@@ -1,0 +1,102 @@
+// https://nuxt.com/docs/api/configuration/nuxt-config
+import vuetify from 'vite-plugin-vuetify';
+
+export default defineNuxtConfig({
+  ssr: true,
+  devServer: {
+    port: 9000,
+  },
+  modules: [
+    "nuxt3-winston-log",
+    '@nuxtjs/google-fonts',
+    '@vueuse/motion/nuxt',
+    async (options, nuxt) => {
+      nuxt.hooks.hook('vite:extendConfig', (config) => {
+        config?.plugins?.push(vuetify(
+          {
+            autoImport: {
+              labs: true,
+            },
+          }
+        ));
+      });
+    }
+  ],
+  nuxt3WinstonLog: {
+    maxSize: "20m",
+    maxFiles: "1d",
+  },
+  css: [
+    "~/assets/css/main.css",
+    "~/assets/css/global.css",
+    "~/assets/scss/main.scss",
+  ],
+  googleFonts: {
+    families: {
+      Inter: [400, 500, 600, 700, 900]
+    },
+    display: 'swap'
+  },
+  runtimeConfig: {
+    public: {
+      apiBaseUrl: 'http://localhost:8000/api/v1',
+      siteUrl: 'https://archeryhub.id',
+      siteName: 'Archery Hub',
+    }
+  },
+  app: {
+    head: {
+      htmlAttrs: {
+        lang: 'en',
+        class: 'dark'
+      },
+      title: 'Archery Hub - Tournament Management System',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'description', content: 'Modern archery tournament management system for organizing competitions, managing athletes, and live scoring.' },
+        { name: 'theme-color', content: '#f9d406' },
+      ],
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap' }
+      ],
+    }
+  },
+  features: {
+    inlineStyles: false,
+  },
+  postcss: {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {},
+    },
+  },
+  build: {
+    transpile: ["vuetify"],
+  },
+  vite: {
+    define: {
+      "process.env.DEBUG": true, // Enable debug logging
+    },
+    server: {
+      allowedHosts: ['localhost', '127.0.0.1']
+    }
+  },
+  watch: ["data"],
+  nitro: {
+    debug: true
+  },
+  // Ensure proper client-side error handling
+  experimental: {
+    payloadExtraction: false,
+    appManifest: false
+  },
+  // Enable source maps for better debugging
+  sourcemap: {
+    server: true,
+    client: true
+  },
+  // Ensure SSR compatibility for authentication
+  compatibilityDate: '2024-10-22'
+});

@@ -1,0 +1,20 @@
+{
+    "servers": {
+        "mysql": {
+            "command": "npx",
+            "args": [
+                "@liangshanli/mcp-server-mysql"
+            ],
+            "env": {
+                "MYSQL_HOST": "151.243.222.93",
+                "MYSQL_PORT": "30036",
+                "MYSQL_USER": "ichsan",
+                "MYSQL_PASSWORD": "12345",
+                "MYSQL_DATABASE": "budibadu",
+                "ALLOW_DDL": "true",
+                "ALLOW_DROP": "true",
+                "ALLOW_DELETE": "true"
+            }
+        }
+    }
+}

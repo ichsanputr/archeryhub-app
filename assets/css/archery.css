@@ -1,0 +1,223 @@
+/* Archery Hub Custom Styles */
+
+/* Base styles */
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Dark theme by default */
+html {
+  @apply dark;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-background-dark;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-surface-highlight rounded;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-brand-gold;
+}
+
+/* Material Symbols Icons */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'liga';
+}
+
+/* Button styles */
+.btn-primary {
+  @apply bg-primary text-background-dark font-bold rounded-lg px-4 py-2 hover:bg-yellow-400 transition-colors;
+}
+
+.btn-secondary {
+  @apply bg-surface-highlight text-white font-medium rounded-lg px-4 py-2 border border-brand-border hover:bg-surface-dark transition-colors;
+}
+
+.btn-outline {
+  @apply border border-brand-border text-brand-gold font-medium rounded-lg px-4 py-2 hover:bg-surface-dark hover:text-white transition-colors;
+}
+
+/* Card styles */
+.card {
+  @apply bg-surface-dark rounded-xl border border-brand-border p-6 shadow-xl;
+}
+
+.card-highlight {
+  @apply bg-surface-highlight rounded-lg p-4 border border-brand-border;
+}
+
+/* Input styles */
+.input {
+  @apply w-full rounded-lg text-white bg-brand-surface border border-brand-border focus:border-primary focus:ring-2 focus:ring-primary/50 focus:outline-none px-4 py-3 transition-all;
+}
+
+.input::placeholder {
+  @apply text-brand-border;
+}
+
+/* Table styles */
+.table-container {
+  @apply bg-surface-dark rounded-xl border border-brand-border overflow-hidden;
+}
+
+.table-header {
+  @apply bg-surface-highlight/50 border-b border-brand-border px-6 py-4 text-left text-brand-gold text-xs font-semibold uppercase tracking-wider;
+}
+
+.table-row {
+  @apply hover:bg-surface-highlight/20 transition-colors border-b border-brand-border;
+}
+
+.table-cell {
+  @apply px-6 py-4;
+}
+
+/* Status badges */
+.badge {
+  @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+}
+
+.badge-success {
+  @apply bg-green-900/40 text-green-400 border border-green-800;
+}
+
+.badge-warning {
+  @apply bg-yellow-900/40 text-yellow-400 border border-yellow-800;
+}
+
+.badge-error {
+  @apply bg-red-900/40 text-red-400 border border-red-800;
+}
+
+.badge-info {
+  @apply bg-blue-900/40 text-blue-400 border border-blue-800;
+}
+
+.badge-neutral {
+  @apply bg-surface-highlight text-gray-400 border border-brand-border;
+}
+
+/* Animation utilities */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.slide-in-right {
+  animation: slideInRight 0.3s ease-in-out;
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.3s ease-in-out;
+}
+
+/* Loading spinner */
+.spinner {
+  @apply inline-block w-6 h-6 border-4 border-brand-border border-t-primary rounded-full animate-spin;
+}
+
+/* Page transitions */
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.3s ease;
+}
+
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+/* Rank colors for leaderboard */
+.rank-gold {
+  @apply bg-primary text-background-dark border border-yellow-200;
+}
+
+.rank-silver {
+  @apply bg-slate-200 text-slate-900 border border-slate-300;
+}
+
+.rank-bronze {
+  @apply bg-orange-600 text-white border border-orange-400;
+}
+
+/* Target animation for scoring */
+@keyframes pulseTarget {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+.pulse-target {
+  animation: pulseTarget 1s ease-in-out infinite;
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-full-width {
+    width: 100% !important;
+    max-width: none !important;
+  }
+}

@@ -1,0 +1,269 @@
+<template>
+  <section class="py-20 bg-gradient-to-br from-yellow-50 via-orange-50 to-red-50 relative overflow-hidden">
+    <!-- Decorative background -->
+    <div class="pointer-events-none absolute inset-0 -z-10">
+      <div class="absolute -top-20 -left-16 h-56 w-56 rounded-full bg-yellow-200/40 blur-3xl" />
+      <div class="absolute -bottom-24 -right-10 h-64 w-64 rounded-full bg-orange-200/30 blur-3xl" />
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-96 w-96 rounded-full bg-orange-100/20 blur-3xl" />
+    </div>
+
+    <Container>
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <div class="inline-flex items-center gap-2 rounded-full bg-white/80 backdrop-blur-sm border border-yellow-200 px-4 py-2 mb-6">
+          <div class="h-2 w-2 rounded-full bg-yellow-500 animate-pulse" />
+          <span class="text-xs font-bold tracking-wider text-yellow-600 uppercase">
+            Platform Comparison
+          </span>
+        </div>
+        
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">
+          Why choose
+          <span class="bg-gradient-to-r from-yellow-600 via-orange-500 to-yellow-600 bg-clip-text text-transparent">
+            BudiBadu
+          </span>
+          for learning?
+        </h2>
+        
+        <p class="text-base sm:text-lg text-gray-600 leading-relaxed">
+          We're different. BudiBadu focuses on
+          <span class="font-semibold text-gray-900">real-world problem-solving</span>
+          with visual guides, multi-language examples, and a beginner-friendly approach.
+        </p>
+      </div>
+
+      <!-- Comparison Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <!-- BudiBadu Card (Featured) -->
+        <div class="relative group">
+          <!-- "Best for You" Badge -->
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
+            <div class="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 px-3 py-1 shadow-lg">
+              <Icon :ssr="true" icon="ph:star-fill" class="w-3 h-3 text-white" />
+              <span class="text-xs font-bold text-white">Recommended</span>
+            </div>
+          </div>
+
+          <div class="relative bg-gradient-to-br from-white to-yellow-50/50 rounded-2xl border-2 border-yellow-400 shadow-xl p-6 h-full transform transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+            <!-- Platform Header -->
+            <div class="text-center mb-6">
+              <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-500 to-orange-500 mb-4 shadow-lg">
+                <Icon :ssr="true" icon="ph:rocket-launch-fill" class="w-8 h-8 text-white" />
+              </div>
+              <h3 class="text-2xl font-bold text-gray-900 mb-1">BudiBadu</h3>
+              <p class="text-sm text-gray-600">Learn by solving real problems</p>
+            </div>
+
+            <!-- Features List -->
+            <div class="space-y-3 mb-6">
+              <div v-for="(feature, idx) in budibaduFeatures" :key="idx" class="flex items-start gap-3">
+                <div class="flex-shrink-0 w-5 h-5 rounded-full bg-yellow-500 flex items-center justify-center mt-0.5">
+                  <Icon :ssr="true" icon="ph:check-bold" class="w-3 h-3 text-white" />
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-semibold text-gray-900">{{ feature.title }}</p>
+                  <p class="text-xs text-gray-600 mt-0.5">{{ feature.description }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- CTA Button -->
+            <a href="/problem" class="block w-full py-3 px-4 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-semibold text-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+              Start Learning Free
+              <Icon :ssr="true" icon="ph:arrow-right-bold" class="inline-block w-4 h-4 ml-1" />
+            </a>
+          </div>
+        </div>
+
+        <!-- LeetCode Card -->
+        <div class="relative group">
+          <div class="bg-white rounded-2xl border border-gray-200 shadow-md p-6 h-full transform transition-all duration-300 hover:scale-105 hover:shadow-xl hover:border-gray-300">
+            <!-- Platform Header -->
+            <div class="text-center mb-6">
+              <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gray-100 mb-4">
+                <Icon :ssr="true" icon="ph:code-bold" class="w-8 h-8 text-gray-600" />
+              </div>
+              <h3 class="text-2xl font-bold text-gray-900 mb-1">LeetCode</h3>
+              <p class="text-sm text-gray-600">Interview preparation focus</p>
+            </div>
+
+            <!-- Features List -->
+            <div class="space-y-3 mb-6">
+              <div v-for="(feature, idx) in leetcodeFeatures" :key="idx" class="flex items-start gap-3">
+                <div class="flex-shrink-0 mt-0.5">
+                  <Icon :ssr="true" :icon="feature.icon" class="w-5 h-5" :class="feature.color" />
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-semibold text-gray-900">{{ feature.title }}</p>
+                  <p class="text-xs text-gray-600 mt-0.5">{{ feature.description }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Info Badge -->
+            <div class="text-center py-2 px-3 rounded-lg bg-gray-50 border border-gray-200">
+              <p class="text-xs text-gray-600">Great for Big Tech interviews</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Codewars Card -->
+        <div class="relative group">
+          <div class="bg-white rounded-2xl border border-gray-200 shadow-md p-6 h-full transform transition-all duration-300 hover:scale-105 hover:shadow-xl hover:border-gray-300">
+            <!-- Platform Header -->
+            <div class="text-center mb-6">
+              <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gray-100 mb-4">
+                <Icon :ssr="true" icon="ph:sword-bold" class="w-8 h-8 text-gray-600" />
+              </div>
+              <h3 class="text-2xl font-bold text-gray-900 mb-1">Codewars</h3>
+              <p class="text-sm text-gray-600">Gamified kata challenges</p>
+            </div>
+
+            <!-- Features List -->
+            <div class="space-y-3 mb-6">
+              <div v-for="(feature, idx) in codewarsFeatures" :key="idx" class="flex items-start gap-3">
+                <div class="flex-shrink-0 mt-0.5">
+                  <Icon :ssr="true" :icon="feature.icon" class="w-5 h-5" :class="feature.color" />
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-semibold text-gray-900">{{ feature.title }}</p>
+                  <p class="text-xs text-gray-600 mt-0.5">{{ feature.description }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Info Badge -->
+            <div class="text-center py-2 px-3 rounded-lg bg-gray-50 border border-gray-200">
+              <p class="text-xs text-gray-600">Perfect for quick practice</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Container>
+  </section>
+</template>
+
+<script setup>
+import { Icon } from '@iconify/vue'
+import Container from '~/components/Container.vue'
+
+defineOptions({
+  name: 'CompareSection'
+})
+
+const budibaduFeatures = [
+  {
+    title: 'Visual Flowcharts',
+    description: 'See algorithm logic with step-by-step diagrams'
+  },
+  {
+    title: 'Multi-Language Solutions',
+    description: '6+ languages with curated best answers'
+  },
+  {
+    title: 'Beginner-Friendly',
+    description: 'Progressive difficulty with clear explanations'
+  },
+  {
+    title: 'Real-World Focus',
+    description: 'Problems feel like production tasks'
+  },
+  {
+    title: '20-40 Min Sessions',
+    description: 'Perfect for daily consistent practice'
+  }
+]
+
+const leetcodeFeatures = [
+  {
+    icon: 'ph:briefcase',
+    color: 'text-blue-600',
+    title: 'Interview Focus',
+    description: 'Optimized for Big Tech DSA questions'
+  },
+  {
+    icon: 'ph:book-open',
+    color: 'text-green-600',
+    title: 'Strong Editorials',
+    description: 'Official solutions with detailed explanations'
+  },
+  {
+    icon: 'ph:users-three',
+    color: 'text-purple-600',
+    title: 'Large Community',
+    description: 'Active discussions on every problem'
+  },
+  {
+    icon: 'ph:trophy',
+    color: 'text-orange-600',
+    title: 'Contest Mode',
+    description: 'Weekly competitions and rankings'
+  }
+]
+
+const codewarsFeatures = [
+  {
+    icon: 'ph:game-controller',
+    color: 'text-red-600',
+    title: 'Gamified Learning',
+    description: 'Rank up through kata challenges'
+  },
+  {
+    icon: 'ph:lightning',
+    color: 'text-yellow-600',
+    title: 'Quick Exercises',
+    description: 'Short drills for syntax fluency'
+  },
+  {
+    icon: 'ph:sparkle',
+    color: 'text-pink-600',
+    title: 'Creative Solutions',
+    description: 'See many different approaches'
+  },
+  {
+    icon: 'ph:heart',
+    color: 'text-red-500',
+    title: 'Community-Driven',
+    description: 'User-created challenges'
+  }
+]
+
+const differentiators = [
+  {
+    icon: 'ph:flow-arrow',
+    title: 'Visual Algorithm Flow',
+    description: 'Every problem has a flowchart showing the thinking process step-by-step'
+  },
+  {
+    icon: 'ph:chalkboard-teacher',
+    title: 'Teaching First',
+    description: 'Explanations focus on building intuition, not just showing code'
+  },
+  {
+    icon: 'ph:path',
+    title: 'Structured Progression',
+    description: 'Carefully ordered problems that build on each other'
+  },
+  {
+    icon: 'ph:clock-countdown',
+    title: 'Bite-Sized Sessions',
+    description: 'Problems designed for 20-40 minute focused practice'
+  }
+]
+</script>
+
+<style scoped>
+/* Custom animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.group:hover .group-hover\:animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+</style>

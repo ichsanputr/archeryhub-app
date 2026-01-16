@@ -1,0 +1,70 @@
+/* Theme Colors and Gradients */
+
+/* Consistent Theme Gradient Backgrounds */
+.hero-gradient-primary {
+  background: linear-gradient(to bottom right, #f59e0b, #d97706);
+}
+
+/* Theme Color Variables */
+:root {
+  /* Primary Colors */
+  --color-primary: #FFC832;
+  --color-primary-50: #FFFBF0;
+  --color-primary-100: #FFF7DC;
+  --color-primary-200: #FFEFB8;
+  --color-primary-300: #FFE085;
+  --color-primary-400: #FFCE51;
+  --color-primary-500: #FFC832;
+  --color-primary-600: #E6A82E;
+  --color-primary-700: #CC8829;
+  --color-primary-800: #B36C25;
+  --color-primary-900: #994F20;
+
+  /* Secondary Colors */
+  --color-secondary: #f59e0b;
+  --color-secondary-light: #d97706;
+
+  /* Neutral Colors */
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+
+  /* Status Colors */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+}
+
+/* Dark Theme Variables */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary: #FFD700;
+    --color-gray-50: #1f2937;
+    --color-gray-100: #374151;
+    --color-gray-200: #4b5563;
+    --color-gray-300: #6b7280;
+    --color-gray-400: #9ca3af;
+    --color-gray-500: #d1d5db;
+    --color-gray-600: #e5e7eb;
+    --color-gray-700: #f3f4f6;
+    --color-gray-800: #f9fafb;
+    --color-gray-900: #ffffff;
+  }
+}
+
+/* Utility Classes for Theme Colors */
+.text-primary { color: var(--color-primary); }
+.bg-primary { background-color: var(--color-primary); }
+.border-primary { border-color: var(--color-primary); }
+
+.text-secondary { color: var(--color-secondary); }
+.bg-secondary { background-color: var(--color-secondary); }
+.border-secondary { border-color: var(--color-secondary); }
