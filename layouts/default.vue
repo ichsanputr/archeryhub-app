@@ -1,26 +1,24 @@
 <template>
   <div class="min-h-screen bg-background-dark text-white flex">
     <!-- Sidebar Overlay (Mobile) -->
-    <div 
-      v-if="isSidebarOpen" 
-      class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden transition-opacity"
-      @click="isSidebarOpen = false"
-    ></div>
+    <div v-if="isSidebarOpen" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden transition-opacity"
+      @click="isSidebarOpen = false"></div>
 
     <!-- Sidebar -->
     <AppSidebar />
-    
+
     <!-- Main Content Area -->
     <div class="flex-1 flex flex-col min-h-screen overflow-hidden">
       <!-- Header -->
       <AppHeader />
-      
+
       <!-- Page Content -->
       <main class="flex-1 overflow-y-auto p-4 md:p-8">
         <slot />
       </main>
-    <!-- Global Modals -->
-    <DeviceRegistrationModal v-model="showDeviceModal" />
+      <!-- Global Modals -->
+      <DeviceRegistrationModal v-model="showDeviceModal" />
+    </div>
   </div>
 </template>
 
@@ -31,8 +29,5 @@ const showDeviceModal = useState('show-device-modal', () => false)
 </script>
 
 <style scoped>
-/* Ensure dark theme */
-:deep(html) {
-  @apply dark;
-}
+/* Ensure dark theme is handled via nuxt.config.ts */
 </style>

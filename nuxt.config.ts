@@ -7,8 +7,6 @@ export default defineNuxtConfig({
     port: 9000,
   },
   modules: [
-    "nuxt3-winston-log",
-    '@nuxtjs/google-fonts',
     '@vueuse/motion/nuxt',
     async (options, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) => {
@@ -22,21 +20,12 @@ export default defineNuxtConfig({
       });
     }
   ],
-  nuxt3WinstonLog: {
-    maxSize: "20m",
-    maxFiles: "1d",
-  },
+
   css: [
     "~/assets/css/main.css",
     "~/assets/css/global.css",
     "~/assets/scss/main.scss",
   ],
-  googleFonts: {
-    families: {
-      Inter: [400, 500, 600, 700, 900]
-    },
-    display: 'swap'
-  },
   runtimeConfig: {
     public: {
       apiBaseUrl: 'http://localhost:8000/api/v1',
@@ -59,7 +48,7 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap' }
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Reddit+Sans:wght@300;400;500;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap' }
       ],
     }
   },

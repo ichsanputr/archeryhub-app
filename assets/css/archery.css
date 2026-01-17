@@ -10,6 +10,41 @@ html {
   @apply dark;
 }
 
+/* Custom Utilities */
+@layer utilities {
+  .bg-brand-border {
+    background-color: #4a4321;
+  }
+
+  .border-brand-border {
+    border-color: #4a4321;
+  }
+
+  .bg-surface-highlight {
+    background-color: #353018;
+  }
+
+  .bg-surface-dark {
+    background-color: #2d2814;
+  }
+
+  .bg-background-dark {
+    background-color: #231f0f;
+  }
+
+  .text-brand-gold {
+    color: #f9d006;
+  }
+
+  .bg-brand-gold {
+    background-color: #f9d006;
+  }
+
+  .bg-brand-surface {
+    background-color: #2d2814;
+  }
+}
+
 /* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;
@@ -125,6 +160,7 @@ html {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -134,6 +170,7 @@ html {
   from {
     transform: translateX(100%);
   }
+
   to {
     transform: translateX(0);
   }
@@ -143,6 +180,7 @@ html {
   from {
     transform: translateX(-100%);
   }
+
   to {
     transform: translateX(0);
   }
@@ -196,10 +234,13 @@ html {
 
 /* Target animation for scoring */
 @keyframes pulseTarget {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1);
     opacity: 1;
   }
+
   50% {
     transform: scale(1.05);
     opacity: 0.8;
@@ -215,7 +256,7 @@ html {
   .no-print {
     display: none !important;
   }
-  
+
   .print-full-width {
     width: 100% !important;
     max-width: none !important;
