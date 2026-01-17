@@ -28,7 +28,8 @@
       <div>
         <div class="flex items-center gap-3 mb-1">
           <h1 class="text-3xl font-black text-white tracking-tight">Overview</h1>
-          <span class="px-2 py-1 rounded text-xs font-bold bg-green-500/20 text-green-400 border border-green-500/30 flex items-center gap-1">
+          <span
+            class="px-2 py-1 rounded text-xs font-bold bg-green-500/20 text-green-400 border border-green-500/30 flex items-center gap-1">
             <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
             LIVE
           </span>
@@ -39,7 +40,8 @@
 
     <!-- KPI Stats Row -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-      <div class="bg-surface-highlight rounded-xl p-5 flex flex-col justify-between h-32 relative overflow-hidden group">
+      <div
+        class="bg-surface-highlight rounded-xl p-5 flex flex-col justify-between h-32 relative overflow-hidden group">
         <div class="absolute right-[-10px] top-[-10px] text-white/5 group-hover:text-white/10 transition-colors">
           <span class="material-symbols-outlined text-[100px]">group</span>
         </div>
@@ -53,7 +55,8 @@
         </div>
       </div>
 
-      <div class="bg-surface-highlight rounded-xl p-5 flex flex-col justify-between h-32 relative overflow-hidden group">
+      <div
+        class="bg-surface-highlight rounded-xl p-5 flex flex-col justify-between h-32 relative overflow-hidden group">
         <div class="absolute right-[-10px] top-[-10px] text-white/5 group-hover:text-white/10 transition-colors">
           <span class="material-symbols-outlined text-[100px]">adjust</span>
         </div>
@@ -64,7 +67,8 @@
         </div>
       </div>
 
-      <div class="bg-surface-highlight rounded-xl p-5 flex flex-col justify-between h-32 relative overflow-hidden group">
+      <div
+        class="bg-surface-highlight rounded-xl p-5 flex flex-col justify-between h-32 relative overflow-hidden group">
         <div class="absolute right-[-10px] top-[-10px] text-white/5 group-hover:text-white/10 transition-colors">
           <span class="material-symbols-outlined text-[100px]">assignment_turned_in</span>
         </div>
@@ -77,7 +81,8 @@
         </div>
       </div>
 
-      <div class="bg-surface-highlight rounded-xl p-5 flex flex-col justify-between h-32 relative overflow-hidden group">
+      <div
+        class="bg-surface-highlight rounded-xl p-5 flex flex-col justify-between h-32 relative overflow-hidden group">
         <div class="absolute right-[-10px] top-[-10px] text-white/5 group-hover:text-white/10 transition-colors">
           <span class="material-symbols-outlined text-[100px]">timer</span>
         </div>
@@ -115,13 +120,10 @@
         </div>
         <div class="p-6 flex-1 overflow-y-auto">
           <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3">
-            <div 
-              v-for="target in targets" 
-              :key="target.id"
-              :class="getTargetClass(target.status)"
-              class="aspect-square rounded-lg flex flex-col items-center justify-center cursor-pointer transition-all group"
-            >
-              <span :class="getTargetTextClass(target.status)" class="font-bold text-lg group-hover:scale-110 transition-transform">
+            <div v-for="target in targets" :key="target.id" :class="getTargetClass(target.status)"
+              class="aspect-square rounded-lg flex flex-col items-center justify-center cursor-pointer transition-all group">
+              <span :class="getTargetTextClass(target.status)"
+                class="font-bold text-lg group-hover:scale-110 transition-transform">
                 {{ target.id }}
               </span>
               <span v-if="target.status === 'issue'" class="material-symbols-outlined text-[16px] text-red-400">
@@ -153,11 +155,7 @@
               </tr>
             </thead>
             <tbody class="divide-y divide-brand-border">
-              <tr 
-                v-for="(entry, index) in leaderboard" 
-                :key="entry.id"
-                class="hover:bg-white/5 transition-colors"
-              >
+              <tr v-for="(entry, index) in leaderboard" :key="entry.id" class="hover:bg-white/5 transition-colors">
                 <td class="px-4 py-3 font-bold" :class="index === 0 ? 'text-primary' : 'text-white'">
                   {{ index + 1 }}
                 </td>
@@ -185,13 +183,11 @@
           <span class="bg-red-500/20 text-red-400 text-xs font-bold px-2 py-1 rounded">2 New</span>
         </div>
         <div class="p-4 flex flex-col gap-3">
-          <div 
-            v-for="alert in alerts" 
-            :key="alert.id"
+          <div v-for="alert in alerts" :key="alert.id"
             :class="alert.type === 'error' ? 'bg-red-500/10 border-red-500/20' : 'bg-brand-border/30 border-brand-border/50'"
-            class="flex items-start gap-3 p-3 rounded-lg border"
-          >
-            <span :class="alert.type === 'error' ? 'text-red-400' : 'text-primary'" class="material-symbols-outlined mt-0.5">
+            class="flex items-start gap-3 p-3 rounded-lg border">
+            <span :class="alert.type === 'error' ? 'text-red-400' : 'text-primary'"
+              class="material-symbols-outlined mt-0.5">
               {{ alert.icon }}
             </span>
             <div class="flex-1">
@@ -202,7 +198,9 @@
                 {{ alert.message }}
               </p>
             </div>
-            <button :class="alert.type === 'error' ? 'bg-red-500/20 hover:bg-red-500/30 text-red-300' : 'bg-brand-border hover:bg-surface-highlight text-white'" class="px-3 py-1 text-xs rounded transition-colors">
+            <button
+              :class="alert.type === 'error' ? 'bg-red-500/20 hover:bg-red-500/30 text-red-300' : 'bg-brand-border hover:bg-surface-highlight text-white'"
+              class="px-3 py-1 text-xs rounded transition-colors">
               {{ alert.action }}
             </button>
           </div>
@@ -216,11 +214,8 @@
           Quick Actions
         </h3>
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          <button 
-            v-for="action in quickActions" 
-            :key="action.label"
-            class="flex flex-col items-center justify-center p-4 rounded-lg bg-brand-border/20 border border-brand-border hover:bg-brand-border/40 hover:border-primary/50 text-white transition-all group"
-          >
+          <button v-for="action in quickActions" :key="action.label"
+            class="flex flex-col items-center justify-center p-4 rounded-lg bg-brand-border/20 border border-brand-border hover:bg-brand-border/40 hover:border-primary/50 text-white transition-all group">
             <span class="material-symbols-outlined mb-2 group-hover:text-primary transition-colors">
               {{ action.icon }}
             </span>
@@ -238,7 +233,8 @@ import { useRoute } from 'vue-router'
 
 definePageMeta({
   title: 'Tournament Dashboard',
-  layout: 'default'
+  layout: 'default',
+  middleware: 'auth'
 })
 
 const route = useRoute()

@@ -15,18 +15,13 @@
           </h1>
         </div>
         <div class="flex items-center gap-3">
-          <button 
-            @click="advancePhase"
-            :disabled="!canAdvance"
-            class="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#4a4421] text-white hover:bg-[#5a5329] transition-colors font-medium text-sm disabled:opacity-50"
-          >
+          <button @click="advancePhase" :disabled="!canAdvance"
+            class="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#4a4421] text-white hover:bg-[#5a5329] transition-colors font-medium text-sm disabled:opacity-50">
             <span class="material-symbols-outlined text-lg">arrow_forward</span>
             Advance Phase
           </button>
-          <button 
-            @click="showRankings = true"
-            class="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#f9d406] text-[#23200f] hover:bg-yellow-400 transition-colors font-bold text-sm"
-          >
+          <button @click="showRankings = true"
+            class="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#f9d406] text-[#23200f] hover:bg-yellow-400 transition-colors font-bold text-sm">
             <span class="material-symbols-outlined text-lg">leaderboard</span>
             Final Rankings
           </button>
@@ -37,15 +32,10 @@
     <!-- Phase Selector -->
     <div class="max-w-7xl mx-auto px-6 py-6">
       <div class="flex items-center gap-2 overflow-x-auto pb-2">
-        <button 
-          v-for="phase in phases" 
-          :key="phase.value"
-          @click="selectedPhase = phase.value"
-          class="whitespace-nowrap px-4 py-2 rounded-lg font-medium text-sm transition-colors"
-          :class="selectedPhase === phase.value 
-            ? 'bg-[#f9d406] text-[#23200f]' 
-            : 'bg-[#4a4421] text-white hover:bg-[#5a5329]'"
-        >
+        <button v-for="phase in phases" :key="phase.value" @click="selectedPhase = phase.value"
+          class="whitespace-nowrap px-4 py-2 rounded-lg font-medium text-sm transition-colors" :class="selectedPhase === phase.value
+            ? 'bg-[#f9d406] text-[#23200f]'
+            : 'bg-[#4a4421] text-white hover:bg-[#5a5329]'">
           {{ phase.label }}
         </button>
       </div>
@@ -63,21 +53,14 @@
       </div>
 
       <div v-else class="grid gap-4" :class="getGridClass">
-        <div 
-          v-for="match in matches" 
-          :key="match.id"
-          @click="selectMatch(match)"
-          class="bg-[#2E2B1B] rounded-xl border border-[#4a4421] overflow-hidden cursor-pointer hover:border-[#f9d406]/50 transition-all group"
-        >
+        <div v-for="match in matches" :key="match.id" @click="selectMatch(match)"
+          class="bg-[#2E2B1B] rounded-xl border border-[#4a4421] overflow-hidden cursor-pointer hover:border-[#f9d406]/50 transition-all group">
           <!-- Match Header -->
           <div class="px-4 py-3 bg-[#4a4421]/30 border-b border-[#4a4421] flex items-center justify-between">
             <span class="text-[#ccc38e] text-sm font-medium">
               Match {{ match.match_number }}
             </span>
-            <span 
-              class="px-2 py-0.5 rounded-full text-xs font-medium"
-              :class="getMatchStatusClass(match.status)"
-            >
+            <span class="px-2 py-0.5 rounded-full text-xs font-medium" :class="getMatchStatusClass(match.status)">
               {{ match.status }}
             </span>
           </div>
@@ -85,11 +68,10 @@
           <!-- Competitors -->
           <div class="divide-y divide-[#4a4421]">
             <!-- Player 1 -->
-            <div 
-              class="px-4 py-4 flex items-center gap-4 transition-colors"
-              :class="match.winner_id === match.participant1?.id ? 'bg-green-900/20' : ''"
-            >
-              <div class="w-8 h-8 rounded-full bg-[#4a4421] flex items-center justify-center text-sm font-bold text-[#ccc38e]">
+            <div class="px-4 py-4 flex items-center gap-4 transition-colors"
+              :class="match.winner_id === match.participant1?.id ? 'bg-green-900/20' : ''">
+              <div
+                class="w-8 h-8 rounded-full bg-[#4a4421] flex items-center justify-center text-sm font-bold text-[#ccc38e]">
                 {{ match.participant1?.qual_rank || '-' }}
               </div>
               <div class="flex-1 min-w-0">
@@ -106,20 +88,16 @@
                   {{ match.set_score1 }} sets
                 </p>
               </div>
-              <span 
-                v-if="match.winner_id === match.participant1?.id"
-                class="material-symbols-outlined text-green-400"
-              >
+              <span v-if="match.winner_id === match.participant1?.id" class="material-symbols-outlined text-green-400">
                 check_circle
               </span>
             </div>
 
             <!-- Player 2 -->
-            <div 
-              class="px-4 py-4 flex items-center gap-4 transition-colors"
-              :class="match.winner_id === match.participant2?.id ? 'bg-green-900/20' : ''"
-            >
-              <div class="w-8 h-8 rounded-full bg-[#4a4421] flex items-center justify-center text-sm font-bold text-[#ccc38e]">
+            <div class="px-4 py-4 flex items-center gap-4 transition-colors"
+              :class="match.winner_id === match.participant2?.id ? 'bg-green-900/20' : ''">
+              <div
+                class="w-8 h-8 rounded-full bg-[#4a4421] flex items-center justify-center text-sm font-bold text-[#ccc38e]">
                 {{ match.participant2?.qual_rank || '-' }}
               </div>
               <div class="flex-1 min-w-0">
@@ -136,10 +114,7 @@
                   {{ match.set_score2 }} sets
                 </p>
               </div>
-              <span 
-                v-if="match.winner_id === match.participant2?.id"
-                class="material-symbols-outlined text-green-400"
-              >
+              <span v-if="match.winner_id === match.participant2?.id" class="material-symbols-outlined text-green-400">
                 check_circle
               </span>
             </div>
@@ -147,18 +122,12 @@
 
           <!-- Match Actions -->
           <div v-if="match.status !== 'completed'" class="px-4 py-3 bg-[#4a4421]/20 flex gap-2">
-            <button 
-              v-if="match.status === 'pending'"
-              @click.stop="startMatch(match)"
-              class="flex-1 py-2 rounded-lg bg-green-600 text-white text-sm font-medium hover:bg-green-500 transition-colors"
-            >
+            <button v-if="match.status === 'pending'" @click.stop="startMatch(match)"
+              class="flex-1 py-2 rounded-lg bg-green-600 text-white text-sm font-medium hover:bg-green-500 transition-colors">
               Start Match
             </button>
-            <button 
-              v-if="match.status === 'ongoing'"
-              @click.stop="openScoreModal(match)"
-              class="flex-1 py-2 rounded-lg bg-[#f9d406] text-[#23200f] text-sm font-bold hover:bg-yellow-400 transition-colors"
-            >
+            <button v-if="match.status === 'ongoing'" @click.stop="openScoreModal(match)"
+              class="flex-1 py-2 rounded-lg bg-[#f9d406] text-[#23200f] text-sm font-bold hover:bg-yellow-400 transition-colors">
               Enter Score
             </button>
           </div>
@@ -168,25 +137,21 @@
 
     <!-- Final Rankings Modal -->
     <Teleport to="body">
-      <div 
-        v-if="showRankings" 
+      <div v-if="showRankings"
         class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
-        @click.self="showRankings = false"
-      >
+        @click.self="showRankings = false">
         <div class="bg-[#2E2B1B] rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden border border-[#4a4421]">
           <div class="p-6 border-b border-[#4a4421] flex items-center justify-between">
             <h2 class="text-xl font-bold text-white flex items-center gap-2">
               <span class="material-symbols-outlined text-[#f9d406]">emoji_events</span>
               Final Rankings
             </h2>
-            <button 
-              @click="showRankings = false"
-              class="p-2 rounded-lg hover:bg-[#4a4421] text-[#ccc38e] hover:text-white transition-colors"
-            >
+            <button @click="showRankings = false"
+              class="p-2 rounded-lg hover:bg-[#4a4421] text-[#ccc38e] hover:text-white transition-colors">
               <span class="material-symbols-outlined">close</span>
             </button>
           </div>
-          
+
           <div class="overflow-y-auto max-h-[70vh]">
             <table class="w-full">
               <thead class="bg-[#4a4421]/30 sticky top-0">
@@ -198,16 +163,10 @@
                 </tr>
               </thead>
               <tbody class="divide-y divide-[#4a4421]">
-                <tr 
-                  v-for="r in rankings" 
-                  :key="r.athlete_id"
-                  class="hover:bg-[#4a4421]/20"
-                >
+                <tr v-for="r in rankings" :key="r.athlete_id" class="hover:bg-[#4a4421]/20">
                   <td class="px-6 py-4">
-                    <span 
-                      class="w-8 h-8 rounded-full flex items-center justify-center font-bold"
-                      :class="getMedalClass(r.rank)"
-                    >
+                    <span class="w-8 h-8 rounded-full flex items-center justify-center font-bold"
+                      :class="getMedalClass(r.rank)">
                       {{ r.rank }}
                     </span>
                   </td>
@@ -235,32 +194,26 @@
 
     <!-- Score Entry Modal -->
     <Teleport to="body">
-      <div 
-        v-if="scoreModal.show" 
+      <div v-if="scoreModal.show"
         class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
-        @click.self="scoreModal.show = false"
-      >
+        @click.self="scoreModal.show = false">
         <div class="bg-[#2E2B1B] rounded-2xl w-full max-w-md border border-[#4a4421]">
           <div class="p-6 border-b border-[#4a4421]">
             <h2 class="text-xl font-bold text-white">Complete Match</h2>
             <p class="text-[#ccc38e] text-sm mt-1">Select the winner</p>
           </div>
-          
+
           <div class="p-6 space-y-4">
-            <button 
-              @click="completeMatch(scoreModal.match.participant1?.id)"
-              class="w-full p-4 rounded-xl border border-[#4a4421] text-left hover:border-green-500 hover:bg-green-900/20 transition-all"
-            >
+            <button @click="completeMatch(scoreModal.match.participant1?.id)"
+              class="w-full p-4 rounded-xl border border-[#4a4421] text-left hover:border-green-500 hover:bg-green-900/20 transition-all">
               <p class="text-white font-bold">
                 {{ scoreModal.match.participant1?.first_name }} {{ scoreModal.match.participant1?.last_name }}
               </p>
               <p class="text-[#ccc38e] text-sm">Score: {{ scoreModal.match.score1 }}</p>
             </button>
 
-            <button 
-              @click="completeMatch(scoreModal.match.participant2?.id)"
-              class="w-full p-4 rounded-xl border border-[#4a4421] text-left hover:border-green-500 hover:bg-green-900/20 transition-all"
-            >
+            <button @click="completeMatch(scoreModal.match.participant2?.id)"
+              class="w-full p-4 rounded-xl border border-[#4a4421] text-left hover:border-green-500 hover:bg-green-900/20 transition-all">
               <p class="text-white font-bold">
                 {{ scoreModal.match.participant2?.first_name }} {{ scoreModal.match.participant2?.last_name }}
               </p>
@@ -269,10 +222,8 @@
           </div>
 
           <div class="px-6 pb-6">
-            <button 
-              @click="scoreModal.show = false"
-              class="w-full py-3 rounded-lg border border-[#4a4421] text-[#ccc38e] hover:bg-[#4a4421] transition-colors"
-            >
+            <button @click="scoreModal.show = false"
+              class="w-full py-3 rounded-lg border border-[#4a4421] text-[#ccc38e] hover:bg-[#4a4421] transition-colors">
               Cancel
             </button>
           </div>
@@ -283,6 +234,12 @@
 </template>
 
 <script setup>
+definePageMeta({
+  title: 'Finals Bracket',
+  layout: 'default',
+  middleware: 'auth'
+})
+
 const route = useRoute()
 const { $api } = useNuxtApp()
 

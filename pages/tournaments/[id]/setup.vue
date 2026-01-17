@@ -100,7 +100,8 @@
           <div class="flex items-center justify-between">
             <h3 class="text-lg font-bold text-white pl-1">Configured Categories</h3>
             <div class="flex gap-2">
-              <button class="text-brand-gold hover:text-primary text-sm font-medium flex items-center gap-1 px-2 py-1 rounded hover:bg-white/5">
+              <button
+                class="text-brand-gold hover:text-primary text-sm font-medium flex items-center gap-1 px-2 py-1 rounded hover:bg-white/5">
                 <span class="material-symbols-outlined text-[18px]">delete_sweep</span>
                 Clear All
               </button>
@@ -108,11 +109,8 @@
           </div>
 
           <!-- Category Items -->
-          <div 
-            v-for="(category, index) in categories" 
-            :key="index"
-            class="card border-l-4 border-l-primary hover:shadow-lg transition-all"
-          >
+          <div v-for="(category, index) in categories" :key="index"
+            class="card border-l-4 border-l-primary hover:shadow-lg transition-all">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div class="flex items-start gap-4 flex-1">
                 <div class="bg-primary/10 p-2 rounded-lg text-primary hidden sm:block">
@@ -130,11 +128,13 @@
               </div>
 
               <div class="flex flex-wrap items-center gap-3">
-                <div v-if="category.distance" class="flex items-center gap-2 bg-surface-dark px-3 py-2 rounded border border-brand-border">
+                <div v-if="category.distance"
+                  class="flex items-center gap-2 bg-surface-dark px-3 py-2 rounded border border-brand-border">
                   <span class="material-symbols-outlined text-gray-400 text-[18px]">straighten</span>
                   <span class="text-sm font-semibold text-white">{{ category.distance }}m</span>
                 </div>
-                <div v-if="category.targetFace" class="flex items-center gap-2 bg-surface-dark px-3 py-2 rounded border border-brand-border">
+                <div v-if="category.targetFace"
+                  class="flex items-center gap-2 bg-surface-dark px-3 py-2 rounded border border-brand-border">
                   <span class="material-symbols-outlined text-gray-400 text-[18px]">adjust</span>
                   <span class="text-sm font-semibold text-white">{{ category.targetFace }}</span>
                 </div>
@@ -171,7 +171,7 @@
             <div class="w-full bg-gray-700 rounded-full h-2 mb-6">
               <div class="bg-primary h-2 rounded-full" :style="`width: ${completionPercentage}%`"></div>
             </div>
-            
+
             <div v-if="categories.length > 0" class="space-y-4">
               <div v-for="(stat, index) in categoryStats" :key="index" class="flex items-center gap-3">
                 <div :class="stat.colorClass" class="size-8 rounded flex items-center justify-center font-bold text-xs">
@@ -218,7 +218,8 @@ import { useRoute } from 'vue-router'
 
 definePageMeta({
   title: 'Tournament Setup',
-  layout: 'default'
+  layout: 'default',
+  middleware: 'auth'
 })
 
 const route = useRoute()
@@ -252,13 +253,13 @@ const categoryStats = computed(() => {
     stats[key].count++
     if (!cat.distance) stats[key].pending = true
   })
-  
+
   const result = Object.values(stats).map((stat, index) => ({
     ...stat,
     label: stat.name[0],
     colorClass: index === 0 ? 'bg-blue-500/20 text-blue-400' : 'bg-purple-500/20 text-purple-400'
   }))
-  
+
   return result
 })
 
@@ -267,9 +268,9 @@ const addCategory = () => {
     alert('Please fill all fields')
     return
   }
-  
+
   const genders = newCategory.value.gender === 'Both (Creates 2)' ? ['Men', 'Women'] : [newCategory.value.gender]
-  
+
   genders.forEach(gender => {
     categories.value.push({
       name: `${newCategory.value.bowStyle} ${gender} ${newCategory.value.ageClass}`,
@@ -279,7 +280,7 @@ const addCategory = () => {
       status: 'incomplete'
     })
   })
-  
+
   newCategory.value = { bowStyle: '', ageClass: '', gender: '' }
 }
 

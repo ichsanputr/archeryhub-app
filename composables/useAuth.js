@@ -1,4 +1,4 @@
-// OAuth GitHub authentication composable
+// OAuth Google authentication composable
 import { computed, readonly } from 'vue'
 import { useState, useRuntimeConfig, useNuxtApp } from '#imports'
 import { $fetch } from 'ofetch'
@@ -18,13 +18,13 @@ export const useAuth = () => {
   const login = async () => {
     try {
       const baseUrl = config.public.apiBaseUrl
-      const { auth_url, state } = await $fetch(`${baseUrl}/auth/github?app_url=${window.location.origin}/auth/callback`)
-      
+      const { auth_url, state } = await $fetch(`${baseUrl}/auth/google?app_url=${window.location.origin}/auth/callback`)
+
       if (state && import.meta.client) {
         sessionStorage.setItem('oauth_state', state)
       }
-      
-      if (auth_url) {         
+
+      if (auth_url) {
         if (import.meta.client) {
           window.location.href = auth_url
         } else {
@@ -32,7 +32,7 @@ export const useAuth = () => {
           return auth_url
         }
       } else {
-        throw new Error('GitHub auth_url not provided by backend')
+        throw new Error('Google auth_url not provided by backend')
       }
     } catch (error) {
       console.error('Login error:', error)
@@ -57,12 +57,12 @@ export const useAuth = () => {
         document.cookie = 'auth_token=; path=/; domain=localhost; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
         // Clear for current domain
         document.cookie = 'auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
-        // Clear for .budibadu.com
-        document.cookie = 'auth_token=; path=/; domain=.budibadu.com; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+        // Clear for .archeryhub.id
+        document.cookie = 'auth_token=; path=/; domain=.archeryhub.id; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
       }
-      
+
       user.value = null;
-      
+
       // Use window.reload to refresh app state
       if (import.meta.client) {
         window.location.reload();
@@ -80,13 +80,13 @@ export const useAuth = () => {
   const fetchUser = async () => {
     try {
       isUserLoading.value = true
-      
+
       // On server-side, user data should already be available from middleware
       if (import.meta.server) {
         isUserLoading.value = false
         return
       }
-      
+
       // On client-side, fetch user data
       const response = await $fetch(`${config.public.apiBaseUrl}/user`, {
         headers: {
@@ -94,21 +94,20 @@ export const useAuth = () => {
         },
         credentials: 'include' // Important: include HTTP-only cookies
       })
-      
+
       // Handle API response structure - it returns {data: user, message: "..."}
       const userData = response?.data || response
-      
+
       // Ensure user data matches expected structure
       if (userData && userData.id) {
         user.value = {
           id: userData.id,
-          github_id: userData.github_id,
+          google_id: userData.google_id,
           username: userData.username,
-          name: userData.name,
+          name: userData.name || userData.full_name,
           email: userData.email,
           avatar_url: userData.avatar_url,
-          github_profile_url: userData.github_profile_url,
-          token_expires_at: userData.token_expires_at,
+          role: userData.role,
           is_active: userData.is_active,
           created_at: userData.created_at,
           updated_at: userData.updated_at

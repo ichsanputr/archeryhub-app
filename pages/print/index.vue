@@ -23,18 +23,14 @@
               <span class="material-symbols-outlined text-[#f9d406]">description</span>
               Report Type
             </h2>
-            
+
             <div class="space-y-2">
-              <button 
-                v-for="type in reportTypes" 
-                :key="type.value"
-                @click="selectedType = type.value"
-                class="w-full p-4 rounded-xl border text-left transition-all flex items-center gap-3"
-                :class="selectedType === type.value 
-                  ? 'border-[#f9d406] bg-[#f9d406]/10' 
-                  : 'border-[#4a4421] hover:border-[#f9d406]/50'"
-              >
-                <span class="material-symbols-outlined" :class="selectedType === type.value ? 'text-[#f9d406]' : 'text-[#ccc38e]'">
+              <button v-for="type in reportTypes" :key="type.value" @click="selectedType = type.value"
+                class="w-full p-4 rounded-xl border text-left transition-all flex items-center gap-3" :class="selectedType === type.value
+                  ? 'border-[#f9d406] bg-[#f9d406]/10'
+                  : 'border-[#4a4421] hover:border-[#f9d406]/50'">
+                <span class="material-symbols-outlined"
+                  :class="selectedType === type.value ? 'text-[#f9d406]' : 'text-[#ccc38e]'">
                   {{ type.icon }}
                 </span>
                 <div>
@@ -51,14 +47,12 @@
               <span class="material-symbols-outlined text-[#f9d406]">tune</span>
               Options
             </h2>
-            
+
             <div class="space-y-4">
               <div>
                 <label class="block text-[#ccc38e] text-sm mb-2">Tournament</label>
-                <select 
-                  v-model="selectedTournament"
-                  class="w-full bg-[#23200f] border border-[#4a4421] rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-[#f9d406]/50"
-                >
+                <select v-model="selectedTournament"
+                  class="w-full bg-[#23200f] border border-[#4a4421] rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-[#f9d406]/50">
                   <option value="">Select Tournament</option>
                   <option v-for="t in tournaments" :key="t.id" :value="t.id">{{ t.name }}</option>
                 </select>
@@ -66,10 +60,8 @@
 
               <div v-if="needsEvent">
                 <label class="block text-[#ccc38e] text-sm mb-2">Event</label>
-                <select 
-                  v-model="selectedEvent"
-                  class="w-full bg-[#23200f] border border-[#4a4421] rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-[#f9d406]/50"
-                >
+                <select v-model="selectedEvent"
+                  class="w-full bg-[#23200f] border border-[#4a4421] rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-[#f9d406]/50">
                   <option value="">All Events</option>
                   <option v-for="e in events" :key="e.id" :value="e.id">{{ e.name }}</option>
                 </select>
@@ -78,26 +70,18 @@
               <div>
                 <label class="block text-[#ccc38e] text-sm mb-2">Format</label>
                 <div class="flex gap-2">
-                  <button 
-                    v-for="f in formats"
-                    :key="f.value"
-                    @click="selectedFormat = f.value"
-                    class="flex-1 py-2 rounded-lg text-sm font-medium transition-colors"
-                    :class="selectedFormat === f.value 
-                      ? 'bg-[#f9d406] text-[#23200f]' 
-                      : 'bg-[#4a4421] text-[#ccc38e] hover:text-white'"
-                  >
+                  <button v-for="f in formats" :key="f.value" @click="selectedFormat = f.value"
+                    class="flex-1 py-2 rounded-lg text-sm font-medium transition-colors" :class="selectedFormat === f.value
+                      ? 'bg-[#f9d406] text-[#23200f]'
+                      : 'bg-[#4a4421] text-[#ccc38e] hover:text-white'">
                     {{ f.label }}
                   </button>
                 </div>
               </div>
             </div>
 
-            <button 
-              @click="generateReport"
-              :disabled="!canGenerate || generating"
-              class="w-full mt-6 py-3 rounded-lg bg-[#f9d406] text-[#23200f] font-bold hover:bg-yellow-400 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
-            >
+            <button @click="generateReport" :disabled="!canGenerate || generating"
+              class="w-full mt-6 py-3 rounded-lg bg-[#f9d406] text-[#23200f] font-bold hover:bg-yellow-400 transition-colors disabled:opacity-50 flex items-center justify-center gap-2">
               <span v-if="generating" class="material-symbols-outlined animate-spin">refresh</span>
               <span>{{ generating ? 'Generating...' : 'Generate Report' }}</span>
             </button>
@@ -113,17 +97,13 @@
                 Preview
               </h2>
               <div v-if="reportData" class="flex gap-2">
-                <button 
-                  @click="downloadReport"
-                  class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#4a4421] text-white text-sm hover:bg-[#5a5329] transition-colors"
-                >
+                <button @click="downloadReport"
+                  class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#4a4421] text-white text-sm hover:bg-[#5a5329] transition-colors">
                   <span class="material-symbols-outlined text-lg">download</span>
                   Download
                 </button>
-                <button 
-                  @click="printReport"
-                  class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#f9d406] text-[#23200f] text-sm font-bold hover:bg-yellow-400 transition-colors"
-                >
+                <button @click="printReport"
+                  class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#f9d406] text-[#23200f] text-sm font-bold hover:bg-yellow-400 transition-colors">
                   <span class="material-symbols-outlined text-lg">print</span>
                   Print
                 </button>
@@ -185,11 +165,7 @@
               </div>
 
               <div v-else-if="selectedType === 'medals'" class="space-y-4">
-                <div 
-                  v-for="m in reportData" 
-                  :key="m.event"
-                  class="bg-[#4a4421]/20 rounded-xl p-4"
-                >
+                <div v-for="m in reportData" :key="m.event" class="bg-[#4a4421]/20 rounded-xl p-4">
                   <h3 class="text-white font-bold mb-3">{{ m.event }}</h3>
                   <div class="grid grid-cols-3 gap-3">
                     <div class="text-center">
@@ -224,6 +200,12 @@
 </template>
 
 <script setup>
+definePageMeta({
+  title: 'Print Center',
+  layout: 'default',
+  middleware: 'auth'
+})
+
 const { $api } = useNuxtApp()
 
 const selectedType = ref('rankings')
@@ -269,7 +251,7 @@ const fetchTournaments = async () => {
 
 const generateReport = async () => {
   if (!canGenerate.value) return
-  
+
   generating.value = true
   try {
     const { data } = await $api('/print/generate', {

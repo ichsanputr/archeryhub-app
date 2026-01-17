@@ -1,16 +1,20 @@
 <template>
   <div class="min-h-screen bg-gradient-to-b from-background-dark to-[#050810] -m-8 p-8">
     <!-- Header -->
-    <div class="h-32 flex items-center justify-between px-8 bg-surface-dark/95 backdrop-blur-md rounded-xl mb-6 shadow-xl border border-surface-highlight relative overflow-hidden">
+    <div
+      class="h-32 flex items-center justify-between px-8 bg-surface-dark/95 backdrop-blur-md rounded-xl mb-6 shadow-xl border border-surface-highlight relative overflow-hidden">
       <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
-      
+
       <div class="flex items-center gap-8">
-        <div class="h-20 w-20 rounded-xl bg-surface-highlight border border-white/10 flex items-center justify-center shadow-lg group">
-          <span class="material-symbols-outlined text-primary text-5xl group-hover:scale-110 transition-transform duration-500">target</span>
+        <div
+          class="h-20 w-20 rounded-xl bg-surface-highlight border border-white/10 flex items-center justify-center shadow-lg group">
+          <span
+            class="material-symbols-outlined text-primary text-5xl group-hover:scale-110 transition-transform duration-500">target</span>
         </div>
         <div class="flex flex-col justify-center h-full pt-1">
           <div class="flex items-center gap-3 mb-1">
-            <span class="bg-red-600 text-white text-[10px] font-black px-2 py-0.5 rounded-sm tracking-widest uppercase animate-pulse shadow-md shadow-red-900/20">
+            <span
+              class="bg-red-600 text-white text-[10px] font-black px-2 py-0.5 rounded-sm tracking-widest uppercase animate-pulse shadow-md shadow-red-900/20">
               Live
             </span>
             <h2 class="text-primary font-semibold tracking-wider uppercase text-sm border-l border-white/20 pl-3">
@@ -40,7 +44,8 @@
         </div>
         <span class="text-2xl text-slate-600 font-bold pb-5">:</span>
         <div class="flex flex-col items-center gap-1">
-          <div class="bg-background-dark w-16 h-20 rounded border border-primary/40 flex items-center justify-center shadow-[0_0_15px_rgba(255,193,7,0.15)]">
+          <div
+            class="bg-background-dark w-16 h-20 rounded border border-primary/40 flex items-center justify-center shadow-[0_0_15px_rgba(255,193,7,0.15)]">
             <span class="text-4xl font-mono font-bold text-primary tracking-tighter tabular-nums">{{ seconds }}</span>
           </div>
           <span class="text-[10px] uppercase text-primary font-bold tracking-widest">Sec</span>
@@ -49,7 +54,8 @@
     </div>
 
     <!-- Leaderboard Header -->
-    <div class="grid grid-cols-12 gap-4 px-6 py-3 mb-2 rounded-lg bg-surface-highlight/30 border border-white/5 text-slate-400 text-xs font-bold uppercase tracking-widest">
+    <div
+      class="grid grid-cols-12 gap-4 px-6 py-3 mb-2 rounded-lg bg-surface-highlight/30 border border-white/5 text-slate-400 text-xs font-bold uppercase tracking-widest">
       <div class="col-span-1 text-center">Rank</div>
       <div class="col-span-1 text-center">Trend</div>
       <div class="col-span-4 text-left pl-4">Athlete</div>
@@ -62,31 +68,33 @@
 
     <!-- Leaderboard Entries -->
     <div class="flex flex-col gap-2.5 overflow-y-auto">
-      <div 
-        v-for="(entry, index) in leaderboard" 
-        :key="entry.id"
-        :class="getRankClass(index + 1)"
-        class="grid grid-cols-12 gap-4 items-center rounded-lg p-3 shadow-[0_4px_20px_rgba(0,0,0,0.3)] relative group transition-all duration-300 hover:bg-surface-highlight"
-      >
-        <div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-        
+      <div v-for="(entry, index) in leaderboard" :key="entry.id" :class="getRankClass(index + 1)"
+        class="grid grid-cols-12 gap-4 items-center rounded-lg p-3 shadow-[0_4px_20px_rgba(0,0,0,0.3)] relative group transition-all duration-300 hover:bg-surface-highlight">
+        <div
+          class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+        </div>
+
         <!-- Rank -->
         <div class="col-span-1 flex justify-center">
-          <div :class="getRankBadgeClass(index + 1)" class="w-10 h-10 rounded flex items-center justify-center text-xl font-black shadow-lg">
+          <div :class="getRankBadgeClass(index + 1)"
+            class="w-10 h-10 rounded flex items-center justify-center text-xl font-black shadow-lg">
             {{ index + 1 }}
           </div>
         </div>
 
         <!-- Trend -->
         <div class="col-span-1 flex justify-center">
-          <span v-if="entry.trend === 'up'" class="material-symbols-outlined text-emerald-500 text-3xl">arrow_drop_up</span>
-          <span v-else-if="entry.trend === 'down'" class="material-symbols-outlined text-rose-500 text-3xl">arrow_drop_down</span>
+          <span v-if="entry.trend === 'up'"
+            class="material-symbols-outlined text-emerald-500 text-3xl">arrow_drop_up</span>
+          <span v-else-if="entry.trend === 'down'"
+            class="material-symbols-outlined text-rose-500 text-3xl">arrow_drop_down</span>
           <span v-else class="material-symbols-outlined text-slate-500 text-2xl">remove</span>
         </div>
 
         <!-- Athlete -->
         <div class="col-span-4 flex items-center gap-4 pl-2">
-          <img :src="entry.flag" :alt="`${entry.country} Flag`" class="w-12 h-8 object-cover rounded shadow-md ring-1 ring-white/10" />
+          <img :src="entry.flag" :alt="`${entry.country} Flag`"
+            class="w-12 h-8 object-cover rounded shadow-md ring-1 ring-white/10" />
           <div class="flex flex-col">
             <span class="text-white text-xl font-bold leading-tight tracking-tight">{{ entry.name }}</span>
             <span class="text-primary text-xs font-semibold uppercase tracking-wide">{{ entry.country }}</span>
@@ -94,16 +102,21 @@
         </div>
 
         <!-- Scores -->
-        <div class="col-span-1 text-center text-xl font-bold text-slate-300 tabular-nums font-mono">{{ entry.end1 }}</div>
-        <div class="col-span-1 text-center text-xl font-bold text-slate-300 tabular-nums font-mono">{{ entry.end2 }}</div>
-        <div class="col-span-1 text-center text-xl font-bold text-slate-300 tabular-nums font-mono">{{ entry.end3 }}</div>
-        <div class="col-span-1 text-center text-xl font-bold tabular-nums font-mono" :class="index === 0 ? 'text-primary animate-pulse' : 'text-slate-300'">
+        <div class="col-span-1 text-center text-xl font-bold text-slate-300 tabular-nums font-mono">{{ entry.end1 }}
+        </div>
+        <div class="col-span-1 text-center text-xl font-bold text-slate-300 tabular-nums font-mono">{{ entry.end2 }}
+        </div>
+        <div class="col-span-1 text-center text-xl font-bold text-slate-300 tabular-nums font-mono">{{ entry.end3 }}
+        </div>
+        <div class="col-span-1 text-center text-xl font-bold tabular-nums font-mono"
+          :class="index === 0 ? 'text-primary animate-pulse' : 'text-slate-300'">
           {{ entry.end4 }}
         </div>
 
         <!-- Total -->
         <div class="col-span-2 text-right pr-6">
-          <span class="text-4xl font-black tracking-tighter tabular-nums" :class="index === 0 ? 'text-primary' : 'text-white'">
+          <span class="text-4xl font-black tracking-tighter tabular-nums"
+            :class="index === 0 ? 'text-primary' : 'text-white'">
             {{ entry.total }}
           </span>
         </div>
@@ -111,15 +124,18 @@
     </div>
 
     <!-- Ticker Footer -->
-    <div class="mt-6 flex items-stretch h-16 bg-surface-dark border-t border-primary/30 rounded-xl shadow-[0_-5px_20px_rgba(0,0,0,0.5)] overflow-hidden">
-      <div class="bg-primary text-background-dark font-black px-8 flex items-center justify-center shrink-0 skew-x-[-12deg] -ml-4 pl-8 border-r-4 border-white/10">
+    <div
+      class="mt-6 flex items-stretch h-16 bg-surface-dark border-t border-primary/30 rounded-xl shadow-[0_-5px_20px_rgba(0,0,0,0.5)] overflow-hidden">
+      <div
+        class="bg-primary text-background-dark font-black px-8 flex items-center justify-center shrink-0 skew-x-[-12deg] -ml-4 pl-8 border-r-4 border-white/10">
         <div class="skew-x-[12deg] flex items-center gap-2">
           <span class="material-symbols-outlined">campaign</span>
           <span>UPDATES</span>
         </div>
       </div>
       <div class="flex-1 flex items-center overflow-hidden">
-        <div class="animate-[ticker_40s_linear_infinite] text-xl font-medium text-slate-200 tracking-wide whitespace-nowrap">
+        <div
+          class="animate-[ticker_40s_linear_infinite] text-xl font-medium text-slate-200 tracking-wide whitespace-nowrap">
           {{ tickerText }}
         </div>
       </div>
@@ -133,7 +149,8 @@ import { useRoute } from 'vue-router'
 
 definePageMeta({
   title: 'Live Leaderboard',
-  layout: 'default'
+  layout: 'default',
+  middleware: 'auth'
 })
 
 const route = useRoute()
@@ -191,13 +208,13 @@ const connectWebSocket = () => {
   // Extract host from apiBaseUrl
   const apiHost = config.public.apiBaseUrl.replace(/^https?:\/\//, '')
   const wsUrl = `${wsProtocol}//${apiHost}/ws/live/${tournamentID}`
-  
+
   ws = new WebSocket(wsUrl)
-  
+
   ws.onopen = () => {
     tickerText.value = 'Live updates connected. Waiting for scores...'
   }
-  
+
   ws.onmessage = (event) => {
     try {
       const msg = JSON.parse(event.data)
@@ -209,7 +226,7 @@ const connectWebSocket = () => {
       console.error('WS message error:', e)
     }
   }
-  
+
   ws.onclose = () => {
     tickerText.value = 'Connection lost. Reconnecting...'
     setTimeout(connectWebSocket, 5000)
@@ -252,7 +269,12 @@ const getRankBadgeClass = (rank) => {
 
 <style>
 @keyframes ticker {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
 }
 </style>

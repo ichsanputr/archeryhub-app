@@ -35,18 +35,21 @@
             <span class="material-symbols-outlined text-[#f9d406]">sports_martial_arts</span>
             Match Overview
           </h2>
-          
+
           <div class="flex items-center justify-center gap-8">
             <!-- Participant 1 -->
             <div class="text-center flex-1">
-              <div class="w-20 h-20 rounded-full bg-[#4a4421] mx-auto mb-3 flex items-center justify-center" :class="stats.winner_id === stats.participant1?.id ? 'ring-4 ring-green-500' : ''">
+              <div class="w-20 h-20 rounded-full bg-[#4a4421] mx-auto mb-3 flex items-center justify-center"
+                :class="stats.winner_id === stats.participant1?.id ? 'ring-4 ring-green-500' : ''">
                 <span class="text-[#ccc38e] font-bold text-2xl">
                   {{ stats.participant1?.first_name?.[0] }}{{ stats.participant1?.last_name?.[0] }}
                 </span>
               </div>
-              <p class="text-white font-bold">{{ stats.participant1?.first_name }} {{ stats.participant1?.last_name }}</p>
+              <p class="text-white font-bold">{{ stats.participant1?.first_name }} {{ stats.participant1?.last_name }}
+              </p>
               <p class="text-[#ccc38e] text-sm">{{ stats.participant1?.country || '-' }}</p>
-              <p class="text-3xl font-bold mt-2" :class="stats.winner_id === stats.participant1?.id ? 'text-green-500' : 'text-white'">
+              <p class="text-3xl font-bold mt-2"
+                :class="stats.winner_id === stats.participant1?.id ? 'text-green-500' : 'text-white'">
                 {{ stats.score1 }}
               </p>
             </div>
@@ -58,14 +61,17 @@
 
             <!-- Participant 2 -->
             <div class="text-center flex-1">
-              <div class="w-20 h-20 rounded-full bg-[#4a4421] mx-auto mb-3 flex items-center justify-center" :class="stats.winner_id === stats.participant2?.id ? 'ring-4 ring-green-500' : ''">
+              <div class="w-20 h-20 rounded-full bg-[#4a4421] mx-auto mb-3 flex items-center justify-center"
+                :class="stats.winner_id === stats.participant2?.id ? 'ring-4 ring-green-500' : ''">
                 <span class="text-[#ccc38e] font-bold text-2xl">
                   {{ stats.participant2?.first_name?.[0] }}{{ stats.participant2?.last_name?.[0] }}
                 </span>
               </div>
-              <p class="text-white font-bold">{{ stats.participant2?.first_name }} {{ stats.participant2?.last_name }}</p>
+              <p class="text-white font-bold">{{ stats.participant2?.first_name }} {{ stats.participant2?.last_name }}
+              </p>
               <p class="text-[#ccc38e] text-sm">{{ stats.participant2?.country || '-' }}</p>
-              <p class="text-3xl font-bold mt-2" :class="stats.winner_id === stats.participant2?.id ? 'text-green-500' : 'text-white'">
+              <p class="text-3xl font-bold mt-2"
+                :class="stats.winner_id === stats.participant2?.id ? 'text-green-500' : 'text-white'">
                 {{ stats.score2 }}
               </p>
             </div>
@@ -84,7 +90,8 @@
           </div>
           <div class="bg-[#2E2B1B] rounded-xl border border-[#4a4421] p-5">
             <p class="text-[#ccc38e] text-sm">Highest Arrow</p>
-            <p class="text-green-500 text-3xl font-bold">{{ stats.highest_arrow === 11 ? 'X' : stats.highest_arrow }}</p>
+            <p class="text-green-500 text-3xl font-bold">{{ stats.highest_arrow === 11 ? 'X' : stats.highest_arrow }}
+            </p>
           </div>
           <div class="bg-[#2E2B1B] rounded-xl border border-[#4a4421] p-5">
             <p class="text-[#ccc38e] text-sm">Duration</p>
@@ -97,13 +104,15 @@
           <!-- P1 Stats -->
           <div class="bg-[#2E2B1B] rounded-xl border border-[#4a4421] overflow-hidden">
             <div class="px-6 py-4 border-b border-[#4a4421] bg-[#4a4421]/20">
-              <h3 class="text-white font-bold">{{ stats.participant1?.first_name }} {{ stats.participant1?.last_name }}</h3>
+              <h3 class="text-white font-bold">{{ stats.participant1?.first_name }} {{ stats.participant1?.last_name }}
+              </h3>
             </div>
             <div class="p-6">
               <div class="grid grid-cols-3 gap-4 mb-6">
                 <div class="text-center">
                   <p class="text-[#ccc38e] text-xs uppercase mb-1">Score</p>
-                  <p class="text-white text-xl font-bold">{{ stats.participant1_stats?.total_score || stats.score1 }}</p>
+                  <p class="text-white text-xl font-bold">{{ stats.participant1_stats?.total_score || stats.score1 }}
+                  </p>
                 </div>
                 <div class="text-center">
                   <p class="text-[#ccc38e] text-xs uppercase mb-1">X Count</p>
@@ -114,17 +123,15 @@
                   <p class="text-white text-xl font-bold">{{ stats.participant1_stats?.ten_count || 0 }}</p>
                 </div>
               </div>
-              
+
               <!-- Score Distribution -->
               <div class="space-y-2">
                 <p class="text-[#ccc38e] text-xs uppercase mb-2">Score Distribution</p>
                 <div v-for="score in [10, 9, 8, 7, 6]" :key="score" class="flex items-center gap-3">
                   <span class="w-6 text-[#ccc38e] text-sm">{{ score }}</span>
                   <div class="flex-1 bg-[#4a4421]/30 rounded-full h-2 overflow-hidden">
-                    <div 
-                      class="bg-[#f9d406] h-full rounded-full transition-all"
-                      :style="{ width: getDistributionWidth(stats.participant1_stats, score) }"
-                    ></div>
+                    <div class="bg-[#f9d406] h-full rounded-full transition-all"
+                      :style="{ width: getDistributionWidth(stats.participant1_stats, score) }"></div>
                   </div>
                   <span class="w-8 text-right text-[#ccc38e] text-sm">
                     {{ stats.participant1_stats?.distribution?.[score] || 0 }}
@@ -137,13 +144,15 @@
           <!-- P2 Stats -->
           <div class="bg-[#2E2B1B] rounded-xl border border-[#4a4421] overflow-hidden">
             <div class="px-6 py-4 border-b border-[#4a4421] bg-[#4a4421]/20">
-              <h3 class="text-white font-bold">{{ stats.participant2?.first_name }} {{ stats.participant2?.last_name }}</h3>
+              <h3 class="text-white font-bold">{{ stats.participant2?.first_name }} {{ stats.participant2?.last_name }}
+              </h3>
             </div>
             <div class="p-6">
               <div class="grid grid-cols-3 gap-4 mb-6">
                 <div class="text-center">
                   <p class="text-[#ccc38e] text-xs uppercase mb-1">Score</p>
-                  <p class="text-white text-xl font-bold">{{ stats.participant2_stats?.total_score || stats.score2 }}</p>
+                  <p class="text-white text-xl font-bold">{{ stats.participant2_stats?.total_score || stats.score2 }}
+                  </p>
                 </div>
                 <div class="text-center">
                   <p class="text-[#ccc38e] text-xs uppercase mb-1">X Count</p>
@@ -154,17 +163,15 @@
                   <p class="text-white text-xl font-bold">{{ stats.participant2_stats?.ten_count || 0 }}</p>
                 </div>
               </div>
-              
+
               <!-- Score Distribution -->
               <div class="space-y-2">
                 <p class="text-[#ccc38e] text-xs uppercase mb-2">Score Distribution</p>
                 <div v-for="score in [10, 9, 8, 7, 6]" :key="score" class="flex items-center gap-3">
                   <span class="w-6 text-[#ccc38e] text-sm">{{ score }}</span>
                   <div class="flex-1 bg-[#4a4421]/30 rounded-full h-2 overflow-hidden">
-                    <div 
-                      class="bg-[#f9d406] h-full rounded-full transition-all"
-                      :style="{ width: getDistributionWidth(stats.participant2_stats, score) }"
-                    ></div>
+                    <div class="bg-[#f9d406] h-full rounded-full transition-all"
+                      :style="{ width: getDistributionWidth(stats.participant2_stats, score) }"></div>
                   </div>
                   <span class="w-8 text-right text-[#ccc38e] text-sm">
                     {{ stats.participant2_stats?.distribution?.[score] || 0 }}
@@ -180,6 +187,12 @@
 </template>
 
 <script setup>
+definePageMeta({
+  title: 'Match Statistics',
+  layout: 'default',
+  middleware: 'auth'
+})
+
 const route = useRoute()
 const { $api } = useNuxtApp()
 

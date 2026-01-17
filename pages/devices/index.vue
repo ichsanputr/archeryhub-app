@@ -6,10 +6,7 @@
         <h1 class="text-3xl font-black text-white">Device Management</h1>
         <p class="text-brand-gold mt-1">Monitor and pair tablets for live scoring</p>
       </div>
-      <button 
-        @click="showModal = true"
-        class="btn-primary flex items-center gap-2"
-      >
+      <button @click="showModal = true" class="btn-primary flex items-center gap-2">
         <span class="material-symbols-outlined">add_circle</span>
         Add New Device
       </button>
@@ -59,12 +56,14 @@
             <tr v-for="device in devices" :key="device.id" class="hover:bg-white/[0.02] transition-colors group">
               <td class="px-6 py-4">
                 <div class="flex items-center gap-3">
-                  <div class="size-10 rounded-lg bg-surface-highlight flex items-center justify-center group-hover:scale-110 transition-transform">
-                     <span class="material-symbols-outlined text-primary">{{ getDeviceIcon(device.device_type) }}</span>
+                  <div
+                    class="size-10 rounded-lg bg-surface-highlight flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <span class="material-symbols-outlined text-primary">{{ getDeviceIcon(device.device_type) }}</span>
                   </div>
                   <div>
                     <p class="text-white font-bold text-sm">{{ device.device_name || 'Unnamed Device' }}</p>
-                    <p class="text-brand-gold text-[10px] font-mono tracking-tighter uppercase opacity-50">{{ device.device_code }}</p>
+                    <p class="text-brand-gold text-[10px] font-mono tracking-tighter uppercase opacity-50">{{
+                      device.device_code }}</p>
                   </div>
                 </div>
               </td>
@@ -79,7 +78,8 @@
                 <span v-else class="text-brand-gold/30 italic text-xs">Unassigned</span>
               </td>
               <td class="px-6 py-4">
-                <span :class="getStatusClass(device.status)" class="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-widest">
+                <span :class="getStatusClass(device.status)"
+                  class="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-widest">
                   {{ device.status }}
                 </span>
               </td>
@@ -88,7 +88,8 @@
               </td>
               <td class="px-6 py-4 text-right">
                 <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button class="p-2 rounded hover:bg-surface-highlight text-gray-400 hover:text-white transition-colors">
+                  <button
+                    class="p-2 rounded hover:bg-surface-highlight text-gray-400 hover:text-white transition-colors">
                     <span class="material-symbols-outlined text-[20px]">settings</span>
                   </button>
                   <button class="p-2 rounded hover:bg-red-500/10 text-gray-400 hover:text-red-400 transition-colors">
@@ -103,17 +104,15 @@
     </div>
 
     <!-- Registration Modal -->
-    <DeviceRegistrationModal 
-      v-model="showModal"
-      @registered="fetchDevices"
-    />
+    <DeviceRegistrationModal v-model="showModal" @registered="fetchDevices" />
   </div>
 </template>
 
 <script setup>
 definePageMeta({
   title: 'Device Management',
-  layout: 'default'
+  layout: 'default',
+  middleware: 'auth'
 })
 
 const { get } = useApi()
@@ -133,16 +132,16 @@ const fetchDevices = async () => {
     // For now get across all tournaments or implement specific selector
     const res = await get('/tournaments')
     const allDevices = []
-    
+
     if (res && res.tournaments) {
-       for (const t of res.tournaments) {
-         try {
-           const dRes = await get(`/tournaments/${t.id}/devices`)
-           if (dRes && dRes.devices) {
-             allDevices.push(...dRes.devices)
-           }
-         } catch (e) { /* ignore individual failures */ }
-       }
+      for (const t of res.tournaments) {
+        try {
+          const dRes = await get(`/tournaments/${t.id}/devices`)
+          if (dRes && dRes.devices) {
+            allDevices.push(...dRes.devices)
+          }
+        } catch (e) { /* ignore individual failures */ }
+      }
     }
     devices.value = allDevices
   } catch (e) {

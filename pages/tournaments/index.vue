@@ -6,10 +6,7 @@
         <h1 class="text-3xl font-black text-white">Tournaments</h1>
         <p class="text-brand-gold mt-1">Manage all your archery competitions</p>
       </div>
-      <NuxtLink 
-        to="/tournaments/create"
-        class="btn-primary flex items-center gap-2"
-      >
+      <NuxtLink to="/tournaments/create" class="btn-primary flex items-center gap-2">
         <span class="material-symbols-outlined">add_circle</span>
         Create Tournament
       </NuxtLink>
@@ -17,13 +14,9 @@
 
     <!-- Filters -->
     <div class="flex flex-wrap gap-3">
-      <button 
-        v-for="filter in filters" 
-        :key="filter.value"
-        @click="activeFilter = filter.value"
+      <button v-for="filter in filters" :key="filter.value" @click="activeFilter = filter.value"
         :class="activeFilter === filter.value ? 'bg-primary text-background-dark' : 'bg-surface-highlight text-white border border-brand-border'"
-        class="px-4 py-2 rounded-lg font-semibold text-sm transition-colors hover:border-primary/50"
-      >
+        class="px-4 py-2 rounded-lg font-semibold text-sm transition-colors hover:border-primary/50">
         {{ filter.label }} ({{ filter.count }})
       </button>
     </div>
@@ -40,15 +33,12 @@
     </div>
 
     <div v-else class="grid grid-cols-1 gap-4">
-      <div 
-        v-for="tournament in tournaments" 
-        :key="tournament.id"
-        @click="$router.push(`/tournaments/${tournament.id}`)"
-        class="card hover:border-primary/50 transition-all cursor-pointer group"
-      >
+      <div v-for="tournament in tournaments" :key="tournament.id" @click="$router.push(`/tournaments/${tournament.id}`)"
+        class="card hover:border-primary/50 transition-all cursor-pointer group">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-4 flex-1">
-            <div class="size-16 rounded-lg bg-primary/20 flex items-center justify-center text-primary font-bold text-lg">
+            <div
+              class="size-16 rounded-lg bg-primary/20 flex items-center justify-center text-primary font-bold text-lg">
               {{ tournament.code }}
             </div>
             <div class="flex-1">
@@ -83,7 +73,8 @@ import { ref, onMounted } from 'vue'
 
 definePageMeta({
   title: 'Tournaments',
-  layout: 'default'
+  layout: 'default',
+  middleware: 'auth'
 })
 
 const loading = ref(false)
@@ -107,7 +98,7 @@ const fetchData = async () => {
     const response = await get(`/tournaments?status=${status}`)
     if (response && response.tournaments) {
       tournaments.value = response.tournaments
-      
+
       // Update counts (optional but helpful)
       if (activeFilter.value === 'all') {
         const counts = { all: response.total || response.tournaments.length, published: 0, ongoing: 0, completed: 0 }

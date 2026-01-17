@@ -5,12 +5,12 @@
       @click="isSidebarOpen = false"></div>
 
     <!-- Sidebar -->
-    <AppSidebar />
+    <LayoutAppSidebar />
 
     <!-- Main Content Area -->
     <div class="flex-1 flex flex-col min-h-screen overflow-hidden">
       <!-- Header -->
-      <AppHeader />
+      <LayoutAppHeader />
 
       <!-- Page Content -->
       <main class="flex-1 overflow-y-auto p-4 md:p-8">
