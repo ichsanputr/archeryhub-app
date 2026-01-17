@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-background-dark text-white flex">
+  <div class="min-h-screen bg-gray-50 dark:bg-background-dark text-gray-900 dark:text-white flex">
     <!-- Sidebar Overlay (Mobile) -->
     <div v-if="isSidebarOpen" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden transition-opacity"
       @click="isSidebarOpen = false"></div>
@@ -23,11 +23,15 @@
 </template>
 
 <script setup>
+import { useTheme } from '~/composables/useTheme'
+
 // This layout includes the sidebar and header for authenticated users
 const isSidebarOpen = useState('mobile-sidebar-open', () => false)
 const showDeviceModal = useState('show-device-modal', () => false)
-</script>
 
-<style scoped>
-/* Ensure dark theme is handled via nuxt.config.ts */
-</style>
+// Initialize theme
+const { initializeTheme } = useTheme()
+onMounted(() => {
+  initializeTheme()
+})
+</script>

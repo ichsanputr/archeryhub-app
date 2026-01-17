@@ -1,6 +1,6 @@
 <template>
   <aside
-    class="w-64 bg-surface-dark border-r border-surface-highlight flex flex-col fixed md:static inset-y-0 left-0 z-50 transition-transform duration-300 md:translate-x-0 shrink-0"
+    class="w-64 bg-white dark:bg-surface-dark border-r border-gray-200 dark:border-surface-highlight flex flex-col fixed md:static inset-y-0 left-0 z-50 transition-transform duration-300 md:translate-x-0 shrink-0"
     :class="isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'">
     <!-- Logo/Brand -->
     <div class="p-6 flex items-center gap-3">
@@ -8,7 +8,7 @@
         <span class="material-symbols-outlined" style="font-size: 24px;">adjust</span>
       </div>
       <div>
-        <h1 class="text-white text-base font-bold leading-none">Archery Hub</h1>
+        <h1 class="text-gray-900 dark:text-white text-base font-bold leading-none">Archery Hub</h1>
         <p class="text-primary/80 text-xs font-medium mt-1">Command Center</p>
       </div>
       <button class="md:hidden ml-auto text-gray-400" @click="isSidebarOpen = false">
@@ -19,9 +19,10 @@
     <!-- Navigation Links -->
     <nav class="flex-1 px-4 py-4 flex flex-col gap-2 overflow-y-auto">
       <NuxtLink v-for="link in navLinks" :key="link.path" :to="link.path"
-        class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors" :class="isActive(link.path)
-          ? 'bg-surface-highlight text-white'
-          : 'text-gray-400 hover:bg-surface-highlight/50 hover:text-white'">
+        class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors"
+        :class="isActive(link.path)
+          ? 'bg-gray-100 dark:bg-surface-highlight text-gray-900 dark:text-white'
+          : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-surface-highlight/50 hover:text-gray-900 dark:hover:text-white'">
         <span class="material-symbols-outlined" :class="isActive(link.path) ? 'text-primary' : ''">
           {{ link.icon }}
         </span>
@@ -34,7 +35,7 @@
     </nav>
 
     <!-- User Section / Logout -->
-    <div class="p-4 border-t border-surface-highlight">
+    <div class="p-4 border-t border-gray-200 dark:border-surface-highlight">
       <button
         class="flex w-full items-center gap-2 justify-center rounded-lg h-10 px-4 bg-primary text-background-dark text-sm font-bold hover:bg-yellow-400 transition-colors"
         @click="handleLogout">

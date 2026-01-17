@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen bg-background-dark flex items-center justify-center p-4">
+    <div class="min-h-screen bg-gray-50 dark:bg-background-dark flex items-center justify-center p-4">
         <div class="w-full max-w-md">
             <!-- Logo and Branding -->
             <div class="text-center mb-8">
@@ -9,24 +9,111 @@
                         <span class="material-symbols-outlined text-4xl text-black">target</span>
                     </div>
                 </div>
-                <h1 class="text-3xl font-black text-white">Archery Hub</h1>
+                <h1 class="text-3xl font-black text-gray-900 dark:text-white">Archery Hub</h1>
                 <p class="text-brand-gold mt-2">Tournament Management System</p>
             </div>
 
             <!-- Login Card -->
-            <div class="card p-8">
-                <h2 class="text-xl font-bold text-white text-center mb-6">Welcome Back</h2>
+            <div class="bg-white dark:bg-surface-dark border border-gray-200 dark:border-surface-highlight rounded-2xl p-8 shadow-sm">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white text-center mb-6">Welcome Back</h2>
 
                 <!-- Error Message -->
                 <div v-if="error"
-                    class="mb-4 p-3 rounded-lg bg-red-500/20 border border-red-500/50 text-red-400 text-sm text-center">
+                    class="mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/50 text-red-600 dark:text-red-400 text-sm text-center">
                     {{ error }}
                 </div>
 
+                <!-- Tab Switcher -->
+                <div class="flex mb-6 bg-gray-100 dark:bg-surface-highlight rounded-lg p-1">
+                    <button 
+                        @click="authMode = 'login'"
+                        class="flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all"
+                        :class="authMode === 'login' 
+                            ? 'bg-white dark:bg-background-dark text-gray-900 dark:text-white shadow-sm' 
+                            : 'text-gray-600 dark:text-gray-400'"
+                    >
+                        Sign In
+                    </button>
+                    <button 
+                        @click="authMode = 'register'"
+                        class="flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all"
+                        :class="authMode === 'register' 
+                            ? 'bg-white dark:bg-background-dark text-gray-900 dark:text-white shadow-sm' 
+                            : 'text-gray-600 dark:text-gray-400'"
+                    >
+                        Sign Up
+                    </button>
+                </div>
+
+                <!-- Email/Password Form -->
+                <form @submit.prevent="handleEmailAuth" class="space-y-4 mb-6">
+                    <div v-if="authMode === 'register'">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
+                        <input 
+                            v-model="form.fullName"
+                            type="text"
+                            placeholder="John Doe"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-surface-highlight bg-white dark:bg-background-dark text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-brand-gold/50 focus:border-brand-gold"
+                        />
+                    </div>
+
+                    <div v-if="authMode === 'register'">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Username</label>
+                        <input 
+                            v-model="form.username"
+                            type="text"
+                            placeholder="johndoe"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-surface-highlight bg-white dark:bg-background-dark text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-brand-gold/50 focus:border-brand-gold"
+                        />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                        <input 
+                            v-model="form.email"
+                            type="email"
+                            placeholder="you@example.com"
+                            required
+                            class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-surface-highlight bg-white dark:bg-background-dark text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-brand-gold/50 focus:border-brand-gold"
+                        />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
+                        <input 
+                            v-model="form.password"
+                            type="password"
+                            placeholder="••••••••"
+                            required
+                            minlength="6"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-surface-highlight bg-white dark:bg-background-dark text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-brand-gold/50 focus:border-brand-gold"
+                        />
+                    </div>
+
+                    <button 
+                        type="submit" 
+                        :disabled="isLoading"
+                        class="w-full py-3 rounded-xl bg-brand-gold hover:bg-yellow-500 text-black font-bold transition-all disabled:opacity-50"
+                    >
+                        <span v-if="isLoading" class="flex items-center justify-center gap-2">
+                            <div class="spinner size-5"></div>
+                            {{ authMode === 'login' ? 'Signing in...' : 'Creating account...' }}
+                        </span>
+                        <span v-else>{{ authMode === 'login' ? 'Sign In' : 'Create Account' }}</span>
+                    </button>
+                </form>
+
+                <!-- Divider -->
+                <div class="flex items-center gap-4 my-6">
+                    <div class="flex-1 h-px bg-gray-200 dark:bg-surface-highlight"></div>
+                    <span class="text-gray-500 dark:text-gray-400 text-sm">or continue with</span>
+                    <div class="flex-1 h-px bg-gray-200 dark:bg-surface-highlight"></div>
+                </div>
+
                 <!-- Google Login Button -->
-                <button @click="handleLogin" :disabled="isLoading"
-                    class="w-full flex items-center justify-center gap-3 px-6 py-4 rounded-xl bg-white hover:bg-gray-100 text-gray-900 font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed">
-                    <svg v-if="!isLoading" class="size-5" viewBox="0 0 24 24">
+                <button @click="handleGoogleLogin" :disabled="isLoading"
+                    class="w-full flex items-center justify-center gap-3 px-6 py-3 rounded-xl border border-gray-300 dark:border-surface-highlight bg-white dark:bg-surface-dark hover:bg-gray-50 dark:hover:bg-surface-highlight text-gray-900 dark:text-white font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                    <svg class="size-5" viewBox="0 0 24 24">
                         <path fill="#4285F4"
                             d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
                         <path fill="#34A853"
@@ -36,20 +123,12 @@
                         <path fill="#EA4335"
                             d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
                     </svg>
-                    <div v-else class="spinner size-5"></div>
-                    <span>{{ isLoading ? 'Connecting...' : 'Continue with Google' }}</span>
+                    <span>Google</span>
                 </button>
-
-                <!-- Divider -->
-                <div class="flex items-center gap-4 my-6">
-                    <div class="flex-1 h-px bg-surface-highlight"></div>
-                    <span class="text-brand-gold text-sm">or</span>
-                    <div class="flex-1 h-px bg-surface-highlight"></div>
-                </div>
 
                 <!-- Guest Access -->
                 <NuxtLink to="/"
-                    class="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-surface-highlight hover:bg-surface-highlight text-white font-medium transition-all">
+                    class="w-full flex items-center justify-center gap-2 px-6 py-3 mt-4 rounded-xl border border-gray-200 dark:border-surface-highlight hover:bg-gray-50 dark:hover:bg-surface-highlight text-gray-600 dark:text-gray-300 font-medium transition-all">
                     <span class="material-symbols-outlined">visibility</span>
                     <span>Browse as Guest</span>
                 </NuxtLink>
@@ -62,7 +141,7 @@
                     <NuxtLink to="/terms" class="text-brand-gold hover:underline">Terms</NuxtLink> and
                     <NuxtLink to="/privacy" class="text-brand-gold hover:underline">Privacy Policy</NuxtLink>
                 </p>
-                <p class="text-gray-600 text-xs">
+                <p class="text-gray-400 text-xs">
                     Need help? <NuxtLink to="/contact" class="text-brand-gold hover:underline">Contact Support
                     </NuxtLink>
                 </p>
@@ -83,27 +162,60 @@ definePageMeta({
 
 const route = useRoute()
 const router = useRouter()
-const { login, isLoggedIn } = useAuth()
+const { login, loginWithEmail, register, isLoggedIn } = useAuth()
 
 const isLoading = ref(false)
 const error = ref(null)
+const authMode = ref('login') // 'login' or 'register'
+
+const form = ref({
+    email: '',
+    password: '',
+    username: '',
+    fullName: ''
+})
 
 // Redirect if already logged in
 onMounted(() => {
     if (isLoggedIn.value) {
-        const redirect = route.query.redirect || '/dashboard'
+        const redirect = route.query.redirect || '/'
         router.replace(redirect)
     }
 })
 
-const handleLogin = async () => {
+const handleEmailAuth = async () => {
+    isLoading.value = true
+    error.value = null
+
+    try {
+        if (authMode.value === 'login') {
+            await loginWithEmail(form.value.email, form.value.password)
+        } else {
+            await register({
+                email: form.value.email,
+                password: form.value.password,
+                username: form.value.username,
+                full_name: form.value.fullName
+            })
+        }
+        const redirect = route.query.redirect || '/'
+        router.push(redirect)
+    } catch (err) {
+        console.error('Auth failed:', err)
+        error.value = err.message || (authMode.value === 'login' ? 'Invalid email or password' : 'Registration failed')
+    } finally {
+        isLoading.value = false
+    }
+}
+
+const handleGoogleLogin = async () => {
     isLoading.value = true
     error.value = null
 
     try {
         await login()
     } catch (err) {
-        console.error('Login failed:', err)
+        console.error('Google login failed:', err)
         error.value = 'Failed to connect to Google. Please try again.'
         isLoading.value = false
     }

@@ -1,7 +1,8 @@
 <template>
-  <div class="min-h-screen bg-[#23200f]">
+  <div class="min-h-screen bg-gray-50 dark:bg-[#23200f]">
     <!-- Header -->
-    <div class="border-b border-[#4a4421] bg-[#23200f]/95 backdrop-blur px-6 py-4 sticky top-0 z-10">
+    <div
+      class="border-b border-gray-200 dark:border-[#4a4421] bg-white dark:bg-[#23200f]/95 backdrop-blur px-6 py-4 sticky top-0 z-10">
       <div class="max-w-7xl mx-auto flex items-center justify-between">
         <div>
           <h1 class="text-2xl font-bold text-white flex items-center gap-3">

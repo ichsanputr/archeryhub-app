@@ -36,8 +36,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: {
-        lang: 'en',
-        class: 'dark'
+        lang: 'en'
       },
       title: 'Archery Hub - Tournament Management System',
       meta: [

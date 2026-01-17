@@ -5,9 +5,13 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
-/* Dark theme by default */
-html {
-  @apply dark;
+/* Light theme base colors */
+:root {
+  --bg-light: #f9fafb;
+  --surface-light: #ffffff;
+  --border-light: #e5e7eb;
+  --text-light: #111827;
+  --text-muted-light: #6b7280;
 }
 
 /* Custom Utilities */
@@ -44,6 +48,7 @@ html {
     background-color: #2d2814;
   }
 }
+
 
 /* Scrollbar styling */
 ::-webkit-scrollbar {

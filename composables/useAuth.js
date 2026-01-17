@@ -40,6 +40,74 @@ export const useAuth = () => {
     }
   }
 
+  // Email/password login
+  const loginWithEmail = async (email, password) => {
+    try {
+      const baseUrl = config.public.apiBaseUrl
+      const response = await $fetch(`${baseUrl}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: { email, password },
+        credentials: 'include'
+      })
+
+      // Store token in cookie if returned
+      if (response.token && import.meta.client) {
+        document.cookie = `auth_token=${response.token}; path=/; max-age=259200; SameSite=Lax`
+      }
+
+      // Set user data
+      if (response.user) {
+        user.value = {
+          id: response.user.id,
+          username: response.user.username,
+          name: response.user.full_name,
+          email: response.user.email,
+          role: response.user.role
+        }
+      }
+
+      return response
+    } catch (error) {
+      console.error('Email login error:', error)
+      throw new Error(error.data?.error || 'Invalid email or password')
+    }
+  }
+
+  // Register new user
+  const register = async (userData) => {
+    try {
+      const baseUrl = config.public.apiBaseUrl
+      const response = await $fetch(`${baseUrl}/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: userData,
+        credentials: 'include'
+      })
+
+      // Store token in cookie if returned
+      if (response.token && import.meta.client) {
+        document.cookie = `auth_token=${response.token}; path=/; max-age=259200; SameSite=Lax`
+      }
+
+      // Set user data
+      if (response.user) {
+        user.value = {
+          id: response.user.id,
+          username: response.user.username,
+          name: response.user.full_name,
+          email: response.user.email,
+          role: response.user.role
+        }
+      }
+
+      return response
+    } catch (error) {
+      console.error('Registration error:', error)
+      throw new Error(error.data?.error || 'Registration failed')
+    }
+  }
+
   const logout = async () => {
     try {
       // Call the logout API endpoint
@@ -138,6 +206,8 @@ export const useAuth = () => {
     isUserLoading: readonly(isUserLoading),
     isLoggedIn,
     login,
+    loginWithEmail,
+    register,
     logout,
     fetchUser,
     initializeAuth
