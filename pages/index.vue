@@ -1,363 +1,435 @@
 <template>
-    <div class="min-h-screen bg-background-dark">
+    <div class="min-h-screen bg-background-light font-body text-navy overflow-x-hidden">
         <!-- Navigation -->
-        <nav
-            class="fixed top-0 left-0 right-0 z-50 bg-background-dark/95 backdrop-blur border-b border-surface-highlight">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between h-16">
-                    <div class="flex items-center gap-3">
-                        <div class="size-10 rounded-lg bg-brand-gold flex items-center justify-center">
-                            <span class="material-symbols-outlined text-xl text-black">target</span>
+        <nav class="fixed top-0 z-50 w-full transition-all duration-500" :class="[
+            isScrolled
+                ? 'bg-white/95 backdrop-blur-md border-b border-border-subtle py-2 shadow-lg'
+                : 'bg-transparent border-transparent py-4'
+        ]">
+            <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-20">
+                    <div class="flex items-center gap-3 group cursor-pointer" @click="navigateTo('/')">
+                        <div class="flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-300"
+                            :class="isScrolled ? 'bg-navy text-primary' : 'bg-primary text-navy'">
+                            <span class="material-symbols-outlined text-2xl">gps_fixed</span>
                         </div>
-                        <span class="text-xl font-bold text-white">Archery Hub</span>
+                        <span class="text-xl font-bold tracking-tight font-display transition-colors duration-300"
+                            :class="isScrolled ? 'text-navy' : 'text-white'">Archery Hub</span>
                     </div>
                     <div class="hidden md:flex items-center gap-8">
-                        <a href="#features" class="text-gray-400 hover:text-white transition-colors">Features</a>
-                        <a href="#how-it-works" class="text-gray-400 hover:text-white transition-colors">How It
-                            Works</a>
-                        <a href="#testimonials"
-                            class="text-gray-400 hover:text-white transition-colors">Testimonials</a>
-                        <a href="#faq" class="text-gray-400 hover:text-white transition-colors">FAQ</a>
+                        <NuxtLink to="/" class="text-sm font-medium transition-all duration-300 hover:text-primary"
+                            :class="isScrolled ? 'text-navy' : 'text-white/80'">Home</NuxtLink>
+                        <NuxtLink to="/tournaments"
+                            class="text-sm font-medium transition-all duration-300 hover:text-primary"
+                            :class="isScrolled ? 'text-navy' : 'text-white/80'">Tournaments</NuxtLink>
+                        <a class="text-sm font-medium transition-all duration-300 hover:text-primary"
+                            :class="isScrolled ? 'text-navy' : 'text-white/80'" href="#">Scoring</a>
+                        <a class="text-sm font-medium transition-all duration-300 hover:text-primary"
+                            :class="isScrolled ? 'text-navy' : 'text-white/80'" href="#">Clubs</a>
+                        <NuxtLink to="/about" class="text-sm font-medium transition-all duration-300 hover:text-primary"
+                            :class="isScrolled ? 'text-navy' : 'text-white/80'">About</NuxtLink>
                     </div>
-                    <div class="flex items-center gap-4">
+                    <div class="hidden md:flex">
                         <NuxtLink to="/auth/login"
-                            class="text-brand-gold hover:text-white transition-colors font-medium">
-                            Sign In
+                            class="bg-primary hover:bg-primary-hover text-navy text-sm font-bold px-6 py-2.5 rounded-lg transition-colors duration-200">
+                            Login / Register
                         </NuxtLink>
-                        <NuxtLink to="/auth/login"
-                            class="px-4 py-2 rounded-lg bg-brand-gold text-black font-bold hover:bg-yellow-400 transition-colors">
-                            Get Started
-                        </NuxtLink>
+                    </div>
+                    <div class="flex md:hidden">
+                        <button class="transition-colors duration-300" :class="isScrolled ? 'text-navy' : 'text-white'"
+                            @click="mobileMenuOpen = !mobileMenuOpen">
+                            <span class="material-symbols-outlined">{{ mobileMenuOpen ? 'close' : 'menu' }}</span>
+                        </button>
                     </div>
                 </div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div v-if="mobileMenuOpen" class="md:hidden bg-white border-b border-border-subtle p-4 space-y-4">
+                <NuxtLink to="/" class="block text-navy text-sm font-medium">Home</NuxtLink>
+                <NuxtLink to="/tournaments" class="block text-navy text-sm font-medium">Tournaments</NuxtLink>
+                <a href="#" class="block text-navy text-sm font-medium">Scoring</a>
+                <a href="#" class="block text-navy text-sm font-medium">Clubs</a>
+                <NuxtLink to="/about" class="block text-navy text-sm font-medium">About</NuxtLink>
+                <NuxtLink to="/auth/login" class="block bg-primary text-navy text-center font-bold py-2 rounded-lg">
+                    Login / Register</NuxtLink>
             </div>
         </nav>
 
         <!-- Hero Section -->
-        <section class="relative overflow-hidden pt-24">
-            <div class="absolute inset-0 bg-gradient-to-br from-background-dark via-surface-dark to-background-dark">
+        <section class="relative w-full h-[600px] md:h-[700px] overflow-hidden">
+            <div class="absolute inset-0 w-full h-full">
+                <img alt="Professional archer aiming at target" class="w-full h-full object-cover object-center"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAy5qIYUnhOAA9fRw-ezPUypzWUtCQTHv6EpNe6Q0bAAz6AFkDLOqgltBvPdIyyRsW4WqNcDFxXZlfgwFHWevvHH2yphLfwWEOEHT3GyFbvXsenr1qoxDPsSf-bmVfNqwG9_5cJoVMhgvCJ2FfEt6bQgicn5WlBrsP8axm39cBTN9E6cF7MQ9vKO5p0acgAZ1z3IYSXi-yQILL1HoOdT6ZobZEyg4qolUIumeiK6bVGuATW7dwLfqmaRIFiXL-l1PEPGa_sRD5Lc9E" />
+                <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90">
+                </div>
             </div>
-            <div
-                class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-brand-gold/10 via-transparent to-transparent">
-            </div>
-
-            <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    <div class="text-center lg:text-left">
-                        <div
-                            class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-sm font-medium mb-6">
-                            <span class="material-symbols-outlined text-lg">verified</span>
-                            <span>Trusted by 500+ Organizations Worldwide</span>
+            <div class="relative z-10 w-full h-full flex items-center">
+                <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                    <div class="max-w-2xl">
+                        <div ref="heroBadge"
+                            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 w-fit mb-6 border border-white/10 backdrop-blur-md opacity-0 translate-y-4">
+                            <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                            <span class="text-white/90 text-xs font-medium tracking-wide uppercase">Platform No.1 di
+                                Indonesia</span>
                         </div>
-
-                        <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-6">
-                            Professional
-                            <span
-                                class="text-transparent bg-clip-text bg-gradient-to-r from-brand-gold to-yellow-400">Archery</span>
-                            Tournament Management
+                        <h1 ref="heroTitle"
+                            class="text-4xl md:text-5xl lg:text-7xl font-black text-white leading-[1.1] mb-6 tracking-tight drop-shadow-lg font-display opacity-0 translate-y-8">
+                            Modernisasi Tata <span
+                                class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-green-300">Kelola
+                                Panahan</span> Indonesia
                         </h1>
-
-                        <p class="text-lg md:text-xl text-gray-400 mb-8 max-w-xl mx-auto lg:mx-0">
-                            The complete platform for archery competitions. From registration to live results,
-                            manage everything in one place.
+                        <p ref="heroText"
+                            class="text-white/80 text-lg md:text-xl font-light leading-relaxed mb-10 max-w-xl drop-shadow-md opacity-0 translate-y-8">
+                            Platform infrastruktur digital terintegrasi untuk manajemen klub, skor real-time, dan
+                            turnamen panahan profesional yang lebih efisien.
                         </p>
-
-                        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <div ref="heroButtons" class="flex flex-col sm:flex-row gap-4 opacity-0 translate-y-8">
                             <NuxtLink to="/auth/login"
-                                class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-brand-gold to-yellow-500 text-black font-bold text-lg hover:shadow-lg hover:shadow-brand-gold/30 transition-all">
-                                <span class="material-symbols-outlined">rocket_launch</span>
-                                Start Free Trial
+                                class="bg-primary hover:bg-primary-hover text-navy text-base font-bold px-8 py-3.5 rounded-xl transition-all shadow-[0_4px_14px_0_rgba(183,251,35,0.39)] hover:shadow-[0_6px_20px_rgba(183,251,35,0.23)] hover:-translate-y-0.5 text-center">
+                                Mulai Sekarang
                             </NuxtLink>
-                            <a href="#how-it-works"
-                                class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl border border-surface-highlight text-white font-semibold text-lg hover:bg-surface-highlight transition-all">
-                                <span class="material-symbols-outlined">play_circle</span>
-                                Watch Demo
-                            </a>
+                            <button
+                                class="bg-white/10 hover:bg-white/20 border border-white/20 text-white text-base font-medium px-8 py-3.5 rounded-xl transition-colors backdrop-blur-md">
+                                Pelajari Fitur
+                            </button>
                         </div>
                     </div>
+                </div>
+            </div>
+        </section>
 
-                    <div class="hidden lg:flex justify-center">
-                        <div class="relative">
-                            <div
-                                class="size-80 rounded-full bg-gradient-to-br from-brand-gold/20 to-transparent flex items-center justify-center">
-                                <div
-                                    class="size-64 rounded-full bg-gradient-to-br from-brand-gold/30 to-transparent flex items-center justify-center">
-                                    <span class="material-symbols-outlined text-9xl text-brand-gold">target</span>
+        <!-- Upcoming Tournaments -->
+        <section class="w-full py-20 -mt-12 relative z-20">
+            <div class="max-w-[960px] mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bg-white rounded-3xl shadow-xl border border-border-subtle/50 p-6 md:p-8">
+                    <div class="flex items-center justify-between mb-8">
+                        <div>
+                            <h2 class="text-navy text-2xl font-bold tracking-tight font-display">Turnamen Mendatang</h2>
+                            <p class="text-text-sub text-sm mt-1">Daftar kompetisi resmi terdekat yang dibuka untuk
+                                pendaftaran.</p>
+                        </div>
+                        <NuxtLink to="/tournaments"
+                            class="hidden sm:flex items-center gap-1 text-navy text-sm font-semibold hover:text-primary-hover transition-colors group">
+                            Lihat Semua
+                            <span
+                                class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </NuxtLink>
+                    </div>
+                    <div class="flex flex-col gap-4">
+                        <div v-for="event in upcomingEvents" :key="event.name"
+                            class="group bg-white rounded-2xl border border-border-subtle p-5 hover:border-primary/50 hover:shadow-card transition-all duration-300">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+                                <div class="flex items-start gap-5">
+                                    <div
+                                        class="flex-shrink-0 flex flex-col items-center justify-center w-16 h-16 rounded-xl bg-navy text-white shadow-sm">
+                                        <span class="text-xs font-medium uppercase tracking-wider text-primary">{{
+                                            event.month }}</span>
+                                        <span class="text-2xl font-bold leading-none">{{ event.day }}</span>
+                                    </div>
+                                    <div class="flex flex-col">
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <span v-for="tag in event.tags" :key="tag.label" :class="tag.class"
+                                                class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide">
+                                                {{ tag.label }}
+                                            </span>
+                                        </div>
+                                        <h3
+                                            class="text-navy text-lg font-bold group-hover:text-primary-hover transition-colors font-display">
+                                            {{ event.name }}</h3>
+                                        <div class="flex items-center gap-4 mt-1 text-sm text-text-sub">
+                                            <div class="flex items-center gap-1">
+                                                <span
+                                                    class="material-symbols-outlined text-base text-primary">location_on</span>
+                                                {{ event.location }}
+                                            </div>
+                                            <div class="hidden sm:flex items-center gap-1">
+                                                <span
+                                                    class="material-symbols-outlined text-base text-primary">sports_score</span>
+                                                {{ event.categories }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex-shrink-0 sm:self-center">
+                                    <button
+                                        class="w-full sm:w-auto bg-primary/10 hover:bg-primary text-navy-light hover:text-navy text-sm font-bold py-2.5 px-6 rounded-lg transition-colors border border-primary/20">
+                                        Daftar Sekarang
+                                    </button>
                                 </div>
                             </div>
-                            <div
-                                class="absolute -top-4 -right-4 bg-surface-dark border border-surface-highlight rounded-xl px-4 py-3 shadow-xl">
-                                <div class="text-2xl font-bold text-white">1.2M+</div>
-                                <div class="text-xs text-brand-gold">Scores Recorded</div>
-                            </div>
-                            <div
-                                class="absolute -bottom-4 -left-4 bg-surface-dark border border-surface-highlight rounded-xl px-4 py-3 shadow-xl">
-                                <div class="text-2xl font-bold text-white">50K+</div>
-                                <div class="text-xs text-brand-gold">Athletes</div>
-                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Stats Bar -->
-        <section class="py-12 bg-surface-dark border-y border-surface-highlight">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-                    <div v-for="stat in stats" :key="stat.label" class="text-center">
-                        <div class="text-3xl md:text-4xl font-black text-brand-gold mb-1">{{ stat.value }}</div>
-                        <div class="text-sm text-gray-400">{{ stat.label }}</div>
+                    <div class="mt-6 text-center sm:hidden">
+                        <NuxtLink to="/tournaments"
+                            class="inline-flex items-center gap-1 text-navy text-sm font-semibold">
+                            Lihat Semua Turnamen
+                            <span class="material-symbols-outlined text-lg">arrow_forward</span>
+                        </NuxtLink>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Live Competitions Spotlight -->
-        <section class="py-20 bg-background-dark">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-12">
+        <!-- Call to Action Section -->
+        <section class="w-full pb-20">
+            <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid md:grid-cols-2 gap-8">
                     <div
-                        class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/20 text-red-400 text-sm font-medium mb-4">
-                        <span class="size-2 rounded-full bg-red-500 animate-pulse"></span>
-                        Live Now
-                    </div>
-                    <h2 class="text-3xl md:text-4xl font-black text-white mb-4">Active Competitions</h2>
-                    <p class="text-gray-400 max-w-2xl mx-auto">See what's happening in the archery world right now</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div v-for="event in liveEvents" :key="event.name"
-                        class="group p-6 rounded-2xl bg-surface-dark border border-surface-highlight hover:border-brand-gold/50 transition-all">
-                        <div class="flex items-start justify-between mb-4">
-                            <div>
-                                <h3 class="text-lg font-bold text-white group-hover:text-brand-gold transition-colors">
-                                    {{ event.name }}</h3>
-                                <p class="text-sm text-gray-400">{{ event.location }}</p>
-                            </div>
-                            <span v-if="event.live"
-                                class="px-2 py-1 rounded-full bg-red-500/20 text-red-400 text-xs font-bold">LIVE</span>
-                            <span v-else
-                                class="px-2 py-1 rounded-full bg-brand-gold/20 text-brand-gold text-xs font-bold">{{
-                                event.status }}</span>
+                        class="relative overflow-hidden group bg-navy rounded-3xl p-10 flex flex-col justify-between shadow-lg hover:shadow-2xl transition-all duration-300">
+                        <div
+                            class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-primary/10 rounded-full blur-3xl opacity-50 z-0 group-hover:bg-primary/20 transition-all">
                         </div>
-                        <div class="flex items-center justify-between text-sm">
-                            <span class="text-gray-400">{{ event.date }}</span>
-                            <span class="text-brand-gold font-medium">{{ event.participants }} Athletes</span>
+                        <div class="relative z-10">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-primary flex items-center justify-center text-navy mb-6">
+                                <span class="material-symbols-outlined text-2xl">person_add</span>
+                            </div>
+                            <h3 class="text-3xl font-bold text-white mb-4 font-display">Jadi Atlet</h3>
+                            <p class="text-white/70 text-lg mb-8 max-w-md">Daftarkan dirimu, bangun profil prestasi, dan
+                                ikuti berbagai turnamen resmi di seluruh Indonesia.</p>
+                        </div>
+                        <div class="relative z-10">
+                            <NuxtLink to="/auth/login"
+                                class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-navy text-base font-bold px-8 py-3.5 rounded-xl transition-all shadow-lg hover:shadow-primary/30 hover:-translate-y-1">
+                                Daftar Sebagai Atlet
+                                <span class="material-symbols-outlined">arrow_forward</span>
+                            </NuxtLink>
+                        </div>
+                    </div>
+                    <div
+                        class="relative overflow-hidden group bg-white border border-border-subtle rounded-3xl p-10 flex flex-col justify-between shadow-lg hover:shadow-2xl transition-all duration-300">
+                        <div
+                            class="absolute bottom-0 left-0 -ml-16 -mb-16 w-64 h-64 bg-navy/5 rounded-full blur-3xl opacity-50 z-0">
+                        </div>
+                        <div class="relative z-10">
+                            <div class="w-12 h-12 rounded-xl bg-navy flex items-center justify-center text-white mb-6">
+                                <span class="material-symbols-outlined text-2xl">domain_add</span>
+                            </div>
+                            <h3 class="text-3xl font-bold text-navy mb-4 font-display">Daftarkan Organisasi</h3>
+                            <p class="text-text-sub text-lg mb-8 max-w-md">Kelola klub atau federasi Anda dengan sistem
+                                manajemen modern. Buat turnamen dan atur anggota dengan mudah.</p>
+                        </div>
+                        <div class="relative z-10">
+                            <NuxtLink to="/auth/login"
+                                class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-navy hover:bg-navy-light text-white text-base font-bold px-8 py-3.5 rounded-xl transition-all shadow-lg hover:shadow-navy/30 hover:-translate-y-1">
+                                Gabung Mitra
+                                <span class="material-symbols-outlined">arrow_forward</span>
+                            </NuxtLink>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Features Section -->
-        <section id="features" class="py-20 bg-surface-dark/50">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-black text-white mb-4">Everything You Need</h2>
-                    <p class="text-lg text-gray-400 max-w-2xl mx-auto">
-                        Comprehensive tools designed for archery tournament organizers, coaches, and athletes.
-                    </p>
+        <!-- Digital Governance Ecosystem -->
+        <section class="bg-white py-16 md:py-24 border-b border-gray-100">
+            <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 max-w-2xl mx-auto">
+                    <h2 class="text-navy text-3xl font-bold mb-4 font-display">Ekosistem Tata Kelola Digital</h2>
+                    <p class="text-text-sub">Fitur terintegrasi dirancang untuk memprofesionalkan manajemen panahan dari
+                        tingkat klub hingga federasi nasional.</p>
                 </div>
+                <div class="grid md:grid-cols-3 gap-8 lg:gap-12">
+                    <div
+                        class="group p-8 rounded-2xl bg-gray-50 border border-transparent hover:border-primary/20 hover:shadow-xl transition-all duration-300">
+                        <div
+                            class="w-16 h-16 bg-navy rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-primary text-4xl">scoreboard</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-navy mb-3">Scoring Real-time</h3>
+                        <p class="text-text-sub leading-relaxed">
+                            Sistem penilaian digital dengan sinkronisasi cloud instan. Hilangkan papan skor kertas dan
+                            sediakan hasil langsung untuk penonton di seluruh dunia.
+                        </p>
+                    </div>
+                    <div
+                        class="group p-8 rounded-2xl bg-gray-50 border border-transparent hover:border-primary/20 hover:shadow-xl transition-all duration-300">
+                        <div
+                            class="w-16 h-16 bg-navy rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-primary text-4xl">domain</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-navy mb-3">Manajemen Klub</h3>
+                        <p class="text-text-sub leading-relaxed">
+                            Alat administrasi bagi klub untuk mengelola anggota, memproses pendaftaran, dan memantau
+                            kemajuan perkembangan atlet dari waktu ke waktu.
+                        </p>
+                    </div>
+                    <div
+                        class="group p-8 rounded-2xl bg-gray-50 border border-transparent hover:border-primary/20 hover:shadow-xl transition-all duration-300">
+                        <div
+                            class="w-16 h-16 bg-navy rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-primary text-4xl">leaderboard</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-navy mb-3">Ranking Nasional</h3>
+                        <p class="text-text-sub leading-relaxed">
+                            Kalkulasi poin otomatis dan pembaruan peringkat berdasarkan hasil turnamen, memastikan
+                            transparansi dalam seleksi nasional.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
+        <!-- Live Events Section -->
+        <section class="bg-gray-50 py-16 md:py-20 overflow-hidden">
+            <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between mb-8">
+                    <h2 class="text-2xl font-bold text-navy flex items-center gap-3 font-display">
+                        <span class="w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
+                        Event Live Saat Ini
+                    </h2>
+                    <NuxtLink to="/tournaments"
+                        class="text-navy hover:text-primary font-bold text-sm flex items-center gap-1 group">
+                        Lihat Jadwal <span
+                            class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
+                    </NuxtLink>
+                </div>
+                <div class="flex overflow-x-auto pb-8 -mx-4 px-4 sm:mx-0 sm:px-0 gap-6 no-scrollbar snap-x">
+                    <div v-for="live in liveEvents" :key="live.name"
+                        class="min-w-[300px] md:min-w-[380px] snap-center group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:border-primary/50 transition-all duration-300 flex flex-col">
+                        <div class="relative h-48 overflow-hidden">
+                            <div class="absolute top-3 left-3 z-10 flex gap-2">
+                                <span
+                                    class="bg-red-500 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md flex items-center gap-1 animate-pulse">
+                                    <span class="material-symbols-outlined text-[12px]">fiber_manual_record</span> Live
+                                </span>
+                                <span
+                                    class="bg-white/90 backdrop-blur-sm text-navy text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md">
+                                    {{ live.type }}
+                                </span>
+                            </div>
+                            <img :src="live.image" :alt="live.name"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        </div>
+                        <div class="p-5 flex-1 flex flex-col">
+                            <h3
+                                class="text-lg font-bold text-navy mb-2 leading-snug group-hover:text-primary transition-colors font-display">
+                                {{ live.name }}
+                            </h3>
+                            <div class="flex items-start gap-2 text-text-sub text-sm mb-4">
+                                <span class="material-symbols-outlined text-lg mt-0.5">location_on</span>
+                                <span class="truncate">{{ live.location }}</span>
+                            </div>
+                            <div class="mt-auto">
+                                <button
+                                    class="w-full h-10 rounded-lg border-2 border-navy text-navy hover:bg-navy hover:text-white font-bold text-sm transition-all flex items-center justify-center gap-2">
+                                    <span class="material-symbols-outlined text-lg">scoreboard</span>
+                                    Skor Langsung
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Latest News Section -->
+        <section class="bg-white py-16 md:py-20 border-t border-gray-100">
+            <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between mb-8">
+                    <h2 class="text-2xl font-bold text-navy font-display">Berita Terbaru</h2>
+                    <a class="text-text-sub hover:text-navy font-bold text-sm" href="#">Lihat Semua Berita</a>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div v-for="feature in features" :key="feature.title"
-                        class="group p-6 rounded-2xl bg-surface-dark border border-surface-highlight hover:border-brand-gold/50 transition-all">
-                        <div
-                            class="size-14 rounded-xl bg-brand-gold/10 flex items-center justify-center mb-4 group-hover:bg-brand-gold/20 transition-colors">
-                            <span class="material-symbols-outlined text-3xl text-brand-gold">{{ feature.icon }}</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-2">{{ feature.title }}</h3>
-                        <p class="text-gray-400">{{ feature.description }}</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- How It Works -->
-        <section id="how-it-works" class="py-20 bg-background-dark">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-black text-white mb-4">How It Works</h2>
-                    <p class="text-lg text-gray-400 max-w-2xl mx-auto">
-                        Get your tournament up and running in minutes
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <div v-for="(step, index) in steps" :key="step.title" class="relative text-center">
-                        <div
-                            class="size-16 rounded-full bg-brand-gold/10 border-2 border-brand-gold flex items-center justify-center mx-auto mb-4">
-                            <span class="text-2xl font-black text-brand-gold">{{ index + 1 }}</span>
-                        </div>
-                        <h3 class="text-lg font-bold text-white mb-2">{{ step.title }}</h3>
-                        <p class="text-sm text-gray-400">{{ step.description }}</p>
-                        <div v-if="index < 3"
-                            class="hidden md:block absolute top-8 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-brand-gold/50 to-transparent">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Testimonials -->
-        <section id="testimonials" class="py-20 bg-surface-dark/50">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-black text-white mb-4">Trusted by Champions</h2>
-                    <p class="text-lg text-gray-400 max-w-2xl mx-auto">
-                        See what tournament organizers say about Archery Hub
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div v-for="testimonial in testimonials" :key="testimonial.name"
-                        class="p-6 rounded-2xl bg-surface-dark border border-surface-highlight">
-                        <div class="flex items-center gap-1 mb-4">
-                            <span v-for="i in 5" :key="i"
-                                class="material-symbols-outlined text-brand-gold text-lg">star</span>
-                        </div>
-                        <p class="text-gray-300 mb-6">"{{ testimonial.quote }}"</p>
-                        <div class="flex items-center gap-4">
-                            <div class="size-12 rounded-full bg-brand-gold/20 flex items-center justify-center">
-                                <span class="text-brand-gold font-bold">{{ testimonial.initials }}</span>
+                    <article v-for="news in latestNews" :key="news.title" class="flex flex-col group cursor-pointer">
+                        <div class="relative h-60 rounded-2xl overflow-hidden mb-5">
+                            <img :src="news.image" :alt="news.title"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                            <div
+                                class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/60 to-transparent">
                             </div>
-                            <div>
-                                <div class="text-white font-bold">{{ testimonial.name }}</div>
-                                <div class="text-sm text-gray-400">{{ testimonial.role }}</div>
-                            </div>
+                            <span
+                                class="absolute bottom-4 left-4 text-white text-xs font-bold bg-navy px-3 py-1 rounded-md">{{
+                                    news.category }}</span>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- FAQ Section -->
-        <section id="faq" class="py-20 bg-background-dark">
-            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-black text-white mb-4">Frequently Asked Questions</h2>
-                    <p class="text-lg text-gray-400">Find answers to common questions</p>
-                </div>
-
-                <div class="space-y-4">
-                    <div v-for="(faq, index) in faqs" :key="index"
-                        class="rounded-xl bg-surface-dark border border-surface-highlight overflow-hidden">
-                        <button @click="toggleFaq(index)"
-                            class="w-full p-6 flex items-center justify-between text-left">
-                            <span class="text-white font-semibold">{{ faq.question }}</span>
-                            <span class="material-symbols-outlined text-brand-gold transition-transform"
-                                :class="{ 'rotate-180': openFaq === index }">
-                                expand_more
+                        <div class="flex-1">
+                            <div class="flex items-center gap-3 text-sm text-text-sub mb-2">
+                                <span class="flex items-center gap-1"><span
+                                        class="material-symbols-outlined text-sm">calendar_today</span> {{ news.date
+                                        }}</span>
+                            </div>
+                            <h3
+                                class="text-xl font-bold text-navy mb-3 group-hover:text-primary line-clamp-2 font-display">
+                                {{ news.title }}
+                            </h3>
+                            <p class="text-text-sub mb-4 line-clamp-2 text-sm">
+                                {{ news.excerpt }}
+                            </p>
+                            <span class="text-navy hover:text-primary font-bold text-sm flex items-center gap-1">
+                                Baca Selengkapnya <span class="material-symbols-outlined text-sm">arrow_right_alt</span>
                             </span>
-                        </button>
-                        <div v-show="openFaq === index" class="px-6 pb-6 text-gray-400">
-                            {{ faq.answer }}
                         </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CTA Section -->
-        <section class="py-20 bg-surface-dark/50">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <div
-                    class="p-8 md:p-12 rounded-3xl bg-gradient-to-br from-brand-gold/10 via-surface-dark to-surface-dark border border-brand-gold/20">
-                    <h2 class="text-3xl md:text-4xl font-black text-white mb-4">Ready to Get Started?</h2>
-                    <p class="text-lg text-gray-400 mb-8 max-w-xl mx-auto">
-                        Join thousands of archery organizations already using Archery Hub to manage their tournaments.
-                    </p>
-                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                        <NuxtLink to="/auth/login"
-                            class="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-xl bg-gradient-to-r from-brand-gold to-yellow-500 text-black font-bold text-lg hover:shadow-lg hover:shadow-brand-gold/30 transition-all">
-                            <span class="material-symbols-outlined">rocket_launch</span>
-                            Start Free Trial
-                        </NuxtLink>
-                        <NuxtLink to="/contact"
-                            class="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-xl border border-surface-highlight text-white font-semibold text-lg hover:bg-surface-highlight transition-all">
-                            <span class="material-symbols-outlined">mail</span>
-                            Contact Sales
-                        </NuxtLink>
-                    </div>
+                    </article>
                 </div>
             </div>
         </section>
 
         <!-- Footer -->
-        <footer class="py-16 border-t border-surface-highlight bg-background-dark">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
-                    <div class="col-span-2 md:col-span-1">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="size-10 rounded-lg bg-brand-gold flex items-center justify-center">
-                                <span class="material-symbols-outlined text-xl text-black">target</span>
+        <footer class="bg-navy border-t border-white/10 pt-16 pb-8">
+            <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid md:grid-cols-4 gap-12 mb-12">
+                    <div class="col-span-1 md:col-span-2">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-primary text-navy">
+                                <span class="material-symbols-outlined text-xl">gps_fixed</span>
                             </div>
-                            <span class="text-xl font-bold text-white">Archery Hub</span>
+                            <span class="text-white text-lg font-bold font-display">Archery Hub</span>
                         </div>
-                        <p class="text-gray-400 text-sm mb-4">
-                            Professional tournament management for archery competitions worldwide.
+                        <p class="text-white/60 text-sm max-w-xs leading-relaxed">
+                            Membangun masa depan panahan Indonesia melalui inovasi teknologi dan integrasi data yang
+                            transparan.
                         </p>
                     </div>
-
                     <div>
-                        <h4 class="text-white font-bold mb-4">Product</h4>
-                        <ul class="space-y-2 text-sm text-gray-400">
-                            <li><a href="#features" class="hover:text-brand-gold transition-colors">Features</a></li>
+                        <h4 class="text-white font-bold mb-6 font-display">Platform</h4>
+                        <ul class="space-y-4">
                             <li>
-                                <NuxtLink to="/about" class="hover:text-brand-gold transition-colors">About</NuxtLink>
-                            </li>
-                            <li><a href="#" class="hover:text-brand-gold transition-colors">Pricing</a></li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h4 class="text-white font-bold mb-4">Support</h4>
-                        <ul class="space-y-2 text-sm text-gray-400">
-                            <li>
-                                <NuxtLink to="/contact" class="hover:text-brand-gold transition-colors">Contact
+                                <NuxtLink to="/tournaments"
+                                    class="text-white/60 hover:text-primary text-sm transition-colors">Turnamen
                                 </NuxtLink>
                             </li>
-                            <li><a href="#faq" class="hover:text-brand-gold transition-colors">FAQ</a></li>
-                            <li><a href="#" class="hover:text-brand-gold transition-colors">Documentation</a></li>
+                            <li><a class="text-white/60 hover:text-primary text-sm transition-colors" href="#">Klub &
+                                    Komunitas</a></li>
+                            <li><a class="text-white/60 hover:text-primary text-sm transition-colors" href="#">Live
+                                    Score</a></li>
+                            <li><a class="text-white/60 hover:text-primary text-sm transition-colors" href="#">Ranking
+                                    Nasional</a></li>
                         </ul>
                     </div>
-
                     <div>
-                        <h4 class="text-white font-bold mb-4">Legal</h4>
-                        <ul class="space-y-2 text-sm text-gray-400">
+                        <h4 class="text-white font-bold mb-6 font-display">Bantuan</h4>
+                        <ul class="space-y-4">
+                            <li><a class="text-white/60 hover:text-primary text-sm transition-colors" href="#">Pusat
+                                    Bantuan</a></li>
                             <li>
-                                <NuxtLink to="/privacy" class="hover:text-brand-gold transition-colors">Privacy Policy
+                                <NuxtLink to="/terms"
+                                    class="text-white/60 hover:text-primary text-sm transition-colors">Syarat &
+                                    Ketentuan</NuxtLink>
+                            </li>
+                            <li>
+                                <NuxtLink to="/privacy"
+                                    class="text-white/60 hover:text-primary text-sm transition-colors">Kebijakan Privasi
                                 </NuxtLink>
                             </li>
                             <li>
-                                <NuxtLink to="/terms" class="hover:text-brand-gold transition-colors">Terms of Service
+                                <NuxtLink to="/contact"
+                                    class="text-white/60 hover:text-primary text-sm transition-colors">Kontak Kami
                                 </NuxtLink>
                             </li>
                         </ul>
                     </div>
                 </div>
-
-                <div
-                    class="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-surface-highlight">
-                    <div class="text-sm text-gray-500 mb-4 md:mb-0">
-                        © {{ new Date().getFullYear() }} Archery Hub. All rights reserved.
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <a href="#" class="text-gray-400 hover:text-brand-gold transition-colors">
-                            <span class="material-symbols-outlined">mail</span>
+                <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p class="text-white/40 text-xs text-center md:text-left">© {{ new Date().getFullYear() }} Archery
+                        Hub Indonesia. All rights reserved.</p>
+                    <div class="flex gap-6">
+                        <a class="text-white/40 hover:text-white transition-colors" href="#">
+                            <span class="sr-only">Instagram</span>
                         </a>
-                        <a href="#" class="text-gray-400 hover:text-brand-gold transition-colors">
-                            <svg class="size-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
-                            </svg>
-                        </a>
-                        <a href="#" class="text-gray-400 hover:text-brand-gold transition-colors">
-                            <svg class="size-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
-                            </svg>
+                        <a class="text-white/40 hover:text-white transition-colors" href="#">
+                            <span class="sr-only">Twitter</span>
                         </a>
                     </div>
                 </div>
@@ -367,58 +439,146 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-definePageMeta({
-    layout: 'blank',
-    title: 'Archery Hub - Professional Tournament Management'
-})
+gsap.registerPlugin(ScrollTrigger)
 
-const openFaq = ref(null)
-const toggleFaq = (index) => {
-    openFaq.value = openFaq.value === index ? null : index
+const isScrolled = ref(false)
+const mobileMenuOpen = ref(false)
+
+// Refs for GSAP animations
+const heroBadge = ref(null)
+const heroTitle = ref(null)
+const heroText = ref(null)
+const heroButtons = ref(null)
+
+const handleScroll = () => {
+    isScrolled.value = window.scrollY > 50
 }
 
-const stats = [
-    { value: '2,500+', label: 'Tournaments Hosted' },
-    { value: '85', label: 'Countries' },
-    { value: '50,000+', label: 'Athletes' },
-    { value: '1.2M+', label: 'Scores Recorded' }
+onMounted(() => {
+    window.addEventListener('scroll', handleScroll)
+
+    // GSAP Hero Animations
+    const tl = gsap.timeline({ defaults: { ease: 'power3.out', duration: 1 } })
+
+    tl.to(heroBadge.value, { opacity: 1, y: 0, duration: 0.8 }, 0.2)
+        .to(heroTitle.value, { opacity: 1, y: 0, duration: 1 }, 0.4)
+        .to(heroText.value, { opacity: 1, y: 0, duration: 1 }, 0.6)
+        .to(heroButtons.value, { opacity: 1, y: 0, duration: 1 }, 0.8)
+})
+
+onUnmounted(() => {
+    window.removeEventListener('scroll', handleScroll)
+})
+
+definePageMeta({
+    layout: 'blank'
+})
+
+useHead({
+    title: 'Archery Hub - Modernisasi Tata Kelola Panahan Indonesia',
+    meta: [
+        {
+            name: 'description', content: 'Platform infrastruktur digital terintegrasi untuk manajemen klub, skor real-time, dan turnamen panahan profesional.'
+        }
+    ]
+})
+
+const upcomingEvents = [
+    {
+        name: 'Jakarta Open 2024',
+        month: 'Nov',
+        day: '14',
+        location: 'GBK Arena, Senayan',
+        categories: 'Recurve & Compound',
+        tags: [
+            { label: 'Open', class: 'bg-blue-100 text-blue-700' },
+            { label: 'Nasional', class: 'bg-orange-100 text-orange-700' }
+        ]
+    },
+    {
+        name: 'Surabaya Archery Cup',
+        month: 'Dec',
+        day: '20',
+        location: 'Lapangan KONI Jatim',
+        categories: 'Standard Bow U-15',
+        tags: [
+            { label: 'Junior', class: 'bg-green-100 text-green-700' }
+        ]
+    },
+    {
+        name: 'Yogyakarta Indoor Series',
+        month: 'Jan',
+        day: '12',
+        location: 'GOR Klebengan',
+        categories: 'Barebow & Recurve',
+        tags: [
+            { label: 'Series 1', class: 'bg-purple-100 text-purple-700' }
+        ]
+    }
 ]
 
 const liveEvents = [
-    { name: 'National Indoor Championship 2026', location: 'Jakarta, Indonesia', date: 'Jan 17-19', participants: 248, live: true },
-    { name: 'World Cup Stage 1', location: 'Shanghai, China', date: 'Jan 22-28', participants: 312, status: 'UPCOMING' },
-    { name: 'European Grand Prix', location: 'Paris, France', date: 'Feb 5-8', participants: 186, status: 'UPCOMING' }
+    {
+        name: 'Surabaya Archery Cup 2024',
+        type: 'National Series',
+        location: 'KONI Jatim Field, Surabaya',
+        image:
+            'https://lh3.googleusercontent.com/aida-public/AB6AXuAJXWL-Z7f7fP24_IyBjI_e-q_jYcMbzRtaKiOpKP8TxgqwSxRrCqNcE-GXJXbiCEv6rlwlNJzTmbbgAdQFWHH4Jk_Fw-aslTiT3Qezy8bbmGRG0WoRA-yD8tykZuxYObytzJ6Yf7yNL8poFU6vWlyEuFjbHcIzwfoLAMru-bfdw4GXezmv71SwRPYw_-Ct6ZP3f6AqglpvBIhCSrp9g13uTQpj69_-hzZqp1wSqJJ-9PdZqp0CYWgFWsajdRos9QmU7eeyuFhFPH0'
+    },
+    {
+        name: 'Jakarta Indoor Open',
+        type: 'Regional',
+        location: 'Senayan Hall B, Jakarta',
+        image:
+            'https://lh3.googleusercontent.com/aida-public/AB6AXuBmKeu4qLnuI8uJ8itXirIGY311f6c_CfhqFD3qtMv-M4oTNDiSeGeylyU0qI_7lQHeMywtfdDw175-dWrdxwZwWSnnEMmkBca4ScW0dEbBQ_wZYVWuCaOPI-A204QdKHKXQxHsutHbZP8c9uPaZpfK8lzqziHTAW_dqnlmi99AtLhIGmxfUZ-irvcNm1YUswSsH9HGhvq4Hr6jq7rsveM4HwMmhNVDABEGcgh0sYQHoHy9t1IzkTX2LexV72X240IEyZL2_InQGZ8'
+    },
+    {
+        name: 'Borneo Youth Qualifier',
+        type: 'Club Series',
+        location: 'Balikpapan Sports Center',
+        image:
+            'https://lh3.googleusercontent.com/aida-public/AB6AXuDQStrrmLQN-DtqrTO5KWNF3EvwOXSw-raemHMh-lxMUVAtHiqxHNMqzQoV2l1ReELlRe_dVIAkp1P8Bc8ekRqbhOn-axS6izTQXKw3d70pq-CpZHWUZoS58mGL70U_Bk96ViNRcaOaGr5wIkPrtg8w46mzrAtHgWRH6VKAUalmkrFJ8qjDltkmd-nHJs4aUfrBBphZSnivwOkhoIjzG8dpjeCtp_UOZTOnovXJP7IAWJEeWqw7Uh7-mlLVkorgyeOsSRun6CmO_8I'
+    }
 ]
 
-const features = [
-    { icon: 'event', title: 'Tournament Management', description: 'Create and manage tournaments with ease. Set up categories, distances, and sessions in minutes.' },
-    { icon: 'live_tv', title: 'Live Results', description: 'Real-time score updates and live leaderboards that keep everyone engaged.' },
-    { icon: 'groups', title: 'Athlete Registration', description: 'Streamlined registration process with photo ID cards and accreditation support.' },
-    { icon: 'account_tree', title: 'Bracket System', description: 'Automated bracket generation for elimination rounds with visual displays.' },
-    { icon: 'print', title: 'Print Center', description: 'Generate scorecards, result sheets, certificates, and official documents.' },
-    { icon: 'analytics', title: 'Statistics & Analytics', description: 'Comprehensive statistics and performance analytics for athletes and teams.' }
-]
-
-const steps = [
-    { title: 'Create Event', description: 'Set up your tournament with dates, venue, and competition format.' },
-    { title: 'Register Athletes', description: 'Athletes register online or you can import from spreadsheets.' },
-    { title: 'Run Competition', description: 'Use our scoring system for qualification and elimination rounds.' },
-    { title: 'Share Results', description: 'Publish live results and generate certificates automatically.' }
-]
-
-const testimonials = [
-    { name: 'John Smith', initials: 'JS', role: 'Tournament Director, USA Archery', quote: 'Archery Hub has revolutionized how we run our national championships. The live scoring feature is a game-changer.' },
-    { name: 'Maria Garcia', initials: 'MG', role: 'Club President, Madrid Archery', quote: 'Finally, a system that understands archery. Setup is intuitive and our athletes love seeing real-time rankings.' },
-    { name: 'Tanaka Yuki', initials: 'TY', role: 'Event Organizer, Japan Archery Federation', quote: 'We\'ve reduced our administrative time by 70%. The automated bracket system is incredibly reliable.' }
-]
-
-const faqs = [
-    { question: 'How much does Archery Hub cost?', answer: 'Archery Hub offers a free tier for small clubs with up to 3 tournaments per year. Paid plans start at $29/month for unlimited tournaments and premium features.' },
-    { question: 'Can I import my existing athlete database?', answer: 'Yes! You can import athletes via CSV or Excel files. We also support integration with major archery federation databases.' },
-    { question: 'Does it work offline?', answer: 'Our mobile scoring app works offline and syncs automatically when connectivity is restored. Perfect for outdoor venues with limited internet.' },
-    { question: 'What archery formats are supported?', answer: 'We support all World Archery formats including Olympic, Field, and 3D. Custom scoring rules can also be configured.' },
-    { question: 'How do I get support?', answer: 'We offer email support for all users, with priority support and phone access for premium plans. Our documentation covers most common questions.' }
+const latestNews = [
+    {
+        title: 'Hasil Seleksi Pelatnas Archery 2025 Resmi Diumumkan',
+        date: 'Oct 28, 2024',
+        category: 'Pelatnas',
+        image:
+            'https://lh3.googleusercontent.com/aida-public/AB6AXuCaKz9i1Sy4TPWgHSZRQZdfbE9FAsY4xikvvu2rhp8s_A9V5Sy5lv8pftyxQXwQSSv1xbdCGZkIqVOv_3u8sisf-kuW8CCXnYrzldx8xKkp12tmxF1SztarFv2PQMwoYr5sv7cn1wpmzOMepJof7lZkvTkOqS_LS94B-kyA-HRdMFPaNXbC-I6OY9Rp2dTCI-86cqoGMepWYeLPECuEvPwH35G_RyrcW4OoeB-xFCH1noe3E3mLKFdU_ftNYNRJ-e35YW_UO7tjW3E',
+        excerpt: 'Persatuan Panahan Indonesia secara resmi merilis daftar atlet yang terpilih untuk mengikuti pemusatan latihan nasional tahun depan.'
+    },
+    {
+        title: 'Indonesia Juara Umum di Kejuaraan Asia Tenggara 2024',
+        date: 'Oct 25, 2024',
+        category: 'Prestasi',
+        image:
+            'https://lh3.googleusercontent.com/aida-public/AB6AXuCq8OlQbcxO7uY4gwKVt6JygaktR4FjGZfJwbWiOyDIXqXr0bCnQIn3f-5m63myglDTGxDrpDHrFX2wVGOC7C8INtL7td4RDrpYhrJi0qjxPG7jixXi-Cw0fJQfRMda9sgJhfzCsFLmMhX9mvC6_gNAo5OF_MDtU5ukfm3hvRqWuHC0pbxNqSd0uWfIxLjxHXmyDnRtFg9VIz-XC2tCuvSusJKEFLjs57_DO7_uOGurALxGKsxcgIJmc_0gHV72A6BGvhiStIpWr3o',
+        excerpt: 'Penampilan bersejarah kontingen nasional berhasil mengamankan 5 medali emas, mendominasi divisi Recurve dan Compound.'
+    },
+    {
+        title: 'Regulasi Peralatan Baru untuk Musim Indoor Mendatang',
+        date: 'Oct 20, 2024',
+        category: 'Regulasi',
+        image:
+            'https://lh3.googleusercontent.com/aida-public/AB6AXuCEyoMyPhTl7-9oRbs8Fqz1YZxEwczL3vvrIpNzNHGImIhte8_MRqCsmxPDpeo-GMFv4xD1UFE7CzQuZjLAaeTEFSwwGpLM5Fuuji1ri-DclVPd3XjaiZbP_HVCmNxUF4N4RvPt5eunD3D7XJwRXiE80p0b-XDjG79vpkghLPtwWffcqE__kLuIxrZg_xFXL5tPcnF3V-v_UjBTeSP3GZHOFSZ132JQ3wm91uitNtsctbagveyUjYxxYgEumBV7_uYhaBtTeHfBlCs',
+        excerpt: 'World Archery telah memperbarui aturan mengenai diameter anak panah dan berat stabilizer untuk kompetisi dalam ruangan.'
+    }
 ]
 </script>
+
+<style scoped>
+.text-text-sub {
+    color: #4b5563;
+}
+
+.border-border-subtle {
+    border-color: #e5e7eb;
+}
+</style>

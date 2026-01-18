@@ -12,26 +12,33 @@ module.exports = {
         extend: {
             colors: {
                 primary: {
-                    DEFAULT: '#f9d406',
-                    dark: '#e6c205',
-                    light: '#fade44',
+                    DEFAULT: '#D9FF00', // Neon Lime
+                    hover: '#c2e600',
+                },
+                navy: {
+                    dark: '#0f172a',
+                    light: '#1e293b',
+                    DEFAULT: '#0f172a',
                 },
                 brand: {
                     gold: '#f9d006',
-                    border: '#4a4321',
-                    surface: '#2d2814',
+                    lime: '#D9FF00',
                 },
                 surface: {
-                    dark: '#2d2814',
-                    highlight: '#353018',
+                    white: '#ffffff',
+                    light: '#f9fafb',
+                    dark: '#0f172a',
                 },
                 background: {
-                    dark: '#231f0f',
+                    light: '#f9fafb',
+                    dark: '#0f172a',
                 }
             },
             fontFamily: {
                 sans: ['Inter', 'sans-serif'],
                 reddit: ['Reddit Sans', 'sans-serif'],
+                display: ['Lexend', 'sans-serif'],
+                body: ['Noto Sans', 'sans-serif'],
             },
         },
     },

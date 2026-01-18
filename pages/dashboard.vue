@@ -1,137 +1,116 @@
 <template>
-  <div class="space-y-6">
-    <!-- Page Header -->
-    <div class="flex flex-col gap-4">
-      <h1 class="text-white text-3xl md:text-4xl font-black leading-tight">Dashboard</h1>
-      <p class="text-brand-gold text-base">Welcome back! Here's what's happening with your tournaments today.</p>
+  <div class="max-w-7xl mx-auto space-y-8">
+    <!-- Welcome Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+      <div>
+        <h1 class="text-3xl lg:text-4xl font-black text-navy tracking-tight">Ringkasan Aktivitas</h1>
+        <p class="text-text-secondary mt-1 font-medium">Selamat datang kembali, Alex! Pantau performa turnamen Anda hari
+          ini.</p>
+      </div>
+      <div class="flex gap-3">
+        <NuxtLink to="/tournaments/create"
+          class="flex items-center gap-2 px-6 py-3 bg-primary text-navy font-black rounded-xl hover:bg-primary-hover shadow-lg shadow-primary/20 transition-all border border-primary/20">
+          <span class="material-symbols-outlined font-black">add_circle</span>
+          Buat Turnamen Baru
+        </NuxtLink>
+      </div>
     </div>
 
-    <!-- Stats Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-      <div class="card">
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div v-for="stat in dashboardStats" :key="stat.label"
+        class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-all flex flex-col gap-4">
         <div class="flex items-center justify-between">
-          <div>
-            <p class="text-brand-gold text-sm font-medium">Active Tournaments</p>
-            <h3 class="text-white text-3xl font-bold mt-2">{{ stats.activeTournaments }}</h3>
-            <p class="text-green-400 text-xs mt-1">
-              <span class="material-symbols-outlined text-xs inline">trending_up</span>
-              +12% from last month
-            </p>
+          <div :class="stat.bgClass" class="w-12 h-12 rounded-xl flex items-center justify-center">
+            <span class="material-symbols-outlined text-2xl" :class="stat.iconColor">{{ stat.icon }}</span>
           </div>
-          <div class="size-12 rounded-full bg-primary/20 flex items-center justify-center text-primary">
-            <span class="material-symbols-outlined text-2xl">target</span>
-          </div>
+          <span v-if="stat.trend" :class="stat.trendColor"
+            class="text-[10px] font-black px-2 py-1 rounded bg-gray-50 border border-gray-100 uppercase tracking-widest">
+            {{ stat.trend }}
+          </span>
         </div>
-      </div>
-
-      <div class="card">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-brand-gold text-sm font-medium">Total Athletes</p>
-            <h3 class="text-white text-3xl font-bold mt-2">{{ stats.totalAthletes }}</h3>
-            <p class="text-green-400 text-xs mt-1">
-              <span class="material-symbols-outlined text-xs inline">trending_up</span>
-              +24% from last month
-            </p>
-          </div>
-          <div class="size-12 rounded-full bg-primary/20 flex items-center justify-center text-primary">
-            <span class="material-symbols-outlined text-2xl">groups</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-brand-gold text-sm font-medium">Live Events</p>
-            <h3 class="text-white text-3xl font-bold mt-2">{{ stats.liveEvents }}</h3>
-            <p class="text-primary text-xs mt-1 flex items-center gap-1">
-              <span class="size-2 bg-red-500 rounded-full animate-pulse"></span>
-              Currently in progress
-            </p>
-          </div>
-          <div class="size-12 rounded-full bg-primary/20 flex items-center justify-center text-primary">
-            <span class="material-symbols-outlined text-2xl">live_tv</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-brand-gold text-sm font-medium">Completed Today</p>
-            <h3 class="text-white text-3xl font-bold mt-2">{{ stats.completedToday }}</h3>
-            <p class="text-gray-400 text-xs mt-1">Events finished</p>
-          </div>
-          <div class="size-12 rounded-full bg-primary/20 flex items-center justify-center text-primary">
-            <span class="material-symbols-outlined text-2xl">check_circle</span>
-          </div>
+        <div>
+          <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">{{ stat.label }}</p>
+          <h3 class="text-3xl font-black text-navy mt-1 tabular-nums">{{ stat.value }}</h3>
         </div>
       </div>
     </div>
 
-    <!-- Quick Actions & Recent Activity -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- Quick Actions -->
-      <div class="card lg:col-span-1">
-        <h2 class="text-white text-xl font-bold mb-4 flex items-center gap-2">
-          <span class="material-symbols-outlined text-primary">bolt</span>
-          Quick Actions
-        </h2>
-        <div class="space-y-3">
-          <button v-for="action in quickActions" :key="action.label" @click="handleQuickAction(action.path)"
-            class="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-surface-highlight hover:bg-surface-highlight/70 transition-colors text-left">
-            <span class="material-symbols-outlined text-primary">{{ action.icon }}</span>
-            <span class="text-white font-medium text-sm">{{ action.label }}</span>
-          </button>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Active Tournaments -->
+      <div
+        class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col min-h-[400px]">
+        <div class="px-6 py-5 border-b border-gray-50 flex justify-between items-center bg-gray-50/50">
+          <h3 class="font-black text-navy text-lg uppercase tracking-tight">Turnamen Berjalan</h3>
+          <div class="flex items-center gap-2">
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+            </span>
+            <span class="text-[10px] font-black text-primary uppercase tracking-widest">Live Updates</span>
+          </div>
+        </div>
+        <div class="divide-y divide-gray-50">
+          <div v-for="event in activeEvents" :key="event.id"
+            class="p-6 hover:bg-gray-50/50 transition-all cursor-pointer group"
+            @click="navigateTo(`/tournaments/${event.id}/manage`)">
+            <div class="flex items-center gap-6">
+              <div
+                class="w-14 h-14 bg-navy rounded-xl flex flex-col items-center justify-center text-primary shrink-0 group-hover:bg-primary group-hover:text-navy transition-colors">
+                <span class="text-xs font-black uppercase tracking-tighter">{{ event.code }}</span>
+              </div>
+              <div class="flex-grow min-w-0">
+                <h4 class="text-lg font-black text-navy group-hover:text-primary transition-colors truncate">{{
+                  event.name }}</h4>
+                <div class="flex items-center gap-4 mt-1">
+                  <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[14px]">groups</span>
+                    {{ event.participants }} Atlet
+                  </span>
+                  <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[14px]">location_on</span>
+                    {{ event.location }}
+                  </span>
+                </div>
+              </div>
+              <div class="shrink-0 flex items-center gap-4">
+                <div class="hidden sm:flex flex-col items-end">
+                  <span class="text-[10px] font-black text-gray-300 uppercase tracking-widest">Progress</span>
+                  <span class="text-sm font-black text-navy">{{ event.progress }}%</span>
+                </div>
+                <span
+                  class="material-symbols-outlined text-gray-200 group-hover:text-primary transition-colors">chevron_right</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-auto p-4 border-t border-gray-50 text-center">
+          <NuxtLink to="/tournaments/my" class="text-xs font-black text-navy hover:underline uppercase tracking-widest">
+            Lihat Semua Turnamen Saya</NuxtLink>
         </div>
       </div>
 
-      <!-- Recent Tournaments -->
-      <div class="card lg:col-span-2">
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="text-white text-xl font-bold flex items-center gap-2">
-            <span class="material-symbols-outlined text-primary">schedule</span>
-            Recent Tournaments
-          </h2>
-          <NuxtLink to="/tournaments" class="text-primary text-sm font-medium hover:text-yellow-400">
-            View All →
-          </NuxtLink>
+      <!-- Notifications / Activity -->
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full">
+        <div class="px-6 py-5 border-b border-gray-50 flex justify-between items-center bg-gray-50/50">
+          <h3 class="font-black text-navy text-lg uppercase tracking-tight">Notifikasi Baru</h3>
+          <span class="px-2 py-0.5 rounded bg-primary text-navy text-[10px] font-black">4</span>
         </div>
-
-        <div v-if="loading" class="flex justify-center py-8">
-          <div class="spinner"></div>
-        </div>
-
-        <div v-else-if="recentTournaments.length === 0" class="text-center py-8 text-brand-gold">
-          <span class="material-symbols-outlined text-4xl mb-2">inbox</span>
-          <p>No tournaments yet. Create your first one!</p>
-        </div>
-
-        <div v-else class="space-y-3">
-          <div v-for="tournament in recentTournaments" :key="tournament.id"
-            class="flex items-center justify-between p-4 rounded-lg bg-surface-highlight hover:bg-surface-highlight/70 transition-colors cursor-pointer"
-            @click="$router.push(`/tournaments/${tournament.id}`)">
-            <div class="flex items-center gap-4">
-              <div class="size-12 rounded-lg bg-primary/20 flex items-center justify-center text-primary font-bold">
-                {{ tournament.code }}
-              </div>
-              <div>
-                <h3 class="text-white font-bold text-sm">{{ tournament.name }}</h3>
-                <p class="text-brand-gold text-xs mt-1">
-                  {{ formatDate(tournament.start_date) }} - {{ formatDate(tournament.end_date) }}
-                </p>
-              </div>
+        <div class="flex-grow p-4 space-y-4 overflow-y-auto no-scrollbar">
+          <div v-for="notif in notifications" :key="notif.id"
+            class="flex gap-4 p-4 rounded-xl hover:bg-gray-50 transition-all border border-transparent hover:border-gray-100">
+            <div :class="notif.iconBg" class="w-10 h-10 rounded-lg flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-xl" :class="notif.iconColor">{{ notif.icon }}</span>
             </div>
-            <div class="flex items-center gap-4">
-              <span :class="getStatusClass(tournament.status)" class="badge">
-                {{ tournament.status }}
-              </span>
-              <span class="text-brand-gold text-sm">
-                {{ tournament.participant_count }} athletes
-              </span>
+            <div class="min-w-0">
+              <p class="text-sm font-bold text-navy leading-tight">{{ notif.title }}</p>
+              <p class="text-[10px] text-gray-400 font-bold mt-1 uppercase">{{ notif.time }}</p>
             </div>
           </div>
+        </div>
+        <div class="p-4 border-t border-gray-50 text-center">
+          <button class="text-xs font-black text-navy hover:underline uppercase tracking-widest">Tandai Sudah
+            Dibaca</button>
         </div>
       </div>
     </div>
@@ -139,106 +118,41 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
-
 definePageMeta({
-  title: 'Dashboard',
-  layout: 'default',
-  middleware: 'auth'
+  layout: 'dashboard'
 })
 
-// Sample data (will be replaced with API calls)
-const stats = ref({
-  activeTournaments: 8,
-  totalAthletes: 1247,
-  liveEvents: 3,
-  completedToday: 5
-})
-
-const loading = ref(false)
-
-const recentTournaments = ref([
-  {
-    id: '1',
-    code: 'NAC24',
-    name: 'National Archery Championship 2024',
-    start_date: '2024-06-15',
-    end_date: '2024-06-18',
-    status: 'ongoing',
-    participant_count: 245
-  },
-  {
-    id: '2',
-    code: 'RQ24',
-    name: 'Regional Qualifier 2024',
-    start_date: '2024-06-10',
-    end_date: '2024-06-11',
-    status: 'completed',
-    participant_count: 128
-  },
-  {
-    id: '3',
-    code: 'IND24',
-    name: 'Indoor Championship 2024',
-    start_date: '2024-07-01',
-    end_date: '2024-07-03',
-    status: 'published',
-    participant_count: 98
-  },
-])
-
-const quickActions = [
-  { label: 'Create New Tournament', icon: 'add_circle', path: '/tournaments/create' },
-  { label: 'Register Athlete', icon: 'person_add', path: '/athletes/create' },
-  { label: 'View Live Results', icon: 'live_tv', path: '/live' },
-  { label: 'Generate Reports', icon: 'assessment', path: '/reports' },
+const dashboardStats = [
+  { label: 'Turnamen Aktif', value: '12', icon: 'emoji_events', trend: '+2', trendColor: 'text-green-500', bgClass: 'bg-primary/10', iconColor: 'text-primary' },
+  { label: 'Total Peserta', value: '1,240', icon: 'groups', trend: '+15%', trendColor: 'text-green-500', bgClass: 'bg-blue-50', iconColor: 'text-blue-600' },
+  { label: 'Revenue (IDR)', value: '45.2M', icon: 'payments', trend: '+12%', trendColor: 'text-green-500', bgClass: 'bg-orange-50', iconColor: 'text-orange-600' },
+  { label: 'Tiket Support', value: '4', icon: 'support_agent', trend: 'Unresolved', trendColor: 'text-red-500', bgClass: 'bg-red-50', iconColor: 'text-red-500' },
 ]
 
-const handleQuickAction = (path) => {
-  router.push(path)
-}
+const activeEvents = [
+  { id: '1', code: 'IO-24', name: 'Indonesian Open Championship 2024', participants: 450, location: 'GBK Jakarta', progress: 75 },
+  { id: '2', code: 'ST-24', name: 'Seleksi Nasional Tahap 1', participants: 120, location: 'Sentul Archery', progress: 100 },
+  { id: '3', code: 'RY-24', name: 'Riau Open Series #2', participants: 280, location: 'Pekanbaru', progress: 20 },
+]
 
-const formatDate = (dateString) => {
-  const date = new Date(dateString)
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-}
-
-const getStatusClass = (status) => {
-  const statusClasses = {
-    'ongoing': 'badge-info',
-    'completed': 'badge-success',
-    'published': 'badge-warning',
-    'draft': 'badge-neutral',
-    'archived': 'badge-neutral'
-  }
-  return statusClasses[status] || 'badge-neutral'
-}
-
-onMounted(async () => {
-  const { get } = useApi()
-  loading.value = true
-
-  try {
-    // Fetch stats and recent tournaments in parallel
-    const [statsRes, tournamentsRes] = await Promise.all([
-      get('/stats/dashboard'),
-      get('/tournaments?limit=5')
-    ])
-
-    if (statsRes) {
-      stats.value = statsRes
-    }
-
-    if (tournamentsRes && tournamentsRes.tournaments) {
-      recentTournaments.value = tournamentsRes.tournaments
-    }
-  } catch (error) {
-    console.error('Dashboard data fetch error:', error)
-  } finally {
-    loading.value = false
-  }
-})
+const notifications = [
+  { id: 1, title: 'Pendaftaran baru: Budi Santoso (Recurve Men)', time: '2 MENIT LALU', icon: 'person_add', iconBg: 'bg-blue-50', iconColor: 'text-blue-500' },
+  { id: 2, title: 'Pembayaran terverifikasi: Rp 350.000', time: '15 MENIT LALU', icon: 'check_circle', iconBg: 'bg-green-50', iconColor: 'text-green-500' },
+  { id: 3, title: 'Target #12 bermasalah di scoring app', time: '1 JAM LALU', icon: 'warning', iconBg: 'bg-red-50', iconColor: 'text-red-500' },
+  { id: 4, title: 'Laporan harian Day 1 siap diunduh', time: '3 JAM LALU', icon: 'description', iconBg: 'bg-gray-50', iconColor: 'text-gray-400' },
+]
 </script>
+
+<style scoped>
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.text-navy {
+  color: #0f172a;
+}
+
+.text-text-secondary {
+  color: #6b7280;
+}
+</style>

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://budibadu.com/sitemap.xml
+Sitemap: https://archeryhub.id/sitemap.xml

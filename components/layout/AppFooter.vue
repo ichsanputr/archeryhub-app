@@ -12,15 +12,16 @@
           <div class="flex flex-col items-start gap-2 mb-4">
             <div class="flex items-center gap-2">
               <a href="/" class="inline-block flex-none">
-                <img src="/logo-light.png" alt="BudiBadu Logo" class="h-12 sm:h-14 w-auto" />
+                <img src="/logo-light.png" alt="Archery Hub Logo" class="h-12 sm:h-14 w-auto" />
               </a>
               <div class="text-2xl font-semibold">
-                Budibadu
+                Archery Hub
               </div>
             </div>
-            <div class="text-sm sm:text-base text-gray-400 leading-relaxed">Coding challenge platform where developers
-              practice algorithmic problems, enhance problem-solving skills, learn faster through hands-on experience,
-              and track your progress across multiple programming languages.</div>
+            <div class="text-sm sm:text-base text-gray-400 leading-relaxed">The ultimate archery tournament management
+              platform.
+              Organize events, manage participant rankings, track live results,
+              and enhance the competitive archery experience for everyone.</div>
           </div>
         </div>
 
@@ -31,15 +32,15 @@
           </h4>
           <ul class="space-y-2 sm:space-y-3">
             <li>
-              <a href="/leaderboard"
+              <a href="/tournaments"
                 class="flex items-center text-sm sm:text-base text-gray-400 hover:text-yellow-400 transition-all duration-200 transform hover:translate-x-1">
-                Leaderboard
+                Tournaments
               </a>
             </li>
             <li>
-              <a href="/saved"
+              <a href="/results"
                 class="flex items-center text-sm sm:text-base text-gray-400 hover:text-yellow-400 transition-all duration-200 transform hover:translate-x-1">
-                Saved Problems
+                Live Results
               </a>
             </li>
           </ul>

@@ -13,7 +13,7 @@
           </div>
           <h1 class="mt-4 text-3xl sm:text-4xl font-extrabold leading-tight text-gray-900">Join Our Team</h1>
           <p class="mt-2 text-base sm:text-lg text-gray-600 max-w-2xl">
-            Help build the best coding challenge experience. We value craftsmanship, ownership,
+            Help build the best archery tournament management experience. We value craftsmanship, ownership,
             and a bias for shipping.
           </p>
         </div>
@@ -47,19 +47,20 @@
               </div>
             </summary>
             <div class="px-6 pb-6 pt-0 text-sm text-gray-700 leading-relaxed">
-              <p class="mb-4">Join our quality assurance team to ensure BudiBadu delivers a flawless coding experience.
-                As a Junior QA Manual tester, you'll be responsible for testing our coding platform, identifying bugs,
-                and ensuring that our programming challenges work correctly across different languages and environments.
+              <p class="mb-4">Join our quality assurance team to ensure Archery Hub delivers a flawless tournament
+                management experience.
+                As a Junior QA Manual tester, you'll be responsible for testing our platform, identifying bugs,
+                and ensuring that our scoring systems work correctly across different devices and environments.
               </p>
 
               <div class="mb-4">
                 <h4 class="font-semibold text-gray-800 mb-2">Key Responsibilities:</h4>
                 <ul class="mt-3 list-disc pl-5 space-y-2">
-                  <li>Execute manual test cases for web applications and coding platform features</li>
-                  <li>Test programming challenges across multiple languages (Rust, Python, JavaScript, etc.)</li>
+                  <li>Execute manual test cases for web applications and tournament platform features</li>
+                  <li>Verify scoring systems and bracket generation logic</li>
                   <li>Identify, document, and track bugs using issue tracking systems</li>
-                  <li>Verify code editor functionality and user interface components</li>
-                  <li>Test user authentication, submission systems, and leaderboard features</li>
+                  <li>Verify real-time scoring functionality and user interface components</li>
+                  <li>Test user authentication, registration systems, and leaderboard features</li>
                   <li>Perform regression testing for new releases and feature updates</li>
                   <li>Collaborate with developers to reproduce and resolve issues</li>
                   <li>Create and maintain test documentation and test cases</li>
@@ -124,18 +125,19 @@
               </div>
             </summary>
             <div class="px-6 pb-6 pt-0 text-sm text-gray-700 leading-relaxed">
-              <p class="mb-4">Build the next generation of coding challenge platform with cutting-edge technologies.
-                As a Fullstack Developer, you'll work across our entire technology stack, from high-performance Rust
-                backend services to modern React and Vue.js frontends, creating seamless experiences for developers
-                worldwide.</p>
+              <p class="mb-4">Build the next generation of archery tournament management platform with cutting-edge
+                technologies.
+                As a Fullstack Developer, you'll work across our entire technology stack, from high-performance Go
+                backend services to modern Vue.js and Nuxt frontends, creating seamless experiences for athletes
+                and organizers.</p>
 
               <div class="mb-4">
                 <h4 class="font-semibold text-gray-800 mb-2">Key Responsibilities:</h4>
                 <ul class="mt-3 list-disc pl-5 space-y-2">
-                  <li>Develop backend services and APIs using Rust and Golang</li>
-                  <li>Build responsive frontend applications with Vue.js and React.js</li>
+                  <li>Develop backend services and APIs using Go and SQL</li>
+                  <li>Build responsive frontend applications with Vue.js and Nuxt</li>
                   <li>Design and implement database schemas and optimize query performance</li>
-                  <li>Create real-time code execution and testing infrastructure</li>
+                  <li>Create real-time scoring and bracket management infrastructure</li>
                   <li>Implement user authentication, authorization, and security features</li>
                   <li>Build and maintain CI/CD pipelines and deployment infrastructure</li>
                   <li>Optimize application performance and scalability</li>
@@ -210,15 +212,15 @@ definePageMeta({
 
 const route = useRoute()
 useHead({
-  title: 'Careers - BudiBadu Coding Challenge',
+  title: 'Careers - Archery Hub Tournament Manager',
   meta: [
     { name: 'robots', content: 'noindex' },
-    { name: 'description', content: 'Join BudiBadu to help build the best coding challenge experience. Explore open roles and apply.' }
+    { name: 'description', content: 'Join Archery Hub to help build the best tournament management experience. Explore open roles and apply.' }
   ],
   link: [
     {
       rel: 'canonical',
-      href: `https://budibadu.com${route.path}`
+      href: `https://archeryhub.id${route.path}`
     }
   ]
 })

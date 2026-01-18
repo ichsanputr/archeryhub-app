@@ -4,31 +4,33 @@
     <div class="pointer-events-none absolute inset-0 -z-10">
       <div class="absolute -top-20 -left-16 h-56 w-56 rounded-full bg-yellow-200/40 blur-3xl" />
       <div class="absolute -bottom-24 -right-10 h-64 w-64 rounded-full bg-orange-200/30 blur-3xl" />
-      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-96 w-96 rounded-full bg-orange-100/20 blur-3xl" />
+      <div
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-96 w-96 rounded-full bg-orange-100/20 blur-3xl" />
     </div>
 
     <Container>
       <!-- Section Header -->
       <div class="text-center max-w-3xl mx-auto mb-16">
-        <div class="inline-flex items-center gap-2 rounded-full bg-white/80 backdrop-blur-sm border border-yellow-200 px-4 py-2 mb-6">
+        <div
+          class="inline-flex items-center gap-2 rounded-full bg-white/80 backdrop-blur-sm border border-yellow-200 px-4 py-2 mb-6">
           <div class="h-2 w-2 rounded-full bg-yellow-500 animate-pulse" />
           <span class="text-xs font-bold tracking-wider text-yellow-600 uppercase">
             Platform Comparison
           </span>
         </div>
-        
+
         <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">
           Why choose
           <span class="bg-gradient-to-r from-yellow-600 via-orange-500 to-yellow-600 bg-clip-text text-transparent">
-            BudiBadu
+            Archery Hub
           </span>
-          for learning?
+          for management?
         </h2>
-        
+
         <p class="text-base sm:text-lg text-gray-600 leading-relaxed">
-          We're different. BudiBadu focuses on
-          <span class="font-semibold text-gray-900">real-world problem-solving</span>
-          with visual guides, multi-language examples, and a beginner-friendly approach.
+          We're different. Archery Hub focuses on
+          <span class="font-semibold text-gray-900">efficiency and real-time results</span>
+          with automated brackets, participant tracking, and a user-friendly organizer dashboard.
         </p>
       </div>
 
@@ -38,20 +40,23 @@
         <div class="relative group">
           <!-- "Best for You" Badge -->
           <div class="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-            <div class="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 px-3 py-1 shadow-lg">
+            <div
+              class="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 px-3 py-1 shadow-lg">
               <Icon :ssr="true" icon="ph:star-fill" class="w-3 h-3 text-white" />
               <span class="text-xs font-bold text-white">Recommended</span>
             </div>
           </div>
 
-          <div class="relative bg-gradient-to-br from-white to-yellow-50/50 rounded-2xl border-2 border-yellow-400 shadow-xl p-6 h-full transform transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+          <div
+            class="relative bg-gradient-to-br from-white to-yellow-50/50 rounded-2xl border-2 border-yellow-400 shadow-xl p-6 h-full transform transition-all duration-300 hover:scale-105 hover:shadow-2xl">
             <!-- Platform Header -->
             <div class="text-center mb-6">
-              <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-500 to-orange-500 mb-4 shadow-lg">
-                <Icon :ssr="true" icon="ph:rocket-launch-fill" class="w-8 h-8 text-white" />
+              <div
+                class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-500 to-orange-500 mb-4 shadow-lg">
+                <Icon :ssr="true" icon="ph:target-fill" class="w-8 h-8 text-white" />
               </div>
-              <h3 class="text-2xl font-bold text-gray-900 mb-1">BudiBadu</h3>
-              <p class="text-sm text-gray-600">Learn by solving real problems</p>
+              <h3 class="text-2xl font-bold text-gray-900 mb-1">Archery Hub</h3>
+              <p class="text-sm text-gray-600">Modern tournament oversight</p>
             </div>
 
             <!-- Features List -->
@@ -68,8 +73,9 @@
             </div>
 
             <!-- CTA Button -->
-            <a href="/problem" class="block w-full py-3 px-4 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-semibold text-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
-              Start Learning Free
+            <a href="/tournaments"
+              class="block w-full py-3 px-4 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-semibold text-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+              Go Pro for Free
               <Icon :ssr="true" icon="ph:arrow-right-bold" class="inline-block w-4 h-4 ml-1" />
             </a>
           </div>
@@ -77,14 +83,15 @@
 
         <!-- LeetCode Card -->
         <div class="relative group">
-          <div class="bg-white rounded-2xl border border-gray-200 shadow-md p-6 h-full transform transition-all duration-300 hover:scale-105 hover:shadow-xl hover:border-gray-300">
+          <div
+            class="bg-white rounded-2xl border border-gray-200 shadow-md p-6 h-full transform transition-all duration-300 hover:scale-105 hover:shadow-xl hover:border-gray-300">
             <!-- Platform Header -->
             <div class="text-center mb-6">
               <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gray-100 mb-4">
-                <Icon :ssr="true" icon="ph:code-bold" class="w-8 h-8 text-gray-600" />
+                <Icon :ssr="true" icon="ph:file-text-bold" class="w-8 h-8 text-gray-600" />
               </div>
-              <h3 class="text-2xl font-bold text-gray-900 mb-1">LeetCode</h3>
-              <p class="text-sm text-gray-600">Interview preparation focus</p>
+              <h3 class="text-2xl font-bold text-gray-900 mb-1">Paper & Pen</h3>
+              <p class="text-sm text-gray-600">The traditional way</p>
             </div>
 
             <!-- Features List -->
@@ -102,21 +109,22 @@
 
             <!-- Info Badge -->
             <div class="text-center py-2 px-3 rounded-lg bg-gray-50 border border-gray-200">
-              <p class="text-xs text-gray-600">Great for Big Tech interviews</p>
+              <p class="text-xs text-gray-600">Prone to errors and slow results</p>
             </div>
           </div>
         </div>
 
         <!-- Codewars Card -->
         <div class="relative group">
-          <div class="bg-white rounded-2xl border border-gray-200 shadow-md p-6 h-full transform transition-all duration-300 hover:scale-105 hover:shadow-xl hover:border-gray-300">
+          <div
+            class="bg-white rounded-2xl border border-gray-200 shadow-md p-6 h-full transform transition-all duration-300 hover:scale-105 hover:shadow-xl hover:border-gray-300">
             <!-- Platform Header -->
             <div class="text-center mb-6">
               <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gray-100 mb-4">
-                <Icon :ssr="true" icon="ph:sword-bold" class="w-8 h-8 text-gray-600" />
+                <Icon :ssr="true" icon="ph:table-bold" class="w-8 h-8 text-gray-600" />
               </div>
-              <h3 class="text-2xl font-bold text-gray-900 mb-1">Codewars</h3>
-              <p class="text-sm text-gray-600">Gamified kata challenges</p>
+              <h3 class="text-2xl font-bold text-gray-900 mb-1">Spreadsheets</h3>
+              <p class="text-sm text-gray-600">Manual calculation focus</p>
             </div>
 
             <!-- Features List -->
@@ -153,78 +161,78 @@ defineOptions({
 
 const budibaduFeatures = [
   {
-    title: 'Visual Flowcharts',
-    description: 'See algorithm logic with step-by-step diagrams'
+    title: 'Live Scoreboard',
+    description: 'Real-time updates for spectators and athletes'
   },
   {
-    title: 'Multi-Language Solutions',
-    description: '6+ languages with curated best answers'
+    title: 'Auto Bracket Gen',
+    description: 'Instant elimination brackets based on qualifying'
   },
   {
-    title: 'Beginner-Friendly',
-    description: 'Progressive difficulty with clear explanations'
+    title: 'Mobile Scoring',
+    description: 'Enter scores directly from the field via mobile'
   },
   {
-    title: 'Real-World Focus',
-    description: 'Problems feel like production tasks'
+    title: 'Stats & Ranking',
+    description: 'Comprehensive athlete career tracking'
   },
   {
-    title: '20-40 Min Sessions',
-    description: 'Perfect for daily consistent practice'
+    title: 'Event Builder',
+    description: 'Quickly set up distances, ends, and categories'
   }
 ]
 
 const leetcodeFeatures = [
   {
-    icon: 'ph:briefcase',
-    color: 'text-blue-600',
-    title: 'Interview Focus',
-    description: 'Optimized for Big Tech DSA questions'
+    icon: 'ph:clock-bold',
+    color: 'text-red-600',
+    title: 'Manual Checking',
+    description: 'Scores must be double-checked by hand'
   },
   {
-    icon: 'ph:book-open',
-    color: 'text-green-600',
-    title: 'Strong Editorials',
-    description: 'Official solutions with detailed explanations'
-  },
-  {
-    icon: 'ph:users-three',
-    color: 'text-purple-600',
-    title: 'Large Community',
-    description: 'Active discussions on every problem'
-  },
-  {
-    icon: 'ph:trophy',
+    icon: 'ph:warning-bold',
     color: 'text-orange-600',
-    title: 'Contest Mode',
-    description: 'Weekly competitions and rankings'
+    title: 'Slow Progress',
+    description: 'Results take hours or days to publish'
+  },
+  {
+    icon: 'ph:info-bold',
+    color: 'text-blue-600',
+    title: 'Limited Access',
+    description: 'Only officials see the rankings'
+  },
+  {
+    icon: 'ph:x-circle-bold',
+    color: 'text-red-500',
+    title: 'No Real-time',
+    description: 'Offline-only until event ends'
   }
 ]
 
 const codewarsFeatures = [
   {
-    icon: 'ph:game-controller',
-    color: 'text-red-600',
-    title: 'Gamified Learning',
-    description: 'Rank up through kata challenges'
-  },
-  {
-    icon: 'ph:lightning',
+    icon: 'ph:wrench-bold',
     color: 'text-yellow-600',
-    title: 'Quick Exercises',
-    description: 'Short drills for syntax fluency'
+    title: 'Complex Setup',
+    description: 'Hours spent crafting formulas'
   },
   {
-    icon: 'ph:sparkle',
-    color: 'text-pink-600',
-    title: 'Creative Solutions',
-    description: 'See many different approaches'
+    icon: 'ph:lock-bold',
+    color: 'text-gray-600',
+    title: 'Siloed Data',
+    description: 'Hard to share results with public'
   },
   {
-    icon: 'ph:heart',
-    color: 'text-red-500',
-    title: 'Community-Driven',
-    description: 'User-created challenges'
+    icon: 'ph:user-minus-bold',
+    color: 'text-orange-600',
+    title: 'Manual Sync',
+    description: 'No auto-sync between field and HQ'
+  },
+  {
+    icon: 'ph:warning-circle-bold',
+    color: 'text-red-600',
+    title: 'Formula Errors',
+    description: 'One typo breaks the entire sheet'
   }
 ]
 
@@ -255,9 +263,12 @@ const differentiators = [
 <style scoped>
 /* Custom animations */
 @keyframes float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px);
   }
+
   50% {
     transform: translateY(-10px);
   }

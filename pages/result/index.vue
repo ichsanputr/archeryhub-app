@@ -80,15 +80,15 @@ const formatDate = (dateString) => {
 
 const route = useRoute()
 useHead({
-  title: 'My Result - Rust Coding Challenge',
+  title: 'My Results - Archery Hub Tournament Manager',
   meta: [
-    { name: 'description', content: 'View your completed Rust coding challenges and track your progress.' },
+    { name: 'description', content: 'View your archery tournament results and track your progress.' },
     { name: 'robots', content: 'noindex' }
   ],
   link: [
     {
       rel: 'canonical',
-      href: `https://budibadu.com${route.path}`
+      href: `https://archeryhub.id${route.path}`
     }
   ]
 })
@@ -98,11 +98,13 @@ useHead({
   <div class="min-h-screen bg-gray-50">
     <!-- Header Section -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-      <div class="relative overflow-hidden rounded-2xl border border-yellow-100 bg-gradient-to-r from-yellow-50 via-white to-orange-50">
+      <div
+        class="relative overflow-hidden rounded-2xl border border-yellow-100 bg-gradient-to-r from-yellow-50 via-white to-orange-50">
         <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-yellow-200/40 blur-3xl"></div>
         <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-orange-200/40 blur-3xl"></div>
         <div class="relative p-6 sm:p-8">
-          <div class="inline-flex items-center gap-2 rounded-full border border-yellow-200 bg-white/70 px-3 py-1 text-sm text-yellow-700 shadow-sm backdrop-blur">
+          <div
+            class="inline-flex items-center gap-2 rounded-full border border-yellow-200 bg-white/70 px-3 py-1 text-sm text-yellow-700 shadow-sm backdrop-blur">
             <Icon :ssr="true" icon="carbon:result" class="h-4 w-4" />
             <span>Your Progress</span>
           </div>
@@ -110,7 +112,7 @@ useHead({
             My Results
           </h1>
           <p class="mt-2 text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl">
-            Track your progress and view completed challenges
+            Track your progress and view your tournament results
           </p>
         </div>
       </div>
@@ -121,17 +123,12 @@ useHead({
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 max-w-md mx-auto">
           <div class="flex flex-col items-center gap-6">
             <div class="flex flex-col items-center gap-2">
-              <v-progress-circular 
-                indeterminate 
-                color="primary" 
-                size="64"
-                class="mb-4"
-              />
+              <v-progress-circular indeterminate color="primary" size="64" class="mb-4" />
               <h3 class="text-lg font-semibold text-gray-900">
                 Loading your results...
               </h3>
               <p class="text-gray-600 text-center">
-                Please wait while we fetch your completed challenges.
+                Please wait while we fetch your tournament results.
               </p>
             </div>
           </div>
@@ -150,18 +147,17 @@ useHead({
                 {{ error }}
               </p>
             </div>
-            
+
             <div class="flex flex-col gap-3 w-full">
-              <button 
-                @click="fetchResults"
-                class="flex items-center justify-center gap-2 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition-colors w-full"
-              >
+              <button @click="fetchResults"
+                class="flex items-center justify-center gap-2 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition-colors w-full">
                 <Icon :ssr="true" icon="ph:arrow-clockwise" class="w-4 h-4" />
                 Try Again
               </button>
-              
+
               <a href="/" class="w-full">
-                <button class="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-medium transition-colors w-full">
+                <button
+                  class="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-medium transition-colors w-full">
                   <Icon :ssr="true" icon="ph:house" class="w-4 h-4" />
                   Go to Homepage
                 </button>
@@ -178,17 +174,16 @@ useHead({
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div class="block bg-white rounded-xl shadow-sm border border-gray-200 p-6 relative">
               <!-- Demo overlay -->
-              <div class="absolute inset-0 bg-gradient-to-t from-gray-50/90 to-transparent rounded-xl z-10 flex items-end justify-center pb-4">
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-gray-50/90 to-transparent rounded-xl z-10 flex items-end justify-center pb-4">
                 <div class="text-center">
-                  <button 
-                    @click="login"
-                    class="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition-colors text-sm"
-                  >
+                  <button @click="login"
+                    class="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition-colors text-sm">
                     Login to View Details
                   </button>
                 </div>
               </div>
-              
+
               <div class="flex items-start justify-between mb-4">
                 <div class="flex-1">
                   <div class="flex items-center space-x-3 mb-2">
@@ -200,11 +195,8 @@ useHead({
                     {{ completedProblems[0]?.description }}
                   </p>
                   <div class="flex flex-wrap gap-1 mb-4">
-                    <span
-                      v-for="tag in completedProblems[0]?.tags"
-                      :key="tag"
-                      class="px-2 py-1 bg-yellow-50 text-yellow-700 rounded-full text-xs"
-                    >
+                    <span v-for="tag in completedProblems[0]?.tags" :key="tag"
+                      class="px-2 py-1 bg-yellow-50 text-yellow-700 rounded-full text-xs">
                       {{ tag }}
                     </span>
                   </div>
@@ -219,7 +211,7 @@ useHead({
                   </div>
                   <div class="text-lg font-bold text-gray-900">{{ completedProblems[0]?.attempts }}</div>
                 </div>
-                
+
                 <div class="bg-gray-50 rounded-lg p-3">
                   <div class="flex items-center space-x-2">
                     <Icon :ssr="true" icon="ph:clock" class="w-4 h-4 text-yellow-600" />
@@ -227,7 +219,7 @@ useHead({
                   </div>
                   <div class="text-lg font-bold text-gray-900">{{ completedProblems[0]?.timeSpent }}</div>
                 </div>
-                
+
                 <div class="bg-gray-50 rounded-lg p-3">
                   <div class="flex items-center space-x-2">
                     <Icon :ssr="true" icon="ph:lightning" class="w-4 h-4 text-yellow-600" />
@@ -235,7 +227,7 @@ useHead({
                   </div>
                   <div class="text-lg font-bold text-gray-900">{{ completedProblems[0]?.executionTime }}</div>
                 </div>
-                
+
                 <div class="bg-gray-50 rounded-lg p-3">
                   <div class="flex items-center space-x-2">
                     <Icon :ssr="true" icon="ph:x-circle" class="w-4 h-4 text-red-600" />
@@ -257,26 +249,21 @@ useHead({
 
         <!-- For logged users: Show actual results -->
         <div v-else class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div
-            v-for="problem in completedProblems"
-            :key="problem.id"
-            :class="[
-              'block bg-white rounded-xl shadow-sm border border-gray-200 p-6 transition-all duration-300',
-              user ? 'cursor-pointer hover:shadow-md hover:border-yellow-200 group' : 'relative'
-            ]"
-            @click="user && navigateTo(`/result/${problem.slug}`)"
-          >
+          <div v-for="problem in completedProblems" :key="problem.id" :class="[
+            'block bg-white rounded-xl shadow-sm border border-gray-200 p-6 transition-all duration-300',
+            user ? 'cursor-pointer hover:shadow-md hover:border-yellow-200 group' : 'relative'
+          ]" @click="user && navigateTo(`/result/${problem.slug}`)">
             <!-- Demo overlay for non-logged users -->
-            <div v-if="!user" class="absolute inset-0 bg-gradient-to-t from-gray-50/90 to-transparent rounded-xl z-10 flex items-end justify-center pb-4">
+            <div v-if="!user"
+              class="absolute inset-0 bg-gradient-to-t from-gray-50/90 to-transparent rounded-xl z-10 flex items-end justify-center pb-4">
               <div class="text-center">
-                <button 
-                  class="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition-colors text-sm"
-                >
+                <button
+                  class="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition-colors text-sm">
                   Login to View Details
                 </button>
               </div>
             </div>
-            
+
             <div class="flex items-start justify-between mb-4">
               <div class="flex-1">
                 <div class="flex items-center space-x-3 mb-2">
@@ -294,11 +281,8 @@ useHead({
                   {{ problem.description }}
                 </p>
                 <div class="flex flex-wrap gap-1 mb-4">
-                  <span
-                    v-for="tag in problem.tags"
-                    :key="tag"
-                    class="px-2 py-1 bg-yellow-50 text-yellow-700 rounded-full text-xs"
-                  >
+                  <span v-for="tag in problem.tags" :key="tag"
+                    class="px-2 py-1 bg-yellow-50 text-yellow-700 rounded-full text-xs">
                     {{ tag }}
                   </span>
                 </div>
@@ -313,7 +297,7 @@ useHead({
                 </div>
                 <div class="text-lg font-bold text-gray-900">{{ problem.attempts }}</div>
               </div>
-              
+
               <div class="bg-gray-50 rounded-lg p-3">
                 <div class="flex items-center space-x-2">
                   <Icon :ssr="true" icon="ph:clock" class="w-4 h-4 text-yellow-600" />
@@ -321,7 +305,7 @@ useHead({
                 </div>
                 <div class="text-lg font-bold text-gray-900">{{ problem.timeSpent }}</div>
               </div>
-              
+
               <div class="bg-gray-50 rounded-lg p-3">
                 <div class="flex items-center space-x-2">
                   <Icon :ssr="true" icon="ph:lightning" class="w-4 h-4 text-yellow-600" />
@@ -329,7 +313,7 @@ useHead({
                 </div>
                 <div class="text-lg font-bold text-gray-900">{{ problem.executionTime }}</div>
               </div>
-              
+
               <div class="bg-gray-50 rounded-lg p-3">
                 <div class="flex items-center space-x-2">
                   <Icon :ssr="true" icon="ph:x-circle" class="w-4 h-4 text-red-600" />
@@ -345,7 +329,8 @@ useHead({
                 {{ user ? 'Last Attempt:' : 'Demo Date:' }} {{ formatDate(problem.completedAt) }}
               </div>
               <div v-if="user" class="text-xs text-gray-500">
-                <Icon :ssr="true" icon="ph:arrow-right" class="w-3 h-3 inline ml-1 group-hover:text-yellow-600 transition-colors" />
+                <Icon :ssr="true" icon="ph:arrow-right"
+                  class="w-3 h-3 inline ml-1 group-hover:text-yellow-600 transition-colors" />
               </div>
             </div>
           </div>
@@ -360,20 +345,22 @@ useHead({
                   No results found
                 </h3>
                 <p class="text-gray-600 text-center">
-                  Complete some challenges to see your results here.
+                  Participate in tournaments to see your results here.
                 </p>
               </div>
-              
+
               <div class="flex flex-col gap-3 w-full">
-                <a href="/problem" class="w-full">
-                  <button class="flex items-center justify-center gap-2 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition-colors w-full">
-                    <Icon :ssr="true" icon="ph:code" class="w-4 h-4" />
-                    Browse Problems
+                <a href="/tournaments" class="w-full">
+                  <button
+                    class="flex items-center justify-center gap-2 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition-colors w-full">
+                    <Icon :ssr="true" icon="ph:trophy" class="w-4 h-4" />
+                    Browse Tournaments
                   </button>
                 </a>
-                
+
                 <a href="/" class="w-full">
-                  <button class="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-medium transition-colors w-full">
+                  <button
+                    class="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-medium transition-colors w-full">
                     <Icon :ssr="true" icon="ph:house" class="w-4 h-4" />
                     Go to Homepage
                   </button>

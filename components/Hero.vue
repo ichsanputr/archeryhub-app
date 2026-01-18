@@ -21,26 +21,26 @@
           <h1 class="mt-3 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-gray-900">
             Level up with
             <span
-              class="block bg-gradient-to-r from-yellow-600 via-orange-500 to-yellow-400 bg-clip-text text-transparent">BudiBadu</span>
+              class="block bg-gradient-to-r from-yellow-600 via-orange-500 to-yellow-400 bg-clip-text text-transparent">Archery
+              Hub</span>
           </h1>
 
           <p class="mt-5 text-base sm:text-lg md:text-xl text-gray-600 max-w-xl leading-relaxed">
-            Practice coding for <span class="underline font-semibold">free</span> with <span
-              class="underline font-semibold">hundreds</span> of real-world problems that strengthen your
-            problem-solving and algorithmic thinking skills. Explore challenges across different topics, learn new
-            techniques, and grow your confidence as a programmer.
+            Manage your archery tournaments with <span class="underline font-semibold">ease</span>.
+            Archery Hub provides <span class="underline font-semibold">comprehensive</span> tools
+            for live scoring, participant registration, and results management.
           </p>
 
           <div class="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-            <a href="/problem"
+            <a href="/tournaments"
               class="btn-primary flex gap-2 items-center px-6 py-2.5 sm:px-7 sm:py-3 justify-center text-sm sm:text-base">
-              <Icon :ssr="true" icon="uil:apps" class="w-4 h-4 sm:w-5 sm:h-5" />
-              <span>Explore Problems</span>
+              <Icon :ssr="true" icon="ph:trophy" class="w-4 h-4 sm:w-5 sm:h-5" />
+              <span>Explore Tournaments</span>
             </a>
-            <a href="/leaderboard"
+            <a href="/results"
               class="btn-secondary flex gap-2 items-center px-6 py-2.5 sm:px-7 sm:py-3 justify-center text-sm sm:text-base">
-              <Icon :ssr="true" icon="material-symbols:trophy-outline" class="w-4 h-4 sm:w-5 sm:h-5" color="orange" />
-              <span>View Leaderboard</span>
+              <Icon :ssr="true" icon="ph:chart-bar" class="w-4 h-4 sm:w-5 sm:h-5" color="orange" />
+              <span>View Results</span>
             </a>
           </div>
         </div>

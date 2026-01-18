@@ -34,9 +34,14 @@
               <h2 class="text-2xl font-bold text-gray-900 mb-2">Send us a message</h2>
               <div class="space-y-3 text-gray-600">
                 <p>Fill out the form below and we'll get back to you within 24 hours.</p>
-                <p>Whether you're reporting a bug, suggesting a feature, or just want to share your thoughts about BudiBadu, we value your input. Our team reviews every message carefully and strives to provide helpful, personalized responses.</p>
-                <p>For urgent technical issues or time-sensitive inquiries, please include "URGENT" in your subject line, and we'll prioritize your message. For general questions or feedback, you can expect a response within one business day.</p>
-                <p>We're committed to building the best coding challenge platform, and your feedback helps us improve. Thank you for taking the time to reach out!</p>
+                <p>Whether you're reporting a bug, suggesting a feature, or just want to share your thoughts about
+                  Archery Hub, we value your input. Our team reviews every message carefully and strives to provide
+                  helpful, personalized responses.</p>
+                <p>For urgent technical issues or time-sensitive inquiries, please include "URGENT" in your subject
+                  line, and we'll prioritize your message. For general questions or feedback, you can expect a response
+                  within one business day.</p>
+                <p>We're committed to building the best archery tournament management platform, and your feedback helps
+                  us improve. Thank you for taking the time to reach out!</p>
               </div>
             </div>
 
@@ -103,7 +108,7 @@
             </h3>
 
             <div class="space-y-4">
-              <a href="mailto:hello@budibadu.com"
+              <a href="mailto:hello@archeryhub.id"
                 class="flex items-center gap-3 p-3 rounded-xl hover:bg-yellow-50 transition-colors group">
                 <div
                   class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center group-hover:bg-yellow-200 transition-colors">
@@ -111,7 +116,7 @@
                 </div>
                 <div>
                   <div class="font-medium text-gray-900">Email</div>
-                  <div class="text-sm text-gray-600">hello@budibadu.com</div>
+                  <div class="text-sm text-gray-600">hello@archeryhub.id</div>
                 </div>
               </a>
 
@@ -127,7 +132,7 @@
                 </div>
               </a>
 
-              <a href="https://twitter.com/budibadu" target="_blank"
+              <a href="https://twitter.com/archeryhub" target="_blank"
                 class="flex items-center gap-3 p-3 rounded-xl hover:bg-yellow-50 transition-colors group">
                 <div
                   class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center group-hover:bg-yellow-200 transition-colors">
@@ -135,7 +140,7 @@
                 </div>
                 <div>
                   <div class="font-medium text-gray-900">Twitter</div>
-                  <div class="text-sm text-gray-600">@budibadu</div>
+                  <div class="text-sm text-gray-600">@archeryhub</div>
                 </div>
               </a>
             </div>
@@ -185,17 +190,17 @@ definePageMeta({
 // Set page meta
 const route = useRoute()
 useHead({
-  title: 'Contact - BudiBadu Coding Challenge',
+  title: 'Contact - Archery Hub Tournament Manager',
   meta: [
     {
       name: 'description',
-      content: 'Get in touch with the BudiBadu team. We\'d love to hear your feedback, suggestions, and questions.'
+      content: 'Get in touch with the Archery Hub team. We\'d love to hear your feedback, suggestions, and questions.'
     }
   ],
   link: [
     {
       rel: 'canonical',
-      href: `https://budibadu.com${route.path}`
+      href: `https://archeryhub.id${route.path}`
     }
   ]
 })

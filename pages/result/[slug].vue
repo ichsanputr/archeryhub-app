@@ -153,15 +153,15 @@ const formatDate = (dateString) => {
 }
 
 useHead({
-  title: `Result ${problemTitle.value} - Rust Coding Challenge`,
+  title: `Result ${problemTitle.value} - Archery Hub Tournament Manager`,
   meta: [
-    { name: 'description', content: `View all your attempts and results for problem ${problemTitle.value}.` },
+    { name: 'description', content: `View all your attempts and results for event ${problemTitle.value}.` },
     { name: 'robots', content: 'noindex' }
   ],
   link: [
     {
       rel: 'canonical',
-      href: `https://budibadu.com${route.path}`
+      href: `https://archeryhub.id${route.path}`
     }
   ]
 })
@@ -174,7 +174,7 @@ useHead({
       <div class="absolute inset-0 bg-black/20"></div>
       <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-white/10 blur-3xl"></div>
       <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-white/10 blur-3xl"></div>
-      
+
       <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <!-- Breadcrumb -->
         <nav class="flex items-center space-x-2 text-yellow-100 text-sm mb-4">
@@ -188,9 +188,10 @@ useHead({
 
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
           <div class="flex-1">
-            <div class="inline-flex items-center gap-2 rounded-full border border-yellow-300/30 bg-white/10 px-3 py-1 text-sm text-yellow-100 backdrop-blur mb-4">
-              <Icon :ssr="true" icon="ph:code" class="h-4 w-4" />
-              <span>Problem Results</span>
+            <div
+              class="inline-flex items-center gap-2 rounded-full border border-yellow-300/30 bg-white/10 px-3 py-1 text-sm text-yellow-100 backdrop-blur mb-4">
+              <Icon :ssr="true" icon="ph:trophy" class="h-4 w-4" />
+              <span>Event Results</span>
             </div>
             <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-3">
               {{ problemTitle }}
@@ -199,7 +200,7 @@ useHead({
               Track your progress and analyze your submissions
             </p>
           </div>
-          
+
           <!-- Stats Cards -->
           <div v-if="user && !loading && problemResults.length > 0" class="grid grid-cols-3 gap-4 lg:gap-6">
             <div class="bg-white/10 backdrop-blur rounded-xl p-4 text-center border border-white/20">
@@ -221,9 +222,9 @@ useHead({
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <LoginRequired v-if="!user" title="Login Required"
-        message="Please log in to view your problem results and track your progress." icon="ph:chart-line"
-        primary-action="Login with GitHub" secondary-action="Go to Homepage" secondary-route="/"
-        primary-icon="logos:github-icon" secondary-icon="ph:house" />
+        message="Please log in to view your event results and track your progress." icon="ph:chart-line"
+        primary-action="Login / Register" secondary-action="Go to Homepage" secondary-route="/" primary-icon="ph:user"
+        secondary-icon="ph:house" />
 
       <!-- Enhanced Loading State -->
       <div v-else-if="loading" class="text-center py-16">
@@ -321,7 +322,7 @@ useHead({
         <div class="space-y-6">
           <div v-for="(result, index) in paginatedResults" :key="result.id"
             class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-300">
-            
+
             <!-- Result Header -->
             <div class="p-6 border-b border-gray-100">
               <div class="flex items-start justify-between">
@@ -335,20 +336,18 @@ useHead({
                         Attempt #{{ (page - 1) * pageSize + index + 1 }}
                       </h3>
                     </div>
-                    <span class="px-3 py-1 text-sm font-medium rounded-full border"
-                      :class="result.status === 'Accepted' 
-                        ? 'bg-green-50 text-green-700 border-green-200' 
-                        : result.status === 'Compilation Error'
+                    <span class="px-3 py-1 text-sm font-medium rounded-full border" :class="result.status === 'Accepted'
+                      ? 'bg-green-50 text-green-700 border-green-200'
+                      : result.status === 'Compilation Error'
                         ? 'bg-yellow-50 text-yellow-700 border-yellow-200'
                         : 'bg-red-50 text-red-700 border-red-200'">
-                      <Icon :ssr="true" 
-                        :icon="result.status === 'Accepted' ? 'ph:check-circle' : 
-                              result.status === 'Compilation Error' ? 'ph:warning-circle' : 'ph:x-circle'" 
+                      <Icon :ssr="true" :icon="result.status === 'Accepted' ? 'ph:check-circle' :
+                        result.status === 'Compilation Error' ? 'ph:warning-circle' : 'ph:x-circle'"
                         class="w-3 h-3 mr-1 inline" />
                       {{ result.status }}
                     </span>
                   </div>
-                  
+
                   <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600">
                     <span class="flex items-center gap-1">
                       <Icon :ssr="true" icon="ph:calendar" class="w-4 h-4" />
@@ -379,7 +378,7 @@ useHead({
                     <div class="font-semibold text-gray-900">{{ result.executionTime }}</div>
                   </div>
                 </div>
-                
+
                 <div class="flex items-center gap-3">
                   <div class="p-2 bg-blue-100 rounded-lg">
                     <Icon :ssr="true" icon="tdesign:time" class="w-4 h-4 text-blue-600" />
@@ -409,7 +408,8 @@ useHead({
                   <Icon :ssr="true" icon="ph:warning" class="w-5 h-5 text-red-600" />
                   <span class="font-medium text-red-800">Error Output</span>
                 </div>
-                <pre class="text-sm text-red-700 font-mono whitespace-pre-wrap break-words bg-red-25 p-3 rounded border">{{ result.stderr }}</pre>
+                <pre
+                  class="text-sm text-red-700 font-mono whitespace-pre-wrap break-words bg-red-25 p-3 rounded border">{{ result.stderr }}</pre>
               </div>
             </div>
 
@@ -433,18 +433,19 @@ useHead({
 
         <!-- Enhanced Pagination Controls -->
         <div v-if="user && !loading && filteredResults.length > pageSize" class="mt-8 flex justify-center">
-          <nav class="inline-flex items-center rounded-lg border border-gray-300 bg-white shadow-sm" aria-label="Pagination">
+          <nav class="inline-flex items-center rounded-lg border border-gray-300 bg-white shadow-sm"
+            aria-label="Pagination">
             <button
               class="inline-flex items-center gap-2 px-4 py-2 rounded-l-lg border-r border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               :disabled="page === 1" @click="page > 1 && (page = page - 1)">
               <Icon :ssr="true" icon="ph:caret-left" class="w-4 h-4" />
               Previous
             </button>
-            
+
             <div class="flex items-center px-4 py-2 bg-gray-50 text-sm font-medium text-gray-900">
               Page {{ page }} of {{ Math.ceil(filteredResults.length / pageSize) }}
             </div>
-            
+
             <button
               class="inline-flex items-center gap-2 px-4 py-2 rounded-r-lg border-l border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               :disabled="page >= Math.ceil(filteredResults.length / pageSize)"
@@ -458,8 +459,8 @@ useHead({
         <!-- Results Summary -->
         <div v-if="user && !loading && paginatedResults.length > 0" class="mt-6 text-center">
           <p class="text-sm text-gray-600">
-            Showing <span class="font-medium">{{ (page - 1) * pageSize + 1 }}</span> to 
-            <span class="font-medium">{{ Math.min(page * pageSize, filteredResults.length) }}</span> of 
+            Showing <span class="font-medium">{{ (page - 1) * pageSize + 1 }}</span> to
+            <span class="font-medium">{{ Math.min(page * pageSize, filteredResults.length) }}</span> of
             <span class="font-medium">{{ filteredResults.length }}</span> attempts
             <span v-if="filters.status" class="text-blue-600">(filtered by {{ filters.status }})</span>
           </p>
@@ -478,14 +479,16 @@ useHead({
               You haven't submitted any solutions for this problem. Start coding to see your results here!
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-              <a :href="`/problem/${problemSlug}`">
-                <button class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
-                  <Icon :ssr="true" icon="ph:code" class="w-4 h-4" />
-                  Solve Problem
+              <a :href="`/tournaments`">
+                <button
+                  class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
+                  <Icon :ssr="true" icon="ph:trophy" class="w-4 h-4" />
+                  View Tournament
                 </button>
               </a>
               <a href="/result">
-                <button class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-medium transition-colors">
+                <button
+                  class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-medium transition-colors">
                   <Icon :ssr="true" icon="ph:arrow-left" class="w-4 h-4" />
                   Back to Results
                 </button>
@@ -507,7 +510,7 @@ useHead({
             <p class="text-gray-600 mb-6">
               Try adjusting your status filter to see more results.
             </p>
-            <button @click="filters.status = ''" 
+            <button @click="filters.status = ''"
               class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
               <Icon :ssr="true" icon="ph:x" class="w-4 h-4" />
               Clear Filter
