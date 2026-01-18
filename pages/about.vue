@@ -4,7 +4,8 @@
     <div class="absolute inset-0 -z-10">
       <div class="absolute inset-0 bg-gradient-to-br from-yellow-50 via-white to-orange-50"></div>
       <div class="pointer-events-none absolute -top-24 -left-24 h-72 w-72 rounded-full bg-yellow-200/40 blur-3xl"></div>
-      <div class="pointer-events-none absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-orange-200/40 blur-3xl"></div>
+      <div class="pointer-events-none absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-orange-200/40 blur-3xl">
+      </div>
     </div>
 
     <Container>
@@ -20,15 +21,15 @@
             Our Platform
           </h2>
           <p class="text-lg leading-relaxed text-gray-600 mb-4">
-            BudiBadu is a comprehensive coding challenge platform designed to help developers 
-            sharpen their problem-solving skills across multiple programming languages. We believe 
-            that consistent practice with well-crafted challenges is the key to becoming a better programmer.
+            Archery Hub is a comprehensive tournament management platform designed to help archery
+            organizations and clubs manage their competitions with ease. We believe
+            that efficient management and live engagement are key to a successful sporting event.
           </p>
           <p class="text-lg leading-relaxed text-gray-600">
-            Our platform offers language-specific challenges for Rust, Python, Java, PHP, JavaScript, 
-            and TypeScript, with each platform tailored to the unique characteristics and best practices 
-            of that language. Whether you're preparing for technical interviews, learning a new language, 
-            or simply want to stay sharp, BudiBadu provides the perfect environment for growth.
+            Our platform offers end-to-end solutions for archery tournaments, including registration,
+            athlete management, live scoring, and official result publishing. Whether you're running
+            a small club competition or a national championship, Archery Hub provides the
+            perfect tools for a professional experience.
           </p>
         </div>
 
@@ -38,21 +39,21 @@
             About the Founder
           </h2>
           <p class="text-lg leading-relaxed text-gray-600 mb-4">
-            Hi! I'm Ichsan, the creator and developer behind BudiBadu. As a passionate programmer 
-            and educator, I've experienced firsthand the challenges of learning new programming languages 
-            and preparing for technical interviews. This journey inspired me to create a platform that 
-            makes coding practice more accessible and effective.
+            Hi! I'm Ichsan, the creator and developer behind Archery Hub. As an archery
+            enthusiast and software engineer, I've seen the need for more modern and
+            accessible tools to manage archery events and track athlete progress.
+            This passion inspired me to build a platform that simplifies tournament logistics.
           </p>
           <p class="text-lg leading-relaxed text-gray-600 mb-4">
-            With years of experience in software development and a deep understanding of what makes 
-            programming challenges effective, I've carefully curated problems that not only test your 
-            coding skills but also help you think like a programmer. Each challenge is designed to 
-            build upon previous knowledge while introducing new concepts and patterns.
+            With years of experience in both software development and sports management,
+            I've designed Archery Hub to be intuitive for organizers and engaging for athletes.
+            Every feature is built with the goal of making archery competitions more
+            professional, transparent, and exciting for everyone involved.
           </p>
           <p class="text-lg leading-relaxed text-gray-600">
-            My goal is to create a supportive community where developers can grow together, share 
-            knowledge, and celebrate each other's achievements. BudiBadu is more than just a 
-            coding platform—it's a place where your programming journey becomes an adventure.
+            My goal is to support the archery community by providing world-class technology
+            that grows with your needs. Archery Hub is more than just a
+            management system—it's a partner in your tournament journey.
           </p>
         </div>
 
@@ -72,17 +73,17 @@ definePageMeta({
 // Set page meta
 const route = useRoute()
 useHead({
-  title: 'About - BudiBadu Coding Challenge',
+  title: 'About - Archery Hub Tournament Manager',
   meta: [
     {
       name: 'description',
-      content: 'Learn about BudiBadu, the comprehensive coding challenge platform designed to help developers sharpen their problem-solving skills across multiple programming languages.'
+      content: 'Learn about Archery Hub, the comprehensive tournament management platform designed to help archery organizations and clubs manage their competitions with ease.'
     }
   ],
   link: [
     {
       rel: 'canonical',
-      href: `https://budibadu.com${route.path}`
+      href: `https://archeryhub.id${route.path}`
     }
   ]
 })
