@@ -43,13 +43,13 @@ jobs:
       - name: Sync dist to VPS (Temp)
         run: |
           rsync -avz --delete -e "ssh -p 30221 -o StrictHostKeyChecking=no" \
-          ./.output/ root@151.243.222.93:/root/budibadu-app/.output-temp/
+          ./.output/ root@151.243.222.93:/root/archeryhub-app/.output-temp/
 
       - name: Atomic Swap & Reload on VPS
         run: |
           ssh -p 30221 -o StrictHostKeyChecking=no root@151.243.222.93 << 'EOF'
             set -e
-            cd /root/budibadu-app
+            cd /root/archeryhub-app
             
             # Atomic swap strategy
             echo "Performing atomic swap..."
