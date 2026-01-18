@@ -10,10 +10,13 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
         await fetchUser()
     }
 
-    // After fetching, check if user is logged in
+    // For development: Disable auth redirection
+    /*
     if (!isLoggedIn.value) {
         // Store the intended destination for redirect after login
         const redirectPath = to.fullPath
         return navigateTo(`/auth/login?redirect=${encodeURIComponent(redirectPath)}`)
     }
+    */
+    console.log('Auth middleware bypass for development mode')
 })

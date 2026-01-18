@@ -20,7 +20,8 @@
       <!-- Content -->
       <article class="legal-content rounded-2xl border border-yellow-100 bg-white p-6 sm:p-8 shadow-sm">
         <p>
-          This Privacy Policy describes how Archery Hub ("we", "us", "our") collects, uses, and shares information when
+          This Privacy Policy describes how Archeryhub.id ("we", "us", "our") collects, uses, and shares information
+          when
           you use our
           website and services (collectively, the "Services"). By using the Services, you agree to the collection and
           use of information

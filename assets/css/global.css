@@ -135,7 +135,7 @@ small {
 
 /* Landing Page Styles */
 .text-gradient {
-  background: linear-gradient(135deg, #f59e0b, #d97706, #b45309);
+  background: linear-gradient(135deg, #D9FF00, #c2e600);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -144,13 +144,13 @@ small {
 .glass-card {
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 200, 50, 0.1);
+  border: 1px solid rgba(217, 255, 0, 0.1);
   border-radius: 1rem;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
-  color: white;
+  background: #D9FF00;
+  color: #0f172a;
   border: none;
   border-radius: 0.5rem;
   font-weight: 600;
@@ -158,25 +158,25 @@ small {
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #d97706, #b45309);
+  background: #c2e600;
   transform: translateY(-1px);
-  box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
+  box-shadow: 0 10px 25px rgba(217, 255, 0, 0.3);
 }
 
 .btn-secondary {
   background: transparent;
-  color: #f59e0b;
-  border: 2px solid #f59e0b;
+  color: #0f172a;
+  border: 2px solid #0f172a;
   border-radius: 0.5rem;
   font-weight: 600;
   transition: all 0.3s ease;
 }
 
 .btn-secondary:hover {
-  background: #f59e0b;
+  background: #0f172a;
   color: white;
   transform: translateY(-1px);
-  box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.3);
 }
 
 /* Code Block Scrollbar Styling */

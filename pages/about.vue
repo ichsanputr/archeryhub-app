@@ -21,14 +21,14 @@
             Our Platform
           </h2>
           <p class="text-lg leading-relaxed text-gray-600 mb-4">
-            Archery Hub is a comprehensive tournament management platform designed to help archery
+            Archeryhub.id is a comprehensive tournament management platform designed to help archery
             organizations and clubs manage their competitions with ease. We believe
             that efficient management and live engagement are key to a successful sporting event.
           </p>
           <p class="text-lg leading-relaxed text-gray-600">
             Our platform offers end-to-end solutions for archery tournaments, including registration,
             athlete management, live scoring, and official result publishing. Whether you're running
-            a small club competition or a national championship, Archery Hub provides the
+            a small club competition or a national championship, Archeryhub.id provides the
             perfect tools for a professional experience.
           </p>
         </div>
@@ -39,20 +39,20 @@
             About the Founder
           </h2>
           <p class="text-lg leading-relaxed text-gray-600 mb-4">
-            Hi! I'm Ichsan, the creator and developer behind Archery Hub. As an archery
+            Hi! I'm Ichsan, the creator and developer behind Archeryhub.id. As an archery
             enthusiast and software engineer, I've seen the need for more modern and
             accessible tools to manage archery events and track athlete progress.
             This passion inspired me to build a platform that simplifies tournament logistics.
           </p>
           <p class="text-lg leading-relaxed text-gray-600 mb-4">
             With years of experience in both software development and sports management,
-            I've designed Archery Hub to be intuitive for organizers and engaging for athletes.
+            I've designed Archeryhub.id to be intuitive for organizers and engaging for athletes.
             Every feature is built with the goal of making archery competitions more
             professional, transparent, and exciting for everyone involved.
           </p>
           <p class="text-lg leading-relaxed text-gray-600">
             My goal is to support the archery community by providing world-class technology
-            that grows with your needs. Archery Hub is more than just a
+            that grows with your needs. Archeryhub.id is more than just a
             management system—it's a partner in your tournament journey.
           </p>
         </div>
@@ -73,11 +73,11 @@ definePageMeta({
 // Set page meta
 const route = useRoute()
 useHead({
-  title: 'About - Archery Hub Tournament Manager',
+  title: 'About - Archeryhub.id Tournament Manager',
   meta: [
     {
       name: 'description',
-      content: 'Learn about Archery Hub, the comprehensive tournament management platform designed to help archery organizations and clubs manage their competitions with ease.'
+      content: 'Learn about Archeryhub.id, the comprehensive tournament management platform designed to help archery organizations and clubs manage their competitions with ease.'
     }
   ],
   link: [

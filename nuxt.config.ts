@@ -4,7 +4,7 @@ import vuetify from 'vite-plugin-vuetify';
 export default defineNuxtConfig({
   ssr: true,
   devServer: {
-    port: 9000,
+    port: 3000,
   },
   modules: [
     '@vueuse/motion/nuxt',
@@ -30,7 +30,7 @@ export default defineNuxtConfig({
     public: {
       apiBaseUrl: 'http://localhost:8000/api/v1',
       siteUrl: 'https://archeryhub.id',
-      siteName: 'Archery Hub',
+      siteName: 'Archeryhub.id',
     }
   },
   app: {
@@ -38,17 +38,18 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'en'
       },
-      title: 'Archery Hub - Tournament Management System',
+      title: 'Archeryhub.id - Tournament Management System',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'description', content: 'Modern archery tournament management system for organizing competitions, managing athletes, and live scoring.' },
-        { name: 'theme-color', content: '#f9d406' },
+        { name: 'theme-color', content: '#D9FF00' },
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Reddit+Sans:wght@300;400;500;600;700&family=Lexend:wght@300;400;500;600;700;800;900&family=Noto+Sans:wght@400;500;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap' }
       ],
+      pageTransition: { name: 'page', mode: 'out-in' }
     }
   },
   features: {

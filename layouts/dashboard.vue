@@ -5,9 +5,9 @@
             class="flex-shrink-0 flex flex-col bg-navy text-white shadow-xl z-20 transition-all duration-300 border-r border-white/5">
             <div class="h-16 flex items-center px-6 border-b border-white/10 shrink-0">
                 <div class="flex items-center gap-3 overflow-hidden">
-                    <span class="material-symbols-outlined text-primary text-3xl shrink-0">adjust</span>
-                    <span v-if="!isSidebarCollapsed" class="text-lg font-black tracking-tight whitespace-nowrap">Archery
-                        Hub</span>
+                    <img src="/logo.png" alt="Archeryhub.id Logo" class="h-8 w-8 object-contain shrink-0" />
+                    <span v-if="!isSidebarCollapsed"
+                        class="text-lg font-black tracking-tight whitespace-nowrap">Archeryhub.id</span>
                 </div>
             </div>
 
@@ -98,15 +98,15 @@ const isSidebarCollapsed = ref(false)
 
 const navItems = [
     { label: 'Ringkasan', icon: 'dashboard', path: '/dashboard' },
-    { label: 'Turnamen Saya', icon: 'emoji_events', path: '/tournaments' },
-    { label: 'Statistik Global', icon: 'bar_chart', path: '/statistics' },
+    { label: 'Turnamen Saya', icon: 'emoji_events', path: '/dashboard/tournaments' },
+    { label: 'Statistik Global', icon: 'bar_chart', path: '/dashboard/statistics' },
 ]
 
 const eventItems = [
-    { label: 'Panel Kontrol', icon: 'view_quilt', path: '/tournaments/1/manage' },
-    { label: 'Manajemen Atlet', icon: 'groups', path: '/tournaments/1/manage/archers' },
-    { label: 'Scoring & Hasil', icon: 'scoreboard', path: '/tournaments/1/manage/scoring' },
-    { label: 'Pengaturan Event', icon: 'settings', path: '/tournaments/1/manage/settings' },
+    { label: 'Panel Kontrol', icon: 'view_quilt', path: '/dashboard/tournaments/1/manage' },
+    { label: 'Manajemen Atlet', icon: 'groups', path: '/dashboard/tournaments/1/manage/archers' },
+    { label: 'Scoring & Hasil', icon: 'scoreboard', path: '/dashboard/tournaments/1/manage/scoring' },
+    { label: 'Pengaturan Event', icon: 'settings', path: '/dashboard/tournaments/1/manage/settings' },
 ]
 
 const currentPageTitle = computed(() => {

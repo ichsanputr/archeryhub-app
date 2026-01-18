@@ -47,7 +47,7 @@
               </div>
             </summary>
             <div class="px-6 pb-6 pt-0 text-sm text-gray-700 leading-relaxed">
-              <p class="mb-4">Join our quality assurance team to ensure Archery Hub delivers a flawless tournament
+              <p class="mb-4">Join our quality assurance team to ensure Archeryhub.id delivers a flawless tournament
                 management experience.
                 As a Junior QA Manual tester, you'll be responsible for testing our platform, identifying bugs,
                 and ensuring that our scoring systems work correctly across different devices and environments.

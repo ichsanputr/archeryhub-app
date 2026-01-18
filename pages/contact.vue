@@ -35,7 +35,7 @@
               <div class="space-y-3 text-gray-600">
                 <p>Fill out the form below and we'll get back to you within 24 hours.</p>
                 <p>Whether you're reporting a bug, suggesting a feature, or just want to share your thoughts about
-                  Archery Hub, we value your input. Our team reviews every message carefully and strives to provide
+                  Archeryhub.id, we value your input. Our team reviews every message carefully and strives to provide
                   helpful, personalized responses.</p>
                 <p>For urgent technical issues or time-sensitive inquiries, please include "URGENT" in your subject
                   line, and we'll prioritize your message. For general questions or feedback, you can expect a response

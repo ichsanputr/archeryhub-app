@@ -7,6 +7,7 @@ export default defineEventHandler(async (event) => {
         return
     }
 
+    /* 
     const token = getCookie(event, 'auth_token')
     if (!token) {
         event.context.user = null
@@ -32,4 +33,7 @@ export default defineEventHandler(async (event) => {
         }
         event.context.user = null
     }
+    */
+    event.context.user = null // Default to null for dev mode
+
 })

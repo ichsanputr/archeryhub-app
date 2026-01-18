@@ -12,10 +12,10 @@
           <div class="flex flex-col items-start gap-2 mb-4">
             <div class="flex items-center gap-2">
               <a href="/" class="inline-block flex-none">
-                <img src="/logo-light.png" alt="Archery Hub Logo" class="h-12 sm:h-14 w-auto" />
+                <img src="/logo-light.png" alt="Archeryhub.id Logo" class="h-12 sm:h-14 w-auto" />
               </a>
               <div class="text-2xl font-semibold">
-                Archery Hub
+                Archeryhub.id
               </div>
             </div>
             <div class="text-sm sm:text-base text-gray-400 leading-relaxed">The ultimate archery tournament management
@@ -30,20 +30,20 @@
           <h4 class="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-white">
             Navigation
           </h4>
-          <ul class="space-y-2 sm:space-y-3">
-            <li>
-              <a href="/tournaments"
+          <div class="flex flex-col gap-2 sm:gap-3">
+            <div>
+              <a href="/dashboard/tournaments"
                 class="flex items-center text-sm sm:text-base text-gray-400 hover:text-yellow-400 transition-all duration-200 transform hover:translate-x-1">
                 Tournaments
               </a>
-            </li>
-            <li>
-              <a href="/results"
+            </div>
+            <div>
+              <a href="/dashboard/result"
                 class="flex items-center text-sm sm:text-base text-gray-400 hover:text-yellow-400 transition-all duration-200 transform hover:translate-x-1">
                 Live Results
               </a>
-            </li>
-          </ul>
+            </div>
+          </div>
         </div>
 
         <!-- Column 4: About Links -->
@@ -51,32 +51,32 @@
           <h4 class="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-white">
             About
           </h4>
-          <ul class="space-y-2 sm:space-y-3">
-            <li>
+          <div class="flex flex-col gap-2 sm:gap-3">
+            <div>
               <a href="/about"
                 class="flex items-center text-sm sm:text-base text-gray-400 hover:text-yellow-400 transition-all duration-200 transform hover:translate-x-1">
                 About Us
               </a>
-            </li>
-            <li>
+            </div>
+            <div>
               <a href="/contact"
                 class="flex items-center text-sm sm:text-base text-gray-400 hover:text-yellow-400 transition-all duration-200 transform hover:translate-x-1">
                 Contact
               </a>
-            </li>
-            <li>
+            </div>
+            <div>
               <a href="/privacy"
                 class="flex items-center text-sm sm:text-base text-gray-400 hover:text-yellow-400 transition-all duration-200 transform hover:translate-x-1">
                 Privacy Policy
               </a>
-            </li>
-            <li>
+            </div>
+            <div>
               <a href="/terms"
                 class="flex items-center text-sm sm:text-base text-gray-400 hover:text-yellow-400 transition-all duration-200 transform hover:translate-x-1">
                 Terms of Service
               </a>
-            </li>
-          </ul>
+            </div>
+          </div>
         </div>
 
         <!-- Column 5: Developer (right end on large screens) -->
@@ -84,29 +84,24 @@
           <h4 class="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-white">
             Developer
           </h4>
-          <ul class="space-y-2 sm:space-y-3">
-            <li>
+          <div class="flex flex-col gap-2 sm:gap-3">
+            <div>
               <a href="/blog"
                 class="flex items-center text-sm sm:text-base text-gray-400 hover:text-yellow-400 transition-all duration-200 transform hover:translate-x-1">
                 Blog
               </a>
-            </li>
-            <li>
+            </div>
+            <div>
               <a href="/career"
                 class="flex items-center text-sm sm:text-base text-gray-400 hover:text-yellow-400 transition-all duration-200 transform hover:translate-x-1">
                 Career
               </a>
-            </li>
-          </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </footer>
 </template>
 
-<style scoped>
-ul {
-  list-style: none !important;
-  padding-left: 0;
-}
-</style>
+<style scoped></style>

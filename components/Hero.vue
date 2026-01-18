@@ -21,23 +21,22 @@
           <h1 class="mt-3 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-gray-900">
             Level up with
             <span
-              class="block bg-gradient-to-r from-yellow-600 via-orange-500 to-yellow-400 bg-clip-text text-transparent">Archery
-              Hub</span>
+              class="block bg-gradient-to-r from-yellow-600 via-orange-500 to-yellow-400 bg-clip-text text-transparent">Archeryhub.id</span>
           </h1>
 
           <p class="mt-5 text-base sm:text-lg md:text-xl text-gray-600 max-w-xl leading-relaxed">
             Manage your archery tournaments with <span class="underline font-semibold">ease</span>.
-            Archery Hub provides <span class="underline font-semibold">comprehensive</span> tools
+            Archeryhub.id provides <span class="underline font-semibold">comprehensive</span> tools
             for live scoring, participant registration, and results management.
           </p>
 
           <div class="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-            <a href="/tournaments"
+            <a href="/dashboard/tournaments"
               class="btn-primary flex gap-2 items-center px-6 py-2.5 sm:px-7 sm:py-3 justify-center text-sm sm:text-base">
               <Icon :ssr="true" icon="ph:trophy" class="w-4 h-4 sm:w-5 sm:h-5" />
               <span>Explore Tournaments</span>
             </a>
-            <a href="/results"
+            <a href="/dashboard/result"
               class="btn-secondary flex gap-2 items-center px-6 py-2.5 sm:px-7 sm:py-3 justify-center text-sm sm:text-base">
               <Icon :ssr="true" icon="ph:chart-bar" class="w-4 h-4 sm:w-5 sm:h-5" color="orange" />
               <span>View Results</span>

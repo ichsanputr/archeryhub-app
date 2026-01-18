@@ -13,7 +13,7 @@
           </div>
           <h1 class="mt-4 text-3xl sm:text-4xl font-extrabold leading-tight text-gray-900">Terms of Service</h1>
           <p class="mt-2 text-base sm:text-lg text-gray-600 max-w-2xl">Please read these terms carefully before using
-            Archery Hub.</p>
+            Archeryhub.id.</p>
         </div>
       </section>
 
@@ -21,7 +21,7 @@
       <article class="legal-content rounded-2xl border border-yellow-100 bg-white p-6 sm:p-8 shadow-sm">
         <h2>1. Acceptance of Terms</h2>
         <p>
-          By accessing or using Archery Hub (the "Service"), you agree to be bound by these Terms of Service and our
+          By accessing or using Archeryhub.id (the "Service"), you agree to be bound by these Terms of Service and our
           Privacy Policy.
           If you do not agree, do not use the Service.
         </p>
@@ -43,7 +43,7 @@
 
         <h2>4. User Submissions</h2>
         <p>
-          If you submit content (such as feedback, match scores, or comments), you grant Archery Hub a worldwide,
+          If you submit content (such as feedback, match scores, or comments), you grant Archeryhub.id a worldwide,
           non-exclusive, royalty-free
           license to use, reproduce, and display that content for operating and improving the Service.
         </p>
@@ -64,7 +64,7 @@
 
         <h2>7. Limitation of Liability</h2>
         <p>
-          To the fullest extent permitted by law, Archery Hub and its affiliates shall not be liable for any indirect,
+          To the fullest extent permitted by law, Archeryhub.id and its affiliates shall not be liable for any indirect,
           incidental, special,
           consequential, or punitive damages, or any loss of profits or data.
         </p>

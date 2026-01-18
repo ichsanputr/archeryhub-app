@@ -11,7 +11,7 @@
       <div class="text-center mb-16">
         <h2 class="text-2xl sm:text-3xl sm:text-4xl font-bold mb-6">
           <span class="text-gray-800">Join</span> <span class="text-gradient">Hundreds of Promoters</span><br>
-          <span class="text-gray-800">who manage events with Archery Hub</span>
+          <span class="text-gray-800">who manage events with Archeryhub.id</span>
         </h2>
       </div>
 
@@ -56,7 +56,7 @@ const testimonials = [
     name: "Agus Santoso",
     username: "agus-archery",
     role: "Tournament Director",
-    content: "Archery Hub has revolutionized how we run our provincial championships. The live results are a game-changer!",
+    content: "Archeryhub.id has revolutionized how we run our provincial championships. The live results are a game-changer!",
     rating: 5,
     company: "East Java Archery Association"
   },
@@ -72,7 +72,7 @@ const testimonials = [
     name: "Budi Pratama",
     username: "budi-pro-archery",
     role: "Club Manager",
-    content: "Registration and participant management used to take days. Now it's done in minutes with Archery Hub.",
+    content: "Registration and participant management used to take days. Now it's done in minutes with Archeryhub.id.",
     rating: 5,
     company: "Jakarta Archery Club"
   },

@@ -4,11 +4,11 @@
     :class="isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'">
     <!-- Logo/Brand -->
     <div class="p-6 flex items-center gap-3">
-      <div class="size-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
-        <span class="material-symbols-outlined" style="font-size: 24px;">adjust</span>
+      <div class="size-10 rounded-full bg-primary/20 flex items-center justify-center shrink-0 overflow-hidden p-1.5">
+        <img src="/logo.png" alt="Logo" class="w-full h-full object-contain" />
       </div>
       <div>
-        <h1 class="text-gray-900 dark:text-white text-base font-bold leading-none">Archery Hub</h1>
+        <h1 class="text-gray-900 dark:text-white text-base font-bold leading-none">Archeryhub.id</h1>
         <p class="text-primary/80 text-xs font-medium mt-1">Command Center</p>
       </div>
       <button class="md:hidden ml-auto text-gray-400" @click="isSidebarOpen = false">
@@ -60,21 +60,21 @@ watch(() => route.path, () => {
 })
 
 const navLinks = [
-  { path: '/', icon: 'dashboard', label: 'Dashboard' },
-  { path: '/tournaments', icon: 'target', label: 'Tournaments' },
-  { path: '/athletes', icon: 'groups', label: 'Athletes' },
-  { path: '/teams', icon: 'group_work', label: 'Teams' },
-  { path: '/live', icon: 'live_tv', label: 'Live Results', badge: '' },
-  { path: '/awards', icon: 'workspace_premium', label: 'Awards' },
-  { path: '/accreditation', icon: 'badge', label: 'Accreditation' },
-  { path: '/print', icon: 'print', label: 'Print Center' },
-  { path: '/devices', icon: 'devices', label: 'Devices' },
-  { path: '/settings', icon: 'settings', label: 'Settings' },
+  { path: '/dashboard', icon: 'dashboard', label: 'Dashboard' },
+  { path: '/dashboard/tournaments', icon: 'target', label: 'Tournaments' },
+  { path: '/dashboard/athletes', icon: 'groups', label: 'Athletes' },
+  { path: '/dashboard/teams', icon: 'group_work', label: 'Teams' },
+  { path: '/dashboard/live', icon: 'live_tv', label: 'Live Results', badge: '' },
+  { path: '/dashboard/awards', icon: 'workspace_premium', label: 'Awards' },
+  { path: '/dashboard/accreditation', icon: 'badge', label: 'Accreditation' },
+  { path: '/dashboard/print', icon: 'print', label: 'Print Center' },
+  { path: '/dashboard/devices', icon: 'devices', label: 'Devices' },
+  { path: '/dashboard/settings', icon: 'settings', label: 'Settings' },
 ]
 
 const isActive = (path) => {
-  if (path === '/') {
-    return route.path === '/'
+  if (path === '/dashboard') {
+    return route.path === '/dashboard' || route.path === '/dashboard/'
   }
   return route.path.startsWith(path)
 }
