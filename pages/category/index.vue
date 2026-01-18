@@ -88,15 +88,15 @@ const clearSearch = () => {
 // SEO
 const route = useRoute()
 useHead({
-  title: 'Categories - BudiBadu Coding Challenge',
+  title: 'Categories - Archery Hub Tournament Manager',
   meta: [
-    { name: 'description', content: 'Browse all programming categories and topics. Find coding challenges organized by different programming concepts and skills.' },
-    { name: 'keywords', content: 'programming categories, coding topics, algorithm categories, data structures, programming concepts' }
+    { name: 'description', content: 'Browse all archery tournament categories and formats. Find events organized by different bow divisions and skill levels.' },
+    { name: 'keywords', content: 'archery categories, tournament topics, competition formats, bow divisions, skill levels' }
   ],
   link: [
     {
       rel: 'canonical',
-      href: `https://budibadu.com${route.path}`
+      href: `https://archeryhub.id${route.path}`
     }
   ]
 })
@@ -120,13 +120,13 @@ useHead({
       <Container>
         <div class="text-center mb-12">
           <h1 class="text-2xl sm:text-3xl sm:text-4xl font-extrabold leading-tight text-gray-900 mb-4">
-            Programming Problems Categories
+            Tournament Event Categories
           </h1>
 
           <p class="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-            Discover a wide range of problems organized by programming concepts, topics, and difficulty levels. Explore
-            curated challenges that strengthen your understanding of algorithms, data structures, and real-world coding
-            scenarios — helping you sharpen your skills where it matters most.
+            Discover a wide range of archery events organized by bow divisions, age categories, and distances. Explore
+            curated competitions that follow official federation rules and formats — helping you manage and track
+            performance where it matters most.
           </p>
 
           <!-- Search Bar -->
@@ -215,9 +215,9 @@ useHead({
 
                   <div class="mt-4 pt-4 border-t border-gray-100">
                     <div class="flex items-center justify-center text-sm">
-                      <Icon :ssr="true" icon="ph:code" class="w-4 h-4 text-gray-400 mr-1" />
+                      <Icon :ssr="true" icon="ph:trophy" class="w-4 h-4 text-gray-400 mr-1" />
                       <span class="text-gray-600">
-                        {{ category.problem_count }} problem{{ category.problem_count !== 1 ? 's' : '' }}
+                        {{ category.problem_count }} event{{ category.problem_count !== 1 ? 's' : '' }}
                       </span>
                     </div>
                   </div>
@@ -232,7 +232,8 @@ useHead({
           <div class="max-w-md mx-auto">
             <Icon :ssr="true" icon="ph:folder-x" class="w-16 h-16 mx-auto mb-4 text-gray-400" />
             <h3 class="text-xl font-semibold mb-2 text-gray-900">
-              {{ apiError ? 'Failed to load categories' : filters.search ? 'No categories found' : 'No categories available' }}
+              {{ apiError ? 'Failed to load categories' : filters.search ? 'No categories found' : 'No categories
+              available' }}
             </h3>
             <p class="text-gray-500 mb-6">
               {{ filters.search

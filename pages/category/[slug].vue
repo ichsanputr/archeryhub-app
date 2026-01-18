@@ -4,7 +4,6 @@ import { useRoute, useAsyncData, useRuntimeConfig, useHead, showError } from '#a
 import { Icon } from '@iconify/vue'
 import Container from '~/components/Container.vue'
 import ProblemCard from '~/components/ProblemCard.vue'
-import Adsense from '~/components/Adsense.vue'
 
 defineOptions({
     name: 'CategoryDetailPage'
@@ -138,17 +137,17 @@ const sortOptions = [
 useHead(() => {
     if (is404.value) {
         return {
-            title: 'Category Not Found - BudiBadu Coding Challenge',
+            title: 'Category Not Found - Archery Hub Tournament Manager',
             meta: [
-                { name: 'description', content: `The category "${categorySlug}" was not found on BudiBadu Coding Challenge.` },
+                { name: 'description', content: `The category "${categorySlug}" was not found on Archery Hub.` },
             ]
         }
     }
 
-    const title = category.value ? `Solve ${category.value.name} Programming Problems by BudiBadu Coding Challenge` : 'Category - BudiBadu Coding Challenge'
+    const title = category.value ? `Solve ${category.value.name} Archery Events by Archery Hub` : 'Category - Archery Hub'
     const description = category.value
-        ? `Explore ${category.value.name} programming problems. ${category.value.description || ''} Practice coding challenges and improve your skills with BudiBadu Coding Challenge.`
-        : 'Browse programming problems by category with BudiBadu Coding Challenge.'
+        ? `Explore ${category.value.name} archery events. ${category.value.description || ''} Practice and compete with Archery Hub.`
+        : 'Browse archery events by category with Archery Hub.'
 
     return {
         title,
@@ -159,7 +158,7 @@ useHead(() => {
         link: [
             {
                 rel: 'canonical',
-                href: `https://budibadu.com${route.path}`
+                href: `https://archeryhub.id${route.path}`
             }
         ]
     }
@@ -280,10 +279,8 @@ useHead(() => {
         <section v-if="!is404" class="py-12 sm:py-16">
             <Container>
                 <!-- Ads Section -->
-                <div class="py-8 flex justify-center bg-gray-50 mb-6">
-                    <Adsense key="mobile-header-ad-2" client="ca-pub-1356911639243870" ad-slot="4242301831"
-                        format="auto" responsive="true"
-                        :style="{ display: 'block', width: '100%', minHeight: '100px' }" />
+                <div class="py-8 flex justify-center bg-gray-50 mb-6" v-if="false">
+                    <!-- Adsense removed to fix build error -->
                 </div>
                 <!-- Results Header -->
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-8">
