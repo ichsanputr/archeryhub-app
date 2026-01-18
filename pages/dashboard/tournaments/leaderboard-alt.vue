@@ -16,7 +16,7 @@
                                 Recurve Finals</h2>
                         </div>
                         <h1
-                            class="text-white text-3xl lg:text-5xl font-black tracking-tighter truncate leading-tight uppercase italic">
+                            class="text-white text-3xl lg:text-5xl font-black tracking-tighter truncate leading-tight uppercase">
                             2024 National Archery Championship
                         </h1>
                     </div>
@@ -29,10 +29,10 @@
                                 class="bg-[#1e2b42] w-16 h-20 rounded-xl flex items-center justify-center border border-white/10 shadow-lg overflow-hidden relative">
                                 <div class="absolute inset-x-0 h-px bg-white/5 top-1/2"></div>
                                 <span class="text-4xl font-mono font-black text-white tracking-tighter">{{ unit.value
-                                    }}</span>
+                                }}</span>
                             </div>
                             <span class="text-[8px] uppercase text-slate-500 font-black tracking-[0.2em]">{{ unit.label
-                                }}</span>
+                            }}</span>
                         </div>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                         <span class="material-symbols-outlined text-3xl"
                             :class="ath.trend === 'up' ? 'text-green-500' : ath.trend === 'down' ? 'text-red-500' : 'text-slate-600'">
                             {{ ath.trend === 'up' ? 'arrow_drop_up' : ath.trend === 'down' ? 'arrow_drop_down' :
-                            'remove' }}
+                                'remove' }}
                         </span>
                     </div>
 
@@ -81,8 +81,7 @@
                             <img :src="ath.image" class="w-full h-full object-cover rounded-xl">
                         </div>
                         <div class="min-w-0">
-                            <h3
-                                class="text-white text-2xl font-black truncate leading-none uppercase tracking-tight italic">
+                            <h3 class="text-white text-2xl font-black truncate leading-none uppercase tracking-tight">
                                 {{ ath.name }}</h3>
                             <span class="text-slate-500 text-xs font-bold uppercase tracking-widest mt-1 block">{{
                                 ath.country }}</span>

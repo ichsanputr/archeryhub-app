@@ -3,3 +3,74 @@
 @tailwind utilities;
 
 @import './archery.css';
+
+/* Logo .id color */
+.text-logo-id {
+    color: #4BE350;
+}
+
+/* Custom Scrollbar Styles */
+@layer utilities {
+
+    /* Scrollbar width */
+    .scrollbar-thin {
+        scrollbar-width: thin;
+    }
+
+    .scrollbar-none {
+        scrollbar-width: none;
+    }
+
+    .scrollbar-none::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+/* Global Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 10px;
+    border: 2px solid #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #b7fb23 0%, #9ae811 100%);
+}
+
+/* Thin scrollbar variant for nested containers */
+.scrollbar-styled::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.scrollbar-styled::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.scrollbar-styled::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+.scrollbar-styled::-webkit-scrollbar-thumb:hover {
+    background: #0f172a;
+}
+
+/* Primary accent scrollbar */
+.scrollbar-primary::-webkit-scrollbar-thumb {
+    background: #0f172a;
+}
+
+.scrollbar-primary::-webkit-scrollbar-thumb:hover {
+    background: #b7fb23;
+}

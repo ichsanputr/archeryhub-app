@@ -182,9 +182,9 @@
 import Container from '~/components/Container.vue'
 import { Icon } from '@iconify/vue'
 
-// Use default layout 
+// Use landing layout
 definePageMeta({
-  layout: 'default'
+  layout: 'landing'
 })
 
 // Set page meta

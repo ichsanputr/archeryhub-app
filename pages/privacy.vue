@@ -108,9 +108,9 @@
 <script setup>
 import Container from '~/components/Container.vue'
 
-// Use default layout
+// Use landing layout
 definePageMeta({
-  layout: 'default'
+  layout: 'landing'
 })
 
 // Set page meta

@@ -95,7 +95,7 @@
                     Pembayaran
                 </h2>
             </div>
-            <div class="p-8 text-center text-text-sub/50 italic text-sm">
+            <div class="p-8 text-center text-text-sub/50 text-sm">
                 Selesaikan detail pendaftaran terlebih dahulu untuk melanjutkan ke pembayaran.
             </div>
         </section>

@@ -14,12 +14,13 @@
                             <img src="/logo.png" alt="Logo" class="w-7 h-7 object-contain" />
                         </div>
                         <span class="text-xl font-bold tracking-tight font-display transition-colors duration-300"
-                            :class="isScrolled ? 'text-navy' : 'text-white'">Archeryhub.id</span>
+                            :class="isScrolled ? 'text-navy' : 'text-white'">Archeryhub<span
+                                class="text-logo-id">.id</span></span>
                     </div>
                     <div class="hidden md:flex items-center gap-8">
                         <NuxtLink to="/" class="text-sm font-medium transition-all duration-300 hover:text-primary"
                             :class="isScrolled ? 'text-navy' : 'text-white/80'">Home</NuxtLink>
-                        <NuxtLink to="/dashboard/tournaments"
+                        <NuxtLink to="/tournaments"
                             class="text-sm font-medium transition-all duration-300 hover:text-primary"
                             :class="isScrolled ? 'text-navy' : 'text-white/80'">Tournaments</NuxtLink>
                         <a class="text-sm font-medium transition-all duration-300 hover:text-primary"
@@ -47,7 +48,7 @@
             <!-- Mobile Menu -->
             <div v-if="mobileMenuOpen" class="md:hidden bg-white border-b border-border-subtle p-4 space-y-4">
                 <NuxtLink to="/" class="block text-navy text-sm font-medium">Home</NuxtLink>
-                <NuxtLink to="/dashboard/tournaments" class="block text-navy text-sm font-medium">Tournaments</NuxtLink>
+                <NuxtLink to="/tournaments" class="block text-navy text-sm font-medium">Tournaments</NuxtLink>
                 <a href="#" class="block text-navy text-sm font-medium">Scoring</a>
                 <a href="#" class="block text-navy text-sm font-medium">Clubs</a>
                 <NuxtLink to="/about" class="block text-navy text-sm font-medium">About</NuxtLink>
@@ -120,7 +121,8 @@
                                     class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
                             </NuxtLink>
                         </div>
-                        <div class="flex flex-col gap-4">
+                        <div
+                            class="flex flex-col gap-4 max-h-[500px] overflow-y-auto pr-2 scrollbar-thin scrollbar-track-gray-100 scrollbar-thumb-gray-300 hover:scrollbar-thumb-gray-400">
                             <div v-for="event in upcomingEvents" :key="event.name"
                                 class="group bg-white rounded-2xl border border-border-subtle p-5 hover:border-primary/50 hover:shadow-card transition-all duration-300">
                                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
@@ -179,11 +181,11 @@
                             </p>
                         </div>
                         <div class="relative z-10">
-                            <NuxtLink to="/auth/login"
+                            <a href="/auth/register?type=archer"
                                 class="w-full inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-navy text-sm font-bold px-6 py-3 rounded-xl transition-all">
                                 Daftar Atlet
                                 <span class="material-symbols-outlined text-lg">arrow_forward</span>
-                            </NuxtLink>
+                            </a>
                         </div>
                     </div>
 
@@ -197,11 +199,11 @@
                             <p class="text-text-sub text-sm mb-6">Kelola klub atau federasi dengan sistem modern.</p>
                         </div>
                         <div class="relative z-10">
-                            <NuxtLink to="/auth/login"
+                            <a href="/auth/register?type=organization"
                                 class="w-full inline-flex items-center justify-center gap-2 bg-navy hover:bg-navy-light text-white text-sm font-bold px-6 py-3 rounded-xl transition-all">
                                 Gabung Mitra
                                 <span class="material-symbols-outlined text-lg">arrow_forward</span>
-                            </NuxtLink>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -318,7 +320,8 @@
                     <a class="text-text-sub hover:text-navy font-bold text-sm" href="#">Lihat Semua Berita</a>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <article v-for="news in latestNews" :key="news.title" class="flex flex-col group cursor-pointer">
+                    <NuxtLink v-for="news in latestNews" :key="news.title" :to="`/berita/${news.slug}`"
+                        class="flex flex-col group cursor-pointer">
                         <div class="relative h-60 rounded-2xl overflow-hidden mb-5">
                             <img :src="news.image" :alt="news.title"
                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -346,13 +349,13 @@
                                 Baca Selengkapnya <span class="material-symbols-outlined text-sm">arrow_right_alt</span>
                             </span>
                         </div>
-                    </article>
+                    </NuxtLink>
                 </div>
             </div>
         </section>
 
         <!-- Footer -->
-        <AppFooter />
+        <LayoutAppFooter />
     </div>
 </template>
 
@@ -418,6 +421,17 @@ const upcomingEvents = [
         ]
     },
     {
+        name: 'Indonesian Open Championship',
+        month: 'Nov',
+        day: '20',
+        location: 'GBK Archery Field, Jakarta',
+        categories: 'All Divisions',
+        tags: [
+            { label: 'Grade A', class: 'bg-red-100 text-red-700' },
+            { label: 'International', class: 'bg-blue-100 text-blue-700' }
+        ]
+    },
+    {
         name: 'Surabaya Archery Cup',
         month: 'Dec',
         day: '20',
@@ -428,6 +442,17 @@ const upcomingEvents = [
         ]
     },
     {
+        name: 'Bali International Open',
+        month: 'Dec',
+        day: '05',
+        location: 'Denpasar Archery Center',
+        categories: 'Recurve & Compound',
+        tags: [
+            { label: 'Open', class: 'bg-blue-100 text-blue-700' },
+            { label: 'International', class: 'bg-purple-100 text-purple-700' }
+        ]
+    },
+    {
         name: 'Yogyakarta Indoor Series',
         month: 'Jan',
         day: '12',
@@ -435,6 +460,36 @@ const upcomingEvents = [
         categories: 'Barebow & Recurve',
         tags: [
             { label: 'Series 1', class: 'bg-purple-100 text-purple-700' }
+        ]
+    },
+    {
+        name: 'Medan Archery Open',
+        month: 'Feb',
+        day: '01',
+        location: 'USU Sports Center',
+        categories: 'Recurve & Compound',
+        tags: [
+            { label: 'Regional', class: 'bg-orange-100 text-orange-700' }
+        ]
+    },
+    {
+        name: 'Borneo Archery Festival',
+        month: 'Jan',
+        day: '10',
+        location: 'Balikpapan Sports Center',
+        categories: 'All Divisions',
+        tags: [
+            { label: 'Club', class: 'bg-teal-100 text-teal-700' }
+        ]
+    },
+    {
+        name: 'Makassar Championship',
+        month: 'Feb',
+        day: '15',
+        location: 'Karebosi Field',
+        categories: 'Recurve Only',
+        tags: [
+            { label: 'Provincial', class: 'bg-yellow-100 text-yellow-700' }
         ]
     }
 ]
@@ -465,6 +520,7 @@ const liveEvents = [
 
 const latestNews = [
     {
+        slug: 'hasil-seleksi-pelatnas-2025',
         title: 'Hasil Seleksi Pelatnas Archery 2025 Resmi Diumumkan',
         date: 'Oct 28, 2024',
         category: 'Pelatnas',
@@ -472,6 +528,7 @@ const latestNews = [
         excerpt: 'Persatuan Panahan Indonesia secara resmi merilis daftar atlet yang terpilih untuk mengikuti pemusatan latihan nasional tahun depan.'
     },
     {
+        slug: 'indonesia-juara-umum-sea-2024',
         title: 'Indonesia Juara Umum di Kejuaraan Asia Tenggara 2024',
         date: 'Oct 25, 2024',
         category: 'Prestasi',
@@ -479,6 +536,7 @@ const latestNews = [
         excerpt: 'Penampilan bersejarah kontingen nasional berhasil mengamankan 5 medali emas, mendominasi divisi Recurve dan Compound.'
     },
     {
+        slug: 'regulasi-peralatan-baru-indoor',
         title: 'Regulasi Peralatan Baru untuk Musim Indoor Mendatang',
         date: 'Oct 20, 2024',
         category: 'Regulasi',

@@ -12,7 +12,8 @@
                     <div class="w-12 h-12 flex items-center justify-center transition-all duration-300">
                         <img src="/logo.png" alt="Logo" class="w-12 h-12 object-contain" />
                     </div>
-                    <span class="text-white text-3xl font-bold tracking-tight font-display">Archeryhub.id</span>
+                    <span class="text-white text-3xl font-bold tracking-tight font-display">Archeryhub<span
+                            class="text-logo-id">.id</span></span>
                 </div>
                 <h1 class="text-white text-5xl font-black leading-tight tracking-tight mb-4 font-display">
                     Tingkatkan <br />
@@ -114,7 +115,7 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4 mt-6">
+                <div class="mt-6">
                     <button @click="handleGoogleLogin"
                         class="flex items-center justify-center gap-3 w-full py-2.5 px-4 border border-gray-200 rounded-xl shadow-sm bg-white text-sm font-bold text-slate-700 hover:bg-gray-50 hover:border-gray-300 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 font-body"
                         type="button">
@@ -128,13 +129,8 @@
                             <path fill="#EA4335"
                                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
                         </svg>
-                        Google
+                        Masuk dengan Google
                     </button>
-                    <NuxtLink to="/"
-                        class="flex items-center justify-center gap-2 w-full py-2.5 px-4 border border-gray-200 rounded-xl shadow-sm bg-white text-sm font-bold text-slate-700 hover:bg-gray-50 hover:border-gray-300 transition-all font-body">
-                        <span class="material-symbols-outlined text-lg">visibility</span>
-                        Guest
-                    </NuxtLink>
                 </div>
 
                 <p class="mt-8 text-center text-sm text-slate-600 font-body">

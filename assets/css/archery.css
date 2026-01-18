@@ -115,20 +115,20 @@ body {
 }
 
 .input::placeholder {
-  @apply text-brand-border;
+  @apply text-gray-400;
 }
 
 /* Table styles */
 .table-container {
-  @apply bg-surface-dark rounded-xl border border-brand-border overflow-hidden;
+  @apply bg-slate-800 rounded-xl border border-slate-700 overflow-hidden;
 }
 
 .table-header {
-  @apply bg-surface-highlight/50 border-b border-brand-border px-6 py-4 text-left text-brand-gold text-xs font-semibold uppercase tracking-wider;
+  @apply bg-slate-700/50 border-b border-slate-600 px-6 py-4 text-left text-amber-400 text-xs font-semibold uppercase tracking-wider;
 }
 
 .table-row {
-  @apply hover:bg-surface-highlight/20 transition-colors border-b border-brand-border;
+  @apply hover:bg-slate-700/20 transition-colors border-b border-slate-700;
 }
 
 .table-cell {

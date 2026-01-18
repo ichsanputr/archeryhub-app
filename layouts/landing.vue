@@ -1,11 +1,10 @@
 <template>
-  <div class="font-sans">
-    <AppHeader />
-    <main>
+  <div class="min-h-screen flex flex-col bg-background-light font-body text-navy">
+    <LayoutLandingHeader />
+    <main class="flex-grow">
       <slot />
     </main>
-    <AppFooter />
-    <ToastNotifications />
+    <LayoutAppFooter />
   </div>
 </template>
 

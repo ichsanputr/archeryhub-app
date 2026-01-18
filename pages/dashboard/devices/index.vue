@@ -75,7 +75,7 @@
                   <span class="text-white text-xs font-bold">{{ device.target_assignment }}</span>
                   <span class="text-brand-gold text-[10px]">Session {{ device.session }}</span>
                 </div>
-                <span v-else class="text-brand-gold/30 italic text-xs">Unassigned</span>
+                <span v-else class="text-brand-gold/30 text-xs">Unassigned</span>
               </td>
               <td class="px-6 py-4">
                 <span :class="getStatusClass(device.status)"
