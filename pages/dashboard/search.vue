@@ -47,7 +47,7 @@
             v-for="tournament in results.tournaments" 
             :key="tournament.id"
             class="glass-card hover:border-primary/50 transition-all group cursor-pointer"
-            @click="navigateTo(`/tournaments/${tournament.id}`)"
+            @click="navigateTo(`/events/${tournament.id}`)"
           >
             <div class="p-5">
               <div class="flex justify-between items-start mb-4">
@@ -141,7 +141,7 @@ const fetchData = async () => {
   loading.value = true
   try {
     const [tournamentsRes, athletesRes] = await Promise.all([
-      get(`/tournaments?search=${encodeURIComponent(q.value)}&limit=20`),
+      get(`/events?search=${encodeURIComponent(q.value)}&limit=20`),
       get(`/athletes?search=${encodeURIComponent(q.value)}&limit=20`)
     ])
     

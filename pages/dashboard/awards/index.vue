@@ -271,7 +271,7 @@ const fetchAwards = async () => {
 
 const fetchTournaments = async () => {
   try {
-    const { data } = await $api('/tournaments?limit=50')
+    const { data } = await $api('/events?limit=50')
     tournaments.value = data?.tournaments || []
   } catch (e) {
     console.error('Failed to fetch tournaments:', e)

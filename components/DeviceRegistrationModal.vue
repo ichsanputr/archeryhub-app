@@ -108,7 +108,7 @@ const form = ref({
 
 const fetchTournaments = async () => {
   try {
-    const res = await get('/tournaments?status=published,ongoing')
+    const res = await get('/events?status=published,ongoing')
     tournaments.value = res.tournaments || []
   } catch (e) {
     console.error('Failed to fetch tournaments', e)

@@ -31,7 +31,7 @@
           </p>
 
           <div class="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-            <a href="/dashboard/tournaments"
+            <a href="/dashboard/events"
               class="btn-primary flex gap-2 items-center px-6 py-2.5 sm:px-7 sm:py-3 justify-center text-sm sm:text-base">
               <Icon :ssr="true" icon="ph:trophy" class="w-4 h-4 sm:w-5 sm:h-5" />
               <span>Explore Tournaments</span>

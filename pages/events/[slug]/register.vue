@@ -9,9 +9,9 @@
             </div>
             <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <nav class="flex items-center gap-2 text-sm text-gray-400 mb-4">
-                    <NuxtLink to="/tournaments" class="hover:text-white transition-colors">Tournaments</NuxtLink>
+                    <NuxtLink to="/events" class="hover:text-white transition-colors">Tournaments</NuxtLink>
                     <span class="material-symbols-outlined text-base">chevron_right</span>
-                    <NuxtLink :to="`/tournaments/${slug}`" class="hover:text-white transition-colors">{{ tournament.name
+                    <NuxtLink :to="`/events/${slug}`" class="hover:text-white transition-colors">{{ tournament.name
                         }}</NuxtLink>
                     <span class="material-symbols-outlined text-base">chevron_right</span>
                     <span class="text-primary font-medium">Registrasi</span>
@@ -225,7 +225,7 @@ const handleSubmit = async () => {
         })
 
         // Redirect to payment page
-        router.push(`/tournaments/${slug}/payment?reg=${res.id}`)
+        router.push(`/events/${slug}/payment?reg=${res.id}`)
     } catch (error) {
         alert('Gagal melakukan pendaftaran. Silakan coba lagi.')
     } finally {

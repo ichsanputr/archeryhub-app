@@ -61,7 +61,7 @@ watch(() => route.path, () => {
 
 const navLinks = [
   { path: '/dashboard', icon: 'dashboard', label: 'Panel Utama' },
-  { path: '/dashboard/tournaments', icon: 'target', label: 'Turnamen' },
+  { path: '/dashboard/events', icon: 'target', label: 'Turnamen' },
   { path: '/dashboard/athletes', icon: 'groups', label: 'Atlet' },
   { path: '/dashboard/teams', icon: 'group_work', label: 'Tim' },
   { path: '/dashboard/live', icon: 'live_tv', label: 'Hasil Langsung', badge: '' },

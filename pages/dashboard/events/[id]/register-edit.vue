@@ -75,7 +75,7 @@
                                 class="px-8 py-3 bg-primary hover:bg-primary-hover text-navy font-black rounded-xl transition-all shadow-lg shadow-primary/20 grow">
                                 Simpan Perubahan
                             </button>
-                            <button @click="navigateTo(`/tournaments/1/register`)"
+                            <button @click="navigateTo(`/events/1/register`)"
                                 class="px-8 py-3 bg-gray-50 hover:bg-gray-100 text-text-sub/50 font-bold rounded-xl transition-all">
                                 Batal
                             </button>
@@ -112,7 +112,7 @@ const form = reactive({
 
 const saveChanges = () => {
     alert('Detail pendaftaran berhasil diperbarui!')
-    navigateTo(`/tournaments/1/register`)
+    navigateTo(`/events/1/register`)
 }
 </script>
 

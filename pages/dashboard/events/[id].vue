@@ -9,7 +9,7 @@
             </div>
             <div class="relative z-20 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16 pb-0">
                 <nav class="flex items-center gap-2 text-xs text-white/40 mb-6 uppercase tracking-widest font-bold">
-                    <NuxtLink to="/dashboard/tournaments" class="hover:text-white transition-colors">Tournaments
+                    <NuxtLink to="/dashboard/events" class="hover:text-white transition-colors">Tournaments
                     </NuxtLink>
                     <span class="material-symbols-outlined text-sm">chevron_right</span>
                     <span class="text-primary">Indonesian Open 2024</span>
@@ -134,15 +134,15 @@ const route = useRoute()
 const tId = route.params.id || '1'
 
 const tabs = [
-    { id: 'overview', name: 'Ringkasan', path: `/dashboard/tournaments/${tId}` },
-    { id: 'timeline', name: 'Jadwal Pertandingan', path: `/dashboard/tournaments/${tId}/timeline` },
-    { id: 'participants', name: 'Daftar Atlet', path: `/dashboard/tournaments/${tId}/participants` },
-    { id: 'results', name: 'Hasil Live', path: `/dashboard/tournaments/${tId}/results` },
-    { id: 'venue', name: 'Informasi Venue', path: `/dashboard/tournaments/${tId}/venue` }
+    { id: 'overview', name: 'Ringkasan', path: `/dashboard/events/${tId}` },
+    { id: 'timeline', name: 'Jadwal Pertandingan', path: `/dashboard/events/${tId}/timeline` },
+    { id: 'participants', name: 'Daftar Atlet', path: `/dashboard/events/${tId}/participants` },
+    { id: 'results', name: 'Hasil Live', path: `/dashboard/events/${tId}/results` },
+    { id: 'venue', name: 'Informasi Venue', path: `/dashboard/events/${tId}/venue` }
 ]
 
 const isTabActive = (tab) => {
-    if (tab.id === 'overview' && route.path === `/dashboard/tournaments/${tId}`) return true
+    if (tab.id === 'overview' && route.path === `/dashboard/events/${tId}`) return true
     return route.path === tab.path
 }
 </script>

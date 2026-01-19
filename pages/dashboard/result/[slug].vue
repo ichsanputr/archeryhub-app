@@ -479,7 +479,7 @@ useHead({
               You haven't submitted any solutions for this problem. Start coding to see your results here!
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-              <a :href="`/tournaments`">
+              <a :href="`/events`">
                 <button
                   class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
                   <Icon :ssr="true" icon="ph:trophy" class="w-4 h-4" />

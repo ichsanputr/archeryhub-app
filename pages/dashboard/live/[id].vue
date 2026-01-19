@@ -171,7 +171,7 @@ let timerInterval = null
 
 const fetchRankings = async () => {
   try {
-    const res = await get(`/tournaments/${tournamentID}/rankings`)
+    const res = await get(`/events/${tournamentID}/rankings`)
     if (res && res.rankings) {
       // Map API ranking to entries with trend if possible
       leaderboard.value = res.rankings.map(r => ({
@@ -193,7 +193,7 @@ const fetchRankings = async () => {
 
 const fetchTournamentDetails = async () => {
   try {
-    const res = await get(`/tournaments/${tournamentID}`)
+    const res = await get(`/events/${tournamentID}`)
     if (res) {
       tournamentName.value = res.name
     }

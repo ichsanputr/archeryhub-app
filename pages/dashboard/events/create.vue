@@ -6,7 +6,7 @@
         <NuxtLink to="/dashboard" class="text-gray-500 hover:text-primary-hover text-sm font-medium transition-colors">
           Dashboard</NuxtLink>
         <span class="material-symbols-outlined text-gray-300 text-sm">chevron_right</span>
-        <NuxtLink to="/dashboard/tournaments"
+        <NuxtLink to="/dashboard/events"
           class="text-gray-500 hover:text-primary-hover text-sm font-medium transition-colors">Events</NuxtLink>
         <span class="material-symbols-outlined text-gray-300 text-sm">chevron_right</span>
         <span class="text-navy text-sm font-bold">Buat Baru</span>
@@ -184,7 +184,7 @@
             <span class="material-symbols-outlined">arrow_back</span>
             <span>Kembali</span>
           </button>
-          <NuxtLink v-else to="/dashboard/tournaments"
+          <NuxtLink v-else to="/dashboard/events"
             class="w-full md:w-auto h-12 px-6 rounded-lg border border-gray-300 text-gray-600 font-bold hover:bg-gray-50 hover:text-navy transition-colors flex items-center justify-center">
             Batal
           </NuxtLink>
@@ -206,6 +206,10 @@
 </template>
 
 <script setup>
+import TiptapEditor from '~/components/common/TiptapEditor.vue'
+import FormSection from '~/components/common/FormSection.vue'
+import FormInput from '~/components/common/FormInput.vue'
+
 definePageMeta({
   layout: 'dashboard'
 })
@@ -294,9 +298,9 @@ const handleSubmit = async () => {
       registration_deadline: form.registrationDeadline
     }
 
-    const result = await post('/tournaments', payload)
+    const result = await post('/events', payload)
     if (result?.id) {
-      router.push(`/dashboard/tournaments/${result.id}/checkout`)
+      router.push(`/dashboard/events/${result.id}/checkout`)
     }
   } catch (error) {
     console.error('Failed to create tournament:', error)

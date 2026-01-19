@@ -7,7 +7,7 @@
                     class="text-gray-500 hover:text-primary-hover text-sm font-medium transition-colors">Dashboard
                 </NuxtLink>
                 <span class="material-symbols-outlined text-gray-300 text-sm">chevron_right</span>
-                <NuxtLink to="/dashboard/tournaments"
+                <NuxtLink to="/dashboard/events"
                     class="text-gray-500 hover:text-primary-hover text-sm font-medium transition-colors">Events
                 </NuxtLink>
                 <span class="material-symbols-outlined text-gray-300 text-sm">chevron_right</span>

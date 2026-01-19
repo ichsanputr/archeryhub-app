@@ -14,7 +14,7 @@
                     <nav class="hidden md:flex items-center gap-8">
                         <a href="/" class="text-gray-600 hover:text-navy font-medium text-sm transition-colors">
                             Beranda</a>
-                        <a href="/tournaments"
+                        <a href="/events"
                             class="text-navy font-bold text-sm relative after:content-[''] after:absolute after:w-full after:h-0.5 after:bg-primary after:-bottom-5 after:left-0">
                             Turnamen</a>
                         <a href="#"
@@ -39,7 +39,7 @@
                 <!-- Mobile Menu -->
                 <div v-if="mobileMenuOpen" class="md:hidden bg-white border-t border-gray-100 py-4 px-4 space-y-3">
                     <a href="/" class="block text-navy font-medium text-sm py-2">Beranda</a>
-                    <a href="/tournaments" class="block text-primary font-bold text-sm py-2">Turnamen</a>
+                    <a href="/events" class="block text-primary font-bold text-sm py-2">Turnamen</a>
                     <a href="#" class="block text-gray-600 font-medium text-sm py-2">Peringkat</a>
                     <a href="#" class="block text-gray-600 font-medium text-sm py-2">Berita</a>
                     <div class="pt-3 border-t border-gray-100 flex gap-3">
@@ -65,7 +65,7 @@
             <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-0">
                 <!-- Breadcrumb -->
                 <nav class="flex items-center gap-2 text-sm text-gray-400 mb-8">
-                    <NuxtLink to="/tournaments" class="hover:text-white transition-colors">Tournaments</NuxtLink>
+                    <NuxtLink to="/events" class="hover:text-white transition-colors">Tournaments</NuxtLink>
                     <span class="material-symbols-outlined text-base">chevron_right</span>
                     <span class="text-primary font-medium">{{ tournament.name }}</span>
                 </nav>
@@ -102,7 +102,7 @@
                             </div>
                         </div>
                     </div>
-                    <NuxtLink :to="`/tournaments/${slug}/register`"
+                    <NuxtLink :to="`/events/${slug}/register`"
                         class="h-10 px-5 bg-primary hover:bg-primary-hover text-navy font-bold text-sm rounded-lg transition-colors flex items-center justify-center gap-2 shadow-md">
                         Daftar Sekarang
                         <span class="material-symbols-outlined text-lg">arrow_forward</span>
@@ -277,12 +277,12 @@
                                 <div class="bg-primary h-2 rounded-full" style="width: 77%"></div>
                             </div>
                         </div>
-                        <NuxtLink :to="`/tournaments/${slug}/register`"
+                        <NuxtLink :to="`/events/${slug}/register`"
                             class="w-full block py-4 bg-primary hover:bg-primary-hover text-navy font-bold rounded-xl transition-colors shadow-md text-center">
                             Daftar Sekarang
                         </NuxtLink>
                         <p class="text-center text-xs text-gray-400 mt-3">Sudah terdaftar? <NuxtLink
-                                class="text-navy font-bold hover:underline" :to="`/dashboard/tournaments`">Cek status
+                                class="text-navy font-bold hover:underline" :to="`/dashboard/events`">Cek status
                             </NuxtLink>
                         </p>
                     </div>

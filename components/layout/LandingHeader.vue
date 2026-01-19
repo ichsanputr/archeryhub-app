@@ -17,8 +17,8 @@
                         :class="{ 'text-navy font-bold': isActive('/') }">
                         Beranda
                     </a>
-                    <a href="/tournaments" class="text-gray-600 hover:text-navy font-medium text-sm transition-colors"
-                        :class="{ 'text-navy font-bold': isActive('/tournaments') }">
+                    <a href="/events" class="text-gray-600 hover:text-navy font-medium text-sm transition-colors"
+                        :class="{ 'text-navy font-bold': isActive('/events') }">
                         Turnamen
                     </a>
                     <a href="/berita" class="text-gray-600 hover:text-navy font-medium text-sm transition-colors"
@@ -51,8 +51,8 @@
             <div v-if="mobileMenuOpen" class="md:hidden bg-white border-t border-gray-100 py-4 px-4 space-y-3">
                 <a href="/" class="block text-gray-600 font-medium text-sm py-2"
                     :class="{ 'text-navy font-bold': isActive('/') }">Beranda</a>
-                <a href="/tournaments" class="block text-gray-600 font-medium text-sm py-2"
-                    :class="{ 'text-primary font-bold': isActive('/tournaments') }">Turnamen</a>
+                <a href="/events" class="block text-gray-600 font-medium text-sm py-2"
+                    :class="{ 'text-primary font-bold': isActive('/events') }">Turnamen</a>
                 <a href="/berita" class="block text-gray-600 font-medium text-sm py-2"
                     :class="{ 'text-primary font-bold': isActive('/berita') }">Berita</a>
                 <a href="/about" class="block text-gray-600 font-medium text-sm py-2"

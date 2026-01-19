@@ -4,7 +4,7 @@
     <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
       <div>
         <div class="flex items-center gap-2 text-sm text-gray-500 mb-2">
-          <NuxtLink to="/dashboard/tournaments" class="hover:text-navy cursor-pointer font-medium">Events</NuxtLink>
+          <NuxtLink to="/dashboard/events" class="hover:text-navy cursor-pointer font-medium">Events</NuxtLink>
           <span class="material-symbols-outlined text-[12px]">chevron_right</span>
           <span class="text-navy font-bold">Manajemen Atlet</span>
         </div>

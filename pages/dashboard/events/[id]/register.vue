@@ -149,7 +149,7 @@ const nextStep = () => {
 
 const submitRegistration = () => {
     alert('Pendaftaran berhasil! Mengalihkan ke halaman pembayaran...')
-    navigateTo(`/tournaments/1/index`)
+    navigateTo(`/events/1/index`)
 }
 </script>
 

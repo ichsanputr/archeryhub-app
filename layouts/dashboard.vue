@@ -26,7 +26,7 @@
                     class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group"
                     :class="route.path === item.path ? 'bg-primary text-navy shadow-lg shadow-primary/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'">
                     <span class="material-symbols-outlined group-hover:scale-110 transition-transform">{{ item.icon
-                        }}</span>
+                    }}</span>
                     <span v-if="!isSidebarCollapsed" class="text-sm font-bold whitespace-nowrap">{{ item.label }}</span>
                 </NuxtLink>
 
@@ -39,7 +39,7 @@
                     class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group"
                     :class="route.path.startsWith(item.path) && item.path !== '/' ? 'bg-primary text-navy shadow-lg shadow-primary/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'">
                     <span class="material-symbols-outlined group-hover:scale-110 transition-transform">{{ item.icon
-                        }}</span>
+                    }}</span>
                     <span v-if="!isSidebarCollapsed" class="text-sm font-bold whitespace-nowrap">{{ item.label }}</span>
                 </NuxtLink>
             </nav>
@@ -118,6 +118,8 @@
 </template>
 
 <script setup>
+import AppDialog from '~/components/common/AppDialog.vue'
+
 const route = useRoute()
 const { user, logout } = useAuth()
 const isSidebarCollapsed = ref(false)

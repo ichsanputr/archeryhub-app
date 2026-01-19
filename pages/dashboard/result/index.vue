@@ -350,7 +350,7 @@ useHead({
               </div>
 
               <div class="flex flex-col gap-3 w-full">
-                <a href="/tournaments" class="w-full">
+                <a href="/events" class="w-full">
                   <button
                     class="flex items-center justify-center gap-2 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition-colors w-full">
                     <Icon :ssr="true" icon="ph:trophy" class="w-4 h-4" />

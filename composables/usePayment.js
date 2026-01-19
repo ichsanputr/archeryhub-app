@@ -15,7 +15,7 @@ export const usePayment = () => {
 
     const registerTournament = async (tournamentId, payload) => {
         try {
-            const data = await $fetch(`${apiBaseUrl}/tournaments/${tournamentId}/register`, {
+            const data = await $fetch(`${apiBaseUrl}/events/${tournamentId}/register`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${auth.token.value}`

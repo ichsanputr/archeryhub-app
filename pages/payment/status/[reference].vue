@@ -99,7 +99,7 @@
 
             <div v-else class="text-center py-20">
                 <h2 class="text-xl font-bold text-navy mb-4">Transaksi tidak ditemukan</h2>
-                <NuxtLink to="/tournaments" class="text-primary font-bold hover:underline">Kembali ke Turnamen
+                <NuxtLink to="/events" class="text-primary font-bold hover:underline">Kembali ke Turnamen
                 </NuxtLink>
             </div>
         </div>

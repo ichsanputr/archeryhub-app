@@ -129,13 +129,13 @@ const fetchDevices = async () => {
   loading.value = true
   try {
     // For now get across all tournaments or implement specific selector
-    const res = await get('/tournaments')
+    const res = await get('/events')
     const allDevices = []
 
     if (res && res.tournaments) {
       for (const t of res.tournaments) {
         try {
-          const dRes = await get(`/tournaments/${t.id}/devices`)
+          const dRes = await get(`/events/${t.id}/devices`)
           if (dRes && dRes.devices) {
             allDevices.push(...dRes.devices)
           }

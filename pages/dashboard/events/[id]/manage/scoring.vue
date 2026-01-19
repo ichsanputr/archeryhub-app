@@ -4,7 +4,7 @@
     <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
       <div>
         <div class="flex items-center gap-2 text-sm text-gray-500 mb-2 font-medium">
-          <NuxtLink to="/dashboard/tournaments"
+          <NuxtLink to="/dashboard/events"
             class="hover:text-primary-hover transition-colors flex items-center gap-1">
             <span class="material-symbols-outlined text-[16px]">arrow_back</span>
             Kembali ke Events

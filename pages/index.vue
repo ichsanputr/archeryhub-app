@@ -20,7 +20,7 @@
                     <div class="hidden md:flex items-center gap-8">
                         <NuxtLink to="/" class="text-sm font-medium transition-all duration-300 hover:text-primary"
                             :class="isScrolled ? 'text-navy' : 'text-white/80'">Beranda</NuxtLink>
-                        <NuxtLink to="/tournaments"
+                        <NuxtLink to="/events"
                             class="text-sm font-medium transition-all duration-300 hover:text-primary"
                             :class="isScrolled ? 'text-navy' : 'text-white/80'">Turnamen</NuxtLink>
                         <NuxtLink to="#" class="text-sm font-medium transition-all duration-300 hover:text-primary"
@@ -53,7 +53,7 @@
             <!-- Mobile Menu -->
             <div v-if="mobileMenuOpen" class="md:hidden bg-white border-b border-border-subtle p-4 space-y-4">
                 <NuxtLink to="/" class="block text-navy text-sm font-medium">Beranda</NuxtLink>
-                <NuxtLink to="/tournaments" class="block text-navy text-sm font-medium">Turnamen</NuxtLink>
+                <NuxtLink to="/events" class="block text-navy text-sm font-medium">Turnamen</NuxtLink>
                 <NuxtLink to="#" class="block text-navy text-sm font-medium">Skor</NuxtLink>
                 <NuxtLink to="#" class="block text-navy text-sm font-medium">Klub</NuxtLink>
                 <NuxtLink to="/about" class="block text-navy text-sm font-medium">Tentang</NuxtLink>
@@ -123,7 +123,7 @@
                                 <p class="text-text-sub text-sm mt-1">Daftar kompetisi resmi terdekat yang dibuka untuk
                                     pendaftaran.</p>
                             </div>
-                            <NuxtLink to="/tournaments"
+                            <NuxtLink to="/events"
                                 class="hidden sm:flex items-center gap-1 text-navy text-sm font-semibold hover:text-primary-hover transition-colors group">
                                 Lihat Semua
                                 <span
@@ -276,7 +276,7 @@
                         <span class="w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
                         Event Live Saat Ini
                     </h2>
-                    <NuxtLink to="/tournaments"
+                    <NuxtLink to="/events"
                         class="text-navy hover:text-primary font-bold text-sm flex items-center gap-1 group">
                         Lihat Jadwal <span
                             class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>

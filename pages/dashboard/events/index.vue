@@ -6,7 +6,7 @@
         <h1 class="text-2xl md:text-3xl font-black text-navy tracking-tight">Daftar Event</h1>
         <p class="text-text-secondary text-sm font-medium mt-1">Kelola kompetisi dan pantau progres turnamen Anda.</p>
       </div>
-      <NuxtLink to="/dashboard/tournaments/create"
+      <NuxtLink to="/dashboard/events/create"
         class="h-11 px-5 rounded-lg bg-primary text-navy font-bold hover:bg-primary-hover shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 whitespace-nowrap">
         <span class="material-symbols-outlined text-[20px]">add</span>
         <span>Buat Event Baru</span>
@@ -87,11 +87,11 @@
                 </span>
               </td>
               <td class="px-6 py-4 text-right">
-                <NuxtLink v-if="event.status === 'ongoing'" :to="`/dashboard/tournaments/${event.id}/manage`"
+                <NuxtLink v-if="event.status === 'ongoing'" :to="`/dashboard/events/${event.id}/manage`"
                   class="text-sm font-semibold text-primary-hover hover:text-navy transition-colors px-3 py-1.5 rounded-md hover:bg-primary/10">
                   Kelola
                 </NuxtLink>
-                <NuxtLink v-else :to="`/dashboard/tournaments/${event.id}`"
+                <NuxtLink v-else :to="`/dashboard/events/${event.id}`"
                   class="text-sm font-semibold text-gray-500 hover:text-navy transition-colors px-3 py-1.5 rounded-md hover:bg-gray-100">
                   Lihat
                 </NuxtLink>

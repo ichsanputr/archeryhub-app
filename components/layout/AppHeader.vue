@@ -86,12 +86,12 @@ const pageTitle = computed(() => {
 
 const showAddButton = computed(() => {
   // Show add button on specific routes
-  const addRoutes = ['/tournaments', '/athletes', '/devices']
+  const addRoutes = ['/events', '/athletes', '/devices']
   return addRoutes.some(r => route.path.startsWith(r))
 })
 
 const addButtonText = computed(() => {
-  if (route.path.startsWith('/tournaments')) return 'Turnamen Baru'
+  if (route.path.startsWith('/events')) return 'Turnamen Baru'
   if (route.path.startsWith('/athletes')) return 'Atlet Baru'
   if (route.path.startsWith('/devices')) return 'Tambah Perangkat'
   return 'Tambah Baru'
@@ -107,8 +107,8 @@ const handleSearch = () => {
 const showDeviceModal = useState('show-device-modal', () => false)
 
 const handleAdd = () => {
-  if (route.path.startsWith('/tournaments')) {
-    router.push('/tournaments/create')
+  if (route.path.startsWith('/events')) {
+    router.push('/events/create')
   } else if (route.path.startsWith('/athletes')) {
     router.push('/athletes/create')
   } else if (route.path.startsWith('/devices')) {

@@ -5,7 +5,7 @@
       <div class="max-w-7xl mx-auto flex items-center justify-between">
         <div>
           <nav class="flex items-center gap-2 text-sm text-[#ccc38e] mb-1">
-            <NuxtLink to="/tournaments" class="hover:text-white">Tournaments</NuxtLink>
+            <NuxtLink to="/events" class="hover:text-white">Tournaments</NuxtLink>
             <span class="material-symbols-outlined text-sm">chevron_right</span>
             <span class="text-white">Finals</span>
           </nav>

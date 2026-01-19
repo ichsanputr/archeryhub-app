@@ -14,7 +14,7 @@
                     <nav class="hidden md:flex items-center gap-8">
                         <NuxtLink to="/" class="text-gray-600 hover:text-navy font-medium text-sm transition-colors">
                             Home</NuxtLink>
-                        <NuxtLink to="/tournaments"
+                        <NuxtLink to="/events"
                             class="text-navy font-bold text-sm relative after:content-[''] after:absolute after:w-full after:h-0.5 after:bg-primary after:-bottom-5 after:left-0">
                             Tournaments</NuxtLink>
                         <a href="#"
@@ -69,7 +69,7 @@
                         </div>
                     </div>
                     <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
-                        <NuxtLink to="/tournaments/indonesian-open-2024"
+                        <NuxtLink to="/events/indonesian-open-2024"
                             class="flex-1 sm:flex-none h-12 px-8 bg-primary hover:bg-primary-hover text-navy font-bold rounded-lg transition-colors flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(183,251,35,0.3)]">
                             Register Now
                             <span class="material-symbols-outlined text-lg">arrow_forward</span>
@@ -217,7 +217,7 @@
                     <!-- Grid -->
                     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                         <NuxtLink v-for="tournament in filteredTournaments" :key="tournament.slug"
-                            :to="`/tournaments/${tournament.slug}`"
+                            :to="`/events/${tournament.slug}`"
                             class="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:border-primary/50 transition-all duration-300 flex flex-col h-full"
                             :class="tournament.status === 'finished' ? 'opacity-80 grayscale hover:opacity-100 hover:grayscale-0' : ''">
                             <div class="relative h-48 overflow-hidden">

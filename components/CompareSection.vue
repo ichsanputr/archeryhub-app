@@ -73,7 +73,7 @@
             </div>
 
             <!-- CTA Button -->
-            <a href="/dashboard/tournaments"
+            <a href="/dashboard/events"
               class="block w-full py-3 px-4 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-semibold text-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
               Go Pro for Free
               <Icon :ssr="true" icon="ph:arrow-right-bold" class="inline-block w-4 h-4 ml-1" />

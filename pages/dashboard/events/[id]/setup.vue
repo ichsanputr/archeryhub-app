@@ -4,11 +4,11 @@
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
       <div>
         <div class="flex flex-wrap gap-2 mb-2">
-          <NuxtLink to="/dashboard/tournaments" class="text-brand-gold text-sm font-medium hover:text-primary">
+          <NuxtLink to="/dashboard/events" class="text-brand-gold text-sm font-medium hover:text-primary">
             Tournaments
           </NuxtLink>
           <span class="text-gray-600 text-sm font-medium">/</span>
-          <NuxtLink :to="`/dashboard/tournaments/${tournamentId}`"
+          <NuxtLink :to="`/dashboard/events/${tournamentId}`"
             class="text-brand-gold text-sm font-medium hover:text-primary">
             {{ tournamentName }}
           </NuxtLink>
@@ -203,7 +203,7 @@
               Save & Continue
               <span class="material-symbols-outlined">arrow_forward</span>
             </button>
-            <NuxtLink :to="`/dashboard/tournaments/${tournamentId}/create`" class="btn-secondary py-3 text-center">
+            <NuxtLink :to="`/dashboard/events/${tournamentId}/create`" class="btn-secondary py-3 text-center">
               Back to Details
             </NuxtLink>
           </div>

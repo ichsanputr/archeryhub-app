@@ -40,7 +40,7 @@
               Navigasi
             </h4>
             <div class="flex flex-col gap-3">
-              <a href="/tournaments"
+              <a href="/events"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 Turnamen
               </a>
