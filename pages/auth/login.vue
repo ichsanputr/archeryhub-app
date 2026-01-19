@@ -15,7 +15,7 @@
                     <div class="w-12 h-12 flex items-center justify-center transition-all duration-300">
                         <img src="/logo.png" alt="Logo" class="w-12 h-12 object-contain" />
                     </div>
-                    <span class="text-white text-3xl font-bold tracking-tight font-display">Archeryhub<span
+                    <span class="text-white text-3xl font-black tracking-tight font-display">Archeryhub<span
                             class="text-logo-id">.id</span></span>
                 </div>
                 <h1 class="text-white text-5xl font-black leading-tight tracking-tight mb-4 font-display">
@@ -46,6 +46,16 @@
         <div
             class="relative z-10 w-full lg:w-1/2 bg-white/95 backdrop-blur-sm lg:bg-white flex flex-col justify-center items-center p-6 sm:p-12 lg:p-24 overflow-y-auto h-full no-scrollbar">
             <div class="w-full max-w-sm space-y-8">
+                <div class="lg:hidden mb-8 text-center">
+                    <div class="inline-flex items-center gap-3">
+                        <div class="w-10 h-10 flex items-center justify-center">
+                            <img src="/logo.png" alt="Logo" class="w-10 h-10 object-contain" />
+                        </div>
+                        <span class="text-navy text-2xl font-black tracking-tight font-display">Archeryhub<span
+                                class="text-logo-id">.id</span></span>
+                    </div>
+                </div>
+
                 <div class="text-center sm:text-left">
                     <h2 class="text-3xl font-black text-slate-900 tracking-tight font-display">Wah, Masuk Lagi Yuk!</h2>
                     <p class="mt-2 text-slate-500 text-sm font-body">Masukin email sama password kamu buat lanjut ya.

@@ -7,8 +7,17 @@ export const useApi = () => {
    * @param {Object} options - Additional fetch options
    * @returns {Object} Fetch options with proper cookie handling
    */
+  const config = useRuntimeConfig()
+  const apiBaseUrl = config.public.apiBaseUrl
+
+  /**
+   * Creates fetch options that handle cookies correctly for both server and client
+   * @param {Object} options - Additional fetch options
+   * @returns {Object} Fetch options with proper cookie handling
+   */
   const createFetchOptions = (options = {}) => {
     const defaultOptions = {
+      baseURL: apiBaseUrl,
       headers: {
         'Content-Type': 'application/json',
         ...options.headers
@@ -21,7 +30,7 @@ export const useApi = () => {
         // Server-side: use cookies from request headers
         const event = useRequestEvent()
         const cookie = event?.node?.req?.headers?.cookie || ''
-        
+
         return {
           ...defaultOptions,
           headers: {
@@ -76,10 +85,10 @@ export const useApi = () => {
    * @returns {Promise} The API response
    */
   const post = async (url, body = null, options = {}) => {
-    return await apiCall(url, { 
-      method: 'POST', 
+    return await apiCall(url, {
+      method: 'POST',
       body,
-      ...options 
+      ...options
     })
   }
 
@@ -91,10 +100,10 @@ export const useApi = () => {
    * @returns {Promise} The API response
    */
   const put = async (url, body = null, options = {}) => {
-    return await apiCall(url, { 
-      method: 'PUT', 
+    return await apiCall(url, {
+      method: 'PUT',
       body,
-      ...options 
+      ...options
     })
   }
 

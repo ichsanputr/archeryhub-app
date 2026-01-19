@@ -6,7 +6,7 @@
 
 /* Logo .id color */
 .text-logo-id {
-    color: #4BE350;
+    color: #D9FF00;
 }
 
 /* Custom Scrollbar Styles */
@@ -78,26 +78,20 @@
 /* Page & Layout Transitions - Unified Smooth Fade + Scale */
 .page-enter-active,
 .layout-enter-active {
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    transition-delay: 0.1s;
-    /* Slight delay for enter to wait for leave to finish */
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .page-leave-active,
 .layout-leave-active {
-    transition: all 0.1s cubic-bezier(0.4, 0, 1, 1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 1, 1);
 }
 
 .page-enter-from,
 .layout-enter-from {
     opacity: 0;
-    transform: scale(0.98);
-    filter: blur(4px);
 }
 
 .page-leave-to,
 .layout-leave-to {
     opacity: 0;
-    transform: scale(1.02);
-    filter: blur(4px);
 }

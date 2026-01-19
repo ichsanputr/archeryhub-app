@@ -7,7 +7,7 @@
                     <div class="w-8 h-8 bg-navy rounded-lg flex items-center justify-center">
                         <img src="/logo.png" alt="Logo" class="w-5 h-5 object-contain" />
                     </div>
-                    <span class="text-navy text-xl font-bold tracking-tight">Archeryhub<span
+                    <span class="text-navy text-xl font-black tracking-tight font-display">Archeryhub<span
                             class="text-logo-id">.id</span></span>
                 </NuxtLink>
 

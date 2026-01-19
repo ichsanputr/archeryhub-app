@@ -13,7 +13,7 @@
                             :class="isScrolled ? 'bg-navy' : 'bg-primary'">
                             <img src="/logo.png" alt="Logo" class="w-7 h-7 object-contain" />
                         </div>
-                        <span class="text-xl font-bold tracking-tight font-display transition-colors duration-300"
+                        <span class="text-xl font-black tracking-tight font-display transition-colors duration-300"
                             :class="isScrolled ? 'text-navy' : 'text-white'">Archeryhub<span
                                 class="text-logo-id">.id</span></span>
                     </div>

@@ -162,18 +162,61 @@
             </div>
           </FormSection>
 
-          <!-- Platform Fee Notice -->
-          <div class="bg-amber-50 border border-amber-200 rounded-xl p-6">
-            <div class="flex gap-4">
-              <span class="material-symbols-outlined text-amber-500 text-2xl shrink-0">info</span>
-              <div>
-                <h4 class="font-bold text-amber-800 mb-1">Biaya Platform</h4>
-                <p class="text-amber-700 text-sm">Archeryhub mengenakan biaya platform sebesar <strong>Rp
-                    50.000</strong> untuk setiap event yang dipublikasikan. Pembayaran dapat dilakukan setelah event
-                  dibuat.</p>
+          <!-- Payment Channel Selection -->
+          <FormSection icon="payments" title="Pilih Metode Pembayaran Untuk Aktivasi">
+            <p class="text-text-secondary text-sm mb-6">
+              Archeryhub mengenakan biaya platform sebesar <strong>Rp 50.000</strong> untuk aktivasi event.
+              Pilih metode pembayaran sekarang untuk aktivasi instan.
+            </p>
+
+            <div v-if="isLoadingChannels" class="flex items-center justify-center py-8">
+              <span class="material-symbols-outlined animate-spin text-3xl text-primary">sync</span>
+            </div>
+
+            <div v-else class="space-y-6">
+              <!-- VA Group -->
+              <div v-if="channelGroups.va?.length">
+                <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Virtual Account</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <button v-for="channel in channelGroups.va" :key="channel.code" type="button"
+                    @click="selectedMethod = channel.code"
+                    :class="selectedMethod === channel.code ? 'border-primary bg-primary/5 ring-1 ring-primary' : 'border-gray-100 hover:border-gray-200'"
+                    class="p-4 rounded-xl border-2 transition-all flex flex-col items-center gap-2">
+                    <img :src="channel.icon_url" :alt="channel.name" class="h-6 object-contain" />
+                    <span class="text-[10px] font-bold text-navy text-center leading-tight">{{ channel.name }}</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- E-Wallet Group -->
+              <div v-if="channelGroups.ewallet?.length">
+                <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">E-Wallet</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <button v-for="channel in channelGroups.ewallet" :key="channel.code" type="button"
+                    @click="selectedMethod = channel.code"
+                    :class="selectedMethod === channel.code ? 'border-primary bg-primary/5 ring-1 ring-primary' : 'border-gray-100 hover:border-gray-200'"
+                    class="p-4 rounded-xl border-2 transition-all flex flex-col items-center gap-2">
+                    <img :src="channel.icon_url" :alt="channel.name" class="h-6 object-contain" />
+                    <span class="text-[10px] font-bold text-navy text-center leading-tight">{{ channel.name }}</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Store Group -->
+              <div v-if="channelGroups.store?.length">
+                <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Retail Store</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <button v-for="channel in channelGroups.store" :key="channel.code" type="button"
+                    @click="selectedMethod = channel.code"
+                    :class="selectedMethod === channel.code ? 'border-primary bg-primary/5 ring-1 ring-primary' : 'border-gray-100 hover:border-gray-200'"
+                    class="p-4 rounded-xl border-2 transition-all flex flex-col items-center gap-2">
+                    <img :src="channel.icon_url" :alt="channel.name" class="h-6 object-contain" />
+                    <span class="text-[10px] font-bold text-navy text-center leading-tight">{{ channel.name }}</span>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
+          </FormSection>
         </div>
 
         <!-- Action Buttons -->
@@ -194,14 +237,62 @@
             <span>Selanjutnya: {{ stepTitles[currentStep] }}</span>
             <span class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
           </button>
-          <button v-else type="submit" :disabled="isSubmitting"
+          <button v-else type="submit" :disabled="isSubmitting || !selectedMethod"
             class="w-full md:w-auto h-12 px-8 rounded-lg bg-navy-dark text-white font-bold hover:bg-navy-light shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50">
             <span v-if="isSubmitting" class="material-symbols-outlined animate-spin">sync</span>
-            <span>{{ isSubmitting ? 'Memproses...' : 'Buat Event' }}</span>
+            <span>{{ isSubmitting ? 'Memproses...' : 'Buat Event & Bayar' }}</span>
           </button>
         </div>
       </form>
     </div>
+
+    <!-- Payment Instructions Dialog -->
+    <AppDialog v-model:show="showPaymentDialog" title="Instruksi Pembayaran" type="primary" icon="payments">
+      <div class="space-y-6">
+        <div class="text-center">
+          <p class="text-sm text-gray-500 mb-1">Total yang harus dibayar</p>
+          <p class="text-3xl font-black text-navy">Rp {{ paymentResult?.amount?.toLocaleString('id-ID') }}</p>
+        </div>
+
+        <div v-if="paymentResult?.pay_code" class="bg-gray-50 rounded-xl p-6 text-center border border-gray-100">
+          <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Kode Pembayaran / Virtual Account
+          </p>
+          <div class="flex items-center justify-center gap-3">
+            <span class="text-2xl font-black text-navy tracking-widest">{{ paymentResult.pay_code }}</span>
+            <button @click="copyToClipboard(paymentResult.pay_code)" class="text-primary hover:text-primary-hover">
+              <span class="material-symbols-outlined text-xl">content_copy</span>
+            </button>
+          </div>
+        </div>
+
+        <div v-if="paymentResult?.qr_url" class="flex flex-col items-center gap-4">
+          <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Scan QR Code</p>
+          <img :src="paymentResult.qr_url" alt="QR Code" class="w-48 h-48 rounded-xl border-4 border-white shadow-sm" />
+        </div>
+
+        <div class="space-y-4">
+          <div class="flex justify-between text-sm py-2 border-b border-gray-50">
+            <span class="text-gray-500">Event</span>
+            <span class="font-bold text-navy truncate ml-4">{{ form.name }}</span>
+          </div>
+          <div class="flex justify-between text-sm py-2 border-b border-gray-50">
+            <span class="text-gray-500">Metode</span>
+            <span class="font-bold text-navy">{{ paymentResult?.payment_name }}</span>
+          </div>
+          <div class="flex justify-between text-sm py-2">
+            <span class="text-gray-500">Berakhir Dalam</span>
+            <span class="font-bold text-amber-600">{{ formatExpiry(paymentResult?.expired_time) }}</span>
+          </div>
+        </div>
+
+        <div class="pt-4">
+          <button @click="finishCreation"
+            class="w-full h-12 rounded-xl bg-navy text-white font-bold hover:bg-navy-light transition-all">
+            Saya Sudah Bayar / Selesai
+          </button>
+        </div>
+      </div>
+    </AppDialog>
   </div>
 </template>
 
@@ -209,17 +300,23 @@
 import TiptapEditor from '~/components/common/TiptapEditor.vue'
 import FormSection from '~/components/common/FormSection.vue'
 import FormInput from '~/components/common/FormInput.vue'
+import AppDialog from '~/components/common/AppDialog.vue'
 
 definePageMeta({
   layout: 'dashboard'
 })
 
 const router = useRouter()
-const { post } = useApi()
+const { get, post } = useApi()
 
 const currentStep = ref(1)
 const totalSteps = 4
 const isSubmitting = ref(false)
+const isLoadingChannels = ref(true)
+const channels = ref([])
+const selectedMethod = ref(null)
+const showPaymentDialog = ref(false)
+const paymentResult = ref(null)
 
 const stepTitles = ['Info Dasar', 'Divisi', 'Pengaturan', 'Review']
 const stepDescriptions = [
@@ -262,6 +359,28 @@ const availableCategories = [
   { code: 'master60', name: 'Master 60+' },
 ]
 
+const channelGroups = computed(() => {
+  const groups = { va: [], ewallet: [], store: [] }
+  channels.value.forEach(ch => {
+    if (ch.group === 'Virtual Account') groups.va.push(ch)
+    else if (ch.group === 'E-Wallet') groups.ewallet.push(ch)
+    else if (ch.group === 'Convenience Store') groups.store.push(ch)
+  })
+  return groups
+})
+
+onMounted(async () => {
+  try {
+    const result = await get('/payment/channels')
+    console.log('Payment channels loaded:', result)
+    channels.value = result || []
+  } catch (error) {
+    console.error('Failed to load payment channels:', error)
+  } finally {
+    isLoadingChannels.value = false
+  }
+})
+
 const nextStep = () => {
   if (currentStep.value < totalSteps) {
     currentStep.value++
@@ -281,10 +400,25 @@ const formatDate = (dateStr) => {
   })
 }
 
+const formatExpiry = (timestamp) => {
+  if (!timestamp) return '-'
+  return new Date(timestamp * 1000).toLocaleString('id-ID')
+}
+
+const copyToClipboard = (text) => {
+  navigator.clipboard.writeText(text)
+  // TODO: Add toast notification
+}
+
+const finishCreation = () => {
+  router.push('/dashboard/events')
+}
+
 const handleSubmit = async () => {
   isSubmitting.value = true
   try {
     const payload = {
+      code: form.name.substring(0, 3).toUpperCase() + Math.random().toString(36).substring(2, 5).toUpperCase(),
       name: form.name,
       venue: form.venue,
       start_date: form.startDate,
@@ -295,12 +429,26 @@ const handleSubmit = async () => {
       status: form.status,
       divisions: form.divisions,
       categories: form.categories,
-      registration_deadline: form.registrationDeadline
+      registration_deadline: form.registrationDeadline,
+      type: 'Outdoor' // Default
     }
 
     const result = await post('/events', payload)
+
     if (result?.id) {
-      router.push(`/dashboard/events/${result.id}/checkout`)
+      // Create payment immediately
+      const paymentResponse = await post('/payment/create', {
+        event_id: result.id,
+        method: selectedMethod.value,
+        type: 'platform_fee'
+      })
+
+      if (paymentResponse) {
+        paymentResult.value = paymentResponse
+        showPaymentDialog.value = true
+      } else {
+        router.push('/dashboard/events')
+      }
     }
   } catch (error) {
     console.error('Failed to create tournament:', error)
