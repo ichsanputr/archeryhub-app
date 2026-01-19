@@ -9,7 +9,7 @@
       </div>
       <div>
         <h1 class="text-gray-900 dark:text-white text-base font-bold leading-none">Archeryhub.id</h1>
-        <p class="text-primary/80 text-xs font-medium mt-1">Command Center</p>
+        <p class="text-primary/80 text-xs font-medium mt-1">Pusat Komando</p>
       </div>
       <button class="md:hidden ml-auto text-gray-400" @click="isSidebarOpen = false">
         <span class="material-symbols-outlined">close</span>
@@ -40,7 +40,7 @@
         class="flex w-full items-center gap-2 justify-center rounded-lg h-10 px-4 bg-primary text-background-dark text-sm font-bold hover:bg-yellow-400 transition-colors"
         @click="handleLogout">
         <span class="material-symbols-outlined text-[20px]">logout</span>
-        <span>Log Out</span>
+        <span>Keluar</span>
       </button>
     </div>
   </aside>
@@ -60,16 +60,16 @@ watch(() => route.path, () => {
 })
 
 const navLinks = [
-  { path: '/dashboard', icon: 'dashboard', label: 'Dashboard' },
-  { path: '/dashboard/tournaments', icon: 'target', label: 'Tournaments' },
-  { path: '/dashboard/athletes', icon: 'groups', label: 'Athletes' },
-  { path: '/dashboard/teams', icon: 'group_work', label: 'Teams' },
-  { path: '/dashboard/live', icon: 'live_tv', label: 'Live Results', badge: '' },
-  { path: '/dashboard/awards', icon: 'workspace_premium', label: 'Awards' },
-  { path: '/dashboard/accreditation', icon: 'badge', label: 'Accreditation' },
-  { path: '/dashboard/print', icon: 'print', label: 'Print Center' },
-  { path: '/dashboard/devices', icon: 'devices', label: 'Devices' },
-  { path: '/dashboard/settings', icon: 'settings', label: 'Settings' },
+  { path: '/dashboard', icon: 'dashboard', label: 'Panel Utama' },
+  { path: '/dashboard/tournaments', icon: 'target', label: 'Turnamen' },
+  { path: '/dashboard/athletes', icon: 'groups', label: 'Atlet' },
+  { path: '/dashboard/teams', icon: 'group_work', label: 'Tim' },
+  { path: '/dashboard/live', icon: 'live_tv', label: 'Hasil Langsung', badge: '' },
+  { path: '/dashboard/awards', icon: 'workspace_premium', label: 'Penghargaan' },
+  { path: '/dashboard/accreditation', icon: 'badge', label: 'Akreditasi' },
+  { path: '/dashboard/print', icon: 'print', label: 'Pusat Cetak' },
+  { path: '/dashboard/devices', icon: 'devices', label: 'Perangkat' },
+  { path: '/dashboard/settings', icon: 'settings', label: 'Pengaturan' },
 ]
 
 const isActive = (path) => {

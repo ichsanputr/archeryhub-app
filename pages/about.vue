@@ -12,48 +12,48 @@
       <div class="text-center max-w-4xl mx-auto">
         <!-- Title -->
         <h1 class="text-2xl sm:text-3xl sm:text-4xl md:text-5xl font-extrabold mb-6">
-          <span class="text-gray-900">About</span>
+          <span class="text-gray-900">Tentang</span>
         </h1>
 
         <!-- Platform Description -->
         <div class="rounded-2xl border border-yellow-100 bg-white p-8 mb-12 text-left shadow-sm">
           <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-            Our Platform
+            Platform Kami
           </h2>
           <p class="text-lg leading-relaxed text-gray-600 mb-4">
-            Archeryhub.id is a comprehensive tournament management platform designed to help archery
-            organizations and clubs manage their competitions with ease. We believe
-            that efficient management and live engagement are key to a successful sporting event.
+            Archeryhub.id adalah platform manajemen turnamen komprehensif yang dirancang untuk membantu organisasi dan
+            klub panahan mengelola kompetisi mereka dengan mudah. Kami percaya bahwa manajemen yang efisien dan
+            keterlibatan langsung adalah kunci suksesnya sebuah acara olahraga.
           </p>
           <p class="text-lg leading-relaxed text-gray-600">
-            Our platform offers end-to-end solutions for archery tournaments, including registration,
-            athlete management, live scoring, and official result publishing. Whether you're running
-            a small club competition or a national championship, Archeryhub.id provides the
-            perfect tools for a professional experience.
+            Platform kami menawarkan solusi menyeluruh untuk turnamen panahan, termasuk pendaftaran,
+            manajemen atlet, skor langsung, dan publikasi hasil resmi. Baik Anda menjalankan
+            kompetisi klub kecil atau kejuaraan nasional, Archeryhub.id menyediakan
+            alat yang sempurna untuk pengalaman profesional.
           </p>
         </div>
 
         <!-- Personal Description -->
         <div class="rounded-2xl border border-yellow-100 bg-white p-8 text-left shadow-sm">
           <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-            About the Founder
+            Tentang Pendiri
           </h2>
           <p class="text-lg leading-relaxed text-gray-600 mb-4">
-            Hi! I'm Ichsan, the creator and developer behind Archeryhub.id. As an archery
-            enthusiast and software engineer, I've seen the need for more modern and
-            accessible tools to manage archery events and track athlete progress.
-            This passion inspired me to build a platform that simplifies tournament logistics.
+            Halo! Saya Ichsan, pencipta dan pengembang di balik Archeryhub.id. Sebagai penggemar
+            panahan dan insinyur perangkat lunak, saya melihat kebutuhan akan alat yang lebih modern
+            dan mudah diakses untuk mengelola acara panahan dan melacak kemajuan atlet.
+            Semangat inilah yang menginspirasi saya untuk membangun platform yang menyederhanakan logistik turnamen.
           </p>
           <p class="text-lg leading-relaxed text-gray-600 mb-4">
-            With years of experience in both software development and sports management,
-            I've designed Archeryhub.id to be intuitive for organizers and engaging for athletes.
-            Every feature is built with the goal of making archery competitions more
-            professional, transparent, and exciting for everyone involved.
+            Dengan pengalaman bertahun-tahun dalam pengembangan perangkat lunak dan manajemen olahraga,
+            saya merancang Archeryhub.id agar intuitif bagi penyelenggara dan menarik bagi atlet.
+            Setiap fitur dibangun dengan tujuan membuat kompetisi panahan menjadi lebih
+            profesional, transparan, dan menarik bagi semua orang yang terlibat.
           </p>
           <p class="text-lg leading-relaxed text-gray-600">
-            My goal is to support the archery community by providing world-class technology
-            that grows with your needs. Archeryhub.id is more than just a
-            management system—it's a partner in your tournament journey.
+            Tujuan saya adalah mendukung komunitas panahan dengan menyediakan teknologi kelas dunia
+            yang tumbuh sesuai kebutuhan Anda. Archeryhub.id lebih dari sekadar
+            sistem manajemen—ia adalah mitra dalam perjalanan turnamen Anda.
           </p>
         </div>
 
@@ -73,7 +73,7 @@ definePageMeta({
 // Set page meta
 const route = useRoute()
 useHead({
-  title: 'About - Archeryhub.id Tournament Manager',
+  title: 'Tentang - Archeryhub.id Pengelola Turnamen',
   meta: [
     {
       name: 'description',

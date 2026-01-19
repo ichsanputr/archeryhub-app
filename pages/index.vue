@@ -19,21 +19,21 @@
                     </div>
                     <div class="hidden md:flex items-center gap-8">
                         <NuxtLink to="/" class="text-sm font-medium transition-all duration-300 hover:text-primary"
-                            :class="isScrolled ? 'text-navy' : 'text-white/80'">Home</NuxtLink>
+                            :class="isScrolled ? 'text-navy' : 'text-white/80'">Beranda</NuxtLink>
                         <NuxtLink to="/tournaments"
                             class="text-sm font-medium transition-all duration-300 hover:text-primary"
-                            :class="isScrolled ? 'text-navy' : 'text-white/80'">Tournaments</NuxtLink>
+                            :class="isScrolled ? 'text-navy' : 'text-white/80'">Turnamen</NuxtLink>
                         <a class="text-sm font-medium transition-all duration-300 hover:text-primary"
-                            :class="isScrolled ? 'text-navy' : 'text-white/80'" href="#">Scoring</a>
+                            :class="isScrolled ? 'text-navy' : 'text-white/80'" href="#">Skor</a>
                         <a class="text-sm font-medium transition-all duration-300 hover:text-primary"
-                            :class="isScrolled ? 'text-navy' : 'text-white/80'" href="#">Clubs</a>
+                            :class="isScrolled ? 'text-navy' : 'text-white/80'" href="#">Klub</a>
                         <NuxtLink to="/about" class="text-sm font-medium transition-all duration-300 hover:text-primary"
-                            :class="isScrolled ? 'text-navy' : 'text-white/80'">About</NuxtLink>
+                            :class="isScrolled ? 'text-navy' : 'text-white/80'">Tentang</NuxtLink>
                     </div>
                     <div class="hidden md:flex">
                         <NuxtLink to="/auth/login"
                             class="bg-primary hover:bg-primary-hover text-navy text-sm font-bold px-6 py-2.5 rounded-lg transition-colors duration-200">
-                            Login / Register
+                            Masuk / Daftar
                         </NuxtLink>
                     </div>
                     <div class="flex md:hidden">
@@ -47,13 +47,13 @@
 
             <!-- Mobile Menu -->
             <div v-if="mobileMenuOpen" class="md:hidden bg-white border-b border-border-subtle p-4 space-y-4">
-                <NuxtLink to="/" class="block text-navy text-sm font-medium">Home</NuxtLink>
-                <NuxtLink to="/tournaments" class="block text-navy text-sm font-medium">Tournaments</NuxtLink>
-                <a href="#" class="block text-navy text-sm font-medium">Scoring</a>
-                <a href="#" class="block text-navy text-sm font-medium">Clubs</a>
-                <NuxtLink to="/about" class="block text-navy text-sm font-medium">About</NuxtLink>
+                <NuxtLink to="/" class="block text-navy text-sm font-medium">Beranda</NuxtLink>
+                <NuxtLink to="/tournaments" class="block text-navy text-sm font-medium">Turnamen</NuxtLink>
+                <a href="#" class="block text-navy text-sm font-medium">Skor</a>
+                <a href="#" class="block text-navy text-sm font-medium">Klub</a>
+                <NuxtLink to="/about" class="block text-navy text-sm font-medium">Tentang</NuxtLink>
                 <NuxtLink to="/auth/login" class="block bg-primary text-navy text-center font-bold py-2 rounded-lg">
-                    Login / Register</NuxtLink>
+                    Masuk / Daftar</NuxtLink>
             </div>
         </nav>
 
@@ -425,10 +425,10 @@ const upcomingEvents = [
         month: 'Nov',
         day: '20',
         location: 'GBK Archery Field, Jakarta',
-        categories: 'All Divisions',
+        categories: 'Semua Divisi',
         tags: [
             { label: 'Grade A', class: 'bg-red-100 text-red-700' },
-            { label: 'International', class: 'bg-blue-100 text-blue-700' }
+            { label: 'Internasional', class: 'bg-blue-100 text-blue-700' }
         ]
     },
     {
@@ -449,7 +449,7 @@ const upcomingEvents = [
         categories: 'Recurve & Compound',
         tags: [
             { label: 'Open', class: 'bg-blue-100 text-blue-700' },
-            { label: 'International', class: 'bg-purple-100 text-purple-700' }
+            { label: 'Internasional', class: 'bg-purple-100 text-purple-700' }
         ]
     },
     {
@@ -477,9 +477,9 @@ const upcomingEvents = [
         month: 'Jan',
         day: '10',
         location: 'Balikpapan Sports Center',
-        categories: 'All Divisions',
+        categories: 'Semua Divisi',
         tags: [
-            { label: 'Club', class: 'bg-teal-100 text-teal-700' }
+            { label: 'Klub', class: 'bg-teal-100 text-teal-700' }
         ]
     },
     {
@@ -487,9 +487,9 @@ const upcomingEvents = [
         month: 'Feb',
         day: '15',
         location: 'Karebosi Field',
-        categories: 'Recurve Only',
+        categories: 'Hanya Recurve',
         tags: [
-            { label: 'Provincial', class: 'bg-yellow-100 text-yellow-700' }
+            { label: 'Provinsi', class: 'bg-yellow-100 text-yellow-700' }
         ]
     }
 ]
@@ -497,7 +497,7 @@ const upcomingEvents = [
 const liveEvents = [
     {
         name: 'Surabaya Archery Cup 2024',
-        type: 'National Series',
+        type: 'Seri Nasional',
         location: 'KONI Jatim Field, Surabaya',
         image:
             'https://lh3.googleusercontent.com/aida-public/AB6AXuAJXWL-Z7f7fP24_IyBjI_e-q_jYcMbzRtaKiOpKP8TxgqwSxRrCqNcE-GXJXbiCEv6rlwlNJzTmbbgAdQFWHH4Jk_Fw-aslTiT3Qezy8bbmGRG0WoRA-yD8tykZuxYObytzJ6Yf7yNL8poFU6vWlyEuFjbHcIzwfoLAMru-bfdw4GXezmv71SwRPYw_-Ct6ZP3f6AqglpvBIhCSrp9g13uTQpj69_-hzZqp1wSqJJ-9PdZqp0CYWgFWsajdRos9QmU7eeyuFhFPH0'
@@ -511,7 +511,7 @@ const liveEvents = [
     },
     {
         name: 'Borneo Youth Qualifier',
-        type: 'Club Series',
+        type: 'Seri Klub',
         location: 'Balikpapan Sports Center',
         image:
             'https://lh3.googleusercontent.com/aida-public/AB6AXuDQStrrmLQN-DtqrTO5KWNF3EvwOXSw-raemHMh-lxMUVAtHiqxHNMqzQoV2l1ReELlRe_dVIAkp1P8Bc8ekRqbhOn-axS6izTQXKw3d70pq-CpZHWUZoS58mGL70U_Bk96ViNRcaOaGr5wIkPrtg8w46mzrAtHgWRH6VKAUalmkrFJ8qjDltkmd-nHJs4aUfrBBphZSnivwOkhoIjzG8dpjeCtp_UOZTOnovXJP7IAWJEeWqw7Uh7-mlLVkorgyeOsSRun6CmO_8I'

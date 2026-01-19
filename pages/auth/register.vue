@@ -416,6 +416,8 @@ const form = ref({
     }
 })
 
+const { register } = useAuth()
+
 const handleRegister = async () => {
     if (form.value.password !== form.value.confirmPassword) {
         error.value = 'Kata sandi tidak cocok'
@@ -426,19 +428,21 @@ const handleRegister = async () => {
     error.value = null
 
     try {
+        const typeData = form.value[form.value.userType]
         const payload = {
+            username: form.value.email.split('@')[0] + Math.floor(Math.random() * 1000), // Generate a username if none provided
             email: form.value.email,
             password: form.value.password,
-            userType: form.value.userType,
-            ...form.value[form.value.userType]
+            user_type: form.value.userType,
+            full_name: typeData.fullName || typeData.name || '',
+            phone: typeData.phone || typeData.contactPersonPhone || typeData.headCoachPhone || ''
         }
 
         console.log('Registering:', payload)
-        // TODO: Call API to register user
-        await new Promise(resolve => setTimeout(resolve, 1500))
+        await register(payload)
 
-        // Redirect to login
-        window.location.href = '/auth/login'
+        // Redirect to dashboard on success (useAuth already sets user state)
+        window.location.href = '/dashboard'
     } catch (err) {
         console.error('Registration failed:', err)
         error.value = err.message || 'Pendaftaran gagal. Silakan coba lagi.'

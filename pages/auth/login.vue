@@ -185,7 +185,7 @@ const handleEmailAuth = async () => {
         router.push(redirect)
     } catch (err) {
         console.error('Auth failed:', err)
-        error.value = err.message || 'Invalid email or password'
+        error.value = err.message || 'Email atau kata sandi salah'
     } finally {
         isLoading.value = false
     }
@@ -199,7 +199,7 @@ const handleGoogleLogin = async () => {
         await login()
     } catch (err) {
         console.error('Google login failed:', err)
-        error.value = 'Failed to connect to Google. Please try again.'
+        error.value = 'Gagal menyambung ke Google. Silakan coba lagi.'
         isLoading.value = false
     }
 }

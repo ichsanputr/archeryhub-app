@@ -20,7 +20,7 @@
           <span class="material-symbols-outlined text-brand-gold">search</span>
           <input v-model="searchQuery"
             class="w-full bg-transparent border-none text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-brand-gold text-sm focus:ring-0 ml-2 focus:outline-none"
-            placeholder="Search tournaments, athletes, events..." @keyup.enter="handleSearch" />
+            placeholder="Cari turnamen, atlet, event..." @keyup.enter="handleSearch" />
         </div>
       </div>
     </div>
@@ -30,7 +30,7 @@
       <!-- Theme Toggle -->
       <button @click="toggleTheme"
         class="size-10 flex items-center justify-center rounded-lg bg-gray-100 dark:bg-surface-highlight text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-surface-highlight/70 transition-colors"
-        :title="isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
+        :title="isDark ? 'Ganti ke Mode Terang' : 'Ganti ke Mode Gelap'">
         <span v-if="isDark" class="material-symbols-outlined text-[20px]">light_mode</span>
         <span v-else class="material-symbols-outlined text-[20px]">dark_mode</span>
       </button>
@@ -91,10 +91,10 @@ const showAddButton = computed(() => {
 })
 
 const addButtonText = computed(() => {
-  if (route.path.startsWith('/tournaments')) return 'New Tournament'
-  if (route.path.startsWith('/athletes')) return 'New Athlete'
-  if (route.path.startsWith('/devices')) return 'Add Device'
-  return 'Add New'
+  if (route.path.startsWith('/tournaments')) return 'Turnamen Baru'
+  if (route.path.startsWith('/athletes')) return 'Atlet Baru'
+  if (route.path.startsWith('/devices')) return 'Tambah Perangkat'
+  return 'Tambah Baru'
 })
 
 const handleSearch = () => {

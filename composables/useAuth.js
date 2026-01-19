@@ -63,7 +63,8 @@ export const useAuth = () => {
           username: response.user.username,
           name: response.user.full_name,
           email: response.user.email,
-          role: response.user.role
+          role: response.user.role,
+          type: response.user.type
         }
       }
 
@@ -97,7 +98,8 @@ export const useAuth = () => {
           username: response.user.username,
           name: response.user.full_name,
           email: response.user.email,
-          role: response.user.role
+          role: response.user.role,
+          type: response.user.type
         }
       }
 
@@ -176,6 +178,7 @@ export const useAuth = () => {
           email: userData.email,
           avatar_url: userData.avatar_url,
           role: userData.role,
+          type: userData.type,
           is_active: userData.is_active,
           created_at: userData.created_at,
           updated_at: userData.updated_at
@@ -191,6 +194,41 @@ export const useAuth = () => {
       user.value = null
     } finally {
       isUserLoading.value = false
+    }
+  }
+
+  const handleCallback = async (code, state) => {
+    try {
+      const baseUrl = config.public.apiBaseUrl
+      const response = await $fetch(`${baseUrl}/auth/google/callback`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: { code, state },
+        credentials: 'include'
+      })
+
+      // Store token in cookie if returned
+      if (response.token && import.meta.client) {
+        document.cookie = `auth_token=${response.token}; path=/; max-age=2592000; SameSite=Lax`
+      }
+
+      // Set user data
+      if (response.user) {
+        user.value = {
+          id: response.user.id,
+          username: response.user.username,
+          name: response.user.name || response.user.full_name,
+          email: response.user.email,
+          role: response.user.role,
+          type: response.user.user_type || response.user.type,
+          avatar_url: response.user.avatar
+        }
+      }
+
+      return response
+    } catch (error) {
+      console.error('Callback error:', error)
+      throw new Error(error.data?.error || 'Authentication failed')
     }
   }
 
@@ -210,6 +248,7 @@ export const useAuth = () => {
     register,
     logout,
     fetchUser,
+    handleCallback,
     initializeAuth
   }
 }

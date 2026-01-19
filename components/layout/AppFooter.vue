@@ -24,9 +24,9 @@
               </div>
             </div>
             <p class="text-gray-400 leading-relaxed max-w-md text-sm sm:text-base">
-              The ultimate archery tournament management platform.
-              Organize events, manage participant rankings, track live results,
-              and enhance the competitive archery experience for everyone.
+              Platform manajemen turnamen panahan terbaik.
+              Kelola event, atur peringkat peserta, pantau hasil live,
+              dan tingkatkan pengalaman kompetisi panahan bagi semua orang.
             </p>
           </div>
           <!-- Simple Socmed Links could go here -->
@@ -37,16 +37,16 @@
           <!-- Column 2: Navigation -->
           <div class="flex flex-col gap-5">
             <h4 class="text-xs font-black uppercase tracking-widest text-primary">
-              Navigation
+              Navigasi
             </h4>
             <div class="flex flex-col gap-3">
               <a href="/tournaments"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Tournaments
+                Turnamen
               </a>
               <a href="/dashboard/result"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Live Results
+                Hasil Langsung
               </a>
             </div>
           </div>
@@ -54,24 +54,24 @@
           <!-- Column 3: About -->
           <div class="flex flex-col gap-5">
             <h4 class="text-xs font-black uppercase tracking-widest text-primary">
-              Company
+              Perusahaan
             </h4>
             <div class="flex flex-col gap-3">
               <a href="/about"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                About Us
+                Tentang Kami
               </a>
               <a href="/contact"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Contact
+                Kontak
               </a>
               <a href="/privacy"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Privacy Policy
+                Kebijakan Privasi
               </a>
               <a href="/terms"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Terms of Service
+                Syarat & Ketentuan
               </a>
             </div>
           </div>
@@ -79,7 +79,7 @@
           <!-- Column 4: Developer -->
           <div class="flex flex-col gap-5">
             <h4 class="text-xs font-black uppercase tracking-widest text-primary">
-              Developer
+              Pengembang
             </h4>
             <div class="flex flex-col gap-3">
               <a href="/blog"
@@ -88,7 +88,7 @@
               </a>
               <a href="/career"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Career
+                Karir
               </a>
             </div>
           </div>
@@ -98,7 +98,7 @@
       <!-- Bottom Bar -->
       <div class="py-8 border-t border-white/5">
         <p class="text-xs text-gray-500 font-medium text-center sm:text-left">
-          &copy; {{ new Date().getFullYear() }} Archeryhub.id. All rights reserved.
+          &copy; {{ new Date().getFullYear() }} Archeryhub.id. Hak cipta dilindungi undang-undang.
         </p>
       </div>
     </div>

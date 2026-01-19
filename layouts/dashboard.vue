@@ -16,7 +16,7 @@
                     class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group"
                     :class="route.path === item.path ? 'bg-primary text-navy shadow-lg shadow-primary/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'">
                     <span class="material-symbols-outlined group-hover:scale-110 transition-transform">{{ item.icon
-                    }}</span>
+                        }}</span>
                     <span v-if="!isSidebarCollapsed" class="text-sm font-bold whitespace-nowrap">{{ item.label }}</span>
                 </NuxtLink>
 
@@ -29,7 +29,7 @@
                     class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group"
                     :class="route.path.startsWith(item.path) && item.path !== '/' ? 'bg-primary text-navy shadow-lg shadow-primary/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'">
                     <span class="material-symbols-outlined group-hover:scale-110 transition-transform">{{ item.icon
-                    }}</span>
+                        }}</span>
                     <span v-if="!isSidebarCollapsed" class="text-sm font-bold whitespace-nowrap">{{ item.label }}</span>
                 </NuxtLink>
             </nav>
@@ -39,12 +39,13 @@
                 <div class="flex items-center gap-3 px-2 py-1 cursor-pointer hover:opacity-80 transition-opacity">
                     <div
                         class="h-9 w-9 rounded-full bg-primary/20 border-2 border-white/10 flex items-center justify-center text-primary shrink-0 overflow-hidden">
-                        <img src="https://i.pravatar.cc/150?u=admin" class="w-full h-full object-cover">
+                        <img :src="user?.avatar_url || `https://ui-avatars.com/api/?name=${user?.name || 'User'}&background=FFD700&color=0F172A`"
+                            class="w-full h-full object-cover">
                     </div>
                     <div v-if="!isSidebarCollapsed" class="flex flex-col min-w-0">
-                        <span class="text-white text-sm font-bold truncate">Alex Range</span>
-                        <span
-                            class="text-[10px] text-gray-500 font-black uppercase tracking-widest">Administrator</span>
+                        <span class="text-white text-sm font-bold truncate">{{ user?.name || 'Guest' }}</span>
+                        <span class="text-[10px] text-gray-500 font-black uppercase tracking-widest">{{ user?.role ||
+                            'User' }}</span>
                     </div>
                 </div>
             </div>
@@ -76,11 +77,6 @@
                         <span
                             class="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500 border-2 border-white"></span>
                     </button>
-                    <NuxtLink to="/"
-                        class="flex items-center gap-2 px-4 py-2 bg-navy text-white rounded-lg text-sm font-bold hover:bg-navy/90 transition-all shadow-md">
-                        <span class="material-symbols-outlined text-sm">open_in_new</span>
-                        <span class="hidden sm:inline">Landing Page</span>
-                    </NuxtLink>
                 </div>
             </header>
 
@@ -94,6 +90,7 @@
 
 <script setup>
 const route = useRoute()
+const { user } = useAuth()
 const isSidebarCollapsed = ref(false)
 
 const navItems = [
