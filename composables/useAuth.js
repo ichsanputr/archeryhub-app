@@ -11,6 +11,8 @@ export const useAuth = () => {
     }
     return null
   })
+
+  console.log(user)
   const isUserLoading = useState('auth.isUserLoading', () => false)
   const isLoggedIn = computed(() => !!user.value)
   const config = useRuntimeConfig()
@@ -51,11 +53,6 @@ export const useAuth = () => {
         credentials: 'include'
       })
 
-      // Store token in cookie if returned
-      if (response.token && import.meta.client) {
-        document.cookie = `auth_token=${response.token}; path=/; max-age=259200; SameSite=Lax`
-      }
-
       // Set user data
       if (response.user) {
         user.value = {
@@ -85,11 +82,6 @@ export const useAuth = () => {
         body: userData,
         credentials: 'include'
       })
-
-      // Store token in cookie if returned
-      if (response.token && import.meta.client) {
-        document.cookie = `auth_token=${response.token}; path=/; max-age=259200; SameSite=Lax`
-      }
 
       // Set user data
       if (response.user) {
@@ -121,28 +113,18 @@ export const useAuth = () => {
         credentials: 'include' // Important: include HTTP-only cookies
       })
 
-      // Clear the token from cookies for localhost and other domains
-      if (import.meta.client) {
-        // Clear for localhost
-        document.cookie = 'auth_token=; path=/; domain=localhost; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
-        // Clear for current domain
-        document.cookie = 'auth_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
-        // Clear for .archeryhub.id
-        document.cookie = 'auth_token=; path=/; domain=.archeryhub.id; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
-      }
-
       user.value = null;
 
-      // Use window.reload to refresh app state
+      // Redirect to homepage after logout
       if (import.meta.client) {
-        window.location.reload();
+        window.location.href = '/';
       }
     } catch (error) {
       console.error('Logout error:', error);
-      // Even if logout fails, clear local state and refresh
+      // Even if logout fails, clear local state and redirect
       user.value = null;
       if (import.meta.client) {
-        window.location.reload();
+        window.location.href = '/';
       }
     }
   }
@@ -206,11 +188,6 @@ export const useAuth = () => {
         body: { code, state },
         credentials: 'include'
       })
-
-      // Store token in cookie if returned
-      if (response.token && import.meta.client) {
-        document.cookie = `auth_token=${response.token}; path=/; max-age=2592000; SameSite=Lax`
-      }
 
       // Set user data
       if (response.user) {

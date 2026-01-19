@@ -23,7 +23,6 @@ export default defineNuxtConfig({
 
   css: [
     "~/assets/css/main.css",
-    "~/assets/css/global.css",
     "~/assets/scss/main.scss",
   ],
   runtimeConfig: {
@@ -35,6 +34,7 @@ export default defineNuxtConfig({
   },
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
+    layoutTransition: { name: 'layout', mode: 'out-in' },
     head: {
       htmlAttrs: {
         lang: 'en'

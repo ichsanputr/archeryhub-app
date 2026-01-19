@@ -47,10 +47,15 @@ onMounted(async () => {
   }
 
   try {
-    await handleCallback(code, state)
+    const response = await handleCallback(code, state)
 
-    // Success! Redirect to dashboard
-    router.push('/dashboard')
+    // Check if user is new (needs to complete profile)
+    // Backend should return is_new_user: true for new OAuth registrations
+    if (response.is_new_user) {
+      router.push('/auth/complete-profile')
+    } else {
+      router.push('/dashboard')
+    }
   } catch (err) {
     console.error('Callback processing failed:', err)
     error.value = err.message || 'Terjadi kesalahan saat menyambungkan ke Google.'
