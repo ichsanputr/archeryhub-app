@@ -11,7 +11,7 @@ module.exports = {
         PORT: 9003,
         NITRO_PORT: 9003,
         NITRO_HOST: '0.0.0.0',
-        NUXT_PUBLIC_API_BASE_URL: 'https://api.archeryhub.id'
+        NUXT_PUBLIC_API_BASE_URL: 'https://api.archeryhub.id/api/v1'
       }
     },
   ],
