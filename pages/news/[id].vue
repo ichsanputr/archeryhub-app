@@ -4,11 +4,11 @@
         <nav aria-label="Breadcrumb" class="flex mb-8 text-sm text-slate-500">
             <ol class="flex items-center space-x-2">
                 <li>
-                    <NuxtLink to="/" class="hover:text-primary transition-colors">Beranda</NuxtLink>
+                    <NuxtLink to="/" class="hover:text-primary transition-colors">Home</NuxtLink>
                 </li>
                 <li><span class="material-symbols-outlined text-base">chevron_right</span></li>
                 <li>
-                    <NuxtLink to="/berita" class="hover:text-primary transition-colors">Berita</NuxtLink>
+                    <NuxtLink to="/news" class="hover:text-primary transition-colors">News</NuxtLink>
                 </li>
                 <li><span class="material-symbols-outlined text-base">chevron_right</span></li>
                 <li class="text-navy font-medium truncate max-w-[200px] sm:max-w-none">{{ article.title }}</li>
@@ -61,7 +61,7 @@
                     <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                     <div
                         class="absolute bottom-4 right-4 text-white/80 text-xs bg-black/30 px-2 py-1 rounded backdrop-blur-sm">
-                        Photo: {{ article.imageCredit || 'Archery Hub Documentation' }}
+                        Photo: {{ article.imageCredit }}
                     </div>
                 </div>
 
@@ -88,10 +88,10 @@
                     class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
                     <h3 class="text-lg font-bold text-navy dark:text-white mb-6 flex items-center gap-2">
                         <span class="w-1 h-6 bg-primary rounded-full"></span>
-                        Artikel Terkait
+                        Related News
                     </h3>
                     <div class="space-y-6">
-                        <NuxtLink v-for="item in relatedArticles" :key="item.slug" :to="`/berita/${item.slug}`"
+                        <NuxtLink v-for="item in relatedNews" :key="item.id" :to="`/news/${item.id}`"
                             class="group flex gap-4 items-start">
                             <div class="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 relative">
                                 <img :src="item.image" :alt="item.title"
@@ -106,10 +106,10 @@
                             </div>
                         </NuxtLink>
                     </div>
-                    <NuxtLink to="/berita"
-                        class="block w-full text-center mt-6 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                        Lihat Semua Berita
-                    </NuxtLink>
+                    <button
+                        class="w-full mt-6 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                        View All News
+                    </button>
                 </div>
 
                 <!-- Upcoming Tournaments -->
@@ -117,7 +117,7 @@
                     <div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/20 rounded-full blur-2xl"></div>
                     <h3 class="text-lg font-bold mb-6 flex items-center gap-2 relative z-10">
                         <span class="material-symbols-outlined text-primary">emoji_events</span>
-                        Turnamen Mendatang
+                        Upcoming Tournaments
                     </h3>
                     <div class="space-y-4 relative z-10">
                         <div v-for="t in upcomingTournaments" :key="t.id"
@@ -136,9 +136,9 @@
                             </div>
                         </div>
                     </div>
-                    <NuxtLink to="/events"
+                    <NuxtLink to="/tournaments"
                         class="inline-flex items-center gap-1 text-primary text-xs font-bold mt-6 hover:text-white transition-colors">
-                        Lihat Kalender Turnamen <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                        See Tournament Calendar <span class="material-symbols-outlined text-sm">arrow_forward</span>
                     </NuxtLink>
                 </div>
 
@@ -146,14 +146,14 @@
                 <div
                     class="bg-gradient-to-br from-primary to-primary-hover rounded-2xl p-6 shadow-sm border border-primary relative overflow-hidden">
                     <div class="relative z-10">
-                        <h4 class="font-bold text-navy text-lg mb-2">Langganan Berita</h4>
-                        <p class="text-navy/80 text-sm mb-4">Dapatkan berita panahan terbaru langsung di email Anda.</p>
+                        <h4 class="font-bold text-navy text-lg mb-2">Subscribe to Updates</h4>
+                        <p class="text-navy/80 text-sm mb-4">Get the latest archery news directly to your inbox.</p>
                         <form class="space-y-2">
                             <input
                                 class="w-full px-3 py-2 rounded-lg text-sm border-0 focus:ring-2 focus:ring-navy/50 text-slate-800"
-                                placeholder="Alamat email Anda" type="email" required />
+                                placeholder="Your email address" type="email" required />
                             <button
-                                class="w-full bg-navy text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-navy-dark transition-colors">Langganan</button>
+                                class="w-full bg-navy text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-navy-dark transition-colors">Subscribe</button>
                         </form>
                     </div>
                     <span
@@ -170,56 +170,58 @@ definePageMeta({
 })
 
 const route = useRoute()
-const slug = route.params.slug
 
-// Mock data integration
-const articlesData = {
-    'perkembangan-panahan-indonesia-2024': {
-        title: 'National Training Center Selection Results for 2025 Announced',
-        category: 'National Team',
-        date: 'Oct 24, 2024',
-        author: {
-            name: 'Editorial Team',
-            role: 'Archery Hub Indonesia',
-            avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCEyoMyPhTl7-9oRbs8Fqz1YZxEwczL3vvrIpNzNHGImIhte8_MRqCsmxPDpeo-GMFv4xD1UFE7CzQuZjLAaeTEFSwwGpLM5Fuuji1ri-DclVPd3XjaiZbP_HVCmNxUF4N4RvPt5eunD3D7XJwRXiE80p0b-XDjG79vpkghLPtwWffcqE__kLuIxrZg_xFXL5tPcnF3V-v_UjBTeSP3GZHOFSZ132JQ3wm91uitNtsctbagveyUjYxxYgEumBV7_uYhaBtTeHfBlCs'
-        },
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuByxS8LZ93pBQXI_V_Vu3nB0633lwPZGiFCM3UtI-xk79b_O83ASmlHYA36lOzcnmVsbgs4DEe9awj543MvzCN1yzOo1wZ3ViXLdiMRV7vAMdy66lvu-l5dpFAOgZ0uCMKJxsBRXPJL1QeX4_ZdX2ynTEZR-ZMilrncma7gKG2YK0vsj0KJZnw_lD0UZaXFKW2aVFD1SU-mzi_sAT2D-62TP0j5LF6KprFriv2sV9rdypqLSvfrZekYDy45XaK8F1vVh7e5nfrgK7o',
-        imageCredit: 'PB Perpani Documentation',
-        content: `
-      <p class="lead font-medium text-slate-600 dark:text-slate-300 text-xl mb-6 leading-relaxed">
-        The Indonesian Archery Association (PB Perpani) has officially released the list of athletes selected for the National Training Center (Pelatnas) for the upcoming 2025 season. This announcement follows a week of rigorous selection trials held at the Gelora Bung Karno Archery Field in Jakarta.
+// Mock data based on reference
+const article = reactive({
+    title: 'National Training Center Selection Results for 2025 Announced',
+    category: 'National Team',
+    date: 'Oct 24, 2024',
+    author: {
+        name: 'Editorial Team',
+        role: 'Archery Hub Indonesia',
+        avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCEyoMyPhTl7-9oRbs8Fqz1YZxEwczL3vvrIpNzNHGImIhte8_MRqCsmxPDpeo-GMFv4xD1UFE7CzQuZjLAaeTEFSwwGpLM5Fuuji1ri-DclVPd3XjaiZbP_HVCmNxUF4N4RvPt5eunD3D7XJwRXiE80p0b-XDjG79vpkghLPtwWffcqE__kLuIxrZg_xFXL5tPcnF3V-v_UjBTeSP3GZHOFSZ132JQ3wm91uitNtsctbagveyUjYxxYgEumBV7_uYhaBtTeHfBlCs'
+    },
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuByxS8LZ93pBQXI_V_Vu3nB0633lwPZGiFCM3UtI-xk79b_O83ASmlHYA36lOzcnmVsbgs4DEe9awj543MvzCN1yzOo1wZ3ViXLdiMRV7vAMdy66lvu-l5dpFAOgZ0uCMKJxsBRXPJL1QeX4_ZdX2ynTEZR-ZMilrncma7gKG2YK0vsj0KJZnw_lD0UZaXFKW2aVFD1SU-mzi_sAT2D-62TP0j5LF6KprFriv2sV9rdypqLSvfrZekYDy45XaK8F1vVh7e5nfrgK7o',
+    imageCredit: 'PB Perpani Documentation',
+    content: `
+    <p class="lead font-medium text-slate-600 dark:text-slate-300 text-xl mb-6 leading-relaxed">
+      The Indonesian Archery Association (PB Perpani) has officially released the list of athletes selected for the National Training Center (Pelatnas) for the upcoming 2025 season. This announcement follows a week of rigorous selection trials held at the Gelora Bung Karno Archery Field in Jakarta.
+    </p>
+    <p class="mb-6 text-slate-700 dark:text-slate-400 leading-relaxed">
+      A total of 24 athletes across Recurve and Compound divisions have been chosen to represent Indonesia in upcoming international championships, including the SEA Games and the Archery World Cup stages. The selection process this year introduced new physical endurance parameters alongside the traditional scoring rounds.
+    </p>
+    <h3 class="text-2xl font-bold text-navy dark:text-white mb-4 mt-10">A New Era for Indonesian Archery</h3>
+    <p class="mb-6 text-slate-700 dark:text-slate-400 leading-relaxed">
+      The head coach of the National Team emphasized that this year's squad is a mix of seasoned veterans and promising young talent. The strategic decision to include younger athletes aims to build a sustainable pipeline for the 2028 Olympics.
+    </p>
+    <div class="bg-background-light dark:bg-gray-800 border-l-4 border-primary p-6 my-8 rounded-r-lg">
+      <p class="italic text-lg text-navy dark:text-slate-200 font-medium mb-2">
+        "The energy in the camp is different this year. We are seeing record-breaking scores during practice sessions from athletes as young as 17. The future looks very bright."
       </p>
-      <p class="mb-6 text-slate-700 dark:text-slate-400 leading-relaxed">
-        A total of 24 athletes across Recurve and Compound divisions have been chosen to represent Indonesia in upcoming international championships, including the SEA Games and the Archery World Cup stages. The selection process this year introduced new physical endurance parameters alongside the traditional scoring rounds.
-      </p>
-      <h3 class="text-2xl font-bold text-navy dark:text-white mb-4 mt-10">A New Era for Indonesian Archery</h3>
-      <p class="mb-6 text-slate-700 dark:text-slate-400 leading-relaxed">
-        The head coach of the National Team emphasized that this year's squad is a mix of seasoned veterans and promising young talent. The strategic decision to include younger athletes aims to build a sustainable pipeline for the 2028 Olympics.
-      </p>
-      <div class="bg-background-light dark:bg-gray-800 border-l-4 border-primary p-6 my-8 rounded-r-lg">
-        <p class="italic text-lg text-navy dark:text-slate-200 font-medium mb-2">
-          "The energy in the camp is different this year. We are seeing record-breaking scores during practice sessions from athletes as young as 17. The future looks very bright."
-        </p>
-        <cite class="text-sm text-slate-500 not-italic block mt-2">— Head Coach, National Archery Team</cite>
-      </div>
-    `,
-        tags: ['Pelatnas2025', 'Recurve', 'Compound', 'ArcheryIndonesia']
-    }
-}
-
-const article = computed(() => {
-    return articlesData[slug] || articlesData['perkembangan-panahan-indonesia-2024']
+      <cite class="text-sm text-slate-500 not-italic block mt-2">— Head Coach, National Archery Team</cite>
+    </div>
+    <h3 class="text-2xl font-bold text-navy dark:text-white mb-4 mt-10">Selection Criteria Breakdown</h3>
+    <p class="mb-4 text-slate-700 dark:text-slate-400 leading-relaxed">
+      Athletes were evaluated based on a cumulative score comprising:
+    </p>
+    <ul class="list-disc pl-6 space-y-2 mb-6 text-slate-700 dark:text-slate-400 marker:text-primary">
+      <li><strong>Scoring Rounds (70%):</strong> Performance in 70m (Recurve) and 50m (Compound) rounds over 4 days.</li>
+      <li><strong>Match Play (20%):</strong> Head-to-head elimination round performance.</li>
+      <li><strong>Physical Assessment (10%):</strong> Stamina, stability, and core strength tests.</li>
+    </ul>
+  `,
+    tags: ['Pelatnas2025', 'Recurve', 'Compound', 'ArcheryIndonesia']
 })
 
-const relatedArticles = [
+const relatedNews = [
     {
-        slug: '1',
+        id: '1',
         title: "Recurve Women's Team Secures Gold at Asian Grand Prix",
         date: 'Oct 20, 2024',
         image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDQStrrmLQN-DtqrTO5KWNF3EvwOXSw-raemHMh-lxMUVAtHiqxHNMqzQoV2l1ReELlRe_dVIAkp1P8Bc8ekRqbhOn-axS6izTQXKw3d70pq-CpZHWUZoS58mGL70U_Bk96ViNRcaOaGr5wIkPrtg8w46mzrAtHgWRH6VKAUalmkrFJ8qjDltkmd-nHJs4aUfrBBphZSnivwOkhoIjzG8dpjeCtp_UOZTOnovXJP7IAWJEeWqw7Uh7-mlLVkorgyeOsSRun6CmO_8I'
     },
     {
-        slug: '2',
+        id: '2',
         title: 'New Equipment Regulations for U-18 National Championship',
         date: 'Oct 18, 2024',
         image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCq8OlQbcxO7uY4gwKVt6JygaktR4FjGZfJwbWiOyDIXqXr0bCnQIn3f-5m63myglDTGxdrpDHrFX2wVGOC7C8INtL7td4RDrpYhrJi0qjxPG7jixXi-Cw0fJQfRMda9sgJhfzCsFLmMhX9mvC6_gNAo5OF_MDtU5ukfm3hvRqWuHC0pbxNqSd0uWfIxLjxHXmyDnRtFg9VIz-XC2tCuvSusJKEFLjs57_DO7_uOGurALxGKsxcgIJmc_0gHV72A6BGvhiStIpWr3o'
@@ -231,11 +233,6 @@ const upcomingTournaments = [
     { id: '2', title: 'Surabaya Cup', month: 'Dec', day: '05', location: 'Surabaya' },
     { id: '3', title: 'National Indoor', month: 'Jan', day: '12', location: 'Bandung' }
 ]
-
-useSeoMeta({
-    title: () => `${article.value.title} - Archeryhub.id`,
-    description: () => article.value.excerpt
-})
 </script>
 
 <style scoped>

@@ -8,12 +8,13 @@
         ]">
             <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between h-14">
-                    <div class="flex items-center gap-3 group cursor-pointer" @click="navigateTo('/')">
-                        <div class="flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-300 overflow-hidden"
+                    <div class="flex items-center gap-2 sm:gap-3 group cursor-pointer" @click="navigateTo('/')">
+                        <div class="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-xl transition-all duration-300 overflow-hidden"
                             :class="isScrolled ? 'bg-navy' : 'bg-primary'">
-                            <img src="/logo.png" alt="Logo" class="w-7 h-7 object-contain" />
+                            <img src="/logo.png" alt="Logo" class="w-6 h-6 sm:w-7 sm:h-7 object-contain" />
                         </div>
-                        <span class="text-xl font-black tracking-tight font-display transition-colors duration-300"
+                        <span
+                            class="text-lg sm:text-xl font-black tracking-tight font-display transition-colors duration-300"
                             :class="isScrolled ? 'text-navy' : 'text-white'">Archeryhub<span
                                 class="text-logo-id">.id</span></span>
                     </div>
@@ -27,17 +28,15 @@
                             :class="isScrolled ? 'text-navy' : 'text-white/80'">Skor</NuxtLink>
                         <NuxtLink to="#" class="text-sm font-medium transition-all duration-300 hover:text-primary"
                             :class="isScrolled ? 'text-navy' : 'text-white/80'">Klub</NuxtLink>
-                        <NuxtLink to="/about" class="text-sm font-medium transition-all duration-300 hover:text-primary"
-                            :class="isScrolled ? 'text-navy' : 'text-white/80'">Tentang</NuxtLink>
                     </div>
                     <div class="hidden md:flex">
                         <NuxtLink v-if="isLoggedIn" to="/dashboard"
-                            class="bg-primary hover:bg-primary-hover text-navy text-sm font-bold px-6 py-2.5 rounded-lg transition-colors duration-200 flex items-center gap-2">
-                            <span class="material-symbols-outlined text-lg">dashboard</span>
+                            class="bg-primary hover:bg-primary-hover text-navy text-xs font-bold px-4 py-1.5 rounded-lg transition-colors duration-200 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-base">dashboard</span>
                             Dashboard
                         </NuxtLink>
                         <NuxtLink v-else to="/auth/login"
-                            class="bg-primary hover:bg-primary-hover text-navy text-sm font-bold px-6 py-2.5 rounded-lg transition-colors duration-200">
+                            class="bg-primary hover:bg-primary-hover text-navy text-xs font-bold px-4 py-1.5 rounded-lg transition-colors duration-200">
                             Masuk / Daftar
                         </NuxtLink>
                     </div>
@@ -56,7 +55,6 @@
                 <NuxtLink to="/events" class="block text-navy text-sm font-medium">Turnamen</NuxtLink>
                 <NuxtLink to="#" class="block text-navy text-sm font-medium">Skor</NuxtLink>
                 <NuxtLink to="#" class="block text-navy text-sm font-medium">Klub</NuxtLink>
-                <NuxtLink to="/about" class="block text-navy text-sm font-medium">Tentang</NuxtLink>
                 <NuxtLink v-if="isLoggedIn" to="/dashboard"
                     class="block bg-primary text-navy text-center font-bold py-2 rounded-lg">
                     Dashboard</NuxtLink>
@@ -85,13 +83,13 @@
                                 Indonesia</span>
                         </div>
                         <h1 ref="heroTitle"
-                            class="text-3xl md:text-5xl lg:text-6xl font-black text-white leading-[1.1] mb-6 tracking-tight drop-shadow-lg font-display opacity-0 translate-y-8">
+                            class="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.2] sm:leading-[1.1] mb-4 sm:mb-6 tracking-tight drop-shadow-lg font-display opacity-0 translate-y-8">
                             Modernisasi Tata <span
                                 class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-green-300">Kelola
                                 Panahan</span> Indonesia
                         </h1>
                         <p ref="heroText"
-                            class="text-white/80 text-lg md:text-xl font-light leading-relaxed mb-10 max-w-xl drop-shadow-md opacity-0 translate-y-8">
+                            class="text-white/80 text-base sm:text-lg md:text-xl font-light leading-relaxed mb-8 sm:mb-10 max-w-xl drop-shadow-md opacity-0 translate-y-8">
                             Platform infrastruktur digital terintegrasi untuk manajemen klub, skor real-time, dan
                             turnamen panahan profesional yang lebih efisien.
                         </p>
@@ -118,57 +116,79 @@
                     <div class="bg-white rounded-3xl shadow-sm border border-border-subtle/50 p-6 md:p-8 h-full">
                         <div class="flex items-center justify-between mb-8">
                             <div>
-                                <h2 class="text-navy text-2xl font-bold tracking-tight font-display">Turnamen Mendatang
-                                </h2>
-                                <p class="text-text-sub text-sm mt-1">Daftar kompetisi resmi terdekat yang dibuka untuk
-                                    pendaftaran.</p>
+                                <h2 class="text-navy text-xl sm:text-2xl font-bold tracking-tight font-display">Turnamen
+                                    Mendatang</h2>
+                                <p class="text-text-sub text-xs sm:text-sm mt-1">Kompetisi resmi dengan pendaftaran
+                                    aktif.</p>
                             </div>
                             <NuxtLink to="/events"
-                                class="hidden sm:flex items-center gap-1 text-navy text-sm font-semibold hover:text-primary-hover transition-colors group">
-                                Lihat Semua
+                                class="flex items-center gap-1 text-navy text-xs sm:text-sm font-semibold hover:text-primary transition-colors group">
+                                <span class="hidden sm:inline">Lihat Semua</span>
+                                <span class="sm:hidden">Semua</span>
                                 <span
-                                    class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                    class="material-symbols-outlined text-base sm:text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
                             </NuxtLink>
                         </div>
-                        <div
-                            class="flex flex-col gap-4 max-h-[500px] overflow-y-auto pr-2 scrollbar-thin scrollbar-track-gray-100 scrollbar-thumb-gray-300 hover:scrollbar-thumb-gray-400">
-                            <div v-for="event in upcomingEvents" :key="event.name"
-                                class="group bg-white rounded-2xl border border-border-subtle p-5 hover:border-primary/50 hover:shadow-card transition-all duration-300">
-                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-                                    <div class="flex items-start gap-5">
+
+                        <!-- Tournament Cards Container -->
+                        <div class="space-y-4 px-1">
+                            <div v-for="(event, index) in upcomingEvents" :key="event.name"
+                                class="group bg-white rounded-2xl border border-gray-100 p-4 sm:p-5 hover:border-primary/50 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-6">
+                                    <div class="flex items-start gap-4 sm:gap-5">
+                                        <!-- Date Badge -->
                                         <div
-                                            class="flex-shrink-0 flex flex-col items-center justify-center w-16 h-16 rounded-xl bg-navy text-white shadow-sm">
-                                            <span class="text-xs font-medium uppercase tracking-wider text-primary">{{
+                                            class="flex-shrink-0 flex flex-col items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-navy text-white shadow-md group-hover:bg-primary group-hover:text-navy transition-colors duration-300">
+                                            <span
+                                                class="text-[10px] sm:text-xs font-bold uppercase tracking-wider opacity-80">{{
                                                 event.month }}</span>
-                                            <span class="text-2xl font-bold leading-none">{{ event.day }}</span>
+                                            <span class="text-xl sm:text-2xl font-black leading-none">{{ event.day
+                                                }}</span>
                                         </div>
-                                        <div class="flex flex-col">
-                                            <div class="flex items-center gap-2 mb-1">
+
+                                        <!-- Event Details -->
+                                        <div class="flex flex-col min-w-0 flex-1">
+                                            <div class="flex flex-wrap items-center gap-2 mb-1.5">
                                                 <span v-for="tag in event.tags" :key="tag.label" :class="tag.class"
-                                                    class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide">
+                                                    class="px-2 py-0.5 rounded-md text-[9px] sm:text-[10px] font-bold uppercase tracking-wider">
                                                     {{ tag.label }}
                                                 </span>
                                             </div>
                                             <h3
-                                                class="text-navy text-lg font-bold group-hover:text-primary-hover transition-colors font-display">
-                                                {{ event.name }}</h3>
-                                            <div class="flex items-center gap-4 mt-1 text-sm text-text-sub">
+                                                class="text-navy text-base sm:text-lg font-bold group-hover:text-primary transition-colors font-display">
+                                                {{ event.name }}
+                                            </h3>
+                                            <div class="flex items-center gap-3 mt-1 text-xs sm:text-sm text-text-sub">
                                                 <div class="flex items-center gap-1">
                                                     <span
-                                                        class="material-symbols-outlined text-base text-primary">location_on</span>
-                                                    {{ event.location }}
+                                                        class="material-symbols-outlined text-sm sm:text-base text-primary/60">location_on</span>
+                                                    <span class="truncate">{{ event.location }}</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="flex-shrink-0 sm:self-center">
-                                        <button
-                                            class="w-full sm:w-auto bg-primary text-navy text-sm font-bold py-2.5 px-6 rounded-lg transition-colors border border-primary/20 shadow-sm hover:shadow-md">
-                                            Daftar Sekarang
-                                        </button>
+
+                                    <!-- Action -->
+                                    <div class="flex-shrink-0">
+                                        <NuxtLink :to="`/events/${index}`"
+                                            class="w-full sm:w-auto inline-flex items-center justify-center bg-gray-50 group-hover:bg-primary text-navy font-bold py-2.5 px-6 rounded-xl transition-all border border-gray-100 group-hover:border-primary text-sm">
+                                            Daftar
+                                            <span
+                                                class="material-symbols-outlined text-lg ml-2 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all">chevron_right</span>
+                                        </NuxtLink>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- View More Footer -->
+                        <div class="mt-8 flex justify-center">
+                            <NuxtLink to="/events"
+                                class="flex items-center gap-2 text-navy text-sm font-bold hover:text-primary transition-colors group">
+                                Lihat Semua Turnamen
+                                <span
+                                    class="material-symbols-outlined text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                            </NuxtLink>
                         </div>
                     </div>
                 </div>
@@ -185,7 +205,7 @@
                                 class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-navy mb-5">
                                 <span class="material-symbols-outlined text-xl">person_add</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-white mb-2 font-display">Jadi Atlet</h3>
+                            <h3 class="text-xl sm:text-2xl font-bold text-white mb-2 font-display">Jadi Atlet</h3>
                             <p class="text-white/60 text-sm mb-6">Profil prestasi dan ikuti turnamen resmi se-Indonesia.
                             </p>
                         </div>
@@ -199,12 +219,12 @@
                     </div>
 
                     <div
-                        class="relative overflow-hidden group bg-white border border-border-subtle rounded-3xl p-8 flex flex-col justify-between shadow-sm transition-all duration-300 flex-1 min-h-[280px]">
+                        class="relative overflow-hidden group bg-white border border-border-subtle rounded-3xl p-6 sm:p-8 flex flex-col justify-between shadow-sm transition-all duration-300 flex-1 min-h-[260px] sm:min-h-[280px]">
                         <div class="relative z-10">
                             <div class="w-10 h-10 rounded-xl bg-navy flex items-center justify-center text-white mb-5">
                                 <span class="material-symbols-outlined text-xl">domain_add</span>
                             </div>
-                            <h3 class="text-2xl font-bold text-navy mb-2 font-display">Organisasi</h3>
+                            <h3 class="text-xl sm:text-2xl font-bold text-navy mb-2 font-display">Organisasi</h3>
                             <p class="text-text-sub text-sm mb-6">Kelola klub atau federasi dengan sistem modern.</p>
                         </div>
                         <div class="relative z-10">
@@ -222,44 +242,46 @@
         <!-- Digital Governance Ecosystem -->
         <section class="bg-white py-16 md:py-24 border-b border-gray-100">
             <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16 max-w-2xl mx-auto">
-                    <h2 class="text-navy text-3xl font-bold mb-4 font-display">Ekosistem Tata Kelola Digital</h2>
-                    <p class="text-text-sub">Fitur terintegrasi dirancang untuk memprofesionalkan manajemen panahan dari
+                <div class="text-center mb-10 sm:mb-16 max-w-2xl mx-auto">
+                    <h2 class="text-navy text-2xl sm:text-3xl font-bold mb-4 font-display">Ekosistem Tata Kelola Digital
+                    </h2>
+                    <p class="text-text-sub text-sm sm:text-base">Fitur terintegrasi dirancang untuk memprofesionalkan
+                        manajemen panahan dari
                         tingkat klub hingga federasi nasional.</p>
                 </div>
-                <div class="grid md:grid-cols-3 gap-8 lg:gap-12">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 lg:gap-12">
                     <div
-                        class="group p-8 rounded-2xl bg-gray-50 border border-transparent hover:border-primary/20 hover:shadow-xl transition-all duration-300">
+                        class="group p-6 sm:p-8 rounded-2xl bg-gray-50 border border-transparent hover:border-primary/20 hover:shadow-xl transition-all duration-300">
                         <div
-                            class="w-16 h-16 bg-navy rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                            <span class="material-symbols-outlined text-primary text-4xl">scoreboard</span>
+                            class="w-12 h-12 sm:w-16 sm:h-16 bg-navy rounded-2xl flex items-center justify-center mb-5 sm:mb-6 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-primary text-3xl sm:text-4xl">scoreboard</span>
                         </div>
-                        <h3 class="text-xl font-bold text-navy mb-3">Scoring Real-time</h3>
-                        <p class="text-text-sub leading-relaxed">
+                        <h3 class="text-lg sm:text-xl font-bold text-navy mb-2 sm:mb-3">Scoring Real-time</h3>
+                        <p class="text-text-sub text-sm sm:text-base leading-relaxed">
                             Sistem penilaian digital dengan sinkronisasi cloud instan. Hilangkan papan skor kertas dan
                             sediakan hasil langsung untuk penonton di seluruh dunia.
                         </p>
                     </div>
                     <div
-                        class="group p-8 rounded-2xl bg-gray-50 border border-transparent hover:border-primary/20 hover:shadow-xl transition-all duration-300">
+                        class="group p-6 sm:p-8 rounded-2xl bg-gray-50 border border-transparent hover:border-primary/20 hover:shadow-xl transition-all duration-300">
                         <div
-                            class="w-16 h-16 bg-navy rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                            <span class="material-symbols-outlined text-primary text-4xl">domain</span>
+                            class="w-12 h-12 sm:w-16 sm:h-16 bg-navy rounded-2xl flex items-center justify-center mb-5 sm:mb-6 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-primary text-3xl sm:text-4xl">domain</span>
                         </div>
-                        <h3 class="text-xl font-bold text-navy mb-3">Manajemen Klub</h3>
-                        <p class="text-text-sub leading-relaxed">
+                        <h3 class="text-lg sm:text-xl font-bold text-navy mb-2 sm:mb-3">Manajemen Klub</h3>
+                        <p class="text-text-sub text-sm sm:text-base leading-relaxed">
                             Alat administrasi bagi klub untuk mengelola anggota, memproses pendaftaran, dan memantau
                             kemajuan perkembangan atlet dari waktu ke waktu.
                         </p>
                     </div>
                     <div
-                        class="group p-8 rounded-2xl bg-gray-50 border border-transparent hover:border-primary/20 hover:shadow-xl transition-all duration-300">
+                        class="group p-6 sm:p-8 rounded-2xl bg-gray-50 border border-transparent hover:border-primary/20 hover:shadow-xl transition-all duration-300">
                         <div
-                            class="w-16 h-16 bg-navy rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                            <span class="material-symbols-outlined text-primary text-4xl">leaderboard</span>
+                            class="w-12 h-12 sm:w-16 sm:h-16 bg-navy rounded-2xl flex items-center justify-center mb-5 sm:mb-6 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-primary text-3xl sm:text-4xl">leaderboard</span>
                         </div>
-                        <h3 class="text-xl font-bold text-navy mb-3">Ranking Nasional</h3>
-                        <p class="text-text-sub leading-relaxed">
+                        <h3 class="text-lg sm:text-xl font-bold text-navy mb-2 sm:mb-3">Ranking Nasional</h3>
+                        <p class="text-text-sub text-sm sm:text-base leading-relaxed">
                             Kalkulasi poin otomatis dan pembaruan peringkat berdasarkan hasil turnamen, memastikan
                             transparansi dalam seleksi nasional.
                         </p>
@@ -272,14 +294,16 @@
         <section class="bg-gray-50 py-16 md:py-20 overflow-hidden">
             <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between mb-8">
-                    <h2 class="text-2xl font-bold text-navy flex items-center gap-3 font-display">
-                        <span class="w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
+                    <h2 class="text-xl sm:text-2xl font-bold text-navy flex items-center gap-2 sm:gap-3 font-display">
+                        <span class="w-2.5 h-2.5 sm:w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
                         Event Live Saat Ini
                     </h2>
                     <NuxtLink to="/events"
-                        class="text-navy hover:text-primary font-bold text-sm flex items-center gap-1 group">
-                        Lihat Jadwal <span
-                            class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
+                        class="text-navy hover:text-primary font-bold text-xs sm:text-sm flex items-center gap-1 group">
+                        <span class="hidden sm:inline">Lihat Jadwal</span>
+                        <span class="sm:hidden">Jadwal</span>
+                        <span
+                            class="material-symbols-outlined text-base sm:text-lg transition-transform group-hover:translate-x-1">arrow_forward</span>
                     </NuxtLink>
                 </div>
                 <div class="flex overflow-x-auto pb-8 -mx-4 px-4 sm:mx-0 sm:px-0 gap-6 no-scrollbar snap-x">
@@ -326,14 +350,17 @@
             <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between mb-6">
                     <div>
-                        <h2 class="text-2xl font-bold text-navy mb-2 font-display">Klub Unggulan</h2>
-                        <p class="text-text-sub text-sm hidden sm:block">Akademi dan klub panahan terbaik di sekitar
+                        <h2 class="text-xl sm:text-2xl font-bold text-navy mb-2 font-display">Klub Unggulan</h2>
+                        <p class="text-text-sub text-xs sm:text-sm hidden sm:block">Akademi dan klub panahan terbaik di
+                            sekitar
                             Anda</p>
                     </div>
                     <NuxtLink to="/clubs"
-                        class="text-navy hover:text-primary-hover font-bold text-sm flex items-center gap-2 group bg-white px-4 py-2 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
-                        Lihat Semua Klub <span
-                            class="material-symbols-outlined text-lg transition-transform group-hover:translate-x-1">arrow_forward</span>
+                        class="text-navy hover:text-primary-hover font-bold text-xs sm:text-sm flex items-center gap-1 sm:gap-2 group bg-white px-3 sm:px-4 py-2 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
+                        <span class="hidden sm:inline">Lihat Semua Klub</span>
+                        <span class="sm:hidden">Semua Klub</span>
+                        <span
+                            class="material-symbols-outlined text-base sm:text-lg transition-transform group-hover:translate-x-1">arrow_forward</span>
                     </NuxtLink>
                 </div>
                 <div class="flex flex-wrap items-center gap-3 mb-8 overflow-x-auto no-scrollbar pb-2">
@@ -355,9 +382,9 @@
                             class="w-20 h-20 rounded-2xl bg-navy/5 text-navy flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                             <span class="material-symbols-outlined text-4xl">{{ club.icon }}</span>
                         </div>
-                        <h3 class="text-lg font-bold text-navy mb-1 font-display">{{ club.name }}</h3>
-                        <div class="flex items-center gap-1 text-text-sub text-sm mb-6">
-                            <span class="material-symbols-outlined text-base">location_on</span>
+                        <h3 class="text-base sm:text-lg font-bold text-navy mb-1 font-display">{{ club.name }}</h3>
+                        <div class="flex items-center gap-1 text-text-sub text-xs sm:text-sm mb-6">
+                            <span class="material-symbols-outlined text-sm sm:text-base">location_on</span>
                             <span>{{ club.location }}</span>
                         </div>
                         <button
@@ -373,8 +400,9 @@
         <section class="bg-white py-16 md:py-20 border-t border-gray-100">
             <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between mb-8">
-                    <h2 class="text-2xl font-bold text-navy font-display">Berita Terbaru</h2>
-                    <NuxtLink class="text-text-sub hover:text-navy font-bold text-sm" to="#">Lihat Semua Berita
+                    <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">Berita Terbaru</h2>
+                    <NuxtLink class="text-text-sub hover:text-navy font-bold text-xs sm:text-sm" to="/berita">Lihat
+                        Semua Berita
                     </NuxtLink>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -397,13 +425,14 @@
                                         }}</span>
                             </div>
                             <h3
-                                class="text-xl font-bold text-navy mb-3 group-hover:text-primary line-clamp-2 font-display">
+                                class="text-lg sm:text-xl font-bold text-navy mb-3 group-hover:text-primary line-clamp-2 font-display">
                                 {{ news.title }}
                             </h3>
-                            <p class="text-text-sub mb-4 line-clamp-2 text-sm">
+                            <p class="text-text-sub mb-4 line-clamp-2 text-sm sm:text-base">
                                 {{ news.excerpt }}
                             </p>
-                            <span class="text-navy hover:text-primary font-bold text-sm flex items-center gap-1">
+                            <span
+                                class="text-navy hover:text-primary font-bold text-xs sm:text-sm flex items-center gap-1">
                                 Baca Selengkapnya <span class="material-symbols-outlined text-sm">arrow_right_alt</span>
                             </span>
                         </div>

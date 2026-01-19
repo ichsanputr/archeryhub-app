@@ -1,207 +1,191 @@
 <template>
-  <div class="min-h-screen py-10">
-    <Container>
-      <!-- Header Section -->
-      <section
-        class="mb-12 relative overflow-hidden rounded-3xl border border-yellow-100 bg-gradient-to-br from-yellow-50 via-white to-orange-50">
-        <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-yellow-200/40 blur-3xl"></div>
-        <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-orange-200/40 blur-3xl"></div>
-        <div class="absolute top-20 right-20 h-20 w-20 rounded-full bg-yellow-300/30 blur-2xl"></div>
-        <div class="relative p-8 sm:p-12">
-          <div
-            class="inline-flex items-center gap-2 rounded-full border border-yellow-200 bg-white/80 px-4 py-2 text-sm text-yellow-700 shadow-sm backdrop-blur">
-            <Icon icon="ph:chat-circle-dots" class="w-4 h-4" />
-            Get in touch
-          </div>
-          <h1 class="mt-6 text-4xl sm:text-5xl font-extrabold leading-tight text-gray-900">
-            We'd love to
-            <span
-              class="bg-gradient-to-r from-yellow-600 via-orange-500 to-yellow-400 bg-clip-text text-transparent">hear
-              from you</span>
+  <div>
+    <div class="bg-navy relative overflow-hidden pb-12">
+      <div class="absolute inset-0 z-0">
+        <div class="absolute inset-0 bg-gradient-to-b from-navy/90 via-navy/95 to-background-light z-10"></div>
+        <img alt="background" class="w-full h-full object-cover object-center opacity-30 mix-blend-overlay"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuByxS8LZ93pBQXI_V_Vu3nB0633lwPZGiFCM3UtI-xk79b_O83ASmlHYA36lOzcnmVsbgs4DEe9awj543MvzCN1yzOo1wZ3ViXLdiMRV7vAMdy66lvu-l5dpFAOgZ0uCMKJxsBRXPJL1QeX4_ZdX2ynTEZR-ZMilrncma7gKG2YK0vsj0KJZnw_lD0UZaXFKW2aVFD1SU-mzi_sAT2D-62TP0j5LF6KprFriv2sV9rdypqLSvfrZekYDy45XaK8F1vVh7e5nfrgK7o" />
+      </div>
+      <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 md:pt-20 pb-12">
+        <div class="max-w-3xl text-center md:text-left">
+          <h1 class="text-white text-3xl md:text-5xl font-black leading-tight tracking-tight mb-4">
+            Contact Us
           </h1>
-          <p class="mt-4 text-lg sm:text-xl text-gray-600 max-w-3xl">
-            Questions, feedback, or partnership ideas? Send us a message and we'll get back to you as soon as possible.
+          <p class="text-slate-300 text-lg leading-relaxed max-w-2xl">
+            Have questions about the platform? Whether you're a club owner, an athlete, or an event organizer, we're
+            here to help you hit the mark.
           </p>
         </div>
-      </section>
+      </div>
+    </div>
 
-      <!-- Content -->
-      <div class="grid lg:grid-cols-3 gap-8">
-        <!-- Contact Form - Takes 2 columns -->
-        <section class="lg:col-span-2">
-          <div class="rounded-3xl border border-yellow-100 bg-white p-8 sm:p-10 shadow-sm">
-            <div class="mb-8">
-              <h2 class="text-2xl font-bold text-gray-900 mb-2">Send us a message</h2>
-              <div class="space-y-3 text-gray-600">
-                <p>Fill out the form below and we'll get back to you within 24 hours.</p>
-                <p>Whether you're reporting a bug, suggesting a feature, or just want to share your thoughts about
-                  Archeryhub.id, we value your input. Our team reviews every message carefully and strives to provide
-                  helpful, personalized responses.</p>
-                <p>For urgent technical issues or time-sensitive inquiries, please include "URGENT" in your subject
-                  line, and we'll prioritize your message. For general questions or feedback, you can expect a response
-                  within one business day.</p>
-                <p>We're committed to building the best archery tournament management platform, and your feedback helps
-                  us improve. Thank you for taking the time to reach out!</p>
-              </div>
-            </div>
-
-            <form class="space-y-6">
-              <div class="grid sm:grid-cols-2 gap-6">
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 -mt-16 relative z-30">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+        <div class="lg:col-span-7">
+          <div
+            class="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 h-full">
+            <h2 class="text-2xl font-bold text-navy dark:text-white mb-6">Send us a message</h2>
+            <form class="space-y-6" @submit.prevent="handleSubmit">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label for="name" class="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
-                  <input id="name" name="name" type="text" required placeholder="John Doe"
-                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-yellow-500 focus:ring-2 focus:ring-yellow-100 focus:outline-none transition-all duration-200" />
+                  <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Your Name</label>
+                  <input v-model="form.name"
+                    class="w-full px-4 py-3 bg-background-light dark:bg-gray-900 border-transparent rounded-xl text-sm text-slate-800 focus:border-navy focus:bg-white focus:ring-0 transition-colors placeholder:text-slate-400"
+                    placeholder="Enter your full name" type="text" required />
                 </div>
                 <div>
-                  <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
-                  <input id="email" name="email" type="email" required placeholder="john@example.com"
-                    class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-yellow-500 focus:ring-2 focus:ring-yellow-100 focus:outline-none transition-all duration-200" />
+                  <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Email
+                    Address</label>
+                  <input v-model="form.email"
+                    class="w-full px-4 py-3 bg-background-light dark:bg-gray-900 border-transparent rounded-xl text-sm text-slate-800 focus:border-navy focus:bg-white focus:ring-0 transition-colors placeholder:text-slate-400"
+                    placeholder="name@example.com" type="email" required />
                 </div>
               </div>
-
               <div>
-                <label for="subject" class="block text-sm font-semibold text-gray-700 mb-2">Subject</label>
-                <select id="subject" name="subject" required
-                  class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-yellow-500 focus:ring-2 focus:ring-yellow-100 focus:outline-none transition-all duration-200">
-                  <option value="">Select a topic</option>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Subject</label>
+                <select v-model="form.subject"
+                  class="w-full px-4 py-3 bg-background-light dark:bg-gray-900 border-transparent rounded-xl text-sm text-slate-800 focus:border-navy focus:bg-white focus:ring-0 transition-colors cursor-pointer"
+                  required>
+                  <option disabled value="">Select a topic</option>
                   <option value="general">General Inquiry</option>
-                  <option value="bug">Bug Report</option>
-                  <option value="feature">Feature Request</option>
+                  <option value="club">Club Registration Support</option>
+                  <option value="tech">Technical Issue</option>
                   <option value="partnership">Partnership</option>
-                  <option value="support">Technical Support</option>
                 </select>
               </div>
-
               <div>
-                <label for="message" class="block text-sm font-semibold text-gray-700 mb-2">Message</label>
-                <textarea id="message" name="message" rows="6" required placeholder="Tell us more about your inquiry..."
-                  class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:border-yellow-500 focus:ring-2 focus:ring-yellow-100 focus:outline-none transition-all duration-200 resize-none"></textarea>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Message</label>
+                <textarea v-model="form.message"
+                  class="w-full px-4 py-3 bg-background-light dark:bg-gray-900 border-transparent rounded-xl text-sm text-slate-800 focus:border-navy focus:bg-white focus:ring-0 transition-colors placeholder:text-slate-400 resize-none"
+                  placeholder="How can we help you?" rows="5" required></textarea>
               </div>
-
-              <div class="flex items-start gap-3">
-                <input type="checkbox" name="agree" required
-                  class="mt-1 h-4 w-4 rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
-                <label class="text-sm text-gray-600">
-                  I agree to the <NuxtLink to="/privacy" class="text-yellow-600 hover:text-yellow-700 underline">privacy
-                    policy</NuxtLink>
-                  and <NuxtLink to="/terms" class="text-yellow-600 hover:text-yellow-700 underline">terms of service
-                  </NuxtLink>.
-                </label>
+              <div class="pt-2">
+                <button
+                  class="w-full md:w-auto bg-primary hover:bg-primary-hover text-navy px-8 py-3.5 rounded-xl text-sm font-bold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 transform active:scale-95"
+                  type="submit" :disabled="loading">
+                  <span>{{ loading ? 'Sending...' : 'Send Message' }}</span>
+                  <span class="material-symbols-outlined text-lg">send</span>
+                </button>
               </div>
-
-              <button type="submit"
-                class="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-semibold rounded-xl hover:from-yellow-600 hover:to-orange-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-105">
-                <Icon icon="ph:paper-plane-tilt" class="w-5 h-5 mr-2 inline" />
-                Send Message
-              </button>
             </form>
           </div>
-        </section>
+        </div>
 
-        <!-- Contact Information Sidebar -->
-        <aside class="lg:col-span-1 space-y-6">
-          <!-- Contact Methods -->
-          <div class="rounded-3xl border border-yellow-100 bg-white p-6 shadow-sm">
-            <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <Icon icon="ph:address-book" class="w-5 h-5 text-yellow-600" />
-              Contact Information
-            </h3>
-
-            <div class="space-y-4">
-              <NuxtLink to="mailto:hello@archeryhub.id" external
-                class="flex items-center gap-3 p-3 rounded-xl hover:bg-yellow-50 transition-colors group">
-                <div
-                  class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center group-hover:bg-yellow-200 transition-colors">
-                  <Icon icon="ph:envelope" class="w-5 h-5 text-yellow-600" />
+        <div class="lg:col-span-5 space-y-6">
+          <div class="bg-navy rounded-2xl shadow-lg p-8 relative overflow-hidden text-white">
+            <div class="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
+              <span class="material-symbols-outlined text-9xl">travel_explore</span>
+            </div>
+            <h3 class="font-bold text-xl mb-6 relative z-10">Contact Information</h3>
+            <div class="space-y-6 relative z-10">
+              <div class="flex items-start gap-4">
+                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                  <span class="material-symbols-outlined text-primary">location_on</span>
                 </div>
                 <div>
-                  <div class="font-medium text-gray-900">Email</div>
-                  <div class="text-sm text-gray-600">hello@archeryhub.id</div>
+                  <h4 class="text-sm font-bold text-slate-300 uppercase tracking-wide mb-1">Head Office</h4>
+                  <p class="text-white leading-relaxed text-sm">
+                    Gelora Bung Karno Sports Complex<br />
+                    Jl. Pintu Satu Senayan<br />
+                    Jakarta Pusat, DKI Jakarta 10270
+                  </p>
                 </div>
-              </NuxtLink>
-
-              <NuxtLink to="https://github.com/ichsanputr" target="_blank" external
-                class="flex items-center gap-3 p-3 rounded-xl hover:bg-yellow-50 transition-colors group">
-                <div
-                  class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center group-hover:bg-yellow-200 transition-colors">
-                  <Icon icon="ph:github-logo" class="w-5 h-5 text-yellow-600" />
-                </div>
-                <div>
-                  <div class="font-medium text-gray-900">GitHub</div>
-                  <div class="text-sm text-gray-600">@ichsanputr</div>
-                </div>
-              </NuxtLink>
-
-              <NuxtLink to="https://twitter.com/archeryhub" target="_blank" external
-                class="flex items-center gap-3 p-3 rounded-xl hover:bg-yellow-50 transition-colors group">
-                <div
-                  class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center group-hover:bg-yellow-200 transition-colors">
-                  <Icon icon="ph:twitter-logo" class="w-5 h-5 text-yellow-600" />
+              </div>
+              <div class="flex items-start gap-4">
+                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                  <span class="material-symbols-outlined text-primary">mail</span>
                 </div>
                 <div>
-                  <div class="font-medium text-gray-900">Twitter</div>
-                  <div class="text-sm text-gray-600">@archeryhub</div>
+                  <h4 class="text-sm font-bold text-slate-300 uppercase tracking-wide mb-1">Email Support</h4>
+                  <a class="text-white hover:text-primary transition-colors text-sm font-medium"
+                    href="mailto:support@archeryhub.id">support@archeryhub.id</a>
                 </div>
-              </NuxtLink>
+              </div>
+              <div class="flex items-start gap-4">
+                <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
+                  <span class="material-symbols-outlined text-primary">call</span>
+                </div>
+                <div>
+                  <h4 class="text-sm font-bold text-slate-300 uppercase tracking-wide mb-1">Phone</h4>
+                  <a class="text-white hover:text-primary transition-colors text-sm font-medium"
+                    href="tel:+62215758888">+62 21 575 8888</a>
+                  <div class="text-xs text-slate-400 mt-1">Mon-Fri, 9am - 5pm WIB</div>
+                </div>
+              </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-white/10 relative z-10">
+              <h4 class="text-sm font-bold text-slate-300 uppercase tracking-wide mb-4">Follow Us</h4>
+              <div class="flex gap-4">
+                <a href="#"
+                  class="w-10 h-10 rounded-lg bg-white/10 hover:bg-primary hover:text-navy transition-all flex items-center justify-center group">
+                  <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                    <path
+                      d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.84 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+                  </svg>
+                </a>
+                <a href="#"
+                  class="w-10 h-10 rounded-lg bg-white/10 hover:bg-primary hover:text-navy transition-all flex items-center justify-center group">
+                  <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                    <path
+                      d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                  </svg>
+                </a>
+                <a href="#"
+                  class="w-10 h-10 rounded-lg bg-white/10 hover:bg-primary hover:text-navy transition-all flex items-center justify-center group">
+                  <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                    <path
+                      d="M22.675 0h-21.35C.597 0 0 .597 0 1.326v21.348C0 23.403.597 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.73 0 1.325-.597 1.325-1.326V1.326C24 .597 23.403 0 22.675 0z" />
+                  </svg>
+                </a>
+              </div>
             </div>
           </div>
-
-          <!-- Quick Help -->
-          <div class="rounded-3xl border border-yellow-100 bg-white p-6 shadow-sm">
-            <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <Icon icon="ph:question" class="w-5 h-5 text-yellow-600" />
-              Why reach out?
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+            <h3 class="font-bold text-navy dark:text-white mb-2 flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary">help</span>
+              Quick Help
             </h3>
-
-            <ul class="space-y-3 text-sm !list-disc !list-inside text-gray-600">
-              <li class="flex items-start gap-2">
-                Report a bug or technical issue
-              </li>
-              <li class="flex items-start gap-2">
-                Suggest new features or improvements
-              </li>
-              <li class="flex items-start gap-2">
-                Discuss partnerships or collaborations
-              </li>
-              <li class="flex items-start gap-2">
-                Ask about our platform and roadmap
-              </li>
-              <li class="flex items-start gap-2">
-                Educational institution partnerships
-              </li>
-            </ul>
+            <p class="text-sm text-slate-500 mb-3">Looking for frequently asked questions? Visit our Help Center for
+              instant answers.</p>
+            <NuxtLink to="/faq"
+              class="text-xs font-bold text-navy dark:text-white border-b-2 border-primary hover:border-navy transition-colors pb-0.5 inline-block">
+              Visit Help Center</NuxtLink>
           </div>
-
-        </aside>
+        </div>
       </div>
-    </Container>
+    </main>
   </div>
 </template>
 
 <script setup>
-import Container from '~/components/Container.vue'
-import { Icon } from '@iconify/vue'
-
-// Use landing layout
 definePageMeta({
   layout: 'landing'
 })
 
-// Set page meta
-const route = useRoute()
-useHead({
-  title: 'Contact - Archery Hub Tournament Manager',
-  meta: [
-    {
-      name: 'description',
-      content: 'Get in touch with the Archery Hub team. We\'d love to hear your feedback, suggestions, and questions.'
-    }
-  ],
-  link: [
-    {
-      rel: 'canonical',
-      href: `https://archeryhub.id${route.path}`
-    }
-  ]
+const loading = ref(false)
+const form = reactive({
+  name: '',
+  email: '',
+  subject: '',
+  message: ''
 })
+
+const handleSubmit = async () => {
+  loading.value = true
+  // Simulate API call
+  await new Promise(resolve => setTimeout(resolve, 1500))
+  loading.value = false
+  alert('Thank you! Your message has been sent.')
+  // Reset form
+  form.name = ''
+  form.email = ''
+  form.subject = ''
+  form.message = ''
+}
 </script>
+
+<style scoped>
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+</style>

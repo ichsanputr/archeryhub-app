@@ -57,19 +57,15 @@
               Perusahaan
             </h4>
             <div class="flex flex-col gap-3">
-              <NuxtLink to="/about"
-                class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Tentang Kami
-              </NuxtLink>
               <NuxtLink to="/contact"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 Kontak
               </NuxtLink>
-              <NuxtLink to="/privacy"
+              <NuxtLink to="/legal#privacy-policy"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 Kebijakan Privasi
               </NuxtLink>
-              <NuxtLink to="/terms"
+              <NuxtLink to="/legal#terms-of-service"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 Syarat & Ketentuan
               </NuxtLink>

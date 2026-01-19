@@ -25,19 +25,14 @@
                         :class="{ 'text-navy font-bold': isActive('/berita') }">
                         Berita
                     </NuxtLink>
-                    <NuxtLink to="/about" class="text-gray-600 hover:text-navy font-medium text-sm transition-colors"
-                        :class="{ 'text-navy font-bold': isActive('/about') }">
-                        Tentang
-                    </NuxtLink>
                 </nav>
 
-                <!-- Auth Buttons -->
-                <div class="flex items-center gap-4">
-                    <NuxtLink to="/auth/login" class="hidden md:flex text-gray-600 font-medium text-sm hover:text-navy">
+                <div class="flex items-center gap-3">
+                    <NuxtLink to="/auth/login" class="hidden md:flex text-gray-500 font-medium text-xs hover:text-navy">
                         Masuk
                     </NuxtLink>
                     <NuxtLink to="/auth/register"
-                        class="hidden sm:flex bg-navy hover:bg-navy-light text-white px-5 py-2 rounded-lg text-sm font-bold transition-all shadow-md hover:shadow-lg">
+                        class="hidden sm:flex bg-navy hover:bg-navy-light text-white px-4 py-1.5 rounded-lg text-xs font-bold transition-all shadow-sm hover:shadow-lg">
                         Daftar
                     </NuxtLink>
                     <!-- Mobile Menu Button -->
@@ -55,8 +50,6 @@
                     :class="{ 'text-primary font-bold': isActive('/events') }">Turnamen</NuxtLink>
                 <NuxtLink to="/berita" class="block text-gray-600 font-medium text-sm py-2"
                     :class="{ 'text-primary font-bold': isActive('/berita') }">Berita</NuxtLink>
-                <NuxtLink to="/about" class="block text-gray-600 font-medium text-sm py-2"
-                    :class="{ 'text-primary font-bold': isActive('/about') }">Tentang</NuxtLink>
                 <div class="pt-3 border-t border-gray-100 flex gap-3">
                     <NuxtLink to="/auth/login"
                         class="flex-1 text-center py-2.5 border border-gray-200 rounded-lg text-sm font-bold text-navy">
