@@ -131,7 +131,8 @@
                         </div>
 
                         <!-- Tournament Cards Container -->
-                        <div class="space-y-4 px-1">
+                        <div
+                            class="space-y-4 px-1 max-h-[500px] overflow-y-auto scrollbar-thin scrollbar-track-gray-50 scrollbar-thumb-gray-200 hover:scrollbar-thumb-primary/30 transition-colors pr-2">
                             <div v-for="(event, index) in upcomingEvents" :key="event.name"
                                 class="group bg-white rounded-2xl border border-gray-100 p-4 sm:p-5 hover:border-primary/50 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300">
                                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-6">
@@ -141,9 +142,9 @@
                                             class="flex-shrink-0 flex flex-col items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-navy text-white shadow-md group-hover:bg-primary group-hover:text-navy transition-colors duration-300">
                                             <span
                                                 class="text-[10px] sm:text-xs font-bold uppercase tracking-wider opacity-80">{{
-                                                event.month }}</span>
+                                                    event.month }}</span>
                                             <span class="text-xl sm:text-2xl font-black leading-none">{{ event.day
-                                                }}</span>
+                                            }}</span>
                                         </div>
 
                                         <!-- Event Details -->
