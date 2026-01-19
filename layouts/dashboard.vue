@@ -26,7 +26,7 @@
                     class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group"
                     :class="route.path === item.path ? 'bg-primary text-navy shadow-lg shadow-primary/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'">
                     <span class="material-symbols-outlined group-hover:scale-110 transition-transform">{{ item.icon
-                    }}</span>
+                        }}</span>
                     <span v-if="!isSidebarCollapsed" class="text-sm font-bold whitespace-nowrap">{{ item.label }}</span>
                 </NuxtLink>
 
@@ -39,24 +39,32 @@
                     class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group"
                     :class="route.path.startsWith(item.path) && item.path !== '/' ? 'bg-primary text-navy shadow-lg shadow-primary/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'">
                     <span class="material-symbols-outlined group-hover:scale-110 transition-transform">{{ item.icon
-                    }}</span>
+                        }}</span>
                     <span v-if="!isSidebarCollapsed" class="text-sm font-bold whitespace-nowrap">{{ item.label }}</span>
                 </NuxtLink>
             </nav>
 
             <!-- User Profile (Sidebar Bottom) -->
             <div class="p-4 border-t border-white/10 bg-black/20 shrink-0">
-                <div class="flex items-center gap-3 px-2 py-1 cursor-pointer hover:opacity-80 transition-opacity">
-                    <div
-                        class="h-9 w-9 rounded-full bg-primary/20 border-2 border-white/10 flex items-center justify-center text-primary shrink-0 overflow-hidden">
-                        <img :src="user?.avatar_url || `https://ui-avatars.com/api/?name=${user?.name || 'User'}&background=FFD700&color=0F172A`"
-                            class="w-full h-full object-cover">
+                <div class="flex items-center justify-between gap-3 px-2 py-1">
+                    <div class="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity min-w-0">
+                        <div
+                            class="h-9 w-9 rounded-full bg-primary/20 border-2 border-white/10 flex items-center justify-center text-primary shrink-0 overflow-hidden">
+                            <img :src="user?.avatar_url || `https://ui-avatars.com/api/?name=${user?.name || 'User'}&background=FFD700&color=0F172A`"
+                                class="w-full h-full object-cover">
+                        </div>
+                        <div v-if="!isSidebarCollapsed" class="flex flex-col min-w-0">
+                            <span class="text-white text-sm font-bold truncate">{{ user?.name || 'Guest' }}</span>
+                            <span class="text-[10px] text-gray-500 font-black uppercase tracking-widest">{{ user?.role
+                                ||
+                                'User' }}</span>
+                        </div>
                     </div>
-                    <div v-if="!isSidebarCollapsed" class="flex flex-col min-w-0">
-                        <span class="text-white text-sm font-bold truncate">{{ user?.name || 'Guest' }}</span>
-                        <span class="text-[10px] text-gray-500 font-black uppercase tracking-widest">{{ user?.role ||
-                            'User' }}</span>
-                    </div>
+                    <button @click="handleLogout"
+                        class="p-2 text-gray-400 hover:text-red-400 transition-colors rounded-lg hover:bg-white/5"
+                        :title="isSidebarCollapsed ? 'Keluar' : ''">
+                        <span class="material-symbols-outlined text-[20px]">logout</span>
+                    </button>
                 </div>
             </div>
         </aside>
@@ -101,27 +109,38 @@
                 <slot />
             </main>
         </div>
+
+        <!-- Global Dialog -->
+        <AppDialog v-model:show="showLogoutDialog" title="Keluar dari Sistem"
+            message="Apakah Anda yakin ingin mengakhiri sesi ini? Anda perlu masuk kembali untuk mengakses panel kontrol."
+            confirm-text="Ya, Keluar" cancel-text="Tetap di Sini" type="danger" icon="logout" @confirm="logout" />
     </div>
 </template>
 
 <script setup>
 const route = useRoute()
-const { user } = useAuth()
+const { user, logout } = useAuth()
 const isSidebarCollapsed = ref(false)
 const isMobileMenuOpen = ref(false)
+const showLogoutDialog = ref(false)
+
+const handleLogout = () => {
+    showLogoutDialog.value = true
+}
 
 const navItems = [
     { label: 'Ringkasan', icon: 'dashboard', path: '/dashboard' },
-    { label: 'Turnamen Saya', icon: 'emoji_events', path: '/dashboard/tournaments' },
+    { label: 'Event Saya', icon: 'emoji_events', path: '/dashboard/events' },
     { label: 'Statistik Global', icon: 'bar_chart', path: '/dashboard/statistics' },
 ]
 
 const eventItems = [
-    { label: 'Panel Kontrol', icon: 'view_quilt', path: '/dashboard/tournaments/1/manage' },
-    { label: 'Manajemen Atlet', icon: 'groups', path: '/dashboard/tournaments/1/manage/archers' },
-    { label: 'Scoring & Hasil', icon: 'scoreboard', path: '/dashboard/tournaments/1/manage/scoring' },
-    { label: 'Pengaturan Event', icon: 'settings', path: '/dashboard/tournaments/1/manage/settings' },
+    { label: 'Panel Kontrol', icon: 'view_quilt', path: '/dashboard/events/1/manage' },
+    { label: 'Manajemen Atlet', icon: 'groups', path: '/dashboard/events/1/manage/archers' },
+    { label: 'Scoring & Hasil', icon: 'scoreboard', path: '/dashboard/events/1/manage/scoring' },
+    { label: 'Pengaturan Event', icon: 'settings', path: '/dashboard/events/1/manage/settings' },
 ]
+
 
 const currentPageTitle = computed(() => {
     const active = [...navItems, ...eventItems].find(item => route.path === item.path)
