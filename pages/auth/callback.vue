@@ -29,10 +29,6 @@ import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 
-definePageMeta({
-  layout: 'blank'
-})
-
 const route = useRoute()
 const router = useRouter()
 const { handleCallback } = useAuth()

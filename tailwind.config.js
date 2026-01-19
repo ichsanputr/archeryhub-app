@@ -20,6 +20,11 @@ module.exports = {
                     light: '#1e293b',
                     DEFAULT: '#0f172a',
                 },
+                "navy-dark": "#0f172a",
+                "navy-light": "#1e293b",
+                "text-main": "#111827",
+                "text-secondary": "#6b7280",
+                "text-nav": "#9ca3af",
                 brand: {
                     gold: '#f9d006',
                     lime: '#D9FF00',

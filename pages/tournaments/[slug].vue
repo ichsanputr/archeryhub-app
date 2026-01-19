@@ -357,10 +357,6 @@
 </template>
 
 <script setup>
-definePageMeta({
-    layout: 'blank'
-})
-
 const route = useRoute()
 const slug = route.params.slug
 

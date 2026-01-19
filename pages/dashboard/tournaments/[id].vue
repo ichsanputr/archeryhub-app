@@ -75,7 +75,7 @@
                             <div v-for="unit in ['Hari', 'Jam', 'Menit']" :key="unit"
                                 class="flex-1 bg-gray-50 rounded-lg p-3 text-center">
                                 <span class="block text-2xl font-black text-navy">{{ Math.floor(Math.random() * 24)
-                                }}</span>
+                                    }}</span>
                                 <span class="text-[10px] text-text-sub uppercase font-bold">{{ unit }}</span>
                             </div>
                         </div>
@@ -130,10 +130,6 @@
 </template>
 
 <script setup>
-definePageMeta({
-    layout: 'blank'
-})
-
 const route = useRoute()
 const tId = route.params.id || '1'
 

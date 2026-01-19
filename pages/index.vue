@@ -470,10 +470,6 @@ onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll)
 })
 
-definePageMeta({
-    layout: 'blank'
-})
-
 useHead({
     title: 'Archeryhub.id - Modernisasi Tata Kelola Panahan Indonesia',
     meta: [

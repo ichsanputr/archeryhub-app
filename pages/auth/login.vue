@@ -150,11 +150,6 @@ import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 
-definePageMeta({
-    layout: 'blank',
-    title: 'Login'
-})
-
 const route = useRoute()
 const router = useRouter()
 const { login, loginWithEmail, isLoggedIn } = useAuth()

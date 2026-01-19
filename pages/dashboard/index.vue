@@ -1,59 +1,129 @@
 <template>
   <div class="space-y-8">
-    <!-- Header -->
-    <div class="flex flex-wrap items-center justify-between gap-6">
-      <div class="flex items-center gap-3">
-        <h1 class="text-2xl md:text-3xl font-black text-navy tracking-tight">Ringkasan</h1>
-        <span
-          class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700 border border-green-200 flex items-center gap-1.5 shadow-sm">
-          <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-          LIVE
-        </span>
+    <!-- Header Section -->
+    <div class="flex flex-wrap items-center justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-3">
+          <h1 class="text-3xl font-bold text-navy-dark tracking-tight">Overview</h1>
+          <span
+            class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700 border border-green-200 flex items-center gap-1.5 shadow-sm">
+            <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+            LIVE
+          </span>
+        </div>
+        <p class="text-text-secondary mt-1 font-medium text-sm">Qualification Round 2 in progress</p>
       </div>
-      <p class="text-text-secondary font-medium text-sm">Ronde Kualifikasi 2 sedang berlangsung</p>
+      <div class="flex gap-3">
+        <button
+          class="flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-gray-200 text-navy-dark hover:bg-gray-50 hover:border-gray-300 font-semibold text-sm transition-all shadow-sm">
+          <span class="material-symbols-outlined text-[18px]">pause</span>
+          Pause Round
+        </button>
+        <button
+          class="flex items-center gap-2 px-4 py-2 rounded-lg bg-navy-dark text-white hover:bg-navy-light font-bold text-sm transition-all shadow-md">
+          <span class="material-symbols-outlined text-[18px]">campaign</span>
+          Broadcast
+        </button>
+      </div>
     </div>
 
     <!-- Stats Grid -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-      <div v-for="stat in stats" :key="stat.label"
-        class="bg-white rounded-xl p-4 md:p-5 flex flex-col justify-between min-h-[120px] shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-all border border-gray-100 group">
-        <div class="flex justify-between items-start gap-2">
-          <div class="min-w-0">
-            <p class="text-text-secondary text-[10px] md:text-xs font-bold uppercase tracking-wider mb-1 truncate">{{
-              stat.label }}</p>
-            <p class="text-navy text-2xl md:text-3xl font-black tracking-tight tabular-nums">{{ stat.value }}</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+      <!-- Total Archers -->
+      <div
+        class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-all border border-gray-100 group">
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Total Archers</p>
+            <p class="text-navy-dark text-3xl font-extrabold tracking-tight">124</p>
           </div>
           <div
-            class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy transition-colors shrink-0">
-            <span class="material-symbols-outlined text-xl md:text-2xl">{{ stat.icon }}</span>
+            class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+            <span class="material-symbols-outlined">group</span>
           </div>
         </div>
-        <div class="mt-auto pt-2">
-          <p :class="stat.trendColor" class="text-[10px] font-bold flex items-center gap-1">
-            <span class="material-symbols-outlined text-[14px]">{{ stat.trendIcon }}</span>
-            {{ stat.trend }}
+        <div class="mt-auto">
+          <p class="text-green-600 text-xs font-bold flex items-center gap-1">
+            <span class="material-symbols-outlined text-[14px]">trending_up</span>
+            +12 check-ins today
           </p>
+        </div>
+      </div>
+
+      <!-- Active Targets -->
+      <div
+        class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-all border border-gray-100 group">
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Active Targets</p>
+            <p class="text-navy-dark text-3xl font-extrabold tracking-tight">32<span
+                class="text-lg text-gray-400 font-medium ml-1">/ 35</span></p>
+          </div>
+          <div
+            class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+            <span class="material-symbols-outlined">adjust</span>
+          </div>
+        </div>
+        <div class="mt-auto">
+          <p class="text-text-secondary text-xs font-medium flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+            All systems online
+          </p>
+        </div>
+      </div>
+
+      <!-- Completion -->
+      <div
+        class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-all border border-gray-100 group">
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Completion</p>
+            <p class="text-navy-dark text-3xl font-extrabold tracking-tight">85%</p>
+          </div>
+          <div
+            class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+            <span class="material-symbols-outlined">assignment_turned_in</span>
+          </div>
+        </div>
+        <div class="w-full bg-gray-100 rounded-full h-1.5 mt-auto">
+          <div class="bg-primary h-1.5 rounded-full" style="width: 85%"></div>
+        </div>
+      </div>
+
+      <!-- Time Left -->
+      <div
+        class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-all border border-gray-100 group">
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Time Left</p>
+            <p class="text-navy-dark text-3xl font-extrabold tracking-tight tabular-nums">45:20</p>
+          </div>
+          <div
+            class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+            <span class="material-symbols-outlined">timer</span>
+          </div>
+        </div>
+        <div class="mt-auto">
+          <p class="text-text-secondary text-xs font-medium">Est. End: 14:30 PM</p>
         </div>
       </div>
     </div>
 
-    <!-- Main Grid -->
+    <!-- Main Content Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- Target Status (main content) -->
+      <!-- Target Status -->
       <div
         class="lg:col-span-2 bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
-        <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-white">
-          <h3 class="text-navy font-bold text-base md:text-lg flex items-center gap-2">
-            Status Target
-          </h3>
+        <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
+          <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">Target Status</h3>
           <div class="flex gap-3 text-xs font-semibold">
             <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Shooting
             </div>
             <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-primary"></span> Scoring</div>
-            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-red-500"></span> Masalah</div>
+            <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-red-500"></span> Issue</div>
           </div>
         </div>
-        <div class="p-6 flex-1 bg-gray-50/30">
+        <div class="p-6 flex-1 overflow-y-auto bg-gray-50/30">
           <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3">
             <div v-for="target in targetGrid" :key="target.id" :class="getTargetGridClass(target.status)"
               class="aspect-square rounded-lg flex flex-col items-center justify-center cursor-pointer hover:shadow-md transition-all group shadow-sm">
@@ -69,34 +139,37 @@
       <!-- Leaderboard -->
       <div
         class="bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
-        <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-white">
-          <h3 class="text-navy font-bold text-base md:text-lg">Papan Peringkat</h3>
-          <NuxtLink to="#" class="text-xs text-text-secondary hover:text-navy font-semibold transition-colors">Lihat
-            Semua</NuxtLink>
+        <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
+          <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">Leaderboard</h3>
+          <button class="text-xs text-text-secondary hover:text-navy-dark font-semibold transition-colors">View
+            All</button>
         </div>
         <div class="flex-1 overflow-y-auto">
           <table class="w-full text-left text-sm">
             <thead class="bg-gray-50 text-gray-500 font-semibold border-b border-gray-100">
               <tr>
                 <th class="px-6 py-3 font-medium text-xs uppercase tracking-wider">Rk</th>
-                <th class="px-6 py-3 font-medium text-xs uppercase tracking-wider">Atlet</th>
-                <th class="px-6 py-3 text-right font-medium text-xs uppercase tracking-wider">Skor</th>
+                <th class="px-6 py-3 font-medium text-xs uppercase tracking-wider">Archer</th>
+                <th class="px-6 py-3 text-right font-medium text-xs uppercase tracking-wider">Score</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
               <tr v-for="(archer, index) in leaderboard" :key="archer.id"
                 class="hover:bg-gray-50 transition-colors group">
                 <td class="px-6 py-3.5">
-                  <div :class="index === 0 ? 'bg-primary text-navy shadow-sm' : ''"
-                    class="font-extrabold w-6 h-6 rounded flex items-center justify-center text-xs">{{ index + 1 }}
+                  <div
+                    :class="index === 0 ? 'bg-primary text-navy-dark font-extrabold shadow-sm' : 'text-gray-400 font-bold'"
+                    class="w-6 h-6 rounded flex items-center justify-center text-xs">
+                    {{ index + 1 }}
                   </div>
                 </td>
                 <td class="px-6 py-3.5">
-                  <div class="text-navy font-bold group-hover:text-primary-hover transition-colors">{{ archer.name }}
-                  </div>
+                  <div class="text-navy-dark font-bold group-hover:text-primary-hover transition-colors">{{ archer.name
+                    }}</div>
                   <div class="text-gray-400 text-xs">{{ archer.category }}</div>
                 </td>
-                <td class="px-6 py-3.5 text-right font-mono text-navy font-bold text-base">{{ archer.score }}</td>
+                <td :class="index === 0 ? 'text-navy-dark font-bold text-base' : 'text-navy-dark font-semibold text-sm'"
+                  class="px-6 py-3.5 text-right font-mono">{{ archer.score }}</td>
               </tr>
             </tbody>
           </table>
@@ -104,17 +177,15 @@
       </div>
     </div>
 
-    <!-- Bottom Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Live Alerts & Quick Actions -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pb-6">
       <!-- Live Alerts -->
       <div class="bg-white rounded-xl border border-gray-200 flex flex-col shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
-        <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-white">
-          <h3 class="text-navy font-bold text-base md:text-lg flex items-center gap-2">
-            Notifikasi Live
-          </h3>
+        <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
+          <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">Live Alerts</h3>
           <span
             class="bg-red-50 text-red-600 border border-red-100 text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">2
-            Baru</span>
+            New</span>
         </div>
         <div class="p-6 flex flex-col gap-4">
           <div class="flex items-start gap-4 p-4 rounded-xl bg-red-50/50 border border-red-100">
@@ -122,37 +193,35 @@
               <span class="material-symbols-outlined mt-0.5">warning</span>
             </div>
             <div class="flex-1">
-              <p class="text-navy text-sm font-bold">Kerusakan Target 04</p>
-              <p class="text-text-secondary text-xs mt-1">Sistem tidak membaca tembakan. Teknisi sedang dikirim.</p>
+              <p class="text-navy-dark text-sm font-bold">Target 04 Malfunction</p>
+              <p class="text-text-secondary text-xs mt-1">Sensor not registering hits. Technician dispatched.</p>
             </div>
             <button
-              class="px-3 py-1.5 bg-white border border-gray-200 hover:border-red-200 hover:text-red-600 text-text-secondary text-xs font-semibold rounded-lg shadow-sm transition-colors">Abaikan</button>
+              class="px-3 py-1.5 bg-white border border-gray-200 hover:border-red-200 hover:text-red-600 text-text-secondary text-xs font-semibold rounded-lg shadow-sm transition-colors">Dismiss</button>
           </div>
           <div class="flex items-start gap-4 p-4 rounded-xl bg-gray-50 border border-gray-100">
-            <div class="p-2 bg-white rounded-lg border border-gray-200 shadow-sm text-navy">
+            <div class="p-2 bg-white rounded-lg border border-gray-200 shadow-sm text-navy-dark">
               <span class="material-symbols-outlined mt-0.5">gavel</span>
             </div>
             <div class="flex-1">
-              <p class="text-navy text-sm font-bold">Permintaan Review Skor</p>
-              <p class="text-text-secondary text-xs mt-1">Atlet #23 membantah Anak Panah 3 pada End 4.</p>
+              <p class="text-navy-dark text-sm font-bold">Scoring Review Requested</p>
+              <p class="text-text-secondary text-xs mt-1">Archer #23 contested Arrow 3 on End 4.</p>
             </div>
             <button
-              class="px-3 py-1.5 bg-navy hover:bg-navy-light text-white text-xs font-medium rounded-lg shadow-sm transition-colors">Review</button>
+              class="px-3 py-1.5 bg-navy-dark hover:bg-navy-light text-white text-xs font-medium rounded-lg shadow-sm transition-colors">Review</button>
           </div>
         </div>
       </div>
 
       <!-- Quick Actions -->
       <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
-        <h3 class="text-navy font-bold mb-4 flex items-center gap-2 text-base md:text-lg">
-          Aksi Cepat
-        </h3>
+        <h3 class="text-navy-dark font-bold mb-4 flex items-center gap-2 text-lg">Quick Actions</h3>
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
           <button v-for="action in quickActions" :key="action.label"
             class="flex flex-col items-center justify-center p-4 rounded-xl bg-gray-50 border border-gray-100 hover:bg-white hover:border-primary hover:shadow-lg hover:shadow-primary/10 text-text-main transition-all group duration-300">
             <span class="material-symbols-outlined mb-2 text-gray-400 group-hover:text-primary transition-colors">{{
               action.icon }}</span>
-            <span class="text-xs font-bold group-hover:text-navy">{{ action.label }}</span>
+            <span class="text-xs font-bold group-hover:text-navy-dark text-center">{{ action.label }}</span>
           </button>
         </div>
       </div>
@@ -166,10 +235,10 @@ definePageMeta({
 })
 
 const stats = [
-  { label: 'Total Atlet', value: '124', icon: 'group', trend: '+12 check-in hari ini', trendIcon: 'trending_up', trendColor: 'text-green-600' },
-  { label: 'Target Aktif', value: '32/35', icon: 'adjust', trend: 'Semua target online', trendIcon: 'check_circle', trendColor: 'text-text-secondary' },
-  { label: 'Penyelesaian', value: '85%', icon: 'assignment_turned_in', trend: '', trendIcon: '', trendColor: '' },
-  { label: 'Sisa Waktu', value: '45:20', icon: 'timer', trend: 'Est. Selesai: 14:30', trendIcon: 'schedule', trendColor: 'text-text-secondary' },
+  { label: 'Total Archers', value: '124', icon: 'group', trend: '+12 check-ins today', trendIcon: 'trending_up', trendColor: 'text-green-600' },
+  { label: 'Active Targets', value: '32/35', icon: 'adjust', trend: 'All systems online', trendIcon: 'check_circle', trendColor: 'text-text-secondary' },
+  { label: 'Completion', value: '85%', icon: 'assignment_turned_in', trend: '', trendIcon: '', trendColor: '' },
+  { label: 'Time Left', value: '45:20', icon: 'timer', trend: 'Est. End: 14:30 PM', trendIcon: 'schedule', trendColor: 'text-text-secondary' },
 ]
 
 const targetGrid = [
@@ -208,11 +277,12 @@ const leaderboard = [
 ]
 
 const quickActions = [
-  { label: 'Cetak Scorecard', icon: 'print' },
+  { label: 'Print Scorecards', icon: 'print' },
   { label: 'Sync Leaderboard', icon: 'published_with_changes' },
-  { label: 'Edit Penempatan', icon: 'edit_note' },
-  { label: 'Pengumuman', icon: 'mic' },
+  { label: 'Edit Assignments', icon: 'edit_note' },
+  { label: 'Announcements', icon: 'mic' },
   { label: 'Generate QR', icon: 'qr_code' },
+  { label: 'Device Manager', icon: 'settings_applications' },
 ]
 
 const getTargetGridClass = (status) => {

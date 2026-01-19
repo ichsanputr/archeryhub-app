@@ -358,10 +358,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
-definePageMeta({
-    layout: 'blank'
-})
-
 const route = useRoute()
 const isLoading = ref(false)
 const error = ref(null)

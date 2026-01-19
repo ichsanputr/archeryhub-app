@@ -297,10 +297,6 @@
 </template>
 
 <script setup>
-definePageMeta({
-    layout: 'blank'
-})
-
 const searchQuery = ref('')
 const sortBy = ref('newest')
 
