@@ -167,11 +167,26 @@ const form = ref({
     password: ''
 })
 
-// Redirect if already logged in
-onMounted(() => {
+// Redirect if already logged in or auto-fill in development
+onMounted(async () => {
     if (isLoggedIn.value) {
         const redirect = route.query.redirect || '/'
         router.replace(redirect)
+        return
+    }
+
+    // Auto-fill for development
+    if (import.meta.dev) {
+        try {
+            const config = useRuntimeConfig()
+            const { email, password } = await $fetch(`${config.public.apiBaseUrl}/auth/sample-user`)
+            if (email) {
+                form.value.email = email
+                form.value.password = password
+            }
+        } catch (err) {
+            console.warn('Failed to fetch sample user for auto-fill:', err)
+        }
     }
 })
 

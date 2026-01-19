@@ -23,15 +23,20 @@
                         <NuxtLink to="/tournaments"
                             class="text-sm font-medium transition-all duration-300 hover:text-primary"
                             :class="isScrolled ? 'text-navy' : 'text-white/80'">Turnamen</NuxtLink>
-                        <a class="text-sm font-medium transition-all duration-300 hover:text-primary"
-                            :class="isScrolled ? 'text-navy' : 'text-white/80'" href="#">Skor</a>
-                        <a class="text-sm font-medium transition-all duration-300 hover:text-primary"
-                            :class="isScrolled ? 'text-navy' : 'text-white/80'" href="#">Klub</a>
+                        <NuxtLink to="#" class="text-sm font-medium transition-all duration-300 hover:text-primary"
+                            :class="isScrolled ? 'text-navy' : 'text-white/80'">Skor</NuxtLink>
+                        <NuxtLink to="#" class="text-sm font-medium transition-all duration-300 hover:text-primary"
+                            :class="isScrolled ? 'text-navy' : 'text-white/80'">Klub</NuxtLink>
                         <NuxtLink to="/about" class="text-sm font-medium transition-all duration-300 hover:text-primary"
                             :class="isScrolled ? 'text-navy' : 'text-white/80'">Tentang</NuxtLink>
                     </div>
                     <div class="hidden md:flex">
-                        <NuxtLink to="/auth/login"
+                        <NuxtLink v-if="isLoggedIn" to="/dashboard"
+                            class="bg-primary hover:bg-primary-hover text-navy text-sm font-bold px-6 py-2.5 rounded-lg transition-colors duration-200 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-lg">dashboard</span>
+                            Dashboard
+                        </NuxtLink>
+                        <NuxtLink v-else to="/auth/login"
                             class="bg-primary hover:bg-primary-hover text-navy text-sm font-bold px-6 py-2.5 rounded-lg transition-colors duration-200">
                             Masuk / Daftar
                         </NuxtLink>
@@ -49,10 +54,14 @@
             <div v-if="mobileMenuOpen" class="md:hidden bg-white border-b border-border-subtle p-4 space-y-4">
                 <NuxtLink to="/" class="block text-navy text-sm font-medium">Beranda</NuxtLink>
                 <NuxtLink to="/tournaments" class="block text-navy text-sm font-medium">Turnamen</NuxtLink>
-                <a href="#" class="block text-navy text-sm font-medium">Skor</a>
-                <a href="#" class="block text-navy text-sm font-medium">Klub</a>
+                <NuxtLink to="#" class="block text-navy text-sm font-medium">Skor</NuxtLink>
+                <NuxtLink to="#" class="block text-navy text-sm font-medium">Klub</NuxtLink>
                 <NuxtLink to="/about" class="block text-navy text-sm font-medium">Tentang</NuxtLink>
-                <NuxtLink to="/auth/login" class="block bg-primary text-navy text-center font-bold py-2 rounded-lg">
+                <NuxtLink v-if="isLoggedIn" to="/dashboard"
+                    class="block bg-primary text-navy text-center font-bold py-2 rounded-lg">
+                    Dashboard</NuxtLink>
+                <NuxtLink v-else to="/auth/login"
+                    class="block bg-primary text-navy text-center font-bold py-2 rounded-lg">
                     Masuk / Daftar</NuxtLink>
             </div>
         </nav>
@@ -181,11 +190,11 @@
                             </p>
                         </div>
                         <div class="relative z-10">
-                            <a href="/auth/register?type=archer"
+                            <NuxtLink to="/auth/register?type=archer"
                                 class="w-full inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-navy text-sm font-bold px-6 py-3 rounded-xl transition-all">
                                 Daftar Atlet
                                 <span class="material-symbols-outlined text-lg">arrow_forward</span>
-                            </a>
+                            </NuxtLink>
                         </div>
                     </div>
 
@@ -199,11 +208,11 @@
                             <p class="text-text-sub text-sm mb-6">Kelola klub atau federasi dengan sistem modern.</p>
                         </div>
                         <div class="relative z-10">
-                            <a href="/auth/register?type=organization"
+                            <NuxtLink to="/auth/register?type=organization"
                                 class="w-full inline-flex items-center justify-center gap-2 bg-navy hover:bg-navy-light text-white text-sm font-bold px-6 py-3 rounded-xl transition-all">
                                 Gabung Mitra
                                 <span class="material-symbols-outlined text-lg">arrow_forward</span>
-                            </a>
+                            </NuxtLink>
                         </div>
                     </div>
                 </div>
@@ -312,6 +321,54 @@
             </div>
         </section>
 
+        <!-- Featured Clubs Section -->
+        <section class="bg-[#f8fafc] py-16 md:py-20 border-y border-gray-200 relative z-10">
+            <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-navy mb-2 font-display">Klub Unggulan</h2>
+                        <p class="text-text-sub text-sm hidden sm:block">Akademi dan klub panahan terbaik di sekitar
+                            Anda</p>
+                    </div>
+                    <NuxtLink to="/clubs"
+                        class="text-navy hover:text-primary-hover font-bold text-sm flex items-center gap-2 group bg-white px-4 py-2 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
+                        Lihat Semua Klub <span
+                            class="material-symbols-outlined text-lg transition-transform group-hover:translate-x-1">arrow_forward</span>
+                    </NuxtLink>
+                </div>
+                <div class="flex flex-wrap items-center gap-3 mb-8 overflow-x-auto no-scrollbar pb-2">
+                    <button v-for="region in regions" :key="region"
+                        class="px-5 py-2 rounded-full text-sm font-bold transition-colors whitespace-nowrap"
+                        :class="activeRegion === region ? 'bg-primary text-navy shadow-md' : 'bg-slate-200/70 text-navy hover:bg-slate-300'"
+                        @click="activeRegion = region">
+                        {{ region }}
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div v-for="club in filteredClubs" :key="club.name"
+                        class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center relative group">
+                        <div v-if="club.verified"
+                            class="absolute top-3 right-3 bg-primary text-navy px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 shadow-sm">
+                            <span class="material-symbols-outlined text-[14px] fill-1">verified</span> Verifikasi
+                        </div>
+                        <div
+                            class="w-20 h-20 rounded-2xl bg-navy/5 text-navy flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                            <span class="material-symbols-outlined text-4xl">{{ club.icon }}</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-navy mb-1 font-display">{{ club.name }}</h3>
+                        <div class="flex items-center gap-1 text-text-sub text-sm mb-6">
+                            <span class="material-symbols-outlined text-base">location_on</span>
+                            <span>{{ club.location }}</span>
+                        </div>
+                        <button
+                            class="w-full mt-auto py-2.5 px-4 bg-primary hover:bg-primary-hover text-navy font-bold text-sm rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2">
+                            Lihat Profil
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Latest News Section -->
         <section class="bg-white py-16 md:py-20 border-t border-gray-100">
             <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -363,11 +420,29 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useAuth } from '~/composables/useAuth'
 
 gsap.registerPlugin(ScrollTrigger)
 
+const { isLoggedIn, user } = useAuth()
+
 const isScrolled = ref(false)
 const mobileMenuOpen = ref(false)
+const activeRegion = ref('Semua Wilayah')
+
+const regions = ['Semua Wilayah', 'DKI Jakarta', 'Jawa Barat', 'Jawa Timur', 'DI Yogyakarta', 'Banten', 'Bali']
+
+const clubs = [
+    { name: 'Jakarta Elite Archery', location: 'GBK Senayan, Jakarta', icon: 'target', verified: true, region: 'DKI Jakarta' },
+    { name: 'Pasopati Archery', location: 'Sleman, Yogyakarta', icon: 'legend_toggle', verified: true, region: 'DI Yogyakarta' },
+    { name: 'Borneo Eagle Club', location: 'Balikpapan, Kaltim', icon: 'flight', verified: false, region: 'Kalimantan' },
+    { name: 'Bali Zen Archery', location: 'Ubud, Bali', icon: 'spa', verified: false, region: 'Bali' }
+]
+
+const filteredClubs = computed(() => {
+    if (activeRegion.value === 'Semua Wilayah') return clubs
+    return clubs.filter(club => club.region === activeRegion.value)
+})
 
 // Refs for GSAP animations
 const heroBadge = ref(null)

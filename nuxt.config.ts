@@ -28,12 +28,13 @@ export default defineNuxtConfig({
   ],
   runtimeConfig: {
     public: {
-      apiBaseUrl: 'http://localhost:8000/api/v1',
+      apiBaseUrl: 'http://localhost:8001/api/v1',
       siteUrl: 'https://archeryhub.id',
       siteName: 'Archeryhub.id',
     }
   },
   app: {
+    pageTransition: { name: 'page', mode: 'out-in' },
     head: {
       htmlAttrs: {
         lang: 'en'
@@ -48,8 +49,7 @@ export default defineNuxtConfig({
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Reddit+Sans:wght@300;400;500;600;700&family=Lexend:wght@300;400;500;600;700;800;900&family=Noto+Sans:wght@400;500;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap' }
-      ],
-      pageTransition: { name: 'page', mode: 'out-in' }
+      ]
     }
   },
   features: {

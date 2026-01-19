@@ -1,22 +1,32 @@
 <template>
     <div class="flex h-screen w-full bg-background-light font-sans text-navy-dark overflow-hidden">
+        <!-- Mobile Overlay -->
+        <div v-if="isMobileMenuOpen" @click="isMobileMenuOpen = false" class="fixed inset-0 bg-black/50 z-30 lg:hidden">
+        </div>
+
         <!-- Sidebar -->
-        <aside :class="isSidebarCollapsed ? 'w-20' : 'w-64'"
-            class="flex-shrink-0 flex flex-col bg-navy text-white shadow-xl z-20 transition-all duration-300 border-r border-white/5">
-            <div class="h-16 flex items-center px-6 border-b border-white/10 shrink-0">
+        <aside :class="[
+            isSidebarCollapsed ? 'lg:w-20' : 'lg:w-64',
+            isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+        ]"
+            class="fixed lg:relative inset-y-0 left-0 w-64 flex-shrink-0 flex flex-col bg-navy text-white shadow-xl z-40 transition-all duration-300 border-r border-white/5">
+            <div class="h-16 flex items-center justify-between px-6 border-b border-white/10 shrink-0">
                 <div class="flex items-center gap-3 overflow-hidden">
                     <img src="/logo.png" alt="Archeryhub.id Logo" class="h-8 w-8 object-contain shrink-0" />
                     <span v-if="!isSidebarCollapsed"
                         class="text-lg font-black tracking-tight whitespace-nowrap">Archeryhub.id</span>
                 </div>
+                <button @click="isMobileMenuOpen = false" class="lg:hidden p-1 text-gray-400 hover:text-white">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
             </div>
 
             <nav class="flex-grow flex flex-col p-4 gap-2 overflow-y-auto no-scrollbar">
-                <NuxtLink v-for="item in navItems" :key="item.path" :to="item.path"
+                <NuxtLink v-for="item in navItems" :key="item.path" :to="item.path" @click="isMobileMenuOpen = false"
                     class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group"
                     :class="route.path === item.path ? 'bg-primary text-navy shadow-lg shadow-primary/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'">
                     <span class="material-symbols-outlined group-hover:scale-110 transition-transform">{{ item.icon
-                        }}</span>
+                    }}</span>
                     <span v-if="!isSidebarCollapsed" class="text-sm font-bold whitespace-nowrap">{{ item.label }}</span>
                 </NuxtLink>
 
@@ -25,11 +35,11 @@
                     Penyelenggara
                 </div>
 
-                <NuxtLink v-for="item in eventItems" :key="item.path" :to="item.path"
+                <NuxtLink v-for="item in eventItems" :key="item.path" :to="item.path" @click="isMobileMenuOpen = false"
                     class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group"
                     :class="route.path.startsWith(item.path) && item.path !== '/' ? 'bg-primary text-navy shadow-lg shadow-primary/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'">
                     <span class="material-symbols-outlined group-hover:scale-110 transition-transform">{{ item.icon
-                        }}</span>
+                    }}</span>
                     <span v-if="!isSidebarCollapsed" class="text-sm font-bold whitespace-nowrap">{{ item.label }}</span>
                 </NuxtLink>
             </nav>
@@ -52,28 +62,34 @@
         </aside>
 
         <!-- Main Content Area -->
-        <div class="flex-grow flex flex-col h-full overflow-hidden">
+        <div class="flex-grow flex flex-col h-full overflow-hidden w-full">
             <!-- Header -->
             <header
-                class="h-16 flex items-center justify-between border-b border-gray-200 px-6 md:px-8 bg-white shrink-0 z-10">
-                <div class="flex items-center gap-4">
+                class="h-16 flex items-center justify-between border-b border-gray-200 px-4 md:px-6 lg:px-8 bg-white shrink-0 z-10">
+                <div class="flex items-center gap-3">
+                    <!-- Mobile menu toggle -->
+                    <button @click="isMobileMenuOpen = true"
+                        class="lg:hidden p-2 hover:bg-gray-100 rounded-lg text-gray-400 transition-colors">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                    <!-- Desktop sidebar toggle -->
                     <button @click="isSidebarCollapsed = !isSidebarCollapsed"
-                        class="p-2 hover:bg-gray-100 rounded-lg text-gray-400 transition-colors">
+                        class="hidden lg:block p-2 hover:bg-gray-100 rounded-lg text-gray-400 transition-colors">
                         <span class="material-symbols-outlined">{{ isSidebarCollapsed ? 'menu_open' : 'menu' }}</span>
                     </button>
-                    <h2 class="text-navy font-black text-lg hidden sm:block">{{ currentPageTitle }}</h2>
+                    <h2 class="text-navy font-black text-base md:text-lg truncate">{{ currentPageTitle }}</h2>
                 </div>
 
-                <div class="flex items-center gap-3 sm:gap-6">
+                <div class="flex items-center gap-2 sm:gap-4">
                     <div class="relative hidden lg:block group">
                         <span
                             class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-300 text-[20px] transition-colors group-focus-within:text-primary">search</span>
                         <input type="text" placeholder="Cari data..."
-                            class="bg-gray-50 border border-gray-200 rounded-full pl-10 pr-4 py-2 text-sm text-navy placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent w-64 transition-all">
+                            class="bg-gray-50 border border-gray-200 rounded-full pl-10 pr-4 py-2 text-sm text-navy placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent w-48 xl:w-64 transition-all">
                     </div>
                     <button
                         class="relative p-2 text-gray-400 hover:text-navy hover:bg-gray-100 rounded-full transition-all">
-                        <span class="material-symbols-outlined text-[24px]">notifications</span>
+                        <span class="material-symbols-outlined text-[22px] md:text-[24px]">notifications</span>
                         <span
                             class="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500 border-2 border-white"></span>
                     </button>
@@ -81,7 +97,7 @@
             </header>
 
             <!-- Page Content -->
-            <main class="flex-grow overflow-y-auto p-6 lg:p-10 no-scrollbar bg-background-light">
+            <main class="flex-grow overflow-y-auto p-4 md:p-6 lg:p-10 no-scrollbar bg-background-light">
                 <slot />
             </main>
         </div>
@@ -92,6 +108,7 @@
 const route = useRoute()
 const { user } = useAuth()
 const isSidebarCollapsed = ref(false)
+const isMobileMenuOpen = ref(false)
 
 const navItems = [
     { label: 'Ringkasan', icon: 'dashboard', path: '/dashboard' },

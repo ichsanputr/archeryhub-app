@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Archery Hub - Official Homepage</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0e1e3a", // Navy Blue
+                        "primary-light": "#1a365d",
+                        "accent": "#c3f53c", // Vibrant Lime
+                        "accent-hover": "#a3d92a",
+                        "background-light": "#f3f4f6", // Light Gray
+                        "background-dark": "#0c121c",
+                        "surface": "#ffffff",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.375rem", 
+                        "lg": "0.5rem", 
+                        "xl": "0.75rem", 
+                        "2xl": "1rem"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }.no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }.no-scrollbar {
+            -ms-overflow-style: none;scrollbar-width: none;}
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 font-display antialiased min-h-screen flex flex-col">
+<header class="sticky top-0 z-50 bg-surface dark:bg-[#1a202c] border-b border-gray-200 dark:border-gray-800 shadow-sm">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-16">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-accent">
+<span class="material-symbols-outlined icon-filled text-2xl">target</span>
+</div>
+<span class="text-primary dark:text-white text-xl font-bold tracking-tight">Archery Hub</span>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-primary dark:text-accent font-bold text-sm relative after:content-[''] after:absolute after:w-full after:h-0.5 after:bg-primary dark:after:bg-accent after:-bottom-6 after:left-0" href="#">Home</a>
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white font-medium text-sm transition-colors" href="#">Tournaments</a>
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white font-medium text-sm transition-colors" href="#">Rankings</a>
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white font-medium text-sm transition-colors" href="#">Athletes</a>
+<a class="text-slate-600 dark:text-slate-300 hover:text-primary dark:hover:text-white font-medium text-sm transition-colors" href="#">News</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="hidden md:flex text-slate-600 dark:text-slate-300 font-medium text-sm hover:text-primary">Log In</button>
+<button class="bg-primary hover:bg-primary-light text-white px-5 py-2 rounded-lg text-sm font-bold transition-all shadow-md hover:shadow-lg">
+                        Sign Up
+                    </button>
+<button class="md:hidden text-primary">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<div class="bg-primary relative overflow-hidden">
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-gradient-to-r from-primary via-primary/95 to-primary/60 z-10"></div>
+<img alt="data-alt: Archer drawing a bow during sunset silhouette" class="w-full h-full object-cover object-center opacity-60 mix-blend-overlay" src="https://lh3.googleusercontent.com/aida-public/AB6AXuByxS8LZ93pBQXI_V_Vu3nB0633lwPZGiFCM3UtI-xk79b_O83ASmlHYA36lOzcnmVsbgs4DEe9awj543MvzCN1yzOo1wZ3ViXLdiMRV7vAMdy66lvu-l5dpFAOgZ0uCMKJxsBRXPJL1QeX4_ZdX2ynTEZR-ZMilrncma7gKG2YK0vsj0KJZnw_lD0UZaXFKW2aVFD1SU-mzi_sAT2D-62TP0j5LF6KprFriv2sV9rdypqLSvfrZekYDy45XaK8F1vVh7e5nfrgK7o"/>
+</div>
+<div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 lg:py-32">
+<div class="max-w-3xl">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 backdrop-blur-sm mb-6">
+<span class="material-symbols-outlined text-accent text-sm">dns</span>
+<span class="text-accent text-xs font-bold uppercase tracking-wider">Digital Infrastructure v2.0</span>
+</div>
+<h1 class="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight mb-6">
+                    Modernizing Indonesian <br class="hidden md:block"/> Archery Management
+                </h1>
+<p class="text-slate-300 text-lg md:text-xl leading-relaxed mb-10 max-w-2xl">
+                    The comprehensive digital platform connecting federations, clubs, and athletes across the archipelago. Streamline tournament operations, track national rankings, and elevate the sport.
+                </p>
+<div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+<button class="h-14 px-8 bg-accent hover:bg-accent-hover text-primary font-bold rounded-lg transition-colors flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(195,245,60,0.3)]">
+                        Explore Tournaments
+                        <span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+<button class="h-14 px-8 bg-transparent hover:bg-white/10 text-white font-bold rounded-lg border border-white/30 backdrop-blur-sm transition-colors flex items-center justify-center gap-2">
+                        Platform Features
+                        <span class="material-symbols-outlined text-lg">layers</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<section class="bg-surface dark:bg-gray-900 py-16 md:py-24 border-b border-gray-100 dark:border-gray-800">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="text-center mb-16 max-w-2xl mx-auto">
+<h2 class="text-primary dark:text-white text-3xl font-bold mb-4">Digital Governance Ecosystem</h2>
+<p class="text-slate-500 dark:text-slate-400">Integrated tools designed to professionalize archery management from club level to national federation.</p>
+</div>
+<div class="grid md:grid-cols-3 gap-8 lg:gap-12">
+<div class="group p-8 rounded-2xl bg-background-light dark:bg-gray-800 border border-transparent hover:border-accent/20 hover:shadow-xl transition-all duration-300">
+<div class="w-16 h-16 bg-primary dark:bg-primary/50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-accent text-4xl icon-filled">scoreboard</span>
+</div>
+<h3 class="text-xl font-bold text-primary dark:text-white mb-3">Real-time Scoring</h3>
+<p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Digital scoring system with instant cloud synchronization. Eliminate paper scorecards and provide live results to spectators worldwide.
+                    </p>
+</div>
+<div class="group p-8 rounded-2xl bg-background-light dark:bg-gray-800 border border-transparent hover:border-accent/20 hover:shadow-xl transition-all duration-300">
+<div class="w-16 h-16 bg-primary dark:bg-primary/50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-accent text-4xl icon-filled">domain</span>
+</div>
+<h3 class="text-xl font-bold text-primary dark:text-white mb-3">Club Management</h3>
+<p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Administrative tools for clubs to manage members, process registrations, and track athlete development progress over time.
+                    </p>
+</div>
+<div class="group p-8 rounded-2xl bg-background-light dark:bg-gray-800 border border-transparent hover:border-accent/20 hover:shadow-xl transition-all duration-300">
+<div class="w-16 h-16 bg-primary dark:bg-primary/50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-accent text-4xl icon-filled">leaderboard</span>
+</div>
+<h3 class="text-xl font-bold text-primary dark:text-white mb-3">National Rankings</h3>
+<p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Automated point calculation and ranking updates based on tournament results, ensuring transparency in national selection.
+                    </p>
+</div>
+</div>
+</div>
+</section>
+<section class="bg-background-light dark:bg-background-dark py-16 md:py-20 overflow-hidden">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between mb-8">
+<h2 class="text-2xl font-bold text-primary dark:text-white flex items-center gap-3">
+<span class="w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
+                    Live Events Now
+                </h2>
+<a class="text-primary hover:text-primary-light font-bold text-sm flex items-center gap-1 group" href="#">
+                    View Schedule <span class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
+</a>
+</div>
+<div class="flex overflow-x-auto pb-8 -mx-4 px-4 sm:mx-0 sm:px-0 gap-6 no-scrollbar snap-x">
+<div class="min-w-[300px] md:min-w-[380px] snap-center group bg-surface dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-xl hover:border-accent/50 transition-all duration-300 flex flex-col">
+<div class="relative h-48 overflow-hidden">
+<div class="absolute top-3 left-3 z-10 flex gap-2">
+<span class="bg-red-500 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md flex items-center gap-1 animate-pulse">
+<span class="material-symbols-outlined text-[12px]">fiber_manual_record</span> Live
+                            </span>
+<span class="bg-white/90 backdrop-blur-sm text-primary text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md">
+                                National Series
+                            </span>
+</div>
+<img alt="data-alt: Archer focusing on target close up" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJXWL-Z7f7fP24_IyBjI_e-q_jYcMbzRtaKiOpKP8TxgqwSxRrCqNcE-GXJXbiCEv6rlwlNJzTmbbgAdQFWHH4Jk_Fw-aslTiT3Qezy8bbmGRG0WoRA-yD8tykZuxYObytzJ6Yf7yNL8poFU6vWlyEuFjbHcIzwfoLAMru-bfdw4GXezmv71SwRPYw_-Ct6ZP3f6AqglpvBIhCSrp9g13uTQpj69_-hzZqp1wSqJJ-9PdZqp0CYWgFWsajdRos9QmU7eeyuFhFPH0"/>
+</div>
+<div class="p-5 flex-1 flex flex-col">
+<h3 class="text-lg font-bold text-primary dark:text-white mb-2 leading-snug group-hover:text-primary-light transition-colors">
+                            Surabaya Archery Cup 2024
+                        </h3>
+<div class="space-y-2 mb-4">
+<div class="flex items-start gap-2 text-slate-500 text-sm">
+<span class="material-symbols-outlined text-lg mt-0.5">location_on</span>
+<span class="truncate">KONI Jatim Field, Surabaya</span>
+</div>
+</div>
+<div class="mt-auto">
+<button class="w-full h-10 rounded-lg border-2 border-primary text-primary hover:bg-primary hover:text-white font-bold text-sm transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-lg">scoreboard</span>
+                                Live Scores
+                            </button>
+</div>
+</div>
+</div>
+<div class="min-w-[300px] md:min-w-[380px] snap-center group bg-surface dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-xl hover:border-accent/50 transition-all duration-300 flex flex-col">
+<div class="relative h-48 overflow-hidden">
+<div class="absolute top-3 left-3 z-10 flex gap-2">
+<span class="bg-red-500 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md flex items-center gap-1 animate-pulse">
+<span class="material-symbols-outlined text-[12px]">fiber_manual_record</span> Live
+                            </span>
+<span class="bg-white/90 backdrop-blur-sm text-primary text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md">
+                                Regional
+                            </span>
+</div>
+<img alt="data-alt: Indoor archery range" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmKeu4qLnuI8uJ8itXirIGY311f6c_CfhqFD3qtMv-M4oTNDiSeGeylyU0qI_7lQHeMywtfdDw175-dWrdxwZwWSnnEMmkBca4ScW0dEbBQ_wZYVWuCaOPI-A204QdKHKXQxHsutHbZP8c9uPaZpfK8lzqziHTAW_dqnlmi99AtLhIGmxfUZ-irvcNm1YUswSsH9HGhvq4Hr6jq7rsveM4HwMmhNVDABEGcgh0sYQHoHy9t1IzkTX2LexV72X240IEyZL2_InQGZ8"/>
+</div>
+<div class="p-5 flex-1 flex flex-col">
+<h3 class="text-lg font-bold text-primary dark:text-white mb-2 leading-snug group-hover:text-primary-light transition-colors">
+                            Jakarta Indoor Open
+                        </h3>
+<div class="space-y-2 mb-4">
+<div class="flex items-start gap-2 text-slate-500 text-sm">
+<span class="material-symbols-outlined text-lg mt-0.5">location_on</span>
+<span class="truncate">Senayan Hall B, Jakarta</span>
+</div>
+</div>
+<div class="mt-auto">
+<button class="w-full h-10 rounded-lg border-2 border-primary text-primary hover:bg-primary hover:text-white font-bold text-sm transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-lg">scoreboard</span>
+                                Live Scores
+                            </button>
+</div>
+</div>
+</div>
+<div class="min-w-[300px] md:min-w-[380px] snap-center group bg-surface dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-xl hover:border-accent/50 transition-all duration-300 flex flex-col">
+<div class="relative h-48 overflow-hidden">
+<div class="absolute top-3 left-3 z-10 flex gap-2">
+<span class="bg-red-500 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md flex items-center gap-1 animate-pulse">
+<span class="material-symbols-outlined text-[12px]">fiber_manual_record</span> Live
+                            </span>
+<span class="bg-white/90 backdrop-blur-sm text-primary text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md">
+                                Club Series
+                            </span>
+</div>
+<img alt="data-alt: Archer silhouette" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQStrrmLQN-DtqrTO5KWNF3EvwOXSw-raemHMh-lxMUVAtHiqxHNMqzQoV2l1ReELlRe_dVIAkp1P8Bc8ekRqbhOn-axS6izTQXKw3d70pq-CpZHWUZoS58mGL70U_Bk96ViNRcaOaGr5wIkPrtg8w46mzrAtHgWRH6VKAUalmkrFJ8qjDltkmd-nHJs4aUfrBBphZSnivwOkhoIjzG8dpjeCtp_UOZTOnovXJP7IAWJEeWqw7Uh7-mlLVkorgyeOsSRun6CmO_8I"/>
+</div>
+<div class="p-5 flex-1 flex flex-col">
+<h3 class="text-lg font-bold text-primary dark:text-white mb-2 leading-snug group-hover:text-primary-light transition-colors">
+                            Borneo Youth Qualifier
+                        </h3>
+<div class="space-y-2 mb-4">
+<div class="flex items-start gap-2 text-slate-500 text-sm">
+<span class="material-symbols-outlined text-lg mt-0.5">location_on</span>
+<span class="truncate">Balikpapan Sports Center</span>
+</div>
+</div>
+<div class="mt-auto">
+<button class="w-full h-10 rounded-lg border-2 border-primary text-primary hover:bg-primary hover:text-white font-bold text-sm transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-lg">scoreboard</span>
+                                Live Scores
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="bg-[#f8fafc] dark:bg-[#111827] py-16 md:py-20 border-y border-gray-200 dark:border-gray-800 relative z-10">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between mb-6">
+<div>
+<h2 class="text-2xl font-bold text-primary dark:text-white mb-2">Featured Clubs</h2>
+<p class="text-slate-500 text-sm hidden sm:block">Top rated archery academies and clubs near you</p>
+</div>
+<a class="text-primary hover:text-primary-light font-bold text-sm flex items-center gap-2 group bg-white dark:bg-gray-800 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-all" href="#">
+                See All Clubs <span class="material-symbols-outlined text-lg transition-transform group-hover:translate-x-1">arrow_forward</span>
+</a>
+</div>
+<div class="flex flex-wrap items-center gap-3 mb-8 overflow-x-auto no-scrollbar pb-2">
+<button class="px-5 py-2 rounded-full bg-accent text-primary font-bold text-sm shadow-md hover:bg-accent-hover transition-colors whitespace-nowrap">
+        All Regions
+    </button>
+<button class="px-5 py-2 rounded-full bg-slate-200/70 dark:bg-gray-800 text-primary dark:text-slate-300 font-bold text-sm hover:bg-slate-300 dark:hover:bg-gray-700 transition-colors whitespace-nowrap">
+        DKI Jakarta
+    </button>
+<button class="px-5 py-2 rounded-full bg-slate-200/70 dark:bg-gray-800 text-primary dark:text-slate-300 font-bold text-sm hover:bg-slate-300 dark:hover:bg-gray-700 transition-colors whitespace-nowrap">
+        Jawa Barat
+    </button>
+<button class="px-5 py-2 rounded-full bg-slate-200/70 dark:bg-gray-800 text-primary dark:text-slate-300 font-bold text-sm hover:bg-slate-300 dark:hover:bg-gray-700 transition-colors whitespace-nowrap">
+        Jawa Timur
+    </button>
+<button class="px-5 py-2 rounded-full bg-slate-200/70 dark:bg-gray-800 text-primary dark:text-slate-300 font-bold text-sm hover:bg-slate-300 dark:hover:bg-gray-700 transition-colors whitespace-nowrap">
+        DI Yogyakarta
+    </button>
+<button class="px-5 py-2 rounded-full bg-slate-200/70 dark:bg-gray-800 text-primary dark:text-slate-300 font-bold text-sm hover:bg-slate-300 dark:hover:bg-gray-700 transition-colors whitespace-nowrap">
+        Banten
+    </button>
+<button class="px-5 py-2 rounded-full bg-slate-200/70 dark:bg-gray-800 text-primary dark:text-slate-300 font-bold text-sm hover:bg-slate-300 dark:hover:bg-gray-700 transition-colors whitespace-nowrap">
+        Bali
+    </button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="bg-surface dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center relative group">
+<div class="absolute top-3 right-3 bg-accent text-primary px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[14px] icon-filled">verified</span> Verified
+                </div>
+<div class="w-20 h-20 rounded-2xl bg-primary/5 text-primary flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined text-4xl">target</span>
+</div>
+<h3 class="text-lg font-bold text-primary dark:text-white mb-1">Jakarta Elite Archery</h3>
+<div class="flex items-center gap-1 text-slate-500 text-sm mb-6">
+<span class="material-symbols-outlined text-base">location_on</span>
+<span>GBK Senayan, Jakarta</span>
+</div>
+<button class="w-full mt-auto py-2.5 px-4 bg-accent hover:bg-accent-hover text-primary font-bold text-sm rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2">
+                    View Profile
+                </button>
+</div>
+<div class="bg-surface dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center relative group">
+<div class="absolute top-3 right-3 bg-accent text-primary px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[14px] icon-filled">verified</span> Verified
+                </div>
+<div class="w-20 h-20 rounded-2xl bg-primary/5 text-primary flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined text-4xl">legend_toggle</span>
+</div>
+<h3 class="text-lg font-bold text-primary dark:text-white mb-1">Pasopati Archery</h3>
+<div class="flex items-center gap-1 text-slate-500 text-sm mb-6">
+<span class="material-symbols-outlined text-base">location_on</span>
+<span>Sleman, Yogyakarta</span>
+</div>
+<button class="w-full mt-auto py-2.5 px-4 bg-accent hover:bg-accent-hover text-primary font-bold text-sm rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2">
+                    View Profile
+                </button>
+</div>
+<div class="bg-surface dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center relative group">
+<div class="w-20 h-20 rounded-2xl bg-primary/5 text-primary flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined text-4xl">flight</span>
+</div>
+<h3 class="text-lg font-bold text-primary dark:text-white mb-1">Borneo Eagle Club</h3>
+<div class="flex items-center gap-1 text-slate-500 text-sm mb-6">
+<span class="material-symbols-outlined text-base">location_on</span>
+<span>Balikpapan, East Kal</span>
+</div>
+<button class="w-full mt-auto py-2.5 px-4 bg-accent hover:bg-accent-hover text-primary font-bold text-sm rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2">
+                    View Profile
+                </button>
+</div>
+<div class="bg-surface dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center relative group">
+<div class="w-20 h-20 rounded-2xl bg-primary/5 text-primary flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+<span class="material-symbols-outlined text-4xl">spa</span>
+</div>
+<h3 class="text-lg font-bold text-primary dark:text-white mb-1">Bali Zen Archery</h3>
+<div class="flex items-center gap-1 text-slate-500 text-sm mb-6">
+<span class="material-symbols-outlined text-base">location_on</span>
+<span>Ubud, Bali</span>
+</div>
+<button class="w-full mt-auto py-2.5 px-4 bg-accent hover:bg-accent-hover text-primary font-bold text-sm rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2">
+                    View Profile
+                </button>
+</div>
+</div>
+</div>
+</section>
+<section class="bg-surface dark:bg-gray-900 py-16 md:py-20 border-t border-gray-100 dark:border-gray-800">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between mb-8">
+<h2 class="text-2xl font-bold text-primary dark:text-white">Latest News</h2>
+<a class="text-slate-500 hover:text-primary font-bold text-sm" href="#">View All News</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<article class="flex flex-col group cursor-pointer">
+<div class="relative h-60 rounded-2xl overflow-hidden mb-5">
+<img alt="data-alt: Arrows in target bulls-eye" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaKz9i1Sy4TPWgHSZRQZdfbE9FAsY4xikvvu2rhp8s_A9V5Sy5lv8pftyxQXwQSSv1xbdCGZkIqVOv_3u8sisf-kuW8CCXnYrzldx8xKkp12tmxF1SztarFv2PQMwoYr5sv7cn1wpmzOMepJof7lZkvTkOqS_LS94B-kyA-HRdMFPaNXbC-I6OY9Rp2dTCI-86cqoGMepWYeLPECuEvPwH35G_RyrcW4OoeB-xFCH1noe3E3mLKFdU_ftNYNRJ-e35YW_UO7tjW3E"/>
+<div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/60 to-transparent"></div>
+<span class="absolute bottom-4 left-4 text-white text-xs font-bold bg-primary px-3 py-1 rounded-md">National Team</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-3 text-sm text-slate-500 mb-2">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">calendar_today</span> Oct 28, 2024</span>
+</div>
+<h3 class="text-xl font-bold text-primary dark:text-white mb-3 group-hover:text-primary-light line-clamp-2">
+                            National Training Center Selection Results for 2025 Announced
+                        </h3>
+<p class="text-slate-600 dark:text-slate-400 mb-4 line-clamp-2 text-sm">
+                            The Indonesian Archery Association has officially released the list of athletes selected for the upcoming centralized training camp.
+                        </p>
+<span class="text-accent hover:text-accent-hover font-bold text-sm flex items-center gap-1">
+                            Read Article <span class="material-symbols-outlined text-sm">arrow_right_alt</span>
+</span>
+</div>
+</article>
+<article class="flex flex-col group cursor-pointer">
+<div class="relative h-60 rounded-2xl overflow-hidden mb-5">
+<img alt="data-alt: Podium with medals" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCq8OlQbcxO7uY4gwKVt6JygaktR4FjGZfJwbWiOyDIXqXr0bCnQIn3f-5m63myglDTGxdrpDHrFX2wVGOC7C8INtL7td4RDrpYhrJi0qjxPG7jixXi-Cw0fJQfRMda9sgJhfzCsFLmMhX9mvC6_gNAo5OF_MDtU5ukfm3hvRqWuHC0pbxNqSd0uWfIxLjxHXmyDnRtFg9VIz-XC2tCuvSusJKEFLjs57_DO7_uOGurALxGKsxcgIJmc_0gHV72A6BGvhiStIpWr3o"/>
+<div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/60 to-transparent"></div>
+<span class="absolute bottom-4 left-4 text-white text-xs font-bold bg-primary px-3 py-1 rounded-md">Achievement</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-3 text-sm text-slate-500 mb-2">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">calendar_today</span> Oct 25, 2024</span>
+</div>
+<h3 class="text-xl font-bold text-primary dark:text-white mb-3 group-hover:text-primary-light line-clamp-2">
+                            Indonesia Takes Overall Champion Title at SEAG 2024
+                        </h3>
+<p class="text-slate-600 dark:text-slate-400 mb-4 line-clamp-2 text-sm">
+                            A historic performance by the national contingent secured 5 gold medals, dominating both Recurve and Compound divisions.
+                        </p>
+<span class="text-accent hover:text-accent-hover font-bold text-sm flex items-center gap-1">
+                            Read Article <span class="material-symbols-outlined text-sm">arrow_right_alt</span>
+</span>
+</div>
+</article>
+<article class="flex flex-col group cursor-pointer">
+<div class="relative h-60 rounded-2xl overflow-hidden mb-5">
+<img alt="data-alt: Female archer preparing bow" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEyoMyPhTl7-9oRbs8Fqz1YZxEwczL3vvrIpNzNHGImIhte8_MRqCsmxPDpeo-GMFv4xD1UFE7CzQuZjLAaeTEFSwwGpLM5Fuuji1ri-DclVPd3XjaiZbP_HVCmNxUF4N4RvPt5eunD3D7XJwRXiE80p0b-XDjG79vpkghLPtwWffcqE__kLuIxrZg_xFXL5tPcnF3V-v_UjBTeSP3GZHOFSZ132JQ3wm91uitNtsctbagveyUjYxxYgEumBV7_uYhaBtTeHfBlCs"/>
+<div class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/60 to-transparent"></div>
+<span class="absolute bottom-4 left-4 text-white text-xs font-bold bg-primary px-3 py-1 rounded-md">Regulations</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-3 text-sm text-slate-500 mb-2">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">calendar_today</span> Oct 20, 2024</span>
+</div>
+<h3 class="text-xl font-bold text-primary dark:text-white mb-3 group-hover:text-primary-light line-clamp-2">
+                            New Equipment Regulations for the Upcoming Indoor Season
+                        </h3>
+<p class="text-slate-600 dark:text-slate-400 mb-4 line-clamp-2 text-sm">
+                            World Archery has updated the bylaws regarding arrow diameter and stabilizer weights for indoor competitions starting next month.
+                        </p>
+<span class="text-accent hover:text-accent-hover font-bold text-sm flex items-center gap-1">
+                            Read Article <span class="material-symbols-outlined text-sm">arrow_right_alt</span>
+</span>
+</div>
+</article>
+</div>
+</div>
+</section>
+<footer class="bg-primary text-white py-12 mt-auto">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-accent rounded-lg flex items-center justify-center text-primary">
+<span class="material-symbols-outlined icon-filled text-xl">target</span>
+</div>
+<span class="text-xl font-bold tracking-tight">Archery Hub</span>
+</div>
+<div class="flex gap-8 text-sm text-slate-300">
+<a class="hover:text-white transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-white transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-white transition-colors" href="#">Contact Support</a>
+</div>
+<div class="text-sm text-slate-400">
+                    © 2024 Archery Hub Indonesia.
+                </div>
+</div>
+</div>
+</footer>
+</body></html>

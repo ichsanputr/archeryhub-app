@@ -1,28 +1,5 @@
 <template>
     <div class="min-h-screen bg-background-light font-body text-navy antialiased flex flex-col">
-        <!-- Dashboard Header -->
-        <nav class="sticky top-0 z-50 w-full bg-white border-b border-border-subtle shadow-sm">
-            <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between h-16">
-                    <div class="flex items-center gap-3 cursor-pointer" @click="navigateTo('/')">
-                        <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-navy text-primary">
-                            <span class="material-symbols-outlined text-xl">gps_fixed</span>
-                        </div>
-                        <span class="text-navy text-lg font-bold tracking-tight font-display">Archeryhub.id</span>
-                    </div>
-                    <div class="hidden md:flex items-center gap-6">
-                        <NuxtLink to="/dashboard/tournaments" class="text-text-sub text-sm font-medium hover:text-navy">
-                            Tournaments</NuxtLink>
-                        <NuxtLink to="/dashboard/clubs" class="text-text-sub text-sm font-medium hover:text-navy">Clubs
-                        </NuxtLink>
-                        <NuxtLink to="/dashboard/profile/1" class="text-text-sub text-sm font-medium hover:text-navy">My
-                            Profile
-                        </NuxtLink>
-                    </div>
-                </div>
-            </div>
-        </nav>
-
         <!-- Hero Section -->
         <div class="bg-navy relative overflow-hidden">
             <div class="absolute inset-0 z-0">
@@ -153,6 +130,10 @@
 </template>
 
 <script setup>
+definePageMeta({
+    layout: 'blank'
+})
+
 const route = useRoute()
 const tId = route.params.id || '1'
 

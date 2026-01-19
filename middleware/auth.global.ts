@@ -1,9 +1,7 @@
 // Global Authentication middleware
 export default defineNuxtRouteMiddleware(async (to, from) => {
-    // Only run on client side for now as SSR auth depends on cookies/headers
-    if (import.meta.server) return
-
-    const { isLoggedIn, fetchUser, isUserLoading } = useAuth()
+    const nuxtApp = useNuxtApp()
+    const { isLoggedIn, fetchUser, isUserLoading, user } = useAuth()
 
     // Protected routes:
     // 1. Dashboard and Profile
@@ -11,15 +9,25 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     const isProtectedRoute =
         to.path.startsWith('/dashboard') ||
         to.path.startsWith('/profile') ||
-        to.path.includes('/register') ||
+        (to.path.includes('/register') && !to.path.startsWith('/auth')) ||
         to.path.includes('/payment')
 
-    // Exception: public payment status doesn't need auth (optional, but keep it for now)
-    const isPublicRoute = to.path.startsWith('/auth') || to.path === '/' || to.path === '/tournaments'
+    // Exception: public routes
+    const isPublicRoute = to.path.startsWith('/auth') || to.path === '/' || to.path === '/tournaments' || to.path === '/about'
 
     if (!isProtectedRoute || isPublicRoute) return
 
-    // If user state hasn't been initialized yet, fetch it
+    // On server-side, check user from SSR context
+    if (import.meta.server) {
+        const ssrUser = nuxtApp.ssrContext?.event?.context?.user
+        if (!ssrUser) {
+            const redirectPath = to.fullPath
+            return navigateTo(`/auth/login?redirect=${encodeURIComponent(redirectPath)}`)
+        }
+        return
+    }
+
+    // On client-side, if user state hasn't been initialized yet, fetch it
     if (!isLoggedIn.value && !isUserLoading.value) {
         await fetchUser()
     }
