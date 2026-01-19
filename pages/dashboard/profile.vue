@@ -22,11 +22,11 @@
 
             <!-- GitHub Link -->
             <div class="flex justify-center sm:justify-start">
-              <a :href="user?.githubProfile" target="_blank" rel="noopener noreferrer"
+              <NuxtLink :to="user?.githubProfile" target="_blank" external
                 class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
                 <Icon :ssr="true" icon="logos:github-icon" class="w-4 h-4 mr-2" />
                 View GitHub Profile
-              </a>
+              </NuxtLink>
             </div>
           </div>
 
@@ -72,10 +72,10 @@
             <div v-if="recentActivity.length === 0" class="text-center py-8">
               <Icon :ssr="true" icon="ph:activity" class="w-12 h-12 text-gray-400 mx-auto mb-4" />
               <p class="text-gray-500">No recent activity to show</p>
-              <a href="/problem"
+              <NuxtLink to="/problem"
                 class="inline-flex items-center mt-4 px-4 py-2 text-sm font-medium text-white bg-yellow-600 hover:bg-yellow-700 rounded-lg transition-colors">
                 Start Solving Problems
-              </a>
+              </NuxtLink>
             </div>
             <div v-else class="space-y-3">
               <div v-for="activity in recentActivity" :key="activity.id"

@@ -1,13 +1,16 @@
 <template>
-    <div class="bg-background-light text-slate-900 font-display antialiased h-screen flex overflow-hidden">
-        <!-- Left Side: Visual Hero (Desktop Only) -->
-        <div class="hidden lg:flex lg:w-1/2 relative bg-navy overflow-hidden flex-col justify-end">
+    <div class="relative h-screen bg-navy text-slate-900 font-display antialiased flex overflow-hidden">
+        <!-- Background Hero (Full screen on mobile, absolute behind) -->
+        <div class="absolute inset-0 z-0 lg:w-1/2 lg:relative lg:flex overflow-hidden flex-col justify-end">
             <div class="absolute inset-0 z-0">
-                <img alt="Archery action shot" class="w-full h-full object-cover mix-blend-overlay opacity-50"
+                <img alt="Archery action shot"
+                    class="w-full h-full object-cover mix-blend-overlay opacity-40 lg:opacity-50"
                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuByxS8LZ93pBQXI_V_Vu3nB0633lwPZGiFCM3UtI-xk79b_O83ASmlHYA36lOzcnmVsbgs4DEe9awj543MvzCN1yzOo1wZ3ViXLdiMRV7vAMdy66lvu-l5dpFAOgZ0uCMKJxsBRXPJL1QeX4_ZdX2ynTEZR-ZMilrncma7gKG2YK0vsj0KJZnw_lD0UZaXFKW2aVFD1SU-mzi_sAT2D-62TP0j5LF6KprFriv2sV9rdypqLSvfrZekYDy45XaK8F1vVh7e5nfrgK7o" />
                 <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/60 to-transparent"></div>
             </div>
-            <div class="relative z-10 p-16 max-w-2xl">
+
+            <!-- Content only visible on desktop -->
+            <div class="hidden lg:block relative z-10 p-16 max-w-2xl">
                 <div class="flex items-center gap-4 mb-12">
                     <div class="w-12 h-12 flex items-center justify-center transition-all duration-300">
                         <img src="/logo.png" alt="Logo" class="w-12 h-12 object-contain" />
@@ -41,7 +44,7 @@
 
         <!-- Right Side: Login Form -->
         <div
-            class="w-full lg:w-1/2 bg-white flex flex-col justify-center items-center p-6 sm:p-12 lg:p-24 overflow-y-auto h-full no-scrollbar">
+            class="relative z-10 w-full lg:w-1/2 bg-white/95 backdrop-blur-sm lg:bg-white flex flex-col justify-center items-center p-6 sm:p-12 lg:p-24 overflow-y-auto h-full no-scrollbar">
             <div class="w-full max-w-sm space-y-8">
                 <div class="text-center sm:text-left">
                     <h2 class="text-3xl font-black text-slate-900 tracking-tight font-display">Wah, Masuk Lagi Yuk!</h2>

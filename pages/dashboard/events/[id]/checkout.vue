@@ -117,8 +117,9 @@
                     </button>
 
                     <p class="text-xs text-gray-500 text-center mt-4">
-                        Dengan melanjutkan, Anda menyetujui <a href="#" class="text-primary hover:underline">syarat dan
-                            ketentuan</a> kami.
+                        Dengan melanjutkan, Anda menyetujui <NuxtLink to="#" class="text-primary hover:underline">syarat
+                            dan
+                            ketentuan</NuxtLink> kami.
                     </p>
                 </div>
             </div>

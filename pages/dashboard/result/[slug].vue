@@ -178,10 +178,10 @@ useHead({
       <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <!-- Breadcrumb -->
         <nav class="flex items-center space-x-2 text-yellow-100 text-sm mb-4">
-          <a href="/result" class="hover:text-white transition-colors">
+          <NuxtLink to="/result" class="hover:text-white transition-colors">
             <Icon :ssr="true" icon="ph:chart-line" class="w-4 h-4 inline mr-1" />
             Results
-          </a>
+          </NuxtLink>
           <Icon :ssr="true" icon="ph:caret-right" class="w-3 h-3" />
           <span class="text-white">{{ problemTitle }}</span>
         </nav>
@@ -271,13 +271,13 @@ useHead({
                 Try Again
               </button>
 
-              <a href="/result" class="flex-1">
+              <NuxtLink to="/result" class="flex-1">
                 <button
                   class="w-full flex items-center justify-center gap-2 px-6 py-3 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-medium transition-colors">
                   <Icon :ssr="true" icon="ph:arrow-left" class="w-4 h-4" />
                   Back to Results
                 </button>
-              </a>
+              </NuxtLink>
             </div>
           </div>
         </div>
@@ -479,20 +479,20 @@ useHead({
               You haven't submitted any solutions for this problem. Start coding to see your results here!
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-              <a :href="`/events`">
+              <NuxtLink to="/events">
                 <button
                   class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
                   <Icon :ssr="true" icon="ph:trophy" class="w-4 h-4" />
                   View Tournament
                 </button>
-              </a>
-              <a href="/result">
+              </NuxtLink>
+              <NuxtLink to="/result">
                 <button
                   class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-medium transition-colors">
                   <Icon :ssr="true" icon="ph:arrow-left" class="w-4 h-4" />
                   Back to Results
                 </button>
-              </a>
+              </NuxtLink>
             </div>
           </div>
         </div>

@@ -1,50 +1,51 @@
 <template>
-    <div class="bg-surface font-display antialiased min-h-screen flex overflow-hidden">
-        <!-- Left Side: Visual Hero (Desktop Only) -->
-        <div class="relative hidden w-0 flex-1 lg:block bg-navy">
-            <div class="absolute inset-0 h-full w-full">
-                <div class="absolute inset-0 bg-navy/40 mix-blend-multiply z-10"></div>
-                <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent z-10 opacity-90">
-                </div>
-                <img alt="Archer silhouette during sunset" class="h-full w-full object-cover object-center opacity-80"
+    <div class="relative h-screen bg-navy text-slate-900 font-display antialiased flex overflow-hidden">
+        <!-- Background Hero (Full screen on mobile, absolute behind) -->
+        <div class="absolute inset-0 z-0 lg:w-1/2 lg:relative lg:flex overflow-hidden flex-col justify-end">
+            <div class="absolute inset-0 z-0">
+                <img alt="Archery action shot"
+                    class="w-full h-full object-cover mix-blend-overlay opacity-40 lg:opacity-50"
                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuByxS8LZ93pBQXI_V_Vu3nB0633lwPZGiFCM3UtI-xk79b_O83ASmlHYA36lOzcnmVsbgs4DEe9awj543MvzCN1yzOo1wZ3ViXLdiMRV7vAMdy66lvu-l5dpFAOgZ0uCMKJxsBRXPJL1QeX4_ZdX2ynTEZR-ZMilrncma7gKG2YK0vsj0KJZnw_lD0UZaXFKW2aVFD1SU-mzi_sAT2D-62TP0j5LF6KprFriv2sV9rdypqLSvfrZekYDy45XaK8F1vVh7e5nfrgK7o" />
+                <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/60 to-transparent"></div>
             </div>
-            <div class="relative z-20 flex h-full flex-col justify-end p-12 xl:p-16 text-white">
-                <div class="mb-10 max-w-lg">
-                    <div class="w-14 h-14 flex items-center justify-center mb-8">
-                        <img src="/logo.png" alt="Logo" class="w-14 h-14 object-contain" />
+
+            <!-- Content only visible on desktop -->
+            <div class="hidden lg:block relative z-10 p-16 max-w-2xl">
+                <div class="flex items-center gap-4 mb-12">
+                    <div class="w-12 h-12 flex items-center justify-center transition-all duration-300">
+                        <img src="/logo.png" alt="Logo" class="w-12 h-12 object-contain" />
                     </div>
-                    <h2 class="text-4xl xl:text-5xl font-black tracking-tight leading-tight mb-6 font-display">
-                        Ikutan Revolusi Digital Panahan Indonesia
-                    </h2>
-                    <div class="flex flex-wrap items-center gap-4 text-slate-300 text-sm font-medium font-body">
-                        <div class="flex items-center gap-2">
-                            <span class="material-symbols-outlined text-primary">check_circle</span>
-                            <span>Kelola Klub</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="material-symbols-outlined text-primary">check_circle</span>
-                            <span>Pantau Skor</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <span class="material-symbols-outlined text-primary">check_circle</span>
-                            <span>Ikutan Lomba</span>
-                        </div>
-                    </div>
+                    <span class="text-white text-3xl font-bold tracking-tight font-display">Archeryhub<span
+                            class="text-logo-id">.id</span></span>
                 </div>
-                <div class="flex items-center gap-4 text-xs text-slate-400 border-t border-white/10 pt-6 font-body">
-                    <span>© 2024 Archeryhub.id Indonesia</span>
-                    <span class="w-1 h-1 rounded-full bg-slate-500"></span>
-                    <a class="hover:text-white transition-colors" href="/privacy">Privacy</a>
-                    <span class="w-1 h-1 rounded-full bg-slate-500"></span>
-                    <a class="hover:text-white transition-colors" href="/terms">Terms</a>
+                <h1 class="text-white text-5xl font-black leading-tight tracking-tight mb-4 font-display">
+                    Ikutan Revolusi <br />
+                    Digital Panahan
+                </h1>
+                <p class="text-slate-300 text-lg leading-relaxed max-w-md font-body">
+                    Gabung bareng komunitas panahan terbesar di Indonesia buat kelola klub, pantau skor, sama ikutan
+                    lomba.
+                </p>
+                <div class="mt-12 flex items-center gap-4 text-sm text-slate-400 font-medium font-body">
+                    <div class="flex -space-x-2">
+                        <img alt="User" class="w-8 h-8 rounded-full border-2 border-navy bg-slate-200"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcgAI-cKVqB-rFvg63jv5RqEiFblqdw595CXHY_R7cP1SzEvLj9RApZNYpesTGKW4hnP6dODFBORzsQz0VTfOAeoUYNYWc66Rf-yAuUMyNAA2_feDvo-BF1MCVdcMHo0CJNnE5nLwPtWxfvnSOcil9PLAyYxZ56fuEWoyVFIc05X2iy2UqUQ5lNWaZZ6_e7XIc0IsvLCNI8qHt3-Z3Y-kccrkuHvLLZ1FVuFXdTt8f1fPfb-RIIZpqmeTGSo32A8PCc9Zn-1ij28M" />
+                        <img alt="User" class="w-8 h-8 rounded-full border-2 border-navy bg-slate-200"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDt3SzLRngf9eHahpVCYP2lIN59kq_ysykNYB0--B_JGyYcXCC5AHTW_2x8vyGfM0qqiy-UGLJIIoHecm6B__qMiqICjO8NJEpXxIIlJM96qygcz03iEnUXREI7C4rLHfbBaETWW8QsW4RuMBRz3BN0MdrIrNEdUFHgPKtE6wsEHA-FxaOf1oI5NtSJ4BwGLMFF62K65NfZJQ62juWLySTcEyLw_46lXePMcVuVlpsOxm_uvoVuOukVyaGNjboiem1tc9S2_MylKiY" />
+                        <img alt="User" class="w-8 h-8 rounded-full border-2 border-navy bg-slate-200"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCx-xM4-BPNOrQ3_em1j0mlD_KE5EfI8v_jh4BaO6M5r5WHUqu4TAV3zkUmk1AG7upbKsPXhgVcHTEDNu1LUdNqZYfqP0q1ZfVe_1Xqt1qpULObZvsqkCF9gx045dkMOFa6g1JYMZ8vyf9wWcj4PAh7vnXobMo-3zQS99zd4Aixp4PBT6fsUSb91KG67a5YVnsq81X3IDhvc-C6tUYjTcQ4SfuaNPyEqUc6zMTbXU9moUm5vejyBMc3PLKfoIVvow9qNznmw9IVcO0" />
+                        <div
+                            class="w-8 h-8 rounded-full border-2 border-navy bg-slate-700 flex items-center justify-center text-[10px] text-white">
+                            +2k</div>
+                    </div>
+                    <span>Atlet udah gabung di Archeryhub.id</span>
                 </div>
             </div>
         </div>
 
         <!-- Right Side: Registration Form -->
         <div
-            class="flex flex-1 flex-col justify-start px-4 py-8 sm:px-6 lg:flex-none lg:px-16 xl:px-20 bg-white w-full lg:w-[650px] xl:w-[750px] overflow-y-auto no-scrollbar">
+            class="relative z-10 w-full lg:w-1/2 bg-white/95 backdrop-blur-sm lg:bg-white flex flex-col items-center p-6 sm:p-12 lg:p-16 overflow-y-auto h-full no-scrollbar">
             <div class="mx-auto w-full max-w-md lg:max-w-lg">
                 <!-- Logo (Mobile Only) -->
                 <div class="lg:hidden mb-8 text-center">
@@ -318,10 +319,11 @@
                             </div>
                             <div class="ml-3 text-sm font-body">
                                 <label class="font-medium text-slate-600">Saya setuju dengan
-                                    <a class="font-black text-navy hover:text-primary-hover" href="/terms">Syarat &
-                                        Ketentuan</a> dan
-                                    <a class="font-black text-navy hover:text-primary-hover" href="/privacy">Kebijakan
-                                        Privasi</a>
+                                    <NuxtLink class="font-black text-navy hover:text-primary-hover" to="/terms">Syarat &
+                                        Ketentuan</NuxtLink> dan
+                                    <NuxtLink class="font-black text-navy hover:text-primary-hover" to="/privacy">
+                                        Kebijakan
+                                        Privasi</NuxtLink>
                                 </label>
                             </div>
                         </div>
@@ -343,10 +345,10 @@
                     <div class="mt-8 text-center font-body">
                         <p class="text-sm text-slate-600">
                             Sudah punya akun?
-                            <a class="font-black text-navy hover:text-primary-hover transition-colors"
-                                href="/auth/login">
+                            <NuxtLink class="font-black text-navy hover:text-primary-hover transition-colors"
+                                to="/auth/login">
                                 Masuk di sini
-                            </a>
+                            </NuxtLink>
                         </p>
                     </div>
                 </div>

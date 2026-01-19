@@ -29,7 +29,7 @@
 
       <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-16">
         <div v-for="item in features" :key="item.title" class="group">
-          <a :href="`/problem/${item.slug}`"
+          <NuxtLink :to="`/problem/${item.slug}`"
             class="block bg-white rounded-lg shadow-sm border border-gray-200 p-6 h-full transition-all duration-300 hover:border-yellow-200 hover:shadow-lg transform hover:-translate-y-1 no-underline">
             <div class="mb-4">
               <h3 class="font-bold text-lg text-gray-800 mb-2 line-clamp-2 min-h-[3.5rem]">{{ item.title }}</h3>
@@ -46,15 +46,15 @@
               <p class="text-gray-600 text-sm leading-relaxed line-clamp-3 mb-3 min-h-[4.5rem]">{{ item.description }}
               </p>
             </div>
-          </a>
+          </NuxtLink>
         </div>
       </div>
       <!-- Bottom See All Button -->
       <div v-if="!isLoading && features.length > 0" class="text-center flex justify-center mt-8">
-        <a href="/problem"
+        <NuxtLink to="/problem"
           class="inline-block px-6 py-3 bg-yellow-500 text-white font-medium rounded-lg hover:bg-yellow-600 transition-colors duration-200">
           See All {{ problemCount }} Problems
-        </a>
+        </NuxtLink>
       </div>
     </Container>
   </section>

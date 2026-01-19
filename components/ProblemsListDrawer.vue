@@ -74,7 +74,7 @@
 
             <!-- Problems List with Staggered Animation -->
             <div v-else class="space-y-3">
-              <a v-for="(problem, index) in allProblems" :key="problem.slug" :href="`/problem/${problem.slug}`"
+              <NuxtLink v-for="(problem, index) in allProblems" :key="problem.slug" :to="`/problem/${problem.slug}`"
                 class="problem-item block rounded-xl border p-4 transition-all"
                 :style="{ animationDelay: `${index * 50}ms` }" :class="theme === 'dark'
                   ? 'bg-gray-800 border-gray-700 hover:border-yellow-500 hover:bg-gray-750'
@@ -100,7 +100,7 @@
                   <Icon :ssr="true" icon="ph:arrow-right" :class="theme === 'dark' ? 'text-gray-400' : 'text-gray-500'"
                     class="w-4 h-4 flex-shrink-0 mt-1" />
                 </div>
-              </a>
+              </NuxtLink>
             </div>
           </div>
         </div>

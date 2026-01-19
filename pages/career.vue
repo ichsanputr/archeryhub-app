@@ -98,8 +98,9 @@
                   <br><br>
                   To apply, please send your CV and a brief cover letter explaining your interest in quality assurance
                   to
-                  <a href="mailto:ichsanfadhil67@gmail.com"
-                    class="text-yellow-700 hover:text-yellow-600 underline font-medium">ichsanfadhil67@gmail.com</a>
+                  <NuxtLink to="mailto:ichsanfadhil67@gmail.com" external
+                    class="text-yellow-700 hover:text-yellow-600 underline font-medium">ichsanfadhil67@gmail.com
+                  </NuxtLink>
                 </p>
               </div>
             </div>
@@ -177,8 +178,9 @@
                   <br><br>
                   To apply, please send your CV, GitHub profile, and examples of projects using Rust/Golang and
                   Vue.js/React.js to
-                  <a href="mailto:ichsanfadhil67@gmail.com"
-                    class="text-yellow-700 hover:text-yellow-600 underline font-medium">ichsanfadhil67@gmail.com</a>
+                  <NuxtLink to="mailto:ichsanfadhil67@gmail.com" external
+                    class="text-yellow-700 hover:text-yellow-600 underline font-medium">ichsanfadhil67@gmail.com
+                  </NuxtLink>
                 </p>
               </div>
             </div>
@@ -188,8 +190,8 @@
         <!-- Notice -->
         <p class="mt-8 text-sm text-gray-600 text-center">
           Don't see a fit? We love great people.
-          <a href="/contact" class="text-yellow-700 hover:text-yellow-600 underline font-medium">Send us a note
-          </a>
+          <NuxtLink to="/contact" class="text-yellow-700 hover:text-yellow-600 underline font-medium">Send us a note
+          </NuxtLink>
           with your work.
         </p>
       </section>

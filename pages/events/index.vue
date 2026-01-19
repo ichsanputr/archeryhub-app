@@ -17,9 +17,10 @@
                         <NuxtLink to="/events"
                             class="text-navy font-bold text-sm relative after:content-[''] after:absolute after:w-full after:h-0.5 after:bg-primary after:-bottom-5 after:left-0">
                             Tournaments</NuxtLink>
-                        <a href="#"
-                            class="text-gray-600 hover:text-navy font-medium text-sm transition-colors">Rankings</a>
-                        <a href="#" class="text-gray-600 hover:text-navy font-medium text-sm transition-colors">News</a>
+                        <NuxtLink to="#" class="text-gray-600 hover:text-navy font-medium text-sm transition-colors">
+                            Rankings</NuxtLink>
+                        <NuxtLink to="#" class="text-gray-600 hover:text-navy font-medium text-sm transition-colors">
+                            News</NuxtLink>
                     </nav>
                     <div class="flex items-center gap-4">
                         <NuxtLink to="/auth/login"

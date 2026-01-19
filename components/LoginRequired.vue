@@ -60,13 +60,13 @@ defineProps({
             class="flex items-center justify-center gap-2 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition-colors w-full">
             {{ primaryAction }}
           </button>
-          <a :href="secondaryRoute" class="w-full">
+          <NuxtLink :to="secondaryRoute" class="w-full">
             <button
               class="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-medium transition-colors w-full">
               <Icon :ssr="true" :icon="secondaryIcon" class="w-4 h-4" />
               {{ secondaryAction }}
             </button>
-          </a>
+          </NuxtLink>
         </div>
       </div>
     </div>

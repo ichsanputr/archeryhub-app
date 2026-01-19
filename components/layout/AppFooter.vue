@@ -16,9 +16,9 @@
         <div class="lg:col-span-5 flex flex-col gap-6">
           <div class="flex flex-col items-start gap-4">
             <div class="flex items-center gap-3">
-              <a href="/" class="inline-block flex-none">
+              <NuxtLink to="/" class="inline-block flex-none">
                 <img src="/logo.png" alt="Archeryhub.id Logo" class="h-10 sm:h-12 w-auto" />
-              </a>
+              </NuxtLink>
               <div class="text-2xl font-black tracking-tight text-white font-display">
                 Archeryhub<span class="text-logo-id">.id</span>
               </div>
@@ -40,14 +40,14 @@
               Navigasi
             </h4>
             <div class="flex flex-col gap-3">
-              <a href="/events"
+              <NuxtLink to="/events"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 Turnamen
-              </a>
-              <a href="/dashboard/result"
+              </NuxtLink>
+              <NuxtLink to="/dashboard/result"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 Hasil Langsung
-              </a>
+              </NuxtLink>
             </div>
           </div>
 
@@ -57,22 +57,22 @@
               Perusahaan
             </h4>
             <div class="flex flex-col gap-3">
-              <a href="/about"
+              <NuxtLink to="/about"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 Tentang Kami
-              </a>
-              <a href="/contact"
+              </NuxtLink>
+              <NuxtLink to="/contact"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 Kontak
-              </a>
-              <a href="/privacy"
+              </NuxtLink>
+              <NuxtLink to="/privacy"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 Kebijakan Privasi
-              </a>
-              <a href="/terms"
+              </NuxtLink>
+              <NuxtLink to="/terms"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 Syarat & Ketentuan
-              </a>
+              </NuxtLink>
             </div>
           </div>
 
@@ -82,14 +82,14 @@
               Pengembang
             </h4>
             <div class="flex flex-col gap-3">
-              <a href="/blog"
+              <NuxtLink to="/blog"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 Blog
-              </a>
-              <a href="/career"
+              </NuxtLink>
+              <NuxtLink to="/career"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 Karir
-              </a>
+              </NuxtLink>
             </div>
           </div>
         </div>

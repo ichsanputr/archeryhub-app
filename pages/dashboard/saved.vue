@@ -180,13 +180,13 @@ useHead({
                 Try Again
               </button>
 
-              <a href="/problem" class="w-full">
+              <NuxtLink to="/problem" class="w-full">
                 <button
                   class="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-medium transition-colors w-full">
                   <Icon :ssr="true" icon="ph:code" class="w-4 h-4" />
                   Browse Problems
                 </button>
-              </a>
+              </NuxtLink>
             </div>
           </div>
         </div>
@@ -206,21 +206,21 @@ useHead({
           </div>
 
           <div class="flex flex-col gap-3 w-full max-w-md">
-            <a href="/problem" class="w-full">
+            <NuxtLink to="/problem" class="w-full">
               <button
                 class="flex items-center justify-center gap-2 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition-colors w-full">
                 <Icon :ssr="true" icon="ph:code" class="w-4 h-4" />
                 Browse Problems
               </button>
-            </a>
+            </NuxtLink>
 
-            <a href="/" class="w-full">
+            <NuxtLink to="/" class="w-full">
               <button
                 class="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-medium transition-colors w-full">
                 <Icon :ssr="true" icon="ph:house" class="w-4 h-4" />
                 Go to Homepage
               </button>
-            </a>
+            </NuxtLink>
           </div>
         </div>
       </div>
@@ -346,11 +346,11 @@ useHead({
 
             <!-- Action Buttons -->
             <div class="flex items-center justify-between pt-4 border-t border-gray-200">
-              <a :href="`/problem/${problem.slug}`"
+              <NuxtLink :to="`/problem/${problem.slug}`"
                 class="flex items-center gap-2 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition-colors text-sm">
                 <Icon :ssr="true" icon="ph:play" class="w-4 h-4" />
                 Solve Now
-              </a>
+              </NuxtLink>
 
               <!-- Save Button (for removal) -->
               <button @click="removeSavedProblem(problem.slug)"
@@ -377,21 +377,21 @@ useHead({
               </div>
 
               <div class="flex flex-col gap-3 w-full">
-                <a href="/problem" class="w-full">
+                <NuxtLink to="/problem" class="w-full">
                   <button
                     class="flex items-center justify-center gap-2 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition-colors w-full">
                     <Icon :ssr="true" icon="ph:code" class="w-4 h-4" />
                     Browse Problems
                   </button>
-                </a>
+                </NuxtLink>
 
-                <a href="/" class="w-full">
+                <NuxtLink to="/" class="w-full">
                   <button
                     class="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-medium transition-colors w-full">
                     <Icon :ssr="true" icon="ph:house" class="w-4 h-4" />
                     Go to Homepage
                   </button>
-                </a>
+                </NuxtLink>
               </div>
             </div>
           </div>

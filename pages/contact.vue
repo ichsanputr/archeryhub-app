@@ -82,10 +82,10 @@
                 <input type="checkbox" name="agree" required
                   class="mt-1 h-4 w-4 rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
                 <label class="text-sm text-gray-600">
-                  I agree to the <a href="/privacy" class="text-yellow-600 hover:text-yellow-700 underline">privacy
-                    policy</a>
-                  and <a href="/terms" class="text-yellow-600 hover:text-yellow-700 underline">terms of service
-                  </a>.
+                  I agree to the <NuxtLink to="/privacy" class="text-yellow-600 hover:text-yellow-700 underline">privacy
+                    policy</NuxtLink>
+                  and <NuxtLink to="/terms" class="text-yellow-600 hover:text-yellow-700 underline">terms of service
+                  </NuxtLink>.
                 </label>
               </div>
 
@@ -108,7 +108,7 @@
             </h3>
 
             <div class="space-y-4">
-              <a href="mailto:hello@archeryhub.id"
+              <NuxtLink to="mailto:hello@archeryhub.id" external
                 class="flex items-center gap-3 p-3 rounded-xl hover:bg-yellow-50 transition-colors group">
                 <div
                   class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center group-hover:bg-yellow-200 transition-colors">
@@ -118,9 +118,9 @@
                   <div class="font-medium text-gray-900">Email</div>
                   <div class="text-sm text-gray-600">hello@archeryhub.id</div>
                 </div>
-              </a>
+              </NuxtLink>
 
-              <a href="https://github.com/ichsanputr" target="_blank"
+              <NuxtLink to="https://github.com/ichsanputr" target="_blank" external
                 class="flex items-center gap-3 p-3 rounded-xl hover:bg-yellow-50 transition-colors group">
                 <div
                   class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center group-hover:bg-yellow-200 transition-colors">
@@ -130,9 +130,9 @@
                   <div class="font-medium text-gray-900">GitHub</div>
                   <div class="text-sm text-gray-600">@ichsanputr</div>
                 </div>
-              </a>
+              </NuxtLink>
 
-              <a href="https://twitter.com/archeryhub" target="_blank"
+              <NuxtLink to="https://twitter.com/archeryhub" target="_blank" external
                 class="flex items-center gap-3 p-3 rounded-xl hover:bg-yellow-50 transition-colors group">
                 <div
                   class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center group-hover:bg-yellow-200 transition-colors">
@@ -142,7 +142,7 @@
                   <div class="font-medium text-gray-900">Twitter</div>
                   <div class="text-sm text-gray-600">@archeryhub</div>
                 </div>
-              </a>
+              </NuxtLink>
             </div>
           </div>
 

@@ -95,8 +95,8 @@
         </p>
 
         <p>
-          For questions about this policy or your data, contact us at <a href="mailto:hello@archeryhub.id"
-            class="text-yellow-600 hover:text-yellow-700 underline">hello@archeryhub.id</a>.
+          For questions about this policy or your data, contact us at <NuxtLink to="mailto:hello@archeryhub.id" external
+            class="text-yellow-600 hover:text-yellow-700 underline">hello@archeryhub.id</NuxtLink>.
         </p>
 
         <p class="last-updated">Last Updated: {{ new Date().toLocaleDateString() }}</p>

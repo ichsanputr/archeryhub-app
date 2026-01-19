@@ -4,9 +4,9 @@
         <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
             <!-- Breadcrumb -->
             <nav class="flex items-center gap-2 text-sm text-gray-500 mb-8">
-                <a href="/" class="hover:text-navy transition-colors">Beranda</a>
+                <NuxtLink to="/" class="hover:text-navy transition-colors">Beranda</NuxtLink>
                 <span class="material-symbols-outlined text-base">chevron_right</span>
-                <a href="/berita" class="hover:text-navy transition-colors">Berita</a>
+                <NuxtLink to="/berita" class="hover:text-navy transition-colors">Berita</NuxtLink>
                 <span class="material-symbols-outlined text-base">chevron_right</span>
                 <span class="text-navy font-medium truncate max-w-xs">{{ article.title }}</span>
             </nav>
@@ -133,7 +133,7 @@
             <section class="mt-16">
                 <h2 class="text-2xl font-bold text-navy mb-6">Artikel Terkait</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <a v-for="related in relatedArticles" :key="related.slug" :href="`/berita/${related.slug}`"
+                    <NuxtLink v-for="related in relatedArticles" :key="related.slug" :to="`/berita/${related.slug}`"
                         class="group bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg hover:border-primary/30 transition-all">
                         <div class="relative aspect-video overflow-hidden">
                             <img :src="related.image" :alt="related.title"
@@ -141,13 +141,13 @@
                         </div>
                         <div class="p-4">
                             <span class="text-xs font-bold text-primary uppercase tracking-wider">{{ related.category
-                            }}</span>
+                                }}</span>
                             <h3
                                 class="text-navy font-bold mt-2 group-hover:text-primary-hover transition-colors line-clamp-2">
                                 {{ related.title }}</h3>
                             <p class="text-gray-500 text-sm mt-2">{{ related.date }}</p>
                         </div>
-                    </a>
+                    </NuxtLink>
                 </div>
             </section>
         </main>
