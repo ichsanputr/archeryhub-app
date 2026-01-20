@@ -1,147 +1,5 @@
 <template>
     <div class="min-h-screen bg-background-light font-body text-navy overflow-x-hidden">
-        <!-- Navigation -->
-        <nav class="fixed top-0 z-50 w-full transition-all duration-500" :class="[
-            isScrolled
-                ? 'bg-white/95 backdrop-blur-md border-b border-border-subtle py-2 shadow-lg'
-                : 'bg-transparent border-transparent py-4'
-        ]">
-            <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between h-14">
-                    <div class="flex items-center gap-2 sm:gap-3 group cursor-pointer" @click="navigateTo('/')">
-                        <div class="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-xl transition-all duration-300 overflow-hidden"
-                            :class="isScrolled ? 'bg-navy' : 'bg-primary'">
-                            <img src="/logo.png" alt="Logo" class="w-6 h-6 sm:w-7 sm:h-7 object-contain" />
-                        </div>
-                        <span
-                            class="text-lg sm:text-xl font-black tracking-tight font-display transition-colors duration-300"
-                            :class="isScrolled ? 'text-navy' : 'text-white'">Archeryhub<span
-                                class="text-logo-id">.id</span></span>
-                    </div>
-                    <div class="hidden md:flex items-center gap-8">
-                        <NuxtLink to="/" class="text-sm font-medium transition-all duration-300 hover:text-primary"
-                            :class="isScrolled ? 'text-navy' : 'text-white/80'">Beranda</NuxtLink>
-                        
-                        <!-- Turnamen with Mega Menu -->
-                        <div class="relative" @mouseenter="showMegaMenu = true" @mouseleave="showMegaMenu = false">
-                            <button class="text-sm font-medium transition-all duration-300 hover:text-primary flex items-center gap-1"
-                                :class="isScrolled ? 'text-navy' : 'text-white/80'">
-                                Turnamen
-                                <Icon icon="ph:caret-down" class="text-xs transition-transform" :class="{ 'rotate-180': showMegaMenu }" />
-                            </button>
-                            
-                            <!-- Mega Menu Dropdown -->
-                            <Transition enter-active-class="transition duration-200 ease-out"
-                                enter-from-class="opacity-0 translate-y-1" enter-to-class="opacity-100 translate-y-0"
-                                leave-active-class="transition duration-150 ease-in"
-                                leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 translate-y-1">
-                                <div v-if="showMegaMenu" class="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[700px]">
-                                    <div class="bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden">
-                                        <div class="grid grid-cols-12 gap-0">
-                                            <!-- Featured Event -->
-                                            <div class="col-span-5 bg-gradient-to-br from-navy to-navy-light p-6">
-                                                <span class="text-primary text-xs font-bold uppercase tracking-wider">Featured Event</span>
-                                                <div class="mt-3">
-                                                    <div class="aspect-video bg-white/10 rounded-lg overflow-hidden mb-3">
-                                                        <img src="https://images.unsplash.com/photo-1565992441121-4367c2967103?w=400&h=225&fit=crop" 
-                                                            alt="Featured Event" class="w-full h-full object-cover" />
-                                                    </div>
-                                                    <h3 class="text-white font-bold text-sm leading-tight">National Indoor Championship 2026</h3>
-                                                    <p class="text-white/70 text-xs mt-1">Jakarta • 25-28 Feb 2026</p>
-                                                    <NuxtLink to="/events" 
-                                                        class="inline-flex items-center gap-1 mt-3 text-primary text-xs font-bold hover:text-white transition-colors">
-                                                        Lihat Detail
-                                                        <Icon icon="ph:arrow-right" />
-                                                    </NuxtLink>
-                                                </div>
-                                            </div>
-                                            
-                                            <!-- Categories & Links -->
-                                            <div class="col-span-7 p-6">
-                                                <div class="grid grid-cols-2 gap-8">
-                                                    <!-- By Category -->
-                                                    <div>
-                                                        <span class="text-gray-400 text-xs font-bold uppercase tracking-wider">Kategori</span>
-                                                        <div class="mt-3 space-y-2">
-                                                            <NuxtLink v-for="cat in megaCategories" :key="cat.code" 
-                                                                :to="`/events?division=${cat.code}`"
-                                                                class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors group">
-                                                                <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                                                                    <Icon :icon="cat.icon" class="text-primary text-lg" />
-                                                                </div>
-                                                                <span class="text-navy font-semibold text-sm group-hover:text-primary transition-colors">{{ cat.name }}</span>
-                                                            </NuxtLink>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <!-- Quick Links -->
-                                                    <div>
-                                                        <span class="text-gray-400 text-xs font-bold uppercase tracking-wider">Akses Cepat</span>
-                                                        <div class="mt-3 space-y-1">
-                                                            <NuxtLink v-for="link in megaQuickLinks" :key="link.to" 
-                                                                :to="link.to"
-                                                                class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-gray-50 transition-colors text-gray-600 hover:text-navy text-sm">
-                                                                <Icon :icon="link.icon" class="text-base" />
-                                                                {{ link.label }}
-                                                            </NuxtLink>
-                                                        </div>
-                                                        
-                                                        <!-- CTA -->
-                                                        <div class="mt-4 pt-4 border-t border-gray-100">
-                                                            <NuxtLink to="/events"
-                                                                class="flex items-center justify-center gap-2 w-full py-2.5 bg-primary hover:bg-primary-hover text-navy font-bold text-sm rounded-lg transition-all">
-                                                                <Icon icon="ph:list-bullets" />
-                                                                Semua Turnamen
-                                                            </NuxtLink>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Transition>
-                        </div>
-                        
-                        <NuxtLink to="#" class="text-sm font-medium transition-all duration-300 hover:text-primary"
-                            :class="isScrolled ? 'text-navy' : 'text-white/80'">Skor</NuxtLink>
-                        <NuxtLink to="#" class="text-sm font-medium transition-all duration-300 hover:text-primary"
-                            :class="isScrolled ? 'text-navy' : 'text-white/80'">Klub</NuxtLink>
-                    </div>
-                    <div class="hidden md:flex">
-                        <NuxtLink v-if="isLoggedIn" to="/dashboard"
-                            class="bg-primary hover:bg-primary-hover text-navy text-xs font-bold px-4 py-1.5 rounded-lg transition-colors duration-200 flex items-center gap-2">
-                            <Icon icon="ph:layout-bold" class="text-base" />
-                            Dashboard
-                        </NuxtLink>
-                        <NuxtLink v-else to="/auth/login"
-                            class="bg-primary hover:bg-primary-hover text-navy text-xs font-bold px-4 py-1.5 rounded-lg transition-colors duration-200">
-                            Masuk / Daftar
-                        </NuxtLink>
-                    </div>
-                    <div class="flex md:hidden">
-                        <button class="transition-colors duration-300" :class="isScrolled ? 'text-navy' : 'text-white'"
-                            @click="mobileMenuOpen = !mobileMenuOpen">
-                            <Icon :icon="mobileMenuOpen ? 'ph:x-bold' : 'ph:list-bold'" class="text-2xl" />
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Mobile Menu -->
-            <div v-if="mobileMenuOpen" class="md:hidden bg-white border-b border-border-subtle p-4 space-y-4">
-                <NuxtLink to="/" class="block text-navy text-sm font-medium">Beranda</NuxtLink>
-                <NuxtLink to="/events" class="block text-navy text-sm font-medium">Turnamen</NuxtLink>
-                <NuxtLink to="#" class="block text-navy text-sm font-medium">Skor</NuxtLink>
-                <NuxtLink to="#" class="block text-navy text-sm font-medium">Klub</NuxtLink>
-                <NuxtLink v-if="isLoggedIn" to="/dashboard"
-                    class="block bg-primary text-navy text-center font-bold py-2 rounded-lg">
-                    Dashboard</NuxtLink>
-                <NuxtLink v-else to="/auth/login"
-                    class="block bg-primary text-navy text-center font-bold py-2 rounded-lg">
-                    Masuk / Daftar</NuxtLink>
-            </div>
-        </nav>
 
         <!-- Hero Section -->
         <section class="relative w-full h-screen overflow-hidden">
@@ -180,7 +38,7 @@
                             </NuxtLink>
                             <button
                                 class="bg-white/10 hover:bg-white/20 border border-white/20 text-white text-sm font-medium px-6 py-2.5 rounded-xl transition-colors backdrop-blur-md">
-                                Pelajari Fitur
+                                Cek Fiturnya
                             </button>
                         </div>
                     </div>
@@ -196,66 +54,60 @@
                     <div class="bg-white rounded-3xl shadow-sm border border-border-subtle/50 p-6 md:p-8 h-full">
                         <div class="flex items-center justify-between mb-8">
                             <div>
-                                <h2 class="text-navy text-xl sm:text-2xl font-bold tracking-tight font-display">Turnamen
-                                    Mendatang</h2>
-                                <p class="text-text-sub text-xs sm:text-sm mt-1">Kompetisi resmi dengan pendaftaran
-                                    aktif.</p>
+                                <h2 class="text-navy text-xl sm:text-2xl font-bold tracking-tight font-display">Event
+                                    Bakal Digelar</h2>
+                                <p class="text-text-sub text-xs sm:text-sm mt-1">Daftar sekarang sebelum slotnya penuh!
+                                </p>
                             </div>
                             <NuxtLink to="/events"
                                 class="flex items-center gap-1 text-navy text-xs sm:text-sm font-semibold hover:text-primary transition-colors group">
-                                <span class="hidden sm:inline">Lihat Semua</span>
+                                <span class="hidden sm:inline">Cek Semua</span>
                                 <span class="sm:hidden">Semua</span>
                                 <span
                                     class="material-symbols-outlined text-base sm:text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
                             </NuxtLink>
                         </div>
 
-                        <!-- Tournament Cards Container -->
                         <div
-                            class="space-y-4 px-1 max-h-[500px] overflow-y-auto scrollbar-thin scrollbar-track-gray-50 scrollbar-thumb-gray-200 hover:scrollbar-thumb-primary/30 transition-colors pr-2">
+                            class="space-y-4 px-1 max-h-[550px] overflow-y-auto scrollbar-thin scrollbar-track-gray-50 scrollbar-thumb-gray-200 hover:scrollbar-thumb-primary/30 transition-colors pr-2 custom-scrollbar">
                             <div v-for="(event, index) in upcomingEvents" :key="event.name"
-                                class="group bg-white rounded-2xl border border-gray-100 p-4 sm:p-5 hover:border-primary/50 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300">
-                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-6">
-                                    <div class="flex items-start gap-4 sm:gap-5">
-                                        <!-- Date Badge -->
+                                class="group bg-white rounded-2xl border border-gray-100 p-4 sm:p-5 hover:border-primary/50 hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] transition-all duration-300 relative overflow-hidden">
+                                <div class="flex flex-row items-center sm:items-center justify-between gap-4">
+                                    <div class="flex items-center gap-3 sm:gap-5 flex-1 min-w-0">
+                                        <!-- Date Badge (Redesigned for Mobile) -->
                                         <div
-                                            class="flex-shrink-0 flex flex-col items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-navy text-white shadow-md group-hover:bg-primary group-hover:text-navy transition-colors duration-300">
+                                            class="flex-shrink-0 flex flex-col items-center justify-center w-11 h-11 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-navy text-white shadow-sm group-hover:bg-primary group-hover:text-navy transition-colors duration-300">
                                             <span
-                                                class="text-[10px] sm:text-xs font-bold uppercase tracking-wider opacity-80">{{
+                                                class="text-[8px] sm:text-xs font-bold uppercase tracking-wider opacity-80">{{
                                                     event.month }}</span>
-                                            <span class="text-xl sm:text-2xl font-black leading-none">{{ event.day
-                                            }}</span>
+                                            <span class="text-sm sm:text-2xl font-black leading-none">{{ event.day
+                                                }}</span>
                                         </div>
 
-                                        <!-- Event Details -->
                                         <div class="flex flex-col min-w-0 flex-1">
-                                            <div class="flex flex-wrap items-center gap-2 mb-1.5">
-                                                <span v-for="tag in event.tags" :key="tag.label" :class="tag.class"
-                                                    class="px-2 py-0.5 rounded-md text-[9px] sm:text-[10px] font-bold uppercase tracking-wider">
-                                                    {{ tag.label }}
-                                                </span>
-                                            </div>
                                             <h3
-                                                class="text-navy text-base sm:text-lg font-bold group-hover:text-primary transition-colors font-display">
+                                                class="text-navy text-sm sm:text-lg font-bold group-hover:text-primary transition-colors font-display line-clamp-1">
                                                 {{ event.name }}
                                             </h3>
-                                            <div class="flex items-center gap-3 mt-1 text-xs sm:text-sm text-text-sub">
+                                            <div
+                                                class="flex items-center gap-2 mt-0.5 sm:mt-1 text-[10px] sm:text-sm text-text-sub">
                                                 <div class="flex items-center gap-1">
                                                     <span
-                                                        class="material-symbols-outlined text-sm sm:text-base text-primary/60">location_on</span>
+                                                        class="material-symbols-outlined text-[12px] sm:text-base text-primary/60">location_on</span>
                                                     <span class="truncate">{{ event.location }}</span>
                                                 </div>
+                                                <span class="sm:hidden w-1 h-1 bg-gray-300 rounded-full"></span>
+                                                <span class="sm:hidden text-navy font-bold">Terverifikasi</span>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- Action -->
                                     <div class="flex-shrink-0">
                                         <NuxtLink :to="`/events/${index}`"
-                                            class="w-full sm:w-auto inline-flex items-center justify-center bg-gray-50 group-hover:bg-primary text-navy font-bold py-2.5 px-6 rounded-xl transition-all border border-gray-100 group-hover:border-primary text-sm">
-                                            Daftar
+                                            class="inline-flex items-center justify-center bg-gray-50 group-hover:bg-primary text-navy font-bold p-2 sm:py-2.5 sm:px-6 rounded-lg sm:rounded-xl transition-all border border-gray-100 group-hover:border-primary text-xs sm:text-sm shadow-sm group-hover:shadow-md">
+                                            <span class="hidden sm:inline">Ikuti</span>
                                             <span
-                                                class="material-symbols-outlined text-lg ml-2 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all">chevron_right</span>
+                                                class="material-symbols-outlined text-lg sm:ml-2 text-navy/40 group-hover:text-navy transition-colors">chevron_right</span>
                                         </NuxtLink>
                                     </div>
                                 </div>
@@ -266,7 +118,7 @@
                         <div class="mt-8 flex justify-center">
                             <NuxtLink to="/events"
                                 class="flex items-center gap-2 text-navy text-sm font-bold hover:text-primary transition-colors group">
-                                Lihat Semua Turnamen
+                                Cek Semua Event
                                 <span
                                     class="material-symbols-outlined text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
                             </NuxtLink>
@@ -275,9 +127,9 @@
                 </div>
 
                 <!-- Column 2: CTA Cards (Stacked) -->
-                <div class="md:col-span-2 lg:col-span-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
+                <div class="md:col-span-2 lg:col-span-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 sm:gap-6">
                     <div
-                        class="relative overflow-hidden group bg-navy rounded-3xl p-8 flex flex-col justify-between shadow-sm transition-all duration-300 flex-1 min-h-[280px]">
+                        class="relative overflow-hidden group bg-navy rounded-2xl sm:rounded-3xl p-6 sm:p-8 flex flex-col justify-between shadow-sm transition-all duration-300 flex-1 min-h-[240px] sm:min-h-[280px]">
                         <div
                             class="absolute top-0 right-0 -mr-16 -mt-16 w-48 h-48 bg-primary/10 rounded-full blur-3xl opacity-50 z-0">
                         </div>
@@ -286,32 +138,34 @@
                                 class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-navy mb-5">
                                 <span class="material-symbols-outlined text-xl">person_add</span>
                             </div>
-                            <h3 class="text-xl sm:text-2xl font-bold text-white mb-2 font-display">Jadi Atlet</h3>
-                            <p class="text-white/60 text-sm mb-6">Profil prestasi dan ikuti turnamen resmi se-Indonesia.
+                            <h3 class="text-xl sm:text-2xl font-bold text-white mb-2 font-display">Gabung Jadi Atlet
+                            </h3>
+                            <p class="text-white/60 text-sm mb-6">Bikin profil prestasi dan ikut event seru
+                                se-Indonesia.
                             </p>
                         </div>
                         <div class="relative z-10">
                             <NuxtLink to="/auth/register?type=archer"
                                 class="w-full inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-navy text-sm font-bold px-6 py-3 rounded-xl transition-all">
-                                Daftar Atlet
+                                Daftar Sekarang
                                 <span class="material-symbols-outlined text-lg">arrow_forward</span>
                             </NuxtLink>
                         </div>
                     </div>
 
                     <div
-                        class="relative overflow-hidden group bg-white border border-border-subtle rounded-3xl p-6 sm:p-8 flex flex-col justify-between shadow-sm transition-all duration-300 flex-1 min-h-[260px] sm:min-h-[280px]">
+                        class="relative overflow-hidden group bg-white border border-border-subtle rounded-2xl sm:rounded-3xl p-6 sm:p-8 flex flex-col justify-between shadow-sm transition-all duration-300 flex-1 min-h-[240px] sm:min-h-[280px]">
                         <div class="relative z-10">
                             <div class="w-10 h-10 rounded-xl bg-navy flex items-center justify-center text-white mb-5">
                                 <span class="material-symbols-outlined text-xl">domain_add</span>
                             </div>
-                            <h3 class="text-xl sm:text-2xl font-bold text-navy mb-2 font-display">Organisasi</h3>
-                            <p class="text-text-sub text-sm mb-6">Kelola klub atau federasi dengan sistem modern.</p>
+                            <h3 class="text-xl sm:text-2xl font-bold text-navy mb-2 font-display">Klub & Organisasi</h3>
+                            <p class="text-text-sub text-sm mb-6">Kelola klub atau federasi kamu pakai cara modern.</p>
                         </div>
                         <div class="relative z-10">
                             <NuxtLink to="/auth/register?type=organization"
                                 class="w-full inline-flex items-center justify-center gap-2 bg-navy hover:bg-navy-light text-white text-sm font-bold px-6 py-3 rounded-xl transition-all">
-                                Gabung Mitra
+                                Bikin Akun Klub
                                 <span class="material-symbols-outlined text-lg">arrow_forward</span>
                             </NuxtLink>
                         </div>
@@ -320,52 +174,134 @@
             </div>
         </section>
 
-        <!-- Digital Governance Ecosystem -->
-        <section class="bg-white py-16 md:py-24 border-b border-gray-100">
+        <!-- Precision Ecosystem Features -->
+        <section class="relative bg-white py-12 sm:py-24 md:py-32 overflow-hidden border-b border-gray-100">
+            <!-- Background Glow/Patterns -->
+            <div class="absolute inset-0 pointer-events-none opacity-20">
+                <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/10 blur-[120px] rounded-full"></div>
+                <div class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-navy/5 blur-[120px] rounded-full"></div>
+            </div>
+
             <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-10 sm:mb-16 max-w-2xl mx-auto">
-                    <h2 class="text-navy text-2xl sm:text-3xl font-bold mb-4 font-display">Ekosistem Tata Kelola Digital
-                    </h2>
-                    <p class="text-text-sub text-sm sm:text-base">Fitur terintegrasi dirancang untuk memprofesionalkan
-                        manajemen panahan dari
-                        tingkat klub hingga federasi nasional.</p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 lg:gap-12">
-                    <div
-                        class="group p-6 sm:p-8 rounded-2xl bg-gray-50 border border-transparent hover:border-primary/20 hover:shadow-xl transition-all duration-300">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+                    <!-- Desktop: Left Column (Image Slider) -->
+                    <div v-if="!isMobile" class="lg:col-span-7 relative order-1 lg:order-1">
+                        <!-- Main Feature Image with Description Overlay -->
                         <div
-                            class="w-12 h-12 sm:w-16 sm:h-16 bg-navy rounded-2xl flex items-center justify-center mb-5 sm:mb-6 group-hover:scale-110 transition-transform">
-                            <span class="material-symbols-outlined text-primary text-3xl sm:text-4xl">scoreboard</span>
+                            class="relative w-full aspect-video md:aspect-[4/3] rounded-[2rem] bg-navy overflow-hidden shadow-2xl group border border-white/5">
+                            <!-- Background Image -->
+                            <img src="https://images.unsplash.com/photo-1541535881962-3bb380b08458?auto=format&fit=crop&q=80&w=1200"
+                                alt="Archery Focus"
+                                class="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 transition-all duration-1000 scale-[1.05]" />
+
+                            <!-- Static Overlays -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/40 to-transparent"></div>
+                            <div class="absolute inset-0 abstract-pattern opacity-5"></div>
+                            <div class="absolute -top-24 -right-24 w-64 h-64 bg-primary/20 blur-[80px] rounded-full">
+                            </div>
+
+                            <!-- Dynamic Content Overlay -->
+                            <div class="absolute inset-0 p-6 sm:p-8 md:p-12 flex flex-col justify-end">
+                                <Transition mode="out-in" enter-active-class="transition duration-500 ease-out"
+                                    enter-from-class="opacity-0 translate-y-8"
+                                    enter-to-class="opacity-100 translate-y-0"
+                                    leave-active-class="transition duration-300 ease-in"
+                                    leave-from-class="opacity-100 translate-y-0"
+                                    leave-to-class="opacity-0 -translate-y-8">
+                                    <div :key="activeFeature" class="max-w-xl">
+                                        <h3
+                                            class="text-xl sm:text-2xl md:text-3xl lg:text-5xl font-black text-white mb-2 sm:mb-4 font-display leading-tight">
+                                            {{ featureItems[activeFeature].title }}
+                                        </h3>
+                                        <p
+                                            class="text-white/80 text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed font-light">
+                                            {{ featureItems[activeFeature].longDescription }}
+                                        </p>
+                                    </div>
+                                </Transition>
+                            </div>
                         </div>
-                        <h3 class="text-lg sm:text-xl font-bold text-navy mb-2 sm:mb-3">Scoring Real-time</h3>
-                        <p class="text-text-sub text-sm sm:text-base leading-relaxed">
-                            Sistem penilaian digital dengan sinkronisasi cloud instan. Hilangkan papan skor kertas dan
-                            sediakan hasil langsung untuk penonton di seluruh dunia.
-                        </p>
                     </div>
-                    <div
-                        class="group p-6 sm:p-8 rounded-2xl bg-gray-50 border border-transparent hover:border-primary/20 hover:shadow-xl transition-all duration-300">
-                        <div
-                            class="w-12 h-12 sm:w-16 sm:h-16 bg-navy rounded-2xl flex items-center justify-center mb-5 sm:mb-6 group-hover:scale-110 transition-transform">
-                            <span class="material-symbols-outlined text-primary text-3xl sm:text-4xl">domain</span>
+
+                    <!-- Right: Features List -->
+                    <div class="lg:col-span-12 lg:col-start-8 lg:col-span-5 flex flex-col gap-8 md:gap-10 order-2">
+                        <div class="space-y-6">
+                            <span
+                                class="inline-block py-1 px-3 bg-primary text-navy text-[10px] font-black uppercase tracking-[0.2em] rounded-md">Ekosistem
+                                Presisi</span>
+                            <h2
+                                class="text-3xl md:text-4xl lg:text-5xl font-black text-navy leading-[1.1] font-display">
+                                Semua Makin <span
+                                    class="text-transparent bg-clip-text bg-gradient-to-r from-navy to-navy/40">Presisi.</span>
+                            </h2>
+                            <p class="text-sm sm:text-base lg:text-lg text-text-sub leading-relaxed max-w-md">
+                                Solusi digital lengkap buat semua penggiat panahan Indonesia.
+                            </p>
                         </div>
-                        <h3 class="text-lg sm:text-xl font-bold text-navy mb-2 sm:mb-3">Manajemen Klub</h3>
-                        <p class="text-text-sub text-sm sm:text-base leading-relaxed">
-                            Alat administrasi bagi klub untuk mengelola anggota, memproses pendaftaran, dan memantau
-                            kemajuan perkembangan atlet dari waktu ke waktu.
-                        </p>
-                    </div>
-                    <div
-                        class="group p-6 sm:p-8 rounded-2xl bg-gray-50 border border-transparent hover:border-primary/20 hover:shadow-xl transition-all duration-300">
-                        <div
-                            class="w-12 h-12 sm:w-16 sm:h-16 bg-navy rounded-2xl flex items-center justify-center mb-5 sm:mb-6 group-hover:scale-110 transition-transform">
-                            <span class="material-symbols-outlined text-primary text-3xl sm:text-4xl">leaderboard</span>
+
+                        <!-- Mobile: Main Feature Image with Description Overlay -->
+                        <div v-if="isMobile"
+                            class="relative w-full aspect-video rounded-3xl bg-navy overflow-hidden shadow-xl border border-white/5 animate-fade-in">
+                            <!-- Background Image -->
+                            <img src="https://images.unsplash.com/photo-1541535881962-3bb380b08458?auto=format&fit=crop&q=80&w=1200"
+                                alt="Archery Focus" class="w-full h-full object-cover opacity-60 scale-[1.05]" />
+
+                            <!-- Static Overlays -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-navy transition-all duration-500"
+                                :style="{ opacity: activeFeature >= 0 ? 0.9 : 0.6 }"></div>
+
+                            <!-- Dynamic Content Overlay (Mobile View) -->
+                            <div class="absolute inset-0 p-6 flex flex-col justify-end">
+                                <Transition mode="out-in" enter-active-class="transition duration-300 ease-out"
+                                    enter-from-class="opacity-0 translate-y-4"
+                                    enter-to-class="opacity-100 translate-y-0"
+                                    leave-active-class="transition duration-200 ease-in"
+                                    leave-from-class="opacity-100 translate-y-0"
+                                    leave-to-class="opacity-0 -translate-y-4">
+                                    <div :key="activeFeature">
+                                        <h3 class="text-xl font-black text-white mb-2 font-display">
+                                            {{ featureItems[activeFeature].title }}
+                                        </h3>
+                                        <p class="text-white/80 text-[11px] leading-relaxed line-clamp-3">
+                                            {{ featureItems[activeFeature].longDescription }}
+                                        </p>
+                                    </div>
+                                </Transition>
+                            </div>
                         </div>
-                        <h3 class="text-lg sm:text-xl font-bold text-navy mb-2 sm:mb-3">Ranking Nasional</h3>
-                        <p class="text-text-sub text-sm sm:text-base leading-relaxed">
-                            Kalkulasi poin otomatis dan pembaruan peringkat berdasarkan hasil turnamen, memastikan
-                            transparansi dalam seleksi nasional.
-                        </p>
+
+                        <!-- Interactive Feature Cards (Scrollable) -->
+                        <div class="relative">
+                            <div
+                                class="flex flex-col gap-3 max-h-[350px] sm:max-h-[400px] overflow-y-auto pr-2 sm:pr-4 custom-scrollbar">
+                                <div v-for="(feature, idx) in featureItems" :key="feature.title"
+                                    @click="activeFeature = idx"
+                                    class="group flex items-center p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer"
+                                    :class="activeFeature === idx ? 'bg-navy border-navy ring-1 sm:ring-2 ring-primary ring-offset-2 shadow-xl scale-[1.01]' : 'bg-white border-gray-100 hover:border-primary/50 hover:shadow-lg'">
+                                    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center mr-3 sm:mr-5 transition-colors duration-300 flex-shrink-0"
+                                        :class="activeFeature === idx ? 'bg-primary text-navy' : 'bg-gray-50 text-navy group-hover:bg-primary'">
+                                        <Icon :icon="feature.icon" class="text-xl sm:text-2xl" />
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-sm sm:text-lg font-bold transition-colors duration-300 truncate"
+                                            :class="activeFeature === idx ? 'text-white' : 'text-navy'">
+                                            {{ feature.title }}
+                                        </h4>
+                                        <p v-if="activeFeature === idx"
+                                            class="text-white/60 text-[10px] sm:text-xs mt-0.5 animate-fade-in line-clamp-1">
+                                            {{ feature.description }}
+                                        </p>
+                                    </div>
+                                    <Icon icon="ph:caret-right-bold"
+                                        class="text-lg sm:text-xl transition-all duration-300 flex-shrink-0"
+                                        :class="activeFeature === idx ? 'text-primary opacity-100 translate-x-1' : 'text-gray-200 opacity-20'" />
+                                </div>
+                            </div>
+                            <!-- Bottom Fade Overlay -->
+                            <div
+                                class="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white/80 to-transparent pointer-events-none">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -377,30 +313,21 @@
                 <div class="flex items-center justify-between mb-8">
                     <h2 class="text-xl sm:text-2xl font-bold text-navy flex items-center gap-2 sm:gap-3 font-display">
                         <span class="w-2.5 h-2.5 sm:w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
-                        Event Live Saat Ini
+                        Lagi Berlangsung Nih!
                     </h2>
                     <NuxtLink to="/events"
                         class="text-navy hover:text-primary font-bold text-xs sm:text-sm flex items-center gap-1 group">
-                        <span class="hidden sm:inline">Lihat Jadwal</span>
+                        <span class="hidden sm:inline">Cek Jadwalnya</span>
                         <span class="sm:hidden">Jadwal</span>
                         <span
                             class="material-symbols-outlined text-base sm:text-lg transition-transform group-hover:translate-x-1">arrow_forward</span>
                     </NuxtLink>
                 </div>
-                <div class="flex overflow-x-auto pb-8 -mx-4 px-4 sm:mx-0 sm:px-0 gap-6 no-scrollbar snap-x">
+                <div
+                    class="flex lg:grid lg:grid-cols-3 gap-6 lg:gap-8 pb-8 lg:pb-0 overflow-x-auto lg:overflow-x-visible -mx-4 px-4 sm:mx-0 sm:px-0 lg:mx-0 lg:px-0 no-scrollbar snap-x lg:snap-none">
                     <div v-for="live in liveEvents" :key="live.name"
-                        class="min-w-[300px] md:min-w-[380px] snap-center group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:border-primary/50 transition-all duration-300 flex flex-col">
+                        class="min-w-[300px] md:min-w-[380px] lg:min-w-0 snap-center group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:border-primary/50 transition-all duration-300 flex flex-col">
                         <div class="relative h-48 overflow-hidden">
-                            <div class="absolute top-3 left-3 z-10 flex gap-2">
-                                <span
-                                    class="bg-red-500 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md flex items-center gap-1 animate-pulse">
-                                    <span class="material-symbols-outlined text-[12px]">fiber_manual_record</span> Live
-                                </span>
-                                <span
-                                    class="bg-white/90 backdrop-blur-sm text-navy text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md">
-                                    {{ live.type }}
-                                </span>
-                            </div>
                             <img :src="live.image" :alt="live.name"
                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                         </div>
@@ -417,7 +344,7 @@
                                 <button
                                     class="w-full h-10 rounded-lg border-2 border-navy text-navy hover:bg-navy hover:text-white font-bold text-sm transition-all flex items-center justify-center gap-2">
                                     <span class="material-symbols-outlined text-lg">scoreboard</span>
-                                    Skor Langsung
+                                    Cek Skor Live
                                 </button>
                             </div>
                         </div>
@@ -431,14 +358,13 @@
             <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between mb-6">
                     <div>
-                        <h2 class="text-xl sm:text-2xl font-bold text-navy mb-2 font-display">Klub Unggulan</h2>
-                        <p class="text-text-sub text-xs sm:text-sm hidden sm:block">Akademi dan klub panahan terbaik di
-                            sekitar
-                            Anda</p>
+                        <h2 class="text-xl sm:text-2xl font-bold text-navy mb-2 font-display">Klub Pilihan</h2>
+                        <p class="text-text-sub text-xs sm:text-sm hidden sm:block">Cek klub panahan keren di sekitar
+                            kamu.</p>
                     </div>
                     <NuxtLink to="/clubs"
                         class="text-navy hover:text-primary-hover font-bold text-xs sm:text-sm flex items-center gap-1 sm:gap-2 group bg-white px-3 sm:px-4 py-2 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
-                        <span class="hidden sm:inline">Lihat Semua Klub</span>
+                        <span class="hidden sm:inline">Cek Semua Klub</span>
                         <span class="sm:hidden">Semua Klub</span>
                         <span
                             class="material-symbols-outlined text-base sm:text-lg transition-transform group-hover:translate-x-1">arrow_forward</span>
@@ -470,7 +396,7 @@
                         </div>
                         <button
                             class="w-full mt-auto py-2.5 px-4 bg-primary hover:bg-primary-hover text-navy font-bold text-sm rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2">
-                            Lihat Profil
+                            Cek Profil
                         </button>
                     </div>
                 </div>
@@ -481,9 +407,9 @@
         <section class="bg-white py-16 md:py-20 border-t border-gray-100">
             <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between mb-8">
-                    <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">Berita Terbaru</h2>
-                    <NuxtLink class="text-text-sub hover:text-navy font-bold text-xs sm:text-sm" to="/berita">Lihat
-                        Semua Berita
+                    <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">Kabar Terbaru</h2>
+                    <NuxtLink class="text-text-sub hover:text-navy font-bold text-xs sm:text-sm" to="/berita">Cek Berita
+                        Lainnya
                     </NuxtLink>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -514,48 +440,47 @@
                             </p>
                             <span
                                 class="text-navy hover:text-primary font-bold text-xs sm:text-sm flex items-center gap-1">
-                                Baca Selengkapnya <span class="material-symbols-outlined text-sm">arrow_right_alt</span>
+                                Simak Selengkapnya <span
+                                    class="material-symbols-outlined text-sm">arrow_right_alt</span>
                             </span>
                         </div>
                     </NuxtLink>
                 </div>
             </div>
         </section>
-
-        <!-- Footer -->
-        <LayoutAppFooter />
     </div>
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useAuth } from '~/composables/useAuth'
 
 gsap.registerPlugin(ScrollTrigger)
 
+const isMobile = ref(false)
+const checkMobile = () => {
+    isMobile.value = window.innerWidth < 1024
+}
+
+onMounted(() => {
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+})
+
+onUnmounted(() => {
+    window.removeEventListener('resize', checkMobile)
+})
+
+definePageMeta({
+    layout: 'landing'
+})
+
 const { isLoggedIn, user } = useAuth()
 
-const isScrolled = ref(false)
-const mobileMenuOpen = ref(false)
-const showMegaMenu = ref(false)
-const mobileSubmenuOpen = ref(false)
 const activeRegion = ref('Semua Wilayah')
-
-const megaCategories = [
-    { code: 'recurve', name: 'Recurve', icon: 'ph:target-bold' },
-    { code: 'compound', name: 'Compound', icon: 'ph:crosshair-bold' },
-    { code: 'barebow', name: 'Barebow', icon: 'ph:circle-bold' },
-    { code: 'traditional', name: 'Traditional', icon: 'ph:tree-bold' },
-]
-
-const megaQuickLinks = [
-    { to: '/events', label: 'Semua Event', icon: 'ph:calendar-dots' },
-    { to: '/events?status=ongoing', label: 'Sedang Berlangsung', icon: 'ph:lightning' },
-    { to: '/events?status=upcoming', label: 'Akan Datang', icon: 'ph:clock' },
-]
 
 const regions = ['Semua Wilayah', 'DKI Jakarta', 'Jawa Barat', 'Jawa Timur', 'DI Yogyakarta', 'Banten', 'Bali']
 
@@ -577,13 +502,7 @@ const heroTitle = ref(null)
 const heroText = ref(null)
 const heroButtons = ref(null)
 
-const handleScroll = () => {
-    isScrolled.value = window.scrollY > 50
-}
-
 onMounted(() => {
-    window.addEventListener('scroll', handleScroll)
-
     // GSAP Hero Animations
     const tl = gsap.timeline({ defaults: { ease: 'power3.out', duration: 1 } })
 
@@ -591,10 +510,6 @@ onMounted(() => {
         .to(heroTitle.value, { opacity: 1, y: 0, duration: 1 }, 0.4)
         .to(heroText.value, { opacity: 1, y: 0, duration: 1 }, 0.6)
         .to(heroButtons.value, { opacity: 1, y: 0, duration: 1 }, 0.8)
-})
-
-onUnmounted(() => {
-    window.removeEventListener('scroll', handleScroll)
 })
 
 useHead({
@@ -614,107 +529,123 @@ const upcomingEvents = [
         location: 'GBK Arena, Senayan',
         categories: 'Recurve & Compound',
         tags: [
-            { label: 'Open', class: 'bg-blue-100 text-blue-700' },
-            { label: 'Nasional', class: 'bg-orange-100 text-orange-700' }
+            { label: 'Grade A', class: 'bg-primary/10 text-primary border border-primary/20' },
+            { label: 'National', class: 'bg-navy/10 text-navy border border-navy/20' }
         ]
     },
     {
-        name: 'Indonesian Open Championship',
-        month: 'Nov',
-        day: '20',
-        location: 'GBK Archery Field, Jakarta',
-        categories: 'Semua Divisi',
-        tags: [
-            { label: 'Grade A', class: 'bg-red-100 text-red-700' },
-            { label: 'Internasional', class: 'bg-blue-100 text-blue-700' }
-        ]
-    },
-    {
-        name: 'Surabaya Archery Cup',
-        month: 'Dec',
-        day: '20',
-        location: 'Lapangan KONI Jatim',
-        categories: 'Standard Bow U-15',
-        tags: [
-            { label: 'Junior', class: 'bg-green-100 text-green-700' }
-        ]
-    },
-    {
-        name: 'Bali International Open',
+        name: 'Banten Archery Series',
         month: 'Dec',
         day: '05',
-        location: 'Denpasar Archery Center',
-        categories: 'Recurve & Compound',
+        location: 'Tangerang, Banten',
+        categories: 'Barebow & Standard',
         tags: [
-            { label: 'Open', class: 'bg-blue-100 text-blue-700' },
-            { label: 'Internasional', class: 'bg-purple-100 text-purple-700' }
+            { label: 'Official', class: 'bg-primary/10 text-primary border border-primary/20' }
         ]
     },
     {
-        name: 'Yogyakarta Indoor Series',
-        month: 'Jan',
-        day: '12',
-        location: 'GOR Klebengan',
-        categories: 'Barebow & Recurve',
+        name: 'Youth Archery Cup',
+        month: 'Dec',
+        day: '20',
+        location: 'Bandung, Jawa Barat',
+        categories: 'U-12, U-15, U-17',
         tags: [
-            { label: 'Series 1', class: 'bg-purple-100 text-purple-700' }
-        ]
-    },
-    {
-        name: 'Medan Archery Open',
-        month: 'Feb',
-        day: '01',
-        location: 'USU Sports Center',
-        categories: 'Recurve & Compound',
-        tags: [
-            { label: 'Regional', class: 'bg-orange-100 text-orange-700' }
-        ]
-    },
-    {
-        name: 'Borneo Archery Festival',
-        month: 'Jan',
-        day: '10',
-        location: 'Balikpapan Sports Center',
-        categories: 'Semua Divisi',
-        tags: [
-            { label: 'Klub', class: 'bg-teal-100 text-teal-700' }
-        ]
-    },
-    {
-        name: 'Makassar Championship',
-        month: 'Feb',
-        day: '15',
-        location: 'Karebosi Field',
-        categories: 'Hanya Recurve',
-        tags: [
-            { label: 'Provinsi', class: 'bg-yellow-100 text-yellow-700' }
+            { label: 'Junior', class: 'bg-orange-50 text-orange-600 border border-orange-100' }
         ]
     }
 ]
 
 const liveEvents = [
     {
-        name: 'Surabaya Archery Cup 2024',
-        type: 'Seri Nasional',
-        location: 'KONI Jatim Field, Surabaya',
-        image:
-            'https://lh3.googleusercontent.com/aida-public/AB6AXuAJXWL-Z7f7fP24_IyBjI_e-q_jYcMbzRtaKiOpKP8TxgqwSxRrCqNcE-GXJXbiCEv6rlwlNJzTmbbgAdQFWHH4Jk_Fw-aslTiT3Qezy8bbmGRG0WoRA-yD8tykZuxYObytzJ6Yf7yNL8poFU6vWlyEuFjbHcIzwfoLAMru-bfdw4GXezmv71SwRPYw_-Ct6ZP3f6AqglpvBIhCSrp9g13uTQpj69_-hzZqp1wSqJJ-9PdZqp0CYWgFWsajdRos9QmU7eeyuFhFPH0'
+        name: 'Surabaya Archery Festival 2024',
+        location: 'Lapangan KONI Jatim, Surabaya',
+        type: 'Qualification Round',
+        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAJXWL-Z7f7fP24_IyBjI_e-q_jYcMbzRtaKiOpKP8TxgqwSxRrCqNcE-GXJXbiCEv6rlwlNJzTmbbgAdQFWHH4Jk_Fw-aslTiT3Qezy8bbmGRG0WoRA-yD8tykZuxYObytzJ6Yf7yNL8poFU6vWlyEuFjbHcIzwfoLAMru-bfdw4GXezmv71SwRPYw_-Ct6ZP3f6AqglpvBIhCSrp9g13uTQpj69_-hzZqp1wSqJJ-9PdZqp0CYWgFWsajdRos9QmU7eeyuFhFPH0'
     },
     {
-        name: 'Jakarta Indoor Open',
-        type: 'Regional',
-        location: 'Senayan Hall B, Jakarta',
-        image:
-            'https://lh3.googleusercontent.com/aida-public/AB6AXuBmKeu4qLnuI8uJ8itXirIGY311f6c_CfhqFD3qtMv-M4oTNDiSeGeylyU0qI_7lQHeMywtfdDw175-dWrdxwZwWSnnEMmkBca4ScW0dEbBQ_wZYVWuCaOPI-A204QdKHKXQxHsutHbZP8c9uPaZpfK8lzqziHTAW_dqnlmi99AtLhIGmxfUZ-irvcNm1YUswSsH9HGhvq4Hr6jq7rsveM4HwMmhNVDABEGcgh0sYQHoHy9t1IzkTX2LexV72X240IEyZL2_InQGZ8'
+        name: 'Bali International Open',
+        location: 'Denpasar, Bali',
+        type: 'Final Round',
+        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBmKeu4qLnuI8uJ8itXirIGY311f6c_CfhqFD3qtMv-M4oTNDiSeGeylyU0qI_7lQHeMywtfdDw175-dWrdxwZwWSnnEMmkBca4ScW0dEbBQ_wZYVWuCaOPI-A204QdKHKXQxHsutHbZP8c9uPaZpfK8lzqziHTAW_dqnlmi99AtLhIGmxfUZ-irvcNm1YUswSsH9HGhvq4Hr6jq7rsveM4HwMmhNVDABEGcgh0sYQHoHy9t1IzkTX2LexV72X240IEyZL2_InQGZ8'
     },
     {
-        name: 'Borneo Youth Qualifier',
-        type: 'Seri Klub',
-        location: 'Balikpapan Sports Center',
-        image:
-            'https://lh3.googleusercontent.com/aida-public/AB6AXuDQStrrmLQN-DtqrTO5KWNF3EvwOXSw-raemHMh-lxMUVAtHiqxHNMqzQoV2l1ReELlRe_dVIAkp1P8Bc8ekRqbhOn-axS6izTQXKw3d70pq-CpZHWUZoS58mGL70U_Bk96ViNRcaOaGr5wIkPrtg8w46mzrAtHgWRH6VKAUalmkrFJ8qjDltkmd-nHJs4aUfrBBphZSnivwOkhoIjzG8dpjeCtp_UOZTOnovXJP7IAWJEeWqw7Uh7-mlLVkorgyeOsSRun6CmO_8I'
+        name: 'Bandung Open Championship',
+        location: 'Siliwangi, Bandung',
+        type: 'Elimination Round',
+        image: 'https://images.unsplash.com/photo-1541535881962-3bb380b08458?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+        name: 'Jakarta Indoor Archery',
+        location: 'Senayan, Jakarta',
+        type: 'Qualification Round',
+        image: 'https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+        name: 'Yogya National Series',
+        location: 'Mandala Krida, DIY',
+        type: 'Semi Final',
+        image: 'https://images.unsplash.com/photo-1444491741275-3747c33cc99b?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+        name: 'Banten Archery Cup 2024',
+        location: 'Tangerang, Banten',
+        type: 'Final Round',
+        image: 'https://images.unsplash.com/photo-1511880493577-f3d35706497f?auto=format&fit=crop&q=80&w=800'
     }
 ]
+
+const activeFeature = ref(0)
+const featureItems = [
+    {
+        title: 'Skoring Digital Real-time',
+        icon: 'ic:outline-scoreboard',
+        description: 'Input skor langsung di genggaman.',
+        longDescription: 'Nggak ada lagi catat manual pakai kertas. Wasit atau atlet tinggal klik skor di aplikasi, dan hasilnya langsung dihitung otomatis. Data skor langsung sinkron ke server buat ditampilin di TV atau layar besar saat event berlangsung.'
+    },
+    {
+        title: 'Registrasi Simpel',
+        icon: 'ph:user-plus-bold',
+        description: 'Daftar turnamen dalam satu klik.',
+        longDescription: 'Capek nginput data yang sama berulang kali? Di Archeryhub, profil atlet kamu udah kesimpan aman. Mau ikut turnamen apapun tinggal pilih eventnya, klik daftar, dan beres! Nggak perlu lagi isi form panjang yang bikin pening.'
+    },
+    {
+        title: 'Leaderboard Update Terus',
+        icon: 'ph:chart-bar-horizontal-bold',
+        description: 'Pantau posisi rival tanpa jeda.',
+        longDescription: 'Mau tau siapa yang lagi memimpin? Leaderboard kami update setiap ada skor baru yang masuk. Atlet, pelatih, dan penonton bisa terus mantau siapa yang dapet peringkat teratas di babak kualifikasi maupun eliminasi secara detail.'
+    },
+    {
+        title: 'Laporan Beres Otomatis',
+        icon: 'ph:article-bold',
+        description: 'Hasil lomba siap dalam sekejap.',
+        longDescription: 'Begitu panah terakhir ditembakkan, laporan hasil pertandingan udah siap. Panitia nggak perlu begadang buat rekap data. Sistem kita otomatis nge-generate PDF hasil lomba per divisi yang akurat dan sesuai standar federasi.'
+    },
+    {
+        title: 'Sertifikat Digital Instant',
+        icon: 'ph:certificate-bold',
+        description: 'Klaim prestasi kamu hari itu juga.',
+        longDescription: 'Menang atau kalah, dedikasi kamu pantes dapet apresiasi. E-sertifikat resmi bakal langsung muncul di profil kamu begitu event selesai. Bisa langsung didownload buat diprint atau dipamerin ke story Instagram kamu!'
+    },
+    {
+        title: 'Manajemen Klub Terpadu',
+        icon: 'ph:users-four-bold',
+        description: 'Kelola klub makin pro dan rapi.',
+        longDescription: 'Bikin klub kamu makin solid dengan manajemen data atlet yang rapi. Pantau kehadiran latihan, rekap skor internal klub, sampai pengingat iuran bulanan angggota, semuanya bisa dikelola lewat dashboard admin khusus klub.'
+    },
+    {
+        title: 'Integrasi Membership',
+        icon: 'ph:identification-card-bold',
+        description: 'KTA digital buat akses nasional.',
+        longDescription: 'Punya akses ke seluruh ekosistem panahan dengan satu ID. Membership Archeryhub bukan cuma buat keren-kerenan, tapi jadi syarat resmi buat ikut turnamen berlisensi nasional dan bukti kamu bagian dari komunitas atlet pro.'
+    },
+    {
+        title: 'Analitik Performa Atlet',
+        icon: 'ph:trend-up-bold',
+        description: 'Lihat progres kamu makin tajam.',
+        longDescription: 'Lihat data di balik performa kamu. Sistem kita nangkep statistik skor kamu dari setiap event dan latihan, terus nampilin grafik progres yang gampang dibaca. Bantu kamu dan pelatih nentuin apa yang perlu ditingkatkan buat ke depannya.'
+    }
+]
+
 
 const latestNews = [
     {
@@ -751,5 +682,57 @@ const latestNews = [
 
 .border-border-subtle {
     border-color: #e5e7eb;
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+
+.custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #e2e8f0 transparent;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
 }
 </style>

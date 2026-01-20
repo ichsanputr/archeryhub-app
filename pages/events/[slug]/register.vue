@@ -12,7 +12,7 @@
                     <NuxtLink to="/events" class="hover:text-white transition-colors">Tournaments</NuxtLink>
                     <span class="material-symbols-outlined text-base">chevron_right</span>
                     <NuxtLink :to="`/events/${slug}`" class="hover:text-white transition-colors">{{ tournament.name
-                        }}</NuxtLink>
+                    }}</NuxtLink>
                     <span class="material-symbols-outlined text-base">chevron_right</span>
                     <span class="text-primary font-medium">Registrasi</span>
                 </nav>
@@ -76,7 +76,7 @@
                                             class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-white appearance-none">
                                             <option value="" disabled>Pilih Divisi</option>
                                             <option v-for="div in divisions" :key="div.id" :value="div.name">{{ div.name
-                                                }}</option>
+                                            }}</option>
                                         </select>
                                     </div>
                                     <div class="space-y-2">
@@ -98,7 +98,7 @@
                                                     class="sr-only">
                                                 <span class="text-sm font-bold"
                                                     :class="form.bowType === bow.id ? 'text-navy' : 'text-gray-500'">{{
-                                                    bow.name }}</span>
+                                                        bow.name }}</span>
                                                 <span v-if="form.bowType === bow.id"
                                                     class="absolute top-2 right-2 text-primary">
                                                     <span class="material-symbols-outlined text-sm">check_circle</span>
@@ -165,7 +165,12 @@
 </template>
 
 <script setup>
+definePageMeta({
+    layout: 'landing'
+})
+
 const route = useRoute()
+
 const router = useRouter()
 const slug = route.params.slug
 const payment = usePayment()

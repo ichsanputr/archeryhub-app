@@ -1,28 +1,29 @@
 <template>
-    <nav class="bg-white border-b border-gray-200 shadow-sm relative z-50">
+    <nav class="fixed top-0 z-50 w-full transition-all duration-500" :class="navClasses">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <!-- Logo -->
                 <NuxtLink to="/" class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-navy rounded-lg flex items-center justify-center">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-300"
+                        :class="logoBoxClasses">
                         <img src="/logo.png" alt="Logo" class="w-5 h-5 object-contain" />
                     </div>
-                    <span class="text-navy text-xl font-black tracking-tight font-display">Archeryhub<span
-                            class="text-logo-id">.id</span></span>
+                    <span class="text-xl font-black tracking-tight font-display transition-colors duration-300"
+                        :class="logoTextClasses">Archeryhub<span class="text-logo-id">.id</span></span>
                 </NuxtLink>
 
                 <!-- Desktop Navigation -->
                 <nav class="hidden md:flex items-center gap-8">
-                    <NuxtLink to="/" class="text-gray-600 hover:text-navy font-medium text-sm transition-colors"
-                        :class="{ 'text-navy font-bold': isActive('/') }">
+                    <NuxtLink to="/" class="font-medium text-sm transition-all duration-300 hover:text-primary"
+                        :class="[navLinkClasses, { 'font-bold': isActive('/') }]">
                         Beranda
                     </NuxtLink>
 
                     <!-- Turnamen with Mega Menu -->
                     <div class="relative" @mouseenter="showMegaMenu = true" @mouseleave="showMegaMenu = false">
                         <button
-                            class="text-gray-600 hover:text-navy font-medium text-sm transition-colors flex items-center gap-1"
-                            :class="{ 'text-navy font-bold': isActive('/events') }">
+                            class="font-medium text-sm transition-all duration-300 flex items-center gap-1 hover:text-primary"
+                            :class="[navLinkClasses, { 'font-bold': isActive('/events') }]">
                             Turnamen
                             <Icon icon="ph:caret-down" class="text-xs transition-transform"
                                 :class="{ 'rotate-180': showMegaMenu }" />
@@ -38,9 +39,8 @@
                                     <div class="grid grid-cols-12 gap-0">
                                         <!-- Featured Event -->
                                         <div class="col-span-5 bg-gradient-to-br from-navy to-navy-light p-6">
-                                            <span
-                                                class="text-primary text-xs font-bold uppercase tracking-wider">Featured
-                                                Event</span>
+                                            <span class="text-primary text-xs font-bold uppercase tracking-wider">Event
+                                                Unggulan</span>
                                             <div class="mt-3">
                                                 <div class="aspect-video bg-white/10 rounded-lg overflow-hidden mb-3">
                                                     <img src="https://images.unsplash.com/photo-1565992441121-4367c2967103?w=400&h=225&fit=crop"
@@ -51,7 +51,7 @@
                                                 <p class="text-white/70 text-xs mt-1">Jakarta • 25-28 Feb 2026</p>
                                                 <NuxtLink to="/events"
                                                     class="inline-flex items-center gap-1 mt-3 text-primary text-xs font-bold hover:text-white transition-colors">
-                                                    Lihat Detail
+                                                    Cek Detailnya
                                                     <Icon icon="ph:arrow-right" />
                                                 </NuxtLink>
                                             </div>
@@ -72,11 +72,9 @@
                                                                 class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
                                                                 <Icon :icon="cat.icon" class="text-primary text-lg" />
                                                             </div>
-                                                            <div>
-                                                                <span
-                                                                    class="text-navy font-semibold text-sm group-hover:text-primary transition-colors">{{
+                                                            <span
+                                                                class="text-navy font-semibold text-sm group-hover:text-primary transition-colors">{{
                                                                     cat.name }}</span>
-                                                            </div>
                                                         </NuxtLink>
                                                     </div>
                                                 </div>
@@ -112,43 +110,57 @@
                         </Transition>
                     </div>
 
-                    <NuxtLink to="/berita" class="text-gray-600 hover:text-navy font-medium text-sm transition-colors"
-                        :class="{ 'text-navy font-bold': isActive('/berita') }">
-                        Berita
-                    </NuxtLink>
+                    <NuxtLink to="#" class="font-medium text-sm transition-all duration-300 hover:text-primary"
+                        :class="navLinkClasses">Skor</NuxtLink>
+                    <NuxtLink to="#" class="font-medium text-sm transition-all duration-300 hover:text-primary"
+                        :class="navLinkClasses">Klub</NuxtLink>
+                    <NuxtLink to="/berita" class="font-medium text-sm transition-all duration-300 hover:text-primary"
+                        :class="[navLinkClasses, { 'font-bold': isActive('/berita') }]">Berita</NuxtLink>
                 </nav>
 
-                <div class="flex items-center gap-3">
-                    <NuxtLink to="/auth/login" class="hidden md:flex text-gray-500 font-medium text-xs hover:text-navy">
-                        Masuk
+                <!-- Desktop Auth Buttons -->
+                <div class="hidden md:flex items-center gap-3">
+                    <NuxtLink v-if="isLoggedIn" to="/dashboard"
+                        class="bg-primary hover:bg-primary-hover text-navy text-sm font-bold px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
+                        <Icon icon="ph:layout-bold" />
+                        Dashboard
                     </NuxtLink>
-                    <NuxtLink to="/auth/register"
-                        class="hidden sm:flex bg-navy hover:bg-navy-light text-white px-4 py-1.5 rounded-lg text-xs font-bold transition-all shadow-sm hover:shadow-lg">
-                        Daftar
-                    </NuxtLink>
-                    <!-- Mobile Menu Button -->
-                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden text-navy p-2">
-                        <Icon :icon="mobileMenuOpen ? 'ph:x-bold' : 'ph:list-bold'" class="text-2xl" />
-                    </button>
+                    <template v-else>
+                        <NuxtLink to="/auth/login"
+                            class="text-sm font-bold px-4 py-2 rounded-lg transition-colors border"
+                            :class="authButtonClasses">
+                            Masuk
+                        </NuxtLink>
+                        <NuxtLink to="/auth/register"
+                            class="bg-primary hover:bg-primary-hover text-navy text-sm font-bold px-4 py-2 rounded-lg transition-colors">
+                            Daftar
+                        </NuxtLink>
+                    </template>
                 </div>
+
+                <!-- Mobile Menu Toggle -->
+                <button class="md:hidden transition-colors duration-300" :class="mobileToggleClasses"
+                    @click="mobileMenuOpen = !mobileMenuOpen">
+                    <Icon :icon="mobileMenuOpen ? 'ph:x-bold' : 'ph:list-bold'" class="text-2xl" />
+                </button>
             </div>
+        </div>
 
-            <!-- Mobile Menu -->
-            <Transition enter-active-class="transition duration-200 ease-out"
-                enter-from-class="opacity-0 -translate-y-2" enter-to-class="opacity-100 translate-y-0"
-                leave-active-class="transition duration-150 ease-in" leave-from-class="opacity-100 translate-y-0"
-                leave-to-class="opacity-0 -translate-y-2">
-                <div v-if="mobileMenuOpen" class="md:hidden bg-white border-t border-gray-100 py-4 px-4">
-                    <NuxtLink to="/" class="block text-gray-600 font-medium text-sm py-3"
-                        :class="{ 'text-navy font-bold': isActive('/') }">Beranda</NuxtLink>
+        <!-- Mobile Menu -->
+        <Transition enter-active-class="transition duration-200 ease-out" enter-from-class="opacity-0 -translate-y-2"
+            enter-to-class="opacity-100 translate-y-0" leave-active-class="transition duration-150 ease-in"
+            leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 -translate-y-2">
+            <div v-if="mobileMenuOpen" class="md:hidden bg-white border-t border-gray-100 shadow-lg">
+                <div class="px-4 py-4 space-y-1">
+                    <NuxtLink to="/" class="block text-navy font-medium text-sm py-3"
+                        :class="{ 'text-primary font-bold': isActive('/') }">Beranda</NuxtLink>
 
-                    <!-- Turnamen Accordion -->
-                    <div class="border-b border-gray-50">
+                    <!-- Mobile Turnamen Submenu -->
+                    <div>
                         <button @click="mobileSubmenuOpen = !mobileSubmenuOpen"
-                            class="flex items-center justify-between w-full py-3 text-gray-600 font-medium text-sm"
-                            :class="{ 'text-primary font-bold': isActive('/events') }">
-                            Turnamen
-                            <Icon icon="ph:caret-down" class="text-sm transition-transform"
+                            class="w-full flex items-center justify-between text-navy font-medium text-sm py-3">
+                            <span :class="{ 'text-primary font-bold': isActive('/events') }">Turnamen</span>
+                            <Icon icon="ph:caret-down" class="text-xs transition-transform"
                                 :class="{ 'rotate-180': mobileSubmenuOpen }" />
                         </button>
 
@@ -156,23 +168,15 @@
                             enter-from-class="opacity-0 max-h-0" enter-to-class="opacity-100 max-h-96"
                             leave-active-class="transition duration-150 ease-in" leave-from-class="opacity-100 max-h-96"
                             leave-to-class="opacity-0 max-h-0">
-                            <div v-if="mobileSubmenuOpen" class="overflow-hidden pb-2">
-                                <div class="pl-4 space-y-1">
-                                    <NuxtLink v-for="cat in categories" :key="cat.code"
-                                        :to="`/events?division=${cat.code}`"
-                                        class="flex items-center gap-3 py-2.5 text-gray-500 text-sm hover:text-navy">
-                                        <Icon :icon="cat.icon" class="text-base text-primary" />
-                                        {{ cat.name }}
-                                    </NuxtLink>
-                                    <div class="border-t border-gray-100 my-2 pt-2">
-                                        <NuxtLink v-for="link in quickLinks" :key="link.to" :to="link.to"
-                                            class="flex items-center gap-3 py-2.5 text-gray-500 text-sm hover:text-navy">
-                                            <Icon :icon="link.icon" class="text-base" />
-                                            {{ link.label }}
-                                        </NuxtLink>
-                                    </div>
+                            <div v-if="mobileSubmenuOpen" class="pl-4 py-2 space-y-2 overflow-hidden">
+                                <NuxtLink v-for="cat in categories" :key="cat.code" :to="`/events?division=${cat.code}`"
+                                    class="flex items-center gap-3 py-2 text-gray-600 text-sm">
+                                    <Icon :icon="cat.icon" class="text-primary" />
+                                    {{ cat.name }}
+                                </NuxtLink>
+                                <div class="border-t border-gray-100 pt-2 mt-2">
                                     <NuxtLink to="/events"
-                                        class="flex items-center justify-center gap-2 mt-2 py-2.5 bg-gray-50 text-navy font-semibold text-sm rounded-lg">
+                                        class="flex items-center gap-2 py-2 text-navy font-medium text-sm">
                                         <Icon icon="ph:list-bullets" />
                                         Semua Turnamen
                                     </NuxtLink>
@@ -181,32 +185,96 @@
                         </Transition>
                     </div>
 
+                    <NuxtLink to="#" class="block text-gray-600 font-medium text-sm py-3">Skor</NuxtLink>
+                    <NuxtLink to="#" class="block text-gray-600 font-medium text-sm py-3">Klub</NuxtLink>
                     <NuxtLink to="/berita" class="block text-gray-600 font-medium text-sm py-3"
                         :class="{ 'text-primary font-bold': isActive('/berita') }">Berita</NuxtLink>
 
                     <div class="pt-4 border-t border-gray-100 flex gap-3 mt-2">
-                        <NuxtLink to="/auth/login"
-                            class="flex-1 text-center py-2.5 border border-gray-200 rounded-lg text-sm font-bold text-navy">
-                            Masuk
+                        <NuxtLink v-if="isLoggedIn" to="/dashboard"
+                            class="flex-1 text-center py-2.5 bg-primary text-navy rounded-lg text-sm font-bold">
+                            Dashboard
                         </NuxtLink>
-                        <NuxtLink to="/auth/register"
-                            class="flex-1 text-center py-2.5 bg-navy text-white rounded-lg text-sm font-bold">
-                            Daftar
-                        </NuxtLink>
+                        <template v-else>
+                            <NuxtLink to="/auth/login"
+                                class="flex-1 text-center py-2.5 border border-gray-200 rounded-lg text-sm font-bold text-navy">
+                                Masuk
+                            </NuxtLink>
+                            <NuxtLink to="/auth/register"
+                                class="flex-1 text-center py-2.5 bg-navy text-white rounded-lg text-sm font-bold">
+                                Daftar
+                            </NuxtLink>
+                        </template>
                     </div>
                 </div>
-            </Transition>
-        </div>
+            </div>
+        </Transition>
     </nav>
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue'
 
+const props = defineProps({
+    transparent: {
+        type: Boolean,
+        default: false
+    }
+})
+
 const route = useRoute()
+const { isLoggedIn } = useAuth()
+
 const mobileMenuOpen = ref(false)
 const mobileSubmenuOpen = ref(false)
 const showMegaMenu = ref(false)
+const isScrolled = ref(false)
+
+// Scroll handler for transparent mode
+const handleScroll = () => {
+    isScrolled.value = window.scrollY > 50
+}
+
+onMounted(() => {
+    window.addEventListener('scroll', handleScroll)
+    handleScroll()
+})
+
+onUnmounted(() => {
+    window.removeEventListener('scroll', handleScroll)
+})
+
+// Dynamic classes based on transparent mode and scroll state
+const showSolid = computed(() => !props.transparent || isScrolled.value)
+
+const navClasses = computed(() => {
+    if (showSolid.value) {
+        return 'bg-white border-b border-gray-200 shadow-sm'
+    }
+    return 'bg-transparent border-transparent'
+})
+
+const logoBoxClasses = computed(() => {
+    return showSolid.value ? 'bg-navy' : 'bg-primary'
+})
+
+const logoTextClasses = computed(() => {
+    return showSolid.value ? 'text-navy' : 'text-white'
+})
+
+const navLinkClasses = computed(() => {
+    return showSolid.value ? 'text-gray-600 hover:text-navy' : 'text-white/80'
+})
+
+const authButtonClasses = computed(() => {
+    return showSolid.value
+        ? 'border-gray-200 text-navy hover:bg-gray-50'
+        : 'border-white/30 text-white hover:bg-white/10'
+})
+
+const mobileToggleClasses = computed(() => {
+    return showSolid.value ? 'text-navy' : 'text-white'
+})
 
 const isActive = (path) => {
     if (path === '/') {
@@ -223,9 +291,9 @@ const categories = [
 ]
 
 const quickLinks = [
-    { to: '/events', label: 'Semua Event', icon: 'ph:calendar-dots' },
-    { to: '/events?status=ongoing', label: 'Sedang Berlangsung', icon: 'ph:lightning' },
-    { to: '/events?status=upcoming', label: 'Akan Datang', icon: 'ph:clock' },
+    { to: '/events', label: 'Cek Semua Event', icon: 'ph:calendar-dots' },
+    { to: '/events?status=ongoing', label: 'Lagi Berlangsung', icon: 'ph:lightning' },
+    { to: '/events?status=upcoming', label: 'Bakal Digelar', icon: 'ph:clock' },
 ]
 
 // Close mobile menu on route change

@@ -1,26 +1,64 @@
 <template>
-  <header
-    class="h-16 border-b border-gray-200 dark:border-surface-highlight bg-white dark:bg-background-dark/95 backdrop-blur px-4 md:px-8 flex items-center justify-between shrink-0 z-10 sticky top-0">
+  <header :class="[
+    navClasses,
+    'h-16 px-4 md:px-8 flex items-center justify-between shrink-0 z-50 sticky top-0 transition-all duration-300'
+  ]">
     <!-- Left Section -->
     <div class="flex items-center gap-4 md:gap-8 flex-1">
       <!-- Mobile Menu Button -->
-      <div class="md:hidden text-gray-700 dark:text-white cursor-pointer" @click="toggleMobileSidebar">
+      <div :class="[isScrolled || !transparent ? 'text-gray-700 dark:text-white' : 'text-white']"
+        class="lg:hidden cursor-pointer" @click="toggleMobileSidebar">
         <Icon icon="ph:list" class="text-2xl" />
       </div>
 
-      <!-- Page Title (from route meta or default) -->
-      <div class="hidden md:block">
-        <h2 class="text-gray-900 dark:text-white text-lg font-bold">{{ pageTitle }}</h2>
+      <!-- Logo & Branding -->
+      <NuxtLink to="/" class="flex items-center gap-3 shrink-0">
+        <div class="w-8 h-8 bg-navy rounded-lg flex items-center justify-center">
+          <img src="/logo.png" alt="Logo" class="w-5 h-5 object-contain" />
+        </div>
+        <span :class="[isScrolled || !transparent ? 'text-navy dark:text-white' : 'text-white']"
+          class="text-xl font-black tracking-tight font-display hidden sm:block">Archeryhub<span
+            class="text-logo-id">.id</span></span>
+      </NuxtLink>
+
+      <!-- Main Navigation (Visible only on Landing/Home context) -->
+      <nav v-if="transparent || !isDashboard" class="hidden lg:flex items-center gap-6 xl:gap-8 ml-4">
+        <NuxtLink to="/"
+          :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-navy' : 'text-white/80 hover:text-white']"
+          class="font-medium text-sm transition-colors">Beranda</NuxtLink>
+        <NuxtLink to="/events"
+          :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-navy' : 'text-white/80 hover:text-white']"
+          class="font-medium text-sm transition-colors">Turnamen</NuxtLink>
+        <NuxtLink to="/clubs"
+          :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-navy' : 'text-white/80 hover:text-white']"
+          class="font-medium text-sm transition-colors">Klub</NuxtLink>
+        <NuxtLink to="/rankings"
+          :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-navy' : 'text-white/80 hover:text-white']"
+          class="font-medium text-sm transition-colors">Peringkat</NuxtLink>
+      </nav>
+
+      <!-- Page Title (Dashboard context) -->
+      <div v-if="isDashboard" class="hidden lg:block ml-4">
+        <h2 :class="[isScrolled || !transparent ? 'text-gray-900 dark:text-white' : 'text-white/90']"
+          class="text-lg font-bold">{{ pageTitle }}</h2>
       </div>
 
       <!-- Search Bar -->
-      <div class="max-w-md w-full hidden sm:block">
-        <div
-          class="flex w-full items-center rounded-lg bg-gray-100 dark:bg-surface-highlight h-10 px-3 transition-all focus-within:ring-2 focus-within:ring-primary/50">
-          <Icon icon="ph:magnifying-glass" class="text-brand-gold text-lg" />
-          <input v-model="searchQuery"
-            class="w-full bg-transparent border-none text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-brand-gold text-sm focus:ring-0 ml-2 focus:outline-none"
-            placeholder="Cari turnamen, atlet, event..." @keyup.enter="handleSearch" />
+      <div class="max-w-xs xl:max-w-md w-full hidden md:block">
+        <div :class="[
+          isScrolled || !transparent
+            ? 'bg-gray-100 dark:bg-surface-highlight border-transparent'
+            : 'bg-white/10 border-white/20 backdrop-blur-md'
+        ]"
+          class="flex w-full items-center rounded-lg border h-10 px-3 transition-all focus-within:ring-2 focus-within:ring-primary/50">
+          <Icon icon="ph:magnifying-glass" :class="[isScrolled || !transparent ? 'text-brand-gold' : 'text-primary']"
+            class="text-lg" />
+          <input v-model="searchQuery" :class="[
+            isScrolled || !transparent
+              ? 'text-gray-900 dark:text-white placeholder-gray-500'
+              : 'text-white placeholder-white/60'
+          ]" class="w-full bg-transparent border-none text-sm focus:ring-0 ml-2 focus:outline-none"
+            placeholder="Cari..." @keyup.enter="handleSearch" />
         </div>
       </div>
     </div>
@@ -28,8 +66,11 @@
     <!-- Right Section -->
     <div class="flex items-center gap-3 pl-4">
       <!-- Theme Toggle -->
-      <button @click="toggleTheme"
-        class="size-10 flex items-center justify-center rounded-lg bg-gray-100 dark:bg-surface-highlight text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-surface-highlight/70 transition-colors"
+      <button @click="toggleTheme" :class="[
+        isScrolled || !transparent
+          ? 'bg-gray-100 dark:bg-surface-highlight text-gray-700 dark:text-white hover:bg-gray-200'
+          : 'bg-white/10 text-white hover:bg-white/20'
+      ]" class="size-10 flex items-center justify-center rounded-lg transition-colors"
         :title="isDark ? 'Ganti ke Mode Terang' : 'Ganti ke Mode Gelap'">
         <Icon v-if="isDark" icon="ph:sun" class="text-[20px]" />
         <Icon v-else icon="ph:moon" class="text-[20px]" />
@@ -37,15 +78,18 @@
 
       <!-- Add New Button (context-aware) -->
       <button v-if="showAddButton"
-        class="hidden md:flex h-10 px-4 bg-primary hover:bg-yellow-400 text-background-dark rounded-lg text-sm font-bold items-center gap-2 transition-colors"
+        class="hidden md:flex h-10 px-4 bg-primary hover:bg-yellow-400 text-background-dark rounded-lg text-sm font-bold items-center gap-2 transition-colors shadow-sm"
         @click="handleAdd">
         <Icon icon="ph:plus-bold" class="text-[18px]" />
         {{ addButtonText }}
       </button>
 
       <!-- Notifications -->
-      <button
-        class="size-10 flex items-center justify-center rounded-lg bg-gray-100 dark:bg-surface-highlight text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-surface-highlight/70 transition-colors relative">
+      <button :class="[
+        isScrolled || !transparent
+          ? 'bg-gray-100 dark:bg-surface-highlight text-gray-700 dark:text-white hover:bg-gray-200'
+          : 'bg-white/10 text-white hover:bg-white/20'
+      ]" class="size-10 flex items-center justify-center rounded-lg transition-colors relative">
         <Icon icon="ph:bell" class="text-[20px]" />
         <span v-if="notificationCount > 0"
           class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border border-white dark:border-surface-highlight"></span>
@@ -61,9 +105,16 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTheme } from '~/composables/useTheme'
+
+const props = defineProps({
+  transparent: {
+    type: Boolean,
+    default: false
+  }
+})
 
 const route = useRoute()
 const router = useRouter()
@@ -74,33 +125,62 @@ const searchQuery = ref('')
 const notificationCount = ref(3)
 const userAvatar = ref('https://via.placeholder.com/40')
 
+// Scroll state for transparency transition
+const isScrolled = ref(false)
+
+const handleScroll = () => {
+  isScrolled.value = window.scrollY > 50
+}
+
+onMounted(() => {
+  if (props.transparent) {
+    window.addEventListener('scroll', handleScroll)
+    handleScroll()
+  }
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
+
+const navClasses = computed(() => {
+  if (props.transparent) {
+    return isScrolled.value
+      ? 'bg-white dark:bg-background-dark/95 border-b border-gray-200 dark:border-surface-highlight shadow-sm'
+      : 'bg-transparent border-b border-white/10'
+  }
+  return 'bg-white dark:bg-background-dark/95 border-b border-gray-200 dark:border-surface-highlight shadow-sm'
+})
+
+const isDashboard = computed(() => {
+  return route.path.startsWith('/dashboard')
+})
+
 const pageTitle = computed(() => {
-  // Get title from route meta or path
   if (route.meta.title) return route.meta.title
-
   const pathSegments = route.path.split('/').filter(Boolean)
-  if (pathSegments.length === 0) return 'Dashboard'
-
-  // Capitalize first segment
+  if (pathSegments.length === 0) return ''
+  // If it's the second segment of dashboard (e.g. /dashboard/events)
+  if (pathSegments[0] === 'dashboard' && pathSegments[1]) {
+    return pathSegments[1].charAt(0).toUpperCase() + pathSegments[1].slice(1)
+  }
   return pathSegments[0].charAt(0).toUpperCase() + pathSegments[0].slice(1)
 })
 
 const showAddButton = computed(() => {
-  // Show add button on specific routes
-  const addRoutes = ['/events', '/athletes', '/devices']
+  const addRoutes = ['/dashboard/events', '/dashboard/athletes', '/dashboard/devices']
   return addRoutes.some(r => route.path.startsWith(r))
 })
 
 const addButtonText = computed(() => {
-  if (route.path.startsWith('/events')) return 'Turnamen Baru'
-  if (route.path.startsWith('/athletes')) return 'Atlet Baru'
-  if (route.path.startsWith('/devices')) return 'Tambah Perangkat'
+  if (route.path.startsWith('/dashboard/events')) return 'Turnamen Baru'
+  if (route.path.startsWith('/dashboard/athletes')) return 'Atlet Baru'
+  if (route.path.startsWith('/dashboard/devices')) return 'Tambah Perangkat'
   return 'Tambah Baru'
 })
 
 const handleSearch = () => {
   if (searchQuery.value.trim()) {
-    console.log('Searching for:', searchQuery.value)
     router.push(`/search?q=${encodeURIComponent(searchQuery.value)}`)
   }
 }
@@ -108,11 +188,11 @@ const handleSearch = () => {
 const showDeviceModal = useState('show-device-modal', () => false)
 
 const handleAdd = () => {
-  if (route.path.startsWith('/events')) {
-    router.push('/events/create')
-  } else if (route.path.startsWith('/athletes')) {
-    router.push('/athletes/create')
-  } else if (route.path.startsWith('/devices')) {
+  if (route.path.startsWith('/dashboard/events')) {
+    router.push('/dashboard/events/create')
+  } else if (route.path.startsWith('/dashboard/athletes')) {
+    router.push('/dashboard/athletes/create')
+  } else if (route.path.startsWith('/dashboard/devices')) {
     showDeviceModal.value = true
   }
 }
@@ -122,7 +202,6 @@ const toggleMobileSidebar = () => {
 }
 
 const toggleUserMenu = () => {
-  // TODO: Implement user menu
   console.log('Toggle user menu')
 }
 </script>

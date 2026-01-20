@@ -67,37 +67,7 @@
         <!-- Main Content Area -->
         <div class="flex-grow flex flex-col h-full overflow-hidden w-full">
             <!-- Header -->
-            <header
-                class="h-16 flex items-center justify-between border-b border-gray-200 px-4 md:px-6 lg:px-8 bg-white shrink-0 z-10">
-                <div class="flex items-center gap-3">
-                    <!-- Mobile menu toggle -->
-                    <button @click="isMobileMenuOpen = true"
-                        class="lg:hidden p-2 hover:bg-gray-100 rounded-lg text-gray-400 transition-colors">
-                        <Icon icon="ph:list" class="text-xl" />
-                    </button>
-                    <!-- Desktop sidebar toggle -->
-                    <button @click="isSidebarCollapsed = !isSidebarCollapsed"
-                        class="hidden lg:block p-2 hover:bg-gray-100 rounded-lg text-gray-400 transition-colors">
-                        <Icon :icon="isSidebarCollapsed ? 'ph:layout' : 'ph:list'" class="text-xl" />
-                    </button>
-                    <h2 class="text-navy font-black text-base md:text-lg truncate">{{ currentPageTitle }}</h2>
-                </div>
-
-                <div class="flex items-center gap-2 sm:gap-4">
-                    <div class="relative hidden lg:block group">
-                        <Icon icon="ph:magnifying-glass"
-                            class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300 text-[20px] transition-colors group-focus-within:text-primary" />
-                        <input type="text" placeholder="Cari data..."
-                            class="bg-gray-50 border border-gray-200 rounded-full pl-10 pr-4 py-2 text-sm text-navy placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent w-48 xl:w-64 transition-all">
-                    </div>
-                    <button
-                        class="relative p-2 text-gray-400 hover:text-navy hover:bg-gray-100 rounded-full transition-all">
-                        <Icon icon="ph:bell" class="text-[22px] md:text-[24px]" />
-                        <span
-                            class="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500 border-2 border-white"></span>
-                    </button>
-                </div>
-            </header>
+            <LayoutAppHeader />
 
             <!-- Page Content -->
             <main class="flex-grow overflow-y-auto p-4 md:p-6 lg:p-10 no-scrollbar bg-background-light">
@@ -119,7 +89,7 @@ import { Icon } from '@iconify/vue'
 const route = useRoute()
 const { user, logout } = useAuth()
 const isSidebarCollapsed = ref(false)
-const isMobileMenuOpen = ref(false)
+const isMobileMenuOpen = useState('mobile-sidebar-open', () => false)
 const showLogoutDialog = ref(false)
 
 const handleLogout = () => {

@@ -1,35 +1,5 @@
 <template>
     <div class="min-h-screen bg-background-light font-body text-navy">
-        <!-- Navigation -->
-        <nav class="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between h-16">
-                    <NuxtLink to="/" class="flex items-center gap-3">
-                        <div class="w-8 h-8 bg-navy rounded-lg flex items-center justify-center">
-                            <img src="/logo.png" alt="Logo" class="w-5 h-5 object-contain" />
-                        </div>
-                        <span class="text-navy text-xl font-bold tracking-tight">Archeryhub<span
-                                class="text-primary">.id</span></span>
-                    </NuxtLink>
-                    <nav class="hidden md:flex items-center gap-8">
-                        <NuxtLink to="/" class="text-gray-600 hover:text-navy font-medium text-sm transition-colors">
-                            Home</NuxtLink>
-                        <NuxtLink to="/events"
-                            class="text-navy font-bold text-sm relative after:content-[''] after:absolute after:w-full after:h-0.5 after:bg-primary after:-bottom-5 after:left-0">
-                            Tournaments</NuxtLink>
-                        <NuxtLink to="#" class="text-gray-600 hover:text-navy font-medium text-sm transition-colors">
-                            Rankings</NuxtLink>
-                        <NuxtLink to="#" class="text-gray-600 hover:text-navy font-medium text-sm transition-colors">
-                            News</NuxtLink>
-                    </nav>
-                    <div class="flex items-center gap-4">
-                        <BaseButton to="/auth/login" variant="ghost" size="sm">Log In</BaseButton>
-                        <BaseButton to="/auth/login" variant="gold" size="sm">Sign Up</BaseButton>
-                    </div>
-                </div>
-            </div>
-        </nav>
-
         <!-- Hero Section: Featured Event -->
         <div class="bg-navy relative overflow-hidden">
             <div class="absolute inset-0 z-0">
@@ -44,7 +14,7 @@
                         <div
                             class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 border border-primary/30 backdrop-blur-sm mb-6">
                             <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-                            <span class="text-primary text-xs font-bold uppercase tracking-wider">Featured Event</span>
+                            <span class="text-navy text-xs font-bold uppercase tracking-wider">Event Unggulan</span>
                         </div>
                         <h1
                             class="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight mb-4">
@@ -68,7 +38,7 @@
                     <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
                         <BaseButton to="/events/indonesian-open-2024" variant="primary" size="lg"
                             iconRight="ph:arrow-right" class="shadow-xl">
-                            Daftar Sekarang
+                            Ikuti Sekarang
                         </BaseButton>
                         <BaseButton variant="secondary" size="lg">
                             Detail Event
@@ -87,14 +57,14 @@
                     <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
                         <h3 class="text-navy font-bold text-lg mb-4 flex items-center gap-2">
                             <Icon icon="ph:magnifying-glass" />
-                            Find Tournament
+                            Cari Event
                         </h3>
                         <div class="relative">
                             <Icon icon="ph:magnifying-glass"
                                 class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xl" />
                             <input v-model="searchQuery"
                                 class="w-full pl-10 pr-4 py-3 bg-gray-50 border-none rounded-lg text-sm focus:ring-2 focus:ring-navy placeholder:text-gray-400"
-                                placeholder="Search by name..." type="text" />
+                                placeholder="Cari nama event..." type="text" />
                         </div>
                     </div>
 
@@ -112,7 +82,7 @@
                             <details class="group" open>
                                 <summary
                                     class="flex justify-between items-center font-bold cursor-pointer list-none p-5 text-sm text-gray-800 hover:bg-gray-50 transition-colors">
-                                    <span>Category</span>
+                                    <span>Kategori</span>
                                     <Icon icon="ph:caret-down" class="transition group-open:rotate-180 text-gray-400" />
                                 </summary>
                                 <div class="text-gray-600 px-5 pb-5 text-sm space-y-3">
@@ -164,7 +134,7 @@
                             <details class="group">
                                 <summary
                                     class="flex justify-between items-center font-bold cursor-pointer list-none p-5 text-sm text-gray-800 hover:bg-gray-50 transition-colors">
-                                    <span>Division</span>
+                                    <span>Divisi</span>
                                     <Icon icon="ph:caret-down" class="transition group-open:rotate-180 text-gray-400" />
                                 </summary>
                                 <div class="text-gray-600 px-5 pb-5 text-sm space-y-3">
@@ -192,16 +162,16 @@
                 <!-- Main Content: Tournament Grid -->
                 <div class="flex-1">
                     <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-2xl font-bold text-navy">All Tournaments <span
+                        <h2 class="text-2xl font-bold text-navy">Semua Event <span
                                 class="text-gray-400 font-normal text-lg ml-2">({{ filteredTournaments.length }})</span>
                         </h2>
                         <div class="flex items-center gap-2">
-                            <span class="text-sm text-gray-500 hidden sm:inline">Sort by:</span>
+                            <span class="text-sm text-gray-500 hidden sm:inline">Urutin:</span>
                             <select v-model="sortBy"
                                 class="border-none bg-white text-sm font-medium text-navy rounded-lg shadow-sm py-2 pl-3 pr-8 focus:ring-navy cursor-pointer">
-                                <option value="newest">Date: Newest First</option>
-                                <option value="oldest">Date: Oldest First</option>
-                                <option value="name">Name: A-Z</option>
+                                <option value="newest">Waktu: Paling Baru</option>
+                                <option value="oldest">Waktu: Terlama</option>
+                                <option value="name">Nama: A-Z</option>
                             </select>
                         </div>
                     </div>
@@ -213,25 +183,7 @@
                             class="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:border-primary/50 transition-all duration-300 flex flex-col h-full"
                             :class="tournament.status === 'finished' ? 'opacity-80 grayscale hover:opacity-100 hover:grayscale-0' : ''">
                             <div class="relative h-48 overflow-hidden">
-                                <div class="absolute top-3 left-3 z-10 flex gap-2">
-                                    <span v-if="tournament.status === 'live'"
-                                        class="bg-red-500 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md flex items-center gap-1 animate-pulse">
-                                        <Icon icon="ph:broadcast-bold" class="text-[12px]" />
-                                        Live
-                                    </span>
-                                    <span v-else-if="tournament.status === 'upcoming'"
-                                        class="bg-navy text-white text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md">
-                                        Upcoming
-                                    </span>
-                                    <span v-else
-                                        class="bg-gray-600 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md">
-                                        Finished
-                                    </span>
-                                    <span v-if="tournament.category"
-                                        class="bg-white/90 backdrop-blur-sm text-navy text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md">
-                                        {{ tournament.category }}
-                                    </span>
-                                </div>
+                                <!-- Labels Removed -->
                                 <img :alt="tournament.name"
                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                     :src="tournament.image" />
@@ -254,13 +206,13 @@
                                 <div class="mt-auto">
                                     <BaseButton v-if="tournament.status === 'live'" variant="navy" block
                                         icon="ph:scoreboard">
-                                        Skor Live
+                                        Cek Skor
                                     </BaseButton>
                                     <BaseButton v-else-if="tournament.status === 'upcoming'" variant="primary" block>
-                                        Daftar Sekarang
+                                        Ikuti
                                     </BaseButton>
                                     <BaseButton v-else variant="outline" block iconRight="ph:medal">
-                                        Lihat Hasil
+                                        Cek Hasil
                                     </BaseButton>
                                 </div>
                             </div>
@@ -270,15 +222,13 @@
                     <!-- Pagination -->
                     <div class="mt-12 flex justify-center">
                         <BaseButton variant="outline" size="lg" iconRight="ph:caret-down">
-                            Muat Lebih Banyak
+                            Tampilin Lagi
                         </BaseButton>
                     </div>
                 </div>
             </div>
         </main>
 
-        <!-- Footer -->
-        <LayoutAppFooter />
     </div>
 </template>
 
@@ -315,7 +265,11 @@ const filteredTournaments = computed(() => {
 })
 
 useSeoMeta({
-    title: 'Tournaments - Archeryhub.id',
-    description: 'Browse and register for archery tournaments across Indonesia.'
+    title: 'Semua Event - Archeryhub.id',
+    description: 'Cari dan daftar event panahan seru di seluruh Indonesia.'
+})
+
+definePageMeta({
+    layout: 'landing'
 })
 </script>

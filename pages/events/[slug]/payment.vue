@@ -103,7 +103,7 @@
                             <div class="pt-4 border-t border-gray-100 flex justify-between items-center">
                                 <span class="text-base font-bold text-navy">Total Bayar</span>
                                 <span class="text-xl font-black text-primary">IDR {{ totalAmount.toLocaleString()
-                                    }}</span>
+                                }}</span>
                             </div>
                         </div>
                     </div>
@@ -114,7 +114,12 @@
 </template>
 
 <script setup>
+definePageMeta({
+    layout: 'landing'
+})
+
 const route = useRoute()
+
 const router = useRouter()
 const slug = route.params.slug
 const registrationId = route.query.reg

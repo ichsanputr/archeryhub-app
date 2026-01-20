@@ -1,58 +1,5 @@
 <template>
     <div class="min-h-screen bg-background-light font-body text-navy">
-        <!-- Navigation -->
-        <nav class="bg-white border-b border-gray-200 shadow-sm">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between h-16">
-                    <NuxtLink to="/" class="flex items-center gap-3">
-                        <div class="w-8 h-8 bg-navy rounded-lg flex items-center justify-center">
-                            <img src="/logo.png" alt="Logo" class="w-5 h-5 object-contain" />
-                        </div>
-                        <span class="text-navy text-xl font-black tracking-tight font-display">Archeryhub<span
-                                class="text-logo-id">.id</span></span>
-                    </NuxtLink>
-                    <nav class="hidden md:flex items-center gap-8">
-                        <NuxtLink to="/" class="text-gray-600 hover:text-navy font-medium text-sm transition-colors">
-                            Beranda</NuxtLink>
-                        <NuxtLink to="/events"
-                            class="text-navy font-bold text-sm relative after:content-[''] after:absolute after:w-full after:h-0.5 after:bg-primary after:-bottom-5 after:left-0">
-                            Turnamen</NuxtLink>
-                        <NuxtLink to="#" class="text-gray-600 hover:text-navy font-medium text-sm transition-colors">
-                            Peringkat</NuxtLink>
-                        <NuxtLink to="#" class="text-gray-600 hover:text-navy font-medium text-sm transition-colors">
-                            Berita</NuxtLink>
-                    </nav>
-                    <div class="flex items-center gap-4">
-                        <NuxtLink to="/auth/login"
-                            class="hidden md:flex text-gray-600 font-medium text-sm hover:text-navy">Masuk</NuxtLink>
-                        <NuxtLink to="/auth/register"
-                            class="hidden sm:flex bg-navy hover:bg-navy-light text-white px-5 py-2 rounded-lg text-sm font-bold transition-all shadow-md hover:shadow-lg">
-                            Daftar
-                        </NuxtLink>
-                        <!-- Mobile Menu Button -->
-                        <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden text-navy p-2">
-                            <Icon :icon="mobileMenuOpen ? 'ph:x' : 'ph:list'" class="text-2xl" />
-                        </button>
-                    </div>
-                </div>
-                <!-- Mobile Menu -->
-                <div v-if="mobileMenuOpen" class="md:hidden bg-white border-t border-gray-100 py-4 px-4 space-y-3">
-                    <NuxtLink to="/" class="block text-navy font-medium text-sm py-2">Beranda</NuxtLink>
-                    <NuxtLink to="/events" class="block text-primary font-bold text-sm py-2">Turnamen</NuxtLink>
-                    <NuxtLink to="#" class="block text-gray-600 font-medium text-sm py-2">Peringkat</NuxtLink>
-                    <NuxtLink to="#" class="block text-gray-600 font-medium text-sm py-2">Berita</NuxtLink>
-                    <div class="pt-3 border-t border-gray-100 flex gap-3">
-                        <NuxtLink to="/auth/login"
-                            class="flex-1 text-center py-2.5 border border-gray-200 rounded-lg text-sm font-bold text-navy">
-                            Masuk</NuxtLink>
-                        <NuxtLink to="/auth/register"
-                            class="flex-1 text-center py-2.5 bg-navy text-white rounded-lg text-sm font-bold">Daftar
-                        </NuxtLink>
-                    </div>
-                </div>
-            </div>
-        </nav>
-
         <!-- Hero Header -->
         <div class="bg-navy relative overflow-hidden">
             <div class="absolute inset-0 z-0">
@@ -64,7 +11,7 @@
             <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-0">
                 <!-- Breadcrumb -->
                 <nav class="flex items-center gap-2 text-sm text-gray-400 mb-8">
-                    <NuxtLink to="/events" class="hover:text-white transition-colors">Tournaments</NuxtLink>
+                    <NuxtLink to="/events" class="hover:text-white transition-colors">Semua Event</NuxtLink>
                     <Icon icon="ph:caret-right" class="text-base" />
                     <span class="text-primary font-medium">{{ tournament.name }}</span>
                 </nav>
@@ -73,16 +20,16 @@
                     <div class="max-w-3xl">
                         <div class="flex items-center gap-3 mb-4">
                             <span
-                                class="px-3 py-1 rounded-full bg-primary/20 border border-primary/30 text-primary text-xs font-bold uppercase tracking-wider backdrop-blur-sm">
+                                class="px-3 py-1 rounded-full bg-primary/20 border border-primary/30 text-navy text-xs font-bold uppercase tracking-wider backdrop-blur-sm">
                                 {{ tournament.category }}
                             </span>
                             <span v-if="tournament.status === 'upcoming'"
-                                class="px-3 py-1 rounded-full bg-red-500/20 border border-red-500/30 text-red-400 text-xs font-bold uppercase tracking-wider backdrop-blur-sm flex items-center gap-1">
+                                class="px-3 py-1 rounded-full bg-red-500/20 border border-red-500/30 text-red-700 text-xs font-bold uppercase tracking-wider backdrop-blur-sm flex items-center gap-1">
                                 <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span> Pendaftaran
                                 Dibuka
                             </span>
                             <span v-else-if="tournament.status === 'live'"
-                                class="px-3 py-1 rounded-full bg-red-500/20 border border-red-500/30 text-red-400 text-xs font-bold uppercase tracking-wider backdrop-blur-sm flex items-center gap-1">
+                                class="px-3 py-1 rounded-full bg-red-500/20 border border-red-500/30 text-red-700 text-xs font-bold uppercase tracking-wider backdrop-blur-sm flex items-center gap-1">
                                 <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span> Sedang
                                 Berlangsung
                             </span>
@@ -107,7 +54,7 @@
                     </div>
                     <NuxtLink :to="`/events/${slug}/register`"
                         class="h-10 px-5 bg-primary hover:bg-primary-hover text-navy font-bold text-sm rounded-lg transition-colors flex items-center justify-center gap-2 shadow-md">
-                        Daftar Sekarang
+                        Yuk Ikutan!
                         <span class="material-symbols-outlined text-lg">arrow_forward</span>
                     </NuxtLink>
                 </div>
@@ -237,10 +184,10 @@
                         </section>
                     </div>
 
-                    <TournamentScheduleTab v-else-if="activeTab === 'Jadwal Pertandingan'" />
-                    <TournamentAthletesTab v-else-if="activeTab === 'Daftar Atlet'" />
+                    <TournamentScheduleTab v-else-if="activeTab === 'Jadwal Lomba'" />
+                    <TournamentAthletesTab v-else-if="activeTab === 'Peserta'" />
                     <TournamentResultsTab v-else-if="activeTab === 'Hasil Live'" />
-                    <TournamentVenueTab v-else-if="activeTab === 'Info Venue'" :venue="tournament.venue"
+                    <TournamentVenueTab v-else-if="activeTab === 'Lokasi'" :venue="tournament.venue"
                         :address="tournament.address" />
                 </div>
 
@@ -282,7 +229,7 @@
                         </div>
                         <NuxtLink :to="`/events/${slug}/register`"
                             class="w-full block py-4 bg-primary hover:bg-primary-hover text-navy font-bold rounded-xl transition-colors shadow-md text-center">
-                            Daftar Sekarang
+                            Yuk Daftar Sekarang
                         </NuxtLink>
                         <p class="text-center text-xs text-gray-400 mt-3">Sudah terdaftar? <NuxtLink
                                 class="text-navy font-bold hover:underline" :to="`/dashboard/events`">Cek status
@@ -355,8 +302,6 @@
             </div>
         </main>
 
-        <!-- Footer -->
-        <LayoutAppFooter />
     </div>
 </template>
 
@@ -366,9 +311,7 @@ import { Icon } from '@iconify/vue'
 const route = useRoute()
 const slug = route.params.slug
 
-const mobileMenuOpen = ref(false)
-
-const tabs = ['Ringkasan', 'Jadwal Pertandingan', 'Daftar Atlet', 'Hasil Live', 'Info Venue']
+const tabs = ['Ringkasan', 'Jadwal Lomba', 'Peserta', 'Hasil Live', 'Lokasi']
 const activeTab = ref('Ringkasan')
 
 const tournamentsData = {
@@ -383,45 +326,26 @@ const tournamentsData = {
         category: 'National Series',
         organizer: 'Perpani DKI Jakarta',
         image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuByxS8LZ93pBQXI_V_Vu3nB0633lwPZGiFCM3UtI-xk79b_O83ASmlHYA36lOzcnmVsbgs4DEe9awj543MvzCN1yzOo1wZ3ViXLdiMRV7vAMdy66lvu-l5dpFAOgZ0uCMKJxsBRXPJL1QeX4_ZdX2ynTEZR-ZMilrncma7gKG2YK0vsj0KJZnw_lD0UZaXFKW2aVFD1SU-mzi_sAT2D-62TP0j5LF6KprFriv2sV9rdypqLSvfrZekYDy45XaK8F1vVh7e5nfrgK7o'
-    },
-    'surabaya-archery-cup-2024': {
-        name: 'Surabaya Archery Cup 2024',
-        date: 'Nov 10 - 13, 2024',
-        location: 'KONI Jatim Field, Surabaya',
-        venue: 'KONI Jatim Field',
-        address: 'Jl. Jatim, Surabaya, East Java',
-        status: 'live',
-        category: 'National Series',
-        organizer: 'Perpani Jawa Timur',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAJXWL-Z7f7fP24_IyBjI_e-q_jYcMbzRtaKiOpKP8TxgqwSxRrCqNcE-GXJXbiCEv6rlwlNJzTmbbgAdQFWHH4Jk_Fw-aslTiT3Qezy8bbmGRG0WoRA-yD8tykZuxYObytzJ6Yf7yNL8poFU6vWlyEuFjbHcIzwfoLAMru-bfdw4GXezmv71SwRPYw_-Ct6ZP3f6AqglpvBIhCSrp9g13uTQpj69_-hzZqp1wSqJJ-9PdZqp0CYWgFWsajdRos9QmU7eeyuFhFPH0'
-    },
-    'bali-international-open': {
-        name: 'Bali International Open',
-        date: 'Dec 01 - 05, 2024',
-        location: 'Denpasar Archery Center, Bali',
-        venue: 'Denpasar Archery Center',
-        address: 'Jl. Gatot Subroto, Denpasar, Bali',
-        status: 'upcoming',
-        category: 'Grade A',
-        organizer: 'Perpani Bali',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBmKeu4qLnuI8uJ8itXirIGY311f6c_CfhqFD3qtMv-M4oTNDiSeGeylyU0qI_7lQHeMywtfdDw175-dWrdxwZwWSnnEMmkBca4ScW0dEbBQ_wZYVWuCaOPI-A204QdKHKXQxHsutHbZP8c9uPaZpfK8lzqziHTAW_dqnlmi99AtLhIGmxfUZ-irvcNm1YUswSsH9HGhvq4Hr6jq7rsveM4HwMmhNVDABEGcgh0sYQHoHy9t1IzkTX2LexV72X240IEyZL2_InQGZ8'
     }
 }
 
-const tournament = computed(() => {
-    return tournamentsData[slug] || tournamentsData['indonesian-open-2024']
-})
+const tournament = computed(() => tournamentsData[slug] || tournamentsData['indonesian-open-2024'])
 
 const divisions = [
     { name: 'Recurve Division', icon: 'adjust', distance: '70m', categories: ["Men's Individual", "Women's Individual", "Mixed Team"] },
     { name: 'Compound Division', icon: 'gps_fixed', distance: '50m', categories: ["Men's Individual", "Women's Individual", "Mixed Team"] },
 ]
 
+definePageMeta({
+    layout: 'landing'
+})
+
 useSeoMeta({
     title: () => `${tournament.value.name} - Archeryhub.id`,
     description: () => `Register for ${tournament.value.name} at ${tournament.value.location}. ${tournament.value.date}.`
 })
 </script>
+
 
 <style scoped>
 .no-scrollbar::-webkit-scrollbar {

@@ -43,7 +43,7 @@
                         class="p-6 border-b border-gray-100 bg-gray-50 font-bold text-navy flex items-center justify-between">
                         <span>Rincian Pembayaran</span>
                         <span class="text-xs text-primary bg-primary/10 px-2 py-1 rounded">{{ transaction.payment_method
-                        }}</span>
+                            }}</span>
                     </div>
 
                     <div class="p-6 md:p-8 space-y-8 text-center">
@@ -73,7 +73,7 @@
                         <div class="py-6 border-t border-dashed border-gray-200">
                             <p class="text-sm font-bold text-gray-500 mb-2">Total yang harus dibayar:</p>
                             <p class="text-4xl font-black text-primary">IDR {{ transaction.total_amount.toLocaleString()
-                            }}</p>
+                                }}</p>
                         </div>
                     </div>
                 </div>
@@ -108,7 +108,12 @@
 </template>
 
 <script setup>
+definePageMeta({
+    layout: 'landing'
+})
+
 const route = useRoute()
+
 const reference = route.params.reference
 const payment = usePayment()
 
