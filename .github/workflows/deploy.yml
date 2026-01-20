@@ -40,17 +40,27 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Sync dist to VPS (Temp)
+      - name: Compress and Sync to VPS
         run: |
-          rsync -avz --delete -e "ssh -p 30221 -o StrictHostKeyChecking=no" \
-          ./.output/ root@151.243.222.93:/root/archeryhub-app/.output-temp/
+          tar -czf output.tar.gz -C .output .
+          rsync -az -e "ssh -p 30221 -o StrictHostKeyChecking=no" \
+          output.tar.gz root@151.243.222.93:/root/archeryhub-app/output.tar.gz
 
-      - name: Atomic Swap & Reload on VPS
+      - name: Extract, Atomic Swap & Reload on VPS
         run: |
           ssh -p 30221 -o StrictHostKeyChecking=no root@151.243.222.93 << 'EOF'
             set -e
             cd /root/archeryhub-app
             
+            # Prepare temp directory
+            rm -rf .output-temp
+            mkdir -p .output-temp
+            
+            # Extract tarball
+            echo "Extracting tarball..."
+            tar -xzf output.tar.gz -C .output-temp
+            rm output.tar.gz
+
             # Atomic swap strategy
             echo "Performing atomic swap..."
             rm -rf .output-old

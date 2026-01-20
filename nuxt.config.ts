@@ -69,6 +69,7 @@ export default defineNuxtConfig({
   },
   watch: ["data"],
   nitro: {
+    minify: true,
     debug: true
   },
   // Ensure proper client-side error handling
