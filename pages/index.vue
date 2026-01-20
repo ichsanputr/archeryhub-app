@@ -78,8 +78,9 @@
                     <div class="max-w-2xl">
                         <div ref="heroBadge"
                             class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 w-fit mb-6 border border-white/10 backdrop-blur-md opacity-0 translate-y-4">
-                            <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-                            <span class="text-white/90 text-xs font-medium tracking-wide uppercase">Platform No.1 di
+                            <span class="w-2 h-2 rounded-full bg-primary"></span>
+                            <span class="text-white/90 text-xs font-medium tracking-wide uppercase">Platform Panahan
+                                No.1 di
                                 Indonesia</span>
                         </div>
                         <h1 ref="heroTitle"
@@ -110,7 +111,7 @@
 
         <!-- Main Content Section: Tournaments & CTA -->
         <section class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 -mt-12 relative z-20">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-8 sm:mt-2 gap-6 md:gap-8">
                 <!-- Column 1: Upcoming Tournaments -->
                 <div class="md:col-span-2 lg:col-span-2">
                     <div class="bg-white rounded-3xl shadow-sm border border-border-subtle/50 p-6 md:p-8 h-full">
@@ -144,7 +145,7 @@
                                                 class="text-[10px] sm:text-xs font-bold uppercase tracking-wider opacity-80">{{
                                                     event.month }}</span>
                                             <span class="text-xl sm:text-2xl font-black leading-none">{{ event.day
-                                            }}</span>
+                                                }}</span>
                                         </div>
 
                                         <!-- Event Details -->

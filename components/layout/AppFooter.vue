@@ -36,7 +36,7 @@
         <div class="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8 sm:gap-12">
           <!-- Column 2: Navigation -->
           <div class="flex flex-col gap-5">
-            <h4 class="text-xs font-black uppercase tracking-widest text-primary">
+            <h4 class="text-xs font-black uppercase tracking-widest text-white">
               Navigasi
             </h4>
             <div class="flex flex-col gap-3">
@@ -53,7 +53,7 @@
 
           <!-- Column 3: About -->
           <div class="flex flex-col gap-5">
-            <h4 class="text-xs font-black uppercase tracking-widest text-primary">
+            <h4 class="text-xs font-black uppercase tracking-widest text-white">
               Perusahaan
             </h4>
             <div class="flex flex-col gap-3">
@@ -74,7 +74,7 @@
 
           <!-- Column 4: Developer -->
           <div class="flex flex-col gap-5">
-            <h4 class="text-xs font-black uppercase tracking-widest text-primary">
+            <h4 class="text-xs font-black uppercase tracking-widest text-white">
               Pengembang
             </h4>
             <div class="flex flex-col gap-3">
