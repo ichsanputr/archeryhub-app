@@ -4,7 +4,7 @@
             <div class="p-2 bg-primary/20 rounded-lg text-navy">
                 <span class="material-symbols-outlined text-[20px]">{{ icon }}</span>
             </div>
-            <h3 class="text-lg font-bold uppercase tracking-wide">{{ title }}</h3>
+            <h3 class="text-lg font-bold tracking-wide">{{ title }}</h3>
         </div>
         <slot />
     </div>

@@ -32,10 +32,10 @@ const toggleSaveProblem = async (slug) => {
   if (!token) {
     throw new Error('User not authenticated')
   }
-  
+
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:9000'
   const isCurrentlySaved = props.saved
-  
+
   if (isCurrentlySaved) {
     // Remove saved problem
     await $fetch(`${apiBaseUrl}/user/saved-problem/${slug}`, {
@@ -69,7 +69,7 @@ const navigateToProblem = () => {
 
 const handleSave = async (event) => {
   event.stopPropagation() // Prevent navigation
-  
+
   if (!user.value) {
     // Show login prompt toast with action button
     showSaveLoginPrompt()
@@ -80,9 +80,9 @@ const handleSave = async (event) => {
   try {
     const slug = props.problem.slug || props.problem.stem || props.problem._path?.split('/').pop()?.replace('.md', '')
     const cleanSlug = slug?.replace('problem/', '') || 'unknown'
-    
+
     await toggleSaveProblem(cleanSlug)
-    
+
     // Emit event to parent to update the saved state
     emit('update:saved', !props.saved)
   } catch (error) {
@@ -99,15 +99,15 @@ const parsedCategories = computed(() => {
     if (props.problem.meta?.categories) {
       return props.problem.meta.categories
     }
-    
+
     if (props.problem.categories) {
-      const categoryArray = typeof props.problem.categories === 'string' 
-        ? JSON.parse(props.problem.categories) 
+      const categoryArray = typeof props.problem.categories === 'string'
+        ? JSON.parse(props.problem.categories)
         : props.problem.categories
-      
+
       return Array.isArray(categoryArray) ? categoryArray : []
     }
-    
+
     return []
   } catch (error) {
     console.warn('Failed to parse categories for problem:', props.problem.id, error)
@@ -118,24 +118,26 @@ const parsedCategories = computed(() => {
 </script>
 
 <template>
-  <div 
+  <div
     class="group bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6 transition-all duration-300 hover:shadow-lg hover:border-yellow-200 cursor-pointer h-full flex flex-col"
-    @click="navigateToProblem"
-  >
+    @click="navigateToProblem">
     <!-- Header -->
     <div class="flex items-start justify-between mb-3 sm:mb-4">
       <div class="flex items-center space-x-2 sm:space-x-3 flex-1 min-w-0">
         <div class="flex-1 min-w-0">
-          <h3 class="text-base sm:text-lg font-semibold text-gray-900 group-hover:text-yellow-600 transition-colors duration-200 truncate">
+          <h3
+            class="text-base sm:text-lg font-black text-navy group-hover:text-primary transition-colors duration-200 truncate font-display tracking-tight">
             {{ problem.title }}
           </h3>
         </div>
       </div>
       <div class="flex items-center space-x-2">
-        <span v-if="problem.category_name" class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium flex-shrink-0">
+        <span v-if="problem.category_name"
+          class="bg-primary/20 text-navy px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">
           {{ problem.category_name }}
         </span>
-        <div v-if="problem.featured" class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-medium flex-shrink-0">
+        <div v-if="problem.featured"
+          class="bg-amber-100 text-amber-700 px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">
           Featured
         </div>
       </div>
@@ -147,56 +149,36 @@ const parsedCategories = computed(() => {
     </p>
 
     <!-- Categories (hide for random problems with category_name) -->
-    <div v-if="!problem.category_name" class="flex flex-wrap gap-1 sm:gap-1 mb-3 sm:mb-4">
-      <v-chip
-        v-for="category in parsedCategories.slice(0, 3)"
-        :key="category"
-        size="x-small"
-        variant="outlined"
-        class="text-xs"
-      >
+    <div v-if="!problem.category_name" class="flex flex-wrap gap-1 sm:gap-2 mb-3 sm:mb-4">
+      <span v-for="category in parsedCategories.slice(0, 3)" :key="category"
+        class="px-2 py-0.5 rounded-full border border-gray-200 text-[10px] font-bold text-gray-500 uppercase tracking-wider">
         {{ category }}
-      </v-chip>
-      <v-chip
-        v-if="parsedCategories.length > 3"
-        size="x-small"
-        variant="outlined"
-        class="text-xs"
-        color="grey"
-      >
+      </span>
+      <span v-if="parsedCategories.length > 3"
+        class="px-2 py-0.5 rounded-full border border-gray-100 bg-gray-50 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
         +{{ parsedCategories.length - 3 }}
-      </v-chip>
+      </span>
     </div>
 
     <!-- Action -->
     <div class="mt-auto flex items-center justify-between">
-      <div class="flex items-center text-yellow-600 font-medium text-xs sm:text-sm group-hover:translate-x-1 transition-transform">
-        <span class="hidden sm:inline">Solve Problem</span>
-        <span class="sm:hidden">Solve</span>
+      <div
+        class="flex items-center text-primary font-bold text-xs sm:text-sm group-hover:translate-x-1 transition-transform">
+        <span class="hidden sm:inline">Lihat Detail</span>
+        <span class="sm:hidden">Detail</span>
         <Icon :ssr="true" icon="ph:arrow-right" class="w-3 h-3 sm:w-4 sm:h-4 ml-1" />
       </div>
-      
+
       <!-- Save Button -->
-      <button
-        v-if="showSaveButton"
-        @click="handleSave"
-        :disabled="isSaving"
-        class="p-2 rounded-lg transition-colors hover:bg-gray-100 flex items-center justify-center"
+      <button v-if="showSaveButton" @click="handleSave" :disabled="isSaving"
+        class="p-2 rounded-lg transition-colors hover:bg-gray-100 flex items-center justify-center border border-transparent active:scale-95 transition-all"
         :class="{
-          'text-yellow-600': props.saved,
-          'text-gray-400': !props.saved
-        }"
-      >
-        <Icon :ssr="true" 
-          v-if="!isSaving"
-          :icon="props.saved ? 'ph:bookmark-simple-fill' : 'ph:bookmark-simple'" 
-          class="w-4 h-4" 
-        />
-        <Icon :ssr="true" 
-          v-else
-          icon="ph:spinner" 
-          class="w-4 h-4 animate-spin" 
-        />
+          'text-primary bg-primary/5 border-primary/20': props.saved,
+          'text-gray-300': !props.saved
+        }">
+        <Icon :ssr="true" v-if="!isSaving" :icon="props.saved ? 'ph:bookmark-simple-fill' : 'ph:bookmark-simple'"
+          class="w-4 h-4" />
+        <Icon :ssr="true" v-else icon="ph:spinner" class="w-4 h-4 animate-spin" />
       </button>
     </div>
   </div>

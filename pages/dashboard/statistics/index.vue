@@ -7,11 +7,9 @@
                 <p class="text-text-secondary mt-1 font-medium text-sm">Analisis performa atlet dan turnamen</p>
             </div>
             <div class="flex gap-3">
-                <button
-                    class="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 text-gray-600 hover:text-navy font-bold text-sm rounded-xl transition-all">
-                    <span class="material-symbols-outlined text-[18px]">download</span>
-                    <span class="hidden sm:inline">Ekspor Laporan</span>
-                </button>
+                <BaseButton variant="outline" icon="ph:download-simple">
+                    Ekspor Laporan
+                </BaseButton>
             </div>
         </div>
 
@@ -28,13 +26,13 @@
                             }}</p>
                     </div>
                     <div
-                        class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy transition-colors shrink-0">
-                        <span class="material-symbols-outlined text-xl md:text-2xl">{{ stat.icon }}</span>
+                        class="bg-gray-50 p-2 rounded-lg text-primary-dark group-hover:bg-primary group-hover:text-navy transition-colors shrink-0">
+                        <Icon :icon="stat.icon" class="text-xl md:text-2xl" />
                     </div>
                 </div>
                 <div class="mt-auto pt-2">
                     <p :class="stat.trendColor" class="text-[10px] font-bold flex items-center gap-1">
-                        <span class="material-symbols-outlined text-[14px]">{{ stat.trendIcon }}</span>
+                        <Icon :icon="stat.trendIcon" class="text-[14px]" />
                         {{ stat.trend }}
                     </p>
                 </div>
@@ -128,16 +126,17 @@
             </div>
             <div class="p-4 space-y-3">
                 <div v-for="activity in recentActivities" :key="activity.id"
-                    class="flex items-start gap-3 p-3 rounded-xl bg-gray-50 border border-gray-100">
-                    <div class="p-2 bg-white rounded-lg border border-gray-100 shadow-sm shrink-0">
-                        <span class="material-symbols-outlined text-[18px]" :class="activity.iconColor">{{ activity.icon
-                            }}</span>
+                    class="flex items-start gap-4 p-4 rounded-xl bg-gray-50 border border-gray-100 hover:bg-white hover:border-primary/20 transition-all group">
+                    <div
+                        class="p-2 bg-white rounded-lg border border-gray-100 shadow-sm shrink-0 group-hover:bg-primary/10 transition-colors">
+                        <Icon :icon="activity.icon" class="text-[20px]" :class="activity.iconColor" />
                     </div>
                     <div class="flex-1 min-w-0">
                         <p class="text-sm font-bold text-navy">{{ activity.title }}</p>
-                        <p class="text-xs text-gray-400 mt-0.5">{{ activity.description }}</p>
+                        <p class="text-xs text-text-secondary mt-1 leading-relaxed">{{ activity.description }}</p>
                     </div>
-                    <span class="text-[10px] text-gray-400 font-bold uppercase shrink-0">{{ activity.time }}</span>
+                    <span class="text-[10px] text-text-secondary font-black uppercase shrink-0">{{ activity.time
+                    }}</span>
                 </div>
             </div>
         </div>
@@ -150,10 +149,10 @@ definePageMeta({
 })
 
 const overviewStats = [
-    { label: 'Total Atlet', value: '2.847', icon: 'groups', trend: '+128 bulan ini', trendIcon: 'trending_up', trendColor: 'text-green-600' },
-    { label: 'Turnamen Selesai', value: '156', icon: 'emoji_events', trend: '+12 bulan ini', trendIcon: 'trending_up', trendColor: 'text-green-600' },
-    { label: 'Rata-rata Skor', value: '542', icon: 'scoreboard', trend: '+3.2% vs bulan lalu', trendIcon: 'trending_up', trendColor: 'text-green-600' },
-    { label: 'Klub Terdaftar', value: '89', icon: 'home', trend: '+5 klub baru', trendIcon: 'add_circle', trendColor: 'text-blue-600' },
+    { label: 'Total Atlet', value: '2.847', icon: 'ph:users-three', trend: '+128 bulan ini', trendIcon: 'ph:trend-up', trendColor: 'text-green-600' },
+    { label: 'Turnamen Selesai', value: '156', icon: 'ph:trophy', trend: '+12 bulan ini', trendIcon: 'ph:trend-up', trendColor: 'text-green-600' },
+    { label: 'Rata-rata Skor', value: '542', icon: 'ph:target', trend: '+3.2% vs bulan lalu', trendIcon: 'ph:trend-up', trendColor: 'text-green-600' },
+    { label: 'Klub Terdaftar', value: '89', icon: 'ph:house-line', trend: '+5 klub baru', trendIcon: 'ph:plus-circle', trendColor: 'text-blue-600' },
 ]
 
 const topAthletes = [
@@ -173,9 +172,9 @@ const categories = [
 ]
 
 const recentActivities = [
-    { id: 1, title: 'Indonesian Open 2024 selesai', description: '450 atlet berpartisipasi dari 35 klub', time: '2 jam lalu', icon: 'emoji_events', iconColor: 'text-primary-hover' },
-    { id: 2, title: 'Rekor baru tercatat', description: 'Arif Dwi mencatat skor 685 di kategori Recurve 70m', time: '5 jam lalu', icon: 'star', iconColor: 'text-yellow-500' },
-    { id: 3, title: 'Klub baru bergabung', description: 'Surabaya Archery Academy mendaftar sebagai mitra', time: '1 hari lalu', icon: 'group_add', iconColor: 'text-blue-500' },
+    { id: 1, title: 'Indonesian Open 2024 selesai', description: '450 atlet berpartisipasi dari 35 klub', time: '2 jam lalu', icon: 'ph:trophy', iconColor: 'text-primary-dark' },
+    { id: 2, title: 'Rekor baru tercatat', description: 'Arif Dwi mencatat skor 685 di kategori Recurve 70m', time: '5 jam lalu', icon: 'ph:star-fill', iconColor: 'text-yellow-500' },
+    { id: 3, title: 'Klub baru bergabung', description: 'Surabaya Archery Academy mendaftar sebagai mitra', time: '1 hari lalu', icon: 'ph:user-plus', iconColor: 'text-blue-500' },
 ]
 </script>
 

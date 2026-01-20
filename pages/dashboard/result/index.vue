@@ -12,14 +12,16 @@ defineOptions({
 
 const { user } = useAuth()
 const completedProblems = ref([])
+const isLoading = ref(true)
+const fetchError = ref(null)
 const config = useRuntimeConfig()
 const apiBaseUrl = config.public.apiBaseUrl || 'http://localhost:9000'
 const { get } = useApi()
 
-const { data: completedProblemsData, pending: isLoading, error: loadError, refresh: fetchResults } = await useAsyncData('user-results', async () => {
+const fetchResults = async () => {
   if (!user.value) {
     // Return single demo data for preview
-    return [
+    completedProblems.value = [
       {
         id: 'demo-1',
         slug: 'two-sum',
@@ -36,8 +38,12 @@ const { data: completedProblemsData, pending: isLoading, error: loadError, refre
         platform: 'Demo Platform'
       }
     ]
+    isLoading.value = false
+    return
   }
 
+  isLoading.value = true
+  fetchError.value = null
   try {
     const response = await get(`${apiBaseUrl}/user/result`)
 
@@ -45,7 +51,7 @@ const { data: completedProblemsData, pending: isLoading, error: loadError, refre
     const raw = response && typeof response === 'object' ? (response.data ?? response) : []
     const results = Array.isArray(raw) ? raw : []
 
-    return results.map((r) => ({
+    completedProblems.value = results.map((r) => ({
       id: r.problem_id,
       slug: r.problem_id,
       title: r.problem_title || r.problem_id || 'Unknown Problem',
@@ -61,36 +67,36 @@ const { data: completedProblemsData, pending: isLoading, error: loadError, refre
       platform: r.platform_name || 'Unknown Platform'
     }))
   } catch (error) {
-    console.log(error)
     console.error('Failed to fetch results:', error)
-    throw new Error('Failed to load results. Please try again.')
+    fetchError.value = 'Failed to load results. Please try again.'
+  } finally {
+    isLoading.value = false
   }
+}
+
+onMounted(() => {
+  fetchResults()
 })
 
-watch(completedProblemsData, (val) => {
-  completedProblems.value = val || []
-}, { immediate: true })
-
 const loading = computed(() => isLoading.value)
-const error = computed(() => loadError.value?.message || null)
+const error = computed(() => fetchError.value || null)
 
 const formatDate = (dateString) => {
   return useFormattedDatePreset(dateString, 'dateTime')
 }
 
+// SEO
 const route = useRoute()
 useHead({
-  title: 'My Results - Archeryhub.id Tournament Manager',
+  title: 'Hasil Saya - Archeryhub.id',
   meta: [
-    { name: 'description', content: 'View your archery tournament results and track your progress.' },
+    { name: 'description', content: 'Lihat hasil turnamen panahan Anda dan pantau kemajuan Anda.' },
     { name: 'robots', content: 'noindex' }
-  ],
-  link: [
-    {
-      rel: 'canonical',
-      href: `https://archeryhub.id${route.path}`
-    }
   ]
+})
+
+definePageMeta({
+  layout: 'dashboard'
 })
 </script>
 
@@ -99,20 +105,20 @@ useHead({
     <!-- Header Section -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       <div
-        class="relative overflow-hidden rounded-2xl border border-yellow-100 bg-gradient-to-r from-yellow-50 via-white to-orange-50">
-        <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-yellow-200/40 blur-3xl"></div>
-        <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-orange-200/40 blur-3xl"></div>
+        class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white">
+        <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+        <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
         <div class="relative p-6 sm:p-8">
           <div
-            class="inline-flex items-center gap-2 rounded-full border border-yellow-200 bg-white/70 px-3 py-1 text-sm text-yellow-700 shadow-sm backdrop-blur">
+            class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm text-primary shadow-sm backdrop-blur">
             <Icon :ssr="true" icon="carbon:result" class="h-4 w-4" />
-            <span>Your Progress</span>
+            <span>Kemajuan Saya</span>
           </div>
-          <h1 class="mt-4 text-2xl sm:text-3xl md:text-4xl font-extrabold leading-tight text-gray-900">
-            My Results
+          <h1 class="mt-4 text-2xl sm:text-3xl md:text-4xl font-black leading-tight tracking-tight font-display">
+            Hasil Saya
           </h1>
-          <p class="mt-2 text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl">
-            Track your progress and view your tournament results
+          <p class="mt-2 text-sm sm:text-base text-slate-300 max-w-2xl font-body">
+            Pantau kemajuan kamu dan lihat hasil turnamen yang udah kamu ikuti.
           </p>
         </div>
       </div>
@@ -120,16 +126,12 @@ useHead({
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
       <div v-if="loading" class="text-center py-16">
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 max-w-md mx-auto">
+        <div class="bg-white rounded-2xl border border-gray-100 p-12 max-w-md mx-auto shadow-sm">
           <div class="flex flex-col items-center gap-6">
-            <div class="flex flex-col items-center gap-2">
-              <v-progress-circular indeterminate color="primary" size="64" class="mb-4" />
-              <h3 class="text-lg font-semibold text-gray-900">
-                Loading your results...
-              </h3>
-              <p class="text-gray-600 text-center">
-                Please wait while we fetch your tournament results.
-              </p>
+            <div class="size-16 border-4 border-primary border-t-transparent animate-spin rounded-full"></div>
+            <div class="space-y-2">
+              <h3 class="text-lg font-bold text-navy">Memuat hasil...</h3>
+              <p class="text-slate-500 text-sm">Tunggu sebentar ya, lagi ngambil data hasil turnamen kamu.</p>
             </div>
           </div>
         </div>
@@ -149,19 +151,13 @@ useHead({
             </div>
 
             <div class="flex flex-col gap-3 w-full">
-              <button @click="fetchResults"
-                class="flex items-center justify-center gap-2 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition-colors w-full">
-                <Icon :ssr="true" icon="ph:arrow-clockwise" class="w-4 h-4" />
-                Try Again
-              </button>
+              <BaseButton @click="fetchResults" variant="gold" block icon="ph:arrow-clockwise">
+                Coba Lagi
+              </BaseButton>
 
-              <NuxtLink to="/" class="w-full">
-                <button
-                  class="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-medium transition-colors w-full">
-                  <Icon :ssr="true" icon="ph:house" class="w-4 h-4" />
-                  Go to Homepage
-                </button>
-              </NuxtLink>
+              <BaseButton to="/" variant="outline" block icon="ph:house">
+                Kembali ke Beranda
+              </BaseButton>
             </div>
           </div>
         </div>
@@ -173,14 +169,12 @@ useHead({
           <!-- Single demo result card -->
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div class="block bg-white rounded-xl shadow-sm border border-gray-200 p-6 relative">
-              <!-- Demo overlay -->
               <div
                 class="absolute inset-0 bg-gradient-to-t from-gray-50/90 to-transparent rounded-xl z-10 flex items-end justify-center pb-4">
-                <div class="text-center">
-                  <button @click="login"
-                    class="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition-colors text-sm">
-                    Login to View Details
-                  </button>
+                <div class="text-center px-6 w-full">
+                  <BaseButton @click="login" variant="gold" block size="sm">
+                    Login untuk melihat detail
+                  </BaseButton>
                 </div>
               </div>
 
@@ -256,27 +250,21 @@ useHead({
             <!-- Demo overlay for non-logged users -->
             <div v-if="!user"
               class="absolute inset-0 bg-gradient-to-t from-gray-50/90 to-transparent rounded-xl z-10 flex items-end justify-center pb-4">
-              <div class="text-center">
-                <button
-                  class="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition-colors text-sm">
-                  Login to View Details
-                </button>
+              <div class="text-center px-6 w-full">
+                <BaseButton variant="gold" block size="sm" @click.stop="login">
+                  Login untuk melihat detail
+                </BaseButton>
               </div>
             </div>
 
             <div class="flex items-start justify-between mb-4">
               <div class="flex-1">
-                <div class="flex items-center space-x-3 mb-2">
-                  <h3 :class="[
-                    'text-lg font-bold transition-colors',
-                    user ? 'text-gray-900 group-hover:text-yellow-600' : 'text-gray-700'
-                  ]">
-                    {{ problem.title }}
-                  </h3>
-                  <span v-if="!user" class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs">
-                    Demo
-                  </span>
-                </div>
+                <h3 :class="[
+                  'text-lg font-black transition-colors',
+                  user ? 'text-navy group-hover:text-primary' : 'text-gray-700'
+                ]">
+                  {{ problem.title }}
+                </h3>
                 <p class="text-gray-600 text-sm mb-3 line-clamp-2">
                   {{ problem.description }}
                 </p>
@@ -350,21 +338,13 @@ useHead({
               </div>
 
               <div class="flex flex-col gap-3 w-full">
-                <NuxtLink to="/events" class="w-full">
-                  <button
-                    class="flex items-center justify-center gap-2 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition-colors w-full">
-                    <Icon :ssr="true" icon="ph:trophy" class="w-4 h-4" />
-                    Browse Tournaments
-                  </button>
-                </NuxtLink>
+                <BaseButton to="/dashboard/events" variant="gold" block icon="ph:trophy">
+                  Cari Turnamen
+                </BaseButton>
 
-                <NuxtLink to="/" class="w-full">
-                  <button
-                    class="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-medium transition-colors w-full">
-                    <Icon :ssr="true" icon="ph:house" class="w-4 h-4" />
-                    Go to Homepage
-                  </button>
-                </NuxtLink>
+                <BaseButton to="/" variant="outline" block icon="ph:house">
+                  Kembali ke Beranda
+                </BaseButton>
               </div>
             </div>
           </div>

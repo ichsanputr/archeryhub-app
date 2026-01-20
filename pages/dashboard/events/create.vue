@@ -14,12 +14,12 @@
 
       <div class="flex flex-wrap justify-between gap-6 items-end">
         <div class="flex flex-col gap-3">
-          <h1 class="text-2xl md:text-3xl font-black text-navy tracking-tight">Buat Event Baru</h1>
+          <h1 class="text-2xl md:text-3xl font-black text-navy tracking-tight">Buat event baru</h1>
           <p class="text-text-secondary text-sm md:text-base font-medium max-w-2xl">{{ stepDescriptions[currentStep - 1]
           }}</p>
         </div>
         <div class="flex flex-col gap-3 min-w-[240px]">
-          <div class="flex justify-between items-center text-xs font-bold uppercase tracking-wider text-navy">
+          <div class="flex justify-between items-center text-xs font-bold tracking-wider text-navy">
             <span>{{ stepTitles[currentStep - 1] }}</span>
             <span>Langkah {{ currentStep }} dari {{ totalSteps }}</span>
           </div>
@@ -36,105 +36,114 @@
       <form @submit.prevent="handleSubmit" class="flex flex-col gap-10">
 
         <!-- Step 1: Basic Info -->
-        <div v-if="currentStep === 1" class="flex flex-col gap-8">
+        <div v-if="currentStep === 1" class="flex flex-col gap-8 animate-in fade-in slide-in-from-right-4">
           <FormSection icon="badge" title="Identitas Event">
             <div class="grid grid-cols-1 gap-6">
-              <FormInput v-model="form.name" label="Nama Event" placeholder="contoh: National Indoor Championship 2024"
-                required />
-              <FormInput v-model="form.venue" label="Lokasi Venue" placeholder="Masukkan nama venue atau alamat"
+              <BaseInput v-model="form.name" label="Nama Event" placeholder="contoh: National Indoor Championship 2024"
+                required :error="errors.name" @blur="validate('name', form.name, [rules.required()])" />
+              <BaseInput v-model="form.venue" label="Lokasi Venue" placeholder="Masukkan nama venue atau alamat"
                 icon="location_on" />
+              <BaseInput v-model="form.gmapsLink" label="Link Google Maps" placeholder="https://goo.gl/maps/..."
+                icon="ph:map-pin" />
             </div>
           </FormSection>
 
           <FormSection icon="calendar_month" title="Jadwal">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormInput v-model="form.startDate" label="Tanggal & Waktu Mulai" type="datetime-local" required />
-              <FormInput v-model="form.endDate" label="Tanggal & Waktu Selesai" type="datetime-local" required />
+              <BaseInput v-model="form.startDate" label="Tanggal & Waktu Mulai" type="datetime-local" required
+                :error="errors.startDate" @blur="validate('startDate', form.startDate, [rules.required()])" />
+              <BaseInput v-model="form.endDate" label="Tanggal & Waktu Selesai" type="datetime-local" required
+                :error="errors.endDate" @blur="validate('endDate', form.endDate, [rules.required()])" />
             </div>
           </FormSection>
 
           <FormSection icon="description" title="Detail Event">
-            <div class="flex flex-col gap-2">
-              <span class="text-navy text-sm font-semibold">Deskripsi</span>
+            <div class="flex flex-col gap-1.5">
+              <label class="text-navy text-sm font-bold ml-1">Deskripsi</label>
               <TiptapEditor v-model="form.description" />
             </div>
           </FormSection>
         </div>
 
-        <!-- Step 2: Categories -->
-        <div v-if="currentStep === 2" class="flex flex-col gap-8">
-          <FormSection icon="category" title="Divisi & Kategori">
-            <p class="text-text-secondary text-sm mb-4">Pilih divisi dan kategori yang tersedia untuk event ini.</p>
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-              <label v-for="div in availableDivisions" :key="div.code"
-                class="flex items-center gap-3 p-4 rounded-lg border-2 cursor-pointer transition-all"
-                :class="form.divisions.includes(div.code) ? 'border-primary bg-primary/5' : 'border-gray-200 hover:border-gray-300'">
-                <input type="checkbox" :value="div.code" v-model="form.divisions" class="hidden" />
-                <span class="material-symbols-outlined text-2xl"
-                  :class="form.divisions.includes(div.code) ? 'text-primary' : 'text-gray-400'">{{ div.icon }}</span>
-                <span class="font-semibold text-navy">{{ div.name }}</span>
-              </label>
-            </div>
-          </FormSection>
+        <!-- Step 2: Categories & Settings -->
+        <div v-if="currentStep === 2" class="flex flex-col gap-10 animate-in fade-in slide-in-from-right-4">
+          <FormSection icon="category" title="Divisi dan kategori">
+            <p class="text-text-secondary text-sm mb-6">Pilih divisi dan kategori yang tersedia untuk event ini.</p>
 
-          <FormSection icon="groups" title="Kategori Umur">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-              <label v-for="cat in availableCategories" :key="cat.code"
-                class="flex items-center justify-center gap-2 p-3 rounded-lg border-2 cursor-pointer transition-all text-center"
-                :class="form.categories.includes(cat.code) ? 'border-primary bg-primary/5' : 'border-gray-200 hover:border-gray-300'">
-                <input type="checkbox" :value="cat.code" v-model="form.categories" class="hidden" />
-                <span class="font-semibold text-sm"
-                  :class="form.categories.includes(cat.code) ? 'text-navy' : 'text-gray-600'">{{ cat.name }}</span>
-              </label>
-            </div>
-          </FormSection>
-        </div>
+            <div class="flex flex-col gap-8">
+              <div class="flex flex-col gap-3">
+                <label class="text-navy text-sm font-bold ml-1">Divisi busur</label>
+                <div class="flex flex-wrap gap-3">
+                  <button v-for="div in availableDivisions" :key="div.code" type="button"
+                    @click="toggleValue(form.divisions, div.code)"
+                    class="h-14 px-6 rounded-xl border-2 flex items-center gap-3 font-bold transition-all text-sm"
+                    :class="form.divisions.includes(div.code) ? 'bg-primary border-primary text-navy shadow-lg shadow-primary/20' : 'bg-white border-gray-100 text-gray-400 hover:border-primary/50'">
+                    <span class="material-symbols-outlined">{{ div.icon }}</span>
+                    {{ div.name }}
+                  </button>
+                </div>
+                <p v-if="errors.divisions" class="text-red-500 text-[11px] font-bold ml-1">{{ errors.divisions }}</p>
+              </div>
 
-        <!-- Step 3: Settings -->
-        <div v-if="currentStep === 3" class="flex flex-col gap-8">
-          <FormSection icon="payments" title="Biaya Pendaftaran">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormInput v-model.number="form.entryFee" label="Biaya Pendaftaran (Rp)" type="number"
-                placeholder="350000" />
-              <FormInput v-model="form.registrationDeadline" label="Batas Pendaftaran" type="datetime-local" />
-            </div>
-          </FormSection>
-
-          <FormSection icon="tune" title="Pengaturan Lainnya">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <FormInput v-model.number="form.maxParticipants" label="Maksimal Peserta" type="number"
-                placeholder="100" />
-              <div class="flex flex-col gap-2">
-                <span class="text-navy text-sm font-semibold">Status Awal</span>
-                <select v-model="form.status"
-                  class="form-input w-full rounded-lg text-navy border border-gray-200 bg-gray-50 h-12 px-4">
-                  <option value="draft">Draft (Belum Dipublikasi)</option>
-                  <option value="published">Published (Langsung Aktif)</option>
-                </select>
+              <div class="flex flex-col gap-3">
+                <label class="text-navy text-sm font-bold ml-1">Kategori umur</label>
+                <div class="flex flex-wrap gap-2">
+                  <button v-for="cat in availableCategories" :key="cat.code" type="button"
+                    @click="toggleValue(form.categories, cat.code)"
+                    class="h-10 px-4 rounded-lg border-2 flex items-center font-bold transition-all text-xs"
+                    :class="form.categories.includes(cat.code) ? 'bg-primary border-primary text-navy' : 'bg-white border-gray-100 text-gray-400 hover:border-primary/50'">
+                    {{ cat.name }}
+                  </button>
+                </div>
+                <p v-if="errors.categories" class="text-red-500 text-[11px] font-bold ml-1">{{ errors.categories }}</p>
               </div>
             </div>
           </FormSection>
+
+          <FormSection icon="payments" title="Biaya pendaftaran">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <BaseInput v-model.number="form.entryFee" label="Biaya pendaftaran (Rp)" type="number"
+                placeholder="350000" />
+              <BaseInput v-model="form.registrationDeadline" label="Batas pendaftaran" type="datetime-local" />
+            </div>
+          </FormSection>
+
+          <FormSection icon="tune" title="Pengaturan lainnya">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <BaseInput v-model.number="form.maxParticipants" label="Maksimal peserta" type="number"
+                placeholder="100" />
+
+              <BaseSelect v-model="form.status" label="Status awal" :items="[
+                { title: 'Draft (Belum dipublikasi)', value: 'draft' },
+                { title: 'Published (Langsung aktif)', value: 'published' }
+              ]" />
+            </div>
+          </FormSection>
         </div>
 
-        <!-- Step 4: Review & Payment -->
-        <div v-if="currentStep === 4" class="flex flex-col gap-8">
-          <FormSection icon="summarize" title="Ringkasan Event">
+        <!-- Step 3: Review -->
+        <div v-if="currentStep === 3" class="flex flex-col gap-8">
+          <FormSection icon="summarize" title="Ringkasan event">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div class="space-y-4">
                 <div class="flex justify-between py-2 border-b border-gray-100">
-                  <span class="text-gray-500">Nama Event</span>
+                  <span class="text-gray-500">Nama event</span>
                   <span class="font-semibold text-navy">{{ form.name || '-' }}</span>
                 </div>
                 <div class="flex justify-between py-2 border-b border-gray-100">
                   <span class="text-gray-500">Lokasi</span>
                   <span class="font-semibold text-navy">{{ form.venue || '-' }}</span>
                 </div>
+                <div v-if="form.gmapsLink" class="flex justify-between py-2 border-b border-gray-100">
+                  <span class="text-gray-500">Gmaps Link</span>
+                  <span class="font-semibold text-primary truncate max-w-xs">{{ form.gmapsLink }}</span>
+                </div>
                 <div class="flex justify-between py-2 border-b border-gray-100">
-                  <span class="text-gray-500">Tanggal Mulai</span>
+                  <span class="text-gray-500">Tanggal mulai</span>
                   <span class="font-semibold text-navy">{{ formatDate(form.startDate) }}</span>
                 </div>
                 <div class="flex justify-between py-2 border-b border-gray-100">
-                  <span class="text-gray-500">Biaya Pendaftaran</span>
+                  <span class="text-gray-500">Biaya pendaftaran</span>
                   <span class="font-semibold text-navy">Rp {{ form.entryFee?.toLocaleString('id-ID') || '0' }}</span>
                 </div>
               </div>
@@ -144,12 +153,12 @@
                   <span class="font-semibold text-navy">{{ form.divisions.length }} dipilih</span>
                 </div>
                 <div class="flex justify-between py-2 border-b border-gray-100">
-                  <span class="text-gray-500">Kategori Umur</span>
+                  <span class="text-gray-500">Kategori umur</span>
                   <span class="font-semibold text-navy">{{ form.categories.length }} dipilih</span>
                 </div>
                 <div class="flex justify-between py-2 border-b border-gray-100">
-                  <span class="text-gray-500">Maks. Peserta</span>
-                  <span class="font-semibold text-navy">{{ form.maxParticipants || 'Tidak Dibatasi' }}</span>
+                  <span class="text-gray-500">Maks. peserta</span>
+                  <span class="font-semibold text-navy">{{ form.maxParticipants || 'Tidak dibatasi' }}</span>
                 </div>
                 <div class="flex justify-between py-2 border-b border-gray-100">
                   <span class="text-gray-500">Status</span>
@@ -161,146 +170,38 @@
               </div>
             </div>
           </FormSection>
-
-          <!-- Payment Channel Selection -->
-          <FormSection icon="payments" title="Pilih Metode Pembayaran Untuk Aktivasi">
-            <p class="text-text-secondary text-sm mb-6">
-              Archeryhub mengenakan biaya platform sebesar <strong>Rp 50.000</strong> untuk aktivasi event.
-              Pilih metode pembayaran sekarang untuk aktivasi instan.
-            </p>
-
-            <div v-if="isLoadingChannels" class="flex items-center justify-center py-8">
-              <span class="material-symbols-outlined animate-spin text-3xl text-primary">sync</span>
-            </div>
-
-            <div v-else class="space-y-6">
-              <!-- VA Group -->
-              <div v-if="channelGroups.va?.length">
-                <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Virtual Account</h3>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  <button v-for="channel in channelGroups.va" :key="channel.code" type="button"
-                    @click="selectedMethod = channel.code"
-                    :class="selectedMethod === channel.code ? 'border-primary bg-primary/5 ring-1 ring-primary' : 'border-gray-100 hover:border-gray-200'"
-                    class="p-4 rounded-xl border-2 transition-all flex flex-col items-center gap-2">
-                    <img :src="channel.icon_url" :alt="channel.name" class="h-6 object-contain" />
-                    <span class="text-[10px] font-bold text-navy text-center leading-tight">{{ channel.name }}</span>
-                  </button>
-                </div>
-              </div>
-
-              <!-- E-Wallet Group -->
-              <div v-if="channelGroups.ewallet?.length">
-                <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">E-Wallet</h3>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  <button v-for="channel in channelGroups.ewallet" :key="channel.code" type="button"
-                    @click="selectedMethod = channel.code"
-                    :class="selectedMethod === channel.code ? 'border-primary bg-primary/5 ring-1 ring-primary' : 'border-gray-100 hover:border-gray-200'"
-                    class="p-4 rounded-xl border-2 transition-all flex flex-col items-center gap-2">
-                    <img :src="channel.icon_url" :alt="channel.name" class="h-6 object-contain" />
-                    <span class="text-[10px] font-bold text-navy text-center leading-tight">{{ channel.name }}</span>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Store Group -->
-              <div v-if="channelGroups.store?.length">
-                <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Retail Store</h3>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  <button v-for="channel in channelGroups.store" :key="channel.code" type="button"
-                    @click="selectedMethod = channel.code"
-                    :class="selectedMethod === channel.code ? 'border-primary bg-primary/5 ring-1 ring-primary' : 'border-gray-100 hover:border-gray-200'"
-                    class="p-4 rounded-xl border-2 transition-all flex flex-col items-center gap-2">
-                    <img :src="channel.icon_url" :alt="channel.name" class="h-6 object-contain" />
-                    <span class="text-[10px] font-bold text-navy text-center leading-tight">{{ channel.name }}</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </FormSection>
         </div>
 
         <!-- Action Buttons -->
         <div
           class="flex flex-col-reverse md:flex-row items-center justify-between gap-4 pt-8 border-t border-gray-100 mt-4">
-          <button v-if="currentStep > 1" type="button" @click="prevStep"
-            class="w-full md:w-auto h-12 px-6 rounded-lg border border-gray-300 text-gray-600 font-bold hover:bg-gray-50 hover:text-navy transition-colors flex items-center justify-center gap-2">
-            <span class="material-symbols-outlined">arrow_back</span>
-            <span>Kembali</span>
-          </button>
-          <NuxtLink v-else to="/dashboard/events"
-            class="w-full md:w-auto h-12 px-6 rounded-lg border border-gray-300 text-gray-600 font-bold hover:bg-gray-50 hover:text-navy transition-colors flex items-center justify-center">
+          <BaseButton v-if="currentStep > 1" type="button" variant="outline" icon="arrow_back" @click="prevStep" block
+            class="md:w-auto">
+            Kembali
+          </BaseButton>
+          <BaseButton v-else to="/dashboard/events" variant="outline" block class="md:w-auto">
             Batal
-          </NuxtLink>
+          </BaseButton>
 
-          <button v-if="currentStep < totalSteps" type="button" @click="nextStep"
-            class="w-full md:w-auto h-12 px-8 rounded-lg bg-primary text-navy font-bold hover:bg-primary-hover shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 group">
-            <span>Selanjutnya: {{ stepTitles[currentStep] }}</span>
-            <span class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
-          </button>
-          <button v-else type="submit" :disabled="isSubmitting || !selectedMethod"
-            class="w-full md:w-auto h-12 px-8 rounded-lg bg-navy-dark text-white font-bold hover:bg-navy-light shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50">
-            <span v-if="isSubmitting" class="material-symbols-outlined animate-spin">sync</span>
-            <span>{{ isSubmitting ? 'Memproses...' : 'Buat Event & Bayar' }}</span>
-          </button>
+          <BaseButton v-if="currentStep < totalSteps" type="button" variant="gold" icon-right="arrow_forward"
+            @click="nextStep" block class="md:w-auto">
+            Selanjutnya: {{ stepTitles[currentStep] }}
+          </BaseButton>
+          <BaseButton v-else type="submit" variant="primary" :loading="isSubmitting" loading-text="Memproses..." block
+            class="md:w-auto">
+            Buat event
+          </BaseButton>
         </div>
       </form>
     </div>
 
-    <!-- Payment Instructions Dialog -->
-    <AppDialog v-model:show="showPaymentDialog" title="Instruksi Pembayaran" type="primary" icon="payments">
-      <div class="space-y-6">
-        <div class="text-center">
-          <p class="text-sm text-gray-500 mb-1">Total yang harus dibayar</p>
-          <p class="text-3xl font-black text-navy">Rp {{ paymentResult?.amount?.toLocaleString('id-ID') }}</p>
-        </div>
-
-        <div v-if="paymentResult?.pay_code" class="bg-gray-50 rounded-xl p-6 text-center border border-gray-100">
-          <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Kode Pembayaran / Virtual Account
-          </p>
-          <div class="flex items-center justify-center gap-3">
-            <span class="text-2xl font-black text-navy tracking-widest">{{ paymentResult.pay_code }}</span>
-            <button @click="copyToClipboard(paymentResult.pay_code)" class="text-primary hover:text-primary-hover">
-              <span class="material-symbols-outlined text-xl">content_copy</span>
-            </button>
-          </div>
-        </div>
-
-        <div v-if="paymentResult?.qr_url" class="flex flex-col items-center gap-4">
-          <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Scan QR Code</p>
-          <img :src="paymentResult.qr_url" alt="QR Code" class="w-48 h-48 rounded-xl border-4 border-white shadow-sm" />
-        </div>
-
-        <div class="space-y-4">
-          <div class="flex justify-between text-sm py-2 border-b border-gray-50">
-            <span class="text-gray-500">Event</span>
-            <span class="font-bold text-navy truncate ml-4">{{ form.name }}</span>
-          </div>
-          <div class="flex justify-between text-sm py-2 border-b border-gray-50">
-            <span class="text-gray-500">Metode</span>
-            <span class="font-bold text-navy">{{ paymentResult?.payment_name }}</span>
-          </div>
-          <div class="flex justify-between text-sm py-2">
-            <span class="text-gray-500">Berakhir Dalam</span>
-            <span class="font-bold text-amber-600">{{ formatExpiry(paymentResult?.expired_time) }}</span>
-          </div>
-        </div>
-
-        <div class="pt-4">
-          <button @click="finishCreation"
-            class="w-full h-12 rounded-xl bg-navy text-white font-bold hover:bg-navy-light transition-all">
-            Saya Sudah Bayar / Selesai
-          </button>
-        </div>
-      </div>
-    </AppDialog>
   </div>
 </template>
 
 <script setup>
 import TiptapEditor from '~/components/common/TiptapEditor.vue'
 import FormSection from '~/components/common/FormSection.vue'
-import FormInput from '~/components/common/FormInput.vue'
-import AppDialog from '~/components/common/AppDialog.vue'
+import { useFormValidation } from '~/composables/useFormValidation'
 
 definePageMeta({
   layout: 'dashboard'
@@ -310,25 +211,22 @@ const router = useRouter()
 const { get, post } = useApi()
 
 const currentStep = ref(1)
-const totalSteps = 4
+const totalSteps = 3
 const isSubmitting = ref(false)
-const isLoadingChannels = ref(true)
-const channels = ref([])
-const selectedMethod = ref(null)
-const showPaymentDialog = ref(false)
-const paymentResult = ref(null)
 
-const stepTitles = ['Info Dasar', 'Divisi', 'Pengaturan', 'Review']
+const { errors, validate, validateForm, rules, clearErrors } = useFormValidation()
+
+const stepTitles = ['Info dasar', 'Divisi dan pengaturan', 'Review']
 const stepDescriptions = [
   'Mulai dengan mengisi detail penting untuk kompetisi Anda.',
-  'Pilih divisi busur dan kategori umur yang tersedia.',
-  'Atur biaya pendaftaran dan batas peserta.',
+  'Pilih divisi, kategori, dan atur detail event.',
   'Periksa kembali semua informasi sebelum menyimpan.'
 ]
 
 const form = reactive({
   name: '',
   venue: '',
+  gmapsLink: '',
   startDate: '',
   endDate: '',
   description: '',
@@ -359,31 +257,47 @@ const availableCategories = [
   { code: 'master60', name: 'Master 60+' },
 ]
 
-const channelGroups = computed(() => {
-  const groups = { va: [], ewallet: [], store: [] }
-  channels.value.forEach(ch => {
-    if (ch.group === 'Virtual Account') groups.va.push(ch)
-    else if (ch.group === 'E-Wallet') groups.ewallet.push(ch)
-    else if (ch.group === 'Convenience Store') groups.store.push(ch)
-  })
-  return groups
-})
 
-onMounted(async () => {
-  try {
-    const result = await get('/payment/channels')
-    console.log('Payment channels loaded:', result)
-    channels.value = result || []
-  } catch (error) {
-    console.error('Failed to load payment channels:', error)
-  } finally {
-    isLoadingChannels.value = false
+const toggleValue = (arr, val) => {
+  const index = arr.indexOf(val)
+  if (index === -1) {
+    arr.push(val)
+  } else {
+    arr.splice(index, 1)
   }
-})
+}
+
+const validateStep = (step) => {
+  if (step === 1) {
+    return validateForm(form, {
+      name: [rules.required()],
+      startDate: [rules.required()],
+      endDate: [rules.required()]
+    })
+  } else if (step === 2) {
+    let isValid = true
+    if (form.divisions.length === 0) {
+      errors.divisions = 'Pilih minimal satu divisi'
+      isValid = false
+    } else {
+      errors.divisions = null
+    }
+    if (form.categories.length === 0) {
+      errors.categories = 'Pilih minimal satu kategori'
+      isValid = false
+    } else {
+      errors.categories = null
+    }
+    return isValid
+  }
+  return true
+}
 
 const nextStep = () => {
-  if (currentStep.value < totalSteps) {
-    currentStep.value++
+  if (validateStep(currentStep.value)) {
+    if (currentStep.value < totalSteps) {
+      currentStep.value++
+    }
   }
 }
 
@@ -400,55 +314,40 @@ const formatDate = (dateStr) => {
   })
 }
 
-const formatExpiry = (timestamp) => {
-  if (!timestamp) return '-'
-  return new Date(timestamp * 1000).toLocaleString('id-ID')
-}
-
-const copyToClipboard = (text) => {
-  navigator.clipboard.writeText(text)
-  // TODO: Add toast notification
-}
-
-const finishCreation = () => {
-  router.push('/dashboard/events')
-}
 
 const handleSubmit = async () => {
+  if (!validateStep(currentStep.value)) return
+
   isSubmitting.value = true
   try {
+    const formatToISO = (dateStr) => {
+      if (!dateStr) return null
+      // dateStr from datetime-local is YYYY-MM-DDTHH:mm
+      // Append :00Z or convert via Date object
+      return new Date(dateStr).toISOString()
+    }
+
     const payload = {
       code: form.name.substring(0, 3).toUpperCase() + Math.random().toString(36).substring(2, 5).toUpperCase(),
       name: form.name,
       venue: form.venue,
-      start_date: form.startDate,
-      end_date: form.endDate,
+      gmaps_link: form.gmapsLink,
+      start_date: formatToISO(form.startDate),
+      end_date: formatToISO(form.endDate),
       description: form.description,
       entry_fee: form.entryFee,
       max_participants: form.maxParticipants,
       status: form.status,
       divisions: form.divisions,
       categories: form.categories,
-      registration_deadline: form.registrationDeadline,
+      registration_deadline: formatToISO(form.registrationDeadline),
       type: 'Outdoor' // Default
     }
 
     const result = await post('/events', payload)
 
     if (result?.id) {
-      // Create payment immediately
-      const paymentResponse = await post('/payment/create', {
-        event_id: result.id,
-        method: selectedMethod.value,
-        type: 'platform_fee'
-      })
-
-      if (paymentResponse) {
-        paymentResult.value = paymentResponse
-        showPaymentDialog.value = true
-      } else {
-        router.push('/dashboard/events')
-      }
+      router.push('/dashboard/events')
     }
   } catch (error) {
     console.error('Failed to create tournament:', error)

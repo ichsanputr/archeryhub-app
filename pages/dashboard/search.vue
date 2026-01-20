@@ -2,27 +2,24 @@
   <div class="space-y-6">
     <!-- Search Header -->
     <div class="flex flex-col gap-4">
-      <h1 class="text-2xl font-bold text-white">Search Results</h1>
-      <p class="text-brand-gold/80" v-if="q">
-        Showing results for "<span class="text-white font-medium">{{ q }}</span>"
+      <h1 class="text-3xl font-black text-navy">Hasil Pencarian</h1>
+      <p class="text-text-secondary font-medium" v-if="q">
+        Menampilkan hasil untuk "<span class="text-navy font-bold italic">{{ q }}</span>"
       </p>
     </div>
 
     <!-- Tabs -->
-    <div class="flex gap-2 border-b border-surface-highlight">
-      <button 
-        v-for="tab in tabs" 
-        :key="tab.id"
-        class="px-6 py-3 text-sm font-medium transition-colors relative"
-        :class="activeTab === tab.id ? 'text-primary' : 'text-brand-gold/60 hover:text-brand-gold'"
-        @click="activeTab = tab.id"
-      >
+    <div class="flex gap-2 border-b border-gray-100 overflow-x-auto no-scrollbar pb-1">
+      <BaseButton v-for="tab in tabs" :key="tab.id" variant="ghost" size="sm" :class="[
+        'rounded-none border-b-2 font-bold !px-6 !py-4 transition-all whitespace-nowrap',
+        activeTab === tab.id ? 'border-primary text-navy bg-primary/5' : 'border-transparent text-gray-500 hover:text-navy hover:bg-gray-50'
+      ]" @click="activeTab = tab.id">
         {{ tab.label }}
-        <span v-if="getItemCount(tab.id) !== null" class="ml-2 px-1.5 py-0.5 rounded-full bg-surface-highlight text-[10px] text-white">
+        <span v-if="getItemCount(tab.id) !== null"
+          class="ml-2 px-2 py-0.5 rounded-full bg-gray-100 text-[10px] text-navy font-black">
           {{ getItemCount(tab.id) }}
         </span>
-        <div v-if="activeTab === tab.id" class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
-      </button>
+      </BaseButton>
     </div>
 
     <!-- Results Area -->
@@ -32,44 +29,42 @@
         <p class="text-brand-gold/60">Searching...</p>
       </div>
 
-      <div v-else-if="!hasResults" class="flex flex-col items-center justify-center py-20 gap-4 text-center">
-        <span class="material-symbols-outlined text-6xl text-brand-gold/20">search_off</span>
+      <div v-else-if="!hasResults" class="flex flex-col items-center justify-center py-20 gap-6 text-center">
+        <div class="p-6 bg-gray-100 rounded-full">
+          <span class="material-symbols-outlined text-6xl text-gray-300">search_off</span>
+        </div>
         <div>
-          <h3 class="text-xl font-bold text-white mb-1">No results found</h3>
-          <p class="text-brand-gold/60">Try adjusting your keywords or filters</p>
+          <h3 class="text-xl font-bold text-navy mb-2">Tidak ada hasil ditemukan</h3>
+          <p class="text-text-secondary max-w-xs mx-auto">Coba gunakan kata kunci lain atau periksa filter pencarian
+            kamu.</p>
         </div>
       </div>
 
       <div v-else>
         <!-- Tournaments Tab -->
         <div v-if="activeTab === 'tournaments'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div 
-            v-for="tournament in results.tournaments" 
-            :key="tournament.id"
-            class="glass-card hover:border-primary/50 transition-all group cursor-pointer"
-            @click="navigateTo(`/events/${tournament.id}`)"
-          >
-            <div class="p-5">
-              <div class="flex justify-between items-start mb-4">
-                <span class="px-2 py-1 rounded-md bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider">
-                  {{ tournament.code }}
-                </span>
-                <span :class="getStatusClass(tournament.status)">
-                  {{ tournament.status }}
-                </span>
+          <div v-for="tournament in results.tournaments" :key="tournament.id"
+            class="bg-white border border-gray-200 rounded-xl p-5 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 transition-all group cursor-pointer"
+            @click="navigateTo(`/dashboard/events/${tournament.id}`)">
+            <div class="flex justify-between items-start mb-4">
+              <span class="px-2 py-1 rounded bg-navy text-white text-[10px] font-black tracking-widest">
+                {{ tournament.code }}
+              </span>
+              <span :class="getStatusClass(tournament.status)">
+                {{ tournament.status }}
+              </span>
+            </div>
+            <h3 class="text-lg font-black text-navy group-hover:text-primary transition-colors mb-3 line-clamp-1">
+              {{ tournament.name }}
+            </h3>
+            <div class="space-y-2.5 text-sm text-text-secondary font-medium">
+              <div class="flex items-center gap-2">
+                <Icon icon="ph:calendar" class="text-lg text-primary" />
+                {{ formatDate(tournament.start_date) }}
               </div>
-              <h3 class="text-lg font-bold text-white group-hover:text-primary transition-colors mb-2 line-clamp-1">
-                {{ tournament.name }}
-              </h3>
-              <div class="space-y-2 text-sm text-brand-gold/60">
-                <div class="flex items-center gap-2">
-                  <span class="material-symbols-outlined text-[18px]">calendar_today</span>
-                  {{ formatDate(tournament.start_date) }}
-                </div>
-                <div class="flex items-center gap-2">
-                  <span class="material-symbols-outlined text-[18px]">location_on</span>
-                  {{ tournament.location }}
-                </div>
+              <div class="flex items-center gap-2">
+                <Icon icon="ph:map-pin" class="text-lg text-primary" />
+                {{ tournament.location || tournament.venue || 'Venue TBD' }}
               </div>
             </div>
           </div>
@@ -77,13 +72,11 @@
 
         <!-- Athletes Tab -->
         <div v-if="activeTab === 'athletes'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div 
-            v-for="athlete in results.athletes" 
-            :key="athlete.id"
+          <div v-for="athlete in results.athletes" :key="athlete.id"
             class="glass-card p-4 flex items-center gap-4 hover:border-primary/50 transition-all cursor-pointer"
-            @click="navigateTo(`/athletes/${athlete.id}`)"
-          >
-            <div class="size-16 rounded-full bg-surface-highlight flex items-center justify-center overflow-hidden shrink-0 border-2 border-surface-highlight group-hover:border-primary/30 transition-colors">
+            @click="navigateTo(`/athletes/${athlete.id}`)">
+            <div
+              class="size-16 rounded-full bg-surface-highlight flex items-center justify-center overflow-hidden shrink-0 border-2 border-surface-highlight group-hover:border-primary/30 transition-colors">
               <img v-if="athlete.photo_url" :src="athlete.photo_url" class="size-full object-cover" />
               <span v-else class="material-symbols-outlined text-3xl text-brand-gold/30">person</span>
             </div>
@@ -137,17 +130,17 @@ const getItemCount = (id) => {
 
 const fetchData = async () => {
   if (!q.value) return
-  
+
   loading.value = true
   try {
     const [tournamentsRes, athletesRes] = await Promise.all([
       get(`/events?search=${encodeURIComponent(q.value)}&limit=20`),
       get(`/athletes?search=${encodeURIComponent(q.value)}&limit=20`)
     ])
-    
+
     results.value.tournaments = tournamentsRes.tournaments || []
     results.value.athletes = athletesRes.athletes || []
-    
+
     // Auto-switch to tab with results if current is empty
     if (results.value.tournaments.length === 0 && results.value.athletes.length > 0) {
       activeTab.value = 'athletes'

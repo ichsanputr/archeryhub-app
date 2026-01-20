@@ -27,41 +27,27 @@
                         <div class="md:col-span-4">
                             <label class="block text-xs font-bold text-text-sub uppercase tracking-wider mb-1">Nama
                                 Klub</label>
-                            <div class="relative">
-                                <span
-                                    class="absolute left-3 top-1/2 -translate-y-1/2 text-text-sub material-symbols-outlined text-lg">search</span>
-                                <input v-model="searchQuery"
-                                    class="w-full pl-10 pr-4 py-2.5 bg-gray-50 border-none rounded-lg text-sm text-navy focus:ring-2 focus:ring-primary placeholder:text-text-sub/50"
-                                    placeholder="Cari klub..." type="text" />
-                            </div>
+                            <BaseInput v-model="searchQuery" placeholder="Cari klub..." icon="ph:magnifying-glass" />
                         </div>
                         <div class="md:col-span-3">
                             <label
                                 class="block text-xs font-bold text-text-sub uppercase tracking-wider mb-1">Provinsi</label>
-                            <select v-model="province"
-                                class="w-full py-2.5 bg-gray-50 border-none rounded-lg text-sm text-navy focus:ring-2 focus:ring-primary cursor-pointer">
-                                <option value="">Semua Provinsi</option>
-                                <option v-for="p in provinces" :key="p" :value="p">{{ p }}</option>
-                            </select>
+                            <BaseSelect v-model="province" :options="provinces.map(p => ({ value: p, label: p }))"
+                                placeholder="Semua Provinsi" />
                         </div>
                         <div class="md:col-span-3">
                             <label
                                 class="block text-xs font-bold text-text-sub uppercase tracking-wider mb-1">Kota</label>
-                            <select v-model="city"
-                                class="w-full py-2.5 bg-gray-50 border-none rounded-lg text-sm text-navy focus:ring-2 focus:ring-primary cursor-pointer">
-                                <option value="">Semua Kota</option>
-                                <option v-for="c in cities" :key="c" :value="c">{{ c }}</option>
-                            </select>
+                            <BaseSelect v-model="city" :options="cities.map(c => ({ value: c, label: c }))"
+                                placeholder="Semua Kota" />
                         </div>
                         <div class="md:col-span-2">
                             <label
                                 class="block text-xs font-bold text-text-sub uppercase tracking-wider mb-1">Level</label>
-                            <select v-model="level"
-                                class="w-full py-2.5 bg-gray-50 border-none rounded-lg text-sm text-navy focus:ring-2 focus:ring-primary cursor-pointer">
-                                <option value="">Semua Level</option>
-                                <option value="Pro">Pro</option>
-                                <option value="Community">Community</option>
-                            </select>
+                            <BaseSelect v-model="level" :options="[
+                                { value: 'Pro', label: 'Pro' },
+                                { value: 'Community', label: 'Community' }
+                            ]" placeholder="Semua Level" />
                         </div>
                     </div>
                 </div>
@@ -76,7 +62,7 @@
                     <div class="bg-navy rounded-2xl shadow-lg overflow-hidden relative">
                         <div class="p-6 relative z-10">
                             <h3 class="text-white font-bold text-lg mb-1 flex items-center gap-2 font-display">
-                                <span class="material-symbols-outlined text-primary">workspace_premium</span>
+                                <Icon icon="ph:sketch-logo" class="text-primary" />
                                 Klub Pilihan
                             </h3>
                             <p class="text-white/40 text-xs mb-6">Klub dengan rating tertinggi bulan ini</p>
@@ -99,8 +85,7 @@
                                             class="text-[10px] font-bold px-2 py-0.5 rounded">{{ featured.level
                                             }}</span>
                                         <span class="text-white/60 text-xs flex items-center gap-1">
-                                            <span
-                                                class="material-symbols-outlined text-[14px] text-primary">verified</span>
+                                            <Icon icon="ph:seal-check-fill" class="text-primary" />
                                             Terverifikasi
                                         </span>
                                     </div>
@@ -117,11 +102,12 @@
                                 class="text-text-sub font-normal text-lg ml-2">({{ filteredClubs.length }})</span></h2>
                         <div class="flex items-center gap-2">
                             <span class="text-sm text-text-sub">Urutkan:</span>
-                            <select v-model="sortBy"
-                                class="bg-white border-none text-sm font-medium text-navy rounded-lg shadow-sm py-2 pl-3 pr-10 focus:ring-primary cursor-pointer">
-                                <option value="name">Nama A-Z</option>
-                                <option value="members">Anggota Terbanyak</option>
-                            </select>
+                            <div class="w-48">
+                                <BaseSelect v-model="sortBy" :options="[
+                                    { value: 'name', label: 'Nama A-Z' },
+                                    { value: 'members', label: 'Anggota Terbanyak' }
+                                ]" />
+                            </div>
                         </div>
                     </div>
 
@@ -145,7 +131,7 @@
                                         class="text-lg font-bold text-navy leading-tight mb-1 group-hover:text-primary transition-colors font-display">
                                         {{ club.name }}</h3>
                                     <div class="flex items-center gap-1 text-text-sub text-xs">
-                                        <span class="material-symbols-outlined text-[14px]">location_on</span>
+                                        <Icon icon="ph:map-pin" />
                                         <span>{{ club.city }}</span>
                                     </div>
                                 </div>
@@ -163,15 +149,15 @@
                                         class="block text-[10px] text-text-sub uppercase tracking-wide mt-0.5">Level</span>
                                 </div>
                             </div>
-                            <button
-                                class="mt-auto w-full bg-primary hover:bg-primary-hover text-navy font-bold py-2.5 rounded-lg text-sm transition-colors shadow-sm">
+                            <BaseButton variant="primary" block size="md"
+                                @click="$router.push(`/dashboard/clubs/${club.id}`)">
                                 Lihat Profil
-                            </button>
+                            </BaseButton>
                         </div>
                     </div>
-                    <div v-else class="text-center py-20 bg-white rounded-2xl border border-dashed border-gray-100">
-                        <span class="material-symbols-outlined text-6xl text-gray-200 mb-4">group_off</span>
-                        <p class="text-text-sub">Tidak ada klub yang sesuai dengan pencarian Anda.</p>
+                    <div v-else class="text-center py-24 bg-white rounded-2xl border border-dashed border-gray-100">
+                        <Icon icon="ph:users-four" class="text-6xl text-gray-200 mb-4 mx-auto" />
+                        <p class="text-text-sub font-medium">Tidak ada klub yang sesuai dengan pencarian Anda.</p>
                     </div>
                 </div>
             </div>

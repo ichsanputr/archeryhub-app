@@ -99,6 +99,10 @@
                             <div class="flex items-center gap-2">
                                 <span class="material-symbols-outlined text-primary">location_on</span>
                                 <span>{{ tournament.location }}</span>
+                                <a v-if="tournament.gmaps_link" :href="tournament.gmaps_link" target="_blank"
+                                    class="text-xs text-primary hover:underline flex items-center gap-1 ml-2">
+                                    (Lihat di Peta)
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -312,18 +316,19 @@
 
                     <!-- Map Card -->
                     <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-                        <div class="h-48 bg-gray-200 relative group cursor-pointer">
+                        <a :href="tournament.gmaps_link || '#'" target="_blank"
+                            class="block h-48 bg-gray-200 relative group cursor-pointer">
                             <img alt="Map Location"
                                 class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
                                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBrem4azc6WDMeDRbQw-2joq0fcWSF6QDRhvFPnW-ZtTHG4r0ECeGr8vc0pPmiT9d1nf6uWWAKZV7gq4w5KOncu3fb8KTi_XBz3tdpkVmJJmYaADUQlUXX_F7nLa_E2NafPu8ouY13kIof5Eq-of3RwBG7KLqmrOsacwZG3PTf4QMy_Kg7hNn1wy70_AypgzTCtU9fNYKdIuuk90f3tKG-PQTM6beImIzXkc9NJP7mrw7xfVZmahm9Ur0fzjDkkH2C0zP1aJy_XLg" />
                             <div class="absolute inset-0 bg-gray-800/10 flex items-center justify-center">
                                 <span
                                     class="px-4 py-2 bg-white rounded-lg shadow-md font-bold text-sm text-navy flex items-center gap-2">
-                                    <span class="material-symbols-outlined text-red-500">location_on</span> Lihat di
-                                    Peta
+                                    <span class="material-symbols-outlined text-red-500">location_on</span>
+                                    {{ tournament.gmaps_link ? 'Buka Google Maps' : 'Lihat di Peta' }}
                                 </span>
                             </div>
-                        </div>
+                        </a>
                         <div class="p-5">
                             <h3 class="font-bold text-navy mb-1">{{ tournament.venue }}</h3>
                             <p class="text-sm text-gray-500 mb-4">{{ tournament.address }}</p>
@@ -371,6 +376,7 @@ const tournamentsData = {
         date: 'Nov 12 - 15, 2024',
         location: 'GBK Archery Field, Jakarta',
         venue: 'GBK Archery Field',
+        gmaps_link: 'https://maps.app.goo.gl/9b1H5y8oVQ...',
         address: 'Jl. Pintu Satu Senayan, Gelora, Tanah Abang, Jakarta Pusat',
         status: 'upcoming',
         category: 'National Series',

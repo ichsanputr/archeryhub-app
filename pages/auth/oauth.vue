@@ -1,23 +1,31 @@
 <template>
-  <div class="oauth-container">
-    <div class="oauth-card">
-      <h1>Login Successful</h1>
-      <p>Your authentication was successful. You can now return to the home page.</p>
-      <v-btn 
-        color="primary" 
-        @click="goHome"
-        class="mt-4"
-      >
-        Back to Home
-      </v-btn>
+  <div class="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+    <div
+      class="bg-white rounded-3xl shadow-xl shadow-navy/5 border border-gray-100 p-8 text-center max-w-sm w-full relative overflow-hidden">
+      <!-- Decorative element -->
+      <div class="absolute top-0 right-0 -mt-8 -mr-8 size-24 bg-primary/10 rounded-full blur-2xl"></div>
+
+      <div class="size-16 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+        <Icon :ssr="true" icon="ph:check-circle-bold" class="w-10 h-10" />
+      </div>
+
+      <h1 class="text-2xl font-black text-navy mb-2 tracking-tight">Login Berhasil!</h1>
+      <p class="text-slate-500 font-medium mb-8">Autentikasi kamu berhasil. Sekarang kamu bisa kembali ke halaman utama.
+      </p>
+
+      <button @click="goHome"
+        class="w-full bg-navy hover:bg-navy-light text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-navy/10 active:scale-[0.98]">
+        Kembali ke Beranda
+      </button>
     </div>
   </div>
 </template>
 
 <script setup>
 import { onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
+import { Icon } from '@iconify/vue'
 
 const router = useRouter()
 const { setToken } = useAuth()
@@ -37,31 +45,5 @@ const goHome = () => {
 </script>
 
 <style scoped>
-.oauth-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 80vh;
-  padding: 20px;
-}
-
-.oauth-card {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
-  text-align: center;
-  max-width: 400px;
-  width: 100%;
-}
-
-h1 {
-  color: #4caf50;
-  margin-bottom: 1rem;
-}
-
-p {
-  color: #666;
-  margin-bottom: 1.5rem;
-}
+/* No specific styles needed as Tailwind handles it all */
 </style>

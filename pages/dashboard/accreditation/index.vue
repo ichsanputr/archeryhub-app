@@ -1,26 +1,22 @@
 <template>
-  <div class="min-h-screen bg-[#23200f]">
+  <div class="min-h-screen bg-background-light">
     <!-- Header -->
-    <div class="border-b border-[#4a4421] bg-[#23200f]/95 backdrop-blur px-6 py-4 sticky top-0 z-10">
+    <div class="border-b border-gray-100 bg-white/95 backdrop-blur px-6 py-4 sticky top-0 z-10">
       <div class="max-w-7xl mx-auto flex items-center justify-between">
         <div>
-          <h1 class="text-2xl font-bold text-white flex items-center gap-3">
-            <span class="material-symbols-outlined text-[#f9d406]">badge</span>
-            Accreditation
+          <h1 class="text-2xl font-black text-navy flex items-center gap-3 font-display">
+            <Icon icon="ph:identification-card-bold" class="text-primary" />
+            Akreditasi
           </h1>
-          <p class="text-[#ccc38e] text-sm mt-1">ID cards, gate control, and check-in management</p>
+          <p class="text-text-secondary text-sm mt-1 font-medium">ID Card, kontrol gerbang, dan manajemen check-in</p>
         </div>
         <div class="flex items-center gap-3">
-          <button @click="showGateSituation = true"
-            class="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#4a4421] text-white hover:bg-[#5a5329] transition-colors font-medium text-sm">
-            <span class="material-symbols-outlined text-lg">door_sensor</span>
-            Gate Status
-          </button>
-          <button @click="showBulkCreate = true"
-            class="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#f9d406] text-[#23200f] hover:bg-yellow-400 transition-colors font-bold text-sm">
-            <span class="material-symbols-outlined text-lg">add_card</span>
+          <BaseButton variant="outline" icon="ph:door" @click="showGateSituation = true">
+            Status Gerbang
+          </BaseButton>
+          <BaseButton variant="primary" icon="ph:cards" @click="showBulkCreate = true">
             Bulk Create
-          </button>
+          </BaseButton>
         </div>
       </div>
     </div>
@@ -28,21 +24,21 @@
     <!-- Filters and Stats -->
     <div class="max-w-7xl mx-auto px-6 py-6">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div class="bg-[#2E2B1B] rounded-xl border border-[#4a4421] p-5">
-          <p class="text-[#ccc38e] text-sm">Pending</p>
-          <p class="text-white text-2xl font-bold">{{ stats.pending }}</p>
+        <div class="bg-white rounded-xl border border-gray-100 p-5 shadow-sm">
+          <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Pending</p>
+          <p class="text-navy text-2xl font-black">{{ stats.pending }}</p>
         </div>
-        <div class="bg-[#2E2B1B] rounded-xl border border-[#4a4421] p-5">
-          <p class="text-[#ccc38e] text-sm">Printed</p>
-          <p class="text-yellow-500 text-2xl font-bold">{{ stats.printed }}</p>
+        <div class="bg-white rounded-xl border border-gray-100 p-5 shadow-sm">
+          <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Printed</p>
+          <p class="text-orange-500 text-2xl font-black">{{ stats.printed }}</p>
         </div>
-        <div class="bg-[#2E2B1B] rounded-xl border border-[#4a4421] p-5">
-          <p class="text-[#ccc38e] text-sm">Issued</p>
-          <p class="text-green-500 text-2xl font-bold">{{ stats.issued }}</p>
+        <div class="bg-white rounded-xl border border-gray-100 p-5 shadow-sm">
+          <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Issued</p>
+          <p class="text-primary-dark text-2xl font-black">{{ stats.issued }}</p>
         </div>
-        <div class="bg-[#2E2B1B] rounded-xl border border-[#4a4421] p-5">
-          <p class="text-[#ccc38e] text-sm">Revoked</p>
-          <p class="text-red-500 text-2xl font-bold">{{ stats.revoked }}</p>
+        <div class="bg-white rounded-xl border border-gray-100 p-5 shadow-sm">
+          <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Revoked</p>
+          <p class="text-red-500 text-2xl font-black">{{ stats.revoked }}</p>
         </div>
       </div>
 
@@ -84,19 +80,24 @@
 
     <!-- Accreditation List -->
     <div class="max-w-7xl mx-auto px-6 pb-8">
-      <div class="bg-[#2E2B1B] rounded-xl border border-[#4a4421] overflow-hidden">
+      <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
         <div v-if="loading" class="flex items-center justify-center py-20">
-          <div class="animate-spin rounded-full h-10 w-10 border-2 border-[#f9d406] border-t-transparent"></div>
+          <div class="animate-spin rounded-full h-10 w-10 border-2 border-primary border-t-transparent"></div>
         </div>
 
         <table v-else class="w-full">
-          <thead class="bg-[#4a4421]/30">
-            <tr>
-              <th class="px-6 py-4 text-left text-[#ccc38e] text-xs font-semibold uppercase">Card Number</th>
-              <th class="px-6 py-4 text-left text-[#ccc38e] text-xs font-semibold uppercase">Participant</th>
-              <th class="px-6 py-4 text-left text-[#ccc38e] text-xs font-semibold uppercase">Type</th>
-              <th class="px-6 py-4 text-left text-[#ccc38e] text-xs font-semibold uppercase">Status</th>
-              <th class="px-6 py-4 text-right text-[#ccc38e] text-xs font-semibold uppercase">Actions</th>
+          <thead>
+            <tr class="bg-gray-50 border-b border-gray-100">
+              <th class="px-6 py-4 text-left text-text-secondary text-[10px] font-bold uppercase tracking-wider">No.
+                Kartu</th>
+              <th class="px-6 py-4 text-left text-text-secondary text-[10px] font-bold uppercase tracking-wider">Peserta
+              </th>
+              <th class="px-6 py-4 text-left text-text-secondary text-[10px] font-bold uppercase tracking-wider">Tipe
+              </th>
+              <th class="px-6 py-4 text-left text-text-secondary text-[10px] font-bold uppercase tracking-wider">Status
+              </th>
+              <th class="px-6 py-4 text-right text-text-secondary text-[10px] font-bold uppercase tracking-wider">Aksi
+              </th>
             </tr>
           </thead>
           <tbody class="divide-y divide-[#4a4421]">
@@ -128,20 +129,12 @@
               </td>
               <td class="px-6 py-4 text-right">
                 <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button v-if="acc.status === 'pending'" @click="updateStatus(acc.id, 'printed')"
-                    class="p-2 rounded-lg bg-[#4a4421] text-white hover:bg-yellow-600 transition-colors"
-                    title="Mark as Printed">
-                    <span class="material-symbols-outlined text-lg">print</span>
-                  </button>
-                  <button v-if="acc.status === 'printed'" @click="updateStatus(acc.id, 'issued')"
-                    class="p-2 rounded-lg bg-green-600 text-white hover:bg-green-500 transition-colors"
-                    title="Mark as Issued">
-                    <span class="material-symbols-outlined text-lg">check</span>
-                  </button>
-                  <button v-if="acc.status !== 'revoked'" @click="updateStatus(acc.id, 'revoked')"
-                    class="p-2 rounded-lg bg-red-600/50 text-red-300 hover:bg-red-600 transition-colors" title="Revoke">
-                    <span class="material-symbols-outlined text-lg">block</span>
-                  </button>
+                  <BaseButton v-if="acc.status === 'pending'" variant="ghost" size="sm" icon="ph:printer"
+                    @click="updateStatus(acc.id, 'printed')" />
+                  <BaseButton v-if="acc.status === 'printed'" variant="ghost" size="sm" icon="ph:check-bold"
+                    class="text-green-600 hover:bg-green-50" @click="updateStatus(acc.id, 'issued')" />
+                  <BaseButton v-if="acc.status !== 'revoked'" variant="ghost" size="sm" icon="ph:prohibit"
+                    class="text-red-500 hover:bg-red-50" @click="updateStatus(acc.id, 'revoked')" />
                 </div>
               </td>
             </tr>
@@ -160,16 +153,13 @@
       <div v-if="showGateSituation"
         class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
         @click.self="showGateSituation = false">
-        <div class="bg-[#2E2B1B] rounded-2xl w-full max-w-2xl border border-[#4a4421]">
-          <div class="p-6 border-b border-[#4a4421] flex items-center justify-between">
-            <h2 class="text-xl font-bold text-white flex items-center gap-2">
-              <span class="material-symbols-outlined text-[#f9d406]">door_sensor</span>
-              Gate Situation
+        <div class="bg-white rounded-2xl w-full max-w-2xl border border-gray-100 shadow-xl overflow-hidden">
+          <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+            <h2 class="text-xl font-bold text-navy flex items-center gap-2 font-display">
+              <Icon icon="ph:door-bold" class="text-primary" />
+              Situasi Gerbang
             </h2>
-            <button @click="showGateSituation = false"
-              class="p-2 rounded-lg hover:bg-[#4a4421] text-[#ccc38e] hover:text-white transition-colors">
-              <span class="material-symbols-outlined">close</span>
-            </button>
+            <BaseButton variant="ghost" size="sm" icon="ph:x" class="!p-1.5" @click="showGateSituation = false" />
           </div>
 
           <div class="p-6">
@@ -209,11 +199,11 @@
       <div v-if="showBulkCreate"
         class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
         @click.self="showBulkCreate = false">
-        <div class="bg-[#2E2B1B] rounded-2xl w-full max-w-md border border-[#4a4421]">
-          <div class="p-6 border-b border-[#4a4421]">
-            <h2 class="text-xl font-bold text-white flex items-center gap-2">
-              <span class="material-symbols-outlined text-[#f9d406]">add_card</span>
-              Bulk Create Accreditations
+        <div class="bg-white rounded-2xl w-full max-w-md border border-gray-100 shadow-xl overflow-hidden">
+          <div class="p-6 border-b border-gray-100">
+            <h2 class="text-xl font-bold text-navy flex items-center gap-2 font-display">
+              <Icon icon="ph:cards-bold" class="text-primary" />
+              Bulk Create Akreditasi
             </h2>
           </div>
 
@@ -246,14 +236,12 @@
             </div>
 
             <div class="flex gap-3 pt-4">
-              <button type="button" @click="showBulkCreate = false"
-                class="flex-1 py-3 rounded-lg border border-[#4a4421] text-[#ccc38e] hover:bg-[#4a4421] transition-colors">
-                Cancel
-              </button>
-              <button type="submit" :disabled="creating"
-                class="flex-1 py-3 rounded-lg bg-[#f9d406] text-[#23200f] font-bold hover:bg-yellow-400 transition-colors disabled:opacity-50">
-                {{ creating ? 'Creating...' : 'Create All' }}
-              </button>
+              <BaseButton variant="ghost" block @click="showBulkCreate = false">
+                Batal
+              </BaseButton>
+              <BaseButton variant="primary" block :loading="creating" type="submit">
+                Buat Semua
+              </BaseButton>
             </div>
           </form>
         </div>

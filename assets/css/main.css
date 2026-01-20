@@ -1,8 +1,8 @@
+@import './archery.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import './archery.css';
 
 /* Logo .id color */
 .text-logo-id {

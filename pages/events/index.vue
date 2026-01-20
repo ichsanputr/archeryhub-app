@@ -23,12 +23,8 @@
                             News</NuxtLink>
                     </nav>
                     <div class="flex items-center gap-4">
-                        <NuxtLink to="/auth/login"
-                            class="hidden md:flex text-gray-600 font-medium text-sm hover:text-navy">Log In</NuxtLink>
-                        <NuxtLink to="/auth/login"
-                            class="bg-navy hover:bg-navy-light text-white px-5 py-2 rounded-lg text-sm font-bold transition-all shadow-md hover:shadow-lg">
-                            Sign Up
-                        </NuxtLink>
+                        <BaseButton to="/auth/login" variant="ghost" size="sm">Log In</BaseButton>
+                        <BaseButton to="/auth/login" variant="gold" size="sm">Sign Up</BaseButton>
                     </div>
                 </div>
             </div>
@@ -70,15 +66,13 @@
                         </div>
                     </div>
                     <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
-                        <NuxtLink to="/events/indonesian-open-2024"
-                            class="flex-1 sm:flex-none h-12 px-8 bg-primary hover:bg-primary-hover text-navy font-bold rounded-lg transition-colors flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(183,251,35,0.3)]">
-                            Register Now
-                            <span class="material-symbols-outlined text-lg">arrow_forward</span>
-                        </NuxtLink>
-                        <button
-                            class="flex-1 sm:flex-none h-12 px-8 bg-white/10 hover:bg-white/20 text-white font-bold rounded-lg backdrop-blur-sm border border-white/10 transition-colors flex items-center justify-center">
-                            Event Details
-                        </button>
+                        <BaseButton to="/events/indonesian-open-2024" variant="primary" size="lg"
+                            iconRight="ph:arrow-right" class="shadow-xl">
+                            Daftar Sekarang
+                        </BaseButton>
+                        <BaseButton variant="secondary" size="lg">
+                            Detail Event
+                        </BaseButton>
                     </div>
                 </div>
             </div>
@@ -108,10 +102,10 @@
                     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                         <div class="p-5 border-b border-gray-100 flex justify-between items-center">
                             <h3 class="text-navy font-bold text-lg flex items-center gap-2">
-                                <span class="material-symbols-outlined">filter_list</span>
-                                Filters
+                                <Icon icon="ph:funnel" />
+                                Filter
                             </h3>
-                            <button class="text-xs font-semibold text-gray-500 hover:text-navy">Reset</button>
+                            <BaseButton variant="ghost" size="sm">Reset</BaseButton>
                         </div>
                         <div class="divide-y divide-gray-100">
                             <!-- Category Filter -->
@@ -261,20 +255,16 @@
                                     </div>
                                 </div>
                                 <div class="mt-auto">
-                                    <button v-if="tournament.status === 'live'"
-                                        class="w-full h-10 rounded-lg border-2 border-navy text-navy hover:bg-navy hover:text-white font-bold text-sm transition-all flex items-center justify-center gap-2">
-                                        <span class="material-symbols-outlined text-lg">scoreboard</span>
-                                        Live Scores
-                                    </button>
-                                    <button v-else-if="tournament.status === 'upcoming'"
-                                        class="w-full h-10 rounded-lg bg-primary hover:bg-primary-hover text-navy font-bold text-sm transition-all shadow-sm">
-                                        Register Now
-                                    </button>
-                                    <button v-else
-                                        class="w-full h-10 rounded-lg border border-gray-200 hover:bg-gray-50 text-gray-600 font-bold text-sm transition-all flex items-center justify-center gap-2">
-                                        View Results
-                                        <span class="material-symbols-outlined text-lg">emoji_events</span>
-                                    </button>
+                                    <BaseButton v-if="tournament.status === 'live'" variant="navy" block
+                                        icon="ph:scoreboard">
+                                        Skor Live
+                                    </BaseButton>
+                                    <BaseButton v-else-if="tournament.status === 'upcoming'" variant="primary" block>
+                                        Daftar Sekarang
+                                    </BaseButton>
+                                    <BaseButton v-else variant="outline" block iconRight="ph:medal">
+                                        Lihat Hasil
+                                    </BaseButton>
                                 </div>
                             </div>
                         </NuxtLink>
@@ -282,11 +272,9 @@
 
                     <!-- Pagination -->
                     <div class="mt-12 flex justify-center">
-                        <button
-                            class="px-8 py-3 bg-white border border-gray-200 text-navy font-bold rounded-xl hover:bg-gray-50 transition-colors shadow-sm flex items-center gap-2">
-                            Load More Tournaments
-                            <span class="material-symbols-outlined">expand_more</span>
-                        </button>
+                        <BaseButton variant="outline" size="lg" iconRight="ph:caret-down">
+                            Muat Lebih Banyak
+                        </BaseButton>
                     </div>
                 </div>
             </div>

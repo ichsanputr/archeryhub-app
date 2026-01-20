@@ -3,48 +3,39 @@
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <div>
-        <h1 class="text-3xl font-black text-white">Athletes Management</h1>
-        <p class="text-brand-gold mt-1">Manage all registered athletes</p>
+        <h1 class="text-3xl font-black text-navy font-display">Manajemen Atlet</h1>
+        <p class="text-text-secondary mt-1 font-medium">Kelola semua atlet yang terdaftar di Archeryhub.id</p>
       </div>
-      <button class="btn-primary flex items-center gap-2">
-        <span class="material-symbols-outlined">person_add</span>
-        Add New Athlete
-      </button>
+      <BaseButton variant="primary" icon="ph:user-plus" @click="$router.push('/dashboard/athletes/create')">
+        Tambah Atlet Baru
+      </BaseButton>
     </div>
 
     <!-- Filters & Search -->
     <div class="flex flex-col md:flex-row gap-4">
       <div class="flex-1">
-        <div class="flex items-center rounded-lg bg-surface-highlight h-12 px-4">
-          <span class="material-symbols-outlined text-brand-gold">search</span>
-          <input v-model="searchQuery"
-            class="w-full bg-transparent border-none text-white placeholder-brand-gold text-sm focus:ring-0 ml-2"
-            placeholder="Search by name, ID, or club..." />
-        </div>
+        <BaseInput v-model="searchQuery" placeholder="Cari berdasarkan nama, ID, atau klub..."
+          icon="ph:magnifying-glass" />
       </div>
       <div class="flex gap-3">
-        <select class="input h-12">
-          <option>All Status</option>
-          <option>Active</option>
-          <option>Pending</option>
-          <option>Suspended</option>
-        </select>
-        <button class="btn-secondary flex items-center gap-2">
-          <span class="material-symbols-outlined text-primary">filter_list</span>
+        <div class="w-48">
+          <BaseSelect v-model="activeTab" :options="tabs.map(t => ({ value: t.value, label: t.label }))" />
+        </div>
+        <BaseButton variant="outline" icon="ph:funnel">
           Filter
-        </button>
+        </BaseButton>
       </div>
     </div>
 
     <!-- Status Tabs -->
-    <div class="flex gap-2 overflow-x-auto pb-2">
-      <button v-for="tab in tabs" :key="tab.value"
-        :class="activeTab === tab.value ? 'bg-primary text-background-dark' : 'bg-surface-highlight text-white border border-transparent hover:border-primary/50'"
-        class="whitespace-nowrap px-4 py-2 rounded-lg font-semibold text-sm transition-colors"
-        @click="activeTab = tab.value">
+    <div class="flex gap-2 overflow-x-auto no-scrollbar pb-2">
+      <BaseButton v-for="tab in tabs" :key="tab.value" variant="ghost" size="sm" :class="[
+        'whitespace-nowrap font-bold transition-all',
+        activeTab === tab.value ? 'bg-navy text-white' : 'bg-white border border-gray-200 text-navy hover:border-primary'
+      ]" @click="activeTab = tab.value">
         {{ tab.label }}
-        <span v-if="tab.count > 0" class="ml-2 font-bold opacity-60">({{ tab.count }})</span>
-      </button>
+        <span v-if="tab.count > 0" class="ml-2 font-black opacity-60">({{ tab.count }})</span>
+      </BaseButton>
     </div>
 
     <!-- Athletes Table -->
@@ -114,21 +105,12 @@
               </td>
               <td class="table-cell text-right">
                 <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button
-                    class="p-1.5 rounded text-gray-400 hover:text-white hover:bg-surface-highlight transition-colors"
-                    title="View Profile">
-                    <span class="material-symbols-outlined text-[20px]">person</span>
-                  </button>
-                  <button
-                    class="p-1.5 rounded text-gray-400 hover:text-primary hover:bg-surface-highlight transition-colors"
-                    title="Edit Details">
-                    <span class="material-symbols-outlined text-[20px]">edit</span>
-                  </button>
-                  <button
-                    class="p-1.5 rounded text-gray-400 hover:text-red-400 hover:bg-surface-highlight transition-colors"
-                    title="Deactivate">
-                    <span class="material-symbols-outlined text-[20px]">block</span>
-                  </button>
+                  <BaseButton variant="ghost" size="sm" icon="ph:user" class="!p-1.5"
+                    @click="$router.push(`/dashboard/athletes/${athlete.id}`)" />
+                  <BaseButton variant="ghost" size="sm" icon="ph:pencil-simple"
+                    class="!p-1.5 text-navy hover:text-primary" />
+                  <BaseButton variant="ghost" size="sm" icon="ph:prohibit"
+                    class="!p-1.5 text-red-500 hover:bg-red-50" />
                 </div>
               </td>
             </tr>
@@ -136,29 +118,27 @@
         </table>
       </div>
 
-      <div class="bg-surface-dark border-t border-brand-border px-6 py-4 flex items-center justify-between">
-        <p class="text-xs text-brand-gold">
-          Showing <span class="font-bold text-white">{{ ((currentPage - 1) * itemsPerPage) + 1 }}</span> to <span
-            class="font-bold text-white">{{ Math.min(currentPage * itemsPerPage, totalItems) }}</span> of <span
-            class="font-bold text-white">{{ totalItems }}</span> results
+      <div class="bg-gray-50 border-t border-gray-100 px-6 py-4 flex items-center justify-between">
+        <p class="text-xs text-text-secondary font-medium">
+          Menampilkan <span class="font-bold text-navy">{{ ((currentPage - 1) * itemsPerPage) + 1 }}</span> sampai <span
+            class="font-bold text-navy">{{ Math.min(currentPage * itemsPerPage, totalItems) }}</span> dari <span
+            class="font-bold text-navy">{{ totalItems }}</span> atlet
         </p>
         <div class="flex gap-2">
-          <button
-            class="px-3 py-1 text-xs rounded border border-brand-border text-brand-gold hover:bg-surface-highlight transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-            :disabled="currentPage === 1" @click="currentPage--; fetchData()">
-            Previous
-          </button>
-          <button v-for="p in Math.min(5, Math.ceil(totalItems / itemsPerPage))" :key="p"
-            class="px-3 py-1 text-xs rounded transition-colors"
-            :class="currentPage === p ? 'bg-primary text-background-dark font-bold' : 'border border-brand-border text-brand-gold hover:bg-surface-highlight'"
-            @click="currentPage = p; fetchData()">
-            {{ p }}
-          </button>
-          <button
-            class="px-3 py-1 text-xs rounded border border-brand-border text-brand-gold hover:bg-surface-highlight transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-            :disabled="currentPage >= Math.ceil(totalItems / itemsPerPage)" @click="currentPage++; fetchData()">
-            Next
-          </button>
+          <BaseButton variant="outline" size="sm" :disabled="currentPage === 1" @click="currentPage--; fetchData()">
+            Sebelumnya
+          </BaseButton>
+          <div class="flex gap-1">
+            <BaseButton v-for="p in Math.min(5, Math.ceil(totalItems / itemsPerPage))" :key="p"
+              :variant="currentPage === p ? 'primary' : 'outline'" size="sm" class="!px-3"
+              @click="currentPage = p; fetchData()">
+              {{ p }}
+            </BaseButton>
+          </div>
+          <BaseButton variant="outline" size="sm" :disabled="currentPage >= Math.ceil(totalItems / itemsPerPage)"
+            @click="currentPage++; fetchData()">
+            Selanjutnya
+          </BaseButton>
         </div>
       </div>
     </div>

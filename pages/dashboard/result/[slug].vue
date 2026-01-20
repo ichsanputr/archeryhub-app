@@ -17,6 +17,8 @@ const problemSlug = route.params.slug
 
 const { user } = useAuth()
 const problemResults = ref([])
+const isLoading = ref(true)
+const fetchError = ref(null)
 const config = useRuntimeConfig()
 const apiBaseUrl = config.public.apiBaseUrl || 'http://localhost:9000'
 const { get } = useApi()
@@ -48,14 +50,20 @@ const statusOptions = [
   { id: 14, description: "Exec Format Error" }
 ]
 
-const { data: problemResultsData, pending: isLoading, error: loadError, refresh: fetchResults } = await useAsyncData(`problem-results-${problemSlug}`, async () => {
-  if (!user.value) return []
+const fetchResults = async () => {
+  if (!user.value) {
+    problemResults.value = []
+    isLoading.value = false
+    return
+  }
 
+  isLoading.value = true
+  fetchError.value = null
   try {
     const response = await get(`${apiBaseUrl}/user/result/problem/${problemSlug}`)
     const results = response?.data || response || []
 
-    return results.map((r) => {
+    problemResults.value = results.map((r) => {
       const totalSeconds = r.time_spent || 0
       const minutes = Math.floor(totalSeconds / 60)
       const seconds = totalSeconds % 60
@@ -79,16 +87,18 @@ const { data: problemResultsData, pending: isLoading, error: loadError, refresh:
     })
   } catch (error) {
     console.error('Failed to fetch problem results:', error)
-    throw new Error('Failed to load problem results. Please try again.')
+    fetchError.value = 'Failed to load problem results. Please try again.'
+  } finally {
+    isLoading.value = false
   }
+}
+
+onMounted(() => {
+  fetchResults()
 })
 
 const loading = computed(() => isLoading.value)
-const error = computed(() => loadError.value?.message || null)
-
-watch(problemResultsData, (val) => {
-  problemResults.value = val || []
-}, { immediate: true })
+const error = computed(() => fetchError.value || null)
 
 // Reset to page 1 when filters change
 watch(filters, () => {
@@ -153,67 +163,63 @@ const formatDate = (dateString) => {
 }
 
 useHead({
-  title: `Result ${problemTitle.value} - Archeryhub.id Tournament Manager`,
+  title: `Hasil Turnamen ${problemTitle.value} - Archeryhub.id`,
   meta: [
-    { name: 'description', content: `View all your attempts and results for event ${problemTitle.value}.` },
+    { name: 'description', content: `Lihat semua upaya dan hasil Anda untuk event ${problemTitle.value}.` },
     { name: 'robots', content: 'noindex' }
-  ],
-  link: [
-    {
-      rel: 'canonical',
-      href: `https://archeryhub.id${route.path}`
-    }
   ]
+})
+
+definePageMeta({
+  layout: 'dashboard'
 })
 </script>
 
 <template>
   <div class="min-h-screen bg-gray-50">
     <!-- Enhanced Header Section -->
-    <section class="bg-gradient-to-br from-yellow-200 via-yellow-300 to-yellow-400 text-white relative overflow-hidden">
-      <div class="absolute inset-0 bg-black/20"></div>
-      <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-white/10 blur-3xl"></div>
-      <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-white/10 blur-3xl"></div>
+    <section class="bg-navy text-white relative overflow-hidden rounded-2xl mb-8 border border-primary/20">
+      <div class="absolute inset-0 bg-primary/5"></div>
+      <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+      <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
 
       <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <!-- Breadcrumb -->
-        <nav class="flex items-center space-x-2 text-yellow-100 text-sm mb-4">
-          <NuxtLink to="/result" class="hover:text-white transition-colors">
-            <Icon :ssr="true" icon="ph:chart-line" class="w-4 h-4 inline mr-1" />
-            Results
-          </NuxtLink>
-          <Icon :ssr="true" icon="ph:caret-right" class="w-3 h-3" />
-          <span class="text-white">{{ problemTitle }}</span>
-        </nav>
+        <!-- Breadcrumb & Back -->
+        <div class="mb-4">
+          <BaseButton to="/dashboard/result" variant="ghost" size="sm" icon="ph:arrow-left"
+            class="!text-yellow-100 hover:!text-white">
+            Kembali ke Daftar Hasil
+          </BaseButton>
+        </div>
 
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
           <div class="flex-1">
             <div
-              class="inline-flex items-center gap-2 rounded-full border border-yellow-300/30 bg-white/10 px-3 py-1 text-sm text-yellow-100 backdrop-blur mb-4">
+              class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm text-primary backdrop-blur mb-4">
               <Icon :ssr="true" icon="ph:trophy" class="h-4 w-4" />
-              <span>Event Results</span>
+              <span>Hasil Event</span>
             </div>
-            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-3">
+            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black text-white mb-3 tracking-tight">
               {{ problemTitle }}
             </h1>
-            <p class="text-yellow-100 text-lg">
-              Track your progress and analyze your submissions
+            <p class="text-slate-300 text-lg font-medium">
+              Pantau progres kamu dan analisa hasil skor setiap sesi.
             </p>
           </div>
 
           <!-- Stats Cards -->
           <div v-if="user && !loading && problemResults.length > 0" class="grid grid-cols-3 gap-4 lg:gap-6">
-            <div class="bg-white/10 backdrop-blur rounded-xl p-4 text-center border border-white/20">
-              <div class="text-2xl lg:text-3xl font-bold text-white">{{ totalAttempts }}</div>
-              <div class="text-sm text-yellow-100">Total Attempts</div>
+            <div class="bg-white/5 backdrop-blur rounded-2xl p-4 text-center border border-white/10 shadow-xl">
+              <div class="text-2xl lg:text-3xl font-black text-primary">{{ totalAttempts }}</div>
+              <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Sesi</div>
             </div>
-            <div class="bg-white/10 backdrop-blur rounded-xl p-4 text-center border border-white/20">
-              <div class="text-2xl lg:text-3xl font-bold text-white">{{ averageTimeSpent }}</div>
-              <div class="text-sm text-yellow-100">Avg Time</div>
+            <div class="bg-white/5 backdrop-blur rounded-2xl p-4 text-center border border-white/10 shadow-xl">
+              <div class="text-2xl lg:text-3xl font-black text-primary">{{ averageTimeSpent }}</div>
+              <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Rata-rata</div>
             </div>
-            <div class="bg-white/10 backdrop-blur rounded-xl p-4 text-center border border-white/20">
-              <div class="text-2xl lg:text-3xl font-bold text-white">{{ bestExecutionTime }}ms</div>
-              <div class="text-sm text-yellow-100">Best Runtime</div>
+            <div class="bg-white/5 backdrop-blur rounded-2xl p-4 text-center border border-white/10 shadow-xl">
+              <div class="text-2xl lg:text-3xl font-black text-primary">{{ bestExecutionTime }}ms</div>
+              <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Terbaik</div>
             </div>
           </div>
         </div>
@@ -228,21 +234,12 @@ useHead({
 
       <!-- Enhanced Loading State -->
       <div v-else-if="loading" class="text-center py-16">
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-12 max-w-md mx-auto">
+        <div class="bg-white rounded-2xl border border-gray-100 p-12 max-w-md mx-auto shadow-sm">
           <div class="flex flex-col items-center gap-6">
-            <div class="relative">
-              <v-progress-circular indeterminate color="primary" size="64" width="4" class="mb-4" />
-              <div class="absolute inset-0 flex items-center justify-center">
-                <Icon :ssr="true" icon="ph:code" class="w-6 h-6 text-blue-500" />
-              </div>
-            </div>
-            <div class="text-center">
-              <h3 class="text-xl font-semibold text-gray-900 mb-2">
-                Loading Results
-              </h3>
-              <p class="text-gray-600">
-                Fetching your submission history...
-              </p>
+            <div class="size-16 border-4 border-primary border-t-transparent animate-spin rounded-full"></div>
+            <div class="space-y-2">
+              <h3 class="text-lg font-bold text-navy">Memuat hasil...</h3>
+              <p class="text-slate-500 text-sm">Sabar ya, lagi diproses datanya.</p>
             </div>
           </div>
         </div>
@@ -265,19 +262,13 @@ useHead({
             </div>
 
             <div class="flex flex-col sm:flex-row gap-3 w-full">
-              <button @click="fetchResults"
-                class="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
-                <Icon :ssr="true" icon="ph:arrow-clockwise" class="w-4 h-4" />
-                Try Again
-              </button>
+              <BaseButton @click="fetchResults" variant="gold" block icon="ph:arrow-clockwise">
+                Coba Lagi
+              </BaseButton>
 
-              <NuxtLink to="/result" class="flex-1">
-                <button
-                  class="w-full flex items-center justify-center gap-2 px-6 py-3 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-medium transition-colors">
-                  <Icon :ssr="true" icon="ph:arrow-left" class="w-4 h-4" />
-                  Back to Results
-                </button>
-              </NuxtLink>
+              <BaseButton to="/dashboard/result" variant="outline" block icon="ph:arrow-left">
+                Kembali ke Daftar Hasil
+              </BaseButton>
             </div>
           </div>
         </div>
@@ -309,11 +300,9 @@ useHead({
                 <Icon :ssr="true" icon="ph:caret-down"
                   class="absolute right-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
               </div>
-              <button v-if="filters.status" @click="filters.status = ''"
-                class="px-4 py-3 text-sm font-medium text-gray-600 hover:text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                <Icon :ssr="true" icon="ph:x" class="w-4 h-4 mr-1 inline" />
-                Clear
-              </button>
+              <BaseButton v-if="filters.status" variant="outline" size="sm" icon="ph:x" @click="filters.status = ''">
+                Bersihkan
+              </BaseButton>
             </div>
           </div>
         </div>
@@ -433,26 +422,23 @@ useHead({
 
         <!-- Enhanced Pagination Controls -->
         <div v-if="user && !loading && filteredResults.length > pageSize" class="mt-8 flex justify-center">
-          <nav class="inline-flex items-center rounded-lg border border-gray-300 bg-white shadow-sm"
+          <nav class="inline-flex items-center rounded-lg border border-gray-300 bg-white shadow-sm overflow-hidden"
             aria-label="Pagination">
-            <button
-              class="inline-flex items-center gap-2 px-4 py-2 rounded-l-lg border-r border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-              :disabled="page === 1" @click="page > 1 && (page = page - 1)">
-              <Icon :ssr="true" icon="ph:caret-left" class="w-4 h-4" />
-              Previous
-            </button>
+            <BaseButton variant="ghost" size="md" icon="ph:caret-left" :disabled="page === 1"
+              class="rounded-none border-r border-gray-300" @click="page > 1 && (page = page - 1)">
+              Sebelumnya
+            </BaseButton>
 
-            <div class="flex items-center px-4 py-2 bg-gray-50 text-sm font-medium text-gray-900">
-              Page {{ page }} of {{ Math.ceil(filteredResults.length / pageSize) }}
+            <div class="flex items-center px-6 py-2 bg-gray-50 text-sm font-bold text-navy">
+              Halaman {{ page }} dari {{ Math.ceil(filteredResults.length / pageSize) }}
             </div>
 
-            <button
-              class="inline-flex items-center gap-2 px-4 py-2 rounded-r-lg border-l border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            <BaseButton variant="ghost" size="md" icon-right="ph:caret-right"
               :disabled="page >= Math.ceil(filteredResults.length / pageSize)"
+              class="rounded-none border-l border-gray-300"
               @click="page < Math.ceil(filteredResults.length / pageSize) && (page = page + 1)">
-              Next
-              <Icon :ssr="true" icon="ph:caret-right" class="w-4 h-4" />
-            </button>
+              Selanjutnya
+            </BaseButton>
           </nav>
         </div>
 
@@ -479,20 +465,12 @@ useHead({
               You haven't submitted any solutions for this problem. Start coding to see your results here!
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-              <NuxtLink to="/events">
-                <button
-                  class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
-                  <Icon :ssr="true" icon="ph:trophy" class="w-4 h-4" />
-                  View Tournament
-                </button>
-              </NuxtLink>
-              <NuxtLink to="/result">
-                <button
-                  class="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-medium transition-colors">
-                  <Icon :ssr="true" icon="ph:arrow-left" class="w-4 h-4" />
-                  Back to Results
-                </button>
-              </NuxtLink>
+              <BaseButton to="/dashboard/events" variant="gold" icon="ph:trophy">
+                Lihat Turnamen
+              </BaseButton>
+              <BaseButton to="/dashboard/result" variant="outline" icon="ph:arrow-left">
+                Kembali ke Hasil
+              </BaseButton>
             </div>
           </div>
         </div>
@@ -510,11 +488,9 @@ useHead({
             <p class="text-gray-600 mb-6">
               Try adjusting your status filter to see more results.
             </p>
-            <button @click="filters.status = ''"
-              class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
-              <Icon :ssr="true" icon="ph:x" class="w-4 h-4" />
-              Clear Filter
-            </button>
+            <BaseButton variant="gold" icon="ph:x" @click="filters.status = ''">
+              Bersihkan Filter
+            </BaseButton>
           </div>
         </div>
       </template>

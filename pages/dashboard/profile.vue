@@ -21,12 +21,11 @@
             <p class="text-gray-500 mb-4">{{ user?.email || 'No email provided' }}</p>
 
             <!-- GitHub Link -->
-            <div class="flex justify-center sm:justify-start">
-              <NuxtLink :to="user?.githubProfile" target="_blank" external
-                class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
-                <Icon :ssr="true" icon="logos:github-icon" class="w-4 h-4 mr-2" />
+            <div class="flex justify-center sm:justify-start mt-4">
+              <BaseButton v-if="user?.githubProfile" :to="user?.githubProfile" target="_blank" variant="outline"
+                size="sm" icon="logos:github-icon">
                 View GitHub Profile
-              </NuxtLink>
+              </BaseButton>
             </div>
           </div>
 
@@ -49,18 +48,18 @@
       </div>
 
       <!-- Tabs -->
-      <div class="bg-white rounded-lg shadow-sm border border-gray-200">
-        <div class="border-b border-gray-200">
-          <nav class="flex space-x-8 px-6" aria-label="Tabs">
-            <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id" :class="[
-              'py-4 px-1 border-b-2 font-medium text-sm transition-colors',
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="border-b border-gray-100 bg-gray-50/50">
+          <nav class="flex overflow-x-auto no-scrollbar" aria-label="Tabs">
+            <BaseButton v-for="tab in tabs" :key="tab.id" variant="ghost" size="md" :class="[
+              'rounded-none border-b-2 font-bold !px-8 !py-4 transition-all whitespace-nowrap',
               activeTab === tab.id
-                ? 'border-yellow-500 text-yellow-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-            ]">
-              <Icon :ssr="true" :icon="tab.icon" class="w-4 h-4 mr-2 inline" />
+                ? 'border-primary text-navy bg-primary/5'
+                : 'border-transparent text-gray-500 hover:text-navy hover:bg-gray-100/50'
+            ]" @click="activeTab = tab.id">
+              <Icon :icon="tab.icon" class="w-5 h-5 mr-2" />
               {{ tab.name }}
-            </button>
+            </BaseButton>
           </nav>
         </div>
 
@@ -68,14 +67,14 @@
         <div class="p-6">
           <!-- Recent Activity Tab -->
           <div v-if="activeTab === 'activity'" class="space-y-4">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h3>
-            <div v-if="recentActivity.length === 0" class="text-center py-8">
-              <Icon :ssr="true" icon="ph:activity" class="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <p class="text-gray-500">No recent activity to show</p>
-              <NuxtLink to="/problem"
-                class="inline-flex items-center mt-4 px-4 py-2 text-sm font-medium text-white bg-yellow-600 hover:bg-yellow-700 rounded-lg transition-colors">
-                Start Solving Problems
-              </NuxtLink>
+            <h3 class="text-xl font-black text-navy mb-4">Aktivitas Terakhir</h3>
+            <div v-if="recentActivity.length === 0"
+              class="text-center py-16 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+              <Icon icon="ph:activity" class="w-16 h-16 text-gray-300 mx-auto mb-4" />
+              <p class="text-gray-500 font-medium">Belum ada aktivitas baru untuk ditampilkan</p>
+              <BaseButton to="/dashboard/events" variant="gold" class="mt-6" icon="ph:magnifying-glass">
+                Cari Event Panahan
+              </BaseButton>
             </div>
             <div v-else class="space-y-3">
               <div v-for="activity in recentActivity" :key="activity.id"
@@ -135,49 +134,44 @@
           </div>
 
           <!-- Settings Tab -->
-          <div v-if="activeTab === 'settings'" class="space-y-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Settings</h3>
+          <div v-if="activeTab === 'settings'" class="space-y-8">
+            <h3 class="text-xl font-black text-navy mb-4">Pengaturan Akun</h3>
 
             <!-- Profile Settings -->
-            <div class="bg-gray-50 rounded-lg p-4">
-              <h4 class="font-medium text-gray-900 mb-3">Profile Information</h4>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Display Name</label>
-                  <input v-model="settings.displayName" type="text"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-yellow-500 focus:border-yellow-500" />
+            <div class="bg-gray-50/50 rounded-xl p-6 border border-gray-100">
+              <div class="flex items-center gap-3 mb-6">
+                <div class="p-2 bg-navy rounded-lg text-white">
+                  <Icon icon="ph:user-focus" class="w-5 h-5" />
                 </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                  <input :value="user?.email" type="email" disabled
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-500" />
-                </div>
+                <h4 class="font-bold text-navy">Informasi Profil</h4>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <BaseInput v-model="settings.displayName" label="Nama Tampilan" placeholder="Masukkan nama kamu" />
+                <BaseInput :model-value="user?.email" label="Alamat Email" disabled />
               </div>
             </div>
 
             <!-- Preferences -->
-            <div class="bg-gray-50 rounded-lg p-4">
-              <h4 class="font-medium text-gray-900 mb-3">Preferences</h4>
-              <div class="space-y-3">
-                <label class="flex items-center">
-                  <input v-model="settings.emailNotifications" type="checkbox"
-                    class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
-                  <span class="ml-2 text-sm text-gray-700">Email notifications</span>
-                </label>
-                <label class="flex items-center">
-                  <input v-model="settings.publicProfile" type="checkbox"
-                    class="rounded border-gray-300 text-yellow-600 focus:ring-yellow-500" />
-                  <span class="ml-2 text-sm text-gray-700">Public profile</span>
-                </label>
+            <div class="bg-gray-50/50 rounded-xl p-6 border border-gray-100">
+              <div class="flex items-center gap-3 mb-6">
+                <div class="p-2 bg-navy rounded-lg text-white">
+                  <Icon icon="ph:bell-ringing" class="w-5 h-5" />
+                </div>
+                <h4 class="font-bold text-navy">Preferensi Notifikasi</h4>
+              </div>
+
+              <div class="space-y-4">
+                <BaseCheckbox v-model="settings.emailNotifications" label="Aktifkan Notifikasi Email" />
+                <BaseCheckbox v-model="settings.publicProfile" label="Jadikan Profil Publik" />
               </div>
             </div>
 
             <!-- Save Button -->
-            <div class="flex justify-end">
-              <button @click="saveSettings"
-                class="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors">
-                Save Changes
-              </button>
+            <div class="flex justify-end pt-4">
+              <BaseButton variant="gold" size="lg" icon="ph:floppy-disk" @click="saveSettings">
+                Simpan Perubahan
+              </BaseButton>
             </div>
           </div>
         </div>
@@ -290,14 +284,14 @@ definePageMeta({
 
 const route = useRoute()
 useSeoMeta({
-  title: 'Profile - Rust Challenges',
-  description: 'View your progress and achievements'
+  title: 'Profil Saya - Archeryhub.id',
+  description: 'Lihat progres dan pencapaian kamu di Archeryhub.id'
 })
 useHead({
   link: [
     {
       rel: 'canonical',
-      href: `https://budibadu.com${route.path}`
+      href: `https://archeryhub.id${route.path}`
     }
   ]
 })

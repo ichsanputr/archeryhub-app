@@ -24,18 +24,19 @@
             <nav class="flex-grow flex flex-col p-4 gap-2 overflow-y-auto no-scrollbar">
                 <NuxtLink v-for="item in navItems" :key="item.path" :to="item.path" @click="isMobileMenuOpen = false"
                     class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group"
-                    :class="route.path === item.path ? 'bg-primary text-navy shadow-lg shadow-primary/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'">
+                    :class="(item.path === '/dashboard/events' ? route.path.startsWith('/dashboard/events') : route.path === item.path) ? 'bg-primary text-navy shadow-lg shadow-primary/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'">
                     <span class="material-symbols-outlined group-hover:scale-110 transition-transform">{{ item.icon
                     }}</span>
                     <span v-if="!isSidebarCollapsed" class="text-sm font-bold whitespace-nowrap">{{ item.label }}</span>
                 </NuxtLink>
 
-                <div v-if="!isSidebarCollapsed"
-                    class="mt-6 mb-2 px-3 text-[10px] font-black text-gray-500 uppercase tracking-widest">
+                <!-- Temporary hide Penyelenggara section -->
+                <div v-if="false" class="mt-6 mb-2 px-3 text-[10px] font-black text-gray-500 uppercase tracking-widest">
                     Penyelenggara
                 </div>
 
-                <NuxtLink v-for="item in eventItems" :key="item.path" :to="item.path" @click="isMobileMenuOpen = false"
+                <NuxtLink v-if="false" v-for="item in eventItems" :key="item.path" :to="item.path"
+                    @click="isMobileMenuOpen = false"
                     class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group"
                     :class="route.path.startsWith(item.path) && item.path !== '/' ? 'bg-primary text-navy shadow-lg shadow-primary/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'">
                     <span class="material-symbols-outlined group-hover:scale-110 transition-transform">{{ item.icon
@@ -133,7 +134,6 @@ const handleLogout = () => {
 const navItems = [
     { label: 'Ringkasan', icon: 'dashboard', path: '/dashboard' },
     { label: 'Event Saya', icon: 'emoji_events', path: '/dashboard/events' },
-    { label: 'Statistik Global', icon: 'bar_chart', path: '/dashboard/statistics' },
 ]
 
 const eventItems = [
@@ -145,7 +145,10 @@ const eventItems = [
 
 
 const currentPageTitle = computed(() => {
-    const active = [...navItems, ...eventItems].find(item => route.path === item.path)
+    const active = [...navItems, ...eventItems].find(item => {
+        if (item.path === '/dashboard/events') return route.path.startsWith('/dashboard/events')
+        return route.path === item.path
+    })
     return active ? active.label : 'Management'
 })
 </script>

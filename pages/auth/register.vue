@@ -81,265 +81,160 @@
                 </div>
 
                 <div class="mt-8">
-                    <form @submit.prevent="handleRegister" class="space-y-5">
+                    <form @submit.prevent="handleRegister" class="space-y-6">
                         <!-- Common Fields -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <!-- Email -->
                             <div class="sm:col-span-2">
-                                <label class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">
-                                    Alamat Email
-                                </label>
-                                <div class="relative rounded-lg shadow-sm">
-                                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                        <span class="material-symbols-outlined text-slate-400 text-[20px]">mail</span>
-                                    </div>
-                                    <input v-model="form.email" autocomplete="email"
-                                        class="block w-full rounded-lg border-gray-200 bg-gray-50 pl-10 focus:border-primary focus:ring-primary sm:text-sm py-3 transition-colors placeholder:text-slate-400"
-                                        placeholder="email@domain.com" required type="email" />
-                                </div>
+                                <BaseInput v-model="form.email" label="Alamat Email" placeholder="email@domain.com"
+                                    type="email" icon="mail" required :error="errors.email"
+                                    @blur="validate('email', form.email, [rules.required(), rules.email()])" />
                             </div>
 
                             <!-- Password -->
                             <div>
-                                <label class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">
-                                    Kata Sandi
-                                </label>
-                                <div class="relative rounded-lg shadow-sm">
-                                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                        <span class="material-symbols-outlined text-slate-400 text-[20px]">lock</span>
-                                    </div>
-                                    <input v-model="form.password" autocomplete="new-password"
-                                        class="block w-full rounded-lg border-gray-200 bg-gray-50 pl-10 focus:border-primary focus:ring-primary sm:text-sm py-3 transition-colors placeholder:text-slate-400"
-                                        placeholder="••••••••" required type="password" />
-                                </div>
+                                <BaseInput v-model="form.password" label="Kata Sandi" placeholder="••••••••"
+                                    type="password" icon="lock" required :error="errors.password"
+                                    @blur="validate('password', form.password, [rules.required(), rules.minLength(8)])" />
                             </div>
 
                             <!-- Confirm Password -->
                             <div>
-                                <label class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">
-                                    Konfirmasi Sandi
-                                </label>
-                                <div class="relative rounded-lg shadow-sm">
-                                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                        <span class="material-symbols-outlined text-slate-400 text-[20px]">lock</span>
-                                    </div>
-                                    <input v-model="form.confirmPassword" autocomplete="new-password"
-                                        class="block w-full rounded-lg border-gray-200 bg-gray-50 pl-10 focus:border-primary focus:ring-primary sm:text-sm py-3 transition-colors placeholder:text-slate-400"
-                                        placeholder="••••••••" required type="password" />
-                                </div>
+                                <BaseInput v-model="form.confirmPassword" label="Konfirmasi Sandi"
+                                    placeholder="••••••••" type="password" icon="lock" required
+                                    :error="errors.confirmPassword"
+                                    @blur="validate('confirmPassword', form.confirmPassword, [rules.required(), rules.sameAs(form.password, 'Kata sandi tidak cocok')])" />
                             </div>
                         </div>
 
                         <!-- Archer Specific Fields -->
                         <div v-if="form.userType === 'archer'" class="space-y-4 pt-4 border-t border-gray-100">
-                            <h4 class="text-sm font-bold text-navy uppercase tracking-wider flex items-center gap-2">
-                                <span class="material-symbols-outlined text-primary">sports_martial_arts</span>
+                            <h4
+                                class="text-xs font-black text-navy uppercase tracking-widest flex items-center gap-2 mb-4">
+                                <span class="material-symbols-outlined text-primary text-lg">sports_martial_arts</span>
                                 Data Pemanah
                             </h4>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">Nama
-                                        Lengkap</label>
-                                    <input v-model="form.archer.fullName" type="text" required
-                                        placeholder="Nama lengkap sesuai KTP"
-                                        class="block w-full rounded-lg border-gray-200 bg-gray-50 px-4 focus:border-primary focus:ring-primary sm:text-sm py-3" />
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">Nama
-                                        Panggilan</label>
-                                    <input v-model="form.archer.nickname" type="text" placeholder="Nama panggilan"
-                                        class="block w-full rounded-lg border-gray-200 bg-gray-50 px-4 focus:border-primary focus:ring-primary sm:text-sm py-3" />
-                                </div>
-                                <div>
-                                    <label
-                                        class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">Tanggal
-                                        Lahir</label>
-                                    <input v-model="form.archer.dateOfBirth" type="date" required
-                                        class="block w-full rounded-lg border-gray-200 bg-gray-50 px-4 focus:border-primary focus:ring-primary sm:text-sm py-3" />
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">Jenis
-                                        Kelamin</label>
-                                    <select v-model="form.archer.gender"
-                                        class="block w-full rounded-lg border-gray-200 bg-gray-50 px-4 focus:border-primary focus:ring-primary sm:text-sm py-3">
-                                        <option value="male">Laki-laki</option>
-                                        <option value="female">Perempuan</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">No.
-                                        Telepon</label>
-                                    <input v-model="form.archer.phone" type="tel" required placeholder="08xxxxxxxxxx"
-                                        class="block w-full rounded-lg border-gray-200 bg-gray-50 px-4 focus:border-primary focus:ring-primary sm:text-sm py-3" />
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">Jenis
-                                        Busur</label>
-                                    <select v-model="form.archer.bowType"
-                                        class="block w-full rounded-lg border-gray-200 bg-gray-50 px-4 focus:border-primary focus:ring-primary sm:text-sm py-3">
-                                        <option value="recurve">Recurve</option>
-                                        <option value="compound">Compound</option>
-                                        <option value="barebow">Barebow</option>
-                                        <option value="traditional">Tradisional</option>
-                                    </select>
-                                </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <BaseInput v-model="form.archer.fullName" label="Nama Lengkap" placeholder="Sesuai KTP"
+                                    required :error="errors['archer.fullName']"
+                                    @blur="validate('archer.fullName', form.archer.fullName, [rules.required()])" />
+                                <BaseInput v-model="form.archer.nickname" label="Nama Panggilan" placeholder="Nick" />
+                                <BaseInput v-model="form.archer.dateOfBirth" label="Tanggal Lahir" type="date" required
+                                    :error="errors['archer.dateOfBirth']"
+                                    @blur="validate('archer.dateOfBirth', form.archer.dateOfBirth, [rules.required()])" />
+
+                                <BaseSelect v-model="form.archer.gender" label="Jenis Kelamin" :items="[
+                                    { title: 'Laki-laki', value: 'male' },
+                                    { title: 'Perempuan', value: 'female' }
+                                ]" required />
+
+                                <BaseInput v-model="form.archer.phone" label="No. Telepon" type="tel"
+                                    placeholder="08xxxxxxxxxx" required :error="errors['archer.phone']"
+                                    @blur="validate('archer.phone', form.archer.phone, [rules.required()])" />
+
+                                <BaseSelect v-model="form.archer.bowType" label="Jenis Busur" :items="[
+                                    { title: 'Recurve', value: 'recurve' },
+                                    { title: 'Compound', value: 'compound' },
+                                    { title: 'Barebow', value: 'barebow' },
+                                    { title: 'Tradisional', value: 'traditional' }
+                                ]" required />
+
                                 <div class="sm:col-span-2">
-                                    <label
-                                        class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">Kota/Kabupaten</label>
-                                    <input v-model="form.archer.city" type="text" placeholder="Contoh: Jakarta Selatan"
-                                        class="block w-full rounded-lg border-gray-200 bg-gray-50 px-4 focus:border-primary focus:ring-primary sm:text-sm py-3" />
+                                    <BaseInput v-model="form.archer.city" label="Kota/Kabupaten"
+                                        placeholder="Contoh: Jakarta Selatan" />
                                 </div>
                             </div>
                         </div>
 
                         <!-- Organization Specific Fields -->
                         <div v-if="form.userType === 'organization'" class="space-y-4 pt-4 border-t border-gray-100">
-                            <h4 class="text-sm font-bold text-navy uppercase tracking-wider flex items-center gap-2">
-                                <span class="material-symbols-outlined text-primary">corporate_fare</span>
+                            <h4
+                                class="text-xs font-black text-navy uppercase tracking-widest flex items-center gap-2 mb-4">
+                                <span class="material-symbols-outlined text-primary text-lg">corporate_fare</span>
                                 Data Organisasi
                             </h4>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                 <div class="sm:col-span-2">
-                                    <label class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">Nama
-                                        Organisasi</label>
-                                    <input v-model="form.organization.name" type="text" required
-                                        placeholder="Nama resmi organisasi"
-                                        class="block w-full rounded-lg border-gray-200 bg-gray-50 px-4 focus:border-primary focus:ring-primary sm:text-sm py-3" />
+                                    <BaseInput v-model="form.organization.name" label="Nama Organisasi"
+                                        placeholder="Nama resmi organisasi" required
+                                        :error="errors['organization.name']"
+                                        @blur="validate('organization.name', form.organization.name, [rules.required()])" />
                                 </div>
-                                <div>
-                                    <label
-                                        class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">Singkatan</label>
-                                    <input v-model="form.organization.acronym" type="text" placeholder="Contoh: PERPANI"
-                                        class="block w-full rounded-lg border-gray-200 bg-gray-50 px-4 focus:border-primary focus:ring-primary sm:text-sm py-3" />
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">Tipe
-                                        Organisasi</label>
-                                    <select v-model="form.organization.type"
-                                        class="block w-full rounded-lg border-gray-200 bg-gray-50 px-4 focus:border-primary focus:ring-primary sm:text-sm py-3">
-                                        <option value="federation">Federasi</option>
-                                        <option value="association">Asosiasi</option>
-                                        <option value="committee">Panitia</option>
-                                        <option value="sponsor">Sponsor</option>
-                                        <option value="other">Lainnya</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">Nama
-                                        PIC</label>
-                                    <input v-model="form.organization.contactPersonName" type="text" required
-                                        placeholder="Nama penanggung jawab"
-                                        class="block w-full rounded-lg border-gray-200 bg-gray-50 px-4 focus:border-primary focus:ring-primary sm:text-sm py-3" />
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">No.
-                                        Telepon PIC</label>
-                                    <input v-model="form.organization.contactPersonPhone" type="tel" required
-                                        placeholder="08xxxxxxxxxx"
-                                        class="block w-full rounded-lg border-gray-200 bg-gray-50 px-4 focus:border-primary focus:ring-primary sm:text-sm py-3" />
-                                </div>
+                                <BaseInput v-model="form.organization.acronym" label="Singkatan"
+                                    placeholder="Contoh: PERPANI" />
+
+                                <BaseSelect v-model="form.organization.type" label="Tipe Organisasi" :items="[
+                                    { title: 'Federasi', value: 'federation' },
+                                    { title: 'Asosiasi', value: 'association' },
+                                    { title: 'Panitia', value: 'committee' },
+                                    { title: 'Sponsor', value: 'sponsor' },
+                                    { title: 'Lainnya', value: 'other' }
+                                ]" required />
+
+                                <BaseInput v-model="form.organization.contactPersonName" label="Nama PIC"
+                                    placeholder="Nama penanggung jawab" required
+                                    :error="errors['organization.contactPersonName']"
+                                    @blur="validate('organization.contactPersonName', form.organization.contactPersonName, [rules.required()])" />
+                                <BaseInput v-model="form.organization.contactPersonPhone" label="No. Telepon PIC"
+                                    type="tel" placeholder="08xxxxxxxxxx" required
+                                    :error="errors['organization.contactPersonPhone']"
+                                    @blur="validate('organization.contactPersonPhone', form.organization.contactPersonPhone, [rules.required()])" />
+
                                 <div class="sm:col-span-2">
-                                    <label
-                                        class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">Alamat</label>
-                                    <input v-model="form.organization.address" type="text"
-                                        placeholder="Alamat lengkap kantor"
-                                        class="block w-full rounded-lg border-gray-200 bg-gray-50 px-4 focus:border-primary focus:ring-primary sm:text-sm py-3" />
+                                    <BaseInput v-model="form.organization.address" label="Alamat"
+                                        placeholder="Alamat lengkap kantor" />
                                 </div>
                             </div>
                         </div>
 
                         <!-- Club Specific Fields -->
                         <div v-if="form.userType === 'club'" class="space-y-4 pt-4 border-t border-gray-100">
-                            <h4 class="text-sm font-bold text-navy uppercase tracking-wider flex items-center gap-2">
-                                <span class="material-symbols-outlined text-primary">groups</span>
+                            <h4
+                                class="text-xs font-black text-navy uppercase tracking-widest flex items-center gap-2 mb-4">
+                                <span class="material-symbols-outlined text-primary text-lg">groups</span>
                                 Data Klub
                             </h4>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                 <div class="sm:col-span-2">
-                                    <label class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">Nama
-                                        Klub</label>
-                                    <input v-model="form.club.name" type="text" required placeholder="Nama resmi klub"
-                                        class="block w-full rounded-lg border-gray-200 bg-gray-50 px-4 focus:border-primary focus:ring-primary sm:text-sm py-3" />
+                                    <BaseInput v-model="form.club.name" label="Nama Klub" placeholder="Nama resmi klub"
+                                        required :error="errors['club.name']"
+                                        @blur="validate('club.name', form.club.name, [rules.required()])" />
                                 </div>
-                                <div>
-                                    <label
-                                        class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">Singkatan</label>
-                                    <input v-model="form.club.abbreviation" type="text" placeholder="Contoh: JVAC"
-                                        class="block w-full rounded-lg border-gray-200 bg-gray-50 px-4 focus:border-primary focus:ring-primary sm:text-sm py-3" />
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">Tahun
-                                        Berdiri</label>
-                                    <input v-model="form.club.establishedDate" type="date"
-                                        class="block w-full rounded-lg border-gray-200 bg-gray-50 px-4 focus:border-primary focus:ring-primary sm:text-sm py-3" />
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">Nama
-                                        Kepala Pelatih</label>
-                                    <input v-model="form.club.headCoachName" type="text" required
-                                        placeholder="Nama pelatih utama"
-                                        class="block w-full rounded-lg border-gray-200 bg-gray-50 px-4 focus:border-primary focus:ring-primary sm:text-sm py-3" />
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">No.
-                                        Telepon Pelatih</label>
-                                    <input v-model="form.club.headCoachPhone" type="tel" required
-                                        placeholder="08xxxxxxxxxx"
-                                        class="block w-full rounded-lg border-gray-200 bg-gray-50 px-4 focus:border-primary focus:ring-primary sm:text-sm py-3" />
-                                </div>
-                                <div>
-                                    <label
-                                        class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">Kota</label>
-                                    <input v-model="form.club.city" type="text" required placeholder="Lokasi klub"
-                                        class="block w-full rounded-lg border-gray-200 bg-gray-50 px-4 focus:border-primary focus:ring-primary sm:text-sm py-3" />
-                                </div>
-                                <div>
-                                    <label
-                                        class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">Provinsi</label>
-                                    <input v-model="form.club.province" type="text" placeholder="Provinsi"
-                                        class="block w-full rounded-lg border-gray-200 bg-gray-50 px-4 focus:border-primary focus:ring-primary sm:text-sm py-3" />
-                                </div>
+                                <BaseInput v-model="form.club.abbreviation" label="Singkatan"
+                                    placeholder="Contoh: JVAC" />
+                                <BaseInput v-model="form.club.establishedDate" label="Tahun Berdiri" type="date" />
+                                <BaseInput v-model="form.club.headCoachName" label="Nama Kepala Pelatih"
+                                    placeholder="Nama pelatih utama" required :error="errors['club.headCoachName']"
+                                    @blur="validate('club.headCoachName', form.club.headCoachName, [rules.required()])" />
+                                <BaseInput v-model="form.club.headCoachPhone" label="No. Telepon Pelatih" type="tel"
+                                    placeholder="08xxxxxxxxxx" required :error="errors['club.headCoachPhone']"
+                                    @blur="validate('club.headCoachPhone', form.club.headCoachPhone, [rules.required()])" />
+                                <BaseInput v-model="form.club.city" label="Kota" placeholder="Lokasi klub" required
+                                    :error="errors['club.city']"
+                                    @blur="validate('club.city', form.club.city, [rules.required()])" />
+                                <BaseInput v-model="form.club.province" label="Provinsi" placeholder="Provinsi" />
+
                                 <div class="sm:col-span-2">
-                                    <label
-                                        class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">Alamat
-                                        Latihan</label>
-                                    <input v-model="form.club.address" type="text"
-                                        placeholder="Alamat lengkap tempat latihan"
-                                        class="block w-full rounded-lg border-gray-200 bg-gray-50 px-4 focus:border-primary focus:ring-primary sm:text-sm py-3" />
+                                    <BaseInput v-model="form.club.address" label="Alamat Latihan"
+                                        placeholder="Alamat lengkap tempat latihan" />
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Terms -->
-                        <div class="flex items-start pt-4">
-                            <div class="flex h-5 items-center">
-                                <input v-model="form.terms"
-                                    class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary cursor-pointer"
-                                    type="checkbox" required />
-                            </div>
-                            <div class="ml-3 text-sm font-body">
-                                <label class="font-medium text-slate-600">Saya setuju dengan
-                                    <NuxtLink class="font-black text-navy hover:text-primary-hover" to="/terms">Syarat &
-                                        Ketentuan</NuxtLink> dan
-                                    <NuxtLink class="font-black text-navy hover:text-primary-hover" to="/privacy">
-                                        Kebijakan
-                                        Privasi</NuxtLink>
-                                </label>
-                            </div>
+                        <div class="flex flex-col gap-2 pt-4">
+                            <BaseCheckbox v-model="form.terms" required :error="errors.terms">
+                                Saya setuju dengan
+                                <NuxtLink class="font-bold text-navy hover:text-primary-hover" to="/terms">
+                                    Syarat & Ketentuan</NuxtLink> dan
+                                <NuxtLink class="font-bold text-navy hover:text-primary-hover" to="/privacy">
+                                    Kebijakan Privasi</NuxtLink>
+                            </BaseCheckbox>
                         </div>
 
-                        <button :disabled="isLoading"
-                            class="flex w-full justify-center items-center gap-2 rounded-xl border border-transparent bg-primary py-4 px-4 text-sm font-bold text-navy shadow-lg shadow-primary/20 hover:bg-primary-hover hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all transform hover:-translate-y-0.5 disabled:opacity-50"
-                            type="submit">
-                            <span v-if="isLoading" class="flex items-center gap-2">
-                                <div class="spinner size-5"></div>
-                                Sedang mendaftar...
-                            </span>
-                            <span v-else class="flex items-center gap-2">
-                                Daftar Sekarang
-                                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-                            </span>
-                        </button>
+                        <BaseButton type="submit" variant="gold" block size="lg" :loading="isLoading"
+                            loading-text="Sedang mendaftar..." icon-right="arrow_forward">
+                            Daftar Sekarang
+                        </BaseButton>
                     </form>
 
                     <div class="mt-8 text-center font-body">
@@ -359,6 +254,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useFormValidation } from '~/composables/useFormValidation'
 
 const route = useRoute()
 const isLoading = ref(false)
@@ -369,6 +265,8 @@ const userTypes = [
     { value: 'organization', label: 'Organisasi', icon: 'corporate_fare' },
     { value: 'club', label: 'Klub', icon: 'groups' }
 ]
+
+const { errors, validate, validateForm, rules } = useFormValidation()
 
 // Get initial user type from query param
 const getInitialUserType = () => {
@@ -417,8 +315,52 @@ const form = ref({
 const { register } = useAuth()
 
 const handleRegister = async () => {
-    if (form.value.password !== form.value.confirmPassword) {
-        error.value = 'Kata sandi tidak cocok'
+    // Collect all rules based on userType
+    const commonRules = {
+        email: [rules.required(), rules.email()],
+        password: [rules.required(), rules.minLength(8)],
+        confirmPassword: [rules.required(), rules.sameAs(form.value.password, 'Kata sandi tidak cocok')],
+        terms: [rules.required('Anda harus menyetujui syarat dan ketentuan')]
+    }
+
+    const typeRules = {
+        archer: {
+            'archer.fullName': [rules.required()],
+            'archer.dateOfBirth': [rules.required()],
+            'archer.phone': [rules.required()]
+        },
+        organization: {
+            'organization.name': [rules.required()],
+            'organization.contactPersonName': [rules.required()],
+            'organization.contactPersonPhone': [rules.required()]
+        },
+        club: {
+            'club.name': [rules.required()],
+            'club.headCoachName': [rules.required()],
+            'club.headCoachPhone': [rules.required()],
+            'club.city': [rules.required()]
+        }
+    }
+
+    // Combine rules
+    const activeRules = { ...commonRules, ...typeRules[form.value.userType] }
+
+    // Flatten logic for validateForm support with nested paths
+    const flatForm = {
+        ...form.value,
+        'archer.fullName': form.value.archer.fullName,
+        'archer.dateOfBirth': form.value.archer.dateOfBirth,
+        'archer.phone': form.value.archer.phone,
+        'organization.name': form.value.organization.name,
+        'organization.contactPersonName': form.value.organization.contactPersonName,
+        'organization.contactPersonPhone': form.value.organization.contactPersonPhone,
+        'club.name': form.value.club.name,
+        'club.headCoachName': form.value.club.headCoachName,
+        'club.headCoachPhone': form.value.club.headCoachPhone,
+        'club.city': form.value.club.city,
+    }
+
+    if (!validateForm(flatForm, activeRules)) {
         return
     }
 
@@ -451,19 +393,6 @@ const handleRegister = async () => {
 </script>
 
 <style scoped>
-.spinner {
-    border: 2px solid rgba(0, 0, 0, 0.1);
-    border-left-color: currentColor;
-    border-radius: 50%;
-    animation: spin 0.6s linear infinite;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
 .no-scrollbar::-webkit-scrollbar {
     display: none;
 }

@@ -33,6 +33,7 @@ module.exports = {
                     white: '#ffffff',
                     light: '#f9fafb',
                     dark: '#0f172a',
+                    highlight: '#1e293b', // Added highlight color
                 },
                 background: {
                     light: '#f9fafb',

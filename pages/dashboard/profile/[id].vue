@@ -40,17 +40,14 @@
                                 <span>{{ athlete.club }}</span>
                             </div>
                         </div>
-                        <div class="flex flex-wrap justify-center md:justify-start gap-3">
-                            <button
-                                class="h-10 px-6 bg-primary hover:bg-primary-hover text-navy font-bold rounded-lg transition-colors flex items-center gap-2">
-                                <span class="material-symbols-outlined text-lg">add</span>
+                        <div class="flex flex-wrap justify-center md:justify-start gap-4">
+                            <BaseButton variant="primary" size="md" icon="ph:plus-bold">
                                 Ikuti Atlet
-                            </button>
-                            <button
-                                class="h-10 px-6 bg-white/10 hover:bg-white/20 text-white font-bold rounded-lg backdrop-blur-sm border border-white/10 transition-colors flex items-center gap-2">
-                                <span class="material-symbols-outlined text-lg">share</span>
+                            </BaseButton>
+                            <BaseButton variant="ghost" size="md" icon="ph:share-network-bold"
+                                class="bg-white/10 !text-white hover:bg-white/20 backdrop-blur-sm border border-white/10">
                                 Bagikan Profil
-                            </button>
+                            </BaseButton>
                         </div>
                     </div>
                     <div
@@ -91,7 +88,7 @@
                     </div>
                     <div
                         class="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center text-navy group-hover:bg-navy group-hover:text-primary transition-colors">
-                        <span class="material-symbols-outlined text-2xl">{{ metric.icon }}</span>
+                        <Icon :icon="metric.icon" class="text-2xl" />
                     </div>
                 </div>
             </div>
@@ -132,7 +129,7 @@
                             class="flex items-center gap-4 p-3 rounded-xl bg-gray-50 border border-transparent hover:border-primary/20 transition-all">
                             <div
                                 class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-navy shadow-sm">
-                                <span class="material-symbols-outlined text-xl">{{ item.icon }}</span>
+                                <Icon :icon="item.icon" class="text-xl" />
                             </div>
                             <div>
                                 <p class="text-xs text-text-sub font-bold uppercase">{{ item.label }}</p>
@@ -147,10 +144,12 @@
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div class="p-6 border-b border-gray-100 flex justify-between items-center">
                     <h3 class="text-lg font-bold text-navy flex items-center gap-2 font-display">
-                        <span class="material-symbols-outlined text-primary">history</span>
+                        <Icon icon="ph:history-bold" class="text-primary" />
                         Hasil Turnamen Terakhir
                     </h3>
-                    <button class="text-sm font-bold text-navy hover:underline">Lihat Semua Riwayat</button>
+                    <BaseButton variant="ghost" size="sm" class="!text-navy font-bold">
+                        Lihat Semua Riwayat
+                    </BaseButton>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm">
@@ -177,8 +176,8 @@
                                 <td class="px-6 py-4">
                                     <span :class="result.badgeClass"
                                         class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold border">
-                                        <span class="material-symbols-outlined text-[14px]">emoji_events</span> {{
-                                        result.rank }}
+                                        <Icon icon="ph:medal-bold" class="text-[14px]" /> {{
+                                            result.rank }}
                                     </span>
                                 </td>
                             </tr>
@@ -200,9 +199,9 @@ const athlete = {
 }
 
 const metrics = [
-    { label: 'Ranking Nasional', value: '#1', trend: 0, icon: 'public' },
-    { label: 'Rata-rata Skor', value: '9.35', trend: 0.12, icon: 'my_location' },
-    { label: 'Total Medali', value: '11', trend: 2, icon: 'emoji_events' }
+    { label: 'Ranking Nasional', value: '#1', trend: 0, icon: 'ph:globe-hemisphere-west' },
+    { label: 'Rata-rata Skor', value: '9.35', trend: 0.12, icon: 'ph:target' },
+    { label: 'Total Medali', value: '11', trend: 2, icon: 'ph:medal' }
 ]
 
 const performanceHistory = [
@@ -215,10 +214,10 @@ const performanceHistory = [
 ]
 
 const equipment = [
-    { label: 'Riser', value: 'Hoyt Formula Xi', icon: 'straighten' },
-    { label: 'Limbs', value: 'Hoyt Velos', icon: 'architecture' },
-    { label: 'Arrows', value: 'Easton X10', icon: 'arrow_right_alt' },
-    { label: 'Sight', value: 'Axcel Achieve XP', icon: 'visibility' }
+    { label: 'Riser', value: 'Hoyt Formula Xi', icon: 'ph:arrow-fat-line-right' },
+    { label: 'Limbs', value: 'Hoyt Velos', icon: 'ph:sketch-logo' },
+    { label: 'Arrows', value: 'Easton X10', icon: 'ph:navigation-arrow' },
+    { label: 'Sight', value: 'Axcel Achieve XP', icon: 'ph:eye' }
 ]
 
 const recentResults = [

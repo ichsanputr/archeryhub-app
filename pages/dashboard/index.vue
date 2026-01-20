@@ -14,16 +14,12 @@
         <p class="text-text-secondary mt-1 font-medium text-sm">Qualification Round 2 in progress</p>
       </div>
       <div class="flex gap-3">
-        <button
-          class="flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-gray-200 text-navy-dark hover:bg-gray-50 hover:border-gray-300 font-semibold text-sm transition-all shadow-sm">
-          <span class="material-symbols-outlined text-[18px]">pause</span>
+        <BaseButton variant="outline" size="sm" icon="pause">
           Pause Round
-        </button>
-        <button
-          class="flex items-center gap-2 px-4 py-2 rounded-lg bg-navy-dark text-white hover:bg-navy-light font-bold text-sm transition-all shadow-md">
-          <span class="material-symbols-outlined text-[18px]">campaign</span>
+        </BaseButton>
+        <BaseButton variant="primary" size="sm" icon="campaign">
           Broadcast
-        </button>
+        </BaseButton>
       </div>
     </div>
 
@@ -141,8 +137,9 @@
         class="bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
         <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
           <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">Leaderboard</h3>
-          <button class="text-xs text-text-secondary hover:text-navy-dark font-semibold transition-colors">View
-            All</button>
+          <BaseButton variant="ghost" size="sm">
+            View All
+          </BaseButton>
         </div>
         <div class="flex-1 overflow-y-auto">
           <table class="w-full text-left text-sm">
@@ -165,7 +162,7 @@
                 </td>
                 <td class="px-6 py-3.5">
                   <div class="text-navy-dark font-bold group-hover:text-primary-hover transition-colors">{{ archer.name
-                    }}</div>
+                  }}</div>
                   <div class="text-gray-400 text-xs">{{ archer.category }}</div>
                 </td>
                 <td :class="index === 0 ? 'text-navy-dark font-bold text-base' : 'text-navy-dark font-semibold text-sm'"
@@ -196,8 +193,9 @@
               <p class="text-navy-dark text-sm font-bold">Target 04 Malfunction</p>
               <p class="text-text-secondary text-xs mt-1">Sensor not registering hits. Technician dispatched.</p>
             </div>
-            <button
-              class="px-3 py-1.5 bg-white border border-gray-200 hover:border-red-200 hover:text-red-600 text-text-secondary text-xs font-semibold rounded-lg shadow-sm transition-colors">Dismiss</button>
+            <BaseButton variant="outline" size="sm">
+              Dismiss
+            </BaseButton>
           </div>
           <div class="flex items-start gap-4 p-4 rounded-xl bg-gray-50 border border-gray-100">
             <div class="p-2 bg-white rounded-lg border border-gray-200 shadow-sm text-navy-dark">
@@ -207,8 +205,9 @@
               <p class="text-navy-dark text-sm font-bold">Scoring Review Requested</p>
               <p class="text-text-secondary text-xs mt-1">Archer #23 contested Arrow 3 on End 4.</p>
             </div>
-            <button
-              class="px-3 py-1.5 bg-navy-dark hover:bg-navy-light text-white text-xs font-medium rounded-lg shadow-sm transition-colors">Review</button>
+            <BaseButton variant="primary" size="sm">
+              Review
+            </BaseButton>
           </div>
         </div>
       </div>

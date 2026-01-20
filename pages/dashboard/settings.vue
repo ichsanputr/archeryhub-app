@@ -2,148 +2,102 @@
   <div class="space-y-6">
     <!-- Header -->
     <div>
-      <h1 class="text-3xl font-black text-white">Settings</h1>
-      <p class="text-brand-gold mt-1">Manage your application preferences and configurations</p>
+      <h1 class="text-3xl font-black text-navy">Settings</h1>
+      <p class="text-text-secondary mt-1 font-medium italic">Manage your application preferences and configurations</p>
     </div>
 
     <!-- Settings Nav Tabs -->
-    <div class="flex gap-2 border-b border-brand-border overflow-x-auto">
-      <button v-for="tab in tabs" :key="tab.value" @click="activeTab = tab.value"
-        :class="activeTab === tab.value ? 'border-b-2 border-primary text-white' : 'text-brand-gold hover:text-white'"
-        class="px-4 py-3 font-semibold text-sm whitespace-nowrap transition-colors">
+    <div class="flex gap-2 border-b border-gray-100 overflow-x-auto no-scrollbar pb-1">
+      <BaseButton v-for="tab in tabs" :key="tab.value" variant="ghost" size="sm" :class="[
+        'rounded-none border-b-2 font-bold !px-5 !py-4 transition-all',
+        activeTab === tab.value ? 'border-primary text-navy bg-primary/5' : 'border-transparent text-gray-500 hover:text-navy hover:bg-gray-50'
+      ]" @click="activeTab = tab.value">
         {{ tab.label }}
-      </button>
+      </BaseButton>
     </div>
 
     <!-- General Settings -->
-    <div v-if="activeTab === 'general'" class="card space-y-6">
+    <div v-if="activeTab === 'general'"
+      class="bg-white rounded-xl border border-gray-200 p-6 md:p-8 shadow-sm space-y-8">
       <div>
-        <h3 class="text-xl font-bold text-white mb-4">General Settings</h3>
+        <h3 class="text-xl font-bold text-navy mb-6">General Settings</h3>
 
-        <div class="space-y-4">
-          <label class="flex flex-col gap-2">
-            <span class="text-white text-sm font-medium">Organization Name</span>
-            <input v-model="settings.organizationName" class="input" />
-          </label>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <BaseInput v-model="settings.organizationName" label="Organization Name" placeholder="Archeryhub.id" />
 
-          <label class="flex flex-col gap-2">
-            <span class="text-white text-sm font-medium">Default Language</span>
-            <select v-model="settings.language" class="input">
-              <option value="en">English</option>
-              <option value="id">Indonesian</option>
-              <option value="es">Spanish</option>
-            </select>
-          </label>
+          <BaseSelect v-model="settings.language" label="Default Language" :items="[
+            { title: 'English', value: 'en' },
+            { title: 'Indonesian', value: 'id' },
+            { title: 'Spanish', value: 'es' }
+          ]" />
 
-          <label class="flex flex-col gap-2">
-            <span class="text-white text-sm font-medium">Timezone</span>
-            <select v-model="settings.timezone" class="input">
-              <option value="Asia/Jakarta">Asia/Jakarta (GMT+7)</option>
-              <option value="America/New_York">America/New_York (GMT-5)</option>
-              <option value="Europe/London">Europe/London (GMT)</option>
-            </select>
-          </label>
+          <BaseSelect v-model="settings.timezone" label="Timezone" :items="[
+            { title: 'Asia/Jakarta (GMT+7)', value: 'Asia/Jakarta' },
+            { title: 'America/New_York (GMT-5)', value: 'America/New_York' },
+            { title: 'Europe/London (GMT)', value: 'Europe/London' }
+          ]" />
 
-          <label class="flex items-center gap-3">
-            <input v-model="settings.darkMode" type="checkbox"
-              class="rounded border-brand-border text-primary focus:ring-primary" />
-            <span class="text-white text-sm">Enable Dark Mode</span>
-          </label>
+          <div class="flex items-center pt-8">
+            <BaseCheckbox v-model="settings.darkMode" label="Enable Dark Mode" />
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Tournament Settings -->
-    <div v-if="activeTab === 'tournament'" class="card space-y-6">
+    <div v-if="activeTab === 'tournament'"
+      class="bg-white rounded-xl border border-gray-200 p-6 md:p-8 shadow-sm space-y-8">
       <div>
-        <h3 class="text-xl font-bold text-white mb-4">Tournament Defaults</h3>
+        <h3 class="text-xl font-bold text-navy mb-6">Tournament Defaults</h3>
 
-        <div class="space-y-4">
-          <label class="flex flex-col gap-2">
-            <span class="text-white text-sm font-medium">Default Target Distance (meters)</span>
-            <input v-model="settings.defaultDistance" type="number" class="input" />
-          </label>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <BaseInput v-model.number="settings.defaultDistance" label="Default Target Distance (meters)" type="number" />
+          <BaseInput v-model.number="settings.arrowsPerEnd" label="Arrows Per End" type="number" />
+          <BaseInput v-model.number="settings.timePerEnd" label="Time Per End (seconds)" type="number" />
 
-          <label class="flex flex-col gap-2">
-            <span class="text-white text-sm font-medium">Arrows Per End</span>
-            <input v-model="settings.arrowsPerEnd" type="number" class="input" />
-          </label>
-
-          <label class="flex flex-col gap-2">
-            <span class="text-white text-sm font-medium">Time Per End (seconds)</span>
-            <input v-model="settings.timePerEnd" type="number" class="input" />
-          </label>
-
-          <label class="flex items-center gap-3">
-            <input v-model="settings.autoRanking" type="checkbox"
-              class="rounded border-brand-border text-primary focus:ring-primary" />
-            <span class="text-white text-sm">Enable Auto Ranking Calculation</span>
-          </label>
+          <div class="flex items-center pt-8">
+            <BaseCheckbox v-model="settings.autoRanking" label="Enable Auto Ranking Calculation" />
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Scoring Settings -->
-    <div v-if="activeTab === 'scoring'" class="card space-y-6">
+    <div v-if="activeTab === 'scoring'"
+      class="bg-white rounded-xl border border-gray-200 p-6 md:p-8 shadow-sm space-y-8">
       <div>
-        <h3 class="text-xl font-bold text-white mb-4">Scoring Configuration</h3>
+        <h3 class="text-xl font-bold text-navy mb-6">Scoring Configuration</h3>
 
-        <div class="space-y-4">
-          <label class="flex items-center gap-3">
-            <input v-model="settings.allowScoreEdits" type="checkbox"
-              class="rounded border-brand-border text-primary focus:ring-primary" />
-            <span class="text-white text-sm">Allow Score Edits After Submission</span>
-          </label>
-
-          <label class="flex items-center gap-3">
-            <input v-model="settings.requireSignatures" type="checkbox"
-              class="rounded border-brand-border text-primary focus:ring-primary" />
-            <span class="text-white text-sm">Require Digital Signatures</span>
-          </label>
-
-          <label class="flex items-center gap-3">
-            <input v-model="settings.realtimeUpdates" type="checkbox"
-              class="rounded border-brand-border text-primary focus:ring-primary" />
-            <span class="text-white text-sm">Enable Real-time Leaderboard Updates</span>
-          </label>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <BaseCheckbox v-model="settings.allowScoreEdits" label="Allow Score Edits After Submission" />
+          <BaseCheckbox v-model="settings.requireSignatures" label="Require Digital Signatures" />
+          <BaseCheckbox v-model="settings.realtimeUpdates" label="Enable Real-time Leaderboard Updates" />
         </div>
       </div>
     </div>
 
     <!-- Notification Settings -->
-    <div v-if="activeTab === 'notifications'" class="card space-y-6">
+    <div v-if="activeTab === 'notifications'"
+      class="bg-white rounded-xl border border-gray-200 p-6 md:p-8 shadow-sm space-y-8">
       <div>
-        <h3 class="text-xl font-bold text-white mb-4">Notification Preferences</h3>
+        <h3 class="text-xl font-bold text-navy mb-6">Notification Preferences</h3>
 
-        <div class="space-y-4">
-          <label class="flex items-center gap-3">
-            <input v-model="settings.emailNotifications" type="checkbox"
-              class="rounded border-brand-border text-primary focus:ring-primary" />
-            <span class="text-white text-sm">Email Notifications</span>
-          </label>
-
-          <label class="flex items-center gap-3">
-            <input v-model="settings.smsNotifications" type="checkbox"
-              class="rounded border-brand-border text-primary focus:ring-primary" />
-            <span class="text-white text-sm">SMS Notifications</span>
-          </label>
-
-          <label class="flex items-center gap-3">
-            <input v-model="settings.pushNotifications" type="checkbox"
-              class="rounded border-brand-border text-primary focus:ring-primary" />
-            <span class="text-white text-sm">Push Notifications</span>
-          </label>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <BaseCheckbox v-model="settings.emailNotifications" label="Email Notifications" />
+          <BaseCheckbox v-model="settings.smsNotifications" label="SMS Notifications" />
+          <BaseCheckbox v-model="settings.pushNotifications" label="Push Notifications" />
         </div>
       </div>
     </div>
 
     <!-- Save Button -->
-    <div class="flex justify-end gap-4">
-      <button class="btn-secondary">Cancel</button>
-      <button @click="saveSettings" class="btn-primary">
-        <span class="material-symbols-outlined text-[20px]">save</span>
-        Save Settings
-      </button>
+    <div class="flex justify-end gap-3 mt-10 pt-6 border-t border-gray-100">
+      <BaseButton variant="outline" size="lg">
+        Batal
+      </BaseButton>
+      <BaseButton variant="gold" size="lg" icon="save" @click="saveSettings">
+        Simpan Perubahan
+      </BaseButton>
     </div>
   </div>
 </template>
@@ -153,8 +107,7 @@ import { ref } from 'vue'
 
 definePageMeta({
   title: 'Settings',
-  layout: 'default'
-  // middleware: 'auth'
+  layout: 'dashboard'
 })
 
 const activeTab = ref('general')

@@ -3,22 +3,24 @@
     <Container>
       <div class="py-8">
         <!-- Loading State -->
-        <div v-if="loading" class="flex items-center justify-center py-20">
-          <div class="text-center">
-            <div class="inline-block w-12 h-12 border-4 border-yellow-200 border-t-yellow-600 rounded-full animate-spin"></div>
-            <p class="mt-4 text-gray-600">Loading profile...</p>
+        <div v-if="loading" class="flex flex-col items-center justify-center py-20 gap-4">
+          <div class="relative w-16 h-16">
+            <div class="absolute inset-0 border-4 border-primary/20 rounded-full"></div>
+            <div class="absolute inset-0 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
           </div>
+          <p class="text-navy font-bold animate-pulse">Memuat profil...</p>
         </div>
 
         <!-- Error State -->
-        <div v-else-if="error" class="text-center py-20">
-          <Icon icon="ph:warning-circle" class="w-16 h-16 text-red-500 mx-auto mb-4" />
-          <h2 class="text-2xl font-bold text-gray-900 mb-2">User Not Found</h2>
-          <p class="text-gray-600 mb-6">{{ error }}</p>
-          <NuxtLink to="/problem" class="inline-flex items-center gap-2 px-6 py-3 bg-yellow-500 text-white font-semibold rounded-lg hover:bg-yellow-600 transition-colors">
-            <Icon icon="ph:arrow-left" class="w-5 h-5" />
-            Back to Problems
-          </NuxtLink>
+        <div v-else-if="error" class="text-center py-20 bg-white rounded-2xl border border-gray-100 shadow-sm">
+          <div class="w-20 h-20 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Icon icon="ph:user-focus" class="w-10 h-10" />
+          </div>
+          <h2 class="text-2xl font-black text-navy mb-2">Profil Tidak Ditemukan</h2>
+          <p class="text-text-secondary mb-8 max-w-sm mx-auto">{{ error }}</p>
+          <BaseButton to="/dashboard/events" variant="primary" icon="ph:arrow-left">
+            Kembali ke Beranda
+          </BaseButton>
         </div>
 
         <!-- Profile Content -->
@@ -26,17 +28,14 @@
           <!-- Header Section -->
           <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
             <!-- Cover with gradient -->
-            <div class="h-32 bg-gradient-to-r from-yellow-400 via-orange-500 to-yellow-400"></div>
-            
+            <div class="h-32 bg-gradient-to-r from-navy via-primary to-navy"></div>
+
             <!-- Profile Info -->
             <div class="relative px-6 pb-6">
               <!-- Avatar -->
               <div class="absolute -top-16 left-6">
-                <img 
-                  :src="profile.avatar_url" 
-                  :alt="profile.name || profile.username"
-                  class="w-32 h-32 rounded-full border-4 border-white shadow-lg"
-                />
+                <img :src="profile.avatar_url" :alt="profile.name || profile.username"
+                  class="w-32 h-32 rounded-full border-4 border-white shadow-lg" />
               </div>
 
               <!-- User Info -->
@@ -52,17 +51,10 @@
 
                 <!-- Level Badge -->
                 <div class="flex-shrink-0">
-                  <UserLevelBadge
-                    :level="profile.level"
-                    :current-x-p="profile.experience_points"
-                    :next-level-x-p="profile.next_level_xp"
-                    :current-level-min-x-p="profile.current_level_min_xp"
-                    :level-title="profile.level_title"
-                    :title-color="profile.level_title_color"
-                    :badge-icon="profile.badge_icon"
-                    :badge-gradient="profile.badge_gradient"
-                    :show-progress="true"
-                  />
+                  <UserLevelBadge :level="profile.level" :current-x-p="profile.experience_points"
+                    :next-level-x-p="profile.next_level_xp" :current-level-min-x-p="profile.current_level_min_xp"
+                    :level-title="profile.level_title" :title-color="profile.level_title_color"
+                    :badge-icon="profile.badge_icon" :badge-gradient="profile.badge_gradient" :show-progress="true" />
                 </div>
               </div>
             </div>
@@ -70,15 +62,18 @@
 
           <!-- Stats Grid -->
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center hover:shadow-md transition-shadow">
-              <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Icon icon="ph:check-circle-fill" class="w-6 h-6 text-yellow-600" />
+            <div
+              class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center hover:shadow-md transition-shadow group">
+              <div
+                class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-primary transition-colors">
+                <Icon icon="ph:check-circle-fill" class="w-6 h-6 text-primary group-hover:text-navy" />
               </div>
-              <p class="text-3xl font-bold text-gray-900">{{ profile.total_solved }}</p>
-              <p class="text-sm text-gray-600 mt-1">Problems Solved</p>
+              <p class="text-3xl font-black text-navy">{{ profile.total_solved }}</p>
+              <p class="text-sm text-text-secondary mt-1 font-medium">Event Diikuti</p>
             </div>
 
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center hover:shadow-md transition-shadow">
+            <div
+              class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center hover:shadow-md transition-shadow">
               <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
                 <Icon icon="ph:fire-fill" class="w-6 h-6 text-green-600" />
               </div>
@@ -86,15 +81,18 @@
               <p class="text-sm text-gray-600 mt-1">Current Streak</p>
             </div>
 
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center hover:shadow-md transition-shadow">
-              <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Icon icon="ph:trophy-fill" class="w-6 h-6 text-orange-600" />
+            <div
+              class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center hover:shadow-md transition-shadow group">
+              <div
+                class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:bg-orange-500 transition-colors">
+                <Icon icon="ph:trophy-fill" class="w-6 h-6 text-orange-600 group-hover:text-white" />
               </div>
-              <p class="text-3xl font-bold text-gray-900">{{ profile.longest_streak }}</p>
-              <p class="text-sm text-gray-600 mt-1">Longest Streak</p>
+              <p class="text-3xl font-black text-navy">{{ profile.longest_streak }}</p>
+              <p class="text-sm text-text-secondary mt-1 font-medium">Prestasi Terbaik</p>
             </div>
 
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center hover:shadow-md transition-shadow">
+            <div
+              class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center hover:shadow-md transition-shadow">
               <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
                 <Icon icon="ph:percent-fill" class="w-6 h-6 text-purple-600" />
               </div>
@@ -105,15 +103,11 @@
 
           <!-- Activity Heatmap -->
           <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-            <ActivityHeatmap 
-              v-if="activityData.length > 0"
-              :activity-data="activityData"
-              :current-streak="profile.current_streak"
-              :longest-streak="profile.longest_streak"
-            />
-            <div v-else class="text-center py-12">
+            <ActivityHeatmap v-if="activityData.length > 0" :activity-data="activityData"
+              :current-streak="profile.current_streak" :longest-streak="profile.longest_streak" />
+            <div v-else class="text-center py-16 bg-gray-50 rounded-xl border border-dashed border-gray-200">
               <Icon icon="ph:calendar-blank" class="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <p class="text-gray-600">No activity data yet. Start solving problems!</p>
+              <p class="text-text-secondary font-medium">Belum ada data aktivitas. Mulai ikuti event!</p>
             </div>
           </div>
 
@@ -131,10 +125,8 @@
                   <span class="text-gray-600">{{ profile.easy_solved }} solved</span>
                 </div>
                 <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
-                  <div 
-                    class="h-full bg-green-500 transition-all duration-500"
-                    :style="{ width: `${getPercentage(profile.easy_solved, profile.total_solved)}%` }"
-                  ></div>
+                  <div class="h-full bg-green-500 transition-all duration-500"
+                    :style="{ width: `${getPercentage(profile.easy_solved, profile.total_solved)}%` }"></div>
                 </div>
               </div>
 
@@ -148,10 +140,8 @@
                   <span class="text-gray-600">{{ profile.medium_solved }} solved</span>
                 </div>
                 <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
-                  <div 
-                    class="h-full bg-yellow-500 transition-all duration-500"
-                    :style="{ width: `${getPercentage(profile.medium_solved, profile.total_solved)}%` }"
-                  ></div>
+                  <div class="h-full bg-yellow-500 transition-all duration-500"
+                    :style="{ width: `${getPercentage(profile.medium_solved, profile.total_solved)}%` }"></div>
                 </div>
               </div>
 
@@ -165,10 +155,8 @@
                   <span class="text-gray-600">{{ profile.hard_solved }} solved</span>
                 </div>
                 <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
-                  <div 
-                    class="h-full bg-red-500 transition-all duration-500"
-                    :style="{ width: `${getPercentage(profile.hard_solved, profile.total_solved)}%` }"
-                  ></div>
+                  <div class="h-full bg-red-500 transition-all duration-500"
+                    :style="{ width: `${getPercentage(profile.hard_solved, profile.total_solved)}%` }"></div>
                 </div>
               </div>
             </div>
@@ -244,10 +232,10 @@ const fetchActivity = async () => {
 // Format date
 const formatDate = (dateString) => {
   const date = new Date(dateString)
-  return date.toLocaleDateString('en-US', { 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
   })
 }
 
@@ -264,9 +252,9 @@ onMounted(async () => {
 
 // SEO
 useHead({
-  title: `${username} - Profile | BudiBadu`,
+  title: `${username} - Profil | Archeryhub.id`,
   meta: [
-    { name: 'description', content: `View ${username}'s coding profile, stats, and problem-solving activity on BudiBadu` }
+    { name: 'description', content: `Lihat profil panahan, statistik, dan riwayat turnamen ${username} di Archeryhub.id` }
   ]
 })
 </script>
@@ -278,6 +266,7 @@ useHead({
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

@@ -15,16 +15,17 @@ const { user } = useAuth()
 
 // Reactive data
 const savedProblems = ref([])
+const isLoading = ref(true)
+const error = ref(null)
 
 const config = useRuntimeConfig();
 const apiBaseUrl = config.public.apiBaseUrl || 'http://localhost:8080';
 const { get } = useApi();
 
-// Fetch saved problems using useAsyncData (SSR supported)
-const { data: savedProblemsData, pending, error: fetchError, refresh: refreshSaved } = await useAsyncData('saved-problems', async () => {
+const fetchSavedProblems = async () => {
   if (!user.value) {
     // Return demo data for preview
-    return [
+    savedProblems.value = [
       {
         id: 'demo-1',
         slug: 'two-sum',
@@ -42,8 +43,12 @@ const { data: savedProblemsData, pending, error: fetchError, refresh: refreshSav
         }
       },
     ]
+    isLoading.value = false
+    return
   }
 
+  isLoading.value = true
+  error.value = null
   try {
     const response = await get(`${apiBaseUrl}/user/saved-problem`);
 
@@ -52,7 +57,7 @@ const { data: savedProblemsData, pending, error: fetchError, refresh: refreshSav
       ? response
       : (response && response.data && Array.isArray(response.data.problems) ? response.data.problems : [])
 
-    const mapped = (items || []).map((entry) => {
+    savedProblems.value = (items || []).map((entry) => {
       // Support both old shape (saved record with nested problem) and new shape (problem directly)
       const p = entry.problem || entry || {}
       return {
@@ -68,27 +73,20 @@ const { data: savedProblemsData, pending, error: fetchError, refresh: refreshSav
         problem: p,
       }
     })
-
-    return mapped;
   } catch (err) {
     console.error('Error fetching saved problems:', err);
-    throw new Error('Failed to load saved problems');
+    error.value = 'Failed to load saved problems';
+  } finally {
+    isLoading.value = false
   }
+}
+
+onMounted(() => {
+  fetchSavedProblems()
 })
 
-// Derived loading & error
-const loading = computed(() => pending.value)
-const error = computed(() => fetchError.value?.message || null)
-
-// Keep local list in sync with async data
-watch(savedProblemsData, (val) => {
-  savedProblems.value = val || []
-}, { immediate: true })
-
-// Retry fetch
-const fetchSavedProblems = async () => {
-  await refreshSaved()
-}
+// Derived loading & error for template compatibility
+const loading = computed(() => isLoading.value)
 
 // Remove saved problem (local update only; API handled in ProblemCard)
 const removeSavedProblem = async (problemSlug) => {
@@ -102,17 +100,15 @@ const removeSavedProblem = async (problemSlug) => {
 // SEO
 const route = useRoute()
 useHead({
-  title: 'Saved Problems - BudiBadu',
+  title: 'Saved Events - Archeryhub.id',
   meta: [
     { name: 'robots', content: 'noindex' },
-    { name: 'description', content: 'View and manage your saved coding problems.' }
-  ],
-  link: [
-    {
-      rel: 'canonical',
-      href: `https://budibadu.com${route.path}`
-    }
+    { name: 'description', content: 'Lihat event yang Anda simpan.' }
   ]
+})
+
+definePageMeta({
+  layout: 'dashboard'
 })
 </script>
 
@@ -121,20 +117,20 @@ useHead({
     <!-- Header Section -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       <div
-        class="relative overflow-hidden rounded-2xl border border-yellow-100 bg-gradient-to-r from-yellow-50 via-white to-orange-50">
-        <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-yellow-200/40 blur-3xl"></div>
-        <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-orange-200/40 blur-3xl"></div>
+        class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white">
+        <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+        <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
         <div class="relative p-6 sm:p-8">
           <div
-            class="inline-flex items-center gap-2 rounded-full border border-yellow-200 bg-white/70 px-3 py-1 text-sm text-yellow-700 shadow-sm backdrop-blur">
+            class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm text-primary shadow-sm backdrop-blur">
             <Icon :ssr="true" icon="ph:bookmark-simple" class="h-4 w-4" />
-            <span>Your Collection</span>
+            <span>Koleksi Saya</span>
           </div>
-          <h1 class="mt-4 text-2xl sm:text-3xl md:text-4xl font-extrabold leading-tight text-gray-900">
-            Saved Problems
+          <h1 class="mt-4 text-2xl sm:text-3xl md:text-4xl font-black leading-tight tracking-tight font-display">
+            Event Disimpan
           </h1>
-          <p class="mt-2 text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl">
-            Your bookmarked coding challenges for later practice
+          <p class="mt-2 text-sm sm:text-base text-slate-300 max-w-2xl font-body">
+            Simpan event yang menarik buat dipantau atau diikuti nanti.
           </p>
         </div>
       </div>
@@ -144,16 +140,12 @@ useHead({
 
       <!-- Loading State -->
       <div v-if="loading" class="text-center py-16">
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8 max-w-md mx-auto">
+        <div class="bg-white rounded-2xl border border-gray-100 p-12 max-w-md mx-auto shadow-sm">
           <div class="flex flex-col items-center gap-6">
-            <div class="flex flex-col items-center gap-2">
-              <v-progress-circular indeterminate color="primary" size="64" class="mb-4" />
-              <h3 class="text-lg font-semibold text-gray-900">
-                Loading your saved problems...
-              </h3>
-              <p class="text-gray-600 text-center">
-                Please wait while we fetch your bookmarked challenges.
-              </p>
+            <div class="size-16 border-4 border-primary border-t-transparent animate-spin rounded-full"></div>
+            <div class="space-y-2">
+              <h3 class="text-lg font-bold text-navy">Memuat data...</h3>
+              <p class="text-slate-500 text-sm">Tunggu sebentar ya, lagi ngambil data event kamu.</p>
             </div>
           </div>
         </div>
@@ -166,7 +158,7 @@ useHead({
             <div class="flex flex-col items-center gap-2">
               <Icon :ssr="true" icon="ph:warning-circle" class="w-16 h-16 text-red-400" />
               <h3 class="text-lg font-semibold text-gray-900">
-                Failed to Load Saved Problems
+                Gagal memuat event tersimpan
               </h3>
               <p class="text-gray-600 text-center">
                 {{ error }}
@@ -174,19 +166,13 @@ useHead({
             </div>
 
             <div class="flex flex-col gap-3 w-full">
-              <button @click="fetchSavedProblems"
-                class="flex items-center justify-center gap-2 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition-colors w-full">
-                <Icon :ssr="true" icon="ph:arrow-clockwise" class="w-4 h-4" />
-                Try Again
-              </button>
+              <BaseButton @click="fetchSavedProblems" variant="gold" block icon="ph:arrow-clockwise">
+                Coba Lagi
+              </BaseButton>
 
-              <NuxtLink to="/problem" class="w-full">
-                <button
-                  class="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-medium transition-colors w-full">
-                  <Icon :ssr="true" icon="ph:code" class="w-4 h-4" />
-                  Browse Problems
-                </button>
-              </NuxtLink>
+              <BaseButton to="/dashboard/events" variant="outline" block icon="ph:magnifying-glass">
+                Cari Event
+              </BaseButton>
             </div>
           </div>
         </div>
@@ -198,29 +184,21 @@ useHead({
           <div class="flex flex-col items-center gap-2">
             <Icon :ssr="true" icon="ph:bookmark-simple" class="w-16 h-16 text-gray-400" />
             <h3 class="text-lg font-semibold text-gray-900">
-              No saved problems yet
+              Belum ada event yang disimpan
             </h3>
             <p class="text-gray-600 text-center">
-              Start bookmarking problems you want to solve later!
+              Mulai simpan event yang kamu minati untuk dilihat nanti!
             </p>
           </div>
 
           <div class="flex flex-col gap-3 w-full max-w-md">
-            <NuxtLink to="/problem" class="w-full">
-              <button
-                class="flex items-center justify-center gap-2 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition-colors w-full">
-                <Icon :ssr="true" icon="ph:code" class="w-4 h-4" />
-                Browse Problems
-              </button>
-            </NuxtLink>
+            <BaseButton to="/dashboard/events" variant="gold" block icon="ph:magnifying-glass" size="lg">
+              Cari Event
+            </BaseButton>
 
-            <NuxtLink to="/" class="w-full">
-              <button
-                class="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-medium transition-colors w-full">
-                <Icon :ssr="true" icon="ph:house" class="w-4 h-4" />
-                Go to Homepage
-              </button>
-            </NuxtLink>
+            <BaseButton to="/" variant="outline" block icon="ph:house">
+              Kembali ke Beranda
+            </BaseButton>
           </div>
         </div>
       </div>
@@ -235,11 +213,10 @@ useHead({
               <!-- Demo overlay -->
               <div
                 class="absolute inset-0 bg-gradient-to-t from-gray-50/90 to-transparent rounded-xl z-10 flex items-end justify-center pb-4">
-                <div class="text-center">
-                  <button @click="navigateTo('/auth/login')"
-                    class="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition-colors text-sm">
-                    Login to View Details
-                  </button>
+                <div class="text-center px-6 w-full">
+                  <BaseButton to="/auth/login" variant="gold" block size="sm">
+                    Login untuk melihat detail
+                  </BaseButton>
                 </div>
               </div>
 
@@ -345,20 +322,17 @@ useHead({
             </div>
 
             <!-- Action Buttons -->
-            <div class="flex items-center justify-between pt-4 border-t border-gray-200">
-              <NuxtLink :to="`/problem/${problem.slug}`"
-                class="flex items-center gap-2 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition-colors text-sm">
-                <Icon :ssr="true" icon="ph:play" class="w-4 h-4" />
-                Solve Now
-              </NuxtLink>
+            <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+              <BaseButton :to="`/dashboard/events/${problem.id}`" variant="primary" size="sm" icon="ph:info">
+                Detail Event
+              </BaseButton>
 
               <!-- Save Button (for removal) -->
-              <button @click="removeSavedProblem(problem.slug)"
-                class="flex items-center gap-1 px-3 py-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors text-sm"
-                title="Remove from saved">
-                <Icon :ssr="true" icon="ph:bookmark-simple" class="w-4 h-4 fill-current" />
-                <span class="hidden sm:inline">Remove</span>
-              </button>
+              <BaseButton variant="ghost" size="sm" icon="ph:trash"
+                class="text-red-500 hover:text-red-600 hover:bg-red-50 !font-bold"
+                @click="removeSavedProblem(problem.slug)">
+                Hapus
+              </BaseButton>
             </div>
           </div>
         </div>
@@ -377,21 +351,13 @@ useHead({
               </div>
 
               <div class="flex flex-col gap-3 w-full">
-                <NuxtLink to="/problem" class="w-full">
-                  <button
-                    class="flex items-center justify-center gap-2 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg font-medium transition-colors w-full">
-                    <Icon :ssr="true" icon="ph:code" class="w-4 h-4" />
-                    Browse Problems
-                  </button>
-                </NuxtLink>
+                <BaseButton to="/dashboard/events" variant="gold" block icon="ph:magnifying-glass">
+                  Cari Event
+                </BaseButton>
 
-                <NuxtLink to="/" class="w-full">
-                  <button
-                    class="flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 hover:bg-gray-50 text-gray-700 rounded-lg font-medium transition-colors w-full">
-                    <Icon :ssr="true" icon="ph:house" class="w-4 h-4" />
-                    Go to Homepage
-                  </button>
-                </NuxtLink>
+                <BaseButton to="/" variant="outline" block icon="ph:house">
+                  Kembali ke Beranda
+                </BaseButton>
               </div>
             </div>
           </div>
