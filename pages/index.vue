@@ -21,9 +21,88 @@
                     <div class="hidden md:flex items-center gap-8">
                         <NuxtLink to="/" class="text-sm font-medium transition-all duration-300 hover:text-primary"
                             :class="isScrolled ? 'text-navy' : 'text-white/80'">Beranda</NuxtLink>
-                        <NuxtLink to="/events"
-                            class="text-sm font-medium transition-all duration-300 hover:text-primary"
-                            :class="isScrolled ? 'text-navy' : 'text-white/80'">Turnamen</NuxtLink>
+                        
+                        <!-- Turnamen with Mega Menu -->
+                        <div class="relative" @mouseenter="showMegaMenu = true" @mouseleave="showMegaMenu = false">
+                            <button class="text-sm font-medium transition-all duration-300 hover:text-primary flex items-center gap-1"
+                                :class="isScrolled ? 'text-navy' : 'text-white/80'">
+                                Turnamen
+                                <Icon icon="ph:caret-down" class="text-xs transition-transform" :class="{ 'rotate-180': showMegaMenu }" />
+                            </button>
+                            
+                            <!-- Mega Menu Dropdown -->
+                            <Transition enter-active-class="transition duration-200 ease-out"
+                                enter-from-class="opacity-0 translate-y-1" enter-to-class="opacity-100 translate-y-0"
+                                leave-active-class="transition duration-150 ease-in"
+                                leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 translate-y-1">
+                                <div v-if="showMegaMenu" class="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[700px]">
+                                    <div class="bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden">
+                                        <div class="grid grid-cols-12 gap-0">
+                                            <!-- Featured Event -->
+                                            <div class="col-span-5 bg-gradient-to-br from-navy to-navy-light p-6">
+                                                <span class="text-primary text-xs font-bold uppercase tracking-wider">Featured Event</span>
+                                                <div class="mt-3">
+                                                    <div class="aspect-video bg-white/10 rounded-lg overflow-hidden mb-3">
+                                                        <img src="https://images.unsplash.com/photo-1565992441121-4367c2967103?w=400&h=225&fit=crop" 
+                                                            alt="Featured Event" class="w-full h-full object-cover" />
+                                                    </div>
+                                                    <h3 class="text-white font-bold text-sm leading-tight">National Indoor Championship 2026</h3>
+                                                    <p class="text-white/70 text-xs mt-1">Jakarta • 25-28 Feb 2026</p>
+                                                    <NuxtLink to="/events" 
+                                                        class="inline-flex items-center gap-1 mt-3 text-primary text-xs font-bold hover:text-white transition-colors">
+                                                        Lihat Detail
+                                                        <Icon icon="ph:arrow-right" />
+                                                    </NuxtLink>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Categories & Links -->
+                                            <div class="col-span-7 p-6">
+                                                <div class="grid grid-cols-2 gap-8">
+                                                    <!-- By Category -->
+                                                    <div>
+                                                        <span class="text-gray-400 text-xs font-bold uppercase tracking-wider">Kategori</span>
+                                                        <div class="mt-3 space-y-2">
+                                                            <NuxtLink v-for="cat in megaCategories" :key="cat.code" 
+                                                                :to="`/events?division=${cat.code}`"
+                                                                class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors group">
+                                                                <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                                                                    <Icon :icon="cat.icon" class="text-primary text-lg" />
+                                                                </div>
+                                                                <span class="text-navy font-semibold text-sm group-hover:text-primary transition-colors">{{ cat.name }}</span>
+                                                            </NuxtLink>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- Quick Links -->
+                                                    <div>
+                                                        <span class="text-gray-400 text-xs font-bold uppercase tracking-wider">Akses Cepat</span>
+                                                        <div class="mt-3 space-y-1">
+                                                            <NuxtLink v-for="link in megaQuickLinks" :key="link.to" 
+                                                                :to="link.to"
+                                                                class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-gray-50 transition-colors text-gray-600 hover:text-navy text-sm">
+                                                                <Icon :icon="link.icon" class="text-base" />
+                                                                {{ link.label }}
+                                                            </NuxtLink>
+                                                        </div>
+                                                        
+                                                        <!-- CTA -->
+                                                        <div class="mt-4 pt-4 border-t border-gray-100">
+                                                            <NuxtLink to="/events"
+                                                                class="flex items-center justify-center gap-2 w-full py-2.5 bg-primary hover:bg-primary-hover text-navy font-bold text-sm rounded-lg transition-all">
+                                                                <Icon icon="ph:list-bullets" />
+                                                                Semua Turnamen
+                                                            </NuxtLink>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Transition>
+                        </div>
+                        
                         <NuxtLink to="#" class="text-sm font-medium transition-all duration-300 hover:text-primary"
                             :class="isScrolled ? 'text-navy' : 'text-white/80'">Skor</NuxtLink>
                         <NuxtLink to="#" class="text-sm font-medium transition-all duration-300 hover:text-primary"
@@ -461,7 +540,22 @@ const { isLoggedIn, user } = useAuth()
 
 const isScrolled = ref(false)
 const mobileMenuOpen = ref(false)
+const showMegaMenu = ref(false)
+const mobileSubmenuOpen = ref(false)
 const activeRegion = ref('Semua Wilayah')
+
+const megaCategories = [
+    { code: 'recurve', name: 'Recurve', icon: 'ph:target-bold' },
+    { code: 'compound', name: 'Compound', icon: 'ph:crosshair-bold' },
+    { code: 'barebow', name: 'Barebow', icon: 'ph:circle-bold' },
+    { code: 'traditional', name: 'Traditional', icon: 'ph:tree-bold' },
+]
+
+const megaQuickLinks = [
+    { to: '/events', label: 'Semua Event', icon: 'ph:calendar-dots' },
+    { to: '/events?status=ongoing', label: 'Sedang Berlangsung', icon: 'ph:lightning' },
+    { to: '/events?status=upcoming', label: 'Akan Datang', icon: 'ph:clock' },
+]
 
 const regions = ['Semua Wilayah', 'DKI Jakarta', 'Jawa Barat', 'Jawa Timur', 'DI Yogyakarta', 'Banten', 'Bali']
 

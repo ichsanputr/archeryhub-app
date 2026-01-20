@@ -254,89 +254,8 @@
       </form>
     </div>
 
-    <!-- Add Image Modal -->
-    <Teleport to="body">
-      <Transition enter-active-class="transition duration-200 ease-out" enter-from-class="opacity-0"
-        enter-to-class="opacity-100" leave-active-class="transition duration-150 ease-in" leave-from-class="opacity-100"
-        leave-to-class="opacity-0">
-        <div v-if="showImageModal"
-          class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy/50 backdrop-blur-sm">
-          <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6">
-            <div class="flex items-center justify-between mb-6">
-              <h3 class="text-lg font-bold text-navy">Tambah Gambar</h3>
-              <button type="button" @click="closeImageModal" class="text-gray-400 hover:text-navy">
-                <Icon icon="ph:x-bold" class="text-xl" />
-              </button>
-            </div>
-
-            <div class="space-y-4">
-              <!-- File Upload Zone -->
-              <div 
-                @dragover.prevent="isDragging = true"
-                @dragleave.prevent="isDragging = false"
-                @drop.prevent="handleFileDrop"
-                :class="[
-                  'border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer',
-                  isDragging ? 'border-primary bg-primary/5' : 'border-gray-300 hover:border-primary hover:bg-gray-50'
-                ]"
-                @click="$refs.fileInput.click()">
-                <input 
-                  ref="fileInput"
-                  type="file" 
-                  accept="image/jpeg,image/png,image/gif,image/webp"
-                  class="hidden" 
-                  @change="handleFileSelect" />
-                
-                <div v-if="!isUploading && !uploadedPreview">
-                  <Icon icon="ph:cloud-arrow-up" class="text-4xl text-gray-400 mx-auto mb-3" />
-                  <p class="text-sm text-gray-600 font-medium">Drag & drop gambar atau klik untuk pilih</p>
-                  <p class="text-xs text-gray-400 mt-1">JPG, PNG, GIF, WebP (max 10MB)</p>
-                </div>
-                
-                <!-- Uploading State -->
-                <div v-else-if="isUploading" class="py-4">
-                  <Icon icon="ph:spinner" class="text-4xl text-primary animate-spin mx-auto mb-3" />
-                  <p class="text-sm text-gray-600 font-medium">Mengupload...</p>
-                </div>
-                
-                <!-- Preview After Upload -->
-                <div v-else-if="uploadedPreview" class="relative">
-                  <img :src="uploadedPreview" alt="Uploaded preview" class="w-full h-40 object-cover rounded-lg" />
-                  <button type="button" @click.stop="clearUpload"
-                    class="absolute top-2 right-2 bg-red-500 text-white p-1.5 rounded-full hover:bg-red-600 transition-colors">
-                    <Icon icon="ph:x-bold" class="text-sm" />
-                  </button>
-                </div>
-              </div>
-
-              <!-- Caption Input -->
-              <div v-if="uploadedPreview">
-                <label class="text-navy text-sm font-bold mb-1.5 block">Caption (opsional)</label>
-                <input v-model="newImageCaption" type="text" placeholder="Deskripsi singkat gambar"
-                  class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" />
-              </div>
-              
-              <!-- Error Message -->
-              <p v-if="uploadError" class="text-red-500 text-sm flex items-center gap-2">
-                <Icon icon="ph:warning-circle" />
-                {{ uploadError }}
-              </p>
-            </div>
-
-            <div class="flex gap-3 mt-6">
-              <button type="button" @click="closeImageModal"
-                class="flex-1 py-3 border border-gray-200 rounded-xl text-sm font-bold text-gray-600 hover:bg-gray-50 transition-colors">
-                Batal
-              </button>
-              <button type="button" @click="confirmImage" :disabled="!uploadedPreview"
-                class="flex-1 py-3 bg-primary hover:bg-primary-hover text-navy rounded-xl text-sm font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                Tambah Gambar
-              </button>
-            </div>
-          </div>
-        </div>
-      </Transition>
-    </Teleport>
+    <!-- Media Library Modal -->
+    <MediaLibrary :show="showImageModal" @close="showImageModal = false" @select="handleMediaSelect" />
   </div>
 </template>
 
@@ -344,6 +263,7 @@
 import { Icon } from '@iconify/vue'
 import TiptapEditor from '~/components/common/TiptapEditor.vue'
 import FormSection from '~/components/common/FormSection.vue'
+import MediaLibrary from '~/components/common/MediaLibrary.vue'
 import { useFormValidation } from '~/composables/useFormValidation'
 
 definePageMeta({
@@ -383,93 +303,14 @@ const form = reactive({
 })
 
 const showImageModal = ref(false)
-const newImageCaption = ref('')
-const isDragging = ref(false)
-const isUploading = ref(false)
-const uploadedPreview = ref('')
-const uploadedUrl = ref('')
-const uploadError = ref('')
 
-const handleFileSelect = async (event) => {
-  const file = event.target.files?.[0]
-  if (file) {
-    await uploadFile(file)
-  }
-}
-
-const handleFileDrop = async (event) => {
-  isDragging.value = false
-  const file = event.dataTransfer.files?.[0]
-  if (file) {
-    await uploadFile(file)
-  }
-}
-
-const uploadFile = async (file) => {
-  // Validate file type
-  const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
-  if (!allowedTypes.includes(file.type)) {
-    uploadError.value = 'Format file tidak didukung. Gunakan JPG, PNG, GIF, atau WebP.'
-    return
-  }
-  
-  // Validate file size (max 10MB)
-  const maxSize = 10 * 1024 * 1024
-  if (file.size > maxSize) {
-    uploadError.value = 'Ukuran file terlalu besar. Maksimal 10MB.'
-    return
-  }
-  
-  uploadError.value = ''
-  isUploading.value = true
-  
-  try {
-    const formData = new FormData()
-    formData.append('file', file)
-    
-    const config = useRuntimeConfig()
-    const response = await fetch(`${config.public.apiBase}/api/v1/media/upload`, {
-      method: 'POST',
-      body: formData
-    })
-    
-    if (!response.ok) {
-      const error = await response.json()
-      throw new Error(error.error || 'Upload gagal')
-    }
-    
-    const data = await response.json()
-    uploadedUrl.value = data.url
-    uploadedPreview.value = data.url
-  } catch (error) {
-    console.error('Upload failed:', error)
-    uploadError.value = error.message || 'Gagal mengupload file'
-  } finally {
-    isUploading.value = false
-  }
-}
-
-const clearUpload = () => {
-  uploadedPreview.value = ''
-  uploadedUrl.value = ''
-  uploadError.value = ''
-}
-
-const closeImageModal = () => {
-  showImageModal.value = false
-  clearUpload()
-  newImageCaption.value = ''
-}
-
-const confirmImage = () => {
-  if (uploadedUrl.value) {
-    form.images.push({
-      url: uploadedUrl.value,
-      caption: newImageCaption.value.trim() || null,
-      isPrimary: form.images.length === 0
-    })
-    closeImageModal()
-  }
+// Handle media selection from MediaLibrary
+const handleMediaSelect = ({ url, caption }) => {
+  form.images.push({
+    url,
+    caption,
+    isPrimary: form.images.length === 0
+  })
 }
 
 const removeImage = (index) => {
