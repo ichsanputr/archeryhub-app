@@ -81,7 +81,7 @@
                                                 class="text-[8px] sm:text-xs font-bold uppercase tracking-wider opacity-80">{{
                                                     event.month }}</span>
                                             <span class="text-sm sm:text-2xl font-black leading-none">{{ event.day
-                                                }}</span>
+                                            }}</span>
                                         </div>
 
                                         <div class="flex flex-col min-w-0 flex-1">
@@ -101,6 +101,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- asas -->
 
                                     <div class="flex-shrink-0">
                                         <NuxtLink :to="`/events/${index}`"
