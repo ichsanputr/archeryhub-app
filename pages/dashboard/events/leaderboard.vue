@@ -6,7 +6,7 @@
             <div class="flex items-center gap-4">
                 <div
                     class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center shadow-[0_0_20px_rgba(183,251,35,0.3)]">
-                    <span class="material-symbols-outlined text-navy font-black">gps_fixed</span>
+                    <Icon icon="ph:target-bold" class="text-navy text-2xl" />
                 </div>
                 <div>
                     <h1 class="text-xl font-black tracking-tight">LIVE LEADERBOARD</h1>
@@ -86,7 +86,7 @@
                             <span
                                 class="block text-[10px] font-black text-white/20 uppercase tracking-widest mb-1">10s+X</span>
                             <span class="text-xl font-black text-white tabular-nums">{{ athlete.tens }}/{{ athlete.xs
-                                }}</span>
+                            }}</span>
                         </div>
                         <div class="text-center">
                             <span
@@ -101,7 +101,7 @@
                         <span
                             class="block text-[10px] font-black text-white/20 uppercase tracking-[0.2em] mb-1">Total</span>
                         <span class="text-2xl md:text-4xl font-black text-primary tabular-nums">{{ athlete.score
-                            }}</span>
+                        }}</span>
                     </div>
                 </div>
             </div>
@@ -128,6 +128,8 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
+import { ref, onMounted } from 'vue'
 const currentTime = ref('00:00:00')
 
 onMounted(() => {
@@ -174,9 +176,5 @@ definePageMeta({
 
 .font-display {
     font-family: 'Manrope', sans-serif;
-}
-
-.material-symbols-outlined {
-    font-variation-settings: 'FILL' 1, 'wght' 900, 'GRAD' 0, 'opsz' 40;
 }
 </style>

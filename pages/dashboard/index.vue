@@ -14,10 +14,10 @@
         <p class="text-text-secondary mt-1 font-medium text-sm">Qualification Round 2 in progress</p>
       </div>
       <div class="flex gap-3">
-        <BaseButton variant="outline" size="sm" icon="pause">
+        <BaseButton variant="outline" size="sm" icon="ph:pause">
           Pause Round
         </BaseButton>
-        <BaseButton variant="primary" size="sm" icon="campaign">
+        <BaseButton variant="primary" size="sm" icon="ph:broadcast">
           Broadcast
         </BaseButton>
       </div>
@@ -35,12 +35,12 @@
           </div>
           <div
             class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-            <span class="material-symbols-outlined">group</span>
+            <Icon icon="ph:users" class="text-xl" />
           </div>
         </div>
         <div class="mt-auto">
           <p class="text-green-600 text-xs font-bold flex items-center gap-1">
-            <span class="material-symbols-outlined text-[14px]">trending_up</span>
+            <Icon icon="ph:trend-up" class="text-[14px]" />
             +12 check-ins today
           </p>
         </div>
@@ -57,7 +57,7 @@
           </div>
           <div
             class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-            <span class="material-symbols-outlined">adjust</span>
+            <Icon icon="ph:target" class="text-xl" />
           </div>
         </div>
         <div class="mt-auto">
@@ -78,7 +78,7 @@
           </div>
           <div
             class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-            <span class="material-symbols-outlined">assignment_turned_in</span>
+            <Icon icon="ph:check-square-offset" class="text-xl" />
           </div>
         </div>
         <div class="w-full bg-gray-100 rounded-full h-1.5 mt-auto">
@@ -96,7 +96,7 @@
           </div>
           <div
             class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-            <span class="material-symbols-outlined">timer</span>
+            <Icon icon="ph:timer" class="text-xl" />
           </div>
         </div>
         <div class="mt-auto">
@@ -218,8 +218,8 @@
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
           <button v-for="action in quickActions" :key="action.label"
             class="flex flex-col items-center justify-center p-4 rounded-xl bg-gray-50 border border-gray-100 hover:bg-white hover:border-primary hover:shadow-lg hover:shadow-primary/10 text-text-main transition-all group duration-300">
-            <span class="material-symbols-outlined mb-2 text-gray-400 group-hover:text-primary transition-colors">{{
-              action.icon }}</span>
+            <Icon :icon="action.icon.includes(':') ? action.icon : `ph:${action.icon}`"
+              class="mb-2 text-gray-400 group-hover:text-primary transition-colors text-xl" />
             <span class="text-xs font-bold group-hover:text-navy-dark text-center">{{ action.label }}</span>
           </button>
         </div>
@@ -229,15 +229,16 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
 definePageMeta({
   layout: 'dashboard'
 })
 
 const stats = [
-  { label: 'Total Archers', value: '124', icon: 'group', trend: '+12 check-ins today', trendIcon: 'trending_up', trendColor: 'text-green-600' },
-  { label: 'Active Targets', value: '32/35', icon: 'adjust', trend: 'All systems online', trendIcon: 'check_circle', trendColor: 'text-text-secondary' },
-  { label: 'Completion', value: '85%', icon: 'assignment_turned_in', trend: '', trendIcon: '', trendColor: '' },
-  { label: 'Time Left', value: '45:20', icon: 'timer', trend: 'Est. End: 14:30 PM', trendIcon: 'schedule', trendColor: 'text-text-secondary' },
+  { label: 'Total Archers', value: '124', icon: 'ph:users', trend: '+12 check-ins today', trendIcon: 'ph:trend-up', trendColor: 'text-green-600' },
+  { label: 'Active Targets', value: '32/35', icon: 'ph:target', trend: 'All systems online', trendIcon: 'ph:check-circle', trendColor: 'text-text-secondary' },
+  { label: 'Completion', value: '85%', icon: 'ph:check-square-offset', trend: '', trendIcon: '', trendColor: '' },
+  { label: 'Time Left', value: '45:20', icon: 'ph:timer', trend: 'Est. End: 14:30 PM', trendIcon: 'ph:clock', trendColor: 'text-text-secondary' },
 ]
 
 const targetGrid = [
@@ -276,12 +277,12 @@ const leaderboard = [
 ]
 
 const quickActions = [
-  { label: 'Print Scorecards', icon: 'print' },
-  { label: 'Sync Leaderboard', icon: 'published_with_changes' },
-  { label: 'Edit Assignments', icon: 'edit_note' },
-  { label: 'Announcements', icon: 'mic' },
-  { label: 'Generate QR', icon: 'qr_code' },
-  { label: 'Device Manager', icon: 'settings_applications' },
+  { label: 'Print Scorecards', icon: 'ph:printer' },
+  { label: 'Sync Leaderboard', icon: 'ph:arrows-clockwise' },
+  { label: 'Edit Assignments', icon: 'ph:note-pencil' },
+  { label: 'Announcements', icon: 'ph:megaphone' },
+  { label: 'Generate QR', icon: 'ph:qr-code' },
+  { label: 'Device Manager', icon: 'ph:desktop' },
 ]
 
 const getTargetGridClass = (status) => {

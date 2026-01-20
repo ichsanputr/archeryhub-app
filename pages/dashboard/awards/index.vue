@@ -5,7 +5,7 @@
       <div class="max-w-7xl mx-auto flex items-center justify-between">
         <div>
           <h1 class="text-2xl font-bold text-white flex items-center gap-3">
-            <span class="material-symbols-outlined text-[#f9d406]">workspace_premium</span>
+            <Icon icon="ph:medal-bold" class="text-[#f9d406]" />
             Awards & Medals
           </h1>
           <p class="text-[#ccc38e] text-sm mt-1">Track medals and ceremony status</p>
@@ -13,7 +13,7 @@
         <div class="flex items-center gap-3">
           <button @click="showAutoAward = true"
             class="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#f9d406] text-[#23200f] hover:bg-yellow-400 transition-colors font-bold text-sm">
-            <span class="material-symbols-outlined text-lg">auto_fix_high</span>
+            <Icon icon="ph:magic-wand-bold" class="text-lg" />
             Auto Award Medals
           </button>
         </div>
@@ -36,7 +36,7 @@
       <div class="bg-[#2E2B1B] rounded-xl border border-[#4a4421] overflow-hidden mb-8">
         <div class="px-6 py-4 border-b border-[#4a4421] bg-[#4a4421]/20 flex items-center justify-between">
           <h2 class="text-white font-bold flex items-center gap-2">
-            <span class="material-symbols-outlined text-[#f9d406]">leaderboard</span>
+            <Icon icon="ph:chart-bar-bold" class="text-[#f9d406]" />
             Medal Table by Country
           </h2>
         </div>
@@ -102,7 +102,7 @@
       <div class="bg-[#2E2B1B] rounded-xl border border-[#4a4421] overflow-hidden">
         <div class="px-6 py-4 border-b border-[#4a4421] bg-[#4a4421]/20 flex items-center justify-between">
           <h2 class="text-white font-bold flex items-center gap-2">
-            <span class="material-symbols-outlined text-[#f9d406]">military_tech</span>
+            <Icon icon="ph:medal-bold" class="text-[#f9d406]" />
             All Awards
           </h2>
           <div class="flex gap-2">
@@ -124,9 +124,7 @@
             class="px-6 py-4 flex items-center gap-4 hover:bg-[#4a4421]/20">
             <div class="w-12 h-12 rounded-full flex items-center justify-center"
               :class="getMedalBgClass(award.award_type)">
-              <span class="material-symbols-outlined text-2xl" :class="getMedalClass(award.award_type)">
-                workspace_premium
-              </span>
+              <Icon icon="ph:medal-fill" class="text-2xl" :class="getMedalClass(award.award_type)" />
             </div>
             <div class="flex-1">
               <p class="text-white font-medium">{{ award.recipient_name }}</p>
@@ -152,7 +150,7 @@
         <div class="bg-[#2E2B1B] rounded-2xl w-full max-w-md border border-[#4a4421]">
           <div class="p-6 border-b border-[#4a4421]">
             <h2 class="text-xl font-bold text-white flex items-center gap-2">
-              <span class="material-symbols-outlined text-[#f9d406]">auto_fix_high</span>
+              <Icon icon="ph:magic-wand-bold" class="text-[#f9d406]" />
               Auto Award Medals
             </h2>
             <p class="text-[#ccc38e] text-sm mt-1">Automatically award medals based on final results</p>
@@ -193,6 +191,7 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
 definePageMeta({
   title: 'Awards & Medals',
   layout: 'default',

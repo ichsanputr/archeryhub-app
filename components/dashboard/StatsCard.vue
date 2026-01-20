@@ -7,11 +7,10 @@
     ]">
         <div class="flex items-start justify-between mb-3">
             <div class="size-10 rounded-lg flex items-center justify-center" :class="iconBgClass">
-                <span class="material-symbols-outlined text-xl" :class="iconColorClass">{{ icon }}</span>
+                <Icon :icon="icon" class="text-xl" :class="iconColorClass" />
             </div>
             <div v-if="trend" class="flex items-center gap-1 text-xs font-medium" :class="trendClass">
-                <span class="material-symbols-outlined text-sm">{{ trend === 'up' ? 'trending_up' : 'trending_down'
-                    }}</span>
+                <Icon :icon="trend === 'up' ? 'ph:trend-up-bold' : 'ph:trend-down-bold'" class="text-sm" />
                 <span>{{ trendValue }}</span>
             </div>
         </div>
@@ -21,6 +20,7 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
 import { computed } from 'vue'
 
 const props = defineProps({

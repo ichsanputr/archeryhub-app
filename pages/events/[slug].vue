@@ -31,8 +31,7 @@
                         </NuxtLink>
                         <!-- Mobile Menu Button -->
                         <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden text-navy p-2">
-                            <span class="material-symbols-outlined text-2xl">{{ mobileMenuOpen ? 'close' :
-                                'menu' }}</span>
+                            <Icon :icon="mobileMenuOpen ? 'ph:x' : 'ph:list'" class="text-2xl" />
                         </button>
                     </div>
                 </div>
@@ -66,7 +65,7 @@
                 <!-- Breadcrumb -->
                 <nav class="flex items-center gap-2 text-sm text-gray-400 mb-8">
                     <NuxtLink to="/events" class="hover:text-white transition-colors">Tournaments</NuxtLink>
-                    <span class="material-symbols-outlined text-base">chevron_right</span>
+                    <Icon icon="ph:caret-right" class="text-base" />
                     <span class="text-primary font-medium">{{ tournament.name }}</span>
                 </nav>
 
@@ -93,11 +92,11 @@
                         </h1>
                         <div class="flex flex-wrap items-center gap-6 text-gray-300 text-base">
                             <div class="flex items-center gap-2">
-                                <span class="material-symbols-outlined text-primary">calendar_month</span>
+                                <Icon icon="ph:calendar-blank" class="text-primary" />
                                 <span>{{ tournament.date }}</span>
                             </div>
                             <div class="flex items-center gap-2">
-                                <span class="material-symbols-outlined text-primary">location_on</span>
+                                <Icon icon="ph:map-pin" class="text-primary" />
                                 <span>{{ tournament.location }}</span>
                                 <a v-if="tournament.gmaps_link" :href="tournament.gmaps_link" target="_blank"
                                     class="text-xs text-primary hover:underline flex items-center gap-1 ml-2">
@@ -362,6 +361,8 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
+
 const route = useRoute()
 const slug = route.params.slug
 

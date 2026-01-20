@@ -64,7 +64,7 @@
                   class="w-full md:w-auto bg-primary hover:bg-primary-hover text-navy px-8 py-3.5 rounded-xl text-sm font-bold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 transform active:scale-95"
                   type="submit" :disabled="loading">
                   <span>{{ loading ? 'Sending...' : 'Send Message' }}</span>
-                  <span class="material-symbols-outlined text-lg">send</span>
+                  <Icon icon="ph:paper-plane-tilt-bold" class="text-lg" />
                 </button>
               </div>
             </form>
@@ -74,13 +74,13 @@
         <div class="lg:col-span-5 space-y-6">
           <div class="bg-navy rounded-2xl shadow-lg p-8 relative overflow-hidden text-white">
             <div class="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
-              <span class="material-symbols-outlined text-9xl">travel_explore</span>
+              <Icon icon="ph:globe-hemisphere-west-bold" class="text-9xl" />
             </div>
             <h3 class="font-bold text-xl mb-6 relative z-10">Contact Information</h3>
             <div class="space-y-6 relative z-10">
               <div class="flex items-start gap-4">
                 <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
-                  <span class="material-symbols-outlined text-primary">location_on</span>
+                  <Icon icon="ph:map-pin-fill" class="text-primary" />
                 </div>
                 <div>
                   <h4 class="text-sm font-bold text-slate-300 uppercase tracking-wide mb-1">Head Office</h4>
@@ -93,7 +93,7 @@
               </div>
               <div class="flex items-start gap-4">
                 <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
-                  <span class="material-symbols-outlined text-primary">mail</span>
+                  <Icon icon="ph:envelope-simple-fill" class="text-primary" />
                 </div>
                 <div>
                   <h4 class="text-sm font-bold text-slate-300 uppercase tracking-wide mb-1">Email Support</h4>
@@ -103,7 +103,7 @@
               </div>
               <div class="flex items-start gap-4">
                 <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
-                  <span class="material-symbols-outlined text-primary">call</span>
+                  <Icon icon="ph:phone-fill" class="text-primary" />
                 </div>
                 <div>
                   <h4 class="text-sm font-bold text-slate-300 uppercase tracking-wide mb-1">Phone</h4>
@@ -142,7 +142,7 @@
           </div>
           <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
             <h3 class="font-bold text-navy dark:text-white mb-2 flex items-center gap-2">
-              <span class="material-symbols-outlined text-primary">help</span>
+              <Icon icon="ph:question-bold" class="text-primary" />
               Quick Help
             </h3>
             <p class="text-sm text-slate-500 mb-3">Looking for frequently asked questions? Visit our Help Center for
@@ -158,6 +158,7 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
 definePageMeta({
   layout: 'landing'
 })
@@ -184,8 +185,4 @@ const handleSubmit = async () => {
 }
 </script>
 
-<style scoped>
-.material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-}
-</style>
+<style scoped></style>

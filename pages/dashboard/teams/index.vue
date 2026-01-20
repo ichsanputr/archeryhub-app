@@ -6,7 +6,7 @@
       <div class="max-w-7xl mx-auto flex items-center justify-between">
         <div>
           <h1 class="text-2xl font-bold text-white flex items-center gap-3">
-            <span class="material-symbols-outlined text-[#f9d406]">groups</span>
+            <Icon icon="ph:users-three-bold" class="text-[#f9d406]" />
             Team Management
           </h1>
           <p class="text-[#ccc38e] text-sm mt-1">Manage team compositions and rankings</p>
@@ -14,12 +14,12 @@
         <div class="flex items-center gap-3">
           <button @click="showGenerateModal = true"
             class="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#4a4421] text-white hover:bg-[#5a5329] transition-colors font-medium text-sm">
-            <span class="material-symbols-outlined text-lg">auto_awesome</span>
+            <Icon icon="ph:magic-wand-bold" class="text-lg" />
             Auto Generate
           </button>
           <button @click="showCreateModal = true"
             class="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#f9d406] text-[#23200f] hover:bg-yellow-400 transition-colors font-bold text-sm">
-            <span class="material-symbols-outlined text-lg">group_add</span>
+            <Icon icon="ph:user-plus-bold" class="text-lg" />
             Create Team
           </button>
         </div>
@@ -46,7 +46,7 @@
         </div>
 
         <div class="flex items-center gap-2 text-[#ccc38e] text-sm">
-          <span class="material-symbols-outlined text-lg">info</span>
+          <Icon icon="ph:info" class="text-lg" />
           {{ teams.length }} teams found
         </div>
       </div>
@@ -58,8 +58,8 @@
         <div class="animate-spin rounded-full h-10 w-10 border-2 border-[#f9d406] border-t-transparent"></div>
       </div>
 
-      <div v-else-if="teams.length === 0" class="text-center py-20">
-        <span class="material-symbols-outlined text-6xl text-[#4a4421]">groups_off</span>
+      <div v-if="teams.length === 0" class="text-center py-20">
+        <Icon icon="ph:users-three" class="text-6xl text-[#4a4421] mx-auto block" />
         <p class="text-[#ccc38e] mt-4">No teams found</p>
         <button @click="showGenerateModal = true"
           class="mt-4 px-6 py-2 rounded-lg bg-[#f9d406] text-[#23200f] font-bold text-sm hover:bg-yellow-400 transition-colors">
@@ -76,7 +76,7 @@
                 {{ team.team_name }}
               </h3>
               <p class="text-[#ccc38e] text-sm flex items-center gap-1.5 mt-1">
-                <span class="material-symbols-outlined text-sm">flag</span>
+                <Icon icon="ph:flag-bold" class="text-sm" />
                 {{ team.country_code }}
               </p>
             </div>
@@ -125,7 +125,7 @@
             </div>
             <button @click="selectedTeam = null"
               class="p-2 rounded-lg hover:bg-[#4a4421] text-[#ccc38e] hover:text-white transition-colors">
-              <span class="material-symbols-outlined">close</span>
+              <Icon icon="ph:x" />
             </button>
           </div>
 
@@ -148,7 +148,7 @@
 
             <!-- Team Members -->
             <h3 class="text-white font-bold mb-4 flex items-center gap-2">
-              <span class="material-symbols-outlined text-[#f9d406]">group</span>
+              <Icon icon="ph:users-bold" class="text-[#f9d406]" />
               Team Members
             </h3>
 
@@ -189,7 +189,7 @@
         <div class="bg-[#2E2B1B] rounded-2xl w-full max-w-md border border-[#4a4421]">
           <div class="p-6 border-b border-[#4a4421]">
             <h2 class="text-xl font-bold text-white flex items-center gap-2">
-              <span class="material-symbols-outlined text-[#f9d406]">auto_awesome</span>
+              <Icon icon="ph:magic-wand-bold" class="text-[#f9d406]" />
               Auto Generate Teams
             </h2>
             <p class="text-[#ccc38e] text-sm mt-1">Generate teams from qualification rankings</p>
@@ -245,6 +245,7 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
 definePageMeta({
   title: 'Team Management',
   layout: 'default',

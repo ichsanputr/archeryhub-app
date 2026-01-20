@@ -12,7 +12,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div class="max-w-3xl">
                     <div class="flex items-center gap-2 text-primary text-sm font-bold uppercase tracking-wider mb-3">
-                        <span class="material-symbols-outlined text-lg">gavel</span>
+                        <Icon icon="ph:gavel" class="text-lg" />
                         Legal
                     </div>
                     <h1 class="text-3xl md:text-5xl font-black text-white leading-tight mb-4">
@@ -68,7 +68,7 @@
                     <section id="privacy-policy"
                         class="scroll-mt-32 mb-16 border-b border-gray-100 dark:border-gray-700 pb-12">
                         <h2 class="text-3xl font-bold text-navy dark:text-white mb-6 flex items-center gap-3">
-                            <span class="material-symbols-outlined text-primary text-4xl">policy</span>
+                            <Icon icon="ph:shield-check-bold" class="text-primary text-4xl" />
                             Privacy Policy
                         </h2>
                         <div class="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300">
@@ -115,7 +115,7 @@
                     <section id="terms-of-service"
                         class="scroll-mt-32 mb-16 border-b border-gray-100 dark:border-gray-700 pb-12">
                         <h2 class="text-3xl font-bold text-navy dark:text-white mb-6 flex items-center gap-3">
-                            <span class="material-symbols-outlined text-primary text-4xl">gavel</span>
+                            <Icon icon="ph:gavel-bold" class="text-primary text-4xl" />
                             Terms of Service
                         </h2>
                         <div class="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300">
@@ -159,7 +159,7 @@
                     <!-- Disclaimer -->
                     <section id="disclaimer" class="scroll-mt-32">
                         <h2 class="text-3xl font-bold text-navy dark:text-white mb-6 flex items-center gap-3">
-                            <span class="material-symbols-outlined text-primary text-4xl">warning</span>
+                            <Icon icon="ph:warning-bold" class="text-primary text-4xl" />
                             Disclaimer
                         </h2>
                         <div
@@ -197,6 +197,7 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
 definePageMeta({
     layout: 'landing'
 })
@@ -221,9 +222,5 @@ onMounted(() => {
 <style scoped>
 html {
     scroll-behavior: smooth;
-}
-
-.material-symbols-outlined {
-    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 </style>

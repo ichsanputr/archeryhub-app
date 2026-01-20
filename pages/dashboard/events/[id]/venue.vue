@@ -9,7 +9,7 @@
                 <div class="absolute bottom-4 right-4 z-10">
                     <a class="px-4 py-2 bg-white text-navy text-xs font-bold rounded-lg shadow-lg flex items-center gap-2 hover:bg-gray-50 transition-colors"
                         href="https://maps.app.goo.gl/..." target="_blank">
-                        <span class="material-symbols-outlined text-red-500 text-lg">directions</span>
+                        <Icon icon="ph:navigation-arrow-fill" class="text-red-500 text-lg" />
                         Petunjuk Arah
                     </a>
                 </div>
@@ -18,13 +18,13 @@
         <section class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
             <h2 class="text-xl font-bold text-navy mb-4 font-display">Lapangan Panahan GBK</h2>
             <p class="text-text-sub text-sm flex items-center gap-2 mb-6">
-                <span class="material-symbols-outlined text-text-sub/50">location_on</span>
+                <Icon icon="ph:map-pin" class="text-text-sub/50" />
                 Jl. Pintu Satu Senayan, Gelora, Tanah Abang, Jakarta Pusat
             </p>
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <div v-for="facility in facilities" :key="facility.name"
                     class="flex flex-col items-center p-4 bg-gray-50 rounded-xl text-center hover:bg-white hover:shadow-md transition-all">
-                    <span class="material-symbols-outlined text-primary text-3xl mb-2">{{ facility.icon }}</span>
+                    <Icon :icon="facility.icon" class="text-primary text-3xl mb-2" />
                     <span class="text-[10px] font-bold text-navy uppercase">{{ facility.name }}</span>
                 </div>
             </div>
@@ -32,13 +32,13 @@
 
         <section class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
             <h3 class="text-lg font-bold text-navy mb-6 flex items-center gap-2 font-display">
-                <span class="material-symbols-outlined text-primary">commute</span> Cara Ke Sana
+                <Icon icon="ph:car-bold" class="text-primary" /> Cara Ke Sana
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div v-for="transport in transportation" :key="transport.title"
                     class="p-4 border border-gray-50 rounded-xl hover:border-primary/30 transition-colors flex gap-4">
                     <div class="w-10 h-10 rounded-full bg-navy/5 flex items-center justify-center text-navy shrink-0">
-                        <span class="material-symbols-outlined">{{ transport.icon }}</span>
+                        <Icon :icon="transport.icon" />
                     </div>
                     <div>
                         <h4 class="font-bold text-navy mb-1 text-sm">{{ transport.title }}</h4>

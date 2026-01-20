@@ -17,9 +17,9 @@
                         <div class="flex items-start gap-4 mb-6">
                             <div :class="type === 'danger' ? 'bg-red-50 text-red-500' : 'bg-green-50 text-primary-hover'"
                                 class="p-3 rounded-xl shrink-0">
-                                <span class="material-symbols-outlined text-3xl">{{ icon || (type === 'danger' ?
-                                    'warning' :
-                                    'info') }}</span>
+                                <Icon
+                                    :icon="icon && icon.includes(':') ? icon : (type === 'danger' ? 'ph:warning-circle' : 'ph:info')"
+                                    class="text-3xl" />
                             </div>
                             <div>
                                 <h3 class="text-navy-dark text-xl font-black tracking-tight mb-2">{{ title }}</h3>
@@ -53,6 +53,7 @@
 
 <script setup>
 import { gsap } from 'gsap'
+import { Icon } from '@iconify/vue'
 
 const props = defineProps({
     show: Boolean,

@@ -2,7 +2,7 @@
   <div class="space-y-8">
     <section class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
       <h2 class="text-xl font-bold text-navy mb-6 flex items-center gap-2 font-display">
-        <span class="material-symbols-outlined text-primary">info</span> Tentang Turnamen
+        <Icon icon="ph:info-bold" class="text-primary" /> Tentang Turnamen
       </h2>
       <div class="prose max-w-none text-text-sub leading-relaxed space-y-4">
         <p>Indonesian Open Championship 2024 adalah ajang panahan bergengsi tingkat nasional yang mempertemukan talenta
@@ -12,28 +12,29 @@
           <p class="text-sm text-text-sub mb-3">Unduh panduan lengkap yang berisi peraturan, regulasi, dan jadwal detail
             turnamen.</p>
           <button class="text-navy font-bold text-sm hover:underline inline-flex items-center gap-1">
-            Unduh PDF <span class="material-symbols-outlined text-lg">download</span>
+            Unduh PDF
+            <Icon icon="ph:download-simple" class="text-lg" />
           </button>
         </div>
       </div>
     </section>
     <section class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
       <h2 class="text-xl font-bold text-navy mb-6 flex items-center gap-2 font-display">
-        <span class="material-symbols-outlined text-primary">category</span> Divisi Kompetisi
+        <Icon icon="ph:squares-four-bold" class="text-primary" /> Divisi Kompetisi
       </h2>
       <div class="grid md:grid-cols-2 gap-6">
         <div v-for="division in divisions" :key="division.name"
           class="border border-gray-100 rounded-xl p-5 hover:border-primary transition-colors">
           <div class="flex items-center justify-between mb-4">
             <div class="w-12 h-12 bg-navy/5 rounded-lg flex items-center justify-center text-navy">
-              <span class="material-symbols-outlined text-3xl">{{ division.icon }}</span>
+              <Icon :icon="division.icon" class="text-3xl" />
             </div>
             <span class="bg-navy text-white text-xs font-bold px-2 py-1 rounded">{{ division.dist }}</span>
           </div>
           <h3 class="text-lg font-bold text-navy mb-2">{{ division.name }}</h3>
           <ul class="space-y-2 text-sm text-text-sub">
             <li v-for="cat in division.categories" :key="cat" class="flex items-center gap-2">
-              <span class="material-symbols-outlined text-primary text-base">check_circle</span> {{ cat }}
+              <Icon icon="ph:check-circle-fill" class="text-primary text-base" /> {{ cat }}
             </li>
           </ul>
         </div>
@@ -42,7 +43,7 @@
     <section class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 relative overflow-hidden">
       <div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
       <h2 class="text-xl font-bold text-navy mb-6 flex items-center gap-2 relative z-10 font-display">
-        <span class="material-symbols-outlined text-primary">emoji_events</span> Total Hadiah
+        <Icon icon="ph:trophy-bold" class="text-primary" /> Total Hadiah
       </h2>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 relative z-10">
         <div v-for="prize in prizes" :key="prize.pos" :class="prize.bg" class="border rounded-xl p-6 text-center">
@@ -57,9 +58,10 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
 const divisions = [
-  { name: 'Divisi Recurve', dist: '70m', icon: 'adjust', categories: ['Individu Putra', 'Individu Putri', 'Beregu Campuran'] },
-  { name: 'Divisi Compound', dist: '50m', icon: 'gps_fixed', categories: ['Individu Putra', 'Individu Putri', 'Beregu Campuran'] }
+  { name: 'Divisi Recurve', dist: '70m', icon: 'ph:target', categories: ['Individu Putra', 'Individu Putri', 'Beregu Campuran'] },
+  { name: 'Divisi Compound', dist: '50m', icon: 'ph:target-bold', categories: ['Individu Putra', 'Individu Putri', 'Beregu Campuran'] }
 ]
 
 const prizes = [

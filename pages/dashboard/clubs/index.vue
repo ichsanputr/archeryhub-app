@@ -117,7 +117,7 @@
                             <div v-if="club.verified" class="absolute top-4 right-4 z-10">
                                 <div
                                     class="bg-blue-50 text-blue-600 border border-blue-100 px-2 py-1 rounded-md text-[10px] font-bold uppercase flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[12px]">verified</span> Terverifikasi
+                                    <Icon icon="ph:seal-check-fill" class="text-[12px]" /> Terverifikasi
                                 </div>
                             </div>
                             <div class="flex items-start gap-4 mb-4">
@@ -166,6 +166,7 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
 const searchQuery = ref('')
 const province = ref('')
 const city = ref('')

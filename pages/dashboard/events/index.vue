@@ -14,7 +14,8 @@
     <!-- Search & Filter Bar -->
     <div class="flex flex-col md:flex-row gap-4">
       <div class="flex-grow">
-        <BaseInput v-model="searchQuery" icon="search" placeholder="Cari berdasarkan nama event, lokasi..." />
+        <BaseInput v-model="searchQuery" icon="ph:magnifying-glass"
+          placeholder="Cari berdasarkan nama event, lokasi..." />
       </div>
       <div class="w-full md:w-64">
         <BaseSelect v-model="statusFilter" :items="[
@@ -53,7 +54,7 @@
             <tr v-else-if="filteredEvents.length === 0" class="hover:bg-gray-50">
               <td colspan="5" class="px-6 py-12 text-center">
                 <div class="flex flex-col items-center gap-2">
-                  <span class="material-symbols-outlined text-4xl text-gray-300">calendar_today</span>
+                  <Icon icon="ph:calendar-blank" class="text-4xl text-gray-300" />
                   <p class="text-gray-500 font-medium">Tidak ada event ditemukan</p>
                 </div>
               </td>
@@ -62,7 +63,7 @@
               <td class="px-6 py-4">
                 <div class="flex items-center gap-3">
                   <div class="size-10 rounded-lg bg-navy/5 flex items-center justify-center shrink-0">
-                    <span class="material-symbols-outlined text-navy/40">emoji_events</span>
+                    <Icon icon="ph:trophy" class="text-navy/40 text-xl" />
                   </div>
                   <div class="min-w-0">
                     <div class="text-sm font-bold text-navy truncate">{{ event.name }}</div>
@@ -79,7 +80,7 @@
                   <div class="text-sm text-navy truncate max-w-[200px]">{{ event.venue }}</div>
                   <a v-if="event.gmaps_link" :href="event.gmaps_link" target="_blank"
                     class="text-primary hover:text-primary-hover transition-colors" title="Buka Google Maps">
-                    <span class="material-symbols-outlined text-[16px]">map</span>
+                    <Icon icon="ph:map-pin" class="text-[16px]" />
                   </a>
                 </div>
                 <div class="text-xs text-gray-500">{{ event.city || '-' }}</div>
@@ -118,6 +119,7 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
 definePageMeta({
   layout: 'dashboard'
 })

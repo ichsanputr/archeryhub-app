@@ -5,7 +5,7 @@
     <div class="flex items-center gap-4 md:gap-8 flex-1">
       <!-- Mobile Menu Button -->
       <div class="md:hidden text-gray-700 dark:text-white cursor-pointer" @click="toggleMobileSidebar">
-        <span class="material-symbols-outlined">menu</span>
+        <Icon icon="ph:list" class="text-2xl" />
       </div>
 
       <!-- Page Title (from route meta or default) -->
@@ -17,7 +17,7 @@
       <div class="max-w-md w-full hidden sm:block">
         <div
           class="flex w-full items-center rounded-lg bg-gray-100 dark:bg-surface-highlight h-10 px-3 transition-all focus-within:ring-2 focus-within:ring-primary/50">
-          <span class="material-symbols-outlined text-brand-gold">search</span>
+          <Icon icon="ph:magnifying-glass" class="text-brand-gold text-lg" />
           <input v-model="searchQuery"
             class="w-full bg-transparent border-none text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-brand-gold text-sm focus:ring-0 ml-2 focus:outline-none"
             placeholder="Cari turnamen, atlet, event..." @keyup.enter="handleSearch" />
@@ -31,22 +31,22 @@
       <button @click="toggleTheme"
         class="size-10 flex items-center justify-center rounded-lg bg-gray-100 dark:bg-surface-highlight text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-surface-highlight/70 transition-colors"
         :title="isDark ? 'Ganti ke Mode Terang' : 'Ganti ke Mode Gelap'">
-        <span v-if="isDark" class="material-symbols-outlined text-[20px]">light_mode</span>
-        <span v-else class="material-symbols-outlined text-[20px]">dark_mode</span>
+        <Icon v-if="isDark" icon="ph:sun" class="text-[20px]" />
+        <Icon v-else icon="ph:moon" class="text-[20px]" />
       </button>
 
       <!-- Add New Button (context-aware) -->
       <button v-if="showAddButton"
         class="hidden md:flex h-10 px-4 bg-primary hover:bg-yellow-400 text-background-dark rounded-lg text-sm font-bold items-center gap-2 transition-colors"
         @click="handleAdd">
-        <span class="material-symbols-outlined text-[20px]">add</span>
+        <Icon icon="ph:plus-bold" class="text-[18px]" />
         {{ addButtonText }}
       </button>
 
       <!-- Notifications -->
       <button
         class="size-10 flex items-center justify-center rounded-lg bg-gray-100 dark:bg-surface-highlight text-gray-700 dark:text-white hover:bg-gray-200 dark:hover:bg-surface-highlight/70 transition-colors relative">
-        <span class="material-symbols-outlined text-[20px]">notifications</span>
+        <Icon icon="ph:bell" class="text-[20px]" />
         <span v-if="notificationCount > 0"
           class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border border-white dark:border-surface-highlight"></span>
       </button>
@@ -60,6 +60,7 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
 import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTheme } from '~/composables/useTheme'

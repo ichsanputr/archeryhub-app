@@ -41,9 +41,8 @@
                                 class="flex items-center gap-3 p-4 rounded-lg border-2 cursor-pointer transition-all"
                                 :class="form.accountType === type.value ? 'border-primary bg-primary/5' : 'border-gray-200 hover:border-gray-300'">
                                 <input type="radio" :value="type.value" v-model="form.accountType" class="hidden" />
-                                <span class="material-symbols-outlined text-2xl"
-                                    :class="form.accountType === type.value ? 'text-primary' : 'text-gray-400'">{{
-                                    type.icon }}</span>
+                                <Icon :icon="type.icon" class="text-2xl"
+                                    :class="form.accountType === type.value ? 'text-primary' : 'text-gray-400'" />
                                 <div>
                                     <span class="font-semibold text-navy text-sm block">{{ type.label }}</span>
                                     <span class="text-xs text-gray-400">{{ type.desc }}</span>
@@ -62,7 +61,7 @@
 
                 <button type="submit" :disabled="isSubmitting"
                     class="w-full h-12 rounded-lg bg-navy-dark text-white font-bold hover:bg-navy-light transition-colors disabled:opacity-50 flex items-center justify-center gap-2">
-                    <span v-if="isSubmitting" class="material-symbols-outlined animate-spin">sync</span>
+                    <Icon v-if="isSubmitting" icon="ph:spinner-gap-bold" class="animate-spin" />
                     <span>{{ isSubmitting ? 'Menyimpan...' : 'Simpan & Lanjutkan' }}</span>
                 </button>
             </form>
@@ -71,6 +70,7 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
 definePageMeta({
     layout: 'blank'
 })
@@ -87,8 +87,8 @@ const form = reactive({
 })
 
 const accountTypes = [
-    { value: 'personal', label: 'Personal', icon: 'person', desc: 'Pemanah atau pelatih' },
-    { value: 'organization', label: 'Organisasi', icon: 'groups', desc: 'Klub atau penyelenggara' }
+    { value: 'personal', label: 'Personal', icon: 'ph:user', desc: 'Pemanah atau pelatih' },
+    { value: 'organization', label: 'Organisasi', icon: 'ph:users-three', desc: 'Klub atau penyelenggara' }
 ]
 
 const handleSubmit = async () => {

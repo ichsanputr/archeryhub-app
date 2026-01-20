@@ -17,30 +17,24 @@
                         class="text-lg font-black tracking-tight whitespace-nowrap">Archeryhub.id</span>
                 </div>
                 <button @click="isMobileMenuOpen = false" class="lg:hidden p-1 text-gray-400 hover:text-white">
-                    <span class="material-symbols-outlined">close</span>
+                    <Icon icon="ph:x" class="text-xl" />
                 </button>
             </div>
 
-            <nav class="flex-grow flex flex-col p-4 gap-2 overflow-y-auto no-scrollbar">
-                <NuxtLink v-for="item in navItems" :key="item.path" :to="item.path" @click="isMobileMenuOpen = false"
+            <nav class="flex-grow flex-col p-4 gap-2 overflow-y-auto no-scrollbar hidden lg:flex">
+                <NuxtLink v-for="item in navItems" :key="item.path" :to="item.path"
                     class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group"
                     :class="(item.path === '/dashboard/events' ? route.path.startsWith('/dashboard/events') : route.path === item.path) ? 'bg-primary text-navy shadow-lg shadow-primary/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'">
-                    <span class="material-symbols-outlined group-hover:scale-110 transition-transform">{{ item.icon
-                    }}</span>
+                    <Icon :icon="item.icon.includes(':') ? item.icon : `ph:${item.icon}`"
+                        class="text-xl group-hover:scale-110 transition-transform" />
                     <span v-if="!isSidebarCollapsed" class="text-sm font-bold whitespace-nowrap">{{ item.label }}</span>
                 </NuxtLink>
 
-                <!-- Temporary hide Penyelenggara section -->
-                <div v-if="false" class="mt-6 mb-2 px-3 text-[10px] font-black text-gray-500 uppercase tracking-widest">
-                    Penyelenggara
-                </div>
-
                 <NuxtLink v-if="false" v-for="item in eventItems" :key="item.path" :to="item.path"
-                    @click="isMobileMenuOpen = false"
                     class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group"
                     :class="route.path.startsWith(item.path) && item.path !== '/' ? 'bg-primary text-navy shadow-lg shadow-primary/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'">
-                    <span class="material-symbols-outlined group-hover:scale-110 transition-transform">{{ item.icon
-                    }}</span>
+                    <Icon :icon="item.icon.includes(':') ? item.icon : `ph:${item.icon}`"
+                        class="text-xl group-hover:scale-110 transition-transform" />
                     <span v-if="!isSidebarCollapsed" class="text-sm font-bold whitespace-nowrap">{{ item.label }}</span>
                 </NuxtLink>
             </nav>
@@ -64,7 +58,7 @@
                     <button @click="handleLogout"
                         class="p-2 text-gray-400 hover:text-red-400 transition-colors rounded-lg hover:bg-white/5"
                         :title="isSidebarCollapsed ? 'Keluar' : ''">
-                        <span class="material-symbols-outlined text-[20px]">logout</span>
+                        <Icon icon="ph:sign-out" class="text-[20px]" />
                     </button>
                 </div>
             </div>
@@ -79,26 +73,26 @@
                     <!-- Mobile menu toggle -->
                     <button @click="isMobileMenuOpen = true"
                         class="lg:hidden p-2 hover:bg-gray-100 rounded-lg text-gray-400 transition-colors">
-                        <span class="material-symbols-outlined">menu</span>
+                        <Icon icon="ph:list" class="text-xl" />
                     </button>
                     <!-- Desktop sidebar toggle -->
                     <button @click="isSidebarCollapsed = !isSidebarCollapsed"
                         class="hidden lg:block p-2 hover:bg-gray-100 rounded-lg text-gray-400 transition-colors">
-                        <span class="material-symbols-outlined">{{ isSidebarCollapsed ? 'menu_open' : 'menu' }}</span>
+                        <Icon :icon="isSidebarCollapsed ? 'ph:layout' : 'ph:list'" class="text-xl" />
                     </button>
                     <h2 class="text-navy font-black text-base md:text-lg truncate">{{ currentPageTitle }}</h2>
                 </div>
 
                 <div class="flex items-center gap-2 sm:gap-4">
                     <div class="relative hidden lg:block group">
-                        <span
-                            class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-300 text-[20px] transition-colors group-focus-within:text-primary">search</span>
+                        <Icon icon="ph:magnifying-glass"
+                            class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-300 text-[20px] transition-colors group-focus-within:text-primary" />
                         <input type="text" placeholder="Cari data..."
                             class="bg-gray-50 border border-gray-200 rounded-full pl-10 pr-4 py-2 text-sm text-navy placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent w-48 xl:w-64 transition-all">
                     </div>
                     <button
                         class="relative p-2 text-gray-400 hover:text-navy hover:bg-gray-100 rounded-full transition-all">
-                        <span class="material-symbols-outlined text-[22px] md:text-[24px]">notifications</span>
+                        <Icon icon="ph:bell" class="text-[22px] md:text-[24px]" />
                         <span
                             class="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500 border-2 border-white"></span>
                     </button>
@@ -114,12 +108,13 @@
         <!-- Global Dialog -->
         <AppDialog v-model:show="showLogoutDialog" title="Keluar dari Sistem"
             message="Apakah Anda yakin ingin mengakhiri sesi ini? Anda perlu masuk kembali untuk mengakses panel kontrol."
-            confirm-text="Ya, Keluar" cancel-text="Tetap di Sini" type="danger" icon="logout" @confirm="logout" />
+            confirm-text="Ya, Keluar" cancel-text="Tetap di Sini" type="danger" icon="ph:sign-out" @confirm="logout" />
     </div>
 </template>
 
 <script setup>
 import AppDialog from '~/components/common/AppDialog.vue'
+import { Icon } from '@iconify/vue'
 
 const route = useRoute()
 const { user, logout } = useAuth()
@@ -132,15 +127,15 @@ const handleLogout = () => {
 }
 
 const navItems = [
-    { label: 'Ringkasan', icon: 'dashboard', path: '/dashboard' },
-    { label: 'Event Saya', icon: 'emoji_events', path: '/dashboard/events' },
+    { label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard' },
+    { label: 'Event', icon: 'ph:trophy', path: '/dashboard/events' },
 ]
 
 const eventItems = [
-    { label: 'Panel Kontrol', icon: 'view_quilt', path: '/dashboard/events/1/manage' },
-    { label: 'Manajemen Atlet', icon: 'groups', path: '/dashboard/events/1/manage/archers' },
-    { label: 'Scoring & Hasil', icon: 'scoreboard', path: '/dashboard/events/1/manage/scoring' },
-    { label: 'Pengaturan Event', icon: 'settings', path: '/dashboard/events/1/manage/settings' },
+    { label: 'Panel Kontrol', icon: 'ph:layout', path: '/dashboard/events/1/manage' },
+    { label: 'Manajemen Atlet', icon: 'ph:users-three', path: '/dashboard/events/1/manage/archers' },
+    { label: 'Scoring & Hasil', icon: 'ph:scoreboard', path: '/dashboard/events/1/manage/scoring' },
+    { label: 'Pengaturan Event', icon: 'ph:gear', path: '/dashboard/events/1/manage/settings' },
 ]
 
 

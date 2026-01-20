@@ -9,10 +9,8 @@
                peer-focus:ring-4 peer-focus:ring-primary/20
                group-hover:border-primary/50
                flex items-center justify-center shrink-0" :class="error ? 'border-red-500' : ''">
-                <span
-                    class="material-symbols-outlined text-[16px] text-navy font-black scale-0 peer-checked:scale-100 transition-transform">
-                    check
-                </span>
+                <Icon icon="ph:check-bold"
+                    class="text-[12px] text-navy font-black scale-0 peer-checked:scale-100 transition-transform" />
             </div>
 
             <span class="text-sm font-semibold text-navy group-hover:text-primary-dark transition-colors">
@@ -27,6 +25,8 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
+
 defineProps({
     modelValue: Boolean,
     label: String,

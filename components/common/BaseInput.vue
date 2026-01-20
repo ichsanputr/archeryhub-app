@@ -8,7 +8,7 @@
         <div class="relative group">
             <div v-if="icon"
                 class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">
-                <span class="material-symbols-outlined text-[20px]">{{ icon }}</span>
+                <Icon :icon="icon.includes(':') ? icon : `material-symbols:${icon}`" class="text-[20px]" />
             </div>
 
             <input :value="modelValue" @input="$emit('update:modelValue', $event.target.value)" :type="inputType"
@@ -21,9 +21,7 @@
 
             <button v-if="type === 'password'" type="button" @click="isPasswordVisible = !isPasswordVisible"
                 class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-navy transition-colors">
-                <span class="material-symbols-outlined text-[20px]">
-                    {{ isPasswordVisible ? 'visibility_off' : 'visibility' }}
-                </span>
+                <Icon :icon="isPasswordVisible ? 'ph:eye-slash' : 'ph:eye'" class="text-[20px]" />
             </button>
         </div>
 
@@ -38,6 +36,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { Icon } from '@iconify/vue'
 
 const props = defineProps({
     modelValue: [String, Number],

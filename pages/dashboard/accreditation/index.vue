@@ -71,9 +71,9 @@
         </div>
 
         <div class="relative">
-          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#ccc38e]">search</span>
+          <Icon icon="ph:magnifying-glass" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input v-model="searchQuery" type="text" placeholder="Search by name or card number..."
-            class="pl-10 pr-4 py-2.5 bg-[#2E2B1B] border border-[#4a4421] rounded-lg text-white text-sm w-72 focus:ring-2 focus:ring-[#f9d406]/50" />
+            class="pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-navy text-sm w-72 focus:ring-2 focus:ring-primary/50" />
         </div>
       </div>
     </div>
@@ -396,6 +396,7 @@ watch(showGateSituation, (val) => {
   if (val) fetchGateSituation()
 })
 
+import { Icon } from '@iconify/vue'
 onMounted(() => {
   fetchTournaments()
 })

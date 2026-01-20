@@ -31,7 +31,7 @@
 
       <div v-else-if="!hasResults" class="flex flex-col items-center justify-center py-20 gap-6 text-center">
         <div class="p-6 bg-gray-100 rounded-full">
-          <span class="material-symbols-outlined text-6xl text-gray-300">search_off</span>
+          <Icon icon="ph:magnifying-glass-minus" class="text-6xl text-gray-300" />
         </div>
         <div>
           <h3 class="text-xl font-bold text-navy mb-2">Tidak ada hasil ditemukan</h3>
@@ -78,7 +78,7 @@
             <div
               class="size-16 rounded-full bg-surface-highlight flex items-center justify-center overflow-hidden shrink-0 border-2 border-surface-highlight group-hover:border-primary/30 transition-colors">
               <img v-if="athlete.photo_url" :src="athlete.photo_url" class="size-full object-cover" />
-              <span v-else class="material-symbols-outlined text-3xl text-brand-gold/30">person</span>
+              <Icon v-else icon="ph:user" class="text-3xl text-brand-gold/30" />
             </div>
             <div class="flex-1 min-w-0">
               <h3 class="text-base font-bold text-white truncate">{{ athlete.first_name }} {{ athlete.last_name }}</h3>
@@ -100,6 +100,7 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
 const route = useRoute()
 const { get } = useApi()
 

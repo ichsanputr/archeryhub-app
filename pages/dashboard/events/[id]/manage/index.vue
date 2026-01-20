@@ -6,7 +6,7 @@
                 <div class="flex items-center gap-2 text-sm text-gray-500 mb-2 font-medium">
                     <NuxtLink to="/dashboard/events"
                         class="hover:text-primary-hover transition-colors flex items-center gap-1">
-                        <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+                        <Icon icon="ph:arrow-left" class="text-[16px]" />
                         Kembali ke Events
                     </NuxtLink>
                     <span class="text-gray-300">/</span>
@@ -26,13 +26,12 @@
             <div class="flex gap-3 mt-2 md:mt-0">
                 <button
                     class="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-gray-300 bg-white text-navy hover:bg-gray-50 font-bold text-sm transition-all shadow-sm">
-                    <span class="material-symbols-outlined text-[20px]">share</span>
+                    <Icon icon="ph:share-network" class="text-[20px]" />
                     Bagikan
                 </button>
                 <button
                     class="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-navy hover:bg-primary-hover font-bold text-sm transition-all shadow-md group">
-                    <span
-                        class="material-symbols-outlined text-[20px] group-hover:rotate-12 transition-transform">edit</span>
+                    <Icon icon="ph:pencil-simple-bold" class="text-[20px] group-hover:rotate-12 transition-transform" />
                     Edit Event
                 </button>
             </div>
@@ -43,7 +42,7 @@
             <div
                 class="bg-white rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.05)] border border-gray-100 flex items-center gap-5 hover:shadow-[0_10px_15px_rgba(0,0,0,0.05)] transition-shadow">
                 <div class="h-14 w-14 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                    <span class="material-symbols-outlined text-3xl">groups</span>
+                    <Icon icon="ph:users-three" class="text-3xl" />
                 </div>
                 <div>
                     <p class="text-sm text-gray-500 font-medium mb-1">Total Atlet</p>
@@ -57,7 +56,7 @@
                 class="bg-white rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.05)] border border-gray-100 flex items-center gap-5 hover:shadow-[0_10px_15px_rgba(0,0,0,0.05)] transition-shadow">
                 <div
                     class="h-14 w-14 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center shrink-0">
-                    <span class="material-symbols-outlined text-3xl">ads_click</span>
+                    <Icon icon="ph:mouse-left-click" class="text-3xl" />
                 </div>
                 <div>
                     <p class="text-sm text-gray-500 font-medium mb-1">Status Target</p>
@@ -70,7 +69,7 @@
             <div
                 class="bg-white rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.05)] border border-gray-100 flex items-center gap-5 hover:shadow-[0_10px_15px_rgba(0,0,0,0.05)] transition-shadow">
                 <div class="h-14 w-14 rounded-xl bg-green-50 text-green-600 flex items-center justify-center shrink-0">
-                    <span class="material-symbols-outlined text-3xl">payments</span>
+                    <Icon icon="ph:money" class="text-3xl" />
                 </div>
                 <div>
                     <p class="text-sm text-gray-500 font-medium mb-1">Pendapatan</p>
@@ -91,7 +90,7 @@
                     <h3 class="font-bold text-navy text-lg">Informasi Singkat</h3>
                     <button
                         class="text-gray-400 hover:text-primary-hover hover:bg-gray-50 p-1.5 rounded-md transition-colors">
-                        <span class="material-symbols-outlined text-[20px]">edit_square</span>
+                        <Icon icon="ph:pencil-line" class="text-[20px]" />
                     </button>
                 </div>
                 <div class="p-6 flex flex-col gap-6 flex-1">
@@ -107,7 +106,7 @@
                         <div class="flex gap-4">
                             <div
                                 class="shrink-0 w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400">
-                                <span class="material-symbols-outlined text-[18px]">calendar_month</span>
+                                <Icon icon="ph:calendar-blank" class="text-[18px]" />
                             </div>
                             <div>
                                 <p class="text-sm font-semibold text-navy">24 - 26 Okt 2024</p>
@@ -117,7 +116,7 @@
                         <div class="flex gap-4">
                             <div
                                 class="shrink-0 w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400">
-                                <span class="material-symbols-outlined text-[18px]">location_on</span>
+                                <Icon icon="ph:map-pin" class="text-[18px]" />
                             </div>
                             <div>
                                 <p class="text-sm font-semibold text-navy">GBK Archery Field</p>
@@ -276,6 +275,7 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
 definePageMeta({
     layout: 'dashboard'
 })

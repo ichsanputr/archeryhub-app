@@ -67,7 +67,7 @@
                   <div
                     class="size-10 rounded-full bg-cover bg-center shrink-0 border border-surface-highlight flex items-center justify-center overflow-hidden"
                     :style="athlete.photo_url ? `background-image: url('${athlete.photo_url}')` : ''">
-                    <span v-if="!athlete.photo_url" class="material-symbols-outlined text-brand-gold/30">person</span>
+                    <Icon v-if="!athlete.photo_url" icon="ph:user" class="text-brand-gold/30 text-xl" />
                   </div>
                   <div>
                     <p class="text-white text-sm font-bold group-hover:text-primary transition-colors cursor-pointer"
@@ -88,7 +88,7 @@
               </td>
               <td class="table-cell text-brand-gold text-sm">
                 <div class="flex items-center gap-1.5 uppercase font-bold text-[10px]">
-                  <span class="material-symbols-outlined text-[16px]">flag</span>
+                  <Icon icon="ph:flag-banner" class="text-[16px]" />
                   {{ athlete.country }}
                 </div>
               </td>
@@ -146,6 +146,7 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
 
 definePageMeta({

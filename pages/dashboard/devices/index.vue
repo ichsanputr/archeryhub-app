@@ -7,7 +7,7 @@
         <p class="text-brand-gold mt-1">Monitor and pair tablets for live scoring</p>
       </div>
       <button @click="showModal = true" class="btn-primary flex items-center gap-2">
-        <span class="material-symbols-outlined">add_circle</span>
+        <Icon icon="ph:plus-circle-bold" />
         Add New Device
       </button>
     </div>
@@ -16,7 +16,7 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <div v-for="stat in stats" :key="stat.label" class="card p-4 flex items-center gap-4">
         <div :class="stat.colorClass" class="size-12 rounded-lg flex items-center justify-center bg-opacity-10">
-          <span class="material-symbols-outlined">{{ stat.icon }}</span>
+          <Icon :icon="stat.icon" class="text-xl" />
         </div>
         <div>
           <p class="text-[10px] uppercase text-brand-gold font-bold tracking-wider">{{ stat.label }}</p>
@@ -33,7 +33,7 @@
       </div>
 
       <div v-else-if="devices.length === 0" class="py-20 text-center flex flex-col items-center gap-4">
-        <span class="material-symbols-outlined text-6xl text-brand-gold/10">tablet_mac</span>
+        <Icon icon="ph:tablet-bold" class="text-6xl text-brand-gold/10" />
         <div>
           <h3 class="text-lg font-bold text-white">No devices registered</h3>
           <p class="text-brand-gold/60 text-sm">Register your first scoring tablet to begin</p>
@@ -58,7 +58,7 @@
                 <div class="flex items-center gap-3">
                   <div
                     class="size-10 rounded-lg bg-surface-highlight flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <span class="material-symbols-outlined text-primary">{{ getDeviceIcon(device.device_type) }}</span>
+                    <Icon :icon="getDeviceIcon(device.device_type)" class="text-primary text-xl" />
                   </div>
                   <div>
                     <p class="text-white font-bold text-sm">{{ device.device_name || 'Unnamed Device' }}</p>
@@ -90,10 +90,10 @@
                 <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   <button
                     class="p-2 rounded hover:bg-surface-highlight text-gray-400 hover:text-white transition-colors">
-                    <span class="material-symbols-outlined text-[20px]">settings</span>
+                    <Icon icon="ph:gear-six-bold" class="text-[20px]" />
                   </button>
                   <button class="p-2 rounded hover:bg-red-500/10 text-gray-400 hover:text-red-400 transition-colors">
-                    <span class="material-symbols-outlined text-[20px]">delete</span>
+                    <Icon icon="ph:trash-bold" class="text-[20px]" />
                   </button>
                 </div>
               </td>
@@ -109,6 +109,7 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
 definePageMeta({
   title: 'Device Management',
   layout: 'default',
@@ -120,9 +121,9 @@ const loading = ref(false)
 const showModal = ref(false)
 
 const stats = computed(() => [
-  { label: 'Active Devices', value: devices.value.filter(d => d.status === 'active').length, icon: 'tablet_mac', colorClass: 'bg-green-500 text-green-500' },
-  { label: 'Paired Sessions', value: new Set(devices.value.map(d => d.session)).size, icon: 'hub', colorClass: 'bg-primary text-primary' },
-  { label: 'Out of Sync', value: 0, icon: 'sync_problem', colorClass: 'bg-orange-500 text-orange-500' },
+  { label: 'Active Devices', value: devices.value.filter(d => d.status === 'active').length, icon: 'ph:tablet-bold', colorClass: 'bg-green-500 text-green-500' },
+  { label: 'Paired Sessions', value: new Set(devices.value.map(d => d.session)).size, icon: 'ph:calendar-blank-bold', colorClass: 'bg-primary text-primary' },
+  { label: 'Out of Sync', value: 0, icon: 'ph:sync-bold', colorClass: 'bg-orange-500 text-orange-500' },
 ])
 
 const fetchDevices = async () => {
@@ -152,10 +153,10 @@ const fetchDevices = async () => {
 
 const getDeviceIcon = (type) => {
   switch (type?.toLowerCase()) {
-    case 'tablet': return 'tablet_mac'
-    case 'phone': return 'smartphone'
-    case 'kiosk': return 'desktop_windows'
-    default: return 'devices'
+    case 'tablet': return 'ph:tablet-bold'
+    case 'phone': return 'ph:smartphone-bold'
+    case 'kiosk': return 'ph:desktop-bold'
+    default: return 'ph:devices-bold'
   }
 }
 

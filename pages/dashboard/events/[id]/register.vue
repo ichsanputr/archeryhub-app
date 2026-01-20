@@ -34,7 +34,7 @@
                 </div>
 
                 <div class="bg-primary/5 p-4 rounded-xl border border-primary/20 flex gap-4">
-                    <span class="material-symbols-outlined text-primary">info</span>
+                    <Icon icon="ph:info" class="text-primary text-[24px]" />
                     <p class="text-xs text-text-sub/80 leading-relaxed">
                         Pastikan data atlet sudah sesuai dengan ID Card/KTP. Perubahan data setelah pendaftaran dapat
                         dikenakan biaya administrasi.
@@ -44,7 +44,7 @@
                 <button @click="nextStep" :disabled="!isFormValid"
                     class="w-full py-4 bg-primary hover:bg-primary-hover disabled:opacity-50 disabled:grayscale text-navy font-black text-lg rounded-xl transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
                     Lanjut ke Pembayaran
-                    <span class="material-symbols-outlined">arrow_forward</span>
+                    <Icon icon="ph:arrow-right" />
                 </button>
             </div>
 
@@ -85,7 +85,7 @@
                             </div>
                             <span class="text-sm font-bold text-navy">{{ method.name }}</span>
                             <div v-if="form.paymentMethod === method.id" class="absolute top-2 right-2">
-                                <span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+                                <Icon icon="ph:check-circle-fill" class="text-primary text-sm" />
                             </div>
                         </div>
                     </div>
@@ -110,7 +110,7 @@
                     <button @click="submitRegistration" :disabled="!form.paymentMethod"
                         class="w-full py-4 bg-primary hover:bg-primary-hover disabled:opacity-50 disabled:grayscale text-navy font-black text-lg rounded-xl transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
                         Konfirmasi & Bayar
-                        <span class="material-symbols-outlined">payments</span>
+                        <Icon icon="ph:wallet" />
                     </button>
                     <div class="flex justify-center items-center gap-6 opacity-40 grayscale">
                         <span class="text-[8px] font-black uppercase tracking-tighter">Secure Payment Gateway</span>
@@ -124,6 +124,7 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
 const step = ref(1)
 const form = reactive({
     athlete: '',

@@ -28,11 +28,11 @@
           <div class="flex justify-between items-center mb-3">
             <h3 class="text-sm font-bold uppercase tracking-wider text-brand-gold">Queue ({{ queue.length }})</h3>
             <button class="text-brand-gold hover:text-white">
-              <span class="material-symbols-outlined text-[20px]">filter_list</span>
+              <Icon icon="ph:funnel" class="text-[20px]" />
             </button>
           </div>
           <div class="relative">
-            <span class="material-symbols-outlined absolute left-3 top-2.5 text-gray-400 text-[18px]">search</span>
+            <Icon icon="ph:magnifying-glass" class="absolute left-3 top-2.5 text-gray-400 text-[18px]" />
             <input class="input w-full py-2 pl-9" placeholder="Search applicant..." />
           </div>
         </div>
@@ -74,7 +74,7 @@
             <button class="btn-secondary text-xs">View Full Roster</button>
             <button class="btn-secondary text-xs">
               Skip to Next
-              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+              <Icon icon="ph:arrow-right" class="text-[16px]" />
             </button>
           </div>
         </div>
@@ -87,11 +87,11 @@
             <div
               class="absolute top-4 left-1/2 -translate-x-1/2 flex items-center gap-2 px-2 py-1.5 bg-black/60 backdrop-blur-md rounded-full z-20 opacity-0 hover:opacity-100 transition-opacity">
               <button class="size-8 rounded-full flex items-center justify-center text-white hover:bg-white/20">
-                <span class="material-symbols-outlined text-[20px]">remove</span>
+                <Icon icon="ph:minus" class="text-[20px]" />
               </button>
               <span class="text-xs font-medium text-white/80 w-12 text-center">100%</span>
               <button class="size-8 rounded-full flex items-center justify-center text-white hover:bg-white/20">
-                <span class="material-symbols-outlined text-[20px]">add</span>
+                <Icon icon="ph:plus" class="text-[20px]" />
               </button>
             </div>
 
@@ -186,7 +186,7 @@
               </button>
               <button
                 class="flex-[2] h-14 rounded-lg bg-primary text-background-dark hover:bg-yellow-400 shadow-lg shadow-primary/20 transition-all font-bold flex items-center justify-center gap-2">
-                <span class="material-symbols-outlined">verified</span>
+                <Icon icon="ph:seal-check-fill" />
                 Verify & Approve
               </button>
             </div>
@@ -198,6 +198,7 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
 import { ref, computed } from 'vue'
 
 definePageMeta({

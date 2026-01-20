@@ -31,12 +31,12 @@
                         </h1>
                         <div class="flex flex-col md:flex-row items-center gap-4 text-white/70 text-lg mb-6">
                             <div class="flex items-center gap-2">
-                                <span class="material-symbols-outlined text-primary">badge</span>
+                                <Icon icon="ph:identification-card" class="text-primary" />
                                 <span>{{ athlete.division }}</span>
                             </div>
                             <span class="hidden md:inline text-white/20">•</span>
                             <div class="flex items-center gap-2">
-                                <span class="material-symbols-outlined text-primary">apartment</span>
+                                <Icon icon="ph:buildings" class="text-primary" />
                                 <span>{{ athlete.club }}</span>
                             </div>
                         </div>
@@ -81,8 +81,8 @@
                             <h3 class="text-4xl font-black text-navy">{{ metric.value }}</h3>
                             <span v-if="metric.trend" :class="metric.trend > 0 ? 'text-green-500' : 'text-red-500'"
                                 class="text-sm font-bold flex items-center">
-                                <span class="material-symbols-outlined text-base">{{ metric.trend > 0 ? 'arrow_drop_up'
-                                    : 'arrow_drop_down' }}</span> {{ Math.abs(metric.trend) }}
+                                <Icon :icon="metric.trend > 0 ? 'ph:caret-up-bold' : 'ph:caret-down-bold'"
+                                    class="text-base" /> {{ Math.abs(metric.trend) }}
                             </span>
                         </div>
                     </div>
@@ -240,6 +240,7 @@ const recentResults = [
         badgeClass: 'bg-gray-50 text-gray-700 border-gray-200'
     }
 ]
+import { Icon } from '@iconify/vue'
 </script>
 
 <style scoped>

@@ -15,10 +15,8 @@
                 <span :class="!selectedLabel ? 'text-gray-400' : 'text-navy'">
                     {{ selectedLabel || placeholder || 'Pilih opsi' }}
                 </span>
-                <span class="material-symbols-outlined text-gray-400 transition-transform duration-200"
-                    :class="isOpen ? 'rotate-180 text-primary' : ''">
-                    expand_more
-                </span>
+                <Icon icon="ph:caret-down" class="text-gray-400 transition-transform duration-200"
+                    :class="isOpen ? 'rotate-180 text-primary' : ''" />
             </button>
 
             <!-- Dropdown Menu -->
@@ -34,10 +32,8 @@
                         class="px-4 py-3 text-sm font-medium hover:bg-primary/10 hover:text-navy transition-colors cursor-pointer flex items-center justify-between group"
                         :class="getItemValue(item) === modelValue ? 'bg-primary/5 text-primary-dark' : 'text-gray-600'">
                         {{ getItemTitle(item) }}
-                        <span v-if="getItemValue(item) === modelValue"
-                            class="material-symbols-outlined text-[18px] text-primary transition-all">
-                            check
-                        </span>
+                        <Icon v-if="getItemValue(item) === modelValue" icon="ph:check-bold"
+                            class="text-[18px] text-primary transition-all" />
                     </div>
                 </div>
             </transition>
@@ -51,6 +47,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { Icon } from '@iconify/vue'
 
 const props = defineProps({
     modelValue: [String, Number, Boolean, Object],

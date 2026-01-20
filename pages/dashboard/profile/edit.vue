@@ -67,7 +67,7 @@
                     <div class="flex items-center gap-3 mb-6 border-b border-gray-50 pb-4">
                         <span
                             class="w-10 h-10 rounded-full bg-navy/5 flex items-center justify-center text-navy font-bold">
-                            <span class="material-symbols-outlined">person</span>
+                            <Icon icon="ph:user" class="text-xl" />
                         </span>
                         <div>
                             <h2 class="text-lg font-bold text-navy font-display">Informasi Dasar</h2>
@@ -98,7 +98,7 @@
                     <div class="flex items-center gap-3 mb-6 border-b border-gray-50 pb-4">
                         <span
                             class="w-10 h-10 rounded-full bg-navy/5 flex items-center justify-center text-navy font-bold">
-                            <span class="material-symbols-outlined">badge</span>
+                            <Icon icon="ph:identification-card" class="text-xl" />
                         </span>
                         <div>
                             <h2 class="text-lg font-bold text-navy font-display">Kategori & Disiplin</h2>
@@ -129,7 +129,7 @@
                     <div class="flex items-center gap-3 mb-6 border-b border-gray-50 pb-4">
                         <span
                             class="w-10 h-10 rounded-full bg-navy/5 flex items-center justify-center text-navy font-bold">
-                            <span class="material-symbols-outlined">build</span>
+                            <Icon icon="ph:wrench" class="text-xl" />
                         </span>
                         <div>
                             <h2 class="text-lg font-bold text-navy font-display">Konfigurasi Alat</h2>
@@ -148,7 +148,7 @@
                     <div class="flex items-center gap-3 mb-6 border-b border-gray-50 pb-4">
                         <span
                             class="w-10 h-10 rounded-full bg-navy/5 flex items-center justify-center text-navy font-bold">
-                            <span class="material-symbols-outlined">lock</span>
+                            <Icon icon="ph:lock-bold" />
                         </span>
                         <div>
                             <h2 class="text-lg font-bold text-navy font-display">Pengaturan Privasi</h2>
@@ -194,6 +194,7 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
 const profileData = ref({
     name: 'Arif Dwi Pangestu',
     username: 'arifpangestu',
@@ -232,9 +233,6 @@ const saveChanges = () => {
     color: #4b5563;
 }
 
-.material-symbols-outlined {
-    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-}
 
 .icon-filled {
     font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;

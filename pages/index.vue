@@ -32,7 +32,7 @@
                     <div class="hidden md:flex">
                         <NuxtLink v-if="isLoggedIn" to="/dashboard"
                             class="bg-primary hover:bg-primary-hover text-navy text-xs font-bold px-4 py-1.5 rounded-lg transition-colors duration-200 flex items-center gap-2">
-                            <span class="material-symbols-outlined text-base">dashboard</span>
+                            <Icon icon="ph:layout-bold" class="text-base" />
                             Dashboard
                         </NuxtLink>
                         <NuxtLink v-else to="/auth/login"
@@ -43,7 +43,7 @@
                     <div class="flex md:hidden">
                         <button class="transition-colors duration-300" :class="isScrolled ? 'text-navy' : 'text-white'"
                             @click="mobileMenuOpen = !mobileMenuOpen">
-                            <span class="material-symbols-outlined">{{ mobileMenuOpen ? 'close' : 'menu' }}</span>
+                            <Icon :icon="mobileMenuOpen ? 'ph:x-bold' : 'ph:list-bold'" class="text-2xl" />
                         </button>
                     </div>
                 </div>
@@ -145,7 +145,7 @@
                                                 class="text-[10px] sm:text-xs font-bold uppercase tracking-wider opacity-80">{{
                                                     event.month }}</span>
                                             <span class="text-xl sm:text-2xl font-black leading-none">{{ event.day
-                                                }}</span>
+                                            }}</span>
                                         </div>
 
                                         <!-- Event Details -->
@@ -449,6 +449,7 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
 import { ref, onMounted, onUnmounted } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'

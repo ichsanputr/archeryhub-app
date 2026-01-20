@@ -5,10 +5,10 @@
       <nav class="flex flex-wrap gap-2 items-center">
         <NuxtLink to="/dashboard" class="text-gray-500 hover:text-primary-hover text-sm font-medium transition-colors">
           Dashboard</NuxtLink>
-        <span class="material-symbols-outlined text-gray-300 text-sm">chevron_right</span>
+        <Icon icon="ph:caret-right" class="text-gray-300 text-sm" />
         <NuxtLink to="/dashboard/events"
           class="text-gray-500 hover:text-primary-hover text-sm font-medium transition-colors">Events</NuxtLink>
-        <span class="material-symbols-outlined text-gray-300 text-sm">chevron_right</span>
+        <Icon icon="ph:caret-right" class="text-gray-300 text-sm" />
         <span class="text-navy text-sm font-bold">Buat Baru</span>
       </nav>
 
@@ -37,18 +37,18 @@
 
         <!-- Step 1: Basic Info -->
         <div v-if="currentStep === 1" class="flex flex-col gap-8 animate-in fade-in slide-in-from-right-4">
-          <FormSection icon="badge" title="Identitas Event">
+          <FormSection icon="ph:identification-card" title="Identitas Event">
             <div class="grid grid-cols-1 gap-6">
               <BaseInput v-model="form.name" label="Nama Event" placeholder="contoh: National Indoor Championship 2024"
                 required :error="errors.name" @blur="validate('name', form.name, [rules.required()])" />
               <BaseInput v-model="form.venue" label="Lokasi Venue" placeholder="Masukkan nama venue atau alamat"
-                icon="location_on" />
+                icon="la:place-of-worship" />
               <BaseInput v-model="form.gmapsLink" label="Link Google Maps" placeholder="https://goo.gl/maps/..."
                 icon="ph:map-pin" />
             </div>
           </FormSection>
 
-          <FormSection icon="calendar_month" title="Jadwal">
+          <FormSection icon="ant-design:schedule-outlined" title="Jadwal">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <BaseInput v-model="form.startDate" label="Tanggal & Waktu Mulai" type="datetime-local" required
                 :error="errors.startDate" @blur="validate('startDate', form.startDate, [rules.required()])" />
@@ -57,17 +57,73 @@
             </div>
           </FormSection>
 
-          <FormSection icon="description" title="Detail Event">
+          <!-- Event Images Section -->
+          <FormSection icon="ph:images-bold" title="Gambar Event">
+            <p class="text-text-secondary text-sm mb-4">Tambahkan gambar untuk event Anda. Gambar pertama akan menjadi
+              thumbnail utama.</p>
+
+            <div class="flex flex-wrap gap-4">
+              <!-- Image Thumbnails -->
+              <div v-for="(img, index) in form.images" :key="index"
+                class="relative group w-32 h-32 rounded-xl overflow-hidden border-2 transition-all"
+                :class="img.isPrimary ? 'border-primary shadow-lg shadow-primary/20' : 'border-gray-200'">
+                <img :src="img.url" :alt="img.caption || 'Event image'" class="w-full h-full object-cover" />
+
+                <!-- Overlay Actions -->
+                <div
+                  class="absolute inset-0 bg-navy/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2">
+                  <button type="button" @click="setPrimaryImage(index)"
+                    class="text-white text-xs flex items-center gap-1 hover:text-primary transition-colors"
+                    :class="{ 'text-primary': img.isPrimary }">
+                    <Icon :icon="img.isPrimary ? 'ph:star-fill' : 'ph:star'" class="text-lg" />
+                    {{ img.isPrimary ? 'Utama' : 'Set Utama' }}
+                  </button>
+                  <button type="button" @click="removeImage(index)"
+                    class="text-white text-xs flex items-center gap-1 hover:text-red-400 transition-colors">
+                    <Icon icon="ph:trash" class="text-lg" />
+                    Hapus
+                  </button>
+                </div>
+
+                <!-- Primary Badge -->
+                <div v-if="img.isPrimary"
+                  class="absolute top-1 left-1 bg-primary text-navy text-[10px] font-bold px-1.5 py-0.5 rounded">
+                  Utama
+                </div>
+
+                <!-- Order Badge -->
+                <div
+                  class="absolute bottom-1 right-1 bg-navy/70 text-white text-[10px] font-bold w-5 h-5 rounded flex items-center justify-center">
+                  {{ index + 1 }}
+                </div>
+              </div>
+
+              <!-- Add Image Button -->
+              <button type="button" @click="showImageModal = true"
+                class="w-32 h-32 rounded-xl border-2 border-dashed border-gray-300 hover:border-primary hover:bg-primary/5 transition-all flex flex-col items-center justify-center gap-2 text-gray-400 hover:text-primary">
+                <Icon icon="ph:plus-bold" class="text-2xl" />
+                <span class="text-xs font-medium">Tambah</span>
+              </button>
+            </div>
+
+            <p class="text-xs text-gray-400 mt-3">
+              <Icon icon="ph:info" class="inline" /> Klik gambar untuk set sebagai utama atau hapus
+            </p>
+          </FormSection>
+
+          <FormSection icon="ph:article" title="Detail Event">
             <div class="flex flex-col gap-1.5">
-              <label class="text-navy text-sm font-bold ml-1">Deskripsi</label>
-              <TiptapEditor v-model="form.description" />
+              <label class="text-navy text-sm font-bold ml-1">Content</label>
+              <div class="min-h-[300px]">
+                <TiptapEditor v-model="form.description" />
+              </div>
             </div>
           </FormSection>
         </div>
 
         <!-- Step 2: Categories & Settings -->
         <div v-if="currentStep === 2" class="flex flex-col gap-10 animate-in fade-in slide-in-from-right-4">
-          <FormSection icon="category" title="Divisi dan kategori">
+          <FormSection icon="ph:squares-four" title="Divisi dan kategori">
             <p class="text-text-secondary text-sm mb-6">Pilih divisi dan kategori yang tersedia untuk event ini.</p>
 
             <div class="flex flex-col gap-8">
@@ -78,7 +134,6 @@
                     @click="toggleValue(form.divisions, div.code)"
                     class="h-14 px-6 rounded-xl border-2 flex items-center gap-3 font-bold transition-all text-sm"
                     :class="form.divisions.includes(div.code) ? 'bg-primary border-primary text-navy shadow-lg shadow-primary/20' : 'bg-white border-gray-100 text-gray-400 hover:border-primary/50'">
-                    <span class="material-symbols-outlined">{{ div.icon }}</span>
                     {{ div.name }}
                   </button>
                 </div>
@@ -100,7 +155,7 @@
             </div>
           </FormSection>
 
-          <FormSection icon="payments" title="Biaya pendaftaran">
+          <FormSection icon="ph:money" title="Biaya pendaftaran">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <BaseInput v-model.number="form.entryFee" label="Biaya pendaftaran (Rp)" type="number"
                 placeholder="350000" />
@@ -123,7 +178,7 @@
 
         <!-- Step 3: Review -->
         <div v-if="currentStep === 3" class="flex flex-col gap-8">
-          <FormSection icon="summarize" title="Ringkasan event">
+          <FormSection icon="ph:clipboard-text" title="Ringkasan event">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div class="space-y-4">
                 <div class="flex justify-between py-2 border-b border-gray-100">
@@ -136,7 +191,11 @@
                 </div>
                 <div v-if="form.gmapsLink" class="flex justify-between py-2 border-b border-gray-100">
                   <span class="text-gray-500">Gmaps Link</span>
-                  <span class="font-semibold text-primary truncate max-w-xs">{{ form.gmapsLink }}</span>
+                  <a :href="form.gmapsLink" target="_blank"
+                    class="font-semibold text-primary truncate max-w-xs flex items-center gap-1 hover:underline">
+                    {{ form.gmapsLink }}
+                    <Icon icon="ph:arrow-square-out" class="text-sm" />
+                  </a>
                 </div>
                 <div class="flex justify-between py-2 border-b border-gray-100">
                   <span class="text-gray-500">Tanggal mulai</span>
@@ -195,10 +254,94 @@
       </form>
     </div>
 
+    <!-- Add Image Modal -->
+    <Teleport to="body">
+      <Transition enter-active-class="transition duration-200 ease-out" enter-from-class="opacity-0"
+        enter-to-class="opacity-100" leave-active-class="transition duration-150 ease-in" leave-from-class="opacity-100"
+        leave-to-class="opacity-0">
+        <div v-if="showImageModal"
+          class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy/50 backdrop-blur-sm">
+          <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6">
+            <div class="flex items-center justify-between mb-6">
+              <h3 class="text-lg font-bold text-navy">Tambah Gambar</h3>
+              <button type="button" @click="closeImageModal" class="text-gray-400 hover:text-navy">
+                <Icon icon="ph:x-bold" class="text-xl" />
+              </button>
+            </div>
+
+            <div class="space-y-4">
+              <!-- File Upload Zone -->
+              <div 
+                @dragover.prevent="isDragging = true"
+                @dragleave.prevent="isDragging = false"
+                @drop.prevent="handleFileDrop"
+                :class="[
+                  'border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer',
+                  isDragging ? 'border-primary bg-primary/5' : 'border-gray-300 hover:border-primary hover:bg-gray-50'
+                ]"
+                @click="$refs.fileInput.click()">
+                <input 
+                  ref="fileInput"
+                  type="file" 
+                  accept="image/jpeg,image/png,image/gif,image/webp"
+                  class="hidden" 
+                  @change="handleFileSelect" />
+                
+                <div v-if="!isUploading && !uploadedPreview">
+                  <Icon icon="ph:cloud-arrow-up" class="text-4xl text-gray-400 mx-auto mb-3" />
+                  <p class="text-sm text-gray-600 font-medium">Drag & drop gambar atau klik untuk pilih</p>
+                  <p class="text-xs text-gray-400 mt-1">JPG, PNG, GIF, WebP (max 10MB)</p>
+                </div>
+                
+                <!-- Uploading State -->
+                <div v-else-if="isUploading" class="py-4">
+                  <Icon icon="ph:spinner" class="text-4xl text-primary animate-spin mx-auto mb-3" />
+                  <p class="text-sm text-gray-600 font-medium">Mengupload...</p>
+                </div>
+                
+                <!-- Preview After Upload -->
+                <div v-else-if="uploadedPreview" class="relative">
+                  <img :src="uploadedPreview" alt="Uploaded preview" class="w-full h-40 object-cover rounded-lg" />
+                  <button type="button" @click.stop="clearUpload"
+                    class="absolute top-2 right-2 bg-red-500 text-white p-1.5 rounded-full hover:bg-red-600 transition-colors">
+                    <Icon icon="ph:x-bold" class="text-sm" />
+                  </button>
+                </div>
+              </div>
+
+              <!-- Caption Input -->
+              <div v-if="uploadedPreview">
+                <label class="text-navy text-sm font-bold mb-1.5 block">Caption (opsional)</label>
+                <input v-model="newImageCaption" type="text" placeholder="Deskripsi singkat gambar"
+                  class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" />
+              </div>
+              
+              <!-- Error Message -->
+              <p v-if="uploadError" class="text-red-500 text-sm flex items-center gap-2">
+                <Icon icon="ph:warning-circle" />
+                {{ uploadError }}
+              </p>
+            </div>
+
+            <div class="flex gap-3 mt-6">
+              <button type="button" @click="closeImageModal"
+                class="flex-1 py-3 border border-gray-200 rounded-xl text-sm font-bold text-gray-600 hover:bg-gray-50 transition-colors">
+                Batal
+              </button>
+              <button type="button" @click="confirmImage" :disabled="!uploadedPreview"
+                class="flex-1 py-3 bg-primary hover:bg-primary-hover text-navy rounded-xl text-sm font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                Tambah Gambar
+              </button>
+            </div>
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
   </div>
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
 import TiptapEditor from '~/components/common/TiptapEditor.vue'
 import FormSection from '~/components/common/FormSection.vue'
 import { useFormValidation } from '~/composables/useFormValidation'
@@ -235,15 +378,120 @@ const form = reactive({
   entryFee: 350000,
   registrationDeadline: '',
   maxParticipants: null,
-  status: 'draft'
+  status: 'draft',
+  images: []
 })
 
+const showImageModal = ref(false)
+const newImageCaption = ref('')
+const isDragging = ref(false)
+const isUploading = ref(false)
+const uploadedPreview = ref('')
+const uploadedUrl = ref('')
+const uploadError = ref('')
+
+const handleFileSelect = async (event) => {
+  const file = event.target.files?.[0]
+  if (file) {
+    await uploadFile(file)
+  }
+}
+
+const handleFileDrop = async (event) => {
+  isDragging.value = false
+  const file = event.dataTransfer.files?.[0]
+  if (file) {
+    await uploadFile(file)
+  }
+}
+
+const uploadFile = async (file) => {
+  // Validate file type
+  const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
+  if (!allowedTypes.includes(file.type)) {
+    uploadError.value = 'Format file tidak didukung. Gunakan JPG, PNG, GIF, atau WebP.'
+    return
+  }
+  
+  // Validate file size (max 10MB)
+  const maxSize = 10 * 1024 * 1024
+  if (file.size > maxSize) {
+    uploadError.value = 'Ukuran file terlalu besar. Maksimal 10MB.'
+    return
+  }
+  
+  uploadError.value = ''
+  isUploading.value = true
+  
+  try {
+    const formData = new FormData()
+    formData.append('file', file)
+    
+    const config = useRuntimeConfig()
+    const response = await fetch(`${config.public.apiBase}/api/v1/media/upload`, {
+      method: 'POST',
+      body: formData
+    })
+    
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.error || 'Upload gagal')
+    }
+    
+    const data = await response.json()
+    uploadedUrl.value = data.url
+    uploadedPreview.value = data.url
+  } catch (error) {
+    console.error('Upload failed:', error)
+    uploadError.value = error.message || 'Gagal mengupload file'
+  } finally {
+    isUploading.value = false
+  }
+}
+
+const clearUpload = () => {
+  uploadedPreview.value = ''
+  uploadedUrl.value = ''
+  uploadError.value = ''
+}
+
+const closeImageModal = () => {
+  showImageModal.value = false
+  clearUpload()
+  newImageCaption.value = ''
+}
+
+const confirmImage = () => {
+  if (uploadedUrl.value) {
+    form.images.push({
+      url: uploadedUrl.value,
+      caption: newImageCaption.value.trim() || null,
+      isPrimary: form.images.length === 0
+    })
+    closeImageModal()
+  }
+}
+
+const removeImage = (index) => {
+  const wasPrimary = form.images[index].isPrimary
+  form.images.splice(index, 1)
+  if (wasPrimary && form.images.length > 0) {
+    form.images[0].isPrimary = true
+  }
+}
+
+const setPrimaryImage = (index) => {
+  form.images.forEach((img, i) => {
+    img.isPrimary = i === index
+  })
+}
+
 const availableDivisions = [
-  { code: 'recurve', name: 'Recurve', icon: 'sports' },
-  { code: 'compound', name: 'Compound', icon: 'gps_fixed' },
-  { code: 'barebow', name: 'Barebow', icon: 'adjust' },
-  { code: 'traditional', name: 'Traditional', icon: 'forest' },
-  { code: 'longbow', name: 'Longbow', icon: 'straighten' },
+  { code: 'recurve', name: 'Recurve', icon: 'ph:target' },
+  { code: 'compound', name: 'Compound', icon: 'ph:crosshair' },
+  { code: 'barebow', name: 'Barebow', icon: 'ph:circle' },
+  { code: 'traditional', name: 'Traditional', icon: 'ph:tree' },
+  { code: 'longbow', name: 'Longbow', icon: 'ph:ruler' },
 ]
 
 const availableCategories = [
@@ -269,11 +517,23 @@ const toggleValue = (arr, val) => {
 
 const validateStep = (step) => {
   if (step === 1) {
-    return validateForm(form, {
+    const isBasicValid = validateForm(form, {
       name: [rules.required()],
       startDate: [rules.required()],
       endDate: [rules.required()]
     })
+
+    // Additional validation: end date must be after start date
+    if (form.startDate && form.endDate) {
+      const startTime = new Date(form.startDate).getTime()
+      const endTime = new Date(form.endDate).getTime()
+      if (endTime <= startTime) {
+        errors.endDate = 'Waktu selesai harus setelah waktu mulai'
+        return false
+      }
+    }
+
+    return isBasicValid
   } else if (step === 2) {
     let isValid = true
     if (form.divisions.length === 0) {
@@ -341,7 +601,13 @@ const handleSubmit = async () => {
       divisions: form.divisions,
       categories: form.categories,
       registration_deadline: formatToISO(form.registrationDeadline),
-      type: 'Outdoor' // Default
+      type: 'Outdoor',
+      images: form.images.map((img, i) => ({
+        url: img.url,
+        caption: img.caption,
+        is_primary: img.isPrimary,
+        display_order: i
+      }))
     }
 
     const result = await post('/events', payload)

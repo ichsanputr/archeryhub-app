@@ -12,7 +12,7 @@
         <p class="text-primary/80 text-xs font-medium mt-1">Pusat Komando</p>
       </div>
       <button class="md:hidden ml-auto text-gray-400" @click="isSidebarOpen = false">
-        <span class="material-symbols-outlined">close</span>
+        <Icon icon="ph:x" class="text-xl" />
       </button>
     </div>
 
@@ -23,9 +23,7 @@
         :class="isActive(link.path)
           ? 'bg-gray-100 dark:bg-surface-highlight text-gray-900 dark:text-white'
           : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-surface-highlight/50 hover:text-gray-900 dark:hover:text-white'">
-        <span class="material-symbols-outlined" :class="isActive(link.path) ? 'text-primary' : ''">
-          {{ link.icon }}
-        </span>
+        <Icon :icon="link.icon" :class="isActive(link.path) ? 'text-primary' : ''" class="text-xl" />
         <span class="text-sm font-medium">{{ link.label }}</span>
         <span v-if="link.badge"
           class="ml-auto bg-primary text-background-dark text-xs font-bold px-2 py-0.5 rounded-full">
@@ -39,7 +37,7 @@
       <button
         class="flex w-full items-center gap-2 justify-center rounded-lg h-10 px-4 bg-primary text-background-dark text-sm font-bold hover:bg-yellow-400 transition-colors"
         @click="handleLogout">
-        <span class="material-symbols-outlined text-[20px]">logout</span>
+        <Icon icon="ph:sign-out-bold" class="text-[20px]" />
         <span>Keluar</span>
       </button>
     </div>
@@ -47,6 +45,7 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -60,16 +59,16 @@ watch(() => route.path, () => {
 })
 
 const navLinks = [
-  { path: '/dashboard', icon: 'dashboard', label: 'Panel Utama' },
-  { path: '/dashboard/events', icon: 'target', label: 'Turnamen' },
-  { path: '/dashboard/athletes', icon: 'groups', label: 'Atlet' },
-  { path: '/dashboard/teams', icon: 'group_work', label: 'Tim' },
-  { path: '/dashboard/live', icon: 'live_tv', label: 'Hasil Langsung', badge: '' },
-  { path: '/dashboard/awards', icon: 'workspace_premium', label: 'Penghargaan' },
-  { path: '/dashboard/accreditation', icon: 'badge', label: 'Akreditasi' },
-  { path: '/dashboard/print', icon: 'print', label: 'Pusat Cetak' },
-  { path: '/dashboard/devices', icon: 'devices', label: 'Perangkat' },
-  { path: '/dashboard/settings', icon: 'settings', label: 'Pengaturan' },
+  { path: '/dashboard', icon: 'ph:layout-bold', label: 'Panel Utama' },
+  { path: '/dashboard/events', icon: 'ph:target-bold', label: 'Turnamen' },
+  { path: '/dashboard/athletes', icon: 'ph:users-bold', label: 'Atlet' },
+  { path: '/dashboard/teams', icon: 'ph:users-three-bold', label: 'Tim' },
+  { path: '/dashboard/live', icon: 'ph:broadcast-bold', label: 'Hasil Langsung', badge: '' },
+  { path: '/dashboard/awards', icon: 'ph:trophy-bold', label: 'Penghargaan' },
+  { path: '/dashboard/accreditation', icon: 'ph:identification-card-bold', label: 'Akreditasi' },
+  { path: '/dashboard/print', icon: 'ph:printer-bold', label: 'Pusat Cetak' },
+  { path: '/dashboard/devices', icon: 'ph:devices-bold', label: 'Perangkat' },
+  { path: '/dashboard/settings', icon: 'ph:gear-six-bold', label: 'Pengaturan' },
 ]
 
 const isActive = (path) => {

@@ -23,7 +23,7 @@
                             class="text-text-secondary text-[10px] md:text-xs font-bold uppercase tracking-wider mb-1 truncate">
                             {{ stat.label }}</p>
                         <p class="text-navy text-2xl md:text-3xl font-black tracking-tight tabular-nums">{{ stat.value
-                            }}</p>
+                        }}</p>
                     </div>
                     <div
                         class="bg-gray-50 p-2 rounded-lg text-primary-dark group-hover:bg-primary group-hover:text-navy transition-colors shrink-0">
@@ -82,7 +82,7 @@
                                                 class="text-sm font-bold text-navy group-hover:text-primary-hover transition-colors truncate">
                                                 {{ athlete.name }}</div>
                                             <div class="text-[10px] text-gray-400 font-bold uppercase">{{ athlete.club
-                                                }}</div>
+                                            }}</div>
                                         </div>
                                     </div>
                                 </td>
@@ -136,7 +136,7 @@
                         <p class="text-xs text-text-secondary mt-1 leading-relaxed">{{ activity.description }}</p>
                     </div>
                     <span class="text-[10px] text-text-secondary font-black uppercase shrink-0">{{ activity.time
-                    }}</span>
+                        }}</span>
                 </div>
             </div>
         </div>
@@ -144,6 +144,7 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
 definePageMeta({
     layout: 'dashboard'
 })

@@ -8,8 +8,8 @@
       <div class="flex items-center gap-8">
         <div
           class="h-20 w-20 rounded-xl bg-surface-highlight border border-white/10 flex items-center justify-center shadow-lg group">
-          <span
-            class="material-symbols-outlined text-primary text-5xl group-hover:scale-110 transition-transform duration-500">target</span>
+          <Icon icon="ph:target"
+            class="text-primary text-5xl group-hover:scale-110 transition-transform duration-500" />
         </div>
         <div class="flex flex-col justify-center h-full pt-1">
           <div class="flex items-center gap-3 mb-1">
@@ -84,11 +84,9 @@
 
         <!-- Trend -->
         <div class="col-span-1 flex justify-center">
-          <span v-if="entry.trend === 'up'"
-            class="material-symbols-outlined text-emerald-500 text-3xl">arrow_drop_up</span>
-          <span v-else-if="entry.trend === 'down'"
-            class="material-symbols-outlined text-rose-500 text-3xl">arrow_drop_down</span>
-          <span v-else class="material-symbols-outlined text-slate-500 text-2xl">remove</span>
+          <Icon v-if="entry.trend === 'up'" icon="ph:caret-up-fill" class="text-emerald-500 text-3xl" />
+          <Icon v-else-if="entry.trend === 'down'" icon="ph:caret-down-fill" class="text-rose-500 text-3xl" />
+          <Icon v-else icon="ph:minus-bold" class="text-slate-500 text-2xl" />
         </div>
 
         <!-- Athlete -->
@@ -129,7 +127,7 @@
       <div
         class="bg-primary text-background-dark font-black px-8 flex items-center justify-center shrink-0 skew-x-[-12deg] -ml-4 pl-8 border-r-4 border-white/10">
         <div class="skew-x-[12deg] flex items-center gap-2">
-          <span class="material-symbols-outlined">campaign</span>
+          <Icon icon="ph:megaphone-bold" />
           <span>UPDATES</span>
         </div>
       </div>
@@ -144,6 +142,7 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 

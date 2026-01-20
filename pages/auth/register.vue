@@ -69,7 +69,9 @@
                     <button v-for="type in userTypes" :key="type.value" @click="form.userType = type.value"
                         class="flex-1 py-3 px-4 rounded-lg text-sm font-bold transition-all flex items-center justify-center gap-2"
                         :class="form.userType === type.value ? 'bg-white text-navy shadow-md' : 'text-gray-500 hover:text-navy'">
-                        <span class="material-symbols-outlined text-lg">{{ type.icon }}</span>
+                        <Icon
+                            :icon="type.icon === 'sports_martial_arts' ? 'ph:user-bold' : type.icon === 'corporate_fare' ? 'ph:buildings-bold' : 'ph:users-three-bold'"
+                            class="text-lg" />
                         <span class="hidden sm:inline">{{ type.label }}</span>
                     </button>
                 </div>
@@ -111,7 +113,7 @@
                         <div v-if="form.userType === 'archer'" class="space-y-4 pt-4 border-t border-gray-100">
                             <h4
                                 class="text-xs font-black text-navy uppercase tracking-widest flex items-center gap-2 mb-4">
-                                <span class="material-symbols-outlined text-primary text-lg">sports_martial_arts</span>
+                                <Icon icon="ph:user-bold" class="text-primary text-lg" />
                                 Data Pemanah
                             </h4>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -150,7 +152,7 @@
                         <div v-if="form.userType === 'organization'" class="space-y-4 pt-4 border-t border-gray-100">
                             <h4
                                 class="text-xs font-black text-navy uppercase tracking-widest flex items-center gap-2 mb-4">
-                                <span class="material-symbols-outlined text-primary text-lg">corporate_fare</span>
+                                <Icon icon="ph:buildings-bold" class="text-primary text-lg" />
                                 Data Organisasi
                             </h4>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -191,7 +193,7 @@
                         <div v-if="form.userType === 'club'" class="space-y-4 pt-4 border-t border-gray-100">
                             <h4
                                 class="text-xs font-black text-navy uppercase tracking-widest flex items-center gap-2 mb-4">
-                                <span class="material-symbols-outlined text-primary text-lg">groups</span>
+                                <Icon icon="ph:users-three-bold" class="text-primary text-lg" />
                                 Data Klub
                             </h4>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -253,6 +255,7 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
 import { ref, onMounted } from 'vue'
 import { useFormValidation } from '~/composables/useFormValidation'
 
@@ -261,9 +264,9 @@ const isLoading = ref(false)
 const error = ref(null)
 
 const userTypes = [
-    { value: 'archer', label: 'Pemanah', icon: 'sports_martial_arts' },
-    { value: 'organization', label: 'Organisasi', icon: 'corporate_fare' },
-    { value: 'club', label: 'Klub', icon: 'groups' }
+    { value: 'archer', label: 'Pemanah', icon: 'ph:user-bold' },
+    { value: 'organization', label: 'Organisasi', icon: 'ph:buildings-bold' },
+    { value: 'club', label: 'Klub', icon: 'ph:users-three-bold' }
 ]
 
 const { errors, validate, validateForm, rules } = useFormValidation()

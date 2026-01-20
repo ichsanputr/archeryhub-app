@@ -52,15 +52,15 @@
                         </h1>
                         <div class="flex flex-wrap items-center gap-6 text-gray-300 text-sm md:text-base mb-8">
                             <div class="flex items-center gap-2">
-                                <span class="material-symbols-outlined text-primary">calendar_month</span>
+                                <Icon icon="ph:calendar-blank" class="text-primary" />
                                 <span>Nov 12 - 15, 2024</span>
                             </div>
                             <div class="flex items-center gap-2">
-                                <span class="material-symbols-outlined text-primary">location_on</span>
+                                <Icon icon="ph:map-pin" class="text-primary" />
                                 <span>GBK Archery Field, Jakarta</span>
                             </div>
                             <div class="flex items-center gap-2">
-                                <span class="material-symbols-outlined text-primary">groups</span>
+                                <Icon icon="ph:users-three" class="text-primary" />
                                 <span>Recurve & Compound</span>
                             </div>
                         </div>
@@ -86,12 +86,12 @@
                     <!-- Search -->
                     <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
                         <h3 class="text-navy font-bold text-lg mb-4 flex items-center gap-2">
-                            <span class="material-symbols-outlined">search</span>
+                            <Icon icon="ph:magnifying-glass" />
                             Find Tournament
                         </h3>
                         <div class="relative">
-                            <span
-                                class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 material-symbols-outlined text-xl">search</span>
+                            <Icon icon="ph:magnifying-glass"
+                                class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xl" />
                             <input v-model="searchQuery"
                                 class="w-full pl-10 pr-4 py-3 bg-gray-50 border-none rounded-lg text-sm focus:ring-2 focus:ring-navy placeholder:text-gray-400"
                                 placeholder="Search by name..." type="text" />
@@ -113,8 +113,7 @@
                                 <summary
                                     class="flex justify-between items-center font-bold cursor-pointer list-none p-5 text-sm text-gray-800 hover:bg-gray-50 transition-colors">
                                     <span>Category</span>
-                                    <span
-                                        class="transition group-open:rotate-180 material-symbols-outlined text-gray-400">expand_more</span>
+                                    <Icon icon="ph:caret-down" class="transition group-open:rotate-180 text-gray-400" />
                                 </summary>
                                 <div class="text-gray-600 px-5 pb-5 text-sm space-y-3">
                                     <label class="flex items-center gap-3 cursor-pointer group/item">
@@ -141,8 +140,7 @@
                                 <summary
                                     class="flex justify-between items-center font-bold cursor-pointer list-none p-5 text-sm text-gray-800 hover:bg-gray-50 transition-colors">
                                     <span>Status</span>
-                                    <span
-                                        class="transition group-open:rotate-180 material-symbols-outlined text-gray-400">expand_more</span>
+                                    <Icon icon="ph:caret-down" class="transition group-open:rotate-180 text-gray-400" />
                                 </summary>
                                 <div class="text-gray-600 px-5 pb-5 text-sm space-y-3">
                                     <label class="flex items-center gap-3 cursor-pointer">
@@ -167,8 +165,7 @@
                                 <summary
                                     class="flex justify-between items-center font-bold cursor-pointer list-none p-5 text-sm text-gray-800 hover:bg-gray-50 transition-colors">
                                     <span>Division</span>
-                                    <span
-                                        class="transition group-open:rotate-180 material-symbols-outlined text-gray-400">expand_more</span>
+                                    <Icon icon="ph:caret-down" class="transition group-open:rotate-180 text-gray-400" />
                                 </summary>
                                 <div class="text-gray-600 px-5 pb-5 text-sm space-y-3">
                                     <label class="flex items-center gap-3 cursor-pointer">
@@ -219,7 +216,7 @@
                                 <div class="absolute top-3 left-3 z-10 flex gap-2">
                                     <span v-if="tournament.status === 'live'"
                                         class="bg-red-500 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md flex items-center gap-1 animate-pulse">
-                                        <span class="material-symbols-outlined text-[12px]">fiber_manual_record</span>
+                                        <Icon icon="ph:broadcast-bold" class="text-[12px]" />
                                         Live
                                     </span>
                                     <span v-else-if="tournament.status === 'upcoming'"
@@ -246,11 +243,11 @@
                                 </h3>
                                 <div class="space-y-2 mb-6">
                                     <div class="flex items-start gap-2 text-gray-500 text-sm">
-                                        <span class="material-symbols-outlined text-lg mt-0.5">calendar_today</span>
+                                        <Icon icon="ph:calendar-blank" class="text-lg mt-0.5" />
                                         <span>{{ tournament.date }}</span>
                                     </div>
                                     <div class="flex items-start gap-2 text-gray-500 text-sm">
-                                        <span class="material-symbols-outlined text-lg mt-0.5">location_on</span>
+                                        <Icon icon="ph:map-pin" class="text-lg mt-0.5" />
                                         <span class="truncate">{{ tournament.location }}</span>
                                     </div>
                                 </div>
@@ -286,6 +283,7 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
 const searchQuery = ref('')
 const sortBy = ref('newest')
 
