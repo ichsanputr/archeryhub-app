@@ -29,14 +29,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="relative">
-                        <div
-                            class="w-72 h-72 bg-gradient-to-br from-primary/20 to-transparent rounded-full blur-3xl absolute -top-10 -right-10">
-                        </div>
-                        <img src="https://images.unsplash.com/photo-1564769625905-50e93615e769?w=400"
-                            alt="Archery Equipment"
-                            class="relative z-10 w-80 h-80 object-cover rounded-2xl shadow-2xl border-4 border-white/10" />
-                    </div>
                 </div>
             </div>
         </section>
