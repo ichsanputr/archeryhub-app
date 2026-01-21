@@ -37,32 +37,6 @@
                 </button>
             </div>
         </section>
-
-        <!-- Facilities -->
-        <section class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
-            <h3 class="text-xl font-bold text-navy mb-6">Fasilitas Venue</h3>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-                <div v-for="facility in facilities" :key="facility.name"
-                    class="flex flex-col items-center text-center space-y-3">
-                    <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary">
-                        <span class="material-symbols-outlined text-2xl">{{ facility.icon }}</span>
-                    </div>
-                    <span class="text-sm font-bold text-navy">{{ facility.name }}</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Photo Gallery -->
-        <section class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
-            <h3 class="text-xl font-bold text-navy mb-6">Galeri Foto</h3>
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <div v-for="i in 3" :key="i"
-                    class="aspect-video rounded-xl overflow-hidden bg-gray-100 border border-gray-200 group cursor-pointer">
-                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuByxS8LZ93pBQXI_V_Vu3nB0633lwPZGiFCM3UtI-xk79b_O83ASmlHYA36lOzcnmVsbgs4DEe9awj543MvzCN1yzOo1wZ3ViXLdiMRV7vAMdy66lvu-l5dpFAOgZ0uCMKJxsBRXPJL1QeX4_ZdX2ynTEZR-ZMilrncma7gKG2YK0vsj0KJZnw_lD0UZaXFKW2aVFD1SU-mzi_sAT2D-62TP0j5LF6KprFriv2sV9rdypqLSvfrZekYDy45XaK8F1vVh7e5nfrgK7o"
-                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                </div>
-            </div>
-        </section>
     </div>
 </template>
 

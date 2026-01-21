@@ -24,10 +24,16 @@
                             class="bg-navy/10 text-navy dark:bg-primary/10 dark:text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
                             {{ article.category }}
                         </span>
-                        <span class="text-slate-400 text-sm flex items-center gap-1">
-                            <span class="material-symbols-outlined text-base">calendar_today</span>
+                        <div
+                            class="flex items-center gap-1.5 px-3 py-1 bg-gray-100 rounded-full text-slate-500 text-xs font-bold">
+                            <Icon icon="ph:calendar-blank-bold" class="text-sm" />
                             {{ article.date }}
-                        </span>
+                        </div>
+                        <div
+                            class="flex items-center gap-1.5 px-3 py-1 bg-primary/10 rounded-full text-primary text-xs font-bold">
+                            <Icon icon="ph:clock-bold" class="text-sm" />
+                            {{ readTime }} mnt baca
+                        </div>
                     </div>
                     <h1
                         class="text-3xl md:text-4xl lg:text-5xl font-black text-navy dark:text-white leading-tight mb-6">
@@ -42,15 +48,23 @@
                             <div class="text-sm font-bold text-navy dark:text-white">{{ article.author.name }}</div>
                             <div class="text-xs text-slate-500">{{ article.author.role }}</div>
                         </div>
-                        <div class="ml-auto flex gap-2">
-                            <button
-                                class="p-2 text-slate-400 hover:text-primary transition-colors rounded-full hover:bg-slate-100 dark:hover:bg-gray-800">
-                                <span class="material-symbols-outlined">share</span>
-                            </button>
-                            <button
-                                class="p-2 text-slate-400 hover:text-primary transition-colors rounded-full hover:bg-slate-100 dark:hover:bg-gray-800">
-                                <span class="material-symbols-outlined">bookmark_border</span>
-                            </button>
+                        <div class="ml-auto flex items-center gap-3">
+                            <span
+                                class="hidden sm:block text-xs font-bold text-slate-400 uppercase tracking-wider">Bagikan:</span>
+                            <div class="flex gap-2">
+                                <button
+                                    class="p-2 text-slate-400 hover:text-green-500 transition-all rounded-xl bg-gray-50 hover:bg-green-50">
+                                    <Icon icon="ph:whatsapp-logo-bold" class="text-xl" />
+                                </button>
+                                <button
+                                    class="p-2 text-slate-400 hover:text-blue-600 transition-all rounded-xl bg-gray-50 hover:bg-blue-50">
+                                    <Icon icon="ph:facebook-logo-bold" class="text-xl" />
+                                </button>
+                                <button
+                                    class="p-2 text-slate-400 hover:text-navy transition-all rounded-xl bg-gray-50 hover:bg-navy/10">
+                                    <Icon icon="ph:link-bold" class="text-xl" />
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -66,9 +80,29 @@
                 </div>
 
                 <!-- Article text -->
-                <div
-                    class="prose prose-slate prose-lg max-w-none dark:prose-invert prose-headings:text-navy prose-a:text-primary prose-strong:text-navy">
+                <div class="prose prose-slate prose-lg max-w-none dark:prose-invert 
+                    prose-headings:text-navy prose-headings:font-black 
+                    prose-p:text-slate-600 prose-p:leading-relaxed prose-p:mb-6
+                    prose-a:text-primary prose-a:font-bold prose-a:no-underline hover:prose-a:underline
+                    prose-strong:text-navy prose-strong:font-black">
                     <div v-html="article.content"></div>
+                </div>
+
+                <!-- Footer Share -->
+                <div
+                    class="mt-12 p-8 bg-gray-50 rounded-2xl border border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-6">
+                    <div>
+                        <h4 class="font-black text-navy text-lg mb-1">Apakah artikel ini bermanfaat?</h4>
+                        <p class="text-sm text-slate-500">Bagikan artikel ini ke teman panahan kamu!</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <BaseButton variant="outline" size="sm" icon="ph:whatsapp-logo-bold"
+                            class="!bg-white hover:!text-green-600">WhatsApp</BaseButton>
+                        <BaseButton variant="outline" size="sm" icon="ph:facebook-logo-bold"
+                            class="!bg-white hover:!text-blue-600">Facebook</BaseButton>
+                        <BaseButton variant="outline" size="sm" icon="ph:link-bold" class="!bg-white">Salin Link
+                        </BaseButton>
+                    </div>
                 </div>
 
                 <div class="mt-12 pt-8 border-t border-gray-100 dark:border-gray-800">
@@ -137,8 +171,10 @@
                         </div>
                     </div>
                     <NuxtLink to="/events"
-                        class="inline-flex items-center gap-1 text-primary text-xs font-bold mt-6 hover:text-white transition-colors">
-                        Lihat Kalender Turnamen <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                        class="inline-flex items-center gap-2 text-primary text-xs font-black mt-6 hover:text-white transition-all group">
+                        Lihat Kalender Turnamen
+                        <Icon icon="ph:arrow-right-bold"
+                            class="transform group-hover:translate-x-1 transition-transform" />
                     </NuxtLink>
                 </div>
 
@@ -165,12 +201,25 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+
 definePageMeta({
     layout: 'landing'
 })
 
 const route = useRoute()
 const slug = route.params.slug
+
+// Calculate read time
+const readTime = computed(() => {
+    const text = article.value.content || ''
+    const wordsPerMinute = 200
+    const noOfWords = text.split(/\s/g).length
+    const minutes = noOfWords / wordsPerMinute
+    return Math.ceil(minutes) || 1
+})
 
 // Mock data integration
 const articlesData = {

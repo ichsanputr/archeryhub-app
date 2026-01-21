@@ -82,21 +82,8 @@
 
                 <div class="mt-8">
                     <form @submit.prevent="handleRegister" class="space-y-6">
-                        <!-- Common Fields -->
+                        <!-- User Type Specific Field (MANDATORY FOR GOOGLE REG) -->
                         <div class="space-y-4">
-                            <!-- Email -->
-                            <BaseInput v-model="form.email" label="Alamat Email" placeholder="email@domain.com"
-                                type="email" icon="mail" required :error="errors.email"
-                                @blur="validate('email', form.email, [rules.required(), rules.email()])" />
-
-                            <!-- Password -->
-                            <BaseInput v-model="form.password" label="Kata Sandi" placeholder="Minimal 8 karakter"
-                                type="password" icon="lock" required :error="errors.password"
-                                @blur="validate('password', form.password, [rules.required(), rules.minLength(8)])" />
-                        </div>
-
-                        <!-- User Type Specific Field (SIMPLIFIED) -->
-                        <div class="pt-4 border-t border-gray-100">
                             <!-- Archer: Nama Lengkap -->
                             <div v-if="form.userType === 'archer'">
                                 <h4
@@ -154,7 +141,7 @@
                             </div>
                         </div>
 
-                        <div class="flex flex-col gap-2 pt-4">
+                        <div class="flex flex-col gap-2 pt-6 border-t border-gray-100">
                             <BaseCheckbox v-model="form.terms" required :error="errors.terms">
                                 Saya setuju dengan
                                 <NuxtLink class="font-bold text-navy hover:text-primary-hover" to="/terms">
@@ -164,32 +151,18 @@
                             </BaseCheckbox>
                         </div>
 
-                        <BaseButton type="submit" variant="gold" block size="lg" :loading="isLoading"
-                            loading-text="Sedang mendaftar..." icon-right="arrow_forward">
-                            Daftar Sekarang
-                        </BaseButton>
+                        <!-- Google OAuth Button (PRIMARY ACTION) -->
+                        <div class="pt-2">
+                            <BaseButton variant="gold" block size="lg" icon="logos:google-icon"
+                                @click="handleGoogleRegister" :loading="isGoogleLoading"
+                                :disabled="!isNameValid || !form.terms">
+                                Daftar dengan Google
+                            </BaseButton>
+                            <p class="mt-4 text-xs text-center text-gray-400">
+                                Pilih tipe akun di atas, isi nama, lalu klik tombol ini.
+                            </p>
+                        </div>
                     </form>
-
-                    <!-- OAuth Divider -->
-                    <div class="relative mt-8 font-body">
-                        <div class="absolute inset-0 flex items-center">
-                            <div class="w-full border-t border-gray-200"></div>
-                        </div>
-                        <div class="relative flex justify-center text-sm">
-                            <span class="px-4 bg-white text-slate-500 font-medium">Atau daftar lewat</span>
-                        </div>
-                    </div>
-
-                    <!-- Google OAuth Button -->
-                    <div class="mt-6">
-                        <BaseButton variant="outline" block icon="logos:google-icon" @click="handleGoogleRegister"
-                            :loading="isGoogleLoading">
-                            Daftar dengan Google
-                        </BaseButton>
-                        <p class="mt-2 text-xs text-center text-gray-400">
-                            Pilih tipe akun di atas, lalu klik tombol ini
-                        </p>
-                    </div>
 
                     <div class="mt-8 text-center font-body">
                         <p class="text-sm text-slate-600">
@@ -208,7 +181,8 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { useFormValidation } from '~/composables/useFormValidation'
 
 const route = useRoute()
@@ -236,8 +210,6 @@ const getInitialUserType = () => {
 // Simplified form - only essential fields
 const form = ref({
     userType: getInitialUserType(),
-    email: '',
-    password: '',
     fullName: '',           // For archer
     organizationName: '',   // For organization
     clubName: '',           // For club
@@ -245,78 +217,47 @@ const form = ref({
     terms: false
 })
 
-const { register } = useAuth()
+const { register, login } = useAuth()
 
-const handleRegister = async () => {
-    // Build validation rules based on user type
-    const commonRules = {
-        email: [rules.required(), rules.email()],
-        password: [rules.required(), rules.minLength(8)],
-        terms: [rules.required('Anda harus menyetujui syarat dan ketentuan')]
-    }
-
-    // Add type-specific required field
-    const typeRules = {
-        archer: { fullName: [rules.required()] },
-        organization: { organizationName: [rules.required()] },
-        club: { clubName: [rules.required()] },
-        seller: { storeName: [rules.required()] }
-    }
-
-    const activeRules = { ...commonRules, ...typeRules[form.value.userType] }
-
-    if (!validateForm(form.value, activeRules)) {
-        return
-    }
-
-    isLoading.value = true
-    error.value = null
-
-    try {
-        // Get the name based on user type
-        const getName = () => {
-            switch (form.value.userType) {
-                case 'archer': return form.value.fullName
-                case 'organization': return form.value.organizationName
-                case 'club': return form.value.clubName
-                case 'seller': return form.value.storeName
-                default: return ''
-            }
-        }
-
-        const payload = {
-            username: form.value.email.split('@')[0] + Math.floor(Math.random() * 1000),
-            email: form.value.email,
-            password: form.value.password,
-            user_type: form.value.userType,
-            full_name: getName(),
-            profile_completed: false  // Mark as incomplete, user needs to fill more details
-        }
-
-        console.log('Registering:', payload)
-        await register(payload)
-
-        // Redirect to dashboard on success
-        window.location.href = '/dashboard'
-    } catch (err) {
-        console.error('Registration failed:', err)
-        error.value = err.message || 'Pendaftaran gagal. Silakan coba lagi.'
-    } finally {
-        isLoading.value = false
+const getName = () => {
+    switch (form.value.userType) {
+        case 'archer': return form.value.fullName
+        case 'organization': return form.value.organizationName
+        case 'club': return form.value.clubName
+        case 'seller': return form.value.storeName
+        default: return ''
     }
 }
 
+const isNameValid = computed(() => {
+    const name = getName()
+    return name && name.trim().length >= 3
+})
+
 // Google OAuth registration
 const isGoogleLoading = ref(false)
-const { login } = useAuth()
+
+const handleRegister = () => {
+    handleGoogleRegister()
+}
 
 const handleGoogleRegister = async () => {
+    if (!isNameValid.value) {
+        error.value = 'Silakan isi nama yang valid (minimal 3 karakter)'
+        return
+    }
+
+    if (!form.value.terms) {
+        error.value = 'Anda harus menyetujui syarat dan ketentuan'
+        return
+    }
+
     isGoogleLoading.value = true
     error.value = null
 
     try {
-        // Pass user type to Google OAuth - API will create user in correct table
-        await login(form.value.userType)
+        // Pass user type and captured name to Google OAuth
+        await login(form.value.userType, getName())
     } catch (err) {
         console.error('Google registration failed:', err)
         error.value = 'Gagal menyambung ke Google. Silakan coba lagi.'

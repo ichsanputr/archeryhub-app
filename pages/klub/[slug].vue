@@ -132,7 +132,7 @@
                             <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                                 <Icon icon="ph:trophy-bold" class="text-xl text-primary" />
                             </div>
-                            Event & Prestasi
+                            Prestasi
                         </h2>
                         <div class="space-y-4">
                             <div v-for="event in club.recentEvents" :key="event.id"
@@ -150,7 +150,7 @@
                                 </div>
                                 <span
                                     class="px-4 py-2 bg-green-50 text-green-600 text-sm font-black rounded-full border border-green-200">{{
-                                    event.result }}</span>
+                                        event.result }}</span>
                             </div>
                         </div>
                     </div>
@@ -161,7 +161,7 @@
                             <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                                 <Icon icon="ph:medal-bold" class="text-xl text-primary" />
                             </div>
-                            Anggota Unggulan
+                            Anggota
                         </h2>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                             <div v-for="member in club.topMembers" :key="member.id"
@@ -190,7 +190,7 @@
                         <div class="space-y-4">
                             <div class="flex items-center gap-4">
                                 <div class="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center">
-                                    <Icon icon="ph:phone-fill" class="text-xl text-gray-400" />
+                                    <Icon icon="ph:phone-fill" class="text-xl text-blue-500" />
                                 </div>
                                 <div>
                                     <p class="text-gray-400 text-xs font-bold uppercase">Telepon</p>
@@ -198,8 +198,35 @@
                                 </div>
                             </div>
                             <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center">
-                                    <Icon icon="ph:envelope-fill" class="text-xl text-gray-400" />
+                                <div class="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center">
+                                    <Icon icon="ph:whatsapp-logo-fill" class="text-xl text-green-500" />
+                                </div>
+                                <div>
+                                    <p class="text-gray-400 text-xs font-bold uppercase">WhatsApp</p>
+                                    <p class="font-bold text-navy">{{ club.whatsapp }}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-pink-50 flex items-center justify-center">
+                                    <Icon icon="ph:instagram-logo-fill" class="text-xl text-pink-500" />
+                                </div>
+                                <div>
+                                    <p class="text-gray-400 text-xs font-bold uppercase">Instagram</p>
+                                    <p class="font-bold text-navy">{{ club.instagram }}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center">
+                                    <Icon icon="ph:facebook-logo-fill" class="text-xl text-blue-600" />
+                                </div>
+                                <div>
+                                    <p class="text-gray-400 text-xs font-bold uppercase">Facebook</p>
+                                    <p class="font-bold text-navy">{{ club.facebook }}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center">
+                                    <Icon icon="ph:envelope-fill" class="text-xl text-red-400" />
                                 </div>
                                 <div>
                                     <p class="text-gray-400 text-xs font-bold uppercase">Email</p>
@@ -207,8 +234,8 @@
                                 </div>
                             </div>
                             <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center">
-                                    <Icon icon="ph:map-pin-fill" class="text-xl text-gray-400" />
+                                <div class="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center">
+                                    <Icon icon="ph:map-pin-fill" class="text-xl text-orange-400" />
                                 </div>
                                 <div>
                                     <p class="text-gray-400 text-xs font-bold uppercase">Alamat</p>
@@ -233,10 +260,23 @@
                         </div>
                     </div>
 
-                    <!-- Location Map Placeholder -->
-                    <div class="bg-gray-100 rounded-2xl h-48 flex flex-col items-center justify-center gap-2">
-                        <Icon icon="ph:map-trifold" class="text-5xl text-gray-300" />
-                        <span class="text-sm text-gray-400 font-medium">Peta Lokasi</span>
+                    <!-- Location Map -->
+                    <div
+                        class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden h-64 relative group">
+                        <iframe width="100%" height="100%" frameborder="0" style="border:0"
+                            :src="`https://www.google.com/maps/embed/v1/place?key=REPLACE_WITH_YOUR_API_KEY&q=${encodeURIComponent(club.name + ' ' + club.city + ' ' + club.province)}`"
+                            allowfullscreen v-if="false"></iframe>
+                        <!-- Real Embed with shared link approach (no key needed for basic display usually but iframe embed is better) -->
+                        <iframe width="100%" height="100%" style="border:0" loading="lazy" allowfullscreen
+                            referrerpolicy="no-referrer-when-downgrade"
+                            :src="`https://www.google.com/maps?q=${encodeURIComponent(club.name + ' ' + club.city + ' ' + club.province)}&output=embed`"></iframe>
+                        <div
+                            class="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                            <p class="text-white text-xs font-bold flex items-center gap-1">
+                                <Icon icon="ph:map-pin-bold" />
+                                Lihat di Google Maps
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -290,6 +330,9 @@ const club = ref({
     description: 'Garuda Archery Club adalah klub panahan profesional yang berdiri sejak 2018. Kami menyediakan pelatihan untuk berbagai level dari pemula hingga profesional dengan fokus pada pengembangan teknik dan mental. Fasilitas lengkap dengan lapangan indoor 18m dan outdoor 70m.',
     facilities: ['Lapangan Indoor 18m', 'Lapangan Outdoor 70m', 'Ruang Peralatan', 'Ruang Ganti', 'Parkir Luas', 'Cafeteria'],
     phone: '021-1234567',
+    whatsapp: '+62 812-3456-7890',
+    instagram: '@garudaarchery',
+    facebook: 'Garuda Archery',
     email: 'info@garudaarchery.com',
     address: 'Jl. Panahan No. 123, Senayan, Jakarta Selatan 12190',
     schedules: [

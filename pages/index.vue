@@ -82,7 +82,7 @@
                                                 class="text-[8px] sm:text-xs font-bold uppercase tracking-wider opacity-80">{{
                                                     event.month }}</span>
                                             <span class="text-sm sm:text-2xl font-black leading-none">{{ event.day
-                                                }}</span>
+                                            }}</span>
                                         </div>
 
                                         <div class="flex flex-col min-w-0 flex-1">
@@ -140,7 +140,7 @@
                                 class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-navy mb-5">
                                 <span class="material-symbols-outlined text-xl">person_add</span>
                             </div>
-                            <h3 class="text-xl sm:text-2xl font-bold text-white mb-2 font-display">Gabung Jadi Atlet
+                            <h3 class="text-xl sm:text-2xl font-bold text-white mb-2 font-display">Gabung Jadi Pemanah
                             </h3>
                             <p class="text-white/60 text-sm mb-6">Bikin profil prestasi dan ikut event seru
                                 se-Indonesia.

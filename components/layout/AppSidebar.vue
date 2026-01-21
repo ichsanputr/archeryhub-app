@@ -157,9 +157,10 @@ const navLinks = computed(() => {
   return [
     { label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard' },
     { label: 'Event', icon: 'ph:trophy', path: '/dashboard/events' },
-    { label: 'Pemanah', icon: 'ph:users-three', path: '/dashboard/archers' },
+    { label: 'Laporan', icon: 'ph:chart-bar', path: '/dashboard/reports' },
+    ...(role !== 'organization' ? [{ label: 'Pemanah', icon: 'ph:users-three', path: '/dashboard/archers' }] : []),
     ...(role === 'club' ? [{ label: 'Anggota Klub', icon: 'ph:identification-badge', path: '/dashboard/members' }] : []),
-    ...(role !== 'club' ? [{ label: 'Tim', icon: 'ph:users-four', path: '/dashboard/teams' }] : []),
+    ...(role !== 'club' && role !== 'organization' ? [{ label: 'Tim', icon: 'ph:users-four', path: '/dashboard/teams' }] : []),
     { label: 'Berita', icon: 'ph:newspaper', path: '/dashboard/berita' },
     { label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/settings' },
   ]

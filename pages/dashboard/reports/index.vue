@@ -3,12 +3,30 @@
         <!-- Header -->
         <div class="flex flex-wrap items-center justify-between gap-4">
             <div>
-                <h1 class="text-2xl md:text-3xl font-black text-navy tracking-tight">Statistik Global</h1>
-                <p class="text-text-secondary mt-1 font-medium text-sm">Analisis performa atlet dan turnamen</p>
+                <h1 class="text-2xl md:text-3xl font-black text-navy tracking-tight">Laporan & Statistik</h1>
+                <p class="text-text-secondary mt-1 font-medium text-sm">Analisis menyeluruh untuk pertumbuhan dan
+                    performa</p>
             </div>
-            <div class="flex gap-3">
+            <div class="flex flex-wrap items-center gap-3">
+                <div class="relative group">
+                    <button
+                        class="bg-white border border-gray-200 px-4 py-2 rounded-xl text-sm font-bold text-navy flex items-center gap-3 hover:border-primary transition-all shadow-sm">
+                        <Icon icon="ph:calendar-blank-bold" class="text-primary-dark" />
+                        <span>{{ dateRangeLabel }}</span>
+                        <Icon icon="ph:caret-down-bold"
+                            class="text-gray-400 group-hover:rotate-180 transition-transform" />
+                    </button>
+                    <!-- Simple Dropdown Placeholder -->
+                    <div
+                        class="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-100 rounded-xl shadow-xl overflow-hidden z-20 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-all">
+                        <div v-for="range in rangeOptions" :key="range" @click="dateRange = range"
+                            class="px-4 py-2.5 text-xs font-bold text-navy hover:bg-primary transition-colors cursor-pointer">
+                            {{ range }}
+                        </div>
+                    </div>
+                </div>
                 <BaseButton variant="outline" icon="ph:download-simple">
-                    Ekspor Laporan
+                    Ekspor
                 </BaseButton>
             </div>
         </div>
@@ -104,15 +122,40 @@
                 <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-white">
                     <h3 class="text-navy font-bold text-base md:text-lg">Kategori Populer</h3>
                 </div>
-                <div class="flex-1 p-4 space-y-4">
-                    <div v-for="category in categories" :key="category.name" class="space-y-2">
+                <div class="flex-1 p-6 space-y-5">
+                    <div v-for="category in categories" :key="category.name" class="space-y-2 group">
                         <div class="flex justify-between items-center">
-                            <span class="text-sm font-bold text-navy">{{ category.name }}</span>
+                            <span class="text-sm font-bold text-navy group-hover:text-primary-dark transition-colors">{{
+                                category.name }}</span>
                             <span class="text-xs font-bold text-gray-400">{{ category.count }} atlet</span>
                         </div>
-                        <div class="w-full bg-gray-100 rounded-full h-2">
-                            <div class="bg-primary h-2 rounded-full transition-all"
+                        <div class="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
+                            <div class="bg-primary h-full rounded-full transition-all duration-1000"
                                 :style="`width: ${category.percentage}%`"></div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-gray-100">
+                        <h4 class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Distribusi
+                            Geografis</h4>
+                        <div class="flex items-center gap-2">
+                            <div class="flex-1 h-3 bg-gray-100 rounded-lg flex overflow-hidden">
+                                <div class="h-full bg-navy w-[45%]" title="Jawa"></div>
+                                <div class="h-full bg-primary w-[30%]" title="Sumatera"></div>
+                                <div class="h-full bg-blue-400 w-[15%]" title="Kalimantan"></div>
+                                <div class="h-full bg-gray-300 w-[10%]" title="Lainnya"></div>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-x-4 gap-y-1 mt-3">
+                            <div class="flex items-center gap-1.5 text-[10px] font-bold text-slate-500">
+                                <div class="size-2 rounded-sm bg-navy"></div> Jawa (45%)
+                            </div>
+                            <div class="flex items-center gap-1.5 text-[10px] font-bold text-slate-500">
+                                <div class="size-2 rounded-sm bg-primary"></div> Sumatera (30%)
+                            </div>
+                            <div class="flex items-center gap-1.5 text-[10px] font-bold text-slate-500">
+                                <div class="size-2 rounded-sm bg-blue-400"></div> Kalimantan (15%)
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -149,11 +192,15 @@ definePageMeta({
     layout: 'dashboard'
 })
 
+const dateRange = ref('30 Hari Terakhir')
+const rangeOptions = ['7 Hari Terakhir', '30 Hari Terakhir', '3 Bulan Terakhir', 'Tahun Ini', 'Semua Waktu']
+const dateRangeLabel = computed(() => dateRange.value)
+
 const overviewStats = [
-    { label: 'Total Atlet', value: '2.847', icon: 'ph:users-three', trend: '+128 bulan ini', trendIcon: 'ph:trend-up', trendColor: 'text-green-600' },
-    { label: 'Turnamen Selesai', value: '156', icon: 'ph:trophy', trend: '+12 bulan ini', trendIcon: 'ph:trend-up', trendColor: 'text-green-600' },
-    { label: 'Rata-rata Skor', value: '542', icon: 'ph:target', trend: '+3.2% vs bulan lalu', trendIcon: 'ph:trend-up', trendColor: 'text-green-600' },
-    { label: 'Klub Terdaftar', value: '89', icon: 'ph:house-line', trend: '+5 klub baru', trendIcon: 'ph:plus-circle', trendColor: 'text-blue-600' },
+    { label: 'Total Pendapatan', value: 'Rp 42.5M', icon: 'ph:money-bold', trend: '+18.4% vs bln lalu', trendIcon: 'ph:trend-up', trendColor: 'text-green-600' },
+    { label: 'Pendaftar Baru', value: '1.284', icon: 'ph:user-plus-bold', trend: '+12% hari ini', trendIcon: 'ph:trend-up', trendColor: 'text-green-600' },
+    { label: 'Tingkat Partisipasi', value: '92%', icon: 'ph:chart-line-up-bold', trend: '+5.2% vs target', trendIcon: 'ph:trend-up', trendColor: 'text-green-600' },
+    { label: 'Klub Aktif', value: '89', icon: 'ph:house-line-bold', trend: '+5 klub baru', trendIcon: 'ph:plus-circle', trendColor: 'text-blue-600' },
 ]
 
 const topAthletes = [

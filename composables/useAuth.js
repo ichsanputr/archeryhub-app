@@ -17,11 +17,11 @@ export const useAuth = () => {
   const config = useRuntimeConfig()
 
   // Google OAuth login/registration
-  const login = async (userType = 'archer') => {
+  const login = async (userType = 'archer', fullName = '') => {
     try {
       const baseUrl = config.public.apiBaseUrl
       const callbackUrl = `${window.location.origin}/auth/callback`
-      const { auth_url, state } = await $fetch(`${baseUrl}/auth/google?app_url=${callbackUrl}&user_type=${userType}`)
+      const { auth_url, state } = await $fetch(`${baseUrl}/auth/google?app_url=${callbackUrl}&user_type=${userType}&full_name=${encodeURIComponent(fullName)}`)
 
       if (state && import.meta.client) {
         sessionStorage.setItem('oauth_state', state)
