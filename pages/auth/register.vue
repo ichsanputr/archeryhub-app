@@ -299,11 +299,8 @@ const handleGoogleRegister = async () => {
     error.value = null
 
     try {
-        // Store user type in sessionStorage so we can use it after OAuth callback
-        if (import.meta.client) {
-            sessionStorage.setItem('register_user_type', form.value.userType)
-        }
-        await login()
+        // Pass user type to Google OAuth - API will create user in correct table
+        await login(form.value.userType)
     } catch (err) {
         console.error('Google registration failed:', err)
         error.value = 'Gagal menyambung ke Google. Silakan coba lagi.'

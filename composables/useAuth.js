@@ -17,10 +17,13 @@ export const useAuth = () => {
   const isLoggedIn = computed(() => !!user.value)
   const config = useRuntimeConfig()
 
-  const login = async () => {
+  // Google OAuth login/registration
+  // userType is optional - used when registering new users (archer, organization, club)
+  const login = async (userType = 'archer') => {
     try {
       const baseUrl = config.public.apiBaseUrl
-      const { auth_url, state } = await $fetch(`${baseUrl}/auth/google?app_url=${window.location.origin}/auth/callback`)
+      const callbackUrl = `${window.location.origin}/auth/callback`
+      const { auth_url, state } = await $fetch(`${baseUrl}/auth/google?app_url=${callbackUrl}&user_type=${userType}`)
 
       if (state && import.meta.client) {
         sessionStorage.setItem('oauth_state', state)

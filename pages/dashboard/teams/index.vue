@@ -1,352 +1,303 @@
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-[#23200f]">
-    <!-- Header -->
-    <div
-      class="border-b border-gray-200 dark:border-[#4a4421] bg-white dark:bg-[#23200f]/95 backdrop-blur px-6 py-4 sticky top-0 z-10">
-      <div class="max-w-7xl mx-auto flex items-center justify-between">
-        <div>
-          <h1 class="text-2xl font-bold text-white flex items-center gap-3">
-            <Icon icon="ph:users-three-bold" class="text-[#f9d406]" />
-            Team Management
-          </h1>
-          <p class="text-[#ccc38e] text-sm mt-1">Manage team compositions and rankings</p>
+  <div class="flex flex-col gap-8">
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div>
+        <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight uppercase">
+          <NuxtLink to="/dashboard" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
+          <Icon icon="ph:caret-right-bold" class="text-[12px]" />
+          <span class="text-navy">Tim</span>
         </div>
-        <div class="flex items-center gap-3">
-          <button @click="showGenerateModal = true"
-            class="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#4a4421] text-white hover:bg-[#5a5329] transition-colors font-medium text-sm">
-            <Icon icon="ph:magic-wand-bold" class="text-lg" />
-            Auto Generate
-          </button>
-          <button @click="showCreateModal = true"
-            class="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#f9d406] text-[#23200f] hover:bg-yellow-400 transition-colors font-bold text-sm">
-            <Icon icon="ph:user-plus-bold" class="text-lg" />
-            Create Team
-          </button>
+        <h1 class="text-3xl font-extrabold text-navy tracking-tight">Manajemen Tim</h1>
+        <p class="text-gray-500 font-medium mt-1">Kelola tim dan peserta grup dalam event Anda.</p>
+      </div>
+      <BaseButton variant="primary" icon="ph:plus-bold" class="shadow-lg shadow-primary/20"
+        @click="showCreateModal = true">
+        Buat Tim Baru
+      </BaseButton>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
+        <div class="h-10 w-10 rounded-lg bg-primary/10 text-primary-dark flex items-center justify-center">
+          <Icon icon="ph:users-four" class="text-xl" />
+        </div>
+        <div>
+          <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Total Tim</p>
+          <p class="text-lg font-bold text-navy">{{ teams.length }}</p>
+        </div>
+      </div>
+      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
+        <div class="h-10 w-10 rounded-lg bg-green-50 text-green-600 flex items-center justify-center">
+          <Icon icon="ph:check-circle" class="text-xl" />
+        </div>
+        <div>
+          <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Aktif</p>
+          <p class="text-lg font-bold text-navy">{{teams.filter(t => t.status === 'active').length}}</p>
+        </div>
+      </div>
+      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
+        <div class="h-10 w-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+          <Icon icon="ph:user" class="text-xl" />
+        </div>
+        <div>
+          <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Total Anggota</p>
+          <p class="text-lg font-bold text-navy">{{teams.reduce((acc, t) => acc + t.memberCount, 0)}}</p>
+        </div>
+      </div>
+      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
+        <div class="h-10 w-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+          <Icon icon="ph:trophy" class="text-xl" />
+        </div>
+        <div>
+          <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Event Aktif</p>
+          <p class="text-lg font-bold text-navy">{{[...new Set(teams.map(t => t.eventId))].length}}</p>
         </div>
       </div>
     </div>
 
-    <!-- Filters -->
-    <div class="max-w-7xl mx-auto px-6 py-6">
-      <div class="flex flex-wrap gap-4 items-center justify-between">
-        <div class="flex gap-3">
-          <!-- Tournament Filter -->
-          <select v-model="selectedTournament"
-            class="bg-[#2E2B1B] border border-[#4a4421] rounded-lg px-4 py-2.5 text-white text-sm focus:ring-2 focus:ring-[#f9d406]/50 focus:border-[#f9d406]">
-            <option value="">All Tournaments</option>
-            <option v-for="t in tournaments" :key="t.id" :value="t.id">{{ t.name }}</option>
-          </select>
-
-          <!-- Event Filter -->
-          <select v-model="selectedEvent"
-            class="bg-[#2E2B1B] border border-[#4a4421] rounded-lg px-4 py-2.5 text-white text-sm focus:ring-2 focus:ring-[#f9d406]/50 focus:border-[#f9d406]">
-            <option value="">All Events</option>
-            <option v-for="e in events" :key="e.id" :value="e.id">{{ e.name }}</option>
-          </select>
-        </div>
-
-        <div class="flex items-center gap-2 text-[#ccc38e] text-sm">
-          <Icon icon="ph:info" class="text-lg" />
-          {{ teams.length }} teams found
-        </div>
+    <!-- Search & Filter -->
+    <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
+      <div class="flex-grow w-full">
+        <BaseInput v-model="searchQuery" icon="ph:magnifying-glass" placeholder="Cari nama tim atau event..."
+          label="Pencarian" />
       </div>
+      <div class="w-full md:w-64">
+        <BaseSelect v-model="statusFilter" :items="statusOptions" label="Status" />
+      </div>
+      <BaseButton variant="white" icon="ph:funnel" @click="resetFilters" class="h-11">
+        Reset
+      </BaseButton>
     </div>
 
     <!-- Teams Grid -->
-    <div class="max-w-7xl mx-auto px-6 pb-8">
-      <div v-if="loading" class="flex items-center justify-center py-20">
-        <div class="animate-spin rounded-full h-10 w-10 border-2 border-[#f9d406] border-t-transparent"></div>
-      </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div v-for="team in filteredTeams" :key="team.id"
+        class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg hover:border-primary/30 transition-all group">
 
-      <div v-if="teams.length === 0" class="text-center py-20">
-        <Icon icon="ph:users-three" class="text-6xl text-[#4a4421] mx-auto block" />
-        <p class="text-[#ccc38e] mt-4">No teams found</p>
-        <button @click="showGenerateModal = true"
-          class="mt-4 px-6 py-2 rounded-lg bg-[#f9d406] text-[#23200f] font-bold text-sm hover:bg-yellow-400 transition-colors">
-          Generate Teams from Rankings
-        </button>
-      </div>
-
-      <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div v-for="team in teams" :key="team.id" @click="selectTeam(team)"
-          class="bg-[#2E2B1B] rounded-xl border border-[#4a4421] p-5 cursor-pointer hover:border-[#f9d406]/50 transition-all group">
-          <div class="flex items-start justify-between mb-4">
-            <div>
-              <h3 class="text-white font-bold text-lg group-hover:text-[#f9d406] transition-colors">
-                {{ team.team_name }}
-              </h3>
-              <p class="text-[#ccc38e] text-sm flex items-center gap-1.5 mt-1">
-                <Icon icon="ph:flag-bold" class="text-sm" />
-                {{ team.country_code }}
-              </p>
-            </div>
-            <span class="px-2 py-1 rounded-full text-xs font-medium" :class="getStatusClass(team.status)">
-              {{ team.status }}
-            </span>
-          </div>
-
-          <div class="flex items-center gap-4 mb-4">
-            <div class="flex-1">
-              <p class="text-[#ccc38e] text-xs uppercase tracking-wider mb-1">Total Score</p>
-              <p class="text-white text-2xl font-bold tabular-nums">{{ team.total_score }}</p>
-            </div>
-            <div class="flex-1">
-              <p class="text-[#ccc38e] text-xs uppercase tracking-wider mb-1">X Count</p>
-              <p class="text-[#f9d406] text-2xl font-bold tabular-nums">{{ team.total_x_count }}</p>
-            </div>
-          </div>
-
-          <div class="flex items-center justify-between pt-3 border-t border-[#4a4421]">
-            <div class="flex -space-x-2">
-              <div v-for="i in 3" :key="i"
-                class="w-8 h-8 rounded-full bg-[#4a4421] border-2 border-[#2E2B1B] flex items-center justify-center text-[#ccc38e] text-xs font-bold">
-                {{ i }}
+        <!-- Team Header -->
+        <div class="p-6 border-b border-gray-100">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex items-center gap-4">
+              <div
+                class="h-14 w-14 rounded-xl bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center text-navy font-black text-xl shadow-lg shadow-primary/20">
+                {{ team.name.substring(0, 2).toUpperCase() }}
+              </div>
+              <div>
+                <h3 class="font-bold text-navy text-lg group-hover:text-primary transition-colors">{{ team.name }}</h3>
+                <p class="text-sm text-gray-400">{{ team.eventName }}</p>
               </div>
             </div>
-            <span class="text-[#ccc38e] text-xs">
-              <span v-if="team.team_rank" class="text-[#f9d406] font-bold">#{{ team.team_rank }}</span>
-              <span v-else>Unranked</span>
+            <span :class="[
+              'px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider',
+              team.status === 'active' ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-gray-500'
+            ]">
+              {{ team.status === 'active' ? 'Aktif' : 'Tidak Aktif' }}
             </span>
           </div>
+        </div>
+
+        <!-- Team Info -->
+        <div class="p-6 space-y-4">
+          <!-- Category Badge -->
+          <div class="flex items-center gap-2 text-sm">
+            <Icon icon="ph:tag" class="text-gray-400" />
+            <span class="text-gray-600">{{ team.category }}</span>
+          </div>
+
+          <!-- Members Preview -->
+          <div class="flex items-center justify-between">
+            <div class="flex -space-x-2">
+              <div v-for="(member, idx) in team.members.slice(0, 4)" :key="idx"
+                class="h-8 w-8 rounded-full border-2 border-white bg-gray-100 overflow-hidden">
+                <img v-if="member.avatar" :src="member.avatar" class="w-full h-full object-cover" />
+                <div v-else class="w-full h-full flex items-center justify-center text-xs font-bold text-gray-400">
+                  {{ member.name.charAt(0) }}
+                </div>
+              </div>
+              <div v-if="team.members.length > 4"
+                class="h-8 w-8 rounded-full border-2 border-white bg-navy text-white flex items-center justify-center text-xs font-bold">
+                +{{ team.members.length - 4 }}
+              </div>
+            </div>
+            <span class="text-sm text-gray-500 font-medium">{{ team.memberCount }} Anggota</span>
+          </div>
+
+          <!-- Stats Row -->
+          <div class="flex items-center gap-4 pt-2 border-t border-gray-100">
+            <div class="flex items-center gap-1.5 text-sm text-gray-500">
+              <Icon icon="ph:crosshair" class="text-primary" />
+              <span class="font-bold text-navy">{{ team.totalScore }}</span>
+              <span class="text-gray-400">Skor</span>
+            </div>
+            <div class="flex items-center gap-1.5 text-sm text-gray-500">
+              <Icon icon="ph:ranking" class="text-amber-500" />
+              <span class="font-bold text-navy">#{{ team.rank }}</span>
+              <span class="text-gray-400">Peringkat</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="px-6 py-4 bg-gray-50/50 border-t border-gray-100 flex gap-2">
+          <BaseButton variant="white" size="sm" icon="ph:eye" class="flex-1" @click="viewTeam(team)">
+            Detail
+          </BaseButton>
+          <BaseButton variant="outline" size="sm" icon="ph:pencil-simple" class="flex-1" @click="editTeam(team)">
+            Edit
+          </BaseButton>
+          <button @click="deleteTeam(team)"
+            class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+            <Icon icon="ph:trash" class="text-lg" />
+          </button>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div v-if="filteredTeams.length === 0" class="col-span-full">
+        <div class="bg-white rounded-2xl border border-gray-100 p-16 text-center">
+          <div class="h-20 w-20 mx-auto bg-gray-50 rounded-2xl flex items-center justify-center text-gray-300 mb-6">
+            <Icon icon="ph:users-four" class="text-5xl" />
+          </div>
+          <h3 class="text-xl font-bold text-navy mb-2">Belum Ada Tim</h3>
+          <p class="text-gray-500 mb-6 max-w-sm mx-auto">Buat tim pertama Anda untuk mengorganisir peserta dalam
+            kompetisi grup.</p>
+          <BaseButton variant="primary" icon="ph:plus-bold" @click="showCreateModal = true">
+            Buat Tim Pertama
+          </BaseButton>
         </div>
       </div>
     </div>
-
-    <!-- Team Detail Modal -->
-    <Teleport to="body">
-      <div v-if="selectedTeam"
-        class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
-        @click.self="selectedTeam = null">
-        <div class="bg-[#2E2B1B] rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden border border-[#4a4421]">
-          <div class="p-6 border-b border-[#4a4421] flex items-center justify-between">
-            <div>
-              <h2 class="text-xl font-bold text-white">{{ selectedTeam.team_name }}</h2>
-              <p class="text-[#ccc38e] text-sm">{{ selectedTeam.country_code }}</p>
-            </div>
-            <button @click="selectedTeam = null"
-              class="p-2 rounded-lg hover:bg-[#4a4421] text-[#ccc38e] hover:text-white transition-colors">
-              <Icon icon="ph:x" />
-            </button>
-          </div>
-
-          <div class="p-6 overflow-y-auto max-h-[60vh]">
-            <!-- Team Stats -->
-            <div class="grid grid-cols-3 gap-4 mb-6">
-              <div class="bg-[#4a4421]/30 rounded-xl p-4 text-center">
-                <p class="text-[#ccc38e] text-xs uppercase mb-1">Total Score</p>
-                <p class="text-white text-2xl font-bold">{{ selectedTeam.total_score }}</p>
-              </div>
-              <div class="bg-[#4a4421]/30 rounded-xl p-4 text-center">
-                <p class="text-[#ccc38e] text-xs uppercase mb-1">X Count</p>
-                <p class="text-[#f9d406] text-2xl font-bold">{{ selectedTeam.total_x_count }}</p>
-              </div>
-              <div class="bg-[#4a4421]/30 rounded-xl p-4 text-center">
-                <p class="text-[#ccc38e] text-xs uppercase mb-1">Rank</p>
-                <p class="text-white text-2xl font-bold">#{{ selectedTeam.team_rank || '-' }}</p>
-              </div>
-            </div>
-
-            <!-- Team Members -->
-            <h3 class="text-white font-bold mb-4 flex items-center gap-2">
-              <Icon icon="ph:users-bold" class="text-[#f9d406]" />
-              Team Members
-            </h3>
-
-            <div v-if="teamMembers.length" class="space-y-3">
-              <div v-for="member in teamMembers" :key="member.id"
-                class="flex items-center gap-4 p-4 rounded-xl bg-[#23200f] border border-[#4a4421]">
-                <div
-                  class="w-10 h-10 rounded-full bg-[#4a4421] flex items-center justify-center text-[#f9d406] font-bold">
-                  {{ member.member_order }}
-                </div>
-                <div class="flex-1">
-                  <p class="text-white font-medium">{{ member.first_name }} {{ member.last_name }}</p>
-                  <p class="text-[#ccc38e] text-sm">{{ member.back_number || 'No back number' }}</p>
-                </div>
-                <div class="text-right">
-                  <p class="text-white font-bold tabular-nums">{{ member.total_score }}</p>
-                  <p class="text-[#f9d406] text-sm tabular-nums">{{ member.total_x_count }}X</p>
-                </div>
-                <span v-if="member.is_substitute" class="px-2 py-1 rounded-full text-xs bg-[#4a4421] text-[#ccc38e]">
-                  Sub
-                </span>
-              </div>
-            </div>
-
-            <div v-else class="text-center py-8 text-[#ccc38e]">
-              No members found
-            </div>
-          </div>
-        </div>
-      </div>
-    </Teleport>
-
-    <!-- Generate Teams Modal -->
-    <Teleport to="body">
-      <div v-if="showGenerateModal"
-        class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
-        @click.self="showGenerateModal = false">
-        <div class="bg-[#2E2B1B] rounded-2xl w-full max-w-md border border-[#4a4421]">
-          <div class="p-6 border-b border-[#4a4421]">
-            <h2 class="text-xl font-bold text-white flex items-center gap-2">
-              <Icon icon="ph:magic-wand-bold" class="text-[#f9d406]" />
-              Auto Generate Teams
-            </h2>
-            <p class="text-[#ccc38e] text-sm mt-1">Generate teams from qualification rankings</p>
-          </div>
-
-          <form @submit.prevent="generateTeams" class="p-6 space-y-4">
-            <div>
-              <label class="block text-[#ccc38e] text-sm mb-2">Tournament</label>
-              <select v-model="generateForm.tournamentId" required
-                class="w-full bg-[#23200f] border border-[#4a4421] rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-[#f9d406]/50 focus:border-[#f9d406]">
-                <option value="">Select Tournament</option>
-                <option v-for="t in tournaments" :key="t.id" :value="t.id">{{ t.name }}</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="block text-[#ccc38e] text-sm mb-2">Event</label>
-              <select v-model="generateForm.eventId" required
-                class="w-full bg-[#23200f] border border-[#4a4421] rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-[#f9d406]/50 focus:border-[#f9d406]">
-                <option value="">Select Event</option>
-                <option v-for="e in events" :key="e.id" :value="e.id">{{ e.name }}</option>
-              </select>
-            </div>
-
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label class="block text-[#ccc38e] text-sm mb-2">Team Size</label>
-                <input v-model.number="generateForm.teamSize" type="number" min="2" max="4"
-                  class="w-full bg-[#23200f] border border-[#4a4421] rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-[#f9d406]/50 focus:border-[#f9d406]" />
-              </div>
-              <div>
-                <label class="block text-[#ccc38e] text-sm mb-2">Top N per Country</label>
-                <input v-model.number="generateForm.topN" type="number" min="2" max="6"
-                  class="w-full bg-[#23200f] border border-[#4a4421] rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-[#f9d406]/50 focus:border-[#f9d406]" />
-              </div>
-            </div>
-
-            <div class="flex gap-3 pt-4">
-              <button type="button" @click="showGenerateModal = false"
-                class="flex-1 py-3 rounded-lg border border-[#4a4421] text-[#ccc38e] hover:bg-[#4a4421] transition-colors font-medium">
-                Cancel
-              </button>
-              <button type="submit" :disabled="generating"
-                class="flex-1 py-3 rounded-lg bg-[#f9d406] text-[#23200f] font-bold hover:bg-yellow-400 transition-colors disabled:opacity-50">
-                {{ generating ? 'Generating...' : 'Generate Teams' }}
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </Teleport>
   </div>
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import { ref, computed } from 'vue'
+
 definePageMeta({
-  title: 'Team Management',
-  layout: 'default',
+  title: 'Tim',
+  layout: 'dashboard'
 })
 
-const { $api } = useNuxtApp()
-
-const loading = ref(true)
-const teams = ref([])
-const tournaments = ref([])
-const events = ref([])
-const selectedTournament = ref('')
-const selectedEvent = ref('')
-const selectedTeam = ref(null)
-const teamMembers = ref([])
-const showGenerateModal = ref(false)
+const searchQuery = ref('')
+const statusFilter = ref('all')
 const showCreateModal = ref(false)
-const generating = ref(false)
 
-const generateForm = ref({
-  tournamentId: '',
-  eventId: '',
-  teamSize: 3,
-  topN: 3
+const statusOptions = [
+  { title: 'Semua Status', value: 'all' },
+  { title: 'Aktif', value: 'active' },
+  { title: 'Tidak Aktif', value: 'inactive' }
+]
+
+// Dummy data
+const teams = ref([
+  {
+    id: 1,
+    name: 'Garuda Archer',
+    eventName: 'Kejuaraan Nasional 2024',
+    eventId: 1,
+    category: 'Recurve - Senior Putra',
+    status: 'active',
+    memberCount: 3,
+    totalScore: 1847,
+    rank: 1,
+    members: [
+      { name: 'Ahmad Rifai', avatar: null },
+      { name: 'Budi Santoso', avatar: null },
+      { name: 'Candra Wijaya', avatar: null }
+    ]
+  },
+  {
+    id: 2,
+    name: 'Elang Jawa',
+    eventName: 'Kejuaraan Nasional 2024',
+    eventId: 1,
+    category: 'Compound - Senior Putra',
+    status: 'active',
+    memberCount: 3,
+    totalScore: 1792,
+    rank: 2,
+    members: [
+      { name: 'Dedi Kurniawan', avatar: null },
+      { name: 'Eko Prasetyo', avatar: null },
+      { name: 'Fajar Nugroho', avatar: null }
+    ]
+  },
+  {
+    id: 3,
+    name: 'Srikandi Team',
+    eventName: 'Piala Gubernur 2024',
+    eventId: 2,
+    category: 'Recurve - Senior Putri',
+    status: 'active',
+    memberCount: 3,
+    totalScore: 1723,
+    rank: 1,
+    members: [
+      { name: 'Gita Maharani', avatar: null },
+      { name: 'Hana Pratiwi', avatar: null },
+      { name: 'Indah Lestari', avatar: null }
+    ]
+  },
+  {
+    id: 4,
+    name: 'Rajawali',
+    eventName: 'Piala Gubernur 2024',
+    eventId: 2,
+    category: 'Barebow - Junior Putra',
+    status: 'inactive',
+    memberCount: 3,
+    totalScore: 1456,
+    rank: 5,
+    members: [
+      { name: 'Joko Widodo', avatar: null },
+      { name: 'Kevin Anggara', avatar: null },
+      { name: 'Lukman Hakim', avatar: null }
+    ]
+  },
+  {
+    id: 5,
+    name: 'Phoenix Archer',
+    eventName: 'Kejuaraan Nasional 2024',
+    eventId: 1,
+    category: 'Recurve - Junior Putri',
+    status: 'active',
+    memberCount: 3,
+    totalScore: 1689,
+    rank: 3,
+    members: [
+      { name: 'Maya Sari', avatar: null },
+      { name: 'Nina Agustina', avatar: null },
+      { name: 'Olivia Rahman', avatar: null }
+    ]
+  }
+])
+
+const filteredTeams = computed(() => {
+  return teams.value.filter(team => {
+    const matchesSearch = team.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      team.eventName.toLowerCase().includes(searchQuery.value.toLowerCase())
+    const matchesStatus = statusFilter.value === 'all' || team.status === statusFilter.value
+    return matchesSearch && matchesStatus
+  })
 })
 
-const getStatusClass = (status) => {
-  const classes = {
-    active: 'bg-green-900/40 text-green-400 border border-green-800',
-    eliminated: 'bg-red-900/40 text-red-400 border border-red-800',
-    qualified: 'bg-blue-900/40 text-blue-400 border border-blue-800'
-  }
-  return classes[status] || 'bg-[#4a4421] text-[#ccc38e]'
+const resetFilters = () => {
+  searchQuery.value = ''
+  statusFilter.value = 'all'
 }
 
-const fetchTeams = async () => {
-  loading.value = true
-  try {
-    let url = '/teams/tournament/' + (selectedTournament.value || 'all')
-    if (selectedEvent.value) {
-      url += `?event_id=${selectedEvent.value}`
-    }
-    const { data } = await $api(url)
-    teams.value = data?.teams || []
-  } catch (e) {
-    console.error('Failed to fetch teams:', e)
-    teams.value = []
-  } finally {
-    loading.value = false
-  }
+const viewTeam = (team) => {
+  console.log('View team:', team)
 }
 
-const fetchTournaments = async () => {
-  try {
-    const { data } = await $api('/events?limit=50')
-    tournaments.value = data?.tournaments || []
-  } catch (e) {
-    console.error('Failed to fetch tournaments:', e)
-  }
+const editTeam = (team) => {
+  console.log('Edit team:', team)
 }
 
-const selectTeam = async (team) => {
-  selectedTeam.value = team
-  try {
-    const { data } = await $api(`/teams/${team.id}`)
-    teamMembers.value = data?.members || []
-  } catch (e) {
-    console.error('Failed to fetch team members:', e)
-    teamMembers.value = []
-  }
+const deleteTeam = (team) => {
+  console.log('Delete team:', team)
 }
-
-const generateTeams = async () => {
-  generating.value = true
-  try {
-    await $api(`/teams/tournament/${generateForm.value.tournamentId}/generate`, {
-      method: 'POST',
-      body: {
-        event_id: generateForm.value.eventId,
-        team_size: generateForm.value.teamSize,
-        top_n: generateForm.value.topN
-      }
-    })
-    showGenerateModal.value = false
-    selectedTournament.value = generateForm.value.tournamentId
-    await fetchTeams()
-  } catch (e) {
-    console.error('Failed to generate teams:', e)
-    alert('Failed to generate teams')
-  } finally {
-    generating.value = false
-  }
-}
-
-watch([selectedTournament, selectedEvent], () => {
-  if (selectedTournament.value) {
-    fetchTeams()
-  }
-})
-
-onMounted(() => {
-  fetchTournaments()
-})
 </script>

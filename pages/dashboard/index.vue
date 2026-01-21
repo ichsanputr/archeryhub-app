@@ -173,58 +173,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Live Alerts & Quick Actions -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pb-6">
-      <!-- Live Alerts -->
-      <div class="bg-white rounded-xl border border-gray-200 flex flex-col shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
-        <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
-          <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">Live Alerts</h3>
-          <span
-            class="bg-red-50 text-red-600 border border-red-100 text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">2
-            New</span>
-        </div>
-        <div class="p-6 flex flex-col gap-4">
-          <div class="flex items-start gap-4 p-4 rounded-xl bg-red-50/50 border border-red-100">
-            <div class="p-2 bg-white rounded-lg border border-red-100 shadow-sm text-red-500">
-              <span class="material-symbols-outlined mt-0.5">warning</span>
-            </div>
-            <div class="flex-1">
-              <p class="text-navy-dark text-sm font-bold">Target 04 Malfunction</p>
-              <p class="text-text-secondary text-xs mt-1">Sensor not registering hits. Technician dispatched.</p>
-            </div>
-            <BaseButton variant="outline" size="sm">
-              Dismiss
-            </BaseButton>
-          </div>
-          <div class="flex items-start gap-4 p-4 rounded-xl bg-gray-50 border border-gray-100">
-            <div class="p-2 bg-white rounded-lg border border-gray-200 shadow-sm text-navy-dark">
-              <span class="material-symbols-outlined mt-0.5">gavel</span>
-            </div>
-            <div class="flex-1">
-              <p class="text-navy-dark text-sm font-bold">Scoring Review Requested</p>
-              <p class="text-text-secondary text-xs mt-1">Archer #23 contested Arrow 3 on End 4.</p>
-            </div>
-            <BaseButton variant="primary" size="sm">
-              Review
-            </BaseButton>
-          </div>
-        </div>
-      </div>
-
-      <!-- Quick Actions -->
-      <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
-        <h3 class="text-navy-dark font-bold mb-4 flex items-center gap-2 text-lg">Quick Actions</h3>
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-          <button v-for="action in quickActions" :key="action.label"
-            class="flex flex-col items-center justify-center p-4 rounded-xl bg-gray-50 border border-gray-100 hover:bg-white hover:border-primary hover:shadow-lg hover:shadow-primary/10 text-text-main transition-all group duration-300">
-            <Icon :icon="action.icon.includes(':') ? action.icon : `ph:${action.icon}`"
-              class="mb-2 text-gray-400 group-hover:text-primary transition-colors text-xl" />
-            <span class="text-xs font-bold group-hover:text-navy-dark text-center">{{ action.label }}</span>
-          </button>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 

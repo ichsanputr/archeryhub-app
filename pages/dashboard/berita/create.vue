@@ -1,0 +1,233 @@
+<template>
+    <div class="flex flex-col gap-8 max-w-4xl mx-auto">
+        <!-- Header Section -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div>
+                <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight uppercase">
+                    <NuxtLink to="/dashboard" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
+                    <Icon icon="ph:caret-right-bold" class="text-[12px]" />
+                    <NuxtLink to="/dashboard/berita" class="hover:text-primary transition-colors">Berita</NuxtLink>
+                    <Icon icon="ph:caret-right-bold" class="text-[12px]" />
+                    <span class="text-navy">Buat Baru</span>
+                </div>
+                <h1 class="text-3xl font-extrabold text-navy tracking-tight">Buat Berita Baru</h1>
+                <p class="text-gray-500 font-medium mt-1">Tulis dan publikasikan berita untuk organisasi Anda.</p>
+            </div>
+        </div>
+
+        <!-- Form Card -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <form @submit.prevent="submitNews">
+                <!-- Featured Image Upload -->
+                <div class="p-8 border-b border-gray-100">
+                    <h3 class="text-lg font-bold text-navy mb-4 flex items-center gap-2">
+                        <Icon icon="ph:image" class="text-primary" />
+                        Gambar Utama
+                    </h3>
+                    <div class="relative h-64 border-2 border-dashed border-gray-200 rounded-xl bg-gray-50 hover:border-primary hover:bg-primary/5 transition-colors cursor-pointer overflow-hidden"
+                        @click="triggerFileUpload">
+                        <img v-if="form.imagePreview" :src="form.imagePreview" class="w-full h-full object-cover" />
+                        <div v-else class="absolute inset-0 flex flex-col items-center justify-center gap-3">
+                            <div class="h-16 w-16 rounded-2xl bg-gray-100 flex items-center justify-center">
+                                <Icon icon="ph:upload-simple" class="text-3xl text-gray-400" />
+                            </div>
+                            <div class="text-center">
+                                <p class="font-bold text-navy">Klik untuk upload gambar</p>
+                                <p class="text-sm text-gray-400">PNG, JPG hingga 5MB</p>
+                            </div>
+                        </div>
+                        <input ref="fileInput" type="file" accept="image/*" class="hidden"
+                            @change="handleImageUpload" />
+                    </div>
+                </div>
+
+                <!-- Basic Info -->
+                <div class="p-8 border-b border-gray-100 space-y-6">
+                    <h3 class="text-lg font-bold text-navy mb-4 flex items-center gap-2">
+                        <Icon icon="ph:info" class="text-primary" />
+                        Informasi Berita
+                    </h3>
+
+                    <BaseInput v-model="form.title" label="Judul Berita"
+                        placeholder="Masukkan judul berita yang menarik..." required />
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <BaseSelect v-model="form.category" :items="categoryOptions" label="Kategori" required />
+                        <BaseSelect v-model="form.status" :items="statusOptions" label="Status Publikasi" required />
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">
+                            Kutipan Singkat
+                        </label>
+                        <textarea v-model="form.excerpt"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
+                            rows="3"
+                            placeholder="Tulis ringkasan singkat berita (akan ditampilkan di preview)..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Content Editor -->
+                <div class="p-8 border-b border-gray-100">
+                    <h3 class="text-lg font-bold text-navy mb-4 flex items-center gap-2">
+                        <Icon icon="ph:text-aa" class="text-primary" />
+                        Konten Berita
+                    </h3>
+
+                    <!-- Rich Text Toolbar -->
+                    <div class="flex items-center gap-1 p-2 bg-gray-50 rounded-t-xl border border-gray-200 border-b-0">
+                        <button type="button" class="p-2 hover:bg-white rounded-lg transition-colors" title="Bold">
+                            <Icon icon="ph:text-b-bold" class="text-gray-600" />
+                        </button>
+                        <button type="button" class="p-2 hover:bg-white rounded-lg transition-colors" title="Italic">
+                            <Icon icon="ph:text-italic-bold" class="text-gray-600" />
+                        </button>
+                        <button type="button" class="p-2 hover:bg-white rounded-lg transition-colors" title="Underline">
+                            <Icon icon="ph:text-underline-bold" class="text-gray-600" />
+                        </button>
+                        <div class="w-px h-6 bg-gray-200 mx-1"></div>
+                        <button type="button" class="p-2 hover:bg-white rounded-lg transition-colors" title="Heading">
+                            <Icon icon="ph:text-h-bold" class="text-gray-600" />
+                        </button>
+                        <button type="button" class="p-2 hover:bg-white rounded-lg transition-colors" title="List">
+                            <Icon icon="ph:list-bullets-bold" class="text-gray-600" />
+                        </button>
+                        <button type="button" class="p-2 hover:bg-white rounded-lg transition-colors" title="Link">
+                            <Icon icon="ph:link-bold" class="text-gray-600" />
+                        </button>
+                        <div class="w-px h-6 bg-gray-200 mx-1"></div>
+                        <button type="button" class="p-2 hover:bg-white rounded-lg transition-colors" title="Image">
+                            <Icon icon="ph:image-bold" class="text-gray-600" />
+                        </button>
+                        <button type="button" class="p-2 hover:bg-white rounded-lg transition-colors" title="Video">
+                            <Icon icon="ph:video-bold" class="text-gray-600" />
+                        </button>
+                    </div>
+
+                    <textarea v-model="form.content"
+                        class="w-full px-6 py-4 rounded-b-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none min-h-[400px] text-gray-700 leading-relaxed"
+                        placeholder="Tulis konten berita Anda di sini..."></textarea>
+                </div>
+
+                <!-- SEO Settings -->
+                <div class="p-8 border-b border-gray-100">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-navy flex items-center gap-2">
+                            <Icon icon="ph:magnifying-glass" class="text-primary" />
+                            Pengaturan SEO
+                        </h3>
+                        <span class="text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded-full">Opsional</span>
+                    </div>
+
+                    <div class="space-y-4">
+                        <BaseInput v-model="form.metaTitle" label="Meta Title"
+                            placeholder="Judul untuk mesin pencari..." />
+                        <div>
+                            <label class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">
+                                Meta Description
+                            </label>
+                            <textarea v-model="form.metaDescription"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
+                                rows="2" placeholder="Deskripsi singkat untuk hasil pencarian..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="p-8 bg-gray-50/50 flex items-center justify-between gap-4">
+                    <NuxtLink to="/dashboard/berita">
+                        <BaseButton variant="white" icon="ph:arrow-left">
+                            Kembali
+                        </BaseButton>
+                    </NuxtLink>
+                    <div class="flex items-center gap-3">
+                        <BaseButton variant="outline" type="button" icon="ph:eye" @click="previewNews">
+                            Preview
+                        </BaseButton>
+                        <BaseButton variant="gold" type="submit" icon="ph:paper-plane-tilt" :loading="isSubmitting">
+                            {{ form.status === 'published' ? 'Publikasikan' : 'Simpan Draft' }}
+                        </BaseButton>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</template>
+
+<script setup>
+import { Icon } from '@iconify/vue'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useToast } from '~/composables/useToast'
+
+definePageMeta({
+    title: 'Buat Berita',
+    layout: 'dashboard'
+})
+
+const router = useRouter()
+const toast = useToast()
+const fileInput = ref(null)
+const isSubmitting = ref(false)
+
+const form = ref({
+    title: '',
+    category: 'Event',
+    status: 'draft',
+    excerpt: '',
+    content: '',
+    imagePreview: null,
+    imageFile: null,
+    metaTitle: '',
+    metaDescription: ''
+})
+
+const categoryOptions = [
+    { title: 'Event', value: 'Event' },
+    { title: 'Pengumuman', value: 'Pengumuman' },
+    { title: 'Prestasi', value: 'Prestasi' },
+    { title: 'Lainnya', value: 'Lainnya' }
+]
+
+const statusOptions = [
+    { title: 'Draft', value: 'draft' },
+    { title: 'Publikasikan', value: 'published' }
+]
+
+const triggerFileUpload = () => {
+    fileInput.value?.click()
+}
+
+const handleImageUpload = (event) => {
+    const file = event.target.files[0]
+    if (file) {
+        form.value.imageFile = file
+        form.value.imagePreview = URL.createObjectURL(file)
+    }
+}
+
+const previewNews = () => {
+    toast.info('Preview belum tersedia')
+}
+
+const submitNews = async () => {
+    if (!form.value.title) {
+        toast.error('Judul berita wajib diisi')
+        return
+    }
+
+    isSubmitting.value = true
+
+    try {
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1500))
+
+        toast.success(form.value.status === 'published' ? 'Berita berhasil dipublikasikan!' : 'Draft berhasil disimpan!')
+        router.push('/dashboard/berita')
+    } catch (error) {
+        toast.error('Gagal menyimpan berita')
+    } finally {
+        isSubmitting.value = false
+    }
+}
+</script>

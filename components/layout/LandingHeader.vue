@@ -14,17 +14,12 @@
 
                 <!-- Desktop Navigation -->
                 <nav class="hidden md:flex items-center gap-8">
-                    <NuxtLink to="/" class="font-medium text-sm transition-all duration-300 hover:text-primary"
-                        :class="[navLinkClasses, { 'font-bold': isActive('/') }]">
-                        Beranda
-                    </NuxtLink>
-
                     <!-- Turnamen with Mega Menu -->
                     <div class="relative" @mouseenter="showMegaMenu = true" @mouseleave="showMegaMenu = false">
                         <button
                             class="font-medium text-sm transition-all duration-300 flex items-center gap-1 hover:text-primary"
                             :class="[navLinkClasses, { 'font-bold': isActive('/events') }]">
-                            Turnamen
+                            Event
                             <Icon icon="ph:caret-down" class="text-xs transition-transform"
                                 :class="{ 'rotate-180': showMegaMenu }" />
                         </button>
@@ -111,20 +106,60 @@
                     </div>
 
                     <NuxtLink to="#" class="font-medium text-sm transition-all duration-300 hover:text-primary"
-                        :class="navLinkClasses">Skor</NuxtLink>
-                    <NuxtLink to="#" class="font-medium text-sm transition-all duration-300 hover:text-primary"
                         :class="navLinkClasses">Klub</NuxtLink>
                     <NuxtLink to="/berita" class="font-medium text-sm transition-all duration-300 hover:text-primary"
                         :class="[navLinkClasses, { 'font-bold': isActive('/berita') }]">Berita</NuxtLink>
+                    <NuxtLink to="/shop" class="font-medium text-sm transition-all duration-300 hover:text-primary"
+                        :class="[navLinkClasses, { 'font-bold': isActive('/shop') }]">Marketplace</NuxtLink>
                 </nav>
 
                 <!-- Desktop Auth Buttons -->
                 <div class="hidden md:flex items-center gap-3">
-                    <NuxtLink v-if="isLoggedIn" to="/dashboard"
-                        class="bg-primary hover:bg-primary-hover text-navy text-sm font-bold px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
-                        <Icon icon="ph:layout-bold" />
-                        Dashboard
-                    </NuxtLink>
+                    <!-- Logged In User Avatar -->
+                    <div v-if="isLoggedIn" class="relative" @mouseenter="showUserMenu = true"
+                        @mouseleave="showUserMenu = false">
+                        <button class="flex items-center gap-2 p-1 rounded-full hover:bg-gray-100 transition-colors">
+                            <div
+                                class="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center overflow-hidden border-2 border-white shadow-md">
+                                <img v-if="user?.avatar_url" :src="user.avatar_url"
+                                    class="w-full h-full object-cover" />
+                                <span v-else class="text-navy font-bold text-sm">{{ user?.name?.charAt(0) || 'U'
+                                }}</span>
+                            </div>
+                        </button>
+
+                        <!-- User Dropdown Menu -->
+                        <Transition enter-active-class="transition duration-200 ease-out"
+                            enter-from-class="opacity-0 translate-y-1" enter-to-class="opacity-100 translate-y-0"
+                            leave-active-class="transition duration-150 ease-in"
+                            leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 translate-y-1">
+                            <div v-if="showUserMenu" class="absolute right-0 top-full pt-2 w-56">
+                                <div class="bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden py-2">
+                                    <div class="px-4 py-3 border-b border-gray-100">
+                                        <p class="font-bold text-navy truncate">{{ user?.name || 'User' }}</p>
+                                        <p class="text-xs text-gray-400 truncate">{{ user?.email }}</p>
+                                    </div>
+                                    <NuxtLink to="/dashboard"
+                                        class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-navy transition-colors">
+                                        <Icon icon="ph:layout" class="text-lg" />
+                                        Dashboard
+                                    </NuxtLink>
+                                    <NuxtLink to="/dashboard/settings"
+                                        class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-navy transition-colors">
+                                        <Icon icon="ph:gear" class="text-lg" />
+                                        Pengaturan
+                                    </NuxtLink>
+                                    <div class="border-t border-gray-100 mt-2 pt-2">
+                                        <button @click="handleLogout"
+                                            class="flex items-center gap-3 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 transition-colors w-full">
+                                            <Icon icon="ph:sign-out" class="text-lg" />
+                                            Keluar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </Transition>
+                    </div>
                     <template v-else>
                         <NuxtLink to="/auth/login"
                             class="text-sm font-bold px-4 py-2 rounded-lg transition-colors border"
@@ -223,12 +258,17 @@ const props = defineProps({
 })
 
 const route = useRoute()
-const { isLoggedIn } = useAuth()
+const { isLoggedIn, user, logout } = useAuth()
 
 const mobileMenuOpen = ref(false)
 const mobileSubmenuOpen = ref(false)
 const showMegaMenu = ref(false)
+const showUserMenu = ref(false)
 const isScrolled = ref(false)
+
+const handleLogout = async () => {
+    await logout()
+}
 
 // Scroll handler for transparent mode
 const handleScroll = () => {

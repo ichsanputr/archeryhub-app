@@ -38,8 +38,8 @@
         </span>
       </NuxtLink>
 
-      <!-- Dynamic Event Navigation (Manajemen Event) - Only when in event scope -->
-      <div v-if="eventId" class="flex flex-col gap-1 mt-4">
+      <!-- Dynamic Event Navigation (Manajemen Event) - Only for org/club/admin when in event scope -->
+      <div v-if="eventId && canManageEvents" class="flex flex-col gap-1 mt-4">
         <div class="h-px bg-white/10 mb-2 mx-3"></div>
         <div v-if="!isSidebarCollapsed" class="px-3 mb-2">
           <p class="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Manajemen Event</p>
@@ -66,8 +66,7 @@
           </div>
           <div v-if="!isSidebarCollapsed" class="flex flex-col min-w-0">
             <span class="text-white text-sm font-bold truncate">{{ user?.name || 'Guest' }}</span>
-            <span class="text-[10px] text-gray-500 font-black uppercase tracking-widest">{{ user?.role || 'User'
-            }}</span>
+            <span class="text-[10px] text-gray-500 font-black uppercase tracking-widest">{{ userRoleLabel }}</span>
           </div>
         </div>
         <button @click="handleLogout"
@@ -109,21 +108,50 @@ const eventLinks = computed(() => [
 ])
 
 // Role-based navigation - filtered based on user role
+const isArcher = computed(() => {
+  const role = user.value?.role || user.value?.type || 'archer'
+  return role === 'archer'
+})
+
+const canManageEvents = computed(() => {
+  const role = user.value?.role || user.value?.type || 'archer'
+  return ['admin', 'organization', 'club'].includes(role)
+})
+
+// Indonesian role label
+const userRoleLabel = computed(() => {
+  const role = user.value?.role || user.value?.type || 'archer'
+  const labels = {
+    'archer': 'Pemanah',
+    'organization': 'Organisasi',
+    'club': 'Klub',
+    'admin': 'Admin'
+  }
+  return labels[role] || 'Pengguna'
+})
+
 const navLinks = computed(() => {
-  const role = user.value?.role || 'archer'
+  const role = user.value?.role || user.value?.type || 'archer'
 
-  // Base links for all users
-  const baseLinks = [
-    { label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard', roles: ['archer', 'admin', 'organization', 'club'] },
-    { label: 'Event', icon: 'ph:trophy', path: '/dashboard/events', roles: ['archer', 'admin', 'organization', 'club'] },
-    { label: 'Atlet', icon: 'ph:users-three', path: '/dashboard/archers', roles: ['admin', 'organization', 'club'] },
-    { label: 'Tim', icon: 'ph:users-four', path: '/dashboard/teams', roles: ['admin', 'organization'] },
-    { label: 'Anggota Klub', icon: 'ph:identification-badge', path: '/dashboard/members', roles: ['club'] },
-    { label: 'Hasil Langsung', icon: 'ph:broadcast', path: '/dashboard/live', badge: 'Live', roles: ['archer', 'admin', 'organization', 'club'] },
-    { label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/settings', roles: ['archer', 'admin', 'organization', 'club'] },
+  // Different navigation for archers vs organizers
+  if (role === 'archer') {
+    return [
+      { label: 'Event Saya', icon: 'ph:trophy', path: '/dashboard/events' },
+      { label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/settings' },
+    ]
+  }
+
+  // Full navigation for organizers (org, club, admin)
+  return [
+    { label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard' },
+    { label: 'Event', icon: 'ph:trophy', path: '/dashboard/events' },
+    { label: 'Pemanah', icon: 'ph:users-three', path: '/dashboard/archers' },
+    ...(role === 'club' ? [{ label: 'Anggota Klub', icon: 'ph:identification-badge', path: '/dashboard/members' }] : []),
+    ...(role !== 'club' ? [{ label: 'Tim', icon: 'ph:users-four', path: '/dashboard/teams' }] : []),
+    { label: 'Berita', icon: 'ph:newspaper', path: '/dashboard/berita' },
+    ...(role !== 'archer' ? [{ label: 'Marketplace', icon: 'ph:storefront', path: '/dashboard/shop' }] : []),
+    { label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/settings' },
   ]
-
-  return baseLinks.filter(link => link.roles.includes(role))
 })
 
 const isActive = (path) => {
