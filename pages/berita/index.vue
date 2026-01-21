@@ -94,7 +94,7 @@
                     <!-- Articles List -->
                     <div class="space-y-6">
                         <NuxtLink v-for="article in filteredArticles" :key="article.id" :to="`/berita/${article.id}`"
-                            class="group flex gap-5 bg-white rounded-xl border border-gray-100 p-4 hover:shadow-lg hover:border-primary/30 transition-all">
+                            class="group flex gap-5 bg-white rounded-xl border border-gray-100 p-4 hover:border-primary/30 transition-all">
 
                             <!-- Thumbnail -->
                             <div class="w-32 h-32 md:w-40 md:h-28 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0">

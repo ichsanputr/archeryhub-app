@@ -3,7 +3,7 @@
         <!-- Header -->
         <div class="flex flex-wrap items-center justify-between gap-6 pb-6 border-b border-gray-100">
             <div>
-                <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight uppercase">
+                <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
                     <NuxtLink to="/dashboard" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
                     <span class="text-navy">Detail Turnamen</span>

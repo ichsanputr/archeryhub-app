@@ -69,9 +69,7 @@
                     <button v-for="type in userTypes" :key="type.value" @click="form.userType = type.value"
                         class="flex-1 py-3 px-4 rounded-lg text-sm font-bold transition-all flex items-center justify-center gap-2"
                         :class="form.userType === type.value ? 'bg-white text-navy shadow-md' : 'text-gray-500 hover:text-navy'">
-                        <Icon
-                            :icon="type.icon === 'sports_martial_arts' ? 'ph:user-bold' : type.icon === 'corporate_fare' ? 'ph:buildings-bold' : 'ph:users-three-bold'"
-                            class="text-lg" />
+                        <Icon :icon="type.icon" class="text-lg" />
                         <span class="hidden sm:inline">{{ type.label }}</span>
                     </button>
                 </div>
@@ -218,7 +216,7 @@ const isLoading = ref(false)
 const error = ref(null)
 
 const userTypes = [
-    { value: 'archer', label: 'Pemanah', icon: 'ph:user-bold' },
+    { value: 'archer', label: 'Pemanah', icon: 'temaki:archery' },
     { value: 'organization', label: 'Organisasi', icon: 'ph:buildings-bold' },
     { value: 'club', label: 'Klub', icon: 'ph:users-three-bold' },
     { value: 'seller', label: 'Penjual', icon: 'ph:storefront-bold' }

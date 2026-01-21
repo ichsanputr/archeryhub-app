@@ -67,10 +67,6 @@
           class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border border-white dark:border-surface-highlight"></span>
       </button>
 
-      <!-- User Avatar/Profile -->
-      <div
-        class="size-10 rounded-full bg-cover bg-center border-2 border-gray-200 dark:border-surface-highlight cursor-pointer hover:border-primary transition-colors"
-        :style="`background-image: url('${userAvatar}');`" @click="toggleUserMenu"></div>
     </div>
   </header>
 </template>

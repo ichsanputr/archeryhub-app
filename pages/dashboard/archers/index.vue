@@ -3,7 +3,7 @@
         <!-- Header Section -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
-                <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight uppercase">
+                <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
                     <NuxtLink to="/dashboard" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
                     <span class="text-navy">Pemanah</span>
@@ -107,7 +107,7 @@
                                             class="w-full h-full object-cover" />
                                         <span v-else class="text-white font-bold text-lg">{{ archer.full_name?.charAt(0)
                                             || 'A'
-                                            }}</span>
+                                        }}</span>
                                     </div>
                                     <div>
                                         <p class="font-bold text-navy group-hover:text-primary transition-colors">{{

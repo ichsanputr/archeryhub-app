@@ -1,172 +1,104 @@
-<script setup>
-import { computed } from 'vue'
-import { Icon } from '@iconify/vue'
-import { navigateTo } from '#app'
-import { useHead } from '#app'
-
-// Get error props
-const props = defineProps({
-  error: Object
-})
-
-// Handle different error types
-const is404 = computed(() => props.error?.statusCode === 404)
-const is500 = computed(() => props.error?.statusCode === 500)
-
-// Error messages and suggestions
-const errorConfig = computed(() => {
-  if (is404.value) {
-    return {
-      title: "Page Not Found",
-      subtitle: "The page you're looking for doesn't exist",
-      description: "This could be because the URL was typed incorrectly, the page has been moved, or it never existed.",
-      icon: "ph:file-x",
-      suggestions: [
-        { text: "Go back to homepage", action: "home", icon: "ph:house" },
-        { text: "Read articles", action: "articles", icon: "ph:book-open" },
-      ]
-    }
-  } else if (is500.value) {
-    return {
-      title: "Server Error",
-      subtitle: "Something went wrong on our end",
-      description: "We're experiencing technical difficulties. Please try again later or contact support if the problem persists.",
-      icon: "ph:warning-circle",
-      suggestions: [
-        { text: "Try again", action: "refresh", icon: "ph:arrow-clockwise" },
-        { text: "Go to homepage", action: "home", icon: "ph:house" },
-      ]
-    }
-  } else {
-    return {
-      title: "Something went wrong",
-      subtitle: `Error ${props.error?.statusCode || 'Unknown'}`,
-      description: props.error?.statusMessage || "An unexpected error occurred.",
-      icon: "ph:warning",
-      suggestions: [
-        { text: "Go back to homepage", action: "home", icon: "ph:house" },
-        { text: "Try again", action: "refresh", icon: "ph:arrow-clockwise" }
-      ]
-    }
-  }
-})
-
-// Handle actions
-const handleAction = (action) => {
-  switch (action) {
-    case 'home':
-      navigateTo('/')
-      break
-    case 'problems':
-      navigateTo('/problem')
-      break
-    case 'articles':
-      navigateTo('/article')
-      break
-    case 'leaderboard':
-      navigateTo('/leaderboard')
-      break
-    case 'refresh':
-      window.location.reload()
-      break
-    case 'contact':
-      // You can implement contact logic here
-      window.open('mailto:ichsanfadhil67@gmail.com', '_blank')
-      break
-    default:
-      navigateTo('/')
-  }
-}
-
-// SEO
-useHead({
-  title: `${errorConfig.value.title} - BudiBadu`,
-  meta: [
-    { name: 'description', content: errorConfig.value.description },
-  ]
-})
-</script>
-
 <template>
-  <div class="min-h-screen bg-gray-50 flex items-center justify-center px-4 sm:px-6 lg:px-8">
-    <div class="max-w-2xl w-full text-center">
-      <!-- Error Content -->
-      <div class="mb-12">
-        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-          {{ errorConfig.title }}
-        </h1>
-        
-        <p class="text-base text-gray-500 max-w-lg mx-auto leading-relaxed">
-          {{ errorConfig.description }}
-        </p>
-      </div>
-
-      <!-- Action Buttons -->
-      <div class="space-y-4">
-        <!-- Primary Actions -->
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <button
-            v-for="(suggestion, index) in errorConfig.suggestions.slice(0, 2)"
-            :key="index"
-            @click="handleAction(suggestion.action)"
-            class="inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-lg transition-all duration-200 transform hover:scale-105"
-            :class="index === 0 
-              ? 'bg-orange-500 text-white shadow-lg hover:shadow-xl' 
-              : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 shadow-sm hover:shadow-md'"
-          >
-            <Icon :ssr="true" :icon="suggestion.icon" class="w-5 h-5 mr-2" />
-            {{ suggestion.text }}
-          </button>
+  <div class="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+    <div class="text-center max-w-lg">
+      <!-- Error Illustration -->
+      <div class="relative mb-8">
+        <div
+          class="w-32 h-32 mx-auto bg-gradient-to-br from-primary to-amber-400 rounded-full flex items-center justify-center shadow-xl shadow-primary/20">
+          <div class="w-24 h-24 bg-navy rounded-full flex items-center justify-center">
+            <Icon icon="ph:target" class="text-5xl text-primary" />
+          </div>
         </div>
-
-        <!-- Secondary Actions -->
-        <div v-if="errorConfig.suggestions.length > 2" class="flex flex-wrap gap-3 justify-center pt-4">
-          <button
-            v-for="(suggestion, index) in errorConfig.suggestions.slice(2)"
-            :key="index + 2"
-            @click="handleAction(suggestion.action)"
-            class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-yellow-600 transition-colors"
-          >
-            <Icon :ssr="true" :icon="suggestion.icon" class="w-4 h-4 mr-2" />
-            {{ suggestion.text }}
-          </button>
+        <div
+          class="absolute -bottom-2 left-1/2 -translate-x-1/2 px-4 py-1 bg-red-500 text-white text-xs font-bold rounded-full shadow-lg">
+          {{ error?.statusCode || 404 }}
         </div>
       </div>
 
-      <!-- Footer -->
-      <div class="mt-8 text-sm text-gray-500">
-        <p>
-          If the problem persists, please 
-          <button 
-            @click="handleAction('contact')"
-            class="text-yellow-600 hover:text-yellow-700 font-medium underline"
-          >
-            contact our support team
-          </button>
-        </p>
+      <!-- Error Message -->
+      <h1 class="text-3xl md:text-4xl font-black text-navy mb-4">
+        {{ title }}
+      </h1>
+      <p class="text-gray-500 mb-8 leading-relaxed">
+        {{ message }}
+      </p>
+
+      <!-- Actions -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <NuxtLink to="/">
+          <BaseButton variant="primary" size="lg" icon="ph:house-bold">
+            Kembali ke Beranda
+          </BaseButton>
+        </NuxtLink>
+        <button @click="handleError"
+          class="flex items-center gap-2 text-gray-500 hover:text-navy transition-colors font-medium">
+          <Icon icon="ph:arrow-counter-clockwise" />
+          Coba Lagi
+        </button>
+      </div>
+
+      <!-- Helpful Links -->
+      <div class="mt-12 pt-8 border-t border-gray-200">
+        <p class="text-xs text-gray-400 uppercase tracking-widest font-bold mb-4">Mungkin Anda mencari</p>
+        <div class="flex flex-wrap justify-center gap-3">
+          <NuxtLink to="/events"
+            class="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:border-primary hover:text-navy transition-all">
+            Turnamen
+          </NuxtLink>
+          <NuxtLink to="/klub"
+            class="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:border-primary hover:text-navy transition-all">
+            Klub
+          </NuxtLink>
+          <NuxtLink to="/berita"
+            class="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:border-primary hover:text-navy transition-all">
+            Berita
+          </NuxtLink>
+          <NuxtLink to="/shop"
+            class="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:border-primary hover:text-navy transition-all">
+            Marketplace
+          </NuxtLink>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
-/* Add some animation to the error icon */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-}
+<script setup>
+import { Icon } from '@iconify/vue'
+import { computed } from 'vue'
 
-.error-icon {
-  animation: float 3s ease-in-out infinite;
-}
+// Get error from Nuxt
+const error = useError()
 
-/* Add pulse animation for attention */
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.8; }
-}
+const title = computed(() => {
+  const code = error.value?.statusCode
+  switch (code) {
+    case 404:
+      return 'Halaman Tidak Ditemukan'
+    case 403:
+      return 'Akses Ditolak'
+    case 500:
+      return 'Terjadi Kesalahan'
+    default:
+      return 'Terjadi Kesalahan'
+  }
+})
 
-.pulse {
-  animation: pulse 2s ease-in-out infinite;
+const message = computed(() => {
+  const code = error.value?.statusCode
+  switch (code) {
+    case 404:
+      return 'Maaf, halaman yang Anda cari tidak dapat ditemukan. Mungkin sudah dipindahkan atau dihapus.'
+    case 403:
+      return 'Anda tidak memiliki izin untuk mengakses halaman ini. Silakan login atau hubungi administrator.'
+    case 500:
+      return 'Terjadi kesalahan pada server. Tim kami sedang bekerja untuk memperbaikinya.'
+    default:
+      return error.value?.message || 'Terjadi kesalahan yang tidak diketahui.'
+  }
+})
+
+const handleError = () => {
+  clearError({ redirect: '/' })
 }
-</style>
+</script>

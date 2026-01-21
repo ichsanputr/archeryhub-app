@@ -3,7 +3,7 @@
         <!-- Header Section -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
-                <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight uppercase">
+                <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
                     <NuxtLink to="/dashboard" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
                     <span class="text-navy">Berita</span>
@@ -54,7 +54,7 @@
                 <div>
                     <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Total View</p>
                     <p class="text-lg font-bold text-navy">{{news.reduce((acc, n) => acc + n.views, 0).toLocaleString()
-                    }}</p>
+                        }}</p>
                 </div>
             </div>
         </div>
