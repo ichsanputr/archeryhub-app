@@ -165,6 +165,7 @@ definePageMeta({
     layout: 'dashboard'
 })
 
+const { post } = useApi()
 const router = useRouter()
 const toast = useToast()
 const fileInput = ref(null)
@@ -172,21 +173,21 @@ const isSubmitting = ref(false)
 
 const form = ref({
     title: '',
-    category: 'Event',
+    category: 'pengumuman',
     status: 'draft',
     excerpt: '',
     content: '',
     imagePreview: null,
-    imageFile: null,
+    imageURL: '',
     metaTitle: '',
     metaDescription: ''
 })
 
 const categoryOptions = [
-    { title: 'Event', value: 'Event' },
-    { title: 'Pengumuman', value: 'Pengumuman' },
-    { title: 'Prestasi', value: 'Prestasi' },
-    { title: 'Lainnya', value: 'Lainnya' }
+    { title: 'Event', value: 'event' },
+    { title: 'Pengumuman', value: 'pengumuman' },
+    { title: 'Prestasi', value: 'prestasi' },
+    { title: 'Lainnya', value: 'lainnya' }
 ]
 
 const statusOptions = [
@@ -198,11 +199,28 @@ const triggerFileUpload = () => {
     fileInput.value?.click()
 }
 
-const handleImageUpload = (event) => {
+const handleImageUpload = async (event) => {
     const file = event.target.files[0]
-    if (file) {
-        form.value.imageFile = file
-        form.value.imagePreview = URL.createObjectURL(file)
+    if (!file) return
+
+    // Show preview
+    form.value.imagePreview = URL.createObjectURL(file)
+
+    // Upload to server
+    const formData = new FormData()
+    formData.append('file', file)
+
+    try {
+        const response = await post('/api/v1/media/upload', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+        form.value.imageURL = response.url
+        toast.success('Gambar berhasil diupload')
+    } catch (error) {
+        toast.error('Gagal mengupload gambar')
+        form.value.imagePreview = null
     }
 }
 
@@ -219,8 +237,18 @@ const submitNews = async () => {
     isSubmitting.value = true
 
     try {
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1500))
+        const payload = {
+            title: form.value.title,
+            excerpt: form.value.excerpt,
+            content: form.value.content,
+            image_url: form.value.imageURL,
+            category: form.value.category,
+            status: form.value.status,
+            meta_title: form.value.metaTitle,
+            meta_description: form.value.metaDescription
+        }
+
+        await post('/api/v1/news', payload)
 
         toast.success(form.value.status === 'published' ? 'Berita berhasil dipublikasikan!' : 'Draft berhasil disimpan!')
         router.push('/dashboard/berita')

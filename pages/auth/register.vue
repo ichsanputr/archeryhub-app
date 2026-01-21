@@ -140,6 +140,20 @@
                                 <p class="mt-2 text-xs text-gray-400">Data pelatih dan lokasi bisa dilengkapi di halaman
                                     profil.</p>
                             </div>
+
+                            <!-- Seller: Nama Toko -->
+                            <div v-if="form.userType === 'seller'">
+                                <h4
+                                    class="text-xs font-black text-navy uppercase tracking-widest flex items-center gap-2 mb-4">
+                                    <Icon icon="ph:storefront-bold" class="text-primary text-lg" />
+                                    Data Toko
+                                </h4>
+                                <BaseInput v-model="form.storeName" label="Nama Toko" placeholder="Nama toko Anda"
+                                    required :error="errors.storeName"
+                                    @blur="validate('storeName', form.storeName, [rules.required()])" />
+                                <p class="mt-2 text-xs text-gray-400">Alamat dan detail toko bisa dilengkapi di halaman
+                                    profil.</p>
+                            </div>
                         </div>
 
                         <div class="flex flex-col gap-2 pt-4">
@@ -206,7 +220,8 @@ const error = ref(null)
 const userTypes = [
     { value: 'archer', label: 'Pemanah', icon: 'ph:user-bold' },
     { value: 'organization', label: 'Organisasi', icon: 'ph:buildings-bold' },
-    { value: 'club', label: 'Klub', icon: 'ph:users-three-bold' }
+    { value: 'club', label: 'Klub', icon: 'ph:users-three-bold' },
+    { value: 'seller', label: 'Penjual', icon: 'ph:storefront-bold' }
 ]
 
 const { errors, validate, validateForm, rules } = useFormValidation()
@@ -214,7 +229,7 @@ const { errors, validate, validateForm, rules } = useFormValidation()
 // Get initial user type from query param
 const getInitialUserType = () => {
     const typeParam = route.query.type
-    if (typeParam && ['archer', 'organization', 'club'].includes(typeParam)) {
+    if (typeParam && ['archer', 'organization', 'club', 'seller'].includes(typeParam)) {
         return typeParam
     }
     return 'archer'
@@ -228,6 +243,7 @@ const form = ref({
     fullName: '',           // For archer
     organizationName: '',   // For organization
     clubName: '',           // For club
+    storeName: '',          // For seller
     terms: false
 })
 
@@ -245,7 +261,8 @@ const handleRegister = async () => {
     const typeRules = {
         archer: { fullName: [rules.required()] },
         organization: { organizationName: [rules.required()] },
-        club: { clubName: [rules.required()] }
+        club: { clubName: [rules.required()] },
+        seller: { storeName: [rules.required()] }
     }
 
     const activeRules = { ...commonRules, ...typeRules[form.value.userType] }
@@ -264,6 +281,7 @@ const handleRegister = async () => {
                 case 'archer': return form.value.fullName
                 case 'organization': return form.value.organizationName
                 case 'club': return form.value.clubName
+                case 'seller': return form.value.storeName
                 default: return ''
             }
         }

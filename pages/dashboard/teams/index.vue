@@ -181,99 +181,39 @@ definePageMeta({
   layout: 'dashboard'
 })
 
+const { get, delete: del } = useApi()
+const toast = useToast()
+
+const teams = ref([])
+const isLoading = ref(true)
 const searchQuery = ref('')
 const statusFilter = ref('all')
 const showCreateModal = ref(false)
 
-const statusOptions = [
-  { title: 'Semua Status', value: 'all' },
-  { title: 'Aktif', value: 'active' },
-  { title: 'Tidak Aktif', value: 'inactive' }
-]
-
-// Dummy data
-const teams = ref([
-  {
-    id: 1,
-    name: 'Garuda Archer',
-    eventName: 'Kejuaraan Nasional 2024',
-    eventId: 1,
-    category: 'Recurve - Senior Putra',
-    status: 'active',
-    memberCount: 3,
-    totalScore: 1847,
-    rank: 1,
-    members: [
-      { name: 'Ahmad Rifai', avatar: null },
-      { name: 'Budi Santoso', avatar: null },
-      { name: 'Candra Wijaya', avatar: null }
-    ]
-  },
-  {
-    id: 2,
-    name: 'Elang Jawa',
-    eventName: 'Kejuaraan Nasional 2024',
-    eventId: 1,
-    category: 'Compound - Senior Putra',
-    status: 'active',
-    memberCount: 3,
-    totalScore: 1792,
-    rank: 2,
-    members: [
-      { name: 'Dedi Kurniawan', avatar: null },
-      { name: 'Eko Prasetyo', avatar: null },
-      { name: 'Fajar Nugroho', avatar: null }
-    ]
-  },
-  {
-    id: 3,
-    name: 'Srikandi Team',
-    eventName: 'Piala Gubernur 2024',
-    eventId: 2,
-    category: 'Recurve - Senior Putri',
-    status: 'active',
-    memberCount: 3,
-    totalScore: 1723,
-    rank: 1,
-    members: [
-      { name: 'Gita Maharani', avatar: null },
-      { name: 'Hana Pratiwi', avatar: null },
-      { name: 'Indah Lestari', avatar: null }
-    ]
-  },
-  {
-    id: 4,
-    name: 'Rajawali',
-    eventName: 'Piala Gubernur 2024',
-    eventId: 2,
-    category: 'Barebow - Junior Putra',
-    status: 'inactive',
-    memberCount: 3,
-    totalScore: 1456,
-    rank: 5,
-    members: [
-      { name: 'Joko Widodo', avatar: null },
-      { name: 'Kevin Anggara', avatar: null },
-      { name: 'Lukman Hakim', avatar: null }
-    ]
-  },
-  {
-    id: 5,
-    name: 'Phoenix Archer',
-    eventName: 'Kejuaraan Nasional 2024',
-    eventId: 1,
-    category: 'Recurve - Junior Putri',
-    status: 'active',
-    memberCount: 3,
-    totalScore: 1689,
-    rank: 3,
-    members: [
-      { name: 'Maya Sari', avatar: null },
-      { name: 'Nina Agustina', avatar: null },
-      { name: 'Olivia Rahman', avatar: null }
-    ]
+const fetchTeams = async () => {
+  isLoading.value = true
+  try {
+    const response = await get('/api/v1/teams/my')
+    teams.value = response.data.map(t => ({
+      ...t,
+      name: t.team_name,
+      eventName: t.event_name,
+      category: t.category_name,
+      memberCount: t.member_count,
+      totalScore: t.total_score,
+      rank: t.team_rank || '-',
+      members: [] // Not returned in list for performance
+    })) || []
+  } catch (error) {
+    toast.error('Gagal mengambil data tim')
+  } finally {
+    isLoading.value = false
   }
-])
+}
+
+onMounted(() => {
+  fetchTeams()
+})
 
 const filteredTeams = computed(() => {
   return teams.value.filter(team => {
@@ -297,7 +237,15 @@ const editTeam = (team) => {
   console.log('Edit team:', team)
 }
 
-const deleteTeam = (team) => {
-  console.log('Delete team:', team)
+const deleteTeam = async (team) => {
+  if (!confirm(`Apakah Anda yakin ingin menghapus tim "${team.name}"?`)) return
+
+  try {
+    await del(`/api/v1/teams/${team.id}`)
+    toast.success('Tim berhasil dihapus')
+    fetchTeams()
+  } catch (error) {
+    toast.error('Gagal menghapus tim')
+  }
 }
 </script>

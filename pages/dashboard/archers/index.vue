@@ -103,21 +103,22 @@
                                 <div class="flex items-center gap-4">
                                     <div
                                         class="h-12 w-12 rounded-xl bg-gradient-to-br from-navy to-blue-800 flex items-center justify-center overflow-hidden">
-                                        <img v-if="archer.avatar" :src="archer.avatar"
+                                        <img v-if="archer.photo_url" :src="archer.photo_url"
                                             class="w-full h-full object-cover" />
-                                        <span v-else class="text-white font-bold text-lg">{{ archer.name.charAt(0)
-                                        }}</span>
+                                        <span v-else class="text-white font-bold text-lg">{{ archer.full_name?.charAt(0)
+                                            || 'A'
+                                            }}</span>
                                     </div>
                                     <div>
                                         <p class="font-bold text-navy group-hover:text-primary transition-colors">{{
-                                            archer.name }}</p>
+                                            archer.full_name }}</p>
                                         <div class="flex items-center gap-2 text-xs text-gray-400">
                                             <Icon
-                                                :icon="archer.gender === 'male' ? 'ph:gender-male' : 'ph:gender-female'"
-                                                :class="archer.gender === 'male' ? 'text-blue-500' : 'text-pink-500'" />
-                                            <span>{{ archer.age }} tahun</span>
+                                                :icon="archer.gender === 'M' ? 'ph:gender-male' : archer.gender === 'F' ? 'ph:gender-female' : 'ph:gender-neuter'"
+                                                :class="archer.gender === 'M' ? 'text-blue-500' : archer.gender === 'F' ? 'text-pink-500' : 'text-gray-400'" />
+                                            <span>{{ calculateAge(archer.date_of_birth) }} tahun</span>
                                             <span class="text-gray-300">•</span>
-                                            <span>{{ archer.city }}</span>
+                                            <span>{{ archer.country || 'Indonesia' }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -156,7 +157,7 @@
                             <td class="px-6 py-4">
                                 <div class="flex items-center gap-2">
                                     <Icon icon="ph:crosshair" class="text-primary" />
-                                    <span class="font-bold text-navy text-lg">{{ archer.bestScore }}</span>
+                                    <span class="font-bold text-navy text-lg">{{ archer.bestScore || '-' }}</span>
                                 </div>
                             </td>
 
@@ -231,6 +232,11 @@ definePageMeta({
     layout: 'dashboard'
 })
 
+const { get } = useApi()
+const toast = useToast()
+
+const archers = ref([])
+const isLoading = ref(true)
 const searchQuery = ref('')
 const bowTypeFilter = ref('all')
 const genderFilter = ref('all')
@@ -249,99 +255,46 @@ const genderOptions = [
     { title: 'Putri', value: 'female' }
 ]
 
-// Dummy data
-const archers = ref([
-    {
-        id: 1,
-        name: 'Ahmad Rifai',
-        avatar: null,
-        gender: 'male',
-        age: 24,
-        city: 'Jakarta',
-        club: 'Garuda Archery Club',
-        bowType: 'Recurve',
-        lastEvent: 'Kejuaraan Nasional 2024',
-        lastEventDate: '15 Jan 2024',
-        bestScore: 682
-    },
-    {
-        id: 2,
-        name: 'Siti Rahayu',
-        avatar: null,
-        gender: 'female',
-        age: 22,
-        city: 'Bandung',
-        club: 'Srikandi AC',
-        bowType: 'Recurve',
-        lastEvent: 'Piala Gubernur 2024',
-        lastEventDate: '10 Jan 2024',
-        bestScore: 671
-    },
-    {
-        id: 3,
-        name: 'Budi Santoso',
-        avatar: null,
-        gender: 'male',
-        age: 28,
-        city: 'Surabaya',
-        club: 'Elang Jawa',
-        bowType: 'Compound',
-        lastEvent: 'Kejuaraan Nasional 2024',
-        lastEventDate: '15 Jan 2024',
-        bestScore: 698
-    },
-    {
-        id: 4,
-        name: 'Maya Indah',
-        avatar: null,
-        gender: 'female',
-        age: 19,
-        city: 'Yogyakarta',
-        club: 'Phoenix Archer',
-        bowType: 'Barebow',
-        lastEvent: 'Piala Gubernur 2024',
-        lastEventDate: '10 Jan 2024',
-        bestScore: 612
-    },
-    {
-        id: 5,
-        name: 'Dedi Kurniawan',
-        avatar: null,
-        gender: 'male',
-        age: 26,
-        city: 'Semarang',
-        club: 'Rajawali AC',
-        bowType: 'Compound',
-        lastEvent: 'Kejuaraan Nasional 2024',
-        lastEventDate: '15 Jan 2024',
-        bestScore: 701
-    },
-    {
-        id: 6,
-        name: 'Rina Wulandari',
-        avatar: null,
-        gender: 'female',
-        age: 21,
-        city: 'Malang',
-        club: 'Garuda Archery Club',
-        bowType: 'Recurve',
-        lastEvent: 'Kejuaraan Nasional 2024',
-        lastEventDate: '15 Jan 2024',
-        bestScore: 658
+const fetchArchers = async () => {
+    isLoading.value = true
+    try {
+        const response = await get('/api/v1/archers')
+        archers.value = response.data || []
+    } catch (error) {
+        toast.error('Gagal mengambil data pemanah')
+    } finally {
+        isLoading.value = false
     }
-])
+}
+
+onMounted(() => {
+    fetchArchers()
+})
+
+const calculateAge = (dob) => {
+    if (!dob) return '-'
+    const birthDate = new Date(dob)
+    const today = new Date()
+    let age = today.getFullYear() - birthDate.getFullYear()
+    const m = today.getMonth() - birthDate.getMonth()
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--
+    }
+    return age
+}
 
 const uniqueEvents = computed(() => {
-    return [...new Set(archers.value.map(a => a.lastEvent))].length
+    return [...new Set(archers.value.map(a => a.total_events || 0))].reduce((acc, curr) => acc + curr, 0)
 })
 
 const filteredArchers = computed(() => {
     return archers.value.filter(archer => {
-        const matchesSearch = archer.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-            archer.club.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-            archer.city.toLowerCase().includes(searchQuery.value.toLowerCase())
-        const matchesBowType = bowTypeFilter.value === 'all' || archer.bowType === bowTypeFilter.value
-        const matchesGender = genderFilter.value === 'all' || archer.gender === genderFilter.value
+        const matchesSearch = archer.full_name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+            (archer.club && archer.club.toLowerCase().includes(searchQuery.value.toLowerCase()))
+        const matchesBowType = bowTypeFilter.value === 'all' || archer.bow_type === bowTypeFilter.value
+        const matchesGender = genderFilter.value === 'all' ||
+            (genderFilter.value === 'male' && archer.gender === 'M') ||
+            (genderFilter.value === 'female' && archer.gender === 'F')
         return matchesSearch && matchesBowType && matchesGender
     })
 })

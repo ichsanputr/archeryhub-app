@@ -60,280 +60,289 @@
         </div>
 
         <div v-else>
-            <!-- 1. OVERVIEW TAB -->
-            <div v-if="activeTab === 'overview'" class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                <!-- Sidebar: Stats -->
-                <div class="lg:col-span-1 space-y-6">
-                    <div
-                        class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm group hover:border-primary/30 transition-all">
-                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-3">Total Atlet</p>
-                        <div class="flex items-center justify-between">
-                            <h3 class="text-3xl font-black text-navy">{{ event?.participant_count || 0 }}</h3>
-                            <div class="h-10 w-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
-                                <Icon icon="ph:users-three-bold" class="text-xl" />
-                            </div>
-                        </div>
-                    </div>
+            <!-- 1. PHASE CONTROL TAB -->
+            <div v-if="activeTab === 'control'">
+                <EventPhaseControl :event="event" @refresh="fetchEventDetails" />
+            </div>
 
-                    <div
-                        class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm group hover:border-primary/30 transition-all">
-                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-3">Target Aktif</p>
-                        <div class="flex items-center justify-between">
-                            <h3 class="text-3xl font-black text-navy">{{ Math.ceil((event?.participant_count || 0) / 4)
-                            }}</h3>
-                            <div
-                                class="h-10 w-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center">
-                                <Icon icon="ph:target-bold" class="text-xl" />
-                            </div>
-                        </div>
-                    </div>
+            <!-- 2. QUALIFICATION TAB -->
+            <div v-if="activeTab === 'qualification'">
+                <EventQualificationManager :event-id="route.params.id" />
+            </div>
 
-                    <div
-                        class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm group hover:border-primary/30 transition-all">
-                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-3">Completion</p>
-                        <div class="flex items-center justify-between">
-                            <h3 class="text-3xl font-black text-navy">0%</h3>
-                            <div
-                                class="h-10 w-10 rounded-xl bg-green-50 text-green-600 flex items-center justify-center">
-                                <Icon icon="ph:check-circle-bold" class="text-xl" />
-                            </div>
+            <!-- 3. ELIMINATION TAB -->
+            <div v-if="activeTab === 'elimination'">
+                <EventEliminationManager :event-id="route.params.id" />
+            </div>
+
+            <!-- 4. ATHLETES TAB -->
+            <!-- Sidebar: Stats -->
+            <div class="lg:col-span-1 space-y-6">
+                <div
+                    class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm group hover:border-primary/30 transition-all">
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-3">Total Atlet</p>
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-3xl font-black text-navy">{{ event?.participant_count || 0 }}</h3>
+                        <div class="h-10 w-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                            <Icon icon="ph:users-three-bold" class="text-xl" />
                         </div>
                     </div>
                 </div>
 
-                <!-- Main Overview: Target Grid -->
-                <div class="lg:col-span-3 space-y-8">
-                    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-                        <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-                            <div>
-                                <h3 class="font-black text-navy text-lg tracking-tight">Status Bantalan (Targets)</h3>
-                                <p class="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">Real-time
-                                    monitoring</p>
-                            </div>
-                            <div class="flex gap-4">
-                                <div
-                                    class="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-gray-400">
-                                    <span class="w-2 h-2 rounded-full bg-primary"></span> Scoring
-                                </div>
-                                <div
-                                    class="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-gray-400">
-                                    <span class="w-2 h-2 rounded-full bg-gray-200"></span> Waiting
-                                </div>
-                            </div>
+                <div
+                    class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm group hover:border-primary/30 transition-all">
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-3">Target Aktif</p>
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-3xl font-black text-navy">{{ Math.ceil((event?.participant_count || 0) / 4)
+                        }}</h3>
+                        <div class="h-10 w-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center">
+                            <Icon icon="ph:target-bold" class="text-xl" />
                         </div>
-                        <div class="p-8">
-                            <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-3">
-                                <button v-for="i in maxTargets" :key="i"
-                                    class="aspect-square rounded-xl border flex flex-col items-center justify-center hover:border-primary hover:shadow-md transition-all group bg-white shadow-sm"
-                                    :class="groupedTargets[i] ? 'border-primary/50' : 'border-gray-100 italic'">
-                                    <span
-                                        class="text-navy font-black text-lg group-hover:scale-110 transition-transform"
-                                        :class="{ 'opacity-30': !groupedTargets[i] }">
-                                        {{ String(i).padStart(2, '0') }}
-                                    </span>
-                                    <div v-if="groupedTargets[i]" class="flex gap-0.5 mt-1">
-                                        <div v-for="p in groupedTargets[i]" :key="p.id"
-                                            class="w-1.5 h-1.5 rounded-full bg-primary"></div>
-                                    </div>
-                                </button>
-                            </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm group hover:border-primary/30 transition-all">
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-3">Completion</p>
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-3xl font-black text-navy">0%</h3>
+                        <div class="h-10 w-10 rounded-xl bg-green-50 text-green-600 flex items-center justify-center">
+                            <Icon icon="ph:check-circle-bold" class="text-xl" />
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 2. ATHLETES TAB -->
-            <div v-if="activeTab === 'athletes'" class="space-y-6">
+            <!-- Main Overview: Target Grid -->
+            <div class="lg:col-span-3 space-y-8">
                 <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-                    <div
-                        class="px-8 py-6 border-b border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gray-50/50">
+                    <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
                         <div>
-                            <h3 class="font-black text-navy text-xl tracking-tight">Daftar Atlet Terpusat</h3>
-                            <p class="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">Total {{
-                                participants.length }} Atlet Terdaftar</p>
+                            <h3 class="font-black text-navy text-lg tracking-tight">Status Bantalan (Targets)</h3>
+                            <p class="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">Real-time
+                                monitoring</p>
                         </div>
-                        <div class="flex gap-3">
-                            <BaseInput v-model="searchQuery" placeholder="Cari Nama / Klub..."
-                                icon="ph:magnifying-glass-bold" class="max-w-xs" />
-                            <BaseButton variant="primary" icon="ph:plus-bold" size="sm" class="font-bold">Tambah Manual
-                            </BaseButton>
+                        <div class="flex gap-4">
+                            <div
+                                class="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-gray-400">
+                                <span class="w-2 h-2 rounded-full bg-primary"></span> Scoring
+                            </div>
+                            <div
+                                class="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-gray-400">
+                                <span class="w-2 h-2 rounded-full bg-gray-200"></span> Waiting
+                            </div>
                         </div>
                     </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left">
-                            <thead>
-                                <tr
-                                    class="border-b border-gray-50 bg-gray-50/20 text-[10px] uppercase tracking-[0.2em] text-gray-400 font-black">
-                                    <th class="px-8 py-5">Atlet</th>
-                                    <th class="px-8 py-5">Klub</th>
-                                    <th class="px-8 py-5">Divisi / Kategori</th>
-                                    <th class="px-8 py-5">Bantalan</th>
-                                    <th class="px-8 py-5">Pembayaran</th>
-                                    <th class="px-8 py-5 text-right">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-50 text-sm">
-                                <tr v-for="p in filteredParticipants" :key="p.id"
-                                    class="group hover:bg-gray-50/50 transition-colors">
-                                    <td class="px-8 py-5">
-                                        <div class="flex items-center gap-3">
-                                            <div
-                                                class="h-9 w-9 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs uppercase">
-                                                {{p.full_name?.split(' ').map(n => n[0]).join('')}}
-                                            </div>
-                                            <div>
-                                                <p class="font-black text-navy tracking-tight">{{ p.full_name }}</p>
-                                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
-                                                    {{ p.athlete_code }}</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-8 py-5 text-gray-500 font-medium">{{ p.club_id || '-' }}</td>
-                                    <td class="px-8 py-5">
-                                        <p class="text-navy font-bold text-xs">{{ p.division_name }}</p>
-                                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{{
-                                            p.category_name }}</p>
-                                    </td>
-                                    <td class="px-8 py-5">
-                                        <span v-if="p.target_number"
-                                            class="inline-flex items-center justify-center px-2 py-1 bg-navy text-primary rounded font-black text-xs shadow-sm">
-                                            {{ String(p.target_number).padStart(2, '0') }}{{ p.back_number || '' }}
-                                        </span>
-                                        <span v-else
-                                            class="text-[10px] text-gray-300 font-black uppercase italic">TBD</span>
-                                    </td>
-                                    <td class="px-8 py-5">
-                                        <span
-                                            :class="p.payment_status === 'paid' ? 'bg-green-50 text-green-600 border-green-100' : 'bg-red-50 text-red-600 border-red-100'"
-                                            class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest border">
-                                            {{ p.payment_status || 'Unpaid' }}
-                                        </span>
-                                    </td>
-                                    <td class="px-8 py-5 text-right">
-                                        <button class="p-2 text-gray-300 hover:text-navy transition-colors">
-                                            <Icon icon="ph:pencil-simple-bold" />
-                                        </button>
-                                        <button class="p-2 text-gray-300 hover:text-red-500 transition-colors">
-                                            <Icon icon="ph:trash-bold" />
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr v-if="filteredParticipants.length === 0">
-                                    <td colspan="6" class="px-8 py-12 text-center text-gray-400 italic font-medium">
-                                        Tidak ada atlet yang ditemukan.
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="p-8">
+                        <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-3">
+                            <button v-for="i in maxTargets" :key="i"
+                                class="aspect-square rounded-xl border flex flex-col items-center justify-center hover:border-primary hover:shadow-md transition-all group bg-white shadow-sm"
+                                :class="groupedTargets[i] ? 'border-primary/50' : 'border-gray-100 italic'">
+                                <span class="text-navy font-black text-lg group-hover:scale-110 transition-transform"
+                                    :class="{ 'opacity-30': !groupedTargets[i] }">
+                                    {{ String(i).padStart(2, '0') }}
+                                </span>
+                                <div v-if="groupedTargets[i]" class="flex gap-0.5 mt-1">
+                                    <div v-for="p in groupedTargets[i]" :key="p.id"
+                                        class="w-1.5 h-1.5 rounded-full bg-primary"></div>
+                                </div>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- 3. SCORING TAB -->
-            <div v-if="activeTab === 'scoring'" class="space-y-6">
-                <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-                    <div
-                        class="px-8 py-6 border-b border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gray-50/50">
-                        <div>
-                            <h3 class="font-black text-navy text-xl tracking-tight">Rapid Data Entry</h3>
-                            <p class="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">Input skor atlet
-                                secara cepat per bantalan</p>
-                        </div>
-                        <div class="flex gap-3">
-                            <BaseButton variant="white" icon="ph:download-bold" size="sm" class="font-bold">Export Hasil
-                            </BaseButton>
-                        </div>
+        <!-- 2. ATHLETES TAB -->
+        <div v-if="activeTab === 'athletes'" class="space-y-6">
+            <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+                <div
+                    class="px-8 py-6 border-b border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gray-50/50">
+                    <div>
+                        <h3 class="font-black text-navy text-xl tracking-tight">Daftar Atlet Terpusat</h3>
+                        <p class="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">Total {{
+                            participants.length }} Atlet Terdaftar</p>
                     </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr
-                                    class="border-b border-gray-50 bg-gray-50/20 text-[10px] uppercase tracking-[0.2em] text-gray-400 font-black">
-                                    <th class="px-8 py-5 w-24">Target</th>
-                                    <th class="px-8 py-5">Nama Atlet</th>
-                                    <th class="px-8 py-5">Progress</th>
-                                    <th class="px-8 py-5">Status</th>
-                                    <th class="px-8 py-5 text-right">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-50 text-sm">
-                                <tr v-for="p in filteredParticipants" :key="p.id"
-                                    class="group hover:bg-gray-50/50 transition-colors">
-                                    <td class="px-8 py-5">
+                    <div class="flex gap-3">
+                        <BaseInput v-model="searchQuery" placeholder="Cari Nama / Klub..."
+                            icon="ph:magnifying-glass-bold" class="max-w-xs" />
+                        <BaseButton variant="primary" icon="ph:plus-bold" size="sm" class="font-bold">Tambah Manual
+                        </BaseButton>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr
+                                class="border-b border-gray-50 bg-gray-50/20 text-[10px] uppercase tracking-[0.2em] text-gray-400 font-black">
+                                <th class="px-8 py-5">Atlet</th>
+                                <th class="px-8 py-5">Klub</th>
+                                <th class="px-8 py-5">Divisi / Kategori</th>
+                                <th class="px-8 py-5">Bantalan</th>
+                                <th class="px-8 py-5">Pembayaran</th>
+                                <th class="px-8 py-5 text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-50 text-sm">
+                            <tr v-for="p in filteredParticipants" :key="p.id"
+                                class="group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-8 py-5">
+                                    <div class="flex items-center gap-3">
                                         <div
-                                            class="flex items-center justify-center h-10 w-10 bg-navy text-primary rounded-xl font-black text-sm shadow-sm">
-                                            {{ String(p.target_number || 0).padStart(2, '0') }}{{ p.back_number || '' }}
+                                            class="h-9 w-9 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs uppercase">
+                                            {{p.full_name?.split(' ').map(n => n[0]).join('')}}
                                         </div>
-                                    </td>
-                                    <td class="px-8 py-5">
-                                        <p class="font-black text-navy">{{ p.full_name }}</p>
-                                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{{
-                                            p.division_name }}</p>
-                                    </td>
-                                    <td class="px-8 py-5">
-                                        <div class="flex flex-col gap-1.5">
-                                            <span
-                                                class="text-[10px] font-black uppercase tracking-widest text-gray-400">End
-                                                0 of 6</span>
-                                            <div class="flex items-center gap-1">
-                                                <div v-for="i in 6" :key="i"
-                                                    class="w-2.5 h-2.5 rounded-full bg-gray-100"></div>
-                                            </div>
+                                        <div>
+                                            <p class="font-black text-navy tracking-tight">{{ p.full_name }}</p>
+                                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
+                                                {{ p.athlete_code }}</p>
                                         </div>
-                                    </td>
-                                    <td class="px-8 py-5">
-                                        <span
-                                            class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-amber-50 text-amber-600 border border-amber-100">
-                                            Waiting
-                                        </span>
-                                    </td>
-                                    <td class="px-8 py-5 text-right">
-                                        <BaseButton variant="primary" size="sm" icon="ph:note-pencil-bold"
-                                            class="font-bold text-[10px] uppercase tracking-widest px-4">
-                                            Input Skor
-                                        </BaseButton>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                                    </div>
+                                </td>
+                                <td class="px-8 py-5 text-gray-500 font-medium">{{ p.club_id || '-' }}</td>
+                                <td class="px-8 py-5">
+                                    <p class="text-navy font-bold text-xs">{{ p.division_name }}</p>
+                                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{{
+                                        p.category_name }}</p>
+                                </td>
+                                <td class="px-8 py-5">
+                                    <span v-if="p.target_number"
+                                        class="inline-flex items-center justify-center px-2 py-1 bg-navy text-primary rounded font-black text-xs shadow-sm">
+                                        {{ String(p.target_number).padStart(2, '0') }}{{ p.back_number || '' }}
+                                    </span>
+                                    <span v-else
+                                        class="text-[10px] text-gray-300 font-black uppercase italic">TBD</span>
+                                </td>
+                                <td class="px-8 py-5">
+                                    <span
+                                        :class="p.payment_status === 'paid' ? 'bg-green-50 text-green-600 border-green-100' : 'bg-red-50 text-red-600 border-red-100'"
+                                        class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest border">
+                                        {{ p.payment_status || 'Unpaid' }}
+                                    </span>
+                                </td>
+                                <td class="px-8 py-5 text-right">
+                                    <button class="p-2 text-gray-300 hover:text-navy transition-colors">
+                                        <Icon icon="ph:pencil-simple-bold" />
+                                    </button>
+                                    <button class="p-2 text-gray-300 hover:text-red-500 transition-colors">
+                                        <Icon icon="ph:trash-bold" />
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr v-if="filteredParticipants.length === 0">
+                                <td colspan="6" class="px-8 py-12 text-center text-gray-400 italic font-medium">
+                                    Tidak ada atlet yang ditemukan.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
+        </div>
 
-            <!-- 4. CATEGORIES TAB -->
-            <div v-if="activeTab === 'categories'" class="space-y-8">
-                <EventCategoryManager :event-id="route.params.id" @refresh="fetchEventDetails" />
-            </div>
-
-            <!-- 5. SETTINGS TAB -->
-            <div v-if="activeTab === 'settings'" class="max-w-3xl space-y-8">
-                <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-                    <div class="px-8 py-6 border-b border-gray-100 bg-gray-50/50">
-                        <h3 class="font-black text-navy text-lg tracking-tight">Pengaturan Publikasi</h3>
+        <!-- 3. SCORING TAB -->
+        <div v-if="activeTab === 'scoring'" class="space-y-6">
+            <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+                <div
+                    class="px-8 py-6 border-b border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gray-50/50">
+                    <div>
+                        <h3 class="font-black text-navy text-xl tracking-tight">Rapid Data Entry</h3>
+                        <p class="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">Input skor atlet
+                            secara cepat per bantalan</p>
                     </div>
-                    <div class="p-8 space-y-6">
-                        <div class="flex items-center justify-between gap-6 p-4 rounded-2xl bg-amber-50 border border-amber-100"
-                            v-if="event?.status === 'draft'">
-                            <div class="flex items-center gap-4 text-amber-700">
-                                <Icon icon="ph:warning-circle-bold" class="text-3xl" />
-                                <div>
-                                    <p class="font-black text-sm uppercase tracking-widest">Event Masih Draft</p>
-                                    <p class="text-xs font-medium">Atlet belum bisa mendaftar sampai event dipublish.
-                                    </p>
-                                </div>
+                    <div class="flex gap-3">
+                        <BaseButton variant="white" icon="ph:download-bold" size="sm" class="font-bold">Export Hasil
+                        </BaseButton>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr
+                                class="border-b border-gray-50 bg-gray-50/20 text-[10px] uppercase tracking-[0.2em] text-gray-400 font-black">
+                                <th class="px-8 py-5 w-24">Target</th>
+                                <th class="px-8 py-5">Nama Atlet</th>
+                                <th class="px-8 py-5">Progress</th>
+                                <th class="px-8 py-5">Status</th>
+                                <th class="px-8 py-5 text-right">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-50 text-sm">
+                            <tr v-for="p in filteredParticipants" :key="p.id"
+                                class="group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-8 py-5">
+                                    <div
+                                        class="flex items-center justify-center h-10 w-10 bg-navy text-primary rounded-xl font-black text-sm shadow-sm">
+                                        {{ String(p.target_number || 0).padStart(2, '0') }}{{ p.back_number || '' }}
+                                    </div>
+                                </td>
+                                <td class="px-8 py-5">
+                                    <p class="font-black text-navy">{{ p.full_name }}</p>
+                                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{{
+                                        p.division_name }}</p>
+                                </td>
+                                <td class="px-8 py-5">
+                                    <div class="flex flex-col gap-1.5">
+                                        <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">End
+                                            0 of 6</span>
+                                        <div class="flex items-center gap-1">
+                                            <div v-for="i in 6" :key="i" class="w-2.5 h-2.5 rounded-full bg-gray-100">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-8 py-5">
+                                    <span
+                                        class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-amber-50 text-amber-600 border border-amber-100">
+                                        Waiting
+                                    </span>
+                                </td>
+                                <td class="px-8 py-5 text-right">
+                                    <BaseButton variant="primary" size="sm" icon="ph:note-pencil-bold"
+                                        class="font-bold text-[10px] uppercase tracking-widest px-4">
+                                        Input Skor
+                                    </BaseButton>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. CATEGORIES TAB -->
+        <div v-if="activeTab === 'categories'" class="space-y-8">
+            <EventCategoryManager :event-id="route.params.id" @refresh="fetchEventDetails" />
+        </div>
+
+        <!-- 5. SETTINGS TAB -->
+        <div v-if="activeTab === 'settings'" class="max-w-3xl space-y-8">
+            <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+                <div class="px-8 py-6 border-b border-gray-100 bg-gray-50/50">
+                    <h3 class="font-black text-navy text-lg tracking-tight">Pengaturan Publikasi</h3>
+                </div>
+                <div class="p-8 space-y-6">
+                    <div class="flex items-center justify-between gap-6 p-4 rounded-2xl bg-amber-50 border border-amber-100"
+                        v-if="event?.status === 'draft'">
+                        <div class="flex items-center gap-4 text-amber-700">
+                            <Icon icon="ph:warning-circle-bold" class="text-3xl" />
+                            <div>
+                                <p class="font-black text-sm uppercase tracking-widest">Event Masih Draft</p>
+                                <p class="text-xs font-medium">Atlet belum bisa mendaftar sampai event dipublish.
+                                </p>
                             </div>
-                            <BaseButton variant="primary" @click="publishEvent" :loading="isPublishing"
-                                class="font-black text-[10px] uppercase tracking-widest px-6">Publish Sekarang
-                            </BaseButton>
                         </div>
-                        <div class="space-y-4">
-                            <h4 class="text-sm font-bold text-navy">Danger Zone</h4>
-                            <BaseButton variant="white"
-                                class="text-red-600 border-red-100 bg-red-50/30 hover:bg-red-50 font-bold"
-                                icon="ph:trash-bold">
-                                Batalkan Event
-                            </BaseButton>
-                        </div>
+                        <BaseButton variant="primary" @click="publishEvent" :loading="isPublishing"
+                            class="font-black text-[10px] uppercase tracking-widest px-6">Publish Sekarang
+                        </BaseButton>
+                    </div>
+                    <div class="space-y-4">
+                        <h4 class="text-sm font-bold text-navy">Danger Zone</h4>
+                        <BaseButton variant="white"
+                            class="text-red-600 border-red-100 bg-red-50/30 hover:bg-red-50 font-bold"
+                            icon="ph:trash-bold">
+                            Batalkan Event
+                        </BaseButton>
                     </div>
                 </div>
             </div>
@@ -372,9 +381,10 @@ const filteredParticipants = computed(() => {
 })
 
 const tabs = [
-    { id: 'overview', label: 'Overview', icon: 'ph:layout-bold' },
+    { id: 'control', label: 'Fase & Kontrol', icon: 'ph:command-bold' },
+    { id: 'qualification', label: 'Kualifikasi', icon: 'ph:scoreboard-bold' },
+    { id: 'elimination', label: 'Eliminasi', icon: 'ph:tree-structure-bold' },
     { id: 'athletes', label: 'Atlet', icon: 'ph:users-three-bold' },
-    { id: 'scoring', label: 'Skoring', icon: 'ph:scoreboard-bold' },
     { id: 'categories', label: 'Kategori', icon: 'ph:tag-bold' },
     { id: 'settings', label: 'Pengaturan', icon: 'ph:gear-six-bold' }
 ]

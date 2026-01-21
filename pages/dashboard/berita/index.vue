@@ -54,7 +54,7 @@
                 <div>
                     <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Total View</p>
                     <p class="text-lg font-bold text-navy">{{news.reduce((acc, n) => acc + n.views, 0).toLocaleString()
-                        }}</p>
+                    }}</p>
                 </div>
             </div>
         </div>
@@ -190,99 +190,36 @@ definePageMeta({
     layout: 'dashboard'
 })
 
+const { get, delete: del } = useApi()
+const toast = useToast()
+
+const news = ref([])
+const isLoading = ref(true)
 const searchQuery = ref('')
 const statusFilter = ref('all')
 const categoryFilter = ref('all')
 
-const statusOptions = [
-    { title: 'Semua Status', value: 'all' },
-    { title: 'Dipublikasi', value: 'published' },
-    { title: 'Draft', value: 'draft' }
-]
-
-const categoryOptions = [
-    { title: 'Semua Kategori', value: 'all' },
-    { title: 'Event', value: 'Event' },
-    { title: 'Pengumuman', value: 'Pengumuman' },
-    { title: 'Prestasi', value: 'Prestasi' },
-    { title: 'Lainnya', value: 'Lainnya' }
-]
-
-// Dummy data
-const news = ref([
-    {
-        id: 1,
-        title: 'Kejuaraan Nasional Panahan 2024 Resmi Dibuka',
-        excerpt: 'Kejuaraan nasional panahan tahun 2024 resmi dibuka dengan diikuti oleh lebih dari 500 atlet dari seluruh Indonesia.',
-        category: 'Event',
-        status: 'published',
-        date: '20 Jan 2024',
-        author: 'Admin',
-        views: 1234,
-        image: 'https://images.unsplash.com/photo-1565992441121-4367c2967103?w=800'
-    },
-    {
-        id: 2,
-        title: 'Pendaftaran Piala Gubernur 2024 Dibuka',
-        excerpt: 'Pendaftaran untuk Piala Gubernur Panahan 2024 telah dibuka. Segera daftarkan tim Anda sebelum kuota habis.',
-        category: 'Pengumuman',
-        status: 'published',
-        date: '18 Jan 2024',
-        author: 'Admin',
-        views: 856,
-        image: 'https://images.unsplash.com/photo-1510925758641-869d353cecc7?w=800'
-    },
-    {
-        id: 3,
-        title: 'Tim Garuda Raih Emas di Asian Games',
-        excerpt: 'Tim panahan Indonesia meraih medali emas dalam kategori beregu recurve di Asian Games 2023.',
-        category: 'Prestasi',
-        status: 'published',
-        date: '15 Jan 2024',
-        author: 'Redaksi',
-        views: 2345,
-        image: 'https://images.unsplash.com/photo-1547347298-4074fc3086f0?w=800'
-    },
-    {
-        id: 4,
-        title: 'Perubahan Jadwal Latihan Regional',
-        excerpt: 'Informasi perubahan jadwal latihan untuk wilayah Jawa Barat dan DKI Jakarta.',
-        category: 'Pengumuman',
-        status: 'draft',
-        date: '14 Jan 2024',
-        author: 'Admin',
-        views: 0,
-        image: null
-    },
-    {
-        id: 5,
-        title: 'Workshop Teknik Dasar Panahan untuk Pemula',
-        excerpt: 'Workshop teknik dasar panahan akan diadakan pada tanggal 25 Januari 2024 di GOR Senayan.',
-        category: 'Event',
-        status: 'published',
-        date: '12 Jan 2024',
-        author: 'Panitia',
-        views: 567,
-        image: 'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=800'
-    },
-    {
-        id: 6,
-        title: 'Pengumuman Hasil Seleksi Timnas Junior',
-        excerpt: 'Daftar nama-nama atlet yang lolos seleksi timnas junior panahan Indonesia tahun 2024.',
-        category: 'Pengumuman',
-        status: 'draft',
-        date: '10 Jan 2024',
-        author: 'Komite',
-        views: 0,
-        image: null
+const fetchNews = async () => {
+    isLoading.value = true
+    try {
+        const response = await get('/api/v1/news/my')
+        news.value = response.data || []
+    } catch (error) {
+        toast.error('Gagal mengambil data berita')
+    } finally {
+        isLoading.value = false
     }
-])
+}
+
+onMounted(() => {
+    fetchNews()
+})
 
 const filteredNews = computed(() => {
     return news.value.filter(item => {
         const matchesSearch = item.title.toLowerCase().includes(searchQuery.value.toLowerCase())
         const matchesStatus = statusFilter.value === 'all' || item.status === statusFilter.value
-        const matchesCategory = categoryFilter.value === 'all' || item.category === categoryFilter.value
+        const matchesCategory = categoryFilter.value === 'all' || item.category.toLowerCase() === categoryFilter.value.toLowerCase()
         return matchesSearch && matchesStatus && matchesCategory
     })
 })
@@ -293,8 +230,16 @@ const resetFilters = () => {
     categoryFilter.value = 'all'
 }
 
-const deleteNews = (item) => {
-    console.log('Delete news:', item)
+const deleteNews = async (item) => {
+    if (!confirm(`Apakah Anda yakin ingin menghapus berita "${item.title}"?`)) return
+
+    try {
+        await del(`/api/v1/news/${item.id}`)
+        toast.success('Berita berhasil dihapus')
+        fetchNews()
+    } catch (error) {
+        toast.error('Gagal menghapus berita')
+    }
 }
 </script>
 

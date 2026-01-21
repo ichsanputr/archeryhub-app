@@ -12,7 +12,7 @@
                 <p class="text-gray-500 font-medium mt-1">Kelola katalog produk yang Anda jual di marketplace.</p>
             </div>
             <BaseButton variant="primary" icon="ph:plus-bold" class="shadow-lg shadow-primary/20"
-                @click="showCreateModal = true">
+                @click="openCreateModal">
                 Tambah Produk
             </BaseButton>
         </div>
@@ -98,6 +98,15 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-50">
+                        <!-- Loading State -->
+                        <tr v-if="isLoading">
+                            <td colspan="6" class="px-6 py-12 text-center">
+                                <div class="flex flex-col items-center gap-3">
+                                    <LoadingSpinner size="lg" />
+                                    <p class="text-sm text-gray-400 font-medium">Memuat data produk...</p>
+                                </div>
+                            </td>
+                        </tr>
                         <tr v-for="product in filteredProducts" :key="product.id"
                             class="hover:bg-primary/5 transition-colors group">
                             <!-- Product Info -->
@@ -185,7 +194,7 @@
                         </tr>
 
                         <!-- Empty State -->
-                        <tr v-if="filteredProducts.length === 0">
+                        <tr v-if="!isLoading && filteredProducts.length === 0">
                             <td colspan="6" class="px-6 py-24 text-center">
                                 <div class="flex flex-col items-center gap-4 max-w-xs mx-auto">
                                     <div
@@ -198,7 +207,7 @@
                                             Tambahkan produk pertama Anda untuk mulai berjualan di marketplace.
                                         </p>
                                     </div>
-                                    <BaseButton variant="primary" icon="ph:plus-bold" @click="showCreateModal = true">
+                                    <BaseButton variant="primary" icon="ph:plus-bold" @click="openCreateModal">
                                         Tambah Produk Pertama
                                     </BaseButton>
                                 </div>
@@ -206,6 +215,64 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+
+        <!-- Create/Edit Modal -->
+        <div v-if="showCreateModal"
+            class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-navy/40 backdrop-blur-sm">
+            <div
+                class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col animate-in fade-in zoom-in duration-200">
+                <!-- Modal Header -->
+                <div class="p-6 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+                    <div>
+                        <h2 class="text-xl font-extrabold text-navy tracking-tight">
+                            {{ isEditing ? 'Edit Produk' : 'Tambah Produk Baru' }}
+                        </h2>
+                        <p class="text-sm text-gray-500 font-medium mt-1">Lengkapi informasi detail produk di bawah
+                            ini.</p>
+                    </div>
+                    <button @click="showCreateModal = false"
+                        class="p-2 hover:bg-white rounded-xl transition-colors shadow-sm">
+                        <Icon icon="ph:x-bold" class="text-xl text-gray-400" />
+                    </button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="p-8 overflow-y-auto flex-grow space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <BaseInput v-model="productForm.name" label="Nama Produk" placeholder="Contoh: Recurve Bow"
+                            required />
+                        <BaseSelect v-model="productForm.category"
+                            :items="categoryOptions.filter(o => o.value !== 'all')" label="Kategori" required />
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <BaseInput v-model="productForm.price" type="number" label="Harga (Rp)" placeholder="0"
+                            required />
+                        <BaseInput v-model="productForm.salePrice" type="number" label="Harga Diskon (Rp) - Opsional"
+                            placeholder="0" />
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <BaseInput v-model="productForm.stock" type="number" label="Stok" placeholder="0" required />
+                        <BaseSelect v-model="productForm.status" :items="statusOptions.filter(o => o.value !== 'all')"
+                            label="Status" required />
+                    </div>
+
+                    <BaseInput v-model="productForm.image_url" label="URL Gambar Utama" placeholder="https://..." />
+
+                    <BaseTextarea v-model="productForm.description" label="Deskripsi Produk"
+                        placeholder="Jelaskan detail produk Anda..." rows="4" />
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="p-6 border-t border-gray-100 bg-gray-50/50 flex items-center justify-end gap-3">
+                    <BaseButton variant="white" @click="showCreateModal = false">Batal</BaseButton>
+                    <BaseButton variant="primary" :loading="isSubmitting" @click="handleSubmit">
+                        {{ isEditing ? 'Simpan Perubahan' : 'Tambah Produk' }}
+                    </BaseButton>
+                </div>
             </div>
         </div>
     </div>
@@ -220,77 +287,46 @@ definePageMeta({
     layout: 'dashboard'
 })
 
+const { get, post, put, delete: del } = useApi()
+const { showToast } = useToast()
+
+const products = ref([])
+const isLoading = ref(true)
 const searchQuery = ref('')
 const statusFilter = ref('all')
 const categoryFilter = ref('all')
 const showCreateModal = ref(false)
+const isSubmitting = ref(false)
 
-const statusOptions = [
-    { title: 'Semua Status', value: 'all' },
-    { title: 'Aktif', value: 'active' },
-    { title: 'Draft', value: 'draft' },
-    { title: 'Habis', value: 'sold_out' }
-]
+const productForm = ref({
+    name: '',
+    description: '',
+    price: 0,
+    salePrice: 0,
+    category: 'other',
+    stock: 0,
+    status: 'draft',
+    image_url: ''
+})
 
-const categoryOptions = [
-    { title: 'Semua Kategori', value: 'all' },
-    { title: 'Peralatan', value: 'equipment' },
-    { title: 'Pakaian', value: 'apparel' },
-    { title: 'Aksesoris', value: 'accessories' },
-    { title: 'Training', value: 'training' }
-]
+const isEditing = ref(false)
+const currentProductId = ref(null)
 
-// Dummy data
-const products = ref([
-    {
-        id: 1,
-        name: 'Recurve Bow Hoyt Satori 23"',
-        price: 15500000,
-        salePrice: null,
-        image: 'https://images.unsplash.com/photo-1564769625905-50e93615e769?w=400',
-        category: 'equipment',
-        stock: 5,
-        status: 'active',
-        views: 234,
-        sold: 12
-    },
-    {
-        id: 2,
-        name: 'Carbon Arrow Easton X10 (12pcs)',
-        price: 4800000,
-        salePrice: null,
-        image: 'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=400',
-        category: 'accessories',
-        stock: 23,
-        status: 'active',
-        views: 456,
-        sold: 45
-    },
-    {
-        id: 3,
-        name: 'Jersey Klub Edisi 2024',
-        price: 350000,
-        salePrice: null,
-        image: 'https://images.unsplash.com/photo-1565992441121-4367c2967103?w=400',
-        category: 'apparel',
-        stock: 0,
-        status: 'sold_out',
-        views: 123,
-        sold: 89
-    },
-    {
-        id: 4,
-        name: 'Target Face WA 40cm (10pcs)',
-        price: 150000,
-        salePrice: null,
-        image: 'https://images.unsplash.com/photo-1547347298-4074fc3086f0?w=400',
-        category: 'training',
-        stock: 50,
-        status: 'active',
-        views: 89,
-        sold: 234
+const fetchProducts = async () => {
+    isLoading.ref = true
+    try {
+        const response = await get('/api/v1/products/my')
+        products.value = response.data || []
+    } catch (error) {
+        showToast('Gagal mengambil data produk', 'error')
+    } finally {
+        isLoading.value = false
     }
-])
+}
+
+onMounted(() => {
+    fetchProducts()
+})
 
 const filteredProducts = computed(() => {
     return products.value.filter(product => {
@@ -312,20 +348,82 @@ const formatPrice = (price) => {
 }
 
 const getCategoryLabel = (cat) => {
-    const labels = { equipment: 'Peralatan', apparel: 'Pakaian', accessories: 'Aksesoris', training: 'Training' }
+    const labels = { equipment: 'Peralatan', apparel: 'Pakaian', accessories: 'Aksesoris', training: 'Training', other: 'Lainnya' }
     return labels[cat] || cat
 }
 
 const getStatusLabel = (status) => {
-    const labels = { active: 'Aktif', draft: 'Draft', sold_out: 'Habis' }
+    const labels = { active: 'Aktif', draft: 'Draft', sold_out: 'Habis', archived: 'Arsip' }
     return labels[status] || status
 }
 
-const editProduct = (product) => {
-    console.log('Edit:', product)
+const openCreateModal = () => {
+    isEditing.value = false
+    currentProductId.value = null
+    productForm.value = {
+        name: '',
+        description: '',
+        price: 0,
+        salePrice: 0,
+        category: 'other',
+        stock: 0,
+        status: 'draft',
+        image_url: ''
+    }
+    showCreateModal.value = true
 }
 
-const deleteProduct = (product) => {
-    console.log('Delete:', product)
+const editProduct = (product) => {
+    isEditing.value = true
+    currentProductId.value = product.id
+    productForm.value = {
+        name: product.name,
+        description: product.description || '',
+        price: product.price,
+        salePrice: product.salePrice || 0,
+        category: product.category,
+        stock: product.stock,
+        status: product.status,
+        image_url: product.image_url || ''
+    }
+    showCreateModal.value = true
+}
+
+const handleSubmit = async () => {
+    isSubmitting.value = true
+    try {
+        const payload = {
+            ...productForm.value,
+            price: Number(productForm.value.price),
+            sale_price: productForm.value.salePrice ? Number(productForm.value.salePrice) : null,
+            stock: Number(productForm.value.stock)
+        }
+
+        if (isEditing.value) {
+            await put(`/api/v1/products/${currentProductId.value}`, payload)
+            showToast('Produk berhasil diperbarui', 'success')
+        } else {
+            await post('/api/v1/products', payload)
+            showToast('Produk berhasil ditambahkan', 'success')
+        }
+        showCreateModal.value = false
+        fetchProducts()
+    } catch (error) {
+        showToast('Gagal menyimpan produk', 'error')
+    } finally {
+        isSubmitting.value = false
+    }
+}
+
+const deleteProduct = async (product) => {
+    if (!confirm(`Apakah Anda yakin ingin menghapus produk "${product.name}"?`)) return
+
+    try {
+        await del(`/api/v1/products/${product.id}`)
+        showToast('Produk berhasil dihapus', 'success')
+        fetchProducts()
+    } catch (error) {
+        showToast('Gagal menghapus produk', 'error')
+    }
 }
 </script>

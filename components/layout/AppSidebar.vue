@@ -125,7 +125,8 @@ const userRoleLabel = computed(() => {
     'archer': 'Pemanah',
     'organization': 'Organisasi',
     'club': 'Klub',
-    'admin': 'Admin'
+    'admin': 'Admin',
+    'seller': 'Penjual'
   }
   return labels[role] || 'Pengguna'
 })
@@ -141,6 +142,17 @@ const navLinks = computed(() => {
     ]
   }
 
+  // Seller navigation
+  if (role === 'seller') {
+    return [
+      { label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard' },
+      { label: 'Toko Saya', icon: 'ph:storefront', path: '/dashboard/store' },
+      { label: 'Produk', icon: 'ph:package', path: '/dashboard/shop' },
+      { label: 'Pesanan', icon: 'ph:shopping-cart', path: '/dashboard/orders' },
+      { label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/settings' },
+    ]
+  }
+
   // Full navigation for organizers (org, club, admin)
   return [
     { label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard' },
@@ -149,7 +161,6 @@ const navLinks = computed(() => {
     ...(role === 'club' ? [{ label: 'Anggota Klub', icon: 'ph:identification-badge', path: '/dashboard/members' }] : []),
     ...(role !== 'club' ? [{ label: 'Tim', icon: 'ph:users-four', path: '/dashboard/teams' }] : []),
     { label: 'Berita', icon: 'ph:newspaper', path: '/dashboard/berita' },
-    ...(role !== 'archer' ? [{ label: 'Marketplace', icon: 'ph:storefront', path: '/dashboard/shop' }] : []),
     { label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/settings' },
   ]
 })
