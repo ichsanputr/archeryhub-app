@@ -35,6 +35,8 @@ export default defineEventHandler(async (event: H3Event) => {
     event.context.user = {
         id: payload.user_id,
         email: payload.email,
+        name: payload.name,
+        avatar_url: payload.avatar,
         role: payload.role,
         type: payload.user_type
     }

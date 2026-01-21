@@ -12,13 +12,11 @@ export const useAuth = () => {
     return null
   })
 
-  console.log(user)
   const isUserLoading = useState('auth.isUserLoading', () => false)
   const isLoggedIn = computed(() => !!user.value)
   const config = useRuntimeConfig()
 
   // Google OAuth login/registration
-  // userType is optional - used when registering new users (archer, organization, club)
   const login = async (userType = 'archer') => {
     try {
       const baseUrl = config.public.apiBaseUrl
@@ -33,7 +31,6 @@ export const useAuth = () => {
         if (import.meta.client) {
           window.location.href = auth_url
         } else {
-          // For SSR, we can return the URL for server-side redirect
           return auth_url
         }
       } else {
@@ -59,12 +56,13 @@ export const useAuth = () => {
       // Set user data
       if (response.user) {
         user.value = {
-          id: response.user.id,
+          id: response.user.id || response.user.uuid,
           username: response.user.username,
-          name: response.user.full_name,
+          name: response.user.full_name || response.user.name,
           email: response.user.email,
+          avatar_url: response.user.avatar_url || response.user.avatar,
           role: response.user.role,
-          type: response.user.type
+          type: response.user.type || response.user.user_type || response.user.role
         }
       }
 
@@ -89,12 +87,13 @@ export const useAuth = () => {
       // Set user data
       if (response.user) {
         user.value = {
-          id: response.user.id,
+          id: response.user.id || response.user.uuid,
           username: response.user.username,
-          name: response.user.full_name,
+          name: response.user.full_name || response.user.name,
           email: response.user.email,
+          avatar_url: response.user.avatar_url || response.user.avatar,
           role: response.user.role,
-          type: response.user.type
+          type: response.user.type || response.user.user_type || response.user.role
         }
       }
 
@@ -107,24 +106,21 @@ export const useAuth = () => {
 
   const logout = async () => {
     try {
-      // Call the logout API endpoint
       await $fetch(`${config.public.apiBaseUrl}/auth/logout`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        credentials: 'include' // Important: include HTTP-only cookies
+        credentials: 'include'
       })
 
       user.value = null;
 
-      // Redirect to homepage after logout
       if (import.meta.client) {
         window.location.href = '/';
       }
     } catch (error) {
       console.error('Logout error:', error);
-      // Even if logout fails, clear local state and redirect
       user.value = null;
       if (import.meta.client) {
         window.location.href = '/';
@@ -136,34 +132,30 @@ export const useAuth = () => {
     try {
       isUserLoading.value = true
 
-      // On server-side, user data should already be available from middleware
       if (import.meta.server) {
         isUserLoading.value = false
         return
       }
 
-      // On client-side, fetch user data
       const response = await $fetch(`${config.public.apiBaseUrl}/user`, {
         headers: {
           'Content-Type': 'application/json'
         },
-        credentials: 'include' // Important: include HTTP-only cookies
+        credentials: 'include'
       })
 
-      // Handle API response structure - it returns {data: user, message: "..."}
       const userData = response?.data || response
 
-      // Ensure user data matches expected structure
-      if (userData && userData.id) {
+      if (userData && (userData.id || userData.uuid)) {
         user.value = {
-          id: userData.id,
+          id: userData.id || userData.uuid,
           google_id: userData.google_id,
           username: userData.username,
-          name: userData.name || userData.full_name,
+          name: userData.full_name || userData.name,
           email: userData.email,
-          avatar_url: userData.avatar_url,
+          avatar_url: userData.avatar_url || userData.avatar,
           role: userData.role,
-          type: userData.type,
+          type: userData.type || userData.user_type || userData.role,
           is_active: userData.is_active,
           created_at: userData.created_at,
           updated_at: userData.updated_at
@@ -172,7 +164,6 @@ export const useAuth = () => {
         user.value = null
       }
     } catch (error) {
-      // Don't log 401 errors as they're expected when not authenticated
       if (error?.status !== 401 && error?.statusCode !== 401) {
         console.error('Error fetching user:', error)
       }
@@ -192,16 +183,15 @@ export const useAuth = () => {
         credentials: 'include'
       })
 
-      // Set user data
       if (response.user) {
         user.value = {
           id: response.user.id,
           username: response.user.username,
-          name: response.user.name || response.user.full_name,
+          name: response.user.full_name,
           email: response.user.email,
+          avatar_url: response.user.avatar_url,
           role: response.user.role,
-          type: response.user.user_type || response.user.type,
-          avatar_url: response.user.avatar
+          type: response.user.user_type
         }
       }
 
@@ -212,7 +202,6 @@ export const useAuth = () => {
     }
   }
 
-  // Initialize auth state on client-side
   const initializeAuth = async () => {
     if (import.meta.client && !user.value) {
       await fetchUser()

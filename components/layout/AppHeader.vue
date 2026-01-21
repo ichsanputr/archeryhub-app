@@ -14,17 +14,17 @@
       <!-- Main Navigation (Visible only on Landing/Home context) -->
       <nav v-if="transparent || !isDashboard" class="hidden lg:flex items-center gap-6 xl:gap-8 ml-4">
         <NuxtLink to="/"
-          :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-navy' : 'text-white/80 hover:text-white']"
-          class="font-medium text-sm transition-colors">Beranda</NuxtLink>
+          :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-navy' : 'text-white/80 hover:text-white', { '!text-primary': route.path === '/' }]"
+          class="font-black text-sm transition-colors">Beranda</NuxtLink>
         <NuxtLink to="/events"
-          :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-navy' : 'text-white/80 hover:text-white']"
-          class="font-medium text-sm transition-colors">Event</NuxtLink>
-        <NuxtLink to="/clubs"
-          :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-navy' : 'text-white/80 hover:text-white']"
-          class="font-medium text-sm transition-colors">Klub</NuxtLink>
-        <NuxtLink to="/rankings"
-          :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-navy' : 'text-white/80 hover:text-white']"
-          class="font-medium text-sm transition-colors">Peringkat</NuxtLink>
+          :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-navy' : 'text-white/80 hover:text-white', { '!text-primary': route.path.startsWith('/events') }]"
+          class="font-black text-sm transition-colors">Event</NuxtLink>
+        <NuxtLink to="/klub"
+          :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-navy' : 'text-white/80 hover:text-white', { '!text-primary': route.path.startsWith('/klub') }]"
+          class="font-black text-sm transition-colors">Klub</NuxtLink>
+        <NuxtLink to="/berita"
+          :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-navy' : 'text-white/80 hover:text-white', { '!text-primary': route.path.startsWith('/berita') }]"
+          class="font-black text-sm transition-colors">Berita</NuxtLink>
       </nav>
 
       <!-- Search Bar -->

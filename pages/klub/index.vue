@@ -2,51 +2,98 @@
     <div class="min-h-screen bg-gray-50">
         <!-- Hero Section -->
         <section
-            class="bg-gradient-to-br from-navy via-navy to-blue-900 text-white py-16 md:py-24 relative overflow-hidden">
-            <div class="absolute inset-0 opacity-20">
+            class="bg-gradient-to-br from-navy via-navy to-blue-900 text-white py-20 md:py-28 relative overflow-hidden">
+            <div class="absolute inset-0 opacity-15">
                 <img src="https://images.unsplash.com/photo-1565992441121-4367c2967103?w=1600"
-                    class="w-full h-full object-cover mix-blend-overlay" />
+                    class="w-full h-full object-cover" />
             </div>
-            <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/60 to-transparent"></div>
 
             <div class="container mx-auto px-4 max-w-7xl relative z-10">
-                <div class="max-w-2xl">
-                    <div class="flex items-center gap-2 text-primary text-sm font-bold uppercase tracking-widest mb-4">
-                        <Icon icon="ph:users-three" class="text-lg" />
-                        <span>Komunitas Panahan</span>
+                <div class="max-w-3xl">
+                    <div
+                        class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold uppercase tracking-widest mb-6">
+                        <Icon icon="ph:users-three-bold" class="text-lg" />
+                        <span>Komunitas Pemanah</span>
                     </div>
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-tight mb-6">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] mb-6">
                         Temukan <span class="text-primary">Klub Panahan</span><br />
-                        di Indonesia
+                        Terbaik di Indonesia
                     </h1>
-                    <p class="text-gray-300 text-lg leading-relaxed max-w-lg">
-                        Bergabunglah dengan klub panahan terdekat dan jadilah bagian dari komunitas pemanah Indonesia.
+                    <p class="text-gray-300 text-lg md:text-xl leading-relaxed max-w-xl">
+                        Bergabunglah dengan komunitas pemanah dan tingkatkan kemampuan bersama pelatih dan fasilitas
+                        terbaik.
                     </p>
+
+                    <!-- Search Bar -->
+                    <div class="mt-10 flex flex-col sm:flex-row gap-4 max-w-xl">
+                        <div class="relative flex-1">
+                            <Icon icon="ph:magnifying-glass-bold"
+                                class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl" />
+                            <input v-model="searchQuery" type="text" placeholder="Cari nama klub atau kota..."
+                                class="w-full pl-12 pr-4 py-4 rounded-xl bg-white text-navy font-medium placeholder:text-gray-400 focus:ring-4 focus:ring-primary/30 outline-none transition-all text-base" />
+                        </div>
+                        <button
+                            class="px-8 py-4 bg-primary hover:bg-primary-hover text-navy font-black rounded-xl transition-all shadow-lg shadow-primary/30 flex items-center justify-center gap-2">
+                            <Icon icon="ph:magnifying-glass-bold" />
+                            Cari
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Search & Filter Bar -->
-        <section class="sticky top-16 z-20 bg-white border-b border-gray-200 shadow-sm">
-            <div class="container mx-auto px-4 max-w-7xl">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 py-4">
-                    <!-- Search -->
-                    <div class="relative w-full md:w-96">
-                        <Icon icon="ph:magnifying-glass"
-                            class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-                        <input v-model="searchQuery" type="text" placeholder="Cari nama klub atau lokasi..."
-                            class="w-full pl-11 pr-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm" />
-                    </div>
+        <!-- Quick Stats -->
+        <section class="container mx-auto px-4 max-w-7xl -mt-8 relative z-20">
+            <div
+                class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="text-center">
+                    <p class="text-3xl md:text-4xl font-black text-navy">120+</p>
+                    <p class="text-sm text-gray-500 font-medium mt-1">Klub Terdaftar</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-3xl md:text-4xl font-black text-navy">2,500+</p>
+                    <p class="text-sm text-gray-500 font-medium mt-1">Anggota Aktif</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-3xl md:text-4xl font-black text-navy">34</p>
+                    <p class="text-sm text-gray-500 font-medium mt-1">Provinsi</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-3xl md:text-4xl font-black text-navy">500+</p>
+                    <p class="text-sm text-gray-500 font-medium mt-1">Event Digelar</p>
+                </div>
+            </div>
+        </section>
 
-                    <!-- Filters -->
-                    <div class="flex items-center gap-3 overflow-x-auto no-scrollbar">
-                        <button v-for="loc in locations" :key="loc.value" @click="activeLocation = loc.value" :class="[
-                            'px-4 py-2 rounded-full text-sm font-bold whitespace-nowrap transition-all',
-                            activeLocation === loc.value
-                                ? 'bg-navy text-white shadow-lg'
-                                : 'text-gray-600 hover:bg-gray-100'
-                        ]">
-                            {{ loc.label }}
+        <!-- Filter Bar -->
+        <section class="container mx-auto px-4 max-w-7xl py-8">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <!-- Location Filters -->
+                <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 md:pb-0">
+                    <button v-for="loc in locations" :key="loc.value" @click="activeLocation = loc.value" :class="[
+                        'px-5 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all border-2',
+                        activeLocation === loc.value
+                            ? 'bg-navy text-white border-navy shadow-lg shadow-navy/20'
+                            : 'bg-white text-gray-600 border-gray-200 hover:border-navy hover:text-navy'
+                    ]">
+                        {{ loc.label }}
+                    </button>
+                </div>
+
+                <!-- View Toggle & Count -->
+                <div class="flex items-center gap-4">
+                    <p class="text-gray-500 text-sm font-medium">
+                        <span class="font-bold text-navy">{{ filteredClubs.length }}</span> klub ditemukan
+                    </p>
+                    <div class="flex items-center gap-1 bg-gray-100 p-1 rounded-lg">
+                        <button @click="viewMode = 'grid'"
+                            :class="['p-2 rounded-lg transition-all', viewMode === 'grid' ? 'bg-white shadow-sm text-navy' : 'text-gray-400 hover:text-navy']">
+                            <Icon icon="ph:squares-four-bold" class="text-lg" />
+                        </button>
+                        <button @click="viewMode = 'list'"
+                            :class="['p-2 rounded-lg transition-all', viewMode === 'list' ? 'bg-white shadow-sm text-navy' : 'text-gray-400 hover:text-navy']">
+                            <Icon icon="ph:list-bold" class="text-lg" />
                         </button>
                     </div>
                 </div>
@@ -54,51 +101,43 @@
         </section>
 
         <!-- Clubs Grid -->
-        <section class="container mx-auto px-4 max-w-7xl py-12">
-            <!-- Stats -->
-            <div class="flex items-center justify-between mb-8">
-                <p class="text-gray-500 font-medium">
-                    Menampilkan <span class="font-bold text-navy">{{ filteredClubs.length }}</span> klub
-                </p>
-                <div class="flex items-center gap-2">
-                    <button class="p-2 rounded-lg hover:bg-gray-100 transition-colors"
-                        :class="viewMode === 'grid' ? 'bg-gray-100' : ''" @click="viewMode = 'grid'">
-                        <Icon icon="ph:squares-four" class="text-xl text-gray-600" />
-                    </button>
-                    <button class="p-2 rounded-lg hover:bg-gray-100 transition-colors"
-                        :class="viewMode === 'list' ? 'bg-gray-100' : ''" @click="viewMode = 'list'">
-                        <Icon icon="ph:list" class="text-xl text-gray-600" />
-                    </button>
-                </div>
-            </div>
-
-            <!-- Grid View -->
-            <div v-if="viewMode === 'grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <section class="container mx-auto px-4 max-w-7xl pb-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <NuxtLink v-for="club in filteredClubs" :key="club.id" :to="`/klub/${club.slug}`"
-                    class="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:border-primary/30 transition-all">
+                    class="group bg-white rounded-2xl border-2 border-gray-100 overflow-hidden hover:border-primary transition-all duration-300">
 
                     <!-- Club Banner -->
-                    <div class="relative h-40 bg-gradient-to-br from-navy to-blue-800 overflow-hidden">
+                    <div class="relative h-44 bg-gradient-to-br from-navy to-blue-800 overflow-hidden">
                         <img v-if="club.bannerUrl" :src="club.bannerUrl"
-                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent">
+                        </div>
 
                         <!-- Verified Badge -->
                         <div v-if="club.verified" class="absolute top-4 right-4">
                             <span
-                                class="flex items-center gap-1 px-2 py-1 bg-blue-500 text-white text-xs font-bold rounded-full">
+                                class="flex items-center gap-1 px-3 py-1.5 bg-blue-500 text-white text-xs font-black rounded-full shadow-lg">
                                 <Icon icon="ph:seal-check-fill" />
                                 Verified
                             </span>
                         </div>
+
+                        <!-- Location Badge -->
+                        <div class="absolute bottom-4 left-4">
+                            <span
+                                class="flex items-center gap-1.5 px-3 py-1.5 bg-white/90 backdrop-blur-sm text-navy text-xs font-bold rounded-full">
+                                <Icon icon="ph:map-pin-fill" class="text-primary" />
+                                {{ club.city }}
+                            </span>
+                        </div>
                     </div>
 
-                    <!-- Logo & Info -->
-                    <div class="relative px-5 pb-5">
-                        <div class="flex items-end gap-4 -mt-8">
+                    <!-- Club Info -->
+                    <div class="p-5">
+                        <div class="flex items-start gap-4">
                             <!-- Logo -->
                             <div
-                                class="w-16 h-16 rounded-2xl bg-white border-4 border-white shadow-lg overflow-hidden flex-shrink-0">
+                                class="w-14 h-14 -mt-10 rounded-xl bg-white border-4 border-white shadow-lg overflow-hidden flex-shrink-0">
                                 <div v-if="!club.logoUrl"
                                     class="w-full h-full bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center">
                                     <span class="text-xl font-black text-navy">{{ club.name.charAt(0) }}</span>
@@ -106,33 +145,29 @@
                                 <img v-else :src="club.logoUrl" class="w-full h-full object-cover" />
                             </div>
 
-                            <div class="flex-1 min-w-0 pt-2">
+                            <div class="flex-1 min-w-0 pt-1">
                                 <h3
-                                    class="font-bold text-navy text-lg truncate group-hover:text-primary transition-colors">
+                                    class="font-black text-navy text-lg truncate group-hover:text-primary transition-colors">
                                     {{ club.name }}</h3>
-                                <div class="flex items-center gap-1 text-gray-400 text-sm">
-                                    <Icon icon="ph:map-pin" />
-                                    <span class="truncate">{{ club.city }}</span>
-                                </div>
+                                <p class="text-gray-400 text-sm">{{ club.description?.slice(0, 50) }}...</p>
                             </div>
                         </div>
 
                         <!-- Stats -->
-                        <div class="grid grid-cols-3 gap-4 mt-5 pt-5 border-t border-gray-100">
-                            <div class="text-center">
-                                <p class="text-xl font-bold text-navy">{{ club.memberCount }}</p>
-                                <p class="text-xs text-gray-400 font-medium">Anggota</p>
+                        <div class="flex items-center justify-between mt-5 pt-5 border-t border-gray-100">
+                            <div class="flex items-center gap-1.5">
+                                <Icon icon="ph:users-bold" class="text-gray-400" />
+                                <span class="font-bold text-navy">{{ club.memberCount }}</span>
+                                <span class="text-gray-400 text-sm">Anggota</span>
                             </div>
-                            <div class="text-center">
-                                <p class="text-xl font-bold text-navy">{{ club.eventCount }}</p>
-                                <p class="text-xs text-gray-400 font-medium">Event</p>
+                            <div class="flex items-center gap-1.5">
+                                <Icon icon="ph:star-fill" class="text-amber-400" />
+                                <span class="font-bold text-navy">{{ club.rating }}</span>
                             </div>
-                            <div class="text-center">
-                                <div class="flex items-center justify-center gap-1">
-                                    <Icon icon="ph:star-fill" class="text-amber-400" />
-                                    <p class="text-xl font-bold text-navy">{{ club.rating }}</p>
-                                </div>
-                                <p class="text-xs text-gray-400 font-medium">Rating</p>
+                            <div class="flex items-center gap-1.5">
+                                <Icon icon="ph:trophy-bold" class="text-gray-400" />
+                                <span class="font-bold text-navy">{{ club.eventCount }}</span>
+                                <span class="text-gray-400 text-sm">Event</span>
                             </div>
                         </div>
                     </div>
@@ -141,27 +176,34 @@
 
             <!-- Empty State -->
             <div v-if="filteredClubs.length === 0" class="text-center py-20">
-                <div class="w-20 h-20 bg-gray-100 rounded-full mx-auto flex items-center justify-center mb-4">
-                    <Icon icon="ph:users-three" class="text-4xl text-gray-300" />
+                <div class="w-24 h-24 bg-gray-100 rounded-full mx-auto flex items-center justify-center mb-6">
+                    <Icon icon="ph:users-three" class="text-5xl text-gray-300" />
                 </div>
-                <h3 class="text-xl font-bold text-navy mb-2">Klub Tidak Ditemukan</h3>
-                <p class="text-gray-500">Coba ubah filter atau kata kunci pencarian.</p>
+                <h3 class="text-2xl font-black text-navy mb-3">Klub Tidak Ditemukan</h3>
+                <p class="text-gray-500 max-w-md mx-auto">Coba ubah filter atau kata kunci pencarian untuk menemukan
+                    klub yang sesuai.</p>
             </div>
         </section>
 
-        <!-- CTA Section -->
-        <section class="bg-navy py-16">
-            <div class="container mx-auto px-4 max-w-7xl">
-                <div
-                    class="bg-gradient-to-r from-primary to-amber-400 rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
-                    <div>
-                        <h2 class="text-3xl font-black text-navy mb-2">Punya Klub Panahan?</h2>
-                        <p class="text-navy/70 text-lg">Daftarkan klub Anda dan jangkau lebih banyak pemanah.</p>
+        <!-- CTA Section - Using gradient instead of navy for contrast with footer -->
+        <section class="py-20 bg-gradient-to-br from-primary via-amber-400 to-yellow-400 relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10">
+                <div class="absolute top-0 right-0 w-96 h-96 bg-navy rounded-full blur-3xl"></div>
+                <div class="absolute bottom-0 left-0 w-96 h-96 bg-navy rounded-full blur-3xl"></div>
+            </div>
+            <div class="container mx-auto px-4 max-w-7xl relative z-10">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-10">
+                    <div class="text-center md:text-left">
+                        <h2 class="text-3xl md:text-4xl font-black text-navy mb-3">Punya Klub Panahan?</h2>
+                        <p class="text-navy/70 text-lg max-w-md">Daftarkan klub Anda di Archeryhub.id dan jangkau lebih
+                            banyak pemanah berbakat.</p>
                     </div>
                     <NuxtLink to="/auth/register?type=club">
-                        <BaseButton variant="navy" size="lg" icon="ph:plus-bold">
+                        <button
+                            class="px-10 py-4 bg-navy hover:bg-navy-light text-white font-black rounded-xl transition-all shadow-xl shadow-navy/30 flex items-center gap-3 text-lg">
+                            <Icon icon="ph:plus-bold" />
                             Daftarkan Klub
-                        </BaseButton>
+                        </button>
                     </NuxtLink>
                 </div>
             </div>
@@ -187,6 +229,7 @@ const locations = [
     { label: 'Bandung', value: 'bandung' },
     { label: 'Surabaya', value: 'surabaya' },
     { label: 'Yogyakarta', value: 'yogyakarta' },
+    { label: 'Bali', value: 'bali' },
 ]
 
 // Dummy clubs data
@@ -196,6 +239,7 @@ const clubs = ref([
         name: 'Garuda Archery Club',
         slug: 'garuda-archery',
         city: 'Jakarta Selatan',
+        description: 'Klub panahan profesional dengan fasilitas lengkap dan pelatih bersertifikat internasional.',
         bannerUrl: 'https://images.unsplash.com/photo-1565992441121-4367c2967103?w=800',
         logoUrl: null,
         verified: true,
@@ -208,6 +252,7 @@ const clubs = ref([
         name: 'Bandung Archery Center',
         slug: 'bandung-archery',
         city: 'Bandung',
+        description: 'Pusat pelatihan panahan terbesar di Jawa Barat dengan lapangan indoor dan outdoor.',
         bannerUrl: 'https://images.unsplash.com/photo-1547347298-4074fc3086f0?w=800',
         logoUrl: null,
         verified: true,
@@ -220,6 +265,7 @@ const clubs = ref([
         name: 'Surabaya Bowman',
         slug: 'surabaya-bowman',
         city: 'Surabaya',
+        description: 'Komunitas pemanah Surabaya yang aktif dalam berbagai kompetisi nasional.',
         bannerUrl: 'https://images.unsplash.com/photo-1510925758641-869d353cecc7?w=800',
         logoUrl: null,
         verified: false,
@@ -232,6 +278,7 @@ const clubs = ref([
         name: 'Yogyakarta Arrow Club',
         slug: 'yogya-arrow',
         city: 'Yogyakarta',
+        description: 'Klub panahan tradisional yang menggabungkan teknik modern dengan budaya lokal.',
         bannerUrl: 'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=800',
         logoUrl: null,
         verified: true,
@@ -244,6 +291,7 @@ const clubs = ref([
         name: 'Jakarta Traditional Archery',
         slug: 'jakarta-traditional',
         city: 'Jakarta Barat',
+        description: 'Fokus pada panahan tradisional Indonesia dengan berbagai jenis busur.',
         bannerUrl: null,
         logoUrl: null,
         verified: false,
@@ -253,15 +301,16 @@ const clubs = ref([
     },
     {
         id: 6,
-        name: 'Depok Archery Team',
-        slug: 'depok-archery',
-        city: 'Depok',
-        bannerUrl: null,
+        name: 'Bali Archery Academy',
+        slug: 'bali-archery',
+        city: 'Denpasar',
+        description: 'Akademi panahan dengan pemandangan alam Bali yang menakjubkan.',
+        bannerUrl: 'https://images.unsplash.com/photo-1571260899304-425eee4c7efc?w=800',
         logoUrl: null,
-        verified: false,
-        memberCount: 15,
-        eventCount: 2,
-        rating: 4.2
+        verified: true,
+        memberCount: 28,
+        eventCount: 6,
+        rating: 4.6
     },
 ])
 

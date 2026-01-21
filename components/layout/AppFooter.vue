@@ -42,9 +42,17 @@
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 Turnamen
               </NuxtLink>
-              <NuxtLink to="/dashboard/result"
+              <NuxtLink to="/klub"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Hasil Langsung
+                Klub
+              </NuxtLink>
+              <NuxtLink to="/berita"
+                class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
+                Berita
+              </NuxtLink>
+              <NuxtLink to="/shop"
+                class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
+                Marketplace
               </NuxtLink>
             </div>
           </div>

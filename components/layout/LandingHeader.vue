@@ -105,12 +105,12 @@
                         </Transition>
                     </div>
 
-                    <NuxtLink to="#" class="font-medium text-sm transition-all duration-300 hover:text-primary"
-                        :class="navLinkClasses">Klub</NuxtLink>
-                    <NuxtLink to="/berita" class="font-medium text-sm transition-all duration-300 hover:text-primary"
-                        :class="[navLinkClasses, { 'font-bold': isActive('/berita') }]">Berita</NuxtLink>
-                    <NuxtLink to="/shop" class="font-medium text-sm transition-all duration-300 hover:text-primary"
-                        :class="[navLinkClasses, { 'font-bold': isActive('/shop') }]">Marketplace</NuxtLink>
+                    <NuxtLink to="/klub" class="font-black text-sm transition-all duration-300 hover:text-primary"
+                        :class="[navLinkClasses, { '!text-primary': isActive('/klub') }]">Klub</NuxtLink>
+                    <NuxtLink to="/berita" class="font-black text-sm transition-all duration-300 hover:text-primary"
+                        :class="[navLinkClasses, { '!text-primary': isActive('/berita') }]">Berita</NuxtLink>
+                    <NuxtLink to="/shop" class="font-black text-sm transition-all duration-300 hover:text-primary"
+                        :class="[navLinkClasses, { '!text-primary': isActive('/shop') }]">Marketplace</NuxtLink>
                 </nav>
 
                 <!-- Desktop Auth Buttons -->
@@ -136,6 +136,7 @@
                             <div v-if="showUserMenu" class="absolute right-0 top-full pt-2 w-56">
                                 <div class="bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden py-2">
                                     <div class="px-4 py-3 border-b border-gray-100">
+                                        {{ user }}
                                         <p class="font-bold text-navy truncate">{{ user?.name || 'User' }}</p>
                                         <p class="text-xs text-gray-400 truncate">{{ user?.email }}</p>
                                     </div>
@@ -220,10 +221,12 @@
                         </Transition>
                     </div>
 
-                    <NuxtLink to="#" class="block text-gray-600 font-medium text-sm py-3">Skor</NuxtLink>
-                    <NuxtLink to="#" class="block text-gray-600 font-medium text-sm py-3">Klub</NuxtLink>
+                    <NuxtLink to="/klub" class="block text-gray-600 font-medium text-sm py-3"
+                        :class="{ 'text-primary font-bold': isActive('/klub') }">Klub</NuxtLink>
                     <NuxtLink to="/berita" class="block text-gray-600 font-medium text-sm py-3"
                         :class="{ 'text-primary font-bold': isActive('/berita') }">Berita</NuxtLink>
+                    <NuxtLink to="/shop" class="block text-gray-600 font-medium text-sm py-3"
+                        :class="{ 'text-primary font-bold': isActive('/shop') }">Marketplace</NuxtLink>
 
                     <div class="pt-4 border-t border-gray-100 flex gap-3 mt-2">
                         <NuxtLink v-if="isLoggedIn" to="/dashboard"
