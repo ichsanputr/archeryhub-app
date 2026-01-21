@@ -11,16 +11,6 @@
         <Icon icon="ph:list" class="text-2xl" />
       </div>
 
-      <!-- Logo & Branding -->
-      <NuxtLink to="/" class="flex items-center gap-3 shrink-0">
-        <div class="w-8 h-8 bg-navy rounded-lg flex items-center justify-center">
-          <img src="/logo.png" alt="Logo" class="w-5 h-5 object-contain" />
-        </div>
-        <span :class="[isScrolled || !transparent ? 'text-navy dark:text-white' : 'text-white']"
-          class="text-xl font-black tracking-tight font-display hidden sm:block">Archeryhub<span
-            class="text-logo-id">.id</span></span>
-      </NuxtLink>
-
       <!-- Main Navigation (Visible only on Landing/Home context) -->
       <nav v-if="transparent || !isDashboard" class="hidden lg:flex items-center gap-6 xl:gap-8 ml-4">
         <NuxtLink to="/"
@@ -37,12 +27,6 @@
           class="font-medium text-sm transition-colors">Peringkat</NuxtLink>
       </nav>
 
-      <!-- Page Title (Dashboard context) -->
-      <div v-if="isDashboard" class="hidden lg:block ml-4">
-        <h2 :class="[isScrolled || !transparent ? 'text-gray-900 dark:text-white' : 'text-white/90']"
-          class="text-lg font-bold">{{ pageTitle }}</h2>
-      </div>
-
       <!-- Search Bar -->
       <div class="max-w-xs xl:max-w-md w-full hidden md:block">
         <div :class="[
@@ -51,8 +35,7 @@
             : 'bg-white/10 border-white/20 backdrop-blur-md'
         ]"
           class="flex w-full items-center rounded-lg border h-10 px-3 transition-all focus-within:ring-2 focus-within:ring-primary/50">
-          <Icon icon="ph:magnifying-glass" :class="[isScrolled || !transparent ? 'text-brand-gold' : 'text-primary']"
-            class="text-lg" />
+          <Icon icon="ph:magnifying-glass" class="text-lg" />
           <input v-model="searchQuery" :class="[
             isScrolled || !transparent
               ? 'text-gray-900 dark:text-white placeholder-gray-500'
@@ -65,17 +48,6 @@
 
     <!-- Right Section -->
     <div class="flex items-center gap-3 pl-4">
-      <!-- Theme Toggle -->
-      <button @click="toggleTheme" :class="[
-        isScrolled || !transparent
-          ? 'bg-gray-100 dark:bg-surface-highlight text-gray-700 dark:text-white hover:bg-gray-200'
-          : 'bg-white/10 text-white hover:bg-white/20'
-      ]" class="size-10 flex items-center justify-center rounded-lg transition-colors"
-        :title="isDark ? 'Ganti ke Mode Terang' : 'Ganti ke Mode Gelap'">
-        <Icon v-if="isDark" icon="ph:sun" class="text-[20px]" />
-        <Icon v-else icon="ph:moon" class="text-[20px]" />
-      </button>
-
       <!-- Add New Button (context-aware) -->
       <button v-if="showAddButton"
         class="hidden md:flex h-10 px-4 bg-primary hover:bg-yellow-400 text-background-dark rounded-lg text-sm font-bold items-center gap-2 transition-colors shadow-sm"
@@ -107,7 +79,7 @@
 import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useTheme } from '~/composables/useTheme'
+import { useAuth } from '~/composables/useAuth'
 
 const props = defineProps({
   transparent: {
@@ -118,12 +90,12 @@ const props = defineProps({
 
 const route = useRoute()
 const router = useRouter()
-const { isDark, toggleTheme } = useTheme()
+const { user } = useAuth()
 
 const isSidebarOpen = useState('mobile-sidebar-open', () => false)
 const searchQuery = ref('')
 const notificationCount = ref(3)
-const userAvatar = ref('https://via.placeholder.com/40')
+const userAvatar = computed(() => user.value?.avatar_url || '/avatar-default.svg')
 
 // Scroll state for transparency transition
 const isScrolled = ref(false)
@@ -168,7 +140,7 @@ const pageTitle = computed(() => {
 })
 
 const showAddButton = computed(() => {
-  const addRoutes = ['/dashboard/events', '/dashboard/athletes', '/dashboard/devices']
+  const addRoutes = ['/dashboard/athletes', '/dashboard/devices']
   return addRoutes.some(r => route.path.startsWith(r))
 })
 

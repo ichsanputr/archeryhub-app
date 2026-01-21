@@ -94,7 +94,7 @@
       <!-- Bottom Bar -->
       <div class="py-8 border-t border-white/5">
         <p class="text-xs text-gray-500 font-medium text-center sm:text-left">
-          &copy; {{ new Date().getFullYear() }} Archeryhub.id. oke Hak cipta dilindungi undang-undang.
+          &copy; {{ new Date().getFullYear() }} Archeryhub.id. Hak cipta dilindungi undang-undang.
         </p>
       </div>
     </div>
