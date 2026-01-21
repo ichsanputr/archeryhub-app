@@ -6,12 +6,14 @@
         <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight uppercase">
           <NuxtLink to="/dashboard" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
           <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-          <span class="text-navy">Events</span>
+          <span class="text-navy">Event</span>
         </div>
         <h1 class="text-3xl font-extrabold text-navy tracking-tight">Daftar Event</h1>
-        <p class="text-gray-500 font-medium mt-1">Kelola kompetisi dan pantau progres turnamen Anda.</p>
+        <p class="text-gray-500 font-medium mt-1">
+          {{ isArcher ? 'Event yang Anda ikuti.' : 'Kelola kompetisi dan pantau progres event Anda.' }}
+        </p>
       </div>
-      <BaseButton to="/dashboard/events/create" variant="primary" icon="ph:plus-bold"
+      <BaseButton v-if="canCreateEvent" to="/dashboard/events/create" variant="primary" icon="ph:plus-bold"
         class="shadow-lg shadow-primary/20">
         Buat Event Baru
       </BaseButton>
@@ -26,7 +28,7 @@
         <div>
           <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Aktif</p>
           <p class="text-lg font-bold text-navy">{{events.filter(e => e.status === 'published' || e.status ===
-            'ongoing').length }}</p>
+            'ongoing').length}}</p>
         </div>
       </div>
       <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
@@ -55,12 +57,13 @@
     </div>
 
     <!-- Events List / Table -->
-    <div class="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden flex flex-col min-h-[400px]">
+    <div class="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden flex flex-col">
       <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse min-w-[800px]">
           <thead>
             <tr class="bg-gray-50/50 border-b border-gray-100">
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Informasi Event
+              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Informasi
+                Event
               </th>
               <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Jadwal & Lokasi
               </th>
@@ -127,7 +130,7 @@
                       <span class="text-[11px] font-bold text-gray-400 tracking-wide uppercase">{{ event.code }}</span>
                       <span class="text-gray-300">•</span>
                       <span class="text-[11px] font-bold text-primary-dark uppercase tracking-wide">{{
-                        event.discipline_name || 'Tournament' }}</span>
+                        event.discipline_name || 'Event' }}</span>
                     </div>
                   </div>
                 </div>
@@ -169,10 +172,25 @@
                     class="h-9 font-bold">
                     Kelola
                   </BaseButton>
-                  <button
-                    class="h-9 w-9 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 hover:text-navy transition-all">
-                    <Icon icon="ph:dots-three-vertical-bold" class="text-xl" />
-                  </button>
+                  <div class="relative" v-click-outside="() => closeDropdown(event.id)">
+                    <button @click="toggleDropdown(event.id)"
+                      class="h-9 w-9 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 hover:text-navy transition-all">
+                      <Icon icon="ph:dots-three-vertical-bold" class="text-xl" />
+                    </button>
+                    <div v-if="openDropdownId === event.id"
+                      class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                      <NuxtLink :to="`/dashboard/events/${event.id}/edit`"
+                        class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-navy transition-colors">
+                        <Icon icon="ph:pencil-simple" class="text-lg text-gray-400" />
+                        Edit Event
+                      </NuxtLink>
+                      <button @click="confirmDeleteEvent(event)"
+                        class="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors">
+                        <Icon icon="ph:trash" class="text-lg" />
+                        Hapus Event
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </td>
             </tr>
@@ -184,7 +202,7 @@
       <div v-if="filteredEvents.length > 0"
         class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
         <span class="text-xs text-gray-500 font-bold uppercase tracking-wider">
-          Menampilkan <span class="text-navy">1 - {{ filteredEvents.length }}</span> dari <span class="text-navy">{{
+          Menampilkan <span class="text-navy">{{ filteredEvents.length }}</span> dari <span class="text-navy">{{
             events.length }}</span> Event
         </span>
         <div class="flex items-center gap-2">
@@ -201,20 +219,61 @@
         </div>
       </div>
     </div>
+
+    <!-- Delete Confirmation Dialog -->
+    <Teleport to="body">
+      <div v-if="showDeleteDialog" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-navy/60 backdrop-blur-sm" @click="cancelDelete"></div>
+        <div class="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 animate-in zoom-in-95 duration-200">
+          <div class="flex flex-col items-center text-center gap-4">
+            <div class="h-16 w-16 rounded-2xl bg-red-50 flex items-center justify-center">
+              <Icon icon="ph:warning-circle" class="text-4xl text-red-500" />
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-navy">Hapus Event?</h3>
+              <p class="text-gray-500 mt-2 text-sm leading-relaxed">
+                Apakah Anda yakin ingin menghapus event <span class="font-bold text-navy">{{ eventToDelete?.name
+                }}</span>?
+                Tindakan ini tidak dapat dibatalkan.
+              </p>
+            </div>
+            <div class="flex gap-3 w-full mt-2">
+              <BaseButton variant="outline" class="flex-1" @click="cancelDelete">
+                Batal
+              </BaseButton>
+              <BaseButton variant="danger" class="flex-1 bg-red-600 hover:bg-red-700 text-white" @click="deleteEvent">
+                <Icon icon="ph:trash" class="mr-2" />
+                Hapus Event
+              </BaseButton>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Teleport>
   </div>
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import { useAuth } from '~/composables/useAuth'
+
 definePageMeta({
   layout: 'dashboard'
 })
 
+const { user } = useAuth()
 const { get } = useApi()
 const searchQuery = ref('')
 const statusFilter = ref('')
 const events = ref([])
 const isLoading = ref(true)
+
+// Role-based permissions
+const isArcher = computed(() => user.value?.role === 'archer')
+const canCreateEvent = computed(() => {
+  const role = user.value?.role
+  return role === 'admin' || role === 'organization'
+})
 
 const statusOptions = [
   { title: 'Semua Status', value: '' },
@@ -285,9 +344,9 @@ const getStatusLabel = (status) => {
   const labels = {
     'published': 'Published',
     'draft': 'Draft',
-    'ongoing': 'Live Now',
-    'upcoming': 'Upcoming',
-    'completed': 'Finished'
+    'ongoing': 'Sedang Berlangsung',
+    'upcoming': 'Akan Datang',
+    'completed': 'Selesai'
   }
   return labels[status] || status
 }
@@ -304,5 +363,61 @@ const formatTime = (dateStr) => {
   return new Date(dateStr).toLocaleTimeString('id-ID', {
     hour: '2-digit', minute: '2-digit'
   }) + ' WIB'
+}
+
+// Dropdown state management
+const openDropdownId = ref(null)
+
+const toggleDropdown = (eventId) => {
+  openDropdownId.value = openDropdownId.value === eventId ? null : eventId
+}
+
+const closeDropdown = (eventId) => {
+  if (openDropdownId.value === eventId) {
+    openDropdownId.value = null
+  }
+}
+
+// Delete event functionality
+const { del } = useApi()
+const showDeleteDialog = useState('show-delete-dialog', () => false)
+const eventToDelete = ref(null)
+
+const confirmDeleteEvent = (event) => {
+  eventToDelete.value = event
+  openDropdownId.value = null
+  showDeleteDialog.value = true
+}
+
+const deleteEvent = async () => {
+  if (!eventToDelete.value) return
+  try {
+    await del(`/events/${eventToDelete.value.id}`)
+    events.value = events.value.filter(e => e.id !== eventToDelete.value.id)
+    showDeleteDialog.value = false
+    eventToDelete.value = null
+  } catch (error) {
+    console.error('Failed to delete event:', error)
+  }
+}
+
+const cancelDelete = () => {
+  showDeleteDialog.value = false
+  eventToDelete.value = null
+}
+
+// v-click-outside directive
+const vClickOutside = {
+  mounted(el, binding) {
+    el._clickOutsideHandler = (event) => {
+      if (!el.contains(event.target)) {
+        binding.value()
+      }
+    }
+    document.addEventListener('click', el._clickOutsideHandler)
+  },
+  unmounted(el) {
+    document.removeEventListener('click', el._clickOutsideHandler)
+  }
 }
 </script>

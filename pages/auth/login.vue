@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="text-center sm:text-left">
-                    <h2 class="text-3xl font-black text-slate-900 tracking-tight font-display">Wah, Masuk Lagi Yuk!</h2>
+                    <h2 class="text-3xl font-black text-slate-900 tracking-tight font-display">Masuk Lagi Yuk!</h2>
                     <p class="mt-2 text-slate-500 text-sm font-body">Masukin email sama password kamu buat lanjut ya.
                     </p>
                 </div>

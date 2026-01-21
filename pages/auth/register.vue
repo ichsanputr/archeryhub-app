@@ -85,141 +85,60 @@
                 <div class="mt-8">
                     <form @submit.prevent="handleRegister" class="space-y-6">
                         <!-- Common Fields -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="space-y-4">
                             <!-- Email -->
-                            <div class="sm:col-span-2">
-                                <BaseInput v-model="form.email" label="Alamat Email" placeholder="email@domain.com"
-                                    type="email" icon="mail" required :error="errors.email"
-                                    @blur="validate('email', form.email, [rules.required(), rules.email()])" />
-                            </div>
+                            <BaseInput v-model="form.email" label="Alamat Email" placeholder="email@domain.com"
+                                type="email" icon="mail" required :error="errors.email"
+                                @blur="validate('email', form.email, [rules.required(), rules.email()])" />
 
                             <!-- Password -->
-                            <div>
-                                <BaseInput v-model="form.password" label="Kata Sandi" placeholder="••••••••"
-                                    type="password" icon="lock" required :error="errors.password"
-                                    @blur="validate('password', form.password, [rules.required(), rules.minLength(8)])" />
-                            </div>
-
-                            <!-- Confirm Password -->
-                            <div>
-                                <BaseInput v-model="form.confirmPassword" label="Konfirmasi Sandi"
-                                    placeholder="••••••••" type="password" icon="lock" required
-                                    :error="errors.confirmPassword"
-                                    @blur="validate('confirmPassword', form.confirmPassword, [rules.required(), rules.sameAs(form.password, 'Kata sandi tidak cocok')])" />
-                            </div>
+                            <BaseInput v-model="form.password" label="Kata Sandi" placeholder="Minimal 8 karakter"
+                                type="password" icon="lock" required :error="errors.password"
+                                @blur="validate('password', form.password, [rules.required(), rules.minLength(8)])" />
                         </div>
 
-                        <!-- Archer Specific Fields -->
-                        <div v-if="form.userType === 'archer'" class="space-y-4 pt-4 border-t border-gray-100">
-                            <h4
-                                class="text-xs font-black text-navy uppercase tracking-widest flex items-center gap-2 mb-4">
-                                <Icon icon="ph:user-bold" class="text-primary text-lg" />
-                                Data Pemanah
-                            </h4>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                <BaseInput v-model="form.archer.fullName" label="Nama Lengkap" placeholder="Sesuai KTP"
-                                    required :error="errors['archer.fullName']"
-                                    @blur="validate('archer.fullName', form.archer.fullName, [rules.required()])" />
-                                <BaseInput v-model="form.archer.nickname" label="Nama Panggilan" placeholder="Nick" />
-                                <BaseInput v-model="form.archer.dateOfBirth" label="Tanggal Lahir" type="date" required
-                                    :error="errors['archer.dateOfBirth']"
-                                    @blur="validate('archer.dateOfBirth', form.archer.dateOfBirth, [rules.required()])" />
-
-                                <BaseSelect v-model="form.archer.gender" label="Jenis Kelamin" :items="[
-                                    { title: 'Laki-laki', value: 'male' },
-                                    { title: 'Perempuan', value: 'female' }
-                                ]" required />
-
-                                <BaseInput v-model="form.archer.phone" label="No. Telepon" type="tel"
-                                    placeholder="08xxxxxxxxxx" required :error="errors['archer.phone']"
-                                    @blur="validate('archer.phone', form.archer.phone, [rules.required()])" />
-
-                                <BaseSelect v-model="form.archer.bowType" label="Jenis Busur" :items="[
-                                    { title: 'Recurve', value: 'recurve' },
-                                    { title: 'Compound', value: 'compound' },
-                                    { title: 'Barebow', value: 'barebow' },
-                                    { title: 'Tradisional', value: 'traditional' }
-                                ]" required />
-
-                                <div class="sm:col-span-2">
-                                    <BaseInput v-model="form.archer.city" label="Kota/Kabupaten"
-                                        placeholder="Contoh: Jakarta Selatan" />
-                                </div>
+                        <!-- User Type Specific Field (SIMPLIFIED) -->
+                        <div class="pt-4 border-t border-gray-100">
+                            <!-- Archer: Nama Lengkap -->
+                            <div v-if="form.userType === 'archer'">
+                                <h4
+                                    class="text-xs font-black text-navy uppercase tracking-widest flex items-center gap-2 mb-4">
+                                    <Icon icon="ph:user-bold" class="text-primary text-lg" />
+                                    Data Pemanah
+                                </h4>
+                                <BaseInput v-model="form.fullName" label="Nama Lengkap" placeholder="Sesuai KTP"
+                                    required :error="errors.fullName"
+                                    @blur="validate('fullName', form.fullName, [rules.required()])" />
+                                <p class="mt-2 text-xs text-gray-400">Data lainnya bisa dilengkapi di halaman profil
+                                    setelah masuk.</p>
                             </div>
-                        </div>
 
-                        <!-- Organization Specific Fields -->
-                        <div v-if="form.userType === 'organization'" class="space-y-4 pt-4 border-t border-gray-100">
-                            <h4
-                                class="text-xs font-black text-navy uppercase tracking-widest flex items-center gap-2 mb-4">
-                                <Icon icon="ph:buildings-bold" class="text-primary text-lg" />
-                                Data Organisasi
-                            </h4>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                <div class="sm:col-span-2">
-                                    <BaseInput v-model="form.organization.name" label="Nama Organisasi"
-                                        placeholder="Nama resmi organisasi" required
-                                        :error="errors['organization.name']"
-                                        @blur="validate('organization.name', form.organization.name, [rules.required()])" />
-                                </div>
-                                <BaseInput v-model="form.organization.acronym" label="Singkatan"
-                                    placeholder="Contoh: PERPANI" />
-
-                                <BaseSelect v-model="form.organization.type" label="Tipe Organisasi" :items="[
-                                    { title: 'Federasi', value: 'federation' },
-                                    { title: 'Asosiasi', value: 'association' },
-                                    { title: 'Panitia', value: 'committee' },
-                                    { title: 'Sponsor', value: 'sponsor' },
-                                    { title: 'Lainnya', value: 'other' }
-                                ]" required />
-
-                                <BaseInput v-model="form.organization.contactPersonName" label="Nama PIC"
-                                    placeholder="Nama penanggung jawab" required
-                                    :error="errors['organization.contactPersonName']"
-                                    @blur="validate('organization.contactPersonName', form.organization.contactPersonName, [rules.required()])" />
-                                <BaseInput v-model="form.organization.contactPersonPhone" label="No. Telepon PIC"
-                                    type="tel" placeholder="08xxxxxxxxxx" required
-                                    :error="errors['organization.contactPersonPhone']"
-                                    @blur="validate('organization.contactPersonPhone', form.organization.contactPersonPhone, [rules.required()])" />
-
-                                <div class="sm:col-span-2">
-                                    <BaseInput v-model="form.organization.address" label="Alamat"
-                                        placeholder="Alamat lengkap kantor" />
-                                </div>
+                            <!-- Organization: Nama Organisasi -->
+                            <div v-if="form.userType === 'organization'">
+                                <h4
+                                    class="text-xs font-black text-navy uppercase tracking-widest flex items-center gap-2 mb-4">
+                                    <Icon icon="ph:buildings-bold" class="text-primary text-lg" />
+                                    Data Organisasi
+                                </h4>
+                                <BaseInput v-model="form.organizationName" label="Nama Organisasi"
+                                    placeholder="Nama resmi organisasi" required :error="errors.organizationName"
+                                    @blur="validate('organizationName', form.organizationName, [rules.required()])" />
+                                <p class="mt-2 text-xs text-gray-400">Informasi PIC dan detail lainnya bisa dilengkapi
+                                    di halaman profil.</p>
                             </div>
-                        </div>
 
-                        <!-- Club Specific Fields -->
-                        <div v-if="form.userType === 'club'" class="space-y-4 pt-4 border-t border-gray-100">
-                            <h4
-                                class="text-xs font-black text-navy uppercase tracking-widest flex items-center gap-2 mb-4">
-                                <Icon icon="ph:users-three-bold" class="text-primary text-lg" />
-                                Data Klub
-                            </h4>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                <div class="sm:col-span-2">
-                                    <BaseInput v-model="form.club.name" label="Nama Klub" placeholder="Nama resmi klub"
-                                        required :error="errors['club.name']"
-                                        @blur="validate('club.name', form.club.name, [rules.required()])" />
-                                </div>
-                                <BaseInput v-model="form.club.abbreviation" label="Singkatan"
-                                    placeholder="Contoh: JVAC" />
-                                <BaseInput v-model="form.club.establishedDate" label="Tahun Berdiri" type="date" />
-                                <BaseInput v-model="form.club.headCoachName" label="Nama Kepala Pelatih"
-                                    placeholder="Nama pelatih utama" required :error="errors['club.headCoachName']"
-                                    @blur="validate('club.headCoachName', form.club.headCoachName, [rules.required()])" />
-                                <BaseInput v-model="form.club.headCoachPhone" label="No. Telepon Pelatih" type="tel"
-                                    placeholder="08xxxxxxxxxx" required :error="errors['club.headCoachPhone']"
-                                    @blur="validate('club.headCoachPhone', form.club.headCoachPhone, [rules.required()])" />
-                                <BaseInput v-model="form.club.city" label="Kota" placeholder="Lokasi klub" required
-                                    :error="errors['club.city']"
-                                    @blur="validate('club.city', form.club.city, [rules.required()])" />
-                                <BaseInput v-model="form.club.province" label="Provinsi" placeholder="Provinsi" />
-
-                                <div class="sm:col-span-2">
-                                    <BaseInput v-model="form.club.address" label="Alamat Latihan"
-                                        placeholder="Alamat lengkap tempat latihan" />
-                                </div>
+                            <!-- Club: Nama Klub -->
+                            <div v-if="form.userType === 'club'">
+                                <h4
+                                    class="text-xs font-black text-navy uppercase tracking-widest flex items-center gap-2 mb-4">
+                                    <Icon icon="ph:users-three-bold" class="text-primary text-lg" />
+                                    Data Klub
+                                </h4>
+                                <BaseInput v-model="form.clubName" label="Nama Klub" placeholder="Nama resmi klub"
+                                    required :error="errors.clubName"
+                                    @blur="validate('clubName', form.clubName, [rules.required()])" />
+                                <p class="mt-2 text-xs text-gray-400">Data pelatih dan lokasi bisa dilengkapi di halaman
+                                    profil.</p>
                             </div>
                         </div>
 
@@ -238,6 +157,27 @@
                             Daftar Sekarang
                         </BaseButton>
                     </form>
+
+                    <!-- OAuth Divider -->
+                    <div class="relative mt-8 font-body">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-200"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-4 bg-white text-slate-500 font-medium">Atau daftar lewat</span>
+                        </div>
+                    </div>
+
+                    <!-- Google OAuth Button -->
+                    <div class="mt-6">
+                        <BaseButton variant="outline" block icon="logos:google-icon" @click="handleGoogleRegister"
+                            :loading="isGoogleLoading">
+                            Daftar dengan Google
+                        </BaseButton>
+                        <p class="mt-2 text-xs text-center text-gray-400">
+                            Pilih tipe akun di atas, lalu klik tombol ini
+                        </p>
+                    </div>
 
                     <div class="mt-8 text-center font-body">
                         <p class="text-sm text-slate-600">
@@ -280,90 +220,37 @@ const getInitialUserType = () => {
     return 'archer'
 }
 
+// Simplified form - only essential fields
 const form = ref({
     userType: getInitialUserType(),
     email: '',
     password: '',
-    confirmPassword: '',
-    terms: false,
-    archer: {
-        fullName: '',
-        nickname: '',
-        dateOfBirth: '',
-        gender: 'male',
-        phone: '',
-        bowType: 'recurve',
-        city: ''
-    },
-    organization: {
-        name: '',
-        acronym: '',
-        type: 'association',
-        contactPersonName: '',
-        contactPersonPhone: '',
-        address: ''
-    },
-    club: {
-        name: '',
-        abbreviation: '',
-        establishedDate: '',
-        headCoachName: '',
-        headCoachPhone: '',
-        city: '',
-        province: '',
-        address: ''
-    }
+    fullName: '',           // For archer
+    organizationName: '',   // For organization
+    clubName: '',           // For club
+    terms: false
 })
 
 const { register } = useAuth()
 
 const handleRegister = async () => {
-    // Collect all rules based on userType
+    // Build validation rules based on user type
     const commonRules = {
         email: [rules.required(), rules.email()],
         password: [rules.required(), rules.minLength(8)],
-        confirmPassword: [rules.required(), rules.sameAs(form.value.password, 'Kata sandi tidak cocok')],
         terms: [rules.required('Anda harus menyetujui syarat dan ketentuan')]
     }
 
+    // Add type-specific required field
     const typeRules = {
-        archer: {
-            'archer.fullName': [rules.required()],
-            'archer.dateOfBirth': [rules.required()],
-            'archer.phone': [rules.required()]
-        },
-        organization: {
-            'organization.name': [rules.required()],
-            'organization.contactPersonName': [rules.required()],
-            'organization.contactPersonPhone': [rules.required()]
-        },
-        club: {
-            'club.name': [rules.required()],
-            'club.headCoachName': [rules.required()],
-            'club.headCoachPhone': [rules.required()],
-            'club.city': [rules.required()]
-        }
+        archer: { fullName: [rules.required()] },
+        organization: { organizationName: [rules.required()] },
+        club: { clubName: [rules.required()] }
     }
 
-    // Combine rules
     const activeRules = { ...commonRules, ...typeRules[form.value.userType] }
 
-    // Flatten logic for validateForm support with nested paths
-    const flatForm = {
-        ...form.value,
-        'archer.fullName': form.value.archer.fullName,
-        'archer.dateOfBirth': form.value.archer.dateOfBirth,
-        'archer.phone': form.value.archer.phone,
-        'organization.name': form.value.organization.name,
-        'organization.contactPersonName': form.value.organization.contactPersonName,
-        'organization.contactPersonPhone': form.value.organization.contactPersonPhone,
-        'club.name': form.value.club.name,
-        'club.headCoachName': form.value.club.headCoachName,
-        'club.headCoachPhone': form.value.club.headCoachPhone,
-        'club.city': form.value.club.city,
-    }
-
-    if (!validateForm(flatForm, activeRules)) {
+    if (!validateForm(form.value, activeRules)) {
         return
     }
 
@@ -371,26 +258,56 @@ const handleRegister = async () => {
     error.value = null
 
     try {
-        const typeData = form.value[form.value.userType]
+        // Get the name based on user type
+        const getName = () => {
+            switch (form.value.userType) {
+                case 'archer': return form.value.fullName
+                case 'organization': return form.value.organizationName
+                case 'club': return form.value.clubName
+                default: return ''
+            }
+        }
+
         const payload = {
-            username: form.value.email.split('@')[0] + Math.floor(Math.random() * 1000), // Generate a username if none provided
+            username: form.value.email.split('@')[0] + Math.floor(Math.random() * 1000),
             email: form.value.email,
             password: form.value.password,
             user_type: form.value.userType,
-            full_name: typeData.fullName || typeData.name || '',
-            phone: typeData.phone || typeData.contactPersonPhone || typeData.headCoachPhone || ''
+            full_name: getName(),
+            profile_completed: false  // Mark as incomplete, user needs to fill more details
         }
 
         console.log('Registering:', payload)
         await register(payload)
 
-        // Redirect to dashboard on success (useAuth already sets user state)
+        // Redirect to dashboard on success
         window.location.href = '/dashboard'
     } catch (err) {
         console.error('Registration failed:', err)
         error.value = err.message || 'Pendaftaran gagal. Silakan coba lagi.'
     } finally {
         isLoading.value = false
+    }
+}
+
+// Google OAuth registration
+const isGoogleLoading = ref(false)
+const { login } = useAuth()
+
+const handleGoogleRegister = async () => {
+    isGoogleLoading.value = true
+    error.value = null
+
+    try {
+        // Store user type in sessionStorage so we can use it after OAuth callback
+        if (import.meta.client) {
+            sessionStorage.setItem('register_user_type', form.value.userType)
+        }
+        await login()
+    } catch (err) {
+        console.error('Google registration failed:', err)
+        error.value = 'Gagal menyambung ke Google. Silakan coba lagi.'
+        isGoogleLoading.value = false
     }
 }
 </script>

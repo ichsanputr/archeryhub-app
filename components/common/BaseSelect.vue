@@ -29,7 +29,7 @@
                         Tidak ada opsi
                     </div>
                     <div v-for="item in items" :key="getItemValue(item)" @click="selectItem(item)"
-                        class="px-4 py-3 text-sm font-medium hover:bg-primary/10 hover:text-navy transition-colors cursor-pointer flex items-center justify-between group"
+                        class="px-4 py-3 text-sm font-medium hover:bg-primary/10 hover:text-navy transition-colors cursor-pointer flex-between group"
                         :class="getItemValue(item) === modelValue ? 'bg-primary/5 text-primary-dark' : 'text-gray-600'">
                         {{ getItemTitle(item) }}
                         <Icon v-if="getItemValue(item) === modelValue" icon="ph:check-bold"

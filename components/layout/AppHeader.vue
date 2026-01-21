@@ -18,7 +18,7 @@
           class="font-medium text-sm transition-colors">Beranda</NuxtLink>
         <NuxtLink to="/events"
           :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-navy' : 'text-white/80 hover:text-white']"
-          class="font-medium text-sm transition-colors">Turnamen</NuxtLink>
+          class="font-medium text-sm transition-colors">Event</NuxtLink>
         <NuxtLink to="/clubs"
           :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-navy' : 'text-white/80 hover:text-white']"
           class="font-medium text-sm transition-colors">Klub</NuxtLink>
@@ -145,7 +145,7 @@ const showAddButton = computed(() => {
 })
 
 const addButtonText = computed(() => {
-  if (route.path.startsWith('/dashboard/events')) return 'Turnamen Baru'
+  if (route.path.startsWith('/dashboard/events')) return 'Event Baru'
   if (route.path.startsWith('/dashboard/athletes')) return 'Atlet Baru'
   if (route.path.startsWith('/dashboard/devices')) return 'Tambah Perangkat'
   return 'Tambah Baru'

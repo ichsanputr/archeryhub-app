@@ -22,8 +22,10 @@
                                     class="text-3xl" />
                             </div>
                             <div>
-                                <h3 class="text-navy-dark text-xl font-black tracking-tight mb-2">{{ title }}</h3>
-                                <p class="text-text-secondary text-sm font-medium leading-relaxed">{{ message }}</p>
+                                <h3 class="text-navy-dark text-xl font-black tracking-tight mb-2">{{ title }}
+                                </h3>
+                                <p class="text-text-secondary text-sm font-medium leading-relaxed">{{ message
+                                }}</p>
                             </div>
                         </div>
 
