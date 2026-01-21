@@ -253,7 +253,7 @@ const tabs = [
 
 // Dummy product data
 const product = ref({
-    id: route.params.id,
+    slug: route.params.slug,
     name: 'Recurve Bow Hoyt Satori 23" ILF Riser - Premium Edition',
     price: 15500000,
     salePrice: 13500000,

@@ -61,7 +61,7 @@
                 <!-- Articles Grid -->
                 <div class="lg:col-span-8">
                     <!-- Featured Article -->
-                    <NuxtLink v-if="featuredArticle" :to="`/berita/${featuredArticle.id}`" class="block group mb-10">
+                    <NuxtLink v-if="featuredArticle" :to="`/berita/${featuredArticle.slug || featuredArticle.id}`" class="block group mb-10">
                         <div class="relative rounded-2xl overflow-hidden aspect-video bg-gray-200 shadow-xl">
                             <img :src="featuredArticle.image"
                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
@@ -93,7 +93,7 @@
 
                     <!-- Articles List -->
                     <div class="space-y-6">
-                        <NuxtLink v-for="article in filteredArticles" :key="article.id" :to="`/berita/${article.id}`"
+                        <NuxtLink v-for="article in filteredArticles" :key="article.id" :to="`/berita/${article.slug || article.id}`"
                             class="group flex gap-5 bg-white rounded-xl border border-gray-100 p-4 hover:border-primary/30 transition-all">
 
                             <!-- Thumbnail -->
@@ -160,7 +160,7 @@
                         </h3>
                         <div class="space-y-5">
                             <NuxtLink v-for="(article, index) in popularArticles" :key="article.id"
-                                :to="`/berita/${article.id}`" class="group flex gap-4 items-start">
+                                :to="`/berita/${article.slug || article.id}`" class="group flex gap-4 items-start">
                                 <div
                                     class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary font-black text-sm flex-shrink-0">
                                     {{ index + 1 }}
@@ -258,6 +258,7 @@ const categories = [
 const articles = ref([
     {
         id: 1,
+        slug: 'kejurnas-panahan-2024-dibuka',
         title: 'Kejuaraan Nasional Panahan 2024 Resmi Dibuka dengan Semangat Juang Tinggi',
         excerpt: 'Kejuaraan nasional panahan tahun 2024 resmi dibuka dengan diikuti oleh lebih dari 500 atlet dari seluruh Indonesia. Event ini menjadi ajang pembuktian bagi para pemanah terbaik bangsa.',
         category: 'event',
@@ -268,6 +269,7 @@ const articles = ref([
     },
     {
         id: 2,
+        slug: 'tim-indonesia-emas-asian-archery',
         title: 'Tim Indonesia Raih Emas di Asian Archery Championship',
         excerpt: 'Prestasi membanggakan ditorehkan tim panahan Indonesia dalam ajang Asian Archery Championship 2024 di Korea Selatan.',
         category: 'prestasi',
@@ -278,6 +280,7 @@ const articles = ref([
     },
     {
         id: 3,
+        slug: 'pendaftaran-piala-gubernur-jatim-2024',
         title: 'Pendaftaran Piala Gubernur Jatim 2024 Dibuka',
         excerpt: 'Pendaftaran untuk Piala Gubernur Jawa Timur cabang panahan telah dibuka. Segera daftarkan tim Anda sebelum kuota penuh.',
         category: 'pengumuman',

@@ -105,7 +105,7 @@
                                     <!-- asas -->
 
                                     <div class="flex-shrink-0">
-                                        <NuxtLink :to="`/events/${index}`"
+                                        <NuxtLink :to="`/events/${event.slug || index}`"
                                             class="inline-flex items-center justify-center bg-gray-50 group-hover:bg-primary text-navy font-bold p-2 sm:py-2.5 sm:px-6 rounded-lg sm:rounded-xl transition-all border border-gray-100 group-hover:border-primary text-xs sm:text-sm shadow-sm group-hover:shadow-md">
                                             <span class="hidden sm:inline">Ikuti</span>
                                             <span
@@ -364,7 +364,7 @@
                         <p class="text-text-sub text-xs sm:text-sm hidden sm:block">Cek klub panahan keren di sekitar
                             kamu.</p>
                     </div>
-                    <NuxtLink to="/clubs"
+                    <NuxtLink to="/klub"
                         class="text-navy hover:text-primary-hover font-bold text-xs sm:text-sm flex items-center gap-1 sm:gap-2 group bg-white px-3 sm:px-4 py-2 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
                         <span class="hidden sm:inline">Cek Semua Klub</span>
                         <span class="sm:hidden">Semua Klub</span>
@@ -396,10 +396,10 @@
                             <span class="material-symbols-outlined text-sm sm:text-base">location_on</span>
                             <span>{{ club.location }}</span>
                         </div>
-                        <button
+                        <NuxtLink :to="`/klub/${club.slug}`"
                             class="w-full mt-auto py-2.5 px-4 bg-primary hover:bg-primary-hover text-navy font-bold text-sm rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2">
                             Cek Profil
-                        </button>
+                        </NuxtLink>
                     </div>
                 </div>
             </div>
@@ -487,10 +487,10 @@ const activeRegion = ref('Semua Wilayah')
 const regions = ['Semua Wilayah', 'DKI Jakarta', 'Jawa Barat', 'Jawa Timur', 'DI Yogyakarta', 'Banten', 'Bali']
 
 const clubs = [
-    { name: 'Jakarta Elite Archery', location: 'GBK Senayan, Jakarta', icon: 'target', verified: true, region: 'DKI Jakarta' },
-    { name: 'Pasopati Archery', location: 'Sleman, Yogyakarta', icon: 'legend_toggle', verified: true, region: 'DI Yogyakarta' },
-    { name: 'Borneo Eagle Club', location: 'Balikpapan, Kaltim', icon: 'flight', verified: false, region: 'Kalimantan' },
-    { name: 'Bali Zen Archery', location: 'Ubud, Bali', icon: 'spa', verified: false, region: 'Bali' }
+    { slug: 'jakarta-elite-archery', name: 'Jakarta Elite Archery', location: 'GBK Senayan, Jakarta', icon: 'target', verified: true, region: 'DKI Jakarta' },
+    { slug: 'pasopati-archery', name: 'Pasopati Archery', location: 'Sleman, Yogyakarta', icon: 'legend_toggle', verified: true, region: 'DI Yogyakarta' },
+    { slug: 'borneo-eagle-club', name: 'Borneo Eagle Club', location: 'Balikpapan, Kaltim', icon: 'flight', verified: false, region: 'Kalimantan' },
+    { slug: 'bali-zen-archery', name: 'Bali Zen Archery', location: 'Ubud, Bali', icon: 'spa', verified: false, region: 'Bali' }
 ]
 
 const filteredClubs = computed(() => {
@@ -525,6 +525,7 @@ useHead({
 
 const upcomingEvents = [
     {
+        slug: 'jakarta-open-2024',
         name: 'Jakarta Open 2024',
         month: 'Nov',
         day: '14',
@@ -536,6 +537,7 @@ const upcomingEvents = [
         ]
     },
     {
+        slug: 'banten-archery-series',
         name: 'Banten Archery Series',
         month: 'Dec',
         day: '05',
@@ -546,6 +548,7 @@ const upcomingEvents = [
         ]
     },
     {
+        slug: 'youth-archery-cup',
         name: 'Youth Archery Cup',
         month: 'Dec',
         day: '20',

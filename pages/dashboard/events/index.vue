@@ -19,28 +19,6 @@
       </BaseButton>
     </div>
 
-    <!-- Quick Stats Snippet (Optional but premium) -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
-        <div class="h-10 w-10 rounded-lg bg-primary/10 text-primary-dark flex items-center justify-center">
-          <Icon icon="ph:calendar-check" class="text-xl" />
-        </div>
-        <div>
-          <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Aktif</p>
-          <p class="text-lg font-bold text-navy">{{events.filter(e => e.status === 'published' || e.status ===
-            'ongoing').length}}</p>
-        </div>
-      </div>
-      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
-        <div class="h-10 w-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
-          <Icon icon="ph:file-text" class="text-xl" />
-        </div>
-        <div>
-          <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Draft</p>
-          <p class="text-lg font-bold text-navy">{{events.filter(e => e.status === 'draft').length}}</p>
-        </div>
-      </div>
-    </div>
 
     <!-- Search & Filter Card -->
     <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
@@ -167,7 +145,7 @@
                 </span>
               </td>
               <td class="px-6 py-5 text-right">
-                <div class="flex items-center justify-end gap-2">
+                <div v-if="!isArcher" class="flex items-center justify-end gap-2">
                   <BaseButton :to="`/dashboard/events/${event.id}/manage`" variant="white" size="sm"
                     class="h-9 font-bold">
                     Kelola

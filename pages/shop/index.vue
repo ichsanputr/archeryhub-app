@@ -84,8 +84,8 @@
         <!-- Products Grid -->
         <section class="container mx-auto px-4 max-w-7xl pb-16">
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
-                <div v-for="product in filteredProducts" :key="product.id"
-                    class="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:border-primary/30 transition-all group cursor-pointer">
+                <NuxtLink v-for="product in filteredProducts" :key="product.id" :to="`/shop/${product.slug || product.id}`"
+                    class="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:border-primary/30 transition-all group cursor-pointer block">
 
                     <!-- Product Image -->
                     <div class="relative aspect-square bg-gray-100 overflow-hidden">
@@ -141,7 +141,7 @@
                             <span>{{ product.sold }} terjual</span>
                         </div>
                     </div>
-                </div>
+                </NuxtLink>
             </div>
 
             <!-- Load More -->
@@ -193,7 +193,7 @@ const categories = [
 
 const products = ref([
     {
-        id: 1,
+        slug: 'recurve-bow-hoyt-satori-23',
         name: 'Recurve Bow Hoyt Satori 23"',
         seller: 'Garuda Archery Club',
         price: 15500000,
@@ -204,7 +204,7 @@ const products = ref([
         sold: 23
     },
     {
-        id: 2,
+        slug: 'carbon-arrow-easton-x10-12pcs',
         name: 'Carbon Arrow Easton X10 (12pcs)',
         seller: 'Elang Jawa AC',
         price: 4800000,
@@ -215,7 +215,7 @@ const products = ref([
         sold: 56
     },
     {
-        id: 3,
+        slug: 'arm-guard-premium-leather',
         name: 'Arm Guard Premium Leather',
         seller: 'Srikandi Shop',
         price: 350000,
@@ -226,7 +226,7 @@ const products = ref([
         sold: 128
     },
     {
-        id: 4,
+        slug: 'compound-bow-bear-archery-cruzer',
         name: 'Compound Bow Bear Archery Cruzer',
         seller: 'Phoenix Archer',
         price: 8900000,
@@ -237,7 +237,7 @@ const products = ref([
         sold: 15
     },
     {
-        id: 5,
+        slug: 'jersey-tim-nasional-indonesia-2024',
         name: 'Jersey Tim Nasional Indonesia 2024',
         seller: 'Perpani Store',
         price: 450000,
@@ -248,7 +248,7 @@ const products = ref([
         sold: 89
     },
     {
-        id: 6,
+        slug: 'target-face-wa-40cm-10pcs',
         name: 'Target Face WA 40cm (10pcs)',
         seller: 'Garuda Archery Club',
         price: 150000,
@@ -259,7 +259,7 @@ const products = ref([
         sold: 234
     },
     {
-        id: 7,
+        slug: 'finger-tab-easton-contour',
         name: 'Finger Tab Easton Contour',
         seller: 'Elang Jawa AC',
         price: 680000,
@@ -270,7 +270,7 @@ const products = ref([
         sold: 67
     },
     {
-        id: 8,
+        slug: 'quiver-belt-premium',
         name: 'Quiver Belt Premium',
         seller: 'Srikandi Shop',
         price: 420000,

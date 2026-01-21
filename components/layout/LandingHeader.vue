@@ -123,8 +123,8 @@
                                 class="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center overflow-hidden border-2 border-white shadow-md">
                                 <img v-if="user?.avatar_url" :src="user.avatar_url"
                                     class="w-full h-full object-cover" />
-                                <span v-else class="text-navy font-bold text-sm">{{ user?.name?.charAt(0) || 'U'
-                                    }}</span>
+                                <span v-else class="text-navy font-bold text-sm">{{ user?.full_name?.charAt(0) || 'U'
+                                }}</span>
                             </div>
                         </button>
 
@@ -136,7 +136,7 @@
                             <div v-if="showUserMenu" class="absolute right-0 top-full pt-2 w-56">
                                 <div class="bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden py-2">
                                     <div class="px-4 py-3 border-b border-gray-100">
-                                        <p class="font-bold text-navy truncate">{{ user?.name || 'User' }}</p>
+                                        <p class="font-bold text-navy truncate">{{ user?.full_name || 'User' }}</p>
                                         <p class="text-xs text-gray-400 truncate">{{ user?.email }}</p>
                                     </div>
                                     <NuxtLink to="/dashboard"

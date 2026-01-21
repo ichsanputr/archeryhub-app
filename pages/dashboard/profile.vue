@@ -6,7 +6,7 @@
         <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6">
           <!-- Avatar -->
           <div class="relative">
-            <img :src="user?.avatar || '/default-avatar.png'" :alt="user?.name || 'User'"
+            <img :src="user?.avatar || '/default-avatar.png'" :alt="user?.full_name || 'User'"
               class="w-24 h-24 rounded-full border-4 border-gray-100" />
             <div
               class="absolute -bottom-1 -right-1 w-8 h-8 bg-green-500 rounded-full border-4 border-white flex items-center justify-center">
@@ -16,7 +16,7 @@
 
           <!-- User Info -->
           <div class="flex-1 text-center sm:text-left">
-            <h1 class="text-2xl font-bold text-gray-900">{{ user?.name || 'Anonymous User' }}</h1>
+            <h1 class="text-2xl font-bold text-gray-900">{{ user?.full_name || 'Anonymous User' }}</h1>
             <p class="text-lg text-gray-600 mb-2">@{{ user?.username || 'unknown' }}</p>
             <p class="text-gray-500 mb-4">{{ user?.email || 'No email provided' }}</p>
 

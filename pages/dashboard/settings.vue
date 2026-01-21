@@ -31,7 +31,7 @@
           </div>
         </div>
         <div>
-          <h3 class="text-xl font-bold text-navy">{{ user?.name || 'Pengguna' }}</h3>
+          <h3 class="text-xl font-bold text-navy">{{ user?.full_name || 'Pengguna' }}</h3>
           <p class="text-gray-500">{{ user?.email }}</p>
           <span
             class="inline-flex items-center gap-1 mt-2 px-3 py-1 rounded-full text-xs font-bold uppercase bg-primary/10 text-primary-dark">

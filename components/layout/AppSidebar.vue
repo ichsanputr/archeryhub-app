@@ -65,7 +65,7 @@
             <img :src="userAvatar" class="w-full h-full object-cover">
           </div>
           <div v-if="!isSidebarCollapsed" class="flex flex-col min-w-0">
-            <span class="text-white text-sm font-bold truncate">{{ user?.name || 'Guest' }}</span>
+            <span class="text-white text-sm font-bold truncate">{{ user?.full_name || 'Guest' }}</span>
             <span class="text-[10px] text-gray-500 font-black uppercase tracking-widest">{{ userRoleLabel }}</span>
           </div>
         </div>
