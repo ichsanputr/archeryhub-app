@@ -18,16 +18,17 @@
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
         <!-- Left: Text -->
         <div>
-          <h1 class="mt-3 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight text-gray-900">
-            Level up with
+          <h1
+            class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 leading-tight tracking-tight">
+            All in One<br />
             <span
-              class="block bg-gradient-to-r from-yellow-600 via-orange-500 to-yellow-400 bg-clip-text text-transparent">Archeryhub.id</span>
+              class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-600 via-orange-500 to-yellow-400">Platform
+              Panahan</span><br />
+            Indonesia
           </h1>
-
           <p class="mt-5 text-base sm:text-lg md:text-xl text-gray-600 max-w-xl leading-relaxed">
-            Manage your archery tournaments with <span class="underline font-semibold">ease</span>.
-            Archeryhub.id provides <span class="underline font-semibold">comprehensive</span> tools
-            for live scoring, participant registration, and results management.
+            Archeryhub.id hadir sebagai wadah bagi seluruh penggiat panahan di Indonesia. Dari pemula hingga juara
+            nasional, di sini kita terhubung lewat event, prestasi, dan semangat yang sama.
           </p>
 
           <div class="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
@@ -53,8 +54,6 @@
               <div class="aspect-video bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 animate-pulse">
                 <div class="flex items-center justify-center h-full">
                   <div class="text-center">
-                    <!-- <div class="w-12 h-12 bg-gray-300 rounded-full mx-auto mb-3 animate-pulse"></div> -->
-                    <!-- <div class="h-4 bg-gray-300 rounded w-32 mx-auto animate-pulse"></div> -->
                   </div>
                 </div>
               </div>

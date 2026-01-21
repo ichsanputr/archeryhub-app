@@ -1,64 +1,5 @@
 <template>
     <div class="min-h-screen bg-background-light font-body text-navy antialiased flex flex-col">
-        <!-- Hero Section -->
-        <div class="bg-navy relative overflow-hidden">
-            <div class="absolute inset-0 z-0">
-                <div class="absolute inset-0 bg-gradient-to-r from-navy via-navy/95 to-navy/80 z-10"></div>
-                <img alt="Tournament Hero" class="w-full h-full object-cover object-center opacity-50 mix-blend-overlay"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuByxS8LZ93pBQXI_V_Vu3nB0633lwPZGiFCM3UtI-xk79b_O83ASmlHYA36lOzcnmVsbgs4DEe9awj543MvzCN1yzOo1wZ3ViXLdiMRV7vAMdy66lvu-l5dpFAOgZ0uCMKJxsBRXPJL1QeX4_ZdX2ynTEZR-ZMilrncma7gKG2YK0vsj0KJZnw_lD0UZaXFKW2aVFD1SU-mzi_sAT2D-62TP0j5LF6KprFriv2sV9rdypqLSvfrZekYDy45XaK8F1vVh7e5nfrgK7o" />
-            </div>
-            <div class="relative z-20 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16 pb-0">
-                <nav class="flex items-center gap-2 text-xs text-white/40 mb-6 uppercase tracking-widest font-bold">
-                    <NuxtLink to="/dashboard/events" class="hover:text-white transition-colors">Tournaments
-                    </NuxtLink>
-                    <span class="material-symbols-outlined text-sm">chevron_right</span>
-                    <span class="text-primary">Indonesian Open 2024</span>
-                </nav>
-                <div class="flex flex-col lg:flex-row items-start justify-between gap-8 mb-10">
-                    <div class="max-w-3xl">
-                        <div class="flex items-center gap-3 mb-4">
-                            <span
-                                class="px-3 py-1 rounded-full bg-primary/20 border border-primary/30 text-primary text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm">National
-                                Series</span>
-                            <span
-                                class="px-3 py-1 rounded-full bg-red-500/20 border border-red-500/30 text-red-400 text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm flex items-center gap-1">
-                                <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span> Pendaftaran
-                                Dibuka
-                            </span>
-                        </div>
-                        <h1
-                            class="text-white text-3xl md:text-5xl font-black leading-tight tracking-tight mb-6 font-display">
-                            Indonesian Open Championship 2024</h1>
-                        <div class="flex flex-wrap items-center gap-6 text-white/70 text-sm">
-                            <div class="flex items-center gap-2">
-                                <span class="material-symbols-outlined text-primary text-xl">calendar_month</span>
-                                <span>12 - 15 November 2024</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <span class="material-symbols-outlined text-primary text-xl">location_on</span>
-                                <span>Lapangan Panahan GBK, Jakarta</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto mt-4 lg:mt-0">
-                        <button
-                            class="h-14 px-8 bg-primary hover:bg-primary-hover text-navy font-bold text-lg rounded-xl transition-all shadow-[0_0_20px_rgba(183,251,35,0.3)] hover:-translate-y-1 flex items-center justify-center gap-2">
-                            Daftar Sekarang
-                            <span class="material-symbols-outlined text-xl">arrow_forward</span>
-                        </button>
-                    </div>
-                </div>
-                <!-- Tabs -->
-                <div class="flex items-center gap-1 overflow-x-auto no-scrollbar border-b border-white/10">
-                    <NuxtLink v-for="tab in tabs" :key="tab.id" :to="tab.path"
-                        class="px-6 py-4 text-sm font-bold transition-all whitespace-nowrap border-b-2"
-                        :class="isTabActive(tab) ? 'text-primary border-primary' : 'text-white/40 border-transparent hover:text-white hover:bg-white/5'">
-                        {{ tab.name }}
-                    </NuxtLink>
-                </div>
-            </div>
-        </div>
-
         <!-- Main Content -->
         <main class="flex-grow max-w-[1280px] mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 md:py-12">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 xl:gap-12">
@@ -96,10 +37,10 @@
                                 <div class="bg-primary h-2 rounded-full" style="width: 77%"></div>
                             </div>
                         </div>
-                        <button
-                            class="w-full py-4 bg-primary hover:bg-primary-hover text-navy font-bold rounded-xl transition-all shadow-lg shadow-primary/20 hover:-translate-y-1">
-                            Daftar Sekarang
-                        </button>
+                        <BaseButton v-if="!isManagePage" :to="`/dashboard/events/${tId}/manage`" variant="primary"
+                            class="w-full py-4 text-sm uppercase tracking-widest font-black">
+                            Control Panel
+                        </BaseButton>
                     </div>
 
                     <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
@@ -132,6 +73,10 @@
 <script setup>
 const route = useRoute()
 const tId = route.params.id || '1'
+
+const isManagePage = computed(() => {
+    return route.path.endsWith('/manage')
+})
 
 const tabs = [
     { id: 'overview', name: 'Ringkasan', path: `/dashboard/events/${tId}` },

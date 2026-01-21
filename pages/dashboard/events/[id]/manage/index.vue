@@ -1,271 +1,338 @@
 <template>
-    <div class="flex flex-col gap-6">
+    <div class="flex flex-col gap-8 pb-12">
         <!-- Breadcrumb & Header -->
-        <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
-            <div>
-                <div class="flex items-center gap-2 text-sm text-gray-500 mb-2 font-medium">
-                    <NuxtLink to="/dashboard/events"
-                        class="hover:text-primary-hover transition-colors flex items-center gap-1">
-                        <Icon icon="ph:arrow-left" class="text-[16px]" />
-                        Kembali ke Events
-                    </NuxtLink>
-                    <span class="text-gray-300">/</span>
-                    <span class="text-navy font-semibold">Detail View</span>
+        <div class="flex flex-col md:flex-row md:items-start justify-between gap-6">
+            <div class="space-y-1">
+                <div
+                    class="flex items-center gap-2 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest mb-2">
+                    <NuxtLink to="/dashboard/events" class="hover:text-primary transition-colors">Events</NuxtLink>
+                    <Icon icon="ph:caret-right-bold" class="text-[10px]" />
+                    <span class="text-navy">Control Panel</span>
                 </div>
-                <h1 class="text-3xl font-extrabold text-navy tracking-tight">2024 State Indoor Championship</h1>
-                <div class="flex items-center gap-3 mt-2">
-                    <span
-                        class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700 border border-green-200">
-                        <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-                        Live
+                <div v-if="isLoading" class="h-10 w-64 bg-gray-100 animate-pulse rounded-lg"></div>
+                <h1 v-else class="text-3xl font-black text-navy tracking-tight leading-tight">
+                    {{ event?.name }}
+                </h1>
+
+                <div class="flex flex-wrap items-center gap-4 mt-3">
+                    <span :class="getStatusClass(event?.status)"
+                        class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-widest border shadow-sm">
+                        <span class="w-2 h-2 rounded-full" :class="getStatusDotClass(event?.status)"></span>
+                        {{ getStatusLabel(event?.status) }}
                     </span>
-                    <span class="text-gray-500 text-sm font-medium border-l border-gray-300 pl-3">ID:
-                        #EV-2024-082</span>
+                    <div class="h-4 w-px bg-gray-200 hidden sm:block"></div>
+                    <div class="flex items-center gap-2 text-gray-400 text-xs font-bold uppercase tracking-wider">
+                        <Icon icon="ph:hash-bold" class="text-primary text-sm" />
+                        <span>{{ event?.code }}</span>
+                    </div>
                 </div>
             </div>
-            <div class="flex gap-3 mt-2 md:mt-0">
-                <button
-                    class="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-gray-300 bg-white text-navy hover:bg-gray-50 font-bold text-sm transition-all shadow-sm">
-                    <Icon icon="ph:share-network" class="text-[20px]" />
+
+            <div class="flex flex-wrap gap-3 mt-2 md:mt-2">
+                <BaseButton variant="white" icon="ph:share-network-bold"
+                    class="h-11 px-5 border-gray-200 shadow-sm font-bold">
                     Bagikan
-                </button>
-                <button
-                    class="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-navy hover:bg-primary-hover font-bold text-sm transition-all shadow-md group">
-                    <Icon icon="ph:pencil-simple-bold" class="text-[20px] group-hover:rotate-12 transition-transform" />
+                </BaseButton>
+                <BaseButton :to="`/dashboard/events/${route.params.id}/edit`" variant="primary"
+                    icon="ph:pencil-simple-line-bold" class="h-11 px-6 shadow-lg shadow-primary/20 font-bold">
                     Edit Event
-                </button>
+                </BaseButton>
             </div>
         </div>
 
-        <!-- Stats Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div
-                class="bg-white rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.05)] border border-gray-100 flex items-center gap-5 hover:shadow-[0_10px_15px_rgba(0,0,0,0.05)] transition-shadow">
-                <div class="h-14 w-14 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                    <Icon icon="ph:users-three" class="text-3xl" />
-                </div>
-                <div>
-                    <p class="text-sm text-gray-500 font-medium mb-1">Total Atlet</p>
-                    <div class="flex items-baseline gap-2">
-                        <h3 class="text-2xl font-bold text-navy">124</h3>
-                        <span class="text-xs font-semibold px-1.5 py-0.5 rounded bg-green-50 text-green-600">+12%</span>
-                    </div>
-                </div>
-            </div>
-            <div
-                class="bg-white rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.05)] border border-gray-100 flex items-center gap-5 hover:shadow-[0_10px_15px_rgba(0,0,0,0.05)] transition-shadow">
-                <div
-                    class="h-14 w-14 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center shrink-0">
-                    <Icon icon="ph:mouse-left-click" class="text-3xl" />
-                </div>
-                <div>
-                    <p class="text-sm text-gray-500 font-medium mb-1">Status Target</p>
-                    <div class="flex items-baseline gap-2">
-                        <h3 class="text-2xl font-bold text-navy">32</h3>
-                        <span class="text-sm text-gray-400 font-normal">Lane Aktif</span>
-                    </div>
-                </div>
-            </div>
-            <div
-                class="bg-white rounded-xl p-6 shadow-[0_1px_3px_rgba(0,0,0,0.05)] border border-gray-100 flex items-center gap-5 hover:shadow-[0_10px_15px_rgba(0,0,0,0.05)] transition-shadow">
-                <div class="h-14 w-14 rounded-xl bg-green-50 text-green-600 flex items-center justify-center shrink-0">
-                    <Icon icon="ph:money" class="text-3xl" />
-                </div>
-                <div>
-                    <p class="text-sm text-gray-500 font-medium mb-1">Pendapatan</p>
-                    <div class="flex items-baseline gap-2">
-                        <h3 class="text-2xl font-bold text-navy">Rp 45jt</h3>
-                        <span class="text-xs text-gray-400 font-medium">IDR</span>
-                    </div>
-                </div>
-            </div>
+        <!-- Navigation Tabs -->
+        <div class="flex items-center gap-6 border-b border-gray-100 pb-0">
+            <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
+                :class="activeTab === tab.id ? 'text-navy border-b-2 border-primary' : 'text-gray-400 hover:text-navy hover:border-gray-200'"
+                class="pb-4 px-2 text-sm font-black uppercase tracking-widest transition-all border-b-2 border-transparent flex items-center gap-2">
+                <Icon :icon="tab.icon" class="text-lg" />
+                {{ tab.label }}
+            </button>
         </div>
 
-        <!-- Main Content Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Quick Information Card -->
-            <div
-                class="lg:col-span-1 bg-white rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05)] border border-gray-100 flex flex-col h-full">
-                <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center">
-                    <h3 class="font-bold text-navy text-lg">Informasi Singkat</h3>
-                    <button
-                        class="text-gray-400 hover:text-primary-hover hover:bg-gray-50 p-1.5 rounded-md transition-colors">
-                        <Icon icon="ph:pencil-line" class="text-[20px]" />
-                    </button>
-                </div>
-                <div class="p-6 flex flex-col gap-6 flex-1">
-                    <div>
-                        <label
-                            class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 block">Deskripsi</label>
-                        <p class="text-sm text-gray-600 leading-relaxed">
-                            Kejuaraan indoor tahunan tingkat provinsi untuk divisi Recurve, Compound, dan Barebow. Event
-                            ini merupakan kualifikasi utama untuk tingkat Nasional.
-                        </p>
-                    </div>
-                    <div class="space-y-4">
-                        <div class="flex gap-4">
-                            <div
-                                class="shrink-0 w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400">
-                                <Icon icon="ph:calendar-blank" class="text-[18px]" />
-                            </div>
-                            <div>
-                                <p class="text-sm font-semibold text-navy">24 - 26 Okt 2024</p>
-                                <p class="text-xs text-gray-500 mt-0.5">08:00 - 18:00 WIB</p>
-                            </div>
-                        </div>
-                        <div class="flex gap-4">
-                            <div
-                                class="shrink-0 w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400">
-                                <Icon icon="ph:map-pin" class="text-[18px]" />
-                            </div>
-                            <div>
-                                <p class="text-sm font-semibold text-navy">GBK Archery Field</p>
-                                <p class="text-xs text-gray-500 mt-0.5">Jl. Pintu Satu Senayan, Jakarta 10270</p>
+        <!-- Tab Content -->
+        <div v-if="isLoading" class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <div class="lg:col-span-1 space-y-8">
+                <div class="h-32 bg-gray-50 animate-pulse rounded-2xl"></div>
+                <div class="h-32 bg-gray-50 animate-pulse rounded-2xl"></div>
+            </div>
+            <div class="lg:col-span-3 h-96 bg-gray-50 animate-pulse rounded-2xl"></div>
+        </div>
+
+        <div v-else>
+            <!-- 1. OVERVIEW TAB -->
+            <div v-if="activeTab === 'overview'" class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <!-- Sidebar: Stats -->
+                <div class="lg:col-span-1 space-y-6">
+                    <div
+                        class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm group hover:border-primary/30 transition-all">
+                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-3">Total Atlet</p>
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-3xl font-black text-navy">{{ event?.participant_count || 0 }}</h3>
+                            <div class="h-10 w-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                                <Icon icon="ph:users-three-bold" class="text-xl" />
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <label
-                            class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 block">Kategori</label>
-                        <div class="flex flex-wrap gap-2">
-                            <span
-                                class="px-3 py-1 rounded-full bg-gray-100 text-gray-600 text-xs font-semibold border border-gray-200">Recurve</span>
-                            <span
-                                class="px-3 py-1 rounded-full bg-gray-100 text-gray-600 text-xs font-semibold border border-gray-200">Compound</span>
-                            <span
-                                class="px-3 py-1 rounded-full bg-gray-100 text-gray-600 text-xs font-semibold border border-gray-200">Barebow</span>
-                            <span
-                                class="px-3 py-1 rounded-full bg-gray-100 text-gray-600 text-xs font-semibold border border-gray-200">Youth</span>
+
+                    <div
+                        class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm group hover:border-primary/30 transition-all">
+                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-3">Target Aktif</p>
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-3xl font-black text-navy">{{ Math.ceil((event?.participant_count || 0) / 4)
+                            }}</h3>
+                            <div
+                                class="h-10 w-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center">
+                                <Icon icon="ph:target-bold" class="text-xl" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm group hover:border-primary/30 transition-all">
+                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-3">Completion</p>
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-3xl font-black text-navy">0%</h3>
+                            <div
+                                class="h-10 w-10 rounded-xl bg-green-50 text-green-600 flex items-center justify-center">
+                                <Icon icon="ph:check-circle-bold" class="text-xl" />
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="px-6 py-4 bg-gray-50 rounded-b-xl border-t border-gray-100 text-center">
-                    <NuxtLink :to="`/events/${route.params.id}`"
-                        class="text-sm text-gray-500 hover:text-primary-hover font-bold hover:underline transition-colors">
-                        Lihat Halaman Publik</NuxtLink>
+
+                <!-- Main Overview: Target Grid -->
+                <div class="lg:col-span-3 space-y-8">
+                    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+                        <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                            <div>
+                                <h3 class="font-black text-navy text-lg tracking-tight">Status Bantalan (Targets)</h3>
+                                <p class="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">Real-time
+                                    monitoring</p>
+                            </div>
+                            <div class="flex gap-4">
+                                <div
+                                    class="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-gray-400">
+                                    <span class="w-2 h-2 rounded-full bg-primary"></span> Scoring
+                                </div>
+                                <div
+                                    class="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-gray-400">
+                                    <span class="w-2 h-2 rounded-full bg-gray-200"></span> Waiting
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-8">
+                            <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-3">
+                                <button v-for="i in maxTargets" :key="i"
+                                    class="aspect-square rounded-xl border flex flex-col items-center justify-center hover:border-primary hover:shadow-md transition-all group bg-white shadow-sm"
+                                    :class="groupedTargets[i] ? 'border-primary/50' : 'border-gray-100 italic'">
+                                    <span
+                                        class="text-navy font-black text-lg group-hover:scale-110 transition-transform"
+                                        :class="{ 'opacity-30': !groupedTargets[i] }">
+                                        {{ String(i).padStart(2, '0') }}
+                                    </span>
+                                    <div v-if="groupedTargets[i]" class="flex gap-0.5 mt-1">
+                                        <div v-for="p in groupedTargets[i]" :key="p.id"
+                                            class="w-1.5 h-1.5 rounded-full bg-primary"></div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Live Status Card -->
-            <div class="lg:col-span-2 flex flex-col gap-6">
-                <div
-                    class="bg-white rounded-xl shadow-[0_1px_3px_rgba(0,0,0,0.05)] border border-gray-100 overflow-hidden flex flex-col h-full">
-                    <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center bg-white">
-                        <div class="flex items-center gap-3">
-                            <div class="relative flex h-3 w-3">
-                                <span
-                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                                <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-                            </div>
-                            <h3 class="font-bold text-navy text-lg">Status Live</h3>
+            <!-- 2. ATHLETES TAB -->
+            <div v-if="activeTab === 'athletes'" class="space-y-6">
+                <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+                    <div
+                        class="px-8 py-6 border-b border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gray-50/50">
+                        <div>
+                            <h3 class="font-black text-navy text-xl tracking-tight">Daftar Atlet Terpusat</h3>
+                            <p class="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">Total {{
+                                participants.length }} Atlet Terdaftar</p>
                         </div>
-                        <div class="flex gap-2">
-                            <button
-                                class="text-xs font-bold bg-white border border-gray-200 hover:bg-gray-50 px-3 py-1.5 rounded-lg text-navy transition-colors shadow-sm">
-                                Pause
-                            </button>
-                            <button
-                                class="text-xs font-bold bg-white border border-red-200 text-red-600 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-colors shadow-sm">
-                                Stop Session
-                            </button>
+                        <div class="flex gap-3">
+                            <BaseInput v-model="searchQuery" placeholder="Cari Nama / Klub..."
+                                icon="ph:magnifying-glass-bold" class="max-w-xs" />
+                            <BaseButton variant="primary" icon="ph:plus-bold" size="sm" class="font-bold">Tambah Manual
+                            </BaseButton>
                         </div>
                     </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <!-- Session Info -->
-                        <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-6 gap-4">
-                            <div>
-                                <div class="text-xs font-bold text-primary-hover uppercase tracking-wide mb-1">Sesi Saat
-                                    Ini</div>
-                                <h4 class="font-bold text-2xl text-navy">Ronde Kualifikasi 1</h4>
-                                <p class="text-sm text-gray-500 mt-1">Grup A • Jarak 60m</p>
-                            </div>
-                            <div class="text-left sm:text-right bg-gray-50 px-4 py-2 rounded-lg border border-gray-100">
-                                <div class="text-xs text-gray-500 uppercase font-semibold">Progress</div>
-                                <div class="flex items-baseline gap-1 sm:justify-end">
-                                    <span class="text-3xl font-bold text-navy">End 4</span>
-                                    <span class="text-gray-400 text-lg font-medium">/ 12</span>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr
+                                    class="border-b border-gray-50 bg-gray-50/20 text-[10px] uppercase tracking-[0.2em] text-gray-400 font-black">
+                                    <th class="px-8 py-5">Atlet</th>
+                                    <th class="px-8 py-5">Klub</th>
+                                    <th class="px-8 py-5">Divisi / Kategori</th>
+                                    <th class="px-8 py-5">Bantalan</th>
+                                    <th class="px-8 py-5">Pembayaran</th>
+                                    <th class="px-8 py-5 text-right">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-50 text-sm">
+                                <tr v-for="p in filteredParticipants" :key="p.id"
+                                    class="group hover:bg-gray-50/50 transition-colors">
+                                    <td class="px-8 py-5">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="h-9 w-9 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs uppercase">
+                                                {{p.full_name?.split(' ').map(n => n[0]).join('')}}
+                                            </div>
+                                            <div>
+                                                <p class="font-black text-navy tracking-tight">{{ p.full_name }}</p>
+                                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
+                                                    {{ p.athlete_code }}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-8 py-5 text-gray-500 font-medium">{{ p.club_id || '-' }}</td>
+                                    <td class="px-8 py-5">
+                                        <p class="text-navy font-bold text-xs">{{ p.division_name }}</p>
+                                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{{
+                                            p.category_name }}</p>
+                                    </td>
+                                    <td class="px-8 py-5">
+                                        <span v-if="p.target_number"
+                                            class="inline-flex items-center justify-center px-2 py-1 bg-navy text-primary rounded font-black text-xs shadow-sm">
+                                            {{ String(p.target_number).padStart(2, '0') }}{{ p.back_number || '' }}
+                                        </span>
+                                        <span v-else
+                                            class="text-[10px] text-gray-300 font-black uppercase italic">TBD</span>
+                                    </td>
+                                    <td class="px-8 py-5">
+                                        <span
+                                            :class="p.payment_status === 'paid' ? 'bg-green-50 text-green-600 border-green-100' : 'bg-red-50 text-red-600 border-red-100'"
+                                            class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest border">
+                                            {{ p.payment_status || 'Unpaid' }}
+                                        </span>
+                                    </td>
+                                    <td class="px-8 py-5 text-right">
+                                        <button class="p-2 text-gray-300 hover:text-navy transition-colors">
+                                            <Icon icon="ph:pencil-simple-bold" />
+                                        </button>
+                                        <button class="p-2 text-gray-300 hover:text-red-500 transition-colors">
+                                            <Icon icon="ph:trash-bold" />
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr v-if="filteredParticipants.length === 0">
+                                    <td colspan="6" class="px-8 py-12 text-center text-gray-400 italic font-medium">
+                                        Tidak ada atlet yang ditemukan.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. SCORING TAB -->
+            <div v-if="activeTab === 'scoring'" class="space-y-6">
+                <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+                    <div
+                        class="px-8 py-6 border-b border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gray-50/50">
+                        <div>
+                            <h3 class="font-black text-navy text-xl tracking-tight">Rapid Data Entry</h3>
+                            <p class="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">Input skor atlet
+                                secara cepat per bantalan</p>
+                        </div>
+                        <div class="flex gap-3">
+                            <BaseButton variant="white" icon="ph:download-bold" size="sm" class="font-bold">Export Hasil
+                            </BaseButton>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr
+                                    class="border-b border-gray-50 bg-gray-50/20 text-[10px] uppercase tracking-[0.2em] text-gray-400 font-black">
+                                    <th class="px-8 py-5 w-24">Target</th>
+                                    <th class="px-8 py-5">Nama Atlet</th>
+                                    <th class="px-8 py-5">Progress</th>
+                                    <th class="px-8 py-5">Status</th>
+                                    <th class="px-8 py-5 text-right">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-50 text-sm">
+                                <tr v-for="p in filteredParticipants" :key="p.id"
+                                    class="group hover:bg-gray-50/50 transition-colors">
+                                    <td class="px-8 py-5">
+                                        <div
+                                            class="flex items-center justify-center h-10 w-10 bg-navy text-primary rounded-xl font-black text-sm shadow-sm">
+                                            {{ String(p.target_number || 0).padStart(2, '0') }}{{ p.back_number || '' }}
+                                        </div>
+                                    </td>
+                                    <td class="px-8 py-5">
+                                        <p class="font-black text-navy">{{ p.full_name }}</p>
+                                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{{
+                                            p.division_name }}</p>
+                                    </td>
+                                    <td class="px-8 py-5">
+                                        <div class="flex flex-col gap-1.5">
+                                            <span
+                                                class="text-[10px] font-black uppercase tracking-widest text-gray-400">End
+                                                0 of 6</span>
+                                            <div class="flex items-center gap-1">
+                                                <div v-for="i in 6" :key="i"
+                                                    class="w-2.5 h-2.5 rounded-full bg-gray-100"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-8 py-5">
+                                        <span
+                                            class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-amber-50 text-amber-600 border border-amber-100">
+                                            Waiting
+                                        </span>
+                                    </td>
+                                    <td class="px-8 py-5 text-right">
+                                        <BaseButton variant="primary" size="sm" icon="ph:note-pencil-bold"
+                                            class="font-bold text-[10px] uppercase tracking-widest px-4">
+                                            Input Skor
+                                        </BaseButton>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. CATEGORIES TAB -->
+            <div v-if="activeTab === 'categories'" class="space-y-8">
+                <EventCategoryManager :event-id="route.params.id" @refresh="fetchEventDetails" />
+            </div>
+
+            <!-- 5. SETTINGS TAB -->
+            <div v-if="activeTab === 'settings'" class="max-w-3xl space-y-8">
+                <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+                    <div class="px-8 py-6 border-b border-gray-100 bg-gray-50/50">
+                        <h3 class="font-black text-navy text-lg tracking-tight">Pengaturan Publikasi</h3>
+                    </div>
+                    <div class="p-8 space-y-6">
+                        <div class="flex items-center justify-between gap-6 p-4 rounded-2xl bg-amber-50 border border-amber-100"
+                            v-if="event?.status === 'draft'">
+                            <div class="flex items-center gap-4 text-amber-700">
+                                <Icon icon="ph:warning-circle-bold" class="text-3xl" />
+                                <div>
+                                    <p class="font-black text-sm uppercase tracking-widest">Event Masih Draft</p>
+                                    <p class="text-xs font-medium">Atlet belum bisa mendaftar sampai event dipublish.
+                                    </p>
                                 </div>
                             </div>
+                            <BaseButton variant="primary" @click="publishEvent" :loading="isPublishing"
+                                class="font-black text-[10px] uppercase tracking-widest px-6">Publish Sekarang
+                            </BaseButton>
                         </div>
-
-                        <!-- Progress Bar -->
-                        <div class="w-full bg-gray-100 rounded-full h-4 mb-8 overflow-hidden shadow-inner">
-                            <div class="bg-primary h-4 rounded-full flex items-center justify-end pr-2"
-                                style="width: 33%">
-                                <span class="text-[10px] font-bold text-navy opacity-50">33%</span>
-                            </div>
-                        </div>
-
-                        <!-- Mini Stats -->
-                        <div class="grid grid-cols-3 gap-4 mb-8">
-                            <div
-                                class="bg-gray-50 rounded-xl p-4 border border-gray-100 text-center hover:bg-gray-100 transition-colors cursor-default">
-                                <div class="text-xs text-gray-500 uppercase font-bold tracking-wide">Sisa Waktu</div>
-                                <div class="text-2xl font-mono font-bold text-navy mt-1">01:45</div>
-                            </div>
-                            <div
-                                class="bg-gray-50 rounded-xl p-4 border border-gray-100 text-center hover:bg-gray-100 transition-colors cursor-default">
-                                <div class="text-xs text-gray-500 uppercase font-bold tracking-wide">Anak Panah</div>
-                                <div class="text-2xl font-bold text-navy mt-1">452</div>
-                            </div>
-                            <div
-                                class="bg-gray-50 rounded-xl p-4 border border-gray-100 text-center hover:bg-gray-100 transition-colors cursor-default">
-                                <div class="text-xs text-gray-500 uppercase font-bold tracking-wide">Rata-rata</div>
-                                <div class="text-2xl font-bold text-navy mt-1">8.4</div>
-                            </div>
-                        </div>
-
-                        <!-- Lane Status Grid -->
-                        <div class="mt-auto">
-                            <div class="flex justify-between items-center mb-3">
-                                <h5 class="text-sm font-bold text-navy">Status Lane Overview</h5>
-                                <div class="flex gap-3 text-xs">
-                                    <span class="flex items-center gap-1.5 text-gray-500"><span
-                                            class="w-2 h-2 rounded-full bg-green-500"></span> Aktif</span>
-                                    <span class="flex items-center gap-1.5 text-gray-500"><span
-                                            class="w-2 h-2 rounded-full bg-yellow-500"></span> Masalah</span>
-                                    <span class="flex items-center gap-1.5 text-gray-500"><span
-                                            class="w-2 h-2 rounded-full bg-gray-300"></span> Kosong</span>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-8 sm:grid-cols-10 md:grid-cols-12 gap-2">
-                                <div
-                                    class="aspect-square bg-green-100 border border-green-200 rounded-md flex items-center justify-center text-[10px] font-bold text-green-800 transition-all hover:scale-105 cursor-pointer">
-                                    1</div>
-                                <div
-                                    class="aspect-square bg-green-100 border border-green-200 rounded-md flex items-center justify-center text-[10px] font-bold text-green-800 transition-all hover:scale-105 cursor-pointer">
-                                    2</div>
-                                <div
-                                    class="aspect-square bg-green-100 border border-green-200 rounded-md flex items-center justify-center text-[10px] font-bold text-green-800 transition-all hover:scale-105 cursor-pointer">
-                                    3</div>
-                                <div
-                                    class="aspect-square bg-yellow-100 border border-yellow-200 rounded-md flex items-center justify-center text-[10px] font-bold text-yellow-800 transition-all hover:scale-105 cursor-pointer shadow-sm shadow-yellow-100">
-                                    4</div>
-                                <div
-                                    class="aspect-square bg-green-100 border border-green-200 rounded-md flex items-center justify-center text-[10px] font-bold text-green-800 transition-all hover:scale-105 cursor-pointer">
-                                    5</div>
-                                <div
-                                    class="aspect-square bg-green-100 border border-green-200 rounded-md flex items-center justify-center text-[10px] font-bold text-green-800 transition-all hover:scale-105 cursor-pointer">
-                                    6</div>
-                                <div
-                                    class="aspect-square bg-gray-100 border border-gray-200 rounded-md flex items-center justify-center text-[10px] font-bold text-gray-400">
-                                    7</div>
-                                <div
-                                    class="aspect-square bg-green-100 border border-green-200 rounded-md flex items-center justify-center text-[10px] font-bold text-green-800 transition-all hover:scale-105 cursor-pointer">
-                                    8</div>
-                                <div
-                                    class="aspect-square bg-green-100 border border-green-200 rounded-md flex items-center justify-center text-[10px] font-bold text-green-800 transition-all hover:scale-105 cursor-pointer">
-                                    9</div>
-                                <div
-                                    class="aspect-square bg-green-100 border border-green-200 rounded-md flex items-center justify-center text-[10px] font-bold text-green-800 transition-all hover:scale-105 cursor-pointer">
-                                    10</div>
-                                <div
-                                    class="aspect-square bg-green-100 border border-green-200 rounded-md flex items-center justify-center text-[10px] font-bold text-green-800 transition-all hover:scale-105 cursor-pointer">
-                                    11</div>
-                                <div
-                                    class="aspect-square bg-green-100 border border-green-200 rounded-md flex items-center justify-center text-[10px] font-bold text-green-800 transition-all hover:scale-105 cursor-pointer">
-                                    12</div>
-                            </div>
+                        <div class="space-y-4">
+                            <h4 class="text-sm font-bold text-navy">Danger Zone</h4>
+                            <BaseButton variant="white"
+                                class="text-red-600 border-red-100 bg-red-50/30 hover:bg-red-50 font-bold"
+                                icon="ph:trash-bold">
+                                Batalkan Event
+                            </BaseButton>
                         </div>
                     </div>
                 </div>
@@ -276,9 +343,141 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { useApi } from '~/composables/useApi'
+
 definePageMeta({
     layout: 'dashboard'
 })
 
 const route = useRoute()
+const { get, post } = useApi()
+const event = ref(null)
+const eventCategories = ref([])
+const participants = ref([])
+const searchQuery = ref('')
+const isLoading = ref(true)
+const isPublishing = ref(false)
+const activeTab = ref('overview')
+
+const filteredParticipants = computed(() => {
+    if (!searchQuery.value) return participants.value
+    const q = searchQuery.value.toLowerCase()
+    return participants.value.filter(p =>
+        p.full_name?.toLowerCase().includes(q) ||
+        p.athlete_code?.toLowerCase().includes(q) ||
+        p.club_id?.toLowerCase().includes(q)
+    )
+})
+
+const tabs = [
+    { id: 'overview', label: 'Overview', icon: 'ph:layout-bold' },
+    { id: 'athletes', label: 'Atlet', icon: 'ph:users-three-bold' },
+    { id: 'scoring', label: 'Skoring', icon: 'ph:scoreboard-bold' },
+    { id: 'categories', label: 'Kategori', icon: 'ph:tag-bold' },
+    { id: 'settings', label: 'Pengaturan', icon: 'ph:gear-six-bold' }
+]
+
+const groupedTargets = computed(() => {
+    const targets = {}
+    participants.value.forEach(p => {
+        if (!p.target_number) return
+        if (!targets[p.target_number]) {
+            targets[p.target_number] = []
+        }
+        targets[p.target_number].push(p)
+    })
+    return targets
+})
+
+const maxTargets = computed(() => {
+    // If we have targets, show up to the highest one, otherwise dummy 20
+    const targetNumbers = Object.keys(groupedTargets.value).map(Number)
+    if (targetNumbers.length === 0) return 20
+    return Math.max(...targetNumbers, 20)
+})
+
+const fetchEventDetails = async () => {
+    isLoading.value = true
+    try {
+        const [eventRes, categoriesRes, participantsRes] = await Promise.all([
+            get(`/events/${route.params.id}`),
+            get(`/events/${route.params.id}/categories`),
+            get(`/events/${route.params.id}/participants`)
+        ])
+        event.value = eventRes
+        eventCategories.value = categoriesRes?.categories || []
+        participants.value = participantsRes?.participants || []
+    } catch (error) {
+        console.error('Failed to fetch event management data:', error)
+    } finally {
+        isLoading.value = false
+    }
+}
+
+const publishEvent = async () => {
+    isPublishing.value = true
+    try {
+        await post(`/events/${route.params.id}/publish`)
+        await fetchEventDetails()
+    } catch (error) {
+        console.error('Failed to publish event:', error)
+    } finally {
+        isPublishing.value = false
+    }
+}
+
+onMounted(() => {
+    fetchEventDetails()
+})
+
+const getStatusClass = (status) => {
+    const classes = {
+        'published': 'bg-green-50 text-green-700 border-green-100 shadow-green-100/50',
+        'draft': 'bg-amber-50 text-amber-700 border-amber-100 shadow-amber-100/50',
+        'ongoing': 'bg-primary/20 text-navy border-primary/20 shadow-primary/10',
+        'upcoming': 'bg-blue-50 text-blue-700 border-blue-100 shadow-blue-100/50',
+        'completed': 'bg-gray-100 text-gray-600 border-gray-200'
+    }
+    return classes[status] || 'bg-gray-100 text-gray-600 border-gray-200'
+}
+
+const getStatusDotClass = (status) => {
+    const classes = {
+        'published': 'bg-green-500',
+        'draft': 'bg-amber-500',
+        'ongoing': 'bg-primary animate-pulse',
+        'upcoming': 'bg-blue-500',
+        'completed': 'bg-gray-300'
+    }
+    return classes[status] || 'bg-gray-300'
+}
+
+const getStatusLabel = (status) => {
+    const labels = {
+        'published': 'Published',
+        'draft': 'Draft Mode',
+        'ongoing': 'Live Event',
+        'upcoming': 'Scheduled',
+        'completed': 'Completed'
+    }
+    return labels[status] || status
+}
 </script>
+
+<style scoped>
+.scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+</style>

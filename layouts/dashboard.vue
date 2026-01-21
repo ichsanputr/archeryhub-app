@@ -79,6 +79,7 @@
         <AppDialog v-model:show="showLogoutDialog" title="Keluar dari Sistem"
             message="Apakah Anda yakin ingin mengakhiri sesi ini? Anda perlu masuk kembali untuk mengakses panel kontrol."
             confirm-text="Ya, Keluar" cancel-text="Tetap di Sini" type="danger" icon="ph:sign-out" @confirm="logout" />
+        <BaseToast />
     </div>
 </template>
 

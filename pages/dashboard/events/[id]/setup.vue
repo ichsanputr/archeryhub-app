@@ -59,10 +59,9 @@
               <span class="text-xs font-semibold uppercase tracking-wider text-brand-gold">Bow Style</span>
               <select v-model="newCategory.bowStyle" class="input">
                 <option value="">Select Style</option>
-                <option>Recurve</option>
-                <option>Compound</option>
-                <option>Barebow</option>
-                <option>Longbow</option>
+                <option v-for="type in bowTypes" :key="type.id" :value="type.id">
+                  {{ type.name }}
+                </option>
               </select>
             </label>
 
@@ -70,11 +69,9 @@
               <span class="text-xs font-semibold uppercase tracking-wider text-brand-gold">Age Class</span>
               <select v-model="newCategory.ageClass" class="input">
                 <option value="">Select Age</option>
-                <option>U13</option>
-                <option>U18 (Cadet)</option>
-                <option>U21 (Junior)</option>
-                <option>Senior (Open)</option>
-                <option>50+ (Master)</option>
+                <option v-for="group in ageGroups" :key="group.id" :value="group.id">
+                  {{ group.name }}
+                </option>
               </select>
             </label>
 
@@ -214,7 +211,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
 definePageMeta({
@@ -230,6 +227,23 @@ const newCategory = ref({
   bowStyle: '',
   ageClass: '',
   gender: ''
+})
+
+const bowTypes = ref([])
+const ageGroups = ref([])
+const { get } = useApi()
+
+onMounted(async () => {
+  try {
+    const [bowRes, ageRes] = await Promise.all([
+      get('/bow-types'),
+      get('/age-groups')
+    ])
+    if (bowRes?.bow_types) bowTypes.value = bowRes.bow_types
+    if (ageRes?.age_groups) ageGroups.value = ageRes.age_groups
+  } catch (err) {
+    console.error('Failed to fetch reference data', err)
+  }
 })
 
 const categories = ref([
@@ -270,10 +284,12 @@ const addCategory = () => {
   }
 
   const genders = newCategory.value.gender === 'Both (Creates 2)' ? ['Men', 'Women'] : [newCategory.value.gender]
+  const styleName = bowTypes.value.find(t => t.id === newCategory.value.bowStyle)?.name || newCategory.value.bowStyle
+  const className = ageGroups.value.find(g => g.id === newCategory.value.ageClass)?.name || newCategory.value.ageClass
 
   genders.forEach(gender => {
     categories.value.push({
-      name: `${newCategory.value.bowStyle} ${gender} ${newCategory.value.ageClass}`,
+      name: `${styleName} ${gender} ${className}`,
       round: 'TBD',
       distance: null,
       targetFace: null,

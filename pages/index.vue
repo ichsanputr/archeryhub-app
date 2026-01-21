@@ -22,14 +22,15 @@
                         </div>
                         <h1 ref="heroTitle"
                             class="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.2] sm:leading-[1.1] mb-4 sm:mb-6 tracking-tight drop-shadow-lg font-display opacity-0 translate-y-8">
-                            Modernisasi Tata <span
-                                class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-green-300">Kelola
-                                Panahan</span> Indonesia
+                            All in One<br />
+                            <span
+                                class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary to-green-300">Platform
+                                Panahan</span><br /> Indonesia
                         </h1>
                         <p ref="heroText"
                             class="text-white/80 text-base sm:text-lg md:text-xl font-light leading-relaxed mb-8 sm:mb-10 max-w-xl drop-shadow-md opacity-0 translate-y-8">
-                            Platform infrastruktur digital terintegrasi untuk manajemen klub, skor real-time, dan
-                            turnamen panahan profesional yang lebih efisien.
+                            Archeryhub.id hadir sebagai wadah bagi seluruh penggiat panahan di Indonesia. Dari pemula
+                            hingga juara nasional, di sini kita terhubung lewat event, prestasi, dan semangat yang sama.
                         </p>
                         <div ref="heroButtons" class="flex flex-col sm:flex-row gap-4 opacity-0 translate-y-8">
                             <NuxtLink to="/auth/login"
@@ -81,7 +82,7 @@
                                                 class="text-[8px] sm:text-xs font-bold uppercase tracking-wider opacity-80">{{
                                                     event.month }}</span>
                                             <span class="text-sm sm:text-2xl font-black leading-none">{{ event.day
-                                            }}</span>
+                                                }}</span>
                                         </div>
 
                                         <div class="flex flex-col min-w-0 flex-1">
@@ -514,10 +515,10 @@ onMounted(() => {
 })
 
 useHead({
-    title: 'Archeryhub.id - Modernisasi Tata Kelola Panahan Indonesia',
+    title: 'Archeryhub.id - All in One Platform Panahan Indonesia',
     meta: [
         {
-            name: 'description', content: 'Platform infrastruktur digital terintegrasi untuk manajemen klub, skor real-time, dan turnamen panahan profesional.'
+            name: 'description', content: 'Archeryhub.id hadir sebagai wadah bagi seluruh penggiat panahan di Indonesia. Dari pemula hingga juara nasional, di sini kita terhubung lewat event, prestasi, dan semangat yang sama.'
         }
     ]
 })

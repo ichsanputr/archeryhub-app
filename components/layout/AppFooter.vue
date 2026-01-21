@@ -24,12 +24,10 @@
               </div>
             </div>
             <p class="text-gray-400 leading-relaxed max-w-md text-sm sm:text-base">
-              Platform manajemen turnamen panahan terbaik.
-              Kelola event, atur peringkat peserta, pantau hasil live,
-              dan tingkatkan pengalaman kompetisi panahan bagi semua orang.
+              Platform infrastruktur digital terintegrasi untuk manajemen klub, skor real-time, dan turnamen panahan
+              profesional yang lebih efisien.
             </p>
           </div>
-          <!-- Simple Socmed Links could go here -->
         </div>
 
         <!-- Links Group Parent -->

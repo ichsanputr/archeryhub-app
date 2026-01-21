@@ -1,115 +1,201 @@
 <template>
-  <div class="space-y-8">
-    <!-- Header -->
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+  <div class="flex flex-col gap-8">
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
       <div>
-        <h1 class="text-2xl md:text-3xl font-black text-navy tracking-tight">Daftar Event</h1>
-        <p class="text-text-secondary text-sm font-medium mt-1">Kelola kompetisi dan pantau progres turnamen Anda.</p>
+        <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight uppercase">
+          <NuxtLink to="/dashboard" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
+          <Icon icon="ph:caret-right-bold" class="text-[12px]" />
+          <span class="text-navy">Events</span>
+        </div>
+        <h1 class="text-3xl font-extrabold text-navy tracking-tight">Daftar Event</h1>
+        <p class="text-gray-500 font-medium mt-1">Kelola kompetisi dan pantau progres turnamen Anda.</p>
       </div>
-      <BaseButton to="/dashboard/events/create" variant="primary" icon="ph:plus">
+      <BaseButton to="/dashboard/events/create" variant="primary" icon="ph:plus-bold"
+        class="shadow-lg shadow-primary/20">
         Buat Event Baru
       </BaseButton>
     </div>
 
-    <!-- Search & Filter Bar -->
-    <div class="flex flex-col md:flex-row gap-4">
-      <div class="flex-grow">
-        <BaseInput v-model="searchQuery" icon="ph:magnifying-glass"
-          placeholder="Cari berdasarkan nama event, lokasi..." />
+    <!-- Quick Stats Snippet (Optional but premium) -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
+        <div class="h-10 w-10 rounded-lg bg-primary/10 text-primary-dark flex items-center justify-center">
+          <Icon icon="ph:calendar-check" class="text-xl" />
+        </div>
+        <div>
+          <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Aktif</p>
+          <p class="text-lg font-bold text-navy">{{events.filter(e => e.status === 'published' || e.status ===
+            'ongoing').length }}</p>
+        </div>
       </div>
-      <div class="w-full md:w-64">
-        <BaseSelect v-model="statusFilter" :items="[
-          { title: 'Semua Status', value: '' },
-          { title: 'Published', value: 'published' },
-          { title: 'Draft', value: 'draft' },
-          { title: 'Berlangsung', value: 'ongoing' },
-          { title: 'Akan Datang', value: 'upcoming' },
-          { title: 'Selesai', value: 'completed' }
-        ]" placeholder="Filter Status" />
+      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
+        <div class="h-10 w-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+          <Icon icon="ph:file-text" class="text-xl" />
+        </div>
+        <div>
+          <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Draft</p>
+          <p class="text-lg font-bold text-navy">{{events.filter(e => e.status === 'draft').length}}</p>
+        </div>
       </div>
     </div>
 
-    <!-- Events Table -->
-    <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm flex flex-col">
+    <!-- Search & Filter Card -->
+    <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
+      <div class="flex-grow w-full">
+        <BaseInput v-model="searchQuery" icon="ph:magnifying-glass" placeholder="Cari nama event, lokasi, atau kode..."
+          label="Pencarian" />
+      </div>
+      <div class="w-full md:w-64">
+        <BaseSelect v-model="statusFilter" :items="statusOptions" label="Status" />
+      </div>
+      <BaseButton variant="white" icon="ph:funnel" @click="resetFilters" class="h-11">
+        Reset
+      </BaseButton>
+    </div>
+
+    <!-- Events List / Table -->
+    <div class="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden flex flex-col min-h-[400px]">
       <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse min-w-[700px]">
+        <table class="w-full text-left border-collapse min-w-[800px]">
           <thead>
-            <tr class="bg-gray-50 border-b border-gray-200">
-              <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Nama Event</th>
-              <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Tanggal</th>
-              <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Lokasi</th>
-              <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">Status</th>
-              <th class="px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-right">Aksi</th>
+            <tr class="bg-gray-50/50 border-b border-gray-100">
+              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Informasi Event
+              </th>
+              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Jadwal & Lokasi
+              </th>
+              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Peserta /
+                Kategori</th>
+              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Status</th>
+              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest text-right">Aksi
+              </th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-100">
+          <tbody class="divide-y divide-gray-50">
+            <!-- Loading State -->
             <tr v-if="isLoading">
-              <td colspan="5" class="px-6 py-12 text-center">
-                <div class="flex flex-col items-center justify-center gap-3">
-                  <div class="size-10 border-4 border-primary border-t-transparent animate-spin rounded-full"></div>
-                  <p class="text-xs text-gray-500 font-medium">Memuat data event...</p>
+              <td colspan="5" class="px-6 py-24 text-center">
+                <div class="flex flex-col items-center justify-center gap-4">
+                  <div class="h-12 w-12 border-4 border-primary border-t-transparent animate-spin rounded-full"></div>
+                  <div class="flex flex-col gap-1">
+                    <p class="text-navy font-bold">Memasuki Arena...</p>
+                    <p class="text-xs text-gray-400 font-medium">Menyiapkan data kompetisi Anda</p>
+                  </div>
                 </div>
               </td>
             </tr>
-            <tr v-else-if="filteredEvents.length === 0" class="hover:bg-gray-50">
-              <td colspan="5" class="px-6 py-12 text-center">
-                <div class="flex flex-col items-center gap-2">
-                  <Icon icon="ph:calendar-blank" class="text-4xl text-gray-300" />
-                  <p class="text-gray-500 font-medium">Tidak ada event ditemukan</p>
+
+            <!-- Empty State -->
+            <tr v-else-if="filteredEvents.length === 0">
+              <td colspan="5" class="px-6 py-24 text-center">
+                <div class="flex flex-col items-center gap-4 max-w-xs mx-auto">
+                  <div class="h-16 w-16 bg-gray-50 rounded-2xl flex items-center justify-center text-gray-300">
+                    <Icon icon="ph:calendar-x" class="text-4xl" />
+                  </div>
+                  <div class="space-y-1">
+                    <p class="text-lg font-bold text-navy">Event Tidak Ditemukan</p>
+                    <p class="text-sm text-gray-500 font-medium leading-relaxed">
+                      Belum ada event yang sesuai dengan kriteria pencarian Anda.
+                    </p>
+                  </div>
+                  <BaseButton v-if="searchQuery || statusFilter" variant="outline" size="sm" @click="resetFilters">
+                    Hapus Filter
+                  </BaseButton>
+                  <BaseButton v-else to="/dashboard/events/create" variant="primary" size="sm" icon="ph:plus-bold">
+                    Buat Event Pertama
+                  </BaseButton>
                 </div>
               </td>
             </tr>
-            <tr v-else v-for="event in filteredEvents" :key="event.id" class="group hover:bg-gray-50 transition-colors">
-              <td class="px-6 py-4">
-                <div class="flex items-center gap-3">
-                  <div class="size-10 rounded-lg bg-navy/5 flex items-center justify-center shrink-0">
-                    <Icon icon="ph:trophy" class="text-navy/40 text-xl" />
+
+            <!-- Data Rows -->
+            <tr v-else v-for="event in filteredEvents" :key="event.id"
+              class="group hover:bg-gray-50/50 transition-all duration-200">
+              <td class="px-6 py-5">
+                <div class="flex items-center gap-4">
+                  <div
+                    class="h-12 w-12 rounded-xl bg-navy/5 overflow-hidden flex items-center justify-center shrink-0 group-hover:bg-primary/10 transition-colors">
+                    <img v-if="event.logo_url" :src="event.logo_url" class="w-full h-full object-cover" />
+                    <Icon v-else icon="ph:trophy-bold"
+                      class="text-navy/20 text-2xl group-hover:text-primary transition-colors" />
                   </div>
                   <div class="min-w-0">
-                    <div class="text-sm font-bold text-navy truncate">{{ event.name }}</div>
-                    <div class="text-xs text-gray-500">{{ event.type || 'Tournament' }}</div>
+                    <div
+                      class="text-[15px] font-bold text-navy truncate group-hover:text-primary-dark transition-colors">
+                      {{ event.name }}</div>
+                    <div class="flex items-center gap-2 mt-0.5">
+                      <span class="text-[11px] font-bold text-gray-400 tracking-wide uppercase">{{ event.code }}</span>
+                      <span class="text-gray-300">•</span>
+                      <span class="text-[11px] font-bold text-primary-dark uppercase tracking-wide">{{
+                        event.discipline_name || 'Tournament' }}</span>
+                    </div>
                   </div>
                 </div>
               </td>
-              <td class="px-6 py-4">
-                <div class="text-sm text-navy font-medium">{{ formatDate(event.start_date) }}</div>
-                <div class="text-xs text-gray-500">{{ formatTime(event.start_date) }}</div>
-              </td>
-              <td class="px-6 py-4">
-                <div class="flex items-center gap-2">
-                  <div class="text-sm text-navy truncate max-w-[200px]">{{ event.venue }}</div>
-                  <a v-if="event.gmaps_link" :href="event.gmaps_link" target="_blank"
-                    class="text-primary hover:text-primary-hover transition-colors" title="Buka Google Maps">
-                    <Icon icon="ph:map-pin" class="text-[16px]" />
-                  </a>
+              <td class="px-6 py-5">
+                <div class="flex flex-col gap-1.5">
+                  <div class="flex items-center gap-2 text-navy text-sm font-semibold">
+                    <Icon icon="ph:calendar-blank" class="text-gray-400" />
+                    {{ formatDate(event.start_date) }}
+                  </div>
+                  <div class="flex items-center gap-2 text-gray-500 text-xs font-medium">
+                    <Icon icon="ph:map-pin" class="text-gray-400" />
+                    <span class="truncate max-w-[150px]">{{ event.venue }}</span>
+                  </div>
                 </div>
-                <div class="text-xs text-gray-500">{{ event.city || '-' }}</div>
               </td>
-              <td class="px-6 py-4">
+              <td class="px-6 py-5">
+                <div class="flex flex-col gap-1.5">
+                  <div class="flex items-center gap-2 text-navy text-sm font-bold">
+                    <Icon icon="ph:users-three" class="text-gray-400" />
+                    {{ event.participant_count }} <span class="text-gray-400 font-medium">Peserta</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-gray-500 text-xs font-semibold">
+                    <Icon icon="ph:stack" class="text-gray-400" />
+                    {{ event.event_count }} <span class="text-gray-400 font-medium">Kategori</span>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-5">
                 <span :class="getStatusClass(event.status)"
-                  class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border">
+                  class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-[11px] font-extrabold uppercase tracking-wider border transition-all">
+                  <span class="w-1.5 h-1.5 rounded-full" :class="getStatusDotClass(event.status)"></span>
                   {{ getStatusLabel(event.status) }}
                 </span>
               </td>
-              <td class="px-6 py-4 text-right">
-                <BaseButton :to="`/dashboard/events/${event.id}/manage`" variant="ghost" size="sm">
-                  Kelola
-                </BaseButton>
+              <td class="px-6 py-5 text-right">
+                <div class="flex items-center justify-end gap-2">
+                  <BaseButton :to="`/dashboard/events/${event.id}/manage`" variant="white" size="sm"
+                    class="h-9 font-bold">
+                    Kelola
+                  </BaseButton>
+                  <button
+                    class="h-9 w-9 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 hover:text-navy transition-all">
+                    <Icon icon="ph:dots-three-vertical-bold" class="text-xl" />
+                  </button>
+                </div>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <!-- Pagination -->
-      <div class="px-6 py-4 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
-        <span class="text-xs text-gray-500 font-medium">Menampilkan <span class="font-bold text-navy">1-5</span> dari
-          <span class="font-bold text-navy">{{ events.length }}</span> event</span>
-        <div class="flex gap-2">
-          <BaseButton variant="outline" size="sm" disabled>
+      <!-- Pagination Card Footer -->
+      <div v-if="filteredEvents.length > 0"
+        class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <span class="text-xs text-gray-500 font-bold uppercase tracking-wider">
+          Menampilkan <span class="text-navy">1 - {{ filteredEvents.length }}</span> dari <span class="text-navy">{{
+            events.length }}</span> Event
+        </span>
+        <div class="flex items-center gap-2">
+          <BaseButton variant="white" size="sm" disabled class="h-9 min-w-[100px]">
             Sebelumnya
           </BaseButton>
-          <BaseButton variant="outline" size="sm">
+          <div class="flex gap-1">
+            <button
+              class="h-9 w-9 rounded-lg bg-primary text-navy font-bold text-xs shadow-sm shadow-primary/20">1</button>
+          </div>
+          <BaseButton variant="white" size="sm" disabled class="h-9 min-w-[100px]">
             Berikutnya
           </BaseButton>
         </div>
@@ -130,6 +216,15 @@ const statusFilter = ref('')
 const events = ref([])
 const isLoading = ref(true)
 
+const statusOptions = [
+  { title: 'Semua Status', value: '' },
+  { title: 'Published', value: 'published' },
+  { title: 'Draft', value: 'draft' },
+  { title: 'Ongoing', value: 'ongoing' },
+  { title: 'Upcoming', value: 'upcoming' },
+  { title: 'Completed', value: 'completed' }
+]
+
 const fetchEvents = async () => {
   isLoading.value = true
   try {
@@ -146,10 +241,19 @@ onMounted(() => {
   fetchEvents()
 })
 
+const resetFilters = () => {
+  searchQuery.value = ''
+  statusFilter.value = ''
+}
+
 const filteredEvents = computed(() => {
   return events.value.filter(event => {
-    const matchesSearch = (event.name?.toLowerCase() || '').includes(searchQuery.value.toLowerCase()) ||
-      (event.venue?.toLowerCase() || '').includes(searchQuery.value.toLowerCase())
+    const q = searchQuery.value.toLowerCase()
+    const matchesSearch = !q ||
+      (event.name?.toLowerCase() || '').includes(q) ||
+      (event.venue?.toLowerCase() || '').includes(q) ||
+      (event.code?.toLowerCase() || '').includes(q) ||
+      (event.location?.toLowerCase() || '').includes(q)
     const matchesStatus = !statusFilter.value || event.status === statusFilter.value
     return matchesSearch && matchesStatus
   })
@@ -157,22 +261,33 @@ const filteredEvents = computed(() => {
 
 const getStatusClass = (status) => {
   const classes = {
-    'published': 'bg-primary/20 text-navy border-primary/20',
+    'published': 'bg-green-50 text-green-700 border-green-100',
     'draft': 'bg-amber-50 text-amber-700 border-amber-100',
-    'ongoing': 'bg-primary/20 text-navy border-primary/20',
+    'ongoing': 'bg-primary/10 text-primary-dark border-primary/20',
     'upcoming': 'bg-blue-50 text-blue-700 border-blue-100',
-    'completed': 'bg-gray-100 text-gray-600 border-gray-200'
+    'completed': 'bg-gray-50 text-gray-500 border-gray-100'
   }
-  return classes[status] || 'bg-gray-100 text-gray-600 border-gray-200'
+  return classes[status] || 'bg-gray-50 text-gray-500 border-gray-100'
+}
+
+const getStatusDotClass = (status) => {
+  const classes = {
+    'published': 'bg-green-500',
+    'draft': 'bg-amber-500',
+    'ongoing': 'bg-primary animate-pulse',
+    'upcoming': 'bg-blue-500',
+    'completed': 'bg-gray-300'
+  }
+  return classes[status] || 'bg-gray-300'
 }
 
 const getStatusLabel = (status) => {
   const labels = {
     'published': 'Published',
     'draft': 'Draft',
-    'ongoing': 'Berlangsung',
-    'upcoming': 'Akan Datang',
-    'completed': 'Selesai'
+    'ongoing': 'Live Now',
+    'upcoming': 'Upcoming',
+    'completed': 'Finished'
   }
   return labels[status] || status
 }
