@@ -15,11 +15,11 @@
 
         <!-- Club Header Card -->
         <section class="container mx-auto px-4 max-w-6xl -mt-28 relative z-10 mb-10">
-            <div class="bg-white rounded-3xl border border-gray-100 shadow-2xl p-6 md:p-10">
+            <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 md:p-10">
                 <div class="flex flex-col md:flex-row gap-6 md:gap-8">
                     <!-- Logo -->
                     <div
-                        class="w-28 h-28 md:w-36 md:h-36 rounded-2xl bg-white border-4 border-white shadow-xl overflow-hidden flex-shrink-0 -mt-20 md:-mt-24">
+                        class="w-28 h-28 md:w-36 md:h-36 rounded-2xl bg-white border-2 border-white shadow-sm overflow-hidden flex-shrink-0 -mt-20 md:-mt-24 relative z-20">
                         <div v-if="!club.logoUrl"
                             class="w-full h-full bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center">
                             <span class="text-4xl md:text-5xl font-black text-navy">{{ club.name.charAt(0) }}</span>
@@ -31,12 +31,13 @@
                     <div class="flex-1">
                         <div class="flex flex-wrap items-start justify-between gap-4">
                             <div>
-                                <div class="flex items-center gap-3 mb-3">
-                                    <h1 class="text-2xl md:text-4xl font-black text-navy">{{ club.name }}</h1>
+                                <div class="flex flex-wrap items-center gap-3 mb-3">
+                                    <h1 class="text-2xl md:text-4xl font-black text-navy leading-tight">{{ club.name }}
+                                    </h1>
                                     <span v-if="club.verified"
-                                        class="flex items-center gap-1 px-3 py-1.5 bg-blue-50 text-blue-600 text-xs font-black rounded-full">
+                                        class="flex items-center gap-1 px-3 py-1.5 bg-blue-50 text-blue-600 text-[10px] md:text-xs font-black rounded-full uppercase tracking-wider">
                                         <Icon icon="ph:seal-check-fill" />
-                                        Terverifikasi
+                                        Verified
                                     </span>
                                 </div>
                                 <div class="flex flex-wrap items-center gap-4 text-gray-500 text-sm font-medium">
@@ -69,28 +70,33 @@
                         </div>
 
                         <!-- Stats Bar -->
-                        <div class="flex flex-wrap items-center gap-8 mt-8 pt-8 border-t border-gray-100">
-                            <div class="text-center">
-                                <p class="text-3xl font-black text-navy">{{ club.memberCount }}</p>
-                                <p class="text-sm text-gray-400 font-bold">Anggota</p>
+                        <div
+                            class="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-4 md:gap-8 mt-8 pt-8 border-t border-gray-100">
+                            <div class="text-center sm:text-left">
+                                <p class="text-2xl md:text-3xl font-black text-navy">{{ club.memberCount }}</p>
+                                <p class="text-[10px] md:text-sm text-gray-400 font-bold uppercase tracking-wide">
+                                    Anggota</p>
                             </div>
-                            <div class="h-10 w-px bg-gray-200 hidden md:block"></div>
-                            <div class="text-center">
-                                <p class="text-3xl font-black text-navy">{{ club.eventCount }}</p>
-                                <p class="text-sm text-gray-400 font-bold">Event</p>
+                            <div class="h-10 w-px bg-gray-200 hidden sm:block"></div>
+                            <div class="text-center sm:text-left">
+                                <p class="text-2xl md:text-3xl font-black text-navy">{{ club.eventCount }}</p>
+                                <p class="text-[10px] md:text-sm text-gray-400 font-bold uppercase tracking-wide">Event
+                                </p>
                             </div>
-                            <div class="h-10 w-px bg-gray-200 hidden md:block"></div>
-                            <div class="text-center">
-                                <div class="flex items-center justify-center gap-1">
-                                    <Icon icon="ph:star-fill" class="text-2xl text-amber-400" />
-                                    <p class="text-3xl font-black text-navy">{{ club.rating }}</p>
+                            <div class="h-10 w-px bg-gray-200 hidden sm:block"></div>
+                            <div class="text-center sm:text-left">
+                                <div class="flex items-center justify-center sm:justify-start gap-1">
+                                    <Icon icon="ph:star-fill" class="text-xl md:text-2xl text-amber-400" />
+                                    <p class="text-2xl md:text-3xl font-black text-navy">{{ club.rating }}</p>
                                 </div>
-                                <p class="text-sm text-gray-400 font-bold">Rating</p>
+                                <p class="text-[10px] md:text-sm text-gray-400 font-bold uppercase tracking-wide">Rating
+                                </p>
                             </div>
-                            <div class="h-10 w-px bg-gray-200 hidden md:block"></div>
-                            <div class="text-center">
-                                <p class="text-3xl font-black text-navy">{{ club.achievements }}</p>
-                                <p class="text-sm text-gray-400 font-bold">Prestasi</p>
+                            <div class="h-10 w-px bg-gray-200 hidden sm:block"></div>
+                            <div class="text-center sm:text-left">
+                                <p class="text-2xl md:text-3xl font-black text-navy">{{ club.achievements }}</p>
+                                <p class="text-[10px] md:text-sm text-gray-400 font-bold uppercase tracking-wide">
+                                    Prestasi</p>
                             </div>
                         </div>
                     </div>
@@ -246,7 +252,7 @@
                     </div>
 
                     <!-- Training Schedule -->
-                    <div class="bg-gradient-to-br from-navy to-navy-light rounded-2xl p-6 text-white shadow-xl">
+                    <div class="bg-gradient-to-br from-navy to-navy-light rounded-2xl p-6 text-white shadow-sm">
                         <h3 class="font-black mb-5 flex items-center gap-2">
                             <Icon icon="ph:calendar-bold" class="text-primary" />
                             Jadwal Latihan

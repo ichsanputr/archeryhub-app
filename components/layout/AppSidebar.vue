@@ -115,7 +115,8 @@ const isArcher = computed(() => {
 
 const canManageEvents = computed(() => {
   const role = user.value?.role || user.value?.type || 'archer'
-  return ['admin', 'organization', 'club'].includes(role)
+  // Klub tidak dapat membuat/mengelola event
+  return ['admin', 'organization'].includes(role)
 })
 
 // Indonesian role label
@@ -153,17 +154,18 @@ const navLinks = computed(() => {
     ]
   }
 
-  // Full navigation for organizers (org, club, admin)
-  return [
+  // Full navigation for organizers/admin; hide Event for club
+  const base = [
     { label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard' },
-    { label: 'Event', icon: 'ph:trophy', path: '/dashboard/events' },
+    ...(role !== 'club' ? [{ label: 'Event', icon: 'ph:trophy', path: '/dashboard/events' }] : []),
     { label: 'Laporan', icon: 'ph:chart-bar', path: '/dashboard/reports' },
-    ...(role !== 'organization' ? [{ label: 'Pemanah', icon: 'ph:users-three', path: '/dashboard/archers' }] : []),
     ...(role === 'club' ? [{ label: 'Anggota Klub', icon: 'ph:identification-badge', path: '/dashboard/members' }] : []),
     ...(role !== 'club' && role !== 'organization' ? [{ label: 'Tim', icon: 'ph:users-four', path: '/dashboard/teams' }] : []),
     { label: 'Berita', icon: 'ph:newspaper', path: '/dashboard/berita' },
     { label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/settings' },
   ]
+
+  return base
 })
 
 const isActive = (path) => {

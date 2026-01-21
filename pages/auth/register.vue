@@ -92,7 +92,8 @@
                                     Data Pemanah
                                 </h4>
                                 <BaseInput v-model="form.fullName" label="Nama Lengkap" placeholder="Sesuai KTP"
-                                    required :error="errors.fullName"
+                                    required
+                                    :error="errors.fullName || (isNameTaken ? 'Nama atlet sudah terdaftar' : '')"
                                     @blur="validate('fullName', form.fullName, [rules.required()])" />
                                 <p class="mt-2 text-xs text-gray-400">Data lainnya bisa dilengkapi di halaman profil
                                     setelah masuk.</p>
@@ -106,7 +107,8 @@
                                     Data Organisasi
                                 </h4>
                                 <BaseInput v-model="form.organizationName" label="Nama Organisasi"
-                                    placeholder="Nama resmi organisasi" required :error="errors.organizationName"
+                                    placeholder="Nama resmi organisasi" required
+                                    :error="errors.organizationName || (isNameTaken ? 'Nama organisasi sudah terdaftar' : '')"
                                     @blur="validate('organizationName', form.organizationName, [rules.required()])" />
                                 <p class="mt-2 text-xs text-gray-400">Informasi PIC dan detail lainnya bisa dilengkapi
                                     di halaman profil.</p>
@@ -120,7 +122,8 @@
                                     Data Klub
                                 </h4>
                                 <BaseInput v-model="form.clubName" label="Nama Klub" placeholder="Nama resmi klub"
-                                    required :error="errors.clubName"
+                                    required
+                                    :error="errors.clubName || (isNameTaken ? 'Nama klub sudah terdaftar' : '')"
                                     @blur="validate('clubName', form.clubName, [rules.required()])" />
                                 <p class="mt-2 text-xs text-gray-400">Data pelatih dan lokasi bisa dilengkapi di halaman
                                     profil.</p>
@@ -134,7 +137,8 @@
                                     Data Toko
                                 </h4>
                                 <BaseInput v-model="form.storeName" label="Nama Toko" placeholder="Nama toko Anda"
-                                    required :error="errors.storeName"
+                                    required
+                                    :error="errors.storeName || (isNameTaken ? 'Nama toko sudah terdaftar' : '')"
                                     @blur="validate('storeName', form.storeName, [rules.required()])" />
                                 <p class="mt-2 text-xs text-gray-400">Alamat dan detail toko bisa dilengkapi di halaman
                                     profil.</p>
@@ -154,8 +158,8 @@
                         <!-- Google OAuth Button (PRIMARY ACTION) -->
                         <div class="pt-2">
                             <BaseButton variant="gold" block size="lg" icon="logos:google-icon"
-                                @click="handleGoogleRegister" :loading="isGoogleLoading"
-                                :disabled="!isNameValid || !form.terms">
+                                @click="handleGoogleRegister" :loading="isGoogleLoading || isValidating"
+                                :disabled="!isNameValid || !form.terms || isNameTaken || isValidating">
                                 Daftar dengan Google
                             </BaseButton>
                             <p class="mt-4 text-xs text-center text-gray-400">
@@ -181,9 +185,11 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useFormValidation } from '~/composables/useFormValidation'
+import { useApi } from '~/composables/useApi'
+import { useAuth } from '~/composables/useAuth'
 
 const route = useRoute()
 const isLoading = ref(false)
@@ -218,6 +224,51 @@ const form = ref({
 })
 
 const { register, login } = useAuth()
+const { get } = useApi()
+
+// Name uniqueness validation
+const isNameTaken = ref(false)
+const isValidating = ref(false)
+let debounceTimer = null
+
+const checkNameUnique = async (name) => {
+    if (!name || name.length < 3) return
+
+    isValidating.value = true
+    try {
+        const response = await get(`/api/v1/auth/check-name?type=${form.value.userType}&name=${encodeURIComponent(name)}`)
+        isNameTaken.value = response.exists
+        if (response.exists) {
+            error.value = 'Nama ini sudah terdaftar. Silakan gunakan nama lain.'
+        } else if (error.value === 'Nama ini sudah terdaftar. Silakan gunakan nama lain.') {
+            error.value = null
+        }
+    } catch (err) {
+        console.error('Failed to check name:', err)
+    } finally {
+        isValidating.value = false
+    }
+}
+
+watch([() => form.value.fullName, () => form.value.organizationName, () => form.value.clubName, () => form.value.storeName], () => {
+    isNameTaken.value = false
+    clearTimeout(debounceTimer)
+    const name = getName()
+    if (name.length >= 3) {
+        debounceTimer = setTimeout(() => {
+            checkNameUnique(name)
+        }, 500)
+    }
+})
+
+watch(() => form.value.userType, () => {
+    isNameTaken.value = false
+    error.value = null
+    const name = getName()
+    if (name.length >= 3) {
+        checkNameUnique(name)
+    }
+})
 
 const getName = () => {
     switch (form.value.userType) {

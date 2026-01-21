@@ -16,7 +16,7 @@
                         <Icon icon="ph:users-three-bold" class="text-lg" />
                         <span>Komunitas Pemanah</span>
                     </div>
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1] mb-6">
+                    <h1 class="text-3xl md:text-5xl lg:text-6xl font-black tracking-tight leading-tight mb-6">
                         Temukan <span class="text-primary">Klub Panahan</span><br />
                         Terbaik di Indonesia
                     </h1>
@@ -48,20 +48,20 @@
             <div
                 class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 grid grid-cols-2 md:grid-cols-4 gap-6">
                 <div class="text-center">
-                    <p class="text-3xl md:text-4xl font-black text-navy">120+</p>
-                    <p class="text-sm text-gray-500 font-medium mt-1">Klub Terdaftar</p>
+                    <p class="text-2xl md:text-4xl font-black text-navy tracking-tight">120+</p>
+                    <p class="text-[10px] md:text-sm text-gray-500 font-bold uppercase tracking-wide mt-1">Klub</p>
                 </div>
-                <div class="text-center">
-                    <p class="text-3xl md:text-4xl font-black text-navy">2,500+</p>
-                    <p class="text-sm text-gray-500 font-medium mt-1">Anggota Aktif</p>
+                <div class="text-center border-l border-gray-100">
+                    <p class="text-2xl md:text-4xl font-black text-navy tracking-tight">2.5k+</p>
+                    <p class="text-[10px] md:text-sm text-gray-500 font-bold uppercase tracking-wide mt-1">Anggota</p>
                 </div>
-                <div class="text-center">
-                    <p class="text-3xl md:text-4xl font-black text-navy">34</p>
-                    <p class="text-sm text-gray-500 font-medium mt-1">Provinsi</p>
+                <div class="text-center border-l border-gray-100">
+                    <p class="text-2xl md:text-4xl font-black text-navy tracking-tight">34</p>
+                    <p class="text-[10px] md:text-sm text-gray-500 font-bold uppercase tracking-wide mt-1">Provinsi</p>
                 </div>
-                <div class="text-center">
-                    <p class="text-3xl md:text-4xl font-black text-navy">500+</p>
-                    <p class="text-sm text-gray-500 font-medium mt-1">Event Digelar</p>
+                <div class="text-center border-l border-gray-100">
+                    <p class="text-2xl md:text-4xl font-black text-navy tracking-tight">500+</p>
+                    <p class="text-[10px] md:text-sm text-gray-500 font-bold uppercase tracking-wide mt-1">Event</p>
                 </div>
             </div>
         </section>
@@ -137,7 +137,7 @@
                         <div class="flex items-start gap-4">
                             <!-- Logo -->
                             <div
-                                class="w-14 h-14 -mt-10 rounded-xl bg-white border-4 border-white shadow-lg overflow-hidden flex-shrink-0">
+                                class="w-14 h-14 -mt-7 rounded-xl bg-white border-2 border-white shadow-xl overflow-hidden flex-shrink-0 relative z-[2]">
                                 <div v-if="!club.logoUrl"
                                     class="w-full h-full bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center">
                                     <span class="text-xl font-black text-navy">{{ club.name.charAt(0) }}</span>
@@ -155,19 +155,17 @@
 
                         <!-- Stats -->
                         <div class="flex items-center justify-between mt-5 pt-5 border-t border-gray-100">
-                            <div class="flex items-center gap-1.5">
-                                <Icon icon="ph:users-bold" class="text-gray-400" />
-                                <span class="font-bold text-navy">{{ club.memberCount }}</span>
-                                <span class="text-gray-400 text-sm">Anggota</span>
+                            <div class="flex items-center gap-1">
+                                <Icon icon="ph:users-bold" class="text-primary" />
+                                <span class="font-black text-navy text-sm">{{ club.memberCount }}</span>
                             </div>
-                            <div class="flex items-center gap-1.5">
+                            <div class="flex items-center gap-1">
                                 <Icon icon="ph:star-fill" class="text-amber-400" />
-                                <span class="font-bold text-navy">{{ club.rating }}</span>
+                                <span class="font-black text-navy text-sm">{{ club.rating }}</span>
                             </div>
-                            <div class="flex items-center gap-1.5">
-                                <Icon icon="ph:trophy-bold" class="text-gray-400" />
-                                <span class="font-bold text-navy">{{ club.eventCount }}</span>
-                                <span class="text-gray-400 text-sm">Event</span>
+                            <div class="flex items-center gap-1 text-right">
+                                <Icon icon="ph:trophy-bold" class="text-primary" />
+                                <span class="font-black text-navy text-sm">{{ club.eventCount }}</span>
                             </div>
                         </div>
                     </div>

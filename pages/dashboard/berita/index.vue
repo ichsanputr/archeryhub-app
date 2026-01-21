@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
-                <div class="h-10 w-10 rounded-lg bg-green-50 text-green-600 flex items-center justify-center">
+                <div class="h-10 w-10 rounded-lg bg-primary/10 text-primary-dark flex items-center justify-center">
                     <Icon icon="ph:check-circle" class="text-xl" />
                 </div>
                 <div>
@@ -39,7 +39,7 @@
                 </div>
             </div>
             <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
-                <div class="h-10 w-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+                <div class="h-10 w-10 rounded-lg bg-primary/10 text-primary-dark flex items-center justify-center">
                     <Icon icon="ph:file-text" class="text-xl" />
                 </div>
                 <div>
@@ -48,7 +48,7 @@
                 </div>
             </div>
             <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
-                <div class="h-10 w-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+                <div class="h-10 w-10 rounded-lg bg-primary/10 text-primary-dark flex items-center justify-center">
                     <Icon icon="ph:eye" class="text-xl" />
                 </div>
                 <div>
@@ -202,7 +202,7 @@ const categoryFilter = ref('all')
 const fetchNews = async () => {
     isLoading.value = true
     try {
-        const response = await get('/api/v1/news/my')
+    const response = await get('/news/my')
         news.value = response.data || []
     } catch (error) {
         toast.error('Gagal mengambil data berita')
@@ -234,7 +234,7 @@ const deleteNews = async (item) => {
     if (!confirm(`Apakah Anda yakin ingin menghapus berita "${item.title}"?`)) return
 
     try {
-        await del(`/api/v1/news/${item.id}`)
+        await del(`/news/${item.id}`)
         toast.success('Berita berhasil dihapus')
         fetchNews()
     } catch (error) {
