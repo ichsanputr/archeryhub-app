@@ -123,7 +123,7 @@
                         <BaseButton variant="outline" size="lg" icon="ph:chat-circle" class="flex-1">
                             Chat Penjual
                         </BaseButton>
-                        <BaseButton variant="primary" size="lg" icon="ph:shopping-cart" class="flex-1">
+                        <BaseButton @click="handleAddToCart" variant="primary" size="lg" icon="ph:shopping-cart" class="flex-1" :loading="isAddingToCart">
                             + Keranjang
                         </BaseButton>
                     </div>
@@ -188,28 +188,6 @@
                         </tr>
                     </table>
                 </div>
-
-                <div v-if="activeTab === 'reviews'" class="space-y-6">
-                    <div v-for="review in reviews" :key="review.id" class="p-5 bg-gray-50 rounded-xl">
-                        <div class="flex items-start gap-4">
-                            <div
-                                class="w-10 h-10 rounded-full bg-navy text-white flex items-center justify-center font-bold">
-                                {{ review.user.charAt(0) }}
-                            </div>
-                            <div class="flex-1">
-                                <div class="flex items-center gap-2 mb-1">
-                                    <span class="font-bold text-navy">{{ review.user }}</span>
-                                    <div class="flex items-center gap-0.5">
-                                        <Icon v-for="i in review.rating" :key="i" icon="ph:star-fill"
-                                            class="text-amber-400 text-xs" />
-                                    </div>
-                                </div>
-                                <p class="text-gray-600 text-sm">{{ review.comment }}</p>
-                                <span class="text-xs text-gray-400 mt-2 block">{{ review.date }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </section>
 
@@ -248,7 +226,6 @@ const activeTab = ref('description')
 
 const tabs = [
     { label: 'Deskripsi', value: 'description' },
-    { label: 'Ulasan (45)', value: 'reviews' },
 ]
 
 // Dummy product data
@@ -307,6 +284,35 @@ const relatedProducts = ref([
     { id: 4, name: 'Easton Carbon One Arrows', price: 3800000, image: 'https://images.unsplash.com/photo-1510925758641-869d353cecc7?w=400' },
     { id: 5, name: 'Hoyt Formula Limbs', price: 6200000, image: 'https://images.unsplash.com/photo-1565992441121-4367c2967103?w=400' },
 ])
+
+const { post } = useApi()
+const { showToast } = useToast()
+const isAddingToCart = ref(false)
+
+const handleAddToCart = async () => {
+    if (!isLoggedIn.value) {
+        showToast('Silahkan login sebagai Pemanah untuk menambah ke keranjang', 'error')
+        return
+    }
+
+    if (user.value?.user_type !== 'archer') {
+        showToast('Hanya akun Pemanah yang dapat berbelanja', 'error')
+        return
+    }
+
+    isAddingToCart.value = true
+    try {
+        await post('/cart', {
+            product_id: product.value.uuid || 'f38b1a3c-f73e-11f0-87db-c3c8a1ce2650', // Use real ID if available, fallback for dummy
+            quantity: quantity.value
+        })
+        showToast('Berhasil ditambah ke keranjang', 'success')
+    } catch (error) {
+        showToast('Gagal menambah ke keranjang', 'error')
+    } finally {
+        isAddingToCart.value = false
+    }
+}
 
 const formatPrice = (price) => new Intl.NumberFormat('id-ID').format(price)
 </script>

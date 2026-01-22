@@ -147,30 +147,81 @@ definePageMeta({
     layout: 'dashboard'
 })
 
+const { user, fetchUser } = useAuth()
+const { put, get } = useApi()
 const toast = useToast()
 const isSaving = ref(false)
 
-// Dummy store data
+// Store data reactive object
 const store = ref({
-    name: 'Garuda Archery Store',
-    slug: 'garuda-archery',
-    description: 'Toko peralatan panahan berkualitas dengan harga terbaik. Kami menyediakan berbagai macam busur, anak panah, dan aksesoris panahan dari brand ternama.',
+    name: '',
+    slug: '',
+    description: '',
     logoUrl: '',
     bannerUrl: '',
-    phone: '081234567890',
-    email: 'store@garudaarchery.com',
-    address: 'Jl. Panahan No. 123, Senayan',
-    city: 'Jakarta',
-    verified: true,
-    products: 45,
-    sales: 234,
-    rating: 4.8
+    phone: '',
+    email: '',
+    address: '',
+    city: '',
+    verified: false,
+    products: 0,
+    sales: 0,
+    rating: 0
 })
+
+// Initialize from user data
+onMounted(async () => {
+    if (user.value) {
+        syncUserToStore()
+        
+        // Fetch seller specific stats if needed
+        try {
+            const stats = await get('/sellers/me/stats')
+            if (stats) {
+                store.value.products = stats.total_products || 0
+                store.value.sales = stats.total_sales || 0
+                store.value.rating = stats.rating || 0
+            }
+        } catch (error) {
+            console.error('Failed to fetch seller stats:', error)
+        }
+    }
+})
+
+const syncUserToStore = () => {
+    if (!user.value) return
+    store.value.name = user.value.store_name || user.value.name || ''
+    store.value.slug = user.value.store_slug || user.value.slug || ''
+    store.value.description = user.value.description || ''
+    store.value.logoUrl = user.value.avatar_url || ''
+    store.value.bannerUrl = user.value.banner_url || ''
+    store.value.phone = user.value.phone || ''
+    store.value.email = user.value.email || ''
+    store.value.address = user.value.address || ''
+    store.value.city = user.value.city || ''
+    store.value.verified = user.value.is_verified || false
+}
 
 const saveStore = async () => {
     isSaving.value = true
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    toast.success('Perubahan berhasil disimpan!')
-    isSaving.value = false
+    try {
+        await put('/user/profile', {
+            store_name: store.value.name,
+            store_slug: store.value.slug,
+            description: store.value.description,
+            phone: store.value.phone,
+            email: store.value.email,
+            address: store.value.address,
+            city: store.value.city,
+            avatar_url: store.value.logoUrl,
+            banner_url: store.value.bannerUrl
+        })
+        toast.success('Profil toko berhasil diperbarui!')
+        await fetchUser() // Refresh global user state
+    } catch (error) {
+        toast.error(error.message || 'Gagal menyimpan profil toko')
+    } finally {
+        isSaving.value = false
+    }
 }
 </script>

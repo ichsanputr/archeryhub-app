@@ -27,6 +27,13 @@
           class="font-black text-sm transition-colors">Berita</NuxtLink>
       </nav>
 
+      <!-- Dashboard Title (only in dashboard mode) -->
+      <div v-if="isDashboard" class="hidden md:flex items-center gap-3 mr-4">
+        <h1 class="text-lg font-black text-navy whitespace-nowrap">
+          {{ dashboardTitle }}
+        </h1>
+      </div>
+
       <!-- Search Bar -->
       <div class="max-w-xs xl:max-w-md w-full hidden md:block">
         <div :class="[
@@ -73,9 +80,10 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
+import { useEventContext } from '~/composables/useEventContext'
 
 const props = defineProps({
   transparent: {
@@ -87,6 +95,7 @@ const props = defineProps({
 const route = useRoute()
 const router = useRouter()
 const { user } = useAuth()
+const { isEventMode, eventTitle } = useEventContext()
 
 const isSidebarOpen = useState('mobile-sidebar-open', () => false)
 const searchQuery = ref('')
@@ -133,6 +142,15 @@ const pageTitle = computed(() => {
     return pathSegments[1].charAt(0).toUpperCase() + pathSegments[1].slice(1)
   }
   return pathSegments[0].charAt(0).toUpperCase() + pathSegments[0].slice(1)
+})
+
+const dashboardTitle = computed(() => {
+  // If in event mode, show event title
+  if (isEventMode.value && eventTitle.value) {
+    return eventTitle.value
+  }
+  // Otherwise show "Dashboard"
+  return 'Dashboard'
 })
 
 const showAddButton = computed(() => {

@@ -46,7 +46,7 @@
         <!-- Quick Stats -->
         <section class="container mx-auto px-4 max-w-7xl -mt-8 relative z-20">
             <div
-                class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 grid grid-cols-2 md:grid-cols-4 gap-6">
+                class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 grid grid-cols-2 md:grid-cols-4 gap-6">
                 <div class="text-center">
                     <p class="text-2xl md:text-4xl font-black text-navy tracking-tight">120+</p>
                     <p class="text-[10px] md:text-sm text-gray-500 font-bold uppercase tracking-wide mt-1">Klub</p>

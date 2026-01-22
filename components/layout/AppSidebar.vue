@@ -140,6 +140,7 @@ const navLinks = computed(() => {
     return [
       { label: 'Event Saya', icon: 'ph:trophy', path: '/dashboard/events' },
       { label: 'Klub', icon: 'ph:buildings', path: '/dashboard/archer/club' },
+      { label: 'Keranjang', icon: 'ph:shopping-cart', path: '/dashboard/cart' },
       { label: 'Profil Pemanah', icon: 'ph:user-circle', path: '/dashboard/archer/profile' },
       { label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/settings' },
     ]

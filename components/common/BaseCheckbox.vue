@@ -22,12 +22,15 @@
                     error ? 'border-red-500' : ''
                 ]"
             >
-                <Icon 
+                <svg 
                     v-if="modelValue"
-                    icon="ph:check-bold"
-                    class="text-sm text-white font-black" 
-                    style="font-size: 14px;"
-                />
+                    xmlns="http://www.w3.org/2000/svg" 
+                    viewBox="0 0 256 256" 
+                    class="w-3.5 h-3.5 text-white"
+                    fill="currentColor"
+                >
+                    <path d="M232.49,80.49l-128,128a12,12,0,0,1-17,0l-56-56a12,12,0,1,1,17-17L96,183,215.51,63.51a12,12,0,0,1,17,17Z"/>
+                </svg>
             </div>
 
             <span class="text-sm font-semibold text-navy group-hover:text-primary-dark transition-colors flex-1">

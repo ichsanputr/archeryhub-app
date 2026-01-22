@@ -352,9 +352,10 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useApi } from '~/composables/useApi'
+import { useEventContext } from '~/composables/useEventContext'
 
 definePageMeta({
     layout: 'dashboard'
@@ -362,6 +363,7 @@ definePageMeta({
 
 const route = useRoute()
 const { get, post } = useApi()
+const { setEvent, clearEvent } = useEventContext()
 const event = ref(null)
 const eventCategories = ref([])
 const participants = ref([])
@@ -419,6 +421,11 @@ const fetchEventDetails = async () => {
         event.value = eventRes
         eventCategories.value = categoriesRes?.categories || []
         participants.value = participantsRes?.participants || []
+        
+        // Set event context for header
+        if (event.value) {
+            setEvent(event.value)
+        }
     } catch (error) {
         console.error('Failed to fetch event management data:', error)
     } finally {
@@ -441,6 +448,18 @@ const publishEvent = async () => {
 onMounted(() => {
     fetchEventDetails()
 })
+
+// Clear event context when leaving the page
+onBeforeUnmount(() => {
+    clearEvent()
+})
+
+// Watch for event changes to update context
+watch(event, (newEvent) => {
+    if (newEvent) {
+        setEvent(newEvent)
+    }
+}, { deep: true })
 
 const getStatusClass = (status) => {
     const classes = {

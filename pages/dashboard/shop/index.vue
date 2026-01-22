@@ -313,9 +313,9 @@ const isEditing = ref(false)
 const currentProductId = ref(null)
 
 const fetchProducts = async () => {
-    isLoading.ref = true
+    isLoading.value = true
     try {
-        const response = await get('/api/v1/products/my')
+        const response = await get('/products/my')
         products.value = response.data || []
     } catch (error) {
         showToast('Gagal mengambil data produk', 'error')
@@ -400,10 +400,10 @@ const handleSubmit = async () => {
         }
 
         if (isEditing.value) {
-            await put(`/api/v1/products/${currentProductId.value}`, payload)
+            await put(`/products/${currentProductId.value}`, payload)
             showToast('Produk berhasil diperbarui', 'success')
         } else {
-            await post('/api/v1/products', payload)
+            await post('/products', payload)
             showToast('Produk berhasil ditambahkan', 'success')
         }
         showCreateModal.value = false
@@ -419,7 +419,7 @@ const deleteProduct = async (product) => {
     if (!confirm(`Apakah Anda yakin ingin menghapus produk "${product.name}"?`)) return
 
     try {
-        await del(`/api/v1/products/${product.id}`)
+        await del(`/products/${product.id}`)
         showToast('Produk berhasil dihapus', 'success')
         fetchProducts()
     } catch (error) {

@@ -65,7 +65,11 @@ export const useAuth = () => {
           type: response.user.type || response.user.user_type || response.user.role,
           slug: response.user.slug,
           bio: response.user.bio,
-          achievements: response.user.achievements
+          achievements: response.user.achievements,
+          store_name: response.user.store_name,
+          store_slug: response.user.store_slug,
+          description: response.user.description,
+          banner_url: response.user.banner_url
         }
       }
 
@@ -102,7 +106,11 @@ export const useAuth = () => {
           type: response.user.type || response.user.user_type || response.user.role,
           slug: response.user.slug,
           bio: response.user.bio,
-          achievements: response.user.achievements
+          achievements: response.user.achievements,
+          store_name: response.user.store_name,
+          store_slug: response.user.store_slug,
+          description: response.user.description,
+          banner_url: response.user.banner_url
         }
       }
 
@@ -171,6 +179,10 @@ export const useAuth = () => {
           slug: userData.slug,
           bio: userData.bio,
           achievements: userData.achievements,
+          store_name: userData.store_name,
+          store_slug: userData.store_slug,
+          description: userData.description,
+          banner_url: userData.banner_url,
           is_active: userData.is_active,
           created_at: userData.created_at,
           updated_at: userData.updated_at
@@ -209,7 +221,11 @@ export const useAuth = () => {
           type: response.user.user_type,
           slug: response.user.slug,
           bio: response.user.bio,
-          achievements: response.user.achievements
+          achievements: response.user.achievements,
+          store_name: response.user.store_name,
+          store_slug: response.user.store_slug,
+          description: response.user.description,
+          banner_url: response.user.banner_url
         }
       }
 
