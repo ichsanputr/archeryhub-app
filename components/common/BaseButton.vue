@@ -12,6 +12,7 @@
             <span v-else-if="iconRight" class="material-symbols-outlined shrink-0" :class="iconSizeClass">{{ iconRight
             }}</span>
         </template>
+        <span v-if="loading && loadingText" class="ml-2">{{ loadingText }}</span>
     </NuxtLink>
 
     <!-- Use regular button otherwise -->
@@ -27,6 +28,7 @@
             <span v-else-if="iconRight" class="material-symbols-outlined shrink-0" :class="iconSizeClass">{{ iconRight
             }}</span>
         </template>
+        <span v-if="loading && loadingText" class="ml-2">{{ loadingText }}</span>
     </button>
 </template>
 
@@ -75,6 +77,10 @@ const props = defineProps({
     block: {
         type: Boolean,
         default: false
+    },
+    loadingText: {
+        type: String,
+        default: ''
     }
 })
 

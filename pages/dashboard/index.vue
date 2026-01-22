@@ -295,15 +295,24 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useAuth } from '~/composables/useAuth'
+import { useRouter } from 'vue-router'
 
 definePageMeta({
   layout: 'dashboard'
 })
 
+const router = useRouter()
 const { user } = useAuth()
 const userRole = computed(() => user.value?.role || user.value?.type || 'archer')
+
+// Redirect archer users to dashboard/events
+onMounted(() => {
+  if (userRole.value === 'archer') {
+    router.replace('/dashboard/events')
+  }
+})
 
 const clubStats = [
   { label: 'Total Anggota', value: '48', icon: 'ph:users-three', desc: '+3 bulan ini' },

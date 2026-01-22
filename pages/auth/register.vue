@@ -74,12 +74,6 @@
                     </button>
                 </div>
 
-                <!-- Error Message -->
-                <div v-if="error"
-                    class="mt-6 p-3 rounded-lg bg-red-50 border border-red-100 text-red-600 text-sm text-center font-body">
-                    {{ error }}
-                </div>
-
                 <div class="mt-8">
                     <form @submit.prevent="handleRegister" class="space-y-6">
                         <!-- User Type Specific Field (MANDATORY FOR GOOGLE REG) -->
@@ -159,7 +153,8 @@
                         <div class="pt-2">
                             <BaseButton variant="gold" block size="lg" icon="logos:google-icon"
                                 @click="handleGoogleRegister" :loading="isGoogleLoading || isValidating"
-                                :disabled="!isNameValid || !form.terms || isNameTaken || isValidating">
+                                :disabled="!isNameValid || !form.terms || isNameTaken || isValidating"
+                                loading-text="Menyambung ke Google...">
                                 Daftar dengan Google
                             </BaseButton>
                             <p class="mt-4 text-xs text-center text-gray-400">
@@ -190,10 +185,11 @@ import { useRoute } from 'vue-router'
 import { useFormValidation } from '~/composables/useFormValidation'
 import { useApi } from '~/composables/useApi'
 import { useAuth } from '~/composables/useAuth'
+import { useToast } from '~/composables/useToast'
 
 const route = useRoute()
 const isLoading = ref(false)
-const error = ref(null)
+const toast = useToast()
 
 const userTypes = [
     { value: 'archer', label: 'Pemanah', icon: 'temaki:archery' },
@@ -239,9 +235,7 @@ const checkNameUnique = async (name) => {
         const response = await get(`/api/v1/auth/check-name?type=${form.value.userType}&name=${encodeURIComponent(name)}`)
         isNameTaken.value = response.exists
         if (response.exists) {
-            error.value = 'Nama ini sudah terdaftar. Silakan gunakan nama lain.'
-        } else if (error.value === 'Nama ini sudah terdaftar. Silakan gunakan nama lain.') {
-            error.value = null
+            toast.error('Nama ini sudah terdaftar. Silakan gunakan nama lain.')
         }
     } catch (err) {
         console.error('Failed to check name:', err)
@@ -263,7 +257,6 @@ watch([() => form.value.fullName, () => form.value.organizationName, () => form.
 
 watch(() => form.value.userType, () => {
     isNameTaken.value = false
-    error.value = null
     const name = getName()
     if (name.length >= 3) {
         checkNameUnique(name)
@@ -294,24 +287,26 @@ const handleRegister = () => {
 
 const handleGoogleRegister = async () => {
     if (!isNameValid.value) {
-        error.value = 'Silakan isi nama yang valid (minimal 3 karakter)'
+        toast.error('Silakan isi nama yang valid (minimal 3 karakter)')
         return
     }
 
     if (!form.value.terms) {
-        error.value = 'Anda harus menyetujui syarat dan ketentuan'
+        toast.error('Anda harus menyetujui syarat dan ketentuan')
         return
     }
 
     isGoogleLoading.value = true
-    error.value = null
 
     try {
         // Pass user type and captured name to Google OAuth
         await login(form.value.userType, getName())
+        // Hard reload and redirect to homepage
+        window.location.href = '/'
     } catch (err) {
         console.error('Google registration failed:', err)
-        error.value = 'Gagal menyambung ke Google. Silakan coba lagi.'
+        const errorMessage = err.data?.error || err.response?._data?.error || err.message || 'Gagal menyambung ke Google. Silakan coba lagi.'
+        toast.error(errorMessage)
         isGoogleLoading.value = false
     }
 }

@@ -62,12 +62,6 @@
                     </p>
                 </div>
 
-                <!-- Error Message -->
-                <div v-if="error"
-                    class="p-3 rounded-lg bg-red-50 border border-red-100 text-red-600 text-sm text-center font-body">
-                    {{ error }}
-                </div>
-
                 <form @submit.prevent="handleEmailAuth" class="space-y-6">
                     <BaseInput v-model="form.email" label="Alamat Email" placeholder="name@company.com" type="email"
                         icon="mail" required :error="errors.email"
@@ -89,7 +83,7 @@
 
                     <div>
                         <BaseButton type="submit" variant="gold" block :loading="isLoading" loading-text="Lagi masuk..."
-                            icon-right="arrow_forward">
+                            icon-right="ph:arrow-right">
                             Masuk Sekarang
                         </BaseButton>
                     </div>
@@ -106,7 +100,7 @@
 
                 <div class="mt-6">
                     <BaseButton variant="outline" block icon="logos:google-icon" @click="handleGoogleLogin"
-                        :loading="isLoading && !form.email">
+                        :loading="isLoading && !form.email" loading-text="Menyambung ke Google...">
                         Masuk dengan Google
                     </BaseButton>
                 </div>
@@ -128,13 +122,14 @@ import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 import { useFormValidation } from '~/composables/useFormValidation'
+import { useToast } from '~/composables/useToast'
 
 const route = useRoute()
 const router = useRouter()
 const { login, loginWithEmail, isLoggedIn } = useAuth()
+const toast = useToast()
 
 const isLoading = ref(false)
-const error = ref(null)
 
 const { errors, validate, validateForm, rules } = useFormValidation()
 
@@ -176,15 +171,15 @@ const handleEmailAuth = async () => {
     if (!isValid) return
 
     isLoading.value = true
-    error.value = null
 
     try {
         await loginWithEmail(form.value.email, form.value.password)
-        const redirect = route.query.redirect || '/'
-        router.push(redirect)
+        // Hard reload and redirect to homepage
+        window.location.href = '/'
     } catch (err) {
         console.error('Auth failed:', err)
-        error.value = err.message || 'Email atau kata sandi salah'
+        const errorMessage = err.data?.error || err.response?._data?.error || err.message || 'Email atau kata sandi salah'
+        toast.error(errorMessage)
     } finally {
         isLoading.value = false
     }
@@ -192,13 +187,13 @@ const handleEmailAuth = async () => {
 
 const handleGoogleLogin = async () => {
     isLoading.value = true
-    error.value = null
 
     try {
         await login()
     } catch (err) {
         console.error('Google login failed:', err)
-        error.value = 'Gagal menyambung ke Google. Silakan coba lagi.'
+        const errorMessage = err.data?.error || err.message || 'Gagal menyambung ke Google. Silakan coba lagi.'
+        toast.error(errorMessage)
         isLoading.value = false
     }
 }

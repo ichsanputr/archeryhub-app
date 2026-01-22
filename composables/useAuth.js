@@ -62,14 +62,20 @@ export const useAuth = () => {
           email: response.user.email,
           avatar_url: response.user.avatar_url || response.user.avatar,
           role: response.user.role,
-          type: response.user.type || response.user.user_type || response.user.role
+          type: response.user.type || response.user.user_type || response.user.role,
+          slug: response.user.slug,
+          bio: response.user.bio,
+          achievements: response.user.achievements
         }
       }
 
       return response
     } catch (error) {
       console.error('Email login error:', error)
-      throw new Error(error.data?.error || 'Invalid email or password')
+      const errorMessage = error.data?.error || error.response?._data?.error || error.message || 'Invalid email or password'
+      const authError = new Error(errorMessage)
+      authError.data = error.data || error.response?._data || {}
+      throw authError
     }
   }
 
@@ -93,14 +99,20 @@ export const useAuth = () => {
           email: response.user.email,
           avatar_url: response.user.avatar_url || response.user.avatar,
           role: response.user.role,
-          type: response.user.type || response.user.user_type || response.user.role
+          type: response.user.type || response.user.user_type || response.user.role,
+          slug: response.user.slug,
+          bio: response.user.bio,
+          achievements: response.user.achievements
         }
       }
 
       return response
     } catch (error) {
       console.error('Registration error:', error)
-      throw new Error(error.data?.error || 'Registration failed')
+      const errorMessage = error.data?.error || error.response?._data?.error || error.message || 'Registration failed'
+      const authError = new Error(errorMessage)
+      authError.data = error.data || error.response?._data || {}
+      throw authError
     }
   }
 
@@ -156,6 +168,9 @@ export const useAuth = () => {
           avatar_url: userData.avatar_url || userData.avatar,
           role: userData.role,
           type: userData.type || userData.user_type || userData.role,
+          slug: userData.slug,
+          bio: userData.bio,
+          achievements: userData.achievements,
           is_active: userData.is_active,
           created_at: userData.created_at,
           updated_at: userData.updated_at
@@ -191,7 +206,10 @@ export const useAuth = () => {
           email: response.user.email,
           avatar_url: response.user.avatar_url,
           role: response.user.role,
-          type: response.user.user_type
+          type: response.user.user_type,
+          slug: response.user.slug,
+          bio: response.user.bio,
+          achievements: response.user.achievements
         }
       }
 

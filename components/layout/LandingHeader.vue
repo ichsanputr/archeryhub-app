@@ -107,6 +107,8 @@
 
                     <NuxtLink to="/klub" class="font-black text-sm transition-all duration-300 hover:text-primary"
                         :class="[navLinkClasses, { '!text-primary': isActive('/klub') }]">Klub</NuxtLink>
+                    <NuxtLink to="/archer" class="font-black text-sm transition-all duration-300 hover:text-primary"
+                        :class="[navLinkClasses, { '!text-primary': isActive('/archer') }]">Pemanah</NuxtLink>
                     <NuxtLink to="/berita" class="font-black text-sm transition-all duration-300 hover:text-primary"
                         :class="[navLinkClasses, { '!text-primary': isActive('/berita') }]">Berita</NuxtLink>
                     <NuxtLink to="/shop" class="font-black text-sm transition-all duration-300 hover:text-primary"
@@ -222,6 +224,8 @@
 
                     <NuxtLink to="/klub" class="block text-gray-600 font-medium text-sm py-3"
                         :class="{ 'text-primary font-bold': isActive('/klub') }">Klub</NuxtLink>
+                    <NuxtLink to="/archer" class="block text-gray-600 font-medium text-sm py-3"
+                        :class="{ 'text-primary font-bold': isActive('/archer') }">Pemanah</NuxtLink>
                     <NuxtLink to="/berita" class="block text-gray-600 font-medium text-sm py-3"
                         :class="{ 'text-primary font-bold': isActive('/berita') }">Berita</NuxtLink>
                     <NuxtLink to="/shop" class="block text-gray-600 font-medium text-sm py-3"
