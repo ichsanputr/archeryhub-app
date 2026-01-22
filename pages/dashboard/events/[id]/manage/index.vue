@@ -83,7 +83,8 @@
                     <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-3">Total Atlet</p>
                     <div class="flex items-center justify-between">
                         <h3 class="text-3xl font-black text-navy">{{ event?.participant_count || 0 }}</h3>
-                        <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+                        <div
+                            class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                             <Icon icon="ph:users-three-bold" class="text-xl" />
                         </div>
                     </div>
@@ -94,8 +95,9 @@
                     <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-3">Target Aktif</p>
                     <div class="flex items-center justify-between">
                         <h3 class="text-3xl font-black text-navy">{{ Math.ceil((event?.participant_count || 0) / 4)
-                        }}</h3>
-                        <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+                            }}</h3>
+                        <div
+                            class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                             <Icon icon="ph:target-bold" class="text-xl" />
                         </div>
                     </div>
@@ -106,7 +108,8 @@
                     <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-3">Completion</p>
                     <div class="flex items-center justify-between">
                         <h3 class="text-3xl font-black text-navy">0%</h3>
-                        <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+                        <div
+                            class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                             <Icon icon="ph:check-circle-bold" class="text-xl" />
                         </div>
                     </div>
@@ -421,7 +424,7 @@ const fetchEventDetails = async () => {
         event.value = eventRes
         eventCategories.value = categoriesRes?.categories || []
         participants.value = participantsRes?.participants || []
-        
+
         // Set event context for header
         if (event.value) {
             setEvent(event.value)
@@ -447,11 +450,6 @@ const publishEvent = async () => {
 
 onMounted(() => {
     fetchEventDetails()
-})
-
-// Clear event context when leaving the page
-onBeforeUnmount(() => {
-    clearEvent()
 })
 
 // Watch for event changes to update context

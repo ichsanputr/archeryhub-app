@@ -273,10 +273,6 @@ onMounted(() => {
     fetchEventDetails()
 })
 
-onBeforeUnmount(() => {
-    clearEvent()
-})
-
 const searchQuery = ref('')
 
 const targets = ref([

@@ -76,7 +76,8 @@
                             <div>
                                 <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Total
                                     Archers</p>
-                                <p class="text-navy-dark text-3xl font-extrabold tracking-tight">{{ event?.participant_count || 0 }}</p>
+                                <p class="text-navy-dark text-3xl font-extrabold tracking-tight">{{
+                                    event?.participant_count || 0 }}</p>
                             </div>
                             <div
                                 class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
@@ -120,7 +121,8 @@
                             <div>
                                 <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">
                                     Completion</p>
-                                <p class="text-navy-dark text-3xl font-extrabold tracking-tight">{{ completionPercentage }}%</p>
+                                <p class="text-navy-dark text-3xl font-extrabold tracking-tight">{{ completionPercentage
+                                    }}%</p>
                             </div>
                             <div
                                 class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
@@ -138,7 +140,8 @@
                             <div>
                                 <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Time
                                     Left</p>
-                                <p class="text-navy-dark text-3xl font-extrabold tracking-tight tabular-nums">{{ timeLeft }}</p>
+                                <p class="text-navy-dark text-3xl font-extrabold tracking-tight tabular-nums">{{
+                                    timeLeft }}</p>
                             </div>
                             <div
                                 class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
@@ -172,8 +175,7 @@
                         </div>
                         <div class="p-6 flex-1 overflow-y-auto bg-gray-50/30">
                             <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-3">
-                                <button v-for="i in maxTargets" :key="i"
-                                    :class="getTargetStatusClass(i)"
+                                <button v-for="i in maxTargets" :key="i" :class="getTargetStatusClass(i)"
                                     class="aspect-square rounded-lg border flex flex-col items-center justify-center cursor-pointer hover:shadow-md transition-all group shadow-sm">
                                     <span class="font-bold text-lg group-hover:scale-110 transition-transform"
                                         :class="getTargetTextClass(i)">
@@ -183,7 +185,7 @@
                                         <div v-for="p in groupedTargets[i]" :key="p.id"
                                             class="w-2 h-2 rounded-full bg-primary border border-white"></div>
                                     </div>
-                                    <Icon v-if="getTargetHasIssue(i)" icon="ph:warning" 
+                                    <Icon v-if="getTargetHasIssue(i)" icon="ph:warning"
                                         class="text-[16px] text-red-500 mt-1" />
                                 </button>
                             </div>
@@ -254,8 +256,7 @@
                             <div v-for="alert in alerts" :key="alert.id"
                                 :class="alert.type === 'warning' ? 'bg-red-50/50 border-red-100' : 'bg-gray-50 border-gray-100'"
                                 class="flex items-start gap-4 p-4 rounded-xl border">
-                                <div
-                                    :class="alert.type === 'warning' ? 'bg-white border-red-100 text-red-500' : 'bg-white border-gray-200 text-navy-dark'"
+                                <div :class="alert.type === 'warning' ? 'bg-white border-red-100 text-red-500' : 'bg-white border-gray-200 text-navy-dark'"
                                     class="p-2 rounded-lg border shadow-sm">
                                     <Icon :icon="alert.icon" class="text-xl" />
                                 </div>
@@ -280,32 +281,38 @@
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
                             <button
                                 class="flex flex-col items-center justify-center p-4 rounded-xl bg-gray-50 border border-gray-100 hover:bg-white hover:border-primary hover:shadow-lg hover:shadow-primary/10 text-text-main transition-all group duration-300">
-                                <Icon icon="ph:printer" class="mb-2 text-gray-400 group-hover:text-primary transition-colors text-2xl" />
+                                <Icon icon="ph:printer"
+                                    class="mb-2 text-gray-400 group-hover:text-primary transition-colors text-2xl" />
                                 <span class="text-xs font-bold group-hover:text-navy-dark">Print Scorecards</span>
                             </button>
                             <button
                                 class="flex flex-col items-center justify-center p-4 rounded-xl bg-gray-50 border border-gray-100 hover:bg-white hover:border-primary hover:shadow-lg hover:shadow-primary/10 text-text-main transition-all group duration-300">
-                                <Icon icon="ph:arrows-clockwise" class="mb-2 text-gray-400 group-hover:text-primary transition-colors text-2xl" />
+                                <Icon icon="ph:arrows-clockwise"
+                                    class="mb-2 text-gray-400 group-hover:text-primary transition-colors text-2xl" />
                                 <span class="text-xs font-bold group-hover:text-navy-dark">Sync Leaderboard</span>
                             </button>
                             <button
                                 class="flex flex-col items-center justify-center p-4 rounded-xl bg-gray-50 border border-gray-100 hover:bg-white hover:border-primary hover:shadow-lg hover:shadow-primary/10 text-text-main transition-all group duration-300">
-                                <Icon icon="ph:pencil" class="mb-2 text-gray-400 group-hover:text-primary transition-colors text-2xl" />
+                                <Icon icon="ph:pencil"
+                                    class="mb-2 text-gray-400 group-hover:text-primary transition-colors text-2xl" />
                                 <span class="text-xs font-bold group-hover:text-navy-dark">Edit Assignments</span>
                             </button>
                             <button
                                 class="flex flex-col items-center justify-center p-4 rounded-xl bg-gray-50 border border-gray-100 hover:bg-white hover:border-primary hover:shadow-lg hover:shadow-primary/10 text-text-main transition-all group duration-300">
-                                <Icon icon="ph:megaphone" class="mb-2 text-gray-400 group-hover:text-primary transition-colors text-2xl" />
+                                <Icon icon="ph:megaphone"
+                                    class="mb-2 text-gray-400 group-hover:text-primary transition-colors text-2xl" />
                                 <span class="text-xs font-bold group-hover:text-navy-dark">Announcements</span>
                             </button>
                             <button
                                 class="flex flex-col items-center justify-center p-4 rounded-xl bg-gray-50 border border-gray-100 hover:bg-white hover:border-primary hover:shadow-lg hover:shadow-primary/10 text-text-main transition-all group duration-300">
-                                <Icon icon="ph:qr-code" class="mb-2 text-gray-400 group-hover:text-primary transition-colors text-2xl" />
+                                <Icon icon="ph:qr-code"
+                                    class="mb-2 text-gray-400 group-hover:text-primary transition-colors text-2xl" />
                                 <span class="text-xs font-bold group-hover:text-navy-dark">Generate QR</span>
                             </button>
                             <button
                                 class="flex flex-col items-center justify-center p-4 rounded-xl bg-gray-50 border border-gray-100 hover:bg-white hover:border-primary hover:shadow-lg hover:shadow-primary/10 text-text-main transition-all group duration-300">
-                                <Icon icon="ph:gear" class="mb-2 text-gray-400 group-hover:text-primary transition-colors text-2xl" />
+                                <Icon icon="ph:gear"
+                                    class="mb-2 text-gray-400 group-hover:text-primary transition-colors text-2xl" />
                                 <span class="text-xs font-bold group-hover:text-navy-dark">Device Manager</span>
                             </button>
                         </div>
@@ -362,16 +369,18 @@
                                         <div class="flex items-center gap-3">
                                             <div
                                                 class="h-9 w-9 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs uppercase">
-                                                {{ p.full_name?.split(' ').map(n => n[0]).join('') || 'N/A' }}
+                                                {{p.full_name?.split(' ').map(n => n[0]).join('') || 'N/A'}}
                                             </div>
                                             <div>
-                                                <p class="font-black text-navy tracking-tight">{{ p.full_name || p.name }}</p>
+                                                <p class="font-black text-navy tracking-tight">{{ p.full_name || p.name
+                                                    }}</p>
                                                 <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
                                                     {{ p.athlete_code || '-' }}</p>
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-8 py-5 text-gray-500 font-medium">{{ p.club_name || p.club_id || '-' }}
+                                    <td class="px-8 py-5 text-gray-500 font-medium">{{ p.club_name || p.club_id || '-'
+                                        }}
                                     </td>
                                     <td class="px-8 py-5">
                                         <p class="text-navy font-bold text-xs">{{ p.division_name || '-' }}</p>
@@ -620,10 +629,6 @@ const publishEvent = async () => {
 
 onMounted(() => {
     fetchEventDetails()
-})
-
-onBeforeUnmount(() => {
-    clearEvent()
 })
 
 watch(event, (newEvent) => {

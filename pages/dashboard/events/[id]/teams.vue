@@ -24,8 +24,10 @@
 
         <!-- Quick Stats -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+            <div
+                class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div
+                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:users-four" class="text-2xl" />
                 </div>
                 <div>
@@ -33,8 +35,10 @@
                     <p class="text-xl font-black text-navy">{{ teams.length }}</p>
                 </div>
             </div>
-            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+            <div
+                class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div
+                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:users-three" class="text-2xl" />
                 </div>
                 <div>
@@ -42,8 +46,10 @@
                     <p class="text-xl font-black text-navy">{{ totalMembers }}</p>
                 </div>
             </div>
-            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+            <div
+                class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div
+                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:trophy" class="text-2xl" />
                 </div>
                 <div>
@@ -51,8 +57,10 @@
                     <p class="text-xl font-black text-navy">{{ uniqueCategories }}</p>
                 </div>
             </div>
-            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+            <div
+                class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div
+                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:medal" class="text-2xl" />
                 </div>
                 <div>
@@ -66,7 +74,8 @@
         <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
             <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
                 <div class="relative w-full md:w-64">
-                    <Icon icon="ph:magnifying-glass" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
+                    <Icon icon="ph:magnifying-glass"
+                        class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
                     <input v-model="searchQuery"
                         class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-100 rounded-xl text-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none"
                         placeholder="Cari nama tim..." type="text">
@@ -83,27 +92,28 @@
 
         <!-- Teams Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div v-for="team in filteredTeams" :key="team.id"
-                class="team-card group">
+            <div v-for="team in filteredTeams" :key="team.id" class="team-card group">
                 <!-- Team Header with Avatar -->
                 <div class="p-6 border-b border-gray-100">
                     <div class="flex items-start gap-4">
                         <!-- Team Avatar -->
-                        <div class="h-14 w-14 rounded-2xl bg-gradient-to-br from-navy to-navy-light flex items-center justify-center text-primary font-black text-lg shrink-0 group-hover:scale-105 transition-transform shadow-lg">
+                        <div
+                            class="h-14 w-14 rounded-2xl bg-gradient-to-br from-navy to-navy-light flex items-center justify-center text-primary font-black text-lg shrink-0 group-hover:scale-105 transition-transform shadow-lg">
                             {{ getTeamInitials(team.team_name) }}
                         </div>
                         <div class="flex-1 min-w-0">
                             <div class="flex items-start justify-between gap-2 mb-2">
-                                <h3 class="font-black text-navy text-lg tracking-tight leading-tight group-hover:text-primary transition-colors truncate">
+                                <h3
+                                    class="font-black text-navy text-lg tracking-tight leading-tight group-hover:text-primary transition-colors truncate">
                                     {{ team.team_name }}
                                 </h3>
-                                <span
-                                    class="status-badge shrink-0"
+                                <span class="status-badge shrink-0"
                                     :class="team.status === 'active' ? 'active' : 'inactive'">
                                     {{ team.status === 'active' ? 'Aktif' : 'Nonaktif' }}
                                 </span>
                             </div>
-                            <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">{{ team.category_name || 'Kategori Tidak Ditentukan' }}</p>
+                            <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">{{ team.category_name ||
+                                'Kategori Tidak Ditentukan' }}</p>
                         </div>
                     </div>
                     <div class="flex items-center gap-4 mt-4 text-sm">
@@ -122,26 +132,27 @@
                 <div class="p-6 space-y-4">
                     <div class="grid grid-cols-2 gap-4">
                         <div class="bg-gray-50/50 rounded-xl p-3 border border-gray-100">
-                            <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest block mb-1">Total Skor</span>
+                            <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest block mb-1">Total
+                                Skor</span>
                             <span class="text-xl font-black text-navy tabular-nums">{{ team.total_score || 0 }}</span>
                         </div>
                         <div class="bg-gray-50/50 rounded-xl p-3 border border-gray-100">
-                            <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest block mb-1">X+10</span>
+                            <span
+                                class="text-[10px] text-gray-400 font-bold uppercase tracking-widest block mb-1">X+10</span>
                             <span class="text-xl font-black text-navy tabular-nums">{{ team.total_x_count || 0 }}</span>
                         </div>
                     </div>
                     <div v-if="team.members && team.members.length > 0" class="pt-3 border-t border-gray-100">
                         <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-3">Anggota Tim</p>
                         <div class="flex flex-wrap gap-2">
-                            <span v-for="(member, idx) in team.members.slice(0, 4)" :key="idx"
-                                class="member-chip">
-                                <span class="h-5 w-5 rounded-full bg-navy/10 flex items-center justify-center text-[9px] font-bold text-navy">
+                            <span v-for="(member, idx) in team.members.slice(0, 4)" :key="idx" class="member-chip">
+                                <span
+                                    class="h-5 w-5 rounded-full bg-navy/10 flex items-center justify-center text-[9px] font-bold text-navy">
                                     {{ getMemberInitials(member.name || `A${idx + 1}`) }}
                                 </span>
                                 {{ member.name || `Anggota ${idx + 1}` }}
                             </span>
-                            <span v-if="team.members.length > 4"
-                                class="member-chip overflow">
+                            <span v-if="team.members.length > 4" class="member-chip overflow">
                                 +{{ team.members.length - 4 }} lagi
                             </span>
                         </div>
@@ -153,7 +164,8 @@
                     <BaseButton variant="white" size="sm" icon="ph:eye" class="flex-1" @click="viewTeam(team)">
                         Detail
                     </BaseButton>
-                    <BaseButton variant="outline" size="sm" icon="ph:pencil-simple" class="flex-1" @click="editTeam(team)">
+                    <BaseButton variant="outline" size="sm" icon="ph:pencil-simple" class="flex-1"
+                        @click="editTeam(team)">
                         Edit
                     </BaseButton>
                     <button @click="deleteTeam(team)"
@@ -166,11 +178,13 @@
             <!-- Empty State -->
             <div v-if="filteredTeams.length === 0" class="col-span-full">
                 <div class="bg-white rounded-3xl border border-gray-100 p-16 text-center shadow-sm">
-                    <div class="h-24 w-24 mx-auto bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl flex items-center justify-center text-gray-300 mb-6 shadow-inner">
+                    <div
+                        class="h-24 w-24 mx-auto bg-gradient-to-br from-gray-50 to-gray-100 rounded-3xl flex items-center justify-center text-gray-300 mb-6 shadow-inner">
                         <Icon icon="ph:users-four" class="text-5xl" />
                     </div>
                     <h3 class="text-2xl font-black text-navy mb-3">Belum Ada Tim</h3>
-                    <p class="text-gray-500 mb-8 max-w-sm mx-auto leading-relaxed">Tim akan otomatis dibuat dari fase kualifikasi. Silakan selesaikan fase kualifikasi terlebih dahulu.</p>
+                    <p class="text-gray-500 mb-8 max-w-sm mx-auto leading-relaxed">Tim akan otomatis dibuat dari fase
+                        kualifikasi. Silakan selesaikan fase kualifikasi terlebih dahulu.</p>
                 </div>
             </div>
         </div>
@@ -301,10 +315,6 @@ onMounted(() => {
     fetchEventDetails()
     fetchTeams()
 })
-
-onBeforeUnmount(() => {
-    clearEvent()
-})
 </script>
 
 <style scoped>
@@ -376,4 +386,3 @@ onBeforeUnmount(() => {
     font-weight: 600;
 }
 </style>
-

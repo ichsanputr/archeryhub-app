@@ -1,6 +1,6 @@
 // OAuth Google authentication composable
 import { computed, readonly } from 'vue'
-import { useState, useRuntimeConfig, useNuxtApp } from '#imports'
+// useState, useRuntimeConfig, and useNuxtApp are auto-imported by Nuxt
 import { $fetch } from 'ofetch'
 
 export const useAuth = () => {

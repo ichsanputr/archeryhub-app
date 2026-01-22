@@ -6,15 +6,18 @@
                 <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
                     <NuxtLink to="/dashboard/events" class="hover:text-primary transition-colors">Events</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <NuxtLink :to="`/dashboard/events/${route.params.id}/overview`" class="hover:text-primary transition-colors">Control Panel</NuxtLink>
+                    <NuxtLink :to="`/dashboard/events/${route.params.id}/overview`"
+                        class="hover:text-primary transition-colors">Control Panel</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
                     <span class="text-navy">Peserta</span>
                 </div>
                 <h1 class="text-3xl font-extrabold text-navy tracking-tight">Daftar Peserta Event</h1>
-                <p class="text-gray-500 font-medium mt-1">Lihat dan kelola semua peserta yang terdaftar dalam event ini.</p>
+                <p class="text-gray-500 font-medium mt-1">Lihat dan kelola semua peserta yang terdaftar dalam event ini.
+                </p>
             </div>
             <div class="flex gap-3">
-                <BaseButton :to="`/dashboard/events/${route.params.id}/participants/add`" variant="primary" icon="ph:plus-bold" class="h-11 shadow-lg shadow-primary/20">
+                <BaseButton :to="`/dashboard/events/${route.params.id}/participants/add`" variant="primary"
+                    icon="ph:plus-bold" class="h-11 shadow-lg shadow-primary/20">
                     Tambah Peserta
                 </BaseButton>
                 <BaseButton variant="white" icon="ph:download" class="h-11">
@@ -28,8 +31,10 @@
 
         <!-- Stats Cards -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+            <div
+                class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div
+                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:users-three" class="text-2xl" />
                 </div>
                 <div>
@@ -37,8 +42,10 @@
                     <p class="text-xl font-black text-navy">{{ participants.length }}</p>
                 </div>
             </div>
-            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+            <div
+                class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div
+                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:check-circle" class="text-2xl" />
                 </div>
                 <div>
@@ -46,8 +53,10 @@
                     <p class="text-xl font-black text-navy">{{ verifiedCount }}</p>
                 </div>
             </div>
-            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+            <div
+                class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div
+                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:clock" class="text-2xl" />
                 </div>
                 <div>
@@ -55,8 +64,10 @@
                     <p class="text-xl font-black text-navy">{{ pendingCount }}</p>
                 </div>
             </div>
-            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+            <div
+                class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div
+                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:buildings" class="text-2xl" />
                 </div>
                 <div>
@@ -70,7 +81,8 @@
         <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
             <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
                 <div class="relative w-full md:w-64">
-                    <Icon icon="ph:magnifying-glass" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
+                    <Icon icon="ph:magnifying-glass"
+                        class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
                     <input v-model="searchQuery"
                         class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-100 rounded-xl text-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none"
                         placeholder="Cari nama, klub, atau kategori..." type="text">
@@ -110,7 +122,7 @@
                                 <div class="flex items-center gap-3">
                                     <div
                                         class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs uppercase border border-gray-200">
-                                        {{ participant.full_name?.split(' ').map(n => n[0]).join('') || 'U' }}
+                                        {{participant.full_name?.split(' ').map(n => n[0]).join('') || 'U'}}
                                     </div>
                                     <div>
                                         <p class="font-black text-navy tracking-tight">{{ participant.full_name }}</p>
@@ -122,12 +134,14 @@
                             <td class="px-6 py-4 text-gray-500 font-medium">{{ participant.club_name || '-' }}</td>
                             <td class="px-6 py-4">
                                 <p class="text-navy font-bold text-xs">{{ participant.division_name || '-' }}</p>
-                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{{ participant.category_name || '-' }}</p>
+                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{{
+                                    participant.category_name || '-' }}</p>
                             </td>
                             <td class="px-6 py-4">
                                 <span v-if="participant.target_number"
                                     class="inline-flex items-center justify-center px-2 py-1 bg-navy text-primary rounded font-black text-xs shadow-sm">
-                                    {{ String(participant.target_number).padStart(2, '0') }}{{ participant.back_number || '' }}
+                                    {{ String(participant.target_number).padStart(2, '0') }}{{ participant.back_number
+                                    || '' }}
                                 </span>
                                 <span v-else class="text-[10px] text-gray-300 font-black uppercase italic">TBD</span>
                             </td>
@@ -244,10 +258,6 @@ const uniqueClubs = computed(() => {
 onMounted(() => {
     fetchEventDetails()
     fetchParticipants()
-})
-
-onBeforeUnmount(() => {
-    clearEvent()
 })
 </script>
 

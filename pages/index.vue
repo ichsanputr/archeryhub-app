@@ -104,7 +104,7 @@
                                     </div>
                                     <!-- asas -->
 
-                                    <div class="flex-shrink-0">
+                                    <div v-if="!isLoggedIn || isArcher" class="flex-shrink-0">
                                         <NuxtLink :to="`/events/${event.slug || index}`"
                                             class="inline-flex items-center justify-center bg-gray-50 group-hover:bg-primary text-navy font-bold p-2 sm:py-2.5 sm:px-6 rounded-lg sm:rounded-xl transition-all border border-gray-100 group-hover:border-primary text-xs sm:text-sm shadow-sm group-hover:shadow-md">
                                             <span class="hidden sm:inline">Ikuti</span>
@@ -481,6 +481,7 @@ definePageMeta({
 })
 
 const { isLoggedIn, user } = useAuth()
+const isArcher = computed(() => user.value?.type === 'archer' || user.value?.role === 'archer')
 
 const activeRegion = ref('Semua Wilayah')
 

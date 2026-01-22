@@ -201,7 +201,6 @@
 </template>
 
 <script setup>
-import { definePageMeta, useHead } from '#imports'
 import Container from '~/components/Container.vue'
 
 defineOptions({

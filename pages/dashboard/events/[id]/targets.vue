@@ -6,7 +6,8 @@
                 <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
                     <NuxtLink to="/dashboard/events" class="hover:text-primary transition-colors">Events</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <NuxtLink :to="`/dashboard/events/${route.params.id}/overview`" class="hover:text-primary transition-colors">Control Panel</NuxtLink>
+                    <NuxtLink :to="`/dashboard/events/${route.params.id}/overview`"
+                        class="hover:text-primary transition-colors">Control Panel</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
                     <span class="text-navy">Target & Lajur</span>
                 </div>
@@ -25,8 +26,10 @@
 
         <!-- Quick Metrics -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+            <div
+                class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div
+                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:target" class="text-2xl" />
                 </div>
                 <div>
@@ -34,8 +37,10 @@
                     <p class="text-xl font-black text-navy">{{ targets.length }}</p>
                 </div>
             </div>
-            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+            <div
+                class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div
+                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:users-three" class="text-2xl" />
                 </div>
                 <div>
@@ -43,8 +48,10 @@
                     <p class="text-xl font-black text-navy">{{ totalAthletes }}</p>
                 </div>
             </div>
-            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+            <div
+                class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div
+                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:user-plus" class="text-2xl" />
                 </div>
                 <div>
@@ -52,8 +59,10 @@
                     <p class="text-xl font-black text-navy">{{ availableSlots }}</p>
                 </div>
             </div>
-            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+            <div
+                class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div
+                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:wrench" class="text-2xl" />
                 </div>
                 <div>
@@ -84,7 +93,8 @@
                             :class="target.status === 'full' ? 'bg-navy text-primary' : 'bg-white text-navy border border-gray-200'">
                             {{ String(target.target).padStart(2, '0') }}
                         </div>
-                        <span class="font-black text-navy uppercase tracking-tight text-sm">Bantalan {{ target.target }}</span>
+                        <span class="font-black text-navy uppercase tracking-tight text-sm">Bantalan {{ target.target
+                            }}</span>
                     </div>
                     <span :class="getStatusClass(target.status)"
                         class="text-[9px] font-black px-2.5 py-1 rounded-lg border uppercase tracking-widest">
@@ -120,7 +130,8 @@
                                     slot tersedia
                                 </p>
                             </div>
-                            <Icon icon="ph:plus-circle" class="text-gray-300 text-[18px] group-hover/add:text-primary group-hover/add:rotate-90 transition-all" />
+                            <Icon icon="ph:plus-circle"
+                                class="text-gray-300 text-[18px] group-hover/add:text-primary group-hover/add:rotate-90 transition-all" />
                         </div>
                     </div>
                 </div>
@@ -166,10 +177,6 @@ const fetchEventDetails = async () => {
 
 onMounted(() => {
     fetchEventDetails()
-})
-
-onBeforeUnmount(() => {
-    clearEvent()
 })
 
 const laneData = reactive([

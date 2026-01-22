@@ -1,49 +1,19 @@
 <template>
     <div class="min-h-screen bg-background-light font-body text-navy">
-        <!-- Hero Section: Featured Event -->
+        <!-- Hero Section: List Events -->
         <div class="bg-navy relative overflow-hidden">
             <div class="absolute inset-0 z-0">
                 <div class="absolute inset-0 bg-gradient-to-r from-navy via-navy/90 to-transparent z-10"></div>
-                <img alt="Archer drawing a bow during sunset"
-                    class="w-full h-full object-cover object-center opacity-40 mix-blend-overlay"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAy5qIYUnhOAA9fRw-ezPUypzWUtCQTHv6EpNe6Q0bAAz6AFkDLOqgltBvPdIyyRsW4WqNcDFxXZlfgwFHWevvHH2yphLfwWEOEHT3GyFbvXsenr1qoxDPsSf-bmVfNqwG9_5cJoVMhgvCJ2FfEt6bQgicn5WlBrsP8axm39cBTN9E6cF7MQ9vKO5p0acgAZ1z3IYSXi-yQILL1HoOdT6ZobZEyg4qolUIumeiK6bVGuATW7dwLfqmaRIFiXL-l1PEPGa_sRD5Lc9E" />
             </div>
             <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 lg:py-24">
-                <div class="flex flex-col md:flex-row items-start md:items-end justify-between gap-8">
-                    <div class="max-w-2xl">
-                        <div
-                            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/20 border border-primary/30 backdrop-blur-sm mb-6">
-                            <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-                            <span class="text-navy text-xs font-bold uppercase tracking-wider">Event Unggulan</span>
-                        </div>
-                        <h1
-                            class="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight mb-4">
-                            Indonesian Open <br class="hidden md:block" />Championship 2024
-                        </h1>
-                        <div class="flex flex-wrap items-center gap-6 text-gray-300 text-sm md:text-base mb-8">
-                            <div class="flex items-center gap-2">
-                                <Icon icon="ph:calendar-blank" class="text-primary" />
-                                <span>Nov 12 - 15, 2024</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <Icon icon="ph:map-pin" class="text-primary" />
-                                <span>GBK Archery Field, Jakarta</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <Icon icon="ph:users-three" class="text-primary" />
-                                <span>Recurve & Compound</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
-                        <BaseButton to="/events/indonesian-open-2024" variant="primary" size="lg"
-                            iconRight="ph:arrow-right" class="shadow-xl">
-                            Ikuti Sekarang
-                        </BaseButton>
-                        <BaseButton variant="secondary" size="lg">
-                            Detail Event
-                        </BaseButton>
-                    </div>
+                <div class="max-w-3xl">
+                    <h1
+                        class="text-white text-4xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight mb-4">
+                        Semua Event Panahan
+                    </h1>
+                    <p class="text-gray-300 text-lg md:text-xl mb-8 leading-relaxed">
+                        Temukan dan daftar event panahan seru di seluruh Indonesia. Dari kompetisi lokal hingga turnamen nasional, semua ada di sini.
+                    </p>
                 </div>
             </div>
         </div>
@@ -180,8 +150,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                         <NuxtLink v-for="tournament in filteredTournaments" :key="tournament.slug"
                             :to="`/events/${tournament.slug}`"
-                            class="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:border-primary/50 transition-all duration-300 flex flex-col h-full"
-                            :class="tournament.status === 'finished' ? 'opacity-80 grayscale hover:opacity-100 hover:grayscale-0' : ''">
+                            class="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:border-primary/50 transition-all duration-300 flex flex-col h-full">
                             <div class="relative h-48 overflow-hidden">
                                 <!-- Labels Removed -->
                                 <img :alt="tournament.name"
@@ -204,15 +173,8 @@
                                     </div>
                                 </div>
                                 <div class="mt-auto">
-                                    <BaseButton v-if="tournament.status === 'live'" variant="navy" block
-                                        icon="ph:scoreboard">
-                                        Cek Skor
-                                    </BaseButton>
-                                    <BaseButton v-else-if="tournament.status === 'upcoming'" variant="primary" block>
-                                        Ikuti
-                                    </BaseButton>
-                                    <BaseButton v-else variant="outline" block iconRight="ph:medal">
-                                        Cek Hasil
+                                    <BaseButton variant="primary" block iconRight="ph:arrow-right">
+                                        Lihat
                                     </BaseButton>
                                 </div>
                             </div>

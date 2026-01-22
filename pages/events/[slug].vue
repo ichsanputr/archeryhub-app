@@ -17,17 +17,8 @@
 
                 <div class="flex flex-col lg:flex-row items-start justify-between gap-8 mb-12">
                     <div class="max-w-3xl">
-                        <div class="flex items-center gap-3 mb-4">
+                        <div v-if="tournament.status === 'live'" class="flex items-center gap-3 mb-4">
                             <span
-                                class="px-3 py-1 rounded-full bg-primary/20 border border-primary/30 text-navy text-xs font-bold uppercase tracking-wider backdrop-blur-sm">
-                                {{ tournament.category }}
-                            </span>
-                            <span v-if="tournament.status === 'upcoming'"
-                                class="px-3 py-1 rounded-full bg-red-500/20 border border-red-500/30 text-red-700 text-xs font-bold uppercase tracking-wider backdrop-blur-sm flex items-center gap-1">
-                                <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span> Pendaftaran
-                                Dibuka
-                            </span>
-                            <span v-else-if="tournament.status === 'live'"
                                 class="px-3 py-1 rounded-full bg-red-500/20 border border-red-500/30 text-red-700 text-xs font-bold uppercase tracking-wider backdrop-blur-sm flex items-center gap-1">
                                 <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span> Sedang
                                 Berlangsung
@@ -51,23 +42,14 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Register CTA - Auth-aware -->
-                    <div class="flex flex-col items-start gap-2">
+                    <!-- Register CTA - Auth-aware: Only show for non-logged-in or logged-in archers -->
+                    <div v-if="!isLoggedIn || isArcher" class="flex flex-col items-start gap-2">
                         <!-- Not logged in -->
                         <NuxtLink v-if="!isLoggedIn" :to="loginUrl"
                             class="h-10 px-5 bg-primary hover:bg-primary-hover text-navy font-bold text-sm rounded-lg transition-colors flex items-center justify-center gap-2 shadow-md">
                             Login untuk Mendaftar
                             <span class="material-symbols-outlined text-lg">login</span>
                         </NuxtLink>
-                        <!-- Logged in but not archer -->
-                        <template v-else-if="!isArcher">
-                            <NuxtLink :to="archerRegisterUrl"
-                                class="h-10 px-5 bg-white/20 hover:bg-white/30 text-white font-bold text-sm rounded-lg transition-colors flex items-center justify-center gap-2 backdrop-blur-sm border border-white/20">
-                                Daftar sebagai Atlet Dulu
-                                <span class="material-symbols-outlined text-lg">person_add</span>
-                            </NuxtLink>
-                            <p class="text-xs text-gray-400">Anda perlu terdaftar sebagai atlet untuk mendaftar event</p>
-                        </template>
                         <!-- Logged in as archer -->
                         <NuxtLink v-else :to="registerUrl"
                             class="h-10 px-5 bg-primary hover:bg-primary-hover text-navy font-bold text-sm rounded-lg transition-colors flex items-center justify-center gap-2 shadow-md">
@@ -212,7 +194,7 @@
                 <!-- Right Sidebar -->
                 <aside class="space-y-8">
                     <!-- Registration Card -->
-                    <div class="bg-white rounded-2xl p-6 shadow-lg border-t-4 border-primary relative">
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border-t-4 border-primary relative">
                         <h3 class="text-lg font-bold text-navy mb-4">Pendaftaran Ditutup Dalam</h3>
                         <div class="flex gap-3 mb-6">
                             <div class="flex-1 bg-gray-50 rounded-lg p-3 text-center">
@@ -245,33 +227,28 @@
                                 <div class="bg-primary h-2 rounded-full" style="width: 77%"></div>
                             </div>
                         </div>
-                        <!-- Auth-aware registration CTA -->
-                        <template v-if="!isLoggedIn">
-                            <NuxtLink :to="loginUrl"
-                                class="w-full block py-4 bg-primary hover:bg-primary-hover text-navy font-bold rounded-xl transition-colors shadow-md text-center">
-                                Login untuk Mendaftar
-                            </NuxtLink>
-                            <p class="text-center text-xs text-gray-400 mt-3">Belum punya akun?
-                                <NuxtLink class="text-navy font-bold hover:underline" to="/auth/register">Daftar
+                        <!-- Auth-aware registration CTA: Only show for non-logged-in or logged-in archers -->
+                        <template v-if="!isLoggedIn || isArcher">
+                            <template v-if="!isLoggedIn">
+                                <NuxtLink :to="loginUrl"
+                                    class="w-full block py-4 bg-primary hover:bg-primary-hover text-navy font-bold rounded-xl transition-colors shadow-md text-center">
+                                    Login untuk Mendaftar
                                 </NuxtLink>
-                            </p>
-                        </template>
-                        <template v-else-if="!isArcher">
-                            <NuxtLink :to="archerRegisterUrl"
-                                class="w-full block py-4 bg-gray-100 hover:bg-gray-200 text-navy font-bold rounded-xl transition-colors text-center">
-                                Daftar sebagai Atlet Dulu
-                            </NuxtLink>
-                            <p class="text-center text-xs text-gray-400 mt-3">Anda perlu terdaftar sebagai atlet</p>
-                        </template>
-                        <template v-else>
-                            <NuxtLink :to="registerUrl"
-                                class="w-full block py-4 bg-primary hover:bg-primary-hover text-navy font-bold rounded-xl transition-colors shadow-md text-center">
-                                Yuk Daftar Sekarang
-                            </NuxtLink>
-                            <p class="text-center text-xs text-gray-400 mt-3">Sudah terdaftar?
-                                <NuxtLink class="text-navy font-bold hover:underline" :to="`/dashboard/events`">Cek status
+                                <p class="text-center text-xs text-gray-400 mt-3">Belum punya akun?
+                                    <NuxtLink class="text-navy font-bold hover:underline" to="/auth/register">Daftar
+                                    </NuxtLink>
+                                </p>
+                            </template>
+                            <template v-else>
+                                <NuxtLink :to="registerUrl"
+                                    class="w-full block py-4 bg-primary hover:bg-primary-hover text-navy font-bold rounded-xl transition-colors shadow-md text-center">
+                                    Yuk Daftar Sekarang
                                 </NuxtLink>
-                            </p>
+                                <p class="text-center text-xs text-gray-400 mt-3">Sudah terdaftar?
+                                    <NuxtLink class="text-navy font-bold hover:underline" :to="`/dashboard/events`">Cek status
+                                    </NuxtLink>
+                                </p>
+                            </template>
                         </template>
                     </div>
 

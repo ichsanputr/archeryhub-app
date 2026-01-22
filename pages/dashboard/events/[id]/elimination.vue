@@ -158,7 +158,7 @@
                                 <div v-for="set in dummySets" :key="set.num" class="flex items-center gap-4">
                                     <span
                                         class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-[10px] font-black text-gray-400 shadow-inner">S{{
-                                        set.num }}</span>
+                                            set.num }}</span>
                                     <div
                                         class="flex-1 flex items-center justify-between bg-white border border-gray-100 p-2 rounded-xl">
                                         <span class="text-sm font-black text-navy px-2"
@@ -302,7 +302,6 @@ onMounted(async () => {
     } catch (e) { console.error(e) }
 })
 
-onBeforeUnmount(() => clearEvent())
 </script>
 
 <style scoped>

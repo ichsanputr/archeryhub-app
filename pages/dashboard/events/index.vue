@@ -146,8 +146,7 @@
               </td>
               <td class="px-6 py-5 text-right">
                 <div v-if="!isArcher" class="flex items-center justify-end gap-2">
-                  <BaseButton @click="handleManageEvent(event)" variant="primary" size="sm"
-                    class="h-9 font-bold">
+                  <BaseButton @click="handleManageEvent(event)" variant="primary" size="sm" class="h-9 font-bold">
                     Kelola
                   </BaseButton>
                   <div class="relative" v-click-outside="() => closeDropdown(event.id)">
@@ -244,7 +243,7 @@ definePageMeta({
 const { user } = useAuth()
 const { get } = useApi()
 const router = useRouter()
-const { setEvent } = useEventContext()
+const { setEvent, clearEvent } = useEventContext()
 const searchQuery = ref('')
 const statusFilter = ref('')
 const events = ref([])
@@ -280,6 +279,7 @@ const fetchEvents = async () => {
 
 onMounted(() => {
   fetchEvents()
+  clearEvent() // Reset header when back to general list
 })
 
 const resetFilters = () => {
