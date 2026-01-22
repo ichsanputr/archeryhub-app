@@ -84,7 +84,7 @@
                 <!-- View Toggle & Count -->
                 <div class="flex items-center gap-4">
                     <p class="text-gray-500 text-sm font-medium">
-                        <span class="font-bold text-navy">{{ filteredClubs.length }}</span> klub ditemukan
+                        <span class="font-bold text-navy">{{ totalItems }}</span> klub ditemukan
                     </p>
                     <div class="flex items-center gap-1 bg-gray-100 p-1 rounded-lg">
                         <button @click="viewMode = 'grid'"
@@ -102,19 +102,23 @@
 
         <!-- Clubs Grid -->
         <section class="container mx-auto px-4 max-w-7xl pb-16">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <NuxtLink v-for="club in filteredClubs" :key="club.id" :to="`/klub/${club.slug}`"
+            <div v-if="isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-60 pointer-events-none">
+                <div v-for="i in 6" :key="i" class="h-[400px] bg-white rounded-2xl border-2 border-gray-100 animate-pulse"></div>
+            </div>
+
+            <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <NuxtLink v-for="club in clubs" :key="club.uuid" :to="`/klub/${club.slug}`"
                     class="group bg-white rounded-2xl border-2 border-gray-100 overflow-hidden hover:border-primary transition-all duration-300">
 
                     <!-- Club Banner -->
                     <div class="relative h-44 bg-gradient-to-br from-navy to-blue-800 overflow-hidden">
-                        <img v-if="club.bannerUrl" :src="club.bannerUrl"
+                        <img v-if="club.banner_url" :src="club.banner_url"
                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent">
                         </div>
 
                         <!-- Verified Badge -->
-                        <div v-if="club.verified" class="absolute top-4 right-4">
+                        <div v-if="club.verification_status === 'verified'" class="absolute top-4 right-4">
                             <span
                                 class="flex items-center gap-1 px-3 py-1.5 bg-blue-500 text-white text-xs font-black rounded-full shadow-lg">
                                 <Icon icon="ph:seal-check-fill" />
@@ -127,7 +131,7 @@
                             <span
                                 class="flex items-center gap-1.5 px-3 py-1.5 bg-white/90 backdrop-blur-sm text-navy text-xs font-bold rounded-full">
                                 <Icon icon="ph:map-pin-fill" class="text-primary" />
-                                {{ club.city }}
+                                {{ club.city || 'Indonesia' }}
                             </span>
                         </div>
                     </div>
@@ -138,18 +142,18 @@
                             <!-- Logo -->
                             <div
                                 class="w-14 h-14 -mt-7 rounded-xl bg-white border-2 border-white shadow-xl overflow-hidden flex-shrink-0 relative z-[2]">
-                                <div v-if="!club.logoUrl"
+                                <div v-if="!club.avatar_url"
                                     class="w-full h-full bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center">
                                     <span class="text-xl font-black text-navy">{{ club.name.charAt(0) }}</span>
                                 </div>
-                                <img v-else :src="club.logoUrl" class="w-full h-full object-cover" />
+                                <img v-else :src="club.avatar_url" class="w-full h-full object-cover" />
                             </div>
 
                             <div class="flex-1 min-w-0 pt-1">
                                 <h3
                                     class="font-black text-navy text-lg truncate group-hover:text-primary transition-colors">
                                     {{ club.name }}</h3>
-                                <p class="text-gray-400 text-sm">{{ club.description?.slice(0, 50) }}...</p>
+                                <p class="text-gray-400 text-sm truncate">{{ club.province || 'Klub Panahan' }}</p>
                             </div>
                         </div>
 
@@ -157,15 +161,15 @@
                         <div class="flex items-center justify-between mt-5 pt-5 border-t border-gray-100">
                             <div class="flex items-center gap-1">
                                 <Icon icon="ph:users-bold" class="text-primary" />
-                                <span class="font-black text-navy text-sm">{{ club.memberCount }}</span>
+                                <span class="font-black text-navy text-sm">{{ club.member_count }} Members</span>
                             </div>
                             <div class="flex items-center gap-1">
                                 <Icon icon="ph:star-fill" class="text-amber-400" />
-                                <span class="font-black text-navy text-sm">{{ club.rating }}</span>
+                                <span class="font-black text-navy text-sm">4.8</span>
                             </div>
                             <div class="flex items-center gap-1 text-right">
                                 <Icon icon="ph:trophy-bold" class="text-primary" />
-                                <span class="font-black text-navy text-sm">{{ club.eventCount }}</span>
+                                <span class="font-black text-navy text-sm">PRO</span>
                             </div>
                         </div>
                     </div>
@@ -173,7 +177,7 @@
             </div>
 
             <!-- Empty State -->
-            <div v-if="filteredClubs.length === 0" class="text-center py-20">
+            <div v-if="clubs.length === 0 && !isLoading" class="text-center py-20">
                 <div class="w-24 h-24 bg-gray-100 rounded-full mx-auto flex items-center justify-center mb-6">
                     <Icon icon="ph:users-three" class="text-5xl text-gray-300" />
                 </div>
@@ -181,6 +185,15 @@
                 <p class="text-gray-500 max-w-md mx-auto">Coba ubah filter atau kata kunci pencarian untuk menemukan
                     klub yang sesuai.</p>
             </div>
+
+            <!-- Pagination -->
+            <BasePagination
+                v-if="totalItems > itemsPerPage"
+                :current-page="currentPage"
+                :total-items="totalItems"
+                :items-per-page="itemsPerPage"
+                @change-page="handlePageChange"
+            />
         </section>
 
         <!-- CTA Section - Using gradient instead of navy for contrast with footer -->
@@ -217,9 +230,18 @@ definePageMeta({
     layout: 'landing'
 })
 
+const { get } = useApi()
+
 const searchQuery = ref('')
 const activeLocation = ref('all')
 const viewMode = ref('grid')
+
+// Pagination & API state
+const clubs = ref([])
+const currentPage = ref(1)
+const totalItems = ref(0)
+const itemsPerPage = ref(9)
+const isLoading = ref(false)
 
 const locations = [
     { label: 'Semua', value: 'all' },
@@ -230,97 +252,53 @@ const locations = [
     { label: 'Bali', value: 'bali' },
 ]
 
-// Dummy clubs data
-const clubs = ref([
-    {
-        id: 1,
-        name: 'Garuda Archery Club',
-        slug: 'garuda-archery',
-        city: 'Jakarta Selatan',
-        description: 'Klub panahan profesional dengan fasilitas lengkap dan pelatih bersertifikat internasional.',
-        bannerUrl: 'https://images.unsplash.com/photo-1565992441121-4367c2967103?w=800',
-        logoUrl: null,
-        verified: true,
-        memberCount: 45,
-        eventCount: 12,
-        rating: 4.9
-    },
-    {
-        id: 2,
-        name: 'Bandung Archery Center',
-        slug: 'bandung-archery',
-        city: 'Bandung',
-        description: 'Pusat pelatihan panahan terbesar di Jawa Barat dengan lapangan indoor dan outdoor.',
-        bannerUrl: 'https://images.unsplash.com/photo-1547347298-4074fc3086f0?w=800',
-        logoUrl: null,
-        verified: true,
-        memberCount: 38,
-        eventCount: 8,
-        rating: 4.7
-    },
-    {
-        id: 3,
-        name: 'Surabaya Bowman',
-        slug: 'surabaya-bowman',
-        city: 'Surabaya',
-        description: 'Komunitas pemanah Surabaya yang aktif dalam berbagai kompetisi nasional.',
-        bannerUrl: 'https://images.unsplash.com/photo-1510925758641-869d353cecc7?w=800',
-        logoUrl: null,
-        verified: false,
-        memberCount: 22,
-        eventCount: 5,
-        rating: 4.5
-    },
-    {
-        id: 4,
-        name: 'Yogyakarta Arrow Club',
-        slug: 'yogya-arrow',
-        city: 'Yogyakarta',
-        description: 'Klub panahan tradisional yang menggabungkan teknik modern dengan budaya lokal.',
-        bannerUrl: 'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=800',
-        logoUrl: null,
-        verified: true,
-        memberCount: 31,
-        eventCount: 7,
-        rating: 4.8
-    },
-    {
-        id: 5,
-        name: 'Jakarta Traditional Archery',
-        slug: 'jakarta-traditional',
-        city: 'Jakarta Barat',
-        description: 'Fokus pada panahan tradisional Indonesia dengan berbagai jenis busur.',
-        bannerUrl: null,
-        logoUrl: null,
-        verified: false,
-        memberCount: 18,
-        eventCount: 3,
-        rating: 4.3
-    },
-    {
-        id: 6,
-        name: 'Bali Archery Academy',
-        slug: 'bali-archery',
-        city: 'Denpasar',
-        description: 'Akademi panahan dengan pemandangan alam Bali yang menakjubkan.',
-        bannerUrl: 'https://images.unsplash.com/photo-1571260899304-425eee4c7efc?w=800',
-        logoUrl: null,
-        verified: true,
-        memberCount: 28,
-        eventCount: 6,
-        rating: 4.6
-    },
-])
+const fetchClubs = async () => {
+    isLoading.value = true
+    try {
+        const params = {
+            page: currentPage.value,
+            limit: itemsPerPage.value
+        }
+        
+        if (searchQuery.value) {
+            params.q = searchQuery.value
+        }
+        
+        if (activeLocation.value !== 'all') {
+            params.city = activeLocation.value
+        }
 
-const filteredClubs = computed(() => {
-    return clubs.value.filter(club => {
-        const matchesSearch = club.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-            club.city.toLowerCase().includes(searchQuery.value.toLowerCase())
-        const matchesLocation = activeLocation.value === 'all' ||
-            club.city.toLowerCase().includes(activeLocation.value.toLowerCase())
-        return matchesSearch && matchesLocation
-    })
+        const response = await get('/clubs', { query: params })
+        if (response.data) {
+            clubs.value = response.data
+            totalItems.value = response.meta.total_items
+        }
+    } catch (error) {
+        console.error('Failed to fetch clubs:', error)
+    } finally {
+        isLoading.value = false
+    }
+}
+
+// Watchers for filters
+watch([searchQuery, activeLocation], () => {
+    currentPage.value = 1
+    fetchClubs()
 })
+
+// Watcher for page changes
+watch(currentPage, () => {
+    fetchClubs()
+})
+
+onMounted(() => {
+    fetchClubs()
+})
+
+const handlePageChange = (page) => {
+    currentPage.value = page
+    window.scrollTo({ top: 400, behavior: 'smooth' })
+}
 </script>
 
 <style scoped>

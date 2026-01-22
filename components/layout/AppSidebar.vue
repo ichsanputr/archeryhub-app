@@ -160,6 +160,7 @@ const navLinks = computed(() => {
     ...(role !== 'club' ? [{ label: 'Event', icon: 'ph:trophy', path: '/dashboard/events' }] : []),
     { label: 'Laporan', icon: 'ph:chart-bar', path: '/dashboard/reports' },
     ...(role === 'club' ? [{ label: 'Anggota Klub', icon: 'ph:identification-badge', path: '/dashboard/members' }] : []),
+    ...(role === 'club' ? [{ label: 'Profil Klub', icon: 'ph:buildings', path: '/dashboard/club/profile' }] : []),
     ...(role !== 'club' && role !== 'organization' ? [{ label: 'Tim', icon: 'ph:users-four', path: '/dashboard/teams' }] : []),
     { label: 'Berita', icon: 'ph:newspaper', path: '/dashboard/berita' },
     { label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/settings' },

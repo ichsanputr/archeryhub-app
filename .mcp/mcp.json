@@ -10,7 +10,7 @@
                 "MYSQL_PORT": "30036",
                 "MYSQL_USER": "ichsan",
                 "MYSQL_PASSWORD": "12345",
-                "MYSQL_DATABASE": "budibadu",
+                "MYSQL_DATABASE": "archeryhub",
                 "ALLOW_DDL": "true",
                 "ALLOW_DROP": "true",
                 "ALLOW_DELETE": "true"

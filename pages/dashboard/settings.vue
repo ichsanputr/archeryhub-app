@@ -119,6 +119,30 @@
           <div class="md:col-span-2">
             <BaseInput v-model="profile.address" label="Alamat Latihan" placeholder="Alamat lengkap tempat latihan" />
           </div>
+
+          <!-- Contact & Social Media -->
+          <h4 class="md:col-span-2 text-xs font-black text-gray-400 uppercase tracking-widest mt-4">
+            Kontak & Sosial Media
+          </h4>
+          <BaseInput v-model="profile.email" label="Email Klub" placeholder="email@klub.com" type="email" />
+          <BaseInput v-model="profile.phone" label="No. Telepon Official" placeholder="08xxxxxxxxxx" />
+          <BaseInput v-model="profile.website" label="Website" placeholder="https://..." />
+          <BaseInput v-model="profile.socialInstagram" label="Instagram (Username)" placeholder="@username" />
+          <BaseInput v-model="profile.socialFacebook" label="Facebook (URL)" placeholder="https://facebook.com/..." />
+          <BaseInput v-model="profile.whatsapp" label="WhatsApp" placeholder="08xxxxxxxxxx" />
+
+          <!-- About & Schedule -->
+          <h4 class="md:col-span-2 text-xs font-black text-gray-400 uppercase tracking-widest mt-4">
+            Informasi Tambahan
+          </h4>
+          <div class="md:col-span-2">
+            <BaseTextarea v-model="profile.description" label="Deskripsi Klub" 
+              placeholder="Ceritakan tentang klub Anda, sejarah, dan pencapaian..." :rows="4" />
+          </div>
+          <div class="md:col-span-2">
+            <BaseTextarea v-model="profile.trainingSchedule" label="Jadwal Latihan" 
+              placeholder="Contoh: Senin & Rabu: 16:00 - 18:00, Sabtu: 08:00 - 11:00" :rows="3" />
+          </div>
         </div>
       </div>
     </div>
@@ -230,14 +254,9 @@
               type="password" placeholder="Masukkan password saat ini" required />
             <div v-if="hasPassword"></div>
             <BaseInput v-model="passwordForm.newPassword" label="Password Baru" type="password"
-              placeholder="Minimal 8 karakter" required />
+              placeholder="Minimal 6 karakter" required />
             <BaseInput v-model="passwordForm.confirmPassword" label="Konfirmasi Password" type="password"
               placeholder="Ulangi password baru" required />
-          </div>
-          <div class="mt-6">
-            <BaseButton variant="primary" icon="ph:key-bold" @click="savePassword" :loading="isSavingPassword">
-              {{ hasPassword ? 'Ubah Password' : 'Simpan Password' }}
-            </BaseButton>
           </div>
         </div>
       </div>
@@ -245,10 +264,10 @@
 
     <!-- Save Button -->
     <div class="flex justify-end gap-3 mt-10 pt-6 border-t border-gray-100">
-      <BaseButton variant="outline" size="lg">
+      <BaseButton variant="outline" size="md">
         Batal
       </BaseButton>
-      <BaseButton variant="gold" size="lg" icon="ph:floppy-disk" @click="saveSettings" :loading="isSaving">
+      <BaseButton variant="gold" size="md" icon="ph:floppy-disk" @click="saveSettings" :loading="isSaving">
         Simpan Perubahan
       </BaseButton>
     </div>
@@ -294,7 +313,7 @@ const tabs = [
 // Profile data based on user type
 const profile = ref({
   // Archer fields
-  fullName: user.value?.name || '',
+  fullName: user.value?.full_name || user.value?.name || '',
   nickname: user.value?.nickname || '',
   dateOfBirth: user.value?.date_of_birth || '',
   gender: user.value?.gender || 'male',
@@ -311,11 +330,18 @@ const profile = ref({
   // Club fields
   clubName: user.value?.club_name || user.value?.name || '',
   abbreviation: user.value?.abbreviation || '',
-  establishedDate: user.value?.established_date || '',
+  establishedDate: user.value?.established_year ? `${user.value.established_year}-01-01` : '',
   headCoachName: user.value?.head_coach_name || '',
   headCoachPhone: user.value?.head_coach_phone || '',
   province: user.value?.province || '',
-  address: user.value?.address || ''
+  address: user.value?.address || '',
+  email: user.value?.email || '',
+  website: user.value?.website || '',
+  socialInstagram: user.value?.social_instagram || '',
+  socialFacebook: user.value?.social_facebook || '',
+  whatsapp: user.value?.phone || '',
+  description: user.value?.description || '',
+  trainingSchedule: user.value?.training_schedule || ''
 })
 
 const settings = ref({
@@ -330,7 +356,14 @@ const saveSettings = async () => {
   try {
     const payload = {
       profile_completed: true,
-      ...profile.value
+      ...profile.value,
+      // Map to backend fields
+      name: profile.value.clubName,
+      social_instagram: profile.value.socialInstagram,
+      social_facebook: profile.value.socialFacebook,
+      training_schedule: profile.value.trainingSchedule,
+      head_coach_name: profile.value.headCoachName,
+      head_coach_phone: profile.value.headCoachPhone
     }
 
     await put('/user/profile', payload)
@@ -363,8 +396,8 @@ const savePassword = async () => {
     toast.error('Password baru tidak cocok')
     return
   }
-  if (passwordForm.value.newPassword.length < 8) {
-    toast.error('Password minimal 8 karakter')
+  if (passwordForm.value.newPassword.length < 6) {
+    toast.error('Password minimal 6 karakter')
     return
   }
 

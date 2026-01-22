@@ -12,11 +12,13 @@
                 error ? 'border-red-500 focus:border-red-500' : '',
                 isOpen ? 'border-primary bg-white ring-4 ring-primary/10' : ''
             ]">
-                <span :class="!selectedLabel ? 'text-gray-400' : 'text-navy'">
+                <div :class="!selectedLabel ? 'text-gray-400' : 'text-navy'">
                     {{ selectedLabel || placeholder || 'Pilih opsi' }}
-                </span>
-                <Icon icon="ph:caret-down" class="text-gray-400 transition-transform duration-200"
+                </div>
+                <div>
+                    <Icon icon="ph:caret-down" class="text-gray-400 transition-transform duration-200"
                     :class="isOpen ? 'rotate-180 text-primary' : ''" />
+                </div>
             </button>
 
             <!-- Dropdown Menu -->
@@ -29,11 +31,11 @@
                         Tidak ada opsi
                     </div>
                     <div v-for="item in items" :key="getItemValue(item)" @click="selectItem(item)"
-                        class="px-4 py-3 text-sm font-medium hover:bg-primary/10 hover:text-navy transition-colors cursor-pointer flex-between group"
+                        class="px-4 py-3 text-sm flex font-medium hover:bg-primary/10 hover:text-navy transition-colors cursor-pointer flex-between group"
                         :class="getItemValue(item) === modelValue ? 'bg-primary/5 text-primary-dark' : 'text-gray-600'">
-                        {{ getItemTitle(item) }}
-                        <Icon v-if="getItemValue(item) === modelValue" icon="ph:check-bold"
-                            class="text-[18px] text-primary transition-all" />
+                        <div class="text-left">
+                            {{ getItemTitle(item) }}
+                        </div>
                     </div>
                 </div>
             </transition>

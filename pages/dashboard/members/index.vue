@@ -41,7 +41,7 @@
         </div>
       </div>
       <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
-        <div class="h-10 w-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+        <div class="h-10 w-10 rounded-lg bg-primary/10 text-primary-dark flex items-center justify-center">
           <Icon icon="ph:gender-male" class="text-xl" />
         </div>
         <div>
@@ -50,7 +50,7 @@
         </div>
       </div>
       <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
-        <div class="h-10 w-10 rounded-lg bg-pink-50 text-pink-600 flex items-center justify-center">
+        <div class="h-10 w-10 rounded-lg bg-primary/10 text-primary-dark flex items-center justify-center">
           <Icon icon="ph:gender-female" class="text-xl" />
         </div>
         <div>
@@ -59,7 +59,7 @@
         </div>
       </div>
       <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
-        <div class="h-10 w-10 rounded-lg bg-green-50 text-green-600 flex items-center justify-center">
+        <div class="h-10 w-10 rounded-lg bg-primary/10 text-primary-dark flex items-center justify-center">
           <Icon icon="ph:target" class="text-xl" />
         </div>
         <div>

@@ -318,46 +318,34 @@ const isArcher = computed(() => {
 // Check if already a member (would be from API)
 const isMember = ref(false)
 
-// Dummy club data
 const club = ref({
-    id: 1,
-    name: 'Garuda Archery Club',
-    slug: 'garuda-archery',
-    city: 'Jakarta Selatan',
-    province: 'DKI Jakarta',
-    established: '2018',
-    bannerUrl: 'https://images.unsplash.com/photo-1565992441121-4367c2967103?w=1600',
-    logoUrl: null,
-    verified: true,
-    memberCount: 45,
-    eventCount: 12,
-    rating: 4.9,
-    achievements: 8,
-    description: 'Garuda Archery Club adalah klub panahan profesional yang berdiri sejak 2018. Kami menyediakan pelatihan untuk berbagai level dari pemula hingga profesional dengan fokus pada pengembangan teknik dan mental. Fasilitas lengkap dengan lapangan indoor 18m dan outdoor 70m.',
-    facilities: ['Lapangan Indoor 18m', 'Lapangan Outdoor 70m', 'Ruang Peralatan', 'Ruang Ganti', 'Parkir Luas', 'Cafeteria'],
-    phone: '021-1234567',
-    whatsapp: '+62 812-3456-7890',
-    instagram: '@garudaarchery',
-    facebook: 'Garuda Archery',
-    email: 'info@garudaarchery.com',
-    address: 'Jl. Panahan No. 123, Senayan, Jakarta Selatan 12190',
-    schedules: [
-        { day: 'Senin - Rabu', time: '16:00 - 19:00' },
-        { day: 'Jumat', time: '16:00 - 18:00' },
-        { day: 'Sabtu - Minggu', time: '08:00 - 12:00' },
-    ],
-    recentEvents: [
-        { id: 1, name: 'Kejuaraan Nasional 2024', date: '15-18 Januari 2024', result: '🥇 Juara 1' },
-        { id: 2, name: 'Piala Gubernur DKI', date: '5-7 Desember 2023', result: '🥈 Juara 2' },
-        { id: 3, name: 'Jakarta Open 2023', date: '20-22 November 2023', result: '🥉 Juara 3' },
-    ],
-    topMembers: [
-        { id: 1, name: 'Ahmad Rifai', division: 'Recurve Senior' },
-        { id: 2, name: 'Sari Dewi', division: 'Compound Senior' },
-        { id: 3, name: 'Budi Santoso', division: 'Barebow Senior' },
-        { id: 4, name: 'Citra Lestari', division: 'Recurve Junior' },
-    ]
+    id: 0,
+    name: '',
+    slug: '',
+    city: '',
+    province: '',
+    established: '',
+    bannerUrl: '',
+    logoUrl: '',
+    verified: false,
+    memberCount: 0,
+    eventCount: 0,
+    rating: 0,
+    achievements: 0,
+    description: '',
+    facilities: [],
+    phone: '',
+    whatsapp: '',
+    instagram: '',
+    facebook: '',
+    email: '',
+    address: '',
+    schedules: [],
+    recentEvents: [],
+    topMembers: []
 })
+
+const { get } = useApi()
 
 const joinClub = async () => {
     if (!isLoggedIn.value) {
@@ -376,4 +364,41 @@ const joinClub = async () => {
         isJoining.value = false
     }
 }
+
+onMounted(async () => {
+    try {
+        const slug = route.params.slug
+        const resp = await get(`/clubs/${slug}`)
+        const data = resp?.data || resp || {}
+        if (!data || !data.name) return
+        club.value = {
+            id: data.id || data.uuid || 0,
+            name: data.name || '',
+            slug: data.slug || slug,
+            city: data.city || '',
+            province: data.province || '',
+            established: data.established || '',
+            bannerUrl: data.banner_url || '',
+            logoUrl: data.logo_url || '',
+            verified: !!data.verified,
+            memberCount: data.member_count || data.members || 0,
+            eventCount: data.event_count || data.events || 0,
+            rating: data.rating || 0,
+            achievements: data.achievements || 0,
+            description: data.description || '',
+            facilities: data.facilities || [],
+            phone: data.phone || '',
+            whatsapp: data.whatsapp || '',
+            instagram: data.instagram || '',
+            facebook: data.facebook || '',
+            email: data.email || '',
+            address: data.address || '',
+            schedules: data.schedules || [],
+            recentEvents: data.recent_events || [],
+            topMembers: data.top_members || []
+        }
+    } catch (error) {
+        console.error('Gagal memuat klub', error)
+    }
+})
 </script>
