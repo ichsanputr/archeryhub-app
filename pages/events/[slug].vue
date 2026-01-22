@@ -11,7 +11,7 @@
             <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-0">
                 <!-- Breadcrumb -->
                 <div class="mb-8">
-                    <Breadcrumbs :items="[{ label: 'Event', path: '/events' }]" :current="tournament.name"
+                    <Breadcrumbs :items="[{ label: 'Event', path: '/events' }]" :current="tournament.name || 'Event'"
                         class="!text-gray-300" />
                 </div>
 
@@ -65,7 +65,7 @@
         <div class="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center gap-1 overflow-x-auto no-scrollbar -mb-px">
-                    <button v-for="tab in tabs" :key="tab" @click="activeTab = tab"
+                    <button v-for="tab in tabs" :key="tab" @click="navigateTo({ query: { ...route.query, tab } }, { replace: true })"
                         class="px-4 md:px-6 py-3 md:py-4 font-semibold text-sm md:text-base transition-colors whitespace-nowrap border-b-2"
                         :class="activeTab === tab ? 'text-navy border-primary bg-primary/5' : 'text-gray-500 border-transparent hover:text-navy hover:bg-gray-50'">
                         {{ tab }}
@@ -76,12 +76,16 @@
 
         <!-- Main Content -->
         <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 xl:gap-12">
+            <div :class="activeTab === 'Hasil' ? 'grid grid-cols-1' : 'grid grid-cols-1 lg:grid-cols-3 gap-8 xl:gap-12'">
                 <!-- Left Column -->
-                <div class="lg:col-span-2 space-y-10">
+                <div :class="activeTab === 'Hasil' ? 'space-y-10' : 'lg:col-span-2 space-y-10'">
                     <div v-if="activeTab === 'Ringkasan'" class="space-y-10">
                         <!-- About Section -->
                         <section class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
+                            <div v-if="tournament.thumbnail" class="mb-6">
+                                <img :src="tournament.thumbnail" :alt="tournament.name"
+                                    class="w-full h-64 object-cover rounded-xl" />
+                            </div>
                             <h2 class="text-2xl font-bold text-navy mb-6 flex items-center gap-2">
                                 <span class="material-symbols-outlined text-primary">info</span>
                                 Tentang Turnamen
@@ -186,13 +190,13 @@
 
                     <TournamentScheduleTab v-else-if="activeTab === 'Jadwal Lomba'" :event-id="slug" />
                     <TournamentAthletesTab v-else-if="activeTab === 'Peserta'" />
-                    <TournamentResultsTab v-else-if="activeTab === 'Hasil Live'" />
+                    <TournamentResultsTab v-else-if="activeTab === 'Hasil'" :event-id="slug" />
                     <TournamentVenueTab v-else-if="activeTab === 'Lokasi'" :venue="tournament.venue"
                         :address="tournament.address" />
                 </div>
 
-                <!-- Right Sidebar -->
-                <aside class="space-y-8">
+                <!-- Right Sidebar - Hidden on Hasil tab -->
+                <aside v-if="activeTab !== 'Hasil'" class="space-y-8">
                     <!-- Registration Card -->
                     <div class="bg-white rounded-2xl p-6 shadow-sm border-t-4 border-primary relative">
                         <h3 class="text-lg font-bold text-navy mb-4">Pendaftaran Ditutup Dalam</h3>
@@ -292,10 +296,7 @@
                         </a>
                         <div class="p-5">
                             <h3 class="font-bold text-navy mb-1">{{ tournament.venue }}</h3>
-                            <p class="text-sm text-gray-500 mb-4">{{ tournament.address }}</p>
-                            <div class="flex items-center gap-2 text-xs text-gray-400">
-                                <span class="material-symbols-outlined text-sm">sunny</span> 32°C Prakiraan Cerah
-                            </div>
+                            <p class="text-sm text-gray-500">{{ tournament.address }}</p>
                         </div>
                     </div>
 
@@ -323,7 +324,7 @@
 /* eslint-disable vue/multi-word-component-names */
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 import { useApi } from '~/composables/useApi'
@@ -343,8 +344,17 @@ const registerUrl = computed(() => `/events/${slug}/register`)
 const { get } = useApi()
 const isLoading = ref(true)
 
-const tabs = ['Ringkasan', 'Jadwal Lomba', 'Peserta', 'Hasil Live', 'Lokasi']
-const activeTab = ref('Ringkasan')
+const tabs = ['Ringkasan', 'Jadwal Lomba', 'Peserta', 'Hasil', 'Lokasi']
+const activeTab = ref(route.query.tab && tabs.includes(route.query.tab) ? route.query.tab : 'Ringkasan')
+
+// Sync tab with query params
+watch(() => route.query.tab, (newTab) => {
+    if (newTab && tabs.includes(newTab)) {
+        activeTab.value = newTab
+    } else if (!newTab) {
+        activeTab.value = 'Ringkasan'
+    }
+}, { immediate: true })
 
 // Fallback data
 const fallbackTournament = {
@@ -374,7 +384,8 @@ const transformEventData = (data) => ({
     status: data.status || 'upcoming',
     category: data.category || '',
     organizer: data.organizer_name || data.organizer || 'Penyelenggara',
-    image: data.banner_url || data.image || fallbackTournament.image
+    image: data.banner_url || data.image || fallbackTournament.image,
+    thumbnail: data.logo_url || data.thumbnail || null
 })
 
 const fetchTournament = async () => {

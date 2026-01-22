@@ -265,7 +265,7 @@ const transformEventData = (event) => {
         location: event.venue || event.location || 'Lokasi TBA',
         status: event.status || 'upcoming',
         category: event.discipline_name || event.category || null,
-        image: event.banner_url || event.logo_url || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop'
+        image: event.logo_url || event.banner_url || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop'
     }
 }
 

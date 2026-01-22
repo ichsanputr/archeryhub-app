@@ -18,7 +18,7 @@
                     <div class="relative" @mouseenter="showMegaMenu = true" @mouseleave="showMegaMenu = false">
                         <button
                             class="text-sm font-semibold transition-all duration-300 flex items-center gap-1 hover:text-primary"
-                            :class="[navLinkClasses, { 'font-bold': isActive('/events') }]">
+                            :class="[navLinkClasses, { 'font-bold text-primary': isActive('/events') }]">
                             Event
                             <Icon icon="ph:caret-down" class="text-xs transition-transform"
                                 :class="{ 'rotate-180': showMegaMenu }" />

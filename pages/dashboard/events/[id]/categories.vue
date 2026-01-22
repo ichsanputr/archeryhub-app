@@ -148,6 +148,22 @@
                                 <option v-for="age in ageGroups" :key="age.id" :value="age.id">{{ age.name }}</option>
                             </select>
                         </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-gray-700">Jenis Event *</label>
+                            <select v-model="form.event_type_uuid"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
+                                <option value="">Pilih Jenis Event</option>
+                                <option v-for="eventType in eventTypes" :key="eventType.id" :value="eventType.id">{{ eventType.name }}</option>
+                            </select>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-gray-700">Divisi Gender *</label>
+                            <select v-model="form.gender_division_uuid"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
+                                <option value="">Pilih Divisi Gender</option>
+                                <option v-for="gender in genderDivisions" :key="gender.id" :value="gender.id">{{ gender.name }}</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="space-y-2">
@@ -198,12 +214,16 @@ const saving = ref(false)
 const categories = ref([])
 const bowTypes = ref([])
 const ageGroups = ref([])
+const eventTypes = ref([])
+const genderDivisions = ref([])
 const showDialog = ref(false)
 const editingCategory = ref(null)
 
 const form = ref({
     division_uuid: '',
     category_uuid: '',
+    event_type_uuid: '',
+    gender_division_uuid: '',
     max_participants: null,
     status: 'active'
 })
@@ -229,14 +249,18 @@ const formatDate = (dateStr) => {
 const fetchCategories = async () => {
     isLoading.value = true
     try {
-        const [categoriesRes, bowRes, ageRes] = await Promise.all([
+        const [categoriesRes, bowRes, ageRes, eventTypeRes, genderRes] = await Promise.all([
             get(`/events/${eventId}/categories`),
             get('/bow-types'),
-            get('/age-groups')
+            get('/age-groups'),
+            get('/event-types'),
+            get('/gender-divisions')
         ])
         categories.value = categoriesRes?.events || categoriesRes?.data?.events || []
         bowTypes.value = bowRes?.bow_types || bowRes?.data?.bow_types || []
         ageGroups.value = ageRes?.age_groups || ageRes?.data?.age_groups || []
+        eventTypes.value = eventTypeRes?.event_types || eventTypeRes?.data?.event_types || []
+        genderDivisions.value = genderRes?.gender_divisions || genderRes?.data?.gender_divisions || []
     } catch (error) {
         console.error('Failed to fetch categories:', error)
         toast.error('Gagal memuat kategori')
@@ -250,6 +274,8 @@ const openCreateDialog = () => {
     form.value = {
         division_uuid: '',
         category_uuid: '',
+        event_type_uuid: '',
+        gender_division_uuid: '',
         max_participants: null,
         status: 'active'
     }
@@ -261,6 +287,8 @@ const openEditDialog = (category) => {
     form.value = {
         division_uuid: category.division_id,
         category_uuid: category.category_id,
+        event_type_uuid: category.event_type_id || '',
+        gender_division_uuid: category.gender_division_id || '',
         max_participants: category.max_participants,
         status: category.status || 'active'
     }
@@ -273,8 +301,8 @@ const closeDialog = () => {
 }
 
 const saveCategory = async () => {
-    if (!form.value.division_uuid || !form.value.category_uuid) {
-        toast.error('Harap pilih Jenis Busur dan Kelompok Umur')
+    if (!form.value.division_uuid || !form.value.category_uuid || !form.value.event_type_uuid || !form.value.gender_division_uuid) {
+        toast.error('Harap lengkapi semua field yang wajib diisi')
         return
     }
 
@@ -283,6 +311,8 @@ const saveCategory = async () => {
         const payload = {
             division_uuid: form.value.division_uuid,
             category_uuid: form.value.category_uuid,
+            event_type_uuid: form.value.event_type_uuid,
+            gender_division_uuid: form.value.gender_division_uuid,
             max_participants: form.value.max_participants || null,
             status: form.value.status
         }
