@@ -5,6 +5,8 @@
             <div>
                 <div
                     class="flex items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2">
+                    <NuxtLink to="/dashboard/events" class="hover:text-primary transition-colors">Events</NuxtLink>
+                    <Icon icon="ph:caret-right-bold" class="text-[10px]" />
                     <NuxtLink :to="`/dashboard/events/${route.params.id}/overview`"
                         class="hover:text-primary transition-colors">Control Panel</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[10px]" />
@@ -171,7 +173,7 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-4">
-                    <NuxtLink :to="`/dashboard/events/${route.params.id}/manage`"
+                    <NuxtLink :to="`/dashboard/events/${route.params.id}/overview`"
                         class="px-6 py-2.5 bg-white/10 hover:bg-white/20 transition-all rounded-xl text-[10px] font-black uppercase tracking-widest border border-white/5">
                         Inisialisasi Ulang
                     </NuxtLink>
@@ -247,15 +249,15 @@ import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 
+definePageMeta({
+    layout: 'dashboard'
+})
+
 const route = useRoute()
 
 const activeCategory = ref('Recurve Men Individual')
 const activeRound = ref('1/8')
 const selectedMatch = ref(null)
-
-definePageMeta({
-    layout: 'dashboard'
-})
 </script>
 
 <style scoped>

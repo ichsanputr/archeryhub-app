@@ -1,19 +1,9 @@
 <template>
     <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         <!-- Breadcrumb -->
-        <nav aria-label="Breadcrumb" class="flex mb-8 text-sm text-slate-500">
-            <ol class="flex items-center space-x-2">
-                <li>
-                    <NuxtLink to="/" class="hover:text-primary transition-colors">Home</NuxtLink>
-                </li>
-                <li><span class="material-symbols-outlined text-base">chevron_right</span></li>
-                <li>
-                    <NuxtLink to="/news" class="hover:text-primary transition-colors">News</NuxtLink>
-                </li>
-                <li><span class="material-symbols-outlined text-base">chevron_right</span></li>
-                <li class="text-navy font-medium truncate max-w-[200px] sm:max-w-none">{{ article.title }}</li>
-            </ol>
-        </nav>
+        <div class="mb-8">
+            <Breadcrumbs :items="[{ label: 'News', path: '/news' }]" :current="article.title" />
+        </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
             <!-- Article Content -->

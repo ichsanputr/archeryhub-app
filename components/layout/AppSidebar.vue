@@ -21,26 +21,28 @@
     <!-- Scrollable Content -->
     <div class="flex-1 flex flex-col gap-1 overflow-y-auto no-scrollbar p-4">
 
-      <!-- Main Navigation (Menu Utama) - Always visible -->
-      <div v-if="!isSidebarCollapsed" class="px-3 mb-2">
-        <p class="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Menu Utama</p>
-      </div>
-      <NuxtLink v-for="item in navLinks" :key="item.path" :to="item.path"
-        class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group" :class="isActive(item.path)
-          ? 'bg-primary text-navy shadow-lg shadow-primary/20'
-          : 'text-gray-400 hover:bg-white/5 hover:text-white'">
-        <Icon :icon="item.icon.includes(':') ? item.icon : `ph:${item.icon}`" class="text-xl transition-transform"
-          :class="isActive(item.path) ? 'text-navy' : 'group-hover:scale-110'" />
-        <span v-if="!isSidebarCollapsed" class="text-sm font-bold whitespace-nowrap">{{ item.label }}</span>
-        <span v-if="item.badge && !isSidebarCollapsed"
-          class="ml-auto bg-primary/20 text-primary text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-tighter">
-          {{ item.badge }}
-        </span>
-      </NuxtLink>
+      <!-- Main Navigation (Menu Utama) - Hide when in event manage mode -->
+      <template v-if="!isEventManagePage">
+        <div v-if="!isSidebarCollapsed" class="px-3 mb-2">
+          <p class="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Menu Utama</p>
+        </div>
+        <NuxtLink v-for="item in navLinks" :key="item.path" :to="item.path"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group" :class="isActive(item.path)
+            ? 'bg-primary text-navy shadow-lg shadow-primary/20'
+            : 'text-gray-400 hover:bg-white/5 hover:text-white'">
+          <Icon :icon="item.icon.includes(':') ? item.icon : `ph:${item.icon}`" class="text-xl transition-transform"
+            :class="isActive(item.path) ? 'text-navy' : 'group-hover:scale-110'" />
+          <span v-if="!isSidebarCollapsed" class="text-sm font-bold whitespace-nowrap">{{ item.label }}</span>
+          <span v-if="item.badge && !isSidebarCollapsed"
+            class="ml-auto bg-primary/20 text-primary text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-tighter">
+            {{ item.badge }}
+          </span>
+        </NuxtLink>
+      </template>
 
       <!-- Dynamic Event Navigation (Manajemen Event) - Only for org/club/admin when in event scope -->
-      <div v-if="eventId && canManageEvents" class="flex flex-col gap-1 mt-4">
-        <div class="h-px bg-white/10 mb-2 mx-3"></div>
+      <div v-if="eventId && canManageEvents" class="flex flex-col gap-1" :class="isEventManagePage ? '' : 'mt-4'">
+        <div v-if="!isEventManagePage" class="h-px bg-white/10 mb-2 mx-3"></div>
         <div v-if="!isSidebarCollapsed" class="px-3 mb-2">
           <p class="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Manajemen Event</p>
         </div>
@@ -100,11 +102,23 @@ watch(() => route.path, () => {
 })
 
 const eventId = computed(() => route.params.id)
+const isEventManagePage = computed(() => {
+  // Check if we're on any event management page (overview, targets, qualification, elimination, etc.)
+  const path = route.path
+  if (!path.includes('/dashboard/events/')) return false
+  const eventPathMatch = path.match(/\/dashboard\/events\/([^/]+)\/(.+)/)
+  if (!eventPathMatch) return false
+  const [, eventId, subPath] = eventPathMatch
+  // Exclude certain paths that are not management pages
+  const excludedPaths = ['edit', 'checkout', 'participants', 'register', 'register-edit', 'results', 'setup', 'timeline', 'venue']
+  return !excludedPaths.includes(subPath)
+})
 
 const eventLinks = computed(() => [
-  { label: 'Target & Lajur', icon: 'ph:target', path: `/dashboard/events/${eventId.value}/manage/targets` },
-  { label: 'Kualifikasi', icon: 'ph:scoreboard', path: `/dashboard/events/${eventId.value}/manage/qualification` },
-  { label: 'Eliminasi', icon: 'ph:layout', path: `/dashboard/events/${eventId.value}/manage/elimination` },
+  { label: 'Ringkasan', icon: 'ph:squares-four', path: `/dashboard/events/${eventId.value}/overview` },
+  { label: 'Target & Lajur', icon: 'ph:target', path: `/dashboard/events/${eventId.value}/targets` },
+  { label: 'Kualifikasi', icon: 'ph:scoreboard', path: `/dashboard/events/${eventId.value}/qualification` },
+  { label: 'Eliminasi', icon: 'ph:layout', path: `/dashboard/events/${eventId.value}/elimination` },
 ])
 
 // Role-based navigation - filtered based on user role
@@ -151,22 +165,23 @@ const navLinks = computed(() => {
     return [
       { label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard' },
       { label: 'Toko Saya', icon: 'ph:storefront', path: '/dashboard/store' },
-      { label: 'Produk', icon: 'ph:package', path: '/dashboard/shop' },
+      { label: 'Produk', icon: 'ph:package', path: '/dashboard/product' },
       { label: 'Pesanan', icon: 'ph:shopping-cart', path: '/dashboard/orders' },
       { label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/settings' },
     ]
   }
 
   // Full navigation for organizers/admin; hide Event for club
+  // When on event manage page, hide Laporan, Berita, and Pengaturan
   const base = [
     { label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard' },
     ...(role !== 'club' ? [{ label: 'Event', icon: 'ph:trophy', path: '/dashboard/events' }] : []),
-    { label: 'Laporan', icon: 'ph:chart-bar', path: '/dashboard/reports' },
+    ...(!isEventManagePage.value ? [{ label: 'Laporan', icon: 'ph:chart-bar', path: '/dashboard/reports' }] : []),
     ...(role === 'club' ? [{ label: 'Anggota Klub', icon: 'ph:identification-badge', path: '/dashboard/members' }] : []),
     ...(role === 'club' ? [{ label: 'Profil Klub', icon: 'ph:buildings', path: '/dashboard/club/profile' }] : []),
     ...(role !== 'club' && role !== 'organization' ? [{ label: 'Tim', icon: 'ph:users-four', path: '/dashboard/teams' }] : []),
-    { label: 'Berita', icon: 'ph:newspaper', path: '/dashboard/berita' },
-    { label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/settings' },
+    ...(!isEventManagePage.value ? [{ label: 'Berita', icon: 'ph:newspaper', path: '/dashboard/berita' }] : []),
+    ...(!isEventManagePage.value ? [{ label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/settings' }] : []),
   ]
 
   return base
@@ -175,6 +190,11 @@ const navLinks = computed(() => {
 const isActive = (path) => {
   if (path === '/dashboard') {
     return route.path === '/dashboard' || route.path === '/dashboard/'
+  }
+  // For event manage pages, check if path matches exactly or is the base manage page
+  if (path.includes('/manage') && !path.includes('/manage/')) {
+    // If it's the base manage page, check if current path is exactly that or starts with manage/
+    return route.path === path || route.path.startsWith(path + '/')
   }
   return route.path.startsWith(path)
 }

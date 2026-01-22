@@ -1,1 +1,1 @@
-Now please do these, and dont forget to see from another file to get better result, adjust frontend, api endpoint, and database if needed using mcp mysqlx
+Now please do these, and dont forget to see from another file to get better result, adjust frontend, api endpoint, and database if needed using mcp mysql

@@ -326,7 +326,7 @@
                     </NuxtLink>
                 </div>
                 <div
-                    class="flex lg:grid lg:grid-cols-3 gap-6 lg:gap-8 pb-8 lg:pb-0 overflow-x-auto lg:overflow-x-visible -mx-4 px-4 sm:mx-0 sm:px-0 lg:mx-0 lg:px-0 no-scrollbar snap-x lg:snap-none">
+                    class="flex lg:grid lg:grid-cols-4 gap-6 lg:gap-8 pb-8 lg:pb-0 overflow-x-auto lg:overflow-x-visible -mx-4 px-4 sm:mx-0 sm:px-0 lg:mx-0 lg:px-0 no-scrollbar snap-x lg:snap-none">
                     <div v-for="live in liveEvents" :key="live.name"
                         class="min-w-[300px] md:min-w-[380px] lg:min-w-0 snap-center group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:border-primary/50 transition-all duration-300 flex flex-col">
                         <div class="relative h-48 overflow-hidden">
@@ -365,7 +365,7 @@
                             kamu.</p>
                     </div>
                     <NuxtLink to="/klub"
-                        class="text-navy hover:text-primary-hover font-bold text-xs sm:text-sm flex items-center gap-1 sm:gap-2 group bg-white px-3 sm:px-4 py-2 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all">
+                        class="text-navy hover:text-primary font-bold text-xs sm:text-sm flex items-center gap-1 sm:gap-2 group">
                         <span class="hidden sm:inline">Cek Semua Klub</span>
                         <span class="sm:hidden">Semua Klub</span>
                         <span

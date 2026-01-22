@@ -5,6 +5,8 @@
             <div>
                 <div
                     class="flex items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2">
+                    <NuxtLink to="/dashboard/events" class="hover:text-primary transition-colors">Events</NuxtLink>
+                    <Icon icon="ph:caret-right-bold" class="text-[10px]" />
                     <NuxtLink :to="`/dashboard/events/${route.params.id}/overview`"
                         class="hover:text-primary transition-colors">Control Panel</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[10px]" />
@@ -243,8 +245,12 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed, reactive } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
+
+definePageMeta({
+    layout: 'dashboard'
+})
 
 const route = useRoute()
 
@@ -285,10 +291,6 @@ const getTargetStatusClass = (status) => {
     }
     return classes[status] || classes.pending
 }
-
-definePageMeta({
-    layout: 'dashboard'
-})
 </script>
 
 <style scoped>

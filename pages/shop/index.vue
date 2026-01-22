@@ -84,7 +84,8 @@
         <!-- Products Grid -->
         <section class="container mx-auto px-4 max-w-7xl pb-16">
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
-                <NuxtLink v-for="product in filteredProducts" :key="product.id" :to="`/shop/${product.slug || product.id}`"
+                <NuxtLink v-for="product in filteredProducts" :key="product.id"
+                    :to="`/shop/${product.slug || product.id}`"
                     class="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:border-primary/30 transition-all group cursor-pointer block">
 
                     <!-- Product Image -->
@@ -132,12 +133,8 @@
                             </span>
                         </div>
 
-                        <!-- Rating & Sold -->
+                        <!-- Sold -->
                         <div class="flex items-center gap-3 mt-3 text-xs text-gray-400">
-                            <div class="flex items-center gap-1">
-                                <Icon icon="ph:star-fill" class="text-amber-400" />
-                                <span>{{ product.rating }}</span>
-                            </div>
                             <span>{{ product.sold }} terjual</span>
                         </div>
                     </div>

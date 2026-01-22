@@ -136,7 +136,7 @@ const { errors, validate, validateForm, rules } = useFormValidation()
 const form = ref({
     email: '',
     password: '',
-    rememberMe: false
+    rememberMe: true
 })
 
 // Redirect if already logged in or auto-fill in development

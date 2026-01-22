@@ -10,11 +10,10 @@
             </div>
             <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-0">
                 <!-- Breadcrumb -->
-                <nav class="flex items-center gap-2 text-sm text-gray-400 mb-8">
-                    <NuxtLink to="/events" class="hover:text-white transition-colors">Semua Event</NuxtLink>
-                    <Icon icon="ph:caret-right" class="text-base" />
-                    <span class="text-primary font-medium">{{ tournament.name }}</span>
-                </nav>
+                <div class="mb-8">
+                    <Breadcrumbs :items="[{ label: 'Semua Event', path: '/events' }]" :current="tournament.name"
+                        class="!text-gray-300" />
+                </div>
 
                 <div class="flex flex-col lg:flex-row items-start justify-between gap-8 mb-12">
                     <div class="max-w-3xl">

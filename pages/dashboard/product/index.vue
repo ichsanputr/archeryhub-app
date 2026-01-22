@@ -3,10 +3,8 @@
         <!-- Header Section -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
-                <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
-                    <NuxtLink to="/dashboard" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
-                    <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <span class="text-navy">Marketplace</span>
+                <div class="mb-2">
+                    <Breadcrumbs :current="'Manajemen Produk'" />
                 </div>
                 <h1 class="text-3xl font-extrabold text-navy tracking-tight">Manajemen Produk</h1>
                 <p class="text-gray-500 font-medium mt-1">Kelola katalog produk yang Anda jual di marketplace.</p>
@@ -302,7 +300,7 @@ const productForm = ref({
     name: '',
     description: '',
     price: 0,
-    salePrice: 0,
+    sale_price: 0,
     category: 'other',
     stock: 0,
     status: 'draft',
@@ -316,7 +314,13 @@ const fetchProducts = async () => {
     isLoading.value = true
     try {
         const response = await get('/products/my')
-        products.value = response.data || []
+        products.value = (response.data || []).map(p => ({
+            ...p,
+            id: p.id || p.uuid,
+            salePrice: p.sale_price,
+            image: p.image_url || 'https://via.placeholder.com/150',
+            sold: p.sold || 0 // Assuming 'sold' is handled by backend or aggregation
+        }))
     } catch (error) {
         showToast('Gagal mengambil data produk', 'error')
     } finally {
@@ -364,7 +368,7 @@ const openCreateModal = () => {
         name: '',
         description: '',
         price: 0,
-        salePrice: 0,
+        sale_price: 0,
         category: 'other',
         stock: 0,
         status: 'draft',
@@ -380,7 +384,7 @@ const editProduct = (product) => {
         name: product.name,
         description: product.description || '',
         price: product.price,
-        salePrice: product.salePrice || 0,
+        sale_price: product.salePrice || 0,
         category: product.category,
         stock: product.stock,
         status: product.status,
@@ -390,12 +394,17 @@ const editProduct = (product) => {
 }
 
 const handleSubmit = async () => {
+    if (!productForm.value.name || !productForm.value.price) {
+        showToast('Nama dan harga harus diisi', 'warning')
+        return
+    }
+
     isSubmitting.value = true
     try {
         const payload = {
             ...productForm.value,
             price: Number(productForm.value.price),
-            sale_price: productForm.value.salePrice ? Number(productForm.value.salePrice) : null,
+            sale_price: productForm.value.sale_price ? Number(productForm.value.sale_price) : null,
             stock: Number(productForm.value.stock)
         }
 

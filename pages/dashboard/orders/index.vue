@@ -66,62 +66,57 @@
       </div>
 
       <!-- Orders List -->
-      <div class="flex-1 overflow-x-auto">
+      <div class="flex-1 overflow-x-auto relative">
+        <div v-if="isLoading" class="absolute inset-0 bg-white/50 backdrop-blur-[2px] z-10 flex items-center justify-center">
+          <LoadingSpinner size="lg" />
+        </div>
+        
         <table class="w-full text-left">
           <thead>
             <tr class="bg-gray-50/50 text-[10px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-50">
-              <th class="px-6 py-4">Pesanan</th>
+              <th class="px-6 py-4">ID Pesanan</th>
               <th class="px-6 py-4">Tanggal</th>
-              <th class="px-6 py-4">Pembeli</th>
-              <th class="px-6 py-4">Item</th>
               <th class="px-6 py-4 text-right">Total</th>
               <th class="px-6 py-4">Status</th>
               <th class="px-6 py-4 text-center">Aksi</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-50">
-            <tr v-for="order in filteredOrders" :key="order.id" class="hover:bg-gray-50/50 transition-colors group">
+            <tr v-for="order in filteredOrders" :key="order.uuid" class="hover:bg-gray-50/50 transition-colors group">
               <td class="px-6 py-4">
-                <p class="font-black text-navy text-sm">#{{ order.id }}</p>
+                <p class="font-black text-navy text-sm">#{{ order.uuid.substring(0, 8).toUpperCase() }}</p>
                 <div class="flex items-center gap-1 mt-0.5">
-                  <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                  <span class="text-[10px] text-gray-400 font-bold">{{ order.paymentStatus }}</span>
+                  <span class="w-1.5 h-1.5 rounded-full" :class="order.payment_status === 'paid' ? 'bg-green-500' : 'bg-red-500'"></span>
+                  <span class="text-[10px] text-gray-400 font-bold uppercase">{{ order.payment_status }}</span>
                 </div>
               </td>
               <td class="px-6 py-4">
-                <p class="text-xs text-navy font-bold">{{ order.date }}</p>
-                <p class="text-[10px] text-gray-400">{{ order.time }}</p>
-              </td>
-              <td class="px-6 py-4">
-                <div class="flex items-center gap-2">
-                   <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center font-black text-primary text-[10px]">
-                      {{ order.buyer.charAt(0) }}
-                   </div>
-                   <div>
-                      <p class="text-xs font-black text-navy">{{ order.buyer }}</p>
-                      <p class="text-[10px] text-gray-400">{{ order.city }}</p>
-                   </div>
-                </div>
-              </td>
-              <td class="px-6 py-4">
-                <p class="text-xs text-navy font-medium">{{ order.items }} Item</p>
-                <p class="text-[10px] text-gray-400 truncate max-w-[150px]">{{ order.itemName }}</p>
+                <p class="text-xs text-navy font-bold">{{ formatDate(order.created_at) }}</p>
               </td>
               <td class="px-6 py-4 text-right">
-                <p class="text-sm font-black text-navy">{{ formatCurrency(order.total) }}</p>
+                <p class="text-sm font-black text-navy">{{ formatCurrency(order.total_amount) }}</p>
               </td>
               <td class="px-6 py-4">
                 <span :class="getStatusClass(order.status)" class="text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-tighter">
-                  {{ order.statusLabel }}
+                  {{ getStatusLabel(order.status) }}
                 </span>
               </td>
               <td class="px-6 py-4">
                 <div class="flex items-center justify-center gap-2">
+                   <button v-if="order.status === 'pending'" 
+                     @click="updateStatus(order.uuid, 'processing')"
+                     class="p-2 bg-primary/10 text-primary hover:bg-primary hover:text-navy transition-all rounded-lg"
+                     title="Proses Pesanan">
+                      <Icon icon="ph:check-bold" class="text-lg" />
+                   </button>
+                   <button v-if="order.status === 'processing'" 
+                     @click="updateStatus(order.uuid, 'shipped')"
+                     class="p-2 bg-blue-50 text-blue-500 hover:bg-blue-600 hover:text-white transition-all rounded-lg"
+                     title="Kirim Pesanan">
+                      <Icon icon="ph:truck-bold" class="text-lg" />
+                   </button>
                    <button class="p-2 bg-gray-100 text-gray-400 hover:text-navy hover:bg-primary transition-all rounded-lg">
                       <Icon icon="ph:eye" class="text-lg" />
-                   </button>
-                   <button v-if="order.status === 'pending'" class="p-2 bg-primary/10 text-primary hover:bg-primary hover:text-navy transition-all rounded-lg">
-                      <Icon icon="ph:check-bold" class="text-lg" />
                    </button>
                 </div>
               </td>
@@ -130,7 +125,7 @@
         </table>
 
         <!-- Empty State -->
-        <div v-if="filteredOrders.length === 0" class="flex flex-col items-center justify-center py-20">
+        <div v-if="!isLoading && filteredOrders.length === 0" class="flex flex-col items-center justify-center py-20">
           <Icon icon="ph:shopping-bag-open" class="text-6xl text-gray-100 mb-4" />
           <h3 class="text-lg font-black text-navy">Tidak ada pesanan</h3>
           <p class="text-sm text-gray-400 font-medium">Belum ada pesanan yang sesuai dengan filter Anda</p>
@@ -139,7 +134,7 @@
 
       <!-- Pagination Mock -->
       <div class="p-6 border-t border-gray-50 flex items-center justify-between">
-         <p class="text-xs text-gray-400 font-medium">Menampilkan 1-{{ filteredOrders.length }} dari {{ filteredOrders.length }} pesanan</p>
+         <p class="text-xs text-gray-400 font-medium">Menampilkan {{ filteredOrders.length }} pesanan</p>
          <div class="flex gap-2">
             <BaseButton variant="outline" size="xs" disabled>Sebelumnya</BaseButton>
             <BaseButton variant="outline" size="xs" disabled>Berikutnya</BaseButton>
@@ -157,8 +152,14 @@ definePageMeta({
   layout: 'dashboard'
 })
 
+const { get, put } = useApi()
+const { showToast } = useToast()
+
 const activeTab = ref('all')
 const searchQuery = ref('')
+const orders = ref([])
+const sellerStatsRaw = ref(null)
+const isLoading = ref(true)
 
 const tabs = [
   { label: 'Semua', value: 'all' },
@@ -168,110 +169,62 @@ const tabs = [
   { label: 'Selesai', value: 'done' },
 ]
 
-const orderStats = [
+const fetchOrdersData = async () => {
+  isLoading.value = true
+  try {
+    const [ordersRes, statsRes] = await Promise.all([
+      get('/orders'),
+      get('/orders/stats')
+    ])
+    orders.value = ordersRes.data || []
+    sellerStatsRaw.value = statsRes.data
+  } catch (error) {
+    showToast('Gagal mengambil data pesanan', 'error')
+  } finally {
+    isLoading.value = false
+  }
+}
+
+onMounted(() => {
+  fetchOrdersData()
+})
+
+const orderStats = computed(() => [
   { 
     label: 'Total Pesanan', 
-    value: '124', 
+    value: sellerStatsRaw.value?.total_orders || 0, 
     icon: 'ph:shopping-bag', 
     colorClass: 'bg-primary/10 text-primary',
     trendIcon: 'ph:trend-up',
     trendColor: 'text-green-500',
-    trendText: '+8.4%'
+    trendText: 'Live'
   },
   { 
     label: 'Pendapatan', 
-    value: 'Rp 12.450.000', 
+    value: `Rp ${formatPrice(sellerStatsRaw.value?.total_revenue || 0)}`, 
     icon: 'ph:money', 
     colorClass: 'bg-green-50 text-green-500',
     trendIcon: 'ph:trend-up',
     trendColor: 'text-green-500',
-    trendText: '+12.5%'
+    trendText: 'Live'
   },
   { 
-    label: 'Menunggu', 
-    value: '8', 
-    icon: 'ph:clock-afternoon', 
+    label: 'Produk Terjual', 
+    value: sellerStatsRaw.value?.products_sold || 0, 
+    icon: 'ph:package', 
     colorClass: 'bg-amber-50 text-amber-500',
-    trendIcon: 'ph:trend-down',
-    trendColor: 'text-red-500',
-    trendText: '-2.1%'
+    trendIcon: 'ph:trend-up',
+    trendColor: 'text-green-500',
+    trendText: 'Live'
   },
   { 
     label: 'Rating Toko', 
-    value: '4.8', 
+    value: sellerStatsRaw.value?.rating || '0.0', 
     icon: 'ph:star', 
     colorClass: 'bg-blue-50 text-blue-500',
     trendIcon: 'ph:trend-up',
     trendColor: 'text-green-500',
-    trendText: '+0.2%'
-  },
-]
-
-const orders = ref([
-  { 
-    id: 'AH-202401-001', 
-    date: '22 Jan 2024', 
-    time: '14:20', 
-    buyer: 'Budi Santoso', 
-    city: 'Jakarta Selatan',
-    items: 2, 
-    itemName: 'Finger Tab Win&Win, Arm Guard Avalon',
-    total: 850000, 
-    status: 'pending', 
-    statusLabel: 'Menunggu',
-    paymentStatus: 'Dibayar'
-  },
-  { 
-    id: 'AH-202401-002', 
-    date: '21 Jan 2024', 
-    time: '10:15', 
-    buyer: 'Siti Aminah', 
-    city: 'Bandung',
-    items: 1, 
-    itemName: 'Recurve Bow SF Optimo+, Blue 68/24',
-    total: 2200000, 
-    status: 'processing', 
-    statusLabel: 'Diproses',
-    paymentStatus: 'Dibayar'
-  },
-  { 
-    id: 'AH-202401-003', 
-    date: '20 Jan 2024', 
-    time: '09:45', 
-    buyer: 'Rahmat Hidayat', 
-    city: 'Surabaya',
-    items: 12, 
-    itemName: 'Easton Apollo Arrows (Pack of 12)',
-    total: 1800000, 
-    status: 'shipped', 
-    statusLabel: 'Dikirim',
-    paymentStatus: 'Dibayar'
-  },
-  { 
-    id: 'AH-202401-004', 
-    date: '19 Jan 2024', 
-    time: '16:30', 
-    buyer: 'Andi Wijaya', 
-    city: 'Medan',
-    items: 1, 
-    itemName: 'Arrow Quiver Easton Elite',
-    total: 450000, 
-    status: 'done', 
-    statusLabel: 'Selesai',
-    paymentStatus: 'Dibayar'
-  },
-  { 
-    id: 'AH-202401-005', 
-    date: '18 Jan 2024', 
-    time: '11:20', 
-    buyer: 'Dewi Lestari', 
-    city: 'Semarang',
-    items: 3, 
-    itemName: 'Target Face 80cm, Face Pins, Target Hub',
-    total: 120000, 
-    status: 'pending', 
-    statusLabel: 'Menunggu',
-    paymentStatus: 'Menunggu Pembayaran'
+    trendText: 'Live'
   },
 ])
 
@@ -285,15 +238,26 @@ const filteredOrders = computed(() => {
   if (searchQuery.value) {
     const q = searchQuery.value.toLowerCase()
     result = result.filter(order => 
-      order.id.toLowerCase().includes(q) || 
-      order.buyer.toLowerCase().includes(q)
+      order.uuid.toLowerCase().includes(q)
+      // Note: buyer name might need a join or additional field in the future
     )
   }
 
   return result
 })
 
+const updateStatus = async (orderId, newStatus) => {
+  try {
+    await put(`/orders/status/${orderId}`, { status: newStatus })
+    showToast('Status pesanan diperbarui', 'success')
+    fetchOrdersData()
+  } catch (error) {
+    showToast('Gagal memperbarui status', 'error')
+  }
+}
+
 const getStatusClass = (status) => {
+  const statusLower = status?.toLowerCase()
   const classes = {
     'pending': 'bg-amber-50 text-amber-500 border border-amber-100',
     'processing': 'bg-blue-50 text-blue-500 border border-blue-100',
@@ -301,14 +265,34 @@ const getStatusClass = (status) => {
     'done': 'bg-green-50 text-green-500 border border-green-100',
     'cancelled': 'bg-red-50 text-red-500 border border-red-100',
   }
-  return classes[status] || 'bg-gray-50 text-gray-400'
+  return classes[statusLower] || 'bg-gray-50 text-gray-400'
 }
 
+const getStatusLabel = (status) => {
+  const labels = {
+    'pending': 'Menunggu',
+    'processing': 'Diproses',
+    'shipped': 'Dikirim',
+    'done': 'Selesai',
+    'cancelled': 'Dibatalkan'
+  }
+  return labels[status?.toLowerCase()] || status
+}
+
+const formatPrice = (price) => new Intl.NumberFormat('id-ID').format(price)
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat('id-ID', {
     style: 'currency',
     currency: 'IDR',
     minimumFractionDigits: 0
   }).format(amount)
+}
+const formatDate = (dateStr) => {
+  if (!dateStr) return '-'
+  return new Date(dateStr).toLocaleDateString('id-ID', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric'
+  })
 }
 </script>

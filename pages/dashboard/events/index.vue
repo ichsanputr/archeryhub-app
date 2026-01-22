@@ -146,7 +146,7 @@
               </td>
               <td class="px-6 py-5 text-right">
                 <div v-if="!isArcher" class="flex items-center justify-end gap-2">
-                  <BaseButton :to="`/dashboard/events/${event.id}/manage`" variant="white" size="sm"
+                  <BaseButton :to="`/dashboard/events/${event.slug || event.id}/overview`" variant="primary" size="sm"
                     class="h-9 font-bold">
                     Kelola
                   </BaseButton>

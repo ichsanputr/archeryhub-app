@@ -27,8 +27,17 @@
           class="font-black text-sm transition-colors">Berita</NuxtLink>
       </nav>
 
-      <!-- Dashboard Title (only in dashboard mode) -->
-      <div v-if="isDashboard" class="hidden md:flex items-center gap-3 mr-4">
+      <!-- Back Button (only in event manage mode) -->
+      <div v-if="isEventManageMode" class="hidden md:flex items-center gap-3 mr-4">
+        <NuxtLink to="/dashboard/events" 
+          class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-600 hover:text-navy">
+          <Icon icon="ph:arrow-left" class="text-xl" />
+          <span class="text-sm font-bold">Kembali ke Event</span>
+        </NuxtLink>
+      </div>
+
+      <!-- Dashboard Title (only in dashboard mode, not in manage mode) -->
+      <div v-else-if="isDashboard" class="hidden md:flex items-center gap-3 mr-4">
         <h1 class="text-lg font-black text-navy whitespace-nowrap">
           {{ dashboardTitle }}
         </h1>
@@ -96,6 +105,18 @@ const route = useRoute()
 const router = useRouter()
 const { user } = useAuth()
 const { isEventMode, eventTitle } = useEventContext()
+
+const isEventManageMode = computed(() => {
+  // Check if we're on any event management page (overview, targets, qualification, elimination, etc.)
+  const path = route.path
+  if (!path.includes('/dashboard/events/')) return false
+  const eventPathMatch = path.match(/\/dashboard\/events\/([^/]+)\/(.+)/)
+  if (!eventPathMatch) return false
+  const [, eventId, subPath] = eventPathMatch
+  // Exclude certain paths that are not management pages
+  const excludedPaths = ['edit', 'checkout', 'participants', 'register', 'register-edit', 'results', 'setup', 'timeline', 'venue']
+  return !excludedPaths.includes(subPath)
+})
 
 const isSidebarOpen = useState('mobile-sidebar-open', () => false)
 const searchQuery = ref('')

@@ -1,15 +1,10 @@
 <template>
     <div class="min-h-screen bg-gray-50">
         <!-- Breadcrumb -->
-        <div class="bg-white border-b border-gray-200">
-            <div class="container mx-auto px-4 max-w-7xl py-4">
-                <div class="flex items-center gap-2 text-sm text-gray-400 font-medium">
-                    <NuxtLink to="/shop" class="hover:text-primary transition-colors">Marketplace</NuxtLink>
-                    <Icon icon="ph:caret-right" class="text-xs" />
-                    <span class="text-gray-600">{{ product.category }}</span>
-                    <Icon icon="ph:caret-right" class="text-xs" />
-                    <span class="text-navy truncate max-w-xs">{{ product.name }}</span>
-                </div>
+        <div class="bg-white border-b border-gray-200 sticky top-0 z-30">
+            <div class="container mx-auto px-4 max-w-7xl py-3 md:py-4">
+                <Breadcrumbs :items="[{ label: 'Marketplace', path: '/shop' }, { label: product.category }]"
+                    :current="product.name" />
             </div>
         </div>
 
@@ -51,59 +46,39 @@
 
                 <!-- Product Info -->
                 <div class="space-y-6">
-                    <!-- Category & Stock -->
-                    <div class="flex items-center gap-3">
-                        <span
-                            class="px-3 py-1 bg-blue-50 text-blue-600 text-xs font-bold uppercase tracking-wider rounded-full">
-                            {{ product.category }}
-                        </span>
-                        <span v-if="product.stock > 0"
-                            class="px-3 py-1 bg-green-50 text-green-600 text-xs font-bold rounded-full">
-                            Stok: {{ product.stock }}
-                        </span>
-                        <span v-else class="px-3 py-1 bg-red-50 text-red-600 text-xs font-bold rounded-full">
-                            Habis
-                        </span>
-                    </div>
-
-                    <!-- Title -->
-                    <h1 class="text-2xl lg:text-3xl font-black text-navy leading-tight">{{ product.name }}</h1>
-
-                    <!-- Rating & Stats -->
-                    <div class="flex items-center gap-4 text-sm text-gray-500">
-                        <div class="flex items-center gap-1.5">
-                            <div class="flex items-center gap-0.5">
-                                <Icon v-for="i in 5" :key="i" icon="ph:star-fill"
-                                    :class="i <= Math.round(product.rating) ? 'text-amber-400' : 'text-gray-200'" />
-                            </div>
-                            <span class="font-bold text-navy">{{ product.rating }}</span>
-                            <span>({{ product.reviews }} ulasan)</span>
+                    <!-- Title & Stock -->
+                    <div class="space-y-2">
+                        <h1 class="text-2xl lg:text-3xl font-black text-navy leading-tight">{{ product.name }}</h1>
+                        <div class="flex items-center gap-2 text-sm">
+                            <span v-if="product.stock > 0" class="font-bold text-green-600">
+                                Stok: {{ product.stock }}
+                            </span>
+                            <span v-else class="font-bold text-red-600">
+                                Stok Habis
+                            </span>
+                            <span class="text-gray-300">•</span>
+                            <span class="text-gray-500">{{ product.sold }} terjual</span>
+                            <span class="text-gray-300">•</span>
+                            <span class="text-gray-500">{{ product.views }} dilihat</span>
                         </div>
-                        <span class="text-gray-300">•</span>
-                        <span>{{ product.sold }} terjual</span>
-                        <span class="text-gray-300">•</span>
-                        <span>{{ product.views }} dilihat</span>
                     </div>
 
                     <!-- Price -->
-                    <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100">
-                        <div class="flex items-end gap-4">
-                            <span class="text-4xl font-black text-navy">
+                    <div class="bg-gray-50 rounded-2xl p-4 md:p-6 border border-gray-100">
+                        <div class="flex items-end gap-3 md:gap-4">
+                            <span class="text-3xl md:text-4xl font-black text-navy">
                                 Rp {{ formatPrice(product.salePrice || product.price) }}
                             </span>
-                            <span v-if="product.salePrice" class="text-xl text-gray-400 line-through mb-1">
+                            <span v-if="product.salePrice" class="text-lg md:text-xl text-gray-400 line-through mb-1">
                                 Rp {{ formatPrice(product.price) }}
                             </span>
                         </div>
-                        <p v-if="product.salePrice" class="text-green-600 font-bold mt-2">
-                            Hemat Rp {{ formatPrice(product.price - product.salePrice) }}!
-                        </p>
                     </div>
 
                     <!-- Quantity Selector -->
-                    <div class="flex items-center gap-4">
-                        <span class="font-bold text-navy">Jumlah:</span>
-                        <div class="flex items-center border border-gray-200 rounded-xl overflow-hidden">
+                    <div class="flex flex-wrap items-center gap-4">
+                        <span class="font-bold text-navy text-sm md:text-base">Jumlah:</span>
+                        <div class="flex items-center border border-gray-200 rounded-xl overflow-hidden bg-white">
                             <button @click="quantity = Math.max(1, quantity - 1)"
                                 class="px-4 py-2 hover:bg-gray-100 transition-colors">
                                 <Icon icon="ph:minus" />
@@ -115,43 +90,63 @@
                                 <Icon icon="ph:plus" />
                             </button>
                         </div>
-                        <span class="text-gray-400 text-sm">Maks. {{ product.stock }} pcs</span>
+                        <span class="text-gray-400 text-xs md:text-sm">Tersisa {{ product.stock }} pcs</span>
                     </div>
 
-                    <!-- Actions -->
-                    <div class="flex gap-4 pt-4">
+                    <!-- Actions (Desktop) -->
+                    <div class="hidden sm:flex gap-4 pt-2">
                         <BaseButton variant="outline" size="lg" icon="ph:chat-circle" class="flex-1">
                             Chat Penjual
                         </BaseButton>
-                        <BaseButton @click="handleAddToCart" variant="primary" size="lg" icon="ph:shopping-cart" class="flex-1" :loading="isAddingToCart">
+                        <BaseButton @click="handleAddToCart" variant="primary" size="lg" icon="ph:shopping-cart"
+                            class="flex-1" :loading="isAddingToCart">
                             + Keranjang
                         </BaseButton>
                     </div>
 
+                    <!-- Mobile Actions (Visible on small screens) -->
+                    <div class="sm:hidden space-y-3">
+                        <BaseButton @click="handleAddToCart" variant="primary" size="lg" icon="ph:shopping-cart"
+                            class="w-full py-4 text-base font-black" :loading="isAddingToCart">
+                            Tambah Keranjang
+                        </BaseButton>
+                        <BaseButton variant="outline" size="lg" icon="ph:chat-circle" class="w-full py-4">
+                            Chat Penjual
+                        </BaseButton>
+                    </div>
+
+                    <!-- Sticky Mobile Bottom Bar -->
+                    <div
+                        class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 z-40 flex gap-3 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+                        <BaseButton variant="outline" size="lg" icon="ph:chat-circle"
+                            class="flex-shrink-0 !w-14 !h-14 !p-0">
+                        </BaseButton>
+                        <BaseButton @click="handleAddToCart" variant="primary" size="lg" icon="ph:shopping-cart"
+                            class="flex-1 font-black text-sm" :loading="isAddingToCart">
+                            Tambah Keranjang
+                        </BaseButton>
+                    </div>
+
                     <!-- Seller Card -->
-                    <div class="bg-white rounded-2xl border border-gray-200 p-5 mt-6">
+                    <div class="bg-white rounded-2xl border border-gray-200 p-5 mt-4">
                         <div class="flex items-center gap-4">
                             <div
-                                class="w-14 h-14 rounded-xl bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center text-navy font-black text-xl">
+                                class="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center text-navy font-black text-lg md:text-xl flex-shrink-0">
                                 {{ product.seller.name.charAt(0) }}
                             </div>
-                            <div class="flex-1">
+                            <div class="flex-1 min-w-0">
                                 <div class="flex items-center gap-2">
-                                    <h3 class="font-bold text-navy">{{ product.seller.name }}</h3>
+                                    <h3 class="font-bold text-navy truncate">{{ product.seller.name }}</h3>
                                     <Icon v-if="product.seller.verified" icon="ph:seal-check-fill"
-                                        class="text-blue-500" />
+                                        class="text-blue-500 flex-shrink-0" />
                                 </div>
-                                <div class="flex items-center gap-3 text-xs text-gray-400 mt-1">
-                                    <span class="flex items-center gap-1">
-                                        <Icon icon="ph:star-fill" class="text-amber-400" />
-                                        {{ product.seller.rating }}
-                                    </span>
+                                <div class="flex items-center gap-3 text-[10px] md:text-xs text-gray-400 mt-1">
                                     <span>{{ product.seller.products }} produk</span>
                                     <span>{{ product.seller.location }}</span>
                                 </div>
                             </div>
                             <NuxtLink :to="`/shop/seller/${product.seller.slug}`">
-                                <BaseButton variant="white" size="sm">Kunjungi</BaseButton>
+                                <BaseButton variant="white" size="sm" class="hidden xs:flex">Kunjungi</BaseButton>
                             </NuxtLink>
                         </div>
                     </div>
@@ -177,9 +172,7 @@
                 </div>
 
                 <!-- Tab Content -->
-                <div v-if="activeTab === 'description'" class="prose max-w-none text-gray-700">
-                    <p>{{ product.description }}</p>
-
+                <div v-if="activeTab === 'description'" class="prose max-w-none text-gray-700 pt-4">
                     <h3 class="text-lg font-bold text-navy mt-6 mb-4">Spesifikasi</h3>
                     <table class="w-full">
                         <tr v-for="(value, key) in product.specifications" :key="key" class="border-b border-gray-100">

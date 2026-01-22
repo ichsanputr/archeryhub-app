@@ -17,7 +17,7 @@
                     <!-- Turnamen with Mega Menu -->
                     <div class="relative" @mouseenter="showMegaMenu = true" @mouseleave="showMegaMenu = false">
                         <button
-                            class="font-medium text-sm transition-all duration-300 flex items-center gap-1 hover:text-primary"
+                            class="text-sm font-semibold transition-all duration-300 flex items-center gap-1 hover:text-primary"
                             :class="[navLinkClasses, { 'font-bold': isActive('/events') }]">
                             Event
                             <Icon icon="ph:caret-down" class="text-xs transition-transform"
@@ -118,11 +118,11 @@
                 <!-- Desktop Auth Buttons -->
                 <div class="hidden md:flex items-center gap-3">
                     <!-- Cart Icon (For Archers) -->
-                    <NuxtLink v-if="isLoggedIn && user?.user_type === 'archer'" to="/dashboard/cart" 
+                    <NuxtLink v-if="isLoggedIn && user?.user_type === 'archer'" to="/dashboard/cart"
                         class="relative p-2 rounded-xl transition-all duration-300 group"
                         :class="showSolid ? 'text-navy hover:bg-gray-100' : 'text-white hover:bg-white/10'">
                         <Icon icon="ph:shopping-bag-bold" class="text-2xl" />
-                        <span v-if="cartCount > 0" 
+                        <span v-if="cartCount > 0"
                             class="absolute top-1 right-1 w-5 h-5 bg-primary text-navy text-[10px] font-black rounded-full flex items-center justify-center border-2 border-white shadow-sm ring-1 ring-primary/20">
                             {{ cartCount }}
                         </span>
@@ -189,11 +189,11 @@
                 <!-- Mobile Menu Toggle -->
                 <div class="flex items-center gap-2 md:hidden">
                     <!-- Mobile Cart (For Archers) -->
-                    <NuxtLink v-if="isLoggedIn && user?.user_type === 'archer'" to="/dashboard/cart" 
+                    <NuxtLink v-if="isLoggedIn && user?.user_type === 'archer'" to="/dashboard/cart"
                         class="relative p-2 rounded-xl transition-all duration-300"
                         :class="showSolid ? 'text-navy' : 'text-white'">
                         <Icon icon="ph:shopping-bag-bold" class="text-2xl" />
-                        <span v-if="cartCount > 0" 
+                        <span v-if="cartCount > 0"
                             class="absolute top-1 right-1 w-5 h-5 bg-primary text-navy text-[10px] font-black rounded-full flex items-center justify-center border-2 border-white shadow-sm ring-1 ring-primary/20">
                             {{ cartCount }}
                         </span>
@@ -244,14 +244,16 @@
                         <div class="flex items-center gap-4">
                             <div
                                 class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-amber-400 border-2 border-white shadow-lg overflow-hidden flex items-center justify-center">
-                                <img v-if="user?.avatar_url" :src="user.avatar_url" class="w-full h-full object-cover" />
+                                <img v-if="user?.avatar_url" :src="user.avatar_url"
+                                    class="w-full h-full object-cover" />
                                 <span v-else class="text-navy font-black text-xl">{{ user?.full_name?.charAt(0) || 'U'
                                 }}</span>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <p class="text-navy font-black truncate">{{ user?.full_name || 'User' }}</p>
                                 <p class="text-xs text-gray-400 truncate">{{ user?.email }}</p>
-                                <span class="inline-block mt-2 px-2 py-0.5 bg-primary/20 text-navy text-[10px] font-black rounded uppercase tracking-wider">
+                                <span
+                                    class="inline-block mt-2 px-2 py-0.5 bg-primary/20 text-navy text-[10px] font-black rounded uppercase tracking-wider">
                                     {{ user?.user_type || 'Archer' }}
                                 </span>
                             </div>
