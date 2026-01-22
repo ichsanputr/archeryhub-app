@@ -114,15 +114,31 @@ const isEventManagePage = computed(() => {
   return !excludedPaths.includes(subPath)
 })
 
-const eventLinks = computed(() => [
-  { label: 'Ringkasan', icon: 'ph:squares-four', path: `/dashboard/events/${eventId.value}/overview` },
-  { label: 'Halaman Event', icon: 'ph:browser', path: `/dashboard/events/${eventId.value}/page` },
-  { label: 'Peserta', icon: 'ph:users-three', path: `/dashboard/events/${eventId.value}/participants` },
-  { label: 'Tim', icon: 'ph:users-four', path: `/dashboard/events/${eventId.value}/teams` },
-  { label: 'Target & Lajur', icon: 'ph:target', path: `/dashboard/events/${eventId.value}/targets` },
-  { label: 'Kualifikasi', icon: 'fluent:table-freeze-column-20-regular', path: `/dashboard/events/${eventId.value}/qualification` },
-  { label: 'Eliminasi', icon: 'mdi:bracket', path: `/dashboard/events/${eventId.value}/elimination` },
-])
+const eventLinks = computed(() => {
+  const role = user.value?.role || user.value?.type || 'archer'
+  const isOrganization = role === 'organization'
+  
+  const links = [
+    { label: 'Ringkasan', icon: 'ph:squares-four', path: `/dashboard/events/${eventId.value}/overview` },
+    { label: 'Halaman Event', icon: 'ph:browser', path: `/dashboard/events/${eventId.value}/page` },
+  ]
+  
+  // Add Kategori Lomba only for organization users, right after Halaman Event
+  if (isOrganization) {
+    links.push({ label: 'Kategori Lomba', icon: 'ph:tag', path: `/dashboard/events/${eventId.value}/categories` })
+  }
+  
+  // Add the rest of the menu items
+  links.push(
+    { label: 'Peserta', icon: 'ph:users-three', path: `/dashboard/events/${eventId.value}/participants` },
+    { label: 'Tim', icon: 'ph:users-four', path: `/dashboard/events/${eventId.value}/teams` },
+    { label: 'Target & Lajur', icon: 'ph:target', path: `/dashboard/events/${eventId.value}/targets` },
+    { label: 'Kualifikasi', icon: 'fluent:table-freeze-column-20-regular', path: `/dashboard/events/${eventId.value}/qualification` },
+    { label: 'Eliminasi', icon: 'mdi:bracket', path: `/dashboard/events/${eventId.value}/elimination` },
+  )
+  
+  return links
+})
 
 // Role-based navigation - filtered based on user role
 const isArcher = computed(() => {
@@ -151,6 +167,7 @@ const userRoleLabel = computed(() => {
 
 const navLinks = computed(() => {
   const role = user.value?.role || user.value?.type || 'archer'
+  const isAdminOrOrg = role === 'admin' || role === 'organization'
 
   // Different navigation for archers vs organizers
   if (role === 'archer') {
@@ -179,7 +196,6 @@ const navLinks = computed(() => {
   const base = [
     { label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard' },
     ...(role !== 'club' ? [{ label: 'Event', icon: 'ph:trophy', path: '/dashboard/events' }] : []),
-    ...(role !== 'club' ? [{ label: 'Kategori Lomba', icon: 'ph:tag', path: '/dashboard/event-categories' }] : []),
     ...(!isEventManagePage.value ? [{ label: 'Laporan', icon: 'ph:chart-bar', path: '/dashboard/reports' }] : []),
     ...(role === 'club' ? [{ label: 'Anggota Klub', icon: 'ph:identification-badge', path: '/dashboard/members' }] : []),
     ...(role === 'club' ? [{ label: 'Profil Klub', icon: 'ph:buildings', path: '/dashboard/club/profile' }] : []),
