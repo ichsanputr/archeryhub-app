@@ -234,23 +234,61 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import { useApi } from '~/composables/useApi'
+
 const searchQuery = ref('')
 const sortBy = ref('newest')
+const isLoading = ref(true)
 
-const tournaments = [
+const { get } = useApi()
+
+// Fallback sample data
+const sampleTournaments = [
     { slug: 'surabaya-archery-cup-2024', name: 'Surabaya Archery Cup 2024', date: 'Nov 10 - 13, 2024', location: 'KONI Jatim Field, Surabaya', status: 'live', category: 'National Series', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAJXWL-Z7f7fP24_IyBjI_e-q_jYcMbzRtaKiOpKP8TxgqwSxRrCqNcE-GXJXbiCEv6rlwlNJzTmbbgAdQFWHH4Jk_Fw-aslTiT3Qezy8bbmGRG0WoRA-yD8tykZuxYObytzJ6Yf7yNL8poFU6vWlyEuFjbHcIzwfoLAMru-bfdw4GXezmv71SwRPYw_-Ct6ZP3f6AqglpvBIhCSrp9g13uTQpj69_-hzZqp1wSqJJ-9PdZqp0CYWgFWsajdRos9QmU7eeyuFhFPH0' },
     { slug: 'indonesian-open-2024', name: 'Indonesian Open Championship 2024', date: 'Nov 12 - 15, 2024', location: 'GBK Archery Field, Jakarta', status: 'upcoming', category: 'Grade A', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuByxS8LZ93pBQXI_V_Vu3nB0633lwPZGiFCM3UtI-xk79b_O83ASmlHYA36lOzcnmVsbgs4DEe9awj543MvzCN1yzOo1wZ3ViXLdiMRV7vAMdy66lvu-l5dpFAOgZ0uCMKJxsBRXPJL1QeX4_ZdX2ynTEZR-ZMilrncma7gKG2YK0vsj0KJZnw_lD0UZaXFKW2aVFD1SU-mzi_sAT2D-62TP0j5LF6KprFriv2sV9rdypqLSvfrZekYDy45XaK8F1vVh7e5nfrgK7o' },
     { slug: 'bali-international-open', name: 'Bali International Open', date: 'Dec 01 - 05, 2024', location: 'Denpasar Archery Center, Bali', status: 'upcoming', category: 'Grade A', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBmKeu4qLnuI8uJ8itXirIGY311f6c_CfhqFD3qtMv-M4oTNDiSeGeylyU0qI_7lQHeMywtfdDw175-dWrdxwZwWSnnEMmkBca4ScW0dEbBQ_wZYVWuCaOPI-A204QdKHKXQxHsutHbZP8c9uPaZpfK8lzqziHTAW_dqnlmi99AtLhIGmxfUZ-irvcNm1YUswSsH9HGhvq4Hr6jq7rsveM4HwMmhNVDABEGcgh0sYQHoHy9t1IzkTX2LexV72X240IEyZL2_InQGZ8' },
     { slug: 'jogja-youth-championship', name: 'Jogja Youth Championship', date: 'Dec 15 - 17, 2024', location: 'UNY Sports Complex, Yogyakarta', status: 'upcoming', category: null, image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCaKz9i1Sy4TPWgHSZRQZdfbE9FAsY4xikvvu2rhp8s_A9V5Sy5lv8pftyxQXwQSSv1xbdCGZkIqVOv_3u8sisf-kuW8CCXnYrzldx8xKkp12tmxF1SztarFv2PQMwoYr5sv7cn1wpmzOMepJof7lZkvTkOqS_LS94B-kyA-HRdMFPaNXbC-I6OY9Rp2dTCI-86cqoGMepWYeLPECuEvPwH35G_RyrcW4OoeB-xFCH1noe3E3mLKFdU_ftNYNRJ-e35YW_UO7tjW3E' },
     { slug: 'bandung-indoor-classic', name: 'Bandung Indoor Classic', date: 'Oct 20 - 22, 2024', location: 'GOR Pajajaran, Bandung', status: 'finished', category: null, image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCq8OlQbcxO7uY4gwKVt6JygaktR4FjGZfJwbWiOyDIXqXr0bCnQIn3f-5m63myglDTGxdrpDHrFX2wVGOC7C8INtL7td4RDrpYhrJi0qjxPG7jixXi-Cw0fJQfRMda9sgJhfzCsFLmMhX9mvC6_gNAo5OF_MDtU5ukfm3hvRqWuHC0pbxNqSd0uWfIxLjxHXmyDnRtFg9VIz-XC2tCuvSusJKEFLjs57_DO7_uOGurALxGKsxcgIJmc_0gHV72A6BGvhiStIpWr3o' },
     { slug: 'borneo-archery-festival', name: 'Borneo Archery Festival', date: 'Jan 10 - 14, 2025', location: 'Balikpapan Sports Center', status: 'upcoming', category: 'Club', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDQStrrmLQN-DtqrTO5KWNF3EvwOXSw-raemHMh-lxMUVAtHiqxHNMqzQoV2l1ReELlRe_dVIAkp1P8Bc8ekRqbhOn-axS6izTQXKw3d70pq-CpZHWUZoS58mGL70U_Bk96ViNRcaOaGr5wIkPrtg8w46mzrAtHgWRH6VKAUalmkrFJ8qjDltkmd-nHJs4aUfrBBphZSnivwOkhoIjzG8dpjeCtp_UOZTOnovXJP7IAWJEeWqw7Uh7-mlLVkorgyeOsSRun6CmO_8I' },
-    { slug: 'semarang-open-2024', name: 'Semarang Open 2024', date: 'Sep 05 - 08, 2024', location: 'Jatidiri Stadium, Semarang', status: 'finished', category: null, image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCEyoMyPhTl7-9oRbs8Fqz1YZxEwczL3vvrIpNzNHGImIhte8_MRqCsmxPDpeo-GMFv4xD1UFE7CzQuZjLAaeTEFSwwGpLM5Fuuji1ri-DclVPd3XjaiZbP_HVCmNxUF4N4RvPt5eunD3D7XJwRXiE80p0b-XDjG79vpkghLPtwWffcqE__kLuIxrZg_xFXL5tPcnF3V-v_UjBTeSP3GZHOFSZ132JQ3wm91uitNtsctbagveyUjYxxYgEumBV7_uYhaBtTeHfBlCs' },
-    { slug: 'medan-archery-open', name: 'Medan Archery Open 2024', date: 'Feb 01 - 04, 2025', location: 'USU Sports Center, Medan', status: 'upcoming', category: 'Regional', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAy5qIYUnhOAA9fRw-ezPUypzWUtCQTHv6EpNe6Q0bAAz6AFkDLOqgltBvPdIyyRsW4WqNcDFxXZlfgwFHWevvHH2yphLfwWEOEHT3GyFbvXsenr1qoxDPsSf-bmVfNqwG9_5cJoVMhgvCJ2FfEt6bQgicn5WlBrsP8axm39cBTN9E6cF7MQ9vKO5p0acgAZ1z3IYSXi-yQILL1HoOdT6ZobZEyg4qolUIumeiK6bVGuATW7dwLfqmaRIFiXL-l1PEPGa_sRD5Lc9E' },
-    { slug: 'makassar-championship', name: 'Makassar Championship 2024', date: 'Feb 15 - 18, 2025', location: 'Karebosi Field, Makassar', status: 'upcoming', category: 'Provincial', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBmKeu4qLnuI8uJ8itXirIGY311f6c_CfhqFD3qtMv-M4oTNDiSeGeylyU0qI_7lQHeMywtfdDw175-dWrdxwZwWSnnEMmkBca4ScW0dEbBQ_wZYVWuCaOPI-A204QdKHKXQxHsutHbZP8c9uPaZpfK8lzqziHTAW_dqnlmi99AtLhIGmxfUZ-irvcNm1YUswSsH9HGhvq4Hr6jq7rsveM4HwMmhNVDABEGcgh0sYQHoHy9t1IzkTX2LexV72X240IEyZL2_InQGZ8' },
 ]
 
+const tournaments = ref([])
+
+// Transform API response to match expected format
+const transformEventData = (event) => ({
+    slug: event.slug || event.id,
+    name: event.name || event.title,
+    date: event.start_date 
+        ? `${new Date(event.start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${new Date(event.end_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
+        : event.date || 'TBA',
+    location: event.venue || event.location || 'TBA',
+    status: event.status || 'upcoming',
+    category: event.category,
+    image: event.banner_url || event.image || 'https://lh3.googleusercontent.com/aida-public/AB6AXuByxS8LZ93pBQXI_V_Vu3nB0633lwPZGiFCM3UtI-xk79b_O83ASmlHYA36lOzcnmVsbgs4DEe9awj543MvzCN1yzOo1wZ3ViXLdiMRV7vAMdy66lvu-l5dpFAOgZ0uCMKJxsBRXPJL1QeX4_ZdX2ynTEZR-ZMilrncma7gKG2YK0vsj0KJZnw_lD0UZaXFKW2aVFD1SU-mzi_sAT2D-62TP0j5LF6KprFriv2sV9rdypqLSvfrZekYDy45XaK8F1vVh7e5nfrgK7o'
+})
+
+const fetchEvents = async () => {
+    isLoading.value = true
+    try {
+        const response = await get('/events')
+        if (response && Array.isArray(response)) {
+            tournaments.value = response.map(transformEventData)
+        } else if (response?.data && Array.isArray(response.data)) {
+            tournaments.value = response.data.map(transformEventData)
+        } else {
+            // Use sample data as fallback
+            tournaments.value = sampleTournaments
+        }
+    } catch (error) {
+        console.error('Failed to fetch events:', error)
+        tournaments.value = sampleTournaments
+    } finally {
+        isLoading.value = false
+    }
+}
+
 const filteredTournaments = computed(() => {
-    let result = tournaments
+    let result = tournaments.value
     if (searchQuery.value) {
         result = result.filter(t => t.name.toLowerCase().includes(searchQuery.value.toLowerCase()))
     }
@@ -264,6 +302,10 @@ const filteredTournaments = computed(() => {
     return result
 })
 
+onMounted(() => {
+    fetchEvents()
+})
+
 useSeoMeta({
     title: 'Semua Event - Archeryhub.id',
     description: 'Cari dan daftar event panahan seru di seluruh Indonesia.'
@@ -273,3 +315,4 @@ definePageMeta({
     layout: 'landing'
 })
 </script>
+

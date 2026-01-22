@@ -31,8 +31,8 @@
 
     <!-- Stats -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
-        <div class="h-10 w-10 rounded-lg bg-primary/10 text-primary-dark flex items-center justify-center">
+      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+        <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
           <Icon icon="ph:users-three" class="text-xl" />
         </div>
         <div>
@@ -40,8 +40,8 @@
           <p class="text-lg font-bold text-navy">{{ members.length }}</p>
         </div>
       </div>
-      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
-        <div class="h-10 w-10 rounded-lg bg-primary/10 text-primary-dark flex items-center justify-center">
+      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+        <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
           <Icon icon="ph:gender-male" class="text-xl" />
         </div>
         <div>
@@ -49,8 +49,8 @@
           <p class="text-lg font-bold text-navy">{{ members.filter(m => m.gender === 'M').length }}</p>
         </div>
       </div>
-      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
-        <div class="h-10 w-10 rounded-lg bg-primary/10 text-primary-dark flex items-center justify-center">
+      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+        <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
           <Icon icon="ph:gender-female" class="text-xl" />
         </div>
         <div>
@@ -58,8 +58,8 @@
           <p class="text-lg font-bold text-navy">{{ members.filter(m => m.gender === 'F').length }}</p>
         </div>
       </div>
-      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
-        <div class="h-10 w-10 rounded-lg bg-primary/10 text-primary-dark flex items-center justify-center">
+      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+        <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
           <Icon icon="ph:target" class="text-xl" />
         </div>
         <div>

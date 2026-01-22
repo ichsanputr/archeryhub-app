@@ -22,7 +22,7 @@
         <div v-for="stat in clubStats" :key="stat.label" 
           class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all group">
           <div class="flex justify-between items-start mb-4">
-            <div class="p-2.5 rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-navy transition-colors">
+            <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
               <Icon :icon="stat.icon" class="text-2xl" />
             </div>
             <span class="text-[10px] font-black text-green-500 bg-green-50 px-2 py-1 rounded-full">+12%</span>

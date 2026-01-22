@@ -116,6 +116,7 @@ const isEventManagePage = computed(() => {
 
 const eventLinks = computed(() => [
   { label: 'Ringkasan', icon: 'ph:squares-four', path: `/dashboard/events/${eventId.value}/overview` },
+  { label: 'Halaman Event', icon: 'ph:browser', path: `/dashboard/events/${eventId.value}/page` },
   { label: 'Peserta', icon: 'ph:users-three', path: `/dashboard/events/${eventId.value}/participants` },
   { label: 'Tim', icon: 'ph:users-four', path: `/dashboard/events/${eventId.value}/teams` },
   { label: 'Target & Lajur', icon: 'ph:target', path: `/dashboard/events/${eventId.value}/targets` },

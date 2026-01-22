@@ -14,6 +14,9 @@
                 <p class="text-gray-500 font-medium mt-1">Lihat dan kelola semua peserta yang terdaftar dalam event ini.</p>
             </div>
             <div class="flex gap-3">
+                <BaseButton :to="`/dashboard/events/${route.params.id}/participants/add`" variant="primary" icon="ph:plus-bold" class="h-11 shadow-lg shadow-primary/20">
+                    Tambah Peserta
+                </BaseButton>
                 <BaseButton variant="white" icon="ph:download" class="h-11">
                     Export CSV
                 </BaseButton>
@@ -25,8 +28,8 @@
 
         <!-- Stats Cards -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
-                <div class="h-12 w-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:users-three" class="text-2xl" />
                 </div>
                 <div>
@@ -34,8 +37,8 @@
                     <p class="text-xl font-black text-navy">{{ participants.length }}</p>
                 </div>
             </div>
-            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
-                <div class="h-12 w-12 rounded-xl bg-green-50 text-green-600 flex items-center justify-center">
+            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:check-circle" class="text-2xl" />
                 </div>
                 <div>
@@ -43,8 +46,8 @@
                     <p class="text-xl font-black text-navy">{{ verifiedCount }}</p>
                 </div>
             </div>
-            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
-                <div class="h-12 w-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:clock" class="text-2xl" />
                 </div>
                 <div>
@@ -52,8 +55,8 @@
                     <p class="text-xl font-black text-navy">{{ pendingCount }}</p>
                 </div>
             </div>
-            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
-                <div class="h-12 w-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:buildings" class="text-2xl" />
                 </div>
                 <div>

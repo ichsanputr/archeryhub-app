@@ -51,11 +51,30 @@
                             </div>
                         </div>
                     </div>
-                    <NuxtLink :to="`/events/${slug}/register`"
-                        class="h-10 px-5 bg-primary hover:bg-primary-hover text-navy font-bold text-sm rounded-lg transition-colors flex items-center justify-center gap-2 shadow-md">
-                        Yuk Ikutan!
-                        <span class="material-symbols-outlined text-lg">arrow_forward</span>
-                    </NuxtLink>
+                    <!-- Register CTA - Auth-aware -->
+                    <div class="flex flex-col items-start gap-2">
+                        <!-- Not logged in -->
+                        <NuxtLink v-if="!isLoggedIn" :to="loginUrl"
+                            class="h-10 px-5 bg-primary hover:bg-primary-hover text-navy font-bold text-sm rounded-lg transition-colors flex items-center justify-center gap-2 shadow-md">
+                            Login untuk Mendaftar
+                            <span class="material-symbols-outlined text-lg">login</span>
+                        </NuxtLink>
+                        <!-- Logged in but not archer -->
+                        <template v-else-if="!isArcher">
+                            <NuxtLink :to="archerRegisterUrl"
+                                class="h-10 px-5 bg-white/20 hover:bg-white/30 text-white font-bold text-sm rounded-lg transition-colors flex items-center justify-center gap-2 backdrop-blur-sm border border-white/20">
+                                Daftar sebagai Atlet Dulu
+                                <span class="material-symbols-outlined text-lg">person_add</span>
+                            </NuxtLink>
+                            <p class="text-xs text-gray-400">Anda perlu terdaftar sebagai atlet untuk mendaftar event</p>
+                        </template>
+                        <!-- Logged in as archer -->
+                        <NuxtLink v-else :to="registerUrl"
+                            class="h-10 px-5 bg-primary hover:bg-primary-hover text-navy font-bold text-sm rounded-lg transition-colors flex items-center justify-center gap-2 shadow-md">
+                            Yuk Ikutan!
+                            <span class="material-symbols-outlined text-lg">arrow_forward</span>
+                        </NuxtLink>
+                    </div>
                 </div>
             </div>
         </div>
@@ -226,14 +245,34 @@
                                 <div class="bg-primary h-2 rounded-full" style="width: 77%"></div>
                             </div>
                         </div>
-                        <NuxtLink :to="`/events/${slug}/register`"
-                            class="w-full block py-4 bg-primary hover:bg-primary-hover text-navy font-bold rounded-xl transition-colors shadow-md text-center">
-                            Yuk Daftar Sekarang
-                        </NuxtLink>
-                        <p class="text-center text-xs text-gray-400 mt-3">Sudah terdaftar? <NuxtLink
-                                class="text-navy font-bold hover:underline" :to="`/dashboard/events`">Cek status
+                        <!-- Auth-aware registration CTA -->
+                        <template v-if="!isLoggedIn">
+                            <NuxtLink :to="loginUrl"
+                                class="w-full block py-4 bg-primary hover:bg-primary-hover text-navy font-bold rounded-xl transition-colors shadow-md text-center">
+                                Login untuk Mendaftar
                             </NuxtLink>
-                        </p>
+                            <p class="text-center text-xs text-gray-400 mt-3">Belum punya akun?
+                                <NuxtLink class="text-navy font-bold hover:underline" to="/auth/register">Daftar
+                                </NuxtLink>
+                            </p>
+                        </template>
+                        <template v-else-if="!isArcher">
+                            <NuxtLink :to="archerRegisterUrl"
+                                class="w-full block py-4 bg-gray-100 hover:bg-gray-200 text-navy font-bold rounded-xl transition-colors text-center">
+                                Daftar sebagai Atlet Dulu
+                            </NuxtLink>
+                            <p class="text-center text-xs text-gray-400 mt-3">Anda perlu terdaftar sebagai atlet</p>
+                        </template>
+                        <template v-else>
+                            <NuxtLink :to="registerUrl"
+                                class="w-full block py-4 bg-primary hover:bg-primary-hover text-navy font-bold rounded-xl transition-colors shadow-md text-center">
+                                Yuk Daftar Sekarang
+                            </NuxtLink>
+                            <p class="text-center text-xs text-gray-400 mt-3">Sudah terdaftar?
+                                <NuxtLink class="text-navy font-bold hover:underline" :to="`/dashboard/events`">Cek status
+                                </NuxtLink>
+                            </p>
+                        </template>
                     </div>
 
                     <!-- Organizer Card -->
@@ -306,34 +345,81 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import { useAuth } from '~/composables/useAuth'
+import { useApi } from '~/composables/useApi'
 
 const route = useRoute()
 const slug = route.params.slug
 
+// Auth state
+const { user, isLoggedIn } = useAuth()
+const isArcher = computed(() => user.value?.type === 'archer' || user.value?.role === 'archer')
+
+// Generate login URL with redirect
+const loginUrl = computed(() => `/auth/login?redirect=${encodeURIComponent(`/events/${slug}`)}`)
+const archerRegisterUrl = '/auth/register?type=archer'
+const registerUrl = computed(() => `/events/${slug}/register`)
+
+const { get } = useApi()
+const isLoading = ref(true)
+
 const tabs = ['Ringkasan', 'Jadwal Lomba', 'Peserta', 'Hasil Live', 'Lokasi']
 const activeTab = ref('Ringkasan')
 
-const tournamentsData = {
-    'indonesian-open-2024': {
-        name: 'Indonesian Open Championship 2024',
-        date: 'Nov 12 - 15, 2024',
-        location: 'GBK Archery Field, Jakarta',
-        venue: 'GBK Archery Field',
-        gmaps_link: 'https://maps.app.goo.gl/9b1H5y8oVQ...',
-        address: 'Jl. Pintu Satu Senayan, Gelora, Tanah Abang, Jakarta Pusat',
-        status: 'upcoming',
-        category: 'National Series',
-        organizer: 'Perpani DKI Jakarta',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuByxS8LZ93pBQXI_V_Vu3nB0633lwPZGiFCM3UtI-xk79b_O83ASmlHYA36lOzcnmVsbgs4DEe9awj543MvzCN1yzOo1wZ3ViXLdiMRV7vAMdy66lvu-l5dpFAOgZ0uCMKJxsBRXPJL1QeX4_ZdX2ynTEZR-ZMilrncma7gKG2YK0vsj0KJZnw_lD0UZaXFKW2aVFD1SU-mzi_sAT2D-62TP0j5LF6KprFriv2sV9rdypqLSvfrZekYDy45XaK8F1vVh7e5nfrgK7o'
-    }
+// Fallback data
+const fallbackTournament = {
+    name: 'Indonesian Open Championship 2024',
+    date: 'Nov 12 - 15, 2024',
+    location: 'GBK Archery Field, Jakarta',
+    venue: 'GBK Archery Field',
+    gmaps_link: 'https://maps.app.goo.gl/9b1H5y8oVQ...',
+    address: 'Jl. Pintu Satu Senayan, Gelora, Tanah Abang, Jakarta Pusat',
+    status: 'upcoming',
+    category: 'National Series',
+    organizer: 'Perpani DKI Jakarta',
+    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuByxS8LZ93pBQXI_V_Vu3nB0633lwPZGiFCM3UtI-xk79b_O83ASmlHYA36lOzcnmVsbgs4DEe9awj543MvzCN1yzOo1wZ3ViXLdiMRV7vAMdy66lvu-l5dpFAOgZ0uCMKJxsBRXPJL1QeX4_ZdX2ynTEZR-ZMilrncma7gKG2YK0vsj0KJZnw_lD0UZaXFKW2aVFD1SU-mzi_sAT2D-62TP0j5LF6KprFriv2sV9rdypqLSvfrZekYDy45XaK8F1vVh7e5nfrgK7o'
 }
 
-const tournament = computed(() => tournamentsData[slug] || tournamentsData['indonesian-open-2024'])
+const tournament = ref(fallbackTournament)
+
+const transformEventData = (data) => ({
+    name: data.name || data.title || '',
+    date: data.start_date 
+        ? `${new Date(data.start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${new Date(data.end_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
+        : data.date || '',
+    location: data.venue || data.location || '',
+    venue: data.venue || data.location || '',
+    gmaps_link: data.gmaps_link || '',
+    address: data.address || '',
+    status: data.status || 'upcoming',
+    category: data.category || '',
+    organizer: data.organizer_name || data.organizer || 'Penyelenggara',
+    image: data.banner_url || data.image || fallbackTournament.image
+})
+
+const fetchTournament = async () => {
+    isLoading.value = true
+    try {
+        const response = await get(`/events/${slug}`)
+        if (response) {
+            tournament.value = transformEventData(response.data || response)
+        }
+    } catch (error) {
+        console.error('Failed to fetch event:', error)
+        // Keep fallback data
+    } finally {
+        isLoading.value = false
+    }
+}
 
 const divisions = [
     { name: 'Recurve Division', icon: 'adjust', distance: '70m', categories: ["Men's Individual", "Women's Individual", "Mixed Team"] },
     { name: 'Compound Division', icon: 'gps_fixed', distance: '50m', categories: ["Men's Individual", "Women's Individual", "Mixed Team"] },
 ]
+
+onMounted(() => {
+    fetchTournament()
+})
 
 definePageMeta({
     layout: 'landing'

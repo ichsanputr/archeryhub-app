@@ -25,8 +25,8 @@
 
         <!-- Quick Metrics -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
-                <div class="h-12 w-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:target" class="text-2xl" />
                 </div>
                 <div>
@@ -34,8 +34,8 @@
                     <p class="text-xl font-black text-navy">{{ targets.length }}</p>
                 </div>
             </div>
-            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
-                <div class="h-12 w-12 rounded-xl bg-green-50 text-green-600 flex items-center justify-center">
+            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:users-three" class="text-2xl" />
                 </div>
                 <div>
@@ -43,8 +43,8 @@
                     <p class="text-xl font-black text-navy">{{ totalAthletes }}</p>
                 </div>
             </div>
-            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
-                <div class="h-12 w-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:user-plus" class="text-2xl" />
                 </div>
                 <div>
@@ -52,8 +52,8 @@
                     <p class="text-xl font-black text-navy">{{ availableSlots }}</p>
                 </div>
             </div>
-            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
-                <div class="h-12 w-12 rounded-xl bg-red-50 text-red-600 flex items-center justify-center">
+            <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:wrench" class="text-2xl" />
                 </div>
                 <div>

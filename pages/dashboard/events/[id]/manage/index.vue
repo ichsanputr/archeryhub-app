@@ -83,7 +83,7 @@
                     <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-3">Total Atlet</p>
                     <div class="flex items-center justify-between">
                         <h3 class="text-3xl font-black text-navy">{{ event?.participant_count || 0 }}</h3>
-                        <div class="h-10 w-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                        <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                             <Icon icon="ph:users-three-bold" class="text-xl" />
                         </div>
                     </div>
@@ -95,7 +95,7 @@
                     <div class="flex items-center justify-between">
                         <h3 class="text-3xl font-black text-navy">{{ Math.ceil((event?.participant_count || 0) / 4)
                         }}</h3>
-                        <div class="h-10 w-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center">
+                        <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                             <Icon icon="ph:target-bold" class="text-xl" />
                         </div>
                     </div>
@@ -106,7 +106,7 @@
                     <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-3">Completion</p>
                     <div class="flex items-center justify-between">
                         <h3 class="text-3xl font-black text-navy">0%</h3>
-                        <div class="h-10 w-10 rounded-xl bg-green-50 text-green-600 flex items-center justify-center">
+                        <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                             <Icon icon="ph:check-circle-bold" class="text-xl" />
                         </div>
                     </div>

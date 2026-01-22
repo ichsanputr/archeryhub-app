@@ -17,8 +17,8 @@
 
         <!-- Quick Stats -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
-                <div class="h-10 w-10 rounded-lg bg-primary/10 text-primary-dark flex items-center justify-center">
+            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:package" class="text-xl" />
                 </div>
                 <div>
@@ -26,8 +26,8 @@
                     <p class="text-lg font-bold text-navy">{{ products.length }}</p>
                 </div>
             </div>
-            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
-                <div class="h-10 w-10 rounded-lg bg-green-50 text-green-600 flex items-center justify-center">
+            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:check-circle" class="text-xl" />
                 </div>
                 <div>
@@ -35,8 +35,8 @@
                     <p class="text-lg font-bold text-navy">{{products.filter(p => p.status === 'active').length}}</p>
                 </div>
             </div>
-            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
-                <div class="h-10 w-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:eye" class="text-xl" />
                 </div>
                 <div>
@@ -45,8 +45,8 @@
                         0).toLocaleString()}}</p>
                 </div>
             </div>
-            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4">
-                <div class="h-10 w-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:shopping-cart" class="text-xl" />
                 </div>
                 <div>
