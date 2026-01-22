@@ -1,5 +1,5 @@
 <template>
-    <div class="space-y-10">
+    <div class="flex flex-col gap-6 pb-12">
         <!-- Header -->
         <div class="flex flex-wrap items-center justify-between gap-6 pb-6 border-b border-gray-100">
             <div>
@@ -17,11 +17,8 @@
                 <BaseButton variant="white" icon="ph:funnel" class="h-11">
                     Filter Bantalan
                 </BaseButton>
-                <BaseButton variant="white" icon="ph:magic-wand" class="h-11">
+                <BaseButton variant="primary" icon="ph:magic-wand" class="h-11 shadow-lg shadow-primary/20">
                     Isi Otomatis
-                </BaseButton>
-                <BaseButton variant="primary" icon="ph:pencil-simple-bold" class="h-11 shadow-lg shadow-primary/20">
-                    Edit Penempatan
                 </BaseButton>
             </div>
         </div>
@@ -29,7 +26,7 @@
         <!-- Quick Metrics -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
-                <div class="h-12 w-12 rounded-xl bg-navy/5 text-navy flex items-center justify-center">
+                <div class="h-12 w-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
                     <Icon icon="ph:target" class="text-2xl" />
                 </div>
                 <div>
@@ -61,7 +58,7 @@
                 </div>
                 <div>
                     <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Sedang Perbaikan</p>
-                    <p class="text-xl font-black text-navy">2</p>
+                    <p class="text-xl font-black text-navy">{{ maintenanceCount }}</p>
                 </div>
             </div>
         </div>
@@ -85,10 +82,9 @@
                     <div class="flex items-center gap-3">
                         <div class="font-black text-sm px-3 py-1.5 rounded-xl shadow-sm"
                             :class="target.status === 'full' ? 'bg-navy text-primary' : 'bg-white text-navy border border-gray-200'">
-                            {{ target.target }}
+                            {{ String(target.target).padStart(2, '0') }}
                         </div>
-                        <span class="font-black text-navy uppercase tracking-tight text-sm">{{
-                            target.label.toLowerCase() }}</span>
+                        <span class="font-black text-navy uppercase tracking-tight text-sm">Bantalan {{ target.target }}</span>
                     </div>
                     <span :class="getStatusClass(target.status)"
                         class="text-[9px] font-black px-2.5 py-1 rounded-lg border uppercase tracking-widest">
@@ -124,8 +120,7 @@
                                     slot tersedia
                                 </p>
                             </div>
-                            <span
-                                class="material-symbols-outlined text-gray-300 text-[18px] group-hover/add:text-primary group-hover/add:rotate-90 transition-all">add_circle</span>
+                            <Icon icon="ph:plus-circle" class="text-gray-300 text-[18px] group-hover/add:text-primary group-hover/add:rotate-90 transition-all" />
                         </div>
                     </div>
                 </div>
@@ -134,7 +129,7 @@
                     <button
                         class="w-full flex items-center justify-center gap-2 text-[10px] font-black text-gray-400 hover:text-navy transition-colors py-1.5 uppercase tracking-widest disabled:opacity-30 disabled:cursor-not-allowed"
                         :disabled="target.status === 'maintenance'">
-                        <span class="material-symbols-outlined text-[16px]">edit_document</span>
+                        <Icon icon="ph:pencil-simple" class="text-[16px]" />
                         edit penempatan
                     </button>
                 </div>
@@ -145,22 +140,45 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { reactive, computed } from 'vue'
+import { reactive, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
+import { useApi } from '~/composables/useApi'
+import { useEventContext } from '~/composables/useEventContext'
 
 definePageMeta({
     layout: 'dashboard'
 })
 
 const route = useRoute()
+const { get } = useApi()
+const { setEvent, clearEvent } = useEventContext()
+
+const fetchEventDetails = async () => {
+    try {
+        const eventRes = await get(`/events/${route.params.id}`)
+        if (eventRes) {
+            setEvent(eventRes)
+        }
+    } catch (error) {
+        console.error('Failed to fetch event details:', error)
+    }
+}
+
+onMounted(() => {
+    fetchEventDetails()
+})
+
+onBeforeUnmount(() => {
+    clearEvent()
+})
 
 const laneData = reactive([
-    { id: 1, target: '01', label: 'bantalan 1', status: 'full', statusLabel: 'penuh', archers: { A: { name: 'Sarah Jenkins', division: 'Recurve Women' }, B: { name: 'Mike Ross', division: 'Recurve Men' }, C: { name: 'Emily Chen', division: 'Recurve Women' }, D: { name: 'David Kim', division: 'Recurve Men' } } },
-    { id: 2, target: '02', label: 'bantalan 2', status: 'partial', statusLabel: 'sisa 2', archers: { A: { name: 'Jessica Pearson', division: 'Compound Women' }, B: { name: 'Harvey Specter', division: 'Compound Men' } } },
-    { id: 3, target: '03', label: 'bantalan 3', status: 'empty', statusLabel: 'kosong', archers: {} },
-    { id: 4, target: '04', label: 'bantalan 4', status: 'full', statusLabel: 'penuh', archers: { A: { name: 'Louis Litt', division: 'Barebow Men' }, B: { name: 'Donna Paulsen', division: 'Barebow Women' }, C: { name: 'Rachel Zane', division: 'Barebow Women' }, D: { name: 'Katrina Bennett', division: 'Barebow Women' } } },
-    { id: 5, target: '05', label: 'bantalan 5', status: 'maintenance', statusLabel: 'perbaikan', archers: {} },
-    { id: 6, target: '06', label: 'bantalan 6', status: 'partial', statusLabel: 'sisa 1', archers: { A: { name: 'Samantha Wheeler', division: 'Youth Recurve' }, B: { name: 'Alex Williams', division: 'Youth Recurve' }, C: { name: 'Robert Zane', division: 'Youth Recurve' } } },
+    { id: 1, target: 1, label: 'bantalan 1', status: 'full', statusLabel: 'penuh', archers: { A: { name: 'Sarah Jenkins', division: 'Recurve Women' }, B: { name: 'Mike Ross', division: 'Recurve Men' }, C: { name: 'Emily Chen', division: 'Recurve Women' }, D: { name: 'David Kim', division: 'Recurve Men' } } },
+    { id: 2, target: 2, label: 'bantalan 2', status: 'partial', statusLabel: 'sisa 2', archers: { A: { name: 'Jessica Pearson', division: 'Compound Women' }, B: { name: 'Harvey Specter', division: 'Compound Men' } } },
+    { id: 3, target: 3, label: 'bantalan 3', status: 'empty', statusLabel: 'kosong', archers: {} },
+    { id: 4, target: 4, label: 'bantalan 4', status: 'full', statusLabel: 'penuh', archers: { A: { name: 'Louis Litt', division: 'Barebow Men' }, B: { name: 'Donna Paulsen', division: 'Barebow Women' }, C: { name: 'Rachel Zane', division: 'Barebow Women' }, D: { name: 'Katrina Bennett', division: 'Barebow Women' } } },
+    { id: 5, target: 5, label: 'bantalan 5', status: 'maintenance', statusLabel: 'perbaikan', archers: {} },
+    { id: 6, target: 6, label: 'bantalan 6', status: 'partial', statusLabel: 'sisa 1', archers: { A: { name: 'Samantha Wheeler', division: 'Youth Recurve' }, B: { name: 'Alex Williams', division: 'Youth Recurve' }, C: { name: 'Robert Zane', division: 'Youth Recurve' } } },
 ])
 
 const targets = computed(() => laneData)
@@ -169,6 +187,9 @@ const totalAthletes = computed(() => {
 })
 const availableSlots = computed(() => {
     return (laneData.length * 4) - totalAthletes.value
+})
+const maintenanceCount = computed(() => {
+    return laneData.filter(t => t.status === 'maintenance').length
 })
 
 const getArcher = (target, pos) => target.archers[pos]

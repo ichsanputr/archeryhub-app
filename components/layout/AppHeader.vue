@@ -27,13 +27,17 @@
           class="font-black text-sm transition-colors">Berita</NuxtLink>
       </nav>
 
-      <!-- Back Button (only in event manage mode) -->
-      <div v-if="isEventManageMode" class="hidden md:flex items-center gap-3 mr-4">
+      <!-- Event Manage Mode: Back Button + Event Name -->
+      <div v-if="isEventManageMode" class="hidden md:flex items-center gap-4 flex-1">
         <NuxtLink to="/dashboard/events" 
-          class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-600 hover:text-navy">
+          class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-600 hover:text-navy shrink-0">
           <Icon icon="ph:arrow-left" class="text-xl" />
-          <span class="text-sm font-bold">Kembali ke Event</span>
+          <span class="text-sm font-bold">Kembali ke Dashboard</span>
         </NuxtLink>
+        <div class="h-6 w-px bg-gray-200"></div>
+        <h1 class="text-lg font-black text-navy truncate">
+          {{ eventTitle || 'Event Management' }}
+        </h1>
       </div>
 
       <!-- Dashboard Title (only in dashboard mode, not in manage mode) -->
@@ -43,8 +47,8 @@
         </h1>
       </div>
 
-      <!-- Search Bar -->
-      <div class="max-w-xs xl:max-w-md w-full hidden md:block">
+      <!-- Search Bar (hidden in event manage mode) -->
+      <div v-if="!isEventManageMode" class="max-w-xs xl:max-w-md w-full hidden md:block">
         <div :class="[
           isScrolled || !transparent
             ? 'bg-gray-100 dark:bg-surface-highlight border-transparent'

@@ -146,7 +146,7 @@
               </td>
               <td class="px-6 py-5 text-right">
                 <div v-if="!isArcher" class="flex items-center justify-end gap-2">
-                  <BaseButton :to="`/dashboard/events/${event.slug || event.id}/overview`" variant="primary" size="sm"
+                  <BaseButton @click="handleManageEvent(event)" variant="primary" size="sm"
                     class="h-9 font-bold">
                     Kelola
                   </BaseButton>
@@ -234,6 +234,8 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { useAuth } from '~/composables/useAuth'
+import { useEventContext } from '~/composables/useEventContext'
+import { useRouter } from 'vue-router'
 
 definePageMeta({
   layout: 'dashboard'
@@ -241,6 +243,8 @@ definePageMeta({
 
 const { user } = useAuth()
 const { get } = useApi()
+const router = useRouter()
+const { setEvent } = useEventContext()
 const searchQuery = ref('')
 const statusFilter = ref('')
 const events = ref([])
@@ -382,6 +386,14 @@ const deleteEvent = async () => {
 const cancelDelete = () => {
   showDeleteDialog.value = false
   eventToDelete.value = null
+}
+
+// Handle manage event - store event data and navigate
+const handleManageEvent = (event) => {
+  // Store event data in global store
+  setEvent(event)
+  // Navigate to event overview
+  router.push(`/dashboard/events/${event.slug || event.id}/overview`)
 }
 
 // v-click-outside directive

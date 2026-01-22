@@ -1,5 +1,5 @@
 <template>
-    <div class="space-y-6 pb-12">
+    <div class="flex flex-col gap-6 pb-12">
         <!-- Header -->
         <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
             <div>
@@ -15,9 +15,9 @@
                 <h1 class="text-3xl font-black text-navy tracking-tight">Manajemen Sesi Kualifikasi</h1>
             </div>
             <div class="flex gap-3">
-                <BaseButton variant="white" icon="ph:printer-bold" class="h-11 px-5 border-gray-200">Cetak Hasil
+                <BaseButton variant="white" icon="ph:printer" class="h-11 px-5 border-gray-200">Cetak Hasil
                 </BaseButton>
-                <BaseButton variant="primary" icon="ph:broadcast-bold" class="h-11 px-6 shadow-lg shadow-primary/20">
+                <BaseButton variant="primary" icon="ph:broadcast" class="h-11 px-6 shadow-lg shadow-primary/20">
                     Siar Langsung</BaseButton>
             </div>
         </div>
@@ -141,7 +141,7 @@
                                     <div class="flex items-center gap-3">
                                         <div
                                             class="h-8 w-8 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden shrink-0 border border-gray-200">
-                                            <Icon icon="ph:user-bold" class="text-gray-300" />
+                                            <Icon icon="ph:user" class="text-gray-300" />
                                         </div>
                                         <div>
                                             <p class="text-xs font-black text-navy tracking-tight leading-none mb-1">{{
@@ -163,7 +163,7 @@
                                 </td>
                                 <td class="px-6 py-4 text-right">
                                     <Icon
-                                        :icon="archer.trend === 'up' ? 'ph:trend-up-bold' : archer.trend === 'down' ? 'ph:trend-down-bold' : 'ph:minus-bold'"
+                                        :icon="archer.trend === 'up' ? 'ph:trend-up' : archer.trend === 'down' ? 'ph:trend-down' : 'ph:minus'"
                                         :class="archer.trend === 'up' ? 'text-green-500' : archer.trend === 'down' ? 'text-red-500' : 'text-gray-300'"
                                         class="text-lg inline-block" />
                                 </td>
@@ -190,16 +190,16 @@
                     <div class="grid grid-cols-2 gap-3">
                         <button
                             class="flex items-center justify-center gap-2 py-3 bg-navy text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-navy-light transition-all shadow-md active:scale-95">
-                            <Icon icon="ph:pause-bold" /> PAUSE
+                            <Icon icon="ph:pause" /> PAUSE
                         </button>
                         <button
                             class="flex items-center justify-center gap-2 py-3 bg-white border border-gray-200 text-navy rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-gray-50 transition-all active:scale-95">
-                            <Icon icon="ph:arrow-counter-clockwise-bold" /> RESET
+                            <Icon icon="ph:arrow-counter-clockwise" /> RESET
                         </button>
                     </div>
                     <button
                         class="w-full py-4 bg-primary text-navy rounded-2xl flex items-center justify-center gap-3 font-black text-[11px] uppercase tracking-[0.15em] hover:bg-primary-hover transition-all shadow-lg shadow-primary/20 active:scale-95">
-                        <Icon icon="ph:fast-forward-bold" class="text-lg" />
+                        <Icon icon="ph:fast-forward" class="text-lg" />
                         LANJUT KE SERI 7
                     </button>
                 </div>
@@ -224,7 +224,7 @@
                         </div>
                         <div class="pt-3 border-t border-white/10 mt-2">
                             <div class="flex items-start gap-2 text-primary/80">
-                                <Icon icon="ph:info-bold" class="mt-0.5 shrink-0" />
+                                <Icon icon="ph:info" class="mt-0.5 shrink-0" />
                                 <span class="text-[10px] font-bold leading-normal uppercase">Skor Sedang diverifikasi
                                     secara real-time oleh judge lapangan.</span>
                             </div>
@@ -235,7 +235,7 @@
                 <!-- Print Action -->
                 <button
                     class="w-full py-4 bg-white border border-gray-100 rounded-2xl flex items-center justify-center gap-3 font-black text-[10px] uppercase tracking-widest text-navy hover:shadow-md transition-all">
-                    <Icon icon="ph:printer-bold" class="text-lg" />
+                    <Icon icon="ph:printer" class="text-lg" />
                     CETAK RANKING SEKARANG
                 </button>
             </div>
@@ -245,14 +245,37 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
+import { useApi } from '~/composables/useApi'
+import { useEventContext } from '~/composables/useEventContext'
 
 definePageMeta({
     layout: 'dashboard'
 })
 
 const route = useRoute()
+const { get } = useApi()
+const { setEvent, clearEvent } = useEventContext()
+
+const fetchEventDetails = async () => {
+    try {
+        const eventRes = await get(`/events/${route.params.id}`)
+        if (eventRes) {
+            setEvent(eventRes)
+        }
+    } catch (error) {
+        console.error('Failed to fetch event details:', error)
+    }
+}
+
+onMounted(() => {
+    fetchEventDetails()
+})
+
+onBeforeUnmount(() => {
+    clearEvent()
+})
 
 const searchQuery = ref('')
 

@@ -110,15 +110,17 @@ const isEventManagePage = computed(() => {
   if (!eventPathMatch) return false
   const [, eventId, subPath] = eventPathMatch
   // Exclude certain paths that are not management pages
-  const excludedPaths = ['edit', 'checkout', 'participants', 'register', 'register-edit', 'results', 'setup', 'timeline', 'venue']
+  const excludedPaths = ['edit', 'checkout', 'register', 'register-edit', 'results', 'setup', 'timeline', 'venue']
   return !excludedPaths.includes(subPath)
 })
 
 const eventLinks = computed(() => [
   { label: 'Ringkasan', icon: 'ph:squares-four', path: `/dashboard/events/${eventId.value}/overview` },
+  { label: 'Peserta', icon: 'ph:users-three', path: `/dashboard/events/${eventId.value}/participants` },
+  { label: 'Tim', icon: 'ph:users-four', path: `/dashboard/events/${eventId.value}/teams` },
   { label: 'Target & Lajur', icon: 'ph:target', path: `/dashboard/events/${eventId.value}/targets` },
-  { label: 'Kualifikasi', icon: 'ph:scoreboard', path: `/dashboard/events/${eventId.value}/qualification` },
-  { label: 'Eliminasi', icon: 'ph:layout', path: `/dashboard/events/${eventId.value}/elimination` },
+  { label: 'Kualifikasi', icon: 'fluent:table-freeze-column-20-regular', path: `/dashboard/events/${eventId.value}/qualification` },
+  { label: 'Eliminasi', icon: 'mdi:bracket', path: `/dashboard/events/${eventId.value}/elimination` },
 ])
 
 // Role-based navigation - filtered based on user role
