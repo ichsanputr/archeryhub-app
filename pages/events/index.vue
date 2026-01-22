@@ -146,13 +146,38 @@
                         </div>
                     </div>
 
+                    <!-- Loading State -->
+                    <div v-if="isLoading" class="text-center py-20">
+                        <div class="flex flex-col items-center gap-4">
+                            <div class="h-12 w-12 border-4 border-primary border-t-transparent animate-spin rounded-full"></div>
+                            <p class="text-gray-500 font-medium">Memuat event...</p>
+                        </div>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div v-else-if="!isLoading && filteredTournaments.length === 0" class="text-center py-20">
+                        <div class="bg-white rounded-2xl border border-gray-100 p-12 max-w-md mx-auto shadow-sm">
+                            <div class="h-24 w-24 bg-gray-50 rounded-full mx-auto flex items-center justify-center mb-6">
+                                <Icon icon="ph:calendar-x" class="text-5xl text-gray-300" />
+                            </div>
+                            <h3 class="text-2xl font-black text-navy mb-3">Belum Ada Event</h3>
+                            <p class="text-gray-500 mb-8 leading-relaxed">
+                                Saat ini belum ada event panahan yang tersedia. Cek kembali nanti atau hubungi penyelenggara untuk informasi lebih lanjut.
+                            </p>
+                            <div v-if="searchQuery" class="flex justify-center">
+                                <BaseButton variant="outline" @click="searchQuery = ''">
+                                    Hapus Pencarian
+                                </BaseButton>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                        <NuxtLink v-for="tournament in filteredTournaments" :key="tournament.slug"
-                            :to="`/events/${tournament.slug}`"
+                    <div v-else class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                        <NuxtLink v-for="tournament in filteredTournaments" :key="tournament.slug || tournament.id"
+                            :to="`/events/${tournament.slug || tournament.id}`"
                             class="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:border-primary/50 transition-all duration-300 flex flex-col h-full">
                             <div class="relative h-48 overflow-hidden">
-                                <!-- Labels Removed -->
                                 <img :alt="tournament.name"
                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                     :src="tournament.image" />
@@ -182,7 +207,7 @@
                     </div>
 
                     <!-- Pagination -->
-                    <div class="mt-12 flex justify-center">
+                    <div v-if="!isLoading && filteredTournaments.length > 0" class="mt-12 flex justify-center">
                         <BaseButton variant="outline" size="lg" iconRight="ph:caret-down">
                             Tampilin Lagi
                         </BaseButton>
@@ -204,46 +229,65 @@ const isLoading = ref(true)
 
 const { get } = useApi()
 
-// Fallback sample data
-const sampleTournaments = [
-    { slug: 'surabaya-archery-cup-2024', name: 'Surabaya Archery Cup 2024', date: 'Nov 10 - 13, 2024', location: 'KONI Jatim Field, Surabaya', status: 'live', category: 'National Series', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAJXWL-Z7f7fP24_IyBjI_e-q_jYcMbzRtaKiOpKP8TxgqwSxRrCqNcE-GXJXbiCEv6rlwlNJzTmbbgAdQFWHH4Jk_Fw-aslTiT3Qezy8bbmGRG0WoRA-yD8tykZuxYObytzJ6Yf7yNL8poFU6vWlyEuFjbHcIzwfoLAMru-bfdw4GXezmv71SwRPYw_-Ct6ZP3f6AqglpvBIhCSrp9g13uTQpj69_-hzZqp1wSqJJ-9PdZqp0CYWgFWsajdRos9QmU7eeyuFhFPH0' },
-    { slug: 'indonesian-open-2024', name: 'Indonesian Open Championship 2024', date: 'Nov 12 - 15, 2024', location: 'GBK Archery Field, Jakarta', status: 'upcoming', category: 'Grade A', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuByxS8LZ93pBQXI_V_Vu3nB0633lwPZGiFCM3UtI-xk79b_O83ASmlHYA36lOzcnmVsbgs4DEe9awj543MvzCN1yzOo1wZ3ViXLdiMRV7vAMdy66lvu-l5dpFAOgZ0uCMKJxsBRXPJL1QeX4_ZdX2ynTEZR-ZMilrncma7gKG2YK0vsj0KJZnw_lD0UZaXFKW2aVFD1SU-mzi_sAT2D-62TP0j5LF6KprFriv2sV9rdypqLSvfrZekYDy45XaK8F1vVh7e5nfrgK7o' },
-    { slug: 'bali-international-open', name: 'Bali International Open', date: 'Dec 01 - 05, 2024', location: 'Denpasar Archery Center, Bali', status: 'upcoming', category: 'Grade A', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBmKeu4qLnuI8uJ8itXirIGY311f6c_CfhqFD3qtMv-M4oTNDiSeGeylyU0qI_7lQHeMywtfdDw175-dWrdxwZwWSnnEMmkBca4ScW0dEbBQ_wZYVWuCaOPI-A204QdKHKXQxHsutHbZP8c9uPaZpfK8lzqziHTAW_dqnlmi99AtLhIGmxfUZ-irvcNm1YUswSsH9HGhvq4Hr6jq7rsveM4HwMmhNVDABEGcgh0sYQHoHy9t1IzkTX2LexV72X240IEyZL2_InQGZ8' },
-    { slug: 'jogja-youth-championship', name: 'Jogja Youth Championship', date: 'Dec 15 - 17, 2024', location: 'UNY Sports Complex, Yogyakarta', status: 'upcoming', category: null, image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCaKz9i1Sy4TPWgHSZRQZdfbE9FAsY4xikvvu2rhp8s_A9V5Sy5lv8pftyxQXwQSSv1xbdCGZkIqVOv_3u8sisf-kuW8CCXnYrzldx8xKkp12tmxF1SztarFv2PQMwoYr5sv7cn1wpmzOMepJof7lZkvTkOqS_LS94B-kyA-HRdMFPaNXbC-I6OY9Rp2dTCI-86cqoGMepWYeLPECuEvPwH35G_RyrcW4OoeB-xFCH1noe3E3mLKFdU_ftNYNRJ-e35YW_UO7tjW3E' },
-    { slug: 'bandung-indoor-classic', name: 'Bandung Indoor Classic', date: 'Oct 20 - 22, 2024', location: 'GOR Pajajaran, Bandung', status: 'finished', category: null, image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCq8OlQbcxO7uY4gwKVt6JygaktR4FjGZfJwbWiOyDIXqXr0bCnQIn3f-5m63myglDTGxdrpDHrFX2wVGOC7C8INtL7td4RDrpYhrJi0qjxPG7jixXi-Cw0fJQfRMda9sgJhfzCsFLmMhX9mvC6_gNAo5OF_MDtU5ukfm3hvRqWuHC0pbxNqSd0uWfIxLjxHXmyDnRtFg9VIz-XC2tCuvSusJKEFLjs57_DO7_uOGurALxGKsxcgIJmc_0gHV72A6BGvhiStIpWr3o' },
-    { slug: 'borneo-archery-festival', name: 'Borneo Archery Festival', date: 'Jan 10 - 14, 2025', location: 'Balikpapan Sports Center', status: 'upcoming', category: 'Club', image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDQStrrmLQN-DtqrTO5KWNF3EvwOXSw-raemHMh-lxMUVAtHiqxHNMqzQoV2l1ReELlRe_dVIAkp1P8Bc8ekRqbhOn-axS6izTQXKw3d70pq-CpZHWUZoS58mGL70U_Bk96ViNRcaOaGr5wIkPrtg8w46mzrAtHgWRH6VKAUalmkrFJ8qjDltkmd-nHJs4aUfrBBphZSnivwOkhoIjzG8dpjeCtp_UOZTOnovXJP7IAWJEeWqw7Uh7-mlLVkorgyeOsSRun6CmO_8I' },
-]
-
 const tournaments = ref([])
 
 // Transform API response to match expected format
-const transformEventData = (event) => ({
-    slug: event.slug || event.id,
-    name: event.name || event.title,
-    date: event.start_date 
-        ? `${new Date(event.start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${new Date(event.end_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
-        : event.date || 'TBA',
-    location: event.venue || event.location || 'TBA',
-    status: event.status || 'upcoming',
-    category: event.category,
-    image: event.banner_url || event.image || 'https://lh3.googleusercontent.com/aida-public/AB6AXuByxS8LZ93pBQXI_V_Vu3nB0633lwPZGiFCM3UtI-xk79b_O83ASmlHYA36lOzcnmVsbgs4DEe9awj543MvzCN1yzOo1wZ3ViXLdiMRV7vAMdy66lvu-l5dpFAOgZ0uCMKJxsBRXPJL1QeX4_ZdX2ynTEZR-ZMilrncma7gKG2YK0vsj0KJZnw_lD0UZaXFKW2aVFD1SU-mzi_sAT2D-62TP0j5LF6KprFriv2sV9rdypqLSvfrZekYDy45XaK8F1vVh7e5nfrgK7o'
-})
+const transformEventData = (event) => {
+    const formatDate = (dateStr) => {
+        if (!dateStr) return 'TBA'
+        const date = new Date(dateStr)
+        return date.toLocaleDateString('id-ID', { 
+            month: 'short', 
+            day: 'numeric',
+            year: 'numeric'
+        })
+    }
+
+    const formatDateRange = (startDate, endDate) => {
+        if (!startDate) return 'TBA'
+        if (!endDate) return formatDate(startDate)
+        
+        const start = new Date(startDate)
+        const end = new Date(endDate)
+        
+        if (start.getMonth() === end.getMonth() && start.getFullYear() === end.getFullYear()) {
+            return `${start.getDate()} - ${end.getDate()} ${start.toLocaleDateString('id-ID', { month: 'short', year: 'numeric' })}`
+        }
+        
+        return `${formatDate(startDate)} - ${formatDate(endDate)}`
+    }
+
+    return {
+        id: event.uuid || event.id,
+        slug: event.slug || event.uuid || event.id,
+        name: event.name || 'Event Tanpa Nama',
+        date: formatDateRange(event.start_date, event.end_date),
+        location: event.venue || event.location || 'Lokasi TBA',
+        status: event.status || 'upcoming',
+        category: event.discipline_name || event.category || null,
+        image: event.banner_url || event.logo_url || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop'
+    }
+}
 
 const fetchEvents = async () => {
     isLoading.value = true
     try {
         const response = await get('/events')
-        if (response && Array.isArray(response)) {
-            tournaments.value = response.map(transformEventData)
+        
+        // Handle different response structures
+        let eventsData = []
+        if (Array.isArray(response)) {
+            eventsData = response
+        } else if (response?.events && Array.isArray(response.events)) {
+            eventsData = response.events
         } else if (response?.data && Array.isArray(response.data)) {
-            tournaments.value = response.data.map(transformEventData)
-        } else {
-            // Use sample data as fallback
-            tournaments.value = sampleTournaments
+            eventsData = response.data
         }
+        
+        tournaments.value = eventsData.map(transformEventData)
     } catch (error) {
         console.error('Failed to fetch events:', error)
-        tournaments.value = sampleTournaments
+        tournaments.value = []
     } finally {
         isLoading.value = false
     }

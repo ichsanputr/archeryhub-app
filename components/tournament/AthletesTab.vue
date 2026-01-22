@@ -1,19 +1,27 @@
 <template>
     <div class="space-y-6">
         <!-- Filters -->
-        <div class="flex flex-col md:flex-row gap-4 justify-between">
-            <div class="relative flex-grow max-w-md">
-                <span
-                    class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">search</span>
-                <input type="text" placeholder="Cari atlet atau klub..."
-                    class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-100 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all shadow-sm">
+        <div class="space-y-4">
+            <!-- Cari Atlet -->
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+                <div class="relative w-full">
+                    <span
+                        class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">search</span>
+                    <input type="text" placeholder="Cari atlet atau klub..."
+                        class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-100 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all shadow-sm text-sm">
+                </div>
             </div>
-            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar">
-                <button v-for="cat in categories" :key="cat" @click="activeCategory = cat"
-                    class="px-4 py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap shadow-sm border"
-                    :class="activeCategory === cat ? 'bg-navy text-primary border-navy' : 'bg-white text-gray-500 border-gray-100 hover:border-navy hover:text-navy'">
-                    {{ cat }}
-                </button>
+
+            <!-- Tipe / Divisi -->
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+                <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Tipe / Divisi</p>
+                <div class="flex items-center gap-2 overflow-x-auto no-scrollbar">
+                    <button v-for="cat in categories" :key="cat" @click="activeCategory = cat"
+                        class="px-4 py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap shadow-sm border"
+                        :class="activeCategory === cat ? 'bg-navy text-primary border-navy' : 'bg-white text-gray-500 border-gray-100 hover:border-navy hover:text-navy'">
+                        {{ cat }}
+                    </button>
+                </div>
             </div>
         </div>
 

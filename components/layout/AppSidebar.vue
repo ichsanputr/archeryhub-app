@@ -179,6 +179,7 @@ const navLinks = computed(() => {
   const base = [
     { label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard' },
     ...(role !== 'club' ? [{ label: 'Event', icon: 'ph:trophy', path: '/dashboard/events' }] : []),
+    ...(role !== 'club' ? [{ label: 'Kategori Lomba', icon: 'ph:tag', path: '/dashboard/event-categories' }] : []),
     ...(!isEventManagePage.value ? [{ label: 'Laporan', icon: 'ph:chart-bar', path: '/dashboard/reports' }] : []),
     ...(role === 'club' ? [{ label: 'Anggota Klub', icon: 'ph:identification-badge', path: '/dashboard/members' }] : []),
     ...(role === 'club' ? [{ label: 'Profil Klub', icon: 'ph:buildings', path: '/dashboard/club/profile' }] : []),

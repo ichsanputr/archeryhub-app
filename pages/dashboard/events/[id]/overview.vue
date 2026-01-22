@@ -32,7 +32,7 @@
 
             <div class="flex flex-wrap gap-3 mt-2 md:mt-0">
                 <BaseButton variant="white" icon="ph:share-network-bold"
-                    class="h-11 px-5 border-gray-200 shadow-sm font-bold">
+                    class="h-11 px-5 border-gray-200 shadow-sm font-bold" @click="openShareDialog">
                     Bagikan
                 </BaseButton>
                 <BaseButton :to="`/dashboard/events/${route.params.id}/edit`" variant="primary"
@@ -458,6 +458,84 @@
                 </div>
             </div>
         </div>
+
+        <!-- Share Dialog -->
+        <div v-if="showShareDialog"
+            class="fixed inset-0 z-40 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+            <div
+                class="bg-white rounded-2xl shadow-xl border border-gray-100 w-full max-w-md mx-4 p-6 space-y-5 relative">
+                <button
+                    class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 transition-colors"
+                    @click="closeShareDialog">
+                    <Icon icon="ph:x-bold" class="text-lg" />
+                </button>
+
+                <div class="flex items-start gap-3">
+                    <div
+                        class="bg-primary/10 text-primary rounded-xl w-10 h-10 flex items-center justify-center shrink-0">
+                        <Icon icon="ph:share-network-bold" class="text-xl" />
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-navy">Bagikan Halaman Event</h3>
+                        <p class="text-sm text-gray-500 mt-1">
+                            Sebarkan link halaman publik event ini ke sosial media atau salin link untuk dibagikan
+                            ke peserta.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <p class="text-[11px] font-bold text-gray-400 uppercase tracking-[0.18em]">Link Publik
+                        Event</p>
+                    <div class="flex items-center gap-2">
+                        <div
+                            class="flex-1 bg-gray-50 border border-gray-100 rounded-xl px-3 py-2 text-xs text-gray-600 font-mono truncate">
+                            {{ publicEventUrl }}
+                        </div>
+                        <BaseButton variant="white" size="sm" icon="ph:copy-bold" class="whitespace-nowrap"
+                            @click="copyPublicUrl">
+                            Salin
+                        </BaseButton>
+                    </div>
+                    <p v-if="copySuccess" class="text-[11px] text-green-600 font-semibold mt-1">
+                        Link berhasil disalin ke clipboard
+                    </p>
+                </div>
+
+                <div class="pt-3 border-t border-gray-100 space-y-3">
+                    <p class="text-[11px] font-bold text-gray-400 uppercase tracking-[0.18em]">Bagikan ke
+                        Sosial Media</p>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <button type="button" @click="shareTo('whatsapp')"
+                            class="flex flex-col items-center justify-center gap-2 px-3 py-3 rounded-xl border border-gray-100 hover:border-green-500 hover:bg-green-50 transition-all">
+                            <Icon icon="ph:whatsapp-logo" class="text-2xl text-green-500" />
+                            <span class="text-[11px] font-semibold text-gray-600">WhatsApp</span>
+                        </button>
+                        <button type="button" @click="shareTo('telegram')"
+                            class="flex flex-col items-center justify-center gap-2 px-3 py-3 rounded-xl border border-gray-100 hover:border-sky-500 hover:bg-sky-50 transition-all">
+                            <Icon icon="ph:telegram-logo" class="text-2xl text-sky-500" />
+                            <span class="text-[11px] font-semibold text-gray-600">Telegram</span>
+                        </button>
+                        <button type="button" @click="shareTo('twitter')"
+                            class="flex flex-col items-center justify-center gap-2 px-3 py-3 rounded-xl border border-gray-100 hover:border-black hover:bg-gray-50 transition-all">
+                            <Icon icon="ph:twitter-logo" class="text-2xl text-black" />
+                            <span class="text-[11px] font-semibold text-gray-600">X (Twitter)</span>
+                        </button>
+                        <button type="button" @click="shareTo('facebook')"
+                            class="flex flex-col items-center justify-center gap-2 px-3 py-3 rounded-xl border border-gray-100 hover:border-blue-600 hover:bg-blue-50 transition-all">
+                            <Icon icon="ph:facebook-logo" class="text-2xl text-blue-600" />
+                            <span class="text-[11px] font-semibold text-gray-600">Facebook</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-3 border-t border-gray-100">
+                    <BaseButton variant="ghost" size="sm" @click="closeShareDialog">
+                        Tutup
+                    </BaseButton>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -482,6 +560,8 @@ const searchQuery = ref('')
 const isLoading = ref(true)
 const isPublishing = ref(false)
 const activeTab = ref('overview')
+const showShareDialog = ref(false)
+const copySuccess = ref(false)
 
 const filteredParticipants = computed(() => {
     if (!searchQuery.value) return participants.value
@@ -497,7 +577,6 @@ const filteredParticipants = computed(() => {
 
 const tabs = [
     { id: 'overview', label: 'Ringkasan', icon: 'ph:layout-bold' },
-    { id: 'control', label: 'Fase & Kontrol', icon: 'ph:command-bold' },
     { id: 'qualification', label: 'Kualifikasi', icon: 'ph:scoreboard-bold' },
     { id: 'elimination', label: 'Eliminasi', icon: 'ph:tree-structure-bold' },
     { id: 'athletes', label: 'Atlet', icon: 'ph:users-three-bold' },
@@ -553,6 +632,53 @@ const topParticipants = computed(() => {
         .sort((a, b) => (b.total_score || 0) - (a.total_score || 0))
         .slice(0, 5)
 })
+
+const publicEventUrl = computed(() => {
+    const slug = event.value?.slug || route.params.id
+    const origin = window?.location?.origin || 'https://archeryhub.id'
+    return `${origin}/events/${slug}`
+})
+
+const openShareDialog = () => {
+    copySuccess.value = false
+    showShareDialog.value = true
+}
+
+const closeShareDialog = () => {
+    showShareDialog.value = false
+}
+
+const copyPublicUrl = async () => {
+    try {
+        await navigator.clipboard.writeText(publicEventUrl.value)
+        copySuccess.value = true
+        setTimeout(() => {
+            copySuccess.value = false
+        }, 2000)
+    } catch (e) {
+        console.error('Failed to copy link:', e)
+    }
+}
+
+const shareTo = (platform) => {
+    const url = encodeURIComponent(publicEventUrl.value)
+    const text = encodeURIComponent(event.value?.name || 'Event Panahan')
+
+    let shareUrl = ''
+    if (platform === 'whatsapp') {
+        shareUrl = `https://wa.me/?text=${text}%20-%20${url}`
+    } else if (platform === 'telegram') {
+        shareUrl = `https://t.me/share/url?url=${url}&text=${text}`
+    } else if (platform === 'twitter') {
+        shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${text}`
+    } else if (platform === 'facebook') {
+        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`
+    }
+
+    if (shareUrl) {
+        window.open(shareUrl, '_blank', 'noopener,noreferrer')
+    }
+}
 
 const alerts = computed(() => {
     // Generate alerts based on event status

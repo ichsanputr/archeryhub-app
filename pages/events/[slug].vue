@@ -11,7 +11,7 @@
             <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-0">
                 <!-- Breadcrumb -->
                 <div class="mb-8">
-                    <Breadcrumbs :items="[{ label: 'Semua Event', path: '/events' }]" :current="tournament.name"
+                    <Breadcrumbs :items="[{ label: 'Event', path: '/events' }]" :current="tournament.name"
                         class="!text-gray-300" />
                 </div>
 
@@ -184,7 +184,7 @@
                         </section>
                     </div>
 
-                    <TournamentScheduleTab v-else-if="activeTab === 'Jadwal Lomba'" />
+                    <TournamentScheduleTab v-else-if="activeTab === 'Jadwal Lomba'" :event-id="slug" />
                     <TournamentAthletesTab v-else-if="activeTab === 'Peserta'" />
                     <TournamentResultsTab v-else-if="activeTab === 'Hasil Live'" />
                     <TournamentVenueTab v-else-if="activeTab === 'Lokasi'" :venue="tournament.venue"
@@ -320,10 +320,14 @@
     </div>
 </template>
 
+/* eslint-disable vue/multi-word-component-names */
 <script setup>
 import { Icon } from '@iconify/vue'
+import { ref, computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 import { useApi } from '~/composables/useApi'
+import { definePageMeta, useSeoMeta } from '#imports'
 
 const route = useRoute()
 const slug = route.params.slug
@@ -334,7 +338,6 @@ const isArcher = computed(() => user.value?.type === 'archer' || user.value?.rol
 
 // Generate login URL with redirect
 const loginUrl = computed(() => `/auth/login?redirect=${encodeURIComponent(`/events/${slug}`)}`)
-const archerRegisterUrl = '/auth/register?type=archer'
 const registerUrl = computed(() => `/events/${slug}/register`)
 
 const { get } = useApi()

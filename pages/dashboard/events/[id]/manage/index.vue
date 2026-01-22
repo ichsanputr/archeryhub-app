@@ -386,7 +386,6 @@ const filteredParticipants = computed(() => {
 })
 
 const tabs = [
-    { id: 'control', label: 'Fase & Kontrol', icon: 'ph:command-bold' },
     { id: 'qualification', label: 'Kualifikasi', icon: 'ph:scoreboard-bold' },
     { id: 'elimination', label: 'Eliminasi', icon: 'ph:tree-structure-bold' },
     { id: 'athletes', label: 'Atlet', icon: 'ph:users-three-bold' },
