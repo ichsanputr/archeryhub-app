@@ -8,8 +8,15 @@
             </div>
         </div>
 
+        <div v-if="isLoading" class="container mx-auto px-4 max-w-7xl py-20">
+            <div class="flex flex-col items-center justify-center">
+                <Icon icon="ph:spinner-gap-bold" class="text-4xl text-primary animate-spin mb-4" />
+                <p class="text-gray-500 font-medium">Memuat produk...</p>
+            </div>
+        </div>
+
         <!-- Main Product Section -->
-        <section class="container mx-auto px-4 max-w-7xl py-8">
+        <section v-else-if="product" class="container mx-auto px-4 max-w-7xl py-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
 
                 <!-- Product Images -->
@@ -20,7 +27,7 @@
                         <img :src="selectedImage" :alt="product.name" class="w-full h-full object-contain p-4" />
 
                         <!-- Sale Badge -->
-                        <div v-if="product.salePrice" class="absolute top-4 left-4">
+                        <div v-if="product.sale_price" class="absolute top-4 left-4">
                             <span class="px-4 py-2 bg-red-500 text-white font-bold rounded-full shadow-lg">
                                 -{{ discountPercent }}%
                             </span>
@@ -57,9 +64,7 @@
                                 Stok Habis
                             </span>
                             <span class="text-gray-300">•</span>
-                            <span class="text-gray-500">{{ product.sold }} terjual</span>
-                            <span class="text-gray-300">•</span>
-                            <span class="text-gray-500">{{ product.views }} dilihat</span>
+                            <span class="text-gray-500">{{ product.views || 0 }} dilihat</span>
                         </div>
                     </div>
 
@@ -67,9 +72,9 @@
                     <div class="bg-gray-50 rounded-2xl p-4 md:p-6 border border-gray-100">
                         <div class="flex items-end gap-3 md:gap-4">
                             <span class="text-3xl md:text-4xl font-black text-navy">
-                                Rp {{ formatPrice(product.salePrice || product.price) }}
+                                Rp {{ formatPrice(product.sale_price || product.price) }}
                             </span>
-                            <span v-if="product.salePrice" class="text-lg md:text-xl text-gray-400 line-through mb-1">
+                            <span v-if="product.sale_price" class="text-lg md:text-xl text-gray-400 line-through mb-1">
                                 Rp {{ formatPrice(product.price) }}
                             </span>
                         </div>
@@ -127,34 +132,9 @@
                         </BaseButton>
                     </div>
 
-                    <!-- Seller Card -->
-                    <div class="bg-white rounded-2xl border border-gray-200 p-5 mt-4">
-                        <div class="flex items-center gap-4">
-                            <div
-                                class="w-12 h-12 md:w-14 md:h-14 rounded-xl bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center text-navy font-black text-lg md:text-xl flex-shrink-0">
-                                {{ product.seller.name.charAt(0) }}
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <div class="flex items-center gap-2">
-                                    <h3 class="font-bold text-navy truncate">{{ product.seller.name }}</h3>
-                                    <Icon v-if="product.seller.verified" icon="ph:seal-check-fill"
-                                        class="text-blue-500 flex-shrink-0" />
-                                </div>
-                                <div class="flex items-center gap-3 text-[10px] md:text-xs text-gray-400 mt-1">
-                                    <span>{{ product.seller.products }} produk</span>
-                                    <span>{{ product.seller.location }}</span>
-                                </div>
-                            </div>
-                            <NuxtLink :to="`/shop/seller/${product.seller.slug}`">
-                                <BaseButton variant="white" size="sm" class="hidden xs:flex">Kunjungi</BaseButton>
-                            </NuxtLink>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
-
-        <!-- Product Details Tabs -->
         <section class="bg-white border-t border-gray-200 py-8">
             <div class="container mx-auto px-4 max-w-7xl">
                 <!-- Tabs -->
@@ -173,41 +153,34 @@
 
                 <!-- Tab Content -->
                 <div v-if="activeTab === 'description'" class="prose max-w-none text-gray-700 pt-4">
-                    <h3 class="text-lg font-bold text-navy mt-6 mb-4">Spesifikasi</h3>
-                    <table class="w-full">
-                        <tr v-for="(value, key) in product.specifications" :key="key" class="border-b border-gray-100">
-                            <td class="py-3 text-gray-500 w-1/3">{{ key }}</td>
-                            <td class="py-3 font-medium text-navy">{{ value }}</td>
-                        </tr>
-                    </table>
+                    <div v-if="product.description" class="mb-6">
+                        <h3 class="text-lg font-bold text-navy mb-3">Deskripsi</h3>
+                        <p class="text-gray-700 whitespace-pre-line">{{ product.description }}</p>
+                    </div>
+                    <div v-if="product.specifications && Object.keys(product.specifications).length > 0">
+                        <h3 class="text-lg font-bold text-navy mt-6 mb-4">Spesifikasi</h3>
+                        <table class="w-full">
+                            <tr v-for="(value, key) in product.specifications" :key="key"
+                                class="border-b border-gray-100">
+                                <td class="py-3 text-gray-500 w-1/3">{{ key }}</td>
+                                <td class="py-3 font-medium text-navy">{{ value }}</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Related Products -->
-        <section class="container mx-auto px-4 max-w-7xl py-12">
-            <h2 class="text-2xl font-black text-navy mb-6">Produk Serupa</h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-5">
-                <div v-for="item in relatedProducts" :key="item.id"
-                    class="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl transition-all group cursor-pointer">
-                    <div class="relative aspect-square bg-gray-100 overflow-hidden">
-                        <img :src="item.image"
-                            class="w-full h-full object-cover group-hover:scale-105 transition-transform" />
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-bold text-navy text-sm line-clamp-2 mb-2">{{ item.name }}</h3>
-                        <span class="text-lg font-black text-navy">Rp {{ formatPrice(item.price) }}</span>
-                    </div>
-                </div>
-            </div>
-        </section>
     </div>
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { useApi } from '~/composables/useApi'
+import { useToast } from '~/composables/useToast'
+import { useAuth } from '~/composables/useAuth'
 
 definePageMeta({
     layout: 'landing'
@@ -216,92 +189,90 @@ definePageMeta({
 const route = useRoute()
 const quantity = ref(1)
 const activeTab = ref('description')
+const { isLoggedIn, user } = useAuth()
 
 const tabs = [
     { label: 'Deskripsi', value: 'description' },
 ]
 
-// Dummy product data
-const product = ref({
-    slug: route.params.slug,
-    name: 'Recurve Bow Hoyt Satori 23" ILF Riser - Premium Edition',
-    price: 15500000,
-    salePrice: 13500000,
-    stock: 5,
-    category: 'Busur Recurve',
-    rating: 4.9,
-    reviews: 45,
-    sold: 23,
-    views: 1234,
-    images: [
-        'https://images.unsplash.com/photo-1564769625905-50e93615e769?w=800',
-        'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=800',
-        'https://images.unsplash.com/photo-1510925758641-869d353cecc7?w=800',
-    ],
-    description: 'Hoyt Satori adalah riser ILF premium dengan desain ergonomis dan performa tinggi. Terbuat dari aluminium berkualitas tinggi dengan finishing anodized yang tahan lama. Cocok untuk pemanah profesional maupun yang sedang berkembang.',
-    specifications: {
-        'Panjang Riser': '23 inch',
-        'Material': 'Aluminium 6061-T6',
-        'Berat': '1.1 kg',
-        'Draw Weight Range': '15-45 lbs',
-        'Tipe': 'ILF (International Limb Fitting)',
-        'Warna': 'Midnight Black',
-        'Garansi': '2 Tahun'
-    },
-    seller: {
-        name: 'Garuda Archery Store',
-        slug: 'garuda-archery',
-        verified: true,
-        rating: 4.8,
-        products: 45,
-        location: 'Jakarta'
-    }
-})
+const product = ref(null)
+const isLoading = ref(true)
+const selectedImage = ref('')
 
-const selectedImage = ref(product.value.images[0])
+const { get } = useApi()
+const toast = useToast()
+
+const fetchProduct = async () => {
+    isLoading.value = true
+    try {
+        const response = await get(`/products/${route.params.slug}`)
+        product.value = response.data || response
+
+        // Parse images from JSON string if needed
+        if (product.value.images && typeof product.value.images === 'string') {
+            try {
+                product.value.images = JSON.parse(product.value.images)
+            } catch {
+                product.value.images = []
+            }
+        }
+
+        // Parse specifications from JSON string if needed
+        if (product.value.specifications && typeof product.value.specifications === 'string') {
+            try {
+                product.value.specifications = JSON.parse(product.value.specifications)
+            } catch {
+                product.value.specifications = {}
+            }
+        }
+
+        // Set default images array if empty
+        if (!product.value.images || product.value.images.length === 0) {
+            product.value.images = product.value.image_url ? [product.value.image_url] : []
+        }
+
+        selectedImage.value = useImageOrDefault(product.value.images[0] || product.value.image_url)
+    } catch (error) {
+        console.error('Failed to fetch product:', error)
+        toast.error('Produk tidak ditemukan')
+        await navigateTo('/shop')
+    } finally {
+        isLoading.value = false
+    }
+}
+
+onMounted(fetchProduct)
 
 const discountPercent = computed(() => {
-    if (!product.value.salePrice) return 0
-    return Math.round((1 - product.value.salePrice / product.value.price) * 100)
+    if (!product.value || !product.value.sale_price) return 0
+    return Math.round((1 - product.value.sale_price / product.value.price) * 100)
 })
 
-const reviews = ref([
-    { id: 1, user: 'Ahmad R.', rating: 5, comment: 'Produk sangat berkualitas, pengiriman cepat dan packing aman. Recommended seller!', date: '2 hari lalu' },
-    { id: 2, user: 'Budi S.', rating: 5, comment: 'Sesuai deskripsi, build quality excellent. Worth the price.', date: '1 minggu lalu' },
-    { id: 3, user: 'Siti M.', rating: 4, comment: 'Bagus, cuma pengiriman agak lama. Overall puas.', date: '2 minggu lalu' },
-])
-
-const relatedProducts = ref([
-    { id: 2, name: 'WNS Delta LX Riser', price: 8500000, image: 'https://images.unsplash.com/photo-1547347298-4074fc3086f0?w=400' },
-    { id: 3, name: 'Kinetic Vygo Limbs', price: 4200000, image: 'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=400' },
-    { id: 4, name: 'Easton Carbon One Arrows', price: 3800000, image: 'https://images.unsplash.com/photo-1510925758641-869d353cecc7?w=400' },
-    { id: 5, name: 'Hoyt Formula Limbs', price: 6200000, image: 'https://images.unsplash.com/photo-1565992441121-4367c2967103?w=400' },
-])
+const relatedProducts = ref([])
 
 const { post } = useApi()
-const { showToast } = useToast()
 const isAddingToCart = ref(false)
 
 const handleAddToCart = async () => {
     if (!isLoggedIn.value) {
-        showToast('Silahkan login sebagai Pemanah untuk menambah ke keranjang', 'error')
+        toast.error('Silahkan login sebagai Pemanah untuk menambah ke keranjang')
         return
     }
 
-    if (user.value?.user_type !== 'archer') {
-        showToast('Hanya akun Pemanah yang dapat berbelanja', 'error')
+    if (user.value?.type !== 'archer' && user.value?.role !== 'archer') {
+        toast.error('Hanya akun Pemanah yang dapat berbelanja')
         return
     }
 
     isAddingToCart.value = true
     try {
         await post('/cart', {
-            product_id: product.value.uuid || 'f38b1a3c-f73e-11f0-87db-c3c8a1ce2650', // Use real ID if available, fallback for dummy
+            product_id: product.value.id,
             quantity: quantity.value
         })
-        showToast('Berhasil ditambah ke keranjang', 'success')
+        toast.success('Berhasil ditambah ke keranjang')
     } catch (error) {
-        showToast('Gagal menambah ke keranjang', 'error')
+        toast.error('Gagal menambah ke keranjang')
     } finally {
         isAddingToCart.value = false
     }

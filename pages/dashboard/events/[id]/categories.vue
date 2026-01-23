@@ -118,18 +118,8 @@
         </div>
 
         <!-- Create/Edit Dialog -->
-        <div v-if="showDialog" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm"
-            @click.self="closeDialog">
-            <div class="bg-white rounded-2xl shadow-xl border border-gray-100 w-full max-w-2xl mx-4 p-6 space-y-6 relative">
-                <div class="flex items-center justify-between pb-4 border-b border-gray-100">
-                    <h2 class="text-xl font-bold text-navy">
-                        {{ editingCategory ? 'Edit Kategori' : 'Tambah Kategori Baru' }}
-                    </h2>
-                    <button @click="closeDialog" class="text-gray-400 hover:text-gray-600 transition-colors">
-                        <Icon icon="ph:x" class="text-2xl" />
-                    </button>
-                </div>
-
+        <BaseDialogForm v-model="showDialog" :header="editingCategory ? 'Edit Kategori' : 'Tambah Kategori Baru'">
+            <template #default>
                 <div class="space-y-5">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="space-y-2">
@@ -183,15 +173,14 @@
                         </select>
                     </div>
                 </div>
-
-                <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
-                    <BaseButton variant="white" @click="closeDialog">Batal</BaseButton>
-                    <BaseButton variant="primary" @click="saveCategory" :loading="saving">
-                        {{ editingCategory ? 'Simpan Perubahan' : 'Tambah Kategori' }}
-                    </BaseButton>
-                </div>
-            </div>
-        </div>
+            </template>
+            <template #action>
+                <BaseButton variant="white" @click="closeDialog">Batal</BaseButton>
+                <BaseButton variant="primary" @click="saveCategory" :loading="saving">
+                    {{ editingCategory ? 'Simpan Perubahan' : 'Tambah Kategori' }}
+                </BaseButton>
+            </template>
+        </BaseDialogForm>
     </div>
 </template>
 

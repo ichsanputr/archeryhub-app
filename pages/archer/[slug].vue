@@ -18,9 +18,11 @@
                         class="w-28 h-28 md:w-36 md:h-36 rounded-2xl bg-white border-2 border-gray-100 shadow-lg overflow-hidden flex-shrink-0">
                         <div v-if="!archer.photo_url && !archer.avatar_url"
                             class="w-full h-full bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center">
-                            <span class="text-4xl md:text-5xl font-black text-navy">{{ archer.full_name?.charAt(0) || 'A' }}</span>
+                            <span class="text-4xl md:text-5xl font-black text-navy">{{ archer.full_name?.charAt(0) ||
+                                'A' }}</span>
                         </div>
-                        <img v-else :src="archer.photo_url || archer.avatar_url" class="w-full h-full object-cover" />
+                        <img v-else :src="useImageOrDefault(archer.photo_url || archer.avatar_url)"
+                            class="w-full h-full object-cover" />
                     </div>
 
                     <!-- Info -->
@@ -28,7 +30,8 @@
                         <div class="flex flex-wrap items-start justify-between gap-4">
                             <div>
                                 <div class="flex flex-wrap items-center gap-3 mb-3">
-                                    <h1 class="text-2xl md:text-4xl font-black text-navy leading-tight">{{ archer.full_name }}
+                                    <h1 class="text-2xl md:text-4xl font-black text-navy leading-tight">{{
+                                        archer.full_name }}
                                     </h1>
                                     <span v-if="archer.athlete_code"
                                         class="px-3 py-1.5 bg-primary/10 text-primary text-[10px] md:text-xs font-black rounded-full uppercase tracking-wider">
@@ -69,14 +72,17 @@
                             </div>
                             <div class="h-10 w-px bg-gray-200 hidden sm:block"></div>
                             <div class="text-center sm:text-left">
-                                <p class="text-2xl md:text-3xl font-black text-navy">{{ archer.completed_events || 0 }}</p>
-                                <p class="text-[10px] md:text-sm text-gray-400 font-bold uppercase tracking-wide">Selesai
+                                <p class="text-2xl md:text-3xl font-black text-navy">{{ archer.completed_events || 0 }}
+                                </p>
+                                <p class="text-[10px] md:text-sm text-gray-400 font-bold uppercase tracking-wide">
+                                    Selesai
                                 </p>
                             </div>
                             <div class="h-10 w-px bg-gray-200 hidden sm:block"></div>
                             <div v-if="archer.best_score" class="text-center sm:text-left">
                                 <p class="text-2xl md:text-3xl font-black text-navy">{{ archer.best_score }}</p>
-                                <p class="text-[10px] md:text-sm text-gray-400 font-bold uppercase tracking-wide">Best Score
+                                <p class="text-[10px] md:text-sm text-gray-400 font-bold uppercase tracking-wide">Best
+                                    Score
                                 </p>
                             </div>
                             <div v-if="archer.current_ranking" class="h-10 w-px bg-gray-200 hidden sm:block"></div>
@@ -165,7 +171,8 @@
                         <div v-if="archer.achievements" class="mt-8 pt-8 border-t border-gray-100">
                             <h3 class="font-black text-navy text-base mb-4">Prestasi</h3>
                             <div class="prose max-w-none">
-                                <p class="text-gray-600 leading-relaxed whitespace-pre-line">{{ archer.achievements }}</p>
+                                <p class="text-gray-600 leading-relaxed whitespace-pre-line">{{ archer.achievements }}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -226,7 +233,7 @@
                             </div>
                             <div v-if="archer.club_name || archer.club">
                                 <p class="text-xs text-gray-400 font-bold uppercase mb-1">Klub</p>
-                                <NuxtLink v-if="archer.club_slug" :to="`/klub/${archer.club_slug}`" 
+                                <NuxtLink v-if="archer.club_slug" :to="`/klub/${archer.club_slug}`"
                                     class="text-primary hover:underline font-bold">
                                     {{ archer.club_name || archer.club }}
                                 </NuxtLink>
@@ -238,14 +245,16 @@
                     </div>
 
                     <!-- Emergency Contact -->
-                    <div v-if="archer.emergency_contact_name" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                    <div v-if="archer.emergency_contact_name"
+                        class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
                         <h3 class="font-black text-navy text-base mb-4 flex items-center gap-2">
                             <Icon icon="ph:phone-bold" class="text-primary" />
                             Kontak Darurat
                         </h3>
                         <div class="space-y-2">
                             <p class="text-navy font-bold">{{ archer.emergency_contact_name }}</p>
-                            <p v-if="archer.emergency_contact_phone" class="text-gray-500 text-sm">{{ archer.emergency_contact_phone }}</p>
+                            <p v-if="archer.emergency_contact_phone" class="text-gray-500 text-sm">{{
+                                archer.emergency_contact_phone }}</p>
                         </div>
                     </div>
                 </div>
@@ -338,7 +347,7 @@ const fetchArcher = async () => {
     isLoading.value = true
     try {
         const slug = route.params.slug
-        
+
         // Try to fetch by slug first, then by UUID
         let response
         try {
@@ -355,14 +364,14 @@ const fetchArcher = async () => {
             // If direct fetch fails, try by ID
             response = await get(`/archers/${slug}`)
         }
-        
+
         if (response && Object.keys(response).length > 0) {
             archer.value = response
         } else {
             // Use dummy data if API returns empty
             archer.value = { ...dummyArcher, slug: slug }
         }
-        
+
         // Fetch event history (dummy for now)
         eventHistory.value = [
             { id: 1, name: 'Kejurda Jabar 2023', location: 'Bandung', date: '15 Mar 2023', score: 680 },

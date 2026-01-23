@@ -6,7 +6,7 @@
         <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6">
           <!-- Avatar -->
           <div class="relative">
-            <img :src="user?.avatar || '/default-avatar.png'" :alt="user?.full_name || 'User'"
+            <img :src="useImageOrDefault(user?.avatar)" :alt="user?.full_name || 'User'"
               class="w-24 h-24 rounded-full border-4 border-gray-100" />
             <div
               class="absolute -bottom-1 -right-1 w-8 h-8 bg-green-500 rounded-full border-4 border-white flex items-center justify-center">

@@ -12,7 +12,8 @@
                         Semua Event Panahan
                     </h1>
                     <p class="text-gray-300 text-lg md:text-xl mb-8 leading-relaxed">
-                        Temukan dan daftar event panahan seru di seluruh Indonesia. Dari kompetisi lokal hingga turnamen nasional, semua ada di sini.
+                        Temukan dan daftar event panahan seru di seluruh Indonesia. Dari kompetisi lokal hingga turnamen
+                        nasional, semua ada di sini.
                     </p>
                 </div>
             </div>
@@ -149,7 +150,9 @@
                     <!-- Loading State -->
                     <div v-if="isLoading" class="text-center py-20">
                         <div class="flex flex-col items-center gap-4">
-                            <div class="h-12 w-12 border-4 border-primary border-t-transparent animate-spin rounded-full"></div>
+                            <div
+                                class="h-12 w-12 border-4 border-primary border-t-transparent animate-spin rounded-full">
+                            </div>
                             <p class="text-gray-500 font-medium">Memuat event...</p>
                         </div>
                     </div>
@@ -157,12 +160,14 @@
                     <!-- Empty State -->
                     <div v-else-if="!isLoading && filteredTournaments.length === 0" class="text-center py-20">
                         <div class="bg-white rounded-2xl border border-gray-100 p-12 max-w-md mx-auto shadow-sm">
-                            <div class="h-24 w-24 bg-gray-50 rounded-full mx-auto flex items-center justify-center mb-6">
+                            <div
+                                class="h-24 w-24 bg-gray-50 rounded-full mx-auto flex items-center justify-center mb-6">
                                 <Icon icon="ph:calendar-x" class="text-5xl text-gray-300" />
                             </div>
                             <h3 class="text-2xl font-black text-navy mb-3">Belum Ada Event</h3>
                             <p class="text-gray-500 mb-8 leading-relaxed">
-                                Saat ini belum ada event panahan yang tersedia. Cek kembali nanti atau hubungi penyelenggara untuk informasi lebih lanjut.
+                                Saat ini belum ada event panahan yang tersedia. Cek kembali nanti atau hubungi
+                                penyelenggara untuk informasi lebih lanjut.
                             </p>
                             <div v-if="searchQuery" class="flex justify-center">
                                 <BaseButton variant="outline" @click="searchQuery = ''">
@@ -236,8 +241,8 @@ const transformEventData = (event) => {
     const formatDate = (dateStr) => {
         if (!dateStr) return 'TBA'
         const date = new Date(dateStr)
-        return date.toLocaleDateString('id-ID', { 
-            month: 'short', 
+        return date.toLocaleDateString('id-ID', {
+            month: 'short',
             day: 'numeric',
             year: 'numeric'
         })
@@ -246,14 +251,14 @@ const transformEventData = (event) => {
     const formatDateRange = (startDate, endDate) => {
         if (!startDate) return 'TBA'
         if (!endDate) return formatDate(startDate)
-        
+
         const start = new Date(startDate)
         const end = new Date(endDate)
-        
+
         if (start.getMonth() === end.getMonth() && start.getFullYear() === end.getFullYear()) {
             return `${start.getDate()} - ${end.getDate()} ${start.toLocaleDateString('id-ID', { month: 'short', year: 'numeric' })}`
         }
-        
+
         return `${formatDate(startDate)} - ${formatDate(endDate)}`
     }
 
@@ -265,7 +270,7 @@ const transformEventData = (event) => {
         location: event.venue || event.location || 'Lokasi TBA',
         status: event.status || 'upcoming',
         category: event.discipline_name || event.category || null,
-        image: event.logo_url || event.banner_url || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop'
+        image: useImageOrDefault(event.logo_url || event.banner_url)
     }
 }
 
@@ -273,7 +278,7 @@ const fetchEvents = async () => {
     isLoading.value = true
     try {
         const response = await get('/events')
-        
+
         // Handle different response structures
         let eventsData = []
         if (Array.isArray(response)) {
@@ -283,7 +288,7 @@ const fetchEvents = async () => {
         } else if (response?.data && Array.isArray(response.data)) {
             eventsData = response.data
         }
-        
+
         tournaments.value = eventsData.map(transformEventData)
     } catch (error) {
         console.error('Failed to fetch events:', error)
@@ -321,4 +326,3 @@ definePageMeta({
     layout: 'landing'
 })
 </script>
-

@@ -17,8 +17,10 @@
 
         <!-- Quick Stats -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+            <div
+                class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div
+                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:package" class="text-xl" />
                 </div>
                 <div>
@@ -26,8 +28,10 @@
                     <p class="text-lg font-bold text-navy">{{ products.length }}</p>
                 </div>
             </div>
-            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+            <div
+                class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div
+                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:check-circle" class="text-xl" />
                 </div>
                 <div>
@@ -35,8 +39,10 @@
                     <p class="text-lg font-bold text-navy">{{products.filter(p => p.status === 'active').length}}</p>
                 </div>
             </div>
-            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+            <div
+                class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div
+                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:eye" class="text-xl" />
                 </div>
                 <div>
@@ -45,8 +51,10 @@
                         0).toLocaleString()}}</p>
                 </div>
             </div>
-            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+            <div
+                class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div
+                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:shopping-cart" class="text-xl" />
                 </div>
                 <div>
@@ -318,7 +326,7 @@ const fetchProducts = async () => {
             ...p,
             id: p.id || p.uuid,
             salePrice: p.sale_price,
-            image: p.image_url || 'https://via.placeholder.com/150',
+            image: useImageOrDefault(p.image_url),
             sold: p.sold || 0 // Assuming 'sold' is handled by backend or aggregation
         }))
     } catch (error) {

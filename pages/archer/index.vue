@@ -4,7 +4,7 @@
         <section
             class="bg-gradient-to-br from-navy via-navy to-blue-900 text-white py-20 md:py-28 relative overflow-hidden">
             <div class="absolute inset-0 opacity-15">
-                <img src="https://images.unsplash.com/photo-1565992441121-4367c2967103?w=1600"
+                <img :src="useImageOrDefault('https://images.unsplash.com/photo-1565992441121-4367c2967103?w=1600')"
                     class="w-full h-full object-cover" />
             </div>
             <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/60 to-transparent"></div>
@@ -30,7 +30,8 @@
                         <div class="relative flex-1">
                             <Icon icon="ph:magnifying-glass-bold"
                                 class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl" />
-                            <input v-model="searchQuery" type="text" placeholder="Cari nama pemanah, kode atlet, atau klub..."
+                            <input v-model="searchQuery" type="text"
+                                placeholder="Cari nama pemanah, kode atlet, atau klub..."
                                 class="w-full pl-12 pr-4 py-4 rounded-xl bg-white text-navy font-medium placeholder:text-gray-400 focus:ring-4 focus:ring-primary/30 outline-none transition-all text-base" />
                         </div>
                         <button @click="fetchArchers"
@@ -102,18 +103,20 @@
 
         <!-- Archers Grid -->
         <section class="container mx-auto px-4 max-w-7xl pb-16">
-            <div v-if="isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-60 pointer-events-none">
-                <div v-for="i in 6" :key="i" class="h-[400px] bg-white rounded-2xl border-2 border-gray-100 animate-pulse"></div>
+            <div v-if="isLoading"
+                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-60 pointer-events-none">
+                <div v-for="i in 6" :key="i"
+                    class="h-[400px] bg-white rounded-2xl border-2 border-gray-100 animate-pulse"></div>
             </div>
 
             <div v-else-if="viewMode === 'grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <NuxtLink v-for="archer in filteredArchers" :key="archer.id || archer.uuid" 
+                <NuxtLink v-for="archer in filteredArchers" :key="archer.id || archer.uuid"
                     :to="`/archer/${archer.slug || archer.uuid}`"
                     class="group bg-white rounded-2xl border-2 border-gray-100 overflow-hidden hover:border-primary transition-all duration-300">
                     <!-- Archer Avatar & Banner -->
                     <div class="relative h-44 bg-gradient-to-br from-primary to-amber-400 overflow-hidden">
                         <div v-if="archer.photo_url || archer.avatar_url" class="w-full h-full">
-                            <img :src="archer.photo_url || archer.avatar_url"
+                            <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url)"
                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                         </div>
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent">
@@ -137,17 +140,21 @@
                                 class="w-14 h-14 -mt-7 rounded-xl bg-white border-2 border-white shadow-xl overflow-hidden flex-shrink-0 relative z-[2]">
                                 <div v-if="!archer.photo_url && !archer.avatar_url"
                                     class="w-full h-full bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center">
-                                    <span class="text-xl font-black text-navy">{{ archer.full_name?.charAt(0) || 'A' }}</span>
+                                    <span class="text-xl font-black text-navy">{{ archer.full_name?.charAt(0) || 'A'
+                                        }}</span>
                                 </div>
-                                <img v-else :src="archer.photo_url || archer.avatar_url" class="w-full h-full object-cover" />
+                                <img v-else :src="useImageOrDefault(archer.photo_url || archer.avatar_url)"
+                                    class="w-full h-full object-cover" />
                             </div>
 
                             <div class="flex-1 min-w-0 pt-1">
                                 <h3
                                     class="font-black text-navy text-lg truncate group-hover:text-primary transition-colors">
                                     {{ archer.full_name }}</h3>
-                                <p v-if="archer.athlete_code" class="text-gray-400 text-sm truncate">{{ archer.athlete_code }}</p>
-                                <p v-else-if="archer.club_name || archer.club" class="text-gray-400 text-sm truncate">{{ archer.club_name || archer.club }}</p>
+                                <p v-if="archer.athlete_code" class="text-gray-400 text-sm truncate">{{
+                                    archer.athlete_code }}</p>
+                                <p v-else-if="archer.club_name || archer.club" class="text-gray-400 text-sm truncate">{{
+                                    archer.club_name || archer.club }}</p>
                             </div>
                         </div>
 
@@ -175,12 +182,14 @@
                 <div v-for="archer in filteredArchers" :key="archer.id || archer.uuid"
                     class="bg-white rounded-xl border-2 border-gray-100 hover:border-primary transition-all p-6">
                     <NuxtLink :to="`/archer/${archer.slug || archer.uuid}`" class="flex items-center gap-6 group">
-                        <div class="w-20 h-20 rounded-xl bg-gradient-to-br from-primary to-amber-400 overflow-hidden flex-shrink-0">
-                            <img v-if="archer.photo_url || archer.avatar_url" 
-                                :src="archer.photo_url || archer.avatar_url" 
+                        <div
+                            class="w-20 h-20 rounded-xl bg-gradient-to-br from-primary to-amber-400 overflow-hidden flex-shrink-0">
+                            <img v-if="archer.photo_url || archer.avatar_url"
+                                :src="useImageOrDefault(archer.photo_url || archer.avatar_url)"
                                 class="w-full h-full object-cover" />
                             <div v-else class="w-full h-full flex items-center justify-center">
-                                <span class="text-2xl font-black text-navy">{{ archer.full_name?.charAt(0) || 'A' }}</span>
+                                <span class="text-2xl font-black text-navy">{{ archer.full_name?.charAt(0) || 'A'
+                                    }}</span>
                             </div>
                         </div>
                         <div class="flex-1 min-w-0">
@@ -293,17 +302,17 @@ const fetchArchers = async () => {
     isLoading.value = true
     try {
         const params = {}
-        
+
         if (searchQuery.value) {
             params.search = searchQuery.value
         }
-        
+
         if (activeBowType.value !== 'all') {
             // Note: API might not have bow_type filter, but we can filter client-side
         }
 
         const response = await get('/archers', { query: params })
-        
+
         if (response.archers && response.archers.length > 0) {
             archers.value = response.archers
             totalArchers.value = response.total || response.archers.length

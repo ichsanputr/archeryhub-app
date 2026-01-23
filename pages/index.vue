@@ -192,8 +192,8 @@
                         <div
                             class="relative w-full aspect-video md:aspect-[4/3] rounded-[2rem] bg-navy overflow-hidden shadow-2xl group border border-white/5">
                             <!-- Background Image -->
-                            <img src="https://images.unsplash.com/photo-1541535881962-3bb380b08458?auto=format&fit=crop&q=80&w=1200"
-                                alt="Archery Focus"
+                            <img :src="featureItems[activeFeature].image"
+                                :alt="featureItems[activeFeature].title"
                                 class="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 transition-all duration-1000 scale-[1.05]" />
 
                             <!-- Static Overlays -->
@@ -245,8 +245,9 @@
                         <div v-if="isMobile"
                             class="relative w-full aspect-video rounded-3xl bg-navy overflow-hidden shadow-xl border border-white/5 animate-fade-in">
                             <!-- Background Image -->
-                            <img src="https://images.unsplash.com/photo-1541535881962-3bb380b08458?auto=format&fit=crop&q=80&w=1200"
-                                alt="Archery Focus" class="w-full h-full object-cover opacity-60 scale-[1.05]" />
+                            <img :src="featureItems[activeFeature].image"
+                                :alt="featureItems[activeFeature].title"
+                                class="w-full h-full object-cover opacity-60 scale-[1.05]" />
 
                             <!-- Static Overlays -->
                             <div class="absolute inset-0 bg-gradient-to-t from-navy transition-all duration-500"
@@ -597,6 +598,18 @@ const liveEvents = [
         location: 'Tangerang, Banten',
         type: 'Final Round',
         image: 'https://images.unsplash.com/photo-1511880493577-f3d35706497f?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+        name: 'Medan Archery Championship',
+        location: 'Medan, Sumatera Utara',
+        type: 'Qualification Round',
+        image: 'https://images.unsplash.com/photo-1565992441121-4367c2967103?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+        name: 'Makassar Open Tournament',
+        location: 'Makassar, Sulawesi Selatan',
+        type: 'Elimination Round',
+        image: 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&q=80&w=800'
     }
 ]
 
@@ -606,49 +619,57 @@ const featureItems = [
         title: 'Skoring Digital Real-time',
         icon: 'ic:outline-scoreboard',
         description: 'Input skor langsung di genggaman.',
-        longDescription: 'Nggak ada lagi catat manual pakai kertas. Wasit atau atlet tinggal klik skor di aplikasi, dan hasilnya langsung dihitung otomatis. Data skor langsung sinkron ke server buat ditampilin di TV atau layar besar saat event berlangsung.'
+        longDescription: 'Nggak ada lagi catat manual pakai kertas. Wasit atau atlet tinggal klik skor di aplikasi, dan hasilnya langsung dihitung otomatis. Data skor langsung sinkron ke server buat ditampilin di TV atau layar besar saat event berlangsung.',
+        image: 'https://images.unsplash.com/photo-1541535881962-3bb380b08458?auto=format&fit=crop&q=80&w=1200'
     },
     {
         title: 'Registrasi Simpel',
         icon: 'ph:user-plus-bold',
         description: 'Daftar turnamen dalam satu klik.',
-        longDescription: 'Capek nginput data yang sama berulang kali? Di Archeryhub, profil atlet kamu udah kesimpan aman. Mau ikut turnamen apapun tinggal pilih eventnya, klik daftar, dan beres! Nggak perlu lagi isi form panjang yang bikin pening.'
+        longDescription: 'Capek nginput data yang sama berulang kali? Di Archeryhub, profil atlet kamu udah kesimpan aman. Mau ikut turnamen apapun tinggal pilih eventnya, klik daftar, dan beres! Nggak perlu lagi isi form panjang yang bikin pening.',
+        image: 'https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&q=80&w=1200'
     },
     {
         title: 'Leaderboard Update Terus',
         icon: 'ph:chart-bar-horizontal-bold',
         description: 'Pantau posisi rival tanpa jeda.',
-        longDescription: 'Mau tau siapa yang lagi memimpin? Leaderboard kami update setiap ada skor baru yang masuk. Atlet, pelatih, dan penonton bisa terus mantau siapa yang dapet peringkat teratas di babak kualifikasi maupun eliminasi secara detail.'
+        longDescription: 'Mau tau siapa yang lagi memimpin? Leaderboard kami update setiap ada skor baru yang masuk. Atlet, pelatih, dan penonton bisa terus mantau siapa yang dapet peringkat teratas di babak kualifikasi maupun eliminasi secara detail.',
+        image: 'https://images.unsplash.com/photo-1444491741275-3747c33cc99b?auto=format&fit=crop&q=80&w=1200'
     },
     {
         title: 'Laporan Beres Otomatis',
         icon: 'ph:article-bold',
         description: 'Hasil lomba siap dalam sekejap.',
-        longDescription: 'Begitu panah terakhir ditembakkan, laporan hasil pertandingan udah siap. Panitia nggak perlu begadang buat rekap data. Sistem kita otomatis nge-generate PDF hasil lomba per divisi yang akurat dan sesuai standar federasi.'
+        longDescription: 'Begitu panah terakhir ditembakkan, laporan hasil pertandingan udah siap. Panitia nggak perlu begadang buat rekap data. Sistem kita otomatis nge-generate PDF hasil lomba per divisi yang akurat dan sesuai standar federasi.',
+        image: 'https://images.unsplash.com/photo-1511880493577-f3d35706497f?auto=format&fit=crop&q=80&w=1200'
     },
     {
         title: 'Sertifikat Digital Instant',
         icon: 'ph:certificate-bold',
         description: 'Klaim prestasi kamu hari itu juga.',
-        longDescription: 'Menang atau kalah, dedikasi kamu pantes dapet apresiasi. E-sertifikat resmi bakal langsung muncul di profil kamu begitu event selesai. Bisa langsung didownload buat diprint atau dipamerin ke story Instagram kamu!'
+        longDescription: 'Menang atau kalah, dedikasi kamu pantes dapet apresiasi. E-sertifikat resmi bakal langsung muncul di profil kamu begitu event selesai. Bisa langsung didownload buat diprint atau dipamerin ke story Instagram kamu!',
+        image: 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&q=80&w=1200'
     },
     {
         title: 'Manajemen Klub Terpadu',
         icon: 'ph:users-four-bold',
         description: 'Kelola klub makin pro dan rapi.',
-        longDescription: 'Bikin klub kamu makin solid dengan manajemen data atlet yang rapi. Pantau kehadiran latihan, rekap skor internal klub, sampai pengingat iuran bulanan angggota, semuanya bisa dikelola lewat dashboard admin khusus klub.'
+        longDescription: 'Bikin klub kamu makin solid dengan manajemen data atlet yang rapi. Pantau kehadiran latihan, rekap skor internal klub, sampai pengingat iuran bulanan angggota, semuanya bisa dikelola lewat dashboard admin khusus klub.',
+        image: 'https://images.unsplash.com/photo-1565992441121-4367c2967103?auto=format&fit=crop&q=80&w=1200'
     },
     {
         title: 'Integrasi Membership',
         icon: 'ph:identification-card-bold',
         description: 'KTA digital buat akses nasional.',
-        longDescription: 'Punya akses ke seluruh ekosistem panahan dengan satu ID. Membership Archeryhub bukan cuma buat keren-kerenan, tapi jadi syarat resmi buat ikut turnamen berlisensi nasional dan bukti kamu bagian dari komunitas atlet pro.'
+        longDescription: 'Punya akses ke seluruh ekosistem panahan dengan satu ID. Membership Archeryhub bukan cuma buat keren-kerenan, tapi jadi syarat resmi buat ikut turnamen berlisensi nasional dan bukti kamu bagian dari komunitas atlet pro.',
+        image: 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?auto=format&fit=crop&q=80&w=1200'
     },
     {
         title: 'Analitik Performa Atlet',
         icon: 'ph:trend-up-bold',
         description: 'Lihat progres kamu makin tajam.',
-        longDescription: 'Lihat data di balik performa kamu. Sistem kita nangkep statistik skor kamu dari setiap event dan latihan, terus nampilin grafik progres yang gampang dibaca. Bantu kamu dan pelatih nentuin apa yang perlu ditingkatkan buat ke depannya.'
+        longDescription: 'Lihat data di balik performa kamu. Sistem kita nangkep statistik skor kamu dari setiap event dan latihan, terus nampilin grafik progres yang gampang dibaca. Bantu kamu dan pelatih nentuin apa yang perlu ditingkatkan buat ke depannya.',
+        image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200'
     }
 ]
 

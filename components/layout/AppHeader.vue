@@ -29,7 +29,7 @@
 
       <!-- Event Manage Mode: Back Button + Event Name -->
       <div v-if="isEventManageMode" class="hidden md:flex items-center gap-4 flex-1">
-        <NuxtLink to="/dashboard/events" 
+        <NuxtLink to="/dashboard/events"
           class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-600 hover:text-navy shrink-0">
           <Icon icon="ph:arrow-left" class="text-xl" />
           <span class="text-sm font-bold">Kembali ke Dashboard</span>
@@ -125,7 +125,7 @@ const isEventManageMode = computed(() => {
 const isSidebarOpen = useState('mobile-sidebar-open', () => false)
 const searchQuery = ref('')
 const notificationCount = ref(3)
-const userAvatar = computed(() => user.value?.avatar_url || '/avatar-default.svg')
+const userAvatar = computed(() => useImageOrDefault(user.value?.avatar_url))
 
 // Scroll state for transparency transition
 const isScrolled = ref(false)

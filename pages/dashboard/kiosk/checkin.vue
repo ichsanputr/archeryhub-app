@@ -83,7 +83,7 @@
 
             <!-- Image -->
             <div class="md:w-1/3 min-h-[240px] md:min-h-full bg-cover bg-center relative"
-              style="background-image: url('https://via.placeholder.com/300x400');">
+              :style="{ backgroundImage: `url(${useImageOrDefault()})` }">
               <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent md:bg-gradient-to-r"></div>
             </div>
 

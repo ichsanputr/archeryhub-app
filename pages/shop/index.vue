@@ -83,18 +83,26 @@
 
         <!-- Products Grid -->
         <section class="container mx-auto px-4 max-w-7xl pb-16">
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+            <div v-if="isLoading" class="flex flex-col items-center justify-center py-20">
+                <Icon icon="ph:spinner-gap-bold" class="text-4xl text-primary animate-spin mb-4" />
+                <p class="text-gray-500 font-medium">Memuat produk...</p>
+            </div>
+            <div v-else-if="filteredProducts.length === 0" class="flex flex-col items-center justify-center py-20">
+                <Icon icon="ph:package" class="text-5xl text-gray-300 mb-4" />
+                <p class="text-gray-500 font-medium">Tidak ada produk ditemukan</p>
+            </div>
+            <div v-else class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
                 <NuxtLink v-for="product in filteredProducts" :key="product.id"
                     :to="`/shop/${product.slug || product.id}`"
                     class="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:border-primary/30 transition-all group cursor-pointer block">
 
                     <!-- Product Image -->
                     <div class="relative aspect-square bg-gray-100 overflow-hidden">
-                        <img :src="product.image" :alt="product.name"
+                        <img :src="useImageOrDefault(product.image_url)" :alt="product.name"
                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
 
                         <!-- Sale Badge -->
-                        <div v-if="product.salePrice" class="absolute top-3 left-3">
+                        <div v-if="product.sale_price" class="absolute top-3 left-3">
                             <span class="px-2.5 py-1 bg-red-500 text-white text-xs font-bold rounded-full">
                                 SALE
                             </span>
@@ -109,43 +117,31 @@
 
                     <!-- Product Info -->
                     <div class="p-4">
-                        <!-- Seller -->
-                        <div class="flex items-center gap-2 mb-2">
-                            <div class="w-5 h-5 rounded-full bg-navy flex items-center justify-center">
-                                <Icon icon="ph:storefront" class="text-white text-xs" />
-                            </div>
-                            <span class="text-xs text-gray-400 truncate">{{ product.seller }}</span>
-                        </div>
-
                         <!-- Name -->
                         <h3
                             class="font-bold text-navy text-sm line-clamp-2 mb-2 group-hover:text-primary transition-colors">
                             {{ product.name }}
                         </h3>
 
+                        {{ useImageOrDefault(product.image_url) }}
+
                         <!-- Price -->
                         <div class="flex items-end gap-2">
                             <span class="text-lg font-black text-navy">
-                                Rp {{ formatPrice(product.salePrice || product.price) }}
+                                Rp {{ formatPrice(product.sale_price || product.price) }}
                             </span>
-                            <span v-if="product.salePrice" class="text-sm text-gray-400 line-through">
+                            <span v-if="product.sale_price" class="text-sm text-gray-400 line-through">
                                 Rp {{ formatPrice(product.price) }}
                             </span>
                         </div>
 
-                        <!-- Sold -->
+                        <!-- Stock -->
                         <div class="flex items-center gap-3 mt-3 text-xs text-gray-400">
-                            <span>{{ product.sold }} terjual</span>
+                            <span v-if="product.stock > 0">Stok: {{ product.stock }}</span>
+                            <span v-else class="text-red-500">Stok Habis</span>
                         </div>
                     </div>
                 </NuxtLink>
-            </div>
-
-            <!-- Load More -->
-            <div class="text-center mt-12">
-                <BaseButton variant="outline" size="lg" icon="ph:arrow-down">
-                    Muat Lebih Banyak
-                </BaseButton>
             </div>
         </section>
 
@@ -169,128 +165,70 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { useApi } from '~/composables/useApi'
+import { useToast } from '~/composables/useToast'
 
 definePageMeta({
     layout: 'landing'
 })
 
+const { get } = useApi()
+const toast = useToast()
+
 const searchQuery = ref('')
 const categoryFilter = ref('all')
 const sortBy = ref('newest')
+const isLoading = ref(true)
+const products = ref([])
 
 const categories = [
     { label: 'Semua', value: 'all', icon: 'ph:squares-four' },
-    { label: 'Busur', value: 'equipment', icon: 'ph:target' },
-    { label: 'Anak Panah', value: 'arrows', icon: 'ph:arrow-up-right' },
+    { label: 'Peralatan', value: 'equipment', icon: 'ph:target' },
     { label: 'Pakaian', value: 'apparel', icon: 'ph:t-shirt' },
     { label: 'Aksesoris', value: 'accessories', icon: 'ph:bag' },
     { label: 'Training', value: 'training', icon: 'ph:graduation-cap' },
+    { label: 'Lainnya', value: 'other', icon: 'ph:package' },
 ]
 
-const products = ref([
-    {
-        slug: 'recurve-bow-hoyt-satori-23',
-        name: 'Recurve Bow Hoyt Satori 23"',
-        seller: 'Garuda Archery Club',
-        price: 15500000,
-        salePrice: 13500000,
-        image: 'https://images.unsplash.com/photo-1564769625905-50e93615e769?w=400',
-        category: 'equipment',
-        rating: 4.9,
-        sold: 23
-    },
-    {
-        slug: 'carbon-arrow-easton-x10-12pcs',
-        name: 'Carbon Arrow Easton X10 (12pcs)',
-        seller: 'Elang Jawa AC',
-        price: 4800000,
-        salePrice: null,
-        image: 'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=400',
-        category: 'arrows',
-        rating: 4.8,
-        sold: 56
-    },
-    {
-        slug: 'arm-guard-premium-leather',
-        name: 'Arm Guard Premium Leather',
-        seller: 'Srikandi Shop',
-        price: 350000,
-        salePrice: 280000,
-        image: 'https://images.unsplash.com/photo-1510925758641-869d353cecc7?w=400',
-        category: 'accessories',
-        rating: 4.7,
-        sold: 128
-    },
-    {
-        slug: 'compound-bow-bear-archery-cruzer',
-        name: 'Compound Bow Bear Archery Cruzer',
-        seller: 'Phoenix Archer',
-        price: 8900000,
-        salePrice: null,
-        image: 'https://images.unsplash.com/photo-1547347298-4074fc3086f0?w=400',
-        category: 'equipment',
-        rating: 4.9,
-        sold: 15
-    },
-    {
-        slug: 'jersey-tim-nasional-indonesia-2024',
-        name: 'Jersey Tim Nasional Indonesia 2024',
-        seller: 'Perpani Store',
-        price: 450000,
-        salePrice: null,
-        image: 'https://images.unsplash.com/photo-1565992441121-4367c2967103?w=400',
-        category: 'apparel',
-        rating: 4.6,
-        sold: 89
-    },
-    {
-        slug: 'target-face-wa-40cm-10pcs',
-        name: 'Target Face WA 40cm (10pcs)',
-        seller: 'Garuda Archery Club',
-        price: 150000,
-        salePrice: null,
-        image: 'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=400',
-        category: 'training',
-        rating: 4.5,
-        sold: 234
-    },
-    {
-        slug: 'finger-tab-easton-contour',
-        name: 'Finger Tab Easton Contour',
-        seller: 'Elang Jawa AC',
-        price: 680000,
-        salePrice: 580000,
-        image: 'https://images.unsplash.com/photo-1510925758641-869d353cecc7?w=400',
-        category: 'accessories',
-        rating: 4.8,
-        sold: 67
-    },
-    {
-        slug: 'quiver-belt-premium',
-        name: 'Quiver Belt Premium',
-        seller: 'Srikandi Shop',
-        price: 420000,
-        salePrice: null,
-        image: 'https://images.unsplash.com/photo-1547347298-4074fc3086f0?w=400',
-        category: 'accessories',
-        rating: 4.7,
-        sold: 45
+const fetchProducts = async () => {
+    isLoading.value = true
+    try {
+        const response = await get('/products')
+        products.value = response.data || []
+    } catch (error) {
+        console.error('Failed to fetch products:', error)
+        toast.error('Gagal memuat produk')
+        products.value = []
+    } finally {
+        isLoading.value = false
     }
-])
+}
 
 const filteredProducts = computed(() => {
-    return products.value.filter(p => {
-        const matchesSearch = p.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-            p.seller.toLowerCase().includes(searchQuery.value.toLowerCase())
+    let filtered = products.value.filter(p => {
+        const matchesSearch = p.name?.toLowerCase().includes(searchQuery.value.toLowerCase()) || false
         const matchesCategory = categoryFilter.value === 'all' || p.category === categoryFilter.value
         return matchesSearch && matchesCategory
     })
+
+    // Sort
+    if (sortBy.value === 'price-low') {
+        filtered.sort((a, b) => (a.sale_price || a.price) - (b.sale_price || b.price))
+    } else if (sortBy.value === 'price-high') {
+        filtered.sort((a, b) => (b.sale_price || b.price) - (a.sale_price || a.price))
+    } else if (sortBy.value === 'popular') {
+        filtered.sort((a, b) => (b.views || 0) - (a.views || 0))
+    }
+
+    return filtered
 })
 
 const formatPrice = (price) => {
     return new Intl.NumberFormat('id-ID').format(price)
 }
+
+onMounted(fetchProducts)
 </script>
 
 <style scoped>

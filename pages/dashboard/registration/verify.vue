@@ -97,7 +97,7 @@
 
             <!-- Image -->
             <div class="flex-1 flex items-center justify-center p-8 bg-[#151515]">
-              <img src="https://via.placeholder.com/600x800/1a1a1a/333?text=Payment+Receipt" alt="Payment receipt"
+              <img :src="useImageOrDefault()" alt="Payment receipt"
                 class="max-w-full max-h-full object-contain shadow-2xl rounded-sm" />
             </div>
 

@@ -39,7 +39,6 @@ export default defineNuxtConfig({
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'description', content: 'Modern archery tournament management system for organizing competitions, managing athletes, and live scoring.' },
-        { name: 'theme-color', content: '#D9FF00' },
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
