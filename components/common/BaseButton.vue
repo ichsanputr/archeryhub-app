@@ -3,7 +3,7 @@
     <NuxtLink v-if="to" :to="to" :disabled="disabled || loading"
         class="inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]"
         :class="[sizeClass, variantClass, (fullWidth || block) ? 'w-full' : '']" @click="$emit('click', $event)">
-        <CommonLoadingSpinner v-if="loading" size="sm" />
+        <LoadingSpinner v-if="loading" size="sm" />
         <template v-else>
             <Icon v-if="icon && isIconify(icon)" :icon="icon" :class="iconSizeClass" />
             <span v-else-if="icon" class="material-symbols-outlined shrink-0" :class="iconSizeClass">{{ icon }}</span>
@@ -12,14 +12,14 @@
             <span v-else-if="iconRight" class="material-symbols-outlined shrink-0" :class="iconSizeClass">{{ iconRight
             }}</span>
         </template>
-        <span v-if="loading && loadingText" class="ml-2">{{ loadingText }}</span>
+        <span v-if="!loading && loadingText" class="ml-2">{{ loadingText }}</span>
     </NuxtLink>
 
     <!-- Use regular button otherwise -->
     <button v-else :type="type" :disabled="disabled || loading"
         class="inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]"
         :class="[sizeClass, variantClass, (fullWidth || block) ? 'w-full' : '']" @click="$emit('click', $event)">
-        <CommonLoadingSpinner v-if="loading" size="sm" />
+        <LoadingSpinner v-if="loading" size="sm" />
         <template v-else>
             <Icon v-if="icon && isIconify(icon)" :icon="icon" :class="iconSizeClass" />
             <span v-else-if="icon" class="material-symbols-outlined shrink-0" :class="iconSizeClass">{{ icon }}</span>
@@ -28,12 +28,13 @@
             <span v-else-if="iconRight" class="material-symbols-outlined shrink-0" :class="iconSizeClass">{{ iconRight
             }}</span>
         </template>
-        <span v-if="loading && loadingText" class="ml-2">{{ loadingText }}</span>
+        <span v-if="!loading && loadingText" class="ml-2">{{ loadingText }}</span>
     </button>
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import { computed } from 'vue'
 
 const props = defineProps({
     variant: {

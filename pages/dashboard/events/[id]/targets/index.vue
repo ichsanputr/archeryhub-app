@@ -269,18 +269,49 @@
                 <div v-if="editingTarget">
                     <label class="block text-sm font-bold text-gray-700 mb-3">Archer yang Terdaftar</label>
                     <div class="space-y-2">
-                        <div v-for="pos in ['A', 'B', 'C', 'D']" :key="pos" class="flex items-center gap-3 p-3 rounded-xl bg-gray-50 border border-gray-200">
-                            <span class="flex items-center justify-center size-8 rounded-lg bg-white border border-gray-100 text-xs font-black text-gray-400">{{ pos }}</span>
-                            <div v-if="getArcher(editingTarget, pos)" class="flex-1">
-                                <p class="text-sm font-bold text-navy">{{ getArcher(editingTarget, pos).name }}</p>
-                                <p class="text-xs text-gray-500">{{ getArcher(editingTarget, pos).division }}</p>
+                        <div v-for="pos in ['A', 'B', 'C', 'D']" :key="pos" class="flex items-center gap-3 p-3 rounded-xl bg-gray-50 border border-gray-200 transition-all"
+                            :class="editingPosition === pos ? 'border-primary ring-2 ring-primary/20' : ''">
+                            <span class="flex items-center justify-center size-8 rounded-lg bg-white border border-gray-100 text-xs font-black text-gray-400 flex-shrink-0">{{ pos }}</span>
+                            
+                            <!-- Show archer info if assigned -->
+                            <div v-if="getArcher(editingTarget, pos) && editingPosition !== pos" class="flex-1 min-w-0">
+                                <p class="text-sm font-bold text-navy truncate">{{ getArcher(editingTarget, pos).name }}</p>
+                                <p class="text-xs text-gray-500 truncate">{{ getArcher(editingTarget, pos).division }}</p>
                             </div>
+                            
+                            <!-- Show inline dropdown when adding -->
+                            <div v-else-if="editingPosition === pos" class="flex-1">
+                                <select v-model="selectedParticipantForEdit" 
+                                    @change="handleInlineAssignArcher(editingTarget, pos)"
+                                    class="w-full px-3 py-2 rounded-lg border border-primary focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm bg-white">
+                                    <option value="">Pilih Archer...</option>
+                                    <option v-for="participant in availableParticipants" :key="participant.id" :value="participant.id">
+                                        {{ participant.full_name }} - {{ participant.division_name }}
+                                    </option>
+                                </select>
+                                <button @click="editingPosition = null" class="mt-1 text-xs text-gray-500 hover:text-gray-700">
+                                    Batal
+                                </button>
+                            </div>
+                            
+                            <!-- Show empty slot -->
                             <div v-else class="flex-1 text-sm text-gray-400">Slot kosong</div>
-                            <div class="flex gap-2">
-                                <BaseButton v-if="getArcher(editingTarget, pos)" variant="white" size="sm" icon="ph:x" @click="handleRemoveArcher(editingTarget, pos)">
+                            
+                            <!-- Action buttons -->
+                            <div class="flex gap-2 flex-shrink-0">
+                                <BaseButton v-if="getArcher(editingTarget, pos) && editingPosition !== pos" 
+                                    variant="white" 
+                                    size="sm" 
+                                    icon="ph:x" 
+                                    @click="handleRemoveArcher(editingTarget, pos)" 
+                                    :loading="isRemovingArcher">
                                     Hapus
                                 </BaseButton>
-                                <BaseButton v-else variant="white" size="sm" icon="ph:plus" @click="openAssignDialog(editingTarget, pos)">
+                                <BaseButton v-else-if="editingPosition !== pos" 
+                                    variant="white" 
+                                    size="sm" 
+                                    icon="ph:plus" 
+                                    @click="startInlineAdd(editingTarget, pos)">
                                     Tambah
                                 </BaseButton>
                             </div>
@@ -323,6 +354,7 @@ const assigningPosition = ref('')
 const selectedParticipant = ref('')
 const isAssigning = ref(false)
 const isCreating = ref(false)
+const isRemovingArcher = ref(false)
 const newTargetName = ref('')
 
 const fetchEventDetails = async () => {
@@ -510,12 +542,73 @@ const showEditDialog = ref(false)
 const editingTarget = ref(null)
 const editingTargetName = ref('')
 const isUpdatingTargetName = ref(false)
+const editingPosition = ref(null)
+const selectedParticipantForEdit = ref('')
 
 const openEditDialog = (target) => {
     editingTarget.value = target
     editingTargetName.value = target.target_name || `Target ${target.target_number}`
+    editingPosition.value = null
+    selectedParticipantForEdit.value = ''
     showEditDialog.value = true
     fetchAvailableParticipants()
+}
+
+const startInlineAdd = (target, position) => {
+    editingPosition.value = position
+    selectedParticipantForEdit.value = ''
+    // Ensure participants are loaded
+    if (availableParticipants.value.length === 0) {
+        fetchAvailableParticipants()
+    }
+}
+
+const handleInlineAssignArcher = async (target, position) => {
+    if (!selectedParticipantForEdit.value) {
+        editingPosition.value = null
+        return
+    }
+
+    isAssigning.value = true
+    try {
+        const targetName = targetNames.value.find(t => t.id === selectedTargetName.value)
+        if (!targetName) {
+            toast.error('Target name tidak ditemukan')
+            return
+        }
+
+        const payload = {
+            session_id: targetName.session_id,
+            participant_id: selectedParticipantForEdit.value,
+            target_number: target.target_number,
+            target_position: position
+        }
+
+        await put('/targets/assignments', payload)
+        toast.success('Archer berhasil diassign')
+        
+        // Reset inline editing state
+        editingPosition.value = null
+        selectedParticipantForEdit.value = ''
+        
+        // Reload targets and update editing target
+        await loadTargets()
+        
+        // Re-select the editing target after reload
+        if (editingTarget.value) {
+            const updatedTarget = targets.value.find(t => t.target_number === editingTarget.value.target_number)
+            if (updatedTarget) {
+                editingTarget.value = updatedTarget
+            }
+        }
+    } catch (error) {
+        console.error('Failed to assign archer:', error)
+        toast.error(error.response?.data?.error || 'Gagal mengassign archer')
+        editingPosition.value = null
+        selectedParticipantForEdit.value = ''
+    } finally {
+        isAssigning.value = false
+    }
 }
 
 const handleAssignArcher = async () => {
@@ -659,16 +752,45 @@ const handleMoveArcher = async (fromTarget, fromPosition, toTarget, toPosition) 
 }
 
 const handleRemoveArcher = async (target, position) => {
-    try {
-        const archer = target.archers[position]
-        if (!archer || !archer.id) return
+    const archer = target.archers?.[position]
+    if (!archer || !archer.id) {
+        toast.error('Archer tidak ditemukan')
+        return
+    }
 
+    isRemovingArcher.value = true
+    try {
         await del(`/targets/assignments/${archer.id}`)
         toast.success('Archer berhasil dihapus')
-        loadTargets()
+        
+        // Immediately remove from local state for instant UI update
+        if (target.archers && target.archers[position]) {
+            delete target.archers[position]
+            
+            // Update status based on remaining archers
+            const archersCount = Object.keys(target.archers).length
+            if (archersCount === 0) {
+                target.status = 'empty'
+            } else if (archersCount < 4) {
+                target.status = 'partial'
+            }
+        }
+        
+        // Reload from API to ensure consistency
+        await loadTargets()
+        
+        // Re-select the editing target after reload to update the dialog
+        if (editingTarget.value) {
+            const updatedTarget = targets.value.find(t => t.target_number === editingTarget.value.target_number)
+            if (updatedTarget) {
+                editingTarget.value = updatedTarget
+            }
+        }
     } catch (error) {
         console.error('Failed to remove archer:', error)
-        toast.error('Gagal menghapus archer')
+        toast.error(error.response?.data?.error || 'Gagal menghapus archer')
+    } finally {
+        isRemovingArcher.value = false
     }
 }
 

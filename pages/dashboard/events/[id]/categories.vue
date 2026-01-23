@@ -32,9 +32,6 @@
                     
                     <!-- Action Buttons -->
                     <div class="flex gap-3 flex-shrink-0">
-                        <BaseButton variant="white" icon="ph:arrows-clockwise" class="h-11 px-5" @click="fetchCategories">
-                            Muat Ulang
-                        </BaseButton>
                         <BaseButton 
                             variant="primary" 
                             icon="ph:plus-bold" 
@@ -109,8 +106,9 @@
                     <div class="flex items-start justify-between gap-4">
                         <div class="flex-1">
                             <div class="flex items-center gap-3 mb-2">
-                                <h3 class="text-lg font-bold text-navy">{{ category.division_name }} - {{
-                                    category.category_name }}</h3>
+                                <h3 class="text-lg font-bold text-navy">
+                                    {{ category.division_name }} - {{ category.category_name }} - {{ category.event_type_name }} - {{ category.gender_division_name }}
+                                </h3>
                                 <span
                                     :class="category.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'"
                                     class="px-2.5 py-0.5 rounded-full text-xs font-bold">
@@ -132,10 +130,6 @@
                         <div class="flex items-center gap-2">
                             <BaseButton variant="white" size="sm" icon="ph:pencil" @click="openEditDialog(category)">
                                 Edit
-                            </BaseButton>
-                            <BaseButton variant="white" size="sm" icon="ph:trash" @click="confirmDelete(category)"
-                                class="text-red-500 hover:text-red-600">
-                                Hapus
                             </BaseButton>
                         </div>
                     </div>
@@ -223,7 +217,7 @@ definePageMeta({
 
 const route = useRoute()
 const eventId = route.params.id
-const { get, post, put, del } = useApi()
+const { get, post, put } = useApi()
 const toast = useToast()
 
 const isLoading = ref(true)
@@ -348,21 +342,6 @@ const saveCategory = async () => {
         toast.error('Gagal menyimpan kategori')
     } finally {
         saving.value = false
-    }
-}
-
-const confirmDelete = async (category) => {
-    if (!confirm(`Apakah Anda yakin ingin menghapus kategori "${category.division_name} - ${category.category_name}"?`)) {
-        return
-    }
-
-    try {
-        await del(`/events/${eventId}/categories/${category.id}`)
-        toast.success('Kategori berhasil dihapus')
-        await fetchCategories()
-    } catch (error) {
-        console.error('Failed to delete category:', error)
-        toast.error('Gagal menghapus kategori')
     }
 }
 

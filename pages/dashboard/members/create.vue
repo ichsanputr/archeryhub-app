@@ -19,7 +19,7 @@
           :disabled="isSubmitting"
           @click="submit">
           <Icon v-if="!isSubmitting" icon="ph:floppy-disk" class="text-lg" />
-          <CommonLoadingSpinner v-else size="sm" />
+          <LoadingSpinner v-else size="sm" />
           <span>{{ isSubmitting ? 'Menyimpan...' : 'Simpan Anggota' }}</span>
         </button>
       </div>
