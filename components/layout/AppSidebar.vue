@@ -212,11 +212,6 @@ const isActive = (path) => {
   if (path === '/dashboard') {
     return route.path === '/dashboard' || route.path === '/dashboard/'
   }
-  // For event manage pages, check if path matches exactly or is the base manage page
-  if (path.includes('/manage') && !path.includes('/manage/')) {
-    // If it's the base manage page, check if current path is exactly that or starts with manage/
-    return route.path === path || route.path.startsWith(path + '/')
-  }
   return route.path.startsWith(path)
 }
 

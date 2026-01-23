@@ -3,14 +3,6 @@
         <!-- Header -->
         <div class="flex flex-wrap items-center justify-between gap-6 pb-6 border-b border-gray-100">
             <div>
-                <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
-                    <NuxtLink to="/dashboard/events" class="hover:text-primary transition-colors">Events</NuxtLink>
-                    <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <NuxtLink :to="`/dashboard/events/${route.params.id}/overview`"
-                        class="hover:text-primary transition-colors">Control Panel</NuxtLink>
-                    <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <span class="text-navy">Peserta</span>
-                </div>
                 <h1 class="text-3xl font-extrabold text-navy tracking-tight">Daftar Peserta Event</h1>
                 <p class="text-gray-500 font-medium mt-1">Lihat dan kelola semua peserta yang terdaftar dalam event ini.
                 </p>

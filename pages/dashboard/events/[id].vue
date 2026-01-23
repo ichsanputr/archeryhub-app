@@ -14,10 +14,6 @@
 const route = useRoute()
 const tId = route.params.id || '1'
 
-const isManagePage = computed(() => {
-    return route.path.endsWith('/manage')
-})
-
 const tabs = [
     { id: 'overview', name: 'Ringkasan', path: `/dashboard/events/${tId}` },
     { id: 'timeline', name: 'Jadwal Pertandingan', path: `/dashboard/events/${tId}/timeline` },
