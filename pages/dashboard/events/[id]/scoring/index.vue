@@ -16,7 +16,7 @@
                     <div class="flex items-start gap-4">
                         <!-- Icon Badge -->
                         <div class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
-                            <Icon icon="ph:scoreboard" class="text-primary text-2xl" />
+                            <Icon icon="ic:outline-scoreboard" class="text-primary text-2xl" />
                         </div>
                         
                         <!-- Title Section -->

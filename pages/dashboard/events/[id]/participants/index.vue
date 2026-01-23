@@ -147,8 +147,6 @@
                                     <div>
                                         <p class="font-black text-navy tracking-tight">{{ participant.full_name }}</p>
                                         <p class="text-xs text-gray-500 font-medium">{{ participant.email || '-' }}</p>
-                                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-0.5">
-                                            {{ participant.athlete_code || '-' }}</p>
                                     </div>
                                 </div>
                             </td>
@@ -170,7 +168,7 @@
                                         <Icon icon="ph:eye" />
                                     </NuxtLink>
                                     <NuxtLink :to="`/dashboard/events/${route.params.id}/participants/${participant.id}/edit`" 
-                                        class="p-2 text-primary/40 hover:text-primary transition-colors">
+                                        class="p-2 text-navy/40 hover:text-navy transition-colors">
                                         <Icon icon="ph:pencil-simple" />
                                     </NuxtLink>
                                 </div>
