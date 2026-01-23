@@ -106,7 +106,7 @@
                         class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
                     <input v-model="searchQuery"
                         class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-100 rounded-xl text-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none"
-                        placeholder="Cari nama, klub, atau kategori..." type="text">
+                        placeholder="Cari nama, email, klub, atau kategori..." type="text">
                 </div>
                 <div class="flex items-center gap-2 overflow-x-auto no-scrollbar">
                     <button v-for="div in filterDivs" :key="div" @click="activeDiv = div"
@@ -127,9 +127,8 @@
                             <th class="px-6 py-4">No</th>
                             <th class="px-6 py-4">Nama Peserta</th>
                             <th class="px-6 py-4">Klub</th>
-                            <th class="px-6 py-4">Divisi / Kategori</th>
-                            <th class="px-6 py-4">Target</th>
-                            <th class="px-6 py-4">Status</th>
+                            <th class="px-6 py-4">Kategori Lomba</th>
+                            <th class="px-6 py-4">Status Pembayaran</th>
                             <th class="px-6 py-4 text-right">Aksi</th>
                         </tr>
                     </thead>
@@ -147,40 +146,31 @@
                                     </div>
                                     <div>
                                         <p class="font-black text-navy tracking-tight">{{ participant.full_name }}</p>
-                                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
+                                        <p class="text-xs text-gray-500 font-medium">{{ participant.email || '-' }}</p>
+                                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider mt-0.5">
                                             {{ participant.athlete_code || '-' }}</p>
                                     </div>
                                 </div>
                             </td>
                             <td class="px-6 py-4 text-gray-500 font-medium">{{ participant.club_name || '-' }}</td>
                             <td class="px-6 py-4">
-                                <p class="text-navy font-bold text-xs">{{ participant.division_name || '-' }}</p>
-                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{{
-                                    participant.category_name || '-' }}</p>
-                            </td>
-                            <td class="px-6 py-4">
-                                <span v-if="participant.target_number"
-                                    class="inline-flex items-center justify-center px-2 py-1 bg-navy text-primary rounded font-black text-xs shadow-sm">
-                                    {{ String(participant.target_number).padStart(2, '0') }}{{ participant.back_number
-                                    || '' }}
-                                </span>
-                                <span v-else class="text-[10px] text-gray-300 font-black uppercase italic">TBD</span>
+                                <p class="text-navy font-bold text-sm">{{ getCategoryName(participant) }}</p>
                             </td>
                             <td class="px-6 py-4">
                                 <span
-                                    :class="participant.payment_status === 'paid' ? 'bg-green-50 text-green-600 border-green-100' : 'bg-red-50 text-red-600 border-red-100'"
+                                    :class="getPaymentStatusClass(participant.payment_status)"
                                     class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest border">
-                                    {{ participant.payment_status === 'paid' ? 'Lunas' : 'Belum Lunas' }}
+                                    {{ getPaymentStatusText(participant.payment_status) }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-right">
                                 <div class="flex items-center justify-end gap-2">
                                     <NuxtLink :to="`/dashboard/events/${route.params.id}/participants/${participant.id}`" 
-                                        class="p-2 text-gray-300 hover:text-navy transition-colors">
+                                        class="p-2 text-navy/40 hover:text-navy transition-colors">
                                         <Icon icon="ph:eye" />
                                     </NuxtLink>
                                     <NuxtLink :to="`/dashboard/events/${route.params.id}/participants/${participant.id}/edit`" 
-                                        class="p-2 text-gray-300 hover:text-primary transition-colors">
+                                        class="p-2 text-primary/40 hover:text-primary transition-colors">
                                         <Icon icon="ph:pencil-simple" />
                                     </NuxtLink>
                                 </div>
@@ -250,9 +240,11 @@ const filteredParticipants = computed(() => {
         const q = searchQuery.value.toLowerCase()
         filtered = filtered.filter(p =>
             p.full_name?.toLowerCase().includes(q) ||
+            p.email?.toLowerCase().includes(q) ||
             p.club_name?.toLowerCase().includes(q) ||
             p.division_name?.toLowerCase().includes(q) ||
             p.category_name?.toLowerCase().includes(q) ||
+            getCategoryName(p).toLowerCase().includes(q) ||
             p.athlete_code?.toLowerCase().includes(q)
         )
     }
@@ -266,17 +258,55 @@ const filteredParticipants = computed(() => {
 })
 
 const verifiedCount = computed(() => {
-    return participants.value.filter(p => p.payment_status === 'paid').length
+    return participants.value.filter(p => p.payment_status === 'lunas').length
 })
 
 const pendingCount = computed(() => {
-    return participants.value.filter(p => p.payment_status !== 'paid').length
+    return participants.value.filter(p => p.payment_status === 'menunggu_acc' || p.payment_status === 'belum_lunas').length
 })
+
+const getPaymentStatusClass = (status) => {
+    switch(status) {
+        case 'lunas':
+            return 'bg-green-50 text-green-600 border-green-100'
+        case 'belum_lunas':
+            return 'bg-yellow-50 text-yellow-600 border-yellow-100'
+        case 'menunggu_acc':
+            return 'bg-blue-50 text-blue-600 border-blue-100'
+        default:
+            return 'bg-gray-50 text-gray-600 border-gray-100'
+    }
+}
+
+const getPaymentStatusText = (status) => {
+    switch(status) {
+        case 'lunas':
+            return 'Lunas'
+        case 'belum_lunas':
+            return 'Belum Lunas'
+        case 'menunggu_acc':
+            return 'Menunggu ACC'
+        default:
+            return status || '-'
+    }
+}
 
 const uniqueClubs = computed(() => {
     const clubs = new Set(participants.value.map(p => p.club_name).filter(Boolean))
     return clubs.size
 })
+
+const getCategoryName = (participant) => {
+    if (!participant) return '-'
+    
+    const parts = []
+    if (participant.division_name) parts.push(participant.division_name)
+    if (participant.category_name) parts.push(participant.category_name)
+    if (participant.event_type_name) parts.push(participant.event_type_name)
+    if (participant.gender_division_name) parts.push(participant.gender_division_name)
+    
+    return parts.length > 0 ? parts.join(' - ') : '-'
+}
 
 onMounted(() => {
     fetchEventDetails()

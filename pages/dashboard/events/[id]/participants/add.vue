@@ -47,10 +47,26 @@
 
                         <!-- Existing Archer Selection -->
                         <div v-if="archerMode === 'existing'" class="space-y-4">
-                            <BaseInput v-model="searchArcherQuery" icon="ph:magnifying-glass" 
-                                placeholder="Cari nama atau kode pemanah..." label="Cari Pemanah" />
-                            <div v-if="searchArcherQuery" class="max-h-64 overflow-y-auto border border-gray-100 rounded-xl">
-                                <button v-for="archer in filteredArchers" :key="archer.id"
+                            <BaseInput
+                                v-model="searchArcherQuery"
+                                icon="ph:magnifying-glass"
+                                placeholder="Cari nama lengkap atau email pemanah..."
+                                label="Cari Pemanah"
+                            />
+                            <p v-if="searchArcherQuery && searchArcherQuery.length < 2" class="text-xs text-gray-400">
+                                Ketik minimal 2 karakter untuk mulai mencari.
+                            </p>
+                            <div v-if="isSearchingArchers" class="flex items-center gap-2 text-xs text-gray-400">
+                                <span class="inline-block h-3 w-3 border-2 border-primary border-t-transparent rounded-full animate-spin"></span>
+                                Mencari pemanah...
+                            </div>
+                            <div
+                                v-if="searchArcherQuery && searchArcherQuery.length >= 2"
+                                class="max-h-64 overflow-y-auto border border-gray-100 rounded-xl"
+                            >
+                                <button
+                                    v-for="archer in filteredArchers"
+                                    :key="archer.id || archer.uuid"
                                     @click="selectArcher(archer)"
                                     :class="selectedArcher?.id === archer.id ? 'bg-primary/10 border-primary' : 'hover:bg-gray-50'"
                                     class="w-full p-4 text-left border-b border-gray-100 last:border-b-0 transition-colors">
@@ -60,7 +76,7 @@
                                         </div>
                                         <div class="flex-1">
                                             <p class="font-bold text-navy">{{ archer.full_name }}</p>
-                                            <p class="text-xs text-gray-400">{{ archer.athlete_code || '-' }} • {{ archer.club_name || 'Tidak ada klub' }}</p>
+                                            <p class="text-xs text-gray-400">{{ archer.club_name || '-' }}</p>
                                         </div>
                                         <Icon v-if="selectedArcher?.id === archer.id" icon="ph:check-circle" class="text-primary text-xl" />
                                     </div>
@@ -74,17 +90,72 @@
                         <!-- New Archer Form -->
                         <div v-if="archerMode === 'new'" class="space-y-4 border border-gray-100 rounded-xl p-4 bg-gray-50/50">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <BaseInput v-model="newArcherForm.full_name" label="Nama Lengkap" placeholder="Nama sesuai identitas" required />
-                                <BaseInput v-model="newArcherForm.athlete_code" label="Kode Atlet" placeholder="ARC-2025-001" />
-                                <BaseInput v-model="newArcherForm.email" label="Email" type="email" placeholder="email@example.com" />
-                                <BaseInput v-model="newArcherForm.phone" label="No. Telepon" type="tel" placeholder="08xxxxxxxxxx" />
-                                <BaseInput v-model="newArcherForm.date_of_birth" label="Tanggal Lahir" type="date" />
-                                <BaseSelect v-model="newArcherForm.gender" label="Jenis Kelamin" :items="genderOptions" />
-                                <BaseSelect v-model="newArcherForm.bow_type" label="Jenis Busur" :items="bowOptions" />
-                                <BaseInput v-model="newArcherForm.country" label="Negara" placeholder="Indonesia" />
+                                <BaseInput
+                                    v-model="newArcherForm.full_name"
+                                    label="Nama Lengkap"
+                                    placeholder="Nama sesuai identitas"
+                                    required
+                                />
+                                <BaseInput
+                                    v-model="newArcherForm.athlete_code"
+                                    label="Kode Atlet"
+                                    placeholder="ARC-2025-001"
+                                />
+                                <BaseInput
+                                    v-model="newArcherForm.email"
+                                    label="Email"
+                                    type="email"
+                                    placeholder="email@example.com"
+                                    required
+                                />
+                                <BaseInput
+                                    v-model="newArcherForm.password"
+                                    label="Password"
+                                    type="password"
+                                    placeholder="Minimal 6 karakter"
+                                    required
+                                />
+                                <BaseInput
+                                    v-model="newArcherForm.phone"
+                                    label="No. Telepon"
+                                    type="tel"
+                                    placeholder="08xxxxxxxxxx"
+                                />
+                                <BaseInput
+                                    v-model="newArcherForm.date_of_birth"
+                                    label="Tanggal Lahir"
+                                    type="date"
+                                />
+                                <BaseSelect
+                                    v-model="newArcherForm.gender"
+                                    label="Jenis Kelamin"
+                                    :items="genderOptions"
+                                />
+                                <BaseSelect
+                                    v-model="newArcherForm.bow_type"
+                                    label="Jenis Busur"
+                                    :items="bowOptions"
+                                />
+                                <BaseInput
+                                    v-model="newArcherForm.country"
+                                    label="Negara"
+                                    placeholder="Indonesia"
+                                />
                             </div>
-                            <BaseInput v-model="newArcherForm.club" label="Klub" placeholder="Nama klub" />
-                            <BaseTextarea v-model="newArcherForm.address" label="Alamat" placeholder="Alamat lengkap" :rows="2" />
+                            <BaseSelect
+                                v-model="newArcherForm.club_id"
+                                label="Klub"
+                                :items="clubOptions"
+                            />
+                            <BaseTextarea
+                                v-model="newArcherForm.address"
+                                label="Alamat"
+                                placeholder="Alamat lengkap"
+                                :rows="2"
+                            />
+                            <p class="text-xs text-gray-400">
+                                Field bertanda * wajib diisi untuk membuat pemanah baru.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -106,10 +177,9 @@
                     <h3 class="text-lg font-black text-navy mb-4">Informasi Tambahan</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <BaseInput v-model="form.back_number" label="Nomor Punggung" placeholder="Opsional" type="number" />
-                        <BaseInput v-model="form.target_number" label="Nomor Target" placeholder="Akan diassign otomatis" type="number" />
                         <BaseSelect v-model="form.payment_status" label="Status Pembayaran" :items="paymentStatusOptions" />
-                        <BaseInput v-model="form.payment_amount" label="Jumlah Pembayaran" placeholder="0" type="number" />
                     </div>
+                    <BaseInput v-model="form.payment_amount" label="Jumlah Pembayaran" placeholder="0" type="number" class="mt-4" />
                     <BaseTextarea v-model="form.notes" label="Catatan" placeholder="Catatan tambahan (opsional)" :rows="3" class="mt-4" />
                 </div>
             </div>
@@ -161,7 +231,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useEventContext } from '~/composables/useEventContext'
@@ -183,6 +253,7 @@ const { setEvent, clearEvent } = useEventContext()
 const event = ref(null)
 const archers = ref([])
 const categories = ref([])
+const clubs = ref([])
 const archerMode = ref('existing')
 const searchArcherQuery = ref('')
 const selectedArcher = ref(null)
@@ -201,12 +272,13 @@ const newArcherForm = reactive({
     full_name: '',
     athlete_code: '',
     email: '',
+    password: '',
     phone: '',
     date_of_birth: '',
     gender: '',
     bow_type: '',
     country: '',
-    club: '',
+    club_id: '',
     address: ''
 })
 
@@ -225,19 +297,16 @@ const bowOptions = [
 ]
 
 const paymentStatusOptions = [
-    { title: 'Pending', value: 'pending' },
-    { title: 'Paid', value: 'paid' },
-    { title: 'Waived', value: 'waived' }
+    { title: 'Pilih Status', value: '' },
+    { title: 'Menunggu ACC', value: 'menunggu_acc' },
+    { title: 'Belum Lunas', value: 'belum_lunas' },
+    { title: 'Lunas', value: 'lunas' }
 ]
 
+const isSearchingArchers = ref(false)
+
 const filteredArchers = computed(() => {
-    if (!searchArcherQuery.value) return []
-    const q = searchArcherQuery.value.toLowerCase()
-    return archers.value.filter(a =>
-        a.full_name?.toLowerCase().includes(q) ||
-        a.athlete_code?.toLowerCase().includes(q) ||
-        a.club_name?.toLowerCase().includes(q)
-    ).slice(0, 10)
+    return archers.value || []
 })
 
 const categoryOptions = computed(() => {
@@ -254,6 +323,16 @@ const selectedCategory = computed(() => {
     return categories.value.find(c => (c.id || c.uuid) === form.category_id)
 })
 
+const clubOptions = computed(() => {
+    return [
+        { title: 'Pilih Klub', value: '' },
+        ...clubs.value.map(club => ({
+            title: club.name,
+            value: club.uuid
+        }))
+    ]
+})
+
 const fetchEventDetails = async () => {
     try {
         const eventRes = await get(`/events/${route.params.id}`)
@@ -266,12 +345,20 @@ const fetchEventDetails = async () => {
     }
 }
 
-const fetchArchers = async () => {
+const searchArchers = async (query) => {
+    if (!query || query.length < 2) {
+        archers.value = []
+        return
+    }
+
+    isSearchingArchers.value = true
     try {
-        const response = await get('/archers')
+        const response = await get(`/archers?search=${encodeURIComponent(query)}&limit=10`)
         archers.value = response?.archers || []
     } catch (error) {
-        console.error('Failed to fetch archers:', error)
+        console.error('Failed to search archers:', error)
+    } finally {
+        isSearchingArchers.value = false
     }
 }
 
@@ -281,6 +368,15 @@ const fetchCategories = async () => {
         categories.value = response?.events || response?.categories || []
     } catch (error) {
         console.error('Failed to fetch categories:', error)
+    }
+}
+
+const fetchClubs = async () => {
+    try {
+        const response = await get('/clubs?limit=100')
+        clubs.value = response?.data || []
+    } catch (error) {
+        console.error('Failed to fetch clubs:', error)
     }
 }
 
@@ -297,6 +393,35 @@ const formatDate = (dateStr) => {
     })
 }
 
+const validateNewArcherForm = () => {
+    if (!newArcherForm.full_name.trim()) {
+        toast.error('Nama lengkap pemanah wajib diisi')
+        return false
+    }
+    if (!newArcherForm.email.trim()) {
+        toast.error('Email pemanah wajib diisi')
+        return false
+    }
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailPattern.test(newArcherForm.email)) {
+        toast.error('Format email tidak valid')
+        return false
+    }
+    if (!newArcherForm.password || newArcherForm.password.trim().length < 6) {
+        toast.error('Password wajib diisi minimal 6 karakter')
+        return false
+    }
+    if (!newArcherForm.gender) {
+        toast.error('Pilih jenis kelamin pemanah')
+        return false
+    }
+    if (!newArcherForm.bow_type) {
+        toast.error('Pilih jenis busur pemanah')
+        return false
+    }
+    return true
+}
+
 const submit = async () => {
     if (!form.category_id) {
         toast.error('Pilih kategori event terlebih dahulu')
@@ -308,15 +433,14 @@ const submit = async () => {
         return
     }
 
-    if (archerMode.value === 'new' && !newArcherForm.full_name) {
-        toast.error('Nama lengkap wajib diisi')
+    if (archerMode.value === 'new' && !validateNewArcherForm()) {
         return
     }
 
     isSubmitting.value = true
 
     try {
-        let archerId = selectedArcher.value?.id
+        let archerId = selectedArcher.value?.id || selectedArcher.value?.uuid
 
         // Create new archer if needed
         if (archerMode.value === 'new') {
@@ -324,15 +448,16 @@ const submit = async () => {
                 full_name: newArcherForm.full_name,
                 athlete_code: newArcherForm.athlete_code || undefined,
                 email: newArcherForm.email || undefined,
+                password: newArcherForm.password || undefined,
                 phone: newArcherForm.phone || undefined,
                 date_of_birth: newArcherForm.date_of_birth || undefined,
                 gender: newArcherForm.gender || undefined,
                 bow_type: newArcherForm.bow_type || undefined,
                 country: newArcherForm.country || undefined,
-                club: newArcherForm.club || undefined,
+                club_id: newArcherForm.club_id || undefined,
                 address: newArcherForm.address || undefined
             })
-            archerId = archerResponse.id
+            archerId = archerResponse.archer_id || archerResponse.id || archerResponse.uuid
         }
 
         // Register participant
@@ -354,13 +479,39 @@ const submit = async () => {
     }
 }
 
+let searchTimeout
+
+watch(searchArcherQuery, (newVal) => {
+    if (!newVal) {
+        archers.value = []
+        return
+    }
+
+    if (newVal.length < 2) {
+        archers.value = []
+        return
+    }
+
+    if (searchTimeout) {
+        clearTimeout(searchTimeout)
+    }
+
+    // throttle/debounce: tunggu sebentar sebelum hit API
+    searchTimeout = setTimeout(() => {
+        searchArchers(newVal)
+    }, 400)
+})
+
 onMounted(() => {
     fetchEventDetails()
-    fetchArchers()
     fetchCategories()
+    fetchClubs()
 })
 
 onBeforeUnmount(() => {
     clearEvent()
+    if (searchTimeout) {
+        clearTimeout(searchTimeout)
+    }
 })
 </script>

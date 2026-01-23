@@ -114,6 +114,50 @@
             </div>
           </FormSection>
 
+          <!-- Payment Methods Section -->
+          <FormSection icon="ph:credit-card" title="Metode Pembayaran">
+            <p class="text-text-secondary text-sm mb-4">Tambahkan metode pembayaran yang tersedia untuk event ini.</p>
+
+            <div class="space-y-4">
+              <!-- Payment Method List -->
+              <div v-for="(method, index) in form.paymentMethods" :key="index"
+                class="bg-gray-50 border border-gray-200 rounded-xl p-4">
+                <div class="flex items-start justify-between gap-4 mb-4">
+                  <h4 class="text-sm font-bold text-navy">Metode {{ index + 1 }}</h4>
+                  <button type="button" @click="removePaymentMethod(index)"
+                    class="text-red-500 hover:text-red-700 transition-colors">
+                    <Icon icon="ph:trash" class="text-lg" />
+                  </button>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div class="md:col-span-2">
+                    <BaseInput v-model="method.payment_method" label="Nama Metode Pembayaran" 
+                      placeholder="contoh: Transfer Bank BCA" required />
+                  </div>
+                  <BaseInput v-model="method.account_name" label="Nama Pemilik Rekening" 
+                    placeholder="contoh: PT Archery Indonesia" />
+                  <BaseInput v-model="method.account_number" label="Nomor Rekening/ID" 
+                    placeholder="contoh: 1234567890" />
+                  <div class="md:col-span-2">
+                    <BaseTextarea v-model="method.instructions" label="Instruksi Pembayaran (Opsional)" 
+                      placeholder="Tambahkan instruksi atau catatan khusus untuk metode pembayaran ini..." 
+                      rows="3" />
+                  </div>
+                  <BaseInput v-model.number="method.display_order" label="Urutan Tampilan" type="number" 
+                    placeholder="0" />
+                </div>
+              </div>
+
+              <!-- Add Payment Method Button -->
+              <button type="button" @click="addPaymentMethod"
+                class="w-full py-3 rounded-xl border-2 border-dashed border-gray-300 hover:border-primary hover:bg-primary/5 transition-all flex items-center justify-center gap-2 text-gray-500 hover:text-primary font-medium">
+                <Icon icon="ph:plus-circle" class="text-xl" />
+                Tambah Metode Pembayaran
+              </button>
+            </div>
+          </FormSection>
+
           <FormSection icon="ph:article" title="Detail Event">
             <div class="flex flex-col gap-1.5">
               <label class="text-navy text-sm font-bold ml-1">Deskripsi Lengkap</label>
@@ -189,7 +233,8 @@ const form = reactive({
   registrationDeadline: '',
   maxParticipants: null,
   status: 'draft',
-  images: []
+  images: [],
+  paymentMethods: []
 })
 
 const disciplines = ref([])
@@ -262,7 +307,24 @@ const setPrimaryImage = (index) => {
   })
 }
 
+// Payment Methods
+const addPaymentMethod = () => {
+  form.paymentMethods.push({
+    payment_method: '',
+    account_name: '',
+    account_number: '',
+    instructions: '',
+    display_order: form.paymentMethods.length
+  })
+}
 
+const removePaymentMethod = (index) => {
+  form.paymentMethods.splice(index, 1)
+  // Re-index display orders
+  form.paymentMethods.forEach((method, i) => {
+    if (!method.display_order) method.display_order = i
+  })
+}
 
 const toggleValue = (arr, val) => {
   const index = arr.indexOf(val)
@@ -337,7 +399,31 @@ const handleSubmit = async () => {
 
     const result = await post('/events', payload)
 
-    if (result?.id) {
+    if (result?.id || result?.uuid) {
+      const eventId = result.id || result.uuid
+      
+      // Create payment methods if any
+      if (form.paymentMethods.length > 0) {
+        try {
+          await Promise.all(
+            form.paymentMethods
+              .filter(m => m.payment_method) // Only create methods with names
+              .map(method => 
+                post(`/events/${eventId}/payment-methods`, {
+                  payment_method: method.payment_method,
+                  account_name: method.account_name || null,
+                  account_number: method.account_number || null,
+                  instructions: method.instructions || null,
+                  display_order: method.display_order || 0
+                })
+              )
+          )
+        } catch (pmError) {
+          console.error('Failed to create payment methods:', pmError)
+          toast.warning('Event berhasil dibuat, namun ada masalah dengan metode pembayaran')
+        }
+      }
+      
       toast.success('Event berhasil dibuat')
       router.push('/dashboard/events')
     }

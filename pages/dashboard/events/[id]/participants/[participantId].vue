@@ -114,10 +114,6 @@
                             <p class="text-navy font-bold text-lg">{{ participant.back_number || '-' }}</p>
                         </div>
                         <div>
-                            <p class="text-gray-400 font-bold text-xs uppercase tracking-wider mb-2">Nomor Target</p>
-                            <p class="text-navy font-bold text-lg">{{ participant.target_number || 'Belum diassign' }}</p>
-                        </div>
-                        <div>
                             <p class="text-gray-400 font-bold text-xs uppercase tracking-wider mb-2">Sesi</p>
                             <p class="text-navy font-bold text-lg">{{ participant.session || '-' }}</p>
                         </div>
@@ -266,12 +262,20 @@ const formatCurrency = (amount) => {
 
 const getPaymentStatusLabel = (status) => {
     const labels = {
-        'paid': 'Lunas',
-        'pending': 'Pending',
-        'failed': 'Gagal',
-        'refunded': 'Dikembalikan'
+        'lunas': 'Lunas',
+        'belum_lunas': 'Belum Lunas',
+        'menunggu_acc': 'Menunggu ACC'
     }
     return labels[status] || status
+}
+
+const getPaymentStatusClass = (status) => {
+    const classes = {
+        'lunas': 'bg-green-50 text-green-600 border-green-100',
+        'belum_lunas': 'bg-yellow-50 text-yellow-600 border-yellow-100',
+        'menunggu_acc': 'bg-blue-50 text-blue-600 border-blue-100'
+    }
+    return classes[status] || 'bg-gray-50 text-gray-600 border-gray-100'
 }
 
 const getAccreditationStatusLabel = (status) => {

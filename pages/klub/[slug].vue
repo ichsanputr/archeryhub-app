@@ -365,40 +365,71 @@ const joinClub = async () => {
     }
 }
 
+const parseFacilities = (facilitiesData) => {
+    if (!facilitiesData) return []
+    if (Array.isArray(facilitiesData)) return facilitiesData
+    if (typeof facilitiesData === 'string') {
+        try {
+            const parsed = JSON.parse(facilitiesData)
+            return Array.isArray(parsed) ? parsed : []
+        } catch {
+            // If it's a comma-separated string
+            return facilitiesData.split(',').map(f => f.trim()).filter(Boolean)
+        }
+    }
+    return []
+}
+
+const parseSchedules = (scheduleData) => {
+    if (!scheduleData) return []
+    if (Array.isArray(scheduleData)) return scheduleData
+    if (typeof scheduleData === 'string') {
+        try {
+            const parsed = JSON.parse(scheduleData)
+            return Array.isArray(parsed) ? parsed : []
+        } catch {
+            return []
+        }
+    }
+    return []
+}
+
 onMounted(async () => {
     try {
         const slug = route.params.slug
         const resp = await get(`/clubs/${slug}`)
         const data = resp?.data || resp || {}
         if (!data || !data.name) return
+        
         club.value = {
             id: data.id || data.uuid || 0,
             name: data.name || '',
             slug: data.slug || slug,
             city: data.city || '',
             province: data.province || '',
-            established: data.established || '',
+            established: data.established ? new Date(data.established).getFullYear().toString() : '',
             bannerUrl: data.banner_url || '',
-            logoUrl: data.logo_url || '',
+            logoUrl: data.logo_url || data.avatar_url || '',
             verified: !!data.verified,
             memberCount: data.member_count || data.members || 0,
             eventCount: data.event_count || data.events || 0,
-            rating: data.rating || 0,
+            rating: data.rating || 4.5,
             achievements: data.achievements || 0,
-            description: data.description || '',
-            facilities: data.facilities || [],
+            description: data.description || 'Klub panahan yang berdedikasi untuk mengembangkan bakat dan prestasi atlet.',
+            facilities: parseFacilities(data.facilities),
             phone: data.phone || '',
-            whatsapp: data.whatsapp || '',
-            instagram: data.instagram || '',
+            whatsapp: data.whatsapp || data.phone || '',
+            instagram: data.instagram || '@' + slug,
             facebook: data.facebook || '',
             email: data.email || '',
             address: data.address || '',
-            schedules: data.schedules || [],
+            schedules: parseSchedules(data.schedules),
             recentEvents: data.recent_events || [],
             topMembers: data.top_members || []
         }
     } catch (error) {
         console.error('Gagal memuat klub', error)
+        toast.error('Gagal memuat data klub')
     }
 })
 </script>

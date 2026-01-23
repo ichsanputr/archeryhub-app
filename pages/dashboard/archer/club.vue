@@ -27,12 +27,12 @@
             </div>
             <div class="absolute inset-0 bg-gradient-to-t from-navy to-transparent"></div>
             <div class="absolute -bottom-10 left-8">
-              <div class="w-20 h-20 rounded-2xl bg-white border-4 border-white shadow-xl overflow-hidden">
-                 <img v-if="myMembership.avatar_url" :src="myMembership.avatar_url" class="w-full h-full object-cover" />
-                 <div v-else class="w-full h-full bg-primary flex items-center justify-center font-black text-navy text-2xl">
-                    {{ myMembership.club_name.charAt(0) }}
+                 <div class="w-20 h-20 rounded-2xl bg-white border-4 border-white shadow-xl overflow-hidden">
+                   <img v-if="myMembership.club_avatar_url || myMembership.avatar_url" :src="myMembership.club_avatar_url || myMembership.avatar_url" class="w-full h-full object-cover" />
+                   <div v-else class="w-full h-full bg-primary flex items-center justify-center font-black text-navy text-2xl">
+                      {{ myMembership.club_name?.charAt(0) || 'C' }}
+                   </div>
                  </div>
-              </div>
             </div>
           </div>
           <div class="pt-12 p-8">
@@ -114,9 +114,10 @@
               class="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:border-primary transition-all shadow-sm">
               <div class="h-24 bg-gray-100 relative overflow-hidden">
                 <img v-if="club.banner_url" :src="club.banner_url" class="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                <div v-else class="w-full h-full bg-gradient-to-br from-navy to-navy-light"></div>
                 <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                 <div class="absolute bottom-3 left-4 flex items-center gap-2">
-                  <span class="text-[10px] font-black bg-white/90 px-2 py-0.5 rounded-full text-navy uppercase">{{ club.city }}</span>
+                  <span v-if="club.city" class="text-[10px] font-black bg-white/90 px-2 py-0.5 rounded-full text-navy uppercase">{{ club.city }}</span>
                 </div>
               </div>
               <div class="p-5">
@@ -124,17 +125,22 @@
                   <div class="w-10 h-10 -mt-8 rounded-lg bg-white border-2 border-white shadow-lg overflow-hidden shrink-0">
                     <img v-if="club.avatar_url" :src="club.avatar_url" class="w-full h-full object-cover" />
                     <div v-else class="w-full h-full bg-primary flex items-center justify-center font-black text-navy text-sm uppercase">
-                      {{ club.name.charAt(0) }}
+                      {{ club.name?.charAt(0) || 'C' }}
                     </div>
                   </div>
                   <div class="min-w-0">
                     <h4 class="font-bold text-navy truncate">{{ club.name }}</h4>
-                    <p class="text-[10px] text-gray-400 font-bold uppercase">{{ club.member_count }} Members</p>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase">{{ club.member_count || 0 }} Anggota</p>
                   </div>
                 </div>
                 <div class="mt-4">
+                  <NuxtLink :to="`/klub/${club.slug}`" class="block mb-2">
+                    <BaseButton variant="outline" size="xs" block icon="ph:eye">
+                      Lihat Detail
+                    </BaseButton>
+                  </NuxtLink>
                   <BaseButton variant="primary" size="xs" block icon="ph:user-plus" @click="handleJoinClub(club)">
-                    Minta Pendaftaran
+                    Minta Bergabung
                   </BaseButton>
                 </div>
               </div>
@@ -192,7 +198,7 @@ const searchClubs = async () => {
   isSearching.value = true
   hasSearched.value = true
   try {
-    const res = await get('/clubs', { query: { q: searchQuery.value, limit: 12 } })
+    const res = await get(`/clubs?q=${encodeURIComponent(searchQuery.value)}&limit=12`)
     clubResults.value = res.data || []
   } catch (error) {
     console.error('Search failed:', error)

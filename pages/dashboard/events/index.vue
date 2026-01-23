@@ -48,6 +48,7 @@
               <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Peserta /
                 Kategori</th>
               <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Status</th>
+              <th v-if="isArcher" class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Status Pendaftaran</th>
               <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest text-right">Aksi
               </th>
             </tr>
@@ -55,7 +56,7 @@
           <tbody class="divide-y divide-gray-50">
             <!-- Loading State -->
             <tr v-if="isLoading">
-              <td colspan="5" class="px-6 py-24 text-center">
+              <td :colspan="isArcher ? 6 : 5" class="px-6 py-24 text-center">
                 <div class="flex flex-col items-center justify-center gap-4">
                   <div class="h-12 w-12 border-4 border-primary border-t-transparent animate-spin rounded-full"></div>
                   <div class="flex flex-col gap-1">
@@ -68,7 +69,7 @@
 
             <!-- Empty State -->
             <tr v-else-if="filteredEvents.length === 0">
-              <td colspan="5" class="px-6 py-24 text-center">
+              <td :colspan="isArcher ? 6 : 5" class="px-6 py-24 text-center">
                 <div class="flex flex-col items-center gap-4 max-w-xs mx-auto">
                   <div class="h-16 w-16 bg-gray-50 rounded-2xl flex items-center justify-center text-gray-300">
                     <Icon icon="ph:calendar-x" class="text-4xl" />
@@ -144,6 +145,20 @@
                   {{ getStatusLabel(event.status) }}
                 </span>
               </td>
+              <td v-if="isArcher" class="px-6 py-5">
+                <div class="flex flex-col gap-2">
+                  <span :class="getAccreditationStatusClass(event.accreditation_status)"
+                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider border">
+                    <span class="w-1.5 h-1.5 rounded-full" :class="getAccreditationStatusDotClass(event.accreditation_status)"></span>
+                    {{ getAccreditationStatusLabel(event.accreditation_status) }}
+                  </span>
+                  <span :class="getPaymentStatusClass(event.payment_status)"
+                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider border">
+                    <span class="w-1.5 h-1.5 rounded-full" :class="getPaymentStatusDotClass(event.payment_status)"></span>
+                    {{ getPaymentStatusLabel(event.payment_status) }}
+                  </span>
+                </div>
+              </td>
               <td class="px-6 py-5 text-right">
                 <div v-if="!isArcher" class="flex items-center justify-end gap-2">
                   <BaseButton @click="handleManageEvent(event)" variant="primary" size="sm" class="h-9 font-bold">
@@ -168,6 +183,23 @@
                       </button>
                     </div>
                   </div>
+                </div>
+                <div v-else class="flex items-center justify-end gap-2">
+                  <BaseButton 
+                    v-if="event.accreditation_status !== 'approved' && event.participant_uuid"
+                    @click="confirmCancelRegistration(event)" 
+                    variant="outline" 
+                    size="sm" 
+                    class="h-9 font-bold text-red-600 hover:text-red-700 hover:border-red-300"
+                    icon="ph:x-circle">
+                    Batalkan
+                  </BaseButton>
+                  <NuxtLink 
+                    :to="`/events/${event.slug || event.id}`"
+                    class="h-9 px-4 flex items-center justify-center rounded-lg border border-gray-200 hover:border-primary hover:bg-primary/5 text-gray-600 hover:text-primary transition-all font-bold text-sm">
+                    <Icon icon="ph:eye" class="text-base mr-1.5" />
+                    Lihat
+                  </NuxtLink>
                 </div>
               </td>
             </tr>
@@ -227,6 +259,36 @@
         </div>
       </div>
     </Teleport>
+
+    <!-- Cancel Registration Dialog -->
+    <Teleport to="body">
+      <div v-if="showCancelDialog" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-navy/60 backdrop-blur-sm" @click="showCancelDialog = false"></div>
+        <div class="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 animate-in zoom-in-95 duration-200">
+          <div class="flex flex-col items-center text-center gap-4">
+            <div class="h-16 w-16 rounded-2xl bg-amber-50 flex items-center justify-center">
+              <Icon icon="ph:warning-circle" class="text-4xl text-amber-500" />
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-navy">Batalkan Pendaftaran?</h3>
+              <p class="text-gray-500 mt-2 text-sm leading-relaxed">
+                Apakah Anda yakin ingin membatalkan pendaftaran untuk event <span class="font-bold text-navy">{{ registrationToCancel?.name }}</span>?
+                Tindakan ini tidak dapat dibatalkan.
+              </p>
+            </div>
+            <div class="flex gap-3 w-full mt-2">
+              <BaseButton variant="outline" class="flex-1" @click="showCancelDialog = false" :disabled="isCancelling">
+                Batal
+              </BaseButton>
+              <BaseButton variant="danger" class="flex-1 bg-red-600 hover:bg-red-700 text-white" @click="cancelRegistration" :loading="isCancelling">
+                <Icon icon="ph:x-circle" class="mr-2" />
+                Batalkan Pendaftaran
+              </BaseButton>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Teleport>
   </div>
 </template>
 
@@ -234,6 +296,7 @@
 import { Icon } from '@iconify/vue'
 import { useAuth } from '~/composables/useAuth'
 import { useEventContext } from '~/composables/useEventContext'
+import { useToast } from '~/composables/useToast'
 import { useRouter } from 'vue-router'
 
 definePageMeta({
@@ -333,6 +396,67 @@ const getStatusLabel = (status) => {
   return labels[status] || status
 }
 
+// Registration status helpers for archers
+const getAccreditationStatusClass = (status) => {
+  if (!status) return 'bg-gray-50 text-gray-500 border-gray-100'
+  const classes = {
+    'pending': 'bg-amber-50 text-amber-700 border-amber-100',
+    'approved': 'bg-green-50 text-green-700 border-green-100',
+    'rejected': 'bg-red-50 text-red-700 border-red-100'
+  }
+  return classes[status] || 'bg-gray-50 text-gray-500 border-gray-100'
+}
+
+const getAccreditationStatusDotClass = (status) => {
+  if (!status) return 'bg-gray-300'
+  const classes = {
+    'pending': 'bg-amber-500',
+    'approved': 'bg-green-500',
+    'rejected': 'bg-red-500'
+  }
+  return classes[status] || 'bg-gray-300'
+}
+
+const getAccreditationStatusLabel = (status) => {
+  if (!status) return 'Belum Daftar'
+  const labels = {
+    'pending': 'Menunggu ACC',
+    'approved': 'Diterima',
+    'rejected': 'Ditolak'
+  }
+  return labels[status] || status
+}
+
+const getPaymentStatusClass = (status) => {
+  if (!status) return 'bg-gray-50 text-gray-500 border-gray-100'
+  const classes = {
+    'menunggu_acc': 'bg-blue-50 text-blue-700 border-blue-100',
+    'belum_lunas': 'bg-yellow-50 text-yellow-700 border-yellow-100',
+    'lunas': 'bg-green-50 text-green-700 border-green-100'
+  }
+  return classes[status] || 'bg-gray-50 text-gray-500 border-gray-100'
+}
+
+const getPaymentStatusDotClass = (status) => {
+  if (!status) return 'bg-gray-300'
+  const classes = {
+    'menunggu_acc': 'bg-blue-500',
+    'belum_lunas': 'bg-yellow-500',
+    'lunas': 'bg-green-500'
+  }
+  return classes[status] || 'bg-gray-300'
+}
+
+const getPaymentStatusLabel = (status) => {
+  if (!status) return '-'
+  const labels = {
+    'menunggu_acc': 'Menunggu ACC',
+    'belum_lunas': 'Belum Lunas',
+    'lunas': 'Lunas'
+  }
+  return labels[status] || status
+}
+
 const formatDate = (dateStr) => {
   if (!dateStr) return '-'
   return new Date(dateStr).toLocaleDateString('id-ID', {
@@ -362,8 +486,37 @@ const closeDropdown = (eventId) => {
 
 // Delete event functionality
 const { del } = useApi()
+const { toast } = useToast()
 const showDeleteDialog = useState('show-delete-dialog', () => false)
 const eventToDelete = ref(null)
+
+// Cancel registration functionality
+const showCancelDialog = ref(false)
+const registrationToCancel = ref(null)
+const isCancelling = ref(false)
+
+const confirmCancelRegistration = (event) => {
+  registrationToCancel.value = event
+  showCancelDialog.value = true
+}
+
+const cancelRegistration = async () => {
+  if (!registrationToCancel.value?.participant_uuid) return
+  
+  isCancelling.value = true
+  try {
+    await del(`/events/participants/${registrationToCancel.value.participant_uuid}`)
+    toast.success('Pendaftaran berhasil dibatalkan')
+    await fetchEvents() // Refresh the list
+    showCancelDialog.value = false
+    registrationToCancel.value = null
+  } catch (error) {
+    console.error('Failed to cancel registration:', error)
+    toast.error(error.response?.data?.error || 'Gagal membatalkan pendaftaran')
+  } finally {
+    isCancelling.value = false
+  }
+}
 
 const confirmDeleteEvent = (event) => {
   eventToDelete.value = event

@@ -82,7 +82,7 @@
                     </div>
 
                     <div>
-                        <BaseButton type="submit" variant="gold" block :loading="isLoading" loading-text="Lagi masuk..."
+                        <BaseButton type="submit" variant="gold" block :loading="isLoading"
                             icon-right="ph:arrow-right">
                             Masuk Sekarang
                         </BaseButton>
@@ -100,7 +100,7 @@
 
                 <div class="mt-6">
                     <BaseButton variant="outline" block icon="logos:google-icon" @click="handleGoogleLogin"
-                        :loading="isLoading && !form.email" loading-text="Menyambung ke Google...">
+                        :loading="isLoading && !form.email">
                         Masuk dengan Google
                     </BaseButton>
                 </div>

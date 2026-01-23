@@ -107,12 +107,6 @@
                                     placeholder="Contoh: 101" />
                             </div>
                             <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2">Nomor Target</label>
-                                <input v-model="form.target_number" type="text"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                    placeholder="Akan diassign otomatis" />
-                            </div>
-                            <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-2">Sesi</label>
                                 <input v-model.number="form.session" type="number" min="1" max="4"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
@@ -133,10 +127,9 @@
                             <label class="block text-sm font-bold text-gray-700 mb-2">Status Pembayaran *</label>
                             <select v-model="form.payment_status" required
                                 class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
-                                <option value="pending">Pending</option>
-                                <option value="paid">Lunas</option>
-                                <option value="failed">Gagal</option>
-                                <option value="refunded">Dikembalikan</option>
+                                <option value="menunggu_acc">Menunggu ACC</option>
+                                <option value="belum_lunas">Belum Lunas</option>
+                                <option value="lunas">Lunas</option>
                             </select>
                         </div>
                         <div>
@@ -188,7 +181,7 @@
                         </li>
                         <li class="flex items-start gap-2">
                             <Icon icon="ph:check-circle" class="text-green-500 mt-0.5 flex-shrink-0" />
-                            <span>Nomor target akan diassign otomatis saat target dibuat</span>
+                            <span>Nomor target akan diassign pada modul khusus target</span>
                         </li>
                     </ul>
                 </div>
@@ -235,9 +228,8 @@ const isSubmitting = ref(false)
 const form = reactive({
     category_id: '',
     back_number: '',
-    target_number: '',
     session: null,
-    payment_status: 'pending',
+    payment_status: 'menunggu_acc',
     payment_amount: 0,
     accreditation_status: 'pending'
 })
@@ -254,9 +246,8 @@ const fetchParticipant = async () => {
                 // Populate form
                 form.category_id = found.category_id
                 form.back_number = found.back_number || ''
-                form.target_number = found.target_number || ''
                 form.session = found.session || null
-                form.payment_status = found.payment_status || 'pending'
+                form.payment_status = found.payment_status || 'menunggu_acc'
                 form.payment_amount = found.payment_amount || 0
                 form.accreditation_status = found.accreditation_status || 'pending'
             }
@@ -315,7 +306,6 @@ const handleSubmit = async () => {
         const payload = {
             category_id: form.category_id,
             back_number: form.back_number || null,
-            target_number: form.target_number || null,
             session: form.session || null,
             payment_status: form.payment_status,
             payment_amount: form.payment_amount || 0,
