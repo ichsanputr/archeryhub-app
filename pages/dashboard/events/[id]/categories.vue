@@ -3,16 +3,9 @@
         <!-- Header -->
         <div class="flex flex-wrap items-center justify-between gap-6 pb-6 border-b border-gray-100">
             <div>
-                <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
-                    <NuxtLink to="/dashboard/events" class="hover:text-primary transition-colors">Events</NuxtLink>
-                    <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <NuxtLink :to="`/dashboard/events/${route.params.id}/overview`"
-                        class="hover:text-primary transition-colors">Control Panel</NuxtLink>
-                    <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <span class="text-navy">Kategori Lomba</span>
-                </div>
                 <h1 class="text-3xl font-extrabold text-navy tracking-tight">Kategori Lomba</h1>
-                <p class="text-gray-500 font-medium mt-1">Kelola kategori lomba untuk event ini. Setiap kategori dapat memiliki maksimal peserta yang berbeda.
+                <p class="text-gray-500 font-medium mt-1">Kelola kategori lomba untuk event ini. Setiap kategori dapat
+                    memiliki maksimal peserta yang berbeda.
                 </p>
             </div>
             <div class="flex gap-3">
@@ -69,7 +62,9 @@
                 <h2 class="text-lg font-bold text-navy">Daftar Kategori</h2>
             </div>
             <div v-if="isLoading" class="p-12 text-center">
-                <div class="inline-block h-8 w-8 border-4 border-primary border-t-transparent animate-spin rounded-full"></div>
+                <div
+                    class="inline-block h-8 w-8 border-4 border-primary border-t-transparent animate-spin rounded-full">
+                </div>
                 <p class="text-gray-500 mt-4 font-medium">Memuat kategori...</p>
             </div>
             <div v-else-if="categories.length === 0" class="p-12 text-center">
@@ -86,8 +81,10 @@
                     <div class="flex items-start justify-between gap-4">
                         <div class="flex-1">
                             <div class="flex items-center gap-3 mb-2">
-                                <h3 class="text-lg font-bold text-navy">{{ category.division_name }} - {{ category.category_name }}</h3>
-                                <span :class="category.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'"
+                                <h3 class="text-lg font-bold text-navy">{{ category.division_name }} - {{
+                                    category.category_name }}</h3>
+                                <span
+                                    :class="category.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'"
                                     class="px-2.5 py-0.5 rounded-full text-xs font-bold">
                                     {{ category.status === 'active' ? 'Aktif' : 'Nonaktif' }}
                                 </span>
@@ -95,7 +92,8 @@
                             <div class="flex items-center gap-6 text-sm text-gray-500">
                                 <div class="flex items-center gap-2">
                                     <Icon icon="ph:users" class="text-base" />
-                                    <span>Maks. Peserta: <strong class="text-navy">{{ category.max_participants || 'Tidak terbatas' }}</strong></span>
+                                    <span>Maks. Peserta: <strong class="text-navy">{{ category.max_participants ||
+                                            'Tidak terbatas' }}</strong></span>
                                 </div>
                                 <div class="flex items-center gap-2">
                                     <Icon icon="ph:calendar" class="text-base" />
@@ -143,7 +141,8 @@
                             <select v-model="form.event_type_uuid"
                                 class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
                                 <option value="">Pilih Jenis Event</option>
-                                <option v-for="eventType in eventTypes" :key="eventType.id" :value="eventType.id">{{ eventType.name }}</option>
+                                <option v-for="eventType in eventTypes" :key="eventType.id" :value="eventType.id">{{
+                                    eventType.name }}</option>
                             </select>
                         </div>
                         <div class="space-y-2">
@@ -151,7 +150,8 @@
                             <select v-model="form.gender_division_uuid"
                                 class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
                                 <option value="">Pilih Divisi Gender</option>
-                                <option v-for="gender in genderDivisions" :key="gender.id" :value="gender.id">{{ gender.name }}</option>
+                                <option v-for="gender in genderDivisions" :key="gender.id" :value="gender.id">{{
+                                    gender.name }}</option>
                             </select>
                         </div>
                     </div>

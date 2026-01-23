@@ -3,18 +3,6 @@
     <!-- Breadcrumbs & Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
       <div>
-        <div class="flex flex-wrap gap-2 mb-2">
-          <NuxtLink to="/dashboard/events" class="text-brand-gold text-sm font-medium hover:text-primary">
-            Tournaments
-          </NuxtLink>
-          <span class="text-gray-600 text-sm font-medium">/</span>
-          <NuxtLink :to="`/dashboard/events/${tournamentId}`"
-            class="text-brand-gold text-sm font-medium hover:text-primary">
-            {{ tournamentName }}
-          </NuxtLink>
-          <span class="text-gray-600 text-sm font-medium">/</span>
-          <span class="text-white text-sm font-medium">Setup</span>
-        </div>
         <h1 class="text-3xl font-black text-white tracking-tight">Categories & Distances</h1>
         <p class="text-brand-gold mt-1">Define who competes and what targets they shoot.</p>
       </div>

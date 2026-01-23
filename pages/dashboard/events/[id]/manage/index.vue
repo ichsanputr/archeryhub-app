@@ -3,12 +3,6 @@
         <!-- Breadcrumb & Header -->
         <div class="flex flex-col md:flex-row md:items-start justify-between gap-6">
             <div class="space-y-1">
-                <div
-                    class="flex items-center gap-2 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest mb-2">
-                    <NuxtLink to="/dashboard/events" class="hover:text-primary transition-colors">Events</NuxtLink>
-                    <Icon icon="ph:caret-right-bold" class="text-[10px]" />
-                    <span class="text-navy">Control Panel</span>
-                </div>
                 <div v-if="isLoading" class="h-10 w-64 bg-gray-100 animate-pulse rounded-lg"></div>
                 <h1 v-else class="text-3xl font-black text-navy tracking-tight leading-tight">
                     {{ event?.name }}
@@ -95,7 +89,7 @@
                     <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-3">Target Aktif</p>
                     <div class="flex items-center justify-between">
                         <h3 class="text-3xl font-black text-navy">{{ Math.ceil((event?.participant_count || 0) / 4)
-                            }}</h3>
+                        }}</h3>
                         <div
                             class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                             <Icon icon="ph:target-bold" class="text-xl" />
@@ -121,7 +115,7 @@
                 <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
                     <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
                         <div>
-                            <h3 class="font-black text-navy text-lg tracking-tight">Status Bantalan (Targets)</h3>
+                            <h3 class="font-black text-navy text-lg tracking-tight">Status Target</h3>
                             <p class="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">Real-time
                                 monitoring</p>
                         </div>
@@ -181,7 +175,7 @@
                                 <th class="px-8 py-5">Atlet</th>
                                 <th class="px-8 py-5">Klub</th>
                                 <th class="px-8 py-5">Divisi / Kategori</th>
-                                <th class="px-8 py-5">Bantalan</th>
+                                <th class="px-8 py-5">Target</th>
                                 <th class="px-8 py-5">Pembayaran</th>
                                 <th class="px-8 py-5 text-right">Aksi</th>
                             </tr>
@@ -251,7 +245,7 @@
                     <div>
                         <h3 class="font-black text-navy text-xl tracking-tight">Rapid Data Entry</h3>
                         <p class="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">Input skor atlet
-                            secara cepat per bantalan</p>
+                            secara cepat per target</p>
                     </div>
                     <div class="flex gap-3">
                         <BaseButton variant="white" icon="ph:download-bold" size="sm" class="font-bold">Export Hasil

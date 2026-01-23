@@ -357,7 +357,7 @@
                                     <th class="px-8 py-5">Atlet</th>
                                     <th class="px-8 py-5">Klub</th>
                                     <th class="px-8 py-5">Divisi / Kategori</th>
-                                    <th class="px-8 py-5">Bantalan</th>
+                                    <th class="px-8 py-5">Target</th>
                                     <th class="px-8 py-5">Pembayaran</th>
                                     <th class="px-8 py-5 text-right">Aksi</th>
                                 </tr>

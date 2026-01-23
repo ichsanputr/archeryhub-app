@@ -59,7 +59,7 @@
             <div
                 class="lg:col-span-1 bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden flex flex-col h-[600px]">
                 <div class="p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-                    <h3 class="text-[11px] font-black text-navy uppercase tracking-widest">Status Bantalan</h3>
+                    <h3 class="text-[11px] font-black text-navy uppercase tracking-widest">Status Target</h3>
                     <div
                         class="flex items-center gap-1.5 px-2 py-0.5 bg-navy text-primary text-[9px] font-black rounded uppercase">
                         Seri 6</div>

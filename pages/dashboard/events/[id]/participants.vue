@@ -107,7 +107,7 @@
                             <th class="px-6 py-4">Nama Peserta</th>
                             <th class="px-6 py-4">Klub</th>
                             <th class="px-6 py-4">Divisi / Kategori</th>
-                            <th class="px-6 py-4">Bantalan</th>
+                            <th class="px-6 py-4">Target</th>
                             <th class="px-6 py-4">Status</th>
                             <th class="px-6 py-4 text-right">Aksi</th>
                         </tr>

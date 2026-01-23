@@ -9,19 +9,8 @@
         </div>
 
         <template v-else>
-            <!-- Breadcrumb & Header -->
+            <!-- Header -->
             <div class="flex flex-col gap-6">
-                <nav class="flex flex-wrap gap-2 items-center">
-                    <NuxtLink to="/dashboard"
-                        class="text-gray-500 hover:text-primary-hover text-sm font-medium transition-colors">
-                        Dashboard</NuxtLink>
-                    <Icon icon="ph:caret-right" class="text-gray-300 text-sm" />
-                    <NuxtLink to="/dashboard/events"
-                        class="text-gray-500 hover:text-primary-hover text-sm font-medium transition-colors">Events
-                    </NuxtLink>
-                    <Icon icon="ph:caret-right" class="text-gray-300 text-sm" />
-                    <span class="text-navy text-sm font-bold">Edit Event</span>
-                </nav>
 
                 <div class="flex flex-wrap justify-between gap-6 items-end">
                     <div class="flex flex-col gap-3">

@@ -3,11 +3,6 @@
     <!-- Breadcrumb & Header -->
     <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
       <div>
-        <div class="flex items-center gap-2 text-sm text-gray-500 mb-2">
-          <NuxtLink to="/dashboard/events" class="hover:text-navy cursor-pointer font-medium">Events</NuxtLink>
-          <span class="material-symbols-outlined text-[12px]">chevron_right</span>
-          <span class="text-navy font-bold">Manajemen Atlet</span>
-        </div>
         <h1 class="text-2xl md:text-3xl font-black text-navy tracking-tight">Atlet Terdaftar</h1>
         <p class="text-text-secondary font-medium mt-1">Kelola pendaftaran, penempatan target, dan check-in event.</p>
       </div>
@@ -93,12 +88,12 @@
               <td class="px-6 py-4">
                 <span
                   class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-gray-100 text-gray-700">{{
-                  archer.category }}</span>
+                    archer.category }}</span>
               </td>
               <td class="px-6 py-4">
                 <span v-if="archer.target"
                   class="font-bold font-mono text-navy bg-white border border-gray-200 px-2.5 py-1 rounded text-xs shadow-sm">{{
-                  archer.target }}</span>
+                    archer.target }}</span>
                 <span v-else class="text-xs text-gray-400 italic">Belum Ditentukan</span>
               </td>
               <td class="px-6 py-4">

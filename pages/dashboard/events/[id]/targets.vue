@@ -3,23 +3,13 @@
         <!-- Header -->
         <div class="flex flex-wrap items-center justify-between gap-6 pb-6 border-b border-gray-100">
             <div>
-                <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
-                    <NuxtLink to="/dashboard/events" class="hover:text-primary transition-colors">Events</NuxtLink>
-                    <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <NuxtLink :to="`/dashboard/events/${route.params.id}/overview`"
-                        class="hover:text-primary transition-colors">Control Panel</NuxtLink>
-                    <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <span class="text-navy">Target & Lajur</span>
-                </div>
-                <h1 class="text-3xl font-extrabold text-navy tracking-tight">Manajemen Bantalan</h1>
-                <p class="text-gray-500 font-medium mt-1">Atur penempatan atlet dan konfigurasi bantalan target.</p>
+                <h1 class="text-3xl font-extrabold text-navy tracking-tight">Manajemen Target</h1>
+                <p class="text-gray-500 font-medium mt-1">Atur penempatan atlet dan konfigurasi target.</p>
             </div>
             <div class="flex gap-3">
-                <BaseButton variant="white" icon="ph:funnel" class="h-11">
-                    Filter Bantalan
-                </BaseButton>
-                <BaseButton variant="primary" icon="ph:magic-wand" class="h-11 shadow-lg shadow-primary/20">
-                    Isi Otomatis
+                <BaseButton variant="primary" icon="ph:plus-bold" class="h-11 shadow-lg shadow-primary/20"
+                    @click="navigateTo(`/dashboard/events/${route.params.id}/targets/create`)">
+                    Tambah Target
                 </BaseButton>
             </div>
         </div>
@@ -33,7 +23,7 @@
                     <Icon icon="ph:target" class="text-2xl" />
                 </div>
                 <div>
-                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Total Bantalan</p>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Total Target</p>
                     <p class="text-xl font-black text-navy">{{ targets.length }}</p>
                 </div>
             </div>
@@ -93,8 +83,8 @@
                             :class="target.status === 'full' ? 'bg-navy text-primary' : 'bg-white text-navy border border-gray-200'">
                             {{ String(target.target).padStart(2, '0') }}
                         </div>
-                        <span class="font-black text-navy uppercase tracking-tight text-sm">Bantalan {{ target.target
-                            }}</span>
+                        <span class="font-black text-navy uppercase tracking-tight text-sm">Target {{ target.target
+                        }}</span>
                     </div>
                     <span :class="getStatusClass(target.status)"
                         class="text-[9px] font-black px-2.5 py-1 rounded-lg border uppercase tracking-widest">
@@ -180,12 +170,12 @@ onMounted(() => {
 })
 
 const laneData = reactive([
-    { id: 1, target: 1, label: 'bantalan 1', status: 'full', statusLabel: 'penuh', archers: { A: { name: 'Sarah Jenkins', division: 'Recurve Women' }, B: { name: 'Mike Ross', division: 'Recurve Men' }, C: { name: 'Emily Chen', division: 'Recurve Women' }, D: { name: 'David Kim', division: 'Recurve Men' } } },
-    { id: 2, target: 2, label: 'bantalan 2', status: 'partial', statusLabel: 'sisa 2', archers: { A: { name: 'Jessica Pearson', division: 'Compound Women' }, B: { name: 'Harvey Specter', division: 'Compound Men' } } },
-    { id: 3, target: 3, label: 'bantalan 3', status: 'empty', statusLabel: 'kosong', archers: {} },
-    { id: 4, target: 4, label: 'bantalan 4', status: 'full', statusLabel: 'penuh', archers: { A: { name: 'Louis Litt', division: 'Barebow Men' }, B: { name: 'Donna Paulsen', division: 'Barebow Women' }, C: { name: 'Rachel Zane', division: 'Barebow Women' }, D: { name: 'Katrina Bennett', division: 'Barebow Women' } } },
-    { id: 5, target: 5, label: 'bantalan 5', status: 'maintenance', statusLabel: 'perbaikan', archers: {} },
-    { id: 6, target: 6, label: 'bantalan 6', status: 'partial', statusLabel: 'sisa 1', archers: { A: { name: 'Samantha Wheeler', division: 'Youth Recurve' }, B: { name: 'Alex Williams', division: 'Youth Recurve' }, C: { name: 'Robert Zane', division: 'Youth Recurve' } } },
+    { id: 1, target: 1, label: 'target 1', status: 'full', statusLabel: 'penuh', archers: { A: { name: 'Sarah Jenkins', division: 'Recurve Women' }, B: { name: 'Mike Ross', division: 'Recurve Men' }, C: { name: 'Emily Chen', division: 'Recurve Women' }, D: { name: 'David Kim', division: 'Recurve Men' } } },
+    { id: 2, target: 2, label: 'target 2', status: 'partial', statusLabel: 'sisa 2', archers: { A: { name: 'Jessica Pearson', division: 'Compound Women' }, B: { name: 'Harvey Specter', division: 'Compound Men' } } },
+    { id: 3, target: 3, label: 'target 3', status: 'empty', statusLabel: 'kosong', archers: {} },
+    { id: 4, target: 4, label: 'target 4', status: 'full', statusLabel: 'penuh', archers: { A: { name: 'Louis Litt', division: 'Barebow Men' }, B: { name: 'Donna Paulsen', division: 'Barebow Women' }, C: { name: 'Rachel Zane', division: 'Barebow Women' }, D: { name: 'Katrina Bennett', division: 'Barebow Women' } } },
+    { id: 5, target: 5, label: 'target 5', status: 'maintenance', statusLabel: 'perbaikan', archers: {} },
+    { id: 6, target: 6, label: 'target 6', status: 'partial', statusLabel: 'sisa 1', archers: { A: { name: 'Samantha Wheeler', division: 'Youth Recurve' }, B: { name: 'Alex Williams', division: 'Youth Recurve' }, C: { name: 'Robert Zane', division: 'Youth Recurve' } } },
 ])
 
 const targets = computed(() => laneData)

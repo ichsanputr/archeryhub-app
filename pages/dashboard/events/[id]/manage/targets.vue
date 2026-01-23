@@ -31,7 +31,7 @@
                     <Icon icon="ph:target" class="text-2xl" />
                 </div>
                 <div>
-                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Total Bantalan</p>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Total Target</p>
                     <p class="text-xl font-black text-navy">{{ targets.length }}</p>
                 </div>
             </div>
@@ -147,19 +147,19 @@ definePageMeta({
 })
 
 const targetMetrics = [
-    { label: 'total bantalan', value: '32', icon: 'adjust', iconColor: 'text-blue-600', bgClass: 'bg-blue-50' },
+    { label: 'total target', value: '32', icon: 'adjust', iconColor: 'text-blue-600', bgClass: 'bg-blue-50' },
     { label: 'atlet terdaftar', value: '112', icon: 'groups', iconColor: 'text-purple-600', bgClass: 'bg-purple-50', subtext: '/ 128 slot' },
     { label: 'slot tersedia', value: '16', icon: 'event_seat', iconColor: 'text-emerald-600', bgClass: 'bg-emerald-50' },
-    { label: 'sedang perbaikan', value: '1', icon: 'handyman', iconColor: 'text-amber-600', bgClass: 'bg-amber-50', subtext: 'bantalan 05' },
+    { label: 'sedang perbaikan', value: '1', icon: 'handyman', iconColor: 'text-amber-600', bgClass: 'bg-amber-50', subtext: 'target 05' },
 ]
 
 const laneData = reactive([
-    { id: 1, target: '01', label: 'bantalan 1', status: 'full', statusLabel: 'penuh', archers: { A: { name: 'Sarah Jenkins', division: 'Recurve Women' }, B: { name: 'Mike Ross', division: 'Recurve Men' }, C: { name: 'Emily Chen', division: 'Recurve Women' }, D: { name: 'David Kim', division: 'Recurve Men' } } },
-    { id: 2, target: '02', label: 'bantalan 2', status: 'partial', statusLabel: 'sisa 2', archers: { A: { name: 'Jessica Pearson', division: 'Compound Women' }, B: { name: 'Harvey Specter', division: 'Compound Men' } } },
-    { id: 3, target: '03', label: 'bantalan 3', status: 'empty', statusLabel: 'kosong', archers: {} },
-    { id: 4, target: '04', label: 'bantalan 4', status: 'full', statusLabel: 'penuh', archers: { A: { name: 'Louis Litt', division: 'Barebow Men' }, B: { name: 'Donna Paulsen', division: 'Barebow Women' }, C: { name: 'Rachel Zane', division: 'Barebow Women' }, D: { name: 'Katrina Bennett', division: 'Barebow Women' } } },
-    { id: 5, target: '05', label: 'bantalan 5', status: 'maintenance', statusLabel: 'perbaikan', archers: {} },
-    { id: 6, target: '06', label: 'bantalan 6', status: 'partial', statusLabel: 'sisa 1', archers: { A: { name: 'Samantha Wheeler', division: 'Youth Recurve' }, B: { name: 'Alex Williams', division: 'Youth Recurve' }, C: { name: 'Robert Zane', division: 'Youth Recurve' } } },
+    { id: 1, target: '01', label: 'target 1', status: 'full', statusLabel: 'penuh', archers: { A: { name: 'Sarah Jenkins', division: 'Recurve Women' }, B: { name: 'Mike Ross', division: 'Recurve Men' }, C: { name: 'Emily Chen', division: 'Recurve Women' }, D: { name: 'David Kim', division: 'Recurve Men' } } },
+    { id: 2, target: '02', label: 'target 2', status: 'partial', statusLabel: 'sisa 2', archers: { A: { name: 'Jessica Pearson', division: 'Compound Women' }, B: { name: 'Harvey Specter', division: 'Compound Men' } } },
+    { id: 3, target: '03', label: 'target 3', status: 'empty', statusLabel: 'kosong', archers: {} },
+    { id: 4, target: '04', label: 'target 4', status: 'full', statusLabel: 'penuh', archers: { A: { name: 'Louis Litt', division: 'Barebow Men' }, B: { name: 'Donna Paulsen', division: 'Barebow Women' }, C: { name: 'Rachel Zane', division: 'Barebow Women' }, D: { name: 'Katrina Bennett', division: 'Barebow Women' } } },
+    { id: 5, target: '05', label: 'target 5', status: 'maintenance', statusLabel: 'perbaikan', archers: {} },
+    { id: 6, target: '06', label: 'target 6', status: 'partial', statusLabel: 'sisa 1', archers: { A: { name: 'Samantha Wheeler', division: 'Youth Recurve' }, B: { name: 'Alex Williams', division: 'Youth Recurve' }, C: { name: 'Robert Zane', division: 'Youth Recurve' } } },
 ])
 
 const getArcher = (target, pos) => target.archers[pos]

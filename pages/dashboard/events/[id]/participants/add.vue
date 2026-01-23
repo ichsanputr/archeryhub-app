@@ -106,7 +106,7 @@
                     <h3 class="text-lg font-black text-navy mb-4">Informasi Tambahan</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <BaseInput v-model="form.back_number" label="Nomor Punggung" placeholder="Opsional" type="number" />
-                        <BaseInput v-model="form.target_number" label="Nomor Bantalan" placeholder="Akan diassign otomatis" type="number" />
+                        <BaseInput v-model="form.target_number" label="Nomor Target" placeholder="Akan diassign otomatis" type="number" />
                         <BaseSelect v-model="form.payment_status" label="Status Pembayaran" :items="paymentStatusOptions" />
                         <BaseInput v-model="form.payment_amount" label="Jumlah Pembayaran" placeholder="0" type="number" />
                     </div>

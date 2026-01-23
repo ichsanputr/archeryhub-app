@@ -117,26 +117,27 @@ const isEventManagePage = computed(() => {
 const eventLinks = computed(() => {
   const role = user.value?.role || user.value?.type || 'archer'
   const isOrganization = role === 'organization'
-  
+
   const links = [
     { label: 'Ringkasan', icon: 'ph:squares-four', path: `/dashboard/events/${eventId.value}/overview` },
     { label: 'Halaman Event', icon: 'ph:browser', path: `/dashboard/events/${eventId.value}/page` },
+    { label: 'Peserta', icon: 'ph:users-three', path: `/dashboard/events/${eventId.value}/participants` },
+    { label: 'Tim', icon: 'ph:users-four', path: `/dashboard/events/${eventId.value}/teams` },
   ]
-  
-  // Add Kategori Lomba only for organization users, right after Halaman Event
+
+  // Add Kategori Lomba only for organization users, right after Tim
   if (isOrganization) {
     links.push({ label: 'Kategori Lomba', icon: 'ph:tag', path: `/dashboard/events/${eventId.value}/categories` })
   }
-  
+
   // Add the rest of the menu items
   links.push(
-    { label: 'Peserta', icon: 'ph:users-three', path: `/dashboard/events/${eventId.value}/participants` },
-    { label: 'Tim', icon: 'ph:users-four', path: `/dashboard/events/${eventId.value}/teams` },
-    { label: 'Target & Lajur', icon: 'ph:target', path: `/dashboard/events/${eventId.value}/targets` },
+    { label: 'Target', icon: 'ph:target', path: `/dashboard/events/${eventId.value}/targets` },
+    { label: 'Scoring', icon: 'ic:outline-scoreboard', path: `/dashboard/events/${eventId.value}/scoring` },
     { label: 'Kualifikasi', icon: 'fluent:table-freeze-column-20-regular', path: `/dashboard/events/${eventId.value}/qualification` },
     { label: 'Eliminasi', icon: 'mdi:bracket', path: `/dashboard/events/${eventId.value}/elimination` },
   )
-  
+
   return links
 })
 

@@ -2,16 +2,8 @@
     <div class="flex flex-col gap-6 pb-12">
         <!-- Header -->
         <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
-            <div>
-                <div
-                    class="flex items-center gap-2 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2">
-                    <NuxtLink to="/dashboard/events" class="hover:text-primary transition-colors">Events</NuxtLink>
-                    <Icon icon="ph:caret-right-bold" class="text-[10px]" />
-                    <NuxtLink :to="`/dashboard/events/${route.params.id}/overview`"
-                        class="hover:text-primary transition-colors">Control Panel</NuxtLink>
-                    <Icon icon="ph:caret-right-bold" class="text-[10px]" />
-                    <span class="text-navy">Detail Eliminasi</span>
-                </div>
+            <div class="space-y-1">
+                <div v-if="isLoading" class="h-10 w-64 bg-gray-100 animate-pulse rounded-lg"></div>
                 <h1 class="text-3xl font-black text-navy tracking-tight">Manajemen Bagan Eliminasi</h1>
             </div>
             <div class="flex gap-3">
