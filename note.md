@@ -1,1 +1,4 @@
 Now please do these, and dont forget to see from another file to get better result, adjust frontend, api endpoint, and database if needed using mcp mysql
+
+
+you can create table and alter table to achieve this my goal if needed

@@ -63,7 +63,7 @@
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
                                     <option value="">Pilih Kategori</option>
                                     <option v-for="category in eventCategories" :key="category.id" :value="category.id">
-                                        {{ category.category_name }} - {{ category.division_name }}
+                                        {{ formatCategoryName(category) }}
                                     </option>
                                 </select>
                                 <p class="text-xs text-gray-400 mt-1">Pilih kategori lomba untuk target ini</p>
@@ -94,11 +94,7 @@
                                 </li>
                                 <li class="flex items-start gap-2">
                                     <Icon icon="ph:check-circle" class="text-green-500 mt-0.5 flex-shrink-0" />
-                                    <span>Nomor target harus unik dalam sesi dan kategori yang sama</span>
-                                </li>
-                                <li class="flex items-start gap-2">
-                                    <Icon icon="ph:check-circle" class="text-green-500 mt-0.5 flex-shrink-0" />
-                                    <span>Setelah target dibuat, atlet dapat diassign ke posisi A, B, C, atau D</span>
+                                    <span>Setelah target dibuat, Anda dapat membuat multiple kartu target dan assign atlet ke posisi A, B, C, atau D</span>
                                 </li>
                             </ul>
                         </div>
@@ -115,6 +111,7 @@ import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
+import { definePageMeta } from '#imports'
 
 definePageMeta({
     layout: 'dashboard'
@@ -122,7 +119,7 @@ definePageMeta({
 
 const route = useRoute()
 const router = useRouter()
-const { get } = useApi()
+const { get, post } = useApi()
 const toast = useToast()
 
 const isSubmitting = ref(false)
@@ -134,8 +131,7 @@ const form = ref({
     phase: '',
     sessionId: '',
     categoryId: '',
-    roundName: '',
-    target_number: null
+    roundName: ''
 })
 
 const fetchEventCategories = async () => {
@@ -145,7 +141,9 @@ const fetchEventCategories = async () => {
             eventCategories.value = response.events.map(cat => ({
                 id: cat.id,
                 category_name: cat.category_name,
-                division_name: cat.division_name
+                division_name: cat.division_name,
+                event_type_name: cat.event_type_name || '',
+                gender_division_name: cat.gender_division_name || ''
             }))
         }
     } catch (error) {
@@ -174,6 +172,15 @@ const onSessionChange = () => {
     // Session changed, ready to create target
 }
 
+const formatCategoryName = (category) => {
+    const parts = []
+    if (category.division_name) parts.push(category.division_name)
+    if (category.category_name) parts.push(category.category_name)
+    if (category.event_type_name) parts.push(category.event_type_name)
+    if (category.gender_division_name) parts.push(category.gender_division_name)
+    return parts.join(' - ') || 'Kategori'
+}
+
 const handleSubmit = async () => {
     if (!form.value.phase) {
         toast.error('Harap pilih fase')
@@ -197,23 +204,73 @@ const handleSubmit = async () => {
 
     isSubmitting.value = true
     try {
-        // For qualification: target is created implicitly when assignments are made
-        // For now, we'll just validate and redirect - actual target creation happens when assigning participants
-        // In a real implementation, you might want to create a "target" record first
-        
+        // Get session UUID for qualification
+        let sessionUUID = null
         if (form.value.phase === 'qualification') {
-            // Check if target number already exists in this session
-            // This would require an API endpoint to check
-            toast.success('Target siap dibuat. Silakan assign atlet ke target ini dari halaman Target.')
-        } else {
-            // For elimination, targets are created differently
-            toast.success('Target siap dibuat untuk fase eliminasi.')
+            // Find session UUID by session number and category
+            try {
+                const sessionsResponse = await get(`/qualification/sessions?category_id=${form.value.categoryId}`)
+                if (sessionsResponse && sessionsResponse.sessions) {
+                    const session = sessionsResponse.sessions.find(s => 
+                        s.session_name === `Sesi ${form.value.sessionId}` || 
+                        s.session_order === parseInt(form.value.sessionId)
+                    )
+                    if (session) {
+                        sessionUUID = session.id
+                    }
+                }
+            } catch (error) {
+                console.warn('Failed to fetch sessions, will create new one:', error)
+            }
+            
+            // Create session if it doesn't exist
+            if (!sessionUUID) {
+                try {
+                    const createSessionResponse = await post('/qualification/sessions', {
+                        event_category_id: form.value.categoryId,
+                        session_name: `Sesi ${form.value.sessionId}`,
+                        session_order: parseInt(form.value.sessionId)
+                    })
+                    if (createSessionResponse && createSessionResponse.id) {
+                        sessionUUID = createSessionResponse.id
+                    } else {
+                        throw new Error('Failed to create session: No ID returned')
+                    }
+                } catch (error) {
+                    console.error('Failed to create session:', error)
+                    toast.error(error.response?.data?.error || 'Gagal membuat sesi')
+                    return
+                }
+            }
+            
+            // Validate we have a valid UUID
+            if (!sessionUUID || sessionUUID === form.value.sessionId) {
+                toast.error('Gagal mendapatkan UUID sesi. Silakan coba lagi.')
+                return
+            }
         }
+
+        // Create target via API
+        const payload = {
+            phase: form.value.phase,
+            category_id: form.value.categoryId
+        }
+
+        if (form.value.phase === 'qualification') {
+            payload.session_id = sessionUUID
+        } else {
+            payload.round_name = form.value.roundName
+        }
+
+        const response = await post('/targets', payload)
         
-        router.push(`/dashboard/events/${eventId}/targets`)
+        if (response) {
+            toast.success('Target berhasil dibuat')
+            router.push(`/dashboard/events/${eventId}/targets`)
+        }
     } catch (error) {
         console.error('Failed to create target:', error)
-        toast.error(error.response?.data?.error || 'Gagal membuat target')
+        toast.error(error.response?.data?.error || error.message || 'Gagal membuat target')
     } finally {
         isSubmitting.value = false
     }

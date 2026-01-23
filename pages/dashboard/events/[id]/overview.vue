@@ -1,44 +1,66 @@
 <template>
     <div class="flex flex-col gap-8 pb-12">
-        <!-- Header Section -->
-        <div class="flex flex-col md:flex-row md:items-start justify-between gap-6">
-            <div class="space-y-3">
-                <div class="flex items-center gap-3">
-                    <h1 class="text-3xl font-bold text-navy-dark tracking-tight">
-                        {{ isLoading ? 'Loading...' : event?.name || 'Event Overview' }}
-                    </h1>
-                    <span v-if="event?.status === 'ongoing'"
-                        class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700 border border-green-200 flex items-center gap-1.5 shadow-sm">
-                        <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-                        LIVE
-                    </span>
-                </div>
-                <p v-if="event" class="text-text-secondary mt-1 font-medium text-sm">
-                    {{ event.venue || 'Event Venue' }} • {{ event.location || 'Location' }}
-                </p>
-                <div class="flex flex-wrap items-center gap-4">
-                    <span :class="getStatusClass(event?.status)"
-                        class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-widest border shadow-sm">
-                        <span class="w-2 h-2 rounded-full" :class="getStatusDotClass(event?.status)"></span>
-                        {{ getStatusLabel(event?.status) }}
-                    </span>
-                    <div class="h-4 w-px bg-gray-200 hidden sm:block"></div>
-                    <div class="flex items-center gap-2 text-gray-400 text-xs font-bold uppercase tracking-wider">
-                        <Icon icon="ph:hash-bold" class="text-primary text-sm" />
-                        <span>{{ event?.code }}</span>
+        <!-- Enhanced Header -->
+        <div class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
+            <!-- Background Pattern -->
+            <div class="absolute inset-0 opacity-20" style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);"></div>
+            
+            <!-- Decorative Background Elements -->
+            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
+            
+            <!-- Header Content -->
+            <div class="relative p-6 sm:p-8">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                    <div class="flex items-start gap-4">
+                        <!-- Icon Badge -->
+                        <div class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
+                            <Icon icon="ph:calendar-check" class="text-primary text-2xl" />
+                        </div>
+                        
+                        <!-- Title Section -->
+                        <div class="flex-1">
+                            <div class="flex items-center gap-3 mb-2">
+                                <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight">
+                                    {{ isLoading ? 'Loading...' : event?.name || 'Event Overview' }}
+                                </h1>
+                                <span v-if="event?.status === 'ongoing'"
+                                    class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-500/20 text-green-300 border border-green-400/30 flex items-center gap-1.5 shadow-sm">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
+                                    LIVE
+                                </span>
+                            </div>
+                            <p v-if="event" class="text-slate-300 text-sm mb-2">
+                                {{ event.venue || 'Event Venue' }} • {{ event.location || 'Location' }}
+                            </p>
+                            <div class="flex flex-wrap items-center gap-4">
+                                <span :class="getStatusClass(event?.status)"
+                                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-widest border border-white/20 bg-white/5 backdrop-blur">
+                                    <span class="w-2 h-2 rounded-full" :class="getStatusDotClass(event?.status)"></span>
+                                    {{ getStatusLabel(event?.status) }}
+                                </span>
+                                <div class="h-4 w-px bg-white/20 hidden sm:block"></div>
+                                <div class="flex items-center gap-2 text-slate-300 text-xs font-bold uppercase tracking-wider">
+                                    <Icon icon="ph:hash-bold" class="text-primary text-sm" />
+                                    <span>{{ event?.code }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex flex-wrap gap-3 flex-shrink-0">
+                        <BaseButton variant="white" icon="ph:share-network-bold"
+                            class="h-11 px-5 border-white/20 shadow-sm font-bold" @click="openShareDialog">
+                            Bagikan
+                        </BaseButton>
+                        <BaseButton :to="`/dashboard/events/${route.params.id}/edit`" variant="primary"
+                            icon="ph:pencil-simple-line-bold" class="h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all font-bold">
+                            Edit Event
+                        </BaseButton>
                     </div>
                 </div>
-            </div>
-
-            <div class="flex flex-wrap gap-3 mt-2 md:mt-0">
-                <BaseButton variant="white" icon="ph:share-network-bold"
-                    class="h-11 px-5 border-gray-200 shadow-sm font-bold" @click="openShareDialog">
-                    Bagikan
-                </BaseButton>
-                <BaseButton :to="`/dashboard/events/${route.params.id}/edit`" variant="primary"
-                    icon="ph:pencil-simple-line-bold" class="h-11 px-6 shadow-lg shadow-primary/20 font-bold">
-                    Edit Event
-                </BaseButton>
             </div>
         </div>
 
