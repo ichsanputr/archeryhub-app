@@ -1,24 +1,28 @@
 <template>
     <div class="flex flex-col gap-6 pb-12">
         <!-- Enhanced Header -->
-        <div class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
+        <div
+            class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
             <!-- Background Pattern -->
-            <div class="absolute inset-0 opacity-20" style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);"></div>
-            
+            <div class="absolute inset-0 opacity-20"
+                style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);">
+            </div>
+
             <!-- Decorative Background Elements -->
             <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
             <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
-            
+
             <!-- Header Content -->
             <div class="relative p-6 sm:p-8">
                 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
                     <div class="flex items-start gap-4">
                         <!-- Icon Badge -->
-                        <div class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
+                        <div
+                            class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
                             <Icon icon="ic:outline-scoreboard" class="text-primary text-2xl" />
                         </div>
-                        
+
                         <!-- Title Section -->
                         <div class="flex-1">
                             <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
@@ -29,7 +33,7 @@
                             </p>
                         </div>
                     </div>
-                    
+
                     <!-- Action Buttons -->
                     <div class="flex gap-3 flex-shrink-0">
                         <BaseButton variant="white" icon="ph:funnel" class="h-11 px-5">
@@ -62,7 +66,8 @@
                         class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
                         <option value="">Pilih Kategori</option>
                         <option v-for="category in eventCategories" :key="category.id" :value="category.id">
-                            {{ category.division_name }} - {{ category.category_name }}
+                            {{ category.division_name }} - {{ category.category_name }} - {{ category.event_type_name }}
+                            - {{ category.gender_division_name }}
                         </option>
                     </select>
                 </div>
@@ -87,11 +92,13 @@
         <!-- Scoring Workspace (single page flow) -->
         <div v-if="scoringContext.phase && scoringContext.categoryId && scoringContext.cardId"
             class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-            <div class="p-6 border-b border-gray-100 bg-gray-50/30 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+            <div
+                class="p-6 border-b border-gray-100 bg-gray-50/30 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
                 <div>
                     <h3 class="text-lg font-black text-navy tracking-tight flex items-center gap-3">
                         {{ activeTarget?.target_name || 'Target' }}
-                        <span class="text-xs font-bold text-gray-500 bg-white px-3 py-1 rounded-full border border-gray-200">
+                        <span
+                            class="text-xs font-bold text-gray-500 bg-white px-3 py-1 rounded-full border border-gray-200">
                             Target {{ String(activeTarget?.target_number || '').padStart(2, '0') }}
                         </span>
                     </h3>
@@ -100,7 +107,8 @@
                     </p>
                 </div>
                 <div class="flex items-center gap-3">
-                    <BaseButton variant="white" icon="ph:arrows-clockwise" class="h-11 px-5" :loading="isLoading" @click="loadTargets">
+                    <BaseButton variant="white" icon="ph:arrows-clockwise" class="h-11 px-5" :loading="isLoading"
+                        @click="loadTargets">
                         Refresh
                     </BaseButton>
                 </div>
@@ -124,8 +132,10 @@
                                             {{ archer.position }}
                                         </div>
                                         <div class="min-w-0">
-                                            <h3 class="text-lg font-black text-navy leading-tight truncate">{{ archer.name || '-' }}</h3>
-                                            <div class="text-xs text-gray-500 font-medium truncate">{{ archer.division || '-' }}</div>
+                                            <h3 class="text-lg font-black text-navy leading-tight truncate">{{
+                                                archer.name || '-' }}</h3>
+                                            <div class="text-xs text-gray-500 font-medium truncate">{{ archer.division
+                                                || '-' }}</div>
                                         </div>
                                     </div>
                                     <div class="text-right">
@@ -154,15 +164,18 @@
                                             {{ score }}
                                         </div>
                                         <div class="w-px bg-gray-300 mx-1"></div>
-                                        <div class="flex-1 aspect-square bg-navy text-primary rounded-lg flex flex-col items-center justify-center shadow-sm">
+                                        <div
+                                            class="flex-1 aspect-square bg-navy text-primary rounded-lg flex flex-col items-center justify-center shadow-sm">
                                             <span class="text-[10px] uppercase font-bold opacity-70">Sum</span>
-                                            <span class="text-xl font-black">{{ calculateEndSum(archer.currentEndScores) }}</span>
+                                            <span class="text-xl font-black">{{ calculateEndSum(archer.currentEndScores)
+                                                }}</span>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="mt-4 flex items-center gap-2 overflow-x-auto pb-2">
-                                    <span class="text-xs font-semibold text-gray-400 whitespace-nowrap mr-1">Prev:</span>
+                                    <span
+                                        class="text-xs font-semibold text-gray-400 whitespace-nowrap mr-1">Prev:</span>
                                     <div v-for="(prevEnd, pIdx) in archer.prevEnds" :key="pIdx"
                                         class="px-2 py-1 bg-gray-50 rounded border border-gray-100 text-xs text-gray-600 font-mono">
                                         E{{ prevEnd.end_number }}: {{ prevEnd.end_total }}
@@ -210,7 +223,8 @@
                                 <BaseButton variant="white" class="h-12" icon="ph:arrow-right" @click="nextArcher">
                                     Next Archer
                                 </BaseButton>
-                                <BaseButton variant="primary" class="h-12" icon="ph:arrow-fat-line-right" @click="nextEnd" :disabled="!canNextEnd">
+                                <BaseButton variant="primary" class="h-12" icon="ph:arrow-fat-line-right"
+                                    @click="nextEnd" :disabled="!canNextEnd">
                                     Next End
                                 </BaseButton>
                             </div>
@@ -442,8 +456,17 @@ const fetchEventCategories = async () => {
             eventCategories.value = response.events.map(cat => ({
                 id: cat.id,
                 category_name: cat.category_name,
-                division_name: cat.division_name
+                division_name: cat.division_name,
+                event_type_name: cat.event_type_name,
+                gender_division_name: cat.gender_division_name
             }))
+
+            // Auto-select phase and first category
+            scoringContext.value.phase = 'qualification'
+            if (eventCategories.value.length > 0) {
+                scoringContext.value.categoryId = eventCategories.value[0].id
+                // Scoring cards will be fetched by the watcher
+            }
         }
     } catch (error) {
         console.error('Failed to fetch event categories:', error)
@@ -460,6 +483,12 @@ const fetchScoringCards = async () => {
     try {
         const res = await get(`/events/${eventId}/scoring/cards?phase=${scoringContext.value.phase}&category_id=${scoringContext.value.categoryId}`)
         scoringCards.value = res?.cards || []
+
+        // Auto-select first target card
+        if (scoringCards.value.length > 0) {
+            scoringContext.value.cardId = scoringCards.value[0].id
+            loadTargets()
+        }
     } catch (e) {
         console.error('Failed to fetch scoring cards:', e)
         scoringCards.value = []

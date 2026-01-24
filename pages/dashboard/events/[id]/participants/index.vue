@@ -133,10 +133,10 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-50">
-                        <tr v-for="(participant, index) in filteredParticipants" :key="participant.id"
+                        <tr v-for="(participant, index) in participants" :key="participant.id"
                             class="group hover:bg-gray-50/50 transition-colors">
                             <td class="px-6 py-4">
-                                <span class="text-sm font-bold text-gray-400">{{ index + 1 }}</span>
+                                <span class="text-sm font-bold text-gray-400">{{ (page - 1) * limit + index + 1 }}</span>
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center gap-3">
@@ -174,13 +174,46 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr v-if="filteredParticipants.length === 0">
+                        <tr v-if="participants.length === 0">
                             <td colspan="7" class="px-6 py-12 text-center text-gray-400 italic font-medium">
                                 Tidak ada peserta yang ditemukan.
                             </td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
+
+            <!-- Pagination Controls -->
+            <div v-if="totalPages > 1" class="px-6 py-4 border-t border-gray-100 bg-gray-50/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="text-xs font-bold text-gray-400 uppercase tracking-widest">
+                    Showing {{ (page - 1) * limit + 1 }} to {{ Math.min(page * limit, total) }} of {{ total }} participants
+                </div>
+                <div class="flex items-center gap-2">
+                    <button 
+                        @click="changePage(page - 1)" 
+                        :disabled="page === 1"
+                        class="p-2 rounded-lg border border-gray-200 bg-white text-navy/60 hover:text-navy disabled:opacity-30 disabled:cursor-not-allowed transition-all">
+                        <Icon icon="ph:caret-left-bold" />
+                    </button>
+                    
+                    <div class="flex items-center gap-1">
+                        <button v-for="p in totalPages" :key="p"
+                            @click="changePage(p)"
+                            class="h-10 w-10 rounded-lg border text-sm font-black transition-all"
+                            :class="page === p 
+                                ? 'bg-navy border-navy text-white shadow-md' 
+                                : 'bg-white border-gray-200 text-navy/60 hover:bg-gray-50 hover:text-navy'">
+                            {{ p }}
+                        </button>
+                    </div>
+
+                    <button 
+                        @click="changePage(page + 1)" 
+                        :disabled="page === totalPages"
+                        class="p-2 rounded-lg border border-gray-200 bg-white text-navy/60 hover:text-navy disabled:opacity-30 disabled:cursor-not-allowed transition-all">
+                        <Icon icon="ph:caret-right-bold" />
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -202,6 +235,11 @@ const { get } = useApi()
 const { setEvent, clearEvent } = useEventContext()
 
 const participants = ref([])
+const total = ref(0)
+const page = ref(1)
+const limit = ref(10)
+const totalPages = computed(() => Math.ceil(total.value / limit.value))
+
 const searchQuery = ref('')
 const activeDiv = ref('Semua')
 const filterDivs = ['Semua', 'Recurve', 'Compound', 'Barebow']
@@ -221,12 +259,23 @@ const fetchEventDetails = async () => {
 const fetchParticipants = async () => {
     isLoading.value = true
     try {
-        const response = await get(`/events/${route.params.id}/participants`)
+        const offset = (page.value - 1) * limit.value
+        const response = await get(`/events/${route.params.id}/participants?limit=${limit.value}&offset=${offset}`)
         participants.value = response?.participants || []
+        total.value = response?.total || 0
     } catch (error) {
         console.error('Failed to fetch participants:', error)
     } finally {
         isLoading.value = false
+    }
+}
+
+const changePage = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages.value) {
+        page.value = newPage
+        fetchParticipants()
+        // Scroll to top of table
+        window.scrollTo({ top: 0, behavior: 'smooth' })
     }
 }
 
