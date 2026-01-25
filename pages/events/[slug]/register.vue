@@ -51,13 +51,15 @@
                     <span class="material-symbols-outlined text-4xl text-green-500">check_circle</span>
                 </div>
                 <h2 class="text-2xl font-black text-navy mb-3">Pendaftaran Berhasil!</h2>
-                <p class="text-gray-500 mb-6">Pendaftaran Anda telah diterima dan sedang menunggu konfirmasi dari penyelenggara.</p>
+                <p class="text-gray-500 mb-6">Pendaftaran Anda telah diterima dan sedang menunggu konfirmasi dari
+                    penyelenggara.</p>
                 <div class="bg-amber-50 border border-amber-100 rounded-xl p-4 mb-6">
                     <div class="flex items-start gap-3">
                         <span class="material-symbols-outlined text-amber-500 shrink-0">schedule</span>
                         <div class="text-left">
                             <p class="text-sm font-bold text-navy">Menunggu Konfirmasi</p>
-                            <p class="text-xs text-gray-500">Anda akan menerima notifikasi setelah pendaftaran dikonfirmasi.</p>
+                            <p class="text-xs text-gray-500">Anda akan menerima notifikasi setelah pendaftaran
+                                dikonfirmasi.</p>
                         </div>
                     </div>
                 </div>
@@ -80,24 +82,28 @@
             <div class="bg-gradient-to-br from-navy via-navy to-navy-light relative overflow-hidden py-12 sm:py-16">
                 <div class="absolute inset-0 z-0">
                     <div class="absolute inset-0 bg-navy/95 z-10"></div>
-                    <img v-if="event.image" :alt="event.name" class="w-full h-full object-cover opacity-20 mix-blend-overlay"
-                        :src="event.image" />
+                    <img v-if="event.image" :alt="event.name"
+                        class="w-full h-full object-cover opacity-20 mix-blend-overlay" :src="event.image" />
                     <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent z-10"></div>
                 </div>
                 <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <nav class="flex items-center gap-2 text-sm text-gray-300 mb-6">
                         <NuxtLink to="/events" class="hover:text-white transition-colors font-medium">Events</NuxtLink>
                         <span class="material-symbols-outlined text-base text-gray-400">chevron_right</span>
-                        <NuxtLink :to="`/events/${slug}`" class="hover:text-white transition-colors font-medium truncate max-w-[200px] sm:max-w-none">{{ event.name }}</NuxtLink>
+                        <NuxtLink :to="`/events/${slug}`"
+                            class="hover:text-white transition-colors font-medium truncate max-w-[200px] sm:max-w-none">
+                            {{ event.name }}</NuxtLink>
                         <span class="material-symbols-outlined text-base text-gray-400">chevron_right</span>
                         <span class="text-primary font-bold">Konfirmasi Pendaftaran</span>
                     </nav>
                     <div class="flex items-start gap-4">
                         <div class="flex-1">
-                            <h1 class="text-white text-3xl sm:text-4xl font-black tracking-tight mb-3">Konfirmasi Pendaftaran</h1>
-                            <p class="text-gray-300 text-base sm:text-lg">Periksa data Anda sebelum mendaftar ke event ini</p>
+                            <h1 class="text-white text-3xl sm:text-4xl font-black tracking-tight mb-3">Konfirmasi
+                                Pendaftaran</h1>
+                            <p class="text-gray-300 text-base sm:text-lg">Periksa data Anda sebelum mendaftar ke event
+                                ini</p>
                         </div>
-                        <NuxtLink :to="`/events/${slug}`" 
+                        <NuxtLink :to="`/events/${slug}`"
                             class="hidden sm:flex items-center gap-2 px-4 py-2.5 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-xl text-white font-bold text-sm transition-all border border-white/20">
                             <span class="material-symbols-outlined text-lg">arrow_back</span>
                             Kembali
@@ -123,18 +129,22 @@
                             </div>
                             <div class="p-6 space-y-6">
                                 <div class="flex items-start gap-6">
-                                    <div v-if="event.image" class="w-24 h-24 rounded-2xl overflow-hidden shrink-0 bg-gray-100 shadow-s border-2 border-gray-100">
+                                    <div v-if="event.image"
+                                        class="w-24 h-24 rounded-2xl overflow-hidden shrink-0 bg-gray-100 shadow-s border-2 border-gray-100">
                                         <img :src="event.image" :alt="event.name" class="w-full h-full object-cover" />
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <h3 class="text-2xl font-black text-navy mb-3 leading-tight">{{ event.name }}</h3>
+                                        <h3 class="text-2xl font-black text-navy mb-3 leading-tight">{{ event.name }}
+                                        </h3>
                                         <div class="flex flex-wrap gap-4 text-sm">
                                             <div class="flex items-center gap-2 text-gray-600">
-                                                <span class="material-symbols-outlined text-primary text-lg">calendar_month</span>
+                                                <span
+                                                    class="material-symbols-outlined text-primary text-lg">calendar_month</span>
                                                 <span class="font-semibold">{{ event.date || 'TBA' }}</span>
                                             </div>
                                             <div class="flex items-center gap-2 text-gray-600">
-                                                <span class="material-symbols-outlined text-primary text-lg">location_on</span>
+                                                <span
+                                                    class="material-symbols-outlined text-primary text-lg">location_on</span>
                                                 <span class="font-semibold">{{ event.location || 'TBA' }}</span>
                                             </div>
                                         </div>
@@ -148,55 +158,139 @@
 
                         <!-- Archer Profile Card -->
                         <section class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
-                            <div class="p-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white flex items-center justify-between">
+                            <div
+                                class="p-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white flex items-center justify-between">
                                 <h2 class="text-xl font-black text-navy flex items-center gap-3">
                                     <div class="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
                                         <span class="material-symbols-outlined text-primary text-xl">person</span>
                                     </div>
                                     Data Atlet
                                 </h2>
-                                <NuxtLink to="/dashboard/archer/profile" class="text-sm text-primary font-bold hover:text-primary-hover transition-colors flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-primary/5">
+                                <NuxtLink to="/dashboard/archer/profile"
+                                    class="text-sm text-primary font-bold hover:text-primary-hover transition-colors flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-primary/5">
                                     <span class="material-symbols-outlined text-base">edit</span>
                                     Edit Profil
                                 </NuxtLink>
                             </div>
                             <div class="p-6">
                                 <div class="flex items-center gap-5 mb-6 pb-6 border-b border-gray-100">
-                                    <div class="h-20 w-20 rounded-2xl bg-gradient-to-br from-navy to-navy-light flex items-center justify-center text-primary font-black text-2xl shrink-0 overflow-hidden border-2 border-white">
-                                        <img v-if="archerProfile?.avatar_url" :src="archerProfile.avatar_url" :alt="archerProfile.full_name" class="w-full h-full object-cover" />
+                                    <div
+                                        class="h-20 w-20 rounded-2xl bg-gradient-to-br from-navy to-navy-light flex items-center justify-center text-primary font-black text-2xl shrink-0 overflow-hidden border-2 border-white">
+                                        <img v-if="archerProfile?.avatar_url" :src="archerProfile.avatar_url"
+                                            :alt="archerProfile.full_name" class="w-full h-full object-cover" />
                                         <span v-else>{{ getInitials(archerProfile?.full_name || user.name) }}</span>
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <h3 class="text-xl font-black text-navy mb-1">{{ archerProfile?.full_name || user.name }}</h3>
-                                        <p class="text-sm text-gray-500 mb-1">{{ archerProfile?.email || user.email }}</p>
-                                        <p v-if="archerProfile?.athlete_code" class="text-xs text-primary font-bold bg-primary/10 px-2 py-0.5 rounded-md inline-block">{{ archerProfile.athlete_code }}</p>
+                                        <h3 class="text-xl font-black text-navy mb-1">{{ archerProfile?.full_name ||
+                                            user.name }}</h3>
+                                        <p class="text-sm text-gray-500 mb-1">{{ archerProfile?.email || user.email }}
+                                        </p>
+                                        <p v-if="archerProfile?.athlete_code"
+                                            class="text-xs text-primary font-bold bg-primary/10 px-2 py-0.5 rounded-md inline-block">
+                                            {{ archerProfile.athlete_code }}</p>
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                                    <div class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100">
-                                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">Jenis Kelamin</p>
-                                        <p class="text-sm font-bold text-navy">{{ archerProfile?.gender === 'male' ? 'Pria' : archerProfile?.gender === 'female' ? 'Wanita' : '-' }}</p>
+                                    <div
+                                        class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100">
+                                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">
+                                            Jenis Kelamin</p>
+                                        <p class="text-sm font-bold text-navy">{{ archerProfile?.gender === 'male' ?
+                                            'Pria' : archerProfile?.gender === 'female' ? 'Wanita' : '-' }}</p>
                                     </div>
-                                    <div class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100">
-                                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">Tangan Dominan</p>
-                                        <p class="text-sm font-bold text-navy">{{ archerProfile?.dominant_hand === 'right' ? 'Kanan' : archerProfile?.dominant_hand === 'left' ? 'Kiri' : '-' }}</p>
+                                    <div
+                                        class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100">
+                                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">
+                                            Jenis Busur</p>
+                                        <p class="text-sm font-bold text-navy capitalize">{{ archerProfile?.bow_type ||
+                                            '-' }}</p>
                                     </div>
-                                    <div class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100">
-                                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">Jenis Busur</p>
-                                        <p class="text-sm font-bold text-navy capitalize">{{ archerProfile?.bow_type || '-' }}</p>
+                                    <div
+                                        class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100">
+                                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">
+                                            Pengalaman</p>
+                                        <p class="text-sm font-bold text-navy">{{ archerProfile?.experience_years || 0
+                                        }} Tahun</p>
                                     </div>
-                                    <div class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100">
-                                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">Pengalaman</p>
-                                        <p class="text-sm font-bold text-navy">{{ archerProfile?.experience_years || 0 }} Tahun</p>
+                                    <div
+                                        class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100 col-span-2">
+                                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">
+                                            Klub</p>
+                                        <p class="text-sm font-bold text-navy truncate">{{ archerProfile?.club_name ||
+                                            'Belum terdaftar' }}</p>
                                     </div>
-                                    <div class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100 col-span-2">
-                                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">Klub</p>
-                                        <p class="text-sm font-bold text-navy truncate">{{ archerProfile?.club_name || 'Belum terdaftar' }}</p>
+                                    <div v-if="archerProfile?.city"
+                                        class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100 col-span-2 sm:col-span-3">
+                                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">
+                                            Kota/Provinsi</p>
+                                        <p class="text-sm font-bold text-navy">{{ archerProfile.city }}{{
+                                            archerProfile.province ? ', ' + archerProfile.province : '' }}</p>
                                     </div>
-                                    <div v-if="archerProfile?.city" class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100 col-span-2 sm:col-span-3">
-                                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">Kota/Provinsi</p>
-                                        <p class="text-sm font-bold text-navy">{{ archerProfile.city }}{{ archerProfile.province ? ', ' + archerProfile.province : '' }}</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Payment Proof Upload -->
+                        <section v-if="event.registration_fee > 0"
+                            class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+                            <div
+                                class="p-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white flex items-center justify-between">
+                                <h2 class="text-xl font-black text-navy flex items-center gap-3">
+                                    <div class="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-primary text-xl">upload_file</span>
                                     </div>
+                                    Unggah Bukti Pembayaran
+                                </h2>
+                            </div>
+                            <div class="p-6">
+                                <p class="text-sm text-gray-500 mb-6">Silakan unggah bukti transfer pembayaran sesuai
+                                    dengan biaya pendaftaran yang tertera. Anda dapat mengunggah lebih dari satu foto
+                                    jika diperlukan.</p>
+
+                                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-6">
+                                    <!-- Previews -->
+                                    <div v-for="(img, idx) in paymentPreviews" :key="idx"
+                                        class="relative aspect-square rounded-2xl overflow-hidden border-2 border-gray-100 group shadow-sm">
+                                        <img :src="img.url" class="w-full h-full object-cover" />
+                                        <div
+                                            class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                            <button @click="removeProof(idx)"
+                                                class="p-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition-colors shadow-lg">
+                                                <span class="material-symbols-outlined text-base">delete</span>
+                                            </button>
+                                        </div>
+                                        <div v-if="img.uploading"
+                                            class="absolute inset-0 bg-white/80 flex items-center justify-center">
+                                            <span
+                                                class="material-symbols-outlined animate-spin text-primary">sync</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Add Button -->
+                                    <button @click="triggerProofUpload"
+                                        class="aspect-square rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50 hover:border-primary hover:bg-primary/5 transition-all flex flex-col items-center justify-center gap-2 group cursor-pointer">
+                                        <div
+                                            class="h-10 w-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+                                            <span
+                                                class="material-symbols-outlined text-2xl text-primary">add_a_photo</span>
+                                        </div>
+                                        <span
+                                            class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Tambah
+                                            Foto</span>
+                                    </button>
+                                </div>
+
+                                <input ref="proofInput" type="file" multiple accept="image/*" class="hidden"
+                                    @change="handleProofUpload" />
+
+                                <div
+                                    class="flex items-center gap-3 p-4 bg-primary/5 border border-primary/20 rounded-xl">
+                                    <span class="material-symbols-outlined text-primary">info</span>
+                                    <p class="text-xs text-navy/70 font-medium leading-relaxed">
+                                        Pastikan bukti transfer menampilkan <strong>Nominal</strong>,
+                                        <strong>Tanggal</strong>, and <strong>Nama Pengirim</strong> dengan jelas.
+                                        Format file: JPG, PNG (Maks 5MB).
+                                    </p>
                                 </div>
                             </div>
                         </section>
@@ -217,15 +311,20 @@
                                     <select v-model="form.category_id" required
                                         class="w-full px-4 py-3.5 text-sm rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-white font-medium">
                                         <option value="" disabled>Pilih Kategori yang Sesuai</option>
-                                        <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
+                                        <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}
+                                        </option>
                                     </select>
-                                    <p class="text-xs text-gray-500">Pilih kategori sesuai dengan divisi, usia, dan jenis busur Anda</p>
+                                    <p class="text-xs text-gray-500">Pilih kategori sesuai dengan divisi, usia, dan
+                                        jenis busur Anda</p>
                                 </div>
-                                <div v-if="categories.length === 0 && !pending" class="p-4 bg-amber-50 border-2 border-amber-100 rounded-xl">
+                                <div v-if="categories.length === 0 && !pending"
+                                    class="p-4 bg-amber-50 border-2 border-amber-100 rounded-xl">
                                     <div class="flex items-start gap-3">
-                                        <span class="material-symbols-outlined text-amber-500 text-xl shrink-0">info</span>
+                                        <span
+                                            class="material-symbols-outlined text-amber-500 text-xl shrink-0">info</span>
                                         <p class="text-sm text-amber-700 font-medium">
-                                            Kategori untuk event ini belum tersedia. Silakan hubungi penyelenggara untuk informasi lebih lanjut.
+                                            Kategori untuk event ini belum tersedia. Silakan hubungi penyelenggara untuk
+                                            informasi lebih lanjut.
                                         </p>
                                     </div>
                                 </div>
@@ -241,39 +340,35 @@
                                 Ringkasan Pendaftaran
                             </h3>
                             <div class="space-y-4 mb-6">
-                                <div class="flex justify-between items-center pb-3 border-b border-gray-200">
-                                    <span class="text-sm text-gray-500 font-medium">Event</span>
-                                    <span class="font-bold text-navy text-right max-w-[200px] truncate">{{ event.name }}</span>
-                                </div>
-                                <div class="flex justify-between items-center pb-3 border-b border-gray-200">
-                                    <span class="text-sm text-gray-500 font-medium">Atlet</span>
-                                    <span class="font-bold text-navy truncate max-w-[200px] text-right">{{ archerProfile?.full_name || user?.name }}</span>
-                                </div>
-                                <div class="flex justify-between items-start pb-3 border-b border-gray-200">
-                                    <span class="text-sm text-gray-500 font-medium shrink-0">Kategori</span>
-                                    <span class="font-bold text-navy text-right text-sm max-w-[200px]">{{ getSelectedCategoryName() }}</span>
-                                </div>
-                                
                                 <!-- Payment Methods -->
                                 <div v-if="paymentMethods.length > 0" class="pt-3 border-t border-gray-200">
-                                    <p class="text-xs font-black text-gray-700 mb-3 uppercase tracking-wider">Metode Pembayaran</p>
+                                    <p class="text-xs font-black text-gray-700 mb-3 uppercase tracking-wider">Metode
+                                        Pembayaran</p>
                                     <div class="space-y-2.5">
-                                        <div v-for="method in paymentMethods" :key="method.uuid" class="flex items-start gap-3 p-3 bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-100">
-                                            <div class="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                                                <span class="material-symbols-outlined text-primary text-base">payments</span>
+                                        <div v-for="method in paymentMethods" :key="method.uuid"
+                                            class="flex items-start gap-3 p-3 bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-100">
+                                            <div
+                                                class="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                                                <span
+                                                    class="material-symbols-outlined text-primary text-base">payments</span>
                                             </div>
                                             <div class="flex-1 min-w-0">
-                                                <p class="font-bold text-navy text-sm mb-1">{{ method.payment_method }}</p>
-                                                <p v-if="method.account_name" class="text-xs text-gray-600 mb-0.5">{{ method.account_name }}</p>
-                                                <p v-if="method.account_number" class="text-xs font-mono text-gray-700 bg-gray-100 px-2 py-0.5 rounded inline-block">{{ method.account_number }}</p>
+                                                <p class="font-bold text-navy text-sm mb-1">{{ method.payment_method }}
+                                                </p>
+                                                <p v-if="method.account_name" class="text-xs text-gray-600 mb-0.5">{{
+                                                    method.account_name }}</p>
+                                                <p v-if="method.account_number"
+                                                    class="text-xs font-mono text-gray-700 bg-gray-100 px-2 py-0.5 rounded inline-block">
+                                                    {{ method.account_number }}</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="flex justify-between items-center pt-3 border-t-2 border-primary/20">
                                     <span class="text-base font-black text-navy">Biaya Pendaftaran</span>
-                                    <span class="text-2xl font-black text-primary">{{ event.registration_fee ? `Rp ${event.registration_fee.toLocaleString('id-ID')}` : 'Gratis' }}</span>
+                                    <span class="text-2xl font-black text-primary">{{ event.registration_fee ? `Rp
+                                        ${event.registration_fee.toLocaleString('id-ID')}` : 'Gratis' }}</span>
                                 </div>
                             </div>
 
@@ -290,7 +385,8 @@
                                 <div class="flex items-start gap-3">
                                     <span class="material-symbols-outlined text-blue-500 text-lg shrink-0">info</span>
                                     <p class="text-xs text-gray-600 leading-relaxed font-medium">
-                                        Setelah mendaftar, Anda akan menerima konfirmasi dari penyelenggara. Pastikan data Anda sudah benar sebelum melanjutkan.
+                                        Setelah mendaftar, Anda akan menerima konfirmasi dari penyelenggara. Pastikan
+                                        data Anda sudah benar sebelum melanjutkan.
                                     </p>
                                 </div>
                             </div>
@@ -328,11 +424,82 @@ const registrationSuccess = ref(false)
 
 const form = ref({
     category_id: '',
-    payment_amount: 0
+    payment_amount: 0,
+    payment_proofs: []
 })
 
+const proofInput = ref(null)
+const paymentPreviews = ref([])
+
+const triggerProofUpload = () => {
+    proofInput.value?.click()
+}
+
+const handleProofUpload = async (event) => {
+    const files = Array.from(event.target.files)
+    if (!files.length) return
+
+    for (const file of files) {
+        // Validation
+        if (file.size > 5 * 1024 * 1024) {
+            alert(`File ${file.name} terlalu besar (Maks 5MB)`)
+            continue
+        }
+
+        // Create preview
+        const reader = new FileReader()
+        const previewId = Date.now() + Math.random()
+
+        reader.onload = (e) => {
+            paymentPreviews.value.push({
+                id: previewId,
+                url: e.target.result,
+                uploading: true
+            })
+        }
+        reader.readAsDataURL(file)
+
+        // Upload to server
+        const formData = new FormData()
+        formData.append('file', file)
+
+        try {
+            const response = await post('/api/v1/media/upload', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            })
+
+            // Find and update preview
+            const idx = paymentPreviews.value.findIndex(p => p.id === previewId)
+            if (idx !== -1) {
+                paymentPreviews.value[idx].uploading = false
+                paymentPreviews.value[idx].finalUrl = response.url
+            }
+
+            form.value.payment_proofs.push(response.url)
+        } catch (err) {
+            console.error('Upload failed:', err)
+            // Remove preview on failure
+            paymentPreviews.value = paymentPreviews.value.filter(p => p.id !== previewId)
+            alert(`Gagal mengunggah ${file.name}`)
+        }
+    }
+
+    // Reset input
+    event.target.value = ''
+}
+
+const removeProof = (index) => {
+    const removedUrl = paymentPreviews.value[index].finalUrl
+    paymentPreviews.value.splice(index, 1)
+    form.value.payment_proofs = form.value.payment_proofs.filter(url => url !== removedUrl)
+}
+
 const isFormValid = computed(() => {
-    return form.value.category_id && data.value?.archerProfile
+    const categorySelected = !!form.value.category_id
+    const archerProfileExists = !!data.value?.archerProfile
+    const paymentProofProvided = event.value.registration_fee > 0 ? form.value.payment_proofs.length > 0 : true
+
+    return categorySelected && archerProfileExists && paymentProofProvided
 })
 
 const getInitials = (name) => {
@@ -351,7 +518,7 @@ const getSelectedCategoryName = () => {
 const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-register-${slug}`, async () => {
     const { user: authUser, isLoggedIn: authLoggedIn } = useAuth()
     const { get: apiGet } = useApi()
-    
+
     // Check auth status
     const isUserArcher = authUser.value?.type === 'archer' || authUser.value?.role === 'archer'
     if (!authLoggedIn.value || !isUserArcher) {
@@ -369,10 +536,10 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
             apiGet(`/events/${slug}/categories`),
             apiGet('/archers/me').catch(() => apiGet('/auth/me').catch(() => null))
         ])
-        
+
         let eventData = null
         let paymentMethodsData = []
-        
+
         if (eventResponse) {
             const eventId = eventResponse.uuid || eventResponse.id
             eventData = {
@@ -384,7 +551,7 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
                 description: eventResponse.description || '',
                 registration_fee: eventResponse.entry_fee || eventResponse.registration_fee || 0
             }
-            
+
             // Fetch payment methods using event UUID
             try {
                 const paymentMethodsResponse = await apiGet(`/events/${eventId}/payment-methods`).catch(() => apiGet(`/events/${slug}/payment-methods`).catch(() => ({ data: [] })))
@@ -395,7 +562,7 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
                 console.log('Failed to fetch payment methods:', err)
             }
         }
-        
+
         let categoriesData = []
         if (categoriesResponse) {
             categoriesData = (categoriesResponse.events || categoriesResponse.categories || []).map(cat => ({
@@ -403,7 +570,7 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
                 name: `${cat.division_name || cat.division || ''} - ${cat.category_name || cat.category || ''} ${cat.event_type_name ? '- ' + cat.event_type_name : ''} ${cat.gender_division_name ? '- ' + cat.gender_division_name : ''}`.trim()
             }))
         }
-        
+
         let archerProfileData = profileResponse || null
         // Fetch club name if club_id exists
         if (archerProfileData?.club_id && !archerProfileData.club_name) {
@@ -416,7 +583,7 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
                 console.log('Club not found')
             }
         }
-        
+
         return {
             event: eventData,
             categories: categoriesData,
@@ -474,9 +641,10 @@ const handleSubmit = async () => {
         const payload = {
             athlete_id: archerProfile.value?.uuid || archerProfile.value?.id || user.value?.id,
             event_category_id: form.value.category_id,
-            payment_amount: form.value.payment_amount || 0
+            payment_amount: form.value.payment_amount || 0,
+            payment_proof_urls: form.value.payment_proofs
         }
-        
+
         await post(`/events/${event.value.id}/participants`, payload)
 
         registrationSuccess.value = true

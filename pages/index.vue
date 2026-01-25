@@ -82,7 +82,7 @@
                                                 class="text-[8px] sm:text-xs font-bold uppercase tracking-wider opacity-80">{{
                                                     event.month }}</span>
                                             <span class="text-sm sm:text-2xl font-black leading-none">{{ event.day
-                                            }}</span>
+                                                }}</span>
                                         </div>
 
                                         <div class="flex flex-col min-w-0 flex-1">
@@ -192,8 +192,7 @@
                         <div
                             class="relative w-full aspect-video md:aspect-[4/3] rounded-[2rem] bg-navy overflow-hidden shadow-2xl group border border-white/5">
                             <!-- Background Image -->
-                            <img :src="featureItems[activeFeature].image"
-                                :alt="featureItems[activeFeature].title"
+                            <img :src="featureItems[activeFeature].image" :alt="featureItems[activeFeature].title"
                                 class="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 transition-all duration-1000 scale-[1.05]" />
 
                             <!-- Static Overlays -->
@@ -245,8 +244,7 @@
                         <div v-if="isMobile"
                             class="relative w-full aspect-video rounded-3xl bg-navy overflow-hidden shadow-xl border border-white/5 animate-fade-in">
                             <!-- Background Image -->
-                            <img :src="featureItems[activeFeature].image"
-                                :alt="featureItems[activeFeature].title"
+                            <img :src="featureItems[activeFeature].image" :alt="featureItems[activeFeature].title"
                                 class="w-full h-full object-cover opacity-60 scale-[1.05]" />
 
                             <!-- Static Overlays -->
@@ -331,7 +329,8 @@
                     <div v-for="live in liveEvents" :key="live.name"
                         class="min-w-[300px] md:min-w-[380px] lg:min-w-0 snap-center group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:border-primary/50 transition-all duration-300 flex flex-col">
                         <div class="relative h-48 overflow-hidden">
-                            <img :src="live.image" :alt="live.name"
+                            <img :src="useImageOrDefault(live.image || live.image_url || live.banner_url)"
+                                :alt="live.name"
                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                         </div>
                         <div class="p-5 flex-1 flex flex-col">
@@ -344,11 +343,11 @@
                                 <span class="truncate">{{ live.location }}</span>
                             </div>
                             <div class="mt-auto">
-                                <button
+                                <NuxtLink :to="`/events/${live.slug || live.uuid}`"
                                     class="w-full h-10 rounded-lg border-2 border-navy text-navy hover:bg-navy hover:text-white font-bold text-sm transition-all flex items-center justify-center gap-2">
                                     <span class="material-symbols-outlined text-lg">scoreboard</span>
                                     Cek Skor Live
-                                </button>
+                                </NuxtLink>
                             </div>
                         </div>
                     </div>
@@ -419,7 +418,7 @@
                     <NuxtLink v-for="news in latestNews" :key="news.title" :to="`/berita/${news.slug}`"
                         class="flex flex-col group cursor-pointer">
                         <div class="relative h-60 rounded-2xl overflow-hidden mb-5">
-                            <img :src="news.image" :alt="news.title"
+                            <img :src="useImageOrDefault(news.image || news.image_url)" :alt="news.title"
                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                             <div
                                 class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/60 to-transparent">
@@ -460,6 +459,7 @@ import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useAuth } from '~/composables/useAuth'
+import { useApi } from '~/composables/useApi'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -485,19 +485,55 @@ const { isLoggedIn, user } = useAuth()
 const isArcher = computed(() => user.value?.type === 'archer' || user.value?.role === 'archer')
 
 const activeRegion = ref('Semua Wilayah')
+const clubs = ref([])
 
 const regions = ['Semua Wilayah', 'DKI Jakarta', 'Jawa Barat', 'Jawa Timur', 'DI Yogyakarta', 'Banten', 'Bali']
 
-const clubs = [
-    { slug: 'jakarta-elite-archery', name: 'Jakarta Elite Archery', location: 'GBK Senayan, Jakarta', icon: 'target', verified: true, region: 'DKI Jakarta' },
-    { slug: 'pasopati-archery', name: 'Pasopati Archery', location: 'Sleman, Yogyakarta', icon: 'legend_toggle', verified: true, region: 'DI Yogyakarta' },
-    { slug: 'borneo-eagle-club', name: 'Borneo Eagle Club', location: 'Balikpapan, Kaltim', icon: 'flight', verified: false, region: 'Kalimantan' },
-    { slug: 'bali-zen-archery', name: 'Bali Zen Archery', location: 'Ubud, Bali', icon: 'spa', verified: false, region: 'Bali' }
-]
+// Map province names to region names
+const provinceToRegion = {
+    'DKI Jakarta': 'DKI Jakarta',
+    'Jawa Barat': 'Jawa Barat',
+    'Jawa Timur': 'Jawa Timur',
+    'DI Yogyakarta': 'DI Yogyakarta',
+    'Banten': 'Banten',
+    'Bali': 'Bali',
+    'Kalimantan Timur': 'Kalimantan'
+}
+
+const fetchClubs = async () => {
+    try {
+        const response = await get('/clubs', { query: { limit: '20' } })
+        const clubsData = response?.data || []
+        // Map club names to icons
+        const iconMap = {
+            'Jakarta Elite Archery': 'target',
+            'Pasopati Archery': 'legend_toggle',
+            'Borneo Eagle Club': 'flight',
+            'Bali Zen Archery': 'spa',
+            'Bandung Archery Club': 'sports',
+            'Surabaya Archery Team': 'emoji_events',
+            'Akun Ngekode': 'code'
+        }
+
+        clubs.value = clubsData.map(club => ({
+            slug: club.slug,
+            name: club.name,
+            location: club.city ? `${club.city}${club.province ? ', ' + club.province : ''}` : (club.province || ''),
+            icon: iconMap[club.name] || 'target', // Use mapped icon or default
+            verified: club.verification_status === 'verified',
+            region: provinceToRegion[club.province] || club.province || 'Semua Wilayah',
+            city: club.city,
+            province: club.province
+        }))
+    } catch (error) {
+        console.error('Failed to fetch clubs:', error)
+        clubs.value = []
+    }
+}
 
 const filteredClubs = computed(() => {
-    if (activeRegion.value === 'Semua Wilayah') return clubs
-    return clubs.filter(club => club.region === activeRegion.value)
+    if (activeRegion.value === 'Semua Wilayah') return clubs.value
+    return clubs.value.filter(club => club.region === activeRegion.value)
 })
 
 // Refs for GSAP animations
@@ -514,10 +550,18 @@ onMounted(() => {
         .to(heroTitle.value, { opacity: 1, y: 0, duration: 1 }, 0.4)
         .to(heroText.value, { opacity: 1, y: 0, duration: 1 }, 0.6)
         .to(heroButtons.value, { opacity: 1, y: 0, duration: 1 }, 0.8)
+
+    // Fetch live events, latest news, and clubs
+    fetchLiveEvents()
+    fetchLatestNews()
+    fetchClubs()
 })
 
 useHead({
     title: 'Archeryhub.id - All in One Platform Panahan Indonesia',
+    link: [
+        { rel: 'canonical', href: useRequestURL().href }
+    ],
     meta: [
         {
             name: 'description', content: 'Archeryhub.id hadir sebagai wadah bagi seluruh penggiat panahan di Indonesia. Dari pemula hingga juara nasional, di sini kita terhubung lewat event, prestasi, dan semangat yang sama.'
@@ -562,56 +606,25 @@ const upcomingEvents = [
     }
 ]
 
-const liveEvents = [
-    {
-        name: 'Surabaya Archery Festival 2024',
-        location: 'Lapangan KONI Jatim, Surabaya',
-        type: 'Qualification Round',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAJXWL-Z7f7fP24_IyBjI_e-q_jYcMbzRtaKiOpKP8TxgqwSxRrCqNcE-GXJXbiCEv6rlwlNJzTmbbgAdQFWHH4Jk_Fw-aslTiT3Qezy8bbmGRG0WoRA-yD8tykZuxYObytzJ6Yf7yNL8poFU6vWlyEuFjbHcIzwfoLAMru-bfdw4GXezmv71SwRPYw_-Ct6ZP3f6AqglpvBIhCSrp9g13uTQpj69_-hzZqp1wSqJJ-9PdZqp0CYWgFWsajdRos9QmU7eeyuFhFPH0'
-    },
-    {
-        name: 'Bali International Open',
-        location: 'Denpasar, Bali',
-        type: 'Final Round',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBmKeu4qLnuI8uJ8itXirIGY311f6c_CfhqFD3qtMv-M4oTNDiSeGeylyU0qI_7lQHeMywtfdDw175-dWrdxwZwWSnnEMmkBca4ScW0dEbBQ_wZYVWuCaOPI-A204QdKHKXQxHsutHbZP8c9uPaZpfK8lzqziHTAW_dqnlmi99AtLhIGmxfUZ-irvcNm1YUswSsH9HGhvq4Hr6jq7rsveM4HwMmhNVDABEGcgh0sYQHoHy9t1IzkTX2LexV72X240IEyZL2_InQGZ8'
-    },
-    {
-        name: 'Bandung Open Championship',
-        location: 'Siliwangi, Bandung',
-        type: 'Elimination Round',
-        image: 'https://images.unsplash.com/photo-1541535881962-3bb380b08458?auto=format&fit=crop&q=80&w=800'
-    },
-    {
-        name: 'Jakarta Indoor Archery',
-        location: 'Senayan, Jakarta',
-        type: 'Qualification Round',
-        image: 'https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&q=80&w=800'
-    },
-    {
-        name: 'Yogya National Series',
-        location: 'Mandala Krida, DIY',
-        type: 'Semi Final',
-        image: 'https://images.unsplash.com/photo-1444491741275-3747c33cc99b?auto=format&fit=crop&q=80&w=800'
-    },
-    {
-        name: 'Banten Archery Cup 2024',
-        location: 'Tangerang, Banten',
-        type: 'Final Round',
-        image: 'https://images.unsplash.com/photo-1511880493577-f3d35706497f?auto=format&fit=crop&q=80&w=800'
-    },
-    {
-        name: 'Medan Archery Championship',
-        location: 'Medan, Sumatera Utara',
-        type: 'Qualification Round',
-        image: 'https://images.unsplash.com/photo-1565992441121-4367c2967103?auto=format&fit=crop&q=80&w=800'
-    },
-    {
-        name: 'Makassar Open Tournament',
-        location: 'Makassar, Sulawesi Selatan',
-        type: 'Elimination Round',
-        image: 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&q=80&w=800'
+const { get } = useApi()
+const liveEvents = ref([])
+
+const fetchLiveEvents = async () => {
+    try {
+        const response = await get('/events', { query: { status: 'ongoing', limit: '8' } })
+        liveEvents.value = (response?.events || []).map(event => ({
+            name: event.name || event.title,
+            location: event.location || event.venue || '',
+            type: event.status || 'Ongoing',
+            image: event.image || event.banner_url || event.image_url,
+            slug: event.slug || event.uuid,
+            uuid: event.uuid
+        }))
+    } catch (error) {
+        console.error('Failed to fetch live events:', error)
+        liveEvents.value = []
     }
-]
+}
 
 const activeFeature = ref(0)
 const featureItems = [
@@ -674,32 +687,25 @@ const featureItems = [
 ]
 
 
-const latestNews = [
-    {
-        slug: 'hasil-seleksi-pelatnas-2025',
-        title: 'Hasil Seleksi Pelatnas Archery 2025 Resmi Diumumkan',
-        date: 'Oct 28, 2024',
-        category: 'Pelatnas',
-        image: '/berita1.JPG',
-        excerpt: 'Persatuan Panahan Indonesia secara resmi merilis daftar atlet yang terpilih untuk mengikuti pemusatan latihan nasional tahun depan.'
-    },
-    {
-        slug: 'indonesia-juara-umum-sea-2024',
-        title: 'Indonesia Juara Umum di Kejuaraan Asia Tenggara 2024',
-        date: 'Oct 25, 2024',
-        category: 'Prestasi',
-        image: '/berita2.JPG',
-        excerpt: 'Penampilan bersejarah kontingen nasional berhasil mengamankan 5 medali emas, mendominasi divisi Recurve dan Compound.'
-    },
-    {
-        slug: 'regulasi-peralatan-baru-indoor',
-        title: 'Regulasi Peralatan Baru untuk Musim Indoor Mendatang',
-        date: 'Oct 20, 2024',
-        category: 'Regulasi',
-        image: '/berita3.JPG',
-        excerpt: 'World Archery telah memperbarui aturan mengenai diameter anak panah dan berat stabilizer untuk kompetisi dalam ruangan.'
+const latestNews = ref([])
+
+const fetchLatestNews = async () => {
+    try {
+        const response = await get('/news', { query: { limit: '3' } })
+        const newsData = response?.data || []
+        latestNews.value = newsData.slice(0, 3).map(article => ({
+            slug: article.slug,
+            title: article.title,
+            date: article.published_at ? new Date(article.published_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : new Date(article.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
+            category: article.category || 'Berita',
+            image: article.image_url,
+            excerpt: article.excerpt || ''
+        }))
+    } catch (error) {
+        console.error('Failed to fetch latest news:', error)
+        latestNews.value = []
     }
-]
+}
 </script>
 
 <style scoped>

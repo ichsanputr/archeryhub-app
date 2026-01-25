@@ -42,21 +42,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Register CTA - Auth-aware: Only show for non-logged-in or logged-in archers -->
-                    <div v-if="!isLoggedIn || isArcher" class="flex flex-col items-start gap-2">
-                        <!-- Not logged in -->
-                        <NuxtLink v-if="!isLoggedIn" :to="loginUrl"
-                            class="h-10 px-5 bg-primary hover:bg-primary-hover text-navy font-bold text-sm rounded-lg transition-colors flex items-center justify-center gap-2 shadow-md">
-                            Login untuk Mendaftar
-                            <span class="material-symbols-outlined text-lg">login</span>
-                        </NuxtLink>
-                        <!-- Logged in as archer -->
-                        <NuxtLink v-else :to="registerUrl"
-                            class="h-10 px-5 bg-primary hover:bg-primary-hover text-navy font-bold text-sm rounded-lg transition-colors flex items-center justify-center gap-2 shadow-md">
-                            Yuk Ikutan!
-                            <span class="material-symbols-outlined text-lg">arrow_forward</span>
-                        </NuxtLink>
-                    </div>
                 </div>
             </div>
         </div>
@@ -65,7 +50,8 @@
         <div class="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center gap-1 overflow-x-auto no-scrollbar -mb-px">
-                    <button v-for="tab in tabs" :key="tab" @click="navigateTo({ query: { ...route.query, tab } }, { replace: true })"
+                    <button v-for="tab in tabs" :key="tab"
+                        @click="navigateTo({ query: { ...route.query, tab } }, { replace: true })"
                         class="px-4 md:px-6 py-3 md:py-4 font-semibold text-sm md:text-base transition-colors whitespace-nowrap border-b-2"
                         :class="activeTab === tab ? 'text-navy border-primary bg-primary/5' : 'text-gray-500 border-transparent hover:text-navy hover:bg-gray-50'">
                         {{ tab }}
@@ -76,7 +62,8 @@
 
         <!-- Main Content -->
         <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-            <div :class="activeTab === 'Hasil' ? 'grid grid-cols-1' : 'grid grid-cols-1 lg:grid-cols-3 gap-8 xl:gap-12'">
+            <div
+                :class="activeTab === 'Hasil' ? 'grid grid-cols-1' : 'grid grid-cols-1 lg:grid-cols-3 gap-8 xl:gap-12'">
                 <!-- Left Column -->
                 <div :class="activeTab === 'Hasil' ? 'space-y-10' : 'lg:col-span-2 space-y-10'">
                     <div v-if="activeTab === 'Ringkasan'" class="space-y-10">
@@ -249,7 +236,8 @@
                                     Yuk Daftar Sekarang
                                 </NuxtLink>
                                 <p class="text-center text-xs text-gray-400 mt-3">Sudah terdaftar?
-                                    <NuxtLink class="text-navy font-bold hover:underline" :to="`/dashboard/events`">Cek status
+                                    <NuxtLink class="text-navy font-bold hover:underline" :to="`/dashboard/events`">Cek
+                                        status
                                     </NuxtLink>
                                 </p>
                             </template>
@@ -374,7 +362,7 @@ const tournament = ref(fallbackTournament)
 
 const transformEventData = (data) => ({
     name: data.name || data.title || '',
-    date: data.start_date 
+    date: data.start_date
         ? `${new Date(data.start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${new Date(data.end_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
         : data.date || '',
     location: data.venue || data.location || '',
@@ -416,9 +404,19 @@ definePageMeta({
     layout: 'landing'
 })
 
+useHead({
+    link: [
+        { rel: 'canonical', href: useRequestURL().href }
+    ]
+})
+
 useSeoMeta({
     title: () => `${tournament.value.name} - Archeryhub.id`,
-    description: () => `Register for ${tournament.value.name} at ${tournament.value.location}. ${tournament.value.date}.`
+    description: () => tournament.value.description,
+    ogTitle: () => tournament.value.name,
+    ogDescription: () => tournament.value.description,
+    ogImage: () => tournament.value.image,
+    twitterCard: 'summary_large_image',
 })
 </script>
 

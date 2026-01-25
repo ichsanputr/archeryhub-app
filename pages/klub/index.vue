@@ -102,8 +102,10 @@
 
         <!-- Clubs Grid -->
         <section class="container mx-auto px-4 max-w-7xl pb-16">
-            <div v-if="isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-60 pointer-events-none">
-                <div v-for="i in 6" :key="i" class="h-[400px] bg-white rounded-2xl border-2 border-gray-100 animate-pulse"></div>
+            <div v-if="isLoading"
+                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-60 pointer-events-none">
+                <div v-for="i in 6" :key="i"
+                    class="h-[400px] bg-white rounded-2xl border-2 border-gray-100 animate-pulse"></div>
             </div>
 
             <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -187,13 +189,8 @@
             </div>
 
             <!-- Pagination -->
-            <BasePagination
-                v-if="totalItems > itemsPerPage"
-                :current-page="currentPage"
-                :total-items="totalItems"
-                :items-per-page="itemsPerPage"
-                @change-page="handlePageChange"
-            />
+            <BasePagination v-if="totalItems > itemsPerPage" :current-page="currentPage" :total-items="totalItems"
+                :items-per-page="itemsPerPage" @change-page="handlePageChange" />
         </section>
 
         <!-- CTA Section - Using gradient instead of navy for contrast with footer -->
@@ -259,11 +256,11 @@ const fetchClubs = async () => {
             page: currentPage.value,
             limit: itemsPerPage.value
         }
-        
+
         if (searchQuery.value) {
             params.q = searchQuery.value
         }
-        
+
         if (activeLocation.value !== 'all') {
             params.city = activeLocation.value
         }
@@ -299,6 +296,15 @@ const handlePageChange = (page) => {
     currentPage.value = page
     window.scrollTo({ top: 400, behavior: 'smooth' })
 }
+useHead({
+    title: 'Temukan Klub Panahan - Archeryhub.id',
+    link: [
+        { rel: 'canonical', href: useRequestURL().href }
+    ],
+    meta: [
+        { name: 'description', content: 'Cari dan bergabunglah dengan klub panahan terbaik di seluruh Indonesia.' }
+    ]
+})
 </script>
 
 <style scoped>

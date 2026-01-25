@@ -124,6 +124,78 @@
             <p v-if="!form.schedules.length" class="text-sm text-gray-500">Belum ada jadwal latihan.</p>
           </div>
         </div>
+
+        <!-- Dynamic Sections -->
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
+              <Icon icon="ph:stack" class="text-primary" /> Konten Dinamis (Custom Sections)
+            </h3>
+            <button class="px-4 py-2 bg-navy text-white rounded-lg text-sm font-semibold hover:bg-navy-dark transition"
+              @click="addSection">
+              Tambah Section
+            </button>
+          </div>
+          <div class="space-y-6">
+            <div v-for="(section, idx) in dynamicSections" :key="idx" class="border border-gray-200 rounded-2xl p-5 bg-white shadow-sm relative group">
+              <div class="flex justify-between items-center mb-6">
+                <div class="flex items-center gap-4">
+                  <div class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center font-bold text-gray-500">
+                    {{ idx + 1 }}
+                  </div>
+                  <select v-model="section.type" class="bg-gray-50 border border-gray-200 text-sm font-bold rounded-xl px-4 py-2 outline-none focus:ring-2 focus:ring-primary/20 transition-all">
+                    <option value="about">Tentang Kami (Text)</option>
+                    <option value="gallery">Galeri Foto</option>
+                    <option value="testimonials">Testimoni</option>
+                    <option value="faq">FAQ</option>
+                    <option value="hero">Banner Kecil (Promotion)</option>
+                  </select>
+                </div>
+                <div class="flex gap-2">
+                  <button @click="moveSection(idx, -1)" :disabled="idx === 0" class="p-2 text-gray-400 hover:text-navy disabled:opacity-30">
+                    <Icon icon="ph:arrow-up-bold" />
+                  </button>
+                  <button @click="moveSection(idx, 1)" :disabled="idx === dynamicSections.length - 1" class="p-2 text-gray-400 hover:text-navy disabled:opacity-30">
+                    <Icon icon="ph:arrow-down-bold" />
+                  </button>
+                  <button @click="removeSection(idx)" class="p-2 text-red-400 hover:text-red-600">
+                    <Icon icon="ph:trash-bold" />
+                  </button>
+                </div>
+              </div>
+
+              <!-- Content Editor Based on Type -->
+              <div class="space-y-4">
+                <BaseInput v-model="section.title" label="Judul Section" placeholder="Masukkan judul..." />
+                
+                <div v-if="section.type === 'about'">
+                  <BaseTextarea v-model="section.content" label="Konten" rows="4" placeholder="Masukkan cerita atau informasi detail..." />
+                </div>
+
+                <div v-else-if="section.type === 'gallery'" class="space-y-3">
+                  <label class="block text-sm font-bold text-gray-700">Image URLs (comma separated)</label>
+                  <BaseTextarea v-model="section.images" rows="2" placeholder="https://image1.jpg, https://image2.jpg" />
+                </div>
+
+                <div v-else-if="section.type === 'testimonials'" class="space-y-4">
+                  <div v-for="(t, tIdx) in section.items" :key="tIdx" class="p-4 bg-gray-50 rounded-xl border border-gray-100 flex flex-col gap-3">
+                    <div class="flex justify-between">
+                       <span class="text-xs font-bold text-gray-400">Testimoni {{ tIdx + 1 }}</span>
+                       <button @click="section.items.splice(tIdx, 1)" class="text-red-500 text-xs font-bold">Hapus</button>
+                    </div>
+                    <BaseInput v-model="t.author" label="Nama Pengirim" class="!bg-white" />
+                    <BaseTextarea v-model="t.text" label="Pesan" rows="2" class="!bg-white" />
+                  </div>
+                  <button @click="section.items.push({author: '', text: ''})" class="text-sm font-bold text-primary hover:underline">+ Tambah Testimoni</button>
+                </div>
+              </div>
+            </div>
+            <div v-if="!dynamicSections.length" class="text-center py-10 border-2 border-dashed border-gray-100 rounded-2xl">
+              <Icon icon="ph:stack-light" class="text-4xl text-gray-200 mx-auto mb-2" />
+              <p class="text-sm text-gray-400">Belum ada konten tambahan. Klik "Tambah Section" untuk memperkaya profil klub Anda.</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Side card -->
@@ -181,13 +253,14 @@ const form = reactive({
   schedules: []
 })
 
+const dynamicSections = ref([])
 
 const loadProfile = async () => {
   try {
-    // Attempt to load club profile for current user; fallback to dummy
     const resp = await get('/clubs/me')
     const data = resp?.data || resp || {}
     if (data) {
+      // ... existing fields mapping ...
       form.name = data.name || ''
       form.slug = data.slug || ''
       form.bannerUrl = data.banner_url || ''
@@ -206,6 +279,14 @@ const loadProfile = async () => {
       form.address = data.address || ''
       form.facilities = data.facilities || []
       form.schedules = data.schedules || []
+    }
+
+    // Load dynamic sections
+    try {
+      const profileResp = await get('/clubs/me/profile')
+      dynamicSections.value = profileResp?.sections || []
+    } catch (e) {
+      console.error('Failed to load sections', e)
     }
   } catch {
     // fallback dummy
@@ -242,6 +323,27 @@ const removeSchedule = (idx) => {
   form.schedules.splice(idx, 1)
 }
 
+const addSection = () => {
+  dynamicSections.value.push({
+    type: 'about',
+    title: '',
+    content: '',
+    images: '',
+    items: []
+  })
+}
+
+const removeSection = (idx) => {
+  dynamicSections.value.splice(idx, 1)
+}
+
+const moveSection = (idx, step) => {
+  const newIdx = idx + step
+  if (newIdx < 0 || newIdx >= dynamicSections.value.length) return
+  const item = dynamicSections.value.splice(idx, 1)[0]
+  dynamicSections.value.splice(newIdx, 0, item)
+}
+
 const resetForm = () => {
   loadProfile()
 }
@@ -270,6 +372,12 @@ const saveProfile = async () => {
       schedules: form.schedules
     }
     await put('/clubs/me', payload)
+    
+    // Save dynamic sections
+    await put('/clubs/me/profile', {
+      sections: dynamicSections.value
+    })
+
     toast.success('Profil klub berhasil disimpan')
   } catch {
     toast.error('Gagal menyimpan profil klub')

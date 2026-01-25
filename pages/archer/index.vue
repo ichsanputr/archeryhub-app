@@ -266,7 +266,6 @@ const dummyArchers = [
         club: 'Jakarta Elite Archery',
         club_name: 'Jakarta Elite Archery',
         total_events: 12,
-        best_score: 680
     },
     {
         uuid: '2',
@@ -294,7 +293,6 @@ const dummyArchers = [
         club: 'Surabaya Archery',
         club_name: 'Surabaya Archery',
         total_events: 15,
-        best_score: 650
     },
 ]
 
@@ -313,10 +311,23 @@ const fetchArchers = async () => {
 
         const response = await get('/archers', { query: params })
 
-        if (response.archers && response.archers.length > 0) {
-            archers.value = response.archers
-            totalArchers.value = response.total || response.archers.length
-            activeArchers.value = response.archers.filter(a => a.status === 'active').length
+        if (response && (response.archers || response.data)) {
+            const archersData = response.archers || response.data || []
+            archers.value = archersData.map(archer => ({
+                ...archer,
+                uuid: archer.uuid || archer.id,
+                slug: archer.slug,
+                full_name: archer.full_name,
+                athlete_code: archer.athlete_code,
+                city: archer.city,
+                province: archer.province,
+                bow_type: archer.bow_type || 'recurve',
+                photo_url: archer.photo_url || archer.avatar_url,
+                club_name: archer.club_name,
+                total_events: archer.total_events || 0
+            }))
+            totalArchers.value = response.total || archersData.length
+            activeArchers.value = archersData.filter(a => a.status === 'active').length
         } else {
             // Use dummy data if API returns empty
             archers.value = dummyArchers

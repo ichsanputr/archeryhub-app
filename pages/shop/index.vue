@@ -123,8 +123,6 @@
                             {{ product.name }}
                         </h3>
 
-                        {{ useImageOrDefault(product.image_url) }}
-
                         <!-- Price -->
                         <div class="flex items-end gap-2">
                             <span class="text-lg font-black text-navy">

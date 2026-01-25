@@ -1,32 +1,39 @@
 <template>
     <div class="flex flex-col gap-6 pb-12">
         <!-- Enhanced Header -->
-        <div class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
+        <div
+            class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
             <!-- Background Pattern -->
-            <div class="absolute inset-0 opacity-20" style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);"></div>
-            
+            <div class="absolute inset-0 opacity-20"
+                style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);">
+            </div>
+
             <!-- Decorative Background Elements -->
             <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
             <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
-            
+
             <!-- Header Content -->
             <div class="relative p-6 sm:p-8">
                 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
                     <div class="flex items-start gap-4">
                         <!-- Icon Badge -->
-                        <div class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
+                        <div
+                            class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
                             <Icon icon="ph:pencil-simple" class="text-primary text-2xl" />
                         </div>
-                        
+
                         <!-- Title Section -->
                         <div class="flex-1">
                             <div class="flex items-center gap-2 text-sm text-slate-300 mb-2 font-bold tracking-tight">
-                                <NuxtLink :to="`/dashboard/events/${route.params.id}/participants`" class="hover:text-white transition-colors">
+                                <NuxtLink :to="`/dashboard/events/${route.params.id}/participants`"
+                                    class="hover:text-white transition-colors">
                                     Daftar Peserta
                                 </NuxtLink>
                                 <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                                <NuxtLink :to="`/dashboard/events/${route.params.id}/participants/${route.params.participantId}`" class="hover:text-white transition-colors">
+                                <NuxtLink
+                                    :to="`/dashboard/events/${route.params.id}/participants/${route.params.participantId}`"
+                                    class="hover:text-white transition-colors">
                                     Detail
                                 </NuxtLink>
                                 <Icon icon="ph:caret-right-bold" class="text-[12px]" />
@@ -40,22 +47,16 @@
                             </p>
                         </div>
                     </div>
-                    
+
                     <!-- Action Buttons -->
                     <div class="flex gap-3 flex-shrink-0">
-                        <BaseButton 
-                            variant="white" 
-                            icon="ph:arrow-left" 
-                            class="h-11 px-5"
+                        <BaseButton variant="white" icon="ph:arrow-left" class="h-11 px-5"
                             @click="$router.push(`/dashboard/events/${route.params.id}/participants/${route.params.participantId}`)">
                             Batal
                         </BaseButton>
-                        <BaseButton 
-                            variant="primary" 
-                            icon="ph:floppy-disk" 
+                        <BaseButton variant="primary" icon="ph:floppy-disk"
                             class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all"
-                            @click="handleSubmit"
-                            :loading="isSubmitting">
+                            @click="handleSubmit" :loading="isSubmitting">
                             Simpan Perubahan
                         </BaseButton>
                     </div>
@@ -65,7 +66,8 @@
 
         <!-- Loading State -->
         <div v-if="isLoading" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 text-center">
-            <div class="inline-block h-8 w-8 border-4 border-primary border-t-transparent animate-spin rounded-full"></div>
+            <div class="inline-block h-8 w-8 border-4 border-primary border-t-transparent animate-spin rounded-full">
+            </div>
             <p class="text-gray-500 mt-4 font-medium">Memuat data peserta...</p>
         </div>
 
@@ -81,8 +83,9 @@
                     </h2>
                     <div class="space-y-4">
                         <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
-                            <div class="h-16 w-16 rounded-xl bg-gray-100 flex items-center justify-center text-navy font-bold text-xl uppercase border border-gray-200">
-                                {{ participant.full_name?.split(' ').map(n => n[0]).join('') || 'U' }}
+                            <div
+                                class="h-16 w-16 rounded-xl bg-gray-100 flex items-center justify-center text-navy font-bold text-xl uppercase border border-gray-200">
+                                {{participant.full_name?.split(' ').map(n => n[0]).join('') || 'U'}}
                             </div>
                             <div>
                                 <p class="font-bold text-navy">{{ participant.full_name }}</p>
@@ -124,12 +127,11 @@
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Status Pembayaran *</label>
-                            <select v-model="form.payment_status" required
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Status *</label>
+                            <select v-model="form.status" required
                                 class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
-                                <option value="menunggu_acc">Menunggu ACC</option>
-                                <option value="belum_lunas">Belum Lunas</option>
-                                <option value="lunas">Lunas</option>
+                                <option value="Menunggu Acc">Menunggu Acc</option>
+                                <option value="Terdaftar">Terdaftar</option>
                             </select>
                         </div>
                         <div>
@@ -229,7 +231,7 @@ const form = reactive({
     category_id: '',
     back_number: '',
     session: null,
-    payment_status: 'menunggu_acc',
+    status: 'Menunggu Acc',
     payment_amount: 0,
     accreditation_status: 'pending'
 })
@@ -237,22 +239,19 @@ const form = reactive({
 const fetchParticipant = async () => {
     isLoading.value = true
     try {
-        // Fetch all participants and find the one we need
-        const response = await get(`/events/${eventId}/participants`)
-        if (response && response.participants) {
-            const found = response.participants.find(p => p.id === participantId)
-            if (found) {
-                participant.value = found
-                // Populate form
-                form.category_id = found.category_id
-                form.back_number = found.back_number || ''
-                form.session = found.session || null
-                form.payment_status = found.payment_status || 'menunggu_acc'
-                form.payment_amount = found.payment_amount || 0
-                form.accreditation_status = found.accreditation_status || 'pending'
-            }
+        // Fetch specific participant by athlete_code or id
+        const found = await get(`/events/${eventId}/participants/${participantId}`)
+        if (found) {
+            participant.value = found
+            // Populate form
+            form.category_id = found.category_id
+            form.back_number = found.back_number || ''
+            form.session = found.session || null
+            form.status = found.status || 'Menunggu Acc'
+            form.payment_amount = found.payment_amount || 0
+            form.accreditation_status = found.accreditation_status || 'pending'
         }
-        
+
         // Fetch event details and categories
         const [eventRes, categoriesRes] = await Promise.all([
             get(`/events/${eventId}`),
@@ -307,7 +306,7 @@ const handleSubmit = async () => {
             category_id: form.category_id,
             back_number: form.back_number || null,
             session: form.session || null,
-            payment_status: form.payment_status,
+            status: form.status,
             payment_amount: form.payment_amount || 0,
             accreditation_status: form.accreditation_status
         }

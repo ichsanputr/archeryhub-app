@@ -305,7 +305,21 @@ const handleGoogleRegister = async () => {
         window.location.href = '/'
     } catch (err) {
         console.error('Google registration failed:', err)
-        const errorMessage = err.data?.error || err.response?._data?.error || err.message || 'Gagal menyambung ke Google. Silakan coba lagi.'
+        let errorMessage = 'Gagal menyambung ke Google. Silakan coba lagi.'
+        
+        // Handle different error types
+        if (err.status === 401 || err.statusCode === 401) {
+            errorMessage = 'Autentikasi gagal. Silakan coba lagi.'
+        } else if (err.status === 500 || err.statusCode === 500) {
+            errorMessage = 'Terjadi kesalahan pada server. Silakan coba lagi nanti.'
+        } else if (err.data?.error) {
+            errorMessage = err.data.error
+        } else if (err.response?._data?.error) {
+            errorMessage = err.response._data.error
+        } else if (err.message) {
+            errorMessage = err.message
+        }
+        
         toast.error(errorMessage)
         isGoogleLoading.value = false
     }

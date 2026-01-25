@@ -221,7 +221,7 @@ useHead({
   link: [
     {
       rel: 'canonical',
-      href: `https://archeryhub.id${route.path}`
+      href: useRequestURL().href
     }
   ]
 })

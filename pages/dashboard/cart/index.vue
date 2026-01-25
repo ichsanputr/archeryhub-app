@@ -123,22 +123,6 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                                            <div>
-                                                <label
-                                                    class="block mb-2 text-xs font-bold uppercase tracking-wider text-gray-500">Emergency
-                                                    Contact Name</label>
-                                                <input v-model="reg.emergency_contact_name" type="text"
-                                                    class="bg-gray-50 border border-gray-300 text-navy text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5" />
-                                            </div>
-                                            <div>
-                                                <label
-                                                    class="block mb-2 text-xs font-bold uppercase tracking-wider text-gray-500">Contact
-                                                    Phone Number</label>
-                                                <input v-model="reg.emergency_contact_phone" type="text"
-                                                    class="bg-gray-50 border border-gray-300 text-navy text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5" />
-                                            </div>
-                                        </div>
                                     </div>
                                     <div v-if="isEditing" class="flex items-center gap-6 pt-2">
                                         <BaseButton variant="primary" @click="saveRegistration(reg)">Save Changes
@@ -413,9 +397,7 @@ const saveRegistration = async (reg) => {
         await put(`/events/${reg.event_id}/registrations/${reg.id}`, {
             archer_id: reg.archer_id,
             category_id: reg.category_id,
-            jersey_size: reg.jersey_size,
-            emergency_contact_name: reg.emergency_contact_name,
-            emergency_contact_phone: reg.emergency_contact_phone
+            jersey_size: reg.jersey_size
         })
         toast.success('Registrasi berhasil diperbarui')
         isEditing.value = false

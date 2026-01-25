@@ -61,9 +61,10 @@
                 <!-- Articles Grid -->
                 <div class="lg:col-span-8">
                     <!-- Featured Article -->
-                    <NuxtLink v-if="featuredArticle" :to="`/berita/${featuredArticle.slug || featuredArticle.id}`" class="block group mb-10">
+                    <NuxtLink v-if="featuredArticle" :to="`/berita/${featuredArticle.slug || featuredArticle.id}`"
+                        class="block group mb-10">
                         <div class="relative rounded-2xl overflow-hidden aspect-video bg-gray-200 shadow-xl">
-                            <img :src="featuredArticle.image"
+                            <img :src="useImageOrDefault(featuredArticle.image || featuredArticle.image_url)"
                                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent">
                             </div>
@@ -93,16 +94,14 @@
 
                     <!-- Articles List -->
                     <div class="space-y-6">
-                        <NuxtLink v-for="article in filteredArticles" :key="article.id" :to="`/berita/${article.slug || article.id}`"
+                        <NuxtLink v-for="article in filteredArticles" :key="article.id"
+                            :to="`/berita/${article.slug || article.id}`"
                             class="group flex gap-5 bg-white rounded-xl border border-gray-100 p-4 hover:border-primary/30 transition-all">
 
                             <!-- Thumbnail -->
                             <div class="w-32 h-32 md:w-40 md:h-28 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0">
-                                <img v-if="article.image" :src="article.image"
+                                <img :src="useImageOrDefault(article.image || article.image_url)"
                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                                <div v-else class="w-full h-full flex items-center justify-center bg-navy/5">
-                                    <Icon icon="ph:newspaper" class="text-3xl text-gray-300" />
-                                </div>
                             </div>
 
                             <!-- Content -->
@@ -232,19 +231,23 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useToast } from '~/composables/useToast'
+import { useApi } from '~/composables/useApi'
 
 definePageMeta({
     layout: 'landing'
 })
 
+const { get } = useApi()
 const toast = useToast()
 const searchQuery = ref('')
 const activeCategory = ref('all')
 const isLoadingMore = ref(false)
 const isSubscribing = ref(false)
 const subscribeEmail = ref('')
+const articles = ref([])
+const isLoading = ref(true)
 
 const categories = [
     { label: 'Semua', value: 'all' },
@@ -254,64 +257,32 @@ const categories = [
     { label: 'Tips & Tutorial', value: 'tips' },
 ]
 
-// Dummy data
-const articles = ref([
-    {
-        id: 1,
-        slug: 'kejurnas-panahan-2024-dibuka',
-        title: 'Kejuaraan Nasional Panahan 2024 Resmi Dibuka dengan Semangat Juang Tinggi',
-        excerpt: 'Kejuaraan nasional panahan tahun 2024 resmi dibuka dengan diikuti oleh lebih dari 500 atlet dari seluruh Indonesia. Event ini menjadi ajang pembuktian bagi para pemanah terbaik bangsa.',
-        category: 'event',
-        date: '20 Jan 2024',
-        author: 'Tim Redaksi',
-        views: 1234,
-        image: 'https://images.unsplash.com/photo-1565992441121-4367c2967103?w=800'
-    },
-    {
-        id: 2,
-        slug: 'tim-indonesia-emas-asian-archery',
-        title: 'Tim Indonesia Raih Emas di Asian Archery Championship',
-        excerpt: 'Prestasi membanggakan ditorehkan tim panahan Indonesia dalam ajang Asian Archery Championship 2024 di Korea Selatan.',
-        category: 'prestasi',
-        date: '18 Jan 2024',
-        author: 'Sports Desk',
-        views: 2345,
-        image: 'https://images.unsplash.com/photo-1510925758641-869d353cecc7?w=800'
-    },
-    {
-        id: 3,
-        slug: 'pendaftaran-piala-gubernur-jatim-2024',
-        title: 'Pendaftaran Piala Gubernur Jatim 2024 Dibuka',
-        excerpt: 'Pendaftaran untuk Piala Gubernur Jawa Timur cabang panahan telah dibuka. Segera daftarkan tim Anda sebelum kuota penuh.',
-        category: 'pengumuman',
-        date: '15 Jan 2024',
-        author: 'Panitia',
-        views: 856,
-        image: 'https://images.unsplash.com/photo-1547347298-4074fc3086f0?w=800'
-    },
-    {
-        id: 4,
-        title: 'Tips Memilih Busur yang Tepat untuk Pemula',
-        excerpt: 'Panduan lengkap memilih busur panahan yang sesuai untuk pemula. Dari recurve hingga compound, temukan busur ideal Anda.',
-        category: 'tips',
-        date: '12 Jan 2024',
-        author: 'Coach Andi',
-        views: 1567,
-        image: 'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=800'
-    },
-    {
-        id: 5,
-        title: 'Perubahan Jadwal Latihan Regional Jawa Barat',
-        excerpt: 'Informasi perubahan jadwal latihan untuk wilayah Jawa Barat periode Januari-Februari 2024.',
-        category: 'pengumuman',
-        date: '10 Jan 2024',
-        author: 'Admin',
-        views: 423,
-        image: null
+const fetchArticles = async () => {
+    isLoading.value = true
+    try {
+        const response = await get('/news')
+        const newsData = response?.data || []
+        articles.value = newsData.map(article => ({
+            id: article.id || article.uuid,
+            slug: article.slug,
+            title: article.title,
+            excerpt: article.excerpt || '',
+            category: article.category || 'event',
+            date: article.published_at ? new Date(article.published_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : new Date(article.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
+            author: article.author_name || 'Tim Redaksi',
+            views: article.views || 0,
+            image: article.image_url
+        }))
+    } catch (error) {
+        console.error('Failed to fetch articles:', error)
+        toast.error('Gagal memuat berita')
+        articles.value = []
+    } finally {
+        isLoading.value = false
     }
-])
+}
 
-const featuredArticle = computed(() => articles.value[0])
+const featuredArticle = computed(() => articles.value[0] || null)
 
 const filteredArticles = computed(() => {
     return articles.value.slice(1).filter(article => {
@@ -333,9 +304,18 @@ const upcomingEvents = ref([
 
 const loadMore = async () => {
     isLoadingMore.value = true
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    isLoadingMore.value = false
+    try {
+        // In a real implementation, you would fetch more articles with pagination
+        // For now, we'll just simulate loading
+        await new Promise(resolve => setTimeout(resolve, 1000))
+    } finally {
+        isLoadingMore.value = false
+    }
 }
+
+onMounted(() => {
+    fetchArticles()
+})
 
 const subscribe = async () => {
     if (!subscribeEmail.value) return
@@ -345,6 +325,15 @@ const subscribe = async () => {
     subscribeEmail.value = ''
     isSubscribing.value = false
 }
+useHead({
+    title: 'Berita Panahan Terbaru - Archeryhub.id',
+    link: [
+        { rel: 'canonical', href: useRequestURL().href }
+    ],
+    meta: [
+        { name: 'description', content: 'Ikuti perkembangan terbaru turnamen, prestasi atlet, dan berita seputar komunitas panahan Indonesia.' }
+    ]
+})
 </script>
 
 <style scoped>

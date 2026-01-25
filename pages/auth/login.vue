@@ -82,8 +82,7 @@
                     </div>
 
                     <div>
-                        <BaseButton type="submit" variant="gold" block :loading="isLoading"
-                            icon-right="ph:arrow-right">
+                        <BaseButton type="submit" variant="gold" block :loading="isLoading" icon-right="ph:arrow-right">
                             Masuk Sekarang
                         </BaseButton>
                     </div>
@@ -174,11 +173,26 @@ const handleEmailAuth = async () => {
 
     try {
         await loginWithEmail(form.value.email, form.value.password)
-        // Hard reload and redirect to homepage
-        window.location.href = '/'
+        // Redirect to original destination or home
+        const redirect = route.query.redirect || '/'
+        window.location.href = redirect
     } catch (err) {
         console.error('Auth failed:', err)
-        const errorMessage = err.data?.error || err.response?._data?.error || err.message || 'Email atau kata sandi salah'
+        let errorMessage = 'Email atau kata sandi salah'
+
+        // Handle different error types
+        if (err.status === 401 || err.statusCode === 401) {
+            errorMessage = 'Email atau kata sandi salah. Silakan coba lagi.'
+        } else if (err.status === 500 || err.statusCode === 500) {
+            errorMessage = 'Terjadi kesalahan pada server. Silakan coba lagi nanti.'
+        } else if (err.data?.error) {
+            errorMessage = err.data.error
+        } else if (err.response?._data?.error) {
+            errorMessage = err.response._data.error
+        } else if (err.message) {
+            errorMessage = err.message
+        }
+
         toast.error(errorMessage)
     } finally {
         isLoading.value = false
@@ -192,7 +206,21 @@ const handleGoogleLogin = async () => {
         await login()
     } catch (err) {
         console.error('Google login failed:', err)
-        const errorMessage = err.data?.error || err.message || 'Gagal menyambung ke Google. Silakan coba lagi.'
+        let errorMessage = 'Gagal menyambung ke Google. Silakan coba lagi.'
+
+        // Handle different error types
+        if (err.status === 401 || err.statusCode === 401) {
+            errorMessage = 'Autentikasi gagal. Silakan coba lagi.'
+        } else if (err.status === 500 || err.statusCode === 500) {
+            errorMessage = 'Terjadi kesalahan pada server. Silakan coba lagi nanti.'
+        } else if (err.data?.error) {
+            errorMessage = err.data.error
+        } else if (err.response?._data?.error) {
+            errorMessage = err.response._data.error
+        } else if (err.message) {
+            errorMessage = err.message
+        }
+
         toast.error(errorMessage)
         isLoading.value = false
     }

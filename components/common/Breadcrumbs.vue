@@ -24,7 +24,7 @@
             </li>
 
             <li v-if="current" class="flex items-center">
-                <span class="text-navy font-black truncate max-w-[150px] md:max-w-[400px]">
+                <span class="text-gray-400 truncate max-w-[150px] md:max-w-[400px]">
                     {{ current }}
                 </span>
             </li>

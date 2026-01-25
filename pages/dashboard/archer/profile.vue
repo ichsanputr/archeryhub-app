@@ -450,8 +450,7 @@ onMounted(async () => {
       const stats = await get('/archers/me/stats')
       if (stats) {
         userStats.value = {
-          totalEvents: stats.total_events || 0,
-          bestScore: stats.best_score || null
+          totalEvents: stats.total_events || 0
         }
       }
     } catch (error) {

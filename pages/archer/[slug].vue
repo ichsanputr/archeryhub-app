@@ -79,18 +79,6 @@
                                 </p>
                             </div>
                             <div class="h-10 w-px bg-gray-200 hidden sm:block"></div>
-                            <div v-if="archer.best_score" class="text-center sm:text-left">
-                                <p class="text-2xl md:text-3xl font-black text-navy">{{ archer.best_score }}</p>
-                                <p class="text-[10px] md:text-sm text-gray-400 font-bold uppercase tracking-wide">Best
-                                    Score
-                                </p>
-                            </div>
-                            <div v-if="archer.current_ranking" class="h-10 w-px bg-gray-200 hidden sm:block"></div>
-                            <div v-if="archer.current_ranking" class="text-center sm:text-left">
-                                <p class="text-2xl md:text-3xl font-black text-navy">#{{ archer.current_ranking }}</p>
-                                <p class="text-[10px] md:text-sm text-gray-400 font-bold uppercase tracking-wide">
-                                    Ranking</p>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -136,13 +124,6 @@
                                     <div>
                                         <p class="text-xs text-gray-400 font-bold uppercase">Pengalaman</p>
                                         <p class="text-navy font-bold">{{ archer.experience_years }} Tahun</p>
-                                    </div>
-                                </div>
-                                <div v-if="archer.dominant_hand" class="flex items-center gap-3">
-                                    <Icon icon="ph:hand-bold" class="text-primary text-xl" />
-                                    <div>
-                                        <p class="text-xs text-gray-400 font-bold uppercase">Tangan Dominan</p>
-                                        <p class="text-navy font-bold">{{ dominantHandLabel }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -305,8 +286,6 @@ const dummyArcher = {
     address: 'Jl. Sudirman No. 123, Jakarta Selatan',
     bio: 'Pemanah profesional dengan pengalaman lebih dari 8 tahun. Spesialisasi di divisi Recurve dengan fokus pada kompetisi nasional dan internasional.',
     achievements: 'Juara 1 Kejurda Jabar 2023\nJuara 2 Piala Presiden 2022\nJuara 3 Kejurda DKI Jakarta 2021',
-    emergency_contact_name: 'Siti Santoso',
-    emergency_contact_phone: '+628123456790',
     status: 'active'
 }
 
@@ -324,9 +303,6 @@ const genderLabel = computed(() => {
     return archer.value.gender === 'male' ? 'Laki-laki' : archer.value.gender === 'female' ? 'Perempuan' : '-'
 })
 
-const dominantHandLabel = computed(() => {
-    return archer.value.dominant_hand === 'left' ? 'Kiri' : archer.value.dominant_hand === 'right' ? 'Kanan' : '-'
-})
 
 const statusLabel = computed(() => {
     const labels = {

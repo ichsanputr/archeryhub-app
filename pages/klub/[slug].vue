@@ -286,6 +286,76 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Dynamic Sections -->
+            <div v-if="club.sections && club.sections.length" class="mt-8 space-y-8">
+                <div v-for="(section, idx) in club.sections" :key="idx">
+                    <!-- About Section -->
+                    <div v-if="section.type === 'about'"
+                        class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+                        <h2 class="font-black text-navy text-xl mb-5 flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                                <Icon icon="ph:info-bold" class="text-xl text-primary" />
+                            </div>
+                            {{ section.title || 'Tentang Kami' }}
+                        </h2>
+                        <div class="text-gray-600 leading-relaxed text-lg whitespace-pre-line">
+                            {{ section.content }}
+                        </div>
+                    </div>
+
+                    <!-- Gallery Section -->
+                    <div v-else-if="section.type === 'gallery'"
+                        class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+                        <h2 class="font-black text-navy text-xl mb-5 flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                                <Icon icon="ph:image-bold" class="text-xl text-primary" />
+                            </div>
+                            {{ section.title || 'Galeri' }}
+                        </h2>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <div v-for="(img, iIdx) in (section.images?.split(',') || [])" :key="iIdx"
+                                class="aspect-square rounded-xl overflow-hidden bg-gray-100 border border-gray-200 group">
+                                <img :src="img.trim()"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonials Section -->
+                    <div v-else-if="section.type === 'testimonials'" class="space-y-5">
+                        <h2 class="font-black text-navy text-xl flex items-center gap-3 ml-2">
+                            <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                                <Icon icon="ph:chats-bold" class="text-xl text-primary" />
+                            </div>
+                            {{ section.title || 'Testimoni' }}
+                        </h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div v-for="(item, tIdx) in section.items" :key="tIdx"
+                                class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm relative italic text-gray-600">
+                                <Icon icon="ph:quotes-fill" class="absolute -top-3 -left-2 text-4xl text-primary/20" />
+                                <p class="relative z-10 mb-4">{{ item.text }}</p>
+                                <div class="flex items-center gap-3 not-italic">
+                                    <div class="w-8 h-8 rounded-full bg-gray-200"></div>
+                                    <span class="font-bold text-navy text-sm">{{ item.author }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hero/Promo Section -->
+                    <div v-else-if="section.type === 'hero'"
+                        class="relative rounded-3xl overflow-hidden bg-navy p-10 text-white min-h-[300px] flex flex-col justify-center">
+                        <div
+                            class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]">
+                        </div>
+                        <div class="relative z-10 max-w-lg">
+                            <h2 class="text-4xl font-black mb-4 leading-tight">{{ section.title }}</h2>
+                            <p class="text-blue-100 text-lg opacity-80">{{ section.content }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     </div>
 </template>
@@ -300,6 +370,13 @@ import { useApi } from '~/composables/useApi'
 
 definePageMeta({
     layout: 'landing'
+})
+
+useHead({
+    title: computed(() => `${club.value.name} - Profil Klub Archeryhub.id`),
+    link: [
+        { rel: 'canonical', href: useRequestURL().href }
+    ]
 })
 
 const route = useRoute()
@@ -342,7 +419,8 @@ const club = ref({
     address: '',
     schedules: [],
     recentEvents: [],
-    topMembers: []
+    topMembers: [],
+    sections: []
 })
 
 const { get } = useApi()
@@ -398,9 +476,10 @@ onMounted(async () => {
     try {
         const slug = route.params.slug
         const resp = await get(`/clubs/${slug}`)
+        // Handle both wrapped and direct response formats
         const data = resp?.data || resp || {}
         if (!data || !data.name) return
-        
+
         club.value = {
             id: data.id || data.uuid || 0,
             name: data.name || '',
@@ -425,7 +504,8 @@ onMounted(async () => {
             address: data.address || '',
             schedules: parseSchedules(data.schedules),
             recentEvents: data.recent_events || [],
-            topMembers: data.top_members || []
+            topMembers: data.top_members || [],
+            sections: data.sections || []
         }
     } catch (error) {
         console.error('Gagal memuat klub', error)

@@ -1,24 +1,28 @@
 <template>
     <div class="flex flex-col gap-6 pb-12">
         <!-- Enhanced Header -->
-        <div class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
+        <div
+            class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
             <!-- Background Pattern -->
-            <div class="absolute inset-0 opacity-20" style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);"></div>
-            
+            <div class="absolute inset-0 opacity-20"
+                style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);">
+            </div>
+
             <!-- Decorative Background Elements -->
             <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
             <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
-            
+
             <!-- Header Content -->
             <div class="relative p-6 sm:p-8">
                 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
                     <div class="flex items-start gap-4">
                         <!-- Icon Badge -->
-                        <div class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
+                        <div
+                            class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
                             <Icon icon="ph:users-three" class="text-primary text-2xl" />
                         </div>
-                        
+
                         <!-- Title Section -->
                         <div class="flex-1">
                             <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
@@ -29,7 +33,7 @@
                             </p>
                         </div>
                     </div>
-                    
+
                     <!-- Action Buttons -->
                     <div class="flex gap-3 flex-shrink-0">
                         <BaseButton variant="white" icon="ph:download" class="h-11 px-5">
@@ -38,10 +42,8 @@
                         <BaseButton variant="white" icon="ph:funnel" class="h-11 px-5">
                             Filter
                         </BaseButton>
-                        <BaseButton 
-                            :to="`/dashboard/events/${route.params.id}/participants/add`" 
-                            variant="primary"
-                            icon="ph:plus-bold" 
+                        <BaseButton :to="`/dashboard/events/${route.params.id}/participants/add`" variant="primary"
+                            icon="ph:plus-bold"
                             class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all">
                             Tambah Peserta
                         </BaseButton>
@@ -128,7 +130,7 @@
                             <th class="px-6 py-4">Nama Peserta</th>
                             <th class="px-6 py-4">Klub</th>
                             <th class="px-6 py-4">Kategori Lomba</th>
-                            <th class="px-6 py-4">Status Pembayaran</th>
+                            <th class="px-6 py-4">Status</th>
                             <th class="px-6 py-4 text-right">Aksi</th>
                         </tr>
                     </thead>
@@ -136,7 +138,8 @@
                         <tr v-for="(participant, index) in participants" :key="participant.id"
                             class="group hover:bg-gray-50/50 transition-colors">
                             <td class="px-6 py-4">
-                                <span class="text-sm font-bold text-gray-400">{{ (page - 1) * limit + index + 1 }}</span>
+                                <span class="text-sm font-bold text-gray-400">{{ (page - 1) * limit + index + 1
+                                    }}</span>
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center gap-3">
@@ -155,19 +158,15 @@
                                 <p class="text-navy font-bold text-sm">{{ getCategoryName(participant) }}</p>
                             </td>
                             <td class="px-6 py-4">
-                                <span
-                                    :class="getPaymentStatusClass(participant.payment_status)"
+                                <span :class="getStatusClass(participant.status)"
                                     class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest border">
-                                    {{ getPaymentStatusText(participant.payment_status) }}
+                                    {{ participant.status || 'Menunggu Acc' }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-right">
                                 <div class="flex items-center justify-end gap-2">
-                                    <NuxtLink :to="`/dashboard/events/${route.params.id}/participants/${participant.id}`" 
-                                        class="p-2 text-navy/40 hover:text-navy transition-colors">
-                                        <Icon icon="ph:eye" />
-                                    </NuxtLink>
-                                    <NuxtLink :to="`/dashboard/events/${route.params.id}/participants/${participant.id}/edit`" 
+                                    <NuxtLink
+                                        :to="`/dashboard/events/${route.params.id}/participants/${participant.archer_code || participant.id}/edit`"
                                         class="p-2 text-navy/40 hover:text-navy transition-colors">
                                         <Icon icon="ph:pencil-simple" />
                                     </NuxtLink>
@@ -184,32 +183,28 @@
             </div>
 
             <!-- Pagination Controls -->
-            <div v-if="totalPages > 1" class="px-6 py-4 border-t border-gray-100 bg-gray-50/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div v-if="totalPages > 1"
+                class="px-6 py-4 border-t border-gray-100 bg-gray-50/30 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div class="text-xs font-bold text-gray-400 uppercase tracking-widest">
-                    Showing {{ (page - 1) * limit + 1 }} to {{ Math.min(page * limit, total) }} of {{ total }} participants
+                    Showing {{ (page - 1) * limit + 1 }} to {{ Math.min(page * limit, total) }} of {{ total }}
+                    participants
                 </div>
                 <div class="flex items-center gap-2">
-                    <button 
-                        @click="changePage(page - 1)" 
-                        :disabled="page === 1"
+                    <button @click="changePage(page - 1)" :disabled="page === 1"
                         class="p-2 rounded-lg border border-gray-200 bg-white text-navy/60 hover:text-navy disabled:opacity-30 disabled:cursor-not-allowed transition-all">
                         <Icon icon="ph:caret-left-bold" />
                     </button>
-                    
+
                     <div class="flex items-center gap-1">
-                        <button v-for="p in totalPages" :key="p"
-                            @click="changePage(p)"
-                            class="h-10 w-10 rounded-lg border text-sm font-black transition-all"
-                            :class="page === p 
-                                ? 'bg-navy border-navy text-white shadow-md' 
+                        <button v-for="p in totalPages" :key="p" @click="changePage(p)"
+                            class="h-10 w-10 rounded-lg border text-sm font-black transition-all" :class="page === p
+                                ? 'bg-navy border-navy text-white shadow-md'
                                 : 'bg-white border-gray-200 text-navy/60 hover:bg-gray-50 hover:text-navy'">
                             {{ p }}
                         </button>
                     </div>
 
-                    <button 
-                        @click="changePage(page + 1)" 
-                        :disabled="page === totalPages"
+                    <button @click="changePage(page + 1)" :disabled="page === totalPages"
                         class="p-2 rounded-lg border border-gray-200 bg-white text-navy/60 hover:text-navy disabled:opacity-30 disabled:cursor-not-allowed transition-all">
                         <Icon icon="ph:caret-right-bold" />
                     </button>
@@ -305,36 +300,21 @@ const filteredParticipants = computed(() => {
 })
 
 const verifiedCount = computed(() => {
-    return participants.value.filter(p => p.payment_status === 'lunas').length
+    return participants.value.filter(p => p.status === 'Terdaftar').length
 })
 
 const pendingCount = computed(() => {
-    return participants.value.filter(p => p.payment_status === 'menunggu_acc' || p.payment_status === 'belum_lunas').length
+    return participants.value.filter(p => p.status === 'Menunggu Acc').length
 })
 
-const getPaymentStatusClass = (status) => {
-    switch(status) {
-        case 'lunas':
+const getStatusClass = (status) => {
+    switch (status) {
+        case 'Terdaftar':
             return 'bg-green-50 text-green-600 border-green-100'
-        case 'belum_lunas':
-            return 'bg-yellow-50 text-yellow-600 border-yellow-100'
-        case 'menunggu_acc':
+        case 'Menunggu Acc':
             return 'bg-blue-50 text-blue-600 border-blue-100'
         default:
             return 'bg-gray-50 text-gray-600 border-gray-100'
-    }
-}
-
-const getPaymentStatusText = (status) => {
-    switch(status) {
-        case 'lunas':
-            return 'Lunas'
-        case 'belum_lunas':
-            return 'Belum Lunas'
-        case 'menunggu_acc':
-            return 'Menunggu ACC'
-        default:
-            return status || '-'
     }
 }
 
@@ -345,13 +325,13 @@ const uniqueClubs = computed(() => {
 
 const getCategoryName = (participant) => {
     if (!participant) return '-'
-    
+
     const parts = []
     if (participant.division_name) parts.push(participant.division_name)
     if (participant.category_name) parts.push(participant.category_name)
     if (participant.event_type_name) parts.push(participant.event_type_name)
     if (participant.gender_division_name) parts.push(participant.gender_division_name)
-    
+
     return parts.length > 0 ? parts.join(' - ') : '-'
 }
 

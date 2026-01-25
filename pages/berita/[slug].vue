@@ -271,6 +271,12 @@ const upcomingTournaments = [
     { id: '3', title: 'National Indoor', month: 'Jan', day: '12', location: 'Bandung' }
 ]
 
+useHead({
+    link: [
+        { rel: 'canonical', href: useRequestURL().href }
+    ]
+})
+
 useSeoMeta({
     title: () => `${article.value.title} - Archeryhub.id`,
     description: () => article.value.excerpt

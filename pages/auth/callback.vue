@@ -49,8 +49,9 @@ onMounted(async () => {
   try {
     await handleCallback(code, state)
 
-    // Always redirect to dashboard - profile completion is handled via banner there
-    router.push('/dashboard')
+    // Check for redirect query or fallback
+    const redirect = route.query.redirect || '/'
+    router.push(redirect)
   } catch (err) {
     console.error('Callback processing failed:', err)
     error.value = err.message || 'Terjadi kesalahan saat menyambungkan ke Google.'

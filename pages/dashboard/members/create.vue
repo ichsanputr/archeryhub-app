@@ -49,10 +49,6 @@
           <BaseTextarea v-model="form.address" label="Alamat" placeholder="Alamat domisili lengkap" :rows="3" />
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <BaseInput v-model="form.emergency_contact" label="Kontak Darurat" placeholder="Nama kontak darurat" />
-          <BaseInput v-model="form.emergency_phone" label="Telepon Darurat" placeholder="08xxxxxxxxxx" />
-        </div>
 
         <div class="bg-gray-50/60 border border-gray-100 rounded-xl p-4 text-sm text-gray-600">
           Anggota baru akan otomatis ditandai sebagai <span class="font-semibold text-navy">pemanah klub</span> dan dapat login menggunakan email dan password yang Anda buat.
@@ -106,8 +102,6 @@ const form = reactive({
   city: '',
   address: '',
   photo_url: '',
-  emergency_contact: '',
-  emergency_phone: ''
 })
 
 const genderOptions = [
@@ -159,9 +153,7 @@ const submit = async () => {
       athlete_code: form.athlete_code || undefined,
       city: form.city || undefined,
       address: form.address || undefined,
-      photo_url: form.photo_url || undefined,
-      emergency_contact: form.emergency_contact || undefined,
-      emergency_phone: form.emergency_phone || undefined
+      photo_url: form.photo_url || undefined
     }
 
     await post('/archers', payload)
