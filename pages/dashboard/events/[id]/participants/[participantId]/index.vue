@@ -20,7 +20,7 @@
                         <!-- Icon Badge -->
                         <div
                             class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
-                            <Icon icon="ph:pencil-simple" class="text-primary text-2xl" />
+                            <Icon icon="ph:user" class="text-primary text-2xl" />
                         </div>
 
                         <!-- Title Section -->
@@ -31,19 +31,13 @@
                                     Daftar Peserta
                                 </NuxtLink>
                                 <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                                <NuxtLink
-                                    :to="`/dashboard/events/${route.params.id}/participants/${route.params.participantId}`"
-                                    class="hover:text-white transition-colors">
-                                    Detail
-                                </NuxtLink>
-                                <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                                <span class="text-white">Edit</span>
+                                <span class="text-white">Detail & Edit Peserta</span>
                             </div>
                             <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
-                                Edit Peserta
+                                {{ participant?.full_name || 'Detail Peserta' }}
                             </h1>
                             <p class="text-slate-300 text-sm max-w-2xl">
-                                Ubah informasi peserta event
+                                Kelola informasi dan status pendaftaran peserta
                             </p>
                         </div>
                     </div>
@@ -51,8 +45,8 @@
                     <!-- Action Buttons -->
                     <div class="flex gap-3 flex-shrink-0">
                         <BaseButton variant="white" icon="ph:arrow-left" class="h-11 px-5"
-                            @click="$router.push(`/dashboard/events/${route.params.id}/participants/${route.params.participantId}`)">
-                            Batal
+                            @click="$router.push(`/dashboard/events/${route.params.id}/participants`)">
+                            Kembali
                         </BaseButton>
                         <BaseButton variant="primary" icon="ph:floppy-disk"
                             class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all"
@@ -71,27 +65,58 @@
             <p class="text-gray-500 mt-4 font-medium">Memuat data peserta...</p>
         </div>
 
-        <!-- Edit Form -->
+        <!-- Edit Form (Unified Page) -->
         <form v-else-if="participant" @submit.prevent="handleSubmit" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- Main Form -->
             <div class="lg:col-span-2 space-y-6">
                 <!-- Participant Info -->
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 overflow-hidden relative">
+                    <!-- Approved Badge Watermark -->
+                    <div v-if="form.accreditation_status === 'approved'"
+                        class="absolute -right-8 -top-8 rotate-12 opacity-[0.03] select-none pointer-events-none">
+                        <Icon icon="ph:seal-check-fill" class="text-[200px]" />
+                    </div>
+
                     <h2 class="text-lg font-bold text-navy mb-6 flex items-center gap-2">
                         <Icon icon="ph:user" class="text-primary" />
                         Informasi Peserta
                     </h2>
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
+
+                    <div class="space-y-6">
+                        <div
+                            class="flex items-center gap-4 p-5 bg-gray-50 rounded-2xl border border-gray-100 relative z-10">
                             <div
-                                class="h-16 w-16 rounded-xl bg-gray-100 flex items-center justify-center text-navy font-bold text-xl uppercase border border-gray-200">
+                                class="h-16 w-16 rounded-xl bg-white shadow-sm flex items-center justify-center text-navy font-bold text-xl uppercase border border-gray-100">
                                 {{participant.full_name?.split(' ').map(n => n[0]).join('') || 'U'}}
                             </div>
                             <div>
-                                <p class="font-bold text-navy">{{ participant.full_name }}</p>
-                                <p class="text-sm text-gray-500">{{ participant.athlete_code || '-' }}</p>
+                                <p class="font-black text-navy text-lg">{{ participant.full_name }}</p>
+                                <p class="text-sm font-bold text-gray-500 flex items-center gap-1.5">
+                                    <Icon icon="ph:identification-card" />
+                                    {{ participant.athlete_code || '-' }}
+                                </p>
+                            </div>
+
+                            <!-- Status Acc Badge -->
+                            <div class="ml-auto">
+                                <div v-if="form.accreditation_status === 'approved'"
+                                    class="flex items-center gap-1.5 px-3 py-1.5 bg-green-50 text-green-600 rounded-full text-[10px] font-black uppercase tracking-widest border border-green-100">
+                                    <Icon icon="ph:seal-check-fill" class="text-sm" />
+                                    TERVERIFIKASI
+                                </div>
+                                <div v-else-if="form.accreditation_status === 'rejected'"
+                                    class="flex items-center gap-1.5 px-3 py-1.5 bg-red-50 text-red-600 rounded-full text-[10px] font-black uppercase tracking-widest border border-red-100">
+                                    <Icon icon="ph:x-circle-fill" class="text-sm" />
+                                    DITOLAK
+                                </div>
+                                <div v-else
+                                    class="flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 text-amber-600 rounded-full text-[10px] font-black uppercase tracking-widest border border-amber-100">
+                                    <Icon icon="ph:clock-fill" class="text-sm" />
+                                    PENDING
+                                </div>
                             </div>
                         </div>
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <BaseSelect v-model="form.category_id" label="Kategori Event" required
                                 placeholder="Pilih Kategori" icon="ph:trophy" :items="categories" item-title="label"
@@ -110,7 +135,7 @@
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
                     <h2 class="text-lg font-bold text-navy mb-6 flex items-center gap-2">
                         <Icon icon="ph:currency-circle-dollar" class="text-primary" />
-                        Informasi Pembayaran
+                        Status & Pembayaran
                     </h2>
                     <div class="space-y-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -126,7 +151,10 @@
 
                         <!-- Payment Proof Images -->
                         <div class="pt-4 border-t border-gray-100">
-                            <label class="block text-sm font-bold text-gray-700 mb-4">Bukti Pembayaran</label>
+                            <label class="block text-sm font-bold text-gray-700 mb-4 flex items-center gap-2">
+                                <Icon icon="ph:image" />
+                                Bukti Pembayaran
+                            </label>
 
                             <div v-if="form.payment_proof_urls?.length" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
                                 <template v-for="(url, index) in form.payment_proof_urls" :key="index">
@@ -149,7 +177,7 @@
                             <div v-else
                                 class="p-8 bg-gray-50 rounded-xl border border-dashed border-gray-200 text-center text-gray-400">
                                 <Icon icon="ph:image-slash" class="text-3xl mx-auto mb-2 opacity-50" />
-                                <p class="text-xs">Belum ada bukti pembayaran yang diunggah</p>
+                                <p class="text-xs font-bold uppercase tracking-widest opacity-60">Belum ada bukti</p>
                             </div>
                         </div>
                     </div>
@@ -158,7 +186,66 @@
 
             <!-- Sidebar -->
             <div class="space-y-6">
-                <!-- Info Card -->
+                <!-- QR Code Section (Only if Approved) -->
+                <div v-if="form.accreditation_status === 'approved'"
+                    class="bg-white rounded-2xl border-2 border-green-500 shadow-xl shadow-green-500/10 p-6 text-center overflow-hidden relative group">
+                    <div class="absolute inset-0 bg-gradient-to-b from-green-50/50 to-white opacity-50"></div>
+
+                    <div class="relative z-10">
+                        <div
+                            class="inline-flex items-center gap-2 px-3 py-1 bg-green-500 text-white rounded-full text-[10px] font-black mb-4 tracking-tighter shadow-lg shadow-green-500/30">
+                            <Icon icon="ph:qr-code" />
+                            ID CARD QR
+                        </div>
+
+                        <div
+                            class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 mb-4 inline-block transform transition-transform group-hover:scale-105 duration-500">
+                            <qrcode-vue :value="participant?.id" :size="160" level="H" render-as="svg"
+                                foreground="#000000" />
+                        </div>
+
+                        <h3 class="text-navy font-black text-sm mb-1 uppercase tracking-tight">Archer ID Card</h3>
+                        <p class="text-[10px] text-gray-500 font-bold max-w-[180px] mx-auto leading-relaxed">
+                            Scan QR ini untuk verifikasi peserta saat turnamen berlangsung.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Approval Action Card -->
+                <div v-if="form.accreditation_status !== 'approved'"
+                    class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                    <h3 class="text-sm font-extrabold text-navy mb-4 flex items-center gap-2">
+                        <Icon icon="ph:check-square-offset" class="text-primary" />
+                        Verifikasi Pendaftaran
+                    </h3>
+                    <p class="text-xs text-gray-400 mb-6 leading-relaxed">
+                        Setujui pendaftaran setelah memeriksa kelengkapan data dan bukti pembayaran. QR Code akan
+                        digenerate
+                        otomatis.
+                    </p>
+                    <BaseButton variant="primary" block icon="ph:seal-check" class="h-12 shadow-lg shadow-primary/20"
+                        @click="approveParticipant" :loading="isApproving">
+                        Setujui Archer
+                    </BaseButton>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                    <h3 class="text-sm font-bold text-navy mb-4 flex items-center gap-2">
+                        <Icon icon="ph:lightning" class="text-primary" />
+                        Aksi Cepat
+                    </h3>
+                    <div class="space-y-2">
+                        <BaseButton variant="white" block icon="ph:target" @click="assignTarget">
+                            Assign Target
+                        </BaseButton>
+                        <BaseButton variant="white" block icon="ph:printer" @click="printAccreditation">
+                            Cetak Akreditasi
+                        </BaseButton>
+                    </div>
+                </div>
+
+                <!-- Event Info -->
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
                     <h3 class="text-sm font-bold text-navy mb-4">Event</h3>
                     <div v-if="event" class="space-y-3">
@@ -174,21 +261,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Tips -->
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-                    <h3 class="text-sm font-bold text-navy mb-3">Tips</h3>
-                    <ul class="space-y-2 text-xs text-gray-500">
-                        <li class="flex items-start gap-2">
-                            <Icon icon="ph:check-circle" class="text-green-500 mt-0.5 flex-shrink-0" />
-                            <span>Pastikan kategori yang dipilih sesuai dengan divisi peserta</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <Icon icon="ph:check-circle" class="text-green-500 mt-0.5 flex-shrink-0" />
-                            <span>Nomor target akan diassign pada modul khusus target</span>
-                        </li>
-                    </ul>
                 </div>
             </div>
         </form>
@@ -207,6 +279,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import QrcodeVue from 'qrcode.vue'
 import { ref, reactive, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useApi } from '~/composables/useApi'
@@ -229,6 +302,7 @@ const participant = ref(null)
 const event = ref(null)
 const categories = ref([])
 const isSubmitting = ref(false)
+const isApproving = ref(false)
 
 const statusOptions = [
     { title: 'Menunggu Acc', value: 'Menunggu Acc', icon: 'ph:hourglass' },
@@ -315,7 +389,6 @@ const handleSubmit = async () => {
 
     isSubmitting.value = true
     try {
-        // Update participant via API
         const payload = {
             category_id: form.category_id,
             back_number: form.back_number || null,
@@ -328,13 +401,41 @@ const handleSubmit = async () => {
 
         await put(`/events/${eventId}/participants/${participantId}`, payload)
         toast.success('Peserta berhasil diupdate')
-        router.push(`/dashboard/events/${eventId}/participants/${participantId}`)
     } catch (error) {
         console.error('Failed to update participant:', error)
         toast.error(error.response?.data?.error || 'Gagal mengupdate peserta')
     } finally {
         isSubmitting.value = false
     }
+}
+
+const approveParticipant = async () => {
+    isApproving.value = true
+    try {
+        const payload = {
+            accreditation_status: 'approved',
+            status: 'Terdaftar' // Bonus: auto set status to Terdaftar if approved
+        }
+        await put(`/events/${eventId}/participants/${participantId}`, payload)
+
+        form.accreditation_status = 'approved'
+        form.status = 'Terdaftar'
+
+        toast.success('Archer berhasil disetujui! QR Code telah dibuat.')
+    } catch (error) {
+        console.error('Failed to approve participant:', error)
+        toast.error('Gagal menyetujui archer')
+    } finally {
+        isApproving.value = false
+    }
+}
+
+const assignTarget = () => {
+    toast.info('Fitur assign target akan segera tersedia')
+}
+
+const printAccreditation = () => {
+    toast.info('Fitur cetak akreditasi akan segera tersedia')
 }
 
 onMounted(() => {

@@ -63,6 +63,7 @@
     "highlightjs-solidity": "^2.0.6",
     "marked": "^17.0.1",
     "papaparse": "^5.5.3",
+    "qrcode.vue": "^3.6.0",
     "sass": "^1.66.1",
     "uuid": "^13.0.0",
     "vue-chartjs": "^5.3.3",

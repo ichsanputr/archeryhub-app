@@ -11,8 +11,8 @@
                 <Icon :icon="icon.includes(':') ? icon : `material-symbols:${icon}`" class="text-[20px]" />
             </div>
 
-            <input :value="modelValue" @input="$emit('update:modelValue', $event.target.value)" :type="inputType"
-                :placeholder="placeholder" :disabled="disabled" class="w-full h-11 px-4 rounded-xl border border-gray-200 bg-gray-50/50 text-navy text-sm font-medium transition-all
+            <input v-bind="$attrs" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)"
+                :type="inputType" :placeholder="placeholder" :disabled="disabled" class="w-full h-11 px-4 rounded-xl border border-gray-200 bg-gray-50/50 text-navy text-sm font-medium transition-all
                placeholder:text-gray-400 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none
                disabled:opacity-50 disabled:cursor-not-allowed" :class="[
                 icon ? 'pl-11' : 'pl-4',
@@ -33,6 +33,12 @@
         </p>
     </div>
 </template>
+
+<script>
+export default {
+    inheritAttrs: false
+}
+</script>
 
 <script setup>
 import { ref, computed } from 'vue'
