@@ -372,9 +372,10 @@
                             class="material-symbols-outlined text-base sm:text-lg transition-transform group-hover:translate-x-1">arrow_forward</span>
                     </NuxtLink>
                 </div>
-                <div class="flex flex-wrap items-center gap-3 mb-8 overflow-x-auto no-scrollbar pb-2">
+                <div
+                    class="flex flex-nowrap items-center gap-3 mb-8 overflow-x-auto no-scrollbar pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
                     <button v-for="region in regions" :key="region"
-                        class="px-5 py-2 rounded-full text-sm font-bold transition-colors whitespace-nowrap"
+                        class="px-5 py-2 rounded-full text-xs sm:text-sm font-bold transition-colors whitespace-nowrap flex-shrink-0"
                         :class="activeRegion === region ? 'bg-primary text-navy shadow-md' : 'bg-slate-200/70 text-navy hover:bg-slate-300'"
                         @click="activeRegion = region">
                         {{ region }}
@@ -388,8 +389,10 @@
                             <span class="material-symbols-outlined text-[14px] fill-1">verified</span> Verifikasi
                         </div>
                         <div
-                            class="w-20 h-20 rounded-2xl bg-navy/5 text-navy flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                            <span class="material-symbols-outlined text-4xl">{{ club.icon }}</span>
+                            class="w-20 h-20 rounded-2xl bg-navy/5 text-navy flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 overflow-hidden">
+                            <img v-if="club.logo_url" :src="club.logo_url" :alt="club.name"
+                                class="w-full h-full object-cover" />
+                            <span v-else class="material-symbols-outlined text-4xl">{{ club.icon }}</span>
                         </div>
                         <h3 class="text-base sm:text-lg font-bold text-navy mb-1 font-display">{{ club.name }}</h3>
                         <div class="flex items-center gap-1 text-text-sub text-xs sm:text-sm mb-6">
@@ -521,6 +524,7 @@ const fetchClubs = async () => {
             location: club.city ? `${club.city}${club.province ? ', ' + club.province : ''}` : (club.province || ''),
             icon: iconMap[club.name] || 'target', // Use mapped icon or default
             verified: club.verification_status === 'verified',
+            logo_url: club.logo_url,
             region: provinceToRegion[club.province] || club.province || 'Semua Wilayah',
             city: club.city,
             province: club.province
@@ -718,6 +722,15 @@ const fetchLatestNews = async () => {
 }
 
 /* Custom Scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
 .custom-scrollbar::-webkit-scrollbar {
     width: 4px;
 }

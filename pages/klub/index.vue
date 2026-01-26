@@ -141,10 +141,11 @@
                     <!-- Club Info -->
                     <div class="p-5">
                         <div class="flex items-start gap-4">
-                            <!-- Logo -->
                             <div
                                 class="w-14 h-14 -mt-7 rounded-xl bg-white border-2 border-white shadow-xl overflow-hidden flex-shrink-0 relative z-[2]">
-                                <div v-if="!club.avatar_url"
+                                <img v-if="club.logo_url" :src="club.logo_url" :alt="club.name"
+                                    class="w-full h-full object-cover" />
+                                <div v-else-if="!club.avatar_url"
                                     class="w-full h-full bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center">
                                     <span class="text-xl font-black text-navy">{{ club.name.charAt(0) }}</span>
                                 </div>
@@ -160,18 +161,10 @@
                         </div>
 
                         <!-- Stats -->
-                        <div class="flex items-center justify-between mt-5 pt-5 border-t border-gray-100">
+                        <div class="flex items-center mt-5 pt-5 border-t border-gray-100">
                             <div class="flex items-center gap-1">
                                 <Icon icon="ph:users-bold" class="text-primary" />
                                 <span class="font-black text-navy text-sm">{{ club.member_count }} Members</span>
-                            </div>
-                            <div class="flex items-center gap-1">
-                                <Icon icon="ph:star-fill" class="text-amber-400" />
-                                <span class="font-black text-navy text-sm">4.8</span>
-                            </div>
-                            <div class="flex items-center gap-1 text-right">
-                                <Icon icon="ph:trophy-bold" class="text-primary" />
-                                <span class="font-black text-navy text-sm">PRO</span>
                             </div>
                         </div>
                     </div>
@@ -208,7 +201,7 @@
                     </div>
                     <NuxtLink to="/auth/register?type=club">
                         <button
-                            class="px-10 py-4 bg-navy hover:bg-navy-light text-white font-black rounded-xl transition-all shadow-xl shadow-navy/30 flex items-center gap-3 text-lg">
+                            class="px-6 py-3 bg-navy hover:bg-navy-light text-white font-black rounded-xl transition-all shadow-xl shadow-navy/30 flex items-center gap-3">
                             <Icon icon="ph:plus-bold" />
                             Daftarkan Klub
                         </button>

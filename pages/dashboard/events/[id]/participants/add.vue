@@ -6,20 +6,24 @@
                 <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
                     <NuxtLink to="/dashboard/events" class="hover:text-primary transition-colors">Events</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <NuxtLink :to="`/dashboard/events/${route.params.id}/overview`" class="hover:text-primary transition-colors">Control Panel</NuxtLink>
+                    <NuxtLink :to="`/dashboard/events/${route.params.id}/overview`"
+                        class="hover:text-primary transition-colors">Control Panel</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <NuxtLink :to="`/dashboard/events/${route.params.id}/participants`" class="hover:text-primary transition-colors">Peserta</NuxtLink>
+                    <NuxtLink :to="`/dashboard/events/${route.params.id}/participants`"
+                        class="hover:text-primary transition-colors">Peserta</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
                     <span class="text-navy">Tambah Peserta</span>
                 </div>
                 <h1 class="text-3xl font-extrabold text-navy tracking-tight">Tambah Peserta Event</h1>
-                <p class="text-gray-500 font-medium mt-1">Daftarkan pemanah baru atau pilih pemanah yang sudah terdaftar untuk event ini.</p>
+                <p class="text-gray-500 font-medium mt-1">Daftarkan pemanah baru atau pilih pemanah yang sudah terdaftar
+                    untuk event ini.</p>
             </div>
             <div class="flex gap-3">
                 <BaseButton variant="white" :to="`/dashboard/events/${route.params.id}/participants`" class="h-11">
                     Batal
                 </BaseButton>
-                <BaseButton variant="primary" @click="submit" :loading="isSubmitting" class="h-11 shadow-lg shadow-primary/20">
+                <BaseButton variant="primary" @click="submit" :loading="isSubmitting"
+                    class="h-11 shadow-lg shadow-primary/20">
                     Simpan Peserta
                 </BaseButton>
             </div>
@@ -47,38 +51,33 @@
 
                         <!-- Existing Archer Selection -->
                         <div v-if="archerMode === 'existing'" class="space-y-4">
-                            <BaseInput
-                                v-model="searchArcherQuery"
-                                icon="ph:magnifying-glass"
-                                placeholder="Cari nama lengkap atau email pemanah..."
-                                label="Cari Pemanah"
-                            />
+                            <BaseInput v-model="searchArcherQuery" icon="ph:magnifying-glass"
+                                placeholder="Cari nama lengkap atau email pemanah..." label="Cari Pemanah" />
                             <p v-if="searchArcherQuery && searchArcherQuery.length < 2" class="text-xs text-gray-400">
                                 Ketik minimal 2 karakter untuk mulai mencari.
                             </p>
                             <div v-if="isSearchingArchers" class="flex items-center gap-2 text-xs text-gray-400">
-                                <span class="inline-block h-3 w-3 border-2 border-primary border-t-transparent rounded-full animate-spin"></span>
+                                <span
+                                    class="inline-block h-3 w-3 border-2 border-primary border-t-transparent rounded-full animate-spin"></span>
                                 Mencari pemanah...
                             </div>
-                            <div
-                                v-if="searchArcherQuery && searchArcherQuery.length >= 2"
-                                class="max-h-64 overflow-y-auto border border-gray-100 rounded-xl"
-                            >
-                                <button
-                                    v-for="archer in filteredArchers"
-                                    :key="archer.id || archer.uuid"
+                            <div v-if="searchArcherQuery && searchArcherQuery.length >= 2"
+                                class="max-h-64 overflow-y-auto border border-gray-100 rounded-xl">
+                                <button v-for="archer in filteredArchers" :key="archer.id || archer.uuid"
                                     @click="selectArcher(archer)"
                                     :class="selectedArcher?.id === archer.id ? 'bg-primary/10 border-primary' : 'hover:bg-gray-50'"
                                     class="w-full p-4 text-left border-b border-gray-100 last:border-b-0 transition-colors">
                                     <div class="flex items-center gap-3">
-                                        <div class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs uppercase">
-                                            {{ archer.full_name?.split(' ').map(n => n[0]).join('') || 'U' }}
+                                        <div
+                                            class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs uppercase">
+                                            {{archer.full_name?.split(' ').map(n => n[0]).join('') || 'U'}}
                                         </div>
                                         <div class="flex-1">
                                             <p class="font-bold text-navy">{{ archer.full_name }}</p>
                                             <p class="text-xs text-gray-400">{{ archer.club_name || '-' }}</p>
                                         </div>
-                                        <Icon v-if="selectedArcher?.id === archer.id" icon="ph:check-circle" class="text-primary text-xl" />
+                                        <Icon v-if="selectedArcher?.id === archer.id" icon="ph:check-circle"
+                                            class="text-primary text-xl" />
                                     </div>
                                 </button>
                                 <div v-if="filteredArchers.length === 0" class="p-4 text-center text-gray-400 text-sm">
@@ -88,71 +87,28 @@
                         </div>
 
                         <!-- New Archer Form -->
-                        <div v-if="archerMode === 'new'" class="space-y-4 border border-gray-100 rounded-xl p-4 bg-gray-50/50">
+                        <div v-if="archerMode === 'new'"
+                            class="space-y-4 border border-gray-100 rounded-xl p-4 bg-gray-50/50">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <BaseInput
-                                    v-model="newArcherForm.full_name"
-                                    label="Nama Lengkap"
-                                    placeholder="Nama sesuai identitas"
-                                    required
-                                />
-                                <BaseInput
-                                    v-model="newArcherForm.athlete_code"
-                                    label="Kode Atlet"
-                                    placeholder="ARC-2025-001"
-                                />
-                                <BaseInput
-                                    v-model="newArcherForm.email"
-                                    label="Email"
-                                    type="email"
-                                    placeholder="email@example.com"
-                                    required
-                                />
-                                <BaseInput
-                                    v-model="newArcherForm.password"
-                                    label="Password"
-                                    type="password"
-                                    placeholder="Minimal 6 karakter"
-                                    required
-                                />
-                                <BaseInput
-                                    v-model="newArcherForm.phone"
-                                    label="No. Telepon"
-                                    type="tel"
-                                    placeholder="08xxxxxxxxxx"
-                                />
-                                <BaseInput
-                                    v-model="newArcherForm.date_of_birth"
-                                    label="Tanggal Lahir"
-                                    type="date"
-                                />
-                                <BaseSelect
-                                    v-model="newArcherForm.gender"
-                                    label="Jenis Kelamin"
-                                    :items="genderOptions"
-                                />
-                                <BaseSelect
-                                    v-model="newArcherForm.bow_type"
-                                    label="Jenis Busur"
-                                    :items="bowOptions"
-                                />
-                                <BaseInput
-                                    v-model="newArcherForm.country"
-                                    label="Negara"
-                                    placeholder="Indonesia"
-                                />
+                                <BaseInput v-model="newArcherForm.full_name" label="Nama Lengkap"
+                                    placeholder="Nama sesuai identitas" required />
+                                <BaseInput v-model="newArcherForm.athlete_code" label="Kode Atlet"
+                                    placeholder="ARC-2025-001" />
+                                <BaseInput v-model="newArcherForm.email" label="Email" type="email"
+                                    placeholder="email@example.com" required />
+                                <BaseInput v-model="newArcherForm.password" label="Password" type="password"
+                                    placeholder="Minimal 6 karakter" required />
+                                <BaseInput v-model="newArcherForm.phone" label="No. Telepon" type="tel"
+                                    placeholder="08xxxxxxxxxx" />
+                                <BaseInput v-model="newArcherForm.date_of_birth" label="Tanggal Lahir" type="date" />
+                                <BaseSelect v-model="newArcherForm.gender" label="Jenis Kelamin"
+                                    :items="genderOptions" />
+                                <BaseSelect v-model="newArcherForm.bow_type" label="Jenis Busur" :items="bowOptions" />
+                                <BaseInput v-model="newArcherForm.country" label="Negara" placeholder="Indonesia" />
                             </div>
-                            <BaseSelect
-                                v-model="newArcherForm.club_id"
-                                label="Klub"
-                                :items="clubOptions"
-                            />
-                            <BaseTextarea
-                                v-model="newArcherForm.address"
-                                label="Alamat"
-                                placeholder="Alamat lengkap"
-                                :rows="2"
-                            />
+                            <BaseSelect v-model="newArcherForm.club_id" label="Klub" :items="clubOptions" />
+                            <BaseTextarea v-model="newArcherForm.address" label="Alamat" placeholder="Alamat lengkap"
+                                :rows="2" />
                             <p class="text-xs text-gray-400">
                                 Field bertanda * wajib diisi untuk membuat pemanah baru.
                             </p>
@@ -166,7 +122,9 @@
                     <div class="space-y-4">
                         <BaseSelect v-model="form.category_id" label="Kategori" :items="categoryOptions" required />
                         <div v-if="selectedCategory" class="bg-gray-50/50 border border-gray-100 rounded-xl p-4">
-                            <p class="text-sm font-bold text-navy mb-1">{{ selectedCategory.division_name || selectedCategory.division }} - {{ selectedCategory.category_name || selectedCategory.category }}</p>
+                            <p class="text-sm font-bold text-navy mb-1">{{ selectedCategory.division_name ||
+                                selectedCategory.division }} - {{ selectedCategory.category_name ||
+                                selectedCategory.category }}</p>
                             <p class="text-xs text-gray-500">Kategori yang dipilih untuk peserta ini</p>
                         </div>
                     </div>
@@ -176,11 +134,13 @@
                 <div>
                     <h3 class="text-lg font-black text-navy mb-4">Informasi Tambahan</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <BaseInput v-model="form.back_number" label="Nomor Punggung" placeholder="Opsional" type="number" />
-                        <BaseSelect v-model="form.payment_status" label="Status Pembayaran" :items="paymentStatusOptions" />
+                        <BaseSelect v-model="form.payment_status" label="Status Pembayaran"
+                            :items="paymentStatusOptions" />
+                        <BaseInput v-model="form.payment_amount" label="Jumlah Pembayaran" placeholder="0"
+                            type="number" />
                     </div>
-                    <BaseInput v-model="form.payment_amount" label="Jumlah Pembayaran" placeholder="0" type="number" class="mt-4" />
-                    <BaseTextarea v-model="form.notes" label="Catatan" placeholder="Catatan tambahan (opsional)" :rows="3" class="mt-4" />
+                    <BaseTextarea v-model="form.notes" label="Catatan" placeholder="Catatan tambahan (opsional)"
+                        :rows="3" class="mt-4" />
                 </div>
             </div>
 
@@ -190,7 +150,8 @@
                     <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em]">Informasi Event</h3>
                     <div v-if="event">
                         <div class="flex items-center gap-3 mb-3">
-                            <div class="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-bold">
+                            <div
+                                class="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-bold">
                                 <Icon icon="ph:trophy" class="text-xl" />
                             </div>
                             <div>
@@ -215,8 +176,9 @@
                 <div v-if="selectedArcher" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-4">
                     <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em]">Pemanah Terpilih</h3>
                     <div class="flex items-center gap-3">
-                        <div class="h-12 w-12 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-sm uppercase">
-                            {{ selectedArcher.full_name?.split(' ').map(n => n[0]).join('') || 'U' }}
+                        <div
+                            class="h-12 w-12 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-sm uppercase">
+                            {{selectedArcher.full_name?.split(' ').map(n => n[0]).join('') || 'U'}}
                         </div>
                         <div>
                             <p class="font-bold text-navy">{{ selectedArcher.full_name }}</p>
@@ -261,7 +223,6 @@ const isSubmitting = ref(false)
 
 const form = reactive({
     category_id: '',
-    back_number: '',
     target_number: '',
     payment_status: 'pending',
     payment_amount: 0,

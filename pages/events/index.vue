@@ -256,24 +256,25 @@
         </main>
 
         <!-- CTA Section -->
-        <section class="py-20 bg-gradient-to-br from-primary via-amber-400 to-yellow-400 relative overflow-hidden">
+        <section
+            class="py-12 md:py-16 bg-gradient-to-br from-primary via-amber-400 to-yellow-400 relative overflow-hidden">
             <div class="absolute inset-0 opacity-10">
                 <div class="absolute top-0 right-0 w-96 h-96 bg-navy rounded-full blur-3xl"></div>
                 <div class="absolute bottom-0 left-0 w-96 h-96 bg-navy rounded-full blur-3xl"></div>
             </div>
             <div class="container mx-auto px-4 max-w-7xl relative z-10">
-                <div class="flex flex-col md:flex-row items-center justify-between gap-10">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-10">
                     <div class="text-center md:text-left">
-                        <h2 class="text-3xl md:text-5xl font-black text-navy mb-4 tracking-tight">Punya Event Panahan?
+                        <h2 class="text-2xl md:text-3xl font-black text-navy mb-3 tracking-tight">Punya Event Panahan?
                         </h2>
-                        <p class="text-navy/70 text-lg md:text-xl font-bold max-w-xl leading-relaxed">Daftarkan event
+                        <p class="text-navy/70 text-sm sm:text-base font-bold max-w-xl leading-relaxed">Daftarkan event
                             Anda di Archeryhub.id dan kelola pendaftaran serta scoring dengan lebih profesional.</p>
                     </div>
                     <NuxtLink to="/auth/register?type=organizer">
                         <button
-                            class="px-12 py-5 bg-navy hover:bg-navy-light text-white font-black rounded-2xl transition-all shadow-2xl shadow-navy/30 flex items-center gap-3 text-xl group">
+                            class="px-8 py-4 bg-navy hover:bg-navy-light text-white font-black rounded-xl transition-all shadow-xl shadow-navy/20 flex items-center gap-3 text-lg group">
                             <Icon icon="ph:plus-circle-bold"
-                                class="text-2xl group-hover:rotate-90 transition-transform duration-500" />
+                                class="text-xl group-hover:rotate-90 transition-transform duration-500" />
                             Buat Event Sekarang
                         </button>
                     </NuxtLink>

@@ -67,7 +67,7 @@
 
         <!-- Edit Form (Unified Page) -->
         <form v-else-if="participant" @submit.prevent="handleSubmit" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Main Form -->
+            <!-- Main Form Column -->
             <div class="lg:col-span-2 space-y-6">
                 <!-- Participant Info -->
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 overflow-hidden relative">
@@ -96,37 +96,24 @@
                                     {{ participant.athlete_code || '-' }}
                                 </p>
                             </div>
-
-                            <!-- Status Acc Badge -->
-                            <div class="ml-auto">
-                                <div v-if="form.accreditation_status === 'approved'"
-                                    class="flex items-center gap-1.5 px-3 py-1.5 bg-green-50 text-green-600 rounded-full text-[10px] font-black uppercase tracking-widest border border-green-100">
-                                    <Icon icon="ph:seal-check-fill" class="text-sm" />
-                                    TERVERIFIKASI
-                                </div>
-                                <div v-else-if="form.accreditation_status === 'rejected'"
-                                    class="flex items-center gap-1.5 px-3 py-1.5 bg-red-50 text-red-600 rounded-full text-[10px] font-black uppercase tracking-widest border border-red-100">
-                                    <Icon icon="ph:x-circle-fill" class="text-sm" />
-                                    DITOLAK
-                                </div>
-                                <div v-else
-                                    class="flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 text-amber-600 rounded-full text-[10px] font-black uppercase tracking-widest border border-amber-100">
-                                    <Icon icon="ph:clock-fill" class="text-sm" />
-                                    PENDING
-                                </div>
-                            </div>
                         </div>
+                    </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <BaseSelect v-model="form.category_id" label="Kategori Event" required
-                                placeholder="Pilih Kategori" icon="ph:trophy" :items="categories" item-title="label"
-                                item-value="id" />
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                        <BaseSelect v-model="form.category_id" label="Kategori Event" required
+                            placeholder="Pilih Kategori" icon="ph:trophy" :items="categories" item-title="label"
+                            item-value="id" />
 
-                            <BaseInput v-model="form.back_number" label="Nomor Punggung" placeholder="Contoh: 101"
-                                icon="ph:identification-card" />
+                        <BaseInput v-model.number="form.session" type="number" label="Sesi" placeholder="1-4"
+                            icon="ph:timer" min="1" max="4" />
 
-                            <BaseInput v-model.number="form.session" type="number" label="Sesi" placeholder="1-4"
-                                icon="ph:timer" min="1" max="4" />
+                        <div class="md:col-span-2">
+                            <p
+                                class="text-gray-400 font-bold text-xs uppercase tracking-wider mb-2 flex items-center gap-2">
+                                <Icon icon="ph:calendar-check" />
+                                Tanggal Pendaftaran
+                            </p>
+                            <p class="text-navy font-bold">{{ formatDate(participant?.registration_date) }}</p>
                         </div>
                     </div>
                 </div>
@@ -139,14 +126,25 @@
                     </h2>
                     <div class="space-y-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <BaseSelect v-model="form.status" label="Status Pendaftaran" required icon="ph:checks"
-                                :items="statusOptions" />
-
-                            <BaseInput v-model.number="form.payment_amount" type="number" label="Jumlah Pembayaran"
-                                placeholder="0" icon="ph:money" min="0" step="0.01" />
-
-                            <BaseSelect v-model="form.accreditation_status" label="Status Akreditasi" required
-                                icon="ph:shield-check" :items="accreditationOptions" />
+                            <div>
+                                <p class="text-gray-400 font-bold text-xs uppercase tracking-wider mb-2">Status
+                                    Pendaftaran
+                                </p>
+                                <span
+                                    :class="form.status === 'Terdaftar' ? 'bg-green-50 text-green-600 border-green-100' : 'bg-amber-50 text-amber-600 border-amber-100'"
+                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border">
+                                    <Icon
+                                        :icon="form.status === 'Terdaftar' ? 'ph:check-circle-fill' : 'ph:clock-fill'" />
+                                    {{ form.status }}
+                                </span>
+                            </div>
+                            <div>
+                                <p class="text-gray-400 font-bold text-xs uppercase tracking-wider mb-2">Jumlah
+                                    Pembayaran
+                                </p>
+                                <p class="text-navy font-black text-lg">Rp {{ formatCurrency(form.payment_amount || 0)
+                                }}</p>
+                            </div>
                         </div>
 
                         <!-- Payment Proof Images -->
@@ -188,26 +186,32 @@
             <div class="space-y-6">
                 <!-- QR Code Section (Only if Approved) -->
                 <div v-if="form.accreditation_status === 'approved'"
-                    class="bg-white rounded-2xl border-2 border-green-500 shadow-xl shadow-green-500/10 p-6 text-center overflow-hidden relative group">
-                    <div class="absolute inset-0 bg-gradient-to-b from-green-50/50 to-white opacity-50"></div>
+                    class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 text-center group">
 
                     <div class="relative z-10">
-                        <div
-                            class="inline-flex items-center gap-2 px-3 py-1 bg-green-500 text-white rounded-full text-[10px] font-black mb-4 tracking-tighter shadow-lg shadow-green-500/30">
-                            <Icon icon="ph:qr-code" />
-                            ID CARD QR
-                        </div>
+                        <h3
+                            class="text-xs font-black text-navy mb-4 flex items-center justify-center gap-2 uppercase tracking-tighter">
+                            <Icon icon="ph:qr-code" class="text-primary text-lg" />
+                            Archer ID Card
+                        </h3>
 
                         <div
-                            class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 mb-4 inline-block transform transition-transform group-hover:scale-105 duration-500">
+                            class="bg-white p-4 rounded-2xl shadow-sm border border-gray-50 mb-4 inline-block transform transition-transform group-hover:scale-105 duration-500">
                             <qrcode-vue :value="participant?.id" :size="160" level="H" render-as="svg"
                                 foreground="#000000" />
                         </div>
 
-                        <h3 class="text-navy font-black text-sm mb-1 uppercase tracking-tight">Archer ID Card</h3>
                         <p class="text-[10px] text-gray-500 font-bold max-w-[180px] mx-auto leading-relaxed">
-                            Scan QR ini untuk verifikasi peserta saat turnamen berlangsung.
+                            Simpan QR ini untuk verifikasi peserta saat turnamen.
                         </p>
+
+                        <div class="mt-4 pt-4 border-t border-gray-50 flex justify-center">
+                            <div
+                                class="flex items-center gap-1.5 text-[9px] font-black text-green-600 bg-green-50 px-2 py-1 rounded-full uppercase tracking-widest border border-green-100">
+                                <Icon icon="ph:seal-check-fill" />
+                                Verified Participant
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -227,22 +231,6 @@
                         @click="approveParticipant" :loading="isApproving">
                         Setujui Archer
                     </BaseButton>
-                </div>
-
-                <!-- Quick Actions -->
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-                    <h3 class="text-sm font-bold text-navy mb-4 flex items-center gap-2">
-                        <Icon icon="ph:lightning" class="text-primary" />
-                        Aksi Cepat
-                    </h3>
-                    <div class="space-y-2">
-                        <BaseButton variant="white" block icon="ph:target" @click="assignTarget">
-                            Assign Target
-                        </BaseButton>
-                        <BaseButton variant="white" block icon="ph:printer" @click="printAccreditation">
-                            Cetak Akreditasi
-                        </BaseButton>
-                    </div>
                 </div>
 
                 <!-- Event Info -->
@@ -309,15 +297,8 @@ const statusOptions = [
     { title: 'Terdaftar', value: 'Terdaftar', icon: 'ph:check-circle' }
 ]
 
-const accreditationOptions = [
-    { title: 'Pending', value: 'pending', icon: 'ph:clock', description: 'Menunggu verifikasi admin' },
-    { title: 'Disetujui', value: 'approved', icon: 'ph:check-circle', description: 'Peserta telah diverifikasi' },
-    { title: 'Ditolak', value: 'rejected', icon: 'ph:x-circle', description: 'Pendaftaran tidak valid' }
-]
-
 const form = reactive({
     category_id: '',
-    back_number: '',
     session: null,
     status: 'Menunggu Acc',
     payment_amount: 0,
@@ -336,7 +317,6 @@ const fetchParticipant = async () => {
             participant.value = found
             // Populate form
             form.category_id = found.category_id
-            form.back_number = found.back_number || ''
             form.session = found.session || null
             form.status = found.status || 'Menunggu Acc'
             form.payment_amount = found.payment_amount || 0
@@ -381,6 +361,10 @@ const formatDate = (dateStr) => {
     })
 }
 
+const formatCurrency = (value) => {
+    return new Intl.NumberFormat('id-ID', { style: 'decimal' }).format(value)
+}
+
 const handleSubmit = async () => {
     if (!form.category_id) {
         toast.error('Pilih kategori event terlebih dahulu')
@@ -391,7 +375,6 @@ const handleSubmit = async () => {
     try {
         const payload = {
             category_id: form.category_id,
-            back_number: form.back_number || null,
             session: form.session || null,
             status: form.status,
             payment_amount: form.payment_amount || 0,

@@ -1,24 +1,28 @@
 <template>
     <div class="flex flex-col gap-8 pb-12">
         <!-- Enhanced Header -->
-        <div class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
+        <div
+            class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
             <!-- Background Pattern -->
-            <div class="absolute inset-0 opacity-20" style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);"></div>
-            
+            <div class="absolute inset-0 opacity-20"
+                style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);">
+            </div>
+
             <!-- Decorative Background Elements -->
             <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
             <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
-            
+
             <!-- Header Content -->
             <div class="relative p-6 sm:p-8">
                 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
                     <div class="flex items-start gap-4">
                         <!-- Icon Badge -->
-                        <div class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
+                        <div
+                            class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
                             <Icon icon="ph:calendar-check" class="text-primary text-2xl" />
                         </div>
-                        
+
                         <!-- Title Section -->
                         <div class="flex-1">
                             <div class="flex items-center gap-3 mb-2">
@@ -41,7 +45,8 @@
                                     {{ getStatusLabel(event?.status) }}
                                 </span>
                                 <div class="h-4 w-px bg-white/20 hidden sm:block"></div>
-                                <div class="flex items-center gap-2 text-slate-300 text-xs font-bold uppercase tracking-wider">
+                                <div
+                                    class="flex items-center gap-2 text-slate-300 text-xs font-bold uppercase tracking-wider">
                                     <Icon icon="ph:hash-bold" class="text-primary text-sm" />
                                     <span>{{ event?.code }}</span>
                                 </div>
@@ -56,7 +61,8 @@
                             Bagikan
                         </BaseButton>
                         <BaseButton :to="`/dashboard/events/${route.params.id}/edit`" variant="primary"
-                            icon="ph:pencil-simple-line-bold" class="h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all font-bold">
+                            icon="ph:pencil-simple-line-bold"
+                            class="h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all font-bold">
                             Edit Event
                         </BaseButton>
                     </div>
@@ -64,14 +70,13 @@
             </div>
         </div>
 
-        <!-- Navigation Tabs -->
+        <!-- Navigation Tabs (Only Ringkasan) -->
         <div
             class="flex items-center gap-6 border-b border-gray-100 pb-0 shadow-sm -mx-4 px-4 overflow-x-auto no-scrollbar">
-            <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
-                :class="activeTab === tab.id ? 'text-navy border-b-2 border-primary bg-primary/5' : 'text-gray-400 hover:text-navy hover:bg-gray-50'"
-                class="pb-4 pt-4 px-4 text-[11px] font-black uppercase tracking-widest transition-all border-b-2 border-transparent flex items-center gap-2 whitespace-nowrap">
-                <Icon :icon="tab.icon" class="text-lg" />
-                {{ tab.label }}
+            <button @click="activeTab = 'overview'"
+                class="pb-4 pt-4 px-4 text-[11px] font-black uppercase tracking-widest transition-all border-b-2 border-primary bg-primary/5 text-navy">
+                <Icon icon="ph:layout-bold" class="text-lg" />
+                Ringkasan
             </button>
         </div>
 
@@ -144,7 +149,7 @@
                                 <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">
                                     Completion</p>
                                 <p class="text-navy-dark text-3xl font-extrabold tracking-tight">{{ completionPercentage
-                                    }}%</p>
+                                }}%</p>
                             </div>
                             <div
                                 class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
@@ -342,222 +347,84 @@
                 </div>
             </div>
 
-            <!-- Other Tabs -->
-            <div v-if="activeTab === 'control'">
-                <EventPhaseControl :event="event" @refresh="fetchEventDetails" />
-            </div>
-
-            <div v-if="activeTab === 'qualification'">
-                <EventQualificationManager :event-id="route.params.id" />
-            </div>
-
-            <div v-if="activeTab === 'elimination'">
-                <EventEliminationManager :event-id="route.params.id" />
-            </div>
-
-            <div v-if="activeTab === 'athletes'" class="space-y-6">
-                <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-                    <div
-                        class="px-8 py-6 border-b border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gray-50/50">
-                        <div>
-                            <h3 class="font-black text-navy text-xl tracking-tight">Daftar Atlet Terpusat</h3>
-                            <p class="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">Total {{
-                                participants.length }} Atlet Terdaftar</p>
-                        </div>
-                        <div class="flex gap-3">
-                            <BaseInput v-model="searchQuery" placeholder="Cari Nama / Klub..."
-                                icon="ph:magnifying-glass-bold" class="max-w-xs" />
-                            <BaseButton variant="primary" icon="ph:plus-bold" size="sm" class="font-bold">Tambah Manual
-                            </BaseButton>
-                        </div>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left">
-                            <thead>
-                                <tr
-                                    class="border-b border-gray-50 bg-gray-50/20 text-[10px] uppercase tracking-[0.2em] text-gray-400 font-black">
-                                    <th class="px-8 py-5">Atlet</th>
-                                    <th class="px-8 py-5">Klub</th>
-                                    <th class="px-8 py-5">Divisi / Kategori</th>
-                                    <th class="px-8 py-5">Target</th>
-                                    <th class="px-8 py-5">Pembayaran</th>
-                                    <th class="px-8 py-5 text-right">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-50 text-sm">
-                                <tr v-for="p in filteredParticipants" :key="p.id"
-                                    class="group hover:bg-gray-50/50 transition-colors">
-                                    <td class="px-8 py-5">
-                                        <div class="flex items-center gap-3">
-                                            <div
-                                                class="h-9 w-9 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs uppercase">
-                                                {{p.full_name?.split(' ').map(n => n[0]).join('') || 'N/A'}}
-                                            </div>
-                                            <div>
-                                                <p class="font-black text-navy tracking-tight">{{ p.full_name || p.name
-                                                    }}</p>
-                                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
-                                                    {{ p.athlete_code || '-' }}</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-8 py-5 text-gray-500 font-medium">{{ p.club_name || p.club_id || '-'
-                                        }}
-                                    </td>
-                                    <td class="px-8 py-5">
-                                        <p class="text-navy font-bold text-xs">{{ p.division_name || '-' }}</p>
-                                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{{
-                                            p.category_name || '-' }}</p>
-                                    </td>
-                                    <td class="px-8 py-5">
-                                        <span v-if="p.target_number"
-                                            class="inline-flex items-center justify-center px-2 py-1 bg-navy text-primary rounded font-black text-xs shadow-sm">
-                                            {{ String(p.target_number).padStart(2, '0') }}{{ p.back_number || '' }}
-                                        </span>
-                                        <span v-else
-                                            class="text-[10px] text-gray-300 font-black uppercase italic">TBD</span>
-                                    </td>
-                                    <td class="px-8 py-5">
-                                        <span
-                                            :class="p.payment_status === 'paid' ? 'bg-green-50 text-green-600 border-green-100' : 'bg-red-50 text-red-600 border-red-100'"
-                                            class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest border">
-                                            {{ p.payment_status || 'Unpaid' }}
-                                        </span>
-                                    </td>
-                                    <td class="px-8 py-5 text-right">
-                                        <button class="p-2 text-gray-300 hover:text-navy transition-colors">
-                                            <Icon icon="ph:pencil-simple-bold" />
-                                        </button>
-                                        <button class="p-2 text-gray-300 hover:text-red-500 transition-colors">
-                                            <Icon icon="ph:trash-bold" />
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr v-if="filteredParticipants.length === 0">
-                                    <td colspan="6" class="px-8 py-12 text-center text-gray-400 italic font-medium">
-                                        Tidak ada atlet yang ditemukan.
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div v-if="activeTab === 'categories'" class="space-y-8">
-                <EventCategoryManager :event-id="route.params.id" @refresh="fetchEventDetails" />
-            </div>
-
-            <div v-if="activeTab === 'settings'" class="max-w-3xl space-y-8">
-                <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-                    <div class="px-8 py-6 border-b border-gray-100 bg-gray-50/50">
-                        <h3 class="font-black text-navy text-lg tracking-tight">Pengaturan Publikasi</h3>
-                    </div>
-                    <div class="p-8 space-y-6">
-                        <div v-if="event?.status === 'draft'"
-                            class="flex items-center justify-between gap-6 p-4 rounded-2xl bg-amber-50 border border-amber-100">
-                            <div class="flex items-center gap-4 text-amber-700">
-                                <Icon icon="ph:warning-circle-bold" class="text-3xl" />
-                                <div>
-                                    <p class="font-black text-sm uppercase tracking-widest">Event Masih Draft</p>
-                                    <p class="text-xs font-medium">Atlet belum bisa mendaftar sampai event dipublish.
-                                    </p>
-                                </div>
-                            </div>
-                            <BaseButton variant="primary" @click="publishEvent" :loading="isPublishing"
-                                class="font-black text-[10px] uppercase tracking-widest px-6">Publish Sekarang
-                            </BaseButton>
-                        </div>
-                        <div class="space-y-4">
-                            <h4 class="text-sm font-bold text-navy">Danger Zone</h4>
-                            <BaseButton variant="white"
-                                class="text-red-600 border-red-100 bg-red-50/30 hover:bg-red-50 font-bold"
-                                icon="ph:trash-bold">
-                                Batalkan Event
-                            </BaseButton>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
+    </div>
+    </div>
 
-        <!-- Share Dialog -->
-        <div v-if="showShareDialog"
-            class="fixed inset-0 z-40 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-            <div
-                class="bg-white rounded-2xl shadow-xl border border-gray-100 w-full max-w-md mx-4 p-6 space-y-5 relative">
-                <button
-                    class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 transition-colors"
-                    @click="closeShareDialog">
-                    <Icon icon="ph:x-bold" class="text-lg" />
-                </button>
+    <!-- Share Dialog -->
+    <div v-if="showShareDialog"
+        class="fixed inset-0 z-40 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 w-full max-w-md mx-4 p-6 space-y-5 relative">
+            <button class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 transition-colors"
+                @click="closeShareDialog">
+                <Icon icon="ph:x-bold" class="text-lg" />
+            </button>
 
-                <div class="flex items-start gap-3">
-                    <div
-                        class="bg-primary/10 text-primary rounded-xl w-10 h-10 flex items-center justify-center shrink-0">
-                        <Icon icon="ph:share-network-bold" class="text-xl" />
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-bold text-navy">Bagikan Halaman Event</h3>
-                        <p class="text-sm text-gray-500 mt-1">
-                            Sebarkan link halaman publik event ini ke sosial media atau salin link untuk dibagikan
-                            ke peserta.
-                        </p>
-                    </div>
+            <div class="flex items-start gap-3">
+                <div class="bg-primary/10 text-primary rounded-xl w-10 h-10 flex items-center justify-center shrink-0">
+                    <Icon icon="ph:share-network-bold" class="text-xl" />
                 </div>
-
-                <div class="space-y-2">
-                    <p class="text-[11px] font-bold text-gray-400 uppercase tracking-[0.18em]">Link Publik
-                        Event</p>
-                    <div class="flex items-center gap-2">
-                        <div
-                            class="flex-1 bg-gray-50 border border-gray-100 rounded-xl px-3 py-2 text-xs text-gray-600 font-mono truncate">
-                            {{ publicEventUrl }}
-                        </div>
-                        <BaseButton variant="white" size="sm" icon="ph:copy-bold" class="whitespace-nowrap"
-                            @click="copyPublicUrl">
-                            Salin
-                        </BaseButton>
-                    </div>
-                    <p v-if="copySuccess" class="text-[11px] text-green-600 font-semibold mt-1">
-                        Link berhasil disalin ke clipboard
+                <div>
+                    <h3 class="text-lg font-bold text-navy">Bagikan Halaman Event</h3>
+                    <p class="text-sm text-gray-500 mt-1">
+                        Sebarkan link halaman publik event ini ke sosial media atau salin link untuk dibagikan
+                        ke peserta.
                     </p>
                 </div>
+            </div>
 
-                <div class="pt-3 border-t border-gray-100 space-y-3">
-                    <p class="text-[11px] font-bold text-gray-400 uppercase tracking-[0.18em]">Bagikan ke
-                        Sosial Media</p>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                        <button type="button" @click="shareTo('whatsapp')"
-                            class="flex flex-col items-center justify-center gap-2 px-3 py-3 rounded-xl border border-gray-100 hover:border-green-500 hover:bg-green-50 transition-all">
-                            <Icon icon="ph:whatsapp-logo" class="text-2xl text-green-500" />
-                            <span class="text-[11px] font-semibold text-gray-600">WhatsApp</span>
-                        </button>
-                        <button type="button" @click="shareTo('telegram')"
-                            class="flex flex-col items-center justify-center gap-2 px-3 py-3 rounded-xl border border-gray-100 hover:border-sky-500 hover:bg-sky-50 transition-all">
-                            <Icon icon="ph:telegram-logo" class="text-2xl text-sky-500" />
-                            <span class="text-[11px] font-semibold text-gray-600">Telegram</span>
-                        </button>
-                        <button type="button" @click="shareTo('twitter')"
-                            class="flex flex-col items-center justify-center gap-2 px-3 py-3 rounded-xl border border-gray-100 hover:border-black hover:bg-gray-50 transition-all">
-                            <Icon icon="ph:twitter-logo" class="text-2xl text-black" />
-                            <span class="text-[11px] font-semibold text-gray-600">X (Twitter)</span>
-                        </button>
-                        <button type="button" @click="shareTo('facebook')"
-                            class="flex flex-col items-center justify-center gap-2 px-3 py-3 rounded-xl border border-gray-100 hover:border-blue-600 hover:bg-blue-50 transition-all">
-                            <Icon icon="ph:facebook-logo" class="text-2xl text-blue-600" />
-                            <span class="text-[11px] font-semibold text-gray-600">Facebook</span>
-                        </button>
+            <div class="space-y-2">
+                <p class="text-[11px] font-bold text-gray-400 uppercase tracking-[0.18em]">Link Publik
+                    Event</p>
+                <div class="flex items-center gap-2">
+                    <div
+                        class="flex-1 bg-gray-50 border border-gray-100 rounded-xl px-3 py-2 text-xs text-gray-600 font-mono truncate">
+                        {{ publicEventUrl }}
                     </div>
-                </div>
-
-                <div class="flex justify-end gap-3 pt-3 border-t border-gray-100">
-                    <BaseButton variant="ghost" size="sm" @click="closeShareDialog">
-                        Tutup
+                    <BaseButton variant="white" size="sm" icon="ph:copy-bold" class="whitespace-nowrap"
+                        @click="copyPublicUrl">
+                        Salin
                     </BaseButton>
                 </div>
+                <p v-if="copySuccess" class="text-[11px] text-green-600 font-semibold mt-1">
+                    Link berhasil disalin ke clipboard
+                </p>
+            </div>
+
+            <div class="pt-3 border-t border-gray-100 space-y-3">
+                <p class="text-[11px] font-bold text-gray-400 uppercase tracking-[0.18em]">Bagikan ke
+                    Sosial Media</p>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <button type="button" @click="shareTo('whatsapp')"
+                        class="flex flex-col items-center justify-center gap-2 px-3 py-3 rounded-xl border border-gray-100 hover:border-green-500 hover:bg-green-50 transition-all">
+                        <Icon icon="ph:whatsapp-logo" class="text-2xl text-green-500" />
+                        <span class="text-[11px] font-semibold text-gray-600">WhatsApp</span>
+                    </button>
+                    <button type="button" @click="shareTo('telegram')"
+                        class="flex flex-col items-center justify-center gap-2 px-3 py-3 rounded-xl border border-gray-100 hover:border-sky-500 hover:bg-sky-50 transition-all">
+                        <Icon icon="ph:telegram-logo" class="text-2xl text-sky-500" />
+                        <span class="text-[11px] font-semibold text-gray-600">Telegram</span>
+                    </button>
+                    <button type="button" @click="shareTo('twitter')"
+                        class="flex flex-col items-center justify-center gap-2 px-3 py-3 rounded-xl border border-gray-100 hover:border-black hover:bg-gray-50 transition-all">
+                        <Icon icon="ph:twitter-logo" class="text-2xl text-black" />
+                        <span class="text-[11px] font-semibold text-gray-600">X (Twitter)</span>
+                    </button>
+                    <button type="button" @click="shareTo('facebook')"
+                        class="flex flex-col items-center justify-center gap-2 px-3 py-3 rounded-xl border border-gray-100 hover:border-blue-600 hover:bg-blue-50 transition-all">
+                        <Icon icon="ph:facebook-logo" class="text-2xl text-blue-600" />
+                        <span class="text-[11px] font-semibold text-gray-600">Facebook</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-3 pt-3 border-t border-gray-100">
+                <BaseButton variant="ghost" size="sm" @click="closeShareDialog">
+                    Tutup
+                </BaseButton>
             </div>
         </div>
+    </div>
     </div>
 </template>
 
@@ -598,12 +465,7 @@ const filteredParticipants = computed(() => {
 })
 
 const tabs = [
-    { id: 'overview', label: 'Ringkasan', icon: 'ph:layout-bold' },
-    { id: 'qualification', label: 'Kualifikasi', icon: 'ph:scoreboard-bold' },
-    { id: 'elimination', label: 'Eliminasi', icon: 'ph:tree-structure-bold' },
-    { id: 'athletes', label: 'Atlet', icon: 'ph:users-three-bold' },
-    { id: 'categories', label: 'Kategori', icon: 'ph:tag-bold' },
-    { id: 'settings', label: 'Pengaturan', icon: 'ph:gear-six-bold' }
+    { id: 'overview', label: 'Ringkasan', icon: 'ph:layout-bold' }
 ]
 
 const groupedTargets = computed(() => {

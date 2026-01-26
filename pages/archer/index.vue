@@ -3,12 +3,6 @@
         <!-- Hero Section -->
         <section
             class="bg-gradient-to-br from-navy via-navy to-blue-900 text-white py-20 md:py-28 relative overflow-hidden">
-            <div class="absolute inset-0 opacity-15">
-                <img :src="useImageOrDefault('https://images.unsplash.com/photo-1565992441121-4367c2967103?w=1600')"
-                    class="w-full h-full object-cover" />
-            </div>
-            <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/60 to-transparent"></div>
-
             <div class="container mx-auto px-4 max-w-7xl relative z-10">
                 <div class="max-w-3xl">
                     <div
@@ -141,7 +135,7 @@
                                 <div v-if="!archer.photo_url && !archer.avatar_url"
                                     class="w-full h-full bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center">
                                     <span class="text-xl font-black text-navy">{{ archer.full_name?.charAt(0) || 'A'
-                                        }}</span>
+                                    }}</span>
                                 </div>
                                 <img v-else :src="useImageOrDefault(archer.photo_url || archer.avatar_url)"
                                     class="w-full h-full object-cover" />
@@ -189,7 +183,7 @@
                                 class="w-full h-full object-cover" />
                             <div v-else class="w-full h-full flex items-center justify-center">
                                 <span class="text-2xl font-black text-navy">{{ archer.full_name?.charAt(0) || 'A'
-                                    }}</span>
+                                }}</span>
                             </div>
                         </div>
                         <div class="flex-1 min-w-0">

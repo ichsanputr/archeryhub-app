@@ -250,10 +250,15 @@
                         <div class="flex items-center gap-4 mb-4">
                             <div class="w-12 h-12 bg-gray-200 rounded-full overflow-hidden">
                                 <img alt="Logo Penyelenggara" class="w-full h-full object-cover"
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLm2bt_rocjJTBJyLy5egiG9qWTRu9j6JZGiQJiPm8b1G-HSoEuiHPFCrCPBc7qb81krUTSO68P9GueohN-_0IAPQUYSb-Jmd32xXgCNveXoWn0ACR6lV3AFfehy0pYgrdNBVXEyn4uZBaLcOM53xvrj6Nj8lqZdHdDm_sqOirc-36E7u9Qk0pblOTfHJH69INJpXI6D78iO58yfy0HygaJfL6aQRUXwsA6QzEsyDTsfEt6-q4b8f5rl3D59A-pT-X4fXlv7Fm3ng" />
+                                    :src="tournament.organizer_logo || 'https://lh3.googleusercontent.com/aida-public/AB6AXuBLm2bt_rocjJTBJyLy5egiG9qWTRu9j6JZGiQJiPm8b1G-HSoEuiHPFCrCPBc7qb81krUTSO68P9GueohN-_0IAPQUYSb-Jmd32xXgCNveXoWn0ACR6lV3AFfehy0pYgrdNBVXEyn4uZBaLcOM53xvrj6Nj8lqZdHdDm_sqOirc-36E7u9Qk0pblOTfHJH69INJpXI6D78iO58yfy0HygaJfL6aQRUXwsA6QzEsyDTsfEt6-q4b8f5rl3D59A-pT-X4fXlv7Fm3ng'" />
                             </div>
                             <div>
-                                <h4 class="font-bold text-navy text-sm">{{ tournament.organizer }}</h4>
+                                <NuxtLink v-if="tournament.organizer_slug"
+                                    :to="`/organization/${tournament.organizer_slug}`"
+                                    class="font-bold text-navy text-sm hover:text-primary transition-colors">
+                                    {{ tournament.organizer }}
+                                </NuxtLink>
+                                <h4 v-else class="font-bold text-navy text-sm">{{ tournament.organizer }}</h4>
                                 <p class="text-xs text-gray-500">Penyelenggara Terverifikasi <span
                                         class="material-symbols-outlined text-[14px] align-middle text-blue-500">verified</span>
                                 </p>
@@ -262,7 +267,12 @@
                         <div class="flex gap-2">
                             <button
                                 class="flex-1 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">Hubungi</button>
-                            <button
+                            <NuxtLink v-if="tournament.organizer_slug"
+                                :to="`/organization/${tournament.organizer_slug}`"
+                                class="flex-1 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors text-center">
+                                Lihat Profil
+                            </NuxtLink>
+                            <button v-else
                                 class="flex-1 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">Ikuti</button>
                         </div>
                     </div>
@@ -372,6 +382,8 @@ const transformEventData = (data) => ({
     status: data.status || 'upcoming',
     category: data.category || '',
     organizer: data.organizer_name || data.organizer || 'Penyelenggara',
+    organizer_slug: data.organizer_username || data.organizer_slug || null,
+    organizer_logo: data.organizer_avatar_url || data.organizer_logo || null,
     image: data.banner_url || data.image || fallbackTournament.image,
     thumbnail: data.logo_url || data.thumbnail || null
 })
