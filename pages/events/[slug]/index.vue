@@ -1,33 +1,35 @@
 <template>
     <div class="min-h-screen bg-background-light font-body text-navy">
         <!-- Hero Header -->
-        <div class="bg-navy relative overflow-hidden">
+        <div class="bg-navy relative overflow-hidden h-[400px] md:h-[500px] flex items-center">
             <div class="absolute inset-0 z-0">
-                <div class="absolute inset-0 bg-gradient-to-r from-navy via-navy/95 to-navy/80 z-10"></div>
-                <img :alt="tournament.name"
-                    class="w-full h-full object-cover object-center opacity-50 mix-blend-overlay"
-                    :src="tournament.image" />
+                <img :alt="tournament.name" class="w-full h-full object-cover object-center" :src="tournament.image" />
+                <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90">
+                </div>
             </div>
-            <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-0">
+            <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mt-4 md:mt-6">
                 <!-- Breadcrumb -->
                 <div class="mb-8">
                     <Breadcrumbs :items="[{ label: 'Event', path: '/events' }]" :current="tournament.name || 'Event'"
                         class="!text-gray-300" />
                 </div>
 
-                <div class="flex flex-col lg:flex-row items-start justify-between gap-8 mb-12">
+                <div class="flex flex-col lg:flex-row items-end justify-between gap-8 mb-12">
                     <div class="max-w-3xl">
-                        <div v-if="tournament.status === 'live'" class="flex items-center gap-3 mb-4">
+                        <div v-if="tournament.status === 'ongoing' || tournament.status === 'live'"
+                            class="flex items-center gap-3 mb-4">
                             <span
                                 class="px-3 py-1 rounded-full bg-red-500/20 border border-red-500/30 text-red-700 text-xs font-bold uppercase tracking-wider backdrop-blur-sm flex items-center gap-1">
                                 <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span> Sedang
                                 Berlangsung
                             </span>
                         </div>
-                        <h1 class="text-white text-4xl md:text-5xl font-black leading-tight tracking-tight mb-6">
+                        <h1
+                            class="text-white text-3xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight mb-6 font-display">
                             {{ tournament.name }}
                         </h1>
-                        <div class="flex flex-wrap items-center gap-6 text-gray-300 text-base">
+                        <div class="flex flex-wrap items-center gap-6 text-white/80 text-base">
                             <div class="flex items-center gap-2">
                                 <Icon icon="ph:calendar-blank" class="text-primary" />
                                 <span>{{ tournament.date }}</span>
@@ -36,7 +38,7 @@
                                 <Icon icon="ph:map-pin" class="text-primary" />
                                 <span>{{ tournament.location }}</span>
                                 <a v-if="tournament.gmaps_link" :href="tournament.gmaps_link" target="_blank"
-                                    class="text-xs text-primary hover:underline flex items-center gap-1 ml-2">
+                                    class="text-xs text-primary hover:underline flex items-center gap-1 ml-2 font-bold">
                                     (Lihat di Peta)
                                 </a>
                             </div>
@@ -66,14 +68,26 @@
                 :class="activeTab === 'Hasil' ? 'grid grid-cols-1' : 'grid grid-cols-1 lg:grid-cols-3 gap-8 xl:gap-12'">
                 <!-- Left Column -->
                 <div :class="activeTab === 'Hasil' ? 'space-y-10' : 'lg:col-span-2 space-y-10'">
-                    <div v-if="activeTab === 'Ringkasan'" class="space-y-10">
+                    <div v-if="activeTab === 'Ringkasan'" class="space-y-8">
+                        <!-- Event Description Section -->
+                        <section v-if="tournament.description"
+                            class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
+                            <h2 class="text-xl font-bold text-navy mb-6 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">info</span>
+                                Tentang Event
+                            </h2>
+                            <div class="prose prose-sm max-w-none text-gray-600 leading-relaxed whitespace-pre-line">
+                                {{ tournament.description }}
+                            </div>
+                        </section>
+
                         <!-- About Section -->
                         <section class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
                             <div v-if="tournament.thumbnail" class="mb-6">
                                 <img :src="tournament.thumbnail" :alt="tournament.name"
                                     class="w-full h-64 object-cover rounded-xl" />
                             </div>
-                            <h2 class="text-2xl font-bold text-navy mb-6 flex items-center gap-2">
+                            <h2 class="text-xl font-bold text-navy mb-6 flex items-center gap-2">
                                 <span class="material-symbols-outlined text-primary">info</span>
                                 Tentang Turnamen
                             </h2>
@@ -109,30 +123,97 @@
 
                         <!-- Divisions Section -->
                         <section class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
-                            <h2 class="text-2xl font-bold text-navy mb-6 flex items-center gap-2">
-                                <span class="material-symbols-outlined text-primary">category</span>
-                                Divisi Kompetisi
-                            </h2>
-                            <div class="grid md:grid-cols-2 gap-6">
-                                <div v-for="division in divisions" :key="division.name"
-                                    class="group border border-gray-200 rounded-xl p-5 hover:border-primary transition-colors">
-                                    <div class="flex items-center justify-between mb-4">
-                                        <div
-                                            class="w-12 h-12 bg-navy/5 rounded-lg flex items-center justify-center text-navy">
-                                            <span class="material-symbols-outlined text-3xl">{{ division.icon }}</span>
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-xl font-bold text-navy flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-primary">category</span>
+                                    Divisi Kompetisi
+                                </h2>
+                                <div class="hidden md:flex items-center gap-2">
+                                    <button @click="scroll('left')"
+                                        class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-navy hover:border-primary hover:text-primary transition-all">
+                                        <span class="material-symbols-outlined">chevron_left</span>
+                                    </button>
+                                    <button @click="scroll('right')"
+                                        class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-navy hover:border-primary hover:text-primary transition-all">
+                                        <span class="material-symbols-outlined">chevron_right</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="relative">
+                                <div ref="scrollContainer"
+                                    class="flex gap-6 overflow-x-auto no-scrollbar scroll-smooth pb-4 -mx-1 px-1">
+                                    <div v-for="division in divisions" :key="division.name"
+                                        class="min-w-[280px] md:min-w-[320px] group border border-gray-200 rounded-xl p-5 hover:border-primary transition-colors bg-white">
+                                        <div class="flex items-center justify-between mb-4">
+                                            <div
+                                                class="w-12 h-12 bg-navy/5 rounded-lg flex items-center justify-center text-navy">
+                                                <span class="material-symbols-outlined text-3xl">{{ division.icon
+                                                }}</span>
+                                            </div>
+                                            <span class="bg-navy text-white text-xs font-bold px-2 py-1 rounded">{{
+                                                division.distance }}</span>
                                         </div>
-                                        <span class="bg-navy text-white text-xs font-bold px-2 py-1 rounded">{{
-                                            division.distance }}</span>
+                                        <h3 class="font-bold text-navy mb-3">{{ division.name }}</h3>
+                                        <div class="flex flex-wrap gap-2">
+                                            <span v-for="cat in division.categories" :key="cat"
+                                                class="text-[10px] font-bold text-gray-500 bg-gray-100 px-2 py-1 rounded-full uppercase tracking-wider">
+                                                {{ cat }}
+                                            </span>
+                                        </div>
                                     </div>
-                                    <h3 class="text-lg font-bold text-navy mb-2">{{ division.name }}</h3>
-                                    <ul class="space-y-2 text-sm text-gray-600">
-                                        <li v-for="cat in division.categories" :key="cat"
-                                            class="flex items-center gap-2">
-                                            <span
-                                                class="material-symbols-outlined text-primary text-base">check_circle</span>
-                                            {{ cat }}
-                                        </li>
-                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Registration Fees Section -->
+                        <section class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
+                            <h2 class="text-xl font-bold text-navy mb-6 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary">payments</span>
+                                Biaya Pendaftaran
+                            </h2>
+                            <div v-if="tournament.fees && tournament.fees.length > 0"
+                                class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div v-for="(fee, idx) in tournament.fees" :key="idx"
+                                    class="bg-gray-50 rounded-xl p-6 border border-gray-100 hover:border-primary/30 transition-colors shadow-sm">
+                                    <div class="flex items-center gap-3 mb-4">
+                                        <div
+                                            class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm">
+                                            <Icon
+                                                :icon="fee.name.toLowerCase().includes('tim') ? 'ph:users-three-bold' : 'ph:user-bold'"
+                                                class="text-2xl text-primary" />
+                                        </div>
+                                        <span class="font-bold text-navy">{{ fee.name }}</span>
+                                    </div>
+                                    <div class="text-3xl font-black text-navy mb-1">IDR {{
+                                        fee.amount.toLocaleString('id-ID') }}</div>
+                                    <p v-if="fee.description" class="text-xs text-gray-500 font-medium">{{
+                                        fee.description }}</p>
+                                </div>
+                            </div>
+                            <!-- Fallback if no fees list -->
+                            <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="bg-gray-50 rounded-xl p-6 border border-gray-100">
+                                    <div class="flex items-center gap-3 mb-4">
+                                        <div
+                                            class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm">
+                                            <Icon icon="ph:user-bold" class="text-2xl text-primary" />
+                                        </div>
+                                        <span class="font-bold text-navy">Individu</span>
+                                    </div>
+                                    <div class="text-3xl font-black text-navy mb-1">IDR 350.000</div>
+                                    <p class="text-xs text-gray-500 font-medium">Per peserta per divisi</p>
+                                </div>
+                                <div class="bg-gray-50 rounded-xl p-6 border border-gray-100">
+                                    <div class="flex items-center gap-3 mb-4">
+                                        <div
+                                            class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm">
+                                            <Icon icon="ph:users-three-bold" class="text-2xl text-primary" />
+                                        </div>
+                                        <span class="font-bold text-navy">Tim / Beregu</span>
+                                    </div>
+                                    <div class="text-3xl font-black text-navy mb-1">IDR 500.000</div>
+                                    <p class="text-xs text-gray-500 font-medium">Per tim per kategori</p>
                                 </div>
                             </div>
                         </section>
@@ -142,10 +223,14 @@
                             <div
                                 class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2">
                             </div>
-                            <h2 class="text-2xl font-bold text-navy mb-6 flex items-center gap-2 relative z-10">
+                            <h2 class="text-xl font-bold text-navy mb-1 flex items-center gap-2 relative z-10">
                                 <span class="material-symbols-outlined text-primary">emoji_events</span>
                                 Total Hadiah
                             </h2>
+                            <p v-if="tournament.total_prize" class="text-gray-500 text-sm mb-6 relative z-10">
+                                Total Hadiah IDR {{ tournament.total_prize.toLocaleString('id-ID') }}
+                            </p>
+                            <div v-else class="mb-6"></div>
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 relative z-10">
                                 <div
                                     class="bg-gradient-to-br from-[#FFD700]/10 to-transparent border border-[#FFD700]/30 rounded-xl p-6 text-center">
@@ -179,7 +264,7 @@
                     <TournamentAthletesTab v-else-if="activeTab === 'Peserta'" />
                     <TournamentResultsTab v-else-if="activeTab === 'Hasil'" :event-id="slug" />
                     <TournamentVenueTab v-else-if="activeTab === 'Lokasi'" :venue="tournament.venue"
-                        :address="tournament.address" />
+                        :address="tournament.address" :gmaps-link="tournament.gmaps_link" />
                 </div>
 
                 <!-- Right Sidebar - Hidden on Hasil tab -->
@@ -202,14 +287,6 @@
                             </div>
                         </div>
                         <div class="space-y-4 mb-6">
-                            <div class="flex justify-between items-center text-sm border-b border-gray-100 pb-3">
-                                <span class="text-gray-500">Biaya Pendaftaran (Individu)</span>
-                                <span class="font-bold text-navy">IDR 350.000</span>
-                            </div>
-                            <div class="flex justify-between items-center text-sm border-b border-gray-100 pb-3">
-                                <span class="text-gray-500">Biaya Pendaftaran (Tim)</span>
-                                <span class="font-bold text-navy">IDR 500.000</span>
-                            </div>
                             <div class="flex justify-between items-center text-sm pb-1">
                                 <span class="text-gray-500">Slot Tersedia</span>
                                 <span class="font-bold text-primary">45 / 200 Tersisa</span>
@@ -265,33 +342,37 @@
                             </div>
                         </div>
                         <div class="flex gap-2">
-                            <button
-                                class="flex-1 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">Hubungi</button>
+                            <a v-if="tournament.organizer_phone" :href="`https://wa.me/${tournament.organizer_phone}`"
+                                target="_blank"
+                                class="flex-1 py-2.5 bg-green-500 hover:bg-green-600 border border-green-500 rounded-xl text-xs font-bold text-white transition-all flex items-center justify-center gap-2 shadow-sm shadow-green-200">
+                                <Icon icon="ph:whatsapp-logo-bold" class="text-lg" />
+                                WhatsApp
+                            </a>
+                            <button v-else
+                                class="flex-1 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs font-bold text-gray-400 cursor-not-allowed flex items-center justify-center gap-2">
+                                <Icon icon="ph:phone-slash" class="text-lg" />
+                                No. Telp
+                            </button>
+
                             <NuxtLink v-if="tournament.organizer_slug"
                                 :to="`/organization/${tournament.organizer_slug}`"
-                                class="flex-1 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors text-center">
+                                class="flex-1 py-2.5 bg-navy hover:bg-navy-light border border-navy rounded-xl text-xs font-bold text-white transition-all text-center flex items-center justify-center">
                                 Lihat Profil
                             </NuxtLink>
-                            <button v-else
-                                class="flex-1 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">Ikuti</button>
                         </div>
                     </div>
 
                     <!-- Map Card -->
                     <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-                        <a :href="tournament.gmaps_link || '#'" target="_blank"
-                            class="block h-48 bg-gray-200 relative group cursor-pointer">
-                            <img alt="Map Location"
-                                class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBrem4azc6WDMeDRbQw-2joq0fcWSF6QDRhvFPnW-ZtTHG4r0ECeGr8vc0pPmiT9d1nf6uWWAKZV7gq4w5KOncu3fb8KTi_XBz3tdpkVmJJmYaADUQlUXX_F7nLa_E2NafPu8ouY13kIof5Eq-of3RwBG7KLqmrOsacwZG3PTf4QMy_Kg7hNn1wy70_AypgzTCtU9fNYKdIuuk90f3tKG-PQTM6beImIzXkc9NJP7mrw7xfVZmahm9Ur0fzjDkkH2C0zP1aJy_XLg" />
-                            <div class="absolute inset-0 bg-gray-800/10 flex items-center justify-center">
-                                <span
-                                    class="px-4 py-2 bg-white rounded-lg shadow-md font-bold text-sm text-navy flex items-center gap-2">
-                                    <span class="material-symbols-outlined text-red-500">location_on</span>
-                                    {{ tournament.gmaps_link ? 'Buka Google Maps' : 'Lihat di Peta' }}
-                                </span>
+                        <div class="h-48 w-full bg-gray-100 relative group">
+                            <iframe v-if="gmapsEmbedUrl" :src="gmapsEmbedUrl" width="100%" height="100%"
+                                style="border:0;" allowfullscreen="" loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                            <div v-else class="w-full h-full flex items-center justify-center bg-gray-100">
+                                <Icon icon="ph:map-pin" class="text-3xl text-gray-300" />
                             </div>
-                        </a>
+                        </div>
                         <div class="p-5">
                             <h3 class="font-bold text-navy mb-1">{{ tournament.venue }}</h3>
                             <p class="text-sm text-gray-500">{{ tournament.address }}</p>
@@ -299,18 +380,29 @@
                     </div>
 
                     <!-- Share Section -->
-                    <div class="flex items-center gap-4 justify-center">
-                        <span class="text-sm font-medium text-gray-500">Bagikan Event:</span>
-                        <div class="flex gap-2">
-                            <button
-                                class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:text-navy hover:border-navy transition-colors">
-                                <span class="material-symbols-outlined text-lg">share</span>
+                    <div
+                        class="flex flex-col items-center gap-4 justify-center bg-gray-50/50 p-6 rounded-2xl border border-gray-100">
+                        <span class="text-xs font-black text-gray-400 uppercase tracking-widest">Bagikan Event
+                            Ini</span>
+                        <div class="flex gap-4">
+                            <button @click="shareTo('whatsapp')"
+                                class="w-12 h-12 rounded-xl bg-white border border-gray-100 flex items-center justify-center text-[#25D366] hover:bg-[#25D366] hover:text-white hover:border-[#25D366] transition-all shadow-sm hover:shadow-md hover:-translate-y-1">
+                                <Icon icon="ph:whatsapp-logo-fill" class="text-2xl" />
                             </button>
-                            <button
-                                class="w-10 h-10 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-500 hover:text-navy hover:border-navy transition-colors">
-                                <span class="material-symbols-outlined text-lg">link</span>
+                            <button @click="shareTo('facebook')"
+                                class="w-12 h-12 rounded-xl bg-white border border-gray-100 flex items-center justify-center text-[#1877F2] hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2] transition-all shadow-sm hover:shadow-md hover:-translate-y-1">
+                                <Icon icon="ph:facebook-logo-fill" class="text-2xl" />
+                            </button>
+                            <button @click="shareTo('twitter')"
+                                class="w-12 h-12 rounded-xl bg-white border border-gray-100 flex items-center justify-center text-black hover:bg-black hover:text-white hover:border-black transition-all shadow-sm hover:shadow-md hover:-translate-y-1">
+                                <Icon icon="ph:twitter-logo-fill" class="text-2xl" />
+                            </button>
+                            <button @click="copyPublicUrl"
+                                class="w-12 h-12 rounded-xl bg-white border border-gray-100 flex items-center justify-center text-navy hover:bg-navy hover:text-white hover:border-navy transition-all shadow-sm hover:shadow-md hover:-translate-y-1">
+                                <Icon icon="ph:link-bold" class="text-2xl" />
                             </button>
                         </div>
+                        <p v-if="copySuccess" class="text-[10px] font-bold text-green-600">Link berhasil disalin!</p>
                     </div>
                 </aside>
             </div>
@@ -343,7 +435,18 @@ const { get } = useApi()
 const isLoading = ref(true)
 
 const tabs = ['Ringkasan', 'Jadwal Lomba', 'Peserta', 'Hasil', 'Lokasi']
-const activeTab = ref(route.query.tab && tabs.includes(route.query.tab) ? route.query.tab : 'Ringkasan')
+const activeTab = ref('Ringkasan')
+const scrollContainer = ref(null)
+
+const scroll = (direction) => {
+    if (scrollContainer.value) {
+        const scrollAmount = 350
+        scrollContainer.value.scrollBy({
+            left: direction === 'left' ? -scrollAmount : scrollAmount,
+            behavior: 'smooth'
+        })
+    }
+}
 
 // Sync tab with query params
 watch(() => route.query.tab, (newTab) => {
@@ -384,8 +487,38 @@ const transformEventData = (data) => ({
     organizer: data.organizer_name || data.organizer || 'Penyelenggara',
     organizer_slug: data.organizer_username || data.organizer_slug || null,
     organizer_logo: data.organizer_avatar_url || data.organizer_logo || null,
+    organizer_phone: data.organizer_phone || data.phone || null,
     image: data.banner_url || data.image || fallbackTournament.image,
-    thumbnail: data.logo_url || data.thumbnail || null
+    thumbnail: data.logo_url || data.thumbnail || null,
+    fees: data.fees || [],
+    description: data.description || '',
+    total_prize: data.total_prize || 0
+})
+
+// Google Maps embed URL
+const gmapsEmbedUrl = computed(() => {
+    if (!tournament.value.gmaps_link) return null
+
+    try {
+        const link = tournament.value.gmaps_link
+        // If it's already an embed URL
+        if (link.includes('google.com/maps/embed')) return link
+
+        // Extract coordinates or place from URL if available
+        const coordsMatch = link.match(/[?&]q=([^&]+)/)
+        if (coordsMatch) {
+            const query = decodeURIComponent(coordsMatch[1])
+            return `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`
+        }
+
+        // For maps.app.goo.gl or goo.gl links, or direct google.com/maps/place/
+        // Use venue and location if available for better reliability
+        const searchQuery = tournament.value.venue || tournament.value.location || link
+        return `https://www.google.com/maps?q=${encodeURIComponent(searchQuery)}&output=embed`
+    } catch (e) {
+        const searchQuery = tournament.value.venue || tournament.value.location || tournament.value.gmaps_link
+        return `https://www.google.com/maps?q=${encodeURIComponent(searchQuery)}&output=embed`
+    }
 })
 
 const fetchTournament = async () => {
@@ -406,6 +539,9 @@ const fetchTournament = async () => {
 const divisions = [
     { name: 'Recurve Division', icon: 'adjust', distance: '70m', categories: ["Men's Individual", "Women's Individual", "Mixed Team"] },
     { name: 'Compound Division', icon: 'gps_fixed', distance: '50m', categories: ["Men's Individual", "Women's Individual", "Mixed Team"] },
+    { name: 'Barebow Division', icon: 'radar', distance: '50m', categories: ["Men's Individual", "Women's Individual", "Mixed Team"] },
+    { name: 'Nasional Division', icon: 'flag', distance: '40m', categories: ["U-12", "U-15", "Umum"] },
+    { name: 'Traditional', icon: 'history_edu', distance: '30m', categories: ["Umum Putra", "Umum Putri"] },
 ]
 
 onMounted(() => {
@@ -430,6 +566,42 @@ useSeoMeta({
     ogImage: () => tournament.value.image,
     twitterCard: 'summary_large_image',
 })
+
+const copySuccess = ref(false)
+const publicEventUrl = computed(() => {
+    const origin = window?.location?.origin || 'https://archeryhub.id'
+    return `${origin}/events/${slug}`
+})
+
+const copyPublicUrl = async () => {
+    try {
+        await navigator.clipboard.writeText(publicEventUrl.value)
+        copySuccess.value = true
+        setTimeout(() => {
+            copySuccess.value = false
+        }, 2000)
+    } catch (e) {
+        console.error('Failed to copy link:', e)
+    }
+}
+
+const shareTo = (platform) => {
+    const url = encodeURIComponent(publicEventUrl.value)
+    const text = encodeURIComponent(tournament.value.name || 'Event Panahan')
+
+    let shareUrl = ''
+    if (platform === 'whatsapp') {
+        shareUrl = `https://wa.me/?text=${text}%20-%20${url}`
+    } else if (platform === 'facebook') {
+        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`
+    } else if (platform === 'twitter') {
+        shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${text}`
+    }
+
+    if (shareUrl) {
+        window.open(shareUrl, '_blank', 'noopener,noreferrer')
+    }
+}
 </script>
 
 

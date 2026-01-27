@@ -201,7 +201,7 @@
                     </div>
                     <NuxtLink to="/auth/register?type=club">
                         <button
-                            class="px-6 py-3 bg-navy hover:bg-navy-light text-white font-black rounded-xl transition-all shadow-xl shadow-navy/30 flex items-center gap-3">
+                            class="px-6 py-3 bg-navy hover:bg-navy-light text-white font-black rounded-xl transition-all shadow-sm shadow-navy/30 flex items-center gap-3">
                             <Icon icon="ph:plus-bold" />
                             Daftarkan Klub
                         </button>

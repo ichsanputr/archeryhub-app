@@ -1,7 +1,7 @@
 <template>
     <div class="min-h-screen bg-gray-50">
         <!-- Back Button -->
-        <div class="container mx-auto px-4 max-w-6xl pt-6 mb-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 mb-6">
             <NuxtLink to="/archer"
                 class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-xl border border-gray-200 text-navy hover:bg-gray-50 transition-all shadow-sm">
                 <Icon icon="ph:arrow-left-bold" />
@@ -10,7 +10,7 @@
         </div>
 
         <!-- Archer Header Card -->
-        <section class="container mx-auto px-4 max-w-6xl mb-10">
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
             <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 md:p-10">
                 <div class="flex flex-col md:flex-row gap-6 md:gap-8">
                     <!-- Avatar -->
@@ -86,7 +86,7 @@
         </section>
 
         <!-- Main Content -->
-        <section class="container mx-auto px-4 max-w-6xl pb-16">
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <!-- Main Column -->
                 <div class="lg:col-span-2 space-y-8">

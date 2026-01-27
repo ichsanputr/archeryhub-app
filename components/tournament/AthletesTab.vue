@@ -35,7 +35,10 @@
                     </div>
                     <div>
                         <div class="flex items-center gap-1">
-                            <h3 class="font-bold text-navy truncate">{{ athlete.name }}</h3>
+                            <NuxtLink :to="`/archer/${athlete.id}`"
+                                class="font-bold text-navy truncate hover:text-primary transition-colors">
+                                {{ athlete.name }}
+                            </NuxtLink>
                             <span v-if="athlete.verified"
                                 class="material-symbols-outlined text-[14px] text-blue-500">verified</span>
                         </div>
@@ -46,10 +49,10 @@
                 <div class="flex flex-wrap gap-2 mb-4">
                     <span
                         class="px-2 py-1 bg-gray-50 text-gray-600 rounded text-[10px] font-bold uppercase tracking-wider">{{
-                        athlete.division }}</span>
+                            athlete.division }}</span>
                     <span
                         class="px-2 py-1 bg-gray-50 text-gray-600 rounded text-[10px] font-bold uppercase tracking-wider">{{
-                        athlete.category }}</span>
+                            athlete.category }}</span>
                 </div>
 
                 <div class="pt-4 border-t border-gray-50 flex items-center justify-between">
@@ -57,9 +60,10 @@
                         <span class="material-symbols-outlined text-sm">trophy</span>
                         <span class="text-[10px] font-bold">{{ athlete.rank }}nd Rank</span>
                     </div>
-                    <button class="text-primary font-bold text-xs hover:underline flex items-center gap-1">
+                    <NuxtLink :to="`/archer/${athlete.id}`"
+                        class="text-primary font-bold text-xs hover:underline flex items-center gap-1">
                         Profil <span class="material-symbols-outlined text-sm">north_east</span>
-                    </button>
+                    </NuxtLink>
                 </div>
             </div>
         </div>

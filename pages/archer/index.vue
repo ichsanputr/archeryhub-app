@@ -1,62 +1,23 @@
 <template>
     <div class="min-h-screen bg-gray-50">
         <!-- Hero Section -->
-        <section
-            class="bg-gradient-to-br from-navy via-navy to-blue-900 text-white py-20 md:py-28 relative overflow-hidden">
-            <div class="container mx-auto px-4 max-w-7xl relative z-10">
-                <div class="max-w-3xl">
-                    <div
-                        class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold uppercase tracking-widest mb-6">
-                        <Icon icon="ph:user-focus-bold" class="text-lg" />
-                        <span>Komunitas Pemanah</span>
-                    </div>
-                    <h1 class="text-3xl md:text-5xl lg:text-6xl font-black tracking-tight leading-tight mb-6">
-                        Temukan <span class="text-primary">Pemanah</span><br />
-                        Berbakat di Indonesia
-                    </h1>
-                    <p class="text-gray-300 text-lg md:text-xl leading-relaxed max-w-xl">
-                        Jelajahi profil pemanah terbaik, lihat prestasi mereka, dan ikuti perjalanan mereka dalam dunia
-                        panahan.
-                    </p>
-
-                    <!-- Search Bar -->
-                    <div class="mt-10 flex flex-col sm:flex-row gap-4 max-w-xl">
-                        <div class="relative flex-1">
-                            <Icon icon="ph:magnifying-glass-bold"
-                                class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl" />
-                            <input v-model="searchQuery" type="text"
-                                placeholder="Cari nama pemanah, kode atlet, atau klub..."
-                                class="w-full pl-12 pr-4 py-4 rounded-xl bg-white text-navy font-medium placeholder:text-gray-400 focus:ring-4 focus:ring-primary/30 outline-none transition-all text-base" />
-                        </div>
-                        <button @click="fetchArchers"
-                            class="px-8 py-4 bg-primary hover:bg-primary-hover text-navy font-black rounded-xl transition-all shadow-lg shadow-primary/30 flex items-center justify-center gap-2">
-                            <Icon icon="ph:magnifying-glass-bold" />
-                            Cari
-                        </button>
-                    </div>
-                </div>
+        <section class="bg-navy relative overflow-hidden py-16 md:py-24">
+            <div class="absolute inset-0 z-0">
+                <img src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=1600&auto=format&fit=crop&q=80"
+                    alt="Archers Background" class="w-full h-full object-cover opacity-20 mix-blend-overlay" />
+                <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/50 to-transparent"></div>
             </div>
-        </section>
 
-        <!-- Quick Stats -->
-        <section class="container mx-auto px-4 max-w-7xl -mt-8 relative z-20">
-            <div
-                class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div class="text-center">
-                    <p class="text-2xl md:text-4xl font-black text-navy tracking-tight">{{ totalArchers }}</p>
-                    <p class="text-[10px] md:text-sm text-gray-500 font-bold uppercase tracking-wide mt-1">Pemanah</p>
-                </div>
-                <div class="text-center border-l border-gray-100">
-                    <p class="text-2xl md:text-4xl font-black text-navy tracking-tight">{{ activeArchers }}</p>
-                    <p class="text-[10px] md:text-sm text-gray-500 font-bold uppercase tracking-wide mt-1">Aktif</p>
-                </div>
-                <div class="text-center border-l border-gray-100">
-                    <p class="text-2xl md:text-4xl font-black text-navy tracking-tight">34</p>
-                    <p class="text-[10px] md:text-sm text-gray-500 font-bold uppercase tracking-wide mt-1">Provinsi</p>
-                </div>
-                <div class="text-center border-l border-gray-100">
-                    <p class="text-2xl md:text-4xl font-black text-navy tracking-tight">500+</p>
-                    <p class="text-[10px] md:text-sm text-gray-500 font-bold uppercase tracking-wide mt-1">Event</p>
+            <div class="container mx-auto px-4 max-w-7xl relative z-10 text-center md:text-left">
+                <div class="max-w-3xl">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-6">
+                        Temukan <span class="text-primary italic">Inspirasi</span> & <br />
+                        Koneksi Pemanah Indonesia
+                    </h1>
+                    <p class="text-gray-300 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto md:mx-0">
+                        Jelajahi profil para pemanah berbakat dari seluruh penjuru nusantara. Lihat prestasi, klub, dan
+                        dedikasi mereka dalam dunia panahan.
+                    </p>
                 </div>
             </div>
         </section>
@@ -131,7 +92,7 @@
                         <div class="flex items-start gap-4">
                             <!-- Avatar -->
                             <div
-                                class="w-14 h-14 -mt-7 rounded-xl bg-white border-2 border-white shadow-xl overflow-hidden flex-shrink-0 relative z-[2]">
+                                class="w-14 h-14 -mt-7 rounded-xl bg-white border-2 border-white shadow-sm overflow-hidden flex-shrink-0 relative z-[2]">
                                 <div v-if="!archer.photo_url && !archer.avatar_url"
                                     class="w-full h-full bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center">
                                     <span class="text-xl font-black text-navy">{{ archer.full_name?.charAt(0) || 'A'

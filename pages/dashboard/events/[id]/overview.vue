@@ -70,15 +70,7 @@
             </div>
         </div>
 
-        <!-- Navigation Tabs (Only Ringkasan) -->
-        <div
-            class="flex items-center gap-6 border-b border-gray-100 pb-0 shadow-sm -mx-4 px-4 overflow-x-auto no-scrollbar">
-            <button @click="activeTab = 'overview'"
-                class="pb-4 pt-4 px-4 text-[11px] font-black uppercase tracking-widest transition-all border-b-2 border-primary bg-primary/5 text-navy">
-                <Icon icon="ph:layout-bold" class="text-lg" />
-                Ringkasan
-            </button>
-        </div>
+        <!-- Main Content (Overview) -->
 
         <!-- Loading State -->
         <div v-if="isLoading">
@@ -348,83 +340,83 @@
             </div>
 
         </div>
-    </div>
-    </div>
 
-    <!-- Share Dialog -->
-    <div v-if="showShareDialog"
-        class="fixed inset-0 z-40 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 w-full max-w-md mx-4 p-6 space-y-5 relative">
-            <button class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 transition-colors"
-                @click="closeShareDialog">
-                <Icon icon="ph:x-bold" class="text-lg" />
-            </button>
+        <!-- Share Dialog -->
+        <div v-if="showShareDialog"
+            class="fixed inset-0 z-40 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+            <div
+                class="bg-white rounded-2xl shadow-xl border border-gray-100 w-full max-w-md mx-4 p-6 space-y-5 relative">
+                <button class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 transition-colors"
+                    @click="closeShareDialog">
+                    <Icon icon="ph:x-bold" class="text-lg" />
+                </button>
 
-            <div class="flex items-start gap-3">
-                <div class="bg-primary/10 text-primary rounded-xl w-10 h-10 flex items-center justify-center shrink-0">
-                    <Icon icon="ph:share-network-bold" class="text-xl" />
+                <div class="flex items-start gap-3">
+                    <div
+                        class="bg-primary/10 text-primary rounded-xl w-10 h-10 flex items-center justify-center shrink-0">
+                        <Icon icon="ph:share-network-bold" class="text-xl" />
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-navy">Bagikan Halaman Event</h3>
+                        <p class="text-sm text-gray-500 mt-1">
+                            Sebarkan link halaman publik event ini ke sosial media atau salin link untuk dibagikan
+                            ke peserta.
+                        </p>
+                    </div>
                 </div>
-                <div>
-                    <h3 class="text-lg font-bold text-navy">Bagikan Halaman Event</h3>
-                    <p class="text-sm text-gray-500 mt-1">
-                        Sebarkan link halaman publik event ini ke sosial media atau salin link untuk dibagikan
-                        ke peserta.
+
+                <div class="space-y-2">
+                    <p class="text-[11px] font-bold text-gray-400 uppercase tracking-[0.18em]">Link Publik
+                        Event</p>
+                    <div class="flex items-center gap-2">
+                        <div
+                            class="flex-1 bg-gray-50 border border-gray-100 rounded-xl px-3 py-2 text-xs text-gray-600 font-mono truncate">
+                            {{ publicEventUrl }}
+                        </div>
+                        <BaseButton variant="white" size="sm" icon="ph:copy-bold" class="whitespace-nowrap"
+                            @click="copyPublicUrl">
+                            Salin
+                        </BaseButton>
+                    </div>
+                    <p v-if="copySuccess" class="text-[11px] text-green-600 font-semibold mt-1">
+                        Link berhasil disalin ke clipboard
                     </p>
                 </div>
-            </div>
 
-            <div class="space-y-2">
-                <p class="text-[11px] font-bold text-gray-400 uppercase tracking-[0.18em]">Link Publik
-                    Event</p>
-                <div class="flex items-center gap-2">
-                    <div
-                        class="flex-1 bg-gray-50 border border-gray-100 rounded-xl px-3 py-2 text-xs text-gray-600 font-mono truncate">
-                        {{ publicEventUrl }}
+                <div class="pt-3 border-t border-gray-100 space-y-3">
+                    <p class="text-[11px] font-bold text-gray-400 uppercase tracking-[0.18em]">Bagikan ke
+                        Sosial Media</p>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <button type="button" @click="shareTo('whatsapp')"
+                            class="flex flex-col items-center justify-center gap-2 px-3 py-3 rounded-xl border border-gray-100 hover:border-green-500 hover:bg-green-50 transition-all">
+                            <Icon icon="ph:whatsapp-logo" class="text-2xl text-green-500" />
+                            <span class="text-[11px] font-semibold text-gray-600">WhatsApp</span>
+                        </button>
+                        <button type="button" @click="shareTo('telegram')"
+                            class="flex flex-col items-center justify-center gap-2 px-3 py-3 rounded-xl border border-gray-100 hover:border-sky-500 hover:bg-sky-50 transition-all">
+                            <Icon icon="ph:telegram-logo" class="text-2xl text-sky-500" />
+                            <span class="text-[11px] font-semibold text-gray-600">Telegram</span>
+                        </button>
+                        <button type="button" @click="shareTo('twitter')"
+                            class="flex flex-col items-center justify-center gap-2 px-3 py-3 rounded-xl border border-gray-100 hover:border-black hover:bg-gray-50 transition-all">
+                            <Icon icon="ph:twitter-logo" class="text-2xl text-black" />
+                            <span class="text-[11px] font-semibold text-gray-600">X (Twitter)</span>
+                        </button>
+                        <button type="button" @click="shareTo('facebook')"
+                            class="flex flex-col items-center justify-center gap-2 px-3 py-3 rounded-xl border border-gray-100 hover:border-blue-600 hover:bg-blue-50 transition-all">
+                            <Icon icon="ph:facebook-logo" class="text-2xl text-blue-600" />
+                            <span class="text-[11px] font-semibold text-gray-600">Facebook</span>
+                        </button>
                     </div>
-                    <BaseButton variant="white" size="sm" icon="ph:copy-bold" class="whitespace-nowrap"
-                        @click="copyPublicUrl">
-                        Salin
+                </div>
+
+                <div class="flex justify-end gap-3 pt-3 border-t border-gray-100">
+                    <BaseButton variant="ghost" size="sm" @click="closeShareDialog">
+                        Tutup
                     </BaseButton>
                 </div>
-                <p v-if="copySuccess" class="text-[11px] text-green-600 font-semibold mt-1">
-                    Link berhasil disalin ke clipboard
-                </p>
-            </div>
-
-            <div class="pt-3 border-t border-gray-100 space-y-3">
-                <p class="text-[11px] font-bold text-gray-400 uppercase tracking-[0.18em]">Bagikan ke
-                    Sosial Media</p>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    <button type="button" @click="shareTo('whatsapp')"
-                        class="flex flex-col items-center justify-center gap-2 px-3 py-3 rounded-xl border border-gray-100 hover:border-green-500 hover:bg-green-50 transition-all">
-                        <Icon icon="ph:whatsapp-logo" class="text-2xl text-green-500" />
-                        <span class="text-[11px] font-semibold text-gray-600">WhatsApp</span>
-                    </button>
-                    <button type="button" @click="shareTo('telegram')"
-                        class="flex flex-col items-center justify-center gap-2 px-3 py-3 rounded-xl border border-gray-100 hover:border-sky-500 hover:bg-sky-50 transition-all">
-                        <Icon icon="ph:telegram-logo" class="text-2xl text-sky-500" />
-                        <span class="text-[11px] font-semibold text-gray-600">Telegram</span>
-                    </button>
-                    <button type="button" @click="shareTo('twitter')"
-                        class="flex flex-col items-center justify-center gap-2 px-3 py-3 rounded-xl border border-gray-100 hover:border-black hover:bg-gray-50 transition-all">
-                        <Icon icon="ph:twitter-logo" class="text-2xl text-black" />
-                        <span class="text-[11px] font-semibold text-gray-600">X (Twitter)</span>
-                    </button>
-                    <button type="button" @click="shareTo('facebook')"
-                        class="flex flex-col items-center justify-center gap-2 px-3 py-3 rounded-xl border border-gray-100 hover:border-blue-600 hover:bg-blue-50 transition-all">
-                        <Icon icon="ph:facebook-logo" class="text-2xl text-blue-600" />
-                        <span class="text-[11px] font-semibold text-gray-600">Facebook</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="flex justify-end gap-3 pt-3 border-t border-gray-100">
-                <BaseButton variant="ghost" size="sm" @click="closeShareDialog">
-                    Tutup
-                </BaseButton>
             </div>
         </div>
-    </div>
     </div>
 </template>
 

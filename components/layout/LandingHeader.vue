@@ -36,15 +36,17 @@
                                         <div class="col-span-5 bg-gradient-to-br from-navy to-navy-light p-6">
                                             <span class="text-primary text-xs font-bold uppercase tracking-wider">Event
                                                 Unggulan</span>
-                                            <div class="mt-3">
+                                            <div class="mt-3" v-if="featuredEvent">
                                                 <div class="aspect-video bg-white/10 rounded-lg overflow-hidden mb-3">
-                                                    <img src="https://images.unsplash.com/photo-1565992441121-4367c2967103?w=400&h=225&fit=crop"
-                                                        alt="Featured Event" class="w-full h-full object-cover" />
+                                                    <img :src="featuredEvent.image" :alt="featuredEvent.name"
+                                                        class="w-full h-full object-cover" />
                                                 </div>
-                                                <h3 class="text-white font-bold text-sm leading-tight">National Indoor
-                                                    Championship 2026</h3>
-                                                <p class="text-white/70 text-xs mt-1">Jakarta • 25-28 Feb 2026</p>
-                                                <NuxtLink to="/events"
+                                                <h3 class="text-white font-bold text-sm leading-tight line-clamp-2">
+                                                    {{ featuredEvent.name }}
+                                                </h3>
+                                                <p class="text-white/70 text-xs mt-1">{{ featuredEvent.location }} • {{
+                                                    featuredEvent.date }}</p>
+                                                <NuxtLink :to="`/events/${featuredEvent.slug || featuredEvent.id}`"
                                                     class="inline-flex items-center gap-1 mt-3 text-primary text-xs font-bold hover:text-white transition-colors">
                                                     Cek Detailnya
                                                     <Icon icon="ph:arrow-right" />
@@ -54,46 +56,34 @@
 
                                         <!-- Categories & Links -->
                                         <div class="col-span-7 p-6">
-                                            <div class="grid grid-cols-2 gap-8">
-                                                <!-- By Category -->
+                                            <div class="grid grid-cols-1 gap-6">
                                                 <div>
-                                                    <span
-                                                        class="text-gray-400 text-xs font-bold uppercase tracking-wider">Kategori</span>
-                                                    <div class="mt-3 space-y-2">
-                                                        <NuxtLink v-for="cat in categories" :key="cat.code"
-                                                            :to="`/events?division=${cat.code}`"
+                                                    <div class="flex items-center justify-between mb-3">
+                                                        <span
+                                                            class="text-gray-400 text-xs font-bold uppercase tracking-wider">Event
+                                                            Terbaru</span>
+                                                        <NuxtLink to="/events"
+                                                            class="text-primary text-xs font-bold hover:underline">Lihat
+                                                            Semua</NuxtLink>
+                                                    </div>
+                                                    <div class="space-y-2">
+                                                        <NuxtLink v-for="event in latestEvents" :key="event.id"
+                                                            :to="`/events/${event.slug || event.id}`"
                                                             class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors group">
                                                             <div
-                                                                class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                                                                <Icon :icon="cat.icon" class="text-primary text-lg" />
+                                                                class="w-10 h-10 rounded-lg bg-gray-100 overflow-hidden flex-shrink-0">
+                                                                <img :src="event.image"
+                                                                    class="w-full h-full object-cover" />
                                                             </div>
-                                                            <span
-                                                                class="text-navy font-semibold text-sm group-hover:text-primary transition-colors">{{
-                                                                    cat.name }}</span>
-                                                        </NuxtLink>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Quick Links -->
-                                                <div>
-                                                    <span
-                                                        class="text-gray-400 text-xs font-bold uppercase tracking-wider">Akses
-                                                        Cepat</span>
-                                                    <div class="mt-3 space-y-1">
-                                                        <NuxtLink v-for="link in quickLinks" :key="link.to"
-                                                            :to="link.to"
-                                                            class="flex items-center gap-2 py-2 px-3 rounded-lg hover:bg-gray-50 transition-colors text-gray-600 hover:text-navy text-sm">
-                                                            <Icon :icon="link.icon" class="text-base" />
-                                                            {{ link.label }}
-                                                        </NuxtLink>
-                                                    </div>
-
-                                                    <!-- CTA -->
-                                                    <div class="mt-4 pt-4 border-t border-gray-100">
-                                                        <NuxtLink to="/events"
-                                                            class="flex items-center justify-center gap-2 w-full py-2.5 bg-primary hover:bg-primary-hover text-navy font-bold text-sm rounded-lg transition-all">
-                                                            <Icon icon="ph:list-bullets" />
-                                                            Semua Turnamen
+                                                            <div class="flex-1 min-w-0">
+                                                                <span
+                                                                    class="block text-navy font-semibold text-sm group-hover:text-primary transition-colors truncate">
+                                                                    {{ event.name }}
+                                                                </span>
+                                                                <span
+                                                                    class="block text-gray-400 text-[10px] font-medium">{{
+                                                                        event.location }} • {{ event.date }}</span>
+                                                            </div>
                                                         </NuxtLink>
                                                     </div>
                                                 </div>
@@ -292,11 +282,11 @@
                                 leave-active-class="transition-all duration-200 ease-in"
                                 leave-from-class="max-h-96 opacity-100" leave-to-class="max-h-0 opacity-0">
                                 <div v-if="mobileSubmenuOpen" class="pl-12 pr-4 space-y-1 overflow-hidden">
-                                    <NuxtLink v-for="cat in categories" :key="cat.code"
-                                        :to="`/events?division=${cat.code}`" @click="mobileMenuOpen = false"
+                                    <NuxtLink v-for="event in latestEvents" :key="event.id"
+                                        :to="`/events/${event.slug || event.id}`" @click="mobileMenuOpen = false"
                                         class="flex items-center gap-3 py-3 text-gray-500 hover:text-navy text-xs font-bold transition-colors">
-                                        <div class="w-1.5 h-1.5 rounded-full bg-primary"></div>
-                                        {{ cat.name }}
+                                        <div class="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0"></div>
+                                        <span class="truncate">{{ event.name }}</span>
                                     </NuxtLink>
                                     <NuxtLink to="/events" @click="mobileMenuOpen = false"
                                         class="flex items-center gap-3 py-3 text-navy text-xs font-black transition-colors border-t border-gray-50 mt-2">
@@ -393,6 +383,7 @@ onMounted(() => {
     window.addEventListener('scroll', handleScroll)
     handleScroll()
     fetchCartCount()
+    fetchLatestEvents()
     cartInterval = setInterval(fetchCartCount, 30000) // Every 30s
 })
 
@@ -440,18 +431,40 @@ const isActive = (path) => {
     return route.path.startsWith(path)
 }
 
-const categories = [
-    { code: 'recurve', name: 'Recurve', icon: 'ph:target-bold' },
-    { code: 'compound', name: 'Compound', icon: 'ph:crosshair-bold' },
-    { code: 'barebow', name: 'Barebow', icon: 'ph:circle-bold' },
-    { code: 'traditional', name: 'Traditional', icon: 'ph:tree-bold' },
-]
+const latestEvents = ref([])
+const featuredEvent = ref(null)
 
-const quickLinks = [
-    { to: '/events', label: 'Cek Semua Event', icon: 'ph:calendar-dots' },
-    { to: '/events?status=ongoing', label: 'Lagi Berlangsung', icon: 'ph:lightning' },
-    { to: '/events?status=upcoming', label: 'Bakal Digelar', icon: 'ph:clock' },
-]
+const fetchLatestEvents = async () => {
+    try {
+        const response = await get('/events?limit=10')
+        let events = []
+        if (Array.isArray(response)) {
+            events = response
+        } else if (response?.data) {
+            events = response.data
+        } else if (response?.events) {
+            events = response.events
+        }
+
+        const transformed = events.map(event => ({
+            id: event.uuid || event.id,
+            slug: event.slug,
+            name: event.name,
+            location: event.venue || event.location || 'TBA',
+            date: event.start_date ? new Date(event.start_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) : 'TBA',
+            image: event.logo_url || event.banner_url || 'https://images.unsplash.com/photo-1565992441121-4367c2967103?w=400&h=225&fit=crop'
+        }))
+
+        latestEvents.value = transformed.slice(0, 5)
+
+        // Random featured event from the fetched list
+        if (transformed.length > 0) {
+            featuredEvent.value = transformed[Math.floor(Math.random() * transformed.length)]
+        }
+    } catch (error) {
+        console.error('Failed to fetch latest events for mega menu:', error)
+    }
+}
 
 // Close mobile menu on route change
 watch(() => route.path, () => {

@@ -97,9 +97,6 @@
                                 placeholder="Pilih Kategori" icon="ph:trophy" :items="categories" item-title="label"
                                 item-value="id" />
 
-                            <BaseInput v-model="form.back_number" label="Nomor Punggung" placeholder="Contoh: 101"
-                                icon="ph:identification-card" />
-
                             <BaseInput v-model.number="form.session" type="number" label="Sesi" placeholder="1-4"
                                 icon="ph:timer" min="1" max="4" />
                         </div>
@@ -243,7 +240,6 @@ const accreditationOptions = [
 
 const form = reactive({
     category_id: '',
-    back_number: '',
     session: null,
     status: 'Menunggu Acc',
     payment_amount: 0,
@@ -262,7 +258,6 @@ const fetchParticipant = async () => {
             participant.value = found
             // Populate form
             form.category_id = found.category_id
-            form.back_number = found.back_number || ''
             form.session = found.session || null
             form.status = found.status || 'Menunggu Acc'
             form.payment_amount = found.payment_amount || 0
@@ -318,7 +313,6 @@ const handleSubmit = async () => {
         // Update participant via API
         const payload = {
             category_id: form.category_id,
-            back_number: form.back_number || null,
             session: form.session || null,
             status: form.status,
             payment_amount: form.payment_amount || 0,
@@ -328,7 +322,7 @@ const handleSubmit = async () => {
 
         await put(`/events/${eventId}/participants/${participantId}`, payload)
         toast.success('Peserta berhasil diupdate')
-        router.push(`/dashboard/events/${eventId}/participants/${participantId}`)
+        router.push(`/dashboard/events/${eventId}/participants`)
     } catch (error) {
         console.error('Failed to update participant:', error)
         toast.error(error.response?.data?.error || 'Gagal mengupdate peserta')

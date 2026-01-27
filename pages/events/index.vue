@@ -71,41 +71,6 @@
                                 class="text-sm font-bold text-gray-400 hover:text-primary transition-colors">Reset</button>
                         </div>
                         <div class="divide-y divide-gray-100">
-                            <!-- Category Filter -->
-                            <details class="group" open>
-                                <summary
-                                    class="flex justify-between items-center font-bold cursor-pointer list-none p-6 text-sm text-navy hover:bg-gray-50 transition-colors">
-                                    <span>Kategori</span>
-                                    <Icon icon="ph:caret-down-bold"
-                                        class="transition group-open:rotate-180 text-gray-400" />
-                                </summary>
-                                <div class="px-6 pb-6 text-sm space-y-4">
-                                    <label class="flex items-center gap-3 cursor-pointer group/item">
-                                        <input checked
-                                            class="h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary shadow-sm"
-                                            type="checkbox" />
-                                        <span
-                                            class="font-bold text-gray-600 group-hover/item:text-navy transition-colors">National
-                                            Series</span>
-                                    </label>
-                                    <label class="flex items-center gap-3 cursor-pointer group/item">
-                                        <input
-                                            class="h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary shadow-sm"
-                                            type="checkbox" />
-                                        <span
-                                            class="font-bold text-gray-600 group-hover/item:text-navy transition-colors">Regional
-                                            Open</span>
-                                    </label>
-                                    <label class="flex items-center gap-3 cursor-pointer group/item">
-                                        <input
-                                            class="h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary shadow-sm"
-                                            type="checkbox" />
-                                        <span
-                                            class="font-bold text-gray-600 group-hover/item:text-navy transition-colors">Club
-                                            Invitationals</span>
-                                    </label>
-                                </div>
-                            </details>
                             <!-- Status Filter -->
                             <details class="group">
                                 <summary
@@ -180,7 +145,7 @@
                     <!-- Empty State -->
                     <div v-else-if="!isLoading && filteredTournaments.length === 0"
                         class="text-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
-                        <div class="bg-gray-50 rounded-2xl p-12 max-w-sm mx-auto">
+                        <div class="rounded-2xl p-12 max-w-sm mx-auto">
                             <div
                                 class="h-20 w-20 bg-white shadow-sm rounded-2xl mx-auto flex items-center justify-center mb-6">
                                 <Icon icon="ph:calendar-x-bold" class="text-4xl text-gray-300" />
@@ -220,17 +185,15 @@
                                 <div class="space-y-3 mb-8">
                                     <div class="flex items-center gap-3 text-gray-500">
                                         <div
-                                            class="h-8 w-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-                                            <Icon icon="ph:calendar-blank-bold"
-                                                class="text-lg group-hover:text-primary transition-colors" />
+                                            class="h-8 w-8 rounded-lg bg-gray-50 flex items-center justify-center transition-colors">
+                                            <Icon icon="ph:calendar-blank-bold" class="text-lg transition-colors" />
                                         </div>
                                         <span class="text-xs font-bold">{{ tournament.date }}</span>
                                     </div>
                                     <div class="flex items-center gap-3 text-gray-500">
                                         <div
-                                            class="h-8 w-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-                                            <Icon icon="ph:map-pin-bold"
-                                                class="text-lg group-hover:text-primary transition-colors" />
+                                            class="h-8 w-8 rounded-lg bg-gray-50 flex items-center justify-center transition-colors">
+                                            <Icon icon="ph:map-pin-bold" class="text-lg transition-colors" />
                                         </div>
                                         <span class="text-xs font-bold truncate">{{ tournament.location }}</span>
                                     </div>

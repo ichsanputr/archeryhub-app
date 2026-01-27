@@ -261,7 +261,8 @@ const fetchArticles = async () => {
     isLoading.value = true
     try {
         const response = await get('/news')
-        const newsData = response?.data || []
+        const newsData = Array.isArray(response?.data) ? response.data :
+            Array.isArray(response) ? response : [];
         articles.value = newsData.map(article => ({
             id: article.id || article.uuid,
             slug: article.slug,

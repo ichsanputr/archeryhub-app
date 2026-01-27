@@ -5,7 +5,7 @@
         <section class="relative w-full h-screen overflow-hidden">
             <div class="absolute inset-0 w-full h-full">
                 <img alt="Professional archer aiming at target" class="w-full h-full object-cover object-center"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAy5qIYUnhOAA9fRw-ezPUypzWUtCQTHv6EpNe6Q0bAAz6AFkDLOqgltBvPdIyyRsW4WqNcDFxXZlfgwFHWevvHH2yphLfwWEOEHT3GyFbvXsenr1qoxDPsSf-bmVfNqwG9_5cJoVMhgvCJ2FfEt6bQgicn5WlBrsP8axm39cBTN9E6cF7MQ9vKO5p0acgAZ1z3IYSXi-yQILL1HoOdT6ZobZEyg4qolUIumeiK6bVGuATW7dwLfqmaRIFiXL-l1PEPGa_sRD5Lc9E" />
+                    src="/hero-homepage.jpeg" />
                 <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
                 <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90">
                 </div>
