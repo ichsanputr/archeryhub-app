@@ -1,172 +1,84 @@
 <template>
-  <div class="min-h-screen py-10">
-    <Container>
-      <!-- Header Section -->
-      <section
-        class="mb-8 relative overflow-hidden rounded-2xl border border-yellow-100 bg-gradient-to-r from-yellow-50 via-white to-orange-50">
-        <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-yellow-200/40 blur-3xl"></div>
-        <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-orange-200/40 blur-3xl"></div>
-        <div class="relative p-6 sm:p-8">
-          <div
-            class="inline-flex items-center gap-2 rounded-full border border-yellow-200 bg-white/70 px-3 py-1 text-sm text-yellow-700 shadow-sm backdrop-blur">
+  <div class="min-h-screen flex flex-col">
+    <!-- Hero Section -->
+    <div class="bg-navy pt-12 pb-16 relative overflow-hidden">
+      <div class="absolute inset-0 z-0 opacity-10">
+        <div class="absolute right-0 top-0 -mr-20 -mt-20 w-96 h-96 bg-primary rounded-full blur-3xl opacity-20">
+        </div>
+        <div class="absolute left-0 bottom-0 -ml-20 -mb-20 w-96 h-96 bg-blue-500 rounded-full blur-3xl opacity-20">
+        </div>
+      </div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="max-w-3xl">
+          <div class="flex items-center gap-2 text-primary text-sm font-bold uppercase tracking-wider mb-3">
+            <Icon icon="ph:shield-check" class="text-lg" />
             Legal
           </div>
-          <h1 class="mt-4 text-3xl sm:text-4xl font-extrabold leading-tight text-gray-900">Privacy Policy</h1>
-          <p class="mt-2 text-base sm:text-lg text-gray-600 max-w-2xl">Your privacy matters. This page explains what we
-            collect, why, and how we protect your data.</p>
+          <h1 class="text-3xl md:text-5xl font-black text-white leading-tight mb-4">
+            Privacy Policy
+          </h1>
+          <p class="text-slate-300 text-lg leading-relaxed max-w-2xl">
+            At Archery Hub Indonesia, we take your privacy seriously.
+          </p>
+          <p class="text-slate-400 text-sm mt-6">
+            Last updated: October 24, 2024
+          </p>
         </div>
-      </section>
+      </div>
+    </div>
 
-      <!-- Content -->
-      <article class="legal-content rounded-2xl border border-yellow-100 bg-white p-6 sm:p-8 shadow-sm">
-        <p>
-          This Privacy Policy describes how Archeryhub.id ("we", "us", "our") collects, uses, and shares information
-          when
-          you use our
-          website and services (collectively, the "Services"). By using the Services, you agree to the collection and
-          use of information
-          in accordance with this policy.
-        </p>
-
-        <h2>Information We Collect</h2>
-        <ul>
-          <li><strong>Account information</strong>: name, email address, and any details you voluntarily provide.</li>
-          <li><strong>Usage data</strong>: pages visited, actions taken, device info, approximate location (based on
-            IP).</li>
-          <li><strong>Cookies</strong> and similar technologies to remember preferences and improve performance.</li>
-        </ul>
-
-        <h2>How We Use Information</h2>
-        <ul>
-          <li>Provide and improve the Services, including personalization and feature development.</li>
-          <li>Communicate with you about updates, security notices, and support.</li>
-          <li>Monitor performance, prevent fraud/abuse, and ensure platform integrity.</li>
-        </ul>
-
-        <h2>Data Sharing</h2>
-        <p>
-          We do not sell your personal information. We may share limited data with trusted service providers who help us
-          operate the
-          Services (e.g., hosting, analytics, email). These providers are obligated to protect your information and use
-          it only as instructed.
-        </p>
-
-        <h2>Data Retention</h2>
-        <p>
-          We retain information for as long as necessary to provide the Services, comply with legal obligations, resolve
-          disputes,
-          and enforce agreements. You may request deletion of your account data; we will process such requests in
-          accordance with applicable law.
-        </p>
-
-        <h2>Your Choices</h2>
-        <ul>
-          <li>Opt out of non-essential emails using unsubscribe links.</li>
-          <li>Control cookies via your browser settings.</li>
-          <li>Request access, correction, or deletion of your data by contacting us.</li>
-        </ul>
-
-        <h2>Security</h2>
-        <p>
-          We use reasonable administrative, technical, and physical safeguards to protect your information. No method of
-          transmission
-          or storage is 100% secure, and we cannot guarantee absolute security.
-        </p>
-
-        <h2>International Transfers</h2>
-        <p>
-          Your data may be processed in countries other than your own. Where required, we implement appropriate
-          safeguards for such transfers.
-        </p>
-
-        <h2>Children's Privacy</h2>
-        <p>
-          Our Services are not directed to children under 13 (or the applicable age in your jurisdiction). We do not
-          knowingly collect
-          personal information from children. If you believe a child has provided us data, please contact us to remove
-          it.
-        </p>
-
-        <h2>Changes to This Policy</h2>
-        <p>
-          We may update this Privacy Policy from time to time. We will post the new version on this page and update the
-          "Last Updated" date.
-          Your continued use of the Services after changes indicates your acceptance.
-        </p>
-
-        <p>
-          For questions about this policy or your data, contact us at <NuxtLink to="mailto:hello@archeryhub.id" external
-            class="text-yellow-600 hover:text-yellow-700 underline">hello@archeryhub.id</NuxtLink>.
-        </p>
-
-        <p class="last-updated">Last Updated: {{ new Date().toLocaleDateString() }}</p>
-      </article>
-    </Container>
+    <!-- Main Content -->
+    <main class="flex-grow max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 -mt-8 mb-20 relative z-20">
+      <div
+        class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 md:p-12">
+        <div class="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300">
+          <p class="mb-6 leading-relaxed">
+            This Privacy Policy explains how we collect, use, disclosure, and safeguard your information when you visit
+            our
+            website including any other media form, media channel, mobile website, or mobile
+            application related or connected thereto.
+          </p>
+          <h3 class="text-xl font-bold text-navy dark:text-white mt-8 mb-4">1. Collection of Your Information</h3>
+          <p class="mb-4">We may collect information about you in a variety of ways. The information
+            we may collect on the Site includes:</p>
+          <ul class="list-disc pl-6 space-y-2 mb-6 marker:text-primary">
+            <li><strong>Personal Data:</strong> Personally identifiable information, such as your
+              name, shipping address, email address, and telephone number, and demographic
+              information.</li>
+            <li><strong>Derivative Data:</strong> Information our servers automatically collect when
+              you access the Site, such as your IP address, your browser type, your operating
+              system, your access times, and the pages you have viewed directly before and after
+              accessing the Site.</li>
+            <li><strong>Financial Data:</strong> Financial information, such as data related to your
+              payment method (e.g. valid credit card number, card brand, expiration date) that we
+              may collect when you purchase, order, return, exchange, or request information about
+              our services from the Site.</li>
+          </ul>
+          <h3 class="text-xl font-bold text-navy dark:text-white mt-8 mb-4">2. Use of Your Information</h3>
+          <p class="mb-4">Having accurate information about you permits us to provide you with a
+            smooth, efficient, and customized experience. Specifically, we may use information
+            collected about you via the Site to:</p>
+          <ol class="list-decimal pl-6 space-y-2 mb-6 marker:text-navy marker:font-bold">
+            <li>Create and manage your account.</li>
+            <li>Process your subscription to club memberships and tournament registrations.</li>
+            <li>Email you regarding your account or order.</li>
+            <li>Enable user-to-user communications.</li>
+            <li>Fulfill and manage purchases, orders, payments, and other transactions related to
+              the Site.</li>
+          </ol>
+        </div>
+      </div>
+    </main>
   </div>
 </template>
 
 <script setup>
-import Container from '~/components/Container.vue'
-
-// Use landing layout
+import { Icon } from '@iconify/vue'
 definePageMeta({
   layout: 'landing'
 })
 
-// Set page meta
-const route = useRoute()
 useHead({
-  title: 'Privacy Policy - Archery Hub Tournament Manager',
-  meta: [
-    {
-      name: 'description',
-      content: 'Learn about how Archery Hub collects, uses, and protects your personal information and data.'
-    }
-  ],
-  link: [
-    {
-      rel: 'canonical',
-      href: useRequestURL().href
-    }
-  ]
+  title: 'Privacy Policy - Archeryhub.id'
 })
 </script>
-
-<style scoped>
-.legal-content {
-  color: #374151;
-}
-
-.legal-content h2 {
-  margin-top: 1.5rem;
-  margin-bottom: 0.5rem;
-  font-size: 1.25rem;
-  line-height: 1.75rem;
-  font-weight: 700;
-  color: #111827;
-}
-
-.legal-content p {
-  margin-bottom: 1rem;
-}
-
-.legal-content ul {
-  margin-bottom: 1rem;
-  padding-left: 1.25rem;
-  list-style: disc;
-}
-
-.legal-content li {
-  margin-bottom: 0.5rem;
-}
-
-.legal-content strong {
-  font-weight: 600;
-}
-
-.legal-content .last-updated {
-  margin-top: 1.5rem;
-  color: #6B7280;
-  font-size: 0.875rem;
-}
-</style>

@@ -16,8 +16,7 @@
                         <Icon icon="ph:users-three-bold" class="text-lg" />
                         <span>Komunitas Pemanah</span>
                     </div>
-                    <h1
-                        class="text-3xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight mb-6">
+                    <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
                         Temukan <span class="text-primary">Klub Panahan</span><br />
                         Terbaik di Indonesia
                     </h1>

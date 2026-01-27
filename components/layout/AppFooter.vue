@@ -67,33 +67,21 @@
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 Kontak
               </NuxtLink>
-              <NuxtLink to="/legal#privacy-policy"
+              <NuxtLink to="/privacy"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 Kebijakan Privasi
               </NuxtLink>
-              <NuxtLink to="/legal#terms-of-service"
+              <NuxtLink to="/terms"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 Syarat & Ketentuan
+              </NuxtLink>
+              <NuxtLink to="/disclaimer"
+                class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
+                Disclaimer
               </NuxtLink>
             </div>
           </div>
 
-          <!-- Column 4: Developer -->
-          <div class="flex flex-col gap-5">
-            <h4 class="text-xs font-black uppercase tracking-widest text-white">
-              Pengembang
-            </h4>
-            <div class="flex flex-col gap-3">
-              <NuxtLink to="/blog"
-                class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Blog
-              </NuxtLink>
-              <NuxtLink to="/career"
-                class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Karir
-              </NuxtLink>
-            </div>
-          </div>
         </div>
       </div>
 

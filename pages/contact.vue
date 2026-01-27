@@ -1,13 +1,14 @@
 <template>
   <div>
-    <div class="bg-navy relative overflow-hidden pb-12">
-      <div class="absolute inset-0 z-0">
-        <div class="absolute inset-0 bg-gradient-to-b from-navy/90 via-navy/95 to-background-light z-10"></div>
-        <img alt="background" class="w-full h-full object-cover object-center opacity-30 mix-blend-overlay"
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuByxS8LZ93pBQXI_V_Vu3nB0633lwPZGiFCM3UtI-xk79b_O83ASmlHYA36lOzcnmVsbgs4DEe9awj543MvzCN1yzOo1wZ3ViXLdiMRV7vAMdy66lvu-l5dpFAOgZ0uCMKJxsBRXPJL1QeX4_ZdX2ynTEZR-ZMilrncma7gKG2YK0vsj0KJZnw_lD0UZaXFKW2aVFD1SU-mzi_sAT2D-62TP0j5LF6KprFriv2sV9rdypqLSvfrZekYDy45XaK8F1vVh7e5nfrgK7o" />
+    <div class="bg-navy pt-12 pb-16 relative overflow-hidden">
+      <div class="absolute inset-0 z-0 opacity-10">
+        <div class="absolute right-0 top-0 -mr-20 -mt-20 w-96 h-96 bg-primary rounded-full blur-3xl opacity-20">
+        </div>
+        <div class="absolute left-0 bottom-0 -ml-20 -mb-20 w-96 h-96 bg-blue-500 rounded-full blur-3xl opacity-20">
+        </div>
       </div>
-      <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 md:pt-20 pb-12">
-        <div class="max-w-3xl text-center md:text-left">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="max-w-3xl">
           <h1 class="text-white text-3xl md:text-5xl font-black leading-tight tracking-tight mb-4">
             Contact Us
           </h1>
@@ -19,11 +20,11 @@
       </div>
     </div>
 
-    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 -mt-16 relative z-30">
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 -mt-8 relative z-30">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
         <div class="lg:col-span-7">
           <div
-            class="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 h-full">
+            class="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 h-full">
             <h2 class="text-2xl font-bold text-navy dark:text-white mb-6">Send us a message</h2>
             <form class="space-y-6" @submit.prevent="handleSubmit">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -72,7 +73,7 @@
         </div>
 
         <div class="lg:col-span-5 space-y-6">
-          <div class="bg-navy rounded-2xl shadow-lg p-8 relative overflow-hidden text-white">
+          <div class="bg-navy rounded-2xl shadow-sm p-8 relative overflow-hidden text-white">
             <div class="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
               <Icon icon="ph:globe-hemisphere-west-bold" class="text-9xl" />
             </div>

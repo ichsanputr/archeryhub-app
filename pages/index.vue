@@ -21,7 +21,7 @@
                                 Indonesia</span>
                         </div>
                         <h1 ref="heroTitle"
-                            class="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.2] sm:leading-[1.1] mb-4 sm:mb-6 tracking-tight drop-shadow-lg font-display opacity-0 translate-y-8">
+                            class="text-3xl sm:text-4xl md:text-5xl font-black text-white leading-[1.2] sm:leading-[1.1] mb-4 sm:mb-6 tracking-tight drop-shadow-sm font-display opacity-0 translate-y-8">
                             All in One<br />
                             <span
                                 class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary to-green-300">Platform
@@ -242,7 +242,7 @@
 
                         <!-- Mobile: Main Feature Image with Description Overlay -->
                         <div v-if="isMobile"
-                            class="relative w-full aspect-video rounded-3xl bg-navy overflow-hidden shadow-xl border border-white/5 animate-fade-in">
+                            class="relative w-full aspect-video rounded-3xl bg-navy overflow-hidden shadow-sm border border-white/5 animate-fade-in">
                             <!-- Background Image -->
                             <img :src="featureItems[activeFeature].image" :alt="featureItems[activeFeature].title"
                                 class="w-full h-full object-cover opacity-60 scale-[1.05]" />
@@ -278,7 +278,7 @@
                                 <div v-for="(feature, idx) in featureItems" :key="feature.title"
                                     @click="activeFeature = idx"
                                     class="group flex items-center p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer"
-                                    :class="activeFeature === idx ? 'bg-navy border-navy ring-1 sm:ring-2 ring-primary ring-offset-2 shadow-xl scale-[1.01]' : 'bg-white border-gray-100 hover:border-primary/50 hover:shadow-lg'">
+                                    :class="activeFeature === idx ? 'bg-navy border-navy ring-1 sm:ring-2 ring-primary ring-offset-2 shadow-sm scale-[1.01]' : 'bg-white border-gray-100 hover:border-primary/50 hover:shadow-sm'">
                                     <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center mr-3 sm:mr-5 transition-colors duration-300 flex-shrink-0"
                                         :class="activeFeature === idx ? 'bg-primary text-navy' : 'bg-gray-50 text-navy group-hover:bg-primary'">
                                         <Icon :icon="feature.icon" class="text-xl sm:text-2xl" />
@@ -327,7 +327,7 @@
                 <div
                     class="flex lg:grid lg:grid-cols-4 gap-6 lg:gap-8 pb-8 lg:pb-0 overflow-x-auto lg:overflow-x-visible -mx-4 px-4 sm:mx-0 sm:px-0 lg:mx-0 lg:px-0 no-scrollbar snap-x lg:snap-none">
                     <div v-for="live in liveEvents" :key="live.name"
-                        class="min-w-[300px] md:min-w-[380px] lg:min-w-0 snap-center group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:border-primary/50 transition-all duration-300 flex flex-col">
+                        class="min-w-[300px] md:min-w-[380px] lg:min-w-0 snap-center group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-sm hover:border-primary/50 transition-all duration-300 flex flex-col">
                         <div class="relative h-48 overflow-hidden">
                             <img :src="useImageOrDefault(live.image || live.image_url || live.banner_url)"
                                 :alt="live.name"
@@ -339,7 +339,8 @@
                                 {{ live.name }}
                             </h3>
                             <div class="flex items-start gap-2 text-text-sub text-sm mb-4">
-                                <span class="material-symbols-outlined text-lg mt-0.5">location_on</span>
+                                <Icon icon="mi:location" class="material-symbols-outlined text-lg mt-0.5">
+                                </Icon>
                                 <span class="truncate">{{ live.location }}</span>
                             </div>
                             <div class="mt-auto">
@@ -383,7 +384,7 @@
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div v-for="club in filteredClubs" :key="club.name"
-                        class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center relative group">
+                        class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-sm hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center relative group">
                         <div v-if="club.verified"
                             class="absolute top-3 right-3 bg-primary text-navy px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 shadow-sm">
                             <span class="material-symbols-outlined text-[14px] fill-1">verified</span> Verifikasi

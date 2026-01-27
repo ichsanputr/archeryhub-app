@@ -15,8 +15,7 @@
                         <Icon icon="ph:newspaper-clipping" class="text-lg" />
                         <span>Berita & Artikel</span>
                     </div>
-                    <h1
-                        class="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight mb-6">
+                    <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
                         Kabar Terbaru <br />
                         <span class="text-primary">Dunia Panahan</span>
                     </h1>

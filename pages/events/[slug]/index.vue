@@ -18,7 +18,7 @@
                 <div class="flex flex-col lg:flex-row items-end justify-between gap-8 mb-12">
                     <div class="max-w-3xl">
                         <h1
-                            class="text-white text-3xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight mb-6 font-display">
+                            class="text-3xl md:text-5xl font-black leading-tight tracking-tight mb-6 font-display text-white">
                             {{ tournament.name }}
                         </h1>
                         <div class="flex flex-wrap items-center gap-6 text-white/80 text-base">
@@ -55,7 +55,7 @@
         </div>
 
         <!-- Main Content -->
-        <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 md:py-8">
             <div
                 :class="activeTab === 'Hasil' ? 'grid grid-cols-1' : 'grid grid-cols-1 lg:grid-cols-3 gap-8 xl:gap-12'">
                 <!-- Left Column -->
@@ -125,7 +125,7 @@
                                             <div
                                                 class="w-12 h-12 bg-navy/5 rounded-lg flex items-center justify-center text-navy">
                                                 <span class="material-symbols-outlined text-3xl">{{ division.icon
-                                                    }}</span>
+                                                }}</span>
                                             </div>
                                             <span class="bg-navy text-white text-xs font-bold px-2 py-1 rounded">{{
                                                 division.distance }}</span>
@@ -326,8 +326,8 @@
                             </a>
                             <button v-else
                                 class="flex-1 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs font-bold text-gray-400 cursor-not-allowed flex items-center justify-center gap-2">
-                                <Icon icon="ph:phone-slash" class="text-lg" />
-                                No. Telp
+                                <Icon icon="ph:whatsapp-logo" class="text-lg" />
+                                WhatsApp
                             </button>
 
                             <NuxtLink v-if="tournament.organizer_slug"

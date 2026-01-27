@@ -36,11 +36,6 @@
                                 <div class="flex flex-wrap items-center gap-3 mb-3">
                                     <h1 class="text-2xl md:text-4xl font-black text-navy leading-tight">{{ club.name }}
                                     </h1>
-                                    <span v-if="club.verified"
-                                        class="flex items-center gap-1 px-3 py-1.5 bg-blue-50 text-blue-600 text-[10px] md:text-xs font-black rounded-full uppercase tracking-wider">
-                                        <Icon icon="ph:seal-check-fill" />
-                                        Verified
-                                    </span>
                                 </div>
                                 <div class="flex flex-wrap items-center gap-4 text-gray-500 text-sm font-medium">
                                     <span class="flex items-center gap-1.5">
@@ -56,14 +51,25 @@
 
                             <!-- Actions -->
                             <div class="flex gap-3">
-                                <BaseButton v-if="!isMember && isArcher" variant="primary" size="lg" icon="ph:plus-bold"
-                                    :loading="isJoining" @click="joinClub" class="shadow-lg shadow-primary/30">
+                                <BaseButton v-if="!membership && isArcher" variant="primary" size="lg"
+                                    icon="ph:plus-bold" :loading="isJoining" @click="joinClub"
+                                    class="shadow-lg shadow-primary/30">
                                     Gabung Klub
                                 </BaseButton>
-                                <div v-else-if="isMember"
+                                <div v-else-if="membership && membership.status === 'active' && membership.club_id === club.id"
                                     class="px-6 py-3 bg-green-50 text-green-600 font-black text-sm rounded-xl flex items-center gap-2 border-2 border-green-200">
                                     <Icon icon="ph:check-circle-fill" class="text-lg" />
                                     Anggota Aktif
+                                </div>
+                                <div v-else-if="membership && membership.status === 'pending' && membership.club_id === club.id"
+                                    class="px-6 py-3 bg-yellow-50 text-yellow-600 font-black text-sm rounded-xl flex items-center gap-2 border-2 border-yellow-200">
+                                    <Icon icon="ph:clock-fill" class="text-lg" />
+                                    Menunggu Persetujuan
+                                </div>
+                                <div v-else-if="membership && membership.club_id !== club.id"
+                                    class="px-4 py-3 bg-gray-50 text-gray-500 font-bold text-xs rounded-xl flex items-center gap-2 border-2 border-gray-100 max-w-[200px]">
+                                    <Icon icon="ph:info-fill" class="text-lg" />
+                                    Terdaftar di Klub {{ membership.club_name }}
                                 </div>
                                 <button class="p-3 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all">
                                     <Icon icon="ph:share-network-bold" class="text-xl text-gray-600" />
@@ -308,8 +314,8 @@ const isArcher = computed(() => {
     return isLoggedIn.value && (user.value?.role === 'archer' || user.value?.user_type === 'archer')
 })
 
-// Check if already a member (would be from API)
-const isMember = ref(false)
+// Membership status
+const membership = ref(null)
 
 const club = ref({
     id: 0,
@@ -349,9 +355,14 @@ const joinClub = async () => {
 
     isJoining.value = true
     try {
-        await post(`/clubs/join/${club.value.id}`)
+        const response = await post(`/clubs/join/${club.value.id}`)
         toast.success('Permintaan bergabung telah dikirim!')
-        isMember.value = true
+        // Update membership local state
+        membership.value = {
+            status: 'pending',
+            club_id: club.value.id,
+            club_name: club.value.name
+        }
     } catch (error) {
         toast.error('Gagal mengirim permintaan. ' + (error.message || ''))
     } finally {
@@ -422,6 +433,14 @@ onMounted(async () => {
             recentEvents: data.recent_events || [],
             topMembers: data.top_members || [],
             sections: data.sections || []
+        }
+
+        // Fetch membership if logged in
+        if (isArcher.value) {
+            const memberResp = await get('/clubs/my/membership')
+            if (memberResp && memberResp.data) {
+                membership.value = memberResp.data
+            }
         }
     } catch (error) {
         console.error('Gagal memuat klub', error)

@@ -27,15 +27,10 @@
                     <div class="flex flex-wrap gap-4">
                         <NuxtLink to="/auth/register?type=organizer">
                             <BaseButton variant="primary" size="lg" icon="ph:plus-circle-bold"
-                                class="shadow-lg shadow-primary/20 font-black">
+                                class="shadow-sm shadow-primary/20 font-black">
                                 Daftarkan Event
                             </BaseButton>
                         </NuxtLink>
-                        <button @click="scrollToContent"
-                            class="px-6 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-xl text-white font-bold text-sm transition-all border border-white/20 flex items-center gap-2">
-                            <Icon icon="ph:magnifying-glass-bold" />
-                            Cari Turnamen
-                        </button>
                     </div>
                 </div>
             </div>
@@ -156,7 +151,7 @@
                                 Coba ubah pencarian atau filter Anda untuk menemukan event yang tersedia.
                             </p>
                             <BaseButton v-if="searchQuery" variant="primary" @click="searchQuery = ''"
-                                class="shadow-lg shadow-primary/20">
+                                class="shadow-sm shadow-primary/20">
                                 Hapus Pencarian
                             </BaseButton>
                         </div>
@@ -201,7 +196,7 @@
                                 </div>
                                 <div class="mt-auto">
                                     <BaseButton variant="primary" block size="lg" iconRight="ph:arrow-right-bold"
-                                        class="shadow-sm group-hover:shadow-lg group-hover:shadow-primary/20 transition-all">
+                                        class="shadow-sm group-hover:shadow-sm group-hover:shadow-primary/20 transition-all">
                                         Detail Event
                                     </BaseButton>
                                 </div>
@@ -236,7 +231,7 @@
                     </div>
                     <NuxtLink to="/auth/register?type=organizer">
                         <button
-                            class="px-8 py-4 bg-navy hover:bg-navy-light text-white font-black rounded-xl transition-all shadow-xl shadow-navy/20 flex items-center gap-3 text-lg group">
+                            class="px-8 py-4 bg-navy hover:bg-navy-light text-white font-black rounded-xl transition-all shadow-sm shadow-navy/20 flex items-center gap-3 text-lg group">
                             <Icon icon="ph:plus-circle-bold"
                                 class="text-xl group-hover:rotate-90 transition-transform duration-500" />
                             Buat Event Sekarang

@@ -141,7 +141,7 @@
                                 <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">
                                     Completion</p>
                                 <p class="text-navy-dark text-3xl font-extrabold tracking-tight">{{ completionPercentage
-                                }}%</p>
+                                    }}%</p>
                             </div>
                             <div
                                 class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
@@ -224,15 +224,22 @@
                             <table class="w-full text-left text-sm">
                                 <thead class="bg-gray-50 text-gray-500 font-semibold border-b border-gray-100">
                                     <tr>
+                                        <th
+                                            class="px-6 py-3 font-medium text-xs uppercase tracking-wider whitespace-nowrap">
+                                            #</th>
                                         <th class="px-6 py-3 font-medium text-xs uppercase tracking-wider">Rk</th>
                                         <th class="px-6 py-3 font-medium text-xs uppercase tracking-wider">Archer</th>
-                                        <th class="px-6 py-3 text-right font-medium text-xs uppercase tracking-wider">
+                                        <th
+                                            class="px-6 py-3 text-right font-medium text-xs uppercase tracking-wider whitespace-nowrap">
                                             Score</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-100">
                                     <tr v-for="(participant, idx) in topParticipants" :key="participant.id"
                                         class="hover:bg-gray-50 transition-colors group">
+                                        <td class="px-6 py-3.5 text-xs font-mono text-gray-500 whitespace-nowrap">
+                                            {{ participant.athlete_code || participant.id?.slice(0, 8) || '-' }}
+                                        </td>
                                         <td class="px-6 py-3.5">
                                             <div v-if="idx === 0"
                                                 class="bg-primary text-navy-dark font-extrabold w-6 h-6 rounded flex items-center justify-center text-xs shadow-sm">
@@ -250,7 +257,7 @@
                                             {{ participant.total_score || 0 }}</td>
                                     </tr>
                                     <tr v-if="topParticipants.length === 0">
-                                        <td colspan="3" class="px-6 py-12 text-center text-gray-400 italic font-medium">
+                                        <td colspan="4" class="px-6 py-12 text-center text-gray-400 italic font-medium">
                                             No scores yet
                                         </td>
                                     </tr>
@@ -260,8 +267,8 @@
                     </div>
                 </div>
 
-                <!-- Quick Actions & Alerts -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Alerts -->
+                <div class="grid grid-cols-1 gap-6">
                     <!-- Live Alerts -->
                     <div
                         class="bg-white rounded-xl border border-gray-200 flex flex-col shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
@@ -291,49 +298,6 @@
                                 <Icon icon="ph:check-circle" class="text-4xl text-green-200 mx-auto mb-2" />
                                 <p class="text-gray-400 text-sm">All systems operational</p>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Quick Actions -->
-                    <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
-                        <h3 class="text-navy-dark font-bold mb-4 flex items-center gap-2 text-lg">Quick Actions</h3>
-                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                            <button
-                                class="flex flex-col items-center justify-center p-4 rounded-xl bg-gray-50 border border-gray-100 hover:bg-white hover:border-primary hover:shadow-lg hover:shadow-primary/10 text-text-main transition-all group duration-300">
-                                <Icon icon="ph:printer"
-                                    class="mb-2 text-gray-400 group-hover:text-primary transition-colors text-2xl" />
-                                <span class="text-xs font-bold group-hover:text-navy-dark">Print Scorecards</span>
-                            </button>
-                            <button
-                                class="flex flex-col items-center justify-center p-4 rounded-xl bg-gray-50 border border-gray-100 hover:bg-white hover:border-primary hover:shadow-lg hover:shadow-primary/10 text-text-main transition-all group duration-300">
-                                <Icon icon="ph:arrows-clockwise"
-                                    class="mb-2 text-gray-400 group-hover:text-primary transition-colors text-2xl" />
-                                <span class="text-xs font-bold group-hover:text-navy-dark">Sync Leaderboard</span>
-                            </button>
-                            <button
-                                class="flex flex-col items-center justify-center p-4 rounded-xl bg-gray-50 border border-gray-100 hover:bg-white hover:border-primary hover:shadow-lg hover:shadow-primary/10 text-text-main transition-all group duration-300">
-                                <Icon icon="ph:pencil"
-                                    class="mb-2 text-gray-400 group-hover:text-primary transition-colors text-2xl" />
-                                <span class="text-xs font-bold group-hover:text-navy-dark">Edit Assignments</span>
-                            </button>
-                            <button
-                                class="flex flex-col items-center justify-center p-4 rounded-xl bg-gray-50 border border-gray-100 hover:bg-white hover:border-primary hover:shadow-lg hover:shadow-primary/10 text-text-main transition-all group duration-300">
-                                <Icon icon="ph:megaphone"
-                                    class="mb-2 text-gray-400 group-hover:text-primary transition-colors text-2xl" />
-                                <span class="text-xs font-bold group-hover:text-navy-dark">Announcements</span>
-                            </button>
-                            <button
-                                class="flex flex-col items-center justify-center p-4 rounded-xl bg-gray-50 border border-gray-100 hover:bg-white hover:border-primary hover:shadow-lg hover:shadow-primary/10 text-text-main transition-all group duration-300">
-                                <Icon icon="ph:qr-code"
-                                    class="mb-2 text-gray-400 group-hover:text-primary transition-colors text-2xl" />
-                                <span class="text-xs font-bold group-hover:text-navy-dark">Generate QR</span>
-                            </button>
-                            <button
-                                class="flex flex-col items-center justify-center p-4 rounded-xl bg-gray-50 border border-gray-100 hover:bg-white hover:border-primary hover:shadow-lg hover:shadow-primary/10 text-text-main transition-all group duration-300">
-                                <Icon icon="ph:gear"
-                                    class="mb-2 text-gray-400 group-hover:text-primary transition-colors text-2xl" />
-                                <span class="text-xs font-bold group-hover:text-navy-dark">Device Manager</span>
-                            </button>
                         </div>
                     </div>
                 </div>

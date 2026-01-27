@@ -19,22 +19,6 @@
                             Temukan peralatan panahan berkualitas dari berbagai klub dan organisasi terpercaya di
                             Indonesia.
                         </p>
-                        <div class="mt-8 flex items-center gap-4">
-                            <div class="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3">
-                                <Icon icon="ph:storefront" class="text-primary text-2xl" />
-                                <div>
-                                    <p class="text-sm text-gray-400">Penjual Aktif</p>
-                                    <p class="font-bold text-lg">45+ Klub</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3">
-                                <Icon icon="ph:package" class="text-primary text-2xl" />
-                                <div>
-                                    <p class="text-sm text-gray-400">Total Produk</p>
-                                    <p class="font-bold text-lg">500+ Item</p>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -79,7 +63,7 @@
                 <button v-for="cat in categories" :key="cat.value" @click="categoryFilter = cat.value" :class="[
                     'flex items-center gap-2 px-5 py-2.5 rounded-full font-medium text-sm whitespace-nowrap transition-all',
                     categoryFilter === cat.value
-                        ? 'bg-navy text-white shadow-lg shadow-navy/20'
+                        ? 'bg-navy text-white shadow-sm shadow-navy/20'
                         : 'bg-white text-gray-600 border border-gray-200 hover:border-primary hover:text-navy'
                 ]">
                     <Icon :icon="cat.icon" class="text-lg" />
@@ -101,7 +85,7 @@
             <div v-else class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
                 <NuxtLink v-for="product in filteredProducts" :key="product.id"
                     :to="`/shop/${product.slug || product.id}`"
-                    class="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:border-primary/30 transition-all group cursor-pointer block">
+                    class="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-sm hover:border-primary/30 transition-all group cursor-pointer block">
 
                     <!-- Product Image -->
                     <div class="relative aspect-square bg-gray-100 overflow-hidden">

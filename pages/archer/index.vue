@@ -11,7 +11,7 @@
 
             <div class="container mx-auto px-4 max-w-7xl relative z-10 text-center md:text-left">
                 <div class="max-w-3xl">
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-6">
+                    <h1 class="text-3xl md:text-5xl font-black text-white leading-tight mb-6">
                         Temukan <span class="text-primary">Inspirasi</span> & <br />
                         Koneksi Pemanah Indonesia
                     </h1>
@@ -173,13 +173,18 @@
             </div>
 
             <!-- Empty State -->
-            <div v-if="filteredArchers.length === 0 && !isLoading" class="text-center py-20">
+            <div v-if="archers.length === 0 && !isLoading" class="text-center py-20">
                 <div class="w-24 h-24 bg-gray-100 rounded-full mx-auto flex items-center justify-center mb-6">
                     <Icon icon="ph:user-focus" class="text-5xl text-gray-300" />
                 </div>
                 <h3 class="text-2xl font-black text-navy mb-3">Pemanah Tidak Ditemukan</h3>
                 <p class="text-gray-500 max-w-md mx-auto">Coba ubah filter atau kata kunci pencarian untuk menemukan
                     pemanah yang sesuai.</p>
+            </div>
+
+            <!-- Pagination -->
+            <div v-if="totalArchers > pageSize" class="mt-12 flex justify-center">
+                <BasePagination v-model="currentPage" :total-items="totalArchers" :items-per-page="pageSize" />
             </div>
         </section>
     </div>
@@ -195,9 +200,14 @@ definePageMeta({
 
 const { get } = useApi()
 
+const route = useRoute()
+const router = useRouter()
+
 const searchQuery = ref('')
 const activeBowType = ref('all')
 const viewMode = ref('grid')
+const currentPage = ref(Number(route.query.page) || 1)
+const pageSize = ref(12)
 
 const bowTypes = [
     { label: 'Semua', value: 'all' },
@@ -253,11 +263,29 @@ const dummyArchers = [
 
 const { data: archerResponse, pending: isLoading } = await useAsyncData('archers', () => get('/archers', {
     query: {
-        search: searchQuery.value || undefined
+        search: searchQuery.value || undefined,
+        bow_type: activeBowType.value !== 'all' ? activeBowType.value : undefined,
+        limit: pageSize.value,
+        offset: (currentPage.value - 1) * pageSize.value
     }
 }), {
-    watch: [searchQuery],
+    watch: [searchQuery, activeBowType, currentPage],
     server: true
+})
+
+// Update URL when page changes
+watch(currentPage, (val) => {
+    router.push({
+        query: {
+            ...route.query,
+            page: val > 1 ? val : undefined
+        }
+    })
+})
+
+// Reset to page 1 when filters change
+watch([searchQuery, activeBowType], () => {
+    currentPage.value = 1
 })
 
 const archers = computed(() => {
@@ -298,16 +326,11 @@ const totalArchers = computed(() => {
 })
 
 const activeArchers = computed(() => {
-    return archers.value.filter(a => a.status === 'active' || !a.status).length
+    return archerResponse.value?.total || 0
 })
 
-// Filter by bow type client-side
-const filteredArchers = computed(() => {
-    if (activeBowType.value === 'all') {
-        return archers.value
-    }
-    return archers.value.filter(a => a.bow_type === activeBowType.value)
-})
+// Since we moved filtering to serverside, filteredArchers is just archers
+const filteredArchers = computed(() => archers.value)
 </script>
 
 <style scoped>

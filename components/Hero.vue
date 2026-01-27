@@ -19,7 +19,7 @@
         <!-- Left: Text -->
         <div>
           <h1
-            class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 leading-tight tracking-tight">
+            class="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-black text-gray-900 leading-tight tracking-tight">
             All in One<br />
             <span
               class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-600 via-orange-500 to-yellow-400">Platform

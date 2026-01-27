@@ -38,6 +38,8 @@
                 icon="la:place-of-worship" />
               <BaseSelect v-model="form.type" label="Disiplin" :items="disciplineItems" required :error="errors.type"
                 @blur="validate('type', form.type, [rules.required()])" />
+              <BaseSelect v-model="form.city" label="Kota" :items="cityItems" required :error="errors.city"
+                @blur="validate('city', form.city, [rules.required()])" />
 
               <div class="md:col-span-2">
                 <BaseInput v-model="form.gmapsLink" label="Link Google Maps" placeholder="https://goo.gl/maps/..."
@@ -129,22 +131,21 @@
                     <Icon icon="ph:trash" class="text-lg" />
                   </button>
                 </div>
-                
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div class="md:col-span-2">
-                    <BaseInput v-model="method.payment_method" label="Nama Metode Pembayaran" 
+                    <BaseInput v-model="method.payment_method" label="Nama Metode Pembayaran"
                       placeholder="contoh: Transfer Bank BCA" required />
                   </div>
-                  <BaseInput v-model="method.account_name" label="Nama Pemilik Rekening" 
+                  <BaseInput v-model="method.account_name" label="Nama Pemilik Rekening"
                     placeholder="contoh: PT Archery Indonesia" />
-                  <BaseInput v-model="method.account_number" label="Nomor Rekening/ID" 
+                  <BaseInput v-model="method.account_number" label="Nomor Rekening/ID"
                     placeholder="contoh: 1234567890" />
                   <div class="md:col-span-2">
-                    <BaseTextarea v-model="method.instructions" label="Instruksi Pembayaran (Opsional)" 
-                      placeholder="Tambahkan instruksi atau catatan khusus untuk metode pembayaran ini..." 
-                      rows="3" />
+                    <BaseTextarea v-model="method.instructions" label="Instruksi Pembayaran (Opsional)"
+                      placeholder="Tambahkan instruksi atau catatan khusus untuk metode pembayaran ini..." rows="3" />
                   </div>
-                  <BaseInput v-model.number="method.display_order" label="Urutan Tampilan" type="number" 
+                  <BaseInput v-model.number="method.display_order" label="Urutan Tampilan" type="number"
                     placeholder="0" />
                 </div>
               </div>
@@ -227,6 +228,7 @@ const form = reactive({
   endDate: '',
   description: '',
   type: '', // Discipline
+  city: '',
   divisions: [],
   categories: [],
   entryFee: 350000,
@@ -239,6 +241,16 @@ const form = reactive({
 
 const disciplines = ref([])
 const disciplineItems = computed(() => disciplines.value.map(d => ({ title: d.name, value: d.id })))
+
+const indonesianCities = [
+  'Jakarta', 'Bandung', 'Surabaya', 'Medan', 'Semarang', 'Makassar', 'Palembang',
+  'Tangerang', 'Tangerang Selatan', 'Depok', 'Bekasi', 'Bogor', 'Yogyakarta',
+  'Surakarta (Solo)', 'Denpasar', 'Malang', 'Bandar Lampung', 'Pontianak',
+  'Banjarmasin', 'Samarinda', 'Balikpapan', 'Batam', 'Padang', 'Jambi',
+  'Pekanbaru', 'Mataram', 'Kupang', 'Ambon', 'Jayapura', 'Manado'
+].sort()
+
+const cityItems = computed(() => indonesianCities.map(city => ({ title: city, value: city })))
 
 onMounted(async () => {
   try {
@@ -340,7 +352,8 @@ const validateStep = () => {
     name: [rules.required()],
     startDate: [rules.required()],
     endDate: [rules.required()],
-    type: [rules.required()]
+    type: [rules.required()],
+    city: [rules.required()]
   })
 
   // Additional validation: end date must be after start date
@@ -380,6 +393,7 @@ const handleSubmit = async () => {
       code: form.name.substring(0, 3).toUpperCase() + Math.random().toString(36).substring(2, 5).toUpperCase(),
       name: form.name,
       venue: form.venue,
+      city: form.city,
       gmaps_link: form.gmapsLink,
       start_date: formatToISO(form.startDate),
       end_date: formatToISO(form.endDate),
@@ -401,14 +415,14 @@ const handleSubmit = async () => {
 
     if (result?.id || result?.uuid) {
       const eventId = result.id || result.uuid
-      
+
       // Create payment methods if any
       if (form.paymentMethods.length > 0) {
         try {
           await Promise.all(
             form.paymentMethods
               .filter(m => m.payment_method) // Only create methods with names
-              .map(method => 
+              .map(method =>
                 post(`/events/${eventId}/payment-methods`, {
                   payment_method: method.payment_method,
                   account_name: method.account_name || null,
@@ -423,7 +437,7 @@ const handleSubmit = async () => {
           toast.warning('Event berhasil dibuat, namun ada masalah dengan metode pembayaran')
         }
       }
-      
+
       toast.success('Event berhasil dibuat')
       router.push('/dashboard/events')
     }

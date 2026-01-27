@@ -20,7 +20,7 @@
                             {{ article.date }}
                         </div>
                         <div
-                            class="flex items-center gap-1.5 px-3 py-1 bg-primary/10 rounded-full text-primary text-xs font-bold">
+                            class="flex items-center gap-1.5 px-3 py-1 bg-gray-100 rounded-full text-slate-500 text-xs font-bold">
                             <Icon icon="ph:clock-bold" class="text-sm" />
                             {{ readTime }} mnt baca
                         </div>
