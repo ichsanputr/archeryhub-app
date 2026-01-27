@@ -3,18 +3,19 @@
         <!-- Hero Section -->
         <section class="bg-navy relative overflow-hidden py-16 md:py-24">
             <div class="absolute inset-0 z-0">
-                <img src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=1600&auto=format&fit=crop&q=80"
-                    alt="Archers Background" class="w-full h-full object-cover opacity-20 mix-blend-overlay" />
-                <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/50 to-transparent"></div>
+                <img src="/hero-archer.jpeg" alt="Archers Background" class="w-full h-full object-cover" />
+                <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90">
+                </div>
             </div>
 
             <div class="container mx-auto px-4 max-w-7xl relative z-10 text-center md:text-left">
                 <div class="max-w-3xl">
                     <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-6">
-                        Temukan <span class="text-primary italic">Inspirasi</span> & <br />
+                        Temukan <span class="text-primary">Inspirasi</span> & <br />
                         Koneksi Pemanah Indonesia
                     </h1>
-                    <p class="text-gray-300 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto md:mx-0">
+                    <p class="text-white/90 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto md:mx-0">
                         Jelajahi profil para pemanah berbakat dari seluruh penjuru nusantara. Lihat prestasi, klub, dan
                         dedikasi mereka dalam dunia panahan.
                     </p>
@@ -67,65 +68,70 @@
             <div v-else-if="viewMode === 'grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <NuxtLink v-for="archer in filteredArchers" :key="archer.id || archer.uuid"
                     :to="`/archer/${archer.slug || archer.uuid}`"
-                    class="group bg-white rounded-2xl border-2 border-gray-100 overflow-hidden hover:border-primary transition-all duration-300">
-                    <!-- Archer Avatar & Banner -->
-                    <div class="relative h-44 bg-gradient-to-br from-primary to-amber-400 overflow-hidden">
-                        <div v-if="archer.photo_url || archer.avatar_url" class="w-full h-full">
-                            <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url)"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                        </div>
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent">
+                    class="group bg-white rounded-3xl border border-gray-100 p-6 transition-all duration-500">
+                    <div class="flex items-center gap-5">
+                        <!-- Avatar -->
+                        <div class="relative flex-shrink-0">
+                            <div
+                                class="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-amber-400 p-0.5 overflow-hidden shadow-sm transition-transform duration-500">
+                                <div class="w-full h-full rounded-[14px] overflow-hidden bg-white">
+                                    <img v-if="archer.photo_url || archer.avatar_url"
+                                        :src="useImageOrDefault(archer.photo_url || archer.avatar_url)"
+                                        class="w-full h-full object-cover transition-transform duration-500" />
+                                    <div v-else class="w-full h-full flex items-center justify-center bg-gray-50">
+                                        <span class="text-2xl font-black text-navy">{{ archer.full_name?.charAt(0) ||
+                                            'A'
+                                        }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="absolute -bottom-1 -right-1 w-6 h-6 bg-white rounded-lg flex items-center justify-center shadow-md border border-gray-50">
+                                <Icon icon="ph:sketch-logo-fill" class="text-primary text-sm" />
+                            </div>
                         </div>
 
-                        <!-- Location Badge -->
-                        <div v-if="archer.city" class="absolute bottom-4 left-4">
-                            <span
-                                class="flex items-center gap-1.5 px-3 py-1.5 bg-white/90 backdrop-blur-sm text-navy text-xs font-bold rounded-full">
-                                <Icon icon="ph:map-pin-fill" class="text-primary" />
-                                {{ archer.city }}
-                            </span>
+                        <!-- Name & Basic Info -->
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-black text-navy text-xl leading-tight transition-colors truncate mb-1">
+                                {{ archer.full_name }}
+                            </h3>
+                            <div class="flex flex-col gap-0.5">
+                                <span class="text-gray-400 text-sm font-bold flex items-center gap-1.5">
+                                    <Icon icon="ph:shield-bold" class="text-xs" />
+                                    <span class="truncate">{{ archer.club_name || archer.club || 'Independent' }}</span>
+                                </span>
+                                <span v-if="archer.city"
+                                    class="text-gray-400 text-[11px] font-bold flex items-center gap-1.5 uppercase tracking-wider">
+                                    <Icon icon="ph:map-pin-bold" class="text-xs" />
+                                    {{ archer.city }}
+                                </span>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Archer Info -->
-                    <div class="p-5">
-                        <div class="flex items-start gap-4">
-                            <!-- Avatar -->
-                            <div
-                                class="w-14 h-14 -mt-7 rounded-xl bg-white border-2 border-white shadow-sm overflow-hidden flex-shrink-0 relative z-[2]">
-                                <div v-if="!archer.photo_url && !archer.avatar_url"
-                                    class="w-full h-full bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center">
-                                    <span class="text-xl font-black text-navy">{{ archer.full_name?.charAt(0) || 'A'
-                                    }}</span>
+                    <!-- Archer Details Grid -->
+                    <div class="grid grid-cols-2 gap-3 mt-8">
+                        <div class="bg-gray-50/50 rounded-2xl p-3 border border-gray-50 transition-all">
+                            <span
+                                class="block text-[10px] text-gray-400 font-black uppercase tracking-widest mb-1.5">Divisi</span>
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-md bg-navy/5 flex items-center justify-center">
+                                    <Icon icon="ph:target-bold" class="text-navy text-xs" />
                                 </div>
-                                <img v-else :src="useImageOrDefault(archer.photo_url || archer.avatar_url)"
-                                    class="w-full h-full object-cover" />
-                            </div>
-
-                            <div class="flex-1 min-w-0 pt-1">
-                                <h3
-                                    class="font-black text-navy text-lg truncate group-hover:text-primary transition-colors">
-                                    {{ archer.full_name }}</h3>
-                                <p v-if="archer.athlete_code" class="text-gray-400 text-sm truncate">{{
-                                    archer.athlete_code }}</p>
-                                <p v-else-if="archer.club_name || archer.club" class="text-gray-400 text-sm truncate">{{
-                                    archer.club_name || archer.club }}</p>
+                                <span class="text-xs font-black text-navy truncate capitalize">{{ archer.bow_type ||
+                                    'Recurve'
+                                    }}</span>
                             </div>
                         </div>
-
-                        <!-- Stats -->
-                        <div class="flex items-center justify-between mt-5 pt-5 border-t border-gray-100">
-                            <div class="flex items-center gap-1">
-                                <Icon icon="ph:target-bold" class="text-primary" />
-                                <span class="font-black text-navy text-sm">{{ archer.bow_type || 'Recurve' }}</span>
-                            </div>
-                            <div class="flex items-center gap-1">
-                                <Icon icon="ph:trophy-bold" class="text-amber-400" />
-                                <span class="font-black text-navy text-sm">{{ archer.total_events || 0 }} Events</span>
-                            </div>
-                            <div v-if="archer.best_score" class="flex items-center gap-1 text-right">
-                                <Icon icon="ph:star-fill" class="text-primary" />
-                                <span class="font-black text-navy text-sm">{{ archer.best_score }}</span>
+                        <div class="bg-gray-50/50 rounded-2xl p-3 border border-gray-50 transition-all">
+                            <span
+                                class="block text-[10px] text-gray-400 font-black uppercase tracking-widest mb-1.5">Pengalaman</span>
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-6 rounded-md bg-amber-50 flex items-center justify-center">
+                                    <Icon icon="ph:medal-bold" class="text-amber-500 text-xs" />
+                                </div>
+                                <span class="text-xs font-black text-navy">{{ archer.total_events || 0 }} Event</span>
                             </div>
                         </div>
                     </div>
@@ -144,11 +150,11 @@
                                 class="w-full h-full object-cover" />
                             <div v-else class="w-full h-full flex items-center justify-center">
                                 <span class="text-2xl font-black text-navy">{{ archer.full_name?.charAt(0) || 'A'
-                                }}</span>
+                                    }}</span>
                             </div>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <h3 class="font-black text-navy text-xl group-hover:text-primary transition-colors">
+                            <h3 class="font-black text-navy text-xl transition-colors">
                                 {{ archer.full_name }}
                             </h3>
                             <div class="flex items-center gap-4 mt-2 text-sm text-gray-500">
@@ -161,7 +167,7 @@
                             <div class="text-sm text-gray-500 mb-1">Total Event</div>
                             <div class="text-2xl font-black text-navy">{{ archer.total_events || 0 }}</div>
                         </div>
-                        <Icon icon="ph:arrow-right" class="text-gray-300 group-hover:text-primary transition-colors" />
+                        <Icon icon="ph:arrow-right" class="text-gray-300 transition-colors" />
                     </NuxtLink>
                 </div>
             </div>

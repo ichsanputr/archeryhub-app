@@ -1,13 +1,13 @@
 <template>
     <div class="min-h-screen bg-gray-50">
         <!-- Hero Section -->
-        <section
-            class="bg-gradient-to-br from-navy via-navy to-blue-900 text-white py-20 md:py-28 relative overflow-hidden">
-            <div class="absolute inset-0 opacity-15">
-                <img src="https://images.unsplash.com/photo-1565992441121-4367c2967103?w=1600"
-                    class="w-full h-full object-cover" />
+        <section class="bg-navy relative overflow-hidden py-16 md:py-24">
+            <div class="absolute inset-0 z-0">
+                <img src="/hero-club.jpeg" class="w-full h-full object-cover" />
+                <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90">
+                </div>
             </div>
-            <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/60 to-transparent"></div>
 
             <div class="container mx-auto px-4 max-w-7xl relative z-10">
                 <div class="max-w-3xl">
@@ -16,11 +16,12 @@
                         <Icon icon="ph:users-three-bold" class="text-lg" />
                         <span>Komunitas Pemanah</span>
                     </div>
-                    <h1 class="text-3xl md:text-5xl lg:text-6xl font-black tracking-tight leading-tight mb-6">
+                    <h1
+                        class="text-3xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight mb-6">
                         Temukan <span class="text-primary">Klub Panahan</span><br />
                         Terbaik di Indonesia
                     </h1>
-                    <p class="text-gray-300 text-lg md:text-xl leading-relaxed max-w-xl">
+                    <p class="text-white/90 text-lg md:text-xl leading-relaxed max-w-xl">
                         Bergabunglah dengan komunitas pemanah dan tingkatkan kemampuan bersama pelatih dan fasilitas
                         terbaik.
                     </p>
@@ -142,7 +143,7 @@
                     <div class="p-5">
                         <div class="flex items-start gap-4">
                             <div
-                                class="w-14 h-14 -mt-7 rounded-xl bg-white border-2 border-white shadow-xl overflow-hidden flex-shrink-0 relative z-[2]">
+                                class="w-14 h-14 -mt-7 rounded-xl bg-white border-2 border-white shadow-sm overflow-hidden flex-shrink-0 relative z-[2]">
                                 <img v-if="club.logo_url" :src="club.logo_url" :alt="club.name"
                                     class="w-full h-full object-cover" />
                                 <div v-else-if="!club.avatar_url"
@@ -226,12 +227,26 @@ const searchQuery = ref('')
 const activeLocation = ref('all')
 const viewMode = ref('grid')
 
-// Pagination & API state
-const clubs = ref([])
+// Pagination state
 const currentPage = ref(1)
-const totalItems = ref(0)
 const itemsPerPage = ref(9)
-const isLoading = ref(false)
+
+// Fetch data with useAsyncData for SSR support
+const { data, pending: isLoading, refresh } = await useAsyncData('clubs', () => get('/clubs', {
+    query: {
+        page: currentPage.value,
+        limit: itemsPerPage.value,
+        q: searchQuery.value || undefined,
+        city: activeLocation.value === 'all' ? undefined : activeLocation.value
+    }
+}), {
+    watch: [currentPage, activeLocation, searchQuery],
+    server: true
+})
+
+// Local refs for template (derived from data)
+const clubs = computed(() => data.value?.data || [])
+const totalItems = computed(() => data.value?.meta?.total_items || 0)
 
 const locations = [
     { label: 'Semua', value: 'all' },
@@ -242,53 +257,15 @@ const locations = [
     { label: 'Bali', value: 'bali' },
 ]
 
-const fetchClubs = async () => {
-    isLoading.value = true
-    try {
-        const params = {
-            page: currentPage.value,
-            limit: itemsPerPage.value
-        }
-
-        if (searchQuery.value) {
-            params.q = searchQuery.value
-        }
-
-        if (activeLocation.value !== 'all') {
-            params.city = activeLocation.value
-        }
-
-        const response = await get('/clubs', { query: params })
-        if (response.data) {
-            clubs.value = response.data
-            totalItems.value = response.meta.total_items
-        }
-    } catch (error) {
-        console.error('Failed to fetch clubs:', error)
-    } finally {
-        isLoading.value = false
-    }
-}
-
-// Watchers for filters
-watch([searchQuery, activeLocation], () => {
-    currentPage.value = 1
-    fetchClubs()
-})
-
-// Watcher for page changes
-watch(currentPage, () => {
-    fetchClubs()
-})
-
-onMounted(() => {
-    fetchClubs()
-})
-
 const handlePageChange = (page) => {
     currentPage.value = page
     window.scrollTo({ top: 400, behavior: 'smooth' })
 }
+
+// Watch filters to reset page
+watch([searchQuery, activeLocation], () => {
+    currentPage.value = 1
+})
 useHead({
     title: 'Temukan Klub Panahan - Archeryhub.id',
     link: [

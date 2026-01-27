@@ -1,13 +1,13 @@
 <template>
     <div class="min-h-screen bg-gray-50">
         <!-- Hero Section -->
-        <section
-            class="bg-gradient-to-br from-navy via-navy to-blue-900 text-white py-16 md:py-24 relative overflow-hidden">
-            <div class="absolute inset-0 opacity-20">
-                <img src="https://images.unsplash.com/photo-1565992441121-4367c2967103?w=1600"
-                    class="w-full h-full object-cover mix-blend-overlay" />
+        <section class="bg-navy relative overflow-hidden py-16 md:py-24">
+            <div class="absolute inset-0 z-0">
+                <img src="/hero-berita.jpeg" class="w-full h-full object-cover" />
+                <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90">
+                </div>
             </div>
-            <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent"></div>
 
             <div class="container mx-auto px-4 max-w-7xl relative z-10">
                 <div class="max-w-2xl">
@@ -15,11 +15,12 @@
                         <Icon icon="ph:newspaper-clipping" class="text-lg" />
                         <span>Berita & Artikel</span>
                     </div>
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-tight mb-6">
+                    <h1
+                        class="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight mb-6">
                         Kabar Terbaru <br />
                         <span class="text-primary">Dunia Panahan</span>
                     </h1>
-                    <p class="text-gray-300 text-lg leading-relaxed max-w-lg">
+                    <p class="text-white/90 text-lg leading-relaxed max-w-lg">
                         Ikuti perkembangan terbaru turnamen, prestasi atlet, dan berita seputar komunitas panahan
                         Indonesia.
                     </p>

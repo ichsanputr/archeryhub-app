@@ -1,14 +1,21 @@
 <template>
     <div class="min-h-screen bg-gray-50">
         <!-- Hero Section -->
-        <section class="bg-gradient-to-br from-navy to-blue-900 text-white py-16">
-            <div class="container mx-auto px-4 max-w-7xl">
+        <section class="bg-navy relative overflow-hidden py-16 md:py-24">
+            <div class="absolute inset-0 z-0">
+                <img src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=1600&auto=format&fit=crop&q=80"
+                    alt="Shop Background" class="w-full h-full object-cover" />
+                <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90">
+                </div>
+            </div>
+            <div class="container mx-auto px-4 max-w-7xl relative z-10 text-center md:text-left">
                 <div class="flex flex-col md:flex-row items-center justify-between gap-8">
                     <div class="max-w-xl">
-                        <h1 class="text-4xl md:text-5xl font-black tracking-tight mb-4">
+                        <h1 class="text-4xl md:text-5xl font-black text-white tracking-tight mb-4">
                             Marketplace <span class="text-primary">Panahan</span>
                         </h1>
-                        <p class="text-gray-300 text-lg leading-relaxed">
+                        <p class="text-white/90 text-lg leading-relaxed">
                             Temukan peralatan panahan berkualitas dari berbagai klub dan organisasi terpercaya di
                             Indonesia.
                         </p>

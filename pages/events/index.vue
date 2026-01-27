@@ -3,9 +3,10 @@
         <!-- Hero Section: List Events -->
         <div class="bg-navy relative overflow-hidden py-20 md:py-28 lg:py-32">
             <div class="absolute inset-0 z-0">
-                <img src="https://images.unsplash.com/photo-1511018556340-d16986a1c194?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
-                    class="w-full h-full object-cover opacity-30" />
-                <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/60 to-transparent z-10"></div>
+                <img src="/hero-event.jpeg" class="w-full h-full object-cover" />
+                <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90">
+                </div>
             </div>
             <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="max-w-3xl">
@@ -19,7 +20,7 @@
                         Temukan <span class="text-primary">Target</span><br />
                         Kemenanganmu
                     </h1>
-                    <p class="text-gray-300 text-lg md:text-xl mb-8 leading-relaxed max-w-2xl">
+                    <p class="text-white/90 text-lg md:text-xl mb-8 leading-relaxed max-w-2xl">
                         Ikuti berbagai turnamen panahan bergengsi di seluruh Indonesia. Dari tingkat klub hingga
                         nasional, semua tersedia dalam satu platform.
                     </p>
@@ -138,7 +139,7 @@
                                     class="absolute inset-0 border-4 border-primary border-t-transparent animate-spin rounded-full">
                                 </div>
                             </div>
-                            <p class="text-gray-500 font-bold tracking-tight">Menyiapkan lintasan panah Bapak/Ibu...</p>
+                            <p class="text-gray-500 font-bold tracking-tight">Mencari event seru untuk Anda...</p>
                         </div>
                     </div>
 

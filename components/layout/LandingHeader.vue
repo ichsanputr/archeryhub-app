@@ -63,7 +63,8 @@
                                                             class="text-gray-400 text-xs font-bold uppercase tracking-wider">Event
                                                             Terbaru</span>
                                                         <NuxtLink to="/events"
-                                                            class="text-primary text-xs font-bold hover:underline">Lihat
+                                                            class="text-navy hover:text-primary text-xs font-bold transition-colors">
+                                                            Lihat
                                                             Semua</NuxtLink>
                                                     </div>
                                                     <div class="space-y-2">
@@ -127,7 +128,7 @@
                                 <img v-if="user?.avatar_url" :src="user.avatar_url"
                                     class="w-full h-full object-cover" />
                                 <span v-else class="text-navy font-bold text-sm">{{ user?.full_name?.charAt(0) || 'U'
-                                }}</span>
+                                    }}</span>
                             </div>
                         </button>
 
@@ -237,7 +238,7 @@
                                 <img v-if="user?.avatar_url" :src="user.avatar_url"
                                     class="w-full h-full object-cover" />
                                 <span v-else class="text-navy font-black text-xl">{{ user?.full_name?.charAt(0) || 'U'
-                                }}</span>
+                                    }}</span>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <p class="text-navy font-black truncate">{{ user?.full_name || 'User' }}</p>
