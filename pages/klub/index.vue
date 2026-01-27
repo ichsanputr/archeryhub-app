@@ -129,14 +129,7 @@
                             </span>
                         </div>
 
-                        <!-- Location Badge -->
-                        <div class="absolute bottom-4 left-4">
-                            <span
-                                class="flex items-center gap-1.5 px-3 py-1.5 bg-white/90 backdrop-blur-sm text-navy text-xs font-bold rounded-full">
-                                <Icon icon="ph:map-pin-fill" class="text-primary" />
-                                {{ club.city || 'Indonesia' }}
-                            </span>
-                        </div>
+                        <!-- Location Badge removed as per request -->
                     </div>
 
                     <!-- Club Info -->

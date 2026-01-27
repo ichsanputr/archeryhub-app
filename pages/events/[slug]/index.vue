@@ -17,14 +17,6 @@
 
                 <div class="flex flex-col lg:flex-row items-end justify-between gap-8 mb-12">
                     <div class="max-w-3xl">
-                        <div v-if="tournament.status === 'ongoing' || tournament.status === 'live'"
-                            class="flex items-center gap-3 mb-4">
-                            <span
-                                class="px-3 py-1 rounded-full bg-red-500/20 border border-red-500/30 text-red-700 text-xs font-bold uppercase tracking-wider backdrop-blur-sm flex items-center gap-1">
-                                <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span> Sedang
-                                Berlangsung
-                            </span>
-                        </div>
                         <h1
                             class="text-white text-3xl md:text-5xl lg:text-6xl font-black leading-tight tracking-tight mb-6 font-display">
                             {{ tournament.name }}
@@ -69,27 +61,11 @@
                 <!-- Left Column -->
                 <div :class="activeTab === 'Hasil' ? 'space-y-10' : 'lg:col-span-2 space-y-10'">
                     <div v-if="activeTab === 'Ringkasan'" class="space-y-8">
-                        <!-- Event Description Section -->
-                        <section v-if="tournament.description"
-                            class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
+                        <!-- About Section -->
+                        <section class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
                             <h2 class="text-xl font-bold text-navy mb-6 flex items-center gap-2">
                                 <span class="material-symbols-outlined text-primary">info</span>
                                 Tentang Event
-                            </h2>
-                            <div class="prose prose-sm max-w-none text-gray-600 leading-relaxed whitespace-pre-line">
-                                {{ tournament.description }}
-                            </div>
-                        </section>
-
-                        <!-- About Section -->
-                        <section class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
-                            <div v-if="tournament.thumbnail" class="mb-6">
-                                <img :src="tournament.thumbnail" :alt="tournament.name"
-                                    class="w-full h-64 object-cover rounded-xl" />
-                            </div>
-                            <h2 class="text-xl font-bold text-navy mb-6 flex items-center gap-2">
-                                <span class="material-symbols-outlined text-primary">info</span>
-                                Tentang Turnamen
                             </h2>
                             <div class="prose max-w-none text-gray-600 leading-relaxed space-y-4">
                                 <p>

@@ -17,8 +17,8 @@
                     <!-- Turnamen with Mega Menu -->
                     <div class="relative" @mouseenter="showMegaMenu = true" @mouseleave="showMegaMenu = false">
                         <button
-                            class="text-sm font-semibold transition-all duration-300 flex items-center gap-1 hover:text-primary"
-                            :class="[navLinkClasses, { 'font-bold text-primary': isActive('/events') }]">
+                            class="text-sm font-semibold transition-all duration-300 flex items-center gap-1 hover:text-primary px-3 py-1.5 rounded-lg"
+                            :class="[navLinkClasses, { 'bg-primary text-black font-bold': isActive('/events') }]">
                             Event
                             <Icon icon="ph:caret-down" class="text-xs transition-transform"
                                 :class="{ 'rotate-180': showMegaMenu }" />
@@ -96,14 +96,18 @@
                         </Transition>
                     </div>
 
-                    <NuxtLink to="/klub" class="font-black text-sm transition-all duration-300 hover:text-primary"
-                        :class="[navLinkClasses, { '!text-primary': isActive('/klub') }]">Klub</NuxtLink>
-                    <NuxtLink to="/archer" class="font-black text-sm transition-all duration-300 hover:text-primary"
-                        :class="[navLinkClasses, { '!text-primary': isActive('/archer') }]">Pemanah</NuxtLink>
-                    <NuxtLink to="/berita" class="font-black text-sm transition-all duration-300 hover:text-primary"
-                        :class="[navLinkClasses, { '!text-primary': isActive('/berita') }]">Berita</NuxtLink>
-                    <NuxtLink to="/shop" class="font-black text-sm transition-all duration-300 hover:text-primary"
-                        :class="[navLinkClasses, { '!text-primary': isActive('/shop') }]">Marketplace</NuxtLink>
+                    <NuxtLink to="/klub"
+                        class="font-black text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
+                        :class="[navLinkClasses, { 'bg-primary text-black': isActive('/klub') }]">Klub</NuxtLink>
+                    <NuxtLink to="/archer"
+                        class="font-black text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
+                        :class="[navLinkClasses, { 'bg-primary text-black': isActive('/archer') }]">Pemanah</NuxtLink>
+                    <NuxtLink to="/berita"
+                        class="font-black text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
+                        :class="[navLinkClasses, { 'bg-primary text-black': isActive('/berita') }]">Berita</NuxtLink>
+                    <NuxtLink to="/shop"
+                        class="font-black text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
+                        :class="[navLinkClasses, { 'bg-primary text-black': isActive('/shop') }]">Marketplace</NuxtLink>
                 </nav>
 
                 <!-- Desktop Auth Buttons -->
@@ -128,7 +132,7 @@
                                 <img v-if="user?.avatar_url" :src="user.avatar_url"
                                     class="w-full h-full object-cover" />
                                 <span v-else class="text-navy font-bold text-sm">{{ user?.full_name?.charAt(0) || 'U'
-                                    }}</span>
+                                }}</span>
                             </div>
                         </button>
 
@@ -238,7 +242,7 @@
                                 <img v-if="user?.avatar_url" :src="user.avatar_url"
                                     class="w-full h-full object-cover" />
                                 <span v-else class="text-navy font-black text-xl">{{ user?.full_name?.charAt(0) || 'U'
-                                    }}</span>
+                                }}</span>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <p class="text-navy font-black truncate">{{ user?.full_name || 'User' }}</p>

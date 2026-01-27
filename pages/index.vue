@@ -345,8 +345,8 @@
                             <div class="mt-auto">
                                 <NuxtLink :to="`/events/${live.slug || live.uuid}`"
                                     class="w-full h-10 rounded-lg border-2 border-navy text-navy hover:bg-navy hover:text-white font-bold text-sm transition-all flex items-center justify-center gap-2">
-                                    <span class="material-symbols-outlined text-lg">scoreboard</span>
-                                    Cek Skor Live
+                                    <span class="material-symbols-outlined text-lg">visibility</span>
+                                    Lihat Event
                                 </NuxtLink>
                             </div>
                         </div>

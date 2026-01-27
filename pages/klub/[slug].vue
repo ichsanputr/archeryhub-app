@@ -6,11 +6,13 @@
             <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/50 to-transparent"></div>
 
             <!-- Back Button -->
-            <NuxtLink to="/klub"
-                class="absolute top-6 left-6 z-20 flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-white hover:bg-white/20 transition-all">
-                <Icon icon="ph:arrow-left-bold" />
-                <span class="text-sm font-bold">Kembali</span>
-            </NuxtLink>
+            <div class="container mx-auto px-4 max-w-6xl relative h-full">
+                <NuxtLink to="/klub"
+                    class="absolute top-6 left-4 z-20 flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-white hover:bg-white/20 transition-all">
+                    <Icon icon="ph:arrow-left-bold" />
+                    <span class="text-sm font-bold">Kembali</span>
+                </NuxtLink>
+            </div>
         </section>
 
         <!-- Club Header Card -->
