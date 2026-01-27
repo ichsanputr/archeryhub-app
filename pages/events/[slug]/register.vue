@@ -210,7 +210,7 @@
                                         <p class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">
                                             Pengalaman</p>
                                         <p class="text-sm font-bold text-navy">{{ archerProfile?.experience_years || 0
-                                        }} Tahun</p>
+                                            }} Tahun</p>
                                     </div>
                                     <div
                                         class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100 col-span-2">
@@ -464,7 +464,7 @@ const handleProofUpload = async (event) => {
         formData.append('file', file)
 
         try {
-            const response = await post('/api/v1/media/upload', formData, {
+            const response = await post('/media/upload', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             })
 

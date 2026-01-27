@@ -232,7 +232,7 @@ const checkNameUnique = async (name) => {
 
     isValidating.value = true
     try {
-        const response = await get(`/api/v1/auth/check-name?type=${form.value.userType}&name=${encodeURIComponent(name)}`)
+        const response = await get(`/auth/check-name?type=${form.value.userType}&name=${encodeURIComponent(name)}`)
         isNameTaken.value = response.exists
         if (response.exists) {
             toast.error('Nama ini sudah terdaftar. Silakan gunakan nama lain.')
@@ -306,7 +306,7 @@ const handleGoogleRegister = async () => {
     } catch (err) {
         console.error('Google registration failed:', err)
         let errorMessage = 'Gagal menyambung ke Google. Silakan coba lagi.'
-        
+
         // Handle different error types
         if (err.status === 401 || err.statusCode === 401) {
             errorMessage = 'Autentikasi gagal. Silakan coba lagi.'
@@ -319,7 +319,7 @@ const handleGoogleRegister = async () => {
         } else if (err.message) {
             errorMessage = err.message
         }
-        
+
         toast.error(errorMessage)
         isGoogleLoading.value = false
     }

@@ -199,12 +199,6 @@ const searchQuery = ref('')
 const activeBowType = ref('all')
 const viewMode = ref('grid')
 
-// API state
-const archers = ref([])
-const isLoading = ref(false)
-const totalArchers = ref(0)
-const activeArchers = ref(0)
-
 const bowTypes = [
     { label: 'Semua', value: 'all' },
     { label: 'Recurve', value: 'recurve' },
@@ -257,54 +251,55 @@ const dummyArchers = [
     },
 ]
 
-const fetchArchers = async () => {
-    isLoading.value = true
-    try {
-        const params = {}
-
-        if (searchQuery.value) {
-            params.search = searchQuery.value
-        }
-
-        if (activeBowType.value !== 'all') {
-            // Note: API might not have bow_type filter, but we can filter client-side
-        }
-
-        const response = await get('/archers', { query: params })
-
-        if (response && (response.archers || response.data)) {
-            const archersData = response.archers || response.data || []
-            archers.value = archersData.map(archer => ({
-                ...archer,
-                uuid: archer.uuid || archer.id,
-                slug: archer.slug,
-                full_name: archer.full_name,
-                athlete_code: archer.athlete_code,
-                city: archer.city,
-                province: archer.province,
-                bow_type: archer.bow_type || 'recurve',
-                photo_url: archer.photo_url || archer.avatar_url,
-                club_name: archer.club_name,
-                total_events: archer.total_events || 0
-            }))
-            totalArchers.value = response.total || archersData.length
-            activeArchers.value = archersData.filter(a => a.status === 'active').length
-        } else {
-            // Use dummy data if API returns empty
-            archers.value = dummyArchers
-            totalArchers.value = dummyArchers.length
-            activeArchers.value = dummyArchers.length
-        }
-    } catch (error) {
-        console.error('Failed to fetch archers:', error)
-        // Use dummy data on error
-        archers.value = dummyArchers
-        totalArchers.value = dummyArchers.length
-        activeArchers.value = dummyArchers.length
-    } finally {
-        isLoading.value = false
+const { data: archerResponse, pending: isLoading } = await useAsyncData('archers', () => get('/archers', {
+    query: {
+        search: searchQuery.value || undefined
     }
-}
+}), {
+    watch: [searchQuery],
+    server: true
+})
+
+const archers = computed(() => {
+    let rawData = archerResponse.value?.archers || archerResponse.value?.data || archerResponse.value
+    let archersData = []
+
+    if (Array.isArray(rawData)) {
+        archersData = rawData
+    } else if (rawData && typeof rawData === 'object') {
+        archersData = Array.isArray(rawData.data) ? rawData.data :
+            Array.isArray(rawData.archers) ? rawData.archers : []
+    }
+
+    if (archersData.length === 0 && !searchQuery.value) {
+        archersData = dummyArchers
+    }
+
+    return archersData.map(archer => ({
+        ...archer,
+        uuid: archer.uuid || archer.id,
+        slug: archer.slug,
+        full_name: archer.full_name,
+        athlete_code: archer.athlete_code,
+        city: archer.city,
+        province: archer.province,
+        bow_type: archer.bow_type || 'recurve',
+        photo_url: archer.photo_url || archer.avatar_url,
+        club_name: archer.club_name,
+        total_events: archer.total_events || 0
+    }))
+})
+
+const totalArchers = computed(() => {
+    if (archerResponse.value) {
+        return archerResponse.value.total || archers.value.length
+    }
+    return dummyArchers.length
+})
+
+const activeArchers = computed(() => {
+    return archers.value.filter(a => a.status === 'active' || !a.status).length
+})
 
 // Filter by bow type client-side
 const filteredArchers = computed(() => {
@@ -312,15 +307,6 @@ const filteredArchers = computed(() => {
         return archers.value
     }
     return archers.value.filter(a => a.bow_type === activeBowType.value)
-})
-
-// Watchers for filters
-watch([searchQuery, activeBowType], () => {
-    fetchArchers()
-})
-
-onMounted(() => {
-    fetchArchers()
 })
 </script>
 

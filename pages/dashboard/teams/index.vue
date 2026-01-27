@@ -19,8 +19,10 @@
 
     <!-- Quick Stats -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-        <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+      <div
+        class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+        <div
+          class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
           <Icon icon="ph:users-four" class="text-xl" />
         </div>
         <div>
@@ -28,8 +30,10 @@
           <p class="text-lg font-bold text-navy">{{ teams.length }}</p>
         </div>
       </div>
-      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-        <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+      <div
+        class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+        <div
+          class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
           <Icon icon="ph:check-circle" class="text-xl" />
         </div>
         <div>
@@ -37,8 +41,10 @@
           <p class="text-lg font-bold text-navy">{{teams.filter(t => t.status === 'active').length}}</p>
         </div>
       </div>
-      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-        <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+      <div
+        class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+        <div
+          class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
           <Icon icon="ph:user" class="text-xl" />
         </div>
         <div>
@@ -46,8 +52,10 @@
           <p class="text-lg font-bold text-navy">{{teams.reduce((acc, t) => acc + t.memberCount, 0)}}</p>
         </div>
       </div>
-      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-        <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+      <div
+        class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+        <div
+          class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
           <Icon icon="ph:trophy" class="text-xl" />
         </div>
         <div>
@@ -193,7 +201,7 @@ const showCreateModal = ref(false)
 const fetchTeams = async () => {
   isLoading.value = true
   try {
-    const response = await get('/api/v1/teams/my')
+    const response = await get('/teams/my')
     teams.value = response.data.map(t => ({
       ...t,
       name: t.team_name,
@@ -241,7 +249,7 @@ const deleteTeam = async (team) => {
   if (!confirm(`Apakah Anda yakin ingin menghapus tim "${team.name}"?`)) return
 
   try {
-    await del(`/api/v1/teams/${team.id}`)
+    await del(`/teams/${team.id}`)
     toast.success('Tim berhasil dihapus')
     fetchTeams()
   } catch (error) {

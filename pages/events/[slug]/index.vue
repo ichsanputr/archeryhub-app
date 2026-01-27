@@ -149,7 +149,7 @@
                                             <div
                                                 class="w-12 h-12 bg-navy/5 rounded-lg flex items-center justify-center text-navy">
                                                 <span class="material-symbols-outlined text-3xl">{{ division.icon
-                                                }}</span>
+                                                    }}</span>
                                             </div>
                                             <span class="bg-navy text-white text-xs font-bold px-2 py-1 rounded">{{
                                                 division.distance }}</span>
@@ -468,7 +468,7 @@ const fallbackTournament = {
     status: 'upcoming',
     category: 'National Series',
     organizer: 'Perpani DKI Jakarta',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuByxS8LZ93pBQXI_V_Vu3nB0633lwPZGiFCM3UtI-xk79b_O83ASmlHYA36lOzcnmVsbgs4DEe9awj543MvzCN1yzOo1wZ3ViXLdiMRV7vAMdy66lvu-l5dpFAOgZ0uCMKJxsBRXPJL1QeX4_ZdX2ynTEZR-ZMilrncma7gKG2YK0vsj0KJZnw_lD0UZaXFKW2aVFD1SU-mzi_sAT2D-62TP0j5LF6KprFriv2sV9rdypqLSvfrZekYDy45XaK8F1vVh7e5nfrgK7o'
+    image: '/hero-event-detail.jpeg'
 }
 
 const tournament = ref(fallbackTournament)
@@ -488,7 +488,7 @@ const transformEventData = (data) => ({
     organizer_slug: data.organizer_username || data.organizer_slug || null,
     organizer_logo: data.organizer_avatar_url || data.organizer_logo || null,
     organizer_phone: data.organizer_phone || data.phone || null,
-    image: data.banner_url || data.image || fallbackTournament.image,
+    image: data.banner_url || data.image || '/hero-event-detail.jpeg',
     thumbnail: data.logo_url || data.thumbnail || null,
     fees: data.fees || [],
     description: data.description || '',

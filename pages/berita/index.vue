@@ -247,8 +247,6 @@ const activeCategory = ref('all')
 const isLoadingMore = ref(false)
 const isSubscribing = ref(false)
 const subscribeEmail = ref('')
-const articles = ref([])
-const isLoading = ref(true)
 
 const categories = [
     { label: 'Semua', value: 'all' },
@@ -258,31 +256,26 @@ const categories = [
     { label: 'Tips & Tutorial', value: 'tips' },
 ]
 
-const fetchArticles = async () => {
-    isLoading.value = true
-    try {
-        const response = await get('/news')
-        const newsData = Array.isArray(response?.data) ? response.data :
-            Array.isArray(response) ? response : [];
-        articles.value = newsData.map(article => ({
-            id: article.id || article.uuid,
-            slug: article.slug,
-            title: article.title,
-            excerpt: article.excerpt || '',
-            category: article.category || 'event',
-            date: article.published_at ? new Date(article.published_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : new Date(article.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
-            author: article.author_name || 'Tim Redaksi',
-            views: article.views || 0,
-            image: article.image_url
-        }))
-    } catch (error) {
-        console.error('Failed to fetch articles:', error)
-        toast.error('Gagal memuat berita')
-        articles.value = []
-    } finally {
-        isLoading.value = false
-    }
-}
+const { data: newsResponse, pending: isLoading } = await useAsyncData('news', () => get('/news'), {
+    server: true
+})
+
+const articles = computed(() => {
+    const rawData = newsResponse.value?.data || newsResponse.value || []
+    const newsData = Array.isArray(rawData) ? rawData : []
+
+    return newsData.map(article => ({
+        id: article.id || article.uuid,
+        slug: article.slug,
+        title: article.title,
+        excerpt: article.excerpt || '',
+        category: article.category || 'event',
+        date: article.published_at ? new Date(article.published_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : new Date(article.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
+        author: article.author_name || 'Tim Redaksi',
+        views: article.views || 0,
+        image: article.image_url
+    }))
+})
 
 const featuredArticle = computed(() => articles.value[0] || null)
 
@@ -314,10 +307,6 @@ const loadMore = async () => {
         isLoadingMore.value = false
     }
 }
-
-onMounted(() => {
-    fetchArticles()
-})
 
 const subscribe = async () => {
     if (!subscribeEmail.value) return

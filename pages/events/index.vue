@@ -255,11 +255,7 @@ import { useApi } from '~/composables/useApi'
 
 const searchQuery = ref('')
 const sortBy = ref('newest')
-const isLoading = ref(true)
-
 const { get } = useApi()
-
-const tournaments = ref([])
 
 // Transform API response to match expected format
 const transformEventData = (event) => {
@@ -299,29 +295,23 @@ const transformEventData = (event) => {
     }
 }
 
-const fetchEvents = async () => {
-    isLoading.value = true
-    try {
-        const response = await get('/events')
+const { data: eventResponse, pending: isLoading } = await useAsyncData('events', () => get('/events'), {
+    server: true
+})
 
-        // Handle different response structures
-        let eventsData = []
-        if (Array.isArray(response)) {
-            eventsData = response
-        } else if (response?.events && Array.isArray(response.events)) {
-            eventsData = response.events
-        } else if (response?.data && Array.isArray(response.data)) {
-            eventsData = response.data
-        }
-
-        tournaments.value = eventsData.map(transformEventData)
-    } catch (error) {
-        console.error('Failed to fetch events:', error)
-        tournaments.value = []
-    } finally {
-        isLoading.value = false
+const tournaments = computed(() => {
+    let eventsData = []
+    const response = eventResponse.value
+    if (Array.isArray(response)) {
+        eventsData = response
+    } else if (response?.events && Array.isArray(response.events)) {
+        eventsData = response.events
+    } else if (response?.data && Array.isArray(response.data)) {
+        eventsData = response.data
     }
-}
+
+    return eventsData.map(transformEventData)
+})
 
 const filteredTournaments = computed(() => {
     let result = tournaments.value
@@ -336,10 +326,6 @@ const filteredTournaments = computed(() => {
         result = [...result].sort((a, b) => a.name.localeCompare(b.name))
     }
     return result
-})
-
-onMounted(() => {
-    fetchEvents()
 })
 
 const resetFilters = () => {

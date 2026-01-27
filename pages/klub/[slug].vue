@@ -347,7 +347,7 @@ const joinClub = async () => {
 
     isJoining.value = true
     try {
-        await post(`/api/v1/clubs/join/${club.value.id}`)
+        await post(`/clubs/join/${club.value.id}`)
         toast.success('Permintaan bergabung telah dikirim!')
         isMember.value = true
     } catch (error) {

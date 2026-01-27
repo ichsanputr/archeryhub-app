@@ -184,8 +184,6 @@ const toast = useToast()
 const searchQuery = ref('')
 const categoryFilter = ref('all')
 const sortBy = ref('newest')
-const isLoading = ref(true)
-const products = ref([])
 
 const categories = [
     { label: 'Semua', value: 'all', icon: 'ph:squares-four' },
@@ -196,19 +194,11 @@ const categories = [
     { label: 'Lainnya', value: 'other', icon: 'ph:package' },
 ]
 
-const fetchProducts = async () => {
-    isLoading.value = true
-    try {
-        const response = await get('/products')
-        products.value = response.data || []
-    } catch (error) {
-        console.error('Failed to fetch products:', error)
-        toast.error('Gagal memuat produk')
-        products.value = []
-    } finally {
-        isLoading.value = false
-    }
-}
+const { data: productResponse, pending: isLoading } = await useAsyncData('products', () => get('/products'), {
+    server: true
+})
+
+const products = computed(() => productResponse.value?.data || [])
 
 const filteredProducts = computed(() => {
     let filtered = products.value.filter(p => {
@@ -232,8 +222,6 @@ const filteredProducts = computed(() => {
 const formatPrice = (price) => {
     return new Intl.NumberFormat('id-ID').format(price)
 }
-
-onMounted(fetchProducts)
 </script>
 
 <style scoped>

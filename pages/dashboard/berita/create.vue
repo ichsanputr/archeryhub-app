@@ -211,7 +211,7 @@ const handleImageUpload = async (event) => {
     formData.append('file', file)
 
     try {
-        const response = await post('/api/v1/media/upload', formData, {
+        const response = await post('/media/upload', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -248,7 +248,7 @@ const submitNews = async () => {
             meta_description: form.value.metaDescription
         }
 
-        await post('/api/v1/news', payload)
+        await post('/news', payload)
 
         toast.success(form.value.status === 'published' ? 'Berita berhasil dipublikasikan!' : 'Draft berhasil disimpan!')
         router.push('/dashboard/berita')
