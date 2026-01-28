@@ -110,30 +110,6 @@
                         placeholder="Tulis konten berita Anda di sini..."></textarea>
                 </div>
 
-                <!-- SEO Settings -->
-                <div class="p-8 border-b border-gray-100">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-lg font-bold text-navy flex items-center gap-2">
-                            <Icon icon="ph:magnifying-glass" class="text-primary" />
-                            Pengaturan SEO
-                        </h3>
-                        <span class="text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded-full">Opsional</span>
-                    </div>
-
-                    <div class="space-y-4">
-                        <BaseInput v-model="form.metaTitle" label="Meta Title"
-                            placeholder="Judul untuk mesin pencari..." />
-                        <div>
-                            <label class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">
-                                Meta Description
-                            </label>
-                            <textarea v-model="form.metaDescription"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
-                                rows="2" placeholder="Deskripsi singkat untuk hasil pencarian..."></textarea>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Actions -->
                 <div class="p-8 bg-gray-50/50 flex items-center justify-between gap-4">
                     <NuxtLink to="/dashboard/news">

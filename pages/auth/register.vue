@@ -85,7 +85,7 @@
                                     <Icon icon="ph:user-bold" class="text-primary text-lg" />
                                     Data Pemanah
                                 </h4>
-                                <BaseInput v-model="form.fullName" label="Nama Lengkap" placeholder="Sesuai KTP"
+                                <BaseInput v-model="form.fullName" label="Nama Lengkap" placeholder="Masukkan Nama Anda"
                                     required
                                     :error="errors.fullName || (isNameTaken ? 'Nama atlet sudah terdaftar' : '')"
                                     @blur="validate('fullName', form.fullName, [rules.required()])" />
@@ -142,9 +142,9 @@
                         <div class="flex flex-col gap-2 pt-6 border-t border-gray-100">
                             <BaseCheckbox v-model="form.terms" required :error="errors.terms">
                                 Saya setuju dengan
-                                <NuxtLink class="font-bold text-navy hover:text-primary-hover" to="/terms">
+                                <NuxtLink class="font-bold underline text-navy hover:text-primary-hover" to="/terms">
                                     Syarat & Ketentuan</NuxtLink> dan
-                                <NuxtLink class="font-bold text-navy hover:text-primary-hover" to="/privacy">
+                                <NuxtLink class="font-bold underline text-navy hover:text-primary-hover" to="/privacy">
                                     Kebijakan Privasi</NuxtLink>
                             </BaseCheckbox>
                         </div>
@@ -153,8 +153,7 @@
                         <div class="pt-2">
                             <BaseButton variant="gold" block size="lg" icon="logos:google-icon"
                                 @click="handleGoogleRegister" :loading="isGoogleLoading || isValidating"
-                                :disabled="!isNameValid || !form.terms || isNameTaken || isValidating"
-                                loading-text="Menyambung ke Google...">
+                                :disabled="!isNameValid || !form.terms || isNameTaken || isValidating">
                                 Daftar dengan Google
                             </BaseButton>
                             <p class="mt-4 text-xs text-center text-gray-400">
@@ -318,9 +317,8 @@ const handleGoogleRegister = async () => {
 
     try {
         // Pass user type and captured name to Google OAuth
+        // The login function will handle redirecting to Google's OAuth page
         await login(form.value.userType, getName())
-        // Hard reload and redirect to homepage
-        window.location.href = '/'
     } catch (err) {
         console.error('Google registration failed:', err)
         let errorMessage = 'Gagal menyambung ke Google. Silakan coba lagi.'

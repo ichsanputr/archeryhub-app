@@ -12,8 +12,7 @@
         class="inline-flex items-center gap-2 font-bold text-sm px-5 py-4 border-b-2 rounded-none transition-all cursor-pointer"
         :class="activeTab === tab.value
           ? 'border-primary text-navy bg-primary/5'
-          : 'border-transparent text-gray-500 hover:text-navy hover:bg-gray-50'"
-        @click="activeTab = tab.value">
+          : 'border-transparent text-gray-500 hover:text-navy hover:bg-gray-50'" @click="activeTab = tab.value">
         <Icon :icon="tab.icon" class="mr-1 text-base" />
         <span>{{ tab.label }}</span>
       </div>
@@ -50,7 +49,7 @@
           Data Pemanah
         </h4>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <BaseInput v-model="profile.fullName" label="Nama Lengkap" placeholder="Sesuai KTP" required />
+          <BaseInput v-model="profile.fullName" label="Nama Lengkap" placeholder="Masukkan Nama Anda" required />
           <BaseInput v-model="profile.nickname" label="Nama Panggilan" placeholder="Nick" />
           <BaseInput v-model="profile.dateOfBirth" label="Tanggal Lahir" type="date" required />
           <BaseSelect v-model="profile.gender" label="Jenis Kelamin" :items="[
@@ -136,11 +135,11 @@
             Informasi Tambahan
           </h4>
           <div class="md:col-span-2">
-            <BaseTextarea v-model="profile.description" label="Deskripsi Klub" 
+            <BaseTextarea v-model="profile.description" label="Deskripsi Klub"
               placeholder="Ceritakan tentang klub Anda, sejarah, dan pencapaian..." :rows="4" />
           </div>
           <div class="md:col-span-2">
-            <BaseTextarea v-model="profile.trainingSchedule" label="Jadwal Latihan" 
+            <BaseTextarea v-model="profile.trainingSchedule" label="Jadwal Latihan"
               placeholder="Contoh: Senin & Rabu: 16:00 - 18:00, Sabtu: 08:00 - 11:00" :rows="3" />
           </div>
         </div>

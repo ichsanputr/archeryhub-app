@@ -81,7 +81,7 @@
                                     <div v-else class="w-full h-full flex items-center justify-center bg-gray-50">
                                         <span class="text-2xl font-black text-navy">{{ archer.full_name?.charAt(0) ||
                                             'A'
-                                            }}</span>
+                                        }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -121,7 +121,7 @@
                                 </div>
                                 <span class="text-xs font-black text-navy truncate capitalize">{{ archer.bow_type ||
                                     'Recurve'
-                                }}</span>
+                                    }}</span>
                             </div>
                         </div>
                         <div class="bg-gray-50/50 rounded-2xl p-3 border border-gray-50 transition-all">
@@ -150,7 +150,7 @@
                                 class="w-full h-full object-cover" />
                             <div v-else class="w-full h-full flex items-center justify-center">
                                 <span class="text-2xl font-black text-navy">{{ archer.full_name?.charAt(0) || 'A'
-                                }}</span>
+                                    }}</span>
                             </div>
                         </div>
                         <div class="flex-1 min-w-0">
@@ -204,10 +204,11 @@ const { get } = useApi()
 const route = useRoute()
 const router = useRouter()
 
+// Initialize from URL query params
+const currentPage = ref(Number(route.query.page) || 1)
 const searchQuery = ref('')
 const activeBowType = ref('all')
 const viewMode = ref('grid')
-const currentPage = ref(Number(route.query.page) || 1)
 const pageSize = ref(12)
 
 const bowTypes = [
@@ -271,7 +272,7 @@ const { data: archerResponse, pending: isLoading } = await useAsyncData('archers
     }
 }), {
     watch: [searchQuery, activeBowType, currentPage],
-    server: true
+    server: false
 })
 
 // Update URL when page changes

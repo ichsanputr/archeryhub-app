@@ -71,17 +71,15 @@
                                                     class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors group">
                                                     <div
                                                         class="w-10 h-10 rounded-lg bg-gray-100 overflow-hidden flex-shrink-0">
-                                                        <img :src="event.image"
-                                                            class="w-full h-full object-cover" />
+                                                        <img :src="event.image" class="w-full h-full object-cover" />
                                                     </div>
                                                     <div class="flex-1 min-w-0">
                                                         <span
                                                             class="block text-navy font-semibold text-sm group-hover:text-primary transition-colors truncate">
                                                             {{ event.name }}
                                                         </span>
-                                                        <span
-                                                            class="block text-gray-400 text-[10px] font-medium">{{
-                                                                event.location }} • {{ event.date }}</span>
+                                                        <span class="block text-gray-400 text-[10px] font-medium">{{
+                                                            event.location }} • {{ event.date }}</span>
                                                     </div>
                                                 </NuxtLink>
                                             </div>
@@ -103,7 +101,8 @@
                         :class="[navLinkClasses, { 'bg-primary text-black': isActive('/news') }]">Berita</NuxtLink>
                     <NuxtLink to="/products"
                         class="font-black text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
-                        :class="[navLinkClasses, { 'bg-primary text-black': isActive('/products') }]">Marketplace</NuxtLink>
+                        :class="[navLinkClasses, { 'bg-primary text-black': isActive('/products') }]">Marketplace
+                    </NuxtLink>
                 </nav>
 
                 <!-- Desktop Auth Buttons -->

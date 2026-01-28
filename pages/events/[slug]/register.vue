@@ -175,10 +175,12 @@
                             <div class="p-6">
                                 <div class="flex items-center gap-5 mb-6 pb-6 border-b border-gray-100">
                                     <div
-                                        class="h-20 w-20 rounded-2xl bg-gradient-to-br from-navy to-navy-light flex items-center justify-center text-primary font-black text-2xl shrink-0 overflow-hidden border-2 border-white">
+                                        class="h-20 w-20 rounded-2xl bg-gradient-to-br from-navy to-navy-light flex items-center justify-center text-primary font-black text-2xl shrink-0 overflow-hidden border-2 border-white shadow-lg">
                                         <img v-if="archerProfile?.avatar_url" :src="archerProfile.avatar_url"
-                                            :alt="archerProfile.full_name" class="w-full h-full object-cover" />
-                                        <span v-else>{{ getInitials(archerProfile?.full_name || user.name) }}</span>
+                                            :alt="archerProfile?.full_name || user.name"
+                                            class="w-full h-full object-cover" />
+                                        <span v-else class="text-white">{{ getInitials(archerProfile?.full_name ||
+                                            user.name) }}</span>
                                     </div>
                                     <div class="flex-1 min-w-0">
                                         <h3 class="text-xl font-black text-navy mb-1">{{ archerProfile?.full_name ||
@@ -210,7 +212,7 @@
                                         <p class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">
                                             Pengalaman</p>
                                         <p class="text-sm font-bold text-navy">{{ archerProfile?.experience_years || 0
-                                            }} Tahun</p>
+                                        }} Tahun</p>
                                     </div>
                                     <div
                                         class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100 col-span-2">
@@ -464,9 +466,8 @@ const handleProofUpload = async (event) => {
         formData.append('file', file)
 
         try {
-            const response = await post('/media/upload', formData, {
-                headers: { 'Content-Type': 'multipart/form-data' }
-            })
+            // Don't set Content-Type header - axios will set it automatically with boundary for FormData
+            const response = await post('/media/upload', formData)
 
             // Find and update preview
             const idx = paymentPreviews.value.findIndex(p => p.id === previewId)
