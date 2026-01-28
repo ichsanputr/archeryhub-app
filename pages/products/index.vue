@@ -84,7 +84,7 @@
             </div>
             <div v-else class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
                 <NuxtLink v-for="product in filteredProducts" :key="product.id"
-                    :to="`/shop/${product.slug || product.id}`"
+                    :to="`/products/${product.slug || product.id}`"
                     class="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-sm hover:border-primary/30 transition-all group cursor-pointer block">
 
                     <!-- Product Image -->

@@ -2,7 +2,7 @@
     <div class="min-h-screen bg-gray-50">
         <!-- Back Button -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 mb-6">
-            <NuxtLink to="/archer"
+            <NuxtLink to="/archers"
                 class="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-xl border border-gray-200 text-navy hover:bg-gray-50 transition-all shadow-sm">
                 <Icon icon="ph:arrow-left-bold" />
                 <span class="text-sm font-bold">Kembali ke Daftar Pemanah</span>
@@ -214,7 +214,7 @@
                             </div>
                             <div v-if="archer.club_name || archer.club">
                                 <p class="text-xs text-gray-400 font-bold uppercase mb-1">Klub</p>
-                                <NuxtLink v-if="archer.club_slug" :to="`/klub/${archer.club_slug}`"
+                                <NuxtLink v-if="archer.club_slug" :to="`/clubs/${archer.club_slug}`"
                                     class="text-primary hover:underline font-bold">
                                     {{ archer.club_name || archer.club }}
                                 </NuxtLink>

@@ -6,7 +6,7 @@
                 <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
                     <NuxtLink to="/dashboard" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <NuxtLink to="/dashboard/berita" class="hover:text-primary transition-colors">Berita</NuxtLink>
+                    <NuxtLink to="/dashboard/news" class="hover:text-primary transition-colors">Berita</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
                     <span class="text-navy">Buat Baru</span>
                 </div>
@@ -135,7 +135,7 @@
 
                 <!-- Actions -->
                 <div class="p-8 bg-gray-50/50 flex items-center justify-between gap-4">
-                    <NuxtLink to="/dashboard/berita">
+                    <NuxtLink to="/dashboard/news">
                         <BaseButton variant="white" icon="ph:arrow-left">
                             Kembali
                         </BaseButton>
@@ -251,7 +251,7 @@ const submitNews = async () => {
         await post('/news', payload)
 
         toast.success(form.value.status === 'published' ? 'Berita berhasil dipublikasikan!' : 'Draft berhasil disimpan!')
-        router.push('/dashboard/berita')
+        router.push('/dashboard/news')
     } catch (error) {
         toast.error('Gagal menyimpan berita')
     } finally {

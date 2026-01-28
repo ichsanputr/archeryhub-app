@@ -3,8 +3,13 @@
         <!-- Header -->
         <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
             <div class="space-y-1">
-                <div v-if="isLoading" class="h-10 w-64 bg-gray-100 animate-pulse rounded-lg"></div>
+                <NuxtLink :to="`/dashboard/events/${route.params.id}`"
+                    class="text-sm text-gray-500 hover:text-navy flex items-center gap-1 mb-2 transition-colors">
+                    <Icon icon="ph:arrow-left" class="text-lg" />
+                    Kembali ke Dashboard
+                </NuxtLink>
                 <h1 class="text-3xl font-black text-navy tracking-tight">Manajemen Bagan Eliminasi</h1>
+                <p class="text-gray-500 text-sm">Kelola dan lihat bagan eliminasi untuk event ini.</p>
             </div>
             <div class="flex gap-3">
                 <BaseButton variant="white" icon="ph:printer" class="h-11 px-5 border-gray-200">Cetak Bagan</BaseButton>

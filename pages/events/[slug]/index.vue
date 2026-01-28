@@ -1,7 +1,7 @@
 <template>
     <div class="min-h-screen bg-background-light font-body text-navy">
         <!-- Hero Header -->
-        <div class="bg-navy relative overflow-hidden h-[400px] md:h-[500px] flex items-center">
+        <div class="bg-navy relative overflow-hidden h-[400px] flex items-center">
             <div class="absolute inset-0 z-0">
                 <img :alt="tournament.name" class="w-full h-full object-cover object-center" :src="tournament.image" />
                 <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
@@ -24,11 +24,11 @@
                         <div class="flex flex-wrap items-center gap-6 text-white/80 text-base">
                             <div class="flex items-center gap-2">
                                 <Icon icon="ph:calendar-blank" class="text-primary" />
-                                <span>{{ tournament.date }}</span>
+                                <span>{{ displayValue(tournament.date) }}</span>
                             </div>
                             <div class="flex items-center gap-2">
                                 <Icon icon="ph:map-pin" class="text-primary" />
-                                <span>{{ tournament.location }}</span>
+                                <span>{{ displayValue(tournament.location) }}</span>
                                 <a v-if="tournament.gmaps_link" :href="tournament.gmaps_link" target="_blank"
                                     class="text-xs text-primary hover:underline flex items-center gap-1 ml-2 font-bold">
                                     (Lihat di Peta)
@@ -62,56 +62,51 @@
                 <div :class="activeTab === 'Hasil' ? 'space-y-10' : 'lg:col-span-2 space-y-10'">
                     <div v-if="activeTab === 'Ringkasan'" class="space-y-8">
                         <!-- About Section -->
-                        <section class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
-                            <h2 class="text-xl font-bold text-navy mb-6 flex items-center gap-2">
-                                <span class="material-symbols-outlined text-primary">info</span>
+                        <section v-if="tournament.page_settings?.sections?.about !== false"
+                            class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
+                            <h2 class="text-lg sm:text-xl font-bold text-navy mb-6 flex items-center gap-2">
+                                <Icon icon="ph:info" class="text-primary" />
                                 Tentang Event
                             </h2>
                             <div class="prose max-w-none text-gray-600 leading-relaxed space-y-4">
-                                <p>
-                                    <strong>{{ tournament.name }}</strong> adalah salah satu event panahan terkemuka
-                                    tahun
-                                    ini,
-                                    mengumpulkan talenta-talenta terbaik dari seluruh nusantara dan negara-negara
-                                    tetangga.
-                                    Diselenggarakan di {{ tournament.venue }} yang bergengsi, acara ini berfungsi
-                                    sebagai
-                                    babak kualifikasi
-                                    untuk Asian Archery Cup yang akan datang.
-                                </p>
-                                <p>
-                                    Peserta akan berkompetisi dalam kondisi kelas dunia yang mengikuti standar World
-                                    Archery.
-                                    Tahun ini, kami memperkenalkan format tim campuran baru untuk divisi Compound,
-                                    menjanjikan pertandingan yang lebih seru dan menegangkan.
-                                </p>
-                                <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 mt-6">
+                                <div v-if="tournament.description" class="whitespace-pre-line">
+                                    {{ tournament.description }}
+                                </div>
+                                <div v-else class="italic text-gray-400">
+                                    Belum ada deskripsi untuk event ini.
+                                </div>
+
+                                <div v-if="tournament.technical_guidebook_url"
+                                    class="bg-blue-50 p-4 rounded-xl border border-blue-100 mt-6">
                                     <h4 class="font-bold text-navy mb-2">Buku Panduan Teknis</h4>
-                                    <p class="text-sm text-gray-600 mb-3">Unduh buku panduan teknis lengkap
-                                        yang berisi peraturan, regulasi, dan jadwal detail.</p>
-                                    <button
+                                    <p class="text-sm text-gray-600 mb-3">Unduh buku panduan teknis lengkap yang berisi
+                                        peraturan, regulasi, dan jadwal detail.</p>
+                                    <a :href="tournament.technical_guidebook_url" target="_blank"
                                         class="text-navy font-bold text-sm hover:underline inline-flex items-center gap-1">
-                                        Unduh PDF <span class="material-symbols-outlined text-lg">download</span>
-                                    </button>
+                                        Unduh PDF
+                                        <Icon icon="ph:download-simple" class="text-lg" />
+                                    </a>
                                 </div>
                             </div>
                         </section>
 
                         <!-- Divisions Section -->
-                        <section class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
+                        <section
+                            v-if="tournament.page_settings?.sections?.divisions !== false && divisionsData.length > 0"
+                            class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
                             <div class="flex items-center justify-between mb-6">
-                                <h2 class="text-xl font-bold text-navy flex items-center gap-2">
-                                    <span class="material-symbols-outlined text-primary">category</span>
+                                <h2 class="text-lg sm:text-xl font-bold text-navy flex items-center gap-2">
+                                    <Icon icon="ph:strategy" class="text-primary" />
                                     Divisi Kompetisi
                                 </h2>
-                                <div class="hidden md:flex items-center gap-2">
+                                <div class="hidden md:flex items-center gap-2" v-if="divisionsData.length > 3">
                                     <button @click="scroll('left')"
                                         class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-navy hover:border-primary hover:text-primary transition-all">
-                                        <span class="material-symbols-outlined">chevron_left</span>
+                                        <Icon icon="ph:caret-left" />
                                     </button>
                                     <button @click="scroll('right')"
                                         class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-navy hover:border-primary hover:text-primary transition-all">
-                                        <span class="material-symbols-outlined">chevron_right</span>
+                                        <Icon icon="ph:caret-right" />
                                     </button>
                                 </div>
                             </div>
@@ -119,16 +114,13 @@
                             <div class="relative">
                                 <div ref="scrollContainer"
                                     class="flex gap-6 overflow-x-auto no-scrollbar scroll-smooth pb-4 -mx-1 px-1">
-                                    <div v-for="division in divisions" :key="division.name"
+                                    <div v-for="division in divisionsData" :key="division.name"
                                         class="min-w-[280px] md:min-w-[320px] group border border-gray-200 rounded-xl p-5 hover:border-primary transition-colors bg-white">
                                         <div class="flex items-center justify-between mb-4">
                                             <div
                                                 class="w-12 h-12 bg-navy/5 rounded-lg flex items-center justify-center text-navy">
-                                                <span class="material-symbols-outlined text-3xl">{{ division.icon
-                                                }}</span>
+                                                <Icon :icon="`ph:${division.icon}`" class="text-3xl" />
                                             </div>
-                                            <span class="bg-navy text-white text-xs font-bold px-2 py-1 rounded">{{
-                                                division.distance }}</span>
                                         </div>
                                         <h3 class="font-bold text-navy mb-3">{{ division.name }}</h3>
                                         <div class="flex flex-wrap gap-2">
@@ -143,9 +135,10 @@
                         </section>
 
                         <!-- Registration Fees Section -->
-                        <section class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
-                            <h2 class="text-xl font-bold text-navy mb-6 flex items-center gap-2">
-                                <span class="material-symbols-outlined text-primary">payments</span>
+                        <section v-if="tournament.page_settings?.sections?.fees !== false"
+                            class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
+                            <h2 class="text-lg sm:text-xl font-bold text-navy mb-6 flex items-center gap-2">
+                                <Icon icon="ph:payments" class="text-primary" />
                                 Biaya Pendaftaran
                             </h2>
                             <div v-if="tournament.fees && tournament.fees.length > 0"
@@ -156,13 +149,13 @@
                                         <div
                                             class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm">
                                             <Icon
-                                                :icon="fee.name.toLowerCase().includes('tim') ? 'ph:users-three-bold' : 'ph:user-bold'"
+                                                :icon="fee.name?.toLowerCase().includes('tim') ? 'ph:users-three-bold' : 'ph:user-bold'"
                                                 class="text-2xl text-primary" />
                                         </div>
-                                        <span class="font-bold text-navy">{{ fee.name }}</span>
+                                        <span class="font-bold text-navy">{{ displayValue(fee.name) }}</span>
                                     </div>
                                     <div class="text-3xl font-black text-navy mb-1">IDR {{
-                                        fee.amount.toLocaleString('id-ID') }}</div>
+                                        (fee.amount || 0).toLocaleString('id-ID') }}</div>
                                     <p v-if="fee.description" class="text-xs text-gray-500 font-medium">{{
                                         fee.description }}</p>
                                 </div>
@@ -177,30 +170,21 @@
                                         </div>
                                         <span class="font-bold text-navy">Individu</span>
                                     </div>
-                                    <div class="text-3xl font-black text-navy mb-1">IDR 350.000</div>
+                                    <div class="text-3xl font-black text-navy mb-1">IDR {{ (tournament.entry_fee ||
+                                        0).toLocaleString('id-ID') }}</div>
                                     <p class="text-xs text-gray-500 font-medium">Per peserta per divisi</p>
-                                </div>
-                                <div class="bg-gray-50 rounded-xl p-6 border border-gray-100">
-                                    <div class="flex items-center gap-3 mb-4">
-                                        <div
-                                            class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm">
-                                            <Icon icon="ph:users-three-bold" class="text-2xl text-primary" />
-                                        </div>
-                                        <span class="font-bold text-navy">Tim / Beregu</span>
-                                    </div>
-                                    <div class="text-3xl font-black text-navy mb-1">IDR 500.000</div>
-                                    <p class="text-xs text-gray-500 font-medium">Per tim per kategori</p>
                                 </div>
                             </div>
                         </section>
 
-                        <section
+                        <section v-if="tournament.page_settings?.sections?.prizes !== false"
                             class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 relative overflow-hidden">
                             <div
                                 class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2">
                             </div>
-                            <h2 class="text-xl font-bold text-navy mb-1 flex items-center gap-2 relative z-10">
-                                <span class="material-symbols-outlined text-primary">emoji_events</span>
+                            <h2
+                                class="text-lg sm:text-xl font-bold text-navy mb-1 flex items-center gap-2 relative z-10">
+                                <Icon icon="ph:trophy" class="text-primary" />
                                 Total Hadiah
                             </h2>
                             <p v-if="tournament.total_prize" class="text-gray-500 text-sm mb-6 relative z-10">
@@ -213,7 +197,8 @@
                                     <div class="text-4xl mb-2">🥇</div>
                                     <div class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Juara 1
                                     </div>
-                                    <div class="text-2xl font-black text-navy">IDR 15.000.000</div>
+                                    <div class="text-2xl font-black text-navy">{{ displayValue(tournament.prizes?.first)
+                                    }}</div>
                                     <div class="text-xs text-gray-400 mt-2">+ Medali Emas & Sertifikat</div>
                                 </div>
                                 <div
@@ -221,7 +206,8 @@
                                     <div class="text-4xl mb-2">🥈</div>
                                     <div class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Juara 2
                                     </div>
-                                    <div class="text-2xl font-black text-navy">IDR 10.000.000</div>
+                                    <div class="text-2xl font-black text-navy">{{
+                                        displayValue(tournament.prizes?.second) }}</div>
                                     <div class="text-xs text-gray-400 mt-2">+ Medali Perak & Sertifikat</div>
                                 </div>
                                 <div
@@ -229,7 +215,8 @@
                                     <div class="text-4xl mb-2">🥉</div>
                                     <div class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Juara 3
                                     </div>
-                                    <div class="text-2xl font-black text-navy">IDR 7.500.000</div>
+                                    <div class="text-2xl font-black text-navy">{{ displayValue(tournament.prizes?.third)
+                                    }}</div>
                                     <div class="text-xs text-gray-400 mt-2">+ Medali Perunggu & Sertifikat</div>
                                 </div>
                             </div>
@@ -265,10 +252,14 @@
                         <div class="space-y-4 mb-6">
                             <div class="flex justify-between items-center text-sm pb-1">
                                 <span class="text-gray-500">Slot Tersedia</span>
-                                <span class="font-bold text-primary">45 / 200 Tersisa</span>
+                                <span class="font-bold text-primary">{{ tournament.max_participants -
+                                    (tournament.participant_count || 0) }} / {{ tournament.max_participants }}
+                                    Tersisa</span>
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="bg-primary h-2 rounded-full" style="width: 77%"></div>
+                                <div class="bg-primary h-2 rounded-full"
+                                    :style="{ width: `${((tournament.participant_count || 0) / (tournament.max_participants || 1)) * 100}%` }">
+                                </div>
                             </div>
                         </div>
                         <!-- Auth-aware registration CTA: Only show for non-logged-in or logged-in archers -->
@@ -339,7 +330,8 @@
                     </div>
 
                     <!-- Map Card -->
-                    <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+                    <div v-if="tournament.page_settings?.sections?.location !== false"
+                        class="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100">
                         <div class="h-48 w-full bg-gray-100 relative group">
                             <iframe v-if="gmapsEmbedUrl" :src="gmapsEmbedUrl" width="100%" height="100%"
                                 style="border:0;" allowfullscreen="" loading="lazy"
@@ -350,8 +342,8 @@
                             </div>
                         </div>
                         <div class="p-5">
-                            <h3 class="font-bold text-navy mb-1">{{ tournament.venue }}</h3>
-                            <p class="text-sm text-gray-500">{{ tournament.address }}</p>
+                            <h3 class="font-bold text-navy mb-1">{{ displayValue(tournament.venue) }}</h3>
+                            <p class="text-sm text-gray-500">{{ displayValue(tournament.address) }}</p>
                         </div>
                     </div>
 
@@ -393,11 +385,11 @@ import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
-import { useApi } from '~/composables/useApi'
 import { definePageMeta, useSeoMeta } from '#imports'
 
 const route = useRoute()
 const slug = route.params.slug
+const config = useRuntimeConfig()
 
 // Auth state
 const { user, isLoggedIn } = useAuth()
@@ -407,10 +399,19 @@ const isArcher = computed(() => user.value?.type === 'archer' || user.value?.rol
 const loginUrl = computed(() => `/auth/login?redirect=${encodeURIComponent(`/events/${slug}`)}`)
 const registerUrl = computed(() => `/events/${slug}/register`)
 
-const { get } = useApi()
-const isLoading = ref(true)
+const isLoading = ref(false)
 
-const tabs = ['Ringkasan', 'Jadwal Lomba', 'Peserta', 'Hasil', 'Lokasi']
+const tabs = computed(() => {
+    const list = ['Ringkasan']
+    if (tournament.value.page_settings?.sections?.schedule !== false) {
+        list.push('Jadwal Lomba')
+    }
+    list.push('Peserta', 'Hasil')
+    if (tournament.value.page_settings?.sections?.location !== false) {
+        list.push('Lokasi')
+    }
+    return list
+})
 const activeTab = ref('Ringkasan')
 const scrollContainer = ref(null)
 
@@ -435,16 +436,19 @@ watch(() => route.query.tab, (newTab) => {
 
 // Fallback data
 const fallbackTournament = {
-    name: 'Indonesian Open Championship 2024',
-    date: 'Nov 12 - 15, 2024',
-    location: 'GBK Archery Field, Jakarta',
-    venue: 'GBK Archery Field',
-    gmaps_link: 'https://maps.app.goo.gl/9b1H5y8oVQ...',
-    address: 'Jl. Pintu Satu Senayan, Gelora, Tanah Abang, Jakarta Pusat',
-    status: 'upcoming',
-    category: 'National Series',
+    name: '',
     organizer: 'Perpani DKI Jakarta',
-    image: '/hero-event-detail.jpeg'
+    image: '/hero-event-detail.jpeg',
+    page_settings: {
+        sections: {
+            about: true,
+            divisions: true,
+            fees: true,
+            prizes: true,
+            schedule: true,
+            location: true
+        }
+    }
 }
 
 const tournament = ref(fallbackTournament)
@@ -468,7 +472,20 @@ const transformEventData = (data) => ({
     thumbnail: data.logo_url || data.thumbnail || null,
     fees: data.fees || [],
     description: data.description || '',
-    total_prize: data.total_prize || 0
+    total_prize: data.total_prize || 0,
+    technical_guidebook_url: data.technical_guidebook_url || null,
+    max_participants: data.max_participants || 0,
+    page_settings: data.page_settings ? JSON.parse(data.page_settings) : {
+        sections: {
+            about: true,
+            divisions: true,
+            fees: true,
+            prizes: true,
+            schedule: true,
+            location: true
+        }
+    },
+    prizes: data.page_settings ? (JSON.parse(data.page_settings).prizes || { first: '-', second: '-', third: '-' }) : { first: '-', second: '-', third: '-' }
 })
 
 // Google Maps embed URL
@@ -497,12 +514,20 @@ const gmapsEmbedUrl = computed(() => {
     }
 })
 
+const divisionsData = ref([])
+
 const fetchTournament = async () => {
     isLoading.value = true
     try {
-        const response = await get(`/events/${slug}`)
+        const response = await $fetch(`${config.public.apiBaseUrl}/events/${slug}`)
         if (response) {
             tournament.value = transformEventData(response.data || response)
+        }
+
+        // Fetch categories/divisions
+        const categoriesRes = await $fetch(`${config.public.apiBaseUrl}/events/${slug}/categories`)
+        if (categoriesRes && categoriesRes.events) {
+            divisionsData.value = processDivisions(categoriesRes.events)
         }
     } catch (error) {
         console.error('Failed to fetch event:', error)
@@ -510,6 +535,39 @@ const fetchTournament = async () => {
     } finally {
         isLoading.value = false
     }
+}
+
+const processDivisions = (events) => {
+    const grouped = {}
+    events.forEach(e => {
+        if (!grouped[e.division_name]) {
+            grouped[e.division_name] = {
+                name: e.division_name,
+                categories: new Set()
+            }
+        }
+        grouped[e.division_name].categories.add(e.category_name)
+    })
+
+    return Object.values(grouped).map(d => ({
+        name: d.name,
+        categories: Array.from(d.categories),
+        icon: getDivisionIcon(d.name)
+    }))
+}
+
+const getDivisionIcon = (name) => {
+    const lower = (name || '').toLowerCase()
+    if (lower.includes('recurve')) return 'adjust'
+    if (lower.includes('compound')) return 'gps_fixed'
+    if (lower.includes('barebow')) return 'radar'
+    if (lower.includes('nasional')) return 'flag'
+    return 'category'
+}
+
+const displayValue = (value) => {
+    if (value === null || value === undefined || value === '') return '-'
+    return value
 }
 
 const divisions = [
@@ -520,9 +578,34 @@ const divisions = [
     { name: 'Traditional', icon: 'history_edu', distance: '30m', categories: ["Umum Putra", "Umum Putri"] },
 ]
 
-onMounted(() => {
-    fetchTournament()
-})
+// SSR: Fetch event data with useAsyncData
+const { data: eventData, error: eventError } = await useAsyncData(
+    `event-${slug}`,
+    async () => {
+        const [eventRes, categoriesRes] = await Promise.all([
+            $fetch(`${config.public.apiBaseUrl}/events/${slug}`),
+            $fetch(`${config.public.apiBaseUrl}/events/${slug}/categories`).catch(() => null)
+        ])
+        return { event: eventRes, categories: categoriesRes }
+    }
+)
+
+// Initialize data from SSR response
+if (eventData.value?.event) {
+    tournament.value = transformEventData(eventData.value.event.data || eventData.value.event)
+}
+if (eventData.value?.categories?.events) {
+    divisionsData.value = processDivisions(eventData.value.categories.events)
+}
+
+// Throw 404 if event not found
+if (eventError.value || !eventData.value?.event || !tournament.value.name) {
+    throw createError({
+        statusCode: 404,
+        statusMessage: 'Event tidak ditemukan',
+        fatal: true
+    })
+}
 
 definePageMeta({
     layout: 'landing'

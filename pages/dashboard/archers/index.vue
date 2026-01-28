@@ -6,7 +6,7 @@
         <h1 class="text-3xl font-black text-navy font-display">Manajemen Atlet</h1>
         <p class="text-text-secondary mt-1 font-medium">Kelola semua atlet yang terdaftar di Archeryhub.id</p>
       </div>
-      <BaseButton variant="primary" icon="ph:user-plus" @click="$router.push('/dashboard/athletes/create')">
+      <BaseButton variant="primary" icon="ph:user-plus" @click="$router.push('/dashboard/archers/create')">
         Tambah Atlet Baru
       </BaseButton>
     </div>
@@ -106,7 +106,7 @@
               <td class="table-cell text-right">
                 <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   <BaseButton variant="ghost" size="sm" icon="ph:user" class="!p-1.5"
-                    @click="$router.push(`/dashboard/athletes/${athlete.id}`)" />
+                    @click="$router.push(`/dashboard/archers/${athlete.id}`)" />
                   <BaseButton variant="ghost" size="sm" icon="ph:pencil-simple"
                     class="!p-1.5 text-navy hover:text-primary" />
                   <BaseButton variant="ghost" size="sm" icon="ph:prohibit"
@@ -177,7 +177,7 @@ const fetchData = async () => {
   try {
     const status = activeTab.value === 'all' ? '' : activeTab.value
     const offset = (currentPage.value - 1) * itemsPerPage
-    const response = await get(`/athletes?search=${encodeURIComponent(searchQuery.value)}&status=${status}&limit=${itemsPerPage}&offset=${offset}`)
+    const response = await get(`/archers?search=${encodeURIComponent(searchQuery.value)}&status=${status}&limit=${itemsPerPage}&offset=${offset}`)
 
     if (response && response.athletes) {
       athletes.value = response.athletes

@@ -61,7 +61,7 @@
                 <!-- Articles Grid -->
                 <div class="lg:col-span-8">
                     <!-- Featured Article -->
-                    <NuxtLink v-if="featuredArticle" :to="`/berita/${featuredArticle.slug || featuredArticle.id}`"
+                    <NuxtLink v-if="featuredArticle" :to="`/news/${featuredArticle.slug || featuredArticle.id}`"
                         class="block group mb-10">
                         <div class="relative rounded-2xl overflow-hidden aspect-video bg-gray-200 shadow-xl">
                             <img :src="useImageOrDefault(featuredArticle.image || featuredArticle.image_url)"
@@ -95,7 +95,7 @@
                     <!-- Articles List -->
                     <div class="space-y-6">
                         <NuxtLink v-for="article in filteredArticles" :key="article.id"
-                            :to="`/berita/${article.slug || article.id}`"
+                            :to="`/news/${article.slug || article.id}`"
                             class="group flex gap-5 bg-white rounded-xl border border-gray-100 p-4 hover:border-primary/30 transition-all">
 
                             <!-- Thumbnail -->
@@ -159,7 +159,7 @@
                         </h3>
                         <div class="space-y-5">
                             <NuxtLink v-for="(article, index) in popularArticles" :key="article.id"
-                                :to="`/berita/${article.slug || article.id}`" class="group flex gap-4 items-start">
+                                :to="`/news/${article.slug || article.id}`" class="group flex gap-4 items-start">
                                 <div
                                     class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary font-black text-sm flex-shrink-0">
                                     {{ index + 1 }}
@@ -231,15 +231,14 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { useToast } from '~/composables/useToast'
-import { useApi } from '~/composables/useApi'
 
 definePageMeta({
     layout: 'landing'
 })
 
-const { get } = useApi()
+const config = useRuntimeConfig()
 const toast = useToast()
 const searchQuery = ref('')
 const activeCategory = ref('all')
@@ -255,9 +254,10 @@ const categories = [
     { label: 'Tips & Tutorial', value: 'tips' },
 ]
 
-const { data: newsResponse, pending: isLoading } = await useAsyncData('news', () => get('/news'), {
-    server: true
-})
+const { data: newsResponse, pending: isLoading } = await useAsyncData('news', () =>
+    $fetch(`${config.public.apiBaseUrl}/news`),
+    { server: true }
+)
 
 const articles = computed(() => {
     const rawData = newsResponse.value?.data || newsResponse.value || []

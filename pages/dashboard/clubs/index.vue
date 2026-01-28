@@ -65,7 +65,7 @@
                                 <Icon icon="ph:sketch-logo" class="text-primary" />
                                 Klub Pilihan
                             </h3>
-                            <p class="text-white/40 text-xs mb-6">Klub dengan rating tertinggi bulan ini</p>
+                            <p class="text-white/40 text-xs mb-6">Klub populer bulan ini</p>
                             <div class="space-y-4">
                                 <div v-for="featured in featuredClubs" :key="featured.name"
                                     class="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/10 hover:bg-white/15 transition-colors cursor-pointer group">
@@ -84,10 +84,7 @@
                                             :class="featured.level === 'Pro' ? 'bg-primary text-navy' : 'bg-white/20 text-white'"
                                             class="text-[10px] font-bold px-2 py-0.5 rounded">{{ featured.level
                                             }}</span>
-                                        <span class="text-white/60 text-xs flex items-center gap-1">
-                                            <Icon icon="ph:seal-check-fill" class="text-primary" />
-                                            Terverifikasi
-                                        </span>
+                                        <span class="text-white/60 text-xs">{{ featured.members }} anggota</span>
                                     </div>
                                 </div>
                             </div>
@@ -114,12 +111,6 @@
                     <div v-if="filteredClubs.length > 0" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                         <div v-for="club in filteredClubs" :key="club.id"
                             class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 hover:shadow-lg transition-all duration-300 flex flex-col relative group">
-                            <div v-if="club.verified" class="absolute top-4 right-4 z-10">
-                                <div
-                                    class="bg-blue-50 text-blue-600 border border-blue-100 px-2 py-1 rounded-md text-[10px] font-bold uppercase flex items-center gap-1">
-                                    <Icon icon="ph:seal-check-fill" class="text-[12px]" /> Terverifikasi
-                                </div>
-                            </div>
                             <div class="flex items-start gap-4 mb-4">
                                 <div
                                     class="w-16 h-16 rounded-xl overflow-hidden shadow-sm border border-gray-100 flex-shrink-0">
@@ -184,7 +175,6 @@ const clubs = [
         province: 'DKI Jakarta',
         members: 128,
         level: 'Pro',
-        verified: true,
         logo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDQStrrmLQN-DtqrTO5KWNF3EvwOXSw-raemHMh-lxMUVAtHiqxHNMqzQoV2l1ReELlRe_dVIAkp1P8Bc8ekRqbhOn-axS6izTQXKw3d70pq-CpZHWUZoS58mGL70U_Bk96ViNRcaOaGr5wIkPrtg8w46mzrAtHgWRH6VKAUalmkrFJ8qjDltkmd-nHJs4aUfrBBphZSnivwOkhoIjzG8dpjeCtp_UOZTOnovXJP7IAWJEeWqw7Uh7-mlLVkorgyeOsSRun6CmO_8I'
     },
     {
@@ -194,7 +184,6 @@ const clubs = [
         province: 'Jawa Barat',
         members: 85,
         level: 'Community',
-        verified: false,
         logo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCEyoMyPhTl7-9oRbs8Fqz1YZxEwczL3vvrIpNzNHGImIhte8_MRqCsmxPDpeo-GMFv4xD1UFE7CzQuZjLAaeTEFSwwGpLM5Fuuji1ri-DclVPd3XjaiZbP_HVCmNxUF4N4RvPt5eunD3D7XJwRXiE80p0b-XDjG79vpkghLPtwWffcqE__kLuIxrZg_xFXL5tPcnF3V-v_UjBTeSP3GZHOFSZ132JQ3wm91uitNtsctbagveyUjYxxYgEumBV7_uYhaBtTeHfBlCs'
     },
     {
@@ -204,17 +193,17 @@ const clubs = [
         province: 'DIY',
         members: 210,
         level: 'Pro',
-        verified: true,
         logo: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCq8OlQbcxO7uY4gwKVt6JygaktR4FjGZfJwbWiOyDIXqXr0bCnQIn3f-5m63myglDTGxdrpDHrFX2wVGOC7C8INtL7td4RDrpYhrJi0qjxPG7jixXi-Cw0fJQfRMda9sgJhfzCsFLmMhX9mvC6_gNAo5OF_MDtU5ukfm3hvRqWuHC0pbxNqSd0uWfIxLjxHXmyDnRtFg9VIz-XC2tCuvSusJKEFLjs57_DO7_uOGurALxGKsxcgIJmc_0gHV72A6BGvhiStIpWr3o'
     }
 ]
 
 const featuredClubs = computed(() => {
-    return clubs.filter(c => c.verified).slice(0, 3).map(c => ({
+    return clubs.slice(0, 3).map(c => ({
         name: c.name,
         location: c.city,
         level: c.level,
-        logo: c.logo
+        logo: c.logo,
+        members: c.members
     }))
 })
 

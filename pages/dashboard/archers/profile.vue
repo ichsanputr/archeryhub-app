@@ -487,7 +487,7 @@ const saveProfile = async () => {
 
 const previewProfile = () => {
   if (user.value?.slug) {
-    window.open(`/archer/${user.value.slug}`, '_blank')
+    window.open(`/archers/${user.value.slug}`, '_blank')
   } else {
     toast.warning('Slug profil belum diatur. Silakan simpan profil terlebih dahulu.')
   }

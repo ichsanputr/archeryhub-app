@@ -7,7 +7,7 @@
 
             <!-- Back Button -->
             <div class="container mx-auto px-4 max-w-6xl relative h-full">
-                <NuxtLink to="/klub"
+                <NuxtLink to="/clubs"
                     class="absolute top-6 left-4 z-20 flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-white hover:bg-white/20 transition-all">
                     <Icon icon="ph:arrow-left-bold" />
                     <span class="text-sm font-bold">Kembali</span>
@@ -186,60 +186,59 @@
                             Kontak
                         </h3>
                         <div class="space-y-4">
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center">
-                                    <Icon icon="ph:phone-fill" class="text-xl text-blue-500" />
+                            <div v-if="club.phone" class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
+                                    <Icon icon="ph:phone-fill" class="text-lg text-gray-600" />
                                 </div>
                                 <div>
                                     <p class="text-gray-400 text-xs font-bold uppercase">Telepon</p>
                                     <p class="font-bold text-navy">{{ club.phone }}</p>
                                 </div>
                             </div>
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center">
-                                    <Icon icon="ph:whatsapp-logo-fill" class="text-xl text-green-500" />
+                            <div v-if="club.whatsapp" class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
+                                    <Icon icon="ph:whatsapp-logo-fill" class="text-lg text-gray-600" />
                                 </div>
                                 <div>
                                     <p class="text-gray-400 text-xs font-bold uppercase">WhatsApp</p>
                                     <p class="font-bold text-navy">{{ club.whatsapp }}</p>
                                 </div>
                             </div>
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-xl bg-pink-50 flex items-center justify-center">
-                                    <Icon icon="ph:instagram-logo-fill" class="text-xl text-pink-500" />
-                                </div>
-                                <div>
-                                    <p class="text-gray-400 text-xs font-bold uppercase">Instagram</p>
-                                    <p class="font-bold text-navy">{{ club.instagram }}</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center">
-                                    <Icon icon="ph:facebook-logo-fill" class="text-xl text-blue-600" />
-                                </div>
-                                <div>
-                                    <p class="text-gray-400 text-xs font-bold uppercase">Facebook</p>
-                                    <p class="font-bold text-navy">{{ club.facebook }}</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center">
-                                    <Icon icon="ph:envelope-fill" class="text-xl text-red-400" />
+                            <div v-if="club.email" class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
+                                    <Icon icon="ph:envelope-fill" class="text-lg text-gray-600" />
                                 </div>
                                 <div>
                                     <p class="text-gray-400 text-xs font-bold uppercase">Email</p>
                                     <p class="font-bold text-navy">{{ club.email }}</p>
                                 </div>
                             </div>
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center">
-                                    <Icon icon="ph:map-pin-fill" class="text-xl text-orange-400" />
+                            <div v-if="club.address" class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
+                                    <Icon icon="ph:map-pin-fill" class="text-lg text-gray-600" />
                                 </div>
                                 <div>
                                     <p class="text-gray-400 text-xs font-bold uppercase">Alamat</p>
                                     <p class="font-bold text-navy text-sm">{{ club.address }}</p>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Social Media -->
+                    <div v-if="club.socialMedia && club.socialMedia.length"
+                        class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                        <h3 class="font-black text-navy mb-5 flex items-center gap-2">
+                            <Icon icon="ph:share-network-bold" class="text-primary" />
+                            Media Sosial
+                        </h3>
+                        <div class="space-y-3">
+                            <a v-for="social in club.socialMedia" :key="social.platform" :href="getSocialUrl(social)"
+                                target="_blank"
+                                class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+                                <Icon :icon="getSocialIcon(social.platform)" class="text-xl text-gray-600" />
+                                <span class="font-bold text-navy text-sm">{{ social.username }}</span>
+                            </a>
                         </div>
                     </div>
 
@@ -285,90 +284,43 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { ref, computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 import { useToast } from '~/composables/useToast'
-import { useApi } from '~/composables/useApi'
 
 definePageMeta({
     layout: 'landing'
 })
 
-useHead({
-    title: computed(() => `${club.value.name} - Profil Klub Archeryhub.id`),
-    link: [
-        { rel: 'canonical', href: useRequestURL().href }
-    ]
-})
-
 const route = useRoute()
 const router = useRouter()
+const config = useRuntimeConfig()
 const { isLoggedIn, user } = useAuth()
 const toast = useToast()
-const { post } = useApi()
-
 const isJoining = ref(false)
+const membership = ref(null)
+
+// SSR: Fetch club data with useAsyncData
+const { data: clubData, error } = await useAsyncData(
+    `club-${route.params.slug}`,
+    async () => {
+        const response = await $fetch(`${config.public.apiBaseUrl}/clubs/${route.params.slug}`)
+        return response
+    }
+)
+
+// Throw 404 if club not found
+if (error.value || !clubData.value || !clubData.value.name) {
+    throw createError({
+        statusCode: 404,
+        statusMessage: 'Klub tidak ditemukan',
+        fatal: true
+    })
+}
 
 // Check if user is archer
 const isArcher = computed(() => {
     return isLoggedIn.value && (user.value?.role === 'archer' || user.value?.user_type === 'archer')
 })
-
-// Membership status
-const membership = ref(null)
-
-const club = ref({
-    id: 0,
-    name: '',
-    slug: '',
-    city: '',
-    province: '',
-    established: '',
-    bannerUrl: '',
-    logoUrl: '',
-    verified: false,
-    memberCount: 0,
-    eventCount: 0,
-    rating: 0,
-    achievements: 0,
-    description: '',
-    facilities: [],
-    phone: '',
-    whatsapp: '',
-    instagram: '',
-    facebook: '',
-    email: '',
-    address: '',
-    schedules: [],
-    recentEvents: [],
-    topMembers: [],
-    sections: []
-})
-
-const { get } = useApi()
-
-const joinClub = async () => {
-    if (!isLoggedIn.value) {
-        router.push('/auth/login')
-        return
-    }
-
-    isJoining.value = true
-    try {
-        const response = await post(`/clubs/join/${club.value.id}`)
-        toast.success('Permintaan bergabung telah dikirim!')
-        // Update membership local state
-        membership.value = {
-            status: 'pending',
-            club_id: club.value.id,
-            club_name: club.value.name
-        }
-    } catch (error) {
-        toast.error('Gagal mengirim permintaan. ' + (error.message || ''))
-    } finally {
-        isJoining.value = false
-    }
-}
 
 const parseFacilities = (facilitiesData) => {
     if (!facilitiesData) return []
@@ -378,7 +330,6 @@ const parseFacilities = (facilitiesData) => {
             const parsed = JSON.parse(facilitiesData)
             return Array.isArray(parsed) ? parsed : []
         } catch {
-            // If it's a comma-separated string
             return facilitiesData.split(',').map(f => f.trim()).filter(Boolean)
         }
     }
@@ -399,52 +350,122 @@ const parseSchedules = (scheduleData) => {
     return []
 }
 
-onMounted(async () => {
-    try {
-        const slug = route.params.slug
-        const resp = await get(`/clubs/${slug}`)
-        // Handle both wrapped and direct response formats
-        const data = resp?.data || resp || {}
-        if (!data || !data.name) return
-
-        club.value = {
-            id: data.id || data.uuid || 0,
-            name: data.name || '',
-            slug: data.slug || slug,
-            city: data.city || '',
-            province: data.province || '',
-            established: data.established ? new Date(data.established).getFullYear().toString() : '',
-            bannerUrl: data.banner_url || '',
-            logoUrl: data.logo_url || data.avatar_url || '',
-            verified: !!data.verified,
-            memberCount: data.member_count || data.members || 0,
-            eventCount: data.event_count || data.events || 0,
-            rating: data.rating || 4.5,
-            achievements: data.achievements || 0,
-            description: data.description || 'Klub panahan yang berdedikasi untuk mengembangkan bakat dan prestasi atlet.',
-            facilities: parseFacilities(data.facilities),
-            phone: data.phone || '',
-            whatsapp: data.whatsapp || data.phone || '',
-            instagram: data.instagram || '@' + slug,
-            facebook: data.facebook || '',
-            email: data.email || '',
-            address: data.address || '',
-            schedules: parseSchedules(data.schedules),
-            recentEvents: data.recent_events || [],
-            topMembers: data.top_members || [],
-            sections: data.sections || []
+const parseSocialMedia = (data) => {
+    if (!data) return []
+    if (Array.isArray(data)) return data
+    if (typeof data === 'string') {
+        try {
+            const parsed = JSON.parse(data)
+            return Array.isArray(parsed) ? parsed : []
+        } catch {
+            return []
         }
+    }
+    return []
+}
 
-        // Fetch membership if logged in
-        if (isArcher.value) {
-            const memberResp = await get('/clubs/my/membership')
-            if (memberResp && memberResp.data) {
+// Transform API data to component format (SSR-computed)
+const club = computed(() => {
+    const data = clubData.value || {}
+    return {
+        id: data.id || data.uuid || 0,
+        name: data.name || '',
+        slug: data.slug || route.params.slug,
+        city: data.city || '',
+        province: data.province || '',
+        established: data.established ? new Date(data.established).getFullYear().toString() : '',
+        bannerUrl: data.banner_url || '',
+        logoUrl: data.logo_url || data.avatar_url || '',
+        memberCount: data.member_count || data.members || 0,
+        eventCount: data.event_count || data.events || 0,
+        achievements: data.achievements || 0,
+        description: data.description || 'Klub panahan yang berdedikasi untuk mengembangkan bakat dan prestasi atlet.',
+        facilities: parseFacilities(data.facilities),
+        phone: data.phone || '',
+        whatsapp: data.whatsapp || data.phone || '',
+        email: data.email || '',
+        address: data.address || '',
+        schedules: parseSchedules(data.schedules),
+        recentEvents: data.recent_events || [],
+        topMembers: data.top_members || [],
+        sections: data.sections || [],
+        socialMedia: parseSocialMedia(data.social_media)
+    }
+})
+
+useHead({
+    title: computed(() => club.value.name ? `${club.value.name} - Profil Klub Archeryhub.id` : 'Profil Klub - Archeryhub.id'),
+    link: [
+        { rel: 'canonical', href: useRequestURL().href }
+    ]
+})
+
+const getSocialIcon = (platform) => {
+    const icons = {
+        instagram: 'ph:instagram-logo-fill',
+        facebook: 'ph:facebook-logo-fill',
+        twitter: 'ph:twitter-logo-fill',
+        youtube: 'ph:youtube-logo-fill',
+        tiktok: 'ph:tiktok-logo-fill',
+        linkedin: 'ph:linkedin-logo-fill'
+    }
+    return icons[platform] || 'ph:link-bold'
+}
+
+const getSocialUrl = (social) => {
+    const urls = {
+        instagram: `https://instagram.com/${social.username.replace('@', '')}`,
+        facebook: social.username.startsWith('http') ? social.username : `https://facebook.com/${social.username}`,
+        twitter: `https://twitter.com/${social.username.replace('@', '')}`,
+        youtube: social.username.startsWith('http') ? social.username : `https://youtube.com/@${social.username}`,
+        tiktok: `https://tiktok.com/@${social.username.replace('@', '')}`,
+        linkedin: social.username.startsWith('http') ? social.username : `https://linkedin.com/in/${social.username}`
+    }
+    return urls[social.platform] || social.username
+}
+
+const joinClub = async () => {
+    if (!isLoggedIn.value) {
+        router.push('/auth/login')
+        return
+    }
+
+    isJoining.value = true
+    try {
+        await $fetch(`${config.public.apiBaseUrl}/clubs/join/${club.value.id}`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${useCookie('auth_token').value}`
+            }
+        })
+        toast.success('Permintaan bergabung telah dikirim!')
+        membership.value = {
+            status: 'pending',
+            club_id: club.value.id,
+            club_name: club.value.name
+        }
+    } catch (err) {
+        toast.error('Gagal mengirim permintaan. ' + (err.message || ''))
+    } finally {
+        isJoining.value = false
+    }
+}
+
+// Fetch membership on client side if logged in
+onMounted(async () => {
+    if (isArcher.value) {
+        try {
+            const memberResp = await $fetch(`${config.public.apiBaseUrl}/clubs/my/membership`, {
+                headers: {
+                    'Authorization': `Bearer ${useCookie('auth_token').value}`
+                }
+            })
+            if (memberResp?.data) {
                 membership.value = memberResp.data
             }
+        } catch (e) {
+            // Silent fail - user might not have membership
         }
-    } catch (error) {
-        console.error('Gagal memuat klub', error)
-        toast.error('Gagal memuat data klub')
     }
 })
 </script>

@@ -2,7 +2,7 @@
     <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         <!-- Breadcrumb -->
         <div class="mb-8">
-            <Breadcrumbs :items="[{ label: 'Berita', path: '/berita' }]" :current="article.title" />
+            <Breadcrumbs :items="[{ label: 'Berita', path: '/news' }]" :current="article.title" />
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
@@ -115,7 +115,7 @@
                         Artikel Terkait
                     </h3>
                     <div class="space-y-6">
-                        <NuxtLink v-for="item in relatedArticles" :key="item.slug" :to="`/berita/${item.slug}`"
+                        <NuxtLink v-for="item in relatedArticles" :key="item.slug" :to="`/news/${item.slug}`"
                             class="group flex gap-4 items-start">
                             <div class="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 relative">
                                 <img :src="item.image" :alt="item.title"
@@ -130,7 +130,7 @@
                             </div>
                         </NuxtLink>
                     </div>
-                    <NuxtLink to="/berita"
+                    <NuxtLink to="/news"
                         class="block w-full text-center mt-6 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                         Lihat Semua Berita
                     </NuxtLink>

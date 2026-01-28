@@ -11,76 +11,114 @@
             </BaseButton>
         </div>
 
+        <!-- Tabs Navigation -->
+        <div class="flex items-center gap-1 border-b border-gray-200 overflow-x-auto no-scrollbar">
+            <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
+                class="px-6 py-4 text-sm font-bold transition-all border-b-2 flex items-center gap-2 whitespace-nowrap"
+                :class="activeTab === tab.id ? 'text-navy border-navy bg-gray-50' : 'text-gray-500 border-transparent hover:text-navy hover:bg-gray-50'">
+                <Icon :icon="tab.icon" class="text-xl" />
+                {{ tab.name }}
+            </button>
+        </div>
+
         <!-- Profile Form -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- Main Info -->
             <div class="lg:col-span-2 space-y-6">
-                <!-- Basic Info Card -->
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
-                    <h2 class="font-black text-navy text-lg mb-6 flex items-center gap-2">
-                        <Icon icon="ph:building-office-bold" class="text-primary" />
-                        Informasi Dasar
-                    </h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <BaseInput v-model="form.name" label="Nama Organisasi" placeholder="Nama organisasi..."
-                            required />
-                        <BaseInput v-model="form.acronym" label="Singkatan/Akronim" placeholder="Contoh: PERPANI" />
-                        <BaseInput v-model="form.username" label="Username" placeholder="username-organisasi"
-                            helper="Digunakan untuk URL profil publik" />
-                        <BaseSelect v-model="form.type" label="Tipe Organisasi" :options="typeOptions" />
-                        <div class="md:col-span-2">
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Deskripsi</label>
-                            <textarea v-model="form.description" rows="4"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
-                                placeholder="Ceritakan tentang organisasi Anda..."></textarea>
+                <!-- Tab: Dasar -->
+                <template v-if="activeTab === 'dasar'">
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="font-black text-navy text-lg flex items-center gap-2">
+                                <Icon icon="ph:building-office-bold" class="text-primary" />
+                                Informasi Dasar
+                            </h2>
+                            <label class="flex items-center gap-2 text-sm">
+                                <input type="checkbox" v-model="pageSettings.sections.basic"
+                                    class="rounded border-gray-300" />
+                                <span class="text-gray-500">Tampilkan</span>
+                            </label>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <BaseInput v-model="form.name" label="Nama Organisasi" placeholder="Nama organisasi..."
+                                required />
+                            <BaseInput v-model="form.acronym" label="Singkatan/Akronim" placeholder="Contoh: PERPANI" />
+                            <BaseInput v-model="form.username" label="Username" placeholder="username-organisasi"
+                                helper="Digunakan untuk URL profil publik" />
+                            <BaseSelect v-model="form.type" label="Tipe Organisasi" :options="typeOptions" />
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Deskripsi</label>
+                                <textarea v-model="form.description" rows="4"
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
+                                    placeholder="Ceritakan tentang organisasi Anda..."></textarea>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </template>
 
-                <!-- Contact Info Card -->
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
-                    <h2 class="font-black text-navy text-lg mb-6 flex items-center gap-2">
-                        <Icon icon="ph:phone-bold" class="text-primary" />
-                        Informasi Kontak
-                    </h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <BaseInput v-model="form.email" label="Email" type="email" placeholder="email@organisasi.com"
-                            disabled />
-                        <BaseInput v-model="form.phone" label="Telepon" placeholder="+62..." />
-                        <BaseInput v-model="form.website" label="Website" placeholder="https://website.com" />
-                        <div class="md:col-span-2">
-                            <BaseInput v-model="form.address" label="Alamat" placeholder="Alamat lengkap..." />
+                <!-- Tab: Kontak -->
+                <template v-if="activeTab === 'kontak'">
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="font-black text-navy text-lg flex items-center gap-2">
+                                <Icon icon="ph:phone-bold" class="text-primary" />
+                                Informasi Kontak
+                            </h2>
+                            <label class="flex items-center gap-2 text-sm">
+                                <input type="checkbox" v-model="pageSettings.sections.contact"
+                                    class="rounded border-gray-300" />
+                                <span class="text-gray-500">Tampilkan</span>
+                            </label>
                         </div>
-                        <BaseInput v-model="form.city" label="Kota" placeholder="Jakarta" />
-                        <BaseInput v-model="form.province" label="Provinsi" placeholder="DKI Jakarta" />
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <BaseInput v-model="form.email" label="Email" type="email"
+                                placeholder="email@organisasi.com" disabled />
+                            <BaseInput v-model="form.phone" label="Telepon" placeholder="+62..." />
+                            <BaseInput v-model="form.website" label="Website" placeholder="https://website.com" />
+                            <div class="md:col-span-2">
+                                <BaseInput v-model="form.address" label="Alamat" placeholder="Alamat lengkap..." />
+                            </div>
+                            <BaseInput v-model="form.city" label="Kota" placeholder="Jakarta" />
+                            <BaseInput v-model="form.province" label="Provinsi" placeholder="DKI Jakarta" />
+                        </div>
                     </div>
-                </div>
 
-                <!-- Contact Person Card -->
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
-                    <h2 class="font-black text-navy text-lg mb-6 flex items-center gap-2">
-                        <Icon icon="ph:user-circle-bold" class="text-primary" />
-                        Kontak Person
-                    </h2>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <BaseInput v-model="form.contact_person_name" label="Nama" placeholder="Nama lengkap" />
-                        <BaseInput v-model="form.contact_person_email" label="Email" placeholder="email@personal.com" />
-                        <BaseInput v-model="form.contact_person_phone" label="Telepon" placeholder="+62..." />
+                    <!-- Contact Person Card -->
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
+                        <h2 class="font-black text-navy text-lg mb-6 flex items-center gap-2">
+                            <Icon icon="ph:user-circle-bold" class="text-primary" />
+                            Kontak Person
+                        </h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <BaseInput v-model="form.contact_person_name" label="Nama" placeholder="Nama lengkap" />
+                            <BaseInput v-model="form.contact_person_email" label="Email"
+                                placeholder="email@personal.com" />
+                            <BaseInput v-model="form.contact_person_phone" label="Telepon" placeholder="+62..." />
+                        </div>
                     </div>
-                </div>
+                </template>
 
-                <!-- Social Media Card -->
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
-                    <h2 class="font-black text-navy text-lg mb-6 flex items-center gap-2">
-                        <Icon icon="ph:share-network-bold" class="text-primary" />
-                        Media Sosial
-                    </h2>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <BaseInput v-model="form.social_instagram" label="Instagram" placeholder="@username" />
-                        <BaseInput v-model="form.social_facebook" label="Facebook" placeholder="facebook.com/..." />
-                        <BaseInput v-model="form.social_twitter" label="Twitter/X" placeholder="@username" />
+                <!-- Tab: Sosial -->
+                <template v-if="activeTab === 'sosial'">
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="font-black text-navy text-lg flex items-center gap-2">
+                                <Icon icon="ph:share-network-bold" class="text-primary" />
+                                Media Sosial
+                            </h2>
+                            <label class="flex items-center gap-2 text-sm">
+                                <input type="checkbox" v-model="pageSettings.sections.social"
+                                    class="rounded border-gray-300" />
+                                <span class="text-gray-500">Tampilkan</span>
+                            </label>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <BaseInput v-model="form.social_instagram" label="Instagram" placeholder="@username" />
+                            <BaseInput v-model="form.social_facebook" label="Facebook" placeholder="facebook.com/..." />
+                            <BaseInput v-model="form.social_twitter" label="Twitter/X" placeholder="@username" />
+                        </div>
                     </div>
-                </div>
+                </template>
             </div>
 
             <!-- Sidebar -->
@@ -108,6 +146,29 @@
                             <Icon v-else icon="ph:image-bold" class="text-3xl text-gray-400" />
                         </div>
                         <BaseInput v-model="form.banner_url" placeholder="URL Banner" class="w-full" />
+                    </div>
+                </div>
+
+                <!-- Pengaturan Tampilan -->
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
+                    <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em]">Pengaturan Tampilan</h3>
+                    <p class="text-sm text-gray-500">Centang section yang ingin ditampilkan di halaman publik.</p>
+                    <div class="space-y-3">
+                        <label class="flex items-center gap-3 text-sm text-navy cursor-pointer">
+                            <input type="checkbox" v-model="pageSettings.sections.basic"
+                                class="rounded border-gray-300 text-primary" />
+                            Informasi Dasar
+                        </label>
+                        <label class="flex items-center gap-3 text-sm text-navy cursor-pointer">
+                            <input type="checkbox" v-model="pageSettings.sections.contact"
+                                class="rounded border-gray-300 text-primary" />
+                            Kontak
+                        </label>
+                        <label class="flex items-center gap-3 text-sm text-navy cursor-pointer">
+                            <input type="checkbox" v-model="pageSettings.sections.social"
+                                class="rounded border-gray-300 text-primary" />
+                            Media Sosial
+                        </label>
                     </div>
                 </div>
 
@@ -144,7 +205,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed, onMounted } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 
@@ -161,6 +222,21 @@ const toast = useToast()
 
 const isSaving = ref(false)
 const isLoading = ref(true)
+const activeTab = ref('dasar')
+
+const tabs = [
+    { id: 'dasar', name: 'Informasi Dasar', icon: 'ph:building-office-bold' },
+    { id: 'kontak', name: 'Kontak', icon: 'ph:phone-bold' },
+    { id: 'sosial', name: 'Media Sosial', icon: 'ph:share-network-bold' }
+]
+
+const pageSettings = reactive({
+    sections: {
+        basic: true,
+        contact: true,
+        social: true
+    }
+})
 
 const form = ref({
     name: '',
@@ -241,6 +317,16 @@ const fetchProfile = async () => {
             social_twitter: org.social_twitter || '',
             verification_status: org.verification_status || 'pending'
         }
+
+        // Load page settings
+        if (org.page_settings) {
+            try {
+                const settings = typeof org.page_settings === 'string' ? JSON.parse(org.page_settings) : org.page_settings
+                Object.assign(pageSettings.sections, settings.sections || {})
+            } catch (e) {
+                console.error('Failed to parse page_settings', e)
+            }
+        }
     } catch (error) {
         console.error('Failed to fetch profile:', error)
         toast.error('Gagal memuat profil organisasi')
@@ -270,7 +356,8 @@ const saveProfile = async () => {
             contact_person_phone: form.value.contact_person_phone,
             social_instagram: form.value.social_instagram,
             social_facebook: form.value.social_facebook,
-            social_twitter: form.value.social_twitter
+            social_twitter: form.value.social_twitter,
+            page_settings: JSON.stringify(pageSettings)
         })
         toast.success('Profil organisasi berhasil disimpan!')
     } catch (error) {
@@ -285,3 +372,9 @@ onMounted(() => {
     fetchProfile()
 })
 </script>
+
+<style scoped>
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+</style>

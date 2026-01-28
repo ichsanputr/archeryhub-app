@@ -46,7 +46,7 @@
                                     <Icon icon="ph:calendar-bold" class="text-primary" />
                                     Gabung {{ userProfile.joinedDate }}
                                 </div>
-                                <NuxtLink v-if="userProfile.club" :to="`/klub/${userProfile.club.slug}`"
+                                <NuxtLink v-if="userProfile.club" :to="`/clubs/${userProfile.club.slug}`"
                                     class="flex items-center gap-2 px-4 py-2 bg-navy text-white rounded-xl text-sm font-bold shadow-lg shadow-navy/20 hover:scale-105 transition-all">
                                     <Icon icon="ph:users-three-bold" class="text-primary" />
                                     {{ userProfile.club.name }}

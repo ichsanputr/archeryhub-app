@@ -16,361 +16,387 @@
             </div>
         </div>
 
+        <!-- Tabs Navigation -->
+        <div class="flex items-center gap-1 border-b border-gray-200 overflow-x-auto no-scrollbar">
+            <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
+                class="px-6 py-4 text-sm font-bold transition-all border-b-2 flex items-center gap-2 whitespace-nowrap"
+                :class="activeTab === tab.id ? 'text-navy border-navy bg-gray-50' : 'text-gray-500 border-transparent hover:text-navy hover:bg-gray-50'">
+                <Icon :icon="tab.icon" class="text-xl" />
+                {{ tab.name }}
+            </button>
+        </div>
+
         <!-- Main Content -->
         <div class="space-y-6">
-            <!-- Basic Info -->
-            <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="p-5 border-b border-gray-100 bg-gray-50/50">
-                    <h2 class="text-lg font-bold text-navy flex items-center gap-2">
-                        <Icon icon="ph:info" class="text-primary text-xl" />
-                        Informasi Dasar
-                    </h2>
-                </div>
-                <div class="p-6 space-y-5">
-                    <div class="space-y-2">
-                        <label class="text-sm font-bold text-gray-700">Nama Event</label>
-                        <input v-model="form.name" type="text"
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                            placeholder="Nama event Anda" />
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-sm font-bold text-gray-700">Deskripsi</label>
-                        <textarea v-model="form.description" rows="4"
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
-                            placeholder="Deskripsikan event Anda..."></textarea>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700">Tanggal Mulai</label>
-                            <input v-model="form.start_date" type="datetime-local"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700">Tanggal Selesai</label>
-                            <input v-model="form.end_date" type="datetime-local"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
+            <!-- Informasi Tab -->
+            <div v-if="activeTab === 'informasi'" class="space-y-6">
+                <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="p-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
+                        <h2 class="text-lg font-bold text-navy flex items-center gap-2">
+                            <Icon icon="ph:info" class="text-primary text-xl" />
+                            Informasi Dasar
+                        </h2>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold text-gray-400">Tampilkan di Halaman Publik</span>
+                            <button @click="form.page_settings.sections.about = !form.page_settings.sections.about"
+                                class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none"
+                                :class="form.page_settings.sections.about ? 'bg-primary' : 'bg-gray-200'">
+                                <span
+                                    class="inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform"
+                                    :class="form.page_settings.sections.about ? 'translate-x-5.5' : 'translate-x-1'"></span>
+                            </button>
                         </div>
                     </div>
-                </div>
-            </section>
+                    <div class="p-6 space-y-5">
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-gray-700">Nama Event</label>
+                            <input v-model="form.name" type="text"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                                placeholder="Nama event Anda" />
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-gray-700">Deskripsi (Tentang Event)</label>
+                            <textarea v-model="form.description" rows="6"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
+                                placeholder="Deskripsikan event Anda..."></textarea>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-gray-700">Tanggal Mulai</label>
+                                <input v-model="form.start_date" type="datetime-local"
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-gray-700">Tanggal Selesai</label>
+                                <input v-model="form.end_date" type="datetime-local"
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-            <!-- Location -->
-            <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="p-5 border-b border-gray-100 bg-gray-50/50">
+                <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="p-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
+                        <h2 class="text-lg font-bold text-navy flex items-center gap-2">
+                            <Icon icon="ph:list-bullets" class="text-primary text-xl" />
+                            Divisi Kompetisi
+                        </h2>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold text-gray-400">Tampilkan di Halaman Publik</span>
+                            <button
+                                @click="form.page_settings.sections.divisions = !form.page_settings.sections.divisions"
+                                class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none"
+                                :class="form.page_settings.sections.divisions ? 'bg-primary' : 'bg-gray-200'">
+                                <span
+                                    class="inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform"
+                                    :class="form.page_settings.sections.divisions ? 'translate-x-5.5' : 'translate-x-1'"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-6 text-center py-12">
+                        <Icon icon="ph:info" class="text-4xl text-gray-200 mx-auto mb-3" />
+                        <p class="text-sm text-gray-500">Divisi akan secara otomatis ditampilkan berdasarkan data
+                            kategori lomba yang Anda buat.</p>
+                        <BaseButton variant="outline" size="sm" class="mt-4"
+                            :to="`/dashboard/events/${eventId}/categories`">
+                            Kelola Kategori & Divisi
+                        </BaseButton>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Pendaftaran Tab -->
+            <div v-if="activeTab === 'pendaftaran'" class="space-y-6">
+                <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="p-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
+                        <h2 class="text-lg font-bold text-navy flex items-center gap-2">
+                            <Icon icon="ph:ticket" class="text-primary text-xl" />
+                            Biaya Pendaftaran
+                        </h2>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold text-gray-400">Tampilkan di Halaman Publik</span>
+                            <button @click="form.page_settings.sections.fees = !form.page_settings.sections.fees"
+                                class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none"
+                                :class="form.page_settings.sections.fees ? 'bg-primary' : 'bg-gray-200'">
+                                <span
+                                    class="inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform"
+                                    :class="form.page_settings.sections.fees ? 'translate-x-5.5' : 'translate-x-1'"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-5">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <label class="text-sm font-bold text-gray-700">List Biaya Pendaftaran</label>
+                                <BaseButton variant="outline" size="xs" @click="addFeeField">
+                                    <Icon icon="ph:plus-bold" class="mr-1" /> Tambah Biaya
+                                </BaseButton>
+                            </div>
+                            <div v-if="form.fees.length === 0"
+                                class="text-center py-8 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                                <p class="text-xs text-gray-400">Belum ada biaya pendaftaran. Tambahkan untuk memudahkan
+                                    pendaftar.</p>
+                            </div>
+                            <div v-else class="space-y-3">
+                                <div v-for="(fee, index) in form.fees" :key="index"
+                                    class="flex gap-3 items-start bg-gray-50 p-4 rounded-xl border border-gray-100">
+                                    <div class="flex-grow grid grid-cols-1 md:grid-cols-2 gap-3">
+                                        <input v-model="fee.name" type="text" placeholder="Nama Biaya"
+                                            class="w-full px-4 py-2 rounded-lg border border-gray-200 text-sm" />
+                                        <div class="relative">
+                                            <span
+                                                class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs">IDR</span>
+                                            <input v-model.number="fee.amount" type="number"
+                                                class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-200 text-sm" />
+                                        </div>
+                                        <input v-model="fee.description" type="text" placeholder="Deskripsi (opsional)"
+                                            class="md:col-span-2 w-full px-4 py-2 rounded-lg border border-gray-200 text-xs" />
+                                    </div>
+                                    <button @click="removeFeeField(index)" class="p-2 text-gray-400 hover:text-red-500">
+                                        <Icon icon="ph:trash" />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-100">
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-gray-700">Batas Pendaftaran</label>
+                                <input v-model="form.registration_deadline" type="datetime-local"
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none" />
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-gray-700">Kuota Peserta</label>
+                                <input v-model.number="form.max_participants" type="number"
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none" />
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="p-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
+                        <h2 class="text-lg font-bold text-navy flex items-center gap-2">
+                            <Icon icon="ph:emoji-events" class="text-primary text-xl" />
+                            Hadiah & Guidebook
+                        </h2>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold text-gray-400">Tampilkan Seksi Hadiah</span>
+                            <button @click="form.page_settings.sections.prizes = !form.page_settings.sections.prizes"
+                                class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none"
+                                :class="form.page_settings.sections.prizes ? 'bg-primary' : 'bg-gray-200'">
+                                <span
+                                    class="inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform"
+                                    :class="form.page_settings.sections.prizes ? 'translate-x-5.5' : 'translate-x-1'"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-gray-700">Total Hadiah (IDR)</label>
+                                <input v-model.number="form.total_prize" type="number"
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none" />
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-gray-700">Buku Panduan Teknis (PDF)</label>
+                                <div class="flex items-center gap-2">
+                                    <input type="text" :value="form.technical_guidebook_url ? 'Guidebook.pdf' : ''"
+                                        readonly
+                                        class="flex-1 px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-sm italic"
+                                        placeholder="Belum ada file" />
+                                    <input type="file" ref="guidebookInput" class="hidden" accept=".pdf"
+                                        @change="handleGuidebookUpload" />
+                                    <BaseButton variant="outline" size="sm" @click="$refs.guidebookInput.click()"
+                                        :loading="uploadingGuidebook">Upload</BaseButton>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Lokasi Tab -->
+            <section v-if="activeTab === 'lokasi'"
+                class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="p-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
                     <h2 class="text-lg font-bold text-navy flex items-center gap-2">
                         <Icon icon="ph:map-pin" class="text-primary text-xl" />
-                        Lokasi
+                        Lokasi & Peta
                     </h2>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold text-gray-400">Tampilkan di Halaman Publik</span>
+                        <button @click="form.page_settings.sections.location = !form.page_settings.sections.location"
+                            class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none"
+                            :class="form.page_settings.sections.location ? 'bg-primary' : 'bg-gray-200'">
+                            <span class="inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform"
+                                :class="form.page_settings.sections.location ? 'translate-x-5.5' : 'translate-x-1'"></span>
+                        </button>
+                    </div>
                 </div>
                 <div class="p-6 space-y-5">
                     <div class="space-y-2">
                         <label class="text-sm font-bold text-gray-700">Nama Venue</label>
                         <input v-model="form.venue" type="text"
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                            placeholder="Nama tempat penyelenggaraan" />
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none"
+                            placeholder="Contoh: Lapangan Panahan GBK" />
                     </div>
                     <div class="space-y-2">
                         <label class="text-sm font-bold text-gray-700">Alamat Lengkap</label>
                         <textarea v-model="form.address" rows="2"
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
-                            placeholder="Alamat lengkap venue"></textarea>
-                    </div>
-                    <!-- Google Maps Embed Preview -->
-                    <div v-if="gmapsEmbedUrl" class="space-y-2">
-                        <label class="text-sm font-bold text-gray-700">Pratinjau Peta</label>
-                        <div class="rounded-xl overflow-hidden border border-gray-200 aspect-video w-full bg-gray-50">
-                            <iframe width="100%" height="100%" style="border:0" loading="lazy" allowfullscreen
-                                referrerpolicy="no-referrer-when-downgrade" :src="gmapsEmbedUrl">
-                            </iframe>
-                        </div>
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none resize-none"
+                            placeholder="Alamat detail..."></textarea>
                     </div>
                     <div class="space-y-2">
                         <label class="text-sm font-bold text-gray-700">Link Google Maps</label>
                         <input v-model="form.gmaps_link" type="url"
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none"
                             placeholder="https://maps.app.goo.gl/..." />
-                        <p class="text-xs text-gray-400">Paste link Google Maps untuk menampilkan peta</p>
+                        <div v-if="gmapsEmbedUrl"
+                            class="mt-4 rounded-xl overflow-hidden border border-gray-200 aspect-video">
+                            <iframe width="100%" height="100%" style="border:0" loading="lazy"
+                                :src="gmapsEmbedUrl"></iframe>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Media -->
-            <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="p-5 border-b border-gray-100 bg-gray-50/50">
-                    <h2 class="text-lg font-bold text-navy flex items-center gap-2">
-                        <Icon icon="ph:image" class="text-primary text-xl" />
-                        Media
-                    </h2>
-                </div>
-                <div class="p-6 space-y-5">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <!-- Banner -->
+            <!-- Media Tab -->
+            <div v-if="activeTab === 'media'" class="space-y-6">
+                <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="p-5 border-b border-gray-100 bg-gray-50/50">
+                        <h2 class="text-lg font-bold text-navy flex items-center gap-2">
+                            <Icon icon="ph:image" class="text-primary text-xl" />
+                            Banner & Logo
+                        </h2>
+                    </div>
+                    <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div class="space-y-3">
-                            <label class="text-sm font-bold text-gray-700 block">Banner Event</label>
-                            <div v-if="form.banner_url"
-                                class="relative rounded-2xl overflow-hidden border border-gray-200 aspect-video group">
-                                <img :src="form.banner_url" :alt="form.name" class="w-full h-full object-cover" />
+                            <label class="text-sm font-bold text-gray-700">Banner (Header)</label>
+                            <div v-if="form.banner_url" class="relative rounded-xl overflow-hidden aspect-video group">
+                                <img :src="form.banner_url" class="w-full h-full object-cover" />
                                 <div
-                                    class="absolute inset-0 bg-navy/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                                    class="absolute inset-0 bg-navy/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                                     <button @click="openMediaLibrary('banner')"
-                                        class="p-3 bg-white text-navy rounded-xl font-bold text-sm flex items-center gap-2 hover:bg-primary transition-colors">
-                                        <Icon icon="ph:pencil-simple" /> Ganti
-                                    </button>
+                                        class="p-2 bg-white rounded-lg text-navy font-bold text-xs">Ganti</button>
                                     <button @click="form.banner_url = ''"
-                                        class="p-3 bg-red-500 text-white rounded-xl font-bold text-sm flex items-center gap-2 hover:bg-red-600 transition-colors">
-                                        <Icon icon="ph:trash" /> Hapus
-                                    </button>
+                                        class="p-2 bg-red-500 rounded-lg text-white font-bold text-xs">Hapus</button>
                                 </div>
                             </div>
                             <button v-else @click="openMediaLibrary('banner')"
-                                class="w-full aspect-video rounded-2xl border-2 border-dashed border-gray-200 hover:border-primary hover:bg-gray-50 transition-all flex flex-col items-center justify-center gap-3 text-gray-400 hover:text-primary">
-                                <div class="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center">
-                                    <Icon icon="ph:image-plus" class="text-2xl" />
-                                </div>
-                                <div class="text-center">
-                                    <p class="text-sm font-bold">Pilih Banner</p>
-                                    <p class="text-[10px]">Rasio 16:9, min. 1200x675px</p>
-                                </div>
+                                class="w-full aspect-video rounded-xl border-2 border-dashed border-gray-200 hover:border-primary flex flex-col items-center justify-center text-gray-400">
+                                <Icon icon="ph:image-plus" class="text-3xl mb-2" />
+                                <span class="text-xs font-bold">Pilih Banner</span>
                             </button>
                         </div>
-
-                        <!-- Thumbnail -->
                         <div class="space-y-3">
-                            <label class="text-sm font-bold text-gray-700 block">Thumbnail Event</label>
+                            <label class="text-sm font-bold text-gray-700">Logo / Thumbnail</label>
                             <div v-if="form.logo_url"
-                                class="relative rounded-2xl overflow-hidden border border-gray-200 aspect-square w-48 mx-auto group">
-                                <img :src="form.logo_url" :alt="form.name" class="w-full h-full object-cover" />
+                                class="relative rounded-xl overflow-hidden aspect-square w-32 mx-auto group">
+                                <img :src="form.logo_url" class="w-full h-full object-cover" />
                                 <div
-                                    class="absolute inset-0 bg-navy/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                                    class="absolute inset-0 bg-navy/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1">
                                     <button @click="openMediaLibrary('logo')"
-                                        class="p-2.5 bg-white text-navy rounded-lg font-bold text-xs flex items-center gap-1.5 hover:bg-primary transition-colors">
-                                        <Icon icon="ph:pencil-simple" /> Ganti
-                                    </button>
+                                        class="p-1.5 bg-white rounded text-navy font-bold text-[10px]">Ganti</button>
                                     <button @click="form.logo_url = ''"
-                                        class="p-2.5 bg-red-500 text-white rounded-lg font-bold text-xs flex items-center gap-1.5 hover:bg-red-600 transition-colors">
-                                        <Icon icon="ph:trash" />
-                                    </button>
+                                        class="p-1.5 bg-red-500 rounded text-white font-bold text-[10px]">Hapus</button>
                                 </div>
                             </div>
                             <button v-else @click="openMediaLibrary('logo')"
-                                class="w-48 aspect-square mx-auto rounded-2xl border-2 border-dashed border-gray-200 hover:border-primary hover:bg-gray-50 transition-all flex flex-col items-center justify-center gap-3 text-gray-400 hover:text-primary">
-                                <div class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center">
-                                    <Icon icon="ph:image-plus" class="text-xl" />
-                                </div>
-                                <div class="text-center px-4">
-                                    <p class="text-sm font-bold">Pilih Thumbnail</p>
-                                    <p class="text-[10px]">Rasio 1:1, min. 400x400px</p>
-                                </div>
+                                class="w-32 aspect-square mx-auto rounded-xl border-2 border-dashed border-gray-200 hover:border-primary flex flex-col items-center justify-center text-gray-400">
+                                <Icon icon="ph:image-plus" class="text-2xl mb-1" />
+                                <span class="text-[10px] font-bold text-center px-2">Pilih Logo</span>
                             </button>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
 
-            <!-- Event Images Gallery -->
-            <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="p-5 border-b border-gray-100 bg-gray-50/50">
-                    <h2 class="text-lg font-bold text-navy flex items-center gap-2">
-                        <Icon icon="ph:images" class="text-primary text-xl" />
-                        Galeri Event
-                    </h2>
-                </div>
-                <div class="p-6 space-y-5">
-                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                        <!-- Existing Images -->
+                <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="p-5 border-b border-gray-100 bg-gray-50/50">
+                        <h2 class="text-lg font-bold text-navy flex items-center gap-2">
+                            <Icon icon="ph:images" class="text-primary text-xl" />
+                            Galeri Event
+                        </h2>
+                    </div>
+                    <div class="p-6 grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4">
                         <div v-for="(image, index) in form.event_images" :key="index"
-                            class="group relative aspect-square rounded-2xl overflow-hidden border border-gray-100 shadow-sm transition-all hover:shadow-md">
-                            <img :src="image.url" :alt="image.caption || 'Event image'"
-                                class="w-full h-full object-cover" />
-                            <div
-                                class="absolute inset-0 bg-navy/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between p-3">
-                                <div class="flex justify-end">
-                                    <button @click="removeImage(index)"
-                                        class="w-8 h-8 rounded-lg bg-red-500 text-white flex items-center justify-center hover:bg-red-600 transition-colors">
-                                        <Icon icon="ph:trash" />
-                                    </button>
-                                </div>
-                                <input v-model="image.caption" type="text"
-                                    class="w-full bg-white/10 backdrop-blur-md border border-white/20 rounded-lg px-2 py-1 text-[10px] text-white placeholder:text-white/50 outline-none"
-                                    placeholder="Tambah caption..." />
-                            </div>
+                            class="relative aspect-square rounded-lg overflow-hidden border border-gray-100 group">
+                            <img :src="image.url" class="w-full h-full object-cover" />
+                            <button @click="removeImage(index)"
+                                class="absolute top-1 right-1 p-1 bg-red-500 text-white rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                                <Icon icon="ph:trash" class="text-xs" />
+                            </button>
                         </div>
-
-                        <!-- Add Button -->
                         <button @click="openMediaLibrary('gallery')"
-                            class="aspect-square rounded-2xl border-2 border-dashed border-gray-200 hover:border-primary hover:bg-gray-50 transition-all flex flex-col items-center justify-center gap-2 text-gray-400 hover:text-primary">
-                            <div class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center">
-                                <Icon icon="ph:plus-bold" class="text-xl" />
-                            </div>
-                            <p class="text-xs font-bold">Tambah Foto</p>
+                            class="aspect-square rounded-lg border-2 border-dashed border-gray-200 hover:border-primary flex items-center justify-center text-gray-400">
+                            <Icon icon="ph:plus-bold" />
                         </button>
                     </div>
-                    <p class="text-xs text-gray-400 italic">Klik '+' untuk menambahkan dokumentasi atau poster event ke
-                        galeri.</p>
-                </div>
-            </section>
+                </section>
+            </div>
 
-            <!-- Registration -->
-            <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="p-5 border-b border-gray-100 bg-gray-50/50">
-                    <h2 class="text-lg font-bold text-navy flex items-center gap-2">
-                        <Icon icon="ph:ticket" class="text-primary text-xl" />
-                        Pendaftaran
-                    </h2>
-                </div>
-                <div class="p-6 space-y-5">
-                    <!-- Multiple Fees -->
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <label class="text-sm font-bold text-gray-700">List Biaya Pendaftaran</label>
-                            <BaseButton variant="outline" size="xs" @click="addFeeField">
-                                <Icon icon="ph:plus-bold" class="mr-1" /> Tambah Biaya
-                            </BaseButton>
-                        </div>
-                        <div v-if="form.fees.length === 0"
-                            class="text-center py-8 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                            <p class="text-xs text-gray-400">Belum ada biaya pendaftaran. Tambahkan untuk memudahkan
-                                pendaftar.</p>
-                        </div>
-                        <div v-else class="space-y-3">
-                            <div v-for="(fee, index) in form.fees" :key="index"
-                                class="flex gap-3 items-start bg-gray-50 p-4 rounded-xl border border-gray-100">
-                                <div class="flex-grow grid grid-cols-1 md:grid-cols-2 gap-3">
-                                    <div class="space-y-1">
-                                        <input v-model="fee.name" type="text"
-                                            placeholder="Nama Biaya (e.g. Early Bird Individual)"
-                                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary outline-none text-sm" />
-                                    </div>
-                                    <div class="space-y-1">
-                                        <div class="relative">
-                                            <span
-                                                class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">IDR</span>
-                                            <input v-model.number="fee.amount" type="number" placeholder="0"
-                                                class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary outline-none text-sm" />
-                                        </div>
-                                    </div>
-                                    <div class="md:col-span-2">
-                                        <input v-model="fee.description" type="text"
-                                            placeholder="Deskripsi singkat (opsional)"
-                                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary outline-none text-xs" />
-                                    </div>
-                                </div>
-                                <button @click="removeFeeField(index)"
-                                    class="p-2 text-gray-400 hover:text-red-500 transition-colors">
-                                    <Icon icon="ph:trash" />
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-100">
-                        <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700">Batas Pendaftaran</label>
-                            <input v-model="form.registration_deadline" type="date"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700">Kuota Peserta</label>
-                            <input v-model.number="form.max_participants" type="number"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                placeholder="200" />
-                        </div>
-                    </div>
-
-                    <!-- Total Prize and Guidebook -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700">Total Hadiah (IDR)</label>
-                            <input v-model.number="form.total_prize" type="number"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                placeholder="Contoh: 10000000" />
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700">Buku Panduan Teknis (PDF)</label>
-                            <div class="flex items-center gap-2">
-                                <div class="flex-1 relative">
-                                    <input type="text"
-                                        :value="form.technical_guidebook_url ? 'Guidebook-Teknis.pdf' : ''" readonly
-                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-500 text-sm italic"
-                                        placeholder="Belum ada file diupload" />
-                                    <div v-if="uploadingGuidebook" class="absolute right-3 top-1/2 -translate-y-1/2">
-                                        <Icon icon="line-md:loading-twotone-loop" class="text-primary" />
-                                    </div>
-                                </div>
-                                <input type="file" ref="guidebookInput" class="hidden" accept=".pdf"
-                                    @change="handleGuidebookUpload" />
-                                <BaseButton variant="outline" size="sm" @click="$refs.guidebookInput.click()"
-                                    :disabled="uploadingGuidebook">
-                                    {{ form.technical_guidebook_url ? 'Ganti File' : 'Upload' }}
-                                </BaseButton>
-                                <BaseButton v-if="form.technical_guidebook_url" variant="ghost" size="sm"
-                                    class="text-red-500" @click="form.technical_guidebook_url = ''">
-                                    <Icon icon="ph:trash" />
-                                </BaseButton>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Jadwal Lomba (Schedule) -->
-            <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <!-- Jadwal Tab -->
+            <section v-if="activeTab === 'jadwal'"
+                class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div class="p-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
                     <h2 class="text-lg font-bold text-navy flex items-center gap-2">
                         <Icon icon="ph:calendar-bold" class="text-primary text-xl" />
                         Jadwal Lomba
                     </h2>
-                    <BaseButton variant="outline" size="sm" @click="addScheduleField">
-                        <Icon icon="ph:plus-bold" class="mr-1" /> Tambah Sesi
-                    </BaseButton>
+                    <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold text-gray-400">Tampilkan Seksi Jadwal</span>
+                            <button
+                                @click="form.page_settings.sections.schedule = !form.page_settings.sections.schedule"
+                                class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none"
+                                :class="form.page_settings.sections.schedule ? 'bg-primary' : 'bg-gray-200'">
+                                <span
+                                    class="inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform"
+                                    :class="form.page_settings.sections.schedule ? 'translate-x-5.5' : 'translate-x-1'"></span>
+                            </button>
+                        </div>
+                        <BaseButton variant="outline" size="xs" @click="addScheduleField">
+                            <Icon icon="ph:plus-bold" class="mr-1" /> Tambah Sesi
+                        </BaseButton>
+                    </div>
                 </div>
                 <div class="p-6 space-y-4">
                     <div v-if="form.schedules.length === 0"
-                        class="text-center py-12 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
-                        <Icon icon="ph:calendar-blank" class="text-4xl text-gray-300 mx-auto mb-3" />
-                        <p class="text-sm text-gray-500 font-medium">Jadwal lomba belum diatur.</p>
-                        <p class="text-xs text-gray-400 mt-1">Tambahkan sesi lomba untuk menginformasikan jadwal kepada
-                            peserta.</p>
+                        class="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                        <p class="text-sm text-gray-400">Belum ada jadwal yang ditambahkan.</p>
                     </div>
                     <div v-else class="space-y-4">
                         <div v-for="(session, index) in form.schedules" :key="index"
-                            class="bg-gray-50 p-5 rounded-2xl border border-gray-100 relative group">
+                            class="bg-gray-50 p-4 rounded-xl border border-gray-100 relative group">
                             <button @click="removeScheduleField(index)"
-                                class="absolute top-4 right-4 p-2 text-gray-400 hover:text-red-500 transition-colors">
+                                class="absolute top-3 right-3 text-gray-400 hover:text-red-500">
                                 <Icon icon="ph:trash" />
                             </button>
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                                <div class="space-y-2 lg:col-span-2">
-                                    <label class="text-xs font-bold text-gray-500">Judul Sesi</label>
-                                    <input v-model="session.title" type="text"
-                                        placeholder="Contoh: Kualifikasi Recurve Putra"
-                                        class="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-primary outline-none text-sm" />
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                                <div class="lg:col-span-2 space-y-1">
+                                    <label class="text-[10px] font-bold text-gray-400 uppercase">Judul Sesi</label>
+                                    <input v-model="session.title" type="text" placeholder="Contoh: Kualifikasi Recurve"
+                                        class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm" />
                                 </div>
-                                <div class="space-y-2">
-                                    <label class="text-xs font-bold text-gray-500">Hari Ke-</label>
+                                <div class="space-y-1">
+                                    <label class="text-[10px] font-bold text-gray-400 uppercase">Hari Ke-</label>
                                     <input v-model.number="session.day_order" type="number"
-                                        class="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-primary outline-none text-sm" />
+                                        class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm" />
                                 </div>
-                                <div class="space-y-2">
-                                    <label class="text-xs font-bold text-gray-500">Lokasi Sesi</label>
-                                    <input v-model="session.location" type="text" placeholder="Contoh: Lapangan A"
-                                        class="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-primary outline-none text-sm" />
-                                </div>
-                                <div class="space-y-2">
-                                    <label class="text-xs font-bold text-gray-500">Waktu Mulai</label>
+                                <div class="space-y-1">
+                                    <label class="text-[10px] font-bold text-gray-400 uppercase">Mulai</label>
                                     <input v-model="session.start_time" type="datetime-local"
-                                        class="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-primary outline-none text-sm" />
+                                        class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm" />
                                 </div>
-                                <div class="space-y-2">
-                                    <label class="text-xs font-bold text-gray-500">Waktu Selesai</label>
+                                <div class="space-y-1">
+                                    <label class="text-[10px] font-bold text-gray-400 uppercase">Selesai</label>
                                     <input v-model="session.end_time" type="datetime-local"
-                                        class="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-primary outline-none text-sm" />
+                                        class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm" />
                                 </div>
-                                <div class="lg:col-span-4 space-y-2">
-                                    <label class="text-xs font-bold text-gray-500">Keterangan (Opsional)</label>
-                                    <textarea v-model="session.description" rows="2"
-                                        placeholder="Detail tambahan sesi..."
-                                        class="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-primary outline-none text-sm resize-none"></textarea>
+                                <div class="space-y-1">
+                                    <label class="text-[10px] font-bold text-gray-400 uppercase">Lokasi</label>
+                                    <input v-model="session.location" type="text"
+                                        class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm" />
                                 </div>
                             </div>
                         </div>
@@ -398,6 +424,16 @@ const eventId = route.params.id
 
 const { get, put, post } = useApi()
 const saving = ref(false)
+
+// Tab state
+const activeTab = ref('informasi')
+const tabs = [
+    { id: 'informasi', name: 'Informasi', icon: 'ph:info' },
+    { id: 'pendaftaran', name: 'Pendaftaran', icon: 'ph:ticket' },
+    { id: 'lokasi', name: 'Lokasi', icon: 'ph:map-pin' },
+    { id: 'media', name: 'Media', icon: 'ph:image' },
+    { id: 'jadwal', name: 'Jadwal', icon: 'ph:calendar-bold' }
+]
 
 // Media Library State
 const showMediaLibrary = ref(false)
@@ -446,7 +482,17 @@ const form = ref({
     registration_deadline: '',
     max_participants: 200,
     total_prize: 0,
-    technical_guidebook_url: ''
+    technical_guidebook_url: '',
+    page_settings: {
+        sections: {
+            about: true,
+            divisions: true,
+            fees: true,
+            prizes: true,
+            schedule: true,
+            location: true
+        }
+    }
 })
 
 const addFeeField = () => {
@@ -616,7 +662,17 @@ const fetchEventData = async () => {
                 registration_deadline: formatToDatetimeLocal(data.registration_deadline),
                 max_participants: data.max_participants || 200,
                 total_prize: data.total_prize || 0,
-                technical_guidebook_url: data.technical_guidebook_url || ''
+                technical_guidebook_url: data.technical_guidebook_url || '',
+                page_settings: data.page_settings ? JSON.parse(data.page_settings) : {
+                    sections: {
+                        about: true,
+                        divisions: true,
+                        fees: true,
+                        prizes: true,
+                        schedule: true,
+                        location: true
+                    }
+                }
             }
         }
     } catch (error) {
@@ -647,7 +703,8 @@ const saveEventPage = async () => {
                 ...s,
                 start_time: formatFromDatetimeLocal(s.start_time),
                 end_time: formatFromDatetimeLocal(s.end_time)
-            }))
+            })),
+            page_settings: JSON.stringify(form.value.page_settings)
         }
 
         await put(`/events/${eventId}`, payload)

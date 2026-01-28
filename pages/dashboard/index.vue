@@ -6,7 +6,8 @@
       <div class="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 class="text-3xl font-black text-navy tracking-tight">Overview Klub</h1>
-          <p class="text-gray-500 mt-1 font-medium">Selamat datang kembali, <span class="text-navy font-bold">{{ user?.full_name }}</span></p>
+          <p class="text-gray-500 mt-1 font-medium">Selamat datang kembali, <span class="text-navy font-bold">{{
+            user?.full_name }}</span></p>
         </div>
         <div class="flex gap-3">
           <NuxtLink to="/dashboard/members">
@@ -19,10 +20,11 @@
 
       <!-- Club Stats Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-        <div v-for="stat in clubStats" :key="stat.label" 
+        <div v-for="stat in clubStats" :key="stat.label"
           class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all group">
           <div class="flex justify-between items-start mb-4">
-            <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+            <div
+              class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
               <Icon :icon="stat.icon" class="text-2xl" />
             </div>
             <span class="text-[10px] font-black text-green-500 bg-green-50 px-2 py-1 rounded-full">+12%</span>
@@ -47,10 +49,11 @@
             <BaseButton variant="ghost" size="xs">Lihat Semua</BaseButton>
           </div>
           <div class="p-5 space-y-4 flex-1">
-            <div v-for="event in upcomingClubTournaments" :key="event.id" 
+            <div v-for="event in upcomingClubTournaments" :key="event.id"
               class="flex items-center justify-between p-4 rounded-xl bg-gray-50 border border-gray-100 hover:border-primary/30 transition-all cursor-pointer group">
               <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-lg bg-white border border-gray-100 flex flex-col items-center justify-center shrink-0">
+                <div
+                  class="w-12 h-12 rounded-lg bg-white border border-gray-100 flex flex-col items-center justify-center shrink-0">
                   <span class="text-[10px] font-black text-primary uppercase">{{ event.date.split(' ')[1] }}</span>
                   <span class="text-lg font-black text-navy leading-none">{{ event.date.split(' ')[0] }}</span>
                 </div>
@@ -59,9 +62,10 @@
                   <p class="text-xs text-gray-500">{{ event.status }}</p>
                 </div>
               </div>
-              <Icon icon="ph:arrow-right-bold" class="text-gray-300 group-hover:text-primary transition-all group-hover:translate-x-1" />
+              <Icon icon="ph:arrow-right-bold"
+                class="text-gray-300 group-hover:text-primary transition-all group-hover:translate-x-1" />
             </div>
-            
+
             <div v-if="!upcomingClubTournaments.length" class="text-center py-10">
               <Icon icon="ph:calendar-blank" class="text-4xl text-gray-200 mx-auto mb-2" />
               <p class="text-gray-400 text-sm">Belum ada turnamen terdaftar</p>
@@ -72,43 +76,47 @@
         <!-- Quick Actions & New Members -->
         <div class="space-y-6">
           <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
-             <h3 class="font-black text-navy mb-4 text-xs uppercase tracking-[0.2em] flex items-center gap-2">
-               <Icon icon="ph:lightning-bold" class="text-primary" />
-               Aksi Cepat
-             </h3>
-             <div class="grid grid-cols-2 gap-3">
-               <NuxtLink to="/dashboard/members" class="flex flex-col items-center gap-2 p-4 rounded-xl bg-gray-50 hover:bg-primary/5 hover:border-primary/20 border border-transparent transition-all group">
-                 <Icon icon="ph:user-list" class="text-2xl text-primary" />
-                 <span class="text-[9px] font-black text-navy uppercase text-center">Data Anggota</span>
-               </NuxtLink>
-               <NuxtLink to="/dashboard/berita" class="flex flex-col items-center gap-2 p-4 rounded-xl bg-gray-50 hover:bg-primary/5 hover:border-primary/20 border border-transparent transition-all group">
-                 <Icon icon="ph:newspaper-clipping" class="text-2xl text-primary" />
-                 <span class="text-[9px] font-black text-navy uppercase text-center">Buat Berita</span>
-               </NuxtLink>
-             </div>
+            <h3 class="font-black text-navy mb-4 text-xs uppercase tracking-[0.2em] flex items-center gap-2">
+              <Icon icon="ph:lightning-bold" class="text-primary" />
+              Aksi Cepat
+            </h3>
+            <div class="grid grid-cols-2 gap-3">
+              <NuxtLink to="/dashboard/members"
+                class="flex flex-col items-center gap-2 p-4 rounded-xl bg-gray-50 hover:bg-primary/5 hover:border-primary/20 border border-transparent transition-all group">
+                <Icon icon="ph:user-list" class="text-2xl text-primary" />
+                <span class="text-[9px] font-black text-navy uppercase text-center">Data Anggota</span>
+              </NuxtLink>
+              <NuxtLink to="/dashboard/news"
+                class="flex flex-col items-center gap-2 p-4 rounded-xl bg-gray-50 hover:bg-primary/5 hover:border-primary/20 border border-transparent transition-all group">
+                <Icon icon="ph:newspaper-clipping" class="text-2xl text-primary" />
+                <span class="text-[9px] font-black text-navy uppercase text-center">Buat Berita</span>
+              </NuxtLink>
+            </div>
           </div>
 
           <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
-             <h3 class="font-black text-navy mb-4 text-xs uppercase tracking-[0.2em] flex items-center gap-2">
-               <Icon icon="ph:user-plus-bold" class="text-primary" />
-               Anggota Terbaru
-             </h3>
-             <div class="space-y-4">
-               <div v-for="member in recentMembers" :key="member.id" class="flex items-center gap-3">
-                 <div class="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center font-black text-primary text-xs shrink-0">
-                   {{ member.name.charAt(0) }}
-                 </div>
-                 <div class="flex-1 min-w-0">
-                   <p class="text-sm font-bold text-navy truncate">{{ member.name }}</p>
-                   <p class="text-[10px] text-gray-400 uppercase tracking-tighter">{{ member.joinDate }}</p>
-                 </div>
-                 <span :class="member.status === 'Active' ? 'text-green-500 bg-green-50' : 'text-amber-500 bg-amber-50'" 
-                   class="text-[9px] font-black px-2 py-0.5 rounded-full uppercase">{{ member.status }}</span>
-               </div>
-             </div>
-             <NuxtLink to="/dashboard/members" class="block w-full text-center mt-5 text-xs font-bold text-gray-400 hover:text-primary transition-colors">
-               Lihat Semua Anggota
-             </NuxtLink>
+            <h3 class="font-black text-navy mb-4 text-xs uppercase tracking-[0.2em] flex items-center gap-2">
+              <Icon icon="ph:user-plus-bold" class="text-primary" />
+              Anggota Terbaru
+            </h3>
+            <div class="space-y-4">
+              <div v-for="member in recentMembers" :key="member.id" class="flex items-center gap-3">
+                <div
+                  class="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center font-black text-primary text-xs shrink-0">
+                  {{ member.name.charAt(0) }}
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-bold text-navy truncate">{{ member.name }}</p>
+                  <p class="text-[10px] text-gray-400 uppercase tracking-tighter">{{ member.joinDate }}</p>
+                </div>
+                <span :class="member.status === 'Active' ? 'text-green-500 bg-green-50' : 'text-amber-500 bg-amber-50'"
+                  class="text-[9px] font-black px-2 py-0.5 rounded-full uppercase">{{ member.status }}</span>
+              </div>
+            </div>
+            <NuxtLink to="/dashboard/members"
+              class="block w-full text-center mt-5 text-xs font-bold text-gray-400 hover:text-primary transition-colors">
+              Lihat Semua Anggota
+            </NuxtLink>
           </div>
         </div>
       </div>
@@ -120,10 +128,11 @@
       <div class="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 class="text-3xl font-black text-navy tracking-tight">Ringkasan Toko</h1>
-          <p class="text-gray-500 mt-1 font-medium">Selamat datang di dashboard penjual Anda, <span class="text-navy font-bold">{{ user?.store_name || user?.full_name }}</span></p>
+          <p class="text-gray-500 mt-1 font-medium">Selamat datang di dashboard penjual Anda, <span
+              class="text-navy font-bold">{{ user?.store_name || user?.full_name }}</span></p>
         </div>
         <div class="flex gap-3">
-          <NuxtLink to="/dashboard/shop">
+          <NuxtLink to="/dashboard/products">
             <BaseButton variant="primary" size="sm" icon="ph:plus-circle">
               Tambah Produk
             </BaseButton>
@@ -133,16 +142,19 @@
 
       <!-- Seller Stats Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-        <div v-for="stat in renderedSellerStats" :key="stat.label" 
+        <div v-for="stat in renderedSellerStats" :key="stat.label"
           class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm hover:shadow-xl hover:shadow-gray-200/50 transition-all group overflow-hidden relative">
-          <div class="absolute -right-4 -top-4 w-24 h-24 bg-gray-50 rounded-full group-hover:bg-primary/5 transition-colors duration-500"></div>
-          
+          <div
+            class="absolute -right-4 -top-4 w-24 h-24 bg-gray-50 rounded-full group-hover:bg-primary/5 transition-colors duration-500">
+          </div>
+
           <div class="flex justify-between items-start mb-4 relative z-10">
-            <div class="p-3 rounded-2xl bg-gray-50 text-gray-400 group-hover:bg-primary group-hover:text-navy transition-all duration-300">
+            <div
+              class="p-3 rounded-2xl bg-gray-50 text-gray-400 group-hover:bg-primary group-hover:text-navy transition-all duration-300">
               <Icon :icon="stat.icon" class="text-2xl" />
             </div>
           </div>
-          
+
           <div class="relative z-10">
             <p class="text-gray-400 text-[10px] font-black uppercase tracking-widest mb-1">{{ stat.label }}</p>
             <p class="text-navy text-3xl font-black tracking-tight tabular-nums">{{ stat.value }}</p>
@@ -177,7 +189,8 @@
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-50">
-                  <tr v-for="order in sellerRecentOrders" :key="order.uuid" class="hover:bg-gray-50/50 transition-colors group">
+                  <tr v-for="order in sellerRecentOrders" :key="order.uuid"
+                    class="hover:bg-gray-50/50 transition-colors group">
                     <td class="px-6 py-4">
                       <span class="font-bold text-navy text-sm">{{ order.uuid.substring(0, 8).toUpperCase() }}</span>
                       <p class="text-[10px] text-gray-400 font-medium">{{ formatDate(order.created_at) }}</p>
@@ -186,7 +199,7 @@
                       <p class="font-black text-navy text-sm">Rp {{ formatPrice(order.total_amount) }}</p>
                     </td>
                     <td class="px-6 py-4">
-                      <span :class="getStatusBadgeClass(order.status)" 
+                      <span :class="getStatusBadgeClass(order.status)"
                         class="text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-tighter ring-1 ring-inset">
                         {{ order.status }}
                       </span>
@@ -214,7 +227,7 @@
               </div>
               <Icon icon="ph:chart-line-up-bold" class="text-4xl text-primary/20" />
             </div>
-            
+
             <div class="h-64">
               <Bar v-if="chartData.labels.length" :data="chartData" :options="chartOptions" />
               <div v-else class="h-full flex items-center justify-center text-gray-400 italic">Memuat grafik...</div>
@@ -226,34 +239,38 @@
         <div class="space-y-8">
           <!-- Inventory Alerts -->
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
-             <h3 class="font-black text-navy mb-6 text-xs uppercase tracking-[0.2em] flex items-center gap-2">
-               <Icon icon="ph:warning-circle-bold" class="text-amber-500" />
-               Stok Menipis
-             </h3>
-             <div class="space-y-4">
-               <div v-for="product in sellerStockAlerts" :key="product.id" class="flex items-center gap-4 p-3 rounded-2xl hover:bg-gray-50 transition-colors cursor-pointer group">
-                 <div class="w-12 h-12 rounded-xl bg-gray-100 overflow-hidden flex-shrink-0">
-                   <img v-if="product.image_url" :src="product.image_url" class="w-full h-full object-cover">
-                   <div v-else class="w-full h-full flex items-center justify-center text-gray-300">
-                      <Icon icon="ph:package" class="text-xl" />
-                   </div>
-                 </div>
-                 <div class="flex-1 min-w-0">
-                   <p class="text-sm font-bold text-navy truncate group-hover:text-primary transition-colors">{{ product.name }}</p>
-                   <div class="flex items-center gap-2 mt-1">
-                     <span class="text-[10px] font-black text-red-500 bg-red-50 px-2 py-0.5 rounded-full uppercase">Sisa {{ product.stock }}</span>
-                   </div>
-                 </div>
-               </div>
-               
-               <div v-if="!sellerStockAlerts.length" class="text-center py-6">
-                 <Icon icon="ph:check-circle-bold" class="text-3xl text-green-200 mx-auto mb-2" />
-                 <p class="text-gray-400 text-xs">Stok semua produk aman</p>
-               </div>
-             </div>
-             <NuxtLink to="/dashboard/shop" class="block w-full text-center mt-6 text-[10px] font-black text-gray-400 hover:text-primary uppercase tracking-widest transition-colors">
-               Kelola Semua Produk
-             </NuxtLink>
+            <h3 class="font-black text-navy mb-6 text-xs uppercase tracking-[0.2em] flex items-center gap-2">
+              <Icon icon="ph:warning-circle-bold" class="text-amber-500" />
+              Stok Menipis
+            </h3>
+            <div class="space-y-4">
+              <div v-for="product in sellerStockAlerts" :key="product.id"
+                class="flex items-center gap-4 p-3 rounded-2xl hover:bg-gray-50 transition-colors cursor-pointer group">
+                <div class="w-12 h-12 rounded-xl bg-gray-100 overflow-hidden flex-shrink-0">
+                  <img v-if="product.image_url" :src="product.image_url" class="w-full h-full object-cover">
+                  <div v-else class="w-full h-full flex items-center justify-center text-gray-300">
+                    <Icon icon="ph:package" class="text-xl" />
+                  </div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-sm font-bold text-navy truncate group-hover:text-primary transition-colors">{{
+                    product.name }}</p>
+                  <div class="flex items-center gap-2 mt-1">
+                    <span class="text-[10px] font-black text-red-500 bg-red-50 px-2 py-0.5 rounded-full uppercase">Sisa
+                      {{ product.stock }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div v-if="!sellerStockAlerts.length" class="text-center py-6">
+                <Icon icon="ph:check-circle-bold" class="text-3xl text-green-200 mx-auto mb-2" />
+                <p class="text-gray-400 text-xs">Stok semua produk aman</p>
+              </div>
+            </div>
+            <NuxtLink to="/dashboard/products"
+              class="block w-full text-center mt-6 text-[10px] font-black text-gray-400 hover:text-primary uppercase tracking-widest transition-colors">
+              Kelola Semua Produk
+            </NuxtLink>
           </div>
         </div>
       </div>
@@ -264,23 +281,16 @@
       <!-- Header Section -->
       <div class="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <div class="flex items-center gap-3">
-            <h1 class="text-3xl font-bold text-navy-dark tracking-tight">Overview</h1>
-            <span
-              class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700 border border-green-200 flex items-center gap-1.5 shadow-sm">
-              <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-              LIVE
-            </span>
-          </div>
-          <p class="text-text-secondary mt-1 font-medium text-sm">Qualification Round 2 in progress</p>
+          <h1 class="text-3xl font-black text-navy tracking-tight">Overview</h1>
+          <p class="text-gray-500 mt-1 font-medium">Selamat datang kembali, <span class="text-navy font-bold">{{
+            user?.full_name }}</span></p>
         </div>
         <div class="flex gap-3">
-          <BaseButton variant="outline" size="sm" icon="ph:pause">
-            Pause Round
-          </BaseButton>
-          <BaseButton variant="primary" size="sm" icon="ph:broadcast">
-            Broadcast
-          </BaseButton>
+          <NuxtLink to="/dashboard/events">
+            <BaseButton variant="primary" size="sm" icon="ph:trophy">
+              Kelola Event
+            </BaseButton>
+          </NuxtLink>
         </div>
       </div>
 
@@ -422,11 +432,13 @@
                     </div>
                   </td>
                   <td class="px-6 py-3.5">
-                    <div class="text-navy-dark font-bold group-hover:text-primary-hover transition-colors">{{ archer.name
-                    }}</div>
+                    <div class="text-navy-dark font-bold group-hover:text-primary-hover transition-colors">{{
+                      archer.name
+                      }}</div>
                     <div class="text-gray-400 text-xs">{{ archer.category }}</div>
                   </td>
-                  <td :class="index === 0 ? 'text-navy-dark font-bold text-base' : 'text-navy-dark font-semibold text-sm'"
+                  <td
+                    :class="index === 0 ? 'text-navy-dark font-bold text-base' : 'text-navy-dark font-semibold text-sm'"
                     class="px-6 py-3.5 text-right font-mono">{{ archer.score }}</td>
                 </tr>
               </tbody>
@@ -500,7 +512,7 @@ const fetchSellerDashboardData = async () => {
 
     sellerStatsRaw.value = statsRes.data
     sellerRecentOrders.value = (ordersRes.data || []).slice(0, 5)
-    
+
     // Low stock alerts
     if (productsRes.data) {
       sellerStockAlerts.value = productsRes.data.filter(p => p.stock < 5)

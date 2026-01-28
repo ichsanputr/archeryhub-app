@@ -11,7 +11,7 @@
                 <h1 class="text-3xl font-extrabold text-navy tracking-tight">Manajemen Berita</h1>
                 <p class="text-gray-500 font-medium mt-1">Kelola berita dan pengumuman organisasi Anda.</p>
             </div>
-            <NuxtLink to="/dashboard/berita/create">
+            <NuxtLink to="/dashboard/news/create">
                 <BaseButton variant="primary" icon="ph:plus-bold" class="shadow-lg shadow-primary/20">
                     Buat Berita Baru
                 </BaseButton>
@@ -143,12 +143,12 @@
 
                 <!-- Actions -->
                 <div class="px-6 py-4 bg-gray-50/50 border-t border-gray-100 flex gap-2">
-                    <NuxtLink :to="`/dashboard/berita/${item.id}`" class="flex-1">
+                    <NuxtLink :to="`/dashboard/news/${item.id}`" class="flex-1">
                         <BaseButton variant="white" size="sm" icon="ph:eye" block>
                             Lihat
                         </BaseButton>
                     </NuxtLink>
-                    <NuxtLink :to="`/dashboard/berita/${item.id}/edit`" class="flex-1">
+                    <NuxtLink :to="`/dashboard/news/${item.id}/edit`" class="flex-1">
                         <BaseButton variant="outline" size="sm" icon="ph:pencil-simple" block>
                             Edit
                         </BaseButton>
@@ -170,7 +170,7 @@
                     <h3 class="text-xl font-bold text-navy mb-2">Belum Ada Berita</h3>
                     <p class="text-gray-500 mb-6 max-w-sm mx-auto">Buat berita pertama Anda untuk berbagi informasi
                         dengan pemanah dan peserta event.</p>
-                    <NuxtLink to="/dashboard/berita/create">
+                    <NuxtLink to="/dashboard/news/create">
                         <BaseButton variant="primary" icon="ph:plus-bold">
                             Buat Berita Pertama
                         </BaseButton>

@@ -38,10 +38,12 @@
                     class="bg-white rounded-xl p-5 flex flex-col justify-between min-h-[120px] shadow-sm hover:shadow-md transition-all border border-gray-100 group">
                     <div class="flex justify-between items-start gap-2">
                         <div class="min-w-0">
-                            <p class="text-gray-400 text-[10px] font-black uppercase tracking-wider mb-1 truncate">{{ stat.label }}</p>
+                            <p class="text-gray-400 text-[10px] font-black uppercase tracking-wider mb-1 truncate">{{
+                                stat.label }}</p>
                             <p class="text-navy text-2xl font-black tracking-tight tabular-nums">{{ stat.value }}</p>
                         </div>
-                        <div class="bg-primary/10 p-2 rounded-lg text-primary group-hover:bg-primary group-hover:text-navy transition-colors shrink-0">
+                        <div
+                            class="bg-primary/10 p-2 rounded-lg text-primary group-hover:bg-primary group-hover:text-navy transition-colors shrink-0">
                             <Icon :icon="stat.icon" class="text-2xl" />
                         </div>
                     </div>
@@ -56,11 +58,12 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Member Performance Table -->
-                <div class="lg:col-span-2 bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-sm">
+                <div
+                    class="lg:col-span-2 bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-sm">
                     <div class="p-5 border-b border-gray-100 flex justify-between items-center bg-white">
                         <h3 class="text-navy font-black text-lg flex items-center gap-2">
-                           <Icon icon="ph:trend-up-bold" class="text-primary" />
-                           Performa Atlet Klub
+                            <Icon icon="ph:trend-up-bold" class="text-primary" />
+                            Performa Atlet Klub
                         </h3>
                     </div>
                     <div class="flex-1 overflow-x-auto">
@@ -69,28 +72,35 @@
                                 <tr>
                                     <th class="px-6 py-3 text-[10px] uppercase tracking-wider">Atlet</th>
                                     <th class="px-6 py-3 text-[10px] uppercase tracking-wider">Kategori</th>
-                                    <th class="px-6 py-3 text-[10px] uppercase tracking-wider text-center">Avg Score</th>
+                                    <th class="px-6 py-3 text-[10px] uppercase tracking-wider text-center">Avg Score
+                                    </th>
                                     <th class="px-6 py-3 text-[10px] uppercase tracking-wider text-right">Trend</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-50">
-                                <tr v-for="athlete in clubMemberPerformance" :key="athlete.id" class="group hover:bg-gray-50 transition-colors">
+                                <tr v-for="athlete in clubMemberPerformance" :key="athlete.id"
+                                    class="group hover:bg-gray-50 transition-colors">
                                     <td class="px-6 py-4">
                                         <div class="flex items-center gap-3">
-                                            <div class="size-9 rounded-full bg-primary/10 flex items-center justify-center font-black text-primary text-xs shrink-0">
+                                            <div
+                                                class="size-9 rounded-full bg-primary/10 flex items-center justify-center font-black text-primary text-xs shrink-0">
                                                 {{ athlete.name.charAt(0) }}
                                             </div>
                                             <div class="text-sm font-bold text-navy">{{ athlete.name }}</div>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <span class="text-xs font-bold text-gray-500 bg-gray-100 px-2 py-1 rounded-lg">{{ athlete.category }}</span>
+                                        <span
+                                            class="text-xs font-bold text-gray-500 bg-gray-100 px-2 py-1 rounded-lg">{{
+                                            athlete.category }}</span>
                                     </td>
                                     <td class="px-6 py-4 text-center">
                                         <span class="text-navy font-black">{{ athlete.avgScore }}</span>
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        <span :class="athlete.improvement.startsWith('+') ? 'text-green-500' : 'text-red-500'" class="text-xs font-black">
+                                        <span
+                                            :class="athlete.improvement.startsWith('+') ? 'text-green-500' : 'text-red-500'"
+                                            class="text-xs font-black">
                                             {{ athlete.improvement }} pts
                                         </span>
                                     </td>
@@ -113,7 +123,8 @@
                                 <span class="font-black text-gray-400">{{ cat.count }} Anggota</span>
                             </div>
                             <div class="w-full h-2 bg-gray-50 rounded-full overflow-hidden border border-gray-100">
-                                <div class="h-full bg-primary transition-all duration-1000" :style="`width: ${cat.percentage}%`"></div>
+                                <div class="h-full bg-primary transition-all duration-1000"
+                                    :style="`width: ${cat.percentage}%`"></div>
                             </div>
                         </div>
                     </div>
@@ -131,8 +142,9 @@
                             <p
                                 class="text-text-secondary text-[10px] md:text-xs font-bold uppercase tracking-wider mb-1 truncate">
                                 {{ stat.label }}</p>
-                            <p class="text-navy text-2xl md:text-3xl font-black tracking-tight tabular-nums">{{ stat.value
-                            }}</p>
+                            <p class="text-navy text-2xl md:text-3xl font-black tracking-tight tabular-nums">{{
+                                stat.value
+                                }}</p>
                         </div>
                         <div
                             class="bg-gray-50 p-2 rounded-lg text-primary-dark group-hover:bg-primary group-hover:text-navy transition-colors shrink-0">
@@ -156,7 +168,7 @@
                         <h3 class="text-navy font-bold text-base md:text-lg flex items-center gap-2">
                             Top Atlet Bulan Ini
                         </h3>
-                        <NuxtLink to="/dashboard/athletes"
+                        <NuxtLink to="/dashboard/archers"
                             class="text-xs text-text-secondary hover:text-navy font-bold transition-colors">Lihat Semua
                         </NuxtLink>
                     </div>
@@ -168,7 +180,8 @@
                                     <th class="px-4 md:px-6 py-3 text-[10px] uppercase tracking-wider">Atlet</th>
                                     <th class="px-4 md:px-6 py-3 text-[10px] uppercase tracking-wider text-center">Skor
                                         Tertinggi</th>
-                                    <th class="px-4 md:px-6 py-3 text-[10px] uppercase tracking-wider text-right">Turnamen
+                                    <th class="px-4 md:px-6 py-3 text-[10px] uppercase tracking-wider text-right">
+                                        Turnamen
                                     </th>
                                 </tr>
                             </thead>
@@ -190,8 +203,9 @@
                                                 <div
                                                     class="text-sm font-bold text-navy group-hover:text-primary-hover transition-colors truncate">
                                                     {{ athlete.name }}</div>
-                                                <div class="text-[10px] text-gray-400 font-bold uppercase">{{ athlete.club
-                                                }}</div>
+                                                <div class="text-[10px] text-gray-400 font-bold uppercase">{{
+                                                    athlete.club
+                                                    }}</div>
                                             </div>
                                         </div>
                                     </td>
@@ -216,8 +230,9 @@
                     <div class="flex-1 p-6 space-y-5">
                         <div v-for="category in categories" :key="category.name" class="space-y-2 group">
                             <div class="flex justify-between items-center">
-                                <span class="text-sm font-bold text-navy group-hover:text-primary-dark transition-colors">{{
-                                    category.name }}</span>
+                                <span
+                                    class="text-sm font-bold text-navy group-hover:text-primary-dark transition-colors">{{
+                                        category.name }}</span>
                                 <span class="text-xs font-bold text-gray-400">{{ category.count }} atlet</span>
                             </div>
                             <div class="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
@@ -270,7 +285,7 @@
                             <p class="text-xs text-text-secondary mt-1 leading-relaxed">{{ activity.description }}</p>
                         </div>
                         <span class="text-[10px] text-text-secondary font-black uppercase shrink-0">{{ activity.time
-                            }}</span>
+                        }}</span>
                     </div>
                 </div>
             </div>

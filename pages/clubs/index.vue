@@ -109,7 +109,7 @@
             </div>
 
             <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <NuxtLink v-for="club in clubs" :key="club.uuid" :to="`/klub/${club.slug}`"
+                <NuxtLink v-for="club in clubs" :key="club.uuid" :to="`/clubs/${club.slug}`"
                     class="group bg-white rounded-2xl border-2 border-gray-100 overflow-hidden hover:border-primary transition-all duration-300">
 
                     <!-- Club Banner -->
@@ -118,17 +118,6 @@
                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent">
                         </div>
-
-                        <!-- Verified Badge -->
-                        <div v-if="club.verification_status === 'verified'" class="absolute top-4 right-4">
-                            <span
-                                class="flex items-center gap-1 px-3 py-1.5 bg-blue-500 text-white text-xs font-black rounded-full shadow-lg">
-                                <Icon icon="ph:seal-check-fill" />
-                                Verified
-                            </span>
-                        </div>
-
-                        <!-- Location Badge removed as per request -->
                     </div>
 
                     <!-- Club Info -->
@@ -207,14 +196,13 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 
 definePageMeta({
     layout: 'landing'
 })
 
-const { get } = useApi()
-
+const config = useRuntimeConfig()
 const searchQuery = ref('')
 const activeLocation = ref('all')
 const viewMode = ref('grid')
@@ -224,14 +212,15 @@ const currentPage = ref(1)
 const itemsPerPage = ref(9)
 
 // Fetch data with useAsyncData for SSR support
-const { data, pending: isLoading, refresh } = await useAsyncData('clubs', () => get('/clubs', {
-    query: {
-        page: currentPage.value,
-        limit: itemsPerPage.value,
-        q: searchQuery.value || undefined,
-        city: activeLocation.value === 'all' ? undefined : activeLocation.value
-    }
-}), {
+const { data, pending: isLoading, refresh } = await useAsyncData('clubs', () => {
+    const params = new URLSearchParams()
+    params.append('page', currentPage.value.toString())
+    params.append('limit', itemsPerPage.value.toString())
+    if (searchQuery.value) params.append('q', searchQuery.value)
+    if (activeLocation.value !== 'all') params.append('city', activeLocation.value)
+
+    return $fetch(`${config.public.apiBaseUrl}/clubs?${params.toString()}`)
+}, {
     watch: [currentPage, activeLocation, searchQuery],
     server: true
 })

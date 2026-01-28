@@ -39,7 +39,7 @@
                     </div>
                     <div>
                         <div class="flex items-center gap-1">
-                            <NuxtLink :to="`/archer/${athlete.id}`"
+                            <NuxtLink :to="`/archers/${athlete.id}`"
                                 class="font-bold text-navy truncate hover:text-primary transition-colors">
                                 {{ athlete.name }}
                             </NuxtLink>
@@ -64,7 +64,7 @@
                         <span class="material-symbols-outlined text-sm">trophy</span>
                         <span class="text-[10px] font-bold">{{ athlete.rank }}nd Rank</span>
                     </div>
-                    <NuxtLink :to="`/archer/${athlete.id}`"
+                    <NuxtLink :to="`/archers/${athlete.id}`"
                         class="text-primary font-bold text-xs hover:underline flex items-center gap-1">
                         Profil <span class="material-symbols-outlined text-sm">north_east</span>
                     </NuxtLink>

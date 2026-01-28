@@ -4,7 +4,7 @@
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
                 <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
-                    <NuxtLink to="/dashboard/product" class="hover:text-primary transition-colors">Produk</NuxtLink>
+                    <NuxtLink to="/dashboard/products" class="hover:text-primary transition-colors">Produk</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
                     <span class="text-navy">Tambah Produk</span>
                 </div>
@@ -279,7 +279,7 @@ const handleSubmit = async () => {
 
         const response = await post('/products', payload)
         toast.success('Produk berhasil ditambahkan')
-        router.push('/dashboard/product')
+        router.push('/dashboard/products')
     } catch (error) {
         console.error('Failed to create product:', error)
         toast.error(error.response?.data?.error || 'Gagal menambahkan produk')

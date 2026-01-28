@@ -246,11 +246,10 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { useApi } from '~/composables/useApi'
 
+const config = useRuntimeConfig()
 const searchQuery = ref('')
 const sortBy = ref('newest')
-const { get } = useApi()
 
 // Transform API response to match expected format
 const transformEventData = (event) => {
@@ -290,9 +289,10 @@ const transformEventData = (event) => {
     }
 }
 
-const { data: eventResponse, pending: isLoading } = await useAsyncData('events', () => get('/events'), {
-    server: true
-})
+const { data: eventResponse, pending: isLoading } = await useAsyncData('events', () =>
+    $fetch(`${config.public.apiBaseUrl}/events`),
+    { server: true }
+)
 
 const tournaments = computed(() => {
     let eventsData = []

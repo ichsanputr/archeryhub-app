@@ -96,18 +96,18 @@
                         </Transition>
                     </div>
 
-                    <NuxtLink to="/klub"
+                    <NuxtLink to="/clubs"
                         class="font-black text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
-                        :class="[navLinkClasses, { 'bg-primary text-black': isActive('/klub') }]">Klub</NuxtLink>
-                    <NuxtLink to="/archer"
+                        :class="[navLinkClasses, { 'bg-primary text-black': isActive('/clubs') }]">Klub</NuxtLink>
+                    <NuxtLink to="/archers"
                         class="font-black text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
-                        :class="[navLinkClasses, { 'bg-primary text-black': isActive('/archer') }]">Pemanah</NuxtLink>
-                    <NuxtLink to="/berita"
+                        :class="[navLinkClasses, { 'bg-primary text-black': isActive('/archers') }]">Pemanah</NuxtLink>
+                    <NuxtLink to="/news"
                         class="font-black text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
-                        :class="[navLinkClasses, { 'bg-primary text-black': isActive('/berita') }]">Berita</NuxtLink>
-                    <NuxtLink to="/shop"
+                        :class="[navLinkClasses, { 'bg-primary text-black': isActive('/news') }]">Berita</NuxtLink>
+                    <NuxtLink to="/products"
                         class="font-black text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
-                        :class="[navLinkClasses, { 'bg-primary text-black': isActive('/shop') }]">Marketplace</NuxtLink>
+                        :class="[navLinkClasses, { 'bg-primary text-black': isActive('/products') }]">Marketplace</NuxtLink>
                 </nav>
 
                 <!-- Desktop Auth Buttons -->
@@ -259,10 +259,10 @@
                     <div class="p-4 space-y-1">
                         <NuxtLink v-for="link in [
                             { to: '/', label: 'Beranda', icon: 'ph:house-bold' },
-                            { to: '/klub', label: 'Klub', icon: 'ph:shield-bold' },
-                            { to: '/archer', label: 'Pemanah', icon: 'ph:users-bold' },
-                            { to: '/berita', label: 'Berita', icon: 'ph:newspaper-bold' },
-                            { to: '/shop', label: 'Marketplace', icon: 'ph:shopping-bag-bold' },
+                            { to: '/clubs', label: 'Klub', icon: 'ph:shield-bold' },
+                            { to: '/archers', label: 'Pemanah', icon: 'ph:users-bold' },
+                            { to: '/news', label: 'Berita', icon: 'ph:newspaper-bold' },
+                            { to: '/products', label: 'Marketplace', icon: 'ph:shopping-bag-bold' },
                         ]" :key="link.to" :to="link.to" @click="mobileMenuOpen = false"
                             class="flex items-center gap-4 p-4 rounded-2xl transition-all group"
                             :class="isActive(link.to) ? 'bg-primary text-navy' : 'text-gray-500 hover:bg-gray-50 hover:text-navy'">

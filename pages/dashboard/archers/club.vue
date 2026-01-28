@@ -134,7 +134,7 @@
                   </div>
                 </div>
                 <div class="mt-4">
-                  <NuxtLink :to="`/klub/${club.slug}`" class="block mb-2">
+                  <NuxtLink :to="`/clubs/${club.slug}`" class="block mb-2">
                     <BaseButton variant="outline" size="xs" block icon="ph:eye">
                       Lihat Detail
                     </BaseButton>

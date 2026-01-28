@@ -19,11 +19,11 @@
         <NuxtLink to="/events"
           :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-navy' : 'text-white/80 hover:text-white', { 'bg-primary text-black font-bold': route.path.startsWith('/events') }]"
           class="font-black text-sm transition-colors px-3 py-1.5 rounded-lg">Event</NuxtLink>
-        <NuxtLink to="/klub"
-          :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-navy' : 'text-white/80 hover:text-white', { 'bg-primary text-black font-bold': route.path.startsWith('/klub') }]"
+        <NuxtLink to="/clubs"
+          :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-navy' : 'text-white/80 hover:text-white', { 'bg-primary text-black font-bold': route.path.startsWith('/clubs') }]"
           class="font-black text-sm transition-colors px-3 py-1.5 rounded-lg">Klub</NuxtLink>
-        <NuxtLink to="/berita"
-          :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-navy' : 'text-white/80 hover:text-white', { 'bg-primary text-black font-bold': route.path.startsWith('/berita') }]"
+        <NuxtLink to="/news"
+          :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-navy' : 'text-white/80 hover:text-white', { 'bg-primary text-black font-bold': route.path.startsWith('/news') }]"
           class="font-black text-sm transition-colors px-3 py-1.5 rounded-lg">Berita</NuxtLink>
       </nav>
 
@@ -179,13 +179,13 @@ const dashboardTitle = computed(() => {
 })
 
 const showAddButton = computed(() => {
-  const addRoutes = ['/dashboard/athletes', '/dashboard/devices']
+  const addRoutes = ['/dashboard/archers', '/dashboard/devices']
   return addRoutes.some(r => route.path.startsWith(r))
 })
 
 const addButtonText = computed(() => {
   if (route.path.startsWith('/dashboard/events')) return 'Event Baru'
-  if (route.path.startsWith('/dashboard/athletes')) return 'Atlet Baru'
+  if (route.path.startsWith('/dashboard/archers')) return 'Atlet Baru'
   if (route.path.startsWith('/dashboard/devices')) return 'Tambah Perangkat'
   return 'Tambah Baru'
 })
@@ -201,8 +201,8 @@ const showDeviceModal = useState('show-device-modal', () => false)
 const handleAdd = () => {
   if (route.path.startsWith('/dashboard/events')) {
     router.push('/dashboard/events/create')
-  } else if (route.path.startsWith('/dashboard/athletes')) {
-    router.push('/dashboard/athletes/create')
+  } else if (route.path.startsWith('/dashboard/archers')) {
+    router.push('/dashboard/archers/create')
   } else if (route.path.startsWith('/dashboard/devices')) {
     showDeviceModal.value = true
   }

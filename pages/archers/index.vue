@@ -67,7 +67,7 @@
 
             <div v-else-if="viewMode === 'grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <NuxtLink v-for="archer in filteredArchers" :key="archer.id || archer.uuid"
-                    :to="`/archer/${archer.slug || archer.uuid}`"
+                    :to="`/archers/${archer.slug || archer.uuid}`"
                     class="group bg-white rounded-3xl border border-gray-100 p-6 transition-all duration-500">
                     <div class="flex items-center gap-5">
                         <!-- Avatar -->
@@ -142,7 +142,7 @@
             <div v-else class="space-y-4">
                 <div v-for="archer in filteredArchers" :key="archer.id || archer.uuid"
                     class="bg-white rounded-xl border-2 border-gray-100 hover:border-primary transition-all p-6">
-                    <NuxtLink :to="`/archer/${archer.slug || archer.uuid}`" class="flex items-center gap-6 group">
+                    <NuxtLink :to="`/archers/${archer.slug || archer.uuid}`" class="flex items-center gap-6 group">
                         <div
                             class="w-20 h-20 rounded-xl bg-gradient-to-br from-primary to-amber-400 overflow-hidden flex-shrink-0">
                             <img v-if="archer.photo_url || archer.avatar_url"

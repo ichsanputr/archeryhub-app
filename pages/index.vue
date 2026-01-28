@@ -365,7 +365,7 @@
                         <p class="text-text-sub text-xs sm:text-sm hidden sm:block">Cek klub panahan keren di sekitar
                             kamu.</p>
                     </div>
-                    <NuxtLink to="/klub"
+                    <NuxtLink to="/clubs"
                         class="text-navy hover:text-primary font-bold text-xs sm:text-sm flex items-center gap-1 sm:gap-2 group">
                         <span class="hidden sm:inline">Cek Semua Klub</span>
                         <span class="sm:hidden">Semua Klub</span>
@@ -400,7 +400,7 @@
                             <span class="material-symbols-outlined text-sm sm:text-base">location_on</span>
                             <span>{{ club.location }}</span>
                         </div>
-                        <NuxtLink :to="`/klub/${club.slug}`"
+                        <NuxtLink :to="`/clubs/${club.slug}`"
                             class="w-full mt-auto py-2.5 px-4 bg-primary hover:bg-primary-hover text-navy font-bold text-sm rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2">
                             Cek Profil
                         </NuxtLink>
@@ -414,12 +414,12 @@
             <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between mb-8">
                     <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">Kabar Terbaru</h2>
-                    <NuxtLink class="text-text-sub hover:text-navy font-bold text-xs sm:text-sm" to="/berita">Cek Berita
+                    <NuxtLink class="text-text-sub hover:text-navy font-bold text-xs sm:text-sm" to="/news">Cek Berita
                         Lainnya
                     </NuxtLink>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <NuxtLink v-for="news in latestNews" :key="news.title" :to="`/berita/${news.slug}`"
+                    <NuxtLink v-for="news in latestNews" :key="news.title" :to="`/news/${news.slug}`"
                         class="flex flex-col group cursor-pointer">
                         <div class="relative h-60 rounded-2xl overflow-hidden mb-5">
                             <img :src="useImageOrDefault(news.image || news.image_url)" :alt="news.title"

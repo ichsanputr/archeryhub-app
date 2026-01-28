@@ -45,15 +45,15 @@
             class="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:border-primary hover:text-navy transition-all">
             Turnamen
           </NuxtLink>
-          <NuxtLink to="/klub"
+          <NuxtLink to="/clubs"
             class="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:border-primary hover:text-navy transition-all">
             Klub
           </NuxtLink>
-          <NuxtLink to="/berita"
+          <NuxtLink to="/news"
             class="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:border-primary hover:text-navy transition-all">
             Berita
           </NuxtLink>
-          <NuxtLink to="/shop"
+          <NuxtLink to="/products"
             class="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:border-primary hover:text-navy transition-all">
             Marketplace
           </NuxtLink>
