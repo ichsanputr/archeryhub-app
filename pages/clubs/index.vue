@@ -110,43 +110,72 @@
 
             <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <NuxtLink v-for="club in clubs" :key="club.uuid" :to="`/clubs/${club.slug}`"
-                    class="group bg-white rounded-2xl border-2 border-gray-100 overflow-hidden hover:border-primary transition-all duration-300">
+                    class="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:border-primary/50 transition-all duration-300 flex flex-col pt-8">
 
-                    <!-- Club Banner -->
-                    <div class="relative h-44 bg-gradient-to-br from-navy to-blue-800 overflow-hidden">
-                        <img v-if="club.banner_url" :src="club.banner_url"
-                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent">
+                    <!-- Club Logo Section -->
+                    <div class="flex justify-center mb-6 px-5">
+                        <div
+                            class="w-28 h-28 rounded-2xl bg-gray-50 border border-gray-100 p-0.5 shadow-sm overflow-hidden group-hover:scale-105 transition-transform duration-500">
+                            <img v-if="club.logo_url"
+                                :src="club.logo_url.startsWith('http') ? club.logo_url : `${config.public.apiBaseUrl}${club.logo_url}`"
+                                :alt="club.name" class="w-full h-full object-cover" />
+                            <div v-else
+                                class="w-full h-full bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center">
+                                <span class="text-3xl font-black text-navy">{{ club.name.charAt(0) }}</span>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Club Info -->
-                    <div class="p-5">
-                        <div class="flex items-start gap-4">
+                    <div class="px-6 pb-6 flex-1 flex flex-col">
+                        <div class="text-center mb-6">
+                            <h3
+                                class="font-black text-navy text-xl leading-tight mb-1 group-hover:text-primary transition-colors">
+                                {{ club.name }}
+                            </h3>
                             <div
-                                class="w-14 h-14 -mt-7 rounded-xl bg-white border-2 border-white shadow-sm overflow-hidden flex-shrink-0 relative z-[2]">
-                                <img v-if="club.logo_url" :src="club.logo_url" :alt="club.name"
-                                    class="w-full h-full object-cover" />
-                                <div v-else-if="!club.avatar_url"
-                                    class="w-full h-full bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center">
-                                    <span class="text-xl font-black text-navy">{{ club.name.charAt(0) }}</span>
-                                </div>
-                                <img v-else :src="club.avatar_url" class="w-full h-full object-cover" />
-                            </div>
-
-                            <div class="flex-1 min-w-0 pt-1">
-                                <h3
-                                    class="font-black text-navy text-lg truncate group-hover:text-primary transition-colors">
-                                    {{ club.name }}</h3>
-                                <p class="text-gray-400 text-sm truncate">{{ club.province || 'Klub Panahan' }}</p>
+                                class="flex items-center justify-center gap-1.5 text-gray-400 text-sm font-bold uppercase tracking-wide">
+                                <Icon icon="ph:map-pin-bold" class="text-primary" />
+                                <span>{{ club.city || club.province || 'Indonesia' }}</span>
                             </div>
                         </div>
 
-                        <!-- Stats -->
-                        <div class="flex items-center mt-5 pt-5 border-t border-gray-100">
-                            <div class="flex items-center gap-1">
-                                <Icon icon="ph:users-bold" class="text-primary" />
-                                <span class="font-black text-navy text-sm">{{ club.member_count }} Members</span>
+                        <!-- Extra Info -->
+                        <div class="space-y-3 mb-6 flex-1">
+                            <div v-if="club.phone" class="flex items-center gap-3 text-sm text-gray-500 font-medium">
+                                <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center shrink-0">
+                                    <Icon icon="ph:phone-bold" class="text-primary" />
+                                </div>
+                                <span class="truncate">{{ club.phone }}</span>
+                            </div>
+                            <div v-if="club.social_instagram"
+                                class="flex items-center gap-3 text-sm text-gray-500 font-medium">
+                                <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center shrink-0">
+                                    <Icon icon="ph:instagram-logo-bold" class="text-primary" />
+                                </div>
+                                <span class="truncate">@{{ club.social_instagram }}</span>
+                            </div>
+                            <div v-else-if="club.member_count"
+                                class="flex items-center gap-3 text-sm text-gray-500 font-medium">
+                                <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center shrink-0">
+                                    <Icon icon="ph:users-bold" class="text-primary" />
+                                </div>
+                                <span>{{ club.member_count }} Members</span>
+                            </div>
+                        </div>
+
+                        <!-- Footer Actions -->
+                        <div class="pt-5 border-t border-gray-50 flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <div class="flex -space-x-2">
+                                    <div v-for="i in 3" :key="i"
+                                        class="w-6 h-6 rounded-full border-2 border-white bg-gray-200"></div>
+                                </div>
+                                <span class="text-[10px] font-black text-gray-400 uppercase tracking-wider">+{{
+                                    club.member_count || 0 }} Join</span>
+                            </div>
+                            <div class="text-primary group-hover:translate-x-1 transition-transform">
+                                <Icon icon="ph:arrow-right-bold" class="text-xl" />
                             </div>
                         </div>
                     </div>

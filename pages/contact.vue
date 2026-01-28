@@ -22,7 +22,7 @@
 
     <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 -mt-8 relative z-30">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-        <div class="lg:col-span-7">
+        <div class="lg:col-span-8">
           <div
             class="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 h-full">
             <h2 class="text-2xl font-bold text-navy dark:text-white mb-6">Send us a message</h2>
@@ -72,7 +72,7 @@
           </div>
         </div>
 
-        <div class="lg:col-span-5 space-y-6">
+        <div class="lg:col-span-4 space-y-6">
           <div class="bg-navy rounded-2xl shadow-sm p-8 relative overflow-hidden text-white">
             <div class="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
               <Icon icon="ph:globe-hemisphere-west-bold" class="text-9xl" />

@@ -129,25 +129,6 @@
                             </div>
                         </div>
 
-                        <!-- Contact Info -->
-                        <div v-if="archer.phone || archer.email" class="mt-8 pt-8 border-t border-gray-100">
-                            <h3 class="font-black text-navy text-base mb-4">Kontak</h3>
-                            <div class="space-y-3">
-                                <div v-if="archer.email" class="flex items-center gap-3">
-                                    <Icon icon="ph:envelope-bold" class="text-primary text-xl" />
-                                    <span class="text-navy font-medium">{{ archer.email }}</span>
-                                </div>
-                                <div v-if="archer.phone" class="flex items-center gap-3">
-                                    <Icon icon="ph:phone-bold" class="text-primary text-xl" />
-                                    <span class="text-navy font-medium">{{ archer.phone }}</span>
-                                </div>
-                                <div v-if="archer.address" class="flex items-start gap-3">
-                                    <Icon icon="ph:map-pin-bold" class="text-primary text-xl mt-1" />
-                                    <span class="text-navy font-medium">{{ archer.address }}</span>
-                                </div>
-                            </div>
-                        </div>
-
                         <!-- Achievements -->
                         <div v-if="archer.achievements" class="mt-8 pt-8 border-t border-gray-100">
                             <h3 class="font-black text-navy text-base mb-4">Prestasi</h3>
@@ -192,35 +173,74 @@
 
                 <!-- Sidebar -->
                 <div class="space-y-6">
-                    <!-- Quick Info Card -->
-                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-                        <h3 class="font-black text-navy text-base mb-4 flex items-center gap-2">
-                            <Icon icon="ph:info-bold" class="text-primary" />
-                            Informasi Cepat
+                    <!-- Contact Info Card (Moved from main column) -->
+                    <div v-if="archer.phone || archer.email || archer.address"
+                        class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                        <h3 class="font-black text-navy text-base mb-4 flex items-center gap-3">
+                            <Icon icon="ph:phone-bold" class="text-primary" />
+                            Kontak & Lokasi
                         </h3>
                         <div class="space-y-4">
-                            <div v-if="archer.athlete_code">
-                                <p class="text-xs text-gray-400 font-bold uppercase mb-1">Kode Atlet</p>
-                                <p class="text-navy font-black text-lg">{{ archer.athlete_code }}</p>
+                            <div v-if="archer.email" class="flex items-center gap-3">
+                                <div
+                                    class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0">
+                                    <Icon icon="ph:envelope-bold" class="text-gray-400" />
+                                </div>
+                                <span class="text-navy text-sm font-medium break-all">{{ archer.email }}</span>
                             </div>
-                            <div v-if="archer.status">
-                                <p class="text-xs text-gray-400 font-bold uppercase mb-1">Status</p>
-                                <span :class="[
-                                    'px-3 py-1 rounded-full text-xs font-black uppercase',
-                                    archer.status === 'active' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-600'
-                                ]">
-                                    {{ statusLabel }}
-                                </span>
+                            <div v-if="archer.phone" class="flex items-center gap-3">
+                                <div
+                                    class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0">
+                                    <Icon icon="ph:phone-bold" class="text-gray-400" />
+                                </div>
+                                <span class="text-navy text-sm font-medium">{{ archer.phone }}</span>
                             </div>
-                            <div v-if="archer.club_name || archer.club">
-                                <p class="text-xs text-gray-400 font-bold uppercase mb-1">Klub</p>
-                                <NuxtLink v-if="archer.club_slug" :to="`/clubs/${archer.club_slug}`"
-                                    class="text-primary hover:underline font-bold">
-                                    {{ archer.club_name || archer.club }}
-                                </NuxtLink>
-                                <span v-else class="text-navy font-bold">
-                                    {{ archer.club_name || archer.club }}
-                                </span>
+                            <div v-if="archer.address" class="flex items-start gap-3">
+                                <div
+                                    class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                    <Icon icon="ph:map-pin-bold" class="text-gray-400" />
+                                </div>
+                                <span class="text-navy text-sm font-medium leading-relaxed">{{ archer.address
+                                }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Club Information (Kept in sidebar but styled) -->
+                    <div v-if="archer.club_name || archer.club"
+                        class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                        <h3 class="font-black text-navy text-base mb-4 flex items-center gap-3">
+                            <Icon icon="ph:shield-bold" class="text-primary" />
+                            Afiliasi Klub
+                        </h3>
+                        <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                            <NuxtLink v-if="archer.club_slug" :to="`/clubs/${archer.club_slug}`"
+                                class="flex items-center gap-3 group">
+                                <div class="w-10 h-10 rounded-lg bg-white flex items-center justify-center shadow-sm">
+                                    <Icon icon="ph:buildings-bold" class="text-navy" />
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider mb-0.5">
+                                        Klub Saat Ini</p>
+                                    <p
+                                        class="text-navy font-black text-sm truncate group-hover:text-primary transition-colors">
+                                        {{ archer.club_name || archer.club }}
+                                    </p>
+                                </div>
+                                <Icon icon="ph:caret-right-bold"
+                                    class="text-gray-300 group-hover:text-primary transition-all" />
+                            </NuxtLink>
+                            <div v-else class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-white flex items-center justify-center shadow-sm">
+                                    <Icon icon="ph:buildings-bold" class="text-navy" />
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider mb-0.5">
+                                        Klub Saat Ini</p>
+                                    <p class="text-navy font-bold text-sm truncate">
+                                        {{ archer.club_name || archer.club }}
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -126,12 +126,13 @@
                 <div class="mt-3 flex gap-2">
                   <input type="file" ref="bannerInput" accept="image/*" class="hidden" @change="uploadBanner" />
                   <button type="button" @click="$refs.bannerInput.click()"
-                    class="px-4 py-2 bg-navy text-white text-sm font-bold rounded-lg hover:bg-navy-dark transition">
-                    <Icon icon="ph:upload-bold" class="mr-1" /> Upload
+                    class="flex items-center gap-2 px-4 py-2 bg-navy text-white text-sm font-bold rounded-lg hover:bg-navy-dark transition">
+                    <Icon icon="ph:upload-bold" class="mr-1" />
+                    <div>Upload</div>
                   </button>
                   <button v-if="form.bannerUrl" type="button" @click="form.bannerUrl = ''"
-                    class="px-3 py-2 bg-red-50 text-red-600 text-sm font-bold rounded-lg hover:bg-red-100 transition">
-                    Hapus
+                    class="flex items-center gap-2 px-3 py-2 bg-red-50 text-red-600 text-sm font-bold rounded-lg hover:bg-red-100 transition">
+                    <div>Hapus</div>
                   </button>
                 </div>
               </div>
@@ -150,7 +151,7 @@
                   <input type="file" ref="logoInput" accept="image/*" class="hidden" @change="uploadLogo" />
                   <div class="flex flex-wrap gap-2">
                     <button type="button" @click="$refs.logoInput.click()"
-                      class="inline-flex items-center gap-2 px-4 py-2 bg-navy text-white text-sm font-bold rounded-lg hover:bg-navy-dark transition">
+                      class="flex items-center gap-2 px-4 py-2 bg-navy text-white text-sm font-bold rounded-lg hover:bg-navy-dark transition">
                       <div class="flex items-center justify-center">
                         <Icon icon="ph:upload-bold" />
                       </div>

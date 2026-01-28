@@ -44,7 +44,7 @@
           <div class="p-5 border-b border-gray-50 flex items-center justify-between">
             <h3 class="font-black text-navy flex items-center gap-2">
               <Icon icon="ph:calendar-star-bold" class="text-primary" />
-              Turnamen Mendatang
+              Event Mendatang
             </h3>
             <BaseButton variant="ghost" size="xs">Lihat Semua</BaseButton>
           </div>
@@ -100,7 +100,7 @@
               Anggota Terbaru
             </h3>
             <div class="space-y-4">
-              <div v-for="member in recentMembers" :key="member.id" class="flex items-center gap-3">
+              <div v-for="(member, index) in recentMembers" :key="index" class="flex items-center gap-3">
                 <div
                   class="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center font-black text-primary text-xs shrink-0">
                   {{ member.name.charAt(0) }}
@@ -434,7 +434,7 @@
                   <td class="px-6 py-3.5">
                     <div class="text-navy-dark font-bold group-hover:text-primary-hover transition-colors">{{
                       archer.name
-                      }}</div>
+                    }}</div>
                     <div class="text-gray-400 text-xs">{{ archer.category }}</div>
                   </td>
                   <td
@@ -475,6 +475,11 @@ const sellerStatsRaw = ref(null)
 const sellerRecentOrders = ref([])
 const sellerStockAlerts = ref([])
 const isLoadingSellerData = ref(false)
+const isLoadingClubData = ref(false)
+const clubStatsData = ref(null)
+const clubRecentMembers = ref([])
+const clubUpcomingTournaments = ref([])
+
 
 // Chart state
 const chartData = ref({ labels: [], datasets: [] })
@@ -499,7 +504,27 @@ onMounted(async () => {
   if (userRole.value === 'seller') {
     fetchSellerDashboardData()
   }
+
+  if (userRole.value === 'club') {
+    await fetchClubDashboardData()
+  }
 })
+
+const fetchClubDashboardData = async () => {
+  isLoadingClubData.value = true
+  try {
+    const res = await api.get('/clubs/me/dashboard')
+    if (res.data) {
+      clubStatsData.value = res.data.stats
+      clubRecentMembers.value = res.data.recentMembers || []
+      clubUpcomingTournaments.value = res.data.upcomingTournaments || []
+    }
+  } catch (error) {
+    console.error('Failed to fetch club dashboard data:', error)
+  } finally {
+    isLoadingClubData.value = false
+  }
+}
 
 const fetchSellerDashboardData = async () => {
   isLoadingSellerData.value = true
@@ -558,23 +583,16 @@ const renderedSellerStats = computed(() => [
   { label: 'Rating Toko', value: sellerStatsRaw.value?.rating || '0.0', icon: 'ph:star-bold', desc: 'Nilai dari pembeli' },
 ])
 
-const clubStats = [
-  { label: 'Total Anggota', value: '48', icon: 'ph:users-three', desc: '+3 bulan ini' },
-  { label: 'Pemanah Aktif', value: '32', icon: 'ph:user-focus', desc: 'Terdaftar di turnamen' },
-  { label: 'Event Terdaftar', value: '4', icon: 'ph:trophy', desc: 'Turnamen mendatang' },
-  { label: 'Prestasi', value: '12', icon: 'ph:medal', desc: '6 bulan terakhir' },
-]
+const clubStats = computed(() => [
+  { label: 'Total Anggota', value: clubStatsData.value?.totalMembers || '0', icon: 'ph:users-three', desc: 'Total terdaftar' },
+  { label: 'Pemanah Aktif', value: clubStatsData.value?.activeArchers || '0', icon: 'ph:user-focus', desc: 'Status aktif' },
+  { label: 'Event Mendatang', value: clubStatsData.value?.upcomingEvents || '0', icon: 'ph:calendar-star', desc: 'Turnamen nasional' },
+  { label: 'Prestasi', value: clubStatsData.value?.totalAwards || '0', icon: 'ph:medal', desc: 'Total medali' },
+])
 
-const recentMembers = [
-  { id: 1, name: 'Budi Santoso', joinDate: '20 Jan 2024', status: 'Active' },
-  { id: 2, name: 'Siti Aminah', joinDate: '18 Jan 2024', status: 'Pending' },
-  { id: 3, name: 'Rahmat Hidayat', joinDate: '15 Jan 2024', status: 'Active' },
-]
+const recentMembers = computed(() => clubRecentMembers.value)
+const upcomingClubTournaments = computed(() => clubUpcomingTournaments.value)
 
-const upcomingClubTournaments = [
-  { id: 1, name: 'Piala Walikota Bogor 2024', date: '10 Feb', status: 'Terdaftar' },
-  { id: 2, name: 'Kejurda Jabar Seri 1', date: '25 Feb', status: 'Kualifikasi Internal' },
-]
 
 const stats = [
   { label: 'Total Archers', value: '124', icon: 'ph:users', trend: '+12 check-ins today', trendIcon: 'ph:trend-up', trendColor: 'text-green-600' },

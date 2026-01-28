@@ -81,7 +81,7 @@
                                     <div v-else class="w-full h-full flex items-center justify-center bg-gray-50">
                                         <span class="text-2xl font-black text-navy">{{ archer.full_name?.charAt(0) ||
                                             'A'
-                                        }}</span>
+                                            }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -121,12 +121,12 @@
                                 </div>
                                 <span class="text-xs font-black text-navy truncate capitalize">{{ archer.bow_type ||
                                     'Recurve'
-                                    }}</span>
+                                }}</span>
                             </div>
                         </div>
                         <div class="bg-gray-50/50 rounded-2xl p-3 border border-gray-50 transition-all">
                             <span
-                                class="block text-[10px] text-gray-400 font-black uppercase tracking-widest mb-1.5">Pengalaman</span>
+                                class="block text-[10px] text-gray-400 font-black uppercase tracking-widest mb-1.5">Kompetisi</span>
                             <div class="flex items-center gap-2">
                                 <div class="w-6 h-6 rounded-md bg-amber-50 flex items-center justify-center">
                                     <Icon icon="ph:medal-bold" class="text-amber-500 text-xs" />
@@ -150,7 +150,7 @@
                                 class="w-full h-full object-cover" />
                             <div v-else class="w-full h-full flex items-center justify-center">
                                 <span class="text-2xl font-black text-navy">{{ archer.full_name?.charAt(0) || 'A'
-                                    }}</span>
+                                }}</span>
                             </div>
                         </div>
                         <div class="flex-1 min-w-0">
@@ -184,7 +184,8 @@
 
             <!-- Pagination -->
             <div v-if="totalArchers > pageSize" class="mt-12 flex justify-center">
-                <BasePagination v-model="currentPage" :total-items="totalArchers" :items-per-page="pageSize" />
+                <BasePagination v-model="currentPage" :total-items="totalArchers" :items-per-page="pageSize"
+                    @change-page="p => currentPage = p" />
             </div>
         </section>
     </div>
@@ -319,10 +320,7 @@ const archers = computed(() => {
 })
 
 const totalArchers = computed(() => {
-    if (archerResponse.value) {
-        return archerResponse.value.total || archers.value.length
-    }
-    return dummyArchers.length
+    return archerResponse.value?.total || dummyArchers.length
 })
 
 const activeArchers = computed(() => {
