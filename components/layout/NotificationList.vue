@@ -14,7 +14,7 @@
         <div class="max-h-[400px] overflow-y-auto no-scrollbar">
             <div v-if="notifications.length > 0">
                 <div v-for="note in notifications" :key="note.id" @click="handleNotificationClick(note)"
-                    :class="['px-5 py-4 flex gap-4 hover:bg-gray-50 cursor-pointer transition-colors border-b border-gray-50 last:border-0', !note.read ? 'bg-primary/5' : '']">
+                    :class="['px-5 py-4 flex gap-4 hover:bg-gray-50 cursor-pointer transition-colors border-b border-gray-50 last:border-0', !note.read ? 'bg-blue-50/50' : '']">
 
                     <!-- Icon/Avatar -->
                     <div
@@ -25,10 +25,10 @@
                     <!-- Content -->
                     <div class="flex-1 min-w-0">
                         <p
-                            :class="['text-sm leading-snug mb-1', !note.read ? 'font-black text-navy' : 'text-gray-600 font-medium']">
+                            :class="['text-sm leading-snug mb-1', !note.read ? 'font-black text-gray-900' : 'text-gray-700 font-medium']">
                             {{ note.title }}
                         </p>
-                        <p class="text-xs text-gray-400 line-clamp-2 mb-2 font-medium">{{ note.message }}</p>
+                        <p class="text-xs text-gray-600 line-clamp-2 mb-2 font-medium">{{ note.message }}</p>
                         <span class="text-[10px] text-gray-300 font-bold uppercase tracking-wider">{{ note.time
                         }}</span>
                     </div>

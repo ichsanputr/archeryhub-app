@@ -52,13 +52,26 @@
               <BaseInput v-model="form.username" label="Username" placeholder="perpani-indonesia"
                 helper="Digunakan untuk URL profil publik" />
 
-              <BaseInput v-model="form.acronym" label="Singkatan/Akronim" placeholder="Contoh: PERPANI" />
+              <!-- City Autocomplete -->
+              <div class="relative">
+                <label class="block text-sm font-bold text-navy mb-2">Kota</label>
+                <input v-model="citySearch" type="text"
+                  class="w-full px-4 py-3 rounded-xl border border-gray-100 text-sm font-bold transition-all outline-none focus:border-navy bg-gray-50"
+                  placeholder="Cari kota..." @focus="showCityDropdown = true" @blur="handleCityBlur"
+                  @input="handleCitySearch" />
 
-              <BaseSelect v-model="form.type" label="Tipe Organisasi" :options="typeOptions" />
-
-              <BaseInput v-model="form.city" label="Kota/Kabupaten" placeholder="Jakarta" />
-
-              <BaseInput v-model="form.province" label="Provinsi" placeholder="DKI Jakarta" />
+                <div v-if="showCityDropdown && filteredCities.length > 0"
+                  class="absolute z-50 w-full mt-2 bg-white border border-gray-100 rounded-2xl shadow-2xl max-h-60 overflow-y-auto p-1 py-2">
+                  <button v-for="city in filteredCities" :key="city" type="button"
+                    class="w-full px-4 py-2.5 text-left text-sm font-bold text-navy hover:bg-gray-50 rounded-xl transition-colors"
+                    @mousedown.prevent="selectCity(city)">
+                    {{ city }}
+                  </button>
+                </div>
+                <div v-if="loadingCities" class="absolute right-3 top-[38px]">
+                  <Icon icon="ph:circle-notch-bold" class="animate-spin text-gray-400" />
+                </div>
+              </div>
             </div>
             <BaseTextarea v-model="form.description" label="Tentang Organisasi" rows="5"
               placeholder="Berikan deskripsi singkat dan menarik tentang organisasi Anda..." />
@@ -394,13 +407,10 @@ const pageSettings = reactive({
 
 const form = reactive({
   name: '',
-  username: '', // Organizations use username, not slug
-  acronym: '',
-  type: 'association',
+  username: '',
   bannerUrl: '',
   logoUrl: '',
   city: '',
-  province: '',
   description: '',
   phone: '',
   whatsapp: '',
@@ -412,13 +422,51 @@ const form = reactive({
 
 const dynamicSections = ref([])
 
-const typeOptions = [
-  { value: 'federation', label: 'Federasi' },
-  { value: 'association', label: 'Asosiasi' },
-  { value: 'committee', label: 'Panitia/Komite' },
-  { value: 'sponsor', label: 'Sponsor' },
-  { value: 'other', label: 'Lainnya' }
-]
+// City autocomplete
+const citySearch = ref('')
+const showCityDropdown = ref(false)
+const filteredCities = ref([])
+const loadingCities = ref(false)
+let cityTimeout = null
+
+const handleCitySearch = () => {
+  if (cityTimeout) clearTimeout(cityTimeout)
+  if (!citySearch.value || citySearch.value.length < 2) {
+    filteredCities.value = []
+    return
+  }
+
+  loadingCities.value = true
+  cityTimeout = setTimeout(async () => {
+    try {
+      // Using a public API for Indonesian regions
+      const response = await fetch('https://raw.githubusercontent.com/drshofian/indonesia-regions/master/data/regencies.json')
+      const cities = await response.json()
+
+      const search = citySearch.value.toLowerCase()
+      filteredCities.value = cities
+        .filter(c => c.name.toLowerCase().includes(search))
+        .map(c => c.name)
+        .slice(0, 10)
+    } catch (e) {
+      console.error('Failed to fetch cities', e)
+    } finally {
+      loadingCities.value = false
+    }
+  }, 500)
+}
+
+const selectCity = (city) => {
+  form.city = city
+  citySearch.value = city
+  showCityDropdown.value = false
+}
+
+const handleCityBlur = () => {
+  setTimeout(() => {
+    showCityDropdown.value = false
+  }, 200)
+}
 
 // Media Library
 const showMediaLibrary = ref(false)
@@ -464,12 +512,10 @@ const loadProfile = async () => {
     if (data) {
       form.name = data.name || ''
       form.username = data.username || ''
-      form.acronym = data.acronym || ''
-      form.type = data.type || 'association'
       form.bannerUrl = data.banner_url || ''
       form.logoUrl = data.logo_url || data.avatar_url || ''
       form.city = data.city || ''
-      form.province = data.province || ''
+      citySearch.value = data.city || ''
       form.description = data.description || ''
       form.phone = data.phone || ''
       form.whatsapp = data.whatsapp || ''
@@ -512,13 +558,10 @@ const saveProfile = async () => {
     await put('/organizations/me', {
       name: form.name,
       username: form.username,
-      acronym: form.acronym,
-      type: form.type,
       banner_url: form.bannerUrl,
       logo_url: form.logoUrl,
       avatar_url: form.logoUrl, // Some APIs might expect avatar_url
       city: form.city,
-      province: form.province,
       description: form.description,
       phone: form.phone,
       whatsapp: form.whatsapp,

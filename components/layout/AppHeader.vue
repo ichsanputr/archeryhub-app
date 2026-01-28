@@ -57,8 +57,25 @@
         </div>
       </div>
 
-      <!-- Dashboard Title (only for non-clubs in general dashboard mode) -->
-      <div v-else-if="isDashboard && user?.role !== 'club' && !isEventManageMode"
+      <!-- Dashboard Context: Organization Name -->
+      <div v-else-if="isDashboard && user?.role === 'organization'" class="hidden md:flex items-center gap-3">
+        <div class="flex items-center gap-3">
+          <div
+            class="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center bg-white shadow-sm transition-transform hover:scale-110 duration-300">
+            <img v-if="user?.logo_url" :src="getImageUrl(user.logo_url)" :alt="user?.name || 'Organization'"
+              class="w-full h-full object-cover" />
+            <img v-else-if="user?.avatar_url" :src="getImageUrl(user.avatar_url)" :alt="user?.name || 'Organization'"
+              class="w-full h-full object-cover" />
+            <Icon v-else icon="ph:building-office-fill" class="text-primary text-2xl" />
+          </div>
+          <h2 class="text-lg font-black text-navy truncate max-w-sm tracking-tight">
+            {{ user?.name || 'Organisasi' }}
+          </h2>
+        </div>
+      </div>
+
+      <!-- Dashboard Title (only for non-clubs/orgs in general dashboard mode) -->
+      <div v-else-if="isDashboard && user?.role !== 'club' && user?.role !== 'organization' && !isEventManageMode"
         class="hidden md:flex items-center gap-3 mr-4">
         <h1 class="text-lg font-black text-navy whitespace-nowrap">
           {{ dashboardTitle }}
@@ -95,7 +112,7 @@
       </button>
 
       <!-- Notifications -->
-      <div class="relative">
+      <div ref="notificationRef" class="relative">
         <button @click="showNotifications = !showNotifications" :class="[
           isScrolled || !transparent
             ? 'bg-gray-100 dark:bg-surface-highlight text-gray-700 dark:text-white hover:bg-gray-200'
@@ -127,6 +144,7 @@ import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 import { useEventContext } from '~/composables/useEventContext'
+import { onClickOutside } from '@vueuse/core'
 
 const config = useRuntimeConfig()
 
@@ -163,6 +181,14 @@ const notifications = ref([
   { id: 3, type: 'warning', title: 'Keanggotaan Baru', message: 'Ada 5 permintaan join klub baru yang menunggu persetujuan.', time: '3 JAM LALU', read: false }
 ])
 const userAvatar = computed(() => useImageOrDefault(user.value?.avatar_url))
+
+// Notification panel ref for click outside
+const notificationRef = ref(null)
+onClickOutside(notificationRef, () => {
+  if (showNotifications.value) {
+    showNotifications.value = false
+  }
+})
 
 // Scroll state for transparency transition
 const isScrolled = ref(false)
