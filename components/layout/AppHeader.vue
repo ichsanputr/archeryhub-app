@@ -42,17 +42,16 @@
 
       <!-- Dashboard Context: Club Name replaced Search -->
       <div v-if="isDashboard && user?.role === 'club'" class="hidden md:flex items-center gap-3">
-        <div class="h-8 w-px bg-gray-200 mx-2"></div>
         <div class="flex items-center gap-3">
           <div
-            class="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center bg-white border border-gray-200">
+            class="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center bg-white shadow-sm transition-transform hover:scale-110 duration-300">
             <img v-if="user?.logo_url" :src="getImageUrl(user.logo_url)" :alt="user?.full_name || 'Club'"
               class="w-full h-full object-cover" />
             <img v-else-if="user?.avatar_url" :src="getImageUrl(user.avatar_url)" :alt="user?.full_name || 'Club'"
               class="w-full h-full object-cover" />
-            <Icon v-else icon="ph:shield-check-fill" class="text-primary text-xl" />
+            <Icon v-else icon="ph:shield-check-fill" class="text-primary text-2xl" />
           </div>
-          <h2 class="text-lg font-black text-navy truncate max-w-sm">
+          <h2 class="text-lg font-black text-navy truncate max-w-sm tracking-tight">
             {{ user?.full_name || user?.name || 'Klub Panahan' }}
           </h2>
         </div>
@@ -96,15 +95,26 @@
       </button>
 
       <!-- Notifications -->
-      <button :class="[
-        isScrolled || !transparent
-          ? 'bg-gray-100 dark:bg-surface-highlight text-gray-700 dark:text-white hover:bg-gray-200'
-          : 'bg-white/10 text-white hover:bg-white/20'
-      ]" class="size-10 flex items-center justify-center rounded-lg transition-colors relative">
-        <Icon icon="ph:bell" class="text-[20px]" />
-        <span v-if="notificationCount > 0"
-          class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border border-white dark:border-surface-highlight"></span>
-      </button>
+      <div class="relative">
+        <button @click="showNotifications = !showNotifications" :class="[
+          isScrolled || !transparent
+            ? 'bg-gray-100 dark:bg-surface-highlight text-gray-700 dark:text-white hover:bg-gray-200'
+            : 'bg-white/10 text-white hover:bg-white/20'
+        ]" class="size-10 flex items-center justify-center rounded-lg transition-colors relative group">
+          <Icon icon="ph:bell" class="text-[20px] group-hover:scale-110 transition-transform" />
+          <span v-if="notifications.some(n => !n.read)"
+            class="absolute top-2 right-2 size-2.5 bg-primary rounded-full border border-white dark:border-surface-highlight"></span>
+        </button>
+
+        <!-- Notification Dropdown -->
+        <transition enter-active-class="transition duration-200 ease-out"
+          enter-from-class="transform scale-95 opacity-0" enter-to-class="transform scale-100 opacity-100"
+          leave-active-class="transition duration-150 ease-in" leave-from-class="transform scale-100 opacity-100"
+          leave-to-class="transform scale-95 opacity-0">
+          <NotificationList v-if="showNotifications" :notifications="notifications" @close="showNotifications = false"
+            @mark-all-read="notifications.forEach(n => n.read = true)" class="absolute right-0 mt-2 z-[100]" />
+        </transition>
+      </div>
 
     </div>
   </header>
@@ -112,6 +122,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import NotificationList from './NotificationList.vue'
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
@@ -145,7 +156,12 @@ const isEventManageMode = computed(() => {
 
 const isSidebarOpen = useState('mobile-sidebar-open', () => false)
 const searchQuery = ref('')
-const notificationCount = ref(3)
+const showNotifications = ref(false)
+const notifications = ref([
+  { id: 1, type: 'info', title: 'Selamat Datang!', message: 'Selamat bergabung di Archery Hub. Lengkapi profil klub Anda sekarang.', time: '2 MENIT LALU', read: false },
+  { id: 2, type: 'success', title: 'Profil Diperbarui', message: 'Informasi klub Anda telah berhasil diperbarui.', time: '1 JAM LALU', read: true },
+  { id: 3, type: 'warning', title: 'Keanggotaan Baru', message: 'Ada 5 permintaan join klub baru yang menunggu persetujuan.', time: '3 JAM LALU', read: false }
+])
 const userAvatar = computed(() => useImageOrDefault(user.value?.avatar_url))
 
 // Scroll state for transparency transition
@@ -238,14 +254,8 @@ const toggleUserMenu = () => {
 }
 
 const getImageUrl = (url) => {
+  // Backend now provides full URLs, so just return as-is
   if (!url) return ''
-  if (url.startsWith('http://') || url.startsWith('https://')) {
-    return url
-  }
-  let cleanUrl = url
-  if (cleanUrl.startsWith('/api/v1/')) {
-    cleanUrl = cleanUrl.replace('/api/v1', '')
-  }
-  return `${config.public.apiBaseUrl}${cleanUrl}`
+  return url
 }
 </script>

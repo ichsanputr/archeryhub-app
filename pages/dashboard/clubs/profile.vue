@@ -17,32 +17,46 @@
       </div>
     </div>
 
+    <!-- Tab Navigation -->
+    <div
+      class="flex items-center gap-1 bg-white p-1 rounded-2xl border border-gray-100 shadow-sm overflow-x-auto no-scrollbar">
+      <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id" :class="[
+        'px-5 py-2.5 rounded-xl text-sm font-black transition-all whitespace-nowrap flex items-center gap-2',
+        activeTab === tab.id
+          ? 'bg-navy text-white shadow-lg shadow-navy/20'
+          : 'text-gray-400 hover:text-navy hover:bg-gray-50'
+      ]">
+        <Icon :icon="tab.icon" class="text-lg" />
+        {{ tab.label }}
+      </button>
+    </div>
+
     <!-- Main Content -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <!-- Main form -->
-      <div class="lg:col-span-2 space-y-6">
-        <!-- Identitas -->
-        <div>
-          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-5">
+      <div class="lg:col-span-2 space-y-8">
+
+        <!-- Tab: Umum -->
+        <div v-if="activeTab === 'general'" class="space-y-8">
+          <!-- Identitas -->
+          <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
             <div class="flex items-center justify-between">
               <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
-                <Icon icon="ph:identification-badge" class="text-primary" /> Identitas Klub
+                <Icon icon="ph:identification-badge-bold" class="text-primary text-lg" /> Identitas Utama
               </h3>
-              <BaseCheckbox v-model="pageSettings.sections.identity" label="Tampilkan" />
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <BaseInput v-model="form.name" label="Nama Klub" placeholder="Nama resmi klub" required />
 
               <!-- Slug URL with availability check -->
               <div>
-                <label class="block text-sm font-bold text-gray-700 mb-1.5">Slug URL</label>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Slug URL</label>
                 <div class="relative">
                   <input v-model="form.slug" type="text" :disabled="slugLocked" :class="[
-                    'w-full px-4 py-2.5 rounded-xl border text-sm transition-all outline-none',
-                    slugLocked ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : 'bg-white',
-                    slugStatus === 'available' ? 'border-green-300 focus:border-green-500' : '',
-                    slugStatus === 'taken' ? 'border-red-300 focus:border-red-500' : '',
-                    slugStatus === '' ? 'border-gray-200 focus:border-navy' : ''
+                    'w-full px-4 py-3 rounded-xl border text-sm transition-all outline-none font-bold',
+                    slugLocked ? 'bg-gray-50 text-gray-400 cursor-not-allowed border-gray-100' : 'bg-white border-gray-200 focus:border-navy',
+                    slugStatus === 'available' ? 'border-green-300 focus:border-green-500 bg-green-50/30' : '',
+                    slugStatus === 'taken' ? 'border-red-300 focus:border-red-500 bg-red-50/30' : ''
                   ]" placeholder="contoh: garuda-archery" @input="checkSlugAvailability" />
                   <div v-if="checkingSlug" class="absolute right-3 top-1/2 -translate-y-1/2">
                     <Icon icon="ph:spinner" class="text-gray-400 animate-spin" />
@@ -54,28 +68,31 @@
                     <Icon icon="ph:x-circle-fill" class="text-red-500" />
                   </div>
                 </div>
-                <p v-if="slugLocked" class="text-xs text-gray-400 mt-1">
-                  <Icon icon="ph:lock-fill" class="inline text-xs" /> Slug hanya dapat diubah sekali
+                <p v-if="slugLocked" class="text-[10px] text-gray-400 mt-1.5 flex items-center gap-1 font-medium">
+                  <Icon icon="ph:lock-fill" /> Slug hanya dapat diubah sekali
                 </p>
-                <p v-else-if="slugStatus === 'taken'" class="text-xs text-red-500 mt-1">Slug sudah digunakan</p>
-                <p v-else-if="slugStatus === 'available'" class="text-xs text-green-600 mt-1">Slug tersedia</p>
-                <p v-else class="text-xs text-gray-400 mt-1">URL: archeryhub.id/clubs/{{ form.slug || 'slug-anda' }}</p>
+                <p v-else-if="slugStatus === 'taken'" class="text-[10px] text-red-500 mt-1.5 font-bold">Slug sudah
+                  digunakan</p>
+                <p v-else-if="slugStatus === 'available'" class="text-[10px] text-green-600 mt-1.5 font-bold">Slug
+                  tersedia</p>
+                <p v-else class="text-[10px] text-gray-400 mt-1.5 font-medium italic">URL: archeryhub.id/clubs/{{
+                  form.slug || 'slug-anda' }}</p>
               </div>
 
-              <BaseInput v-model="form.established" label="Tahun Berdiri" type="number" />
+              <BaseInput v-model="form.established" label="Tahun Berdiri" type="number" placeholder="Contoh: 2010" />
 
               <!-- City Autocomplete -->
               <div>
-                <label class="block text-sm font-bold text-gray-700 mb-1.5">Kota/Kabupaten</label>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Kota/Kabupaten</label>
                 <div class="relative">
                   <input v-model="citySearch" type="text"
-                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm transition-all outline-none focus:border-navy bg-white"
+                    class="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm font-bold transition-all outline-none focus:border-navy bg-white"
                     placeholder="Cari kota..." @focus="showCityDropdown = true" @blur="handleCityBlur"
                     @input="filterCities" />
                   <div v-if="showCityDropdown && filteredCities.length > 0"
-                    class="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-48 overflow-y-auto">
+                    class="absolute z-50 w-full mt-2 bg-white border border-gray-100 rounded-2xl shadow-2xl max-h-60 overflow-y-auto p-1 py-2">
                     <button v-for="city in filteredCities" :key="city" type="button"
-                      class="w-full px-4 py-2.5 text-left text-sm hover:bg-gray-50 transition-colors"
+                      class="w-full px-4 py-2.5 text-left text-sm font-bold text-navy hover:bg-gray-50 rounded-xl transition-colors"
                       @mousedown.prevent="selectCity(city)">
                       {{ city }}
                     </button>
@@ -83,278 +100,335 @@
                 </div>
               </div>
 
-              <BaseInput v-model="form.province" label="Provinsi" placeholder="DKI Jakarta" />
+              <BaseInput v-model="form.province" label="Provinsi" placeholder="Contoh: Jawa Tengah" />
             </div>
-            <BaseTextarea v-model="form.description" label="Deskripsi" rows="4"
-              placeholder="Ceritakan tentang klub..." />
+            <BaseTextarea v-model="form.description" label="Tentang Klub" rows="5"
+              placeholder="Berikan deskripsi singkat dan menarik tentang klub Anda..." />
           </div>
 
-          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-6">
+          <!-- Logo & Banner -->
+          <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-8">
             <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
-              <Icon icon="ph:image-bold" class="text-primary" /> Logo & Banner
+              <Icon icon="ph:image-bold" class="text-primary text-lg" /> Branding Visual
             </h3>
 
-            <!-- Logo Upload -->
-            <div>
-              <label class="block text-sm font-bold text-gray-700 mb-2">Logo Klub</label>
-              <div class="flex items-start gap-4">
-                <div
-                  class="w-24 h-24 rounded-xl bg-gray-50 border-2 border-dashed border-gray-200 overflow-hidden flex items-center justify-center flex-shrink-0">
-                  <img v-if="form.logoUrl" :src="form.logoUrl" class="w-full h-full object-cover" />
-                  <Icon v-else icon="ph:user-circle-bold" class="text-4xl text-gray-300" />
-                </div>
-                <div class="flex-1 space-y-3">
-                  <div class="flex flex-wrap gap-2">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <!-- Logo Upload -->
+              <div class="space-y-4">
+                <label class="block text-sm font-black text-navy">Logo Klub</label>
+                <div class="flex flex-col items-center gap-5 p-6 bg-gray-50 rounded-3xl border border-gray-100">
+                  <div
+                    class="w-32 h-32 rounded-2xl bg-white border-2 border-dashed border-gray-200 overflow-hidden flex items-center justify-center shadow-inner group">
+                    <img v-if="form.logoUrl" :src="form.logoUrl"
+                      class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                    <Icon v-else icon="ph:shield-bold" class="text-5xl text-gray-200" />
+                  </div>
+                  <div class="flex gap-2 w-full">
                     <button type="button" @click="openMediaLibrary('logo')"
-                      class="flex items-center gap-2 px-4 py-2 bg-navy text-white text-sm font-bold rounded-lg hover:bg-navy-dark transition">
-                      <div class="flex items-center justify-center">
-                        <Icon icon="ph:image-bold" />
-                      </div>
-                      <div>Pilih Logo</div>
+                      class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-navy text-white text-xs font-black rounded-xl hover:bg-navy-dark transition shadow-md">
+                      <Icon icon="ph:cloud-arrow-up-bold" class="text-base" />
+                      Pilih Logo
                     </button>
                     <button v-if="form.logoUrl" type="button" @click="form.logoUrl = ''"
-                      class="px-3 py-2 bg-red-50 text-red-600 text-sm font-bold rounded-lg hover:bg-red-100 transition">
-                      Hapus
-                    </button>
-                  </div>
-                  <p class="text-xs text-gray-400">Pilih dari galeri media atau upload logo baru.</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Banner Upload -->
-            <div>
-              <label class="block text-sm font-bold text-gray-700 mb-2">Banner Klub</label>
-              <div class="relative">
-                <div
-                  class="h-32 rounded-xl bg-gray-50 border-2 border-dashed border-gray-200 overflow-hidden flex items-center justify-center">
-                  <img v-if="form.bannerUrl" :src="form.bannerUrl" class="w-full h-full object-cover" />
-                  <div v-else class="text-center">
-                    <Icon icon="ph:image-bold" class="text-3xl text-gray-300 mx-auto mb-2" />
-                    <p class="text-xs text-gray-400">Upload banner klub</p>
-                  </div>
-                </div>
-                <div class="mt-3 flex gap-2">
-                  <button type="button" @click="openMediaLibrary('banner')"
-                    class="flex items-center gap-2 px-4 py-2 bg-navy text-white text-sm font-bold rounded-lg hover:bg-navy-dark transition">
-                    <Icon icon="ph:image-bold" class="mr-1" />
-                    <div>Pilih Banner</div>
-                  </button>
-                  <button v-if="form.bannerUrl" type="button" @click="form.bannerUrl = ''"
-                    class="flex items-center gap-2 px-3 py-2 bg-red-50 text-red-600 text-sm font-bold rounded-lg hover:bg-red-100 transition">
-                    <div>Hapus</div>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Kontak -->
-        <div>
-          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-5">
-            <div class="flex items-center justify-between">
-              <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
-                <Icon icon="ph:phone-bold" class="text-primary" /> Kontak
-              </h3>
-              <BaseCheckbox v-model="pageSettings.sections.contact" label="Tampilkan" />
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-              <BaseInput v-model="form.phone" label="Telepon" placeholder="021-xxxxxxx" />
-              <BaseInput v-model="form.whatsapp" label="WhatsApp" placeholder="+62 8xx xxxx xxxx" />
-              <BaseInput v-model="form.email" label="Email" type="email" placeholder="info@klub.com" />
-              <BaseInput v-model="form.website" label="Website" placeholder="https://..." />
-            </div>
-            <BaseTextarea v-model="form.address" label="Alamat Latihan" rows="3"
-              placeholder="Alamat lengkap lokasi latihan." />
-          </div>
-        </div>
-
-        <!-- Sosial Media -->
-        <div>
-          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-5">
-            <div class="flex items-center justify-between">
-              <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
-                <Icon icon="ph:share-network-bold" class="text-primary" /> Media Sosial
-              </h3>
-              <BaseCheckbox v-model="pageSettings.sections.social" label="Tampilkan" />
-            </div>
-            <p class="text-sm text-gray-500">Tambahkan hingga 5 akun media sosial untuk ditampilkan di halaman publik.
-            </p>
-
-            <div class="space-y-4">
-              <div v-for="(social, idx) in form.socialMedia" :key="idx"
-                class="flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100">
-                <select v-model="social.platform"
-                  class="bg-white border border-gray-200 text-sm font-bold rounded-lg px-3 py-2 outline-none focus:border-primary w-40">
-                  <option value="instagram">Instagram</option>
-                  <option value="facebook">Facebook</option>
-                  <option value="twitter">Twitter/X</option>
-                  <option value="youtube">YouTube</option>
-                  <option value="tiktok">TikTok</option>
-                  <option value="linkedin">LinkedIn</option>
-                </select>
-                <BaseInput v-model="social.username" placeholder="Username atau URL" class="flex-1" />
-                <button @click="removeSocialMedia(idx)" class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition">
-                  <Icon icon="ph:trash-bold" class="text-lg" />
-                </button>
-              </div>
-
-              <button v-if="form.socialMedia.length < 5" @click="addSocialMedia"
-                class="w-full py-3 border-2 border-dashed border-gray-200 rounded-xl text-sm font-bold text-gray-500 hover:border-primary hover:text-primary transition flex items-center justify-center gap-2">
-                <Icon icon="ph:plus-bold" />
-                Tambah Media Sosial
-              </button>
-              <p v-else class="text-xs text-gray-400 text-center">Maksimal 5 akun media sosial</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Fasilitas -->
-        <div>
-          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
-            <div class="flex items-center justify-between">
-              <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
-                <Icon icon="ph:check-circle" class="text-primary" /> Fasilitas
-              </h3>
-              <BaseCheckbox v-model="pageSettings.sections.facilities" label="Tampilkan" />
-            </div>
-            <div class="flex gap-2">
-              <BaseInput v-model="facilityInput" placeholder="Tambah fasilitas" class="flex-1" />
-              <button
-                class="px-4 py-2 bg-navy text-white rounded-lg text-sm font-semibold hover:bg-navy-dark transition"
-                @click="addFacility">
-                Tambah
-              </button>
-            </div>
-            <div class="flex flex-wrap gap-2">
-              <span v-for="(item, idx) in form.facilities" :key="idx"
-                class="px-3 py-1 bg-gray-50 border border-gray-200 text-sm font-semibold text-navy rounded-xl flex items-center gap-2">
-                {{ item }}
-                <button class="text-gray-400 hover:text-red-500" @click="removeFacility(idx)">
-                  <Icon icon="ph:x" class="text-sm" />
-                </button>
-              </span>
-              <p v-if="!form.facilities.length" class="text-sm text-gray-500">Belum ada fasilitas ditambahkan.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Jadwal -->
-        <div>
-          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
-            <div class="flex items-center justify-between">
-              <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
-                <Icon icon="ph:calendar-bold" class="text-primary" /> Jadwal Latihan
-              </h3>
-              <div class="flex items-center gap-4">
-                <BaseCheckbox v-model="pageSettings.sections.schedules" label="Tampilkan" />
-                <button
-                  class="px-4 py-2 bg-navy text-white rounded-lg text-sm font-semibold hover:bg-navy-dark transition"
-                  @click="addSchedule">
-                  Tambah Jadwal
-                </button>
-              </div>
-            </div>
-            <div class="space-y-3">
-              <div v-for="(item, idx) in form.schedules" :key="idx"
-                class="grid grid-cols-1 md:grid-cols-3 gap-3 items-center bg-gray-50/60 p-3 rounded-xl border border-gray-100">
-                <BaseInput v-model="item.day" label="Hari" placeholder="Senin - Rabu" />
-                <BaseInput v-model="item.time" label="Jam" placeholder="16:00 - 19:00" />
-                <div class="flex items-end justify-end">
-                  <button class="px-3 py-2 text-sm font-semibold text-red-600 hover:text-red-700"
-                    @click="removeSchedule(idx)">
-                    Hapus
-                  </button>
-                </div>
-              </div>
-              <p v-if="!form.schedules.length" class="text-sm text-gray-500">Belum ada jadwal latihan.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Konten -->
-        <div>
-          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
-            <div class="flex items-center justify-between">
-              <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
-                <Icon icon="ph:stack" class="text-primary" /> Konten Dinamis (Custom Sections)
-              </h3>
-              <button
-                class="px-4 py-2 bg-navy text-white rounded-lg text-sm font-semibold hover:bg-navy-dark transition"
-                @click="addSection">
-                Tambah Section
-              </button>
-            </div>
-            <div class="space-y-6">
-              <div v-for="(section, idx) in dynamicSections" :key="idx"
-                class="border border-gray-200 rounded-2xl p-5 bg-white shadow-sm relative group">
-                <div class="flex justify-between items-center mb-6">
-                  <div class="flex items-center gap-4">
-                    <div
-                      class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center font-bold text-gray-500">
-                      {{ idx + 1 }}
-                    </div>
-                    <select v-model="section.type"
-                      class="bg-gray-50 border border-gray-200 text-sm font-bold rounded-xl px-4 py-2 outline-none focus:ring-2 focus:ring-primary/20 transition-all">
-                      <option value="about">Tentang Kami (Text)</option>
-                      <option value="gallery">Galeri Foto</option>
-                      <option value="testimonials">Testimoni</option>
-                      <option value="faq">FAQ</option>
-                      <option value="hero">Banner Kecil (Promotion)</option>
-                    </select>
-                  </div>
-                  <div class="flex gap-2">
-                    <button @click="moveSection(idx, -1)" :disabled="idx === 0"
-                      class="p-2 text-gray-400 hover:text-navy disabled:opacity-30">
-                      <Icon icon="ph:arrow-up-bold" />
-                    </button>
-                    <button @click="moveSection(idx, 1)" :disabled="idx === dynamicSections.length - 1"
-                      class="p-2 text-gray-400 hover:text-navy disabled:opacity-30">
-                      <Icon icon="ph:arrow-down-bold" />
-                    </button>
-                    <button @click="removeSection(idx)" class="p-2 text-red-400 hover:text-red-600">
+                      class="px-4 py-2.5 bg-red-50 text-red-600 text-xs font-black rounded-xl hover:bg-red-100 transition">
                       <Icon icon="ph:trash-bold" />
                     </button>
                   </div>
                 </div>
+              </div>
 
-                <!-- Content Editor Based on Type -->
-                <div class="space-y-4">
-                  <BaseInput v-model="section.title" label="Judul Section" placeholder="Masukkan judul..." />
-
-                  <div v-if="section.type === 'about'">
-                    <BaseTextarea v-model="section.content" label="Konten" rows="4"
-                      placeholder="Masukkan cerita atau informasi detail..." />
-                  </div>
-
-                  <div v-else-if="section.type === 'gallery'" class="space-y-3">
-                    <label class="block text-sm font-bold text-gray-700">Image URLs (comma separated)</label>
-                    <BaseTextarea v-model="section.images" rows="2"
-                      placeholder="https://image1.jpg, https://image2.jpg" />
-                  </div>
-
-                  <div v-else-if="section.type === 'testimonials'" class="space-y-4">
-                    <div v-for="(t, tIdx) in section.items" :key="tIdx"
-                      class="p-4 bg-gray-50 rounded-xl border border-gray-100 flex flex-col gap-3">
-                      <div class="flex justify-between">
-                        <span class="text-xs font-bold text-gray-400">Testimoni {{ tIdx + 1 }}</span>
-                        <button @click="section.items.splice(tIdx, 1)"
-                          class="text-red-500 text-xs font-bold">Hapus</button>
-                      </div>
-                      <BaseInput v-model="t.author" label="Nama Pengirim" class="!bg-white" />
-                      <BaseTextarea v-model="t.text" label="Pesan" rows="2" class="!bg-white" />
+              <!-- Banner Upload -->
+              <div class="space-y-4">
+                <label class="block text-sm font-black text-navy">Banner Profil</label>
+                <div class="relative group">
+                  <div
+                    class="h-44 rounded-3xl bg-gray-50 border-2 border-dashed border-gray-200 overflow-hidden flex items-center justify-center shadow-inner">
+                    <img v-if="form.bannerUrl" :src="form.bannerUrl"
+                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <div v-else class="text-center p-6">
+                      <Icon icon="ph:image-square-bold" class="text-4xl text-gray-200 mx-auto mb-2" />
+                      <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Upload banner 1200x400</p>
                     </div>
-                    <button @click="section.items.push({ author: '', text: '' })"
-                      class="text-sm font-bold text-primary hover:underline">+ Tambah Testimoni</button>
+                  </div>
+                  <div class="mt-4 flex gap-2">
+                    <button type="button" @click="openMediaLibrary('banner')"
+                      class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-navy text-white text-xs font-black rounded-xl hover:bg-navy-dark transition shadow-md">
+                      <Icon icon="ph:image-bold" class="text-base" />
+                      Ganti Banner
+                    </button>
+                    <button v-if="form.bannerUrl" type="button" @click="form.bannerUrl = ''"
+                      class="px-4 py-2.5 bg-red-50 text-red-600 text-xs font-black rounded-xl hover:bg-red-100 transition">
+                      <Icon icon="ph:trash-bold" />
+                    </button>
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab: Kontak -->
+        <div v-if="activeTab === 'contact'" class="space-y-8">
+          <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
+            <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
+              <Icon icon="ph:phone-bold" class="text-primary text-xl" /> Informasi Kontak
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <BaseInput v-model="form.phone" label="Nomor Telepon" placeholder="Contoh: 021-xxxxxxxx" />
+              <BaseInput v-model="form.whatsapp" label="Nomor WhatsApp" placeholder="Contoh: 08xx-xxxx-xxxx" />
+              <BaseInput v-model="form.email" label="Alamat Email" type="email" placeholder="info@klub.id" />
+              <BaseInput v-model="form.website" label="Website Resmi" placeholder="https://www.klub.id" />
+            </div>
+            <BaseTextarea v-model="form.address" label="Alamat Lengkap (Latihan)" rows="3"
+              placeholder="Tuliskan alamat lengkap lokasi latihan atau kantor sekretariat..." />
+          </div>
+
+          <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
+            <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
+              <Icon icon="ph:share-network-bold" class="text-primary text-xl" /> Kehadiran Media Sosial
+            </h3>
+            <p class="text-sm text-gray-500 font-medium">Hubungkan klub dengan member melalui platform sosial favorit.
+            </p>
+
+            <div class="space-y-4">
+              <transition-group name="list">
+                <div v-for="(social, idx) in form.socialMedia" :key="idx"
+                  class="flex items-center gap-4 p-5 bg-gray-50 rounded-2xl border border-gray-100 group">
+                  <div class="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="relative md:col-span-1">
+                      <select v-model="social.platform"
+                        class="w-full bg-white border border-gray-200 text-sm font-black text-navy rounded-xl px-4 py-3 outline-none focus:border-navy appearance-none">
+                        <option value="instagram">Instagram</option>
+                        <option value="facebook">Facebook</option>
+                        <option value="twitter">X (Twitter)</option>
+                        <option value="youtube">YouTube</option>
+                        <option value="tiktok">TikTok</option>
+                        <option value="linkedin">LinkedIn</option>
+                      </select>
+                      <Icon icon="ph:caret-down-bold"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                    </div>
+                    <BaseInput v-model="social.username" placeholder="Username atau Link Profil"
+                      class="md:col-span-2 !bg-white" />
+                  </div>
+                  <button @click="removeSocialMedia(idx)"
+                    class="p-3 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all">
+                    <Icon icon="ph:trash-bold" class="text-xl" />
+                  </button>
+                </div>
+              </transition-group>
+
+              <button v-if="form.socialMedia.length < 5" @click="addSocialMedia"
+                class="w-full py-4 border-2 border-dashed border-gray-200 rounded-2xl text-sm font-black text-gray-400 hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2 group">
+                <Icon icon="ph:plus-circle-bold" class="text-xl group-hover:rotate-90 transition-transform" />
+                Tambah Platform Baru
+              </button>
+              <p v-else class="text-[10px] text-gray-400 text-center font-bold tracking-widest uppercase">Maksimal 5
+                platform media sosial</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab: Fasilitas & Jadwal -->
+        <div v-if="activeTab === 'facilities'" class="space-y-8">
+          <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
+            <div class="flex items-center justify-between">
+              <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
+                <Icon icon="ph:check-circle-bold" class="text-primary text-xl" /> Daftar Fasilitas
+              </h3>
+            </div>
+            <div class="flex gap-3">
+              <input v-model="facilityInput" placeholder="Contoh: Lapangan Indoor 30m"
+                class="flex-1 px-4 py-3 rounded-xl border border-gray-200 text-sm font-bold focus:border-navy outline-none"
+                @keyup.enter="addFacility" />
+              <button
+                class="px-6 py-3 bg-navy text-white rounded-xl text-sm font-black hover:bg-navy-dark transition shadow-lg shadow-navy/20"
+                @click="addFacility">
+                Tambah
+              </button>
+            </div>
+            <div class="flex flex-wrap gap-3">
+              <transition-group name="list">
+                <span v-for="(item, idx) in form.facilities" :key="idx"
+                  class="pl-4 pr-2 py-2 bg-gray-50 border border-gray-100 text-sm font-black text-navy rounded-xl flex items-center gap-3 group hover:border-primary/30 transition-all">
+                  {{ item }}
+                  <button class="p-1 text-gray-300 hover:text-red-500 rounded-lg hover:bg-red-50 transition-colors"
+                    @click="removeFacility(idx)">
+                    <Icon icon="ph:x-bold" class="text-xs" />
+                  </button>
+                </span>
+              </transition-group>
+              <div v-if="!form.facilities.length"
+                class="w-full text-center py-10 bg-gray-50/50 rounded-2xl border border-dashed border-gray-100">
+                <Icon icon="ph:hand-fist-light" class="text-4xl text-gray-200 mx-auto mb-2" />
+                <p class="text-sm text-gray-400 font-bold">Tekan <span class="text-navy">Enter</span> untuk menambahkan
+                  fasilitas</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
+            <div class="flex items-center justify-between">
+              <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
+                <Icon icon="ph:calendar-bold" class="text-primary text-xl" /> Jadwal Latihan Rutin
+              </h3>
+              <button
+                class="flex items-center gap-2 px-4 py-2.5 bg-navy text-white rounded-xl text-xs font-black hover:bg-navy-dark transition shadow-md"
+                @click="addSchedule">
+                <Icon icon="ph:plus-bold" /> Tambah Jadwal
+              </button>
+            </div>
+            <div class="space-y-4">
+              <transition-group name="list">
+                <div v-for="(item, idx) in form.schedules" :key="idx"
+                  class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center bg-gray-50 p-4 rounded-2xl border border-gray-100 group">
+                  <div class="md:col-span-5">
+                    <BaseInput v-model="item.day" label="Hari" placeholder="Senin - Rabu" class="!bg-white" />
+                  </div>
+                  <div class="md:col-span-5">
+                    <BaseInput v-model="item.time" label="Waktu" placeholder="16:00 - 18:00 WIB" class="!bg-white" />
+                  </div>
+                  <div class="md:col-span-2 flex items-end justify-end h-full">
+                    <button class="p-3 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
+                      @click="removeSchedule(idx)">
+                      <Icon icon="ph:trash-bold" class="text-xl" />
+                    </button>
+                  </div>
+                </div>
+              </transition-group>
+              <div v-if="!form.schedules.length"
+                class="text-center py-10 bg-gray-50/50 rounded-2xl border border-dashed border-gray-100">
+                <Icon icon="ph:clock-light" class="text-4xl text-gray-200 mx-auto mb-2" />
+                <p class="text-sm text-gray-400 font-bold uppercase tracking-widest">Jadwal belum diatur</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab: Konten -->
+        <div v-if="activeTab === 'content'" class="space-y-8">
+          <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
+            <div class="flex items-center justify-between">
+              <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
+                <Icon icon="ph:stack-bold" class="text-primary text-xl" /> Konten Halaman Dinamis
+              </h3>
+              <button
+                class="flex items-center gap-2 px-6 py-3 bg-navy text-white rounded-xl text-sm font-black hover:bg-navy-dark transition shadow-lg shadow-navy/20"
+                @click="addSection">
+                <Icon icon="ph:plus-circle-bold" class="text-lg" /> Tambah Section Baru
+              </button>
+            </div>
+
+            <div class="space-y-6">
+              <transition-group name="list">
+                <div v-for="(section, idx) in dynamicSections" :key="idx"
+                  class="border border-gray-100 rounded-3xl p-6 bg-white shadow-sm hover:shadow-md transition-shadow relative">
+                  <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+                    <div class="flex items-center gap-4">
+                      <div
+                        class="w-10 h-10 rounded-xl bg-navy text-white flex items-center justify-center font-black shadow-sm">
+                        {{ idx + 1 }}
+                      </div>
+                      <div class="relative">
+                        <select v-model="section.type"
+                          class="bg-gray-50 border border-gray-200 text-sm font-black text-navy rounded-xl px-5 py-2.5 outline-none focus:ring-2 focus:ring-primary/20 appearance-none pr-10">
+                          <option value="about">Tentang Kami (Text)</option>
+                          <option value="gallery">Galeri Foto</option>
+                          <option value="testimonials">Testimoni</option>
+                          <option value="faq">FAQ</option>
+                          <option value="hero">Promotion Banner</option>
+                        </select>
+                        <Icon icon="ph:caret-down-bold"
+                          class="absolute right-3 top-1/2 -translate-y-1/2 text-navy pointer-events-none" />
+                      </div>
+                    </div>
+                    <div class="flex gap-2">
+                      <button @click="moveSection(idx, -1)" :disabled="idx === 0"
+                        class="p-2.5 bg-gray-50 text-gray-400 hover:text-navy hover:bg-gray-100 rounded-xl disabled:opacity-20 transition-colors">
+                        <Icon icon="ph:arrow-up-bold" class="text-lg" />
+                      </button>
+                      <button @click="moveSection(idx, 1)" :disabled="idx === dynamicSections.length - 1"
+                        class="p-2.5 bg-gray-50 text-gray-400 hover:text-navy hover:bg-gray-100 rounded-xl disabled:opacity-20 transition-colors">
+                        <Icon icon="ph:arrow-down-bold" class="text-lg" />
+                      </button>
+                      <button @click="removeSection(idx)"
+                        class="p-2.5 bg-red-50 text-red-400 hover:text-red-600 hover:bg-red-100 rounded-xl transition-colors">
+                        <Icon icon="ph:trash-bold" class="text-lg" />
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Content Editor Based on Type -->
+                  <div class="grid grid-cols-1 gap-6 bg-gray-50/50 p-6 rounded-2xl border border-gray-50">
+                    <BaseInput v-model="section.title" label="Judul Section" placeholder="Masukkan judul utama..."
+                      class="!bg-white" />
+
+                    <div v-if="section.type === 'about'">
+                      <BaseTextarea v-model="section.content" label="Konten Paragraf" rows="5"
+                        placeholder="Tuliskan cerita detail atau visi misi klub..." class="!bg-white" />
+                    </div>
+
+                    <div v-else-if="section.type === 'gallery'" class="space-y-4">
+                      <div class="flex items-center justify-between">
+                        <label class="block text-sm font-bold text-gray-700">Media Galeri</label>
+                        <button @click="openMediaLibrary('section-gallery-' + idx)"
+                          class="text-xs font-black text-primary hover:underline flex items-center gap-1">
+                          <Icon icon="ph:plus-bold" /> Tambah dari Media
+                        </button>
+                      </div>
+                      <BaseTextarea v-model="section.images" rows="3" placeholder="Paste link gambar dipisahkan koma..."
+                        class="!bg-white text-xs font-mono" />
+                      <p class="text-[10px] text-gray-400 font-medium">Contoh: https://link1.jpg, https://link2.jpg</p>
+                    </div>
+
+                    <div v-else-if="section.type === 'testimonials'" class="space-y-4">
+                      <div v-for="(t, tIdx) in section.items" :key="tIdx"
+                        class="p-5 bg-white rounded-2xl border border-gray-100 shadow-sm flex flex-col gap-4 relative group">
+                        <button @click="section.items.splice(tIdx, 1)"
+                          class="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
+                          <Icon icon="ph:x-bold" />
+                        </button>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <BaseInput v-model="t.author" label="Nama Penulis" placeholder="Contoh: Coach Budi" />
+                          <BaseInput v-model="t.role" label="Jabatan/Status" placeholder="Contoh: Member Senior" />
+                        </div>
+                        <BaseTextarea v-model="t.text" label="Testimoni" rows="3"
+                          placeholder="Apa kata mereka tentang klub?" />
+                      </div>
+                      <button @click="section.items.push({ author: '', text: '', role: '' })"
+                        class="w-full py-4 border-2 border-dashed border-gray-200 rounded-2xl text-xs font-black text-navy hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2 uppercase tracking-widest">
+                        <Icon icon="ph:plus-bold" /> Tambah Testimoni
+                      </button>
+                    </div>
+
+                    <div v-else-if="section.type === 'faq'" class="space-y-4">
+                      <div v-for="(item, fIdx) in section.items" :key="fIdx"
+                        class="p-5 bg-white rounded-2xl border border-gray-100 shadow-sm space-y-4 relative group">
+                        <button @click="section.items.splice(fIdx, 1)"
+                          class="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
+                          <Icon icon="ph:x-bold" />
+                        </button>
+                        <BaseInput v-model="item.question" label="Pertanyaan" placeholder="Apa syarat bergabung?" />
+                        <BaseTextarea v-model="item.answer" label="Jawaban" rows="2"
+                          placeholder="Cukup membawa busur sendiri..." />
+                      </div>
+                      <button @click="section.items.push({ question: '', answer: '' })"
+                        class="w-full py-4 border-2 border-dashed border-gray-200 rounded-2xl text-xs font-black text-navy hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2 uppercase tracking-widest">
+                        <Icon icon="ph:plus-bold" /> Tambah FAQ Item
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </transition-group>
+
               <div v-if="!dynamicSections.length"
-                class="text-center py-10 border-2 border-dashed border-gray-100 rounded-2xl">
-                <Icon icon="ph:stack-light" class="text-4xl text-gray-200 mx-auto mb-2" />
-                <p class="text-sm text-gray-400">Belum ada konten tambahan. Klik "Tambah Section" untuk memperkaya
-                  profil klub Anda.</p>
+                class="text-center py-20 bg-gray-50/50 rounded-3xl border-2 border-dashed border-gray-100">
+                <div class="size-20 bg-white rounded-full flex items-center justify-center shadow-sm mx-auto mb-5">
+                  <Icon icon="ph:stack-light" class="text-4xl text-gray-200" />
+                </div>
+                <h4 class="text-navy font-black mb-1">Section Tambahan Masih Kosong</h4>
+                <p class="text-sm text-gray-400 max-w-sm mx-auto">Tambahkan section seperti FAQ, Testimoni, atau Galeri
+                  untuk mempercantik halaman publik Anda.</p>
               </div>
             </div>
           </div>
@@ -386,6 +460,40 @@
           <p v-else class="text-xs text-blue-300 italic">Slug URL belum diatur</p>
         </div>
       </div>
+
+      <!-- Side card -->
+      <div class="space-y-4">
+        <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-5">
+          <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
+            <Icon icon="ph:gear-six-bold" class="text-primary text-lg" /> Visibilitas Halaman
+          </h3>
+          <p class="text-xs text-gray-500 font-medium">Atur bagian mana yang dapat dilihat publik.</p>
+          <div class="space-y-4 pt-2">
+            <BaseCheckbox v-model="pageSettings.sections.identity" label="Identitas Klub" />
+            <BaseCheckbox v-model="pageSettings.sections.contact" label="Kontak & Sosmed" />
+            <BaseCheckbox v-model="pageSettings.sections.facilities" label="Fasilitas & Jadwal" />
+            <BaseCheckbox v-model="pageSettings.sections.schedules" label="Jadwal Latihan" />
+          </div>
+        </div>
+
+        <!-- Public Profile Link -->
+        <div
+          class="bg-gradient-to-br from-navy to-navy-light rounded-3xl p-6 text-white shadow-xl shadow-navy/20 relative overflow-hidden group">
+          <Icon icon="ph:broadcast-bold"
+            class="absolute -right-4 -top-4 text-8xl text-white/5 -rotate-12 group-hover:rotate-0 transition-transform duration-700" />
+          <h3 class="font-black mb-2 flex items-center gap-2 relative z-10">
+            Profil Publik
+            <Icon icon="ph:check-circle-fill" class="text-primary" />
+          </h3>
+          <p class="text-xs text-blue-200 mb-6 relative z-10 leading-relaxed font-medium">Profil Anda aktif dan dapat
+            diakses publik melalui URL unik Archery Hub.</p>
+          <NuxtLink v-if="form.slug" :to="`/clubs/${form.slug}`" target="_blank"
+            class="relative z-10 block w-full py-3.5 bg-primary text-navy font-black rounded-2xl text-center hover:bg-primary-hover hover:scale-[1.02] transition-all shadow-lg active:scale-95">
+            Lihat Halaman Publik
+          </NuxtLink>
+          <p v-else class="text-xs text-blue-300 italic relative z-10">Slug URL belum diatur</p>
+        </div>
+      </div>
     </div>
 
     <!-- Media Library Modal -->
@@ -414,6 +522,14 @@ const toast = useToast()
 
 const saving = ref(false)
 const facilityInput = ref('')
+const activeTab = ref('general')
+
+const tabs = [
+  { id: 'general', label: 'Info Umum', icon: 'ph:identification-badge-bold' },
+  { id: 'contact', label: 'Kontak & Sosmed', icon: 'ph:phone-bold' },
+  { id: 'facilities', label: 'Fasilitas & Jadwal', icon: 'ph:check-circle-bold' },
+  { id: 'content', label: 'Konten Tambahan', icon: 'ph:stack-bold' }
+]
 
 const pageSettings = reactive({
   sections: {
@@ -531,6 +647,14 @@ const handleMediaSelect = (media) => {
     form.logoUrl = media.url
   } else if (mediaTarget.value === 'banner') {
     form.bannerUrl = media.url
+  } else if (mediaTarget.value.startsWith('section-gallery-')) {
+    const idx = parseInt(mediaTarget.value.replace('section-gallery-', ''))
+    if (!isNaN(idx) && dynamicSections.value[idx]) {
+      const currentImages = dynamicSections.value[idx].images || ''
+      dynamicSections.value[idx].images = currentImages
+        ? `${currentImages}, ${media.url}`
+        : media.url
+    }
   }
   showMediaLibrary.value = false
 }

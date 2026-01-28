@@ -2,7 +2,8 @@
     <div class="min-h-screen bg-gray-50">
         <!-- Club Banner -->
         <section class="relative h-72 md:h-96 bg-gradient-to-br from-navy to-blue-900 overflow-hidden">
-            <img :src="club.bannerUrl || '/hero-club-detail-default.jpeg'" class="w-full h-full object-cover opacity-60" />
+            <img :src="club.bannerUrl || '/hero-club-detail-default.jpeg'"
+                class="w-full h-full object-cover opacity-60" />
             <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/50 to-transparent"></div>
 
             <!-- Back Button -->
@@ -71,26 +72,13 @@
                                     <Icon icon="ph:info-fill" class="text-lg" />
                                     Terdaftar di Klub {{ membership.club_name }}
                                 </div>
-                                <button class="p-3 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all">
+                                <button @click="shareClub"
+                                    class="p-3 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all h-full flex items-center justify-center">
                                     <Icon icon="ph:share-network-bold" class="text-xl text-gray-600" />
                                 </button>
                             </div>
                         </div>
 
-                        <!-- Stats Bar -->
-                        <div class="flex flex-wrap items-center gap-4 md:gap-8 mt-8 pt-8 border-t border-gray-100">
-                            <div class="text-center sm:text-left">
-                                <p class="text-2xl md:text-3xl font-black text-navy">{{ club.memberCount }}</p>
-                                <p class="text-[10px] md:text-sm text-gray-400 font-bold uppercase tracking-wide">
-                                    Anggota</p>
-                            </div>
-                            <div class="h-10 w-px bg-gray-200 hidden sm:block"></div>
-                            <div class="text-center sm:text-left">
-                                <p class="text-2xl md:text-3xl font-black text-navy">{{ club.achievements }}</p>
-                                <p class="text-[10px] md:text-sm text-gray-400 font-bold uppercase tracking-wide">
-                                    Prestasi</p>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -162,16 +150,63 @@
                             Anggota
                         </h2>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <div v-for="member in club.topMembers" :key="member.id"
+                            <div v-for="member in paginatedMembers" :key="member.id"
                                 class="text-center p-5 rounded-xl border-2 border-gray-100 hover:border-primary hover:bg-primary/5 transition-all cursor-pointer group">
                                 <div
-                                    class="w-18 h-18 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 mx-auto mb-4 flex items-center justify-center overflow-hidden">
-                                    <Icon icon="ph:user-bold"
+                                    class="w-18 h-18 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 mx-auto mb-4 flex items-center justify-center overflow-hidden border-2 border-white shadow-sm">
+                                    <img v-if="member.avatar" :src="getImageUrl(member.avatar)" :alt="member.name"
+                                        class="w-full h-full object-cover" />
+                                    <Icon v-else icon="ph:user-bold"
                                         class="text-3xl text-gray-400 group-hover:text-primary transition-colors" />
                                 </div>
                                 <h4 class="font-black text-navy text-sm group-hover:text-primary transition-colors">{{
                                     member.name }}</h4>
                                 <p class="text-xs text-gray-400 mt-1">{{ member.division }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Load More Members -->
+                        <div v-if="hasMoreMembers" class="mt-8 text-center">
+                            <button @click="loadMoreMembers"
+                                class="px-6 py-2.5 bg-gray-50 hover:bg-gray-100 text-gray-600 font-bold text-sm rounded-xl border border-gray-100 transition-all flex items-center gap-2 mx-auto">
+                                <Icon icon="ph:plus-bold" />
+                                Tampilkan Lebih Banyak
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Sections -->
+                    <div v-for="(section, sIdx) in club.sections" :key="sIdx"
+                        class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+                        <h2 class="font-black text-navy text-xl mb-5 flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                                <Icon
+                                    :icon="section.type === 'faq' ? 'ph:question-bold' : (section.type === 'gallery' ? 'ph:image-bold' : 'ph:info-bold')"
+                                    class="text-xl text-primary" />
+                            </div>
+                            {{ section.title }}
+                        </h2>
+
+                        <p v-if="section.content" class="text-gray-600 leading-relaxed mb-6">{{ section.content }}</p>
+
+                        <!-- Section: FAQ -->
+                        <div v-if="section.type === 'faq'" class="space-y-4">
+                            <div v-for="(item, iIdx) in section.items" :key="iIdx"
+                                class="p-5 bg-gray-50 rounded-xl border border-gray-100">
+                                <h4 class="font-black text-navy text-sm mb-2 flex items-center gap-2">
+                                    <Icon icon="ph:caret-right-bold" class="text-primary" />
+                                    {{ item.question }}
+                                </h4>
+                                <p class="text-gray-500 text-sm leading-relaxed">{{ item.answer }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Section: Gallery -->
+                        <div v-if="section.type === 'gallery'" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <div v-for="(img, iIdx) in (section.images ? section.images.split(',') : [])" :key="iIdx"
+                                class="aspect-square rounded-xl overflow-hidden bg-gray-100 border border-gray-100 group">
+                                <img :src="getImageUrl(img.trim())"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                             </div>
                         </div>
                     </div>
@@ -366,18 +401,45 @@ const parseSocialMedia = (data) => {
 
 // Helper function to get image URL (handles double /api/v1 issue)
 const getImageUrl = (url) => {
+    // Backend now provides full URLs, so just return as-is
     if (!url) return ''
-    // If already a full URL, return as is
-    if (url.startsWith('http://') || url.startsWith('https://')) {
-        return url
+    return url
+}
+
+// Share function
+const shareClub = async () => {
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                title: club.value.name,
+                text: club.value.description,
+                url: window.location.href,
+            })
+        } catch (err) {
+            console.error('Error sharing:', err)
+        }
+    } else {
+        // Fallback: Copy to clipboard
+        try {
+            await navigator.clipboard.writeText(window.location.href)
+            useToast().success('Link profil berhasil disalin!')
+        } catch (err) {
+            console.error('Error copying:', err)
+        }
     }
-    // Remove /api/v1 if it's already in the path
-    let cleanUrl = url
-    if (cleanUrl.startsWith('/api/v1/')) {
-        cleanUrl = cleanUrl.replace('/api/v1', '')
-    }
-    // Prepend base URL
-    return `${config.public.apiBaseUrl}${cleanUrl}`
+}
+
+// Member pagination
+const memberPage = ref(1)
+const itemsPerPage = 8
+const paginatedMembers = computed(() => {
+    return club.value.topMembers.slice(0, memberPage.value * itemsPerPage)
+})
+const hasMoreMembers = computed(() => {
+    return paginatedMembers.value.length < club.value.topMembers.length
+})
+const loadMoreMembers = () => {
+    memberPage.value++
 }
 
 // Transform API data to component format (SSR-computed)

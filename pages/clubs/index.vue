@@ -110,72 +110,83 @@
 
             <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <NuxtLink v-for="club in clubs" :key="club.uuid" :to="`/clubs/${club.slug}`"
-                    class="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-xl hover:border-primary/50 transition-all duration-300 flex flex-col pt-8">
+                    class="group bg-white rounded-3xl border border-gray-200 overflow-hidden hover:shadow-2xl hover:shadow-primary/10 hover:border-primary/40 transition-all duration-500 flex flex-col relative">
+
+                    <!-- Decorative Banner Background -->
+                    <div class="h-24 w-full bg-gradient-to-br from-navy-light to-navy relative overflow-hidden">
+                        <div class="absolute inset-0 opacity-20">
+                            <Icon icon="ph:target-bold"
+                                class="text-white text-6xl absolute -right-4 -top-4 rotate-12" />
+                            <Icon icon="ph:bow-arrow-bold"
+                                class="text-white text-4xl absolute -left-2 -bottom-2 -rotate-12" />
+                        </div>
+                    </div>
 
                     <!-- Club Logo Section -->
-                    <div class="flex justify-center mb-6 px-5">
+                    <div class="flex justify-center -mt-12 mb-4 px-5 relative z-10">
                         <div
-                            class="w-28 h-28 rounded-2xl bg-gray-50 border border-gray-100 p-0.5 shadow-sm overflow-hidden group-hover:scale-105 transition-transform duration-500">
-                            <img v-if="club.logo_url"
-                                :src="getImageUrl(club.logo_url)"
-                                :alt="club.name" class="w-full h-full object-cover" />
+                            class="w-24 h-24 rounded-2xl bg-white border-4 border-white shadow-md overflow-hidden group-hover:scale-105 transition-transform duration-500">
+                            <img v-if="club.logo_url" :src="getImageUrl(club.logo_url)" :alt="club.name"
+                                class="w-full h-full object-cover" />
                             <div v-else
                                 class="w-full h-full bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center">
-                                <span class="text-3xl font-black text-navy">{{ club.name.charAt(0) }}</span>
+                                <span class="text-2xl font-black text-navy">{{ club.name.charAt(0) }}</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Club Info -->
-                    <div class="px-6 pb-6 flex-1 flex flex-col">
-                        <div class="text-center mb-6">
-                            <h3
-                                class="font-black text-navy text-xl leading-tight mb-1 group-hover:text-primary transition-colors">
-                                {{ club.name }}
-                            </h3>
+                    <div class="px-6 pb-6 flex-1 flex flex-col text-center">
+                        <h3
+                            class="font-black text-navy text-xl leading-tight mb-1 group-hover:text-primary transition-colors">
+                            {{ club.name }}
+                        </h3>
+                        <div
+                            class="flex items-center justify-center gap-1.5 text-gray-500 text-xs font-bold uppercase tracking-wider mb-6">
+                            <Icon icon="ph:map-pin-bold" class="text-primary" />
+                            <span>{{ club.city || club.province || 'Indonesia' }}</span>
+                        </div>
+
+                        <!-- Info Grid -->
+                        <div class="grid grid-cols-2 gap-3 mb-6">
                             <div
-                                class="flex items-center justify-center gap-1.5 text-gray-400 text-sm font-bold uppercase tracking-wide">
-                                <Icon icon="ph:map-pin-bold" class="text-primary" />
-                                <span>{{ club.city || club.province || 'Indonesia' }}</span>
+                                class="bg-gray-50 rounded-2xl p-3 flex flex-col items-center justify-center border border-gray-100">
+                                <span
+                                    class="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1">Anggota</span>
+                                <span class="text-base font-black text-navy">{{ club.member_count || 0 }}</span>
+                            </div>
+                            <div
+                                class="bg-gray-50 rounded-2xl p-3 flex flex-col items-center justify-center border border-gray-100">
+                                <span
+                                    class="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1">Prestasi</span>
+                                <span class="text-base font-black text-navy">{{ club.achievements || 0 }}</span>
                             </div>
                         </div>
 
-                        <!-- Extra Info -->
-                        <div class="space-y-3 mb-6 flex-1">
-                            <div v-if="club.phone" class="flex items-center gap-3 text-sm text-gray-500 font-medium">
-                                <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center shrink-0">
-                                    <Icon icon="ph:phone-bold" class="text-primary" />
-                                </div>
-                                <span class="truncate">{{ club.phone }}</span>
-                            </div>
-                            <div v-if="club.social_instagram"
-                                class="flex items-center gap-3 text-sm text-gray-500 font-medium">
-                                <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center shrink-0">
-                                    <Icon icon="ph:instagram-logo-bold" class="text-primary" />
-                                </div>
-                                <span class="truncate">@{{ club.social_instagram }}</span>
-                            </div>
-                            <div v-else-if="club.member_count"
-                                class="flex items-center gap-3 text-sm text-gray-500 font-medium">
-                                <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center shrink-0">
-                                    <Icon icon="ph:users-bold" class="text-primary" />
-                                </div>
-                                <span>{{ club.member_count }} Members</span>
-                            </div>
-                        </div>
-
-                        <!-- Footer Actions -->
-                        <div class="pt-5 border-t border-gray-50 flex items-center justify-between">
+                        <!-- Footer -->
+                        <div class="mt-auto pt-5 border-t border-gray-100 flex items-center justify-between">
                             <div class="flex items-center gap-2">
                                 <div class="flex -space-x-2">
-                                    <div v-for="i in 3" :key="i"
-                                        class="w-6 h-6 rounded-full border-2 border-white bg-gray-200"></div>
+                                    <template v-if="club.member_avatars && club.member_avatars.length">
+                                        <img v-for="(avatar, idx) in club.member_avatars" :key="idx"
+                                            :src="getImageUrl(avatar)"
+                                            class="w-7 h-7 rounded-full border-2 border-white bg-gray-100 object-cover" />
+                                        <div v-if="club.member_count > 3"
+                                            class="w-7 h-7 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-[10px] font-black text-gray-400">
+                                            +{{ club.member_count - 3 }}
+                                        </div>
+                                    </template>
+                                    <template v-else>
+                                        <div v-for="i in 3" :key="i"
+                                            class="w-7 h-7 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-gray-300">
+                                            <Icon icon="ph:user-bold" class="text-xs" />
+                                        </div>
+                                    </template>
                                 </div>
-                                <span class="text-[10px] font-black text-gray-400 uppercase tracking-wider">+{{
-                                    club.member_count || 0 }} Join</span>
                             </div>
-                            <div class="text-primary group-hover:translate-x-1 transition-transform">
-                                <Icon icon="ph:arrow-right-bold" class="text-xl" />
+                            <div
+                                class="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center text-navy group-hover:bg-primary transition-all duration-300">
+                                <Icon icon="ph:arrow-right-bold" class="text-lg" />
                             </div>
                         </div>
                     </div>
@@ -274,18 +285,9 @@ const handlePageChange = (page) => {
 
 // Helper function to get image URL (handles double /api/v1 issue)
 const getImageUrl = (url) => {
+    // Backend now provides full URLs, so just return as-is
     if (!url) return ''
-    // If already a full URL, return as is
-    if (url.startsWith('http://') || url.startsWith('https://')) {
-        return url
-    }
-    // Remove /api/v1 if it's already in the path
-    let cleanUrl = url
-    if (cleanUrl.startsWith('/api/v1/')) {
-        cleanUrl = cleanUrl.replace('/api/v1', '')
-    }
-    // Prepend base URL
-    return `${config.public.apiBaseUrl}${cleanUrl}`
+    return url
 }
 
 // Watch filters to reset page
