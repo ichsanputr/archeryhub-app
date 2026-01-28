@@ -48,7 +48,8 @@
               <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Peserta /
                 Kategori</th>
               <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Status</th>
-              <th v-if="isArcher" class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Status Pendaftaran</th>
+              <th v-if="isArcher" class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">
+                Status Pendaftaran</th>
               <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest text-right">Aksi
               </th>
             </tr>
@@ -60,7 +61,7 @@
                 <div class="flex flex-col items-center justify-center gap-4">
                   <div class="h-12 w-12 border-4 border-primary border-t-transparent animate-spin rounded-full"></div>
                   <div class="flex flex-col gap-1">
-                    <p class="text-navy font-bold">Memasuki Arena...</p>
+                    <p class="text-navy font-bold">Memuat Event...</p>
                     <p class="text-xs text-gray-400 font-medium">Menyiapkan data kompetisi Anda</p>
                   </div>
                 </div>
@@ -149,12 +150,14 @@
                 <div class="flex flex-col gap-2">
                   <span :class="getAccreditationStatusClass(event.accreditation_status)"
                     class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider border">
-                    <span class="w-1.5 h-1.5 rounded-full" :class="getAccreditationStatusDotClass(event.accreditation_status)"></span>
+                    <span class="w-1.5 h-1.5 rounded-full"
+                      :class="getAccreditationStatusDotClass(event.accreditation_status)"></span>
                     {{ getAccreditationStatusLabel(event.accreditation_status) }}
                   </span>
                   <span :class="getPaymentStatusClass(event.payment_status)"
                     class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider border">
-                    <span class="w-1.5 h-1.5 rounded-full" :class="getPaymentStatusDotClass(event.payment_status)"></span>
+                    <span class="w-1.5 h-1.5 rounded-full"
+                      :class="getPaymentStatusDotClass(event.payment_status)"></span>
                     {{ getPaymentStatusLabel(event.payment_status) }}
                   </span>
                 </div>
@@ -185,17 +188,12 @@
                   </div>
                 </div>
                 <div v-else class="flex items-center justify-end gap-2">
-                  <BaseButton 
-                    v-if="event.accreditation_status !== 'approved' && event.participant_uuid"
-                    @click="confirmCancelRegistration(event)" 
-                    variant="outline" 
-                    size="sm" 
-                    class="h-9 font-bold text-red-600 hover:text-red-700 hover:border-red-300"
-                    icon="ph:x-circle">
+                  <BaseButton v-if="event.accreditation_status !== 'approved' && event.participant_uuid"
+                    @click="confirmCancelRegistration(event)" variant="outline" size="sm"
+                    class="h-9 font-bold text-red-600 hover:text-red-700 hover:border-red-300" icon="ph:x-circle">
                     Batalkan
                   </BaseButton>
-                  <NuxtLink 
-                    :to="`/events/${event.slug || event.id}`"
+                  <NuxtLink :to="`/events/${event.slug || event.id}`"
                     class="h-9 px-4 flex items-center justify-center rounded-lg border border-gray-200 hover:border-primary hover:bg-primary/5 text-gray-600 hover:text-primary transition-all font-bold text-sm">
                     <Icon icon="ph:eye" class="text-base mr-1.5" />
                     Lihat
@@ -272,7 +270,8 @@
             <div>
               <h3 class="text-xl font-bold text-navy">Batalkan Pendaftaran?</h3>
               <p class="text-gray-500 mt-2 text-sm leading-relaxed">
-                Apakah Anda yakin ingin membatalkan pendaftaran untuk event <span class="font-bold text-navy">{{ registrationToCancel?.name }}</span>?
+                Apakah Anda yakin ingin membatalkan pendaftaran untuk event <span class="font-bold text-navy">{{
+                  registrationToCancel?.name }}</span>?
                 Tindakan ini tidak dapat dibatalkan.
               </p>
             </div>
@@ -280,7 +279,8 @@
               <BaseButton variant="outline" class="flex-1" @click="showCancelDialog = false" :disabled="isCancelling">
                 Batal
               </BaseButton>
-              <BaseButton variant="danger" class="flex-1 bg-red-600 hover:bg-red-700 text-white" @click="cancelRegistration" :loading="isCancelling">
+              <BaseButton variant="danger" class="flex-1 bg-red-600 hover:bg-red-700 text-white"
+                @click="cancelRegistration" :loading="isCancelling">
                 <Icon icon="ph:x-circle" class="mr-2" />
                 Batalkan Pendaftaran
               </BaseButton>
@@ -503,7 +503,7 @@ const confirmCancelRegistration = (event) => {
 
 const cancelRegistration = async () => {
   if (!registrationToCancel.value?.participant_uuid) return
-  
+
   isCancelling.value = true
   try {
     await del(`/events/participants/${registrationToCancel.value.participant_uuid}`)

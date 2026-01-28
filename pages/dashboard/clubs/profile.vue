@@ -112,7 +112,7 @@
               <Icon icon="ph:image-bold" class="text-primary text-lg" /> Branding Visual
             </h3>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="space-y-8">
               <!-- Logo Upload -->
               <div class="space-y-4">
                 <label class="block text-sm font-black text-navy">Logo Klub</label>
