@@ -20,8 +20,10 @@
 
         <!-- Quick Stats -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+            <div
+                class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div
+                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:newspaper" class="text-xl" />
                 </div>
                 <div>
@@ -29,8 +31,10 @@
                     <p class="text-lg font-bold text-navy">{{ news.length }}</p>
                 </div>
             </div>
-            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+            <div
+                class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div
+                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:check-circle" class="text-xl" />
                 </div>
                 <div>
@@ -38,8 +42,10 @@
                     <p class="text-lg font-bold text-navy">{{news.filter(n => n.status === 'published').length}}</p>
                 </div>
             </div>
-            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+            <div
+                class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div
+                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:file-text" class="text-xl" />
                 </div>
                 <div>
@@ -47,14 +53,16 @@
                     <p class="text-lg font-bold text-navy">{{news.filter(n => n.status === 'draft').length}}</p>
                 </div>
             </div>
-            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+            <div
+                class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div
+                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:eye" class="text-xl" />
                 </div>
                 <div>
                     <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Total View</p>
                     <p class="text-lg font-bold text-navy">{{news.reduce((acc, n) => acc + n.views, 0).toLocaleString()
-                        }}</p>
+                    }}</p>
                 </div>
             </div>
         </div>
@@ -102,16 +110,6 @@
                             {{ item.category }}
                         </span>
                     </div>
-
-                    <!-- Status Badge -->
-                    <div class="absolute top-4 right-4">
-                        <span :class="[
-                            'px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider',
-                            item.status === 'published' ? 'bg-green-500 text-white' : 'bg-gray-400 text-white'
-                        ]">
-                            {{ item.status === 'published' ? 'Live' : 'Draft' }}
-                        </span>
-                    </div>
                 </div>
 
                 <!-- Content -->
@@ -143,12 +141,12 @@
 
                 <!-- Actions -->
                 <div class="px-6 py-4 bg-gray-50/50 border-t border-gray-100 flex gap-2">
-                    <NuxtLink :to="`/dashboard/news/${item.id}`" class="flex-1">
+                    <NuxtLink :to="`/dashboard/news/${item.slug}`" class="flex-1">
                         <BaseButton variant="white" size="sm" icon="ph:eye" block>
                             Lihat
                         </BaseButton>
                     </NuxtLink>
-                    <NuxtLink :to="`/dashboard/news/${item.id}/edit`" class="flex-1">
+                    <NuxtLink :to="`/dashboard/news/${item.slug}/edit`" class="flex-1">
                         <BaseButton variant="outline" size="sm" icon="ph:pencil-simple" block>
                             Edit
                         </BaseButton>
@@ -202,7 +200,7 @@ const categoryFilter = ref('all')
 const fetchNews = async () => {
     isLoading.value = true
     try {
-    const response = await get('/news/my')
+        const response = await get('/news/my')
         news.value = response.data || []
     } catch (error) {
         toast.error('Gagal mengambil data berita')

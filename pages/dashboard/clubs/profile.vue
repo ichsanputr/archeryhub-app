@@ -8,12 +8,6 @@
       </div>
       <div class="flex gap-3">
         <button
-          class="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-xl font-semibold text-sm text-navy shadow-sm hover:bg-gray-50 transition"
-          @click="resetForm">
-          <Icon icon="ph:arrow-counter-clockwise" class="text-lg" />
-          Reset
-        </button>
-        <button
           class="inline-flex items-center gap-2 px-4 py-2.5 bg-navy text-white rounded-xl font-semibold text-sm shadow-lg shadow-primary/20 hover:bg-navy-dark transition"
           :disabled="saving" @click="saveProfile">
           <LoadingSpinner v-if="saving" size="sm" />
@@ -102,14 +96,41 @@
               <BaseInput v-model="form.province" label="Provinsi" placeholder="DKI Jakarta" />
             </div>
             <BaseTextarea v-model="form.description" label="Deskripsi" rows="4"
-              placeholder="Ceritakan tentang klub, filosofi, dan layanan pelatihan." />
+              placeholder="Ceritakan tentang klub..." />
           </div>
 
-          <!-- Banner & Logo Upload -->
           <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-6">
             <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
-              <Icon icon="ph:image-bold" class="text-primary" /> Banner & Logo
+              <Icon icon="ph:image-bold" class="text-primary" /> Logo & Banner
             </h3>
+
+            <!-- Logo Upload -->
+            <div>
+              <label class="block text-sm font-bold text-gray-700 mb-2">Logo Klub</label>
+              <div class="flex items-start gap-4">
+                <div
+                  class="w-24 h-24 rounded-xl bg-gray-50 border-2 border-dashed border-gray-200 overflow-hidden flex items-center justify-center flex-shrink-0">
+                  <img v-if="form.logoUrl" :src="form.logoUrl" class="w-full h-full object-cover" />
+                  <Icon v-else icon="ph:user-circle-bold" class="text-4xl text-gray-300" />
+                </div>
+                <div class="flex-1 space-y-3">
+                  <div class="flex flex-wrap gap-2">
+                    <button type="button" @click="openMediaLibrary('logo')"
+                      class="flex items-center gap-2 px-4 py-2 bg-navy text-white text-sm font-bold rounded-lg hover:bg-navy-dark transition">
+                      <div class="flex items-center justify-center">
+                        <Icon icon="ph:image-bold" />
+                      </div>
+                      <div>Pilih Logo</div>
+                    </button>
+                    <button v-if="form.logoUrl" type="button" @click="form.logoUrl = ''"
+                      class="px-3 py-2 bg-red-50 text-red-600 text-sm font-bold rounded-lg hover:bg-red-100 transition">
+                      Hapus
+                    </button>
+                  </div>
+                  <p class="text-xs text-gray-400">Pilih dari galeri media atau upload logo baru.</p>
+                </div>
+              </div>
+            </div>
 
             <!-- Banner Upload -->
             <div>
@@ -124,45 +145,15 @@
                   </div>
                 </div>
                 <div class="mt-3 flex gap-2">
-                  <input type="file" ref="bannerInput" accept="image/*" class="hidden" @change="uploadBanner" />
-                  <button type="button" @click="$refs.bannerInput.click()"
+                  <button type="button" @click="openMediaLibrary('banner')"
                     class="flex items-center gap-2 px-4 py-2 bg-navy text-white text-sm font-bold rounded-lg hover:bg-navy-dark transition">
-                    <Icon icon="ph:upload-bold" class="mr-1" />
-                    <div>Upload</div>
+                    <Icon icon="ph:image-bold" class="mr-1" />
+                    <div>Pilih Banner</div>
                   </button>
                   <button v-if="form.bannerUrl" type="button" @click="form.bannerUrl = ''"
                     class="flex items-center gap-2 px-3 py-2 bg-red-50 text-red-600 text-sm font-bold rounded-lg hover:bg-red-100 transition">
                     <div>Hapus</div>
                   </button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Logo Upload -->
-            <div>
-              <label class="block text-sm font-bold text-gray-700 mb-2">Logo Klub</label>
-              <div class="flex items-start gap-4">
-                <div
-                  class="w-24 h-24 rounded-xl bg-gray-50 border-2 border-dashed border-gray-200 overflow-hidden flex items-center justify-center flex-shrink-0">
-                  <img v-if="form.logoUrl" :src="form.logoUrl" class="w-full h-full object-cover" />
-                  <Icon v-else icon="ph:user-circle-bold" class="text-4xl text-gray-300" />
-                </div>
-                <div class="flex-1 space-y-3">
-                  <input type="file" ref="logoInput" accept="image/*" class="hidden" @change="uploadLogo" />
-                  <div class="flex flex-wrap gap-2">
-                    <button type="button" @click="$refs.logoInput.click()"
-                      class="flex items-center gap-2 px-4 py-2 bg-navy text-white text-sm font-bold rounded-lg hover:bg-navy-dark transition">
-                      <div class="flex items-center justify-center">
-                        <Icon icon="ph:upload-bold" />
-                      </div>
-                      <div>Upload Logo</div>
-                    </button>
-                    <button v-if="form.logoUrl" type="button" @click="form.logoUrl = ''"
-                      class="px-3 py-2 bg-red-50 text-red-600 text-sm font-bold rounded-lg hover:bg-red-100 transition">
-                      Hapus
-                    </button>
-                  </div>
-                  <p class="text-xs text-gray-400">Format: JPG, PNG. Maksimal 2MB</p>
                 </div>
               </div>
             </div>
@@ -406,6 +397,9 @@
         </div>
       </div>
     </div>
+
+    <!-- Media Library Modal -->
+    <MediaLibrary :show="showMediaLibrary" @close="showMediaLibrary = false" @select="handleMediaSelect" />
   </div>
 </template>
 
@@ -543,45 +537,22 @@ const handleCityBlur = () => {
   }, 200)
 }
 
-// Upload handlers
-const uploadBanner = async (event) => {
-  const file = event.target.files[0]
-  if (!file) return
+// Media Library
+const showMediaLibrary = ref(false)
+const mediaTarget = ref('') // 'logo' or 'banner'
 
-  try {
-    const formData = new FormData()
-    formData.append('file', file)
-    formData.append('type', 'banner')
-
-    const response = await upload('/upload', formData)
-    if (response?.url) {
-      form.bannerUrl = response.url
-      toast.success('Banner berhasil diupload!')
-    }
-  } catch (error) {
-    console.error('Upload error:', error)
-    toast.error('Gagal upload banner')
-  }
+const openMediaLibrary = (target) => {
+  mediaTarget.value = target
+  showMediaLibrary.value = true
 }
 
-const uploadLogo = async (event) => {
-  const file = event.target.files[0]
-  if (!file) return
-
-  try {
-    const formData = new FormData()
-    formData.append('file', file)
-    formData.append('type', 'logo')
-
-    const response = await upload('/upload', formData)
-    if (response?.url) {
-      form.logoUrl = response.url
-      toast.success('Logo berhasil diupload!')
-    }
-  } catch (error) {
-    console.error('Upload error:', error)
-    toast.error('Gagal upload logo')
+const handleMediaSelect = (media) => {
+  if (mediaTarget.value === 'logo') {
+    form.logoUrl = media.url
+  } else if (mediaTarget.value === 'banner') {
+    form.bannerUrl = media.url
   }
+  showMediaLibrary.value = false
 }
 
 // Social media handlers

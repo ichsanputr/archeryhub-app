@@ -2,12 +2,12 @@
     <div class="relative h-screen bg-navy text-slate-900 font-display antialiased flex overflow-hidden">
         <!-- Background Hero (Full screen on mobile, absolute behind) -->
         <div class="absolute inset-0 z-0 lg:w-1/2 lg:relative lg:flex overflow-hidden flex-col justify-end">
-            <div class="absolute inset-0 z-0">
-                <img alt="Archery action shot"
-                    class="w-full h-full object-cover mix-blend-overlay opacity-40 lg:opacity-50"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuByxS8LZ93pBQXI_V_Vu3nB0633lwPZGiFCM3UtI-xk79b_O83ASmlHYA36lOzcnmVsbgs4DEe9awj543MvzCN1yzOo1wZ3ViXLdiMRV7vAMdy66lvu-l5dpFAOgZ0uCMKJxsBRXPJL1QeX4_ZdX2ynTEZR-ZMilrncma7gKG2YK0vsj0KJZnw_lD0UZaXFKW2aVFD1SU-mzi_sAT2D-62TP0j5LF6KprFriv2sV9rdypqLSvfrZekYDy45XaK8F1vVh7e5nfrgK7o" />
-                <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/60 to-transparent"></div>
+            <div v-for="(slide, index) in slides" :key="index"
+                class="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+                :class="currentSlideIndex === index ? 'opacity-40 lg:opacity-50' : 'opacity-0'">
+                <img :src="slide" :alt="'Slide ' + (index + 1)" class="w-full h-full object-cover mix-blend-overlay" />
             </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/60 to-transparent"></div>
 
             <!-- Content only visible on desktop -->
             <div class="hidden lg:block relative z-10 p-16 max-w-2xl">
@@ -38,7 +38,7 @@
                             class="w-8 h-8 rounded-full border-2 border-navy bg-slate-700 flex items-center justify-center text-[10px] text-white">
                             +2k</div>
                     </div>
-                    <span>Atlet udah gabung di Archeryhub.id</span>
+                    <span>Pemanah udah gabung di Archeryhub.id</span>
                 </div>
             </div>
         </div>
@@ -180,7 +180,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, onMounted, computed, watch } from 'vue'
+import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useFormValidation } from '~/composables/useFormValidation'
 import { useApi } from '~/composables/useApi'
@@ -199,6 +199,16 @@ const userTypes = [
 ]
 
 const { errors, validate, validateForm, rules } = useFormValidation()
+
+const slides = ['/slide-1.jpeg', '/slide-2.jpeg', '/slide-3.jpeg']
+const currentSlideIndex = ref(0)
+let slideInterval = null
+
+const startSlideshow = () => {
+    slideInterval = setInterval(() => {
+        currentSlideIndex.value = (currentSlideIndex.value + 1) % slides.length
+    }, 2000)
+}
 
 // Get initial user type from query param
 const getInitialUserType = () => {
@@ -261,6 +271,14 @@ watch(() => form.value.userType, () => {
     if (name.length >= 3) {
         checkNameUnique(name)
     }
+})
+
+onMounted(() => {
+    startSlideshow()
+})
+
+onUnmounted(() => {
+    if (slideInterval) clearInterval(slideInterval)
 })
 
 const getName = () => {

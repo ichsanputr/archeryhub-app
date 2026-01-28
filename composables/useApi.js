@@ -16,12 +16,16 @@ export const useApi = () => {
    * @returns {Object} Fetch options with proper cookie handling
    */
   const createFetchOptions = (options = {}) => {
+    const isFormData = options.body instanceof FormData
+
+    const defaultHeaders = {
+      ...(!isFormData && { 'Content-Type': 'application/json' }),
+      ...options.headers
+    }
+
     const defaultOptions = {
       baseURL: apiBaseUrl,
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers
-      },
+      headers: defaultHeaders,
       ...options
     }
 
@@ -117,12 +121,33 @@ export const useApi = () => {
     return await apiCall(url, { method: 'DELETE', ...options })
   }
 
+  /**
+   * Makes a POST request with FormData (for file uploads)
+   * @param {string} url - The API endpoint URL
+   * @param {FormData} formData - The form data object
+   * @param {Object} options - Additional fetch options
+   * @returns {Promise} The API response
+   */
+  const upload = async (url, formData, options = {}) => {
+    return await apiCall(url, {
+      method: 'POST',
+      body: formData,
+      ...options,
+      headers: {
+        // multipart/form-data should not have Content-Type: application/json
+        // Fetch will set it automatically with the boundary
+        ...options.headers
+      }
+    })
+  }
+
   return {
     createFetchOptions,
     apiCall,
     get,
     post,
     put,
+    upload,
     delete: del
   }
 }

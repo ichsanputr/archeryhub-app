@@ -8,10 +8,10 @@
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
                     <NuxtLink to="/dashboard/news" class="hover:text-primary transition-colors">Berita</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <span class="text-navy">Buat Baru</span>
+                    <span class="text-navy">Edit</span>
                 </div>
-                <h1 class="text-3xl font-extrabold text-navy tracking-tight">Buat Berita Baru</h1>
-                <p class="text-gray-500 font-medium mt-1">Tulis dan publikasikan berita untuk organisasi Anda.</p>
+                <h1 class="text-3xl font-extrabold text-navy tracking-tight">Edit Berita</h1>
+                <p class="text-gray-500 font-medium mt-1">Perbarui konten berita Anda.</p>
             </div>
         </div>
 
@@ -29,7 +29,7 @@
                         <img v-if="form.imageURL" :src="form.imageURL" class="w-full h-full object-cover" />
                         <div v-else class="absolute inset-0 flex flex-col items-center justify-center gap-3">
                             <div class="h-16 w-16 rounded-2xl bg-gray-100 flex items-center justify-center">
-                                <Icon icon="ph:image-bold" class="text-3xl text-gray-400" />
+                                <Icon icon="ph:upload-simple" class="text-3xl text-gray-400" />
                             </div>
                             <div class="text-center">
                                 <p class="font-bold text-navy">Klik untuk pilih gambar</p>
@@ -38,9 +38,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Media Library Modal -->
-                <MediaLibrary :show="showMediaLibrary" @close="showMediaLibrary = false" @select="handleMediaSelect" />
 
                 <!-- Basic Info -->
                 <div class="p-8 border-b border-gray-100 space-y-6">
@@ -75,100 +72,49 @@
                         Konten Berita
                     </h3>
 
-                    <!-- Rich Text Toolbar -->
-                    <div class="flex items-center gap-1 p-2 bg-gray-50 rounded-t-xl border border-gray-200 border-b-0">
-                        <button type="button" class="p-2 hover:bg-white rounded-lg transition-colors" title="Bold">
-                            <Icon icon="ph:text-b-bold" class="text-gray-600" />
-                        </button>
-                        <button type="button" class="p-2 hover:bg-white rounded-lg transition-colors" title="Italic">
-                            <Icon icon="ph:text-italic-bold" class="text-gray-600" />
-                        </button>
-                        <button type="button" class="p-2 hover:bg-white rounded-lg transition-colors" title="Underline">
-                            <Icon icon="ph:text-underline-bold" class="text-gray-600" />
-                        </button>
-                        <div class="w-px h-6 bg-gray-200 mx-1"></div>
-                        <button type="button" class="p-2 hover:bg-white rounded-lg transition-colors" title="Heading">
-                            <Icon icon="ph:text-h-bold" class="text-gray-600" />
-                        </button>
-                        <button type="button" class="p-2 hover:bg-white rounded-lg transition-colors" title="List">
-                            <Icon icon="ph:list-bullets-bold" class="text-gray-600" />
-                        </button>
-                        <button type="button" class="p-2 hover:bg-white rounded-lg transition-colors" title="Link">
-                            <Icon icon="ph:link-bold" class="text-gray-600" />
-                        </button>
-                        <div class="w-px h-6 bg-gray-200 mx-1"></div>
-                        <button type="button" class="p-2 hover:bg-white rounded-lg transition-colors" title="Image">
-                            <Icon icon="ph:image-bold" class="text-gray-600" />
-                        </button>
-                        <button type="button" class="p-2 hover:bg-white rounded-lg transition-colors" title="Video">
-                            <Icon icon="ph:video-bold" class="text-gray-600" />
-                        </button>
-                    </div>
-
                     <textarea v-model="form.content"
-                        class="w-full px-6 py-4 rounded-b-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none min-h-[400px] text-gray-700 leading-relaxed"
+                        class="w-full px-6 py-4 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none min-h-[400px] text-gray-700 leading-relaxed"
                         placeholder="Tulis konten berita Anda di sini..."></textarea>
-                </div>
-
-                <!-- SEO Settings -->
-                <div class="p-8 border-b border-gray-100">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-lg font-bold text-navy flex items-center gap-2">
-                            <Icon icon="ph:magnifying-glass" class="text-primary" />
-                            Pengaturan SEO
-                        </h3>
-                        <span class="text-xs text-gray-400 bg-gray-100 px-2 py-1 rounded-full">Opsional</span>
-                    </div>
-
-                    <div class="space-y-4">
-                        <BaseInput v-model="form.metaTitle" label="Meta Title"
-                            placeholder="Judul untuk mesin pencari..." />
-                        <div>
-                            <label class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">
-                                Meta Description
-                            </label>
-                            <textarea v-model="form.metaDescription"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
-                                rows="2" placeholder="Deskripsi singkat untuk hasil pencarian..."></textarea>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Actions -->
                 <div class="p-8 bg-gray-50/50 flex items-center justify-between gap-4">
                     <NuxtLink to="/dashboard/news">
                         <BaseButton variant="white" icon="ph:arrow-left">
-                            Kembali
+                            Batal
                         </BaseButton>
                     </NuxtLink>
                     <div class="flex items-center gap-3">
-                        <BaseButton variant="outline" type="button" icon="ph:eye" @click="previewNews">
-                            Preview
-                        </BaseButton>
-                        <BaseButton variant="gold" type="submit" icon="ph:paper-plane-tilt" :loading="isSubmitting">
-                            {{ form.status === 'published' ? 'Publikasikan' : 'Simpan Draft' }}
+                        <BaseButton variant="gold" type="submit" icon="ph:floppy-disk" :loading="isSubmitting">
+                            {{ form.status === 'published' ? 'Perbarui & Publikasikan' : 'Simpan Perubahan' }}
                         </BaseButton>
                     </div>
                 </div>
             </form>
         </div>
+
+        <!-- Media Library Modal -->
+        <MediaLibrary :show="showMediaLibrary" @close="showMediaLibrary = false" @select="handleMediaSelect" />
     </div>
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useToast } from '~/composables/useToast'
+import { useApi } from '~/composables/useApi'
 
 definePageMeta({
-    title: 'Buat Berita',
+    title: 'Edit Berita',
     layout: 'dashboard'
 })
 
-const { post } = useApi()
+const route = useRoute()
 const router = useRouter()
 const toast = useToast()
+const { get, put } = useApi()
+
 const isSubmitting = ref(false)
 const showMediaLibrary = ref(false)
 
@@ -183,15 +129,6 @@ const form = ref({
     metaDescription: ''
 })
 
-const openMediaLibrary = () => {
-    showMediaLibrary.value = true
-}
-
-const handleMediaSelect = (media) => {
-    form.value.imageURL = media.url
-    showMediaLibrary.value = false
-}
-
 const categoryOptions = [
     { title: 'Event', value: 'event' },
     { title: 'Pengumuman', value: 'pengumuman' },
@@ -201,11 +138,37 @@ const categoryOptions = [
 
 const statusOptions = [
     { title: 'Draft', value: 'draft' },
-    { title: 'Publikasikan', value: 'published' }
+    { title: 'Publikasi', value: 'published' }
 ]
 
-const previewNews = () => {
-    toast.info('Preview belum tersedia')
+const loadNews = async () => {
+    try {
+        const response = await get(`/news/${route.params.slug}`)
+        if (response) {
+            form.value = {
+                title: response.title || '',
+                category: response.category || 'pengumuman',
+                status: response.status || 'draft',
+                excerpt: response.excerpt || '',
+                content: response.content || '',
+                imageURL: response.image_url || '',
+                metaTitle: response.meta_title || '',
+                metaDescription: response.meta_description || ''
+            }
+        }
+    } catch (error) {
+        toast.error('Gagal memuat data berita')
+        router.push('/dashboard/news')
+    }
+}
+
+const openMediaLibrary = () => {
+    showMediaLibrary.value = true
+}
+
+const handleMediaSelect = (media) => {
+    form.value.imageURL = media.url
+    showMediaLibrary.value = false
 }
 
 const submitNews = async () => {
@@ -228,14 +191,18 @@ const submitNews = async () => {
             meta_description: form.value.metaDescription
         }
 
-        await post('/news', payload)
+        await put(`/news/${route.params.slug}`, payload)
 
-        toast.success(form.value.status === 'published' ? 'Berita berhasil dipublikasikan!' : 'Draft berhasil disimpan!')
+        toast.success('Berita berhasil diperbarui!')
         router.push('/dashboard/news')
     } catch (error) {
-        toast.error('Gagal menyimpan berita')
+        toast.error('Gagal memperbarui berita')
     } finally {
         isSubmitting.value = false
     }
 }
+
+onMounted(() => {
+    loadNews()
+})
 </script>

@@ -27,8 +27,8 @@
           class="font-black text-sm transition-colors px-3 py-1.5 rounded-lg">Berita</NuxtLink>
       </nav>
 
-      <!-- Event Manage Mode: Back Button + Event Name -->
-      <div v-if="isEventManageMode" class="hidden md:flex items-center gap-4 flex-1">
+      <!-- Event Manage Mode (For Orgs/Admins) -->
+      <div v-if="isEventManageMode && user?.role !== 'club'" class="hidden md:flex items-center gap-4 flex-1">
         <NuxtLink to="/dashboard/events"
           class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-600 hover:text-navy shrink-0">
           <Icon icon="ph:arrow-left" class="text-xl" />
@@ -40,15 +40,29 @@
         </h1>
       </div>
 
-      <!-- Dashboard Title (only in dashboard mode, not in manage mode) -->
-      <div v-else-if="isDashboard" class="hidden md:flex items-center gap-3 mr-4">
+      <!-- Dashboard Context: Club Name replaced Search -->
+      <div v-if="isDashboard && user?.role === 'club'" class="hidden md:flex items-center gap-3">
+        <div class="h-8 w-px bg-gray-200 mx-2"></div>
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+            <Icon icon="ph:shield-check-fill" class="text-primary text-xl" />
+          </div>
+          <h2 class="text-lg font-black text-navy truncate max-w-sm">
+            {{ user?.full_name || 'Klub Panahan' }}
+          </h2>
+        </div>
+      </div>
+
+      <!-- Dashboard Title (only for non-clubs in general dashboard mode) -->
+      <div v-else-if="isDashboard && user?.role !== 'club' && !isEventManageMode"
+        class="hidden md:flex items-center gap-3 mr-4">
         <h1 class="text-lg font-black text-navy whitespace-nowrap">
           {{ dashboardTitle }}
         </h1>
       </div>
 
-      <!-- Search Bar (hidden in event manage mode) -->
-      <div v-if="!isEventManageMode" class="max-w-xs xl:max-w-md w-full hidden md:block">
+      <!-- Search Bar (hidden in event manage mode and for clubs) -->
+      <div v-else-if="!isEventManageMode && user?.role !== 'club'" class="max-w-xs xl:max-w-md w-full hidden md:block">
         <div :class="[
           isScrolled || !transparent
             ? 'bg-gray-100 dark:bg-surface-highlight border-transparent'

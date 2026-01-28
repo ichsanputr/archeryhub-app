@@ -5,9 +5,9 @@
       <!-- Club Header -->
       <div class="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 class="text-3xl font-black text-navy tracking-tight">Overview Klub</h1>
-          <p class="text-gray-500 mt-1 font-medium">Selamat datang kembali, <span class="text-navy font-bold">{{
-            user?.full_name }}</span></p>
+          <h1 class="text-3xl font-black text-navy tracking-tight">{{ user?.full_name || 'Panel Kontrol Klub' }}</h1>
+          <p class="text-gray-500 mt-1 font-medium">Monitoring performa dan manajemen anggota klub Anda secara
+            real-time.</p>
         </div>
         <div class="flex gap-3">
           <NuxtLink to="/dashboard/members">

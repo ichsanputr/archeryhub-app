@@ -2,10 +2,13 @@
     <div class="relative h-screen bg-navy text-slate-900 font-display antialiased flex overflow-hidden">
         <!-- Background Hero (Full screen on mobile, absolute behind) -->
         <div class="absolute inset-0 z-0 lg:w-1/2 lg:relative lg:flex overflow-hidden flex-col justify-end">
-            <div class="absolute inset-0 z-0">
-                <img alt="Archery action shot"
-                    class="w-full h-full object-cover mix-blend-overlay opacity-40 lg:opacity-50"
-                    :src="useImageOrDefault()" />
+            <div class="absolute inset-0 z-0 h-full w-full">
+                <div v-for="(slide, index) in slides" :key="index"
+                    class="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+                    :class="currentSlideIndex === index ? 'opacity-40 lg:opacity-50' : 'opacity-0'">
+                    <img :src="slide" :alt="'Slide ' + (index + 1)"
+                        class="w-full h-full object-cover mix-blend-overlay" />
+                </div>
                 <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/60 to-transparent"></div>
             </div>
 
@@ -37,7 +40,7 @@
                             class="w-8 h-8 rounded-full border-2 border-navy bg-slate-700 flex items-center justify-center text-[10px] text-white">
                             +2k</div>
                     </div>
-                    <span>Atlet udah gabung di Archeryhub.id</span>
+                    <span>Pemanah udah gabung di Archeryhub.id</span>
                 </div>
             </div>
         </div>
@@ -117,7 +120,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 import { useFormValidation } from '~/composables/useFormValidation'
@@ -132,6 +135,16 @@ const isLoading = ref(false)
 
 const { errors, validate, validateForm, rules } = useFormValidation()
 
+const slides = ['/slide-1.jpeg', '/slide-2.jpeg', '/slide-3.jpeg']
+const currentSlideIndex = ref(0)
+let slideInterval = null
+
+const startSlideshow = () => {
+    slideInterval = setInterval(() => {
+        currentSlideIndex.value = (currentSlideIndex.value + 1) % slides.length
+    }, 2000)
+}
+
 const form = ref({
     email: '',
     password: '',
@@ -140,6 +153,8 @@ const form = ref({
 
 // Redirect if already logged in or auto-fill in development
 onMounted(async () => {
+    startSlideshow()
+
     if (isLoggedIn.value) {
         const redirect = route.query.redirect || '/'
         router.replace(redirect)
@@ -225,6 +240,10 @@ const handleGoogleLogin = async () => {
         isLoading.value = false
     }
 }
+
+onUnmounted(() => {
+    if (slideInterval) clearInterval(slideInterval)
+})
 </script>
 
 <style scoped>

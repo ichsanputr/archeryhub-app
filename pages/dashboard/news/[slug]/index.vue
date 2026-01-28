@@ -13,7 +13,7 @@
                 <h1 class="text-3xl font-extrabold text-navy tracking-tight">{{ article.title }}</h1>
             </div>
             <div class="flex items-center gap-3">
-                <NuxtLink :to="`/dashboard/news/${route.params.id}/edit`">
+                <NuxtLink :to="`/dashboard/news/${route.params.slug}/edit`">
                     <BaseButton variant="outline" icon="ph:pencil-simple">
                         Edit
                     </BaseButton>
@@ -104,15 +104,6 @@
                     </h3>
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
-                            <span class="text-sm text-gray-500">Status</span>
-                            <span :class="[
-                                'px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider',
-                                article.status === 'published' ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-gray-500'
-                            ]">
-                                {{ article.status === 'published' ? 'Dipublikasi' : 'Draft' }}
-                            </span>
-                        </div>
-                        <div class="flex items-center justify-between">
                             <span class="text-sm text-gray-500">Dibuat</span>
                             <span class="text-sm font-medium text-gray-700">{{ article.createdAt }}</span>
                         </div>
@@ -191,7 +182,7 @@ const toast = useToast()
 
 // Dummy article data
 const article = ref({
-    id: route.params.id,
+    slug: route.params.slug,
     title: 'Kejuaraan Nasional Panahan 2024 Resmi Dibuka',
     excerpt: 'Kejuaraan nasional panahan tahun 2024 resmi dibuka dengan diikuti oleh lebih dari 500 atlet dari seluruh Indonesia.',
     content: `
