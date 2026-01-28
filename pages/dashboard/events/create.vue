@@ -443,8 +443,8 @@ const handleSubmit = async () => {
     }
   } catch (error) {
     console.error('Failed to create tournament:', error)
-    const errorDetail = error.response?._data?.details || error.message || 'Terjadi kesalahan sistem'
-    toast.error(`Gagal membuat event: ${errorDetail}`)
+    const errorMessage = error?.data?.error || error?.response?.data?.error || error?.response?._data?.error || error?.message || 'Gagal membuat event'
+    toast.error(errorMessage)
   } finally {
     isSubmitting.value = false
   }

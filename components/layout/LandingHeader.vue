@@ -54,40 +54,36 @@
                                             </div>
                                         </div>
 
-                                        <!-- Categories & Links -->
+                                        <!-- Latest Events -->
                                         <div class="col-span-7 p-6">
-                                            <div class="grid grid-cols-1 gap-6">
-                                                <div>
-                                                    <div class="flex items-center justify-between mb-3">
+                                            <div class="flex items-center justify-between mb-3">
+                                                <span
+                                                    class="text-gray-400 text-xs font-bold uppercase tracking-wider">Event
+                                                    Terakhir</span>
+                                                <NuxtLink to="/events"
+                                                    class="text-navy hover:text-primary text-xs font-bold transition-colors">
+                                                    Lihat
+                                                    Semua</NuxtLink>
+                                            </div>
+                                            <div class="space-y-2">
+                                                <NuxtLink v-for="event in latestEvents.slice(0, 5)" :key="event.id"
+                                                    :to="`/events/${event.slug || event.id}`"
+                                                    class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors group">
+                                                    <div
+                                                        class="w-10 h-10 rounded-lg bg-gray-100 overflow-hidden flex-shrink-0">
+                                                        <img :src="event.image"
+                                                            class="w-full h-full object-cover" />
+                                                    </div>
+                                                    <div class="flex-1 min-w-0">
                                                         <span
-                                                            class="text-gray-400 text-xs font-bold uppercase tracking-wider">Event
-                                                            Terbaru</span>
-                                                        <NuxtLink to="/events"
-                                                            class="text-navy hover:text-primary text-xs font-bold transition-colors">
-                                                            Lihat
-                                                            Semua</NuxtLink>
+                                                            class="block text-navy font-semibold text-sm group-hover:text-primary transition-colors truncate">
+                                                            {{ event.name }}
+                                                        </span>
+                                                        <span
+                                                            class="block text-gray-400 text-[10px] font-medium">{{
+                                                                event.location }} • {{ event.date }}</span>
                                                     </div>
-                                                    <div class="space-y-2">
-                                                        <NuxtLink v-for="event in latestEvents" :key="event.id"
-                                                            :to="`/events/${event.slug || event.id}`"
-                                                            class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors group">
-                                                            <div
-                                                                class="w-10 h-10 rounded-lg bg-gray-100 overflow-hidden flex-shrink-0">
-                                                                <img :src="event.image"
-                                                                    class="w-full h-full object-cover" />
-                                                            </div>
-                                                            <div class="flex-1 min-w-0">
-                                                                <span
-                                                                    class="block text-navy font-semibold text-sm group-hover:text-primary transition-colors truncate">
-                                                                    {{ event.name }}
-                                                                </span>
-                                                                <span
-                                                                    class="block text-gray-400 text-[10px] font-medium">{{
-                                                                        event.location }} • {{ event.date }}</span>
-                                                            </div>
-                                                        </NuxtLink>
-                                                    </div>
-                                                </div>
+                                                </NuxtLink>
                                             </div>
                                         </div>
                                     </div>

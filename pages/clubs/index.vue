@@ -117,7 +117,7 @@
                         <div
                             class="w-28 h-28 rounded-2xl bg-gray-50 border border-gray-100 p-0.5 shadow-sm overflow-hidden group-hover:scale-105 transition-transform duration-500">
                             <img v-if="club.logo_url"
-                                :src="club.logo_url.startsWith('http') ? club.logo_url : `${config.public.apiBaseUrl}${club.logo_url}`"
+                                :src="getImageUrl(club.logo_url)"
                                 :alt="club.name" class="w-full h-full object-cover" />
                             <div v-else
                                 class="w-full h-full bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center">
@@ -270,6 +270,22 @@ const locations = [
 const handlePageChange = (page) => {
     currentPage.value = page
     window.scrollTo({ top: 400, behavior: 'smooth' })
+}
+
+// Helper function to get image URL (handles double /api/v1 issue)
+const getImageUrl = (url) => {
+    if (!url) return ''
+    // If already a full URL, return as is
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+        return url
+    }
+    // Remove /api/v1 if it's already in the path
+    let cleanUrl = url
+    if (cleanUrl.startsWith('/api/v1/')) {
+        cleanUrl = cleanUrl.replace('/api/v1', '')
+    }
+    // Prepend base URL
+    return `${config.public.apiBaseUrl}${cleanUrl}`
 }
 
 // Watch filters to reset page

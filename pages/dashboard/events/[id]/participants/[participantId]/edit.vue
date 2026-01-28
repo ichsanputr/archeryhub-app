@@ -280,7 +280,8 @@ const fetchParticipant = async () => {
         }
     } catch (error) {
         console.error('Failed to fetch participant:', error)
-        toast.error('Gagal memuat data peserta')
+        const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || 'Gagal memuat data peserta'
+        toast.error(errorMessage)
     } finally {
         isLoading.value = false
     }
@@ -325,7 +326,8 @@ const handleSubmit = async () => {
         router.push(`/dashboard/events/${eventId}/participants`)
     } catch (error) {
         console.error('Failed to update participant:', error)
-        toast.error(error.response?.data?.error || 'Gagal mengupdate peserta')
+        const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || 'Gagal mengupdate peserta'
+        toast.error(errorMessage)
     } finally {
         isSubmitting.value = false
     }

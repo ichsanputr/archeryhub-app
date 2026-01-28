@@ -304,9 +304,10 @@ definePageMeta({
 })
 
 const { user } = useAuth()
-const { get } = useApi()
+const { get, del } = useApi()
 const router = useRouter()
 const { setEvent, clearEvent } = useEventContext()
+const toast = useToast()
 const searchQuery = ref('')
 const statusFilter = ref('')
 const events = ref([])
@@ -335,6 +336,8 @@ const fetchEvents = async () => {
     events.value = response?.events || []
   } catch (error) {
     console.error('Failed to fetch events:', error)
+    const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || 'Gagal memuat daftar event'
+    toast.error(errorMessage)
   } finally {
     isLoading.value = false
   }
@@ -485,8 +488,6 @@ const closeDropdown = (eventId) => {
 }
 
 // Delete event functionality
-const { del } = useApi()
-const { toast } = useToast()
 const showDeleteDialog = useState('show-delete-dialog', () => false)
 const eventToDelete = ref(null)
 
@@ -512,7 +513,8 @@ const cancelRegistration = async () => {
     registrationToCancel.value = null
   } catch (error) {
     console.error('Failed to cancel registration:', error)
-    toast.error(error.response?.data?.error || 'Gagal membatalkan pendaftaran')
+    const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || 'Gagal membatalkan pendaftaran'
+    toast.error(errorMessage)
   } finally {
     isCancelling.value = false
   }

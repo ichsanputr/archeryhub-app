@@ -618,7 +618,8 @@ const loadProfile = async () => {
     }
   } catch (error) {
     console.error('Load profile error:', error)
-    toast.error('Gagal memuat profil klub')
+    const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || 'Gagal memuat profil klub'
+    toast.error(errorMessage)
   }
 }
 
@@ -648,7 +649,8 @@ const saveProfile = async () => {
     toast.success('Profil klub berhasil disimpan!')
   } catch (error) {
     console.error('Save profile error:', error)
-    toast.error('Gagal menyimpan profil')
+    const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || 'Gagal menyimpan profil'
+    toast.error(errorMessage)
   } finally {
     saving.value = false
   }

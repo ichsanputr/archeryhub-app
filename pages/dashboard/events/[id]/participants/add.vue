@@ -433,7 +433,7 @@ const submit = async () => {
         router.push(`/dashboard/events/${route.params.id}/participants`)
     } catch (error) {
         console.error('Failed to add participant:', error)
-        const errorMessage = error.data?.error || error.response?._data?.error || 'Gagal menambahkan peserta'
+        const errorMessage = error?.data?.error || error?.response?.data?.error || error?.response?._data?.error || error?.message || 'Gagal menambahkan peserta'
         toast.error(errorMessage)
     } finally {
         isSubmitting.value = false

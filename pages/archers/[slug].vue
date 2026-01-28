@@ -245,19 +245,6 @@
                         </div>
                     </div>
 
-                    <!-- Emergency Contact -->
-                    <div v-if="archer.emergency_contact_name"
-                        class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-                        <h3 class="font-black text-navy text-base mb-4 flex items-center gap-2">
-                            <Icon icon="ph:phone-bold" class="text-primary" />
-                            Kontak Darurat
-                        </h3>
-                        <div class="space-y-2">
-                            <p class="text-navy font-bold">{{ archer.emergency_contact_name }}</p>
-                            <p v-if="archer.emergency_contact_phone" class="text-gray-500 text-sm">{{
-                                archer.emergency_contact_phone }}</p>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>

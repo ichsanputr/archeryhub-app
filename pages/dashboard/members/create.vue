@@ -160,7 +160,9 @@ const submit = async () => {
     toast.success('Anggota berhasil dibuat')
     router.push('/dashboard/members')
   } catch (error) {
-    toast.error(error.response?.data?.error || 'Gagal membuat anggota')
+    console.error('Failed to create member:', error)
+    const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || 'Gagal membuat anggota'
+    toast.error(errorMessage)
   } finally {
     isSubmitting.value = false
   }

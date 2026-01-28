@@ -456,6 +456,7 @@ import { computed, onMounted, ref } from 'vue'
 import { useAuth } from '~/composables/useAuth'
 import { useRouter } from 'vue-router'
 import { useApi } from '~/composables/useApi'
+import { useToast } from '~/composables/useToast'
 import { Bar } from 'vue-chartjs'
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale } from 'chart.js'
 
@@ -467,6 +468,7 @@ definePageMeta({
 
 const router = useRouter()
 const api = useApi()
+const toast = useToast()
 const { user } = useAuth()
 const userRole = computed(() => user.value?.role || user.value?.type || 'archer')
 
@@ -521,6 +523,8 @@ const fetchClubDashboardData = async () => {
     }
   } catch (error) {
     console.error('Failed to fetch club dashboard data:', error)
+    const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || 'Gagal memuat data dashboard klub'
+    toast.error(errorMessage)
   } finally {
     isLoadingClubData.value = false
   }
@@ -547,6 +551,8 @@ const fetchSellerDashboardData = async () => {
     prepareChartData(ordersRes.data || [])
   } catch (error) {
     console.error('Failed to fetch seller data:', error)
+    const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || 'Gagal memuat data dashboard seller'
+    toast.error(errorMessage)
   } finally {
     isLoadingSellerData.value = false
   }
