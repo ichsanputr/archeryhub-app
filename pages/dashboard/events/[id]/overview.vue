@@ -29,11 +29,6 @@
                                 <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight">
                                     {{ isLoading ? 'Loading...' : event?.name || 'Event Overview' }}
                                 </h1>
-                                <span v-if="event?.status === 'ongoing'"
-                                    class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-green-500/20 text-green-300 border border-green-400/30 flex items-center gap-1.5 shadow-sm">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
-                                    LIVE
-                                </span>
                             </div>
                             <p v-if="event" class="text-slate-300 text-sm mb-2">
                                 {{ event.venue || 'Event Venue' }} • {{ event.location || 'Location' }}
@@ -267,40 +262,6 @@
                     </div>
                 </div>
 
-                <!-- Alerts -->
-                <div class="grid grid-cols-1 gap-6">
-                    <!-- Live Alerts -->
-                    <div
-                        class="bg-white rounded-xl border border-gray-200 flex flex-col shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
-                        <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
-                            <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">Live Alerts</h3>
-                            <span v-if="alerts.length > 0"
-                                class="bg-red-50 text-red-600 border border-red-100 text-xs font-bold px-2.5 py-1 rounded-full shadow-sm">
-                                {{ alerts.length }} New</span>
-                        </div>
-                        <div class="p-6 flex flex-col gap-4">
-                            <div v-for="alert in alerts" :key="alert.id"
-                                :class="alert.type === 'warning' ? 'bg-red-50/50 border-red-100' : 'bg-gray-50 border-gray-100'"
-                                class="flex items-start gap-4 p-4 rounded-xl border">
-                                <div :class="alert.type === 'warning' ? 'bg-white border-red-100 text-red-500' : 'bg-white border-gray-200 text-navy-dark'"
-                                    class="p-2 rounded-lg border shadow-sm">
-                                    <Icon :icon="alert.icon" class="text-xl" />
-                                </div>
-                                <div class="flex-1">
-                                    <p class="text-navy-dark text-sm font-bold">{{ alert.title }}</p>
-                                    <p class="text-text-secondary text-xs mt-1">{{ alert.message }}</p>
-                                </div>
-                                <button
-                                    class="px-3 py-1.5 bg-white border border-gray-200 hover:border-red-200 hover:text-red-600 text-text-secondary text-xs font-semibold rounded-lg shadow-sm transition-colors">
-                                    Dismiss</button>
-                            </div>
-                            <div v-if="alerts.length === 0" class="text-center py-8">
-                                <Icon icon="ph:check-circle" class="text-4xl text-green-200 mx-auto mb-2" />
-                                <p class="text-gray-400 text-sm">All systems operational</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
         </div>
@@ -629,7 +590,7 @@ const getStatusLabel = (status) => {
     const labels = {
         'published': 'Published',
         'draft': 'Draft Mode',
-        'ongoing': 'Live Event',
+        'ongoing': 'Ongoing',
         'upcoming': 'Scheduled',
         'completed': 'Completed'
     }

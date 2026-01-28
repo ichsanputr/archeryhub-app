@@ -17,22 +17,12 @@
       </div>
     </div>
 
-    <!-- Tabs Navigation -->
-    <div class="flex items-center gap-1 border-b border-gray-200 overflow-x-auto no-scrollbar">
-      <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
-        class="px-6 py-4 text-sm font-bold transition-all border-b-2 flex items-center gap-2 whitespace-nowrap"
-        :class="activeTab === tab.id ? 'text-navy border-navy bg-gray-50' : 'text-gray-500 border-transparent hover:text-navy hover:bg-gray-50'">
-        <Icon :icon="tab.icon" class="text-xl" />
-        {{ tab.name }}
-      </button>
-    </div>
-
     <!-- Main Content -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <!-- Main form -->
       <div class="lg:col-span-2 space-y-6">
-        <!-- Tab: Identitas -->
-        <template v-if="activeTab === 'identitas'">
+        <!-- Identitas -->
+        <div>
           <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-5">
             <div class="flex items-center justify-between">
               <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
@@ -158,10 +148,10 @@
               </div>
             </div>
           </div>
-        </template>
+        </div>
 
-        <!-- Tab: Kontak -->
-        <template v-if="activeTab === 'kontak'">
+        <!-- Kontak -->
+        <div>
           <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-5">
             <div class="flex items-center justify-between">
               <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
@@ -178,10 +168,10 @@
             <BaseTextarea v-model="form.address" label="Alamat Latihan" rows="3"
               placeholder="Alamat lengkap lokasi latihan." />
           </div>
-        </template>
+        </div>
 
-        <!-- Tab: Sosial Media -->
-        <template v-if="activeTab === 'sosial'">
+        <!-- Sosial Media -->
+        <div>
           <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-5">
             <div class="flex items-center justify-between">
               <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
@@ -218,10 +208,10 @@
               <p v-else class="text-xs text-gray-400 text-center">Maksimal 5 akun media sosial</p>
             </div>
           </div>
-        </template>
+        </div>
 
-        <!-- Tab: Fasilitas -->
-        <template v-if="activeTab === 'fasilitas'">
+        <!-- Fasilitas -->
+        <div>
           <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
             <div class="flex items-center justify-between">
               <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
@@ -248,10 +238,10 @@
               <p v-if="!form.facilities.length" class="text-sm text-gray-500">Belum ada fasilitas ditambahkan.</p>
             </div>
           </div>
-        </template>
+        </div>
 
-        <!-- Tab: Jadwal -->
-        <template v-if="activeTab === 'jadwal'">
+        <!-- Jadwal -->
+        <div>
           <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
             <div class="flex items-center justify-between">
               <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
@@ -281,10 +271,10 @@
               <p v-if="!form.schedules.length" class="text-sm text-gray-500">Belum ada jadwal latihan.</p>
             </div>
           </div>
-        </template>
+        </div>
 
-        <!-- Tab: Konten -->
-        <template v-if="activeTab === 'konten'">
+        <!-- Konten -->
+        <div>
           <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
             <div class="flex items-center justify-between">
               <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
@@ -368,7 +358,7 @@
               </div>
             </div>
           </div>
-        </template>
+        </div>
       </div>
 
       <!-- Side card -->
@@ -424,16 +414,6 @@ const toast = useToast()
 
 const saving = ref(false)
 const facilityInput = ref('')
-const activeTab = ref('identitas')
-
-const tabs = [
-  { id: 'identitas', name: 'Identitas', icon: 'ph:identification-badge' },
-  { id: 'kontak', name: 'Kontak', icon: 'ph:phone-bold' },
-  { id: 'sosial', name: 'Media Sosial', icon: 'ph:share-network-bold' },
-  { id: 'fasilitas', name: 'Fasilitas', icon: 'ph:check-circle' },
-  { id: 'jadwal', name: 'Jadwal', icon: 'ph:calendar-bold' },
-  { id: 'konten', name: 'Konten', icon: 'ph:stack' }
-]
 
 const pageSettings = reactive({
   sections: {

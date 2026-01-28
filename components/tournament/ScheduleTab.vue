@@ -44,14 +44,6 @@
                                     {{ session.location || 'Venue utama' }}
                                 </p>
                             </div>
-                            <div class="bg-gray-50 p-3 rounded-xl border border-gray-100">
-                                <p class="text-[10px] text-gray-400 uppercase font-black tracking-widest mb-1">
-                                    HARI KE-
-                                </p>
-                                <p class="text-sm font-bold text-navy">
-                                    {{ session.day_order || 1 }}
-                                </p>
-                            </div>
                         </div>
                     </div>
                 </div>

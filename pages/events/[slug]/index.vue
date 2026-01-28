@@ -77,8 +77,8 @@
                                 </div>
 
                                 <div v-if="tournament.technical_guidebook_url"
-                                    class="bg-blue-50 p-4 rounded-xl border border-blue-100 mt-6">
-                                    <h4 class="font-bold text-navy mb-2">Buku Panduan Teknis</h4>
+                                    class="bg-blue-50 p-4 rounded-xl border border-blue-100 mt-4">
+                                    <h4 class="font-bold text-navy !mt-0 mb-2">Buku Panduan Teknis</h4>
                                     <p class="text-sm text-gray-600 mb-3">Unduh buku panduan teknis lengkap yang berisi
                                         peraturan, regulasi, dan jadwal detail.</p>
                                     <a :href="tournament.technical_guidebook_url" target="_blank"
@@ -95,8 +95,7 @@
                             v-if="tournament.page_settings?.sections?.divisions !== false && divisionsData.length > 0"
                             class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
                             <div class="flex items-center justify-between mb-6">
-                                <h2 class="text-lg sm:text-xl font-bold text-navy flex items-center gap-2">
-                                    <Icon icon="ph:strategy" class="text-primary" />
+                                <h2 class="text-lg sm:text-xl font-bold text-navy">
                                     Divisi Kompetisi
                                 </h2>
                                 <div class="hidden md:flex items-center gap-2" v-if="divisionsData.length > 3">
@@ -116,12 +115,6 @@
                                     class="flex gap-6 overflow-x-auto no-scrollbar scroll-smooth pb-4 -mx-1 px-1">
                                     <div v-for="division in divisionsData" :key="division.name"
                                         class="min-w-[280px] md:min-w-[320px] group border border-gray-200 rounded-xl p-5 hover:border-primary transition-colors bg-white">
-                                        <div class="flex items-center justify-between mb-4">
-                                            <div
-                                                class="w-12 h-12 bg-navy/5 rounded-lg flex items-center justify-center text-navy">
-                                                <Icon :icon="`ph:${division.icon}`" class="text-3xl" />
-                                            </div>
-                                        </div>
                                         <h3 class="font-bold text-navy mb-3">{{ division.name }}</h3>
                                         <div class="flex flex-wrap gap-2">
                                             <span v-for="cat in division.categories" :key="cat"
@@ -138,7 +131,7 @@
                         <section v-if="tournament.page_settings?.sections?.fees !== false"
                             class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
                             <h2 class="text-lg sm:text-xl font-bold text-navy mb-6 flex items-center gap-2">
-                                <Icon icon="ph:payments" class="text-primary" />
+                                <Icon icon="ph:currency-circle-dollar" class="text-primary" />
                                 Biaya Pendaftaran
                             </h2>
                             <div v-if="tournament.fees && tournament.fees.length > 0"
@@ -199,7 +192,7 @@
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{ displayValue(tournament.prizes?.first)
                                     }}</div>
-                                    <div class="text-xs text-gray-400 mt-2">+ Medali Emas & Sertifikat</div>
+                                    <div class="text-xs text-gray-400 mt-2">{{ tournament.prizes?.first_caption || '+ Medali Emas & Sertifikat' }}</div>
                                 </div>
                                 <div
                                     class="bg-gradient-to-br from-[#C0C0C0]/10 to-transparent border border-[#C0C0C0]/30 rounded-xl p-6 text-center">
@@ -208,7 +201,7 @@
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{
                                         displayValue(tournament.prizes?.second) }}</div>
-                                    <div class="text-xs text-gray-400 mt-2">+ Medali Perak & Sertifikat</div>
+                                    <div class="text-xs text-gray-400 mt-2">{{ tournament.prizes?.second_caption || '+ Medali Perak & Sertifikat' }}</div>
                                 </div>
                                 <div
                                     class="bg-gradient-to-br from-[#CD7F32]/10 to-transparent border border-[#CD7F32]/30 rounded-xl p-6 text-center">
@@ -217,7 +210,7 @@
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{ displayValue(tournament.prizes?.third)
                                     }}</div>
-                                    <div class="text-xs text-gray-400 mt-2">+ Medali Perunggu & Sertifikat</div>
+                                    <div class="text-xs text-gray-400 mt-2">{{ tournament.prizes?.third_caption || '+ Medali Perunggu & Sertifikat' }}</div>
                                 </div>
                             </div>
                         </section>
@@ -382,7 +375,7 @@
 /* eslint-disable vue/multi-word-component-names */
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 import { definePageMeta, useSeoMeta } from '#imports'
@@ -401,7 +394,27 @@ const registerUrl = computed(() => `/events/${slug}/register`)
 
 const isLoading = ref(false)
 
+// Fallback data
+const fallbackTournament = {
+    name: '',
+    organizer: 'Perpani DKI Jakarta',
+    image: '/hero-event-detail.jpeg',
+    page_settings: {
+        sections: {
+            about: true,
+            divisions: true,
+            fees: true,
+            prizes: true,
+            schedule: true,
+            location: true
+        }
+    }
+}
+
+const tournament = ref(fallbackTournament)
+
 const tabs = computed(() => {
+    if (!tournament.value || !tournament.value.page_settings) return ['Ringkasan']
     const list = ['Ringkasan']
     if (tournament.value.page_settings?.sections?.schedule !== false) {
         list.push('Jadwal Lomba')
@@ -425,33 +438,23 @@ const scroll = (direction) => {
     }
 }
 
-// Sync tab with query params
-watch(() => route.query.tab, (newTab) => {
-    if (newTab && tabs.includes(newTab)) {
-        activeTab.value = newTab
-    } else if (!newTab) {
-        activeTab.value = 'Ringkasan'
-    }
-}, { immediate: true })
-
-// Fallback data
-const fallbackTournament = {
-    name: '',
-    organizer: 'Perpani DKI Jakarta',
-    image: '/hero-event-detail.jpeg',
-    page_settings: {
-        sections: {
-            about: true,
-            divisions: true,
-            fees: true,
-            prizes: true,
-            schedule: true,
-            location: true
-        }
-    }
+// Helper function to decode tab name from URL
+const decodeTabName = (tab) => {
+    if (!tab) return null
+    return decodeURIComponent(String(tab).replace(/\+/g, ' '))
 }
 
-const tournament = ref(fallbackTournament)
+// Re-sync tab when tournament data loads (in case tabs change)
+watch(() => tabs.value, () => {
+    if (!tournament.value) return
+    const currentTab = route.query.tab
+    if (currentTab) {
+        const decodedTab = decodeTabName(currentTab)
+        if (decodedTab && tabs.value.includes(decodedTab)) {
+            activeTab.value = decodedTab
+        }
+    }
+})
 
 const transformEventData = (data) => ({
     name: data.name || data.title || '',
@@ -485,7 +488,8 @@ const transformEventData = (data) => ({
             location: true
         }
     },
-    prizes: data.page_settings ? (JSON.parse(data.page_settings).prizes || { first: '-', second: '-', third: '-' }) : { first: '-', second: '-', third: '-' }
+    prizes: data.page_settings ? (JSON.parse(data.page_settings).prizes || { first: '-', second: '-', third: '-' }) : { first: '-', second: '-', third: '-' },
+    fees: data.page_settings ? (JSON.parse(data.page_settings).fees || []) : []
 })
 
 // Google Maps embed URL
@@ -606,6 +610,38 @@ if (eventError.value || !eventData.value?.event || !tournament.value.name) {
         fatal: true
     })
 }
+
+// Sync tab with query params
+watch(() => route.query.tab, (newTab) => {
+    if (!tournament.value) return
+    if (newTab) {
+        const decodedTab = decodeTabName(newTab)
+        if (decodedTab && tabs.value.includes(decodedTab)) {
+            activeTab.value = decodedTab
+        } else {
+            activeTab.value = tabs.value[0] || 'Ringkasan'
+        }
+    } else {
+        activeTab.value = 'Ringkasan'
+    }
+}, { immediate: true })
+
+// Sync initial tab from query params after tournament is loaded
+onMounted(() => {
+    nextTick(() => {
+        const currentTab = route.query.tab
+        if (currentTab) {
+            const decodedTab = decodeTabName(currentTab)
+            if (decodedTab && tabs.value.includes(decodedTab)) {
+                activeTab.value = decodedTab
+            } else {
+                activeTab.value = tabs.value[0] || 'Ringkasan'
+            }
+        } else {
+            activeTab.value = 'Ringkasan'
+        }
+    })
+})
 
 definePageMeta({
     layout: 'landing'

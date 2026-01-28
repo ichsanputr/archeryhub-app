@@ -2,7 +2,7 @@
     <div class="min-h-screen bg-gray-50">
         <!-- Club Banner -->
         <section class="relative h-72 md:h-96 bg-gradient-to-br from-navy to-blue-900 overflow-hidden">
-            <img v-if="club.bannerUrl" :src="club.bannerUrl" class="w-full h-full object-cover opacity-60" />
+            <img :src="club.bannerUrl || '/hero-club-detail-default.jpeg'" class="w-full h-full object-cover opacity-60" />
             <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/50 to-transparent"></div>
 
             <!-- Back Button -->
@@ -364,9 +364,27 @@ const parseSocialMedia = (data) => {
     return []
 }
 
+// Helper function to get image URL (handles double /api/v1 issue)
+const getImageUrl = (url) => {
+    if (!url) return ''
+    // If already a full URL, return as is
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+        return url
+    }
+    // Remove /api/v1 if it's already in the path
+    let cleanUrl = url
+    if (cleanUrl.startsWith('/api/v1/')) {
+        cleanUrl = cleanUrl.replace('/api/v1', '')
+    }
+    // Prepend base URL
+    return `${config.public.apiBaseUrl}${cleanUrl}`
+}
+
 // Transform API data to component format (SSR-computed)
 const club = computed(() => {
     const data = clubData.value || {}
+    const logoUrl = data.logo_url || data.avatar_url || ''
+    const bannerUrl = data.banner_url || ''
     return {
         id: data.id || data.uuid || 0,
         name: data.name || '',
@@ -374,8 +392,8 @@ const club = computed(() => {
         city: data.city || '',
         province: data.province || '',
         established: data.established ? new Date(data.established).getFullYear().toString() : '',
-        bannerUrl: data.banner_url || '',
-        logoUrl: data.logo_url || data.avatar_url || '',
+        bannerUrl: getImageUrl(bannerUrl),
+        logoUrl: getImageUrl(logoUrl),
         memberCount: data.member_count || data.members || 0,
         eventCount: data.event_count || data.events || 0,
         achievements: data.achievements || 0,

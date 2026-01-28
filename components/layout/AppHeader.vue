@@ -44,11 +44,13 @@
       <div v-if="isDashboard && user?.role === 'club'" class="hidden md:flex items-center gap-3">
         <div class="h-8 w-px bg-gray-200 mx-2"></div>
         <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-            <Icon icon="ph:shield-check-fill" class="text-primary text-xl" />
+          <div class="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center bg-white border border-gray-200">
+            <img v-if="user?.logo_url" :src="getImageUrl(user.logo_url)" :alt="user?.full_name || 'Club'" class="w-full h-full object-cover" />
+            <img v-else-if="user?.avatar_url" :src="getImageUrl(user.avatar_url)" :alt="user?.full_name || 'Club'" class="w-full h-full object-cover" />
+            <Icon v-else icon="ph:shield-check-fill" class="text-primary text-xl" />
           </div>
           <h2 class="text-lg font-black text-navy truncate max-w-sm">
-            {{ user?.full_name || 'Klub Panahan' }}
+            {{ user?.full_name || user?.name || 'Klub Panahan' }}
           </h2>
         </div>
       </div>
@@ -111,6 +113,8 @@ import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 import { useEventContext } from '~/composables/useEventContext'
+
+const config = useRuntimeConfig()
 
 const props = defineProps({
   transparent: {
@@ -228,5 +232,17 @@ const toggleMobileSidebar = () => {
 
 const toggleUserMenu = () => {
   console.log('Toggle user menu')
+}
+
+const getImageUrl = (url) => {
+  if (!url) return ''
+  if (url.startsWith('http://') || url.startsWith('https://')) {
+    return url
+  }
+  let cleanUrl = url
+  if (cleanUrl.startsWith('/api/v1/')) {
+    cleanUrl = cleanUrl.replace('/api/v1', '')
+  }
+  return `${config.public.apiBaseUrl}${cleanUrl}`
 }
 </script>

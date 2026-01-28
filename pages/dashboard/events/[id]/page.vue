@@ -77,8 +77,7 @@
 
                 <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                     <div class="p-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
-                        <h2 class="text-lg font-bold text-navy flex items-center gap-2">
-                            <Icon icon="ph:list-bullets" class="text-primary text-xl" />
+                        <h2 class="text-lg font-bold text-navy">
                             Divisi Kompetisi
                         </h2>
                         <div class="flex items-center gap-2">
@@ -93,14 +92,53 @@
                             </button>
                         </div>
                     </div>
-                    <div class="p-6 text-center py-12">
-                        <Icon icon="ph:info" class="text-4xl text-gray-200 mx-auto mb-3" />
-                        <p class="text-sm text-gray-500">Divisi akan secara otomatis ditampilkan berdasarkan data
-                            kategori lomba yang Anda buat.</p>
-                        <BaseButton variant="outline" size="sm" class="mt-4"
-                            :to="`/dashboard/events/${eventId}/categories`">
-                            Kelola Kategori & Divisi
-                        </BaseButton>
+                    <div class="p-6">
+                        <div v-if="eventCategories.length === 0" class="text-center py-12">
+                            <Icon icon="ph:info" class="text-4xl text-gray-200 mx-auto mb-3" />
+                            <p class="text-sm text-gray-500 mb-4">Belum ada kategori lomba yang dibuat. Tambahkan kategori untuk menampilkan divisi kompetisi.</p>
+                            <BaseButton variant="outline" size="sm"
+                                :to="`/dashboard/events/${eventId}/categories`">
+                                <Icon icon="ph:plus-bold" class="mr-1" /> Tambah Kategori
+                            </BaseButton>
+                        </div>
+                        <div v-else class="space-y-4">
+                            <div v-for="division in groupedDivisions" :key="division.name"
+                                class="border border-gray-100 rounded-xl p-5 hover:border-primary transition-colors bg-gray-50/50">
+                                <div class="flex items-center justify-between mb-4">
+                                    <div>
+                                        <h3 class="text-lg font-bold text-navy">{{ division.name }}</h3>
+                                        <p class="text-xs text-gray-500">{{ division.categories.length }} kategori</p>
+                                    </div>
+                                    <span class="bg-navy text-white text-xs font-bold px-3 py-1 rounded-full">
+                                        {{ division.distance || 'Standard' }}
+                                    </span>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    <div v-for="category in division.categories" :key="category.id"
+                                        class="bg-white rounded-lg p-3 border border-gray-100 flex items-center gap-2">
+                                        <Icon icon="ph:check-circle-fill" class="text-primary text-base flex-shrink-0" />
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-sm font-bold text-navy truncate">
+                                                {{ category.category_name }} - {{ category.event_type_name }} - {{ category.gender_division_name }}
+                                            </p>
+                                            <p v-if="category.max_participants" class="text-xs text-gray-500">
+                                                Maks. {{ category.max_participants }} peserta
+                                            </p>
+                                        </div>
+                                        <span :class="category.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'"
+                                            class="px-2 py-0.5 rounded-full text-[10px] font-bold flex-shrink-0">
+                                            {{ category.status === 'active' ? 'Aktif' : 'Nonaktif' }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pt-4 border-t border-gray-200">
+                                <BaseButton variant="outline" size="sm" class="w-full"
+                                    :to="`/dashboard/events/${eventId}/categories`">
+                                    <Icon icon="ph:gear" class="mr-1" /> Kelola Kategori & Divisi
+                                </BaseButton>
+                            </div>
+                        </div>
                     </div>
                 </section>
             </div>
@@ -196,7 +234,7 @@
                             <div class="space-y-2">
                                 <label class="text-sm font-bold text-gray-700">Total Hadiah (IDR)</label>
                                 <input v-model.number="form.total_prize" type="number"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none" />
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
                             </div>
                             <div class="space-y-2">
                                 <label class="text-sm font-bold text-gray-700">Buku Panduan Teknis (PDF)</label>
@@ -209,6 +247,32 @@
                                         @change="handleGuidebookUpload" />
                                     <BaseButton variant="outline" size="sm" @click="$refs.guidebookInput.click()"
                                         :loading="uploadingGuidebook">Upload</BaseButton>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pt-4 border-t border-gray-100">
+                            <label class="text-sm font-bold text-gray-700 mb-3 block">Detail Hadiah</label>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="space-y-2">
+                                    <label class="text-xs font-bold text-gray-600">Juara 1</label>
+                                    <input v-model="form.prizes.first" type="text" placeholder="Rp 15.000.000"
+                                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm" />
+                                    <input v-model="form.prizes.first_caption" type="text" placeholder="+ Piala + Medali Emas"
+                                        class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-xs" />
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="text-xs font-bold text-gray-600">Juara 2</label>
+                                    <input v-model="form.prizes.second" type="text" placeholder="Rp 10.000.000"
+                                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm" />
+                                    <input v-model="form.prizes.second_caption" type="text" placeholder="+ Piala + Medali Perak"
+                                        class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-xs" />
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="text-xs font-bold text-gray-600">Juara 3</label>
+                                    <input v-model="form.prizes.third" type="text" placeholder="Rp 7.500.000"
+                                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm" />
+                                    <input v-model="form.prizes.third_caption" type="text" placeholder="+ Piala + Medali Perunggu"
+                                        class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-xs" />
                                 </div>
                             </div>
                         </div>
@@ -238,24 +302,42 @@
                     <div class="space-y-2">
                         <label class="text-sm font-bold text-gray-700">Nama Venue</label>
                         <input v-model="form.venue" type="text"
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                             placeholder="Contoh: Lapangan Panahan GBK" />
                     </div>
                     <div class="space-y-2">
                         <label class="text-sm font-bold text-gray-700">Alamat Lengkap</label>
                         <textarea v-model="form.address" rows="2"
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none resize-none"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none resize-none transition-all"
                             placeholder="Alamat detail..."></textarea>
                     </div>
                     <div class="space-y-2">
                         <label class="text-sm font-bold text-gray-700">Link Google Maps</label>
                         <input v-model="form.gmaps_link" type="url"
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                             placeholder="https://maps.app.goo.gl/..." />
                         <div v-if="gmapsEmbedUrl"
                             class="mt-4 rounded-xl overflow-hidden border border-gray-200 aspect-video">
                             <iframe width="100%" height="100%" style="border:0" loading="lazy"
                                 :src="gmapsEmbedUrl"></iframe>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <label class="text-sm font-bold text-gray-700">Aksesibilitas Lokasi</label>
+                        <p class="text-xs text-gray-500 mb-3">Pilih opsi yang tersedia untuk lokasi ini</p>
+                        <div class="flex flex-wrap gap-2">
+                            <button
+                                v-for="option in locationAccessibilityOptions"
+                                :key="option"
+                                type="button"
+                                @click="toggleLocationAccessibility(option)"
+                                class="px-4 py-2 rounded-xl text-sm font-bold transition-all border-2"
+                                :class="form.location_accessibility?.includes(option)
+                                    ? 'bg-primary text-navy border-primary shadow-sm'
+                                    : 'bg-white text-gray-600 border-gray-200 hover:border-primary hover:text-navy'">
+                                <Icon :icon="getLocationAccessibilityIcon(option)" class="inline-block mr-1.5" />
+                                {{ option }}
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -398,6 +480,12 @@
                                     <input v-model="session.location" type="text"
                                         class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm" />
                                 </div>
+                                <div class="lg:col-span-3 space-y-1">
+                                    <label class="text-[10px] font-bold text-gray-400 uppercase">Deskripsi (Opsional)</label>
+                                    <textarea v-model="session.description" rows="2"
+                                        class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm resize-none"
+                                        placeholder="Deskripsi sesi..."></textarea>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -424,6 +512,7 @@ const eventId = route.params.id
 
 const { get, put, post } = useApi()
 const saving = ref(false)
+const eventCategories = ref([])
 
 // Tab state
 const activeTab = ref('informasi')
@@ -466,6 +555,45 @@ const eventData = ref({
     status: 'draft'
 })
 
+const locationAccessibilityOptions = [
+    'Terjangkau Mobil/Motor',
+    'Akses Transportasi Umum',
+    'Parkir Luas',
+    'Fasilitas Toilet',
+    'Area Makan',
+    'Tempat Duduk',
+    'Akses Disabilitas',
+    'Area Parkir Motor',
+    'Area Parkir Mobil'
+]
+
+const getLocationAccessibilityIcon = (option) => {
+    const icons = {
+        'Terjangkau Mobil/Motor': 'ph:car',
+        'Akses Transportasi Umum': 'ph:bus',
+        'Parkir Luas': 'ph:parking',
+        'Fasilitas Toilet': 'ph:toilet',
+        'Area Makan': 'ph:fork-knife',
+        'Tempat Duduk': 'ph:chair',
+        'Akses Disabilitas': 'ph:wheelchair',
+        'Area Parkir Motor': 'ph:motorcycle',
+        'Area Parkir Mobil': 'ph:car-simple'
+    }
+    return icons[option] || 'ph:check-circle'
+}
+
+const toggleLocationAccessibility = (option) => {
+    if (!form.value.location_accessibility) {
+        form.value.location_accessibility = []
+    }
+    const index = form.value.location_accessibility.indexOf(option)
+    if (index > -1) {
+        form.value.location_accessibility.splice(index, 1)
+    } else {
+        form.value.location_accessibility.push(option)
+    }
+}
+
 const form = ref({
     name: '',
     description: '',
@@ -483,6 +611,15 @@ const form = ref({
     max_participants: 200,
     total_prize: 0,
     technical_guidebook_url: '',
+    location_accessibility: [],
+    prizes: {
+        first: '',
+        second: '',
+        third: '',
+        first_caption: '',
+        second_caption: '',
+        third_caption: ''
+    },
     page_settings: {
         sections: {
             about: true,
@@ -509,12 +646,14 @@ const removeFeeField = (index) => {
 
 const addScheduleField = () => {
     form.value.schedules.push({
+        id: null,
         title: '',
-        day_order: (form.value.schedules.length > 0 ? Math.max(...form.value.schedules.map(s => s.day_order)) : 0) + 1,
+        description: '',
+        day_order: (form.value.schedules.length > 0 ? Math.max(...form.value.schedules.map(s => s.day_order || 0)) : 0) + 1,
+        sort_order: (form.value.schedules.length > 0 ? Math.max(...form.value.schedules.map(s => s.sort_order || 0)) : 0) + 1,
         location: '',
         start_time: '',
-        end_time: '',
-        description: ''
+        end_time: ''
     })
 }
 
@@ -636,6 +775,36 @@ const fetchEventData = async () => {
                 console.error('Failed to fetch event images:', err)
             }
 
+            // Fetch event categories
+            try {
+                const categoriesRes = await get(`/events/${eventId}/categories`)
+                eventCategories.value = categoriesRes?.events || categoriesRes?.data?.events || []
+            } catch (err) {
+                console.error('Failed to fetch event categories:', err)
+                eventCategories.value = []
+            }
+
+            // Parse page_settings
+            const pageSettings = data.page_settings ? JSON.parse(data.page_settings) : {
+                sections: {
+                    about: true,
+                    divisions: true,
+                    fees: true,
+                    prizes: true,
+                    schedule: true,
+                    location: true
+                }
+            }
+
+            // Fetch schedules
+            let schedules = []
+            try {
+                const scheduleRes = await get(`/events/${eventId}/schedule`)
+                schedules = scheduleRes?.schedules || scheduleRes?.data?.schedules || []
+            } catch (err) {
+                console.error('Failed to fetch schedules:', err)
+            }
+
             form.value = {
                 name: data.name || data.title || '',
                 description: data.description || '',
@@ -653,9 +822,14 @@ const fetchEventData = async () => {
                     display_order: img.display_order || 0,
                     is_primary: img.is_primary || false
                 })) : [],
-                fees: data.fees || [],
-                schedules: (data.schedules || []).map(s => ({
-                    ...s,
+                fees: pageSettings.fees || [],
+                schedules: schedules.map(s => ({
+                    id: s.id || s.uuid,
+                    title: s.title || '',
+                    description: s.description || '',
+                    day_order: s.day_order || 1,
+                    sort_order: s.sort_order || 1,
+                    location: s.location || '',
                     start_time: formatToDatetimeLocal(s.start_time),
                     end_time: formatToDatetimeLocal(s.end_time)
                 })),
@@ -663,16 +837,9 @@ const fetchEventData = async () => {
                 max_participants: data.max_participants || 200,
                 total_prize: data.total_prize || 0,
                 technical_guidebook_url: data.technical_guidebook_url || '',
-                page_settings: data.page_settings ? JSON.parse(data.page_settings) : {
-                    sections: {
-                        about: true,
-                        divisions: true,
-                        fees: true,
-                        prizes: true,
-                        schedule: true,
-                        location: true
-                    }
-                }
+                location_accessibility: pageSettings.location_accessibility || [],
+                prizes: pageSettings.prizes || { first: '', second: '', third: '', first_caption: '', second_caption: '', third_caption: '' },
+                page_settings: pageSettings
             }
         }
     } catch (error) {
@@ -704,10 +871,35 @@ const saveEventPage = async () => {
                 start_time: formatFromDatetimeLocal(s.start_time),
                 end_time: formatFromDatetimeLocal(s.end_time)
             })),
-            page_settings: JSON.stringify(form.value.page_settings)
+            page_settings: JSON.stringify({
+                ...form.value.page_settings,
+                location_accessibility: form.value.location_accessibility || [],
+                fees: form.value.fees || [],
+                prizes: form.value.prizes || {}
+            })
         }
 
         await put(`/events/${eventId}`, payload)
+
+        // Save schedules separately
+        if (form.value.schedules.length > 0) {
+            try {
+                await put(`/events/${eventId}/schedule`, {
+                    schedules: form.value.schedules.map(s => ({
+                        id: s.id,
+                        title: s.title,
+                        description: s.description || null,
+                        start_time: formatFromDatetimeLocal(s.start_time),
+                        end_time: s.end_time ? formatFromDatetimeLocal(s.end_time) : null,
+                        day_order: s.day_order || 1,
+                        sort_order: s.sort_order || 1,
+                        location: s.location || null
+                    }))
+                })
+            } catch (err) {
+                console.error('Failed to save schedules:', err)
+            }
+        }
 
         // Save event images separately
         if (form.value.event_images.length > 0) {
@@ -722,15 +914,53 @@ const saveEventPage = async () => {
 
         // Show success notification
         const toast = useToast()
-        toast.success('Event berhasil disimpan')
+        toast.success('Halaman event berhasil diperbarui')
+        
+        // Refresh data to show updated values
+        await fetchEventData()
     } catch (error) {
         console.error('Failed to save:', error)
         const toast = useToast()
-        toast.error('Gagal menyimpan event')
+        const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || 'Gagal menyimpan event'
+        toast.error(errorMessage)
     } finally {
         saving.value = false
     }
 }
+
+// Helper functions for divisions
+const getDivisionIcon = (divisionName) => {
+    const name = divisionName?.toLowerCase() || ''
+    if (name.includes('recurve')) return 'ph:target'
+    if (name.includes('compound')) return 'ph:target-bold'
+    if (name.includes('barebow')) return 'ph:target-duotone'
+    return 'ph:target'
+}
+
+const getDivisionDistance = (divisionName) => {
+    const name = divisionName?.toLowerCase() || ''
+    if (name.includes('recurve')) return '70m'
+    if (name.includes('compound')) return '50m'
+    if (name.includes('barebow')) return '50m'
+    return 'Standard'
+}
+
+// Group categories by division
+const groupedDivisions = computed(() => {
+    const groups = {}
+    eventCategories.value.forEach(cat => {
+        const divName = cat.division_name || 'Lainnya'
+        if (!groups[divName]) {
+            groups[divName] = {
+                name: divName,
+                distance: getDivisionDistance(divName),
+                categories: []
+            }
+        }
+        groups[divName].categories.push(cat)
+    })
+    return Object.values(groups)
+})
 
 onMounted(() => {
     fetchEventData()
