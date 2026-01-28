@@ -3,11 +3,6 @@
         <!-- Header -->
         <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
             <div class="space-y-1">
-                <NuxtLink :to="`/dashboard/events/${route.params.id}`"
-                    class="text-sm text-gray-500 hover:text-navy flex items-center gap-1 mb-2 transition-colors">
-                    <Icon icon="ph:arrow-left" class="text-lg" />
-                    Kembali ke Dashboard
-                </NuxtLink>
                 <h1 class="text-3xl font-black text-navy tracking-tight">Daftar Peserta Event</h1>
                 <p class="text-gray-500 text-sm">Lihat dan kelola semua peserta yang terdaftar dalam event ini.</p>
             </div>
@@ -38,7 +33,7 @@
                 </div>
                 <div>
                     <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Total Peserta</p>
-                    <p class="text-xl font-black text-navy">{{ participants.length }}</p>
+                    <p class="text-xl font-black text-navy">{{ total }}</p>
                 </div>
             </div>
             <div
@@ -111,7 +106,7 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-50">
-                        <tr v-for="(participant, index) in participants" :key="participant.id"
+                        <tr v-for="(participant, index) in filteredParticipants" :key="participant.id"
                             class="group hover:bg-gray-50/50 transition-colors">
                             <td class="px-6 py-4">
                                 <span class="text-sm font-bold text-gray-400">{{ (page - 1) * limit + index + 1
@@ -120,8 +115,12 @@
                             <td class="px-6 py-4">
                                 <div class="flex items-center gap-3">
                                     <div
-                                        class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs uppercase border border-gray-200">
-                                        {{participant.full_name?.split(' ').map(n => n[0]).join('') || 'U'}}
+                                        class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs uppercase border border-gray-200 overflow-hidden">
+                                        <img v-if="participant.avatar_url" :src="participant.avatar_url"
+                                            class="w-full h-full object-cover">
+                                        <template v-else>
+                                            {{participant.full_name?.split(' ').map(n => n[0]).join('') || 'U'}}
+                                        </template>
                                     </div>
                                     <div>
                                         <p class="font-black text-navy tracking-tight">{{ participant.full_name }}</p>
@@ -129,7 +128,8 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-6 py-4 text-gray-500 font-medium">{{ participant.club_name || '-' }}</td>
+                            <td class="px-6 py-4 text-gray-500 font-medium text-xs">{{ participant.club_name || '-' }}
+                            </td>
                             <td class="px-6 py-4">
                                 <p class="text-navy font-bold text-sm">{{ getCategoryName(participant) }}</p>
                             </td>
@@ -142,15 +142,15 @@
                             <td class="px-6 py-4 text-right">
                                 <div class="flex items-center justify-end gap-2">
                                     <NuxtLink
-                                        :to="`/dashboard/events/${route.params.id}/participants/${participant.archer_code || participant.id}/edit`"
+                                        :to="`/dashboard/events/${route.params.id}/participants/${participant.id}/edit`"
                                         class="p-2 text-navy/40 hover:text-navy transition-colors">
                                         <Icon icon="ph:pencil-simple" />
                                     </NuxtLink>
                                 </div>
                             </td>
                         </tr>
-                        <tr v-if="participants.length === 0">
-                            <td colspan="7" class="px-6 py-12 text-center text-gray-400 italic font-medium">
+                        <tr v-if="filteredParticipants.length === 0">
+                            <td colspan="6" class="px-6 py-12 text-center text-gray-400 italic font-medium">
                                 Tidak ada peserta yang ditemukan.
                             </td>
                         </tr>
@@ -159,7 +159,7 @@
             </div>
 
             <!-- Pagination Controls -->
-            <div v-if="totalPages > 1"
+            <div v-if="totalPages > 1 && !searchQuery"
                 class="px-6 py-4 border-t border-gray-100 bg-gray-50/30 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div class="text-xs font-bold text-gray-400 uppercase tracking-widest">
                     Showing {{ (page - 1) * limit + 1 }} to {{ Math.min(page * limit, total) }} of {{ total }}
@@ -207,6 +207,8 @@ const { setEvent, clearEvent } = useEventContext()
 
 const participants = ref([])
 const total = ref(0)
+const verifiedCount = ref(0)
+const pendingCount = ref(0)
 const page = ref(1)
 const limit = ref(10)
 const totalPages = computed(() => Math.ceil(total.value / limit.value))
@@ -234,6 +236,8 @@ const fetchParticipants = async () => {
         const response = await get(`/events/${route.params.id}/participants?limit=${limit.value}&offset=${offset}`)
         participants.value = response?.participants || []
         total.value = response?.total || 0
+        verifiedCount.value = response?.verified_count || 0
+        pendingCount.value = response?.pending_count || 0
     } catch (error) {
         console.error('Failed to fetch participants:', error)
     } finally {
@@ -273,14 +277,6 @@ const filteredParticipants = computed(() => {
     }
 
     return filtered
-})
-
-const verifiedCount = computed(() => {
-    return participants.value.filter(p => p.status === 'Terdaftar').length
-})
-
-const pendingCount = computed(() => {
-    return participants.value.filter(p => p.status === 'Menunggu Acc').length
 })
 
 const getStatusClass = (status) => {

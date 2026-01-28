@@ -29,10 +29,6 @@
                             <div class="flex items-center gap-2">
                                 <Icon icon="ph:map-pin" class="text-primary" />
                                 <span>{{ displayValue(tournament.location) }}</span>
-                                <a v-if="tournament.gmaps_link" :href="tournament.gmaps_link" target="_blank"
-                                    class="text-xs text-primary hover:underline flex items-center gap-1 ml-2 font-bold">
-                                    (Lihat di Peta)
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -192,7 +188,7 @@
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{ displayValue(tournament.prizes?.first)
                                     }}</div>
-                                    <div class="text-xs text-gray-400 mt-2">{{ tournament.prizes?.first_caption || '+ Medali Emas & Sertifikat' }}</div>
+                                    <div class="text-xs text-gray-400 mt-2">{{ firstPrizeCaption }}</div>
                                 </div>
                                 <div
                                     class="bg-gradient-to-br from-[#C0C0C0]/10 to-transparent border border-[#C0C0C0]/30 rounded-xl p-6 text-center">
@@ -201,7 +197,7 @@
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{
                                         displayValue(tournament.prizes?.second) }}</div>
-                                    <div class="text-xs text-gray-400 mt-2">{{ tournament.prizes?.second_caption || '+ Medali Perak & Sertifikat' }}</div>
+                                    <div class="text-xs text-gray-400 mt-2">{{ secondPrizeCaption }}</div>
                                 </div>
                                 <div
                                     class="bg-gradient-to-br from-[#CD7F32]/10 to-transparent border border-[#CD7F32]/30 rounded-xl p-6 text-center">
@@ -210,7 +206,7 @@
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{ displayValue(tournament.prizes?.third)
                                     }}</div>
-                                    <div class="text-xs text-gray-400 mt-2">{{ tournament.prizes?.third_caption || '+ Medali Perunggu & Sertifikat' }}</div>
+                                    <div class="text-xs text-gray-400 mt-2">{{ thirdPrizeCaption }}</div>
                                 </div>
                             </div>
                         </section>
@@ -391,6 +387,11 @@ const isArcher = computed(() => user.value?.type === 'archer' || user.value?.rol
 // Generate login URL with redirect
 const loginUrl = computed(() => `/auth/login?redirect=${encodeURIComponent(`/events/${slug}`)}`)
 const registerUrl = computed(() => `/events/${slug}/register`)
+
+// Prize Captions Computed
+const firstPrizeCaption = computed(() => tournament.value.prizes?.first_caption || '+ Medali Emas & Sertifikat')
+const secondPrizeCaption = computed(() => tournament.value.prizes?.second_caption || '+ Medali Perak & Sertifikat')
+const thirdPrizeCaption = computed(() => tournament.value.prizes?.third_caption || '+ Medali Perunggu & Sertifikat')
 
 const isLoading = ref(false)
 

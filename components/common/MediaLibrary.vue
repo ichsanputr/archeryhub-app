@@ -1,42 +1,47 @@
 <template>
-    <Teleport to="body">
-        <Transition enter-active-class="transition duration-200 ease-out" enter-from-class="opacity-0"
-            enter-to-class="opacity-100" leave-active-class="transition duration-150 ease-in"
-            leave-from-class="opacity-100" leave-to-class="opacity-0">
-            <div v-if="show"
-                class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy/60 backdrop-blur-sm">
-                <div
-                    class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[85vh] flex flex-col overflow-hidden">
+    <ClientOnly>
+        <Teleport to="body">
+            <div v-if="show" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                <!-- Backdrop -->
+                <div ref="backdrop" @click="handleClose" class="absolute inset-0 bg-navy-dark/80 backdrop-blur-sm">
+                </div>
+
+                <!-- Dialog Card -->
+                <div ref="dialog"
+                    class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col relative overflow-hidden border border-gray-100">
+                    <!-- Decorative Border Top -->
+                    <div class="bg-primary h-1.5 w-full shrink-0"></div>
+
                     <!-- Header -->
-                    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-                        <h2 class="text-xl font-bold text-navy flex items-center gap-2">
+                    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-white">
+                        <h2 class="text-xl font-black text-navy-dark tracking-tight flex items-center gap-2">
                             <Icon icon="ph:images-square-bold" class="text-primary" />
                             Media Library
                         </h2>
-                        <button type="button" @click="close"
-                            class="text-gray-400 hover:text-navy p-1 rounded-lg hover:bg-gray-100 transition-colors">
+                        <button type="button" @click="handleClose"
+                            class="text-gray-400 hover:text-navy-dark p-1 rounded-lg hover:bg-gray-100 transition-colors">
                             <Icon icon="ph:x-bold" class="text-xl" />
                         </button>
                     </div>
 
                     <!-- Tabs -->
-                    <div class="flex border-b border-gray-100 px-6">
+                    <div class="flex border-b border-gray-100 px-6 bg-white shrink-0">
                         <button @click="activeTab = 'browse'"
-                            class="px-4 py-3 flex items-center text-sm font-semibold border-b-2 transition-colors"
-                            :class="activeTab === 'browse' ? 'border-primary text-navy' : 'border-transparent text-gray-500 hover:text-navy'">
+                            class="px-4 py-3 flex items-center text-sm font-bold border-b-2 transition-colors"
+                            :class="activeTab === 'browse' ? 'border-primary text-navy-dark' : 'border-transparent text-text-secondary hover:text-navy-dark'">
                             <Icon icon="ph:folder-open" class="mr-2" />
                             <span>Pilih dari Library</span>
                         </button>
                         <button @click="activeTab = 'upload'"
-                            class="px-4 py-3 flex items-center text-sm font-semibold border-b-2 transition-colors"
-                            :class="activeTab === 'upload' ? 'border-primary text-navy' : 'border-transparent text-gray-500 hover:text-navy'">
+                            class="px-4 py-3 flex items-center text-sm font-bold border-b-2 transition-colors"
+                            :class="activeTab === 'upload' ? 'border-primary text-navy-dark' : 'border-transparent text-text-secondary hover:text-navy-dark'">
                             <Icon icon="ph:upload-simple" class="mr-2" />
                             <span>Upload Baru</span>
                         </button>
                     </div>
 
                     <!-- Content -->
-                    <div class="flex-1 overflow-y-auto p-6">
+                    <div class="flex-1 overflow-y-auto p-6 bg-white min-h-[300px]">
                         <!-- Browse Tab -->
                         <div v-if="activeTab === 'browse'">
                             <!-- Loading State -->
@@ -61,10 +66,20 @@
 
                             <!-- Media Grid -->
                             <div v-else class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                                <button v-for="file in mediaFiles" :key="file.id" @click="selectMedia(file)"
-                                    class="group relative aspect-square rounded-xl overflow-hidden border-2 transition-all hover:shadow-lg"
+                                <div v-for="file in mediaFiles" :key="file.id" @click="selectMedia(file)" role="button"
+                                    tabindex="0" @keydown.enter="selectMedia(file)"
+                                    @keydown.space.prevent="selectMedia(file)"
+                                    class="group relative aspect-square rounded-xl overflow-hidden border-2 transition-all hover:shadow-lg cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary"
                                     :class="selectedMedia?.id === file.id ? 'border-primary ring-2 ring-primary/30' : 'border-gray-200 hover:border-primary/50'">
-                                    <img :src="file.url" :alt="file.filename" class="w-full h-full object-cover" />
+                                    <img v-if="file.mime_type?.startsWith('image/')" :src="file.url"
+                                        :alt="file.filename" class="w-full h-full object-cover" />
+                                    <div v-else
+                                        class="w-full h-full flex flex-col items-center justify-center bg-gray-50">
+                                        <Icon :icon="getFileIcon(file.mime_type)" class="text-4xl text-gray-400 mb-2" />
+                                        <span
+                                            class="px-2 text-[10px] text-gray-500 font-medium truncate w-full text-center">{{
+                                                getFileExt(file.url) }}</span>
+                                    </div>
 
                                     <!-- Selected Indicator -->
                                     <div v-if="selectedMedia?.id === file.id"
@@ -78,11 +93,17 @@
                                     <!-- Hover Overlay -->
                                     <div
                                         class="absolute inset-0 bg-gradient-to-t from-navy/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <div class="absolute bottom-0 left-0 right-0 p-3">
-                                            <p class="text-white text-xs font-medium truncate">{{ file.filename }}</p>
+                                        <div
+                                            class="absolute bottom-0 left-0 right-0 p-3 flex items-center justify-between">
+                                            <p class="text-white text-[10px] font-medium truncate flex-1 mr-2">{{
+                                                file.filename }}</p>
+                                            <button @click.stop="deleteMedia(file)"
+                                                class="w-7 h-7 rounded-lg bg-red-500 hover:bg-red-600 text-white flex items-center justify-center transition-colors">
+                                                <Icon icon="ph:trash" />
+                                            </button>
                                         </div>
                                     </div>
-                                </button>
+                                </div>
                             </div>
                         </div>
 
@@ -123,13 +144,28 @@
                                 </div>
 
                                 <!-- Upload Success Preview -->
-                                <div v-else-if="uploadedPreview" class="relative">
-                                    <img :src="uploadedPreview" alt="Uploaded preview"
+                                <div v-else-if="uploadedPreview" class="relative group/preview">
+                                    <img v-if="uploadedMimeType?.startsWith('image/')" :src="uploadedPreview"
+                                        alt="Uploaded preview"
                                         class="w-full max-h-48 object-contain rounded-lg mx-auto" />
+                                    <div v-else
+                                        class="w-full h-32 flex flex-col items-center justify-center bg-gray-50 rounded-lg">
+                                        <Icon :icon="getFileIcon(uploadedMimeType)"
+                                            class="text-5xl text-gray-400 mb-2" />
+                                        <p class="text-xs text-gray-500 font-medium px-4 truncate w-full text-center">{{
+                                            uploadCaption }}</p>
+                                    </div>
+
                                     <div class="mt-4 flex items-center justify-center gap-2 text-green-600">
                                         <Icon icon="ph:check-circle-fill" class="text-xl" />
                                         <span class="text-sm font-medium">Upload berhasil!</span>
                                     </div>
+
+                                    <!-- Remove/Cancel Button -->
+                                    <button @click.stop="resetUpload"
+                                        class="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-red-500 text-white shadow-lg flex items-center justify-center hover:bg-red-600 transition-colors">
+                                        <Icon icon="ph:x-bold" />
+                                    </button>
                                 </div>
                             </div>
 
@@ -139,40 +175,38 @@
                                 {{ uploadError }}
                             </p>
 
-                            <!-- Upload Another Button -->
-                            <button v-if="uploadedPreview" @click="resetUpload" type="button"
-                                class="w-full mt-4 py-2.5 border border-gray-200 rounded-xl text-sm font-semibold text-gray-600 hover:bg-gray-50 transition-colors">
-                                <Icon icon="ph:plus" class="mr-2" />
-                                Upload Gambar Lain
-                            </button>
+
                         </div>
                     </div>
 
                     <!-- Footer -->
-                    <div class="flex items-center justify-between px-6 py-4 border-t border-gray-100 bg-gray-50">
-                        <p v-if="selectedMedia" class="text-sm text-gray-600">
-                            <span class="font-medium text-navy">{{ selectedMedia.filename }}</span>
+                    <div
+                        class="flex items-center justify-between px-6 py-4 border-t border-gray-100 bg-gray-50 shrink-0">
+                        <p v-if="selectedMedia" class="text-sm font-medium text-text-secondary">
+                            <span class="text-navy-dark">{{ selectedMedia.filename }}</span>
                         </p>
-                        <p v-else class="text-sm text-gray-400">Pilih gambar atau upload baru</p>
+                        <p v-else class="text-sm font-medium text-gray-400">Pilih gambar atau upload baru</p>
 
                         <div class="flex gap-3">
-                            <button type="button" @click="close"
-                                class="px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-bold text-gray-600 hover:bg-white transition-colors">
+                            <button type="button" @click="handleClose"
+                                class="px-5 py-2.5 border border-gray-200 rounded-xl text-sm font-bold text-text-secondary hover:bg-white hover:border-gray-300 transition-all">
                                 Batal
                             </button>
-                            <button type="button" @click="confirm" :disabled="!selectedMedia && !uploadedUrl"
-                                class="px-6 py-2.5 bg-primary hover:bg-primary-hover text-navy rounded-xl text-sm font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                            <button type="button" @click="handleConfirmSelection"
+                                :disabled="!selectedMedia && !uploadedUrl"
+                                class="px-7 py-2.5 bg-navy-dark hover:bg-navy-light text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-navy-dark/10 disabled:opacity-50 disabled:cursor-not-allowed">
                                 Pilih Gambar
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
-        </Transition>
-    </Teleport>
+        </Teleport>
+    </ClientOnly>
 </template>
 
 <script setup>
+import { gsap } from 'gsap'
 import { Icon } from '@iconify/vue'
 
 const props = defineProps({
@@ -184,7 +218,10 @@ const props = defineProps({
 
 const emit = defineEmits(['close', 'select'])
 
-const config = useRuntimeConfig()
+const { get, upload, delete: del } = useApi()
+
+const backdrop = ref(null)
+const dialog = ref(null)
 const activeTab = ref('browse')
 const isLoadingLibrary = ref(false)
 const mediaFiles = ref([])
@@ -196,7 +233,25 @@ const isUploading = ref(false)
 const uploadCaption = ref('')
 const uploadedPreview = ref('')
 const uploadedUrl = ref('')
+const uploadedMimeType = ref('')
 const uploadError = ref('')
+
+// File Icon Handling
+const getFileIcon = (mimeType) => {
+    if (!mimeType) return 'ph:file-bold'
+    if (mimeType.startsWith('image/')) return 'ph:image-bold'
+    if (mimeType === 'application/pdf') return 'ph:file-pdf-bold'
+    if (mimeType.includes('excel') || mimeType.includes('spreadsheet')) return 'ph:file-xls-bold'
+    if (mimeType.includes('word') || mimeType.includes('document')) return 'ph:file-doc-bold'
+    if (mimeType.includes('zip') || mimeType.includes('archive')) return 'ph:file-zip-bold'
+    return 'ph:file-bold'
+}
+
+const getFileExt = (url) => {
+    if (!url) return ''
+    const parts = url.split('.')
+    return parts.length > 1 ? parts.pop().toUpperCase() : ''
+}
 
 // Computed for upload zone text
 const uploadZoneText = computed(() => {
@@ -207,11 +262,8 @@ const uploadZoneText = computed(() => {
 const loadMediaLibrary = async () => {
     isLoadingLibrary.value = true
     try {
-        const response = await fetch(`${config.public.apiBaseUrl}/media`)
-        if (response.ok) {
-            const data = await response.json()
-            mediaFiles.value = data.files || []
-        }
+        const response = await get('/media')
+        mediaFiles.value = response?.files || []
     } catch (error) {
         console.error('Failed to load media library:', error)
     } finally {
@@ -247,9 +299,9 @@ const uploadFile = async (file) => {
         return
     }
 
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'application/pdf']
     if (!allowedTypes.includes(file.type)) {
-        uploadError.value = 'Format file tidak didukung'
+        uploadError.value = 'Format file tidak didukung. Gunakan: JPEG, PNG, GIF, WebP, atau PDF.'
         return
     }
 
@@ -267,19 +319,11 @@ const uploadFile = async (file) => {
         formData.append('file', file)
         formData.append('caption', uploadCaption.value.trim())
 
-        const response = await fetch(`${config.public.apiBaseUrl}/media/upload`, {
-            method: 'POST',
-            body: formData
-        })
+        const response = await upload('/media/upload', formData)
 
-        if (!response.ok) {
-            const error = await response.json()
-            throw new Error(error.error || 'Upload gagal')
-        }
-
-        const data = await response.json()
-        uploadedUrl.value = data.url
-        uploadedPreview.value = data.url
+        uploadedUrl.value = response.url
+        uploadedPreview.value = response.url
+        uploadedMimeType.value = response.mime_type
         selectedMedia.value = null
 
         // Refresh library
@@ -292,15 +336,56 @@ const uploadFile = async (file) => {
     }
 }
 
+// Delete media
+const deleteMedia = async (file) => {
+    if (!confirm(`Apakah Anda yakin ingin menghapus media "${file.filename}"?`)) return
+
+    try {
+        await del(`/media/${file.id}`)
+        if (selectedMedia.value?.id === file.id) {
+            selectedMedia.value = null
+        }
+        await loadMediaLibrary()
+    } catch (error) {
+        console.error('Failed to delete media:', error)
+        alert('Gagal menghapus media')
+    }
+}
+
 // Reset upload state
 const resetUpload = () => {
     uploadCaption.value = ''
     uploadedPreview.value = ''
     uploadedUrl.value = ''
+    uploadedMimeType.value = ''
     uploadError.value = ''
 }
 
-// Close modal
+// Handle Close with animation
+const handleClose = () => {
+    if (!backdrop.value || !dialog.value) {
+        close()
+        return
+    }
+
+    const tl = gsap.timeline({
+        onComplete: () => close()
+    })
+
+    tl.to(dialog.value, {
+        opacity: 0,
+        y: 20,
+        scale: 0.95,
+        duration: 0.2,
+        ease: 'power2.in'
+    })
+    tl.to(backdrop.value, {
+        opacity: 0,
+        duration: 0.2
+    }, '<')
+}
+
+// Close modal (state reset)
 const close = () => {
     resetUpload()
     selectedMedia.value = null
@@ -309,19 +394,31 @@ const close = () => {
 }
 
 // Confirm selection
-const confirm = () => {
+const handleConfirmSelection = () => {
     const result = selectedMedia.value
         ? { url: selectedMedia.value.url, caption: selectedMedia.value.filename }
         : { url: uploadedUrl.value, caption: uploadCaption.value }
 
     emit('select', result)
-    close()
+    handleClose()
 }
 
 // Watch for modal open
 watch(() => props.show, (newVal) => {
     if (newVal) {
         loadMediaLibrary()
+        nextTick(() => {
+            if (!backdrop.value || !dialog.value) return
+
+            gsap.fromTo(backdrop.value,
+                { opacity: 0 },
+                { opacity: 1, duration: 0.3 }
+            )
+            gsap.fromTo(dialog.value,
+                { opacity: 0, scale: 0.9, y: 30 },
+                { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: 'back.out(1.7)' }
+            )
+        })
     }
 })
 </script>

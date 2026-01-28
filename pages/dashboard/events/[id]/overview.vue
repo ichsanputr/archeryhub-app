@@ -34,12 +34,6 @@
                                 {{ event.venue || 'Event Venue' }} • {{ event.location || 'Location' }}
                             </p>
                             <div class="flex flex-wrap items-center gap-4">
-                                <span :class="getStatusClass(event?.status)"
-                                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-widest border border-white/20 bg-white/5 backdrop-blur">
-                                    <span class="w-2 h-2 rounded-full" :class="getStatusDotClass(event?.status)"></span>
-                                    {{ getStatusLabel(event?.status) }}
-                                </span>
-                                <div class="h-4 w-px bg-white/20 hidden sm:block"></div>
                                 <div
                                     class="flex items-center gap-2 text-slate-300 text-xs font-bold uppercase tracking-wider">
                                     <Icon icon="ph:hash-bold" class="text-primary text-sm" />
@@ -136,7 +130,7 @@
                                 <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">
                                     Completion</p>
                                 <p class="text-navy-dark text-3xl font-extrabold tracking-tight">{{ completionPercentage
-                                    }}%</p>
+                                }}%</p>
                             </div>
                             <div
                                 class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">

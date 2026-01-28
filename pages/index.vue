@@ -70,7 +70,7 @@
                         </div>
 
                         <div
-                            class="space-y-4 px-1 max-h-[550px] overflow-y-auto scrollbar-thin scrollbar-track-gray-50 scrollbar-thumb-gray-200 hover:scrollbar-thumb-primary/30 transition-colors pr-2 custom-scrollbar">
+                            class="grid grid-cols-1 sm:grid-cols-2 gap-4 px-1 max-h-[550px] overflow-y-auto scrollbar-thin scrollbar-track-gray-50 scrollbar-thumb-gray-200 hover:scrollbar-thumb-primary/30 transition-colors pr-2 custom-scrollbar">
                             <div v-for="(event, index) in upcomingEvents" :key="event.name"
                                 class="group bg-white rounded-2xl border border-gray-100 p-4 sm:p-5 hover:border-primary/50 hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] transition-all duration-300 relative overflow-hidden">
                                 <div class="flex flex-row items-center sm:items-center justify-between gap-4">
@@ -607,6 +607,40 @@ const upcomingEvents = [
         categories: 'U-12, U-15, U-17',
         tags: [
             { label: 'Junior', class: 'bg-orange-50 text-orange-600 border border-orange-100' }
+        ]
+    },
+    {
+        slug: 'indonesia-open-2025',
+        name: 'Indonesia Open 2025',
+        month: 'Jan',
+        day: '15',
+        location: 'Senayan, Jakarta',
+        categories: 'Recurve, Compound',
+        tags: [
+            { label: 'Grade S', class: 'bg-primary/10 text-primary border border-primary/20' },
+            { label: 'International', class: 'bg-navy/10 text-navy border border-navy/20' }
+        ]
+    },
+    {
+        slug: 'piala-presiden-2025',
+        name: 'Piala Presiden 2025',
+        month: 'Feb',
+        day: '10',
+        location: 'Bogor, Jawa Barat',
+        categories: 'All Categories',
+        tags: [
+            { label: 'Majors', class: 'bg-red-50 text-red-600 border border-red-100' }
+        ]
+    },
+    {
+        slug: 'bali-archery-festival',
+        name: 'Bali Archery Festival',
+        month: 'Mar',
+        day: '22',
+        location: 'Denpasar, Bali',
+        categories: 'Barebow & Recurve',
+        tags: [
+            { label: 'Festival', class: 'bg-blue-50 text-blue-600 border border-blue-100' }
         ]
     }
 ]

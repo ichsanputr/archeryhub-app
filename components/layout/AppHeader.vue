@@ -44,9 +44,12 @@
       <div v-if="isDashboard && user?.role === 'club'" class="hidden md:flex items-center gap-3">
         <div class="h-8 w-px bg-gray-200 mx-2"></div>
         <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center bg-white border border-gray-200">
-            <img v-if="user?.logo_url" :src="getImageUrl(user.logo_url)" :alt="user?.full_name || 'Club'" class="w-full h-full object-cover" />
-            <img v-else-if="user?.avatar_url" :src="getImageUrl(user.avatar_url)" :alt="user?.full_name || 'Club'" class="w-full h-full object-cover" />
+          <div
+            class="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center bg-white border border-gray-200">
+            <img v-if="user?.logo_url" :src="getImageUrl(user.logo_url)" :alt="user?.full_name || 'Club'"
+              class="w-full h-full object-cover" />
+            <img v-else-if="user?.avatar_url" :src="getImageUrl(user.avatar_url)" :alt="user?.full_name || 'Club'"
+              class="w-full h-full object-cover" />
             <Icon v-else icon="ph:shield-check-fill" class="text-primary text-xl" />
           </div>
           <h2 class="text-lg font-black text-navy truncate max-w-sm">
@@ -136,7 +139,7 @@ const isEventManageMode = computed(() => {
   if (!eventPathMatch) return false
   const [, eventId, subPath] = eventPathMatch
   // Exclude certain paths that are not management pages
-  const excludedPaths = ['edit', 'checkout', 'participants', 'register', 'register-edit', 'results', 'setup', 'timeline', 'venue']
+  const excludedPaths = ['edit', 'checkout', 'register', 'register-edit', 'setup']
   return !excludedPaths.includes(subPath)
 })
 
