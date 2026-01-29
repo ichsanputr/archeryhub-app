@@ -111,7 +111,13 @@
                                     class="flex gap-6 overflow-x-auto no-scrollbar scroll-smooth pb-4 -mx-1 px-1">
                                     <div v-for="division in divisionsData" :key="division.name"
                                         class="min-w-[280px] md:min-w-[320px] group border border-gray-200 rounded-xl p-5 hover:border-primary transition-colors bg-white">
-                                        <h3 class="font-bold text-navy mb-3">{{ division.name }}</h3>
+                                        <div class="flex items-center gap-3 mb-3">
+                                            <div
+                                                class="w-10 h-10 bg-gray-50 rounded-lg flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+                                                <Icon :icon="division.icon" class="text-2xl" />
+                                            </div>
+                                            <h3 class="font-bold text-navy">{{ division.name }}</h3>
+                                        </div>
                                         <div class="flex flex-wrap gap-2">
                                             <span v-for="cat in division.categories" :key="cat"
                                                 class="text-[10px] font-bold text-gray-500 bg-gray-100 px-2 py-1 rounded-full uppercase tracking-wider">
@@ -187,7 +193,7 @@
                                     <div class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Juara 1
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{ displayValue(tournament.prizes?.first)
-                                    }}</div>
+                                        }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ firstPrizeCaption }}</div>
                                 </div>
                                 <div
@@ -205,7 +211,7 @@
                                     <div class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Juara 3
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{ displayValue(tournament.prizes?.third)
-                                    }}</div>
+                                        }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ thirdPrizeCaption }}</div>
                                 </div>
                             </div>
@@ -563,11 +569,12 @@ const processDivisions = (events) => {
 
 const getDivisionIcon = (name) => {
     const lower = (name || '').toLowerCase()
-    if (lower.includes('recurve')) return 'adjust'
-    if (lower.includes('compound')) return 'gps_fixed'
-    if (lower.includes('barebow')) return 'radar'
-    if (lower.includes('nasional')) return 'flag'
-    return 'category'
+    if (lower.includes('recurve')) return 'ph:target'
+    if (lower.includes('compound')) return 'ph:crosshair-simple'
+    if (lower.includes('barebow')) return 'ph:target'
+    if (lower.includes('nasional')) return 'ph:flag-bold'
+    if (lower.includes('traditional')) return 'ph:bow-arrow'
+    return 'ph:strategy'
 }
 
 const displayValue = (value) => {

@@ -60,6 +60,15 @@
                 </div>
 
                 <div class="text-center sm:text-left">
+                    <div v-if="userAvatar" class="mb-6 flex justify-center sm:justify-start">
+                        <div class="relative">
+                            <img :src="userAvatar" alt="User Avatar"
+                                class="w-20 h-20 rounded-full object-cover border-4 border-primary shadow-lg transition-all duration-500 scale-110" />
+                            <div
+                                class="absolute -bottom-1 -right-1 bg-green-500 w-5 h-5 rounded-full border-2 border-white">
+                            </div>
+                        </div>
+                    </div>
                     <h2 class="text-3xl font-black text-slate-900 tracking-tight font-display">Masuk Lagi Yuk!</h2>
                     <p class="mt-2 text-slate-500 text-sm font-body">Masukin email sama password kamu buat lanjut ya.
                     </p>
@@ -118,7 +127,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 import { useFormValidation } from '~/composables/useFormValidation'
@@ -139,6 +148,27 @@ const getMediaUrl = (filename) => {
 const isLoading = ref(false)
 
 const { errors, validate, validateForm, rules } = useFormValidation()
+
+const userAvatar = ref(null)
+
+watch(() => form.value.email, async (newEmail) => {
+    if (!newEmail || !newEmail.includes('@')) {
+        userAvatar.value = null
+        return
+    }
+
+    // Debounce or wait for blur if preferred, but let's try real-time
+    try {
+        const response = await $fetch(`${config.public.apiBaseUrl}/auth/avatar/${encodeURIComponent(newEmail)}`)
+        if (response && response.avatar_url) {
+            userAvatar.value = getMediaUrl(response.avatar_url)
+        } else {
+            userAvatar.value = null
+        }
+    } catch (err) {
+        userAvatar.value = null
+    }
+})
 
 const slides = ['/slide-1.jpeg', '/slide-2.jpeg', '/slide-3.jpeg']
 const currentSlideIndex = ref(0)

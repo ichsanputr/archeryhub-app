@@ -201,7 +201,7 @@
                                     <Icon icon="ph:map-pin-bold" class="text-gray-400" />
                                 </div>
                                 <span class="text-navy text-sm font-medium leading-relaxed">{{ archer.address
-                                }}</span>
+                                    }}</span>
                             </div>
                         </div>
                     </div>
