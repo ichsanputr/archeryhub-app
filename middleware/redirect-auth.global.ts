@@ -1,4 +1,6 @@
-export default defineNuxtRouteMiddleware((to) => {
+import { useAuth } from '~/composables/useAuth'
+
+export default defineNuxtRouteMiddleware((to, from) => {
   // Only apply to auth pages (login/register)
   if (!to.path.startsWith('/auth')) return
 

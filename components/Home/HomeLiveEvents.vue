@@ -1,0 +1,99 @@
+<template>
+    <section class="bg-gray-50 py-16 md:py-20 overflow-hidden">
+        <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-xl sm:text-2xl font-bold text-navy flex items-center gap-2 sm:gap-3 font-display">
+                    <span class="w-2.5 h-2.5 sm:w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
+                    Lagi Berlangsung Nih!
+                </h2>
+                <NuxtLink to="/events"
+                    class="text-navy hover:text-primary font-bold text-xs sm:text-sm flex items-center gap-1 group">
+                    <span class="hidden sm:inline">Cek Jadwalnya</span>
+                    <span class="sm:hidden">Jadwal</span>
+                    <span
+                        class="material-symbols-outlined text-base sm:text-lg transition-transform group-hover:translate-x-1">arrow_forward</span>
+                </NuxtLink>
+            </div>
+
+            <div v-if="loading" class="flex items-center justify-center py-20">
+                <Icon icon="ph:circle-notch-bold" class="text-4xl text-primary animate-spin" />
+            </div>
+
+            <div v-else-if="events.length > 0"
+                class="flex lg:grid lg:grid-cols-4 gap-6 lg:gap-8 pb-8 lg:pb-0 overflow-x-auto lg:overflow-x-visible -mx-4 px-4 sm:mx-0 sm:px-0 lg:mx-0 lg:px-0 no-scrollbar snap-x lg:snap-none">
+                <div v-for="live in events" :key="live.uuid"
+                    class="min-w-[300px] md:min-w-[380px] lg:min-w-0 snap-center group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-sm hover:border-primary/50 transition-all duration-300 flex flex-col">
+                    <div class="relative h-48 overflow-hidden">
+                        <img :src="live.image || '/logo.png'" :alt="live.name"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    </div>
+                    <div class="p-5 flex-1 flex flex-col">
+                        <h3
+                            class="text-lg font-bold text-navy mb-2 leading-snug group-hover:text-primary transition-colors font-display">
+                            {{ live.name }}
+                        </h3>
+                        <div class="flex items-start gap-2 text-gray-500 text-sm mb-4">
+                            <span class="material-symbols-outlined text-lg mt-0.5">location_on</span>
+                            <span class="truncate">{{ live.location }}</span>
+                        </div>
+                        <div class="mt-auto">
+                            <NuxtLink :to="`/events/${live.slug || live.uuid}`"
+                                class="w-full h-10 rounded-lg border-2 border-navy text-navy hover:bg-navy hover:text-white font-bold text-sm transition-all flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined text-lg">visibility</span>
+                                Lihat Event
+                            </NuxtLink>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div v-else class="text-center py-20 bg-white rounded-2xl border border-dashed border-gray-200">
+                <Icon icon="ph:video-camera-slash-light" class="text-5xl text-gray-200 mb-4 mx-auto" />
+                <p class="text-sm text-gray-400">Saat ini belum ada event yang sedang berlangsung.</p>
+            </div>
+        </div>
+    </section>
+</template>
+
+<script setup>
+import { Icon } from '@iconify/vue'
+import { ref, onMounted } from 'vue'
+import { useApi } from '~/composables/useApi'
+
+const { get } = useApi()
+const events = ref([])
+const loading = ref(true)
+
+const fetchLiveEvents = async () => {
+    try {
+        loading.value = true
+        const response = await get('/events', { query: { status: 'ongoing', limit: '8' } })
+        events.value = (response?.events || []).map(event => ({
+            name: event.name || event.title,
+            location: event.location || event.venue || '',
+            image: useImageOrDefault(event.banner_url || event.logo_url),
+            slug: event.slug,
+            uuid: event.uuid
+        }))
+    } catch (error) {
+        console.error('Failed to fetch live events:', error)
+    } finally {
+        loading.value = false
+    }
+}
+
+onMounted(() => {
+    fetchLiveEvents()
+})
+</script>
+
+<style scoped>
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+</style>

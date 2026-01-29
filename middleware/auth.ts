@@ -1,4 +1,6 @@
-export default defineNuxtRouteMiddleware(async () => {
+import { useAuth } from '~/composables/useAuth'
+
+export default defineNuxtRouteMiddleware(async (to, from) => {
   const { user, fetchUser, isLoggedIn } = useAuth()
 
   // If already have user, allow

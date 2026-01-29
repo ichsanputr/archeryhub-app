@@ -31,7 +31,7 @@
         </div>
 
         <!-- Links Group Parent -->
-        <div class="grid grid-cols-2 sm:grid-cols-2 gap-8 sm:gap-20">
+        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-20">
           <!-- Column 2: Navigation -->
           <div class="flex flex-col gap-5">
             <h4 class="text-xs font-black uppercase tracking-widest text-white border-b border-white/10 pb-2">
@@ -74,6 +74,27 @@
               <NuxtLink to="/terms"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 Syarat & Ketentuan
+              </NuxtLink>
+            </div>
+          </div>
+
+          <!-- Column 4: Support -->
+          <div class="flex flex-col gap-5">
+            <h4 class="text-xs font-black uppercase tracking-widest text-white border-b border-white/10 pb-2">
+              Dukungan
+            </h4>
+            <div class="flex flex-col gap-3">
+              <NuxtLink to="/help"
+                class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
+                Pusat Bantuan
+              </NuxtLink>
+              <NuxtLink to="/faq"
+                class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
+                FAQ
+              </NuxtLink>
+              <NuxtLink to="/tutorial"
+                class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
+                Tutorial
               </NuxtLink>
             </div>
           </div>

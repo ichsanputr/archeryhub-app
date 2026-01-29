@@ -1,3 +1,5 @@
+import { useAuth } from '~/composables/useAuth'
+
 // Global Authentication middleware
 export default defineNuxtRouteMiddleware(async (to, from) => {
     const nuxtApp = useNuxtApp()
