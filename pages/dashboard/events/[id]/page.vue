@@ -500,6 +500,80 @@
             </section>
         </div>
 
+        <!-- Hasil Tab -->
+        <div v-if="activeTab === 'hasil'" class="space-y-6">
+            <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="p-5 border-b border-gray-100 bg-gray-50/50">
+                    <h2 class="text-lg font-bold text-navy flex items-center gap-2">
+                        <Icon icon="ph:trophy" class="text-primary text-xl" />
+                        Upload Hasil Lomba
+                    </h2>
+                    <p class="text-sm text-gray-500 mt-1">Upload dokumen hasil lomba (mendukung PDF, JPG, PNG). Anda
+                        dapat mengupload beberapa file.</p>
+                </div>
+                <div class="p-6 space-y-5">
+                    <!-- Upload Area -->
+                    <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-primary transition-colors cursor-pointer"
+                        @click="$refs.resultsFileInput?.click()" @dragover.prevent="isDragging = true"
+                        @dragleave.prevent="isDragging = false" @drop.prevent="handleResultsDrop"
+                        :class="isDragging ? 'border-primary bg-primary/5' : ''">
+                        <div class="flex flex-col items-center gap-3">
+                            <div class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center">
+                                <Icon icon="ph:upload-simple" class="text-3xl text-gray-400" />
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-navy">Klik untuk upload atau drag & drop</p>
+                                <p class="text-xs text-gray-500 mt-1">PDF, JPG, PNG (Max 10MB per file)</p>
+                            </div>
+                        </div>
+                        <input ref="resultsFileInput" type="file" class="hidden" accept=".pdf,.jpg,.jpeg,.png" multiple
+                            @change="handleResultsUpload" />
+                    </div>
+
+                    <!-- Uploaded Files List -->
+                    <div v-if="form.results && form.results.length > 0" class="space-y-3">
+                        <h3 class="text-sm font-bold text-gray-700">Dokumen yang Diupload ({{ form.results.length }})
+                        </h3>
+                        <div class="space-y-2">
+                            <div v-for="(file, index) in form.results" :key="index"
+                                class="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-200 hover:border-primary/50 transition-colors">
+                                <div class="flex items-center gap-3 flex-1">
+                                    <div
+                                        class="w-10 h-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center flex-shrink-0">
+                                        <Icon :icon="getFileIcon(file.url)" class="text-xl text-primary" />
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-bold text-navy truncate">{{ file.name ||
+                                            getFileName(file.url) }}</p>
+                                        <p class="text-xs text-gray-500">{{ formatFileSize(file.size) }}</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <a :href="file.url" target="_blank"
+                                        class="px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary/10 rounded-lg transition-colors">
+                                        Lihat
+                                    </a>
+                                    <button @click="removeResultFile(index)"
+                                        class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+                                        <Icon icon="ph:trash" class="text-lg" />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div v-else class="text-center py-8">
+                        <div class="w-16 h-16 mx-auto rounded-full bg-gray-100 flex items-center justify-center mb-3">
+                            <Icon icon="ph:files" class="text-3xl text-gray-400" />
+                        </div>
+                        <p class="text-sm font-bold text-gray-500">Belum ada dokumen hasil yang diupload</p>
+                        <p class="text-xs text-gray-400 mt-1">Klik area di atas untuk mulai upload</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
         <!-- Media Library Modal -->
         <MediaLibrary :show="showMediaLibrary" @close="showMediaLibrary = false" @select="handleMediaSelect" />
     </div>
@@ -528,7 +602,8 @@ const tabs = [
     { id: 'pendaftaran', name: 'Pendaftaran', icon: 'ph:ticket' },
     { id: 'lokasi', name: 'Lokasi', icon: 'ph:map-pin' },
     { id: 'media', name: 'Media', icon: 'ph:image' },
-    { id: 'jadwal', name: 'Jadwal', icon: 'ph:calendar-bold' }
+    { id: 'jadwal', name: 'Jadwal', icon: 'ph:calendar-bold' },
+    { id: 'hasil', name: 'Hasil', icon: 'ph:trophy' }
 ]
 
 // Media Library State
@@ -636,7 +711,8 @@ const form = ref({
             schedule: true,
             location: true
         }
-    }
+    },
+    results: []
 })
 
 const addFeeField = () => {
@@ -703,6 +779,99 @@ const handleGuidebookUpload = async (event) => {
     } finally {
         uploadingGuidebook.value = false
     }
+}
+
+// Results upload handling
+const isDragging = ref(false)
+const resultsFileInput = ref(null)
+
+const handleResultsUpload = async (event) => {
+    const files = Array.from(event.target.files || [])
+    await uploadResultFiles(files)
+}
+
+const handleResultsDrop = async (event) => {
+    isDragging.value = false
+    const files = Array.from(event.dataTransfer.files || [])
+    await uploadResultFiles(files)
+}
+
+const uploadResultFiles = async (files) => {
+    const toast = useToast()
+    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png']
+    const maxSize = 10 * 1024 * 1024 // 10MB
+
+    for (const file of files) {
+        // Validate file type
+        if (!allowedTypes.includes(file.type)) {
+            toast.error(`File ${file.name} bukan format yang diizinkan (PDF, JPG, PNG)`)
+            continue
+        }
+
+        // Validate file size
+        if (file.size > maxSize) {
+            toast.error(`File ${file.name} terlalu besar (max 10MB)`)
+            continue
+        }
+
+        try {
+            const formData = new FormData()
+            formData.append('file', file)
+            formData.append('caption', `Result - ${form.value.name}`)
+
+            const response = await post('/media/upload', formData, {
+                headers: {
+                    // Fetch will handle the boundary automatically for FormData
+                }
+            })
+
+            if (!form.value.results) {
+                form.value.results = []
+            }
+
+            form.value.results.push({
+                url: response.url,
+                name: file.name,
+                size: file.size,
+                type: file.type
+            })
+
+            toast.success(`File ${file.name} berhasil diupload`)
+        } catch (err) {
+            console.error('Upload failed:', err)
+            toast.error(`Gagal mengupload file ${file.name}`)
+        }
+    }
+
+    // Clear input
+    if (resultsFileInput.value) {
+        resultsFileInput.value.value = ''
+    }
+}
+
+const removeResultFile = (index) => {
+    form.value.results.splice(index, 1)
+}
+
+const getFileIcon = (url) => {
+    if (!url) return 'ph:file'
+    const ext = url.split('.').pop()?.toLowerCase()
+    if (ext === 'pdf') return 'ph:file-pdf'
+    if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext)) return 'ph:file-image'
+    return 'ph:file'
+}
+
+const getFileName = (url) => {
+    if (!url) return 'Unknown'
+    return url.split('/').pop() || 'Unknown'
+}
+
+const formatFileSize = (bytes) => {
+    if (!bytes) return '0 B'
+    const k = 1024
+    const sizes = ['B', 'KB', 'MB', 'GB']
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
 }
 
 // Convert datetime string to datetime-local format
@@ -846,7 +1015,8 @@ const fetchEventData = async () => {
                 technical_guidebook_url: data.technical_guidebook_url || '',
                 location_accessibility: pageSettings.location_accessibility || [],
                 prizes: pageSettings.prizes || { first: '', second: '', third: '', first_caption: '', second_caption: '', third_caption: '' },
-                page_settings: pageSettings
+                page_settings: pageSettings,
+                results: pageSettings.results || []
             }
         }
     } catch (error) {
@@ -882,7 +1052,8 @@ const saveEventPage = async () => {
                 ...form.value.page_settings,
                 location_accessibility: form.value.location_accessibility || [],
                 fees: form.value.fees || [],
-                prizes: form.value.prizes || {}
+                prizes: form.value.prizes || {},
+                results: form.value.results || []
             })
         }
 

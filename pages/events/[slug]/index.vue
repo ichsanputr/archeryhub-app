@@ -193,7 +193,7 @@
                                     <div class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Juara 1
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{ displayValue(tournament.prizes?.first)
-                                        }}</div>
+                                    }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ firstPrizeCaption }}</div>
                                 </div>
                                 <div
@@ -211,7 +211,7 @@
                                     <div class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Juara 3
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{ displayValue(tournament.prizes?.third)
-                                        }}</div>
+                                    }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ thirdPrizeCaption }}</div>
                                 </div>
                             </div>
@@ -304,7 +304,7 @@
                             </div>
                         </div>
                         <div class="flex gap-2">
-                            <a v-if="tournament.organizer_phone" :href="`https://wa.me/${tournament.organizer_phone}`"
+                            <a v-if="tournament.whatsapp_number" :href="`https://wa.me/${tournament.whatsapp_number}`"
                                 target="_blank"
                                 class="flex-1 py-2.5 bg-green-500 hover:bg-green-600 border border-green-500 rounded-xl text-xs font-bold text-white transition-all flex items-center justify-center gap-2 shadow-sm shadow-green-200">
                                 <Icon icon="ph:whatsapp-logo-bold" class="text-lg" />
@@ -478,6 +478,7 @@ const transformEventData = (data) => ({
     organizer_slug: data.organizer_username || data.organizer_slug || null,
     organizer_logo: data.organizer_avatar_url || data.organizer_logo || null,
     organizer_phone: data.organizer_phone || data.phone || null,
+    whatsapp_number: data.whatsapp_number || data.organizer_phone || data.phone || null,
     image: data.banner_url || data.image || '/hero-event-detail.jpeg',
     thumbnail: data.logo_url || data.thumbnail || null,
     fees: data.fees || [],
@@ -496,7 +497,8 @@ const transformEventData = (data) => ({
         }
     },
     prizes: data.page_settings ? (JSON.parse(data.page_settings).prizes || { first: '-', second: '-', third: '-' }) : { first: '-', second: '-', third: '-' },
-    fees: data.page_settings ? (JSON.parse(data.page_settings).fees || []) : []
+    fees: data.page_settings ? (JSON.parse(data.page_settings).fees || []) : [],
+    results: data.page_settings ? (JSON.parse(data.page_settings).results || []) : []
 })
 
 // Google Maps embed URL
