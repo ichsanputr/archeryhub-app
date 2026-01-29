@@ -103,7 +103,7 @@
 
           <!-- Achievements Tab -->
           <div v-if="activeTab === 'achievements'" class="space-y-4">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">Achievements</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Pencapaian</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <div v-for="achievement in achievements" :key="achievement.id" :class="[
                 'p-4 rounded-lg border-2 transition-all',
@@ -211,9 +211,9 @@ const settings = ref({
 })
 
 const tabs = [
-  { id: 'activity', name: 'Recent Activity', icon: 'ph:activity' },
-  { id: 'achievements', name: 'Achievements', icon: 'ph:trophy' },
-  { id: 'settings', name: 'Settings', icon: 'ph:gear' }
+  { id: 'activity', name: 'Aktivitas Terakhir', icon: 'ph:activity' },
+  { id: 'achievements', name: 'Pencapaian', icon: 'ph:trophy' },
+  { id: 'settings', name: 'Pengaturan', icon: 'ph:gear' }
 ]
 
 const recentActivity = ref([
@@ -273,7 +273,7 @@ const achievements = ref([
 
 const saveSettings = () => {
   // TODO: Implement settings save to API
-  showToast('Settings saved successfully!', 'success')
+  showToast('Pengaturan berhasil disimpan!', 'success')
 }
 
 // Meta tags

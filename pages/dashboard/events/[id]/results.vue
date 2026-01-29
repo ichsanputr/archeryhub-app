@@ -118,7 +118,7 @@
         <!-- Qualification Standings Table -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col overflow-hidden">
             <div class="p-5 border-b border-gray-50 flex justify-between items-center bg-gray-50/50">
-                <h3 class="font-bold text-navy text-lg font-display">Qualification Standings</h3>
+                <h3 class="font-bold text-navy text-lg font-display">Klasemen Kualifikasi</h3>
                 <span class="text-[10px] font-black text-primary flex items-center gap-1 uppercase tracking-widest">
                     <span class="relative flex h-2 w-2">
                         <span
@@ -177,10 +177,10 @@
 
 <script setup>
 const selectedDivision = ref('Recurve Men')
-const selectedRound = ref('Elimination Round')
+const selectedRound = ref('Babak Eliminasi')
 
-const divisions = ['Recurve Men', 'Recurve Women', 'Compound Men', 'Compound Women', 'Barebow']
-const rounds = ['Qualification Round', 'Elimination Round', 'Bronze Final', 'Gold Final']
+const divisions = ['Recurve Putra', 'Recurve Putri', 'Compound Putra', 'Compound Putri', 'Barebow']
+const rounds = ['Babak Kualifikasi', 'Babak Eliminasi', 'Final Perunggu', 'Final Emas']
 
 const standings = [
     { name: 'Arif Dwi Pangestu', target: '12A', prov: 'DKI', s1: 338, s2: 342, tens: 42, xs: 16 },

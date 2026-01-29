@@ -30,12 +30,12 @@
                 </p>
                 <div class="mt-12 flex items-center gap-4 text-sm text-slate-400 font-medium font-body">
                     <div class="flex -space-x-2">
-                        <img alt="User" class="w-8 h-8 rounded-full border-2 border-navy bg-slate-200"
-                            :src="useImageOrDefault()" />
-                        <img alt="User" class="w-8 h-8 rounded-full border-2 border-navy bg-slate-200"
-                            :src="useImageOrDefault()" />
-                        <img alt="User" class="w-8 h-8 rounded-full border-2 border-navy bg-slate-200"
-                            :src="useImageOrDefault()" />
+                        <img alt="Archer" class="w-8 h-8 rounded-full border-2 border-navy bg-slate-200 object-cover"
+                            :src="getMediaUrl('94.jpg')" />
+                        <img alt="Archer" class="w-8 h-8 rounded-full border-2 border-navy bg-slate-200 object-cover"
+                            :src="getMediaUrl('18.jpg')" />
+                        <img alt="Archer" class="w-8 h-8 rounded-full border-2 border-navy bg-slate-200 object-cover"
+                            :src="getMediaUrl('8.jpg')" />
                         <div
                             class="w-8 h-8 rounded-full border-2 border-navy bg-slate-700 flex items-center justify-center text-[10px] text-white">
                             +2k</div>
@@ -128,6 +128,13 @@ const route = useRoute()
 const router = useRouter()
 const { login, loginWithEmail, isLoggedIn } = useAuth()
 const toast = useToast()
+const config = useRuntimeConfig()
+
+const getMediaUrl = (filename) => {
+    if (!filename) return ''
+    if (filename.startsWith('http')) return filename
+    return `${config.public.apiBaseUrl}/api/v1/media/${filename}`
+}
 
 const isLoading = ref(false)
 

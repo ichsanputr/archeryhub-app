@@ -325,8 +325,8 @@ const statusOptions = [
   { title: 'Published', value: 'published' },
   { title: 'Draft', value: 'draft' },
   { title: 'Ongoing', value: 'ongoing' },
-  { title: 'Upcoming', value: 'upcoming' },
-  { title: 'Completed', value: 'completed' }
+  { title: 'Akan Datang', value: 'upcoming' },
+  { title: 'Selesai', value: 'completed' }
 ]
 
 const fetchEvents = async () => {

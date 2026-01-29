@@ -136,6 +136,42 @@
                             </NuxtLink>
                         </div>
                     </div>
+
+                    <!-- Dynamic Sections -->
+                    <div v-for="(section, sIdx) in org.sections" :key="sIdx"
+                        class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+                        <h2 class="font-black text-navy text-xl mb-5 flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                                <Icon
+                                    :icon="section.type === 'faq' ? 'ph:question-bold' : (section.type === 'gallery' ? 'ph:image-bold' : 'ph:info-bold')"
+                                    class="text-xl text-primary" />
+                            </div>
+                            {{ section.title }}
+                        </h2>
+
+                        <!-- Text Section -->
+                        <div v-if="section.type === 'text'" class="prose max-w-none">
+                            <p class="text-gray-600 leading-relaxed text-lg whitespace-pre-line">{{ section.content }}
+                            </p>
+                        </div>
+
+                        <!-- Gallery Section -->
+                        <div v-if="section.type === 'gallery'" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <div v-for="(img, idx) in section.media" :key="idx"
+                                class="aspect-square rounded-xl overflow-hidden bg-gray-100 border border-gray-200">
+                                <img :src="img" :alt="`Gallery ${idx + 1}`" class="w-full h-full object-cover" />
+                            </div>
+                        </div>
+
+                        <!-- FAQ Section -->
+                        <div v-if="section.type === 'faq'" class="space-y-4">
+                            <div v-for="(faq, fIdx) in section.faqs" :key="fIdx"
+                                class="border border-gray-200 rounded-xl p-5 bg-gray-50/30">
+                                <h4 class="font-bold text-navy mb-2">{{ faq.question }}</h4>
+                                <p class="text-gray-600 text-sm leading-relaxed">{{ faq.answer }}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Sidebar -->
@@ -244,7 +280,28 @@ const { data: orgResponse, pending: isLoading } = await useAsyncData(
     { server: true }
 )
 
-const org = computed(() => orgResponse.value?.organization || orgResponse.value?.data?.organization || {})
+const org = computed(() => {
+    const rawOrg = orgResponse.value?.organization || orgResponse.value?.data?.organization || {}
+    let sections = []
+    
+    // Parse page_settings if available
+    if (rawOrg.page_settings) {
+        try {
+            const pageSettings = typeof rawOrg.page_settings === 'string' 
+                ? JSON.parse(rawOrg.page_settings) 
+                : rawOrg.page_settings
+            sections = pageSettings.sections || []
+        } catch (e) {
+            console.error('Failed to parse page_settings:', e)
+        }
+    }
+    
+    return {
+        ...rawOrg,
+        sections
+    }
+})
+
 const events = computed(() => orgResponse.value?.events || orgResponse.value?.data?.events || [])
 
 const typeLabels = {

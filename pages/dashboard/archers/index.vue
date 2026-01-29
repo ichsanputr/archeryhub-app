@@ -162,9 +162,9 @@ const activeTab = ref('all')
 
 const tabs = ref([
   { label: 'All Athletes', value: 'all', count: 0 },
-  { label: 'Active', value: 'active', count: 0 },
-  { label: 'Pending', value: 'pending', count: 0 },
-  { label: 'Suspended', value: 'suspended', count: 0 },
+  { label: 'Aktif', value: 'active', count: 0 },
+  { label: 'Menunggu', value: 'pending', count: 0 },
+  { label: 'Ditangguhkan', value: 'suspended', count: 0 },
 ])
 
 const athletes = ref([])

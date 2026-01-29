@@ -301,7 +301,7 @@
           class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-all border border-gray-100 group">
           <div class="flex justify-between items-start">
             <div>
-              <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Total Archers</p>
+              <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Total Atlet</p>
               <p class="text-navy-dark text-3xl font-extrabold tracking-tight">124</p>
             </div>
             <div
@@ -322,7 +322,7 @@
           class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-all border border-gray-100 group">
           <div class="flex justify-between items-start">
             <div>
-              <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Active Targets</p>
+              <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Target Aktif</p>
               <p class="text-navy-dark text-3xl font-extrabold tracking-tight">32<span
                   class="text-lg text-gray-400 font-medium ml-1">/ 35</span></p>
             </div>
@@ -344,7 +344,7 @@
           class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-all border border-gray-100 group">
           <div class="flex justify-between items-start">
             <div>
-              <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Completion</p>
+              <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Penyelesaian</p>
               <p class="text-navy-dark text-3xl font-extrabold tracking-tight">85%</p>
             </div>
             <div
@@ -601,9 +601,9 @@ const upcomingClubTournaments = computed(() => clubUpcomingTournaments.value)
 
 
 const stats = [
-  { label: 'Total Archers', value: '124', icon: 'ph:users', trend: '+12 check-ins today', trendIcon: 'ph:trend-up', trendColor: 'text-green-600' },
-  { label: 'Active Targets', value: '32/35', icon: 'ph:target', trend: 'All systems online', trendIcon: 'ph:check-circle', trendColor: 'text-text-secondary' },
-  { label: 'Completion', value: '85%', icon: 'ph:check-square-offset', trend: '', trendIcon: '', trendColor: '' },
+  { label: 'Total Atlet', value: '124', icon: 'ph:users', trend: '+12 check-ins hari ini', trendIcon: 'ph:trend-up', trendColor: 'text-green-600' },
+  { label: 'Target Aktif', value: '32/35', icon: 'ph:target', trend: 'Semua sistem online', trendIcon: 'ph:check-circle', trendColor: 'text-text-secondary' },
+  { label: 'Penyelesaian', value: '85%', icon: 'ph:check-square-offset', trend: '', trendIcon: '', trendColor: '' },
   { label: 'Time Left', value: '45:20', icon: 'ph:timer', trend: 'Est. End: 14:30 PM', trendIcon: 'ph:clock', trendColor: 'text-text-secondary' },
 ]
 

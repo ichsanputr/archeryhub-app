@@ -305,134 +305,6 @@
           </div>
         </div>
 
-        <!-- Tab: Konten -->
-        <div v-if="activeTab === 'content'" class="space-y-8">
-          <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
-            <div class="flex items-center justify-between">
-              <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
-                <Icon icon="ph:stack-bold" class="text-primary text-xl" /> Konten Halaman Dinamis
-              </h3>
-              <button
-                class="flex items-center gap-2 px-6 py-3 bg-navy text-white rounded-xl text-sm font-black hover:bg-navy-dark transition shadow-lg shadow-navy/20"
-                @click="addSection">
-                <Icon icon="ph:plus-circle-bold" class="text-lg" /> Tambah Section Baru
-              </button>
-            </div>
-
-            <div class="space-y-6">
-              <transition-group name="list">
-                <div v-for="(section, idx) in dynamicSections" :key="idx"
-                  class="border border-gray-100 rounded-3xl p-6 bg-white shadow-sm hover:shadow-md transition-shadow relative">
-                  <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-                    <div class="flex items-center gap-4">
-                      <div
-                        class="w-10 h-10 rounded-xl bg-navy text-white flex items-center justify-center font-black shadow-sm">
-                        {{ idx + 1 }}
-                      </div>
-                      <div class="relative">
-                        <select v-model="section.type"
-                          class="bg-gray-50 border border-gray-200 text-sm font-black text-navy rounded-xl px-5 py-2.5 outline-none focus:ring-2 focus:ring-primary/20 appearance-none pr-10">
-                          <option value="about">Tentang Kami (Text)</option>
-                          <option value="gallery">Galeri Foto</option>
-                          <option value="testimonials">Testimoni</option>
-                          <option value="faq">FAQ</option>
-                          <option value="hero">Promotion Banner</option>
-                        </select>
-                        <Icon icon="ph:caret-down-bold"
-                          class="absolute right-3 top-1/2 -translate-y-1/2 text-navy pointer-events-none" />
-                      </div>
-                    </div>
-                    <div class="flex gap-2">
-                      <button @click="moveSection(idx, -1)" :disabled="idx === 0"
-                        class="p-2.5 bg-gray-50 text-gray-400 hover:text-navy hover:bg-gray-100 rounded-xl disabled:opacity-20 transition-colors">
-                        <Icon icon="ph:arrow-up-bold" class="text-lg" />
-                      </button>
-                      <button @click="moveSection(idx, 1)" :disabled="idx === dynamicSections.length - 1"
-                        class="p-2.5 bg-gray-50 text-gray-400 hover:text-navy hover:bg-gray-100 rounded-xl disabled:opacity-20 transition-colors">
-                        <Icon icon="ph:arrow-down-bold" class="text-lg" />
-                      </button>
-                      <button @click="removeSection(idx)"
-                        class="p-2.5 bg-red-50 text-red-400 hover:text-red-600 hover:bg-red-100 rounded-xl transition-colors">
-                        <Icon icon="ph:trash-bold" class="text-lg" />
-                      </button>
-                    </div>
-                  </div>
-
-                  <!-- Content Editor Based on Type -->
-                  <div class="grid grid-cols-1 gap-6 bg-gray-50/50 p-6 rounded-2xl border border-gray-50">
-                    <BaseInput v-model="section.title" label="Judul Section" placeholder="Masukkan judul utama..."
-                      class="!bg-white" />
-
-                    <div v-if="section.type === 'about'">
-                      <BaseTextarea v-model="section.content" label="Konten Paragraf" rows="5"
-                        placeholder="Tuliskan cerita detail atau visi misi klub..." class="!bg-white" />
-                    </div>
-
-                    <div v-else-if="section.type === 'gallery'" class="space-y-4">
-                      <div class="flex items-center justify-between">
-                        <label class="block text-sm font-bold text-gray-700">Media Galeri</label>
-                        <button @click="openMediaLibrary('section-gallery-' + idx)"
-                          class="text-xs font-black text-primary hover:underline flex items-center gap-1">
-                          <Icon icon="ph:plus-bold" /> Tambah dari Media
-                        </button>
-                      </div>
-                      <BaseTextarea v-model="section.images" rows="3" placeholder="Paste link gambar dipisahkan koma..."
-                        class="!bg-white text-xs font-mono" />
-                      <p class="text-[10px] text-gray-400 font-medium">Contoh: https://link1.jpg, https://link2.jpg</p>
-                    </div>
-
-                    <div v-else-if="section.type === 'testimonials'" class="space-y-4">
-                      <div v-for="(t, tIdx) in section.items" :key="tIdx"
-                        class="p-5 bg-white rounded-2xl border border-gray-100 shadow-sm flex flex-col gap-4 relative group">
-                        <button @click="section.items.splice(tIdx, 1)"
-                          class="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
-                          <Icon icon="ph:x-bold" />
-                        </button>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <BaseInput v-model="t.author" label="Nama Penulis" placeholder="Contoh: Coach Budi" />
-                          <BaseInput v-model="t.role" label="Jabatan/Status" placeholder="Contoh: Member Senior" />
-                        </div>
-                        <BaseTextarea v-model="t.text" label="Testimoni" rows="3"
-                          placeholder="Apa kata mereka tentang klub?" />
-                      </div>
-                      <button @click="section.items.push({ author: '', text: '', role: '' })"
-                        class="w-full py-4 border-2 border-dashed border-gray-200 rounded-2xl text-xs font-black text-navy hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2 uppercase tracking-widest">
-                        <Icon icon="ph:plus-bold" /> Tambah Testimoni
-                      </button>
-                    </div>
-
-                    <div v-else-if="section.type === 'faq'" class="space-y-4">
-                      <div v-for="(item, fIdx) in section.items" :key="fIdx"
-                        class="p-5 bg-white rounded-2xl border border-gray-100 shadow-sm space-y-4 relative group">
-                        <button @click="section.items.splice(fIdx, 1)"
-                          class="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
-                          <Icon icon="ph:x-bold" />
-                        </button>
-                        <BaseInput v-model="item.question" label="Pertanyaan" placeholder="Apa syarat bergabung?" />
-                        <BaseTextarea v-model="item.answer" label="Jawaban" rows="2"
-                          placeholder="Cukup membawa busur sendiri..." />
-                      </div>
-                      <button @click="section.items.push({ question: '', answer: '' })"
-                        class="w-full py-4 border-2 border-dashed border-gray-200 rounded-2xl text-xs font-black text-navy hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2 uppercase tracking-widest">
-                        <Icon icon="ph:plus-bold" /> Tambah FAQ Item
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </transition-group>
-
-              <div v-if="!dynamicSections.length"
-                class="text-center py-20 bg-gray-50/50 rounded-3xl border-2 border-dashed border-gray-100">
-                <div class="size-20 bg-white rounded-full flex items-center justify-center shadow-sm mx-auto mb-5">
-                  <Icon icon="ph:stack-light" class="text-4xl text-gray-200" />
-                </div>
-                <h4 class="text-navy font-black mb-1">Section Tambahan Masih Kosong</h4>
-                <p class="text-sm text-gray-400 max-w-sm mx-auto">Tambahkan section seperti FAQ, Testimoni, atau Galeri
-                  untuk mempercantik halaman publik Anda.</p>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       <!-- Side card -->
@@ -527,8 +399,7 @@ const activeTab = ref('general')
 const tabs = [
   { id: 'general', label: 'Info Umum', icon: 'ph:identification-badge-bold' },
   { id: 'contact', label: 'Kontak & Sosmed', icon: 'ph:phone-bold' },
-  { id: 'facilities', label: 'Fasilitas & Jadwal', icon: 'ph:check-circle-bold' },
-  { id: 'content', label: 'Konten Tambahan', icon: 'ph:stack-bold' }
+  { id: 'facilities', label: 'Fasilitas & Jadwal', icon: 'ph:check-circle-bold' }
 ]
 
 const pageSettings = reactive({
@@ -561,7 +432,6 @@ const form = reactive({
   socialMedia: []
 })
 
-const dynamicSections = ref([])
 
 // Slug checking
 const slugLocked = ref(false)
@@ -647,14 +517,6 @@ const handleMediaSelect = (media) => {
     form.logoUrl = media.url
   } else if (mediaTarget.value === 'banner') {
     form.bannerUrl = media.url
-  } else if (mediaTarget.value.startsWith('section-gallery-')) {
-    const idx = parseInt(mediaTarget.value.replace('section-gallery-', ''))
-    if (!isNaN(idx) && dynamicSections.value[idx]) {
-      const currentImages = dynamicSections.value[idx].images || ''
-      dynamicSections.value[idx].images = currentImages
-        ? `${currentImages}, ${media.url}`
-        : media.url
-    }
   }
   showMediaLibrary.value = false
 }
@@ -703,22 +565,15 @@ const loadProfile = async () => {
       if (data.page_settings) {
         try {
           const parsed = typeof data.page_settings === 'string' ? JSON.parse(data.page_settings) : data.page_settings
-          Object.assign(pageSettings.sections, parsed.sections || {})
+          // Handle page settings sections (visibility toggles)
+          if (parsed.sections && !Array.isArray(parsed.sections)) {
+            Object.assign(pageSettings.sections, parsed.sections || {})
+          }
         } catch (e) {
           console.error('Failed to parse page_settings', e)
         }
       }
 
-      // Load dynamic sections
-      if (data.dynamic_sections) {
-        try {
-          dynamicSections.value = typeof data.dynamic_sections === 'string'
-            ? JSON.parse(data.dynamic_sections)
-            : data.dynamic_sections
-        } catch (e) {
-          console.error('Failed to parse dynamic_sections', e)
-        }
-      }
     }
   } catch (error) {
     console.error('Load profile error:', error)
@@ -747,8 +602,7 @@ const saveProfile = async () => {
       facilities: form.facilities,
       schedules: form.schedules,
       social_media: form.socialMedia,
-      page_settings: JSON.stringify(pageSettings),
-      dynamic_sections: JSON.stringify(dynamicSections.value)
+      page_settings: JSON.stringify(pageSettings)
     })
     toast.success('Profil klub berhasil disimpan!')
   } catch (error) {
@@ -783,28 +637,6 @@ const removeSchedule = (index) => {
   form.schedules.splice(index, 1)
 }
 
-const addSection = () => {
-  dynamicSections.value.push({
-    type: 'about',
-    title: '',
-    content: '',
-    images: '',
-    items: []
-  })
-}
-
-const removeSection = (index) => {
-  dynamicSections.value.splice(index, 1)
-}
-
-const moveSection = (index, direction) => {
-  const newIndex = index + direction
-  if (newIndex >= 0 && newIndex < dynamicSections.value.length) {
-    const temp = dynamicSections.value[index]
-    dynamicSections.value[index] = dynamicSections.value[newIndex]
-    dynamicSections.value[newIndex] = temp
-  }
-}
 
 onMounted(() => {
   loadProfile()

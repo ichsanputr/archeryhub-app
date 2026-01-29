@@ -290,10 +290,23 @@ onMounted(async () => {
 
             if (profileData && profileData.data) {
                 const data = profileData.data
+                // Extract from page_settings if available
+                if (data.page_settings) {
+                    try {
+                        const parsed = typeof data.page_settings === 'string' ? JSON.parse(data.page_settings) : data.page_settings
+                        if (parsed.sections) profile.value.sections = parsed.sections
+                        if (parsed.catalog_config) profile.value.catalog_config = parsed.catalog_config
+                        if (parsed.theme_color) profile.value.theme_color = parsed.theme_color
+                        if (parsed.banner_text) profile.value.banner_text = parsed.banner_text
+                    } catch (e) {
+                        console.error('Failed to parse page_settings', e)
+                    }
+                }
+                // Fallback to direct fields for backward compatibility
                 if (data.sections) profile.value.sections = typeof data.sections === 'string' ? JSON.parse(data.sections) : data.sections
                 if (data.catalog_config) profile.value.catalog_config = typeof data.catalog_config === 'string' ? JSON.parse(data.catalog_config) : data.catalog_config
-                profile.value.theme_color = data.theme_color || '#FBBF24'
-                profile.value.banner_text = data.banner_text || ''
+                if (data.theme_color) profile.value.theme_color = data.theme_color
+                if (data.banner_text) profile.value.banner_text = data.banner_text
             }
         } catch (error) {
             console.error('Failed to fetch seller data:', error)
@@ -332,10 +345,12 @@ const saveStore = async () => {
                 banner_url: store.value.bannerUrl
             }),
             put('/sellers/profile', {
-                sections: profile.value.sections,
-                catalog_config: profile.value.catalog_config,
-                theme_color: profile.value.theme_color,
-                banner_text: profile.value.banner_text
+                page_settings: JSON.stringify({
+                    sections: profile.value.sections,
+                    catalog_config: profile.value.catalog_config,
+                    theme_color: profile.value.theme_color,
+                    banner_text: profile.value.banner_text
+                })
             })
         ])
 

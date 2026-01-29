@@ -3,8 +3,8 @@
         <div class="flex items-center justify-between mb-8">
             <div>
                 <h2 class="text-navy text-xl sm:text-2xl font-bold tracking-tight font-display">Event
-                    Bakal Digelar</h2>
-                <p class="text-text-sub text-xs sm:text-sm mt-1">Daftar sekarang sebelum slotnya penuh!
+                    Terbaru</h2>
+                <p class="text-text-sub text-xs sm:text-sm mt-1">Event terbaru yang bisa kamu ikuti!
                 </p>
             </div>
             <NuxtLink to="/events"
@@ -57,7 +57,7 @@
 
         <div v-else class="flex flex-col items-center justify-center py-20 text-center">
             <Icon icon="ph:calendar-blank-light" class="text-5xl text-gray-200 mb-4" />
-            <p class="text-sm text-gray-400">Belum ada event mendatang.</p>
+            <p class="text-sm text-gray-400">Belum ada event terbaru.</p>
         </div>
 
         <!-- View More Footer -->
@@ -91,9 +91,9 @@ const formatDate = (dateStr, format) => {
 }
 
 const { data: eventsData, pending: loading } = await useAsyncData(
-    'upcoming-events',
+    'latest-events',
     () => $fetch(`${apiBaseUrl}/events`, {
-        query: { limit: '6', status: 'published' }
+        query: { limit: '6' }
     })
 )
 

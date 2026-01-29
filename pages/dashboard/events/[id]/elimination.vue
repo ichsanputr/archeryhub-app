@@ -282,10 +282,10 @@ const selectedMatchData = computed(() => {
 const handleMatchSelect = (id) => { selectedMatch.value = id }
 
 const getRoundName = (id) => {
-    if (id <= 8) return '1/8 Finals'
-    if (id <= 12) return 'Quarter Finals'
-    if (id <= 14) return 'Semi Finals'
-    return 'Gold Medal Match'
+    if (id <= 8) return '1/8 Final'
+    if (id <= 12) return 'Perempat Final'
+    if (id <= 14) return 'Semi Final'
+    return 'Final Emas'
 }
 
 const dummySets = [

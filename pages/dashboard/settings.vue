@@ -2,8 +2,8 @@
   <div class="space-y-6">
     <!-- Header -->
     <div>
-      <h1 class="text-3xl font-black text-navy">Pengaturan</h1>
-      <p class="text-text-secondary mt-1 font-medium">Kelola profil dan preferensi akun Anda</p>
+      <h1 class="text-3xl font-black text-navy">Pengaturan Akun</h1>
+      <p class="text-text-secondary mt-1 font-medium">Kelola kredensial dan keamanan akun Anda</p>
     </div>
 
     <!-- Settings Nav Tabs -->
@@ -18,8 +18,8 @@
       </div>
     </div>
 
-    <!-- Profile Settings -->
-    <div v-if="activeTab === 'profile'"
+    <!-- Account Info -->
+    <div v-if="activeTab === 'account'"
       class="bg-white rounded-xl border border-gray-200 p-6 md:p-8 shadow-sm space-y-8">
 
       <!-- Profile Header -->
@@ -27,13 +27,14 @@
         <div class="relative">
           <div
             class="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden border-4 border-primary/20">
-            <img v-if="user?.avatar_url" :src="user.avatar_url" class="w-full h-full object-cover" />
+            <img v-if="userData?.avatar_url" :src="userData.avatar_url" class="w-full h-full object-cover" />
+            <img v-else-if="userData?.logo_url" :src="userData.logo_url" class="w-full h-full object-cover" />
             <Icon v-else icon="ph:user" class="text-4xl text-primary" />
           </div>
         </div>
         <div>
-          <h3 class="text-xl font-bold text-navy">{{ user?.full_name || 'Pengguna' }}</h3>
-          <p class="text-gray-500">{{ user?.email }}</p>
+          <h3 class="text-xl font-bold text-navy">{{ userData?.full_name || userData?.name || 'Pengguna' }}</h3>
+          <p class="text-gray-500">{{ userData?.email }}</p>
           <span
             class="inline-flex items-center gap-1 mt-2 px-3 py-1 rounded-full text-xs font-bold uppercase bg-primary/10 text-primary-dark">
             <Icon :icon="userTypeIcon" />
@@ -42,140 +43,13 @@
         </div>
       </div>
 
-      <!-- Archer Profile Fields -->
-      <div v-if="userType === 'archer'" class="space-y-6">
-        <h4 class="text-sm font-black text-navy uppercase tracking-widest flex items-center gap-2">
-          <Icon icon="ph:user-bold" class="text-primary" />
-          Data Pemanah
-        </h4>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <BaseInput v-model="profile.fullName" label="Nama Lengkap" placeholder="Masukkan Nama Anda" required />
-          <BaseInput v-model="profile.nickname" label="Nama Panggilan" placeholder="Nick" />
-          <BaseInput v-model="profile.dateOfBirth" label="Tanggal Lahir" type="date" required />
-          <BaseSelect v-model="profile.gender" label="Jenis Kelamin" :items="[
-            { title: 'Laki-laki', value: 'male' },
-            { title: 'Perempuan', value: 'female' }
-          ]" required />
-          <BaseInput v-model="profile.phone" label="No. Telepon" type="tel" placeholder="08xxxxxxxxxx" required />
-          <BaseSelect v-model="profile.bowType" label="Jenis Busur" :items="[
-            { title: 'Recurve', value: 'recurve' },
-            { title: 'Compound', value: 'compound' },
-            { title: 'Barebow', value: 'barebow' },
-            { title: 'Tradisional', value: 'traditional' }
-          ]" required />
-          <BaseInput v-model="profile.city" label="Kota/Kabupaten" placeholder="Contoh: Jakarta Selatan" />
-          <BaseInput v-model="profile.country" label="Negara" placeholder="Indonesia" />
-        </div>
-      </div>
-
-      <!-- Organization Profile Fields -->
-      <div v-if="userType === 'organization'" class="space-y-6">
-        <h4 class="text-sm font-black text-navy uppercase tracking-widest flex items-center gap-2">
-          <Icon icon="ph:buildings-bold" class="text-primary" />
-          Data Organisasi
-        </h4>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="md:col-span-2">
-            <BaseInput v-model="profile.organizationName" label="Nama Organisasi" placeholder="Nama resmi organisasi"
-              required />
-          </div>
-          <BaseInput v-model="profile.acronym" label="Singkatan" placeholder="Contoh: PERPANI" />
-          <BaseSelect v-model="profile.organizationType" label="Tipe Organisasi" :items="[
-            { title: 'Federasi', value: 'federation' },
-            { title: 'Asosiasi', value: 'association' },
-            { title: 'Panitia', value: 'committee' },
-            { title: 'Sponsor', value: 'sponsor' },
-            { title: 'Lainnya', value: 'other' }
-          ]" required />
-          <BaseInput v-model="profile.contactPersonName" label="Nama PIC" placeholder="Nama penanggung jawab"
-            required />
-          <BaseInput v-model="profile.contactPersonPhone" label="No. Telepon PIC" type="tel" placeholder="08xxxxxxxxxx"
-            required />
-          <div class="md:col-span-2">
-            <BaseInput v-model="profile.address" label="Alamat" placeholder="Alamat lengkap kantor" />
-          </div>
-        </div>
-      </div>
-
-      <!-- Club Profile Fields -->
-      <div v-if="userType === 'club'" class="space-y-6">
-        <h4 class="text-sm font-black text-navy uppercase tracking-widest flex items-center gap-2">
-          <Icon icon="ph:users-three-bold" class="text-primary" />
-          Data Klub
-        </h4>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="md:col-span-2">
-            <BaseInput v-model="profile.clubName" label="Nama Klub" placeholder="Nama resmi klub" required />
-          </div>
-          <BaseInput v-model="profile.abbreviation" label="Singkatan" placeholder="Contoh: JVAC" />
-          <BaseInput v-model="profile.establishedDate" label="Tahun Berdiri" type="date" />
-          <BaseInput v-model="profile.headCoachName" label="Nama Kepala Pelatih" placeholder="Nama pelatih utama"
-            required />
-          <BaseInput v-model="profile.headCoachPhone" label="No. Telepon Pelatih" type="tel" placeholder="08xxxxxxxxxx"
-            required />
-          <BaseInput v-model="profile.city" label="Kota" placeholder="Lokasi klub" required />
-          <BaseInput v-model="profile.province" label="Provinsi" placeholder="Provinsi" />
-          <div class="md:col-span-2">
-            <BaseInput v-model="profile.address" label="Alamat Latihan" placeholder="Alamat lengkap tempat latihan" />
-          </div>
-
-          <!-- Contact & Social Media -->
-          <h4 class="md:col-span-2 text-xs font-black text-gray-400 uppercase tracking-widest mt-4">
-            Kontak & Sosial Media
-          </h4>
-          <BaseInput v-model="profile.email" label="Email Klub" placeholder="email@klub.com" type="email" />
-          <BaseInput v-model="profile.phone" label="No. Telepon Official" placeholder="08xxxxxxxxxx" />
-          <BaseInput v-model="profile.website" label="Website" placeholder="https://..." />
-          <BaseInput v-model="profile.socialInstagram" label="Instagram (Username)" placeholder="@username" />
-          <BaseInput v-model="profile.socialFacebook" label="Facebook (URL)" placeholder="https://facebook.com/..." />
-          <BaseInput v-model="profile.whatsapp" label="WhatsApp" placeholder="08xxxxxxxxxx" />
-
-          <!-- About & Schedule -->
-          <h4 class="md:col-span-2 text-xs font-black text-gray-400 uppercase tracking-widest mt-4">
-            Informasi Tambahan
-          </h4>
-          <div class="md:col-span-2">
-            <BaseTextarea v-model="profile.description" label="Deskripsi Klub"
-              placeholder="Ceritakan tentang klub Anda, sejarah, dan pencapaian..." :rows="4" />
-          </div>
-          <div class="md:col-span-2">
-            <BaseTextarea v-model="profile.trainingSchedule" label="Jadwal Latihan"
-              placeholder="Contoh: Senin & Rabu: 16:00 - 18:00, Sabtu: 08:00 - 11:00" :rows="3" />
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- General Settings -->
-    <div v-if="activeTab === 'general'"
-      class="bg-white rounded-xl border border-gray-200 p-6 md:p-8 shadow-sm space-y-8">
       <div>
-        <h3 class="text-xl font-bold text-navy mb-6">Pengaturan Umum</h3>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <BaseSelect v-model="settings.language" label="Bahasa" :items="[
-            { title: 'English', value: 'en' },
-            { title: 'Bahasa Indonesia', value: 'id' }
-          ]" />
-
-          <BaseSelect v-model="settings.timezone" label="Zona Waktu" :items="[
-            { title: 'Asia/Jakarta (WIB)', value: 'Asia/Jakarta' },
-            { title: 'Asia/Makassar (WITA)', value: 'Asia/Makassar' },
-            { title: 'Asia/Jayapura (WIT)', value: 'Asia/Jayapura' }
-          ]" />
-        </div>
-      </div>
-    </div>
-
-    <!-- Notification Settings -->
-    <div v-if="activeTab === 'notifications'"
-      class="bg-white rounded-xl border border-gray-200 p-6 md:p-8 shadow-sm space-y-8">
-      <div>
-        <h3 class="text-xl font-bold text-navy mb-6">Preferensi Notifikasi</h3>
+        <h3 class="text-xl font-bold text-navy mb-2">Informasi Akun</h3>
+        <p class="text-gray-500 text-sm mb-6">Data dasar akun Anda</p>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <BaseCheckbox v-model="settings.emailNotifications" label="Notifikasi Email" />
-          <BaseCheckbox v-model="settings.pushNotifications" label="Notifikasi Push" />
+          <BaseInput v-model="accountForm.email" label="Email" type="email" placeholder="email@example.com" disabled />
+          <BaseInput v-model="accountForm.username" label="Username" placeholder="username" />
         </div>
       </div>
     </div>
@@ -218,10 +92,13 @@
                 </div>
                 <div>
                   <p class="font-bold text-navy">Google</p>
-                  <p class="text-xs text-gray-400">{{ user?.email }}</p>
+                  <p class="text-xs text-gray-400">{{ userData?.email }}</p>
                 </div>
               </div>
-              <span class="px-3 py-1 bg-green-100 text-green-600 text-xs font-bold rounded-full">Terhubung</span>
+              <span v-if="userData?.google_id"
+                class="px-3 py-1 bg-green-100 text-green-600 text-xs font-bold rounded-full">Terhubung</span>
+              <span v-else class="px-3 py-1 bg-gray-200 text-gray-500 text-xs font-bold rounded-full">Tidak
+                Terhubung</span>
             </div>
             <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-200">
               <div class="flex items-center gap-3">
@@ -257,6 +134,47 @@
             <BaseInput v-model="passwordForm.confirmPassword" label="Konfirmasi Password" type="password"
               placeholder="Ulangi password baru" required />
           </div>
+          <div class="mt-6">
+            <BaseButton variant="gold" size="md" icon="ph:key" @click="savePassword" :loading="isSavingPassword">
+              {{ hasPassword ? 'Ubah Password' : 'Atur Password' }}
+            </BaseButton>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- General Settings -->
+    <div v-if="activeTab === 'general'"
+      class="bg-white rounded-xl border border-gray-200 p-6 md:p-8 shadow-sm space-y-8">
+      <div>
+        <h3 class="text-xl font-bold text-navy mb-6">Pengaturan Umum</h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <BaseSelect v-model="settings.language" label="Bahasa" :items="[
+            { title: 'English', value: 'en' },
+            { title: 'Bahasa Indonesia', value: 'id' }
+          ]" />
+
+          <BaseSelect v-model="settings.timezone" label="Zona Waktu" :items="[
+            { title: 'Asia/Jakarta (WIB)', value: 'Asia/Jakarta' },
+            { title: 'Asia/Makassar (WITA)', value: 'Asia/Makassar' },
+            { title: 'Asia/Jayapura (WIT)', value: 'Asia/Jayapura' }
+          ]" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Notification Settings -->
+    <div v-if="activeTab === 'notifications'"
+      class="bg-white rounded-xl border border-gray-200 p-6 md:p-8 shadow-sm space-y-8">
+      <div>
+        <h3 class="text-xl font-bold text-navy mb-6">Preferensi Notifikasi</h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <BaseCheckbox v-model="settings.emailNotifications" label="Notifikasi Email" />
+          <BaseCheckbox v-model="settings.pushNotifications" label="Notifikasi Push" />
+          <BaseCheckbox v-model="settings.eventUpdates" label="Update Event" />
+          <BaseCheckbox v-model="settings.registrationNotifications" label="Notifikasi Pendaftaran" />
         </div>
       </div>
     </div>
@@ -275,72 +193,47 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useAuth } from '~/composables/useAuth'
+import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 
 definePageMeta({
   title: 'Pengaturan',
-  layout: 'dashboard'
+  layout: 'dashboard',
+  middleware: ['auth']
 })
 
 const { user, fetchUser } = useAuth()
-const { put } = useApi()
+const { get, put } = useApi()
 const toast = useToast()
 
-const activeTab = ref('profile')
+const activeTab = ref('account')
 const isSaving = ref(false)
+const isSavingPassword = ref(false)
+const userData = ref(null)
 
 // Determine user type
-const userType = computed(() => user.value?.role || user.value?.type || 'archer')
+const userType = computed(() => userData.value?.user_type || user.value?.role || user.value?.type || 'archer')
 const userTypeLabel = computed(() => {
-  const labels = { archer: 'Pemanah', organization: 'Organisasi', club: 'Klub', admin: 'Admin' }
+  const labels = { archer: 'Pemanah', organization: 'Organisasi', club: 'Klub', admin: 'Admin', seller: 'Seller' }
   return labels[userType.value] || 'Pengguna'
 })
 const userTypeIcon = computed(() => {
-  const icons = { archer: 'ph:user', organization: 'ph:buildings', club: 'ph:users-three', admin: 'ph:shield-star' }
+  const icons = { archer: 'ph:user', organization: 'ph:buildings', club: 'ph:users-three', admin: 'ph:shield-star', seller: 'ph:storefront' }
   return icons[userType.value] || 'ph:user'
 })
 
 const tabs = [
-  { label: 'Profil', value: 'profile', icon: 'ph:user-circle' },
+  { label: 'Akun', value: 'account', icon: 'ph:user-circle' },
   { label: 'Keamanan', value: 'security', icon: 'ph:shield-check' },
   { label: 'Umum', value: 'general', icon: 'ph:gear' },
   { label: 'Notifikasi', value: 'notifications', icon: 'ph:bell' },
 ]
 
-// Profile data based on user type
-const profile = ref({
-  // Archer fields
-  fullName: user.value?.full_name || user.value?.name || '',
-  nickname: user.value?.nickname || '',
-  dateOfBirth: user.value?.date_of_birth || '',
-  gender: user.value?.gender || 'male',
-  phone: user.value?.phone || '',
-  bowType: user.value?.bow_type || 'recurve',
-  city: user.value?.city || '',
-  country: user.value?.country || 'ID',
-  // Organization fields
-  organizationName: user.value?.organization_name || user.value?.name || '',
-  acronym: user.value?.acronym || '',
-  organizationType: user.value?.organization_type || 'association',
-  contactPersonName: user.value?.contact_person_name || '',
-  contactPersonPhone: user.value?.contact_person_phone || '',
-  // Club fields
-  clubName: user.value?.club_name || user.value?.name || '',
-  abbreviation: user.value?.abbreviation || '',
-  establishedDate: user.value?.established_year ? `${user.value.established_year}-01-01` : '',
-  headCoachName: user.value?.head_coach_name || '',
-  headCoachPhone: user.value?.head_coach_phone || '',
-  province: user.value?.province || '',
-  address: user.value?.address || '',
-  email: user.value?.email || '',
-  website: user.value?.website || '',
-  socialInstagram: user.value?.social_instagram || '',
-  socialFacebook: user.value?.social_facebook || '',
-  whatsapp: user.value?.phone || '',
-  description: user.value?.description || '',
-  trainingSchedule: user.value?.training_schedule || ''
+const accountForm = ref({
+  email: '',
+  username: ''
 })
 
 const settings = ref({
@@ -348,47 +241,53 @@ const settings = ref({
   timezone: 'Asia/Jakarta',
   emailNotifications: true,
   pushNotifications: true,
+  eventUpdates: true,
+  registrationNotifications: true
 })
 
-const saveSettings = async () => {
-  isSaving.value = true
-  try {
-    const payload = {
-      profile_completed: true,
-      ...profile.value,
-      // Map to backend fields
-      name: profile.value.clubName,
-      social_instagram: profile.value.socialInstagram,
-      social_facebook: profile.value.socialFacebook,
-      training_schedule: profile.value.trainingSchedule,
-      head_coach_name: profile.value.headCoachName,
-      head_coach_phone: profile.value.headCoachPhone
-    }
-
-    await put('/user/profile', payload)
-    await fetchUser()
-    toast.success('Profil berhasil disimpan')
-  } catch (error) {
-    console.error('Failed to save profile:', error)
-    toast.error('Gagal menyimpan profil')
-  } finally {
-    isSaving.value = false
-  }
-}
-
-// Password handling for OAuth users
-const hasPassword = computed(() => user.value?.has_password || false)
-const passwordStatusLabel = computed(() => hasPassword.value ? 'Password Sudah Diatur' : 'Password Belum Diatur')
-const passwordStatusDescription = computed(() => hasPassword.value
-  ? 'Anda dapat login dengan email dan password'
-  : 'Atur password untuk bisa login tanpa Google'
-)
-const isSavingPassword = ref(false)
 const passwordForm = ref({
   currentPassword: '',
   newPassword: '',
   confirmPassword: ''
 })
+
+// Load user data
+onMounted(async () => {
+  try {
+    const response = await get('/user/profile')
+    userData.value = response
+    accountForm.value.email = response.email || ''
+    accountForm.value.username = response.username || ''
+  } catch (error) {
+    console.error('Failed to load user data:', error)
+    toast.error('Gagal memuat data pengguna')
+  }
+})
+
+const saveSettings = async () => {
+  isSaving.value = true
+  try {
+    await put('/user/profile', {
+      username: accountForm.value.username
+    })
+    await fetchUser()
+    toast.success('Pengaturan berhasil disimpan')
+  } catch (error) {
+    console.error('Failed to save settings:', error)
+    const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || 'Gagal menyimpan pengaturan'
+    toast.error(errorMessage)
+  } finally {
+    isSaving.value = false
+  }
+}
+
+// Password handling
+const hasPassword = computed(() => userData.value?.has_password || false)
+const passwordStatusLabel = computed(() => hasPassword.value ? 'Password Sudah Diatur' : 'Password Belum Diatur')
+const passwordStatusDescription = computed(() => hasPassword.value
+  ? 'Anda dapat login dengan email dan password'
+  : 'Atur password untuk bisa login tanpa Google'
+)
 
 const savePassword = async () => {
   if (passwordForm.value.newPassword !== passwordForm.value.confirmPassword) {
@@ -408,10 +307,14 @@ const savePassword = async () => {
     })
     toast.success(hasPassword.value ? 'Password berhasil diubah' : 'Password berhasil diatur')
     passwordForm.value = { currentPassword: '', newPassword: '', confirmPassword: '' }
-    await fetchUser()
+    
+    // Reload user data to update has_password flag
+    const response = await get('/user/profile')
+    userData.value = response
   } catch (error) {
     console.error('Failed to save password:', error)
-    toast.error('Gagal menyimpan password: ' + (error.message || 'Terjadi kesalahan'))
+    const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || 'Terjadi kesalahan'
+    toast.error('Gagal menyimpan password: ' + errorMessage)
   } finally {
     isSavingPassword.value = false
   }

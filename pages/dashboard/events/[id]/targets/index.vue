@@ -679,7 +679,7 @@ const handleCreateTargetCard = async () => {
             // For elimination, we need to get or create a match first
             // For now, we'll need to get the match_uuid from the API
             // This is a simplified version - you may need to adjust based on your match creation flow
-            toast.error('Elimination phase target cards require match creation first')
+            toast.error('Kartu target fase eliminasi memerlukan pembuatan pertandingan terlebih dahulu')
             return
         }
 

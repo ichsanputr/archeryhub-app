@@ -27,7 +27,7 @@
                         <div class="flex-1">
                             <div class="flex items-center gap-3 mb-2">
                                 <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight">
-                                    {{ isLoading ? 'Loading...' : event?.name || 'Event Overview' }}
+                                    {{ isLoading ? 'Memuat...' : event?.name || 'Ringkasan Event' }}
                                 </h1>
                             </div>
                             <p v-if="event" class="text-slate-300 text-sm mb-2">
@@ -104,8 +104,8 @@
                         class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-all border border-gray-100 group">
                         <div class="flex justify-between items-start">
                             <div>
-                                <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Active
-                                    Targets</p>
+                                <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Target
+                                    Aktif</p>
                                 <p class="text-navy-dark text-3xl font-extrabold tracking-tight">
                                     {{ Math.ceil((event?.participant_count || 0) / 4) }}<span
                                         class="text-lg text-gray-400 font-medium ml-1">/ {{ maxTargets }}</span></p>
@@ -128,7 +128,7 @@
                         <div class="flex justify-between items-start">
                             <div>
                                 <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">
-                                    Completion</p>
+                                    Penyelesaian</p>
                                 <p class="text-navy-dark text-3xl font-extrabold tracking-tight">{{ completionPercentage
                                 }}%</p>
                             </div>
@@ -392,9 +392,18 @@ const groupedTargets = computed(() => {
 })
 
 const maxTargets = computed(() => {
-    const targetNumbers = Object.keys(groupedTargets.value).map(Number)
-    if (targetNumbers.length === 0) return 20
-    return Math.max(...targetNumbers, 20)
+    try {
+        if (!groupedTargets.value || typeof groupedTargets.value !== 'object') return 20
+        const targetNumbers = Object.keys(groupedTargets.value)
+            .map(Number)
+            .filter(n => !isNaN(n) && isFinite(n) && n > 0)
+        if (targetNumbers.length === 0) return 20
+        const max = Math.max(...targetNumbers, 20)
+        return isFinite(max) && max > 0 ? max : 20
+    } catch (error) {
+        console.error('Error calculating maxTargets:', error)
+        return 20
+    }
 })
 
 const completionPercentage = computed(() => {

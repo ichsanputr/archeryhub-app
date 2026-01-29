@@ -121,9 +121,9 @@ const loading = ref(false)
 const showModal = ref(false)
 
 const stats = computed(() => [
-  { label: 'Active Devices', value: devices.value.filter(d => d.status === 'active').length, icon: 'ph:tablet-bold', colorClass: 'bg-green-500 text-green-500' },
-  { label: 'Paired Sessions', value: new Set(devices.value.map(d => d.session)).size, icon: 'ph:calendar-blank-bold', colorClass: 'bg-primary text-primary' },
-  { label: 'Out of Sync', value: 0, icon: 'ph:sync-bold', colorClass: 'bg-orange-500 text-orange-500' },
+  { label: 'Perangkat Aktif', value: devices.value.filter(d => d.status === 'active').length, icon: 'ph:tablet-bold', colorClass: 'bg-green-500 text-green-500' },
+  { label: 'Sesi Terpasang', value: new Set(devices.value.map(d => d.session)).size, icon: 'ph:calendar-blank-bold', colorClass: 'bg-primary text-primary' },
+  { label: 'Tidak Sinkron', value: 0, icon: 'ph:sync-bold', colorClass: 'bg-orange-500 text-orange-500' },
 ])
 
 const fetchDevices = async () => {
