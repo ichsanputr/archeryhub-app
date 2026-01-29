@@ -154,16 +154,12 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed, onMounted } from 'vue'
-import { useApi } from '~/composables/useApi'
-import { useToast } from '~/composables/useToast'
+const config = useRuntimeConfig()
+const apiBaseUrl = config.public.apiBaseUrl
 
 definePageMeta({
     layout: 'landing'
 })
-
-const { get } = useApi()
-const toast = useToast()
 
 const searchQuery = ref('')
 const categoryFilter = ref('all')
@@ -178,7 +174,7 @@ const categories = [
     { label: 'Lainnya', value: 'other', icon: 'ph:package' },
 ]
 
-const { data: productResponse, pending: isLoading } = await useAsyncData('products', () => get('/products'), {
+const { data: productResponse, pending: isLoading } = await useAsyncData('products', () => $fetch(`${apiBaseUrl}/products`), {
     server: true
 })
 

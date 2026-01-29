@@ -5,7 +5,8 @@
             <!-- Cari Atlet -->
             <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
                 <div class="relative w-full">
-                    <Icon icon="ph:magnifying-glass" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl" />
+                    <Icon icon="ph:magnifying-glass"
+                        class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl" />
                     <input v-model="searchQuery" type="text" placeholder="Cari atlet atau klub..."
                         class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-100 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all shadow-sm text-sm">
                 </div>
@@ -60,11 +61,13 @@
                 <div class="pt-4 border-t border-gray-50 flex items-center justify-between">
                     <div class="flex items-center gap-1 text-gray-400">
                         <Icon icon="ph:trophy" class="text-sm" />
-                        <span class="text-[10px] font-bold">{{ athlete.rank === '-' ? 'Belum ada ranking' : `Rank ${athlete.rank}` }}</span>
+                        <span class="text-[10px] font-bold">{{ athlete.rank === '-' ? 'Belum ada ranking' : `Rank
+                            ${athlete.rank}` }}</span>
                     </div>
                     <NuxtLink :to="`/archers/${athlete.id}`"
                         class="text-primary font-bold text-xs hover:underline flex items-center gap-1">
-                        Profil <Icon icon="ph:arrow-square-out" class="text-sm" />
+                        Profil
+                        <Icon icon="ph:arrow-square-out" class="text-sm" />
                     </NuxtLink>
                 </div>
             </div>
@@ -98,119 +101,72 @@
 import { Icon } from '@iconify/vue'
 
 const route = useRoute()
-const { get } = useApi()
-const slug = route.params.slug
+const config = useRuntimeConfig()
+const apiBaseUrl = config.public.apiBaseUrl
 
 const activeCategory = ref('Semua')
 const searchQuery = ref('')
-const athletes = ref([])
-const totalPages = ref(1)
 const currentPage = ref(1)
-const isLoading = ref(true)
-const categories = ref(['Semua'])
+const limit = 12
 
-// Fetch available categories from participants
-const fetchCategories = async () => {
-    try {
-        // Fetch all participants to get unique division+gender combinations
-        const response = await get(`/events/${slug}/participants`, { query: { limit: 1000, offset: 0 } })
-        const participants = response?.participants || []
-        
-        // Build unique category list from actual participants
-        const categorySet = new Set(['Semua'])
-        participants.forEach(p => {
-            if (p.division_name && p.gender_division_name) {
-                categorySet.add(`${p.division_name} ${p.gender_division_name}`)
-            }
-        })
-        categories.value = Array.from(categorySet).sort()
-    } catch (error) {
-        console.error('Failed to fetch categories:', error)
-    }
-}
+// SSR Data Fetching for Categories
+const { data: categoriesData } = await useAsyncData(
+    `event-categories-${slug}`,
+    () => $fetch(`${apiBaseUrl}/events/${slug}/participants`, {
+        query: { limit: 1000, offset: 0 }
+    }),
+    { server: true }
+)
 
-const fetchParticipants = async () => {
-    isLoading.value = true
-    try {
-        // Calculate offset from page number
-        const limit = 12
+const categories = computed(() => {
+    const participants = categoriesData.value?.participants || []
+    const categorySet = new Set(['Semua'])
+    participants.forEach(p => {
+        if (p.division_name && p.gender_division_name) {
+            categorySet.add(`${p.division_name} ${p.gender_division_name}`)
+        }
+    })
+    return Array.from(categorySet).sort()
+})
+
+// SSR Data Fetching for Participants
+const { data: participantsData, pending: isLoading, refresh } = await useAsyncData(
+    `event-participants-${slug}`,
+    () => {
         const offset = (currentPage.value - 1) * limit
-        
-        const params = {
-            limit: limit,
-            offset: offset,
-        }
-        if (searchQuery.value) {
-            params.search = searchQuery.value
-        }
-        if (activeCategory.value !== 'Semua') {
-            params.category = activeCategory.value
-        }
-
-        // Build query string manually to ensure params are passed correctly
-        const queryString = new URLSearchParams()
-        Object.keys(params).forEach(key => {
-            if (params[key] !== undefined && params[key] !== null && params[key] !== '') {
-                queryString.append(key, String(params[key]))
-            }
-        })
-        const queryStr = queryString.toString()
-        const url = `/events/${slug}/participants${queryStr ? '?' + queryStr : ''}`
-        
-        console.log('[AthletesTab] Fetching participants with params:', params, 'URL:', url)
-        const response = await get(url)
-
-        // API returns { participants: [], total: number, limit: number, offset: number }
-        const participants = response?.participants || []
-        
-        if (participants && participants.length > 0) {
-            athletes.value = participants.map(p => ({
-                id: p.id || p.archer_id,
-                name: p.full_name || 'Archery Athlete',
-                club: p.club_name || 'Independent',
-                photo: p.avatar_url || 'https://lh3.googleusercontent.com/aida-public/AB6AXuAN1PKK-zE7gHxiw_aZW8rQ0RXGOUpoAcMX2PerB54W68JgnLtpC0teJYHN1wn5e5Hh5e7o7hzPx_gF8FzvqgkTykuPW2RnCBPrctcfBT9awfftTun8hn_I_2ZdxlhEv7PrrhUSinekRNDYnLyMPUAORFdirFzIiXQuRgcjinT9Jt1Bm_tkVNee3C9NqqYUBs1lYfaFEzgXRZeUvKrEP8FnQOWtp5St5c_s1o-sIV5ALK6iV0TBRUhB2AFDYY_qRHsVDugx540fhIw',
-                division: p.division_name || 'N/A',
-                category: `${p.category_name || ''}${p.event_type_name ? ' - ' + p.event_type_name : ''}${p.gender_division_name ? ' - ' + p.gender_division_name : ''}`.trim() || 'N/A',
-                rank: p.rank || '-',
-                verified: false // TODO: Add verification status to API response
-            }))
-            const total = response?.total || 0
-            totalPages.value = Math.ceil(total / limit) || 1
-        } else {
-            athletes.value = []
-            totalPages.value = 1
-        }
-    } catch (error) {
-        console.error('Failed to fetch participants:', error)
-        athletes.value = []
-        totalPages.value = 1
-    } finally {
-        isLoading.value = false
+        const query = { limit, offset }
+        if (searchQuery.value) query.search = searchQuery.value
+        if (activeCategory.value !== 'Semua') query.category = activeCategory.value
+        return $fetch(`${apiBaseUrl}/events/${slug}/participants`, { query })
+    },
+    {
+        watch: [currentPage, activeCategory, searchQuery],
+        server: true
     }
-}
+)
 
-watch(activeCategory, () => {
-    // Reset to page 1 when category changes
+const athletes = computed(() => {
+    const participants = participantsData.value?.participants || []
+    return participants.map(p => ({
+        id: p.id || p.archer_id,
+        name: p.full_name || 'Archery Athlete',
+        club: p.club_name || 'Independent',
+        photo: p.avatar_url || 'https://lh3.googleusercontent.com/aida-public/AB6AXuAN1PKK-zE7gHxiw_aZW8rQ0RXGOUpoAcMX2PerB54W68JgnLtpC0teJYHN1wn5e5Hh5e7o7hzPx_gF8FzvqgkTykuPW2RnCBPrctcfBT9awfftTun8hn_I_2ZdxlhEv7PrrhUSinekRNDYnLyMPUAORFdirFzIiXQuRgcjinT9Jt1Bm_tkVNee3C9NqqYUBs1lYfaFEzgXRZeUvKrEP8FnQOWtp5St5c_s1o-sIV5ALK6iV0TBRUhB2AFDYY_qRHsVDugx540fhIw',
+        division: p.division_name || 'N/A',
+        category: `${p.category_name || ''}${p.event_type_name ? ' - ' + p.event_type_name : ''}${p.gender_division_name ? ' - ' + p.gender_division_name : ''}`.trim() || 'N/A',
+        rank: p.rank || '-',
+        verified: false
+    }))
+})
+
+const totalPages = computed(() => {
+    const total = participantsData.value?.total || 0
+    return Math.ceil(total / limit) || 1
+})
+
+// Reset to page 1 when category or search changes
+watch([activeCategory, searchQuery], () => {
     currentPage.value = 1
-    fetchParticipants()
-})
-
-watch(currentPage, () => {
-    fetchParticipants()
-})
-
-let searchTimeout
-watch(searchQuery, () => {
-    clearTimeout(searchTimeout)
-    searchTimeout = setTimeout(() => {
-        currentPage.value = 1
-        fetchParticipants()
-    }, 500)
-})
-
-onMounted(() => {
-    fetchCategories()
-    fetchParticipants()
 })
 </script>
 

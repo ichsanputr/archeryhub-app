@@ -105,7 +105,6 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { ref, onMounted } from 'vue'
-import { useApi } from '~/composables/useApi'
 
 definePageMeta({
     layout: 'landing'
@@ -125,11 +124,10 @@ useSeoMeta({
     ogDescription: 'Temukan federasi, asosiasi, dan penyelenggara event panahan terpercaya di Indonesia.'
 })
 
-const { get } = useApi()
+const config = useRuntimeConfig()
+const apiBaseUrl = config.public.apiBaseUrl
 
-const isLoading = ref(true)
 const searchQuery = ref('')
-const organizations = ref([])
 
 const typeLabels = {
     federation: 'Federasi',
@@ -139,27 +137,21 @@ const typeLabels = {
     other: 'Lainnya'
 }
 
-const fetchOrganizations = async () => {
-    isLoading.value = true
-    try {
+const { data: orgData, pending: isLoading, refresh } = await useAsyncData(
+    'organizations',
+    () => {
         const params = new URLSearchParams()
         if (searchQuery.value) {
             params.append('search', searchQuery.value)
         }
-        const response = await get(`/organizations?${params.toString()}`)
-        organizations.value = response?.organizations || response?.data?.organizations || []
-    } catch (error) {
-        console.error('Failed to fetch organizations:', error)
-    } finally {
-        isLoading.value = false
-    }
-}
+        return $fetch(`${apiBaseUrl}/organizations?${params.toString()}`)
+    },
+    { server: true }
+)
+
+const organizations = computed(() => orgData.value?.organizations || orgData.value?.data?.organizations || [])
 
 const doSearch = () => {
-    fetchOrganizations()
+    refresh()
 }
-
-onMounted(() => {
-    fetchOrganizations()
-})
 </script>

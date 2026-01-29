@@ -16,10 +16,12 @@
                 <div v-if="isLoading" class="py-10 flex items-center justify-center text-gray-400 text-sm font-medium">
                     Memuat jadwal lomba...
                 </div>
-                <div v-else-if="!sessions.length" class="py-10 flex items-center justify-center text-gray-400 text-sm font-medium">
+                <div v-else-if="!sessions.length"
+                    class="py-10 flex items-center justify-center text-gray-400 text-sm font-medium">
                     Jadwal lomba belum tersedia.
                 </div>
-                <div v-else v-for="(session, index) in sessions" :key="session.id || index" class="relative z-10 flex gap-6 group">
+                <div v-else v-for="(session, index) in sessions" :key="session.id || index"
+                    class="relative z-10 flex gap-6 group">
                     <div class="w-8 h-8 rounded-full border-4 border-white shadow-md flex items-center justify-center shrink-0 transition-colors"
                         :class="false ? 'bg-red-500' : 'bg-navy'">
                         <span class="w-2 h-2 rounded-full bg-white"></span>
@@ -62,11 +64,19 @@ const props = defineProps({
     }
 })
 
-const activeDay = ref(1)
-const isLoading = ref(true)
-const schedules = ref([])
+const config = useRuntimeConfig()
+const apiBaseUrl = config.public.apiBaseUrl
 
-const { get } = useApi()
+const activeDay = ref(1)
+
+// SSR Data Fetching
+const { data: scheduleData, pending: isLoading } = await useAsyncData(
+    `event-schedule-${props.eventId}`,
+    () => $fetch(`${apiBaseUrl}/events/${props.eventId}/schedule`),
+    { server: true }
+)
+
+const schedules = computed(() => scheduleData.value?.schedules || scheduleData.value?.data?.schedules || [])
 
 const groupedByDay = computed(() => {
     const groups = {}
@@ -101,21 +111,14 @@ const formatTimeRange = (item) => {
     return endStr ? `${startStr} - ${endStr}` : startStr
 }
 
-onMounted(async () => {
-    try {
-        const res = await get(`/events/${props.eventId}/schedule`)
-        schedules.value = res?.schedules || res?.data?.schedules || []
-        if (schedules.value.length) {
-            const minDay = schedules.value.reduce((min, s) => {
-                const d = s.day_order || 1
-                return d < min ? d : min
-            }, schedules.value[0].day_order || 1)
-            activeDay.value = minDay
-        }
-    } catch (err) {
-        console.error('Failed to fetch event schedule', err)
-    } finally {
-        isLoading.value = false
+// Set initial activeDay once data is available
+watch(schedules, (val) => {
+    if (val && val.length > 0 && activeDay.value === 1) {
+        const minDay = val.reduce((min, s) => {
+            const d = s.day_order || 1
+            return d < min ? d : min
+        }, val[0].day_order || 1)
+        activeDay.value = minDay
     }
-})
+}, { immediate: true })
 </script>

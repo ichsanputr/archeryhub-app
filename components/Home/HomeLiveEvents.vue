@@ -57,33 +57,25 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, onMounted } from 'vue'
-import { useApi } from '~/composables/useApi'
 
-const { get } = useApi()
-const events = ref([])
-const loading = ref(true)
+const config = useRuntimeConfig()
+const apiBaseUrl = config.public.apiBaseUrl
 
-const fetchLiveEvents = async () => {
-    try {
-        loading.value = true
-        const response = await get('/events', { query: { status: 'ongoing', limit: '8' } })
-        events.value = (response?.events || []).map(event => ({
-            name: event.name || event.title,
-            location: event.location || event.venue || '',
-            image: useImageOrDefault(event.banner_url || event.logo_url),
-            slug: event.slug,
-            uuid: event.uuid
-        }))
-    } catch (error) {
-        console.error('Failed to fetch live events:', error)
-    } finally {
-        loading.value = false
-    }
-}
+const { data: rawEventsData, pending: loading } = await useAsyncData(
+    'live-events',
+    () => $fetch(`${apiBaseUrl}/events`, {
+        query: { status: 'ongoing', limit: '8' }
+    })
+)
 
-onMounted(() => {
-    fetchLiveEvents()
+const events = computed(() => {
+    return (rawEventsData.value?.events || []).map(event => ({
+        name: event.name || event.title,
+        location: event.location || event.venue || '',
+        image: useImageOrDefault(event.banner_url || event.logo_url),
+        slug: event.slug,
+        uuid: event.uuid
+    }))
 })
 </script>
 

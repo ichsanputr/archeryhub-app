@@ -74,12 +74,9 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, onMounted } from 'vue'
-import { useApi } from '~/composables/useApi'
 
-const { get } = useApi()
-const events = ref([])
-const loading = ref(true)
+const config = useRuntimeConfig()
+const apiBaseUrl = config.public.apiBaseUrl
 
 const formatDate = (dateStr, format) => {
     if (!dateStr) return ''
@@ -93,21 +90,14 @@ const formatDate = (dateStr, format) => {
     return date.toLocaleDateString('id-ID')
 }
 
-const fetchUpcomingEvents = async () => {
-    try {
-        loading.value = true
-        const response = await get('/events', { query: { limit: '6', status: 'published' } })
-        events.value = response?.events || []
-    } catch (error) {
-        console.error('Failed to fetch upcoming events:', error)
-    } finally {
-        loading.value = false
-    }
-}
+const { data: eventsData, pending: loading } = await useAsyncData(
+    'upcoming-events',
+    () => $fetch(`${apiBaseUrl}/events`, {
+        query: { limit: '6', status: 'published' }
+    })
+)
 
-onMounted(() => {
-    fetchUpcomingEvents()
-})
+const events = computed(() => eventsData.value?.events || [])
 </script>
 
 <style scoped>

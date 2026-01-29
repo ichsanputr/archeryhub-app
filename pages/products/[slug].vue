@@ -176,9 +176,8 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useAuth } from '~/composables/useAuth'
 
@@ -195,53 +194,57 @@ const tabs = [
     { label: 'Deskripsi', value: 'description' },
 ]
 
-const product = ref(null)
-const isLoading = ref(true)
-const selectedImage = ref('')
-
-const { get } = useApi()
+const config = useRuntimeConfig()
+const apiBaseUrl = config.public.apiBaseUrl
 const toast = useToast()
 
-const fetchProduct = async () => {
-    isLoading.value = true
-    try {
-        const response = await get(`/products/${route.params.slug}`)
-        product.value = response.data || response
+const { data: productResponse, pending: isLoading } = await useAsyncData(
+    `product-${route.params.slug}`,
+    () => $fetch(`${apiBaseUrl}/products/${route.params.slug}`),
+    { server: true }
+)
 
-        // Parse images from JSON string if needed
-        if (product.value.images && typeof product.value.images === 'string') {
-            try {
-                product.value.images = JSON.parse(product.value.images)
-            } catch {
-                product.value.images = []
-            }
+const product = computed(() => {
+    const data = productResponse.value?.data || productResponse.value
+    if (!data) return null
+
+    // Clone data to avoid mutating reactive state directly if needed, 
+    // although computed return is read-only.
+    const p = { ...data }
+
+    // Parse images from JSON string if needed
+    if (p.images && typeof p.images === 'string') {
+        try {
+            p.images = JSON.parse(p.images)
+        } catch {
+            p.images = []
         }
-
-        // Parse specifications from JSON string if needed
-        if (product.value.specifications && typeof product.value.specifications === 'string') {
-            try {
-                product.value.specifications = JSON.parse(product.value.specifications)
-            } catch {
-                product.value.specifications = {}
-            }
-        }
-
-        // Set default images array if empty
-        if (!product.value.images || product.value.images.length === 0) {
-            product.value.images = product.value.image_url ? [product.value.image_url] : []
-        }
-
-        selectedImage.value = useImageOrDefault(product.value.images[0] || product.value.image_url)
-    } catch (error) {
-        console.error('Failed to fetch product:', error)
-        toast.error('Produk tidak ditemukan')
-        await navigateTo('/shop')
-    } finally {
-        isLoading.value = false
     }
-}
 
-onMounted(fetchProduct)
+    // Parse specifications from JSON string if needed
+    if (p.specifications && typeof p.specifications === 'string') {
+        try {
+            p.specifications = JSON.parse(p.specifications)
+        } catch {
+            p.specifications = {}
+        }
+    }
+
+    // Set default images array if empty
+    if (!p.images || p.images.length === 0) {
+        p.images = p.image_url ? [p.image_url] : []
+    }
+
+    return p
+})
+
+const selectedImage = ref('')
+
+watchEffect(() => {
+    if (product.value) {
+        selectedImage.value = useImageOrDefault(product.value.images[0] || product.value.image_url)
+    }
+})
 
 const discountPercent = computed(() => {
     if (!product.value || !product.value.sale_price) return 0
@@ -250,7 +253,6 @@ const discountPercent = computed(() => {
 
 const relatedProducts = ref([])
 
-const { post } = useApi()
 const isAddingToCart = ref(false)
 
 const handleAddToCart = async () => {
@@ -266,9 +268,15 @@ const handleAddToCart = async () => {
 
     isAddingToCart.value = true
     try {
-        await post('/cart', {
-            product_id: product.value.id,
-            quantity: quantity.value
+        await $fetch(`${apiBaseUrl}/cart`, {
+            method: 'POST',
+            body: {
+                product_id: product.value.id,
+                quantity: quantity.value
+            },
+            headers: {
+                'Authorization': `Bearer ${useCookie('auth_token').value}`
+            }
         })
         toast.success('Berhasil ditambah ke keranjang')
     } catch (error) {

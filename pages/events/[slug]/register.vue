@@ -413,7 +413,6 @@ const router = useRouter()
 const slug = route.params.slug
 
 const { user, isLoggedIn } = useAuth()
-const { get, post } = useApi()
 
 // Auth checks
 const isArcher = computed(() => user.value?.type === 'archer' || user.value?.role === 'archer')
@@ -466,8 +465,14 @@ const handleProofUpload = async (event) => {
         formData.append('file', file)
 
         try {
-            // Don't set Content-Type header - axios will set it automatically with boundary for FormData
-            const response = await post('/media/upload', formData)
+            // Use $fetch for media upload
+            const response = await $fetch(`${apiBaseUrl}/media/upload`, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Authorization': `Bearer ${useCookie('auth_token').value}`
+                }
+            })
 
             // Find and update preview
             const idx = paymentPreviews.value.findIndex(p => p.id === previewId)
@@ -515,75 +520,59 @@ const getSelectedCategoryName = () => {
     return cat ? cat.name : '-'
 }
 
+const config = useRuntimeConfig()
+const apiBaseUrl = config.public.apiBaseUrl
+
 // Fetch event data using useAsyncData
 const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-register-${slug}`, async () => {
-    const { user: authUser, isLoggedIn: authLoggedIn } = useAuth()
-    const { get: apiGet } = useApi()
-
-    // Check auth status
-    const isUserArcher = authUser.value?.type === 'archer' || authUser.value?.role === 'archer'
-    if (!authLoggedIn.value || !isUserArcher) {
-        return {
-            event: null,
-            categories: [],
-            archerProfile: null,
-            paymentMethods: []
-        }
-    }
+    const token = useCookie('auth_token').value
+    const headers = token ? { 'Authorization': `Bearer ${token}` } : {}
 
     try {
-        const [eventResponse, categoriesResponse, profileResponse] = await Promise.all([
-            apiGet(`/events/${slug}`),
-            apiGet(`/events/${slug}/categories`),
-            apiGet('/archers/me').catch(() => apiGet('/auth/me').catch(() => null))
+        // Fetch event and categories concurrently
+        const [eventResponse, categoriesResponse] = await Promise.all([
+            $fetch(`${apiBaseUrl}/events/${slug}`),
+            $fetch(`${apiBaseUrl}/events/${slug}/categories`).catch(() => ({ events: [] }))
         ])
 
-        let eventData = null
+        if (!eventResponse) return null
+
+        const eventId = eventResponse.uuid || eventResponse.id
+        const eventData = {
+            id: eventId,
+            name: eventResponse.name || eventResponse.title || 'Event',
+            date: eventResponse.start_date ? `${new Date(eventResponse.start_date).toLocaleDateString('id-ID')} - ${eventResponse.end_date ? new Date(eventResponse.end_date).toLocaleDateString('id-ID') : ''}` : eventResponse.date || '',
+            location: eventResponse.location || eventResponse.venue || '',
+            image: eventResponse.image || eventResponse.banner_url || '',
+            description: eventResponse.description || '',
+            registration_fee: eventResponse.entry_fee || eventResponse.registration_fee || 0
+        }
+
+        // Fetch profile and payment methods if logged in
+        let archerProfileData = null
         let paymentMethodsData = []
 
-        if (eventResponse) {
-            const eventId = eventResponse.uuid || eventResponse.id
-            eventData = {
-                id: eventId,
-                name: eventResponse.name || eventResponse.title || 'Event',
-                date: eventResponse.start_date ? `${new Date(eventResponse.start_date).toLocaleDateString('id-ID')} - ${eventResponse.end_date ? new Date(eventResponse.end_date).toLocaleDateString('id-ID') : ''}` : eventResponse.date || '',
-                location: eventResponse.location || eventResponse.venue || '',
-                image: eventResponse.image || eventResponse.banner_url || '',
-                description: eventResponse.description || '',
-                registration_fee: eventResponse.entry_fee || eventResponse.registration_fee || 0
-            }
+        if (token) {
+            const [profileResponse, paymentMethodsResponse] = await Promise.all([
+                $fetch(`${apiBaseUrl}/archers/me`, { headers }).catch(() => $fetch(`${apiBaseUrl}/auth/me`, { headers }).catch(() => null)),
+                $fetch(`${apiBaseUrl}/events/${eventId}/payment-methods`, { headers }).catch(() => [])
+            ])
 
-            // Fetch payment methods using event UUID
-            try {
-                const paymentMethodsResponse = await apiGet(`/events/${eventId}/payment-methods`).catch(() => apiGet(`/events/${slug}/payment-methods`).catch(() => ({ data: [] })))
-                if (paymentMethodsResponse) {
-                    paymentMethodsData = (paymentMethodsResponse.data || paymentMethodsResponse || []).filter(m => m.is_active !== false)
-                }
-            } catch (err) {
-                console.log('Failed to fetch payment methods:', err)
+            archerProfileData = profileResponse
+            paymentMethodsData = (Array.isArray(paymentMethodsResponse) ? paymentMethodsResponse : paymentMethodsResponse?.data || []).filter(m => m.is_active !== false)
+
+            if (archerProfileData?.club_id && !archerProfileData.club_name) {
+                try {
+                    const clubRes = await $fetch(`${apiBaseUrl}/clubs/${archerProfileData.club_id}`)
+                    archerProfileData.club_name = clubRes?.name || clubRes?.data?.name
+                } catch (e) { }
             }
         }
 
-        let categoriesData = []
-        if (categoriesResponse) {
-            categoriesData = (categoriesResponse.events || categoriesResponse.categories || []).map(cat => ({
-                id: cat.id || cat.uuid,
-                name: `${cat.division_name || cat.division || ''} - ${cat.category_name || cat.category || ''} ${cat.event_type_name ? '- ' + cat.event_type_name : ''} ${cat.gender_division_name ? '- ' + cat.gender_division_name : ''}`.trim()
-            }))
-        }
-
-        let archerProfileData = profileResponse || null
-        // Fetch club name if club_id exists
-        if (archerProfileData?.club_id && !archerProfileData.club_name) {
-            try {
-                const clubRes = await apiGet(`/clubs/${archerProfileData.club_id}`)
-                if (clubRes) {
-                    archerProfileData.club_name = clubRes.name || clubRes.data?.name
-                }
-            } catch (err) {
-                console.log('Club not found')
-            }
-        }
+        const categoriesData = (categoriesResponse.events || categoriesResponse.categories || []).map(cat => ({
+            id: cat.id || cat.uuid,
+            name: `${cat.division_name || cat.division || ''} - ${cat.category_name || cat.category || ''} ${cat.event_type_name ? '- ' + cat.event_type_name : ''} ${cat.gender_division_name ? '- ' + cat.gender_division_name : ''}`.trim()
+        }))
 
         return {
             event: eventData,
@@ -592,14 +581,14 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
             paymentMethods: paymentMethodsData
         }
     } catch (err) {
-        console.error('Failed to fetch event:', err)
+        console.error('Failed to fetch registration data:', err)
         throw createError({
             statusCode: 500,
-            message: 'Gagal memuat data event'
+            message: 'Gagal memuat data pendaftaran'
         })
     }
 }, {
-    server: false,
+    server: true,
     lazy: true
 })
 
@@ -646,7 +635,13 @@ const handleSubmit = async () => {
             payment_proof_urls: form.value.payment_proofs
         }
 
-        await post(`/events/${event.value.id}/participants`, payload)
+        await $fetch(`${apiBaseUrl}/events/${event.value.id}/participants`, {
+            method: 'POST',
+            body: payload,
+            headers: {
+                'Authorization': `Bearer ${useCookie('auth_token').value}`
+            }
+        })
 
         registrationSuccess.value = true
     } catch (err) {

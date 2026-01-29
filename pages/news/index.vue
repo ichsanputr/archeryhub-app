@@ -290,11 +290,28 @@ const popularArticles = computed(() => {
     return [...articles.value].sort((a, b) => b.views - a.views).slice(0, 5)
 })
 
-const upcomingEvents = ref([
-    { id: 1, name: 'Jakarta Open 2024', month: 'Feb', day: '15', location: 'Senayan' },
-    { id: 2, name: 'Surabaya Cup', month: 'Mar', day: '05', location: 'Surabaya' },
-    { id: 3, name: 'National Indoor', month: 'Mar', day: '20', location: 'Bandung' },
-])
+// SSR Data Fetching for Upcoming Events
+const { data: eventsResponse } = await useAsyncData(
+    'news-sidebar-events',
+    () => $fetch(`${config.public.apiBaseUrl}/events`, {
+        query: { limit: 3 }
+    }),
+    { server: true }
+)
+
+const upcomingEvents = computed(() => {
+    const rawEvents = eventsResponse.value?.data || eventsResponse.value || []
+    return (Array.isArray(rawEvents) ? rawEvents : []).map(event => {
+        const d = new Date(event.start_date || event.created_at)
+        return {
+            id: event.id || event.uuid,
+            name: event.name,
+            month: d.toLocaleDateString('id-ID', { month: 'short' }),
+            day: d.toLocaleDateString('id-ID', { day: '2-digit' }),
+            location: event.city || event.location || 'Indonesia'
+        }
+    })
+})
 
 const loadMore = async () => {
     isLoadingMore.value = true

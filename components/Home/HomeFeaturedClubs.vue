@@ -65,14 +65,12 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed, onMounted } from 'vue'
-import { useApi } from '~/composables/useApi'
-const { get } = useApi()
+
+const config = useRuntimeConfig()
+const apiBaseUrl = config.public.apiBaseUrl
 
 const regions = ['Semua Wilayah', 'DKI Jakarta', 'Jawa Barat', 'Jawa Timur', 'DI Yogyakarta', 'Banten', 'Bali']
 const activeRegion = ref('Semua Wilayah')
-const clubs = ref([])
-const loading = ref(true)
 
 const provinceToRegion = {
     'DKI Jakarta': 'DKI Jakarta',
@@ -83,35 +81,29 @@ const provinceToRegion = {
     'Bali': 'Bali'
 }
 
-const fetchClubs = async () => {
-    try {
-        loading.value = true
-        const response = await get('/clubs', { query: { limit: '20' } })
-        const clubsData = response?.data || []
+const { data: clubsResponse, pending: loading } = await useAsyncData(
+    'featured-clubs',
+    () => $fetch(`${apiBaseUrl}/clubs`, {
+        query: { limit: '20' }
+    })
+)
 
-        clubs.value = clubsData.map(club => ({
-            slug: club.slug,
-            name: club.name,
-            location: club.city ? `${club.city}${club.province ? ', ' + club.province : ''}` : (club.province || ''),
-            icon: 'target',
-            verified: club.verification_status === 'verified',
-            logo_url: club.logo_url,
-            region: provinceToRegion[club.province] || club.province || 'Semua Wilayah'
-        }))
-    } catch (error) {
-        console.error('Failed to fetch clubs:', error)
-    } finally {
-        loading.value = false
-    }
-}
+const clubs = computed(() => {
+    const clubsData = clubsResponse.value?.data || []
+    return clubsData.map(club => ({
+        slug: club.slug,
+        name: club.name,
+        location: club.city ? `${club.city}${club.province ? ', ' + club.province : ''}` : (club.province || ''),
+        icon: 'target',
+        verified: club.verification_status === 'verified',
+        logo_url: club.logo_url,
+        region: provinceToRegion[club.province] || club.province || 'Semua Wilayah'
+    }))
+})
 
 const filteredClubs = computed(() => {
     if (activeRegion.value === 'Semua Wilayah') return clubs.value
     return clubs.value.filter(club => club.region === activeRegion.value)
-})
-
-onMounted(() => {
-    fetchClubs()
 })
 </script>
 

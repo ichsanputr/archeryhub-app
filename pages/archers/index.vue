@@ -81,7 +81,7 @@
                                     <div v-else class="w-full h-full flex items-center justify-center bg-gray-50">
                                         <span class="text-2xl font-black text-navy">{{ archer.full_name?.charAt(0) ||
                                             'A'
-                                        }}</span>
+                                            }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -121,7 +121,7 @@
                                 </div>
                                 <span class="text-xs font-black text-navy truncate capitalize">{{ archer.bow_type ||
                                     'Recurve'
-                                    }}</span>
+                                }}</span>
                             </div>
                         </div>
                         <div class="bg-gray-50/50 rounded-2xl p-3 border border-gray-50 transition-all">
@@ -150,7 +150,7 @@
                                 class="w-full h-full object-cover" />
                             <div v-else class="w-full h-full flex items-center justify-center">
                                 <span class="text-2xl font-black text-navy">{{ archer.full_name?.charAt(0) || 'A'
-                                    }}</span>
+                                }}</span>
                             </div>
                         </div>
                         <div class="flex-1 min-w-0">
@@ -199,7 +199,8 @@ definePageMeta({
     layout: 'landing'
 })
 
-const { get } = useApi()
+const config = useRuntimeConfig()
+const apiBaseUrl = config.public.apiBaseUrl
 
 const route = useRoute()
 const router = useRouter()
@@ -263,7 +264,7 @@ const dummyArchers = [
     },
 ]
 
-const { data: archerResponse, pending: isLoading } = await useAsyncData('archers', () => get('/archers', {
+const { data: archerResponse, pending: isLoading } = await useAsyncData('archers', () => $fetch(`${apiBaseUrl}/archers`, {
     query: {
         search: searchQuery.value || undefined,
         bow_type: activeBowType.value !== 'all' ? activeBowType.value : undefined,
@@ -272,7 +273,7 @@ const { data: archerResponse, pending: isLoading } = await useAsyncData('archers
     }
 }), {
     watch: [searchQuery, activeBowType, currentPage],
-    server: false
+    server: true
 })
 
 // Update URL when page changes

@@ -261,11 +261,8 @@ definePageMeta({
 })
 
 const route = useRoute()
-const { get } = useApi()
-
-const archer = ref({})
-const isLoading = ref(false)
-const eventHistory = ref([])
+const config = useRuntimeConfig()
+const apiBaseUrl = config.public.apiBaseUrl
 
 // Dummy data fallback
 const dummyArcher = {
@@ -296,6 +293,27 @@ const dummyArcher = {
     status: 'active'
 }
 
+// SSR Data Fetching
+const { data: archerResponse, pending: isLoading } = await useAsyncData(
+    `archer-${route.params.slug}`,
+    () => $fetch(`${apiBaseUrl}/archers/${route.params.slug}`),
+    { server: true }
+)
+
+const archer = computed(() => {
+    const data = archerResponse.value
+    if (!data || Object.keys(data).length === 0) {
+        return { ...dummyArcher, slug: route.params.slug }
+    }
+    return data
+})
+
+const eventHistory = ref([
+    { id: 1, name: 'Kejurda Jabar 2023', location: 'Bandung', date: '15 Mar 2023', score: 680 },
+    { id: 2, name: 'Piala Presiden 2022', location: 'Jakarta', date: '20 Nov 2022', score: 675 },
+    { id: 3, name: 'Kejurda DKI Jakarta 2021', location: 'Jakarta', date: '10 Sep 2021', score: 670 }
+])
+
 const bowTypeLabel = computed(() => {
     const labels = {
         recurve: 'Recurve',
@@ -325,57 +343,4 @@ const formatDate = (date) => {
     const d = new Date(date)
     return d.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })
 }
-
-const fetchArcher = async () => {
-    isLoading.value = true
-    try {
-        const slug = route.params.slug
-
-        // Try to fetch by slug first, then by UUID
-        let response
-        try {
-            // Try fetching all archers and find by slug
-            const allArchers = await get('/archers')
-            const found = allArchers.archers?.find(a => a.slug === slug || a.uuid === slug)
-            if (found) {
-                response = { ...found }
-            } else {
-                // Try direct fetch by ID
-                response = await get(`/archers/${slug}`)
-            }
-        } catch {
-            // If direct fetch fails, try by ID
-            response = await get(`/archers/${slug}`)
-        }
-
-        if (response && Object.keys(response).length > 0) {
-            archer.value = response
-        } else {
-            // Use dummy data if API returns empty
-            archer.value = { ...dummyArcher, slug: slug }
-        }
-
-        // Fetch event history (dummy for now)
-        eventHistory.value = [
-            { id: 1, name: 'Kejurda Jabar 2023', location: 'Bandung', date: '15 Mar 2023', score: 680 },
-            { id: 2, name: 'Piala Presiden 2022', location: 'Jakarta', date: '20 Nov 2022', score: 675 },
-            { id: 3, name: 'Kejurda DKI Jakarta 2021', location: 'Jakarta', date: '10 Sep 2021', score: 670 }
-        ]
-    } catch (error) {
-        console.error('Failed to fetch archer:', error)
-        // Use dummy data on error
-        archer.value = { ...dummyArcher, slug: route.params.slug }
-        eventHistory.value = [
-            { id: 1, name: 'Kejurda Jabar 2023', location: 'Bandung', date: '15 Mar 2023', score: 680 },
-            { id: 2, name: 'Piala Presiden 2022', location: 'Jakarta', date: '20 Nov 2022', score: 675 },
-            { id: 3, name: 'Kejurda DKI Jakarta 2021', location: 'Jakarta', date: '10 Sep 2021', score: 670 }
-        ]
-    } finally {
-        isLoading.value = false
-    }
-}
-
-onMounted(() => {
-    fetchArcher()
-})
 </script>

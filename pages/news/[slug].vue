@@ -199,8 +199,42 @@ definePageMeta({
     layout: 'landing'
 })
 
-const route = useRoute()
-const slug = route.params.slug
+const config = useRuntimeConfig()
+const apiBaseUrl = config.public.apiBaseUrl
+
+const { data: newsResponse, pending: isLoading } = await useAsyncData(
+    `news-${slug}`,
+    () => $fetch(`${apiBaseUrl}/news/${slug}`),
+    { server: true }
+)
+
+const article = computed(() => {
+    const data = newsResponse.value?.data || newsResponse.value
+    if (!data) return {
+        title: '',
+        category: '',
+        date: '',
+        author: { name: '', role: '', avatar: '' },
+        image: '',
+        content: '',
+        tags: []
+    }
+
+    return {
+        title: data.title,
+        category: data.category || 'event',
+        date: data.published_at ? new Date(data.published_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : new Date(data.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
+        author: {
+            name: data.author_name || 'Tim Redaksi',
+            role: 'Archery Hub Indonesia',
+            avatar: useImageOrDefault(null)
+        },
+        image: useImageOrDefault(data.image_url),
+        imageCredit: 'Archery Hub Documentation',
+        content: data.content || '',
+        tags: [] // Tags are not currently in the API
+    }
+})
 
 // Calculate read time
 const readTime = computed(() => {
@@ -211,67 +245,44 @@ const readTime = computed(() => {
     return Math.ceil(minutes) || 1
 })
 
-// Mock data integration
-const articlesData = {
-    'perkembangan-panahan-indonesia-2024': {
-        title: 'National Training Center Selection Results for 2025 Announced',
-        category: 'National Team',
-        date: 'Oct 24, 2024',
-        author: {
-            name: 'Editorial Team',
-            role: 'Archery Hub Indonesia',
-            avatar: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCEyoMyPhTl7-9oRbs8Fqz1YZxEwczL3vvrIpNzNHGImIhte8_MRqCsmxPDpeo-GMFv4xD1UFE7CzQuZjLAaeTEFSwwGpLM5Fuuji1ri-DclVPd3XjaiZbP_HVCmNxUF4N4RvPt5eunD3D7XJwRXiE80p0b-XDjG79vpkghLPtwWffcqE__kLuIxrZg_xFXL5tPcnF3V-v_UjBTeSP3GZHOFSZ132JQ3wm91uitNtsctbagveyUjYxxYgEumBV7_uYhaBtTeHfBlCs'
-        },
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuByxS8LZ93pBQXI_V_Vu3nB0633lwPZGiFCM3UtI-xk79b_O83ASmlHYA36lOzcnmVsbgs4DEe9awj543MvzCN1yzOo1wZ3ViXLdiMRV7vAMdy66lvu-l5dpFAOgZ0uCMKJxsBRXPJL1QeX4_ZdX2ynTEZR-ZMilrncma7gKG2YK0vsj0KJZnw_lD0UZaXFKW2aVFD1SU-mzi_sAT2D-62TP0j5LF6KprFriv2sV9rdypqLSvfrZekYDy45XaK8F1vVh7e5nfrgK7o',
-        imageCredit: 'PB Perpani Documentation',
-        content: `
-      <p class="lead font-medium text-slate-600 dark:text-slate-300 text-xl mb-6 leading-relaxed">
-        The Indonesian Archery Association (PB Perpani) has officially released the list of athletes selected for the National Training Center (Pelatnas) for the upcoming 2025 season. This announcement follows a week of rigorous selection trials held at the Gelora Bung Karno Archery Field in Jakarta.
-      </p>
-      <p class="mb-6 text-slate-700 dark:text-slate-400 leading-relaxed">
-        A total of 24 athletes across Recurve and Compound divisions have been chosen to represent Indonesia in upcoming international championships, including the SEA Games and the Archery World Cup stages. The selection process this year introduced new physical endurance parameters alongside the traditional scoring rounds.
-      </p>
-      <h3 class="text-2xl font-bold text-navy dark:text-white mb-4 mt-10">A New Era for Indonesian Archery</h3>
-      <p class="mb-6 text-slate-700 dark:text-slate-400 leading-relaxed">
-        The head coach of the National Team emphasized that this year's squad is a mix of seasoned veterans and promising young talent. The strategic decision to include younger athletes aims to build a sustainable pipeline for the 2028 Olympics.
-      </p>
-      <div class="bg-background-light dark:bg-gray-800 border-l-4 border-primary p-6 my-8 rounded-r-lg">
-        <p class="italic text-lg text-navy dark:text-slate-200 font-medium mb-2">
-          "The energy in the camp is different this year. We are seeing record-breaking scores during practice sessions from athletes as young as 17. The future looks very bright."
-        </p>
-        <cite class="text-sm text-slate-500 not-italic block mt-2">— Head Coach, National Archery Team</cite>
-      </div>
-    `,
-        tags: ['Pelatnas2025', 'Recurve', 'Compound', 'ArcheryIndonesia']
-    }
-}
+const { data: relatedResponse } = await useAsyncData(
+    'related-news',
+    () => $fetch(`${apiBaseUrl}/news`),
+    { server: true, lazy: true }
+)
 
-const article = computed(() => {
-    return articlesData[slug] || articlesData['perkembangan-panahan-indonesia-2024']
+const relatedArticles = computed(() => {
+    const rawData = relatedResponse.value?.data || relatedResponse.value || []
+    return rawData
+        .filter(a => a.slug !== slug)
+        .slice(0, 3)
+        .map(a => ({
+            slug: a.slug,
+            title: a.title,
+            date: a.published_at ? new Date(a.published_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) : '',
+            image: useImageOrDefault(a.image_url)
+        }))
 })
 
-const relatedArticles = [
-    {
-        slug: '1',
-        title: "Recurve Women's Team Secures Gold at Asian Grand Prix",
-        date: 'Oct 20, 2024',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDQStrrmLQN-DtqrTO5KWNF3EvwOXSw-raemHMh-lxMUVAtHiqxHNMqzQoV2l1ReELlRe_dVIAkp1P8Bc8ekRqbhOn-axS6izTQXKw3d70pq-CpZHWUZoS58mGL70U_Bk96ViNRcaOaGr5wIkPrtg8w46mzrAtHgWRH6VKAUalmkrFJ8qjDltkmd-nHJs4aUfrBBphZSnivwOkhoIjzG8dpjeCtp_UOZTOnovXJP7IAWJEeWqw7Uh7-mlLVkorgyeOsSRun6CmO_8I'
-    },
-    {
-        slug: '2',
-        title: 'New Equipment Regulations for U-18 National Championship',
-        date: 'Oct 18, 2024',
-        image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCq8OlQbcxO7uY4gwKVt6JygaktR4FjGZfJwbWiOyDIXqXr0bCnQIn3f-5m63myglDTGxdrpDHrFX2wVGOC7C8INtL7td4RDrpYhrJi0qjxPG7jixXi-Cw0fJQfRMda9sgJhfzCsFLmMhX9mvC6_gNAo5OF_MDtU5ukfm3hvRqWuHC0pbxNqSd0uWfIxLjxHXmyDnRtFg9VIz-XC2tCuvSusJKEFLjs57_DO7_uOGurALxGKsxcgIJmc_0gHV72A6BGvhiStIpWr3o'
-    }
-]
+const { data: upcomingResponse } = await useAsyncData(
+    'upcoming-events-news-sidebar',
+    () => $fetch(`${apiBaseUrl}/events?limit=3`),
+    { server: true, lazy: true }
+)
 
-const upcomingTournaments = [
-    { id: '1', title: 'Jakarta Open 2024', month: 'Nov', day: '15', location: 'Senayan' },
-    { id: '2', title: 'Surabaya Cup', month: 'Dec', day: '05', location: 'Surabaya' },
-    { id: '3', title: 'National Indoor', month: 'Jan', day: '12', location: 'Bandung' }
-]
+const upcomingTournaments = computed(() => {
+    const rawData = upcomingResponse.value?.data || upcomingResponse.value || []
+    return rawData.map(e => ({
+        id: e.uuid || e.id,
+        title: e.name,
+        month: e.start_date ? new Date(e.start_date).toLocaleDateString('id-ID', { month: 'short' }) : '',
+        day: e.start_date ? new Date(e.start_date).toLocaleDateString('id-ID', { day: 'numeric' }) : '',
+        location: e.venue || e.location || ''
+    }))
+})
 
 useHead({
+    title: computed(() => `${article.value.title} - Archeryhub.id`),
     link: [
         { rel: 'canonical', href: useRequestURL().href }
     ]

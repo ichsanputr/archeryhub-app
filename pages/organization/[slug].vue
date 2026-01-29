@@ -227,22 +227,25 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { useApi } from '~/composables/useApi'
-import { useToast } from '~/composables/useToast'
 
 definePageMeta({
     layout: 'landing'
 })
 
 const route = useRoute()
-const { get } = useApi()
-const toast = useToast()
+const config = useRuntimeConfig()
+const apiBaseUrl = config.public.apiBaseUrl
 
-const isLoading = ref(true)
-const org = ref({})
-const events = ref([])
+const { data: orgResponse, pending: isLoading } = await useAsyncData(
+    `org-${route.params.slug}`,
+    () => $fetch(`${apiBaseUrl}/organizations/${route.params.slug}`),
+    { server: true }
+)
+
+const org = computed(() => orgResponse.value?.organization || orgResponse.value?.data?.organization || {})
+const events = computed(() => orgResponse.value?.events || orgResponse.value?.data?.events || [])
 
 const typeLabels = {
     federation: 'Federasi',
@@ -294,19 +297,5 @@ useSeoMeta({
     ogTitle: () => org.value.name,
     ogDescription: () => org.value.description,
     ogImage: () => org.value.avatar_url || org.value.banner_url
-})
-
-onMounted(async () => {
-    try {
-        const slug = route.params.slug
-        const response = await get(`/organizations/${slug}`)
-        org.value = response?.organization || response?.data?.organization || {}
-        events.value = response?.events || response?.data?.events || []
-    } catch (error) {
-        console.error('Failed to fetch organization:', error)
-        toast.error('Gagal memuat data organisasi')
-    } finally {
-        isLoading.value = false
-    }
 })
 </script>

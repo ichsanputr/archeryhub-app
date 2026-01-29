@@ -18,12 +18,14 @@
         </div>
 
         <!-- Qualification Results -->
-        <div v-if="selectedCategoryId && showQualification" class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
+        <div v-if="selectedCategoryId && showQualification"
+            class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
             <h3 class="text-xl font-bold text-navy mb-6">Hasil Kualifikasi</h3>
             <div class="overflow-x-auto">
                 <table class="w-full">
                     <thead>
-                        <tr class="text-[10px] text-gray-400 uppercase font-black tracking-widest border-b border-gray-50">
+                        <tr
+                            class="text-[10px] text-gray-400 uppercase font-black tracking-widest border-b border-gray-50">
                             <th class="px-4 py-3 text-left">Peringkat</th>
                             <th class="px-4 py-3 text-left">Atlet</th>
                             <th class="px-4 py-3 text-center">X+10</th>
@@ -42,14 +44,16 @@
                             </td>
                             <td class="px-4 py-4">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-full bg-gray-100 overflow-hidden shrink-0 flex items-center justify-center">
+                                    <div
+                                        class="w-10 h-10 rounded-full bg-gray-100 overflow-hidden shrink-0 flex items-center justify-center">
                                         <span class="text-xs font-bold text-gray-400 uppercase">
                                             {{ getInitials(result.full_name) }}
                                         </span>
                                     </div>
                                     <div>
                                         <p class="text-sm font-bold text-navy">{{ result.full_name }}</p>
-                                        <p class="text-[10px] text-gray-400 font-medium">{{ result.club_name || '-' }}</p>
+                                        <p class="text-[10px] text-gray-400 font-medium">{{ result.club_name || '-' }}
+                                        </p>
                                     </div>
                                 </div>
                             </td>
@@ -72,7 +76,8 @@
         </div>
 
         <!-- Elimination Bracket -->
-        <div v-if="selectedCategoryId && showElimination" class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
+        <div v-if="selectedCategoryId && showElimination"
+            class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
             <h3 class="text-xl font-bold text-navy mb-6">Bagan Eliminasi</h3>
             <div class="text-center py-12 text-gray-400 italic">
                 Bagan eliminasi akan ditampilkan di sini setelah kualifikasi selesai.
@@ -104,18 +109,57 @@ const props = defineProps({
     }
 })
 
-const { get } = useApi()
-const categories = ref([])
+const config = useRuntimeConfig()
+const apiBaseUrl = config.public.apiBaseUrl
+
 const selectedCategoryId = ref('')
-const qualificationResults = ref([])
-const isLoading = ref(false)
+
+// SSR Data Fetching for Categories
+const { data: categoriesResponse } = await useAsyncData(
+    `event-results-categories-${props.eventId}`,
+    () => $fetch(`${apiBaseUrl}/events/${props.eventId}/categories`),
+    { server: true }
+)
+
+const categories = computed(() => categoriesResponse.value?.events || categoriesResponse.value?.data?.events || [])
+
+// SSR Data Fetching for Qualification Results
+const { data: resultsResponse, pending: isLoading } = await useAsyncData(
+    `event-results-qualification-${props.eventId}-${selectedCategoryId.value}`,
+    () => {
+        if (!selectedCategoryId.value) return null
+        return $fetch(`${apiBaseUrl}/events/${props.eventId}/participants`)
+    },
+    {
+        watch: [selectedCategoryId],
+        server: true
+    }
+)
+
+const qualificationResults = computed(() => {
+    if (!selectedCategoryId.value || !resultsResponse.value) return []
+
+    const participants = resultsResponse.value?.participants || []
+
+    // Filter by category and sort by score (mock data for now as per original code)
+    return participants
+        .filter(p => p.category_id === selectedCategoryId.value)
+        .map((p) => ({
+            id: p.id,
+            full_name: p.full_name,
+            club_name: p.club_name,
+            x10_count: Math.floor(Math.random() * 20),
+            ten_count: Math.floor(Math.random() * 30),
+            total_score: 600 + Math.floor(Math.random() * 100)
+        }))
+        .sort((a, b) => b.total_score - a.total_score)
+})
 
 const showQualification = computed(() => {
     return selectedCategoryId.value && qualificationResults.value.length > 0
 })
 
 const showElimination = computed(() => {
-    // Show elimination if qualification exists (for now, can be enhanced later)
     return selectedCategoryId.value && qualificationResults.value.length > 0
 })
 
@@ -125,54 +169,4 @@ const getInitials = (name) => {
     if (words.length === 1) return words[0].substring(0, 2).toUpperCase()
     return (words[0][0] + words[words.length - 1][0]).toUpperCase()
 }
-
-const fetchCategories = async () => {
-    try {
-        const response = await get(`/events/${props.eventId}/categories`)
-        categories.value = response?.events || response?.data?.events || []
-    } catch (error) {
-        console.error('Failed to fetch categories:', error)
-    }
-}
-
-const fetchQualificationResults = async () => {
-    if (!selectedCategoryId.value) {
-        qualificationResults.value = []
-        return
-    }
-
-    isLoading.value = true
-    try {
-        // TODO: Replace with actual qualification results API endpoint
-        // For now, using participants as placeholder
-        const response = await get(`/events/${props.eventId}/participants`)
-        const participants = response?.participants || []
-        
-        // Filter by category and sort by score (mock data for now)
-        qualificationResults.value = participants
-            .filter(p => p.category_id === selectedCategoryId.value)
-            .map((p, index) => ({
-                id: p.id,
-                full_name: p.full_name,
-                club_name: p.club_name,
-                x10_count: Math.floor(Math.random() * 20), // Mock data
-                ten_count: Math.floor(Math.random() * 30), // Mock data
-                total_score: 600 + Math.floor(Math.random() * 100) // Mock data
-            }))
-            .sort((a, b) => b.total_score - a.total_score)
-    } catch (error) {
-        console.error('Failed to fetch qualification results:', error)
-        qualificationResults.value = []
-    } finally {
-        isLoading.value = false
-    }
-}
-
-watch(selectedCategoryId, () => {
-    fetchQualificationResults()
-})
-
-onMounted(() => {
-    fetchCategories()
-})
 </script>

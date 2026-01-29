@@ -8,12 +8,12 @@
         </div>
 
         <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                 <!-- Desktop: Left Column (Image Slider) -->
-                <div v-if="!isMobile" class="lg:col-span-7 relative order-1 lg:order-1">
+                <div v-if="!isMobile" class="lg:col-span-1 relative order-1 lg:order-1">
                     <!-- Main Feature Image with Description Overlay -->
                     <div
-                        class="relative w-full aspect-video md:aspect-[4/3] rounded-[2rem] bg-navy overflow-hidden shadow-2xl group border border-white/5">
+                        class="relative w-full aspect-video md:aspect-[4/3] lg:aspect-square rounded-[2rem] bg-navy overflow-hidden shadow-2xl group border border-white/5">
                         <!-- Background Image -->
                         <img :src="featureItems[activeFeature].image" :alt="featureItems[activeFeature].title"
                             class="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 transition-all duration-1000 scale-[1.05]" />
@@ -35,10 +35,9 @@
                                         class="text-xl sm:text-2xl md:text-3xl lg:text-5xl font-black text-white mb-2 sm:mb-4 font-display leading-tight">
                                         {{ featureItems[activeFeature].title }}
                                     </h3>
-                                    <p
-                                        class="text-white/80 text-xs sm:text-sm md:text-base lg:text-lg leading-relaxed font-light">
-                                        {{ featureItems[activeFeature].longDescription }}
-                                    </p>
+                                    <div class="text-white/80 text-sm sm:text-base leading-relaxed font-light">
+                                        kontol {{ featureItems[activeFeature].longDescription }}
+                                    </div>
                                 </div>
                             </Transition>
                         </div>
@@ -46,7 +45,7 @@
                 </div>
 
                 <!-- Right: Features List -->
-                <div class="lg:col-span-12 lg:col-start-8 lg:col-span-5 flex flex-col gap-8 md:gap-10 order-2">
+                <div class="lg:col-span-1 flex flex-col gap-8 md:gap-10 order-2">
                     <div class="space-y-6">
                         <span
                             class="inline-block py-1 px-3 bg-primary text-navy text-[10px] font-black uppercase tracking-[0.2em] rounded-md">Ekosistem

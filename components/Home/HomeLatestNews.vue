@@ -56,38 +56,29 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, onMounted } from 'vue'
-import { useApi } from '~/composables/useApi'
 
-const { get } = useApi()
+const config = useRuntimeConfig()
+const apiBaseUrl = config.public.apiBaseUrl
 
-const articles = ref([])
-const loading = ref(true)
+const { data: newsResponse, pending: loading } = await useAsyncData(
+    'latest-news',
+    () => $fetch(`${apiBaseUrl}/news`, {
+        query: { limit: '3' }
+    })
+)
 
-const fetchLatestNews = async () => {
-    try {
-        loading.value = true
-        const response = await get('/news', { query: { limit: '3' } })
-        const newsData = response?.data || []
-        articles.value = newsData.slice(0, 3).map(article => ({
-            slug: article.slug,
-            title: article.title,
-            date: article.published_at
-                ? new Date(article.published_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
-                : new Date(article.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
-            category: article.category || 'Berita',
-            image: article.image_url,
-            excerpt: article.excerpt || ''
-        }))
-    } catch (error) {
-        console.error('Failed to fetch latest news:', error)
-    } finally {
-        loading.value = false
-    }
-}
-
-onMounted(() => {
-    fetchLatestNews()
+const articles = computed(() => {
+    const newsData = newsResponse.value?.data || []
+    return newsData.slice(0, 3).map(article => ({
+        slug: article.slug,
+        title: article.title,
+        date: article.published_at
+            ? new Date(article.published_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+            : new Date(article.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
+        category: article.category || 'Berita',
+        image: article.image_url,
+        excerpt: article.excerpt || ''
+    }))
 })
 </script>
 
