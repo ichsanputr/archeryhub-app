@@ -208,7 +208,21 @@ const { user, fetchUser } = useAuth()
 const { get, put } = useApi()
 const toast = useToast()
 
-const activeTab = ref('account')
+const tabs = computed(() => {
+  const allTabs = [
+    { label: 'Akun', value: 'account', icon: 'ph:user-circle' },
+    { label: 'Keamanan', value: 'security', icon: 'ph:shield-check' },
+    { label: 'Umum', value: 'general', icon: 'ph:gear' },
+    { label: 'Notifikasi', value: 'notifications', icon: 'ph:bell' },
+  ]
+
+  if (user.value?.role === 'organization') {
+    return allTabs.filter(t => t.value !== 'account')
+  }
+  return allTabs
+})
+
+const activeTab = ref(user.value?.role === 'organization' ? 'security' : 'account')
 const isSaving = ref(false)
 const isSavingPassword = ref(false)
 const userData = ref(null)
@@ -223,13 +237,6 @@ const userTypeIcon = computed(() => {
   const icons = { archer: 'ph:user', organization: 'ph:buildings', club: 'ph:users-three', admin: 'ph:shield-star', seller: 'ph:storefront' }
   return icons[userType.value] || 'ph:user'
 })
-
-const tabs = [
-  { label: 'Akun', value: 'account', icon: 'ph:user-circle' },
-  { label: 'Keamanan', value: 'security', icon: 'ph:shield-check' },
-  { label: 'Umum', value: 'general', icon: 'ph:gear' },
-  { label: 'Notifikasi', value: 'notifications', icon: 'ph:bell' },
-]
 
 const accountForm = ref({
   email: '',
@@ -307,7 +314,7 @@ const savePassword = async () => {
     })
     toast.success(hasPassword.value ? 'Password berhasil diubah' : 'Password berhasil diatur')
     passwordForm.value = { currentPassword: '', newPassword: '', confirmPassword: '' }
-    
+
     // Reload user data to update has_password flag
     const response = await get('/user/profile')
     userData.value = response

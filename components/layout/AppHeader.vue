@@ -41,7 +41,7 @@
       </div>
 
       <!-- Dashboard Context: Club Name replaced Search -->
-      <div v-if="isDashboard && user?.role === 'club'" class="hidden md:flex items-center gap-3">
+      <div v-if="isDashboard && user?.role === 'club' && !isEventManageMode" class="hidden md:flex items-center gap-3">
         <div class="flex items-center gap-3">
           <div
             class="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center bg-white shadow-sm transition-transform hover:scale-110 duration-300">
@@ -58,7 +58,8 @@
       </div>
 
       <!-- Dashboard Context: Organization Name -->
-      <div v-else-if="isDashboard && user?.role === 'organization'" class="hidden md:flex items-center gap-3">
+      <div v-else-if="isDashboard && user?.role === 'organization' && !isEventManageMode"
+        class="hidden md:flex items-center gap-3">
         <div class="flex items-center gap-3">
           <div
             class="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center bg-white shadow-sm transition-transform hover:scale-110 duration-300">

@@ -21,7 +21,7 @@
                             class="text-3xl md:text-5xl font-black leading-tight tracking-tight mb-6 font-display text-white">
                             {{ tournament.name }}
                         </h1>
-                        <div class="flex flex-wrap items-center gap-6 text-white/80 text-base">
+                        <div class="flex flex-wrap items-center gap-2 text-white/80 text-sm sm:text-base">
                             <div class="flex items-center gap-2">
                                 <Icon icon="ph:calendar-blank" class="text-primary" />
                                 <span>{{ displayValue(tournament.date) }}</span>

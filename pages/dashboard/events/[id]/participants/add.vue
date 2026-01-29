@@ -92,12 +92,8 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <BaseInput v-model="newArcherForm.full_name" label="Nama Lengkap"
                                     placeholder="Nama sesuai identitas" required />
-                                <BaseInput v-model="newArcherForm.athlete_code" label="Kode Atlet"
-                                    placeholder="ARC-2025-001" />
                                 <BaseInput v-model="newArcherForm.email" label="Email" type="email"
                                     placeholder="email@example.com" required />
-                                <BaseInput v-model="newArcherForm.password" label="Password" type="password"
-                                    placeholder="Minimal 6 karakter" required />
                                 <BaseInput v-model="newArcherForm.phone" label="No. Telepon" type="tel"
                                     placeholder="08xxxxxxxxxx" />
                                 <BaseInput v-model="newArcherForm.date_of_birth" label="Tanggal Lahir" type="date" />
@@ -124,7 +120,7 @@
                         <div v-if="selectedCategory" class="bg-gray-50/50 border border-gray-100 rounded-xl p-4">
                             <p class="text-sm font-bold text-navy mb-1">{{ selectedCategory.division_name ||
                                 selectedCategory.division }} - {{ selectedCategory.category_name ||
-                                selectedCategory.category }}</p>
+                                    selectedCategory.category }}</p>
                             <p class="text-xs text-gray-500">Kategori yang dipilih untuk peserta ini</p>
                         </div>
                     </div>
@@ -368,10 +364,6 @@ const validateNewArcherForm = () => {
         toast.error('Format email tidak valid')
         return false
     }
-    if (!newArcherForm.password || newArcherForm.password.trim().length < 6) {
-        toast.error('Password wajib diisi minimal 6 karakter')
-        return false
-    }
     if (!newArcherForm.gender) {
         toast.error('Pilih jenis kelamin pemanah')
         return false
@@ -407,9 +399,7 @@ const submit = async () => {
         if (archerMode.value === 'new') {
             const archerResponse = await post('/archers', {
                 full_name: newArcherForm.full_name,
-                athlete_code: newArcherForm.athlete_code || undefined,
                 email: newArcherForm.email || undefined,
-                password: newArcherForm.password || undefined,
                 phone: newArcherForm.phone || undefined,
                 date_of_birth: newArcherForm.date_of_birth || undefined,
                 gender: newArcherForm.gender || undefined,
