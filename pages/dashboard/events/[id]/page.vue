@@ -1,17 +1,21 @@
 <template>
     <div class="flex flex-col gap-8">
         <!-- Header -->
-        <div class="flex items-center justify-between">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-                <h1 class="text-3xl font-black text-navy tracking-tight">Halaman Event</h1>
-                <p class="text-gray-500 mt-1">Kelola informasi yang ditampilkan di halaman publik event.</p>
+                <h1 class="text-2xl sm:text-3xl font-black text-navy tracking-tight text-center sm:text-left">Halaman
+                    Event</h1>
+                <p class="text-gray-500 mt-1 text-sm text-center sm:text-left">Kelola informasi yang ditampilkan di
+                    halaman publik event.</p>
             </div>
-            <div class="flex items-center gap-3">
-                <BaseButton variant="outline" icon="ph:eye" :to="`/events/${eventData.slug}`" target="_blank">
-                    Lihat Halaman
+            <div class="flex items-center justify-center sm:justify-end gap-2 sm:gap-3">
+                <BaseButton variant="outline" icon="ph:eye" :to="`/events/${eventData.slug}`" target="_blank" size="sm"
+                    class="flex-1 sm:flex-none">
+                    Lihat
                 </BaseButton>
-                <BaseButton variant="primary" icon="ph:floppy-disk" @click="saveEventPage" :loading="saving">
-                    Simpan Perubahan
+                <BaseButton variant="primary" icon="ph:floppy-disk" @click="saveEventPage" :loading="saving" size="sm"
+                    class="flex-1 sm:flex-none">
+                    Simpan
                 </BaseButton>
             </div>
         </div>
@@ -95,9 +99,9 @@
                     <div class="p-6">
                         <div v-if="eventCategories.length === 0" class="text-center py-12">
                             <Icon icon="ph:info" class="text-4xl text-gray-200 mx-auto mb-3" />
-                            <p class="text-sm text-gray-500 mb-4">Belum ada kategori lomba yang dibuat. Tambahkan kategori untuk menampilkan divisi kompetisi.</p>
-                            <BaseButton variant="outline" size="sm"
-                                :to="`/dashboard/events/${eventId}/categories`">
+                            <p class="text-sm text-gray-500 mb-4">Belum ada kategori lomba yang dibuat. Tambahkan
+                                kategori untuk menampilkan divisi kompetisi.</p>
+                            <BaseButton variant="outline" size="sm" :to="`/dashboard/events/${eventId}/categories`">
                                 <Icon icon="ph:plus-bold" class="mr-1" /> Tambah Kategori
                             </BaseButton>
                         </div>
@@ -116,16 +120,19 @@
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                                     <div v-for="category in division.categories" :key="category.id"
                                         class="bg-white rounded-lg p-3 border border-gray-100 flex items-center gap-2">
-                                        <Icon icon="ph:check-circle-fill" class="text-primary text-base flex-shrink-0" />
+                                        <Icon icon="ph:check-circle-fill"
+                                            class="text-primary text-base flex-shrink-0" />
                                         <div class="flex-1 min-w-0">
                                             <p class="text-sm font-bold text-navy truncate">
-                                                {{ category.category_name }} - {{ category.event_type_name }} - {{ category.gender_division_name }}
+                                                {{ category.category_name }} - {{ category.event_type_name }} - {{
+                                                    category.gender_division_name }}
                                             </p>
                                             <p v-if="category.max_participants" class="text-xs text-gray-500">
                                                 Maks. {{ category.max_participants }} peserta
                                             </p>
                                         </div>
-                                        <span :class="category.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'"
+                                        <span
+                                            :class="category.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'"
                                             class="px-2 py-0.5 rounded-full text-[10px] font-bold flex-shrink-0">
                                             {{ category.status === 'active' ? 'Aktif' : 'Nonaktif' }}
                                         </span>
@@ -257,21 +264,24 @@
                                     <label class="text-xs font-bold text-gray-600">Juara 1</label>
                                     <input v-model="form.prizes.first" type="text" placeholder="Rp 15.000.000"
                                         class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm" />
-                                    <input v-model="form.prizes.first_caption" type="text" placeholder="+ Piala + Medali Emas"
+                                    <input v-model="form.prizes.first_caption" type="text"
+                                        placeholder="+ Piala + Medali Emas"
                                         class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-xs" />
                                 </div>
                                 <div class="space-y-2">
                                     <label class="text-xs font-bold text-gray-600">Juara 2</label>
                                     <input v-model="form.prizes.second" type="text" placeholder="Rp 10.000.000"
                                         class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm" />
-                                    <input v-model="form.prizes.second_caption" type="text" placeholder="+ Piala + Medali Perak"
+                                    <input v-model="form.prizes.second_caption" type="text"
+                                        placeholder="+ Piala + Medali Perak"
                                         class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-xs" />
                                 </div>
                                 <div class="space-y-2">
                                     <label class="text-xs font-bold text-gray-600">Juara 3</label>
                                     <input v-model="form.prizes.third" type="text" placeholder="Rp 7.500.000"
                                         class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm" />
-                                    <input v-model="form.prizes.third_caption" type="text" placeholder="+ Piala + Medali Perunggu"
+                                    <input v-model="form.prizes.third_caption" type="text"
+                                        placeholder="+ Piala + Medali Perunggu"
                                         class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-xs" />
                                 </div>
                             </div>
@@ -326,13 +336,9 @@
                         <label class="text-sm font-bold text-gray-700">Aksesibilitas Lokasi</label>
                         <p class="text-xs text-gray-500 mb-3">Pilih opsi yang tersedia untuk lokasi ini</p>
                         <div class="flex flex-wrap gap-2">
-                            <button
-                                v-for="option in locationAccessibilityOptions"
-                                :key="option"
-                                type="button"
+                            <button v-for="option in locationAccessibilityOptions" :key="option" type="button"
                                 @click="toggleLocationAccessibility(option)"
-                                class="px-4 py-2 rounded-xl text-sm font-bold transition-all border-2"
-                                :class="form.location_accessibility?.includes(option)
+                                class="px-4 py-2 rounded-xl text-sm font-bold transition-all border-2" :class="form.location_accessibility?.includes(option)
                                     ? 'bg-primary text-navy border-primary shadow-sm'
                                     : 'bg-white text-gray-600 border-gray-200 hover:border-primary hover:text-navy'">
                                 <Icon :icon="getLocationAccessibilityIcon(option)" class="inline-block mr-1.5" />
@@ -367,12 +373,12 @@
                             </div>
                             <button v-else @click="openMediaLibrary('banner')"
                                 class="w-full aspect-video rounded-xl border-2 border-dashed border-gray-200 hover:border-primary flex flex-col items-center justify-center text-gray-400">
-                                <Icon icon="ph:image-plus" class="text-3xl mb-2" />
+                                <Icon icon="material-symbols:image-outline" class="text-3xl mb-2" />
                                 <span class="text-xs font-bold">Pilih Banner</span>
                             </button>
                         </div>
-                        <div class="space-y-3">
-                            <label class="text-sm font-bold text-gray-700">Logo / Thumbnail</label>
+                        <div class="space-y-3 text-center md:text-left">
+                            <label class="text-sm font-bold text-gray-700">Poster Event</label>
                             <div v-if="form.logo_url"
                                 class="relative rounded-xl overflow-hidden aspect-square w-32 mx-auto group">
                                 <img :src="form.logo_url" class="w-full h-full object-cover" />
@@ -386,8 +392,8 @@
                             </div>
                             <button v-else @click="openMediaLibrary('logo')"
                                 class="w-32 aspect-square mx-auto rounded-xl border-2 border-dashed border-gray-200 hover:border-primary flex flex-col items-center justify-center text-gray-400">
-                                <Icon icon="ph:image-plus" class="text-2xl mb-1" />
-                                <span class="text-[10px] font-bold text-center px-2">Pilih Logo</span>
+                                <Icon icon="majesticons:plus-line" class="text-2xl mb-1" />
+                                <span class="text-[10px] font-bold text-center px-2">Pilih Poster</span>
                             </button>
                         </div>
                     </div>
@@ -481,7 +487,8 @@
                                         class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm" />
                                 </div>
                                 <div class="lg:col-span-3 space-y-1">
-                                    <label class="text-[10px] font-bold text-gray-400 uppercase">Deskripsi (Opsional)</label>
+                                    <label class="text-[10px] font-bold text-gray-400 uppercase">Deskripsi
+                                        (Opsional)</label>
                                     <textarea v-model="session.description" rows="2"
                                         class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm resize-none"
                                         placeholder="Deskripsi sesi..."></textarea>
@@ -915,7 +922,7 @@ const saveEventPage = async () => {
         // Show success notification
         const toast = useToast()
         toast.success('Halaman event berhasil diperbarui')
-        
+
         // Refresh data to show updated values
         await fetchEventData()
     } catch (error) {
