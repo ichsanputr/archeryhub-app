@@ -91,7 +91,7 @@
                     <!-- Interactive Feature Cards (Scrollable) -->
                     <div class="relative">
                         <div
-                            class="flex flex-col gap-3 max-h-[350px] sm:max-h-[400px] overflow-y-auto pr-2 sm:pr-4 custom-scrollbar">
+                            class="flex flex-col gap-3 max-h-[350px] px-3 sm:max-h-[400px] overflow-y-auto pr-2 sm:pr-4 custom-scrollbar">
                             <div v-for="(feature, idx) in featureItems" :key="feature.title"
                                 @click="activeFeature = idx"
                                 class="group flex items-center p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer"
