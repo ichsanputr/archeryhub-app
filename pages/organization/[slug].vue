@@ -2,15 +2,9 @@
     <div class="min-h-screen bg-gray-50">
         <!-- Organization Banner -->
         <section class="relative h-72 md:h-96 bg-gradient-to-br from-navy to-blue-900 overflow-hidden">
-            <img v-if="org.banner_url" :src="org.banner_url" class="w-full h-full object-cover opacity-60" />
+            <img :src="org.banner_url || '/hero-club-detail-default.jpeg'"
+                class="w-full h-full object-cover opacity-60" />
             <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/50 to-transparent"></div>
-
-            <!-- Back Button -->
-            <NuxtLink to="/organization"
-                class="absolute top-6 left-6 z-20 flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-white hover:bg-white/20 transition-all">
-                <Icon icon="ph:arrow-left-bold" />
-                <span class="text-sm font-bold">Kembali</span>
-            </NuxtLink>
         </section>
 
         <!-- Organization Header Card -->
@@ -43,11 +37,11 @@
                                 <div class="flex flex-wrap items-center gap-4 text-gray-500 text-sm font-medium">
                                     <span v-if="org.city" class="flex items-center gap-1.5">
                                         <Icon icon="ph:map-pin-fill" class="text-primary" />
-                                        {{ org.city }}<span v-if="org.province">, {{ org.province }}</span>
+                                        {{ org.city }}<span v-if="org.country && org.country !== 'Indonesia'">, {{ org.country }}</span>
                                     </span>
-                                    <span v-if="org.type" class="flex items-center gap-1.5">
+                                    <span v-if="org.acronym" class="flex items-center gap-1.5">
                                         <Icon icon="ph:tag-bold" />
-                                        {{ typeLabels[org.type] || org.type }}
+                                        {{ org.acronym }}
                                     </span>
                                 </div>
                             </div>
@@ -183,13 +177,13 @@
                             Kontak
                         </h3>
                         <div class="space-y-4">
-                            <div v-if="org.phone" class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center">
-                                    <Icon icon="ph:phone-fill" class="text-xl text-blue-500" />
+                            <div v-if="org.whatsapp_no" class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center">
+                                    <Icon icon="ph:whatsapp-logo-fill" class="text-xl text-green-500" />
                                 </div>
                                 <div>
-                                    <p class="text-gray-400 text-xs font-bold uppercase">Telepon</p>
-                                    <p class="font-bold text-navy">{{ org.phone }}</p>
+                                    <p class="text-gray-400 text-xs font-bold uppercase">WhatsApp</p>
+                                    <p class="font-bold text-navy">{{ org.whatsapp_no }}</p>
                                 </div>
                             </div>
                             <div v-if="org.email" class="flex items-center gap-4">
@@ -304,13 +298,6 @@ const org = computed(() => {
 
 const events = computed(() => orgResponse.value?.events || orgResponse.value?.data?.events || [])
 
-const typeLabels = {
-    federation: 'Federasi',
-    association: 'Asosiasi',
-    committee: 'Komite',
-    sponsor: 'Sponsor',
-    other: 'Lainnya'
-}
 
 const hasSocialMedia = computed(() => {
     return org.value.social_instagram || org.value.social_facebook || org.value.social_twitter

@@ -145,8 +145,7 @@
               <Icon icon="ph:phone-bold" class="text-primary text-xl" /> Informasi Kontak
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <BaseInput v-model="form.phone" label="Nomor Telepon" placeholder="Contoh: 021-xxxxxxxx" />
-              <BaseInput v-model="form.whatsapp" label="Nomor WhatsApp" placeholder="Contoh: 08xx-xxxx-xxxx" />
+              <BaseInput v-model="form.whatsapp_no" label="Nomor WhatsApp" placeholder="Contoh: 08xx-xxxx-xxxx" required />
               <BaseInput v-model="form.email" label="Alamat Email" type="email" placeholder="info@organisasi.id"
                 disabled />
               <BaseInput v-model="form.website" label="Website Resmi" placeholder="https://www.organisasi.id" />
@@ -282,8 +281,7 @@ const form = reactive({
   logoUrl: '',
   city: '',
   description: '',
-  phone: '',
-  whatsapp: '',
+  whatsapp_no: '',
   email: '',
   website: '',
   address: '',
@@ -414,8 +412,7 @@ const saveProfile = async () => {
       avatar_url: form.logoUrl, // Some APIs might expect avatar_url
       city: form.city,
       description: form.description,
-      phone: form.phone,
-      whatsapp: form.whatsapp,
+      whatsapp_no: form.whatsapp_no,
       website: form.website,
       address: form.address,
       social_media: form.socialMedia,

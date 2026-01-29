@@ -1,3 +1,7 @@
 - For detail organization make it same like club slug page, default banner, no need button kembali
 - table organization change column phone with whatsapp_no and this requiured on dashboard setting profile organization
+- Please on github deploy yml api add action to git pull because i want sync the code and file media 
+- Please trace on this page https://archeryhub.id/archers when i deploy on production for the avatar url i got local domain like this http://localhost:8001/api/v1/media/11.jpg why?
+- organization detail page add banner image default same like club detail
+- remove button kembali on organization detail page
 - 
