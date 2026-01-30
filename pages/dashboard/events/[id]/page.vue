@@ -194,12 +194,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="pt-4 border-t border-gray-200">
-                                <BaseButton variant="outline" size="sm" class="w-full"
-                                    :to="`/dashboard/events/${eventId}/categories`">
-                                    <Icon icon="ph:gear" class="mr-1" /> Kelola Kategori & Divisi
-                                </BaseButton>
-                            </div>
                         </div>
                     </div>
                 </section>

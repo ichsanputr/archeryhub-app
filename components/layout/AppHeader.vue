@@ -70,7 +70,7 @@
             <Icon v-else icon="ph:building-office-fill" class="text-primary text-2xl" />
           </div>
           <h2 class="text-lg font-black text-navy truncate max-w-sm tracking-tight">
-            {{ user?.name || 'Organisasi' }}
+            {{ user?.full_name || 'Organisasi' }}
           </h2>
         </div>
       </div>

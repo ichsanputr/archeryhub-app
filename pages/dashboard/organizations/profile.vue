@@ -286,11 +286,11 @@
           </h3>
           <p class="text-xs text-blue-200 mb-6 relative z-10 leading-relaxed font-medium">Profil Anda aktif dan dapat
             diakses publik melalui URL unik Archery Hub.</p>
-          <NuxtLink v-if="form.username" :to="`/organization/${form.username}`" target="_blank"
+          <NuxtLink v-if="form.slug" :to="`/organization/${form.slug}`" target="_blank"
             class="relative z-10 block w-full py-3.5 bg-primary text-navy font-black rounded-2xl text-center hover:bg-primary-hover hover:scale-[1.02] transition-all shadow-lg active:scale-95">
             Lihat Halaman Publik
           </NuxtLink>
-          <p v-else class="text-xs text-blue-300 italic relative z-10">Username belum diatur</p>
+          <p v-else class="text-xs text-blue-300 italic relative z-10">Slug belum diatur</p>
         </div>
       </div>
     </div>
@@ -302,7 +302,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useAuth } from '~/composables/useAuth'
@@ -387,9 +387,8 @@ const handleCitySearch = () => {
   loadingCities.value = true
   cityTimeout = setTimeout(async () => {
     try {
-      // Using a public API for Indonesian regions
-      const response = await fetch('https://raw.githubusercontent.com/drshofian/indonesia-regions/master/data/regencies.json')
-      const cities = await response.json()
+      const response = await get('/cities')
+      const cities = response.data || []
 
       const search = citySearch.value.toLowerCase()
       filteredCities.value = cities
@@ -457,59 +456,64 @@ const loadProfile = async () => {
   try {
     const resp = await get('/organizations/me')
     const data = resp?.data || resp || {}
-    if (data) {
-      form.name = data.name || ''
-      form.slug = data.slug || ''
-      form.bannerUrl = data.banner_url || ''
-      form.logoUrl = data.logo_url || data.avatar_url || ''
-      form.city = data.city || ''
-      citySearch.value = data.city || ''
-      form.description = data.description || ''
-      form.phone = data.phone || ''
-      form.whatsapp = data.whatsapp || ''
-      form.email = data.email || ''
-      form.website = data.website || ''
-      form.address = data.address || ''
-      form.vision = data.vision || ''
-      form.mission = data.mission || ''
-      form.history = data.history || ''
+    const org = data.organization || data
+
+    if (org && (org.id || org.uuid)) {
+      form.name = org.name || ''
+      form.slug = org.slug || ''
+      form.bannerUrl = org.banner_url || ''
+      form.logoUrl = org.avatar_url || org.logo_url || ''
+      form.city = org.city || ''
+      citySearch.value = org.city || ''
+      form.description = org.description || ''
+      form.whatsapp_no = org.whatsapp_no || ''
+      form.email = org.email || ''
+      form.website = org.website || ''
+      form.address = org.address || ''
+      form.vision = org.vision || ''
+      form.mission = org.mission || ''
+      form.history = org.history || ''
 
       form.faq = []
-      if (data.faq) {
-        if (typeof data.faq === 'string') {
+      const rawFaq = org.faq || data.faq
+      if (rawFaq) {
+        if (typeof rawFaq === 'string') {
           try {
-            form.faq = JSON.parse(data.faq)
+            form.faq = JSON.parse(rawFaq)
           } catch (e) {
             console.error('Failed to parse faq', e)
           }
-        } else if (Array.isArray(data.faq)) {
-          form.faq = data.faq
+        } else if (Array.isArray(rawFaq)) {
+          form.faq = rawFaq
         }
       }
 
       form.socialMedia = []
-      if (data.social_media) {
-        if (typeof data.social_media === 'string') {
+      const rawSocial = org.social_media || data.social_media
+      if (rawSocial) {
+        if (typeof rawSocial === 'string') {
           try {
-            form.socialMedia = JSON.parse(data.social_media)
+            form.socialMedia = JSON.parse(rawSocial)
           } catch (e) {
             console.error('Failed to parse social_media', e)
           }
-        } else if (Array.isArray(data.social_media)) {
-          form.socialMedia = data.social_media
+        } else if (Array.isArray(rawSocial)) {
+          form.socialMedia = rawSocial
         }
       }
 
       // Load page settings
-      if (data.page_settings) {
+      const rawPageSettings = data.page_settings || org.page_settings
+      if (rawPageSettings) {
         try {
-          const parsed = typeof data.page_settings === 'string' ? JSON.parse(data.page_settings) : data.page_settings
-          Object.assign(pageSettings.sections, parsed.sections || {})
+          const parsed = typeof rawPageSettings === 'string' ? JSON.parse(rawPageSettings) : rawPageSettings
+          if (parsed.sections) {
+            Object.assign(pageSettings.sections, parsed.sections)
+          }
         } catch (e) {
           console.error('Failed to parse page_settings', e)
         }
       }
-
     }
   } catch (error) {
     console.error('Load profile error:', error)

@@ -195,7 +195,7 @@ const navLinks = computed(() => {
   // Full navigation for organizers/admin; hide Event for club
   // When on event manage page, hide Laporan, Berita, and Pengaturan
   const base = [
-    { label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard' },
+    ...(role !== 'organization' ? [{ label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard' }] : []),
     ...(role !== 'club' ? [{ label: 'Event', icon: 'ph:trophy', path: '/dashboard/events' }] : []),
     ...(!isEventManagePage.value ? [{ label: 'Laporan', icon: 'ph:chart-bar', path: '/dashboard/reports' }] : []),
     ...(role === 'club' ? [{ label: 'Anggota', icon: 'ph:identification-badge', path: '/dashboard/members' }] : []),
