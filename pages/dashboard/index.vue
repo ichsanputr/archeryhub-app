@@ -378,27 +378,45 @@
 
       <!-- Main Content Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Target Status -->
+        <!-- Event Mendatang (Organization overview – replaces Target Status) -->
         <div
           class="lg:col-span-2 bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
-          <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
-            <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">Target Status</h3>
-            <div class="flex gap-3 text-xs font-semibold">
-              <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Shooting
-              </div>
-              <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-primary"></span> Scoring</div>
-              <div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-red-500"></span> Issue</div>
-            </div>
+          <div class="p-4 px-6 border-b border-gray-100 flex items-center justify-between bg-white">
+            <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">
+              <Icon icon="ph:calendar-star-bold" class="text-primary" />
+              Event Mendatang
+            </h3>
+            <NuxtLink to="/dashboard/events">
+              <BaseButton variant="ghost" size="xs">Lihat Semua</BaseButton>
+            </NuxtLink>
           </div>
-          <div class="p-6 flex-1 overflow-y-auto bg-gray-50/30">
-            <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3">
-              <div v-for="target in targetGrid" :key="target.id" :class="getTargetGridClass(target.status)"
-                class="aspect-square rounded-lg flex flex-col items-center justify-center cursor-pointer hover:shadow-md transition-all group shadow-sm">
-                <span class="font-bold text-lg group-hover:scale-110 transition-transform">{{
-                  String(target.id).padStart(2, '0') }}</span>
-                <span v-if="target.status === 'issue'"
-                  class="material-symbols-outlined text-[16px] text-red-500">warning</span>
+          <div class="p-5 space-y-4 flex-1 overflow-y-auto">
+            <div
+              v-for="event in orgUpcomingEvents"
+              :key="event.id"
+              class="flex items-center justify-between p-4 rounded-xl bg-gray-50 border border-gray-100 hover:border-primary/30 transition-all cursor-pointer group"
+              @click="router.push(`/dashboard/events/${event.id}/overview`)"
+            >
+              <div class="flex items-center gap-4">
+                <div
+                  class="w-12 h-12 rounded-lg bg-white border border-gray-100 flex flex-col items-center justify-center shrink-0">
+                  <span class="text-[10px] font-black text-primary uppercase">{{ event.dateLabel }}</span>
+                  <span class="text-lg font-black text-navy leading-none">{{ event.dayLabel }}</span>
+                </div>
+                <div>
+                  <h4 class="font-bold text-navy group-hover:text-primary transition-colors">{{ event.name }}</h4>
+                  <p class="text-xs text-gray-500">{{ event.statusLabel }}</p>
+                </div>
               </div>
+              <Icon icon="ph:arrow-right-bold"
+                class="text-gray-300 group-hover:text-primary transition-all group-hover:translate-x-1" />
+            </div>
+            <div v-if="!orgUpcomingEvents.length" class="text-center py-10">
+              <Icon icon="ph:calendar-blank" class="text-4xl text-gray-200 mx-auto mb-2" />
+              <p class="text-gray-400 text-sm">Belum ada event. Buat event baru untuk memulai.</p>
+              <NuxtLink to="/dashboard/events/create">
+                <BaseButton variant="primary" size="sm" class="mt-3">Buat Event</BaseButton>
+              </NuxtLink>
             </div>
           </div>
         </div>
@@ -481,6 +499,7 @@ const isLoadingClubData = ref(false)
 const clubStatsData = ref(null)
 const clubRecentMembers = ref([])
 const clubUpcomingTournaments = ref([])
+const orgUpcomingEventsData = ref([])
 
 
 // Chart state
@@ -510,7 +529,27 @@ onMounted(async () => {
   if (userRole.value === 'club') {
     await fetchClubDashboardData()
   }
+
+  // Org/Admin overview: load upcoming events for "Event Mendatang" section
+  if (userRole.value !== 'club' && userRole.value !== 'seller') {
+    fetchOrgUpcomingEvents()
+  }
 })
+
+const fetchOrgUpcomingEvents = async () => {
+  try {
+    const res = await api.get('/events')
+    const list = res?.data ?? res ?? []
+    const now = new Date().toISOString()
+    const upcoming = (Array.isArray(list) ? list : [])
+      .filter((e) => (e.start_date || e.start_at || e.date) && (e.start_date || e.start_at || e.date) >= now)
+      .sort((a, b) => (a.start_date || a.start_at || a.date).localeCompare(b.start_date || b.start_at || b.date))
+    orgUpcomingEventsData.value = upcoming
+  } catch (error) {
+    console.error('Failed to fetch org upcoming events:', error)
+    orgUpcomingEventsData.value = []
+  }
+}
 
 const fetchClubDashboardData = async () => {
   isLoadingClubData.value = true
@@ -599,39 +638,26 @@ const clubStats = computed(() => [
 const recentMembers = computed(() => clubRecentMembers.value)
 const upcomingClubTournaments = computed(() => clubUpcomingTournaments.value)
 
+const orgUpcomingEvents = computed(() => {
+  const list = orgUpcomingEventsData.value || []
+  return list.slice(0, 5).map((e) => {
+    const d = e.start_date ? new Date(e.start_date) : new Date()
+    const statusMap = { draft: 'Draft', published: 'Publik', registration: 'Pendaftaran', ongoing: 'Berlangsung', completed: 'Selesai' }
+    return {
+      id: e.id || e.uuid,
+      name: e.name || e.title || 'Event',
+      dateLabel: d.toLocaleDateString('id-ID', { month: 'short' }),
+      dayLabel: String(d.getDate()),
+      statusLabel: statusMap[e.status] || e.status || '–'
+    }
+  })
+})
 
 const stats = [
   { label: 'Total Atlet', value: '124', icon: 'ph:users', trend: '+12 check-ins hari ini', trendIcon: 'ph:trend-up', trendColor: 'text-green-600' },
   { label: 'Target Aktif', value: '32/35', icon: 'ph:target', trend: 'Semua sistem online', trendIcon: 'ph:check-circle', trendColor: 'text-text-secondary' },
   { label: 'Penyelesaian', value: '85%', icon: 'ph:check-square-offset', trend: '', trendIcon: '', trendColor: '' },
   { label: 'Time Left', value: '45:20', icon: 'ph:timer', trend: 'Est. End: 14:30 PM', trendIcon: 'ph:clock', trendColor: 'text-text-secondary' },
-]
-
-const targetGrid = [
-  { id: 1, status: 'shooting' },
-  { id: 2, status: 'shooting' },
-  { id: 3, status: 'shooting' },
-  { id: 4, status: 'issue' },
-  { id: 5, status: 'shooting' },
-  { id: 6, status: 'shooting' },
-  { id: 7, status: 'scoring' },
-  { id: 8, status: 'scoring' },
-  { id: 9, status: 'shooting' },
-  { id: 10, status: 'shooting' },
-  { id: 11, status: 'shooting' },
-  { id: 12, status: 'shooting' },
-  { id: 13, status: 'shooting' },
-  { id: 14, status: 'shooting' },
-  { id: 15, status: 'shooting' },
-  { id: 16, status: 'shooting' },
-  { id: 17, status: 'shooting' },
-  { id: 18, status: 'shooting' },
-  { id: 19, status: 'empty' },
-  { id: 20, status: 'empty' },
-  { id: 21, status: 'empty' },
-  { id: 22, status: 'empty' },
-  { id: 23, status: 'empty' },
-  { id: 24, status: 'empty' },
 ]
 
 const leaderboard = [
@@ -641,16 +667,6 @@ const leaderboard = [
   { id: 4, name: 'Jessica Wu', category: 'Compound', score: 572 },
   { id: 5, name: 'Tom Baker', category: 'Recurve Open', score: 568 },
 ]
-
-const getTargetGridClass = (status) => {
-  const classes = {
-    'shooting': 'bg-white border border-emerald-200 text-emerald-700 hover:border-emerald-400',
-    'scoring': 'bg-white border border-yellow-200 text-yellow-700 hover:border-primary',
-    'issue': 'bg-red-50 border border-red-200 text-red-600 animate-pulse',
-    'empty': 'bg-gray-50 border border-gray-200 text-gray-300 cursor-not-allowed'
-  }
-  return classes[status] || 'bg-gray-50 border border-gray-200 text-gray-300'
-}
 
 const getStatusBadgeClass = (status) => {
   const statusLower = status?.toLowerCase()

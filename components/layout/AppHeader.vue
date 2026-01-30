@@ -243,8 +243,14 @@ const dashboardTitle = computed(() => {
 })
 
 const showAddButton = computed(() => {
-  const addRoutes = ['/dashboard/archers', '/dashboard/devices']
-  return addRoutes.some(r => route.path.startsWith(r))
+  const role = user.value?.role || user.value?.type
+  if (route.path.startsWith('/dashboard/archers')) {
+    // "Atlet Baru" only for club/organization (they manage athletes), not for archer
+    return role === 'club' || role === 'organization'
+  }
+  if (route.path.startsWith('/dashboard/devices')) return true
+  if (route.path.startsWith('/dashboard/events')) return true
+  return false
 })
 
 const addButtonText = computed(() => {

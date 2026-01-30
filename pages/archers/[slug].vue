@@ -62,24 +62,6 @@
                             </div>
                         </div>
 
-                        <!-- Stats Bar -->
-                        <div
-                            class="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-4 md:gap-8 mt-8 pt-8 border-t border-gray-100">
-                            <div class="text-center sm:text-left">
-                                <p class="text-2xl md:text-3xl font-black text-navy">{{ archer.total_events || 0 }}</p>
-                                <p class="text-[10px] md:text-sm text-gray-400 font-bold uppercase tracking-wide">
-                                    Total Event</p>
-                            </div>
-                            <div class="h-10 w-px bg-gray-200 hidden sm:block"></div>
-                            <div class="text-center sm:text-left">
-                                <p class="text-2xl md:text-3xl font-black text-navy">{{ archer.completed_events || 0 }}
-                                </p>
-                                <p class="text-[10px] md:text-sm text-gray-400 font-bold uppercase tracking-wide">
-                                    Selesai
-                                </p>
-                            </div>
-                            <div class="h-10 w-px bg-gray-200 hidden sm:block"></div>
-                        </div>
                     </div>
                 </div>
             </div>
