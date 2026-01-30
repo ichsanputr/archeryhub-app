@@ -1,12 +1,18 @@
 <template>
     <div
         class="flex h-screen w-full bg-background-light font-sans text-navy-dark overflow-hidden transition-colors duration-300">
-        <!-- Mobile Overlay -->
-        <div v-if="isMobileMenuOpen" @click="isMobileMenuOpen = false"
-            class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] lg:hidden transition-all">
-        </div>
+        <!-- Mobile overlay: behind sidebar (z-[90]) so drawer (z-[100]) stays on top; tap to close -->
+        <Transition name="overlay-fade">
+            <button
+                v-if="isMobileMenuOpen"
+                type="button"
+                class="fixed inset-0 z-[90] lg:hidden bg-black/40 backdrop-blur-[2px] transition-opacity duration-200 focus:outline-none focus:ring-0"
+                aria-label="Tutup menu"
+                @click="isMobileMenuOpen = false"
+            />
+        </Transition>
 
-        <!-- Sidebar (Consolidated Component) -->
+        <!-- Sidebar (drawer on mobile, above overlay) -->
         <LayoutAppSidebar />
 
         <!-- Main Content Area -->
@@ -75,6 +81,14 @@ const handleConfirmedLogout = async () => {
     showLogoutDialog.value = false
     navigateTo('/auth/login')
 }
+
+// Lock body scroll when mobile drawer is open
+watch(isMobileMenuOpen, (open) => {
+    if (import.meta.client) {
+        document.body.style.overflow = open ? 'hidden' : ''
+        document.documentElement.style.overflow = open ? 'hidden' : ''
+    }
+})
 </script>
 
 <style scoped>
@@ -84,5 +98,14 @@ const handleConfirmedLogout = async () => {
 
 .text-navy-dark {
     color: #0f172a;
+}
+
+.overlay-fade-enter-active,
+.overlay-fade-leave-active {
+    transition: opacity 0.2s ease;
+}
+.overlay-fade-enter-from,
+.overlay-fade-leave-to {
+    opacity: 0;
 }
 </style>

@@ -52,8 +52,16 @@ onMounted(async () => {
     const redirect = route.query.redirect || '/dashboard'
     window.location.href = redirect
   } catch (err) {
+    const statusCode = err?.statusCode ?? err?.status
+    const data = err?.data ?? err?.response?._data ?? {}
+    if (statusCode === 409 && data?.already_registered) {
+      const email = data.email || ''
+      const userType = data.user_type || ''
+      window.location.href = `/auth/already-registered?email=${encodeURIComponent(email)}&user_type=${encodeURIComponent(userType)}`
+      return
+    }
     console.error('Callback processing failed:', err)
-    error.value = err.message || 'Terjadi kesalahan saat menyambungkan ke Google.'
+    error.value = err?.data?.error || err?.message || 'Terjadi kesalahan saat menyambungkan ke Google.'
   } finally {
     loading.value = false
   }

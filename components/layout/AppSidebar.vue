@@ -1,10 +1,12 @@
 <template>
   <aside
-    class="w-64 bg-navy flex flex-col fixed md:static inset-y-0 left-0 z-50 transition-all duration-300 md:translate-x-0 shrink-0 border-r border-white/10 shadow-xl"
+    class="w-64 max-w-[85vw] bg-navy flex flex-col fixed md:static inset-y-0 left-0 z-[100] md:z-auto transition-transform duration-300 ease-out md:translate-x-0 shrink-0 border-r border-white/10 md:shadow-xl"
     :class="[
-      isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
+      isSidebarOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full md:translate-x-0',
       isSidebarCollapsed ? 'md:w-20' : 'md:w-64'
-    ]">
+    ]"
+    aria-hidden="false"
+    :aria-label="isSidebarOpen ? 'Menu navigasi terbuka' : 'Menu navigasi tertutup'">
 
     <!-- Logo/Brand -->
     <div class="h-16 flex items-center gap-3 px-6 border-b border-white/10 shrink-0">
