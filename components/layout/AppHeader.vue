@@ -104,14 +104,6 @@
 
     <!-- Right Section -->
     <div class="flex items-center gap-3 pl-4">
-      <!-- Add New Button (context-aware) -->
-      <button v-if="showAddButton"
-        class="hidden md:flex h-10 px-4 bg-primary hover:bg-yellow-400 text-background-dark rounded-lg text-sm font-bold items-center gap-2 transition-colors shadow-sm"
-        @click="handleAdd">
-        <Icon icon="ph:plus-bold" class="text-[18px]" />
-        {{ addButtonText }}
-      </button>
-
       <!-- Notifications -->
       <div ref="notificationRef" class="relative">
         <button @click="showNotifications = !showNotifications" :class="[
@@ -242,24 +234,6 @@ const dashboardTitle = computed(() => {
   return 'Dashboard'
 })
 
-const showAddButton = computed(() => {
-  const role = user.value?.role || user.value?.type
-  if (route.path.startsWith('/dashboard/archers')) {
-    // "Atlet Baru" only for club/organization (they manage athletes), not for archer
-    return role === 'club' || role === 'organization'
-  }
-  if (route.path.startsWith('/dashboard/devices')) return true
-  if (route.path.startsWith('/dashboard/events')) return true
-  return false
-})
-
-const addButtonText = computed(() => {
-  if (route.path.startsWith('/dashboard/events')) return 'Event Baru'
-  if (route.path.startsWith('/dashboard/archers')) return 'Atlet Baru'
-  if (route.path.startsWith('/dashboard/devices')) return 'Tambah Perangkat'
-  return 'Tambah Baru'
-})
-
 const handleSearch = () => {
   if (searchQuery.value.trim()) {
     router.push(`/search?q=${encodeURIComponent(searchQuery.value)}`)
@@ -267,16 +241,6 @@ const handleSearch = () => {
 }
 
 const showDeviceModal = useState('show-device-modal', () => false)
-
-const handleAdd = () => {
-  if (route.path.startsWith('/dashboard/events')) {
-    router.push('/dashboard/events/create')
-  } else if (route.path.startsWith('/dashboard/archers')) {
-    router.push('/dashboard/archers/create')
-  } else if (route.path.startsWith('/dashboard/devices')) {
-    showDeviceModal.value = true
-  }
-}
 
 const toggleMobileSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value

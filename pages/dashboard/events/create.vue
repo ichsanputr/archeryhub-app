@@ -185,7 +185,7 @@
           <BaseButton to="/dashboard/events" variant="ghost" class="px-8">
             Batal
           </BaseButton>
-          <BaseButton type="submit" variant="primary" :loading="isSubmitting" loading-text="Memproses..." class="px-10">
+          <BaseButton type="submit" variant="primary" :loading="isSubmitting" class="px-10">
             Buat event
           </BaseButton>
         </div>
@@ -236,7 +236,7 @@ const form = reactive({
 })
 
 const disciplines = ref([])
-const disciplineItems = computed(() => disciplines.value.map(d => ({ title: d.name, value: d.id })))
+const disciplineItems = computed(() => disciplines.value.map(d => ({ title: d.name, value: d.name })))
 
 const indonesianCities = [
   'Jakarta', 'Bandung', 'Surabaya', 'Medan', 'Semarang', 'Makassar', 'Palembang',
@@ -397,7 +397,7 @@ const handleSubmit = async () => {
       entry_fee: form.entryFee,
       status: form.status,
       registration_deadline: formatToISO(form.registrationDeadline),
-      type: form.type,
+      location_type: form.type,
       images: form.images.map((img, i) => ({
         url: img.url,
         caption: img.caption,

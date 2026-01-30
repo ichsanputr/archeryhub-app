@@ -49,11 +49,6 @@
                             class="h-11 px-5 border-white/20 shadow-sm font-bold" @click="openShareDialog">
                             Bagikan
                         </BaseButton>
-                        <BaseButton :to="`/dashboard/events/${route.params.id}/edit`" variant="primary"
-                            icon="ph:pencil-simple-line-bold"
-                            class="h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all font-bold">
-                            Edit Event
-                        </BaseButton>
                     </div>
                 </div>
             </div>

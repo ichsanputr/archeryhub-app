@@ -284,7 +284,7 @@ const transformEventData = (event) => {
         date: formatDateRange(event.start_date, event.end_date),
         location: event.venue || event.location || 'Lokasi TBA',
         status: event.status || 'upcoming',
-        category: event.discipline_name || event.category || null,
+        category: event.location_type || event.category || null,
         image: useImageOrDefault(event.logo_url || event.banner_url)
     }
 }

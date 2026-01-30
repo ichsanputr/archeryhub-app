@@ -110,7 +110,7 @@
                       <span class="text-[11px] font-bold text-gray-400 tracking-wide uppercase">{{ event.code }}</span>
                       <span class="text-gray-300">•</span>
                       <span class="text-[11px] font-bold text-primary-dark uppercase tracking-wide">{{
-                        event.discipline_name || 'Event' }}</span>
+                        event.location_type || 'Event' }}</span>
                     </div>
                   </div>
                 </div>
@@ -174,11 +174,6 @@
                     </button>
                     <div v-if="openDropdownId === event.id"
                       class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-                      <NuxtLink :to="`/dashboard/events/${event.id}/edit`"
-                        class="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-navy transition-colors">
-                        <Icon icon="ph:pencil-simple" class="text-lg text-gray-400" />
-                        Edit Event
-                      </NuxtLink>
                       <button @click="confirmDeleteEvent(event)"
                         class="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors">
                         <Icon icon="ph:trash" class="text-lg" />

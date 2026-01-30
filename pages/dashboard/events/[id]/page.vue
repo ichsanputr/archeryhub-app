@@ -131,6 +131,28 @@
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
                             </div>
                         </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-gray-700">Tipe Lokasi</label>
+                                <select v-model="form.location_type"
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
+                                    <option value="">Pilih Tipe Lokasi</option>
+                                    <option v-for="discipline in disciplines" :key="discipline.id" :value="discipline.name">
+                                        {{ discipline.name }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-gray-700">Status Event</label>
+                                <select v-model="form.status"
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
+                                    <option value="draft">Draft (Belum dipublikasi)</option>
+                                    <option value="published">Published (Aktif)</option>
+                                    <option value="ongoing">Ongoing (Sedang Berlangsung)</option>
+                                    <option value="completed">Completed (Selesai)</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
@@ -258,6 +280,11 @@
                                 <label class="text-sm font-bold text-gray-700">Batas Pendaftaran</label>
                                 <input v-model="form.registration_deadline" type="datetime-local"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none" />
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-gray-700">Biaya Pendaftaran (Rp)</label>
+                                <input v-model.number="form.entry_fee" type="number" placeholder="350000"
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
                             </div>
                         </div>
                     </div>
@@ -735,6 +762,9 @@ const form = ref({
     fees: [],
     schedules: [],
     registration_deadline: '',
+    entry_fee: 0,
+    location_type: '',
+    status: 'draft',
     total_prize: 0,
     technical_guidebook_url: '',
     location_accessibility: [],
@@ -760,6 +790,8 @@ const form = ref({
     faq: [],
     results: []
 })
+
+const disciplines = ref([])
 
 const addFAQField = () => {
     if (!form.value.faq) form.value.faq = []
@@ -1079,6 +1111,9 @@ const fetchEventData = async () => {
                     end_time: formatToDatetimeLocal(s.end_time)
                 })),
                 registration_deadline: formatToDatetimeLocal(data.registration_deadline),
+                entry_fee: data.entry_fee || 0,
+                location_type: data.location_type || data.discipline_name || '',
+                status: data.status || 'draft',
                 total_prize: data.total_prize || 0,
                 technical_guidebook_url: data.technical_guidebook_url || '',
                 location_accessibility: pageSettings.location_accessibility || [],
@@ -1108,6 +1143,9 @@ const saveEventPage = async () => {
             banner_url: form.value.banner_url,
             logo_url: form.value.logo_url,
             registration_deadline: formatFromDatetimeLocal(form.value.registration_deadline),
+            entry_fee: form.value.entry_fee || 0,
+            location_type: form.value.location_type,
+            status: form.value.status,
             total_prize: form.value.total_prize,
             technical_guidebook_url: form.value.technical_guidebook_url,
             faq: form.value.faq,
@@ -1209,7 +1247,16 @@ const groupedDivisions = computed(() => {
     return Object.values(groups)
 })
 
-onMounted(() => {
+onMounted(async () => {
+    // Fetch disciplines for location_type dropdown
+    try {
+        const discRes = await get('/disciplines')
+        if (discRes?.disciplines) {
+            disciplines.value = discRes.disciplines
+        }
+    } catch (err) {
+        console.error('Failed to fetch disciplines:', err)
+    }
     fetchEventData()
 })
 
