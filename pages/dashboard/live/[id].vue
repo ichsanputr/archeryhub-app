@@ -95,7 +95,7 @@
             class="w-12 h-8 object-cover rounded shadow-md ring-1 ring-white/10" />
           <div class="flex flex-col">
             <span class="text-white text-xl font-bold leading-tight tracking-tight">{{ entry.name }}</span>
-            <span class="text-primary text-xs font-semibold uppercase tracking-wide">{{ entry.country }}</span>
+            <span class="text-primary text-xs font-semibold uppercase tracking-wide">{{ entry.city || '-' }}</span>
           </div>
         </div>
 
@@ -176,8 +176,7 @@ const fetchRankings = async () => {
       leaderboard.value = res.rankings.map(r => ({
         id: r.athlete_id,
         name: r.athlete_name,
-        country: r.country || 'Unknown',
-        flag: `https://flagcdn.com/w80/${(r.country || 'un').toLowerCase()}.png`,
+        city: r.city || '-',
         total: r.total_score,
         rank: r.rank,
         // For ends, we might need a more detailed endpoint or default to 0

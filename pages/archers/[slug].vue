@@ -56,7 +56,7 @@
 
                             <!-- Actions -->
                             <div class="flex gap-3">
-                                <button class="p-3 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all">
+                                <button @click="openShareDialog" class="p-3 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all">
                                     <Icon icon="ph:share-network-bold" class="text-xl text-gray-600" />
                                 </button>
                             </div>
@@ -230,6 +230,74 @@
                 </div>
             </div>
         </section>
+
+        <!-- Share Dialog -->
+        <div v-if="showShareDialog" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <!-- Overlay -->
+            <div @click="closeShareDialog" class="absolute inset-0 bg-navy/60 backdrop-blur-sm transition-opacity"></div>
+
+            <!-- Modal -->
+            <div class="relative w-full max-w-md transform overflow-hidden rounded-3xl bg-white p-8 text-left align-middle shadow-2xl transition-all">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-black text-navy">Bagikan Profil Pemanah</h3>
+                    <button @click="closeShareDialog" class="text-gray-400 hover:text-navy transition-colors">
+                        <Icon icon="ph:x-bold" class="text-xl" />
+                    </button>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl">
+                        <div class="w-12 h-12 rounded-xl bg-white shadow-sm overflow-hidden shrink-0">
+                            <div v-if="!archer.photo_url && !archer.avatar_url"
+                                class="w-full h-full bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center">
+                                <span class="text-xl font-black text-navy">{{ archer.full_name?.charAt(0) || 'A' }}</span>
+                            </div>
+                            <img v-else :src="useImageOrDefault(archer.photo_url || archer.avatar_url)" class="w-full h-full object-cover" />
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <p class="font-bold text-navy truncate">{{ archer.full_name }}</p>
+                            <p class="text-xs text-gray-400 truncate">{{ archer.city }}{{ archer.province ? ', ' + archer.province : '' }}</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-4 gap-4">
+                        <button @click="shareTo('whatsapp')" class="flex flex-col items-center gap-2 group">
+                            <div class="w-12 h-12 rounded-2xl bg-green-50 text-green-500 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white transition-all">
+                                <Icon icon="ph:whatsapp-logo-fill" class="text-2xl" />
+                            </div>
+                            <span class="text-[10px] font-bold text-gray-500">WhatsApp</span>
+                        </button>
+                        <button @click="shareTo('facebook')" class="flex flex-col items-center gap-2 group">
+                            <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all">
+                                <Icon icon="ph:facebook-logo-fill" class="text-2xl" />
+                            </div>
+                            <span class="text-[10px] font-bold text-gray-500">Facebook</span>
+                        </button>
+                        <button @click="shareTo('twitter')" class="flex flex-col items-center gap-2 group">
+                            <div class="w-12 h-12 rounded-2xl bg-sky-50 text-sky-500 flex items-center justify-center group-hover:bg-sky-500 group-hover:text-white transition-all">
+                                <Icon icon="ph:twitter-logo-fill" class="text-2xl" />
+                            </div>
+                            <span class="text-[10px] font-bold text-gray-500">Twitter</span>
+                        </button>
+                        <button @click="copyLink" class="flex flex-col items-center gap-2 group">
+                            <div class="w-12 h-12 rounded-2xl bg-gray-50 text-gray-600 flex items-center justify-center group-hover:bg-navy group-hover:text-white transition-all">
+                                <Icon icon="ph:link-bold" class="text-2xl" />
+                            </div>
+                            <span class="text-[10px] font-bold text-gray-500">{{ copied ? 'Tersalin' : 'Salin' }}</span>
+                        </button>
+                    </div>
+
+                    <div class="relative group mt-4">
+                        <input type="text" readonly :value="shareUrl"
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-bold text-gray-500 outline-none" />
+                        <button @click="copyLink"
+                            class="absolute right-2 top-1.5 px-3 py-1.5 bg-white border border-gray-100 rounded-lg text-[10px] font-black hover:bg-gray-50 transition-colors shadow-sm">
+                            {{ copied ? 'Berhasil' : 'Salin' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -285,7 +353,7 @@ const { data: archerResponse, pending: isLoading } = await useAsyncData(
 const archer = computed(() => {
     const data = archerResponse.value
     if (!data || Object.keys(data).length === 0) {
-        return { ...dummyArcher, slug: route.params.slug }
+        return { ...dummyArcher, username: route.params.slug, slug: route.params.slug }
     }
     return data
 })
@@ -324,5 +392,54 @@ const formatDate = (date) => {
     if (!date) return '-'
     const d = new Date(date)
     return d.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })
+}
+
+// Share dialog
+const showShareDialog = ref(false)
+const copied = ref(false)
+const shareUrl = computed(() => typeof window !== 'undefined' ? window.location.href : '')
+
+const openShareDialog = () => {
+    showShareDialog.value = true
+}
+
+const closeShareDialog = () => {
+    showShareDialog.value = false
+    copied.value = false
+}
+
+const copyLink = async () => {
+    try {
+        await navigator.clipboard.writeText(shareUrl.value)
+        copied.value = true
+        setTimeout(() => {
+            copied.value = false
+        }, 2000)
+    } catch (err) {
+        console.error('Failed to copy:', err)
+    }
+}
+
+const shareTo = (platform) => {
+    const text = encodeURIComponent(`Lihat profil ${archer.value.full_name} di Archeryhub.id`)
+    const url = encodeURIComponent(shareUrl.value)
+    let shareLink = ''
+
+    switch (platform) {
+        case 'whatsapp':
+            shareLink = `https://wa.me/?text=${text}%20${url}`
+            break
+        case 'facebook':
+            shareLink = `https://www.facebook.com/sharer/sharer.php?u=${url}`
+            break
+        case 'twitter':
+            shareLink = `https://twitter.com/intent/tweet?text=${text}&url=${url}`
+            break
+    }
+
+    if (shareLink) {
+        window.open(shareLink, '_blank', 'noopener,noreferrer')
+        closeShareDialog()
+    }
 }
 </script>

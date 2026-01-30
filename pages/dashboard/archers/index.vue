@@ -83,13 +83,13 @@
               <td class="table-cell">
                 <div class="flex flex-col">
                   <span class="text-white text-sm font-medium">{{ athlete.club || 'Independent' }}</span>
-                  <span class="text-brand-gold text-xs">{{ athlete.country }}</span>
+                  <span class="text-brand-gold text-xs">{{ athlete.city || '-' }}</span>
                 </div>
               </td>
               <td class="table-cell text-brand-gold text-sm">
                 <div class="flex items-center gap-1.5 uppercase font-bold text-[10px]">
                   <Icon icon="ph:flag-banner" class="text-[16px]" />
-                  {{ athlete.country }}
+                  {{ athlete.city || '-' }}
                 </div>
               </td>
               <td class="table-cell">

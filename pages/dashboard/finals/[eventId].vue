@@ -79,7 +79,7 @@
                   {{ match.participant1?.first_name }} {{ match.participant1?.last_name }}
                 </p>
                 <p class="text-[#ccc38e] text-xs truncate">
-                  {{ match.participant1?.country || 'TBD' }}
+                  {{ match.participant1?.city || 'TBD' }}
                 </p>
               </div>
               <div class="text-right">
@@ -172,7 +172,7 @@
                   </td>
                   <td class="px-6 py-4">
                     <p class="text-white font-medium">{{ r.athlete_name }}</p>
-                    <p class="text-[#ccc38e] text-sm">{{ r.country || '-' }}</p>
+                    <p class="text-[#ccc38e] text-sm">{{ r.city || '-' }}</p>
                   </td>
                   <td class="px-6 py-4">
                     <span v-if="r.medal" class="flex items-center gap-1">

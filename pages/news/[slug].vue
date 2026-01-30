@@ -90,7 +90,7 @@
                             class="!bg-white hover:!text-green-600">WhatsApp</BaseButton>
                         <BaseButton variant="outline" size="sm" icon="ph:facebook-logo-bold"
                             class="!bg-white hover:!text-blue-600">Facebook</BaseButton>
-                        <BaseButton variant="outline" size="sm" icon="ph:link-bold" class="!bg-white">Salin Link
+                        <BaseButton variant="outline" size="sm" icon="ph:link-bold" class="!bg-white">Salin
                         </BaseButton>
                     </div>
                 </div>
@@ -144,7 +144,11 @@
                         Event Terbaru
                     </h3>
                     <div class="space-y-4 relative z-10">
-                        <div v-for="t in upcomingTournaments" :key="t.id"
+                        <div v-if="upcomingTournaments.length === 0" class="text-center py-8">
+                            <Icon icon="ph:calendar-blank" class="text-4xl text-white/20 mx-auto mb-2" />
+                            <p class="text-sm text-white/60">Belum ada event mendatang</p>
+                        </div>
+                        <NuxtLink v-for="t in upcomingTournaments" :key="t.id" :to="`/events/${t.id}`"
                             class="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/10 hover:bg-white/10 transition-colors cursor-pointer">
                             <div
                                 class="bg-white/10 rounded-lg w-12 h-12 flex flex-col items-center justify-center text-center flex-shrink-0">
@@ -154,11 +158,11 @@
                             <div>
                                 <h4 class="font-bold text-sm leading-tight mb-0.5">{{ t.title }}</h4>
                                 <div class="flex items-center gap-1 text-xs text-slate-300">
-                                    <span class="material-symbols-outlined text-[10px]">location_on</span> {{ t.location
-                                    }}
+                                    <Icon icon="ph:map-pin" class="text-[10px]" />
+                                    {{ t.location }}
                                 </div>
                             </div>
-                        </div>
+                        </NuxtLink>
                     </div>
                     <NuxtLink to="/events"
                         class="inline-flex items-center gap-2 text-primary text-xs font-black mt-6 hover:text-white transition-all group">
@@ -269,19 +273,31 @@ const relatedArticles = computed(() => {
 
 const { data: upcomingResponse } = await useAsyncData(
     'upcoming-events-news-sidebar',
-    () => $fetch(`${apiBaseUrl}/events?limit=3`),
+    () => $fetch(`${apiBaseUrl}/events?limit=3&status=published`),
     { server: true, lazy: true }
 )
 
 const upcomingTournaments = computed(() => {
     const rawData = upcomingResponse.value?.data || upcomingResponse.value || []
-    return rawData.map(e => ({
-        id: e.uuid || e.id,
-        title: e.name,
-        month: e.start_date ? new Date(e.start_date).toLocaleDateString('id-ID', { month: 'short' }) : '',
-        day: e.start_date ? new Date(e.start_date).toLocaleDateString('id-ID', { day: 'numeric' }) : '',
-        location: e.venue || e.location || ''
-    }))
+    const events = Array.isArray(rawData) ? rawData : []
+    const now = new Date()
+    
+    // Filter only upcoming events (start_date >= today) and map
+    return events
+        .filter(e => {
+            if (!e.start_date) return false
+            const startDate = new Date(e.start_date)
+            return startDate >= now
+        })
+        .sort((a, b) => new Date(a.start_date) - new Date(b.start_date))
+        .slice(0, 3)
+        .map(e => ({
+            id: e.uuid || e.id,
+            title: e.name,
+            month: e.start_date ? new Date(e.start_date).toLocaleDateString('id-ID', { month: 'short' }) : '',
+            day: e.start_date ? new Date(e.start_date).toLocaleDateString('id-ID', { day: 'numeric' }) : '',
+            location: e.venue || e.location || e.city || ''
+        }))
 })
 
 useHead({

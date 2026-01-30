@@ -122,7 +122,7 @@
                     <tr>
                       <th class="px-4 py-3 text-left text-[#ccc38e] text-xs font-semibold uppercase">Rank</th>
                       <th class="px-4 py-3 text-left text-[#ccc38e] text-xs font-semibold uppercase">Athlete</th>
-                      <th class="px-4 py-3 text-left text-[#ccc38e] text-xs font-semibold uppercase">Country</th>
+                      <th class="px-4 py-3 text-left text-[#ccc38e] text-xs font-semibold uppercase">City</th>
                       <th class="px-4 py-3 text-right text-[#ccc38e] text-xs font-semibold uppercase">Score</th>
                       <th class="px-4 py-3 text-right text-[#ccc38e] text-xs font-semibold uppercase">X</th>
                       <th class="px-4 py-3 text-right text-[#ccc38e] text-xs font-semibold uppercase">10s</th>
@@ -132,7 +132,7 @@
                     <tr v-for="r in reportData" :key="r.rank" class="hover:bg-[#4a4421]/20">
                       <td class="px-4 py-3 text-[#f9d406] font-bold">{{ r.rank }}</td>
                       <td class="px-4 py-3 text-white font-medium">{{ r.athlete_name }}</td>
-                      <td class="px-4 py-3 text-[#ccc38e]">{{ r.country || '-' }}</td>
+                      <td class="px-4 py-3 text-[#ccc38e]">{{ r.city || '-' }}</td>
                       <td class="px-4 py-3 text-right text-white font-bold tabular-nums">{{ r.total_score }}</td>
                       <td class="px-4 py-3 text-right text-[#f9d406] tabular-nums">{{ r.x_count }}</td>
                       <td class="px-4 py-3 text-right text-[#ccc38e] tabular-nums">{{ r.ten_count }}</td>
@@ -148,7 +148,7 @@
                       <th class="px-4 py-3 text-left text-[#ccc38e] text-xs font-semibold uppercase">Target</th>
                       <th class="px-4 py-3 text-left text-[#ccc38e] text-xs font-semibold uppercase">Back #</th>
                       <th class="px-4 py-3 text-left text-[#ccc38e] text-xs font-semibold uppercase">Athlete</th>
-                      <th class="px-4 py-3 text-left text-[#ccc38e] text-xs font-semibold uppercase">Country</th>
+                      <th class="px-4 py-3 text-left text-[#ccc38e] text-xs font-semibold uppercase">City</th>
                       <th class="px-4 py-3 text-left text-[#ccc38e] text-xs font-semibold uppercase">Division</th>
                     </tr>
                   </thead>
@@ -157,7 +157,7 @@
                       <td class="px-4 py-3 text-[#f9d406] font-mono font-bold">{{ s.target }}</td>
                       <td class="px-4 py-3 text-white font-mono">{{ s.back_number }}</td>
                       <td class="px-4 py-3 text-white font-medium">{{ s.athlete_name }}</td>
-                      <td class="px-4 py-3 text-[#ccc38e]">{{ s.country || '-' }}</td>
+                      <td class="px-4 py-3 text-[#ccc38e]">{{ s.city || '-' }}</td>
                       <td class="px-4 py-3 text-[#ccc38e]">{{ s.division }}</td>
                     </tr>
                   </tbody>

@@ -2,36 +2,32 @@
     <div class="space-y-6">
         <!-- Manual Results / Files -->
         <div v-if="results && results.length > 0" class="space-y-4">
-            <div class="bg-navy rounded-3xl p-8 md:p-10 shadow-lg relative overflow-hidden">
-                <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-primary/10 rounded-full blur-3xl"></div>
-
-                <div class="relative z-10">
-                    <h3 class="text-2xl font-black text-white mb-2 flex items-center gap-3">
-                        <div class="w-12 h-12 rounded-2xl bg-primary/20 flex items-center justify-center">
-                            <Icon icon="ph:file-pdf-duotone" class="text-2xl text-primary" />
-                        </div>
-                        Hasil Scoring Manual
-                    </h3>
-                    <p class="text-white/60 text-sm font-medium mb-8">Download berkas hasil pertandingan resmi yang
-                        diunggah oleh penyelenggara.</p>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <a v-for="(file, fIdx) in results" :key="fIdx" :href="getImageUrl(file.url)" target="_blank"
-                            class="flex items-center gap-4 p-5 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 hover:border-primary/50 transition-all group">
-                            <div
-                                class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-navy transition-all">
-                                <Icon :icon="getFileIcon(file.url)" class="text-2xl" />
-                            </div>
-                            <div class="flex-grow min-w-0">
-                                <h4 class="text-white font-bold truncate group-hover:text-primary transition-colors">{{
-                                    file.name || 'Berkas Hasil' }}</h4>
-                                <p class="text-white/40 text-[10px] font-black uppercase tracking-wider mt-0.5">{{
-                                    getFileType(file.url) }}</p>
-                            </div>
-                            <Icon icon="ph:download-simple-bold"
-                                class="text-white/20 group-hover:text-primary transition-colors" />
-                        </a>
+            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
+                <h3 class="text-xl font-black text-navy mb-2 flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                        <Icon icon="ph:file-pdf-duotone" class="text-2xl text-primary" />
                     </div>
+                    Hasil Scoring Manual
+                </h3>
+                <p class="text-gray-600 text-sm font-medium mb-6">Download berkas hasil pertandingan resmi yang
+                    diunggah oleh penyelenggara.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <a v-for="(file, fIdx) in results" :key="fIdx" :href="getImageUrl(file.url)" target="_blank"
+                        class="flex items-center gap-4 p-5 bg-gray-50 border border-gray-100 rounded-xl hover:bg-primary/5 hover:border-primary/30 transition-all group">
+                        <div
+                            class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-navy transition-all">
+                            <Icon :icon="getFileIcon(file.url)" class="text-2xl" />
+                        </div>
+                        <div class="flex-grow min-w-0">
+                            <h4 class="text-navy font-bold truncate group-hover:text-primary transition-colors">{{
+                                file.name || 'Berkas Hasil' }}</h4>
+                            <p class="text-gray-500 text-[10px] font-black uppercase tracking-wider mt-0.5">{{
+                                getFileType(file.url) }}</p>
+                        </div>
+                        <Icon icon="ph:download-simple-bold"
+                            class="text-gray-400 group-hover:text-primary transition-colors" />
+                    </a>
                 </div>
             </div>
         </div>

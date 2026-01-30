@@ -7,7 +7,7 @@
         <p class="text-gray-500 mt-1 font-medium">Atur informasi publik yang akan ditampilkan di profil Anda</p>
       </div>
       <div class="flex gap-3">
-        <BaseButton v-if="user?.slug" variant="outline" size="sm" icon="ph:eye" @click="previewProfile">
+        <BaseButton v-if="user?.username" variant="outline" size="sm" icon="ph:eye" @click="previewProfile">
           Pratinjau Publik
         </BaseButton>
         <BaseButton variant="gold" size="sm" icon="ph:floppy-disk" @click="saveProfile" :loading="isSaving">
@@ -556,10 +556,10 @@ const saveProfile = async () => {
 }
 
 const previewProfile = () => {
-  if (user.value?.slug) {
-    window.open(`/archers/${user.value.slug}`, '_blank')
+  if (user.value?.username) {
+    window.open(`/archers/${user.value.username}`, '_blank')
   } else {
-    toast.warning('Slug profil belum diatur. Silakan simpan profil terlebih dahulu.')
+    toast.warning('Username profil belum diatur. Silakan simpan profil terlebih dahulu.')
   }
 }
 </script>

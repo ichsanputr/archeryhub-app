@@ -83,10 +83,6 @@
                                         <Icon icon="ph:calendar" />
                                         {{ featuredArticle.date }}
                                     </span>
-                                    <span class="flex items-center gap-1.5">
-                                        <Icon icon="ph:eye" />
-                                        {{ featuredArticle.views }} views
-                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -132,22 +128,16 @@
                                             article.excerpt }}</p>
                                     </div>
 
-                                    <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-50">
-                                        <div class="flex items-center gap-4">
-                                            <div class="flex items-center gap-2">
-                                                <div
-                                                    class="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center">
-                                                    <Icon icon="ph:user-bold" class="text-xs text-primary" />
-                                                </div>
-                                                <span class="text-xs font-bold text-navy">{{ article.author }}</span>
+                                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mt-auto pt-4 border-t border-gray-50">
+                                        <div class="flex items-center gap-2">
+                                            <div
+                                                class="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                                                <Icon icon="ph:user-bold" class="text-xs text-primary" />
                                             </div>
-                                            <div class="flex items-center gap-1.5 text-xs text-gray-400">
-                                                <Icon icon="ph:eye-bold" />
-                                                <span>{{ article.views }}</span>
-                                            </div>
+                                            <span class="text-xs font-bold text-navy">{{ article.author }}</span>
                                         </div>
                                         <span
-                                            class="text-primary font-black text-xs uppercase tracking-wider flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                                            class="text-primary font-black text-xs uppercase tracking-wider flex items-center gap-1 group-hover:translate-x-1 transition-transform self-start sm:self-auto">
                                             Baca Selengkapnya
                                             <Icon icon="ph:arrow-right-bold" />
                                         </span>

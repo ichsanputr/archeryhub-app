@@ -71,25 +71,6 @@
             </div>
         </div>
 
-        <!-- Search and Filter -->
-        <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
-            <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
-                <div class="relative w-full md:w-64">
-                    <Icon icon="ph:magnifying-glass"
-                        class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
-                    <input v-model="searchQuery"
-                        class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-100 rounded-xl text-sm focus:ring-2 focus:ring-primary focus:border-primary outline-none"
-                        placeholder="Cari nama, email, klub, atau kategori..." type="text">
-                </div>
-                <div class="flex items-center gap-2 overflow-x-auto no-scrollbar">
-                    <button v-for="div in filterDivs" :key="div" @click="activeDiv = div"
-                        class="px-4 py-2 rounded-lg text-sm font-bold whitespace-nowrap transition-colors"
-                        :class="activeDiv === div ? 'bg-navy text-white shadow-md' : 'bg-gray-50 text-gray-600 hover:bg-gray-100'">
-                        {{ div }}
-                    </button>
-                </div>
-            </div>
-        </div>
 
         <!-- Participants Table -->
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
@@ -159,7 +140,7 @@
             </div>
 
             <!-- Pagination Controls -->
-            <div v-if="totalPages > 1 && !searchQuery"
+            <div v-if="totalPages > 1"
                 class="px-6 py-4 border-t border-gray-100 bg-gray-50/30 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div class="text-xs font-bold text-gray-400 uppercase tracking-widest">
                     Showing {{ (page - 1) * limit + 1 }} to {{ Math.min(page * limit, total) }} of {{ total }}
@@ -255,28 +236,7 @@ const changePage = (newPage) => {
 }
 
 const filteredParticipants = computed(() => {
-    let filtered = participants.value
-
-    // Filter by search query
-    if (searchQuery.value) {
-        const q = searchQuery.value.toLowerCase()
-        filtered = filtered.filter(p =>
-            p.full_name?.toLowerCase().includes(q) ||
-            p.email?.toLowerCase().includes(q) ||
-            p.club_name?.toLowerCase().includes(q) ||
-            p.division_name?.toLowerCase().includes(q) ||
-            p.category_name?.toLowerCase().includes(q) ||
-            getCategoryName(p).toLowerCase().includes(q) ||
-            p.athlete_code?.toLowerCase().includes(q)
-        )
-    }
-
-    // Filter by division
-    if (activeDiv.value !== 'Semua') {
-        filtered = filtered.filter(p => p.division_name?.includes(activeDiv.value))
-    }
-
-    return filtered
+    return participants.value
 })
 
 const getStatusClass = (status) => {

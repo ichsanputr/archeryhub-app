@@ -67,7 +67,7 @@
 
             <div v-else-if="viewMode === 'grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <NuxtLink v-for="archer in filteredArchers" :key="archer.id || archer.uuid"
-                    :to="`/archers/${archer.slug}`"
+                    :to="`/archers/${archer.username || archer.slug}`"
                     class="group bg-white rounded-3xl border border-gray-100 p-6 transition-all duration-500">
                     <div class="flex items-center gap-5">
                         <!-- Avatar -->
@@ -309,7 +309,7 @@ const archers = computed(() => {
     return archersData.map(archer => ({
         ...archer,
         uuid: archer.uuid || archer.id,
-        slug: archer.slug,
+        slug: archer.username || archer.slug,
         full_name: archer.full_name,
         athlete_code: archer.athlete_code,
         city: archer.city,

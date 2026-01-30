@@ -88,7 +88,7 @@
                   {{ athlete.athlete_code }}
                 </span>
                 <span class="text-[10px] text-brand-gold/40">
-                  {{ athlete.country }}
+                  {{ athlete.city || '-' }}
                 </span>
               </div>
             </div>

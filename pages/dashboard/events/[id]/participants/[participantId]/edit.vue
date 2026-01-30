@@ -114,8 +114,8 @@
                             <BaseSelect v-model="form.status" label="Status Pendaftaran" required icon="ph:checks"
                                 :items="statusOptions" />
 
-                            <BaseInput v-model.number="form.payment_amount" type="number" label="Jumlah Pembayaran"
-                                placeholder="0" icon="ph:money" min="0" step="0.01" />
+                            <BaseInput v-model="form.payment_amount" label="Jumlah Pembayaran"
+                                placeholder="0" icon="ph:money" kind="currency" />
 
                             <BaseSelect v-model="form.accreditation_status" label="Status Akreditasi" required
                                 icon="ph:shield-check" :items="accreditationOptions" />

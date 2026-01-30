@@ -172,7 +172,7 @@
                         </h2>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                             <NuxtLink v-for="member in club.topMembers" :key="member.id"
-                                :to="`/archers/${member.slug || member.uuid}`"
+                                :to="`/archers/${member.username || member.slug || member.uuid}`"
                                 class="text-center p-5 rounded-2xl border border-gray-100 hover:border-primary/50 hover:bg-primary/5 hover:shadow-xl hover:shadow-primary/5 transition-all cursor-pointer group block bg-white">
                                 <div
                                     class="w-20 h-20 rounded-full bg-gradient-to-br from-gray-50 to-gray-100 mx-auto mb-4 flex items-center justify-center overflow-hidden border-2 border-white shadow-md group-hover:scale-105 transition-transform">

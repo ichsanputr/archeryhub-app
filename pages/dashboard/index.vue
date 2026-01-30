@@ -378,13 +378,13 @@
 
       <!-- Main Content Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Event Mendatang (Organization overview – replaces Target Status) -->
+        <!-- Event Recap (Organization overview – replaces Target Status) -->
         <div
           class="lg:col-span-2 bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
           <div class="p-4 px-6 border-b border-gray-100 flex items-center justify-between bg-white">
             <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">
-              <Icon icon="ph:calendar-star-bold" class="text-primary" />
-              Event Mendatang
+              <Icon icon="ph:chart-line-up-bold" class="text-primary" />
+              Rekap Event
             </h3>
             <NuxtLink to="/dashboard/events">
               <BaseButton variant="ghost" size="xs">Lihat Semua</BaseButton>
@@ -392,31 +392,40 @@
           </div>
           <div class="p-5 space-y-4 flex-1 overflow-y-auto">
             <div
-              v-for="event in orgUpcomingEvents"
+              v-for="event in orgCompletedEvents"
               :key="event.id"
               class="flex items-center justify-between p-4 rounded-xl bg-gray-50 border border-gray-100 hover:border-primary/30 transition-all cursor-pointer group"
               @click="router.push(`/dashboard/events/${event.id}/overview`)"
             >
-              <div class="flex items-center gap-4">
+              <div class="flex items-center gap-4 flex-1 min-w-0">
                 <div
                   class="w-12 h-12 rounded-lg bg-white border border-gray-100 flex flex-col items-center justify-center shrink-0">
                   <span class="text-[10px] font-black text-primary uppercase">{{ event.dateLabel }}</span>
                   <span class="text-lg font-black text-navy leading-none">{{ event.dayLabel }}</span>
                 </div>
-                <div>
-                  <h4 class="font-bold text-navy group-hover:text-primary transition-colors">{{ event.name }}</h4>
-                  <p class="text-xs text-gray-500">{{ event.statusLabel }}</p>
+                <div class="flex-1 min-w-0">
+                  <h4 class="font-bold text-navy group-hover:text-primary transition-colors truncate">{{ event.name }}</h4>
+                  <div class="flex items-center gap-4 mt-1">
+                    <p class="text-xs text-gray-500">{{ event.statusLabel }}</p>
+                    <div class="flex items-center gap-3 text-xs text-gray-500">
+                      <span class="flex items-center gap-1">
+                        <Icon icon="ph:users-bold" class="text-[10px]" />
+                        {{ event.participantCount || 0 }} peserta
+                      </span>
+                      <span class="flex items-center gap-1">
+                        <Icon icon="ph:trophy-bold" class="text-[10px]" />
+                        {{ event.categoryCount || 0 }} kategori
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
               <Icon icon="ph:arrow-right-bold"
-                class="text-gray-300 group-hover:text-primary transition-all group-hover:translate-x-1" />
+                class="text-gray-300 group-hover:text-primary transition-all group-hover:translate-x-1 shrink-0" />
             </div>
-            <div v-if="!orgUpcomingEvents.length" class="text-center py-10">
-              <Icon icon="ph:calendar-blank" class="text-4xl text-gray-200 mx-auto mb-2" />
-              <p class="text-gray-400 text-sm">Belum ada event. Buat event baru untuk memulai.</p>
-              <NuxtLink to="/dashboard/events/create">
-                <BaseButton variant="primary" size="sm" class="mt-3">Buat Event</BaseButton>
-              </NuxtLink>
+            <div v-if="!orgCompletedEvents.length" class="text-center py-10">
+              <Icon icon="ph:chart-line-up" class="text-4xl text-gray-200 mx-auto mb-2" />
+              <p class="text-gray-400 text-sm">Belum ada event yang selesai. Rekap akan muncul setelah event selesai.</p>
             </div>
           </div>
         </div>
@@ -530,24 +539,34 @@ onMounted(async () => {
     await fetchClubDashboardData()
   }
 
-  // Org/Admin overview: load upcoming events for "Event Mendatang" section
+  // Org/Admin overview: load completed events for "Rekap Event" section
   if (userRole.value !== 'club' && userRole.value !== 'seller') {
-    fetchOrgUpcomingEvents()
+    fetchOrgCompletedEvents()
   }
 })
 
-const fetchOrgUpcomingEvents = async () => {
+const fetchOrgCompletedEvents = async () => {
   try {
     const res = await api.get('/events')
     const list = res?.data ?? res ?? []
     const now = new Date().toISOString()
-    const upcoming = (Array.isArray(list) ? list : [])
-      .filter((e) => (e.start_date || e.start_at || e.date) && (e.start_date || e.start_at || e.date) >= now)
-      .sort((a, b) => (a.start_date || a.start_at || a.date).localeCompare(b.start_date || b.start_at || b.date))
-    orgUpcomingEventsData.value = upcoming
+    // Filter completed events (status = 'completed' or end_date < now)
+    const completed = (Array.isArray(list) ? list : [])
+      .filter((e) => {
+        const status = e.status?.toLowerCase()
+        const endDate = e.end_date || e.end_at || e.date
+        return status === 'completed' || (endDate && new Date(endDate) < new Date(now))
+      })
+      .sort((a, b) => {
+        const dateA = a.end_date || a.end_at || a.date || ''
+        const dateB = b.end_date || b.end_at || b.date || ''
+        return dateB.localeCompare(dateA) // Most recent first
+      })
+      .slice(0, 5) // Limit to 5 most recent
+    orgCompletedEventsData.value = completed
   } catch (error) {
-    console.error('Failed to fetch org upcoming events:', error)
-    orgUpcomingEventsData.value = []
+    console.error('Failed to fetch org completed events:', error)
+    orgCompletedEventsData.value = []
   }
 }
 
@@ -638,17 +657,20 @@ const clubStats = computed(() => [
 const recentMembers = computed(() => clubRecentMembers.value)
 const upcomingClubTournaments = computed(() => clubUpcomingTournaments.value)
 
-const orgUpcomingEvents = computed(() => {
-  const list = orgUpcomingEventsData.value || []
-  return list.slice(0, 5).map((e) => {
-    const d = e.start_date ? new Date(e.start_date) : new Date()
+const orgCompletedEvents = computed(() => {
+  const list = orgCompletedEventsData.value || []
+  return list.map((e) => {
+    const endDate = e.end_date || e.end_at || e.date
+    const d = endDate ? new Date(endDate) : new Date()
     const statusMap = { draft: 'Draft', published: 'Publik', registration: 'Pendaftaran', ongoing: 'Berlangsung', completed: 'Selesai' }
     return {
       id: e.id || e.uuid,
       name: e.name || e.title || 'Event',
       dateLabel: d.toLocaleDateString('id-ID', { month: 'short' }),
       dayLabel: String(d.getDate()),
-      statusLabel: statusMap[e.status] || e.status || '–'
+      statusLabel: statusMap[e.status] || e.status || 'Selesai',
+      participantCount: e.participant_count || 0,
+      categoryCount: e.category_count || 0
     }
   })
 })

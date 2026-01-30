@@ -113,7 +113,7 @@
                   </div>
                   <div>
                     <p class="text-white font-medium">{{ acc.first_name }} {{ acc.last_name }}</p>
-                    <p class="text-[#ccc38e] text-sm">{{ acc.country || '-' }}</p>
+                    <p class="text-[#ccc38e] text-sm">{{ acc.city || '-' }}</p>
                   </div>
                 </div>
               </td>

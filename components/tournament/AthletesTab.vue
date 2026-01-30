@@ -39,7 +39,7 @@
                     </div>
                     <div>
                         <div class="flex items-center gap-1">
-                            <NuxtLink :to="`/archers/${athlete.slug}`"
+                            <NuxtLink :to="`/archers/${athlete.username || athlete.slug}`"
                                 class="font-bold text-navy truncate hover:text-primary transition-colors">
                                 {{ athlete.name }}
                             </NuxtLink>

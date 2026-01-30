@@ -52,7 +52,7 @@
               <Icon :icon="genderIcon" :class="genderColor" class="text-base" />
               <span>{{ ageLabel }}</span>
               <span class="text-gray-300">•</span>
-              <span>{{ member?.country || 'Indonesia' }}</span>
+              <span>{{ member?.city || '-' }}</span>
             </p>
           </div>
         </div>

@@ -131,7 +131,7 @@
               <p class="text-[#ccc38e] text-sm">{{ award.event_name }}</p>
             </div>
             <div class="text-right">
-              <p class="text-white font-bold">{{ award.country || '-' }}</p>
+              <p class="text-white font-bold">{{ award.city || '-' }}</p>
               <p class="text-[#ccc38e] text-xs">Rank #{{ award.rank }}</p>
             </div>
           </div>

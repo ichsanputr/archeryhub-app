@@ -122,7 +122,7 @@
                         :class="member.gender === 'M' ? 'text-blue-500' : member.gender === 'F' ? 'text-pink-500' : 'text-gray-400'" />
                       <span>{{ calculateAge(member.date_of_birth) }} tahun</span>
                       <span class="text-gray-300">•</span>
-                      <span>{{ member.city || member.country || 'Indonesia' }}</span>
+                      <span>{{ member.city || '-' }}</span>
                     </div>
                   </div>
                 </div>
