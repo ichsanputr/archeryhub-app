@@ -37,7 +37,8 @@
                                 <div class="flex flex-wrap items-center gap-4 text-gray-500 text-sm font-medium">
                                     <span v-if="org.city" class="flex items-center gap-1.5">
                                         <Icon icon="ph:map-pin-fill" class="text-primary" />
-                                        {{ org.city }}<span v-if="org.country && org.country !== 'Indonesia'">, {{ org.country }}</span>
+                                        {{ org.city }}<span v-if="org.country && org.country !== 'Indonesia'">, {{
+                                            org.country }}</span>
                                     </span>
                                     <span v-if="org.acronym" class="flex items-center gap-1.5">
                                         <Icon icon="ph:tag-bold" />
@@ -99,7 +100,9 @@
                             Event yang Diselenggarakan
                         </h2>
                         <div v-if="events.length === 0" class="text-center py-8 text-gray-400">
-                            <Icon icon="ph:calendar-x" class="text-4xl mb-2" />
+                            <div>
+                                <Icon icon="ph:calendar-x" class="text-4xl mb-2 mx-auto" />
+                            </div>
                             <p>Belum ada event yang diselenggarakan</p>
                         </div>
                         <div v-else class="space-y-4">
@@ -131,39 +134,86 @@
                         </div>
                     </div>
 
-                    <!-- Dynamic Sections -->
-                    <div v-for="(section, sIdx) in org.sections" :key="sIdx"
+                    <!-- Vision & Mission -->
+                    <div v-if="pageSettings.sections.about && (org.vision || org.mission)"
+                        class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+                        <h2 class="font-black text-navy text-xl mb-6 flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                                <Icon icon="ph:eye-bold" class="text-xl text-primary" />
+                            </div>
+                            Visi & Misi
+                        </h2>
+                        <div class="space-y-6">
+                            <div v-if="org.vision">
+                                <h3 class="text-sm font-black text-gray-400 uppercase tracking-widest mb-2">Visi</h3>
+                                <p class="text-gray-600 leading-relaxed text-lg whitespace-pre-line">{{ org.vision }}
+                                </p>
+                            </div>
+                            <div v-if="org.mission">
+                                <h3 class="text-sm font-black text-gray-400 uppercase tracking-widest mb-2">Misi</h3>
+                                <p class="text-gray-600 leading-relaxed text-lg whitespace-pre-line">{{ org.mission }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- History -->
+                    <div v-if="pageSettings.sections.about && org.history"
                         class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
                         <h2 class="font-black text-navy text-xl mb-5 flex items-center gap-3">
                             <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                                <Icon
-                                    :icon="section.type === 'faq' ? 'ph:question-bold' : (section.type === 'gallery' ? 'ph:image-bold' : 'ph:info-bold')"
-                                    class="text-xl text-primary" />
+                                <Icon icon="ph:book-open-bold" class="text-xl text-primary" />
                             </div>
-                            {{ section.title }}
+                            Sejarah Organisasi
                         </h2>
+                        <p class="text-gray-600 leading-relaxed text-lg whitespace-pre-line">{{ org.history }}</p>
+                    </div>
 
-                        <!-- Text Section -->
-                        <div v-if="section.type === 'text'" class="prose max-w-none">
-                            <p class="text-gray-600 leading-relaxed text-lg whitespace-pre-line">{{ section.content }}
-                            </p>
-                        </div>
+                    <!-- FAQ -->
+                    <div v-if="pageSettings.sections.faq && org.faq?.length > 0"
+                        class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 overflow-hidden relative">
+                        <!-- Decorative element -->
+                        <div class="absolute -right-12 -bottom-12 w-48 h-48 bg-primary/5 rounded-full blur-3xl"></div>
 
-                        <!-- Gallery Section -->
-                        <div v-if="section.type === 'gallery'" class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                            <div v-for="(img, idx) in section.media" :key="idx"
-                                class="aspect-square rounded-xl overflow-hidden bg-gray-100 border border-gray-200">
-                                <img :src="img" :alt="`Gallery ${idx + 1}`" class="w-full h-full object-cover" />
+                        <div
+                            class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10 relative z-10">
+                            <div>
+                                <h2 class="font-black text-navy text-2xl mb-2 flex items-center gap-3">
+                                    <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
+                                        <Icon icon="ph:question-bold" class="text-2xl text-primary" />
+                                    </div>
+                                    Tanya Jawab (FAQ)
+                                </h2>
+                                <p class="text-sm text-gray-400 font-medium">Informasi penting yang mungkin Anda
+                                    butuhkan</p>
                             </div>
                         </div>
 
-                        <!-- FAQ Section -->
-                        <div v-if="section.type === 'faq'" class="space-y-4">
-                            <div v-for="(faq, fIdx) in section.faqs" :key="fIdx"
-                                class="border border-gray-200 rounded-xl p-5 bg-gray-50/30">
-                                <h4 class="font-bold text-navy mb-2">{{ faq.question }}</h4>
-                                <p class="text-gray-600 text-sm leading-relaxed">{{ faq.answer }}</p>
-                            </div>
+                        <div class="space-y-4 relative z-10">
+                            <details v-for="(faq, fIdx) in org.faq" :key="fIdx"
+                                class="group border border-gray-100 rounded-3xl transition-all duration-300 open:bg-gray-50/50 open:border-primary/20 open:shadow-lg open:shadow-primary/5">
+                                <summary
+                                    class="list-none p-6 font-black text-navy cursor-pointer flex items-center justify-between group-hover:bg-gray-50 group-open:bg-transparent rounded-3xl transition-all duration-300">
+                                    <div class="flex items-center gap-4">
+                                        <span
+                                            class="flex-shrink-0 w-8 h-8 rounded-xl bg-gray-100 group-open:bg-primary group-open:text-navy flex items-center justify-center text-xs font-black transition-colors">
+                                            {{ fIdx + 1 }}
+                                        </span>
+                                        <span class="text-lg leading-tight">{{ faq.question }}</span>
+                                    </div>
+                                    <div
+                                        class="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center group-open:rotate-180 group-open:bg-navy group-open:border-navy transition-all duration-500">
+                                        <Icon icon="ph:caret-down-bold"
+                                            class="text-gray-400 group-open:text-white transition-colors" />
+                                    </div>
+                                </summary>
+                                <div class="px-6 pb-8 pt-0 ml-12">
+                                    <div class="h-px w-full bg-gradient-to-r from-primary/20 to-transparent mb-6"></div>
+                                    <p class="text-gray-600 text-lg leading-relaxed whitespace-pre-line">
+                                        {{ faq.answer }}
+                                    </p>
+                                </div>
+                            </details>
                         </div>
                     </div>
                 </div>
@@ -274,26 +324,27 @@ const { data: orgResponse, pending: isLoading } = await useAsyncData(
     { server: true }
 )
 
-const org = computed(() => {
-    const rawOrg = orgResponse.value?.organization || orgResponse.value?.data?.organization || {}
-    let sections = []
-    
-    // Parse page_settings if available
-    if (rawOrg.page_settings) {
-        try {
-            const pageSettings = typeof rawOrg.page_settings === 'string' 
-                ? JSON.parse(rawOrg.page_settings) 
-                : rawOrg.page_settings
-            sections = pageSettings.sections || []
-        } catch (e) {
-            console.error('Failed to parse page_settings:', e)
+const pageSettings = computed(() => {
+    const rawSettings = orgResponse.value?.organization?.page_settings || orgResponse.value?.data?.organization?.page_settings
+    if (!rawSettings) return { sections: { identity: true, contact: true, about: true, faq: true } }
+    try {
+        const parsed = typeof rawSettings === 'string' ? JSON.parse(rawSettings) : rawSettings
+        return {
+            sections: {
+                identity: true,
+                contact: true,
+                about: true,
+                faq: true,
+                ...(parsed.sections || {})
+            }
         }
+    } catch (e) {
+        return { sections: { identity: true, contact: true, about: true, faq: true } }
     }
-    
-    return {
-        ...rawOrg,
-        sections
-    }
+})
+
+const org = computed(() => {
+    return orgResponse.value?.organization || orgResponse.value?.data?.organization || {}
 })
 
 const events = computed(() => orgResponse.value?.events || orgResponse.value?.data?.events || [])

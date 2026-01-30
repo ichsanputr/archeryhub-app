@@ -202,6 +202,9 @@ definePageMeta({
 const config = useRuntimeConfig()
 const apiBaseUrl = config.public.apiBaseUrl
 
+const route = useRoute()
+const slug = route.params.slug
+
 const { data: newsResponse, pending: isLoading } = await useAsyncData(
     `news-${slug}`,
     () => $fetch(`${apiBaseUrl}/news/${slug}`),

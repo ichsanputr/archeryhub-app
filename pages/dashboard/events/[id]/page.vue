@@ -30,6 +30,63 @@
             </button>
         </div>
 
+        <div v-if="activeTab === 'faq'" class="space-y-6">
+            <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="p-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
+                    <h2 class="text-lg font-bold text-navy flex items-center gap-2">
+                        <Icon icon="ph:question" class="text-primary text-xl" />
+                        Pertanyaan Sering Diajukan (FAQ)
+                    </h2>
+                    <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold text-gray-400">Tampilkan Seksi FAQ</span>
+                            <button @click="form.page_settings.sections.faq = !form.page_settings.sections.faq"
+                                class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none"
+                                :class="form.page_settings.sections.faq ? 'bg-primary' : 'bg-gray-200'">
+                                <span
+                                    class="inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform"
+                                    :class="form.page_settings.sections.faq ? 'translate-x-5.5' : 'translate-x-1'"></span>
+                            </button>
+                        </div>
+                        <BaseButton variant="outline" size="xs" @click="addFAQField">
+                            <Icon icon="ph:plus-bold" class="mr-1" /> Tambah FAQ
+                        </BaseButton>
+                    </div>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div v-if="form.faq?.length === 0"
+                        class="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                        <p class="text-sm text-gray-500">Belum ada FAQ yang ditambahkan.</p>
+                    </div>
+                    <div v-else class="space-y-4">
+                        <div v-for="(item, index) in form.faq" :key="index"
+                            class="bg-gray-50 p-6 rounded-2xl border border-gray-100 relative group">
+                            <button @click="removeFAQField(index)"
+                                class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-colors">
+                                <Icon icon="ph:trash" />
+                            </button>
+                            <div class="space-y-4">
+                                <div class="space-y-2">
+                                    <label
+                                        class="text-xs font-bold text-gray-400 uppercase tracking-widest">Pertanyaan</label>
+                                    <input v-model="item.question" type="text"
+                                        placeholder="Contoh: Berapa biaya pendaftaran?"
+                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
+                                </div>
+                                <div class="space-y-2">
+                                    <label
+                                        class="text-xs font-bold text-gray-400 uppercase tracking-widest">Jawaban</label>
+                                    <textarea v-model="item.answer" rows="3"
+                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none resize-none transition-all"
+                                        placeholder="Tuliskan jawaban yang detail..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
         <!-- Main Content -->
         <div class="space-y-6">
             <!-- Informasi Tab -->
@@ -58,11 +115,9 @@
                                 class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                                 placeholder="Nama event Anda" />
                         </div>
-                        <div class="space-y-2">
+                        <div class="flex flex-col gap-2">
                             <label class="text-sm font-bold text-gray-700">Deskripsi (Tentang Event)</label>
-                            <textarea v-model="form.description" rows="6"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
-                                placeholder="Deskripsikan event Anda..."></textarea>
+                            <TiptapEditor v-model="form.description" class="min-h-[300px]" />
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="space-y-2">
@@ -377,23 +432,22 @@
                                 <span class="text-xs font-bold">Pilih Banner</span>
                             </button>
                         </div>
-                        <div class="space-y-3 text-center md:text-left">
+                        <div class="space-y-3">
                             <label class="text-sm font-bold text-gray-700">Poster Event</label>
-                            <div v-if="form.logo_url"
-                                class="relative rounded-xl overflow-hidden aspect-square w-32 mx-auto group">
+                            <div v-if="form.logo_url" class="relative rounded-xl overflow-hidden aspect-video group">
                                 <img :src="form.logo_url" class="w-full h-full object-cover" />
                                 <div
-                                    class="absolute inset-0 bg-navy/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1">
+                                    class="absolute inset-0 bg-navy/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                                     <button @click="openMediaLibrary('logo')"
-                                        class="p-1.5 bg-white rounded text-navy font-bold text-[10px]">Ganti</button>
+                                        class="p-2 bg-white rounded-lg text-navy font-bold text-xs">Ganti</button>
                                     <button @click="form.logo_url = ''"
-                                        class="p-1.5 bg-red-500 rounded text-white font-bold text-[10px]">Hapus</button>
+                                        class="p-2 bg-red-500 rounded-lg text-white font-bold text-xs">Hapus</button>
                                 </div>
                             </div>
                             <button v-else @click="openMediaLibrary('logo')"
-                                class="w-32 aspect-square mx-auto rounded-xl border-2 border-dashed border-gray-200 hover:border-primary flex flex-col items-center justify-center text-gray-400">
-                                <Icon icon="majesticons:plus-line" class="text-2xl mb-1" />
-                                <span class="text-[10px] font-bold text-center px-2">Pilih Poster</span>
+                                class="w-full aspect-video rounded-xl border-2 border-dashed border-gray-200 hover:border-primary flex flex-col items-center justify-center text-gray-400">
+                                <Icon icon="ph:image-square-bold" class="text-3xl mb-2" />
+                                <span class="text-xs font-bold">Pilih Poster</span>
                             </button>
                         </div>
                     </div>
@@ -581,6 +635,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import TiptapEditor from '~/components/common/TiptapEditor.vue'
 import MediaLibrary from '~/components/common/MediaLibrary.vue'
 import { useApi } from '~/composables/useApi'
 
@@ -603,6 +658,7 @@ const tabs = [
     { id: 'lokasi', name: 'Lokasi', icon: 'ph:map-pin' },
     { id: 'media', name: 'Media', icon: 'ph:image' },
     { id: 'jadwal', name: 'Jadwal', icon: 'ph:calendar-bold' },
+    { id: 'faq', name: 'FAQ', icon: 'ph:question' },
     { id: 'hasil', name: 'Hasil', icon: 'ph:trophy' }
 ]
 
@@ -709,11 +765,25 @@ const form = ref({
             fees: true,
             prizes: true,
             schedule: true,
-            location: true
+            location: true,
+            faq: true
         }
     },
+    faq: [],
     results: []
 })
+
+const addFAQField = () => {
+    if (!form.value.faq) form.value.faq = []
+    form.value.faq.push({
+        question: '',
+        answer: ''
+    })
+}
+
+const removeFAQField = (index) => {
+    form.value.faq.splice(index, 1)
+}
 
 const addFeeField = () => {
     form.value.fees.push({
@@ -968,7 +1038,18 @@ const fetchEventData = async () => {
                     fees: true,
                     prizes: true,
                     schedule: true,
-                    location: true
+                    location: true,
+                    faq: true
+                }
+            }
+
+            // Parse FAQ
+            let faq = []
+            if (data.faq) {
+                try {
+                    faq = typeof data.faq === 'string' ? JSON.parse(data.faq) : data.faq
+                } catch (e) {
+                    console.error('Failed to parse FAQ:', e)
                 }
             }
 
@@ -1016,6 +1097,7 @@ const fetchEventData = async () => {
                 location_accessibility: pageSettings.location_accessibility || [],
                 prizes: pageSettings.prizes || { first: '', second: '', third: '', first_caption: '', second_caption: '', third_caption: '' },
                 page_settings: pageSettings,
+                faq: faq,
                 results: pageSettings.results || []
             }
         }
@@ -1042,6 +1124,7 @@ const saveEventPage = async () => {
             max_participants: form.value.max_participants,
             total_prize: form.value.total_prize,
             technical_guidebook_url: form.value.technical_guidebook_url,
+            faq: form.value.faq,
             fees: form.value.fees,
             schedules: form.value.schedules.map(s => ({
                 ...s,

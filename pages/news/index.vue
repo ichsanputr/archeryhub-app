@@ -93,48 +93,65 @@
                     </NuxtLink>
 
                     <!-- Articles List -->
-                    <div class="space-y-6">
+                    <div class="grid grid-cols-1 gap-6">
                         <NuxtLink v-for="article in filteredArticles" :key="article.id"
                             :to="`/news/${article.slug || article.id}`"
-                            class="group flex gap-5 bg-white rounded-xl border border-gray-100 p-4 hover:border-primary/30 transition-all">
+                            class="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300">
 
-                            <!-- Thumbnail -->
-                            <div class="w-32 h-32 md:w-40 md:h-28 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0">
-                                <img :src="useImageOrDefault(article.image || article.image_url)"
-                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                            </div>
-
-                            <!-- Content -->
-                            <div class="flex-1 flex flex-col justify-between py-1">
-                                <div>
-                                    <div class="flex items-center gap-3 mb-2">
-                                        <span :class="[
-                                            'px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider',
-                                            article.category === 'event' ? 'bg-blue-50 text-blue-600' :
-                                                article.category === 'pengumuman' ? 'bg-amber-50 text-amber-600' :
-                                                    article.category === 'prestasi' ? 'bg-green-50 text-green-600' :
-                                                        'bg-gray-100 text-gray-600'
-                                        ]">
-                                            {{ article.category }}
-                                        </span>
-                                        <span class="text-xs text-gray-400">{{ article.date }}</span>
-                                    </div>
-                                    <h3
-                                        class="font-bold text-navy text-lg leading-snug group-hover:text-primary transition-colors line-clamp-2">
-                                        {{ article.title }}
-                                    </h3>
-                                    <p class="text-gray-500 text-sm mt-1 line-clamp-2 hidden md:block">{{
-                                        article.excerpt }}</p>
+                            <div class="flex flex-col sm:flex-row h-full">
+                                <!-- Thumbnail -->
+                                <div
+                                    class="w-full sm:w-48 md:w-56 h-48 sm:h-auto overflow-hidden bg-gray-100 flex-shrink-0">
+                                    <img :src="useImageOrDefault(article.image || article.image_url)"
+                                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                                 </div>
-                                <div class="flex items-center gap-4 text-xs text-gray-400 mt-2">
-                                    <span class="flex items-center gap-1">
-                                        <Icon icon="ph:user" />
-                                        {{ article.author }}
-                                    </span>
-                                    <span class="flex items-center gap-1">
-                                        <Icon icon="ph:eye" />
-                                        {{ article.views }}
-                                    </span>
+
+                                <!-- Content -->
+                                <div class="flex-1 p-5 md:p-6 flex flex-col justify-between">
+                                    <div>
+                                        <div class="flex items-center gap-3 mb-3">
+                                            <span :class="[
+                                                'px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider',
+                                                article.category === 'event' ? 'bg-blue-50 text-blue-600' :
+                                                    article.category === 'pengumuman' ? 'bg-amber-50 text-amber-600' :
+                                                        article.category === 'prestasi' ? 'bg-green-50 text-green-600' :
+                                                            'bg-gray-100 text-gray-600'
+                                            ]">
+                                                {{ article.category }}
+                                            </span>
+                                            <div class="flex items-center gap-1.5 text-xs text-gray-400 font-bold">
+                                                <Icon icon="ph:calendar-blank-bold" />
+                                                {{ article.date }}
+                                            </div>
+                                        </div>
+                                        <h3
+                                            class="font-black text-navy text-xl leading-snug group-hover:text-primary transition-colors line-clamp-2 mb-3">
+                                            {{ article.title }}
+                                        </h3>
+                                        <p class="text-gray-500 text-sm leading-relaxed line-clamp-2 mb-4">{{
+                                            article.excerpt }}</p>
+                                    </div>
+
+                                    <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-50">
+                                        <div class="flex items-center gap-4">
+                                            <div class="flex items-center gap-2">
+                                                <div
+                                                    class="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center">
+                                                    <Icon icon="ph:user-bold" class="text-xs text-primary" />
+                                                </div>
+                                                <span class="text-xs font-bold text-navy">{{ article.author }}</span>
+                                            </div>
+                                            <div class="flex items-center gap-1.5 text-xs text-gray-400">
+                                                <Icon icon="ph:eye-bold" />
+                                                <span>{{ article.views }}</span>
+                                            </div>
+                                        </div>
+                                        <span
+                                            class="text-primary font-black text-xs uppercase tracking-wider flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                                            Baca Selengkapnya
+                                            <Icon icon="ph:arrow-right-bold" />
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </NuxtLink>

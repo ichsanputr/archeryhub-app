@@ -48,9 +48,9 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <BaseInput v-model="form.name" label="Nama Organisasi" placeholder="Nama resmi organisasi" required />
 
-              <!-- Username URL -->
-              <BaseInput v-model="form.username" label="Username" placeholder="perpani-indonesia"
-                helper="Digunakan untuk URL profil publik" />
+              <!-- Slug URL -->
+              <BaseInput v-model="form.slug" label="Slug URL" placeholder="perpani-indonesia"
+                helper="Digunakan untuk URL profil publik (archeryhub.id/organization/slug)" />
 
               <!-- City Autocomplete -->
               <div class="relative">
@@ -145,7 +145,8 @@
               <Icon icon="ph:phone-bold" class="text-primary text-xl" /> Informasi Kontak
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <BaseInput v-model="form.whatsapp_no" label="Nomor WhatsApp" placeholder="Contoh: 08xx-xxxx-xxxx" required />
+              <BaseInput v-model="form.whatsapp_no" label="Nomor WhatsApp" placeholder="Contoh: 08xx-xxxx-xxxx"
+                required />
               <BaseInput v-model="form.email" label="Alamat Email" type="email" placeholder="info@organisasi.id"
                 disabled />
               <BaseInput v-model="form.website" label="Website Resmi" placeholder="https://www.organisasi.id" />
@@ -200,6 +201,63 @@
           </div>
         </div>
 
+        <!-- Tab: Visi, Misi & Sejarah -->
+        <div v-if="activeTab === 'about'" class="space-y-8">
+          <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
+            <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
+              <Icon icon="ph:eye-bold" class="text-primary text-xl" /> Visi & Misi
+            </h3>
+            <BaseTextarea v-model="form.vision" label="Visi" rows="3" placeholder="Tuliskan visi organisasi..." />
+            <BaseTextarea v-model="form.mission" label="Misi" rows="5"
+              placeholder="Tuliskan misi organisasi (bisa per poin)..." />
+          </div>
+
+          <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
+            <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
+              <Icon icon="ph:book-open-bold" class="text-primary text-xl" /> Sejarah Organisasi
+            </h3>
+            <BaseTextarea v-model="form.history" label="Sejarah Singkat" rows="8"
+              placeholder="Ceritakan sejarah berdirinya organisasi..." />
+          </div>
+        </div>
+
+        <!-- Tab: FAQ -->
+        <div v-if="activeTab === 'faq'" class="space-y-8">
+          <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
+            <div class="flex items-center justify-between">
+              <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
+                <Icon icon="ph:question-bold" class="text-primary text-xl" /> Pertanyaan Sering Diajukan (FAQ)
+              </h3>
+              <button @click="addFAQ"
+                class="text-xs font-black text-primary hover:text-primary-dark flex items-center gap-1 transition">
+                <Icon icon="ph:plus-circle-bold" /> Tambah FAQ
+              </button>
+            </div>
+
+            <div class="space-y-4">
+              <div v-for="(item, idx) in form.faq" :key="idx"
+                class="p-6 bg-gray-50 rounded-2xl border border-gray-100 space-y-4 relative group">
+                <button @click="removeFAQ(idx)"
+                  class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-colors">
+                  <Icon icon="ph:trash-bold" />
+                </button>
+                <BaseInput v-model="item.question" label="Pertanyaan"
+                  placeholder="Contoh: Bagaimana cara menjadi anggota?" />
+                <BaseTextarea v-model="item.answer" label="Jawaban" rows="3"
+                  placeholder="Tuliskan jawaban lengkap..." />
+              </div>
+
+              <div v-if="form.faq.length === 0"
+                class="text-center py-12 border-2 border-dashed border-gray-100 rounded-3xl">
+                <Icon icon="ph:chat-centered-dots-bold" class="text-4xl text-gray-200 mx-auto mb-2" />
+                <p class="text-sm text-gray-400 font-bold uppercase tracking-widest">Belum ada FAQ</p>
+                <button @click="addFAQ"
+                  class="mt-4 px-4 py-2 bg-navy text-white text-xs font-black rounded-xl shadow-lg hover:bg-navy-dark transition">Buat
+                  FAQ Pertama</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Side card -->
@@ -212,6 +270,8 @@
           <div class="space-y-4 pt-2">
             <BaseCheckbox v-model="pageSettings.sections.identity" label="Identitas Organisasi" />
             <BaseCheckbox v-model="pageSettings.sections.contact" label="Kontak & Sosmed" />
+            <BaseCheckbox v-model="pageSettings.sections.about" label="Visi, Misi & Sejarah" />
+            <BaseCheckbox v-model="pageSettings.sections.faq" label="FAQ" />
           </div>
         </div>
 
@@ -246,7 +306,7 @@ import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useAuth } from '~/composables/useAuth'
-import { useToast } from '#imports'
+import { useToast } from '~/composables/useToast'
 
 definePageMeta({
   title: 'Profil Organisasi',
@@ -264,19 +324,23 @@ const activeTab = ref('general')
 
 const tabs = [
   { id: 'general', label: 'Info Umum', icon: 'ph:identification-badge-bold' },
-  { id: 'contact', label: 'Kontak & Sosmed', icon: 'ph:phone-bold' }
+  { id: 'contact', label: 'Kontak & Sosmed', icon: 'ph:phone-bold' },
+  { id: 'about', label: 'Visi & Misi', icon: 'ph:eye-bold' },
+  { id: 'faq', label: 'FAQ', icon: 'ph:question-bold' }
 ]
 
 const pageSettings = reactive({
   sections: {
     identity: true,
-    contact: true
+    contact: true,
+    about: true,
+    faq: true
   }
 })
 
 const form = reactive({
   name: '',
-  username: '',
+  slug: '',
   bannerUrl: '',
   logoUrl: '',
   city: '',
@@ -285,9 +349,26 @@ const form = reactive({
   email: '',
   website: '',
   address: '',
-  socialMedia: []
+  socialMedia: [],
+  vision: '',
+  mission: '',
+  history: '',
+  faq: []
 })
 
+
+// Auto-generate slug from name
+watch(() => form.name, (newVal) => {
+  // Only auto-generate if slug is empty
+  if (!form.slug && newVal) {
+    form.slug = newVal
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/[\s_-]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+})
 
 // City autocomplete
 const citySearch = ref('')
@@ -364,13 +445,21 @@ const removeSocialMedia = (index) => {
   form.socialMedia.splice(index, 1)
 }
 
+const addFAQ = () => {
+  form.faq.push({ question: '', answer: '' })
+}
+
+const removeFAQ = (index) => {
+  form.faq.splice(index, 1)
+}
+
 const loadProfile = async () => {
   try {
     const resp = await get('/organizations/me')
     const data = resp?.data || resp || {}
     if (data) {
       form.name = data.name || ''
-      form.username = data.username || ''
+      form.slug = data.slug || ''
       form.bannerUrl = data.banner_url || ''
       form.logoUrl = data.logo_url || data.avatar_url || ''
       form.city = data.city || ''
@@ -381,7 +470,35 @@ const loadProfile = async () => {
       form.email = data.email || ''
       form.website = data.website || ''
       form.address = data.address || ''
-      form.socialMedia = Array.isArray(data.social_media) ? data.social_media : []
+      form.vision = data.vision || ''
+      form.mission = data.mission || ''
+      form.history = data.history || ''
+
+      form.faq = []
+      if (data.faq) {
+        if (typeof data.faq === 'string') {
+          try {
+            form.faq = JSON.parse(data.faq)
+          } catch (e) {
+            console.error('Failed to parse faq', e)
+          }
+        } else if (Array.isArray(data.faq)) {
+          form.faq = data.faq
+        }
+      }
+
+      form.socialMedia = []
+      if (data.social_media) {
+        if (typeof data.social_media === 'string') {
+          try {
+            form.socialMedia = JSON.parse(data.social_media)
+          } catch (e) {
+            console.error('Failed to parse social_media', e)
+          }
+        } else if (Array.isArray(data.social_media)) {
+          form.socialMedia = data.social_media
+        }
+      }
 
       // Load page settings
       if (data.page_settings) {
@@ -406,7 +523,7 @@ const saveProfile = async () => {
   try {
     await put('/organizations/me', {
       name: form.name,
-      username: form.username,
+      slug: form.slug,
       banner_url: form.bannerUrl,
       logo_url: form.logoUrl,
       avatar_url: form.logoUrl, // Some APIs might expect avatar_url
@@ -415,14 +532,20 @@ const saveProfile = async () => {
       whatsapp_no: form.whatsapp_no,
       website: form.website,
       address: form.address,
+      vision: form.vision,
+      mission: form.mission,
+      history: form.history,
+      faq: form.faq,
       social_media: form.socialMedia,
       page_settings: JSON.stringify(pageSettings)
     })
     toast.success('Profil organisasi berhasil disimpan!')
   } catch (error) {
     console.error('Save profile error:', error)
-    const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || 'Gagal menyimpan profil'
-    toast.error(errorMessage)
+    const errData = error?.data || error?.response?.data || {}
+    const errorMessage = errData.error || error?.message || 'Gagal menyimpan profil'
+    const details = errData.details ? ` (${errData.details})` : ''
+    toast.error(errorMessage + details)
   } finally {
     saving.value = false
   }

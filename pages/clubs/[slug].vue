@@ -32,13 +32,13 @@
 
                     <!-- Info -->
                     <div class="flex-1">
-                        <div class="flex flex-wrap items-start justify-between gap-4">
-                            <div>
+                        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                            <div class="flex-1">
                                 <div class="flex flex-wrap items-center gap-3 mb-3">
                                     <h1 class="text-2xl md:text-4xl font-black text-navy leading-tight">{{ club.name }}
                                     </h1>
                                 </div>
-                                <div class="flex flex-wrap items-center gap-4 text-gray-500 text-sm font-medium">
+                                <div class="flex flex-wrap items-center gap-4 text-gray-500 text-sm font-medium mb-6">
                                     <span class="flex items-center gap-1.5">
                                         <Icon icon="ph:map-pin-fill" class="text-primary" />
                                         {{ club.city }}, {{ club.province }}
@@ -48,13 +48,32 @@
                                         Berdiri {{ club.established }}
                                     </span>
                                 </div>
+
+                                <!-- Club Stats -->
+                                <div class="flex items-center gap-8 md:gap-12 py-6 border-t border-gray-100">
+                                    <div>
+                                        <div class="text-2xl md:text-3xl font-black text-navy">{{ club.memberCount }}
+                                        </div>
+                                        <div
+                                            class="text-[10px] md:text-xs font-bold text-gray-400 uppercase tracking-widest">
+                                            Anggota</div>
+                                    </div>
+                                    <div class="w-px h-8 bg-gray-100"></div>
+                                    <div>
+                                        <div class="text-2xl md:text-3xl font-black text-navy">{{ club.achievements }}
+                                        </div>
+                                        <div
+                                            class="text-[10px] md:text-xs font-bold text-gray-400 uppercase tracking-widest">
+                                            Prestasi</div>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Actions -->
-                            <div class="flex gap-3">
+                            <div class="flex flex-row sm:flex-row items-center gap-3 self-start lg:self-center">
                                 <BaseButton v-if="!membership && isArcher" variant="primary" size="lg"
                                     icon="ph:plus-bold" :loading="isJoining" @click="joinClub"
-                                    class="shadow-lg shadow-primary/30">
+                                    class="shadow-lg shadow-primary/30 whitespace-nowrap">
                                     Gabung Klub
                                 </BaseButton>
                                 <div v-else-if="membership && membership.status === 'active' && membership.club_id === club.id"
@@ -65,20 +84,19 @@
                                 <div v-else-if="membership && membership.status === 'pending' && membership.club_id === club.id"
                                     class="px-6 py-3 bg-yellow-50 text-yellow-600 font-black text-sm rounded-xl flex items-center gap-2 border-2 border-yellow-200">
                                     <Icon icon="ph:clock-fill" class="text-lg" />
-                                    Menunggu Persetujuan
+                                    Menunggu
                                 </div>
                                 <div v-else-if="membership && membership.club_id !== club.id"
-                                    class="px-4 py-3 bg-gray-50 text-gray-500 font-bold text-xs rounded-xl flex items-center gap-2 border-2 border-gray-100 max-w-[200px]">
+                                    class="px-4 py-3 bg-gray-50 text-gray-500 font-bold text-xs rounded-xl flex items-center gap-2 border-2 border-gray-100">
                                     <Icon icon="ph:info-fill" class="text-lg" />
-                                    Terdaftar di Klub {{ membership.club_name }}
+                                    <span>Terdaftar di {{ membership.club_name }}</span>
                                 </div>
                                 <button @click="shareClub"
-                                    class="p-3 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all h-full flex items-center justify-center">
+                                    class="p-4 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all flex items-center justify-center aspect-square">
                                     <Icon icon="ph:share-network-bold" class="text-xl text-gray-600" />
                                 </button>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -150,8 +168,9 @@
                             Anggota
                         </h2>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <div v-for="member in paginatedMembers" :key="member.id"
-                                class="text-center p-5 rounded-xl border-2 border-gray-100 hover:border-primary hover:bg-primary/5 transition-all cursor-pointer group">
+                            <NuxtLink v-for="member in paginatedMembers" :key="member.id"
+                                :to="`/archers/${member.slug || member.uuid}`"
+                                class="text-center p-5 rounded-xl border-2 border-gray-100 hover:border-primary hover:bg-primary/5 transition-all cursor-pointer group block">
                                 <div
                                     class="w-18 h-18 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 mx-auto mb-4 flex items-center justify-center overflow-hidden border-2 border-white shadow-sm">
                                     <img v-if="member.avatar" :src="getImageUrl(member.avatar)" :alt="member.name"
@@ -162,15 +181,25 @@
                                 <h4 class="font-black text-navy text-sm group-hover:text-primary transition-colors">{{
                                     member.name }}</h4>
                                 <p class="text-xs text-gray-400 mt-1">{{ member.division }}</p>
-                            </div>
+                            </NuxtLink>
                         </div>
 
-                        <!-- Load More Members -->
-                        <div v-if="hasMoreMembers" class="mt-8 text-center">
-                            <button @click="loadMoreMembers"
-                                class="px-6 py-2.5 bg-gray-50 hover:bg-gray-100 text-gray-600 font-bold text-sm rounded-xl border border-gray-100 transition-all flex items-center gap-2 mx-auto">
-                                <Icon icon="ph:plus-bold" />
-                                Tampilkan Lebih Banyak
+                        <!-- Pagination -->
+                        <div v-if="totalPages > 1" class="mt-8 flex justify-center items-center gap-2">
+                            <button @click="memberPage--" :disabled="memberPage === 1"
+                                class="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center text-gray-400 hover:text-primary hover:border-primary disabled:opacity-50 disabled:cursor-not-allowed transition-all">
+                                <Icon icon="ph:caret-left-bold" />
+                            </button>
+                            <div class="flex items-center gap-1">
+                                <button v-for="p in totalPages" :key="p" @click="memberPage = p"
+                                    class="w-10 h-10 rounded-xl font-bold text-sm transition-all"
+                                    :class="memberPage === p ? 'bg-primary text-navy border-2 border-primary' : 'text-gray-500 hover:bg-gray-50 border border-gray-100'">
+                                    {{ p }}
+                                </button>
+                            </div>
+                            <button @click="memberPage++" :disabled="memberPage === totalPages"
+                                class="w-10 h-10 rounded-xl border border-gray-200 flex items-center justify-center text-gray-400 hover:text-primary hover:border-primary disabled:opacity-50 disabled:cursor-not-allowed transition-all">
+                                <Icon icon="ph:caret-right-bold" />
                             </button>
                         </div>
                     </div>
@@ -432,15 +461,11 @@ const shareClub = async () => {
 // Member pagination
 const memberPage = ref(1)
 const itemsPerPage = 8
+const totalPages = computed(() => Math.ceil((club.value?.topMembers?.length || 0) / itemsPerPage))
 const paginatedMembers = computed(() => {
-    return club.value.topMembers.slice(0, memberPage.value * itemsPerPage)
+    const start = (memberPage.value - 1) * itemsPerPage
+    return (club.value?.topMembers || []).slice(start, start + itemsPerPage)
 })
-const hasMoreMembers = computed(() => {
-    return paginatedMembers.value.length < club.value.topMembers.length
-})
-const loadMoreMembers = () => {
-    memberPage.value++
-}
 
 // Transform API data to component format (SSR-computed)
 const club = computed(() => {
@@ -468,7 +493,7 @@ const club = computed(() => {
         schedules: parseSchedules(data.schedules),
         recentEvents: data.recent_events || [],
         topMembers: data.top_members || [],
-        sections: data.sections || [],
+        sections: (data.sections || []).filter(s => s.title?.toLowerCase() !== 'apa kata anggota'),
         socialMedia: parseSocialMedia(data.social_media)
     }
 })

@@ -65,8 +65,7 @@
                                 Tentang Event
                             </h2>
                             <div class="prose max-w-none text-gray-600 leading-relaxed space-y-4">
-                                <div v-if="tournament.description" class="whitespace-pre-line">
-                                    {{ tournament.description }}
+                                <div v-if="tournament.description" v-html="tournament.description">
                                 </div>
                                 <div v-else class="italic text-gray-400">
                                     Belum ada deskripsi untuk event ini.
@@ -193,7 +192,7 @@
                                     <div class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Juara 1
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{ displayValue(tournament.prizes?.first)
-                                    }}</div>
+                                        }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ firstPrizeCaption }}</div>
                                 </div>
                                 <div
@@ -211,7 +210,7 @@
                                     <div class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Juara 3
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{ displayValue(tournament.prizes?.third)
-                                    }}</div>
+                                        }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ thirdPrizeCaption }}</div>
                                 </div>
                             </div>
@@ -223,6 +222,58 @@
                     <TournamentResultsTab v-else-if="activeTab === 'Hasil'" :event-id="slug" />
                     <TournamentVenueTab v-else-if="activeTab === 'Lokasi'" :venue="tournament.venue"
                         :address="tournament.address" :gmaps-link="tournament.gmaps_link" />
+
+                    <!-- FAQ Tab -->
+                    <div v-else-if="activeTab === 'FAQ'" class="space-y-8">
+                        <section
+                            class="bg-white rounded-3xl p-8 md:p-10 shadow-sm border border-gray-100 overflow-hidden relative">
+                            <!-- Decorative element -->
+                            <div class="absolute -right-12 -bottom-12 w-48 h-48 bg-primary/5 rounded-full blur-3xl">
+                            </div>
+
+                            <div
+                                class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10 relative z-10">
+                                <div>
+                                    <h2 class="font-black text-navy text-2xl mb-2 flex items-center gap-3">
+                                        <div
+                                            class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
+                                            <Icon icon="ph:question-bold" class="text-2xl text-primary" />
+                                        </div>
+                                        Tanya Jawab (FAQ)
+                                    </h2>
+                                    <p class="text-sm text-gray-400 font-medium">Informasi penting seputar event ini</p>
+                                </div>
+                            </div>
+
+                            <div class="space-y-4 relative z-10">
+                                <details v-for="(faq, fIdx) in tournament.faq" :key="fIdx"
+                                    class="group border border-gray-100 rounded-3xl transition-all duration-300 open:bg-gray-50/50 open:border-primary/20 open:shadow-lg open:shadow-primary/5">
+                                    <summary
+                                        class="list-none p-6 font-black text-navy cursor-pointer flex items-center justify-between group-hover:bg-gray-50 group-open:bg-transparent rounded-3xl transition-all duration-300">
+                                        <div class="flex items-center gap-4">
+                                            <span
+                                                class="flex-shrink-0 w-8 h-8 rounded-xl bg-gray-100 group-open:bg-primary group-open:text-navy flex items-center justify-center text-xs font-black transition-colors">
+                                                {{ fIdx + 1 }}
+                                            </span>
+                                            <span class="text-lg leading-tight">{{ faq.question }}</span>
+                                        </div>
+                                        <div
+                                            class="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center group-open:rotate-180 group-open:bg-navy group-open:border-navy transition-all duration-500">
+                                            <Icon icon="ph:caret-down-bold"
+                                                class="text-gray-400 group-open:text-white transition-colors" />
+                                        </div>
+                                    </summary>
+                                    <div class="px-6 pb-8 pt-0 ml-12">
+                                        <div class="h-px w-full bg-gradient-to-r from-primary/20 to-transparent mb-6">
+                                        </div>
+                                        <p class="text-gray-600 text-lg leading-relaxed whitespace-pre-line">
+                                            {{ faq.answer }}
+                                        </p>
+                                    </div>
+                                </details>
+                            </div>
+                        </section>
+                    </div>
                 </div>
 
                 <!-- Right Sidebar - Hidden on Hasil tab -->
@@ -430,6 +481,9 @@ const tabs = computed(() => {
     if (tournament.value.page_settings?.sections?.location !== false) {
         list.push('Lokasi')
     }
+    if (tournament.value.page_settings?.sections?.faq !== false && tournament.value.faq?.length > 0) {
+        list.push('FAQ')
+    }
     return list
 })
 const activeTab = ref('Ringkasan')
@@ -488,14 +542,12 @@ const transformEventData = (data) => ({
     max_participants: data.max_participants || 0,
     page_settings: data.page_settings ? JSON.parse(data.page_settings) : {
         sections: {
-            about: true,
-            divisions: true,
-            fees: true,
-            prizes: true,
             schedule: true,
-            location: true
+            location: true,
+            faq: true
         }
     },
+    faq: data.faq ? (typeof data.faq === 'string' ? JSON.parse(data.faq) : data.faq) : [],
     prizes: data.page_settings ? (JSON.parse(data.page_settings).prizes || { first: '-', second: '-', third: '-' }) : { first: '-', second: '-', third: '-' },
     fees: data.page_settings ? (JSON.parse(data.page_settings).fees || []) : [],
     results: data.page_settings ? (JSON.parse(data.page_settings).results || []) : []
