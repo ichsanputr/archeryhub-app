@@ -79,26 +79,64 @@
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
                     <h2 class="text-lg font-bold text-navy mb-6 flex items-center gap-2">
                         <Icon icon="ph:user" class="text-primary" />
-                        Informasi Peserta
+                        Informasi Profil Peserta
                     </h2>
-                    <div class="space-y-4">
-                        <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
+                    <div class="space-y-6">
+                        <!-- If Event Archer, show editable fields -->
+                        <template v-if="participant.event_archer_id">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <BaseInput v-model="form.event_archer.full_name" label="Nama Lengkap" required
+                                    placeholder="Nama Sesuai KTP" icon="ph:user-focus" />
+
+                                <BaseInput v-model="form.event_archer.email" label="Email" type="email"
+                                    placeholder="email@example.com" icon="ph:envelope" />
+
+                                <BaseInput v-model="form.event_archer.phone" label="No. WhatsApp" placeholder="0812..."
+                                    icon="ph:whatsapp-logo" />
+
+                                <BaseInput v-model="form.event_archer.club" label="Klub / Sekolah"
+                                    placeholder="Nama Klub" icon="ph:buildings" />
+
+                                <BaseInput v-model="form.event_archer.city" label="Kota / Kabupaten"
+                                    placeholder="Asal Kota" icon="ph:map-pin" />
+
+                                <BaseSelect v-model="form.event_archer.gender" label="Jenis Kelamin"
+                                    :items="['Men', 'Women']" icon="ph:gender-intersex" />
+                            </div>
+                        </template>
+
+                        <!-- If Global Archer, show read-only info -->
+                        <div v-else class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
                             <div
-                                class="h-16 w-16 rounded-xl bg-gray-100 flex items-center justify-center text-navy font-bold text-xl uppercase border border-gray-200">
-                                {{participant.full_name?.split(' ').map(n => n[0]).join('') || 'U'}}
+                                class="h-16 w-16 rounded-xl bg-gray-100 flex items-center justify-center text-navy font-bold text-xl uppercase border border-gray-200 overflow-hidden">
+                                <img v-if="participant.avatar_url" :src="participant.avatar_url"
+                                    class="w-full h-full object-cover">
+                                <template v-else>
+                                    {{participant.full_name?.split(' ').map(n => n[0]).join('') || 'U'}}
+                                </template>
                             </div>
                             <div>
-                                <p class="font-bold text-navy">{{ participant.full_name }}</p>
-                                <p class="text-sm text-gray-500">{{ participant.athlete_code || '-' }}</p>
+                                <p class="font-bold text-navy truncate">{{ participant.full_name }}</p>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <span class="text-xs text-gray-500 font-medium">{{ participant.athlete_code ||
+                                        'Account User' }}</span>
+                                    <span
+                                        class="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-full text-[10px] font-bold uppercase tracking-wider">Verified
+                                        Account</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <BaseSelect v-model="form.category_id" label="Kategori Event" required
-                                placeholder="Pilih Kategori" icon="ph:trophy" :items="categories" item-title="label"
-                                item-value="id" />
 
-                            <BaseInput v-model.number="form.session" type="number" label="Sesi" placeholder="1-4"
-                                icon="ph:timer" min="1" max="4" />
+                        <div class="pt-6 border-t border-gray-50">
+                            <h3 class="text-sm font-bold text-navy mb-4">Informasi Lomba</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <BaseSelect v-model="form.category_id" label="Kategori Event" required
+                                    placeholder="Pilih Kategori" icon="ph:trophy" :items="categories" item-title="label"
+                                    item-value="id" />
+
+                                <BaseInput v-model.number="form.session" type="number" label="Sesi" placeholder="1-4"
+                                    icon="ph:timer" min="1" max="4" />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -114,8 +152,8 @@
                             <BaseSelect v-model="form.status" label="Status Pendaftaran" required icon="ph:checks"
                                 :items="statusOptions" />
 
-                            <BaseInput v-model="form.payment_amount" label="Jumlah Pembayaran"
-                                placeholder="0" icon="ph:money" kind="currency" />
+                            <BaseInput v-model="form.payment_amount" label="Jumlah Pembayaran" placeholder="0"
+                                icon="ph:money" kind="currency" />
 
                             <BaseSelect v-model="form.accreditation_status" label="Status Akreditasi" required
                                 icon="ph:shield-check" :items="accreditationOptions" />
@@ -244,7 +282,18 @@ const form = reactive({
     status: 'Menunggu Acc',
     payment_amount: 0,
     payment_proof_urls: [],
-    accreditation_status: 'pending'
+    accreditation_status: 'pending',
+    // Event Archer details
+    event_archer: {
+        full_name: '',
+        email: '',
+        phone: '',
+        city: '',
+        school: '',
+        club: '',
+        bow_type: '',
+        gender: ''
+    }
 })
 
 const fetchParticipant = async () => {
@@ -263,6 +312,28 @@ const fetchParticipant = async () => {
             form.payment_amount = found.payment_amount || 0
             form.payment_proof_urls = found.payment_proof_urls ? found.payment_proof_urls.split(',') : []
             form.accreditation_status = found.accreditation_status || 'pending'
+
+            // If event_archer_id exists, fetch archer details
+            if (found.event_archer_id) {
+                try {
+                    const archersRes = await get(`/events/${eventId}/event-archers`)
+                    const archerData = archersRes.data?.find(a => a.id === found.event_archer_id)
+                    if (archerData) {
+                        form.event_archer = {
+                            full_name: archerData.full_name || '',
+                            email: archerData.email || '',
+                            phone: archerData.phone || '',
+                            city: archerData.city || '',
+                            school: archerData.school || '',
+                            club: archerData.club || '',
+                            bow_type: archerData.bow_type || '',
+                            gender: archerData.gender || ''
+                        }
+                    }
+                } catch (e) {
+                    console.error('Failed to fetch event archer details', e)
+                }
+            }
         }
 
         // Fetch event details and categories
@@ -319,6 +390,14 @@ const handleSubmit = async () => {
             payment_amount: form.payment_amount || 0,
             payment_proof_urls: form.payment_proof_urls,
             accreditation_status: form.accreditation_status
+        }
+
+        // If it's an event archer, update its profile first
+        if (participant.value?.event_archer_id) {
+            await put(`/events/${eventId}/event-archers/${participant.value.event_archer_id}`, {
+                ...form.event_archer,
+                status: 'active'
+            })
         }
 
         await put(`/events/${eventId}/participants/${participantId}`, payload)
