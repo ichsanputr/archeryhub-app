@@ -128,13 +128,12 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 import { useFormValidation } from '~/composables/useFormValidation'
 import { useToast } from '~/composables/useToast'
 
 const route = useRoute()
-const router = useRouter()
 const { login, loginWithEmail, isLoggedIn } = useAuth()
 const toast = useToast()
 const config = useRuntimeConfig()
@@ -192,8 +191,8 @@ onMounted(async () => {
     startSlideshow()
 
     if (isLoggedIn.value) {
-        const redirect = route.query.redirect || '/'
-        router.replace(redirect)
+        const redirect = route.query.redirect || '/dashboard'
+        window.location.href = redirect
         return
     }
 
@@ -224,8 +223,8 @@ const handleEmailAuth = async () => {
 
     try {
         await loginWithEmail(form.value.email, form.value.password)
-        // Redirect to original destination or home
-        const redirect = route.query.redirect || '/'
+        // Full page reload so auth state is restored from cookie/SSR
+        const redirect = route.query.redirect || '/dashboard'
         window.location.href = redirect
     } catch (err) {
         console.error('Auth failed:', err)

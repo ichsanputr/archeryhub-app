@@ -26,11 +26,10 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 
 const route = useRoute()
-const router = useRouter()
 const { handleCallback } = useAuth()
 
 const loading = ref(true)
@@ -49,9 +48,9 @@ onMounted(async () => {
   try {
     await handleCallback(code, state)
 
-    // Check for redirect query or fallback
-    const redirect = route.query.redirect || '/'
-    router.push(redirect)
+    // Full page reload so auth state is restored from cookie/SSR
+    const redirect = route.query.redirect || '/dashboard'
+    window.location.href = redirect
   } catch (err) {
     console.error('Callback processing failed:', err)
     error.value = err.message || 'Terjadi kesalahan saat menyambungkan ke Google.'
