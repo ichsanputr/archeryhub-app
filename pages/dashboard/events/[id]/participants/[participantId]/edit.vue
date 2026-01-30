@@ -118,11 +118,14 @@
                             <div>
                                 <p class="font-bold text-navy truncate">{{ participant.full_name }}</p>
                                 <div class="flex items-center gap-2 mt-1">
-                                    <span class="text-xs text-gray-500 font-medium">{{ participant.athlete_code ||
-                                        'Account User' }}</span>
-                                    <span
-                                        class="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-full text-[10px] font-bold uppercase tracking-wider">Verified
-                                        Account</span>
+                                    <span class="text-xs text-gray-500 font-medium">@{{ participant.username ||
+                                        'user' }}</span>
+                                    <span v-if="participant.archer_id"
+                                        class="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-full text-[10px] font-bold uppercase tracking-wider">Akun
+                                        Terverifikasi</span>
+                                    <span v-else
+                                        class="px-2 py-0.5 bg-gray-100 text-gray-500 rounded-full text-[10px] font-bold uppercase tracking-wider">Guest
+                                        Registrant</span>
                                 </div>
                             </div>
                         </div>
@@ -154,9 +157,6 @@
 
                             <BaseInput v-model="form.payment_amount" label="Jumlah Pembayaran" placeholder="0"
                                 icon="ph:money" kind="currency" />
-
-                            <BaseSelect v-model="form.accreditation_status" label="Status Akreditasi" required
-                                icon="ph:shield-check" :items="accreditationOptions" />
                         </div>
 
                         <!-- Payment Proof Images -->
@@ -225,6 +225,21 @@
                         </li>
                     </ul>
                 </div>
+                <!-- Danger Zone -->
+                <div class="bg-red-50 rounded-2xl border border-red-100 shadow-sm p-6">
+                    <h3 class="text-sm font-bold text-red-600 mb-2 flex items-center gap-2">
+                        <Icon icon="ph:warning-circle" class="text-lg" />
+                        Kick Participant
+                    </h3>
+                    <p class="text-[10px] text-red-500/80 mb-4 leading-relaxed font-bold">
+                        Hapus peserta dari event ini secara permanen. Tindakan ini juga akan menghapus data target dan
+                        skor yang terkait.
+                    </p>
+                    <BaseButton variant="danger" block icon="ph:user-minus"
+                        class="h-10 text-xs shadow-lg shadow-red-200" @click="handleKickUser" :loading="isKicking">
+                        Keluarkan Peserta
+                    </BaseButton>
+                </div>
             </div>
         </form>
 
@@ -264,16 +279,11 @@ const participant = ref(null)
 const event = ref(null)
 const categories = ref([])
 const isSubmitting = ref(false)
+const isKicking = ref(false)
 
 const statusOptions = [
     { title: 'Menunggu Acc', value: 'Menunggu Acc', icon: 'ph:hourglass' },
     { title: 'Terdaftar', value: 'Terdaftar', icon: 'ph:check-circle' }
-]
-
-const accreditationOptions = [
-    { title: 'Pending', value: 'pending', icon: 'ph:clock', description: 'Menunggu verifikasi admin' },
-    { title: 'Disetujui', value: 'approved', icon: 'ph:check-circle', description: 'Peserta telah diverifikasi' },
-    { title: 'Ditolak', value: 'rejected', icon: 'ph:x-circle', description: 'Pendaftaran tidak valid' }
 ]
 
 const form = reactive({
@@ -282,7 +292,6 @@ const form = reactive({
     status: 'Menunggu Acc',
     payment_amount: 0,
     payment_proof_urls: [],
-    accreditation_status: 'pending',
     // Event Archer details
     event_archer: {
         full_name: '',
@@ -311,7 +320,6 @@ const fetchParticipant = async () => {
             form.status = found.status || 'Menunggu Acc'
             form.payment_amount = found.payment_amount || 0
             form.payment_proof_urls = found.payment_proof_urls ? found.payment_proof_urls.split(',') : []
-            form.accreditation_status = found.accreditation_status || 'pending'
 
             // If event_archer_id exists, fetch archer details
             if (found.event_archer_id) {
@@ -388,8 +396,7 @@ const handleSubmit = async () => {
             session: form.session || null,
             status: form.status,
             payment_amount: form.payment_amount || 0,
-            payment_proof_urls: form.payment_proof_urls,
-            accreditation_status: form.accreditation_status
+            payment_proof_urls: form.payment_proof_urls
         }
 
         // If it's an event archer, update its profile first
@@ -409,6 +416,25 @@ const handleSubmit = async () => {
         toast.error(errorMessage)
     } finally {
         isSubmitting.value = false
+    }
+}
+
+const handleKickUser = async () => {
+    if (!confirm('Apakah Anda yakin ingin mengeluarkan peserta ini dari event? Semua data pendaftaran dan skor akan dihapus secara permanen.')) {
+        return
+    }
+
+    isKicking.value = true
+    try {
+        const { delete: del } = useApi()
+        await del(`/events/${eventId}/participants/${participantId}`)
+        toast.success('Peserta berhasil dikeluarkan')
+        router.push(`/dashboard/events/${eventId}/participants`)
+    } catch (error) {
+        console.error('Failed to kick user:', error)
+        toast.error(error.response?.data?.error || 'Gagal mengeluarkan peserta')
+    } finally {
+        isKicking.value = false
     }
 }
 

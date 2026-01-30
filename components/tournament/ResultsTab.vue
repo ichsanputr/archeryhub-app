@@ -4,8 +4,8 @@
         <div v-if="results && results.length > 0" class="space-y-4">
             <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
                 <h3 class="text-xl font-black text-navy mb-2 flex items-center gap-3">
-                    <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                        <Icon icon="ph:file-pdf-duotone" class="text-2xl text-primary" />
+                    <div class="w-12 h-12 rounded-xl bg-navy/5 flex items-center justify-center">
+                        <Icon icon="ph:file-pdf-bold" class="text-2xl text-navy" />
                     </div>
                     Hasil Scoring Manual
                 </h3>
@@ -14,19 +14,19 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <a v-for="(file, fIdx) in results" :key="fIdx" :href="getImageUrl(file.url)" target="_blank"
-                        class="flex items-center gap-4 p-5 bg-gray-50 border border-gray-100 rounded-xl hover:bg-primary/5 hover:border-primary/30 transition-all group">
+                        class="flex items-center gap-4 p-5 bg-gray-50 border border-gray-100 rounded-xl hover:bg-navy/5 hover:border-navy transition-all group">
                         <div
-                            class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-navy transition-all">
+                            class="w-12 h-12 rounded-xl bg-navy/5 flex items-center justify-center text-navy group-hover:bg-navy group-hover:text-white transition-all">
                             <Icon :icon="getFileIcon(file.url)" class="text-2xl" />
                         </div>
                         <div class="flex-grow min-w-0">
-                            <h4 class="text-navy font-bold truncate group-hover:text-primary transition-colors">{{
+                            <h4 class="text-navy font-bold truncate group-hover:text-navy transition-colors">{{
                                 file.name || 'Berkas Hasil' }}</h4>
                             <p class="text-gray-500 text-[10px] font-black uppercase tracking-wider mt-0.5">{{
                                 getFileType(file.url) }}</p>
                         </div>
                         <Icon icon="ph:download-simple-bold"
-                            class="text-gray-400 group-hover:text-primary transition-colors" />
+                            class="text-gray-400 group-hover:text-navy transition-colors" />
                     </a>
                 </div>
             </div>
@@ -93,7 +93,7 @@
                             <td class="px-4 py-4 text-center font-bold text-gray-500">{{ result.x10_count || 0 }}</td>
                             <td class="px-4 py-4 text-center font-bold text-gray-500">{{ result.ten_count || 0 }}</td>
                             <td class="px-4 py-4 text-center">
-                                <span class="px-3 py-1 bg-navy text-primary rounded-lg font-black text-sm">
+                                <span class="px-3 py-1 bg-navy text-white rounded-lg font-black text-sm">
                                     {{ result.total_score || 0 }}
                                 </span>
                             </td>

@@ -12,9 +12,6 @@
                 <BaseButton variant="white" icon="ph:download" class="h-11 px-5">
                     Export CSV
                 </BaseButton>
-                <BaseButton variant="white" icon="ph:funnel" class="h-11 px-5">
-                    Filter
-                </BaseButton>
                 <BaseButton :to="`/dashboard/events/${route.params.id}/participants/add`" variant="primary"
                     icon="ph:plus-bold"
                     class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all">
@@ -87,54 +84,88 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-50">
-                        <tr v-for="(participant, index) in filteredParticipants" :key="participant.id"
-                            class="group hover:bg-gray-50/50 transition-colors">
-                            <td class="px-6 py-4">
-                                <span class="text-sm font-bold text-gray-400">{{ (page - 1) * limit + index + 1
-                                }}</span>
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="flex items-center gap-3">
+                        <!-- Loading State -->
+                        <tr v-if="isLoading">
+                            <td colspan="6" class="px-6 py-12">
+                                <div class="flex flex-col items-center justify-center gap-4">
                                     <div
-                                        class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs uppercase border border-gray-200 overflow-hidden">
-                                        <img v-if="participant.avatar_url" :src="participant.avatar_url"
-                                            class="w-full h-full object-cover">
-                                        <template v-else>
-                                            {{participant.full_name?.split(' ').map(n => n[0]).join('') || 'U'}}
-                                        </template>
+                                        class="h-10 w-10 border-4 border-primary border-t-transparent animate-spin rounded-full">
                                     </div>
-                                    <div>
-                                        <p class="font-black text-navy tracking-tight">{{ participant.full_name }}</p>
-                                        <p class="text-xs text-gray-500 font-medium">{{ participant.email || '-' }}</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 text-gray-500 font-medium text-xs">{{ participant.club_name || '-' }}
-                            </td>
-                            <td class="px-6 py-4">
-                                <p class="text-navy font-bold text-sm">{{ getCategoryName(participant) }}</p>
-                            </td>
-                            <td class="px-6 py-4">
-                                <span :class="getStatusClass(participant.status)"
-                                    class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest border">
-                                    {{ participant.status || 'Menunggu Acc' }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                <div class="flex items-center justify-end gap-2">
-                                    <NuxtLink
-                                        :to="`/dashboard/events/${route.params.id}/participants/${participant.id}/edit`"
-                                        class="p-2 text-navy/40 hover:text-navy transition-colors">
-                                        <Icon icon="ph:pencil-simple" />
-                                    </NuxtLink>
+                                    <p class="text-xs text-gray-500 font-medium">Memuat data peserta...</p>
                                 </div>
                             </td>
                         </tr>
-                        <tr v-if="filteredParticipants.length === 0">
-                            <td colspan="6" class="px-6 py-12 text-center text-gray-400 italic font-medium">
-                                Tidak ada peserta yang ditemukan.
-                            </td>
-                        </tr>
+
+                        <template v-else>
+                            <tr v-for="(participant, index) in filteredParticipants" :key="participant.id"
+                                class="group hover:bg-gray-50/50 transition-colors">
+                                <td class="px-6 py-4">
+                                    <span class="text-sm font-bold text-gray-400">{{ (page - 1) * limit + index + 1
+                                    }}</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs uppercase border border-gray-200 overflow-hidden">
+                                            <img v-if="participant.avatar_url" :src="participant.avatar_url"
+                                                class="w-full h-full object-cover">
+                                            <template v-else>
+                                                {{participant.full_name?.split(' ').map(n => n[0]).join('') || 'U'}}
+                                            </template>
+                                        </div>
+                                        <div>
+                                            <div class="flex items-center gap-2">
+                                                <p class="font-black text-navy tracking-tight">{{ participant.full_name
+                                                }}
+                                                </p>
+                                                <span v-if="participant.archer_id"
+                                                    class="inline-flex items-center gap-0.5 px-1.5 py-0.5 bg-blue-50 text-blue-600 rounded-md text-[9px] font-black uppercase tracking-wider border border-blue-100">
+                                                    <Icon icon="ph:seal-check-fill" />
+                                                    Verified
+                                                </span>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <p class="text-xs text-gray-500 font-medium">{{ participant.email || '-'
+                                                }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-gray-500 font-medium text-xs">{{ participant.club_name || '-'
+                                }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    <p class="text-navy font-bold text-sm">{{ getCategoryName(participant) }}</p>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span :class="getStatusClass(participant.status)"
+                                        class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest border">
+                                        {{ participant.status || 'Menunggu Acc' }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <NuxtLink
+                                            :to="`/dashboard/events/${route.params.id}/participants/${participant.username || participant.id}`"
+                                            class="p-2 text-navy/40 hover:text-navy transition-colors"
+                                            title="Lihat Detail">
+                                            <Icon icon="ph:eye" class="text-lg" />
+                                        </NuxtLink>
+                                        <NuxtLink
+                                            :to="`/dashboard/events/${route.params.id}/participants/${participant.username || participant.id}/edit`"
+                                            class="p-2 text-navy/40 hover:text-navy transition-colors"
+                                            title="Edit Peserta">
+                                            <Icon icon="ph:pencil-simple" class="text-lg" />
+                                        </NuxtLink>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr v-if="filteredParticipants.length === 0">
+                                <td colspan="6" class="px-6 py-12 text-center text-gray-400 italic font-medium">
+                                    Tidak ada peserta yang ditemukan.
+                                </td>
+                            </tr>
+                        </template>
                     </tbody>
                 </table>
             </div>

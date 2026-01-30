@@ -31,7 +31,7 @@
                                 </h1>
                             </div>
                             <p v-if="event" class="text-slate-300 text-sm mb-2">
-                                {{ event.venue || 'Event Venue' }} • {{ event.location || 'Location' }}
+                                {{ event.venue || 'Lokasi Event' }} • {{ event.location || 'Alamat' }}
                             </p>
                             <div class="flex flex-wrap items-center gap-4">
                                 <div
@@ -78,7 +78,7 @@
                         <div class="flex justify-between items-start">
                             <div>
                                 <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Total
-                                    Archers</p>
+                                    Pemanah</p>
                                 <p class="text-navy-dark text-3xl font-extrabold tracking-tight">{{
                                     event?.participant_count || 0 }}</p>
                             </div>
@@ -90,7 +90,7 @@
                         <div class="mt-auto">
                             <p class="text-green-600 text-xs font-bold flex items-center gap-1">
                                 <Icon icon="ph:trend-up" class="text-[14px]" />
-                                {{ participants.length }} registered
+                                {{ participants.length }} terdaftar
                             </p>
                         </div>
                     </div>
@@ -113,7 +113,7 @@
                         <div class="mt-auto">
                             <p class="text-text-secondary text-xs font-medium flex items-center gap-1">
                                 <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-                                All systems online
+                                Sistem berjalan normal
                             </p>
                         </div>
                     </div>
@@ -141,8 +141,8 @@
                         class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-all border border-gray-100 group">
                         <div class="flex justify-between items-start">
                             <div>
-                                <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Time
-                                    Left</p>
+                                <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Sisa
+                                    Waktu</p>
                                 <p class="text-navy-dark text-3xl font-extrabold tracking-tight tabular-nums">{{
                                     timeLeft }}</p>
                             </div>
@@ -152,45 +152,110 @@
                             </div>
                         </div>
                         <div class="mt-auto">
-                            <p class="text-text-secondary text-xs font-medium">Est. End: {{ estimatedEnd }}</p>
+                            <p class="text-text-secondary text-xs font-medium">Estimasi Selesai: {{ estimatedEnd }}</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Main Content Grid -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <!-- Target Status -->
+                    <!-- Registration Analytics -->
                     <div
                         class="lg:col-span-2 bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
                         <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
-                            <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">Target Status</h3>
-                            <div class="flex gap-3 text-xs font-semibold">
-                                <div class="flex items-center gap-1.5">
-                                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Shooting
-                                </div>
-                                <div class="flex items-center gap-1.5">
-                                    <span class="w-2 h-2 rounded-full bg-primary"></span> Scoring
-                                </div>
-                                <div class="flex items-center gap-1.5">
-                                    <span class="w-2 h-2 rounded-full bg-red-500"></span> Issue
+                            <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">Analisis Pendaftaran
+                            </h3>
+                            <NuxtLink :to="`/dashboard/events/${route.params.id}/participants`"
+                                class="text-xs text-navy font-bold hover:text-primary transition-colors">Lihat Semua
+                                Peserta</NuxtLink>
+                        </div>
+                        <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8 bg-gray-50/30">
+                            <!-- By Category -->
+                            <div>
+                                <h4 class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Sebaran
+                                    Kategori</h4>
+                                <div class="space-y-4">
+                                    <div v-for="cat in registrationStats.categories.slice(0, 5)" :key="cat.name"
+                                        class="space-y-1.5">
+                                        <div class="flex justify-between text-sm">
+                                            <span class="font-bold text-navy-dark truncate pr-2">{{ cat.division }} - {{
+                                                cat.name }}</span>
+                                            <span class="text-navy font-black font-mono shrink-0">{{ cat.count }}</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-1.5">
+                                            <div class="bg-navy h-1.5 rounded-full transition-all duration-500"
+                                                :style="`width: ${(cat.count / Math.max(1, participants.length)) * 100}%`">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div v-if="registrationStats.categories.length === 0"
+                                        class="py-10 text-center text-gray-400 italic text-xs">
+                                        Belum ada data kategori
+                                    </div>
+                                    <p v-if="registrationStats.categories.length > 5"
+                                        class="text-[10px] text-gray-400 italic text-center pt-2">
+                                        Menampilkan 5 kategori terbanyak
+                                    </p>
                                 </div>
                             </div>
-                        </div>
-                        <div class="p-6 flex-1 overflow-y-auto bg-gray-50/30">
-                            <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-3">
-                                <button v-for="i in maxTargets" :key="i" :class="getTargetStatusClass(i)"
-                                    class="aspect-square rounded-lg border flex flex-col items-center justify-center cursor-pointer hover:shadow-md transition-all group shadow-sm">
-                                    <span class="font-bold text-lg group-hover:scale-110 transition-transform"
-                                        :class="getTargetTextClass(i)">
-                                        {{ String(i).padStart(2, '0') }}
-                                    </span>
-                                    <div v-if="groupedTargets[i]" class="flex gap-1 mt-1">
-                                        <div v-for="p in groupedTargets[i]" :key="p.id"
-                                            class="w-2 h-2 rounded-full bg-primary border border-white"></div>
+                            <!-- Payment Status -->
+                            <div>
+                                <h4 class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Status
+                                    Pembayaran</h4>
+                                <div class="space-y-3">
+                                    <div
+                                        class="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-100 shadow-sm transition-transform hover:-translate-y-0.5">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-primary">
+                                                <Icon icon="ph:check-circle-fill" class="text-xl" />
+                                            </div>
+                                            <div>
+                                                <span
+                                                    class="block text-sm font-bold text-navy-dark leading-tight">Lunas</span>
+                                                <span class="text-[10px] text-gray-400 font-medium">Pembayaran
+                                                    Terverifikasi</span>
+                                            </div>
+                                        </div>
+                                        <span class="text-2xl font-black text-green-600 font-mono">{{
+                                            registrationStats.payment.lunas }}</span>
                                     </div>
-                                    <Icon v-if="getTargetHasIssue(i)" icon="ph:warning"
-                                        class="text-[16px] text-red-500 mt-1" />
-                                </button>
+                                    <div
+                                        class="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-100 shadow-sm transition-transform hover:-translate-y-0.5">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-primary">
+                                                <Icon icon="ph:clock-fill" class="text-xl" />
+                                            </div>
+                                            <div>
+                                                <span
+                                                    class="block text-sm font-bold text-navy-dark leading-tight">Menunggu
+                                                    Acc</span>
+                                                <span class="text-[10px] text-gray-400 font-medium">Butuh
+                                                    Verifikasi</span>
+                                            </div>
+                                        </div>
+                                        <span class="text-2xl font-black text-amber-600 font-mono">{{
+                                            registrationStats.payment.menunggu_acc }}</span>
+                                    </div>
+                                    <div
+                                        class="flex items-center justify-between p-4 bg-white rounded-xl border border-gray-100 shadow-sm transition-transform hover:-translate-y-0.5">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-primary">
+                                                <Icon icon="ph:warning-circle-fill" class="text-xl" />
+                                            </div>
+                                            <div>
+                                                <span class="block text-sm font-bold text-navy-dark leading-tight">Belum
+                                                    Lunas</span>
+                                                <span class="text-[10px] text-gray-400 font-medium">Tagihan
+                                                    Terbuka</span>
+                                            </div>
+                                        </div>
+                                        <span class="text-2xl font-black text-red-600 font-mono">{{
+                                            registrationStats.payment.belum_lunas }}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -199,10 +264,10 @@
                     <div
                         class="bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
                         <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
-                            <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">Leaderboard</h3>
+                            <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">Papan Peringkat</h3>
                             <button
-                                class="text-xs text-text-secondary hover:text-navy-dark font-semibold transition-colors">View
-                                All</button>
+                                class="text-xs text-text-secondary hover:text-navy-dark font-semibold transition-colors">Lihat
+                                Semua</button>
                         </div>
                         <div class="flex-1 overflow-y-auto">
                             <table class="w-full text-left text-sm">
@@ -211,11 +276,11 @@
                                         <th
                                             class="px-6 py-3 font-medium text-xs uppercase tracking-wider whitespace-nowrap">
                                             #</th>
-                                        <th class="px-6 py-3 font-medium text-xs uppercase tracking-wider">Rk</th>
-                                        <th class="px-6 py-3 font-medium text-xs uppercase tracking-wider">Archer</th>
+                                        <th class="px-6 py-3 font-medium text-xs uppercase tracking-wider">Pos</th>
+                                        <th class="px-6 py-3 font-medium text-xs uppercase tracking-wider">Pemanah</th>
                                         <th
                                             class="px-6 py-3 text-right font-medium text-xs uppercase tracking-wider whitespace-nowrap">
-                                            Score</th>
+                                            Skor</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-100">
@@ -242,7 +307,7 @@
                                     </tr>
                                     <tr v-if="topParticipants.length === 0">
                                         <td colspan="4" class="px-6 py-12 text-center text-gray-400 italic font-medium">
-                                            No scores yet
+                                            Belum ada skor
                                         </td>
                                     </tr>
                                 </tbody>
@@ -432,6 +497,41 @@ const topParticipants = computed(() => {
         .slice(0, 5)
 })
 
+const registrationStats = computed(() => {
+    const stats = {
+        byCategory: {},
+        byPayment: {
+            lunas: 0,
+            menunggu_acc: 0,
+            belum_lunas: 0
+        }
+    }
+
+    participants.value.forEach(p => {
+        // Category stats
+        const catId = p.category_id || 'unassigned'
+        if (!stats.byCategory[catId]) {
+            stats.byCategory[catId] = {
+                name: p.category_name || 'Tanpa Kategori',
+                division: p.division_name || 'N/A',
+                count: 0
+            }
+        }
+        stats.byCategory[catId].count++
+
+        // Payment stats
+        const status = p.payment_status?.toLowerCase()
+        if (status === 'lunas') stats.byPayment.lunas++
+        else if (status === 'menunggu_acc') stats.byPayment.menunggu_acc++
+        else stats.byPayment.belum_lunas++
+    })
+
+    return {
+        categories: Object.values(stats.byCategory).sort((a, b) => b.count - a.count),
+        payment: stats.byPayment
+    }
+})
+
 const publicEventUrl = computed(() => {
     const slug = event.value?.slug || route.params.id
     const origin = window?.location?.origin || 'https://archeryhub.id'
@@ -487,31 +587,12 @@ const alerts = computed(() => {
             id: 1,
             type: 'info',
             icon: 'ph:user-plus',
-            title: 'Unassigned Participants',
-            message: `${participants.value.filter(p => !p.target_number).length} participants need target assignment.`
+            title: 'Peserta Belum Diatur',
+            message: `${participants.value.filter(p => !p.target_number).length} peserta belum memiliki nomor bantalan.`
         })
     }
     return alertList
 })
-
-const getTargetStatusClass = (targetNum) => {
-    const hasParticipants = groupedTargets.value[targetNum]
-    if (!hasParticipants) {
-        return 'bg-gray-50 border-gray-200 text-gray-300 cursor-not-allowed'
-    }
-    // Check if target has issues (can be enhanced with actual issue data)
-    const hasIssue = false // Placeholder
-    if (hasIssue) {
-        return 'bg-red-50 border-red-200 text-red-600 animate-pulse'
-    }
-    return 'bg-white border-emerald-200 text-emerald-700 hover:border-emerald-400'
-}
-
-const getTargetTextClass = (targetNum) => {
-    const hasParticipants = groupedTargets.value[targetNum]
-    if (!hasParticipants) return 'text-gray-300'
-    return 'text-emerald-700'
-}
 
 const getTargetHasIssue = (targetNum) => {
     // Placeholder - can be enhanced with actual issue detection
@@ -586,11 +667,11 @@ const getStatusDotClass = (status) => {
 
 const getStatusLabel = (status) => {
     const labels = {
-        'published': 'Published',
-        'draft': 'Draft Mode',
-        'ongoing': 'Ongoing',
-        'upcoming': 'Scheduled',
-        'completed': 'Completed'
+        'published': 'Terbit',
+        'draft': 'Draf',
+        'ongoing': 'Berlangsung',
+        'upcoming': 'Dijadwalkan',
+        'completed': 'Selesai'
     }
     return labels[status] || status
 }

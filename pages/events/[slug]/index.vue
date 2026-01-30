@@ -61,7 +61,7 @@
                         <section v-if="tournament.page_settings?.sections?.about !== false"
                             class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
                             <h2 class="text-lg sm:text-xl font-bold text-navy mb-6 flex items-center gap-2">
-                                <Icon icon="ph:info" class="text-primary" />
+                                <Icon icon="ph:info-bold" class="text-navy" />
                                 Tentang Event
                             </h2>
                             <div class="prose max-w-none text-gray-600 leading-relaxed space-y-4">
@@ -95,11 +95,11 @@
                                 </h2>
                                 <div class="hidden md:flex items-center gap-2" v-if="divisionsData.length > 3">
                                     <button @click="scroll('left')"
-                                        class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-navy hover:border-primary hover:text-primary transition-all">
+                                        class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-navy hover:border-navy hover:bg-navy hover:text-white transition-all">
                                         <Icon icon="ph:caret-left" />
                                     </button>
                                     <button @click="scroll('right')"
-                                        class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-navy hover:border-primary hover:text-primary transition-all">
+                                        class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-navy hover:border-navy hover:bg-navy hover:text-white transition-all">
                                         <Icon icon="ph:caret-right" />
                                     </button>
                                 </div>
@@ -109,10 +109,10 @@
                                 <div ref="scrollContainer"
                                     class="flex gap-6 overflow-x-auto no-scrollbar scroll-smooth pb-4 -mx-1 px-1">
                                     <div v-for="division in divisionsData" :key="division.name"
-                                        class="min-w-[280px] md:min-w-[320px] group border border-gray-200 rounded-xl p-5 hover:border-primary transition-colors bg-white">
+                                        class="min-w-[280px] md:min-w-[320px] group border border-gray-200 rounded-xl p-5 hover:border-navy transition-colors bg-white">
                                         <div class="flex items-center gap-3 mb-3">
                                             <div
-                                                class="w-10 h-10 bg-gray-50 rounded-lg flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+                                                class="w-10 h-10 bg-gray-50 rounded-lg flex items-center justify-center group-hover:bg-navy group-hover:text-white transition-colors">
                                                 <Icon :icon="division.icon" class="text-2xl" />
                                             </div>
                                             <h3 class="font-bold text-navy">{{ division.name }}</h3>
@@ -132,19 +132,19 @@
                         <section v-if="tournament.page_settings?.sections?.fees !== false"
                             class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
                             <h2 class="text-lg sm:text-xl font-bold text-navy mb-6 flex items-center gap-2">
-                                <Icon icon="ph:currency-circle-dollar" class="text-primary" />
+                                <Icon icon="ph:currency-circle-dollar-bold" class="text-navy" />
                                 Biaya Pendaftaran
                             </h2>
                             <div v-if="tournament.fees && tournament.fees.length > 0"
                                 class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div v-for="(fee, idx) in tournament.fees" :key="idx"
-                                    class="bg-gray-50 rounded-xl p-6 border border-gray-100 hover:border-primary/30 transition-colors shadow-sm">
+                                    class="bg-gray-50 rounded-xl p-6 border border-gray-100 hover:border-navy/30 transition-colors shadow-sm">
                                     <div class="flex items-center gap-3 mb-4">
                                         <div
                                             class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm">
                                             <Icon
                                                 :icon="fee.name?.toLowerCase().includes('tim') ? 'ph:users-three-bold' : 'ph:user-bold'"
-                                                class="text-2xl text-primary" />
+                                                class="text-2xl text-navy" />
                                         </div>
                                         <span class="font-bold text-navy">{{ displayValue(fee.name) }}</span>
                                     </div>
@@ -160,7 +160,7 @@
                                     <div class="flex items-center gap-3 mb-4">
                                         <div
                                             class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm">
-                                            <Icon icon="ph:user-bold" class="text-2xl text-primary" />
+                                            <Icon icon="ph:user-bold" class="text-2xl text-navy" />
                                         </div>
                                         <span class="font-bold text-navy">Individu</span>
                                     </div>
@@ -178,7 +178,7 @@
                             </div>
                             <h2
                                 class="text-lg sm:text-xl font-bold text-navy mb-1 flex items-center gap-2 relative z-10">
-                                <Icon icon="ph:trophy" class="text-primary" />
+                                <Icon icon="ph:trophy-bold" class="text-navy" />
                                 Total Hadiah
                             </h2>
                             <p v-if="tournament.total_prize" class="text-gray-500 text-sm mb-6 relative z-10">
@@ -192,7 +192,7 @@
                                     <div class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Juara 1
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{ displayValue(tournament.prizes?.first)
-                                    }}</div>
+                                        }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ firstPrizeCaption }}</div>
                                 </div>
                                 <div
@@ -210,7 +210,7 @@
                                     <div class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Juara 3
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{ displayValue(tournament.prizes?.third)
-                                    }}</div>
+                                        }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ thirdPrizeCaption }}</div>
                                 </div>
                             </div>
@@ -236,9 +236,8 @@
                                 class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10 relative z-10">
                                 <div>
                                     <h2 class="font-black text-navy text-2xl mb-2 flex items-center gap-3">
-                                        <div
-                                            class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
-                                            <Icon icon="ph:question-bold" class="text-2xl text-primary" />
+                                        <div class="w-12 h-12 rounded-2xl bg-navy/5 flex items-center justify-center">
+                                            <Icon icon="ph:question-bold" class="text-2xl text-navy" />
                                         </div>
                                         Tanya Jawab (FAQ)
                                     </h2>
@@ -253,7 +252,7 @@
                                         class="list-none p-6 font-black text-navy cursor-pointer flex items-center justify-between group-hover:bg-gray-50 group-open:bg-transparent rounded-3xl transition-all duration-300">
                                         <div class="flex items-center gap-4">
                                             <span
-                                                class="flex-shrink-0 w-8 h-8 rounded-xl bg-gray-100 group-open:bg-primary group-open:text-navy flex items-center justify-center text-xs font-black transition-colors">
+                                                class="flex-shrink-0 w-8 h-8 rounded-xl bg-gray-100 group-open:bg-navy group-open:text-white flex items-center justify-center text-xs font-black transition-colors">
                                                 {{ fIdx + 1 }}
                                             </span>
                                             <span class="text-lg leading-tight">{{ faq.question }}</span>
@@ -296,7 +295,8 @@
                                 <span class="text-xs text-gray-500 uppercase">Menit</span>
                             </div>
                         </div>
-                        <div v-if="tournament.max_participants != null && tournament.max_participants > 0" class="space-y-4 mb-6">
+                        <div v-if="tournament.max_participants != null && tournament.max_participants > 0"
+                            class="space-y-4 mb-6">
                             <div class="flex justify-between items-center text-sm pb-1">
                                 <span class="text-gray-500">Slot Tersedia</span>
                                 <span class="font-bold text-primary">{{ tournament.max_participants -
@@ -309,7 +309,8 @@
                                 </div>
                             </div>
                         </div>
-                        <p v-else class="text-xs text-gray-500 mb-6">Kuota peserta per kategori. Lihat daftar kategori untuk detail.</p>
+                        <p v-else class="text-xs text-gray-500 mb-6">Kuota peserta per kategori. Lihat daftar kategori
+                            untuk detail.</p>
                         <!-- Auth-aware registration CTA: Only show for non-logged-in or logged-in archers -->
                         <template v-if="!isLoggedIn || isArcher">
                             <template v-if="!isLoggedIn">

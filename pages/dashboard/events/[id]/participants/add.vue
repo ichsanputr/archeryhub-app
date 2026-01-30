@@ -4,13 +4,13 @@
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
                 <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
-                    <NuxtLink to="/dashboard/events" class="hover:text-primary transition-colors">Events</NuxtLink>
+                    <NuxtLink to="/dashboard/events" class="hover:text-navy transition-colors">Events</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
                     <NuxtLink :to="`/dashboard/events/${route.params.id}/overview`"
-                        class="hover:text-primary transition-colors">Control Panel</NuxtLink>
+                        class="hover:text-navy transition-colors">Control Panel</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
                     <NuxtLink :to="`/dashboard/events/${route.params.id}/participants`"
-                        class="hover:text-primary transition-colors">Peserta</NuxtLink>
+                        class="hover:text-navy transition-colors">Peserta</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
                     <span class="text-navy">Tambah Peserta</span>
                 </div>
@@ -34,7 +34,7 @@
             <div class="lg:col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-6">
                 <!-- Step 1: Select Archer -->
                 <div>
-                    <h3 class="text-lg font-black text-navy mb-4 pb-4 border-b border-gray-100">Pilih Pemanah</h3>
+                    <h3 class="text-lg font-black text-navy mb-4 pb-4 border-b-2 border-gray-200">Pilih Pemanah</h3>
                     <div class="space-y-4">
                         <div class="flex gap-3">
                             <button @click="archerMode = 'existing'"
@@ -70,7 +70,7 @@
                                     <div class="flex items-center gap-3">
                                         <div
                                             class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs uppercase overflow-hidden border border-gray-200">
-                                            <img v-if="archer.photo_url || archer.avatar_url" 
+                                            <img v-if="archer.photo_url || archer.avatar_url"
                                                 :src="useImageOrDefault(archer.photo_url || archer.avatar_url)"
                                                 class="w-full h-full object-cover" />
                                             <span v-else>
@@ -96,18 +96,22 @@
                             class="space-y-4 border border-gray-100 rounded-xl p-4 bg-gray-50/50">
                             <!-- Choose archer type -->
                             <div class="flex flex-col gap-2">
-                                <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">Tipe Pemanah Baru</p>
-                                <div class="flex flex-col sm:flex-row gap-2">
-                                    <label class="flex-1 inline-flex items-center gap-2 px-3 py-2 rounded-xl border text-xs font-semibold cursor-pointer"
-                                        :class="newArcherType === 'account' ? 'border-primary bg-primary/5 text-primary' : 'border-gray-200 text-gray-600'">
+                                <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">Tipe Pemanah Baru
+                                </p>
+                                <div class="flex flex-col sm:flex-row gap-3">
+                                    <label
+                                        class="flex-1 inline-flex items-center gap-3 px-4 py-3 rounded-xl border-2 text-sm font-bold cursor-pointer transition-all"
+                                        :class="newArcherType === 'account' ? 'border-navy bg-navy text-white shadow-md' : 'border-gray-100 bg-white text-gray-500 hover:border-gray-200'">
                                         <input type="radio" v-model="newArcherType" value="account" class="sr-only" />
-                                        <Icon icon="ph:user-circle" class="text-base" />
+                                        <Icon icon="ph:user-circle-bold" class="text-xl" />
                                         <span>Buat Akun Archeryhub (bisa login)</span>
                                     </label>
-                                    <label class="flex-1 inline-flex items-center gap-2 px-3 py-2 rounded-xl border text-xs font-semibold cursor-pointer"
-                                        :class="newArcherType === 'event_only' ? 'border-primary bg-primary/5 text-primary' : 'border-gray-200 text-gray-600'">
-                                        <input type="radio" v-model="newArcherType" value="event_only" class="sr-only" />
-                                        <Icon icon="ph:target" class="text-base" />
+                                    <label
+                                        class="flex-1 inline-flex items-center gap-3 px-4 py-3 rounded-xl border-2 text-sm font-bold cursor-pointer transition-all"
+                                        :class="newArcherType === 'event_only' ? 'border-navy bg-navy text-white shadow-md' : 'border-gray-100 bg-white text-gray-500 hover:border-gray-200'">
+                                        <input type="radio" v-model="newArcherType" value="event_only"
+                                            class="sr-only" />
+                                        <Icon icon="ph:target-bold" class="text-xl" />
                                         <span>Pemanah Khusus Event Ini Saja</span>
                                     </label>
                                 </div>
@@ -116,10 +120,9 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <BaseInput v-model="newArcherForm.full_name" label="Nama Lengkap"
                                     placeholder="Nama sesuai identitas" required @input="generateUsername" />
-                                <BaseInput v-model="newArcherForm.username" label="Username" 
-                                    placeholder="Auto-generated" disabled />
                                 <BaseInput v-model="newArcherForm.email" label="Email" type="email"
-                                    placeholder="email@example.com (opsional)" />
+                                    :placeholder="newArcherType === 'account' ? 'email@example.com (wajib)' : 'email@example.com (opsional)'"
+                                    :required="newArcherType === 'account'" />
                                 <BaseInput v-model="newArcherForm.phone" label="No. Telepon" type="tel"
                                     placeholder="08xxxxxxxxxx" />
                                 <BaseInput v-model="newArcherForm.date_of_birth" label="Tanggal Lahir" type="date" />
@@ -127,7 +130,8 @@
                                     :items="genderOptions" />
                                 <BaseSelect v-model="newArcherForm.bow_type" label="Jenis Busur" :items="bowOptions" />
                                 <BaseInput v-model="newArcherForm.city" label="Kota" placeholder="Jakarta" />
-                                <BaseInput v-model="newArcherForm.school" label="Sekolah" placeholder="Nama sekolah (opsional)" />
+                                <BaseInput v-model="newArcherForm.school" label="Sekolah"
+                                    placeholder="Nama sekolah (opsional)" />
                             </div>
                             <BaseSelect v-model="newArcherForm.club_id" label="Klub" :items="clubOptions" />
                             <BaseTextarea v-model="newArcherForm.address" label="Alamat" placeholder="Alamat lengkap"
@@ -141,7 +145,7 @@
 
                 <!-- Step 2: Select Category -->
                 <div>
-                    <h3 class="text-lg font-black text-navy mb-4">Pilih Kategori Event</h3>
+                    <h3 class="text-lg font-black text-navy mb-4 pb-4 border-b-2 border-gray-200">Kategori Lomba</h3>
                     <div class="space-y-4">
                         <BaseSelect v-model="form.category_id" label="Kategori" :items="categoryOptions" required />
                         <div v-if="selectedCategory" class="bg-gray-50/50 border border-gray-100 rounded-xl p-4">
@@ -155,7 +159,8 @@
 
                 <!-- Step 3: Additional Info -->
                 <div>
-                    <h3 class="text-lg font-black text-navy mb-4 pb-4 border-b border-gray-100">Informasi Tambahan</h3>
+                    <h3 class="text-lg font-black text-navy mb-4 pb-4 border-b-2 border-gray-200">Informasi Tambahan
+                    </h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <BaseSelect v-model="form.payment_status" label="Status Pembayaran"
                             :items="paymentStatusOptions" />
@@ -174,7 +179,7 @@
                     <div v-if="event">
                         <div class="flex items-center gap-3 mb-3">
                             <div
-                                class="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-bold">
+                                class="h-10 w-10 rounded-xl bg-navy/5 flex items-center justify-center text-navy font-bold">
                                 <Icon icon="ph:trophy" class="text-xl" />
                             </div>
                             <div>
@@ -394,14 +399,8 @@ const generateUsername = () => {
         .replace(/[^a-z0-9-]/g, '')
         .replace(/-+/g, '-')
         .replace(/^-|-$/g, '')
-    
-    // Add random suffix to ensure uniqueness (will be handled by backend)
-    if (username) {
-        const randomSuffix = Math.random().toString(36).substring(2, 6)
-        newArcherForm.username = `${username}-${randomSuffix}`
-    } else {
-        newArcherForm.username = ''
-    }
+
+    newArcherForm.username = username
 }
 
 const validateNewArcherForm = () => {
@@ -409,7 +408,13 @@ const validateNewArcherForm = () => {
         toast.error('Nama lengkap pemanah wajib diisi')
         return false
     }
-    // Email is now optional, but if provided, validate format
+
+    // Email is required for global account
+    if (newArcherType.value === 'account' && !newArcherForm.email?.trim()) {
+        toast.error('Email wajib diisi untuk pembuatan akun Archeryhub')
+        return false
+    }
+
     if (newArcherForm.email && newArcherForm.email.trim()) {
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
         if (!emailPattern.test(newArcherForm.email)) {
