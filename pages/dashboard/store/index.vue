@@ -335,7 +335,7 @@ const saveStore = async () => {
         await Promise.all([
             put('/user/profile', {
                 store_name: store.value.name,
-                store_slug: store.value.slug,
+                slug: store.value.slug,
                 description: store.value.description,
                 phone: store.value.phone,
                 email: store.value.email,

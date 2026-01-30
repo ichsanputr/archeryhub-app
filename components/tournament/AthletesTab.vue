@@ -39,7 +39,7 @@
                     </div>
                     <div>
                         <div class="flex items-center gap-1">
-                            <NuxtLink :to="`/archers/${athlete.id}`"
+                            <NuxtLink :to="`/archers/${athlete.slug}`"
                                 class="font-bold text-navy truncate hover:text-primary transition-colors">
                                 {{ athlete.name }}
                             </NuxtLink>
@@ -64,7 +64,7 @@
                         <span class="text-[10px] font-bold">{{ athlete.rank === '-' ? 'Belum ada ranking' : `Rank
                             ${athlete.rank}` }}</span>
                     </div>
-                    <NuxtLink :to="`/archers/${athlete.id}`"
+                    <NuxtLink :to="`/archers/${athlete.slug}`"
                         class="text-primary font-bold text-xs hover:underline flex items-center gap-1">
                         Profil
                         <Icon icon="ph:arrow-square-out" class="text-sm" />
@@ -151,6 +151,7 @@ const athletes = computed(() => {
     const participants = participantsData.value.participants || []
     return participants.map(p => ({
         id: p.id || p.archer_id,
+        slug: p.slug,
         name: p.full_name || 'Archery Athlete',
         club: p.club_name || 'Independent',
         photo: p.avatar_url || 'https://lh3.googleusercontent.com/aida-public/AB6AXuAN1PKK-zE7gHxiw_aZW8rQ0RXGOUpoAcMX2PerB54W68JgnLtpC0teJYHN1wn5e5Hh5e7o7hzPx_gF8FzvqgkTykuPW2RnCBPrctcfBT9awfftTun8hn_I_2ZdxlhEv7PrrhUSinekRNDYnLyMPUAORFdirFzIiXQuRgcjinT9Jt1Bm_tkVNee3C9NqqYUBs1lYfaFEzgXRZeUvKrEP8FnQOWtp5St5c_s1o-sIV5ALK6iV0TBRUhB2AFDYY_qRHsVDugx540fhIw',
