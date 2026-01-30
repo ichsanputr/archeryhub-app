@@ -100,7 +100,7 @@
                                 <BaseInput v-model="newArcherForm.username" label="Username" 
                                     placeholder="Auto-generated" disabled />
                                 <BaseInput v-model="newArcherForm.email" label="Email" type="email"
-                                    placeholder="email@example.com" />
+                                    placeholder="email@example.com (opsional)" />
                                 <BaseInput v-model="newArcherForm.phone" label="No. Telepon" type="tel"
                                     placeholder="08xxxxxxxxxx" />
                                 <BaseInput v-model="newArcherForm.date_of_birth" label="Tanggal Lahir" type="date" />
@@ -108,6 +108,7 @@
                                     :items="genderOptions" />
                                 <BaseSelect v-model="newArcherForm.bow_type" label="Jenis Busur" :items="bowOptions" />
                                 <BaseInput v-model="newArcherForm.city" label="Kota" placeholder="Jakarta" />
+                                <BaseInput v-model="newArcherForm.school" label="Sekolah" placeholder="Nama sekolah (opsional)" />
                             </div>
                             <BaseSelect v-model="newArcherForm.club_id" label="Klub" :items="clubOptions" />
                             <BaseTextarea v-model="newArcherForm.address" label="Alamat" placeholder="Alamat lengkap"
@@ -243,6 +244,7 @@ const newArcherForm = reactive({
     gender: '',
     bow_type: '',
     city: '',
+    school: '',
     club_id: '',
     address: ''
 })
@@ -435,6 +437,7 @@ const submit = async () => {
                 gender: newArcherForm.gender || undefined,
                 bow_type: newArcherForm.bow_type || undefined,
                 city: newArcherForm.city || undefined,
+                school: newArcherForm.school || undefined,
                 club_id: newArcherForm.club_id || undefined,
                 address: newArcherForm.address || undefined
             })

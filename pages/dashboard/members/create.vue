@@ -42,11 +42,12 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
           <BaseInput v-model="form.city" label="Kota/Kabupaten" placeholder="Contoh: Jakarta Selatan" />
-          <BaseInput v-model="form.photo_url" label="Foto (URL)" placeholder="https://..." />
+          <BaseInput v-model="form.school" label="Sekolah" placeholder="Nama sekolah (opsional)" />
         </div>
 
         <div class="grid grid-cols-1 gap-5">
           <BaseTextarea v-model="form.address" label="Alamat" placeholder="Alamat domisili lengkap" :rows="3" />
+          <BaseInput v-model="form.photo_url" label="Foto (URL)" placeholder="https://..." />
         </div>
 
 
@@ -100,6 +101,7 @@ const form = reactive({
   bow_type: 'recurve',
   athlete_code: '',
   city: '',
+  school: '',
   address: '',
   photo_url: '',
 })
@@ -152,6 +154,7 @@ const submit = async () => {
       bow_type: form.bow_type,
       athlete_code: form.athlete_code || undefined,
       city: form.city || undefined,
+      school: form.school || undefined,
       address: form.address || undefined,
       photo_url: form.photo_url || undefined
     }
