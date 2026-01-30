@@ -350,6 +350,8 @@ const isScrolled = ref(false)
 const cartCount = ref(0)
 const { get } = useApi()
 
+console.log(user.value)
+
 const fetchCartCount = async () => {
     if (isLoggedIn.value && user.value?.user_type === 'archer') {
         try {
