@@ -6,11 +6,11 @@ All auth logic lives in **one server middleware** (SSR-only). There are no route
 
 ## Avatar URL di header (LandingHeader): dari mana?
 
-**Alur singkat:** `avatar_url` yang dipakai di header (dan `useAuth().user`) **bukan** dari API call tiap request, tapi dari **payload JWT** yang di-decode di server middleware.
+**Alur singkat:** `avatar_url` yang dipakai di header (dan `useAuth().user`) berasal dari **payload JWT** yang di-decode di server middleware, atau dari hasil **login/register/callback/fetchUser** (API).
 
-1. **Saat login** (email atau Google): request ke **API (Go)** → API baca user dari DB → panggil `utils.MaskMediaURL(avatar_url)` → **`MaskMediaURL` pakai env `API_BASE_URL`** di API (`api/utils/media.go`). Hasilnya (URL penuh) dimasukkan ke JWT (claim `avatar`) dan ke response login.
-2. **Setiap request ke Nuxt:** `server/middleware/auth.global.ts` baca cookie `auth_token` → decode JWT → set `event.context.user` (termasuk `avatar_url: payload.avatar`). Plugin `auth.server.ts` mengisi `useState('auth.user')` dari context → payload HTML → client.
-3. **LandingHeader.vue** pakai `useAuth().user` → `user.avatar_url` dipakai di `<img :src="user.avatar_url">`. Tidak ada masking di frontend; URL persis dari JWT.
+1. **Saat login** (email atau Google): API (Go) baca user dari DB → `utils.MaskMediaURL(avatar_url)` → hasil dimasukkan ke JWT (claim `avatar`) dan response login.
+2. **Setiap request ke Nuxt:** `server/middleware/auth.global.ts` baca cookie `auth_token` → decode JWT → set **`event.context.user`** (termasuk `avatar_url`). Tidak ada plugin auth; **global state `auth.user`** tidak diisi otomatis — isi via **`useAuth().fetchUser()`** di layout/page bila perlu.
+3. **LandingHeader.vue** pakai `useAuth().user` → `user.avatar_url` di `<img :src="user.avatar_url">`. Jika user belum di-fetch, panggil `fetchUser()` (mis. di layout atau `onMounted`).
 
 **Kenapa di local bisa dapat URL prod (`https://api.archeryhub.id/...`)?**
 
@@ -74,14 +74,32 @@ server/middleware/auth.global.ts
   Page / API
 ```
 
-### Bagaimana global state user terisi (tanpa hit API)
+### Bagaimana global state user terisi (tanpa plugin auth)
 
-1. **Server:** Setiap request masuk → `server/middleware/auth.global.ts` jalan → baca cookie `auth_token`, decode JWT → set **`event.context.user`**.
-2. **SSR:** Plugin **`plugins/auth.server.ts`** jalan (server-only) → baca `useRequestEvent()?.context?.user` → set **`useState('auth.user', () => user)`**. Nilai ini ikut di-serialize ke payload HTML.
-3. **Client:** Saat hydration, **`useState('auth.user')`** di `useAuth()` dapat nilai dari payload (sama dengan yang di server). Jadi **tidak ada panggilan API** untuk isi user; cukup dari payload.
-4. **`plugins/auth.client.js`** memanggil `initializeAuth()`; karena `user` sudah ada dari payload, `fetchUser()` tidak dipanggil.
+- **Tidak ada plugin auth** (`auth.client.js` dan `auth.server.ts` sudah dihapus).
+- **`useState('auth.user', () => null)`** di `useAuth()` — state awal null.
+- State terisi hanya bila:
+  - **Login/register/callback** set `user.value` dari response API, atau
+  - **Pemanggilan eksplisit** `useAuth().fetchUser()` (GET /user) — mis. di layout atau `onMounted` di halaman yang butuh user.
+- **Server middleware** hanya set **`event.context.user`** (dari JWT) untuk redirect; tidak mengisi `useState('auth.user')`.
 
-Ringkas: **Middleware → event.context.user → plugin server isi useState → payload → client.** User global state terisi tanpa hit API.
+Ringkas: **Tidak ada auto-fill.** Panggil **`fetchUser()`** di layout atau halaman yang perlu menampilkan user (mis. header).
+
+---
+
+## API endpoint untuk profile user (sudah ada & oke)
+
+- **GET /api/v1/user/profile**
+  - **Lokasi:** `api/main.go` → `user := api.Group("/user")`, `user.Use(middleware.AuthMiddleware())`, `user.GET("/profile", handler.GetUserProfile(db))`
+  - **Auth:** `AuthMiddleware()` — token dari header `Authorization: Bearer <token>` atau cookie **`auth_token`**
+  - **Handler:** `api/handler/user.go` → `GetUserProfile` — baca `user_id` & `user_type` dari context (JWT), query ke tabel archers/organizations/clubs/sellers, return `uuid`, `email`, `full_name`, `user_type`, `avatar_url`, `logo_url`, `has_password` (avatar_url & logo_url sudah di-mask pakai `utils.MaskMediaURL`)
+  - **Response:** 200 + JSON user, atau 401 jika tidak/token invalid, atau 404 jika user tidak ketemu
+
+- **GET /api/v1/user** (untuk `useAuth().fetchUser()`)
+  - **Handler:** `api/handler/auth_archeryhub.go` → `GetCurrentUser` — return lebih banyak field (username, slug, phone, bio, achievements, dll)
+  - Juga pakai `AuthMiddleware()` dan cookie `auth_token`
+
+Keduanya sudah ada; panggil dari client (atau server) sesuai kebutuhan.
 
 ---
 

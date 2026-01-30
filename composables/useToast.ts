@@ -1,42 +1,86 @@
-import { ref } from 'vue'
+// Toast notification composable
+// useState is Nuxt's built-in (auto-imported), readonly from Vue
+import { readonly } from 'vue'
 
 export type ToastType = 'success' | 'error' | 'warning' | 'info'
 
-export interface Toast {
-    id: number
-    message: string
-    type: ToastType
-    duration?: number
+export interface ToastConfig {
+  message: string
+  type?: ToastType
+  duration?: number
+  action?: unknown
 }
 
-const toasts = ref<Toast[]>([])
-let counter = 0
+export interface Toast {
+  id: number
+  message: string
+  type: ToastType
+  duration: number
+  action?: unknown
+}
 
 export const useToast = () => {
-    const addToast = (message: string, type: ToastType = 'info', duration = 5000) => {
-        const id = counter++
-        toasts.value.push({ id, message, type, duration })
+  const toasts = useState<Toast[]>('toasts', () => [])
 
-        if (duration > 0) {
-            setTimeout(() => {
-                removeToast(id)
-            }, duration)
-        }
+  const addToast = (
+    messageOrConfig: string | ToastConfig,
+    type: ToastType = 'info',
+    duration = 5000
+  ): number => {
+    const id = Date.now()
+
+    let toast: Toast
+    if (typeof messageOrConfig === 'string') {
+      toast = {
+        id,
+        message: messageOrConfig,
+        type,
+        duration
+      }
+    } else {
+      toast = {
+        id,
+        message: messageOrConfig.message,
+        type: messageOrConfig.type ?? type,
+        duration: messageOrConfig.duration ?? duration,
+        action: messageOrConfig.action
+      }
     }
 
-    const removeToast = (id: number) => {
-        const index = toasts.value.findIndex(t => t.id === id)
-        if (index !== -1) {
-            toasts.value.splice(index, 1)
-        }
+    toasts.value.push(toast)
+
+    if (toast.duration > 0) {
+      setTimeout(() => {
+        removeToast(id)
+      }, toast.duration)
     }
 
-    return {
-        toasts,
-        success: (msg: string, duration?: number) => addToast(msg, 'success', duration),
-        error: (msg: string, duration?: number) => addToast(msg, 'error', duration),
-        warning: (msg: string, duration?: number) => addToast(msg, 'warning', duration),
-        info: (msg: string, duration?: number) => addToast(msg, 'info', duration),
-        removeToast
+    return id
+  }
+
+  const removeToast = (id: number): void => {
+    const index = toasts.value.findIndex((toast) => toast.id === id)
+    if (index > -1) {
+      toasts.value.splice(index, 1)
     }
+  }
+
+  const success = (message: string, duration?: number): number =>
+    addToast(message, 'success', duration)
+  const error = (message: string, duration?: number): number =>
+    addToast(message, 'error', duration)
+  const warning = (message: string, duration?: number): number =>
+    addToast(message, 'warning', duration)
+  const info = (message: string, duration?: number): number =>
+    addToast(message, 'info', duration)
+
+  return {
+    toasts: readonly(toasts),
+    addToast,
+    removeToast,
+    success,
+    error,
+    warning,
+    info
+  }
 }
