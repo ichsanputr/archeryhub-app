@@ -101,7 +101,8 @@
                                     placeholder="Asal Kota" icon="ph:map-pin" />
 
                                 <BaseSelect v-model="form.event_archer.gender" label="Jenis Kelamin"
-                                    :items="['Men', 'Women']" icon="ph:gender-intersex" />
+                                    :items="[{ title: 'Laki-laki', value: 'male' }, { title: 'Perempuan', value: 'female' }]"
+                                    icon="ph:gender-intersex" />
                             </div>
                         </template>
 
@@ -136,9 +137,6 @@
                                 <BaseSelect v-model="form.category_id" label="Kategori Event" required
                                     placeholder="Pilih Kategori" icon="ph:trophy" :items="categories" item-title="label"
                                     item-value="id" />
-
-                                <BaseInput v-model.number="form.session" type="number" label="Sesi" placeholder="1-4"
-                                    icon="ph:timer" min="1" max="4" />
                             </div>
                         </div>
                     </div>
@@ -288,7 +286,6 @@ const statusOptions = [
 
 const form = reactive({
     category_id: '',
-    session: null,
     status: 'Menunggu Acc',
     payment_amount: 0,
     payment_proof_urls: [],
@@ -316,7 +313,6 @@ const fetchParticipant = async () => {
             participant.value = found
             // Populate form
             form.category_id = found.category_id
-            form.session = found.session || null
             form.status = found.status || 'Menunggu Acc'
             form.payment_amount = found.payment_amount || 0
             form.payment_proof_urls = found.payment_proof_urls ? found.payment_proof_urls.split(',') : []
@@ -393,7 +389,6 @@ const handleSubmit = async () => {
         // Update participant via API
         const payload = {
             category_id: form.category_id,
-            session: form.session || null,
             status: form.status,
             payment_amount: form.payment_amount || 0,
             payment_proof_urls: form.payment_proof_urls
@@ -407,9 +402,11 @@ const handleSubmit = async () => {
             })
         }
 
-        await put(`/events/${eventId}/participants/${participantId}`, payload)
+        // Use stable UUID if available, otherwise fallback to route param
+        const targetId = participant.value?.id || participantId
+        await put(`/events/${eventId}/participants/${targetId}`, payload)
         toast.success('Peserta berhasil diupdate')
-        router.push(`/dashboard/events/${eventId}/participants`)
+        router.push(`/dashboard/events/${eventId}/participants/${targetId}`)
     } catch (error) {
         console.error('Failed to update participant:', error)
         const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || 'Gagal mengupdate peserta'

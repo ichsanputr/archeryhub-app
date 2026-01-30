@@ -118,8 +118,12 @@
                         <div
                             class="flex items-center gap-4 p-5 bg-gray-50 rounded-2xl border border-gray-100 relative z-10">
                             <div
-                                class="h-16 w-16 rounded-xl bg-white shadow-sm flex items-center justify-center text-navy font-bold text-xl uppercase border border-gray-100">
-                                {{participant.full_name?.split(' ').map(n => n[0]).join('') || 'U'}}
+                                class="h-16 w-16 rounded-xl bg-white shadow-sm flex items-center justify-center text-navy font-bold text-xl uppercase border border-gray-100 overflow-hidden">
+                                <img v-if="participant.avatar_url" :src="participant.avatar_url"
+                                    class="w-full h-full object-cover">
+                                <template v-else>
+                                    {{participant.full_name?.split(' ').map(n => n[0]).join('') || 'U'}}
+                                </template>
                             </div>
                             <div>
                                 <div class="flex items-center gap-2 mb-1">
@@ -151,19 +155,8 @@
                                     class="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center text-black transition-transform">
                                     <Icon icon="ph:trophy-bold" class="text-lg" />
                                 </div>
-                                <p class="font-bold tracking-tight">{{ getCategoryName(participant) }}</p>
-                            </div>
-                        </div>
 
-                        <div>
-                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-1.5 opacity-70">
-                                Sesi Lomba</p>
-                            <div class="flex items-center gap-2.5 text-slate-600">
-                                <div
-                                    class="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center text-black transition-transform">
-                                    <Icon icon="ph:timer-bold" class="text-lg" />
-                                </div>
-                                <p class="font-bold tracking-tight">Sesi {{ participant?.session || '-' }}</p>
+                                <p class="font-bold tracking-tight">{{ getCategoryName(participant) }}</p>
                             </div>
                         </div>
 
@@ -175,8 +168,7 @@
                                     class="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center text-black transition-transform">
                                     <Icon icon="ph:target-bold" class="text-lg" />
                                 </div>
-                                <p class="font-bold tracking-tight">{{ participant?.target_number || 'Belum Ditentukan'
-                                    }}</p>
+                                <p class="font-bold tracking-tight">{{ targetNumberText }}</p>
                             </div>
                         </div>
 
@@ -188,7 +180,8 @@
                                     class="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center text-black transition-transform">
                                     <Icon icon="ph:calendar-check-bold" class="text-lg" />
                                 </div>
-                                <p class="font-bold tracking-tight">{{ formatDate(participant?.registration_date) }}</p>
+                                <p class="font-bold tracking-tight">{{
+                                    formatDate(participant?.registration_date) }}</p>
                             </div>
                         </div>
                     </div>
@@ -218,7 +211,8 @@
                                 <p class="text-gray-400 font-bold text-xs uppercase tracking-wider mb-2">Jumlah
                                     Pembayaran
                                 </p>
-                                <p class="text-navy font-black text-lg">Rp {{ formatCurrency(form.payment_amount || 0)
+                                <p class="text-navy font-black text-lg">Rp {{ formatCurrency(form.payment_amount
+                                    || 0)
                                 }}</p>
                             </div>
                         </div>
@@ -251,7 +245,8 @@
                             <div v-else
                                 class="p-8 bg-gray-50 rounded-xl border border-dashed border-gray-200 text-center text-gray-400">
                                 <Icon icon="ph:image-slash" class="text-3xl mx-auto mb-2 opacity-50" />
-                                <p class="text-xs font-bold uppercase tracking-widest opacity-60">Belum ada bukti</p>
+                                <p class="text-xs font-bold uppercase tracking-widest opacity-60">Belum ada
+                                    bukti</p>
                             </div>
                         </div>
                     </div>
@@ -297,7 +292,7 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import QrcodeVue from 'qrcode.vue'
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
@@ -321,10 +316,13 @@ const categories = ref([])
 
 const form = reactive({
     category_id: '',
-    session: null,
     status: 'Menunggu Acc',
     payment_amount: 0,
     payment_proof_urls: []
+})
+
+const targetNumberText = computed(() => {
+    return participant.value?.target_number || 'Belum Ditentukan'
 })
 
 const fetchParticipant = async () => {
@@ -338,7 +336,6 @@ const fetchParticipant = async () => {
             participant.value = found
             // Populate form
             form.category_id = found.category_id
-            form.session = found.session || null
             form.status = found.status || 'Menunggu Acc'
             form.payment_amount = found.payment_amount || 0
             form.payment_proof_urls = found.payment_proof_urls ? found.payment_proof_urls.split(',') : []
