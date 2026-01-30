@@ -32,8 +32,8 @@
                             class="text-lg font-bold text-navy mb-2 leading-snug group-hover:text-primary transition-colors font-display">
                             {{ live.name }}
                         </h3>
-                        <div class="flex items-start gap-2 text-gray-500 text-sm mb-4">
-                            <span class="material-symbols-outlined text-lg mt-0.5">location_on</span>
+                        <div class="flex items-center gap-2 text-gray-500 text-sm mb-4">
+                            <Icon icon="mi:location" class="text-lg" />
                             <span class="truncate">{{ live.location }}</span>
                         </div>
                         <div class="mt-auto">

@@ -54,18 +54,12 @@
                                     <Icon icon="ph:globe-bold" />
                                     Website
                                 </a>
-                                <button class="p-3 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all">
-                                    <Icon icon="ph:share-network-bold" class="text-xl text-gray-600" />
+                                <button @click="sharePage"
+                                    class="p-3 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all group relative"
+                                    title="Bagikan">
+                                    <Icon icon="ph:share-network-bold"
+                                        class="text-xl text-gray-600 group-hover:text-primary transition-colors" />
                                 </button>
-                            </div>
-                        </div>
-
-                        <!-- Stats Bar -->
-                        <div class="flex flex-wrap items-center gap-4 md:gap-8 mt-8 pt-8 border-t border-gray-100">
-                            <div class="text-center sm:text-left">
-                                <p class="text-2xl md:text-3xl font-black text-navy">{{ events.length }}</p>
-                                <p class="text-[10px] md:text-sm text-gray-400 font-bold uppercase tracking-wide">
-                                    Event</p>
                             </div>
                         </div>
                     </div>
@@ -131,6 +125,30 @@
                                     {{ statusLabel(event.status) }}
                                 </span>
                             </NuxtLink>
+                        </div>
+
+                        <!-- Pagination -->
+                        <div v-if="totalPages > 1" class="flex items-center justify-center gap-2 mt-8">
+                            <button @click="page--" :disabled="page === 1"
+                                class="p-2 rounded-lg border border-gray-200 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors">
+                                <Icon icon="ph:caret-left-bold" />
+                            </button>
+
+                            <div class="flex items-center gap-1">
+                                <button v-for="p in totalPages" :key="p" @click="page = p" :class="[
+                                    'w-10 h-10 rounded-lg font-bold text-sm transition-all',
+                                    page === p
+                                        ? 'bg-navy text-white shadow-md'
+                                        : 'text-gray-500 hover:bg-gray-100'
+                                ]">
+                                    {{ p }}
+                                </button>
+                            </div>
+
+                            <button @click="page++" :disabled="page === totalPages"
+                                class="p-2 rounded-lg border border-gray-200 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors">
+                                <Icon icon="ph:caret-right-bold" />
+                            </button>
                         </div>
                     </div>
 
@@ -228,8 +246,8 @@
                         </h3>
                         <div class="space-y-4">
                             <div v-if="org.whatsapp_no" class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center">
-                                    <Icon icon="ph:whatsapp-logo-fill" class="text-xl text-green-500" />
+                                <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
+                                    <Icon icon="ph:whatsapp-logo-fill" class="text-lg text-gray-600" />
                                 </div>
                                 <div>
                                     <p class="text-gray-400 text-xs font-bold uppercase">WhatsApp</p>
@@ -237,8 +255,8 @@
                                 </div>
                             </div>
                             <div v-if="org.email" class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center">
-                                    <Icon icon="ph:envelope-fill" class="text-xl text-red-400" />
+                                <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
+                                    <Icon icon="ph:envelope-fill" class="text-lg text-gray-600" />
                                 </div>
                                 <div>
                                     <p class="text-gray-400 text-xs font-bold uppercase">Email</p>
@@ -246,8 +264,8 @@
                                 </div>
                             </div>
                             <div v-if="org.address" class="flex items-center gap-4">
-                                <div class="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center">
-                                    <Icon icon="ph:map-pin-fill" class="text-xl text-orange-400" />
+                                <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
+                                    <Icon icon="ph:map-pin-fill" class="text-lg text-gray-600" />
                                 </div>
                                 <div>
                                     <p class="text-gray-400 text-xs font-bold uppercase">Alamat</p>
@@ -286,22 +304,85 @@
                         </div>
                     </div>
 
-                    <!-- Contact Person -->
-                    <div v-if="org.contact_person_name"
-                        class="bg-gradient-to-br from-navy to-navy-light rounded-2xl p-6 text-white shadow-sm">
-                        <h3 class="font-black mb-4 flex items-center gap-2">
-                            <Icon icon="ph:user-circle-bold" class="text-primary" />
-                            Kontak Person
-                        </h3>
-                        <p class="font-bold text-lg">{{ org.contact_person_name }}</p>
-                        <p v-if="org.contact_person_email" class="text-sm text-blue-200">{{ org.contact_person_email }}
-                        </p>
-                        <p v-if="org.contact_person_phone" class="text-sm text-blue-200">{{ org.contact_person_phone }}
-                        </p>
-                    </div>
                 </div>
             </div>
         </section>
+
+        <!-- Share Dialog (Custom Modal) -->
+        <div v-if="isShareOpen" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <!-- Overlay -->
+            <div @click="isShareOpen = false" class="absolute inset-0 bg-navy/60 backdrop-blur-sm transition-opacity">
+            </div>
+
+            <!-- Modal -->
+            <div
+                class="relative w-full max-w-md transform overflow-hidden rounded-3xl bg-white p-8 text-left align-middle shadow-2xl transition-all">
+                <div class="flex items-center justify-between mb-6 text-left">
+                    <h3 class="text-xl font-black text-navy">
+                        Bagikan Organisasi
+                    </h3>
+                    <button @click="isShareOpen = false" class="text-gray-400 hover:text-navy transition-colors">
+                        <Icon icon="ph:x-bold" class="text-xl" />
+                    </button>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl">
+                        <div class="w-12 h-12 rounded-xl bg-white shadow-sm overflow-hidden shrink-0">
+                            <img v-if="org.avatar_url" :src="org.avatar_url" class="w-full h-full object-cover" />
+                            <div v-else
+                                class="w-full h-full bg-primary flex items-center justify-center font-black text-navy">
+                                {{ org.name?.charAt(0) }}
+                            </div>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <p class="font-bold text-navy truncate">{{ org.name }}</p>
+                            <p class="text-xs text-gray-400 truncate">{{ org.city }}</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-4 gap-4">
+                        <button @click="shareTo('whatsapp')" class="flex flex-col items-center gap-2 group">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-green-50 text-green-500 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white transition-all">
+                                <Icon icon="ph:whatsapp-logo-fill" class="text-2xl" />
+                            </div>
+                            <span class="text-[10px] font-bold text-gray-500">WhatsApp</span>
+                        </button>
+                        <button @click="shareTo('facebook')" class="flex flex-col items-center gap-2 group">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all">
+                                <Icon icon="ph:facebook-logo-fill" class="text-2xl" />
+                            </div>
+                            <span class="text-[10px] font-bold text-gray-500">Facebook</span>
+                        </button>
+                        <button @click="shareTo('twitter')" class="flex flex-col items-center gap-2 group">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-sky-50 text-sky-500 flex items-center justify-center group-hover:bg-sky-500 group-hover:text-white transition-all">
+                                <Icon icon="ph:twitter-logo-fill" class="text-2xl" />
+                            </div>
+                            <span class="text-[10px] font-bold text-gray-500">Twitter</span>
+                        </button>
+                        <button @click="copyLink" class="flex flex-col items-center gap-2 group">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-gray-50 text-gray-600 flex items-center justify-center group-hover:bg-navy group-hover:text-white transition-all">
+                                <Icon icon="ph:link-bold" class="text-2xl" />
+                            </div>
+                            <span class="text-[10px] font-bold text-gray-500">{{ copied ? 'Tersalin' : 'Salin' }}</span>
+                        </button>
+                    </div>
+
+                    <div class="relative group mt-4">
+                        <input type="text" readonly :value="shareUrl"
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-bold text-gray-500 outline-none" />
+                        <button @click="copyLink"
+                            class="absolute right-2 top-1.5 px-3 py-1.5 bg-white border border-gray-100 rounded-lg text-[10px] font-black hover:bg-gray-50 transition-colors shadow-sm">
+                            {{ copied ? 'Berhasil' : 'Salin' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -317,11 +398,17 @@ definePageMeta({
 const route = useRoute()
 const config = useRuntimeConfig()
 const apiBaseUrl = config.public.apiBaseUrl
+const page = ref(1)
+const isShareOpen = ref(false)
+const copied = ref(false)
+const shareUrl = computed(() => typeof window !== 'undefined' ? window.location.href : '')
 
 const { data: orgResponse, pending: isLoading } = await useAsyncData(
     `org-${route.params.slug}`,
-    () => $fetch(`${apiBaseUrl}/organizations/${route.params.slug}`),
-    { server: true }
+    () => $fetch(`${apiBaseUrl}/organizations/${route.params.slug}`, {
+        params: { page: page.value, limit: 5 }
+    }),
+    { watch: [page], server: true }
 )
 
 const pageSettings = computed(() => {
@@ -348,7 +435,42 @@ const org = computed(() => {
 })
 
 const events = computed(() => orgResponse.value?.events || orgResponse.value?.data?.events || [])
+const totalEvents = computed(() => orgResponse.value?.total_events || orgResponse.value?.data?.total_events || 0)
+const totalPages = computed(() => Math.ceil(totalEvents.value / 5))
 
+const sharePage = () => {
+    if (navigator.share) {
+        navigator.share({
+            title: org.value.name,
+            text: org.value.description,
+            url: window.location.href
+        }).catch(() => {
+            isShareOpen.value = true
+        })
+    } else {
+        isShareOpen.value = true
+    }
+}
+
+const copyLink = () => {
+    navigator.clipboard.writeText(shareUrl.value)
+    copied.value = true
+    setTimeout(() => copied.value = false, 2000)
+}
+
+const shareTo = (platform) => {
+    const text = encodeURIComponent(`Cek profil ${org.value.name} di Archeryhub!`)
+    const url = encodeURIComponent(shareUrl.value)
+
+    let shareLink = ''
+    switch (platform) {
+        case 'whatsapp': shareLink = `https://wa.me/?text=${text}%20${url}`; break;
+        case 'facebook': shareLink = `https://www.facebook.com/sharer/sharer.php?u=${url}`; break;
+        case 'twitter': shareLink = `https://twitter.com/intent/tweet?text=${text}&url=${url}`; break;
+    }
+
+    if (shareLink) window.open(shareLink, '_blank')
+}
 
 const hasSocialMedia = computed(() => {
     return org.value.social_instagram || org.value.social_facebook || org.value.social_twitter

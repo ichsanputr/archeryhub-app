@@ -1,7 +1,44 @@
 <template>
     <div class="space-y-6">
-        <!-- Category Selector -->
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+        <!-- Manual Results / Files -->
+        <div v-if="results && results.length > 0" class="space-y-4">
+            <div class="bg-navy rounded-3xl p-8 md:p-10 shadow-lg relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-primary/10 rounded-full blur-3xl"></div>
+
+                <div class="relative z-10">
+                    <h3 class="text-2xl font-black text-white mb-2 flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-2xl bg-primary/20 flex items-center justify-center">
+                            <Icon icon="ph:file-pdf-duotone" class="text-2xl text-primary" />
+                        </div>
+                        Hasil Scoring Manual
+                    </h3>
+                    <p class="text-white/60 text-sm font-medium mb-8">Download berkas hasil pertandingan resmi yang
+                        diunggah oleh penyelenggara.</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <a v-for="(file, fIdx) in results" :key="fIdx" :href="getImageUrl(file.url)" target="_blank"
+                            class="flex items-center gap-4 p-5 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 hover:border-primary/50 transition-all group">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-navy transition-all">
+                                <Icon :icon="getFileIcon(file.url)" class="text-2xl" />
+                            </div>
+                            <div class="flex-grow min-w-0">
+                                <h4 class="text-white font-bold truncate group-hover:text-primary transition-colors">{{
+                                    file.name || 'Berkas Hasil' }}</h4>
+                                <p class="text-white/40 text-[10px] font-black uppercase tracking-wider mt-0.5">{{
+                                    getFileType(file.url) }}</p>
+                            </div>
+                            <Icon icon="ph:download-simple-bold"
+                                class="text-white/20 group-hover:text-primary transition-colors" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Selector (Only show if no manual results or explicitly requested) -->
+        <div v-if="(!results || results.length === 0)"
+            class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
             <div class="flex items-center justify-between mb-4">
                 <h3 class="text-xl font-bold text-navy">Pilih Kategori</h3>
             </div>
@@ -17,8 +54,8 @@
             </div>
         </div>
 
-        <!-- Qualification Results -->
-        <div v-if="selectedCategoryId && showQualification"
+        <!-- Qualification Results (Only show if category is selected and no manual results) -->
+        <div v-if="(!results || results.length === 0) && selectedCategoryId && showQualification"
             class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
             <h3 class="text-xl font-bold text-navy mb-6">Hasil Kualifikasi</h3>
             <div class="overflow-x-auto">
@@ -65,27 +102,14 @@
                                 </span>
                             </td>
                         </tr>
-                        <tr v-if="qualificationResults.length === 0">
-                            <td colspan="5" class="px-4 py-8 text-center text-gray-400 italic">
-                                Belum ada hasil kualifikasi untuk kategori ini.
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Elimination Bracket -->
-        <div v-if="selectedCategoryId && showElimination"
-            class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
-            <h3 class="text-xl font-bold text-navy mb-6">Bagan Eliminasi</h3>
-            <div class="text-center py-12 text-gray-400 italic">
-                Bagan eliminasi akan ditampilkan di sini setelah kualifikasi selesai.
-            </div>
-        </div>
-
         <!-- Empty State -->
-        <div v-if="!selectedCategoryId" class="bg-white rounded-2xl p-12 shadow-sm border border-gray-100 text-center">
+        <div v-if="(!results || results.length === 0) && !selectedCategoryId"
+            class="bg-white rounded-2xl p-12 shadow-sm border border-gray-100 text-center">
             <div class="h-24 w-24 bg-gray-50 rounded-full mx-auto flex items-center justify-center mb-6">
                 <Icon icon="ph:trophy" class="text-5xl text-gray-300" />
             </div>
@@ -106,8 +130,29 @@ const props = defineProps({
     eventId: {
         type: String,
         required: true
+    },
+    results: {
+        type: Array,
+        default: () => []
     }
 })
+
+const getFileIcon = (url) => {
+    if (!url) return 'ph:file-bold'
+    const ext = url.split('.').pop().toLowerCase()
+    if (['pdf'].includes(ext)) return 'ph:file-pdf-duotone'
+    if (['xls', 'xlsx', 'csv'].includes(ext)) return 'ph:file-xls-duotone'
+    if (['jpg', 'jpeg', 'png', 'webp'].includes(ext)) return 'ph:file-image-duotone'
+    return 'ph:file-bold'
+}
+
+const getFileType = (url) => {
+    if (!url) return 'DOCUMENT'
+    const ext = url.split('.').pop().toUpperCase()
+    return ext || 'DOCUMENT'
+}
+
+const getImageUrl = (url) => useImageOrDefault(url)
 
 const config = useRuntimeConfig()
 const apiBaseUrl = config.public.apiBaseUrl

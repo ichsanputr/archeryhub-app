@@ -101,6 +101,7 @@
 import { Icon } from '@iconify/vue'
 
 const route = useRoute()
+const slug = route.params.slug
 const config = useRuntimeConfig()
 const apiBaseUrl = config.public.apiBaseUrl
 
@@ -146,7 +147,8 @@ const { data: participantsData, pending: isLoading, refresh } = await useAsyncDa
 )
 
 const athletes = computed(() => {
-    const participants = participantsData.value?.participants || []
+    if (!participantsData.value) return []
+    const participants = participantsData.value.participants || []
     return participants.map(p => ({
         id: p.id || p.archer_id,
         name: p.full_name || 'Archery Athlete',

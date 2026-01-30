@@ -36,7 +36,7 @@
                                         {{ featureItems[activeFeature].title }}
                                     </h3>
                                     <div class="text-white/80 text-sm sm:text-base leading-relaxed font-light">
-                                        kontol {{ featureItems[activeFeature].longDescription }}
+                                        {{ featureItems[activeFeature].longDescription }}
                                     </div>
                                 </div>
                             </Transition>

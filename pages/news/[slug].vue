@@ -141,7 +141,7 @@
                     <div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/20 rounded-full blur-2xl"></div>
                     <h3 class="text-lg font-bold mb-6 flex items-center gap-2 relative z-10">
                         <span class="material-symbols-outlined text-primary">emoji_events</span>
-                        Turnamen Mendatang
+                        Event Terbaru
                     </h3>
                     <div class="space-y-4 relative z-10">
                         <div v-for="t in upcomingTournaments" :key="t.id"
@@ -162,7 +162,7 @@
                     </div>
                     <NuxtLink to="/events"
                         class="inline-flex items-center gap-2 text-primary text-xs font-black mt-6 hover:text-white transition-all group">
-                        Lihat Kalender Turnamen
+                        Lihat Kalender Event
                         <Icon icon="ph:arrow-right-bold"
                             class="transform group-hover:translate-x-1 transition-transform" />
                     </NuxtLink>

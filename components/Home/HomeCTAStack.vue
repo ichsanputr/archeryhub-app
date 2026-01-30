@@ -30,8 +30,8 @@
                 <div class="w-10 h-10 rounded-xl bg-navy flex items-center justify-center text-white mb-5">
                     <span class="material-symbols-outlined text-xl">domain_add</span>
                 </div>
-                <h3 class="text-xl sm:text-2xl font-bold text-navy mb-2 font-display">Klub & Organisasi</h3>
-                <p class="text-text-sub text-sm mb-6">Kelola klub atau federasi kamu pakai cara modern.</p>
+                <h3 class="text-xl sm:text-2xl font-bold text-navy mb-2 font-display">Organisasi</h3>
+                <p class="text-text-sub text-sm mb-6">Kelola organisasi kamu, buat event sebanyaknya.</p>
             </div>
             <div class="relative z-10">
                 <NuxtLink to="/auth/register?type=organization"

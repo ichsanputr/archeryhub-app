@@ -82,52 +82,79 @@
                 <Icon icon="ph:package" class="text-5xl text-gray-300 mb-4" />
                 <p class="text-gray-500 font-medium">Tidak ada produk ditemukan</p>
             </div>
-            <div v-else class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+            <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                <!-- Product Card Premium -->
                 <NuxtLink v-for="product in filteredProducts" :key="product.id"
                     :to="`/products/${product.slug || product.id}`"
-                    class="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-sm hover:border-primary/30 transition-all group cursor-pointer block">
+                    class="bg-white rounded-3xl border border-gray-100 flex flex-col hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] hover:border-primary/50 transition-all group overflow-hidden h-full">
 
-                    <!-- Product Image -->
-                    <div class="relative aspect-square bg-gray-100 overflow-hidden">
+                    <!-- Product Image Container -->
+                    <div class="relative pt-[100%] bg-gray-50 overflow-hidden">
                         <img :src="useImageOrDefault(product.image_url)" :alt="product.name"
-                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                            class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+
+                        <!-- Premium Overlays -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                        </div>
 
                         <!-- Sale Badge -->
-                        <div v-if="product.sale_price" class="absolute top-3 left-3">
-                            <span class="px-2.5 py-1 bg-red-500 text-white text-xs font-bold rounded-full">
-                                SALE
+                        <div v-if="product.sale_price" class="absolute top-4 left-4 z-10">
+                            <div
+                                class="px-3 py-1 bg-red-500 text-white text-[10px] font-black rounded-lg shadow-lg flex items-center gap-1">
+                                <Icon icon="ph:tag-fill" />
+                                PROMO
+                            </div>
+                        </div>
+
+                        <div
+                            class="absolute bottom-4 left-4 right-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 z-10">
+                            <div
+                                class="w-full py-2.5 bg-white/90 backdrop-blur-md text-navy text-xs font-black rounded-xl text-center shadow-lg flex items-center justify-center gap-2">
+                                <Icon icon="ph:arrow-square-out-bold" class="text-sm" />
+                                LIHAT DETAIL
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Content -->
+                    <div class="p-6 flex flex-col flex-1">
+                        <!-- Category & Status -->
+                        <div class="flex items-center justify-between mb-3">
+                            <span
+                                class="text-[10px] font-black text-primary uppercase tracking-widest bg-primary/5 px-2 py-0.5 rounded-md">
+                                {{ product.category }}
+                            </span>
+                            <span v-if="product.stock > 0"
+                                class="text-[10px] font-bold text-green-500 flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                                Tersedia
                             </span>
                         </div>
 
-                        <!-- Wishlist Button -->
-                        <button
-                            class="absolute top-3 right-3 p-2 bg-white/90 backdrop-blur-sm rounded-full opacity-0 group-hover:opacity-100 transition-opacity hover:bg-primary hover:text-navy">
-                            <Icon icon="ph:heart" class="text-lg" />
-                        </button>
-                    </div>
-
-                    <!-- Product Info -->
-                    <div class="p-4">
-                        <!-- Name -->
+                        <!-- Title -->
                         <h3
-                            class="font-bold text-navy text-sm line-clamp-2 mb-2 group-hover:text-primary transition-colors">
+                            class="font-black text-navy text-sm md:text-base mb-3 line-clamp-2 leading-snug group-hover:text-primary transition-colors h-10">
                             {{ product.name }}
                         </h3>
 
-                        <!-- Price -->
-                        <div class="flex items-end gap-2">
-                            <span class="text-lg font-black text-navy">
-                                Rp {{ formatPrice(product.sale_price || product.price) }}
-                            </span>
-                            <span v-if="product.sale_price" class="text-sm text-gray-400 line-through">
-                                Rp {{ formatPrice(product.price) }}
-                            </span>
-                        </div>
-
-                        <!-- Stock -->
-                        <div class="flex items-center gap-3 mt-3 text-xs text-gray-400">
-                            <span v-if="product.stock > 0">Stok: {{ product.stock }}</span>
-                            <span v-else class="text-red-500">Stok Habis</span>
+                        <!-- Price Section -->
+                        <div class="mt-auto pt-4 border-t border-gray-50">
+                            <div class="flex flex-col">
+                                <span v-if="product.sale_price" class="text-[10px] text-gray-400 line-through mb-0.5">
+                                    Rp {{ formatPrice(product.price) }}
+                                </span>
+                                <div class="flex items-center justify-between">
+                                    <span
+                                        class="text-lg font-black text-navy group-hover:text-primary transition-colors">
+                                        Rp {{ formatPrice(product.sale_price || product.price) }}
+                                    </span>
+                                    <div
+                                        class="w-8 h-8 rounded-lg bg-gray-50 group-hover:bg-primary/10 flex items-center justify-center text-gray-400 group-hover:text-primary transition-all">
+                                        <Icon icon="ph:arrow-right-bold" class="text-xs" />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </NuxtLink>

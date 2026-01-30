@@ -192,7 +192,7 @@
                                     <div class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Juara 1
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{ displayValue(tournament.prizes?.first)
-                                        }}</div>
+                                    }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ firstPrizeCaption }}</div>
                                 </div>
                                 <div
@@ -210,7 +210,7 @@
                                     <div class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Juara 3
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{ displayValue(tournament.prizes?.third)
-                                        }}</div>
+                                    }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ thirdPrizeCaption }}</div>
                                 </div>
                             </div>
@@ -219,7 +219,8 @@
 
                     <TournamentScheduleTab v-else-if="activeTab === 'Jadwal Lomba'" :event-id="slug" />
                     <TournamentAthletesTab v-else-if="activeTab === 'Peserta'" />
-                    <TournamentResultsTab v-else-if="activeTab === 'Hasil'" :event-id="slug" />
+                    <TournamentResultsTab v-else-if="activeTab === 'Hasil'" :event-id="slug"
+                        :results="tournament.results" />
                     <TournamentVenueTab v-else-if="activeTab === 'Lokasi'" :venue="tournament.venue"
                         :address="tournament.address" :gmaps-link="tournament.gmaps_link" />
 

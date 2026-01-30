@@ -69,7 +69,10 @@ export default defineNuxtConfig({
   watch: ["data"],
   nitro: {
     minify: true,
-    debug: true
+    debug: true,
+    devProxy: {
+      host: 'localhost',
+    }
   },
   // Ensure proper client-side error handling
   experimental: {

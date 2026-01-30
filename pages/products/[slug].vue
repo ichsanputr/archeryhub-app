@@ -3,8 +3,10 @@
         <!-- Breadcrumb -->
         <div class="bg-white border-b border-gray-200 sticky top-0 z-30">
             <div class="container mx-auto px-4 max-w-7xl py-3 md:py-4">
-                <Breadcrumbs :items="[{ label: 'Marketplace', path: '/shop' }, { label: product.category }]"
-                    :current="product.name" />
+                <Breadcrumbs :items="[
+                    { label: 'Marketplace', path: '/products' },
+                    { label: breadcrumbCategory }
+                ]" :current="product.name" />
             </div>
         </div>
 
@@ -34,7 +36,7 @@
                         </div>
 
                         <!-- Zoom Button -->
-                        <button
+                        <button @click="isZoomOpen = true"
                             class="absolute bottom-4 right-4 p-3 bg-white/90 backdrop-blur-sm rounded-xl shadow-lg hover:bg-primary hover:text-navy transition-colors">
                             <Icon icon="ph:magnifying-glass-plus" class="text-xl" />
                         </button>
@@ -63,13 +65,11 @@
                             <span v-else class="font-bold text-red-600">
                                 Stok Habis
                             </span>
-                            <span class="text-gray-300">•</span>
-                            <span class="text-gray-500">{{ product.views || 0 }} dilihat</span>
                         </div>
                     </div>
 
                     <!-- Price -->
-                    <div class="bg-gray-50 rounded-2xl p-4 md:p-6 border border-gray-100">
+                    <div class="bg-gray-50 rounded-2xl py-4 md:py-6 border border-gray-100">
                         <div class="flex items-end gap-3 md:gap-4">
                             <span class="text-3xl md:text-4xl font-black text-navy">
                                 Rp {{ formatPrice(product.sale_price || product.price) }}
@@ -100,12 +100,9 @@
 
                     <!-- Actions (Desktop) -->
                     <div class="hidden sm:flex gap-4 pt-2">
-                        <BaseButton variant="outline" size="lg" icon="ph:chat-circle" class="flex-1">
-                            Chat Penjual
-                        </BaseButton>
                         <BaseButton @click="handleAddToCart" variant="primary" size="lg" icon="ph:shopping-cart"
-                            class="flex-1" :loading="isAddingToCart">
-                            + Keranjang
+                            class="w-full" :loading="isAddingToCart">
+                            Tambah ke Keranjang
                         </BaseButton>
                     </div>
 
@@ -115,17 +112,11 @@
                             class="w-full py-4 text-base font-black" :loading="isAddingToCart">
                             Tambah Keranjang
                         </BaseButton>
-                        <BaseButton variant="outline" size="lg" icon="ph:chat-circle" class="w-full py-4">
-                            Chat Penjual
-                        </BaseButton>
                     </div>
 
                     <!-- Sticky Mobile Bottom Bar -->
                     <div
                         class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 z-40 flex gap-3 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
-                        <BaseButton variant="outline" size="lg" icon="ph:chat-circle"
-                            class="flex-shrink-0 !w-14 !h-14 !p-0">
-                        </BaseButton>
                         <BaseButton @click="handleAddToCart" variant="primary" size="lg" icon="ph:shopping-cart"
                             class="flex-1 font-black text-sm" :loading="isAddingToCart">
                             Tambah Keranjang
@@ -152,7 +143,7 @@
                 </div>
 
                 <!-- Tab Content -->
-                <div v-if="activeTab === 'description'" class="prose max-w-none text-gray-700 pt-4">
+                <div v-if="activeTab === 'description'" class="prose max-w-none text-gray-700">
                     <div v-if="product.description" class="mb-6">
                         <h3 class="text-lg font-bold text-navy mb-3">Deskripsi</h3>
                         <p class="text-gray-700 whitespace-pre-line">{{ product.description }}</p>
@@ -171,6 +162,18 @@
             </div>
         </section>
 
+        <!-- Image Zoom Modal -->
+        <div v-if="isZoomOpen"
+            class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-navy/95 backdrop-blur-sm">
+            <button @click="isZoomOpen = false"
+                class="absolute top-6 right-6 text-white hover:text-primary transition-colors">
+                <Icon icon="ph:x-bold" class="text-3xl" />
+            </button>
+            <div class="max-w-4xl max-h-[90vh] w-full h-full flex items-center justify-center">
+                <img :src="selectedImage" class="max-w-full max-h-full object-contain" />
+            </div>
+        </div>
+
     </div>
 </template>
 
@@ -188,7 +191,14 @@ definePageMeta({
 const route = useRoute()
 const quantity = ref(1)
 const activeTab = ref('description')
+const isZoomOpen = ref(false)
 const { isLoggedIn, user } = useAuth()
+
+const breadcrumbCategory = computed(() => {
+    const cat = product.value?.category || ''
+    if (!cat) return ''
+    return cat.charAt(0).toUpperCase() + cat.slice(1)
+})
 
 const tabs = [
     { label: 'Deskripsi', value: 'description' },

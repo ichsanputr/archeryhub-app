@@ -559,7 +559,7 @@
             <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div class="p-5 border-b border-gray-100 bg-gray-50/50">
                     <h2 class="text-lg font-bold text-navy flex items-center gap-2">
-                        <Icon icon="ph:trophy" class="text-primary text-xl" />
+                        <Icon icon="iconoir:leaderboard" class="text-primary text-xl" />
                         Upload Hasil Lomba
                     </h2>
                     <p class="text-sm text-gray-500 mt-1">Upload dokumen hasil lomba (mendukung PDF, JPG, PNG). Anda
@@ -659,7 +659,7 @@ const tabs = [
     { id: 'media', name: 'Media', icon: 'ph:image' },
     { id: 'jadwal', name: 'Jadwal', icon: 'ph:calendar-bold' },
     { id: 'faq', name: 'FAQ', icon: 'ph:question' },
-    { id: 'hasil', name: 'Hasil', icon: 'ph:trophy' }
+    { id: 'hasil', name: 'Hasil', icon: 'iconoir:leaderboard' }
 ]
 
 // Media Library State

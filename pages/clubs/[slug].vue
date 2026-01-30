@@ -48,25 +48,6 @@
                                         Berdiri {{ club.established }}
                                     </span>
                                 </div>
-
-                                <!-- Club Stats -->
-                                <div class="flex items-center gap-8 md:gap-12 py-6 border-t border-gray-100">
-                                    <div>
-                                        <div class="text-2xl md:text-3xl font-black text-navy">{{ club.memberCount }}
-                                        </div>
-                                        <div
-                                            class="text-[10px] md:text-xs font-bold text-gray-400 uppercase tracking-widest">
-                                            Anggota</div>
-                                    </div>
-                                    <div class="w-px h-8 bg-gray-100"></div>
-                                    <div>
-                                        <div class="text-2xl md:text-3xl font-black text-navy">{{ club.achievements }}
-                                        </div>
-                                        <div
-                                            class="text-[10px] md:text-xs font-bold text-gray-400 uppercase tracking-widest">
-                                            Prestasi</div>
-                                    </div>
-                                </div>
                             </div>
 
                             <!-- Actions -->
@@ -130,31 +111,53 @@
                         </div>
                     </div>
 
-                    <!-- Recent Events -->
+                    <!-- Achievements Revamp -->
                     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
-                        <h2 class="font-black text-navy text-xl mb-5 flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                                <Icon icon="ph:trophy-bold" class="text-xl text-primary" />
+                        <div class="flex items-center justify-between mb-8">
+                            <h2 class="font-black text-navy text-xl flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-amber-400/10 flex items-center justify-center">
+                                    <Icon icon="ph:trophy-bold" class="text-xl text-amber-500" />
+                                </div>
+                                Prestasi Klub
+                            </h2>
+                            <div
+                                class="px-4 py-1.5 bg-gray-50 rounded-full border border-gray-100 text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                                Highlights
                             </div>
-                            Prestasi
-                        </h2>
-                        <div class="space-y-4">
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div v-for="event in club.recentEvents" :key="event.id"
-                                class="flex items-center gap-5 p-5 bg-gradient-to-r from-gray-50 to-white rounded-xl border border-gray-100 hover:border-primary/30 transition-all cursor-pointer">
+                                class="flex flex-col p-6 bg-white rounded-3xl border border-gray-100 hover:border-primary/40 hover:shadow-2xl hover:shadow-primary/10 transition-all group relative overflow-hidden">
+                                <!-- Decoration background -->
                                 <div
-                                    class="w-14 h-14 rounded-xl bg-navy flex items-center justify-center text-primary shrink-0">
-                                    <Icon icon="ph:trophy-fill" class="text-2xl" />
+                                    class="absolute -right-6 -top-6 w-24 h-24 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-all">
                                 </div>
-                                <div class="flex-1 min-w-0">
-                                    <h4 class="font-black text-navy text-lg">{{ event.name }}</h4>
-                                    <p class="text-sm text-gray-400 flex items-center gap-2">
-                                        <Icon icon="ph:calendar" />
-                                        {{ event.date }}
-                                    </p>
+
+                                <div class="flex items-start justify-between mb-6 relative z-10">
+                                    <div
+                                        class="w-12 h-12 rounded-2xl bg-navy flex items-center justify-center text-primary shadow-lg shadow-navy/20">
+                                        <Icon icon="ph:medal-fill" class="text-2xl" />
+                                    </div>
+                                    <div class="flex flex-col items-end">
+                                        <span
+                                            class="px-3 py-1 bg-primary text-navy text-[10px] font-black rounded-lg uppercase tracking-tight shadow-sm">
+                                            {{ event.result }}
+                                        </span>
+                                    </div>
                                 </div>
-                                <span
-                                    class="px-4 py-2 bg-green-50 text-green-600 text-sm font-black rounded-full border border-green-200">{{
-                                        event.result }}</span>
+
+                                <div class="relative z-10">
+                                    <h4
+                                        class="font-black text-navy text-lg leading-tight group-hover:text-primary transition-colors">
+                                        {{ event.name }}</h4>
+                                    <div class="flex items-center gap-3 mt-3 text-gray-400 text-xs font-bold">
+                                        <span class="flex items-center gap-1.5 px-2.5 py-1 bg-gray-50 rounded-md">
+                                            <Icon icon="ph:calendar-bold" class="text-primary" />
+                                            {{ event.date }}
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -168,19 +171,23 @@
                             Anggota
                         </h2>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <NuxtLink v-for="member in paginatedMembers" :key="member.id"
+                            <NuxtLink v-for="member in club.topMembers" :key="member.id"
                                 :to="`/archers/${member.slug || member.uuid}`"
-                                class="text-center p-5 rounded-xl border-2 border-gray-100 hover:border-primary hover:bg-primary/5 transition-all cursor-pointer group block">
+                                class="text-center p-5 rounded-2xl border border-gray-100 hover:border-primary/50 hover:bg-primary/5 hover:shadow-xl hover:shadow-primary/5 transition-all cursor-pointer group block bg-white">
                                 <div
-                                    class="w-18 h-18 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 mx-auto mb-4 flex items-center justify-center overflow-hidden border-2 border-white shadow-sm">
+                                    class="w-20 h-20 rounded-full bg-gradient-to-br from-gray-50 to-gray-100 mx-auto mb-4 flex items-center justify-center overflow-hidden border-2 border-white shadow-md group-hover:scale-105 transition-transform">
                                     <img v-if="member.avatar" :src="getImageUrl(member.avatar)" :alt="member.name"
                                         class="w-full h-full object-cover" />
                                     <Icon v-else icon="ph:user-bold"
-                                        class="text-3xl text-gray-400 group-hover:text-primary transition-colors" />
+                                        class="text-3xl text-gray-300 group-hover:text-primary transition-colors" />
                                 </div>
-                                <h4 class="font-black text-navy text-sm group-hover:text-primary transition-colors">{{
-                                    member.name }}</h4>
-                                <p class="text-xs text-gray-400 mt-1">{{ member.division }}</p>
+                                <h4
+                                    class="font-bold text-navy text-sm group-hover:text-primary transition-colors truncate px-1">
+                                    {{
+                                        member.name }}</h4>
+                                <p
+                                    class="text-[10px] font-black text-gray-400 uppercase tracking-wider mt-1.5 opacity-60">
+                                    {{ member.division || 'Archer' }}</p>
                             </NuxtLink>
                         </div>
 
@@ -230,13 +237,26 @@
                             </div>
                         </div>
 
-                        <!-- Section: Gallery -->
-                        <div v-if="section.type === 'gallery'" class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                            <div v-for="(img, iIdx) in (section.images ? section.images.split(',') : [])" :key="iIdx"
-                                class="aspect-square rounded-xl overflow-hidden bg-gray-100 border border-gray-100 group">
-                                <img :src="getImageUrl(img.trim())"
-                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                            </div>
+                        <!-- Section: Gallery with Swiper -->
+                        <div v-if="section.type === 'gallery'" class="relative group/swiper">
+                            <swiper :modules="[SwiperNavigation, SwiperPagination, SwiperAutoplay]" :slides-per-view="1"
+                                :space-between="20" :pagination="{ clickable: true }" :navigation="true"
+                                :autoplay="{ delay: 3000, disableOnInteraction: false }" :breakpoints="{
+                                    '640': { slidesPerView: 2 },
+                                    '1024': { slidesPerView: 3 }
+                                }" class="rounded-2xl !pb-12">
+                                <swiper-slide v-for="(img, iIdx) in (section.images ? section.images.split(',') : [])"
+                                    :key="iIdx">
+                                    <div
+                                        class="aspect-square rounded-2xl overflow-hidden bg-gray-100 border border-gray-100 group/img relative">
+                                        <img :src="getImageUrl(img.trim())"
+                                            class="w-full h-full object-cover group-hover/img:scale-110 transition-transform duration-700" />
+                                        <div
+                                            class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover/img:opacity-100 transition-opacity">
+                                        </div>
+                                    </div>
+                                </swiper-slide>
+                            </swiper>
                         </div>
                     </div>
                 </div>
@@ -350,6 +370,11 @@ import { Icon } from '@iconify/vue'
 import { ref, computed } from 'vue'
 import { useAuth } from '~/composables/useAuth'
 import { useToast } from '~/composables/useToast'
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import { Navigation as SwiperNavigation, Pagination as SwiperPagination, Autoplay as SwiperAutoplay } from 'swiper/modules'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
 
 definePageMeta({
     layout: 'landing'
@@ -362,14 +387,22 @@ const { isLoggedIn, user } = useAuth()
 const toast = useToast()
 const isJoining = ref(false)
 const membership = ref(null)
+const memberPage = ref(1)
+const memberLimit = 12
 
 // SSR: Fetch club data with useAsyncData
 const { data: clubData, error } = await useAsyncData(
     `club-${route.params.slug}`,
     async () => {
-        const response = await $fetch(`${config.public.apiBaseUrl}/clubs/${route.params.slug}`)
+        const response = await $fetch(`${config.public.apiBaseUrl}/clubs/${route.params.slug}`, {
+            params: {
+                member_page: memberPage.value,
+                member_limit: memberLimit
+            }
+        })
         return response
-    }
+    },
+    { watch: [memberPage] }
 )
 
 // Throw 404 if club not found
@@ -459,13 +492,7 @@ const shareClub = async () => {
 }
 
 // Member pagination
-const memberPage = ref(1)
-const itemsPerPage = 8
-const totalPages = computed(() => Math.ceil((club.value?.topMembers?.length || 0) / itemsPerPage))
-const paginatedMembers = computed(() => {
-    const start = (memberPage.value - 1) * itemsPerPage
-    return (club.value?.topMembers || []).slice(start, start + itemsPerPage)
-})
+const totalPages = computed(() => Math.ceil((club.value?.memberCount || 0) / memberLimit))
 
 // Transform API data to component format (SSR-computed)
 const club = computed(() => {
