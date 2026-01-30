@@ -23,8 +23,8 @@
     <!-- Scrollable Content -->
     <div class="flex-1 flex flex-col gap-1 overflow-y-auto no-scrollbar p-4">
 
-      <!-- Main Navigation (Menu Utama) - Hide when in event manage mode -->
-      <template v-if="!isEventManagePage">
+      <!-- Main Navigation (Menu Utama) - Hide when on any event sub-page (including edit) -->
+      <template v-if="!isOnEventSubPage">
         <div v-if="!isSidebarCollapsed" class="px-3 mb-2">
           <p class="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Menu Utama</p>
         </div>
@@ -44,7 +44,7 @@
 
       <!-- Dynamic Event Navigation (Manajemen Event) - Only for org/club/admin when in event scope -->
       <div v-if="eventId && canManageEvents" class="flex flex-col gap-1" :class="isEventManagePage ? '' : 'mt-4'">
-        <div v-if="!isEventManagePage" class="h-px bg-white/10 mb-2 mx-3"></div>
+        <div v-if="!isOnEventSubPage && !isEventManagePage" class="h-px bg-white/10 mb-2 mx-3"></div>
         <div v-if="!isSidebarCollapsed" class="px-3 mb-2">
           <p class="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Manajemen Event</p>
         </div>
@@ -104,6 +104,16 @@ watch(() => route.path, () => {
 })
 
 const eventId = computed(() => route.params.id)
+
+// Check if we're on any event sub-page (with event ID in path) - this includes edit, manage pages, etc.
+const isOnEventSubPage = computed(() => {
+  const path = route.path
+  if (!path.includes('/dashboard/events/')) return false
+  // Check if path matches /dashboard/events/:id/... pattern (has a sub-path after event ID)
+  const eventPathMatch = path.match(/\/dashboard\/events\/([^/]+)\/(.+)/)
+  return !!eventPathMatch // Return true if we're on any event sub-page
+})
+
 const isEventManagePage = computed(() => {
   // Check if we're on any event management page (overview, targets, qualification, elimination, etc.)
   const path = route.path

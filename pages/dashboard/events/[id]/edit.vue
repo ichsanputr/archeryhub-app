@@ -36,7 +36,7 @@
                                 </div>
                                 <BaseInput v-model="form.venue" label="Lokasi Venue"
                                     placeholder="Masukkan nama venue atau alamat" icon="la:place-of-worship" />
-                                <BaseSelect v-model="form.type" label="Disiplin" :items="disciplineItems" required
+                                <BaseSelect v-model="form.type" label="Tipe Lokasi" :items="disciplineItems" required
                                     :error="errors.type" @blur="validate('type', form.type, [rules.required()])" />
 
                                 <div class="md:col-span-2">
@@ -88,9 +88,6 @@
 
                         <FormSection icon="ph:gear" title="Pengaturan">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <BaseInput v-model.number="form.maxParticipants" label="Maksimal peserta" type="number"
-                                    placeholder="100" />
-
                                 <BaseSelect v-model="form.status" label="Status" :items="[
                                     { title: 'Draft (Belum dipublikasi)', value: 'draft' },
                                     { title: 'Published (Aktif)', value: 'published' },
@@ -152,7 +149,6 @@ const form = reactive({
     type: '',
     entryFee: 0,
     registrationDeadline: '',
-    maxParticipants: null,
     status: 'draft'
 })
 
@@ -186,7 +182,6 @@ onMounted(async () => {
             form.type = eventRes.discipline_id || ''
             form.entryFee = eventRes.entry_fee || 0
             form.registrationDeadline = formatToDatetimeLocal(eventRes.registration_deadline)
-            form.maxParticipants = eventRes.max_participants
             form.status = eventRes.status || 'draft'
         }
     } catch (err) {
@@ -259,7 +254,6 @@ const handleSubmit = async () => {
             end_date: formatToISO(form.endDate),
             description: form.description,
             entry_fee: form.entryFee,
-            max_participants: form.maxParticipants,
             status: form.status,
             registration_deadline: formatToISO(form.registrationDeadline),
             discipline_id: form.type

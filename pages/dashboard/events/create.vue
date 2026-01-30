@@ -170,9 +170,6 @@
 
           <FormSection icon="ph:gear" title="Pengaturan">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <BaseInput v-model.number="form.maxParticipants" label="Maksimal peserta" type="number"
-                placeholder="100" />
-
               <BaseSelect v-model="form.status" label="Status awal" :items="[
                 { title: 'Draft (Belum dipublikasi)', value: 'draft' },
                 { title: 'Published (Langsung aktif)', value: 'published' }
@@ -233,7 +230,6 @@ const form = reactive({
   categories: [],
   entryFee: 350000,
   registrationDeadline: '',
-  maxParticipants: null,
   status: 'draft',
   images: [],
   paymentMethods: []
@@ -399,7 +395,6 @@ const handleSubmit = async () => {
       end_date: formatToISO(form.endDate),
       description: form.description,
       entry_fee: form.entryFee,
-      max_participants: form.maxParticipants,
       status: form.status,
       registration_deadline: formatToISO(form.registrationDeadline),
       type: form.type,

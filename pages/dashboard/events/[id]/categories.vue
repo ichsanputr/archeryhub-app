@@ -102,32 +102,31 @@
             </div>
             <div v-else class="divide-y divide-gray-100">
                 <div v-for="category in categories" :key="category.id"
-                    class="p-6 hover:bg-gray-50 transition-colors group">
-                    <div class="flex items-start justify-between gap-4">
-                        <div class="flex-1">
-                            <div class="flex items-center gap-3 mb-2">
-                                <h3 class="text-lg font-bold text-navy">
-                                    {{ category.division_name }} - {{ category.category_name }} - {{ category.event_type_name }} - {{ category.gender_division_name }}
+                    class="p-4 sm:p-6 hover:bg-gray-50 transition-colors group">
+                    <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                        <div class="min-w-0 flex-1">
+                            <div class="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
+                                <h3 class="text-base sm:text-lg font-bold text-navy break-words min-w-0">
+                                    {{ category.division_name }} – {{ category.category_name }} – {{ category.event_type_name }} – {{ category.gender_division_name }}
                                 </h3>
                                 <span
                                     :class="category.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'"
-                                    class="px-2.5 py-0.5 rounded-full text-xs font-bold">
+                                    class="px-2.5 py-0.5 rounded-full text-xs font-bold shrink-0">
                                     {{ category.status === 'active' ? 'Aktif' : 'Nonaktif' }}
                                 </span>
                             </div>
-                            <div class="flex items-center gap-6 text-sm text-gray-500">
-                                <div class="flex items-center gap-2">
-                                    <Icon icon="ph:users" class="text-base" />
-                                    <span>Maks. Peserta: <strong class="text-navy">{{ category.max_participants ||
-                                            'Tidak terbatas' }}</strong></span>
+                            <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-6 text-sm text-gray-500">
+                                <div class="flex items-center gap-2 min-w-0">
+                                    <Icon icon="ph:users" class="text-base shrink-0" />
+                                    <span class="break-words">Maks. Peserta: <strong class="text-navy">{{ category.max_participants || 'Tidak terbatas' }}</strong></span>
                                 </div>
-                                <div class="flex items-center gap-2">
-                                    <Icon icon="ph:calendar" class="text-base" />
-                                    <span>Dibuat: {{ formatDate(category.created_at) }}</span>
+                                <div class="flex items-center gap-2 min-w-0">
+                                    <Icon icon="ph:calendar" class="text-base shrink-0" />
+                                    <span class="break-words">Dibuat: {{ formatDate(category.created_at) }}</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="flex items-center gap-2">
+                        <div class="flex justify-end sm:justify-start shrink-0 pt-2 sm:pt-0 border-t border-gray-100 sm:border-t-0">
                             <BaseButton variant="white" size="sm" icon="ph:pencil" @click="openEditDialog(category)">
                                 Edit
                             </BaseButton>
@@ -184,15 +183,6 @@
                             class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                             placeholder="Kosongkan untuk tidak terbatas" />
                         <p class="text-xs text-gray-400">Biarkan kosong jika tidak ada batasan jumlah peserta</p>
-                    </div>
-
-                    <div class="space-y-2">
-                        <label class="text-sm font-bold text-gray-700">Status</label>
-                        <select v-model="form.status"
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
-                            <option value="active">Aktif</option>
-                            <option value="inactive">Nonaktif</option>
-                        </select>
                     </div>
                 </div>
             </template>

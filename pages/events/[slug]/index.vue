@@ -296,7 +296,7 @@
                                 <span class="text-xs text-gray-500 uppercase">Menit</span>
                             </div>
                         </div>
-                        <div class="space-y-4 mb-6">
+                        <div v-if="tournament.max_participants != null && tournament.max_participants > 0" class="space-y-4 mb-6">
                             <div class="flex justify-between items-center text-sm pb-1">
                                 <span class="text-gray-500">Slot Tersedia</span>
                                 <span class="font-bold text-primary">{{ tournament.max_participants -
@@ -305,10 +305,11 @@
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-2">
                                 <div class="bg-primary h-2 rounded-full"
-                                    :style="{ width: `${((tournament.participant_count || 0) / (tournament.max_participants || 1)) * 100}%` }">
+                                    :style="{ width: `${Math.min(100, ((tournament.participant_count || 0) / tournament.max_participants) * 100)}%` }">
                                 </div>
                             </div>
                         </div>
+                        <p v-else class="text-xs text-gray-500 mb-6">Kuota peserta per kategori. Lihat daftar kategori untuk detail.</p>
                         <!-- Auth-aware registration CTA: Only show for non-logged-in or logged-in archers -->
                         <template v-if="!isLoggedIn || isArcher">
                             <template v-if="!isLoggedIn">
@@ -540,7 +541,7 @@ const transformEventData = (data) => ({
     description: data.description || '',
     total_prize: data.total_prize || 0,
     technical_guidebook_url: data.technical_guidebook_url || null,
-    max_participants: data.max_participants || 0,
+    max_participants: data.max_participants ?? null,
     page_settings: data.page_settings ? JSON.parse(data.page_settings) : {
         sections: {
             schedule: true,

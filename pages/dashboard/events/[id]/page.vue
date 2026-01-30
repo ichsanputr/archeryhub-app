@@ -259,11 +259,6 @@
                                 <input v-model="form.registration_deadline" type="datetime-local"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none" />
                             </div>
-                            <div class="space-y-2">
-                                <label class="text-sm font-bold text-gray-700">Kuota Peserta</label>
-                                <input v-model.number="form.max_participants" type="number"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 outline-none" />
-                            </div>
                         </div>
                     </div>
                 </section>
@@ -740,7 +735,6 @@ const form = ref({
     fees: [],
     schedules: [],
     registration_deadline: '',
-    max_participants: 200,
     total_prize: 0,
     technical_guidebook_url: '',
     location_accessibility: [],
@@ -1085,7 +1079,6 @@ const fetchEventData = async () => {
                     end_time: formatToDatetimeLocal(s.end_time)
                 })),
                 registration_deadline: formatToDatetimeLocal(data.registration_deadline),
-                max_participants: data.max_participants || 200,
                 total_prize: data.total_prize || 0,
                 technical_guidebook_url: data.technical_guidebook_url || '',
                 location_accessibility: pageSettings.location_accessibility || [],
@@ -1115,7 +1108,6 @@ const saveEventPage = async () => {
             banner_url: form.value.banner_url,
             logo_url: form.value.logo_url,
             registration_deadline: formatFromDatetimeLocal(form.value.registration_deadline),
-            max_participants: form.value.max_participants,
             total_prize: form.value.total_prize,
             technical_guidebook_url: form.value.technical_guidebook_url,
             faq: form.value.faq,
