@@ -251,7 +251,6 @@
             </div>
         </div>
     </div>
-    </div>
 
     <MediaLibrary :show="showMediaLibrary" @close="showMediaLibrary = false" @select="handleAvatarSelect" />
 </template>
