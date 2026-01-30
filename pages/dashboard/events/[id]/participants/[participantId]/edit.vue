@@ -396,8 +396,16 @@ const handleSubmit = async () => {
 
         // If it's an event archer, update its profile first
         if (participant.value?.event_archer_id) {
+            // Sanitize payload: convert empty strings to null to avoid validation errors
+            const archerPayload = { ...form.event_archer }
+            Object.keys(archerPayload).forEach(key => {
+                if (archerPayload[key] === '') {
+                    archerPayload[key] = null
+                }
+            })
+
             await put(`/events/${eventId}/event-archers/${participant.value.event_archer_id}`, {
-                ...form.event_archer,
+                ...archerPayload,
                 status: 'active'
             })
         }

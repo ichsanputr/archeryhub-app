@@ -120,7 +120,6 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { ref, computed, watch, onMounted } from 'vue'
-import { useApi } from '~/composables/useApi'
 
 const props = defineProps({
     eventId: {
@@ -128,6 +127,14 @@ const props = defineProps({
         required: true
     },
     results: {
+        type: Array,
+        default: () => []
+    },
+    categories: {
+        type: Array,
+        default: () => []
+    },
+    participants: {
         type: Array,
         default: () => []
     }
@@ -150,40 +157,15 @@ const getFileType = (url) => {
 
 const getImageUrl = (url) => useImageOrDefault(url)
 
-const config = useRuntimeConfig()
-const apiBaseUrl = config.public.apiBaseUrl
-
 const selectedCategoryId = ref('')
 
-// SSR Data Fetching for Categories
-const { data: categoriesResponse } = await useAsyncData(
-    `event-results-categories-${props.eventId}`,
-    () => $fetch(`${apiBaseUrl}/events/${props.eventId}/categories`),
-    { server: true }
-)
-
-const categories = computed(() => categoriesResponse.value?.events || categoriesResponse.value?.data?.events || [])
-
-// SSR Data Fetching for Qualification Results
-const { data: resultsResponse, pending: isLoading } = await useAsyncData(
-    `event-results-qualification-${props.eventId}-${selectedCategoryId.value}`,
-    () => {
-        if (!selectedCategoryId.value) return null
-        return $fetch(`${apiBaseUrl}/events/${props.eventId}/participants`)
-    },
-    {
-        watch: [selectedCategoryId],
-        server: true
-    }
-)
+const categories = computed(() => props.categories)
 
 const qualificationResults = computed(() => {
-    if (!selectedCategoryId.value || !resultsResponse.value) return []
-
-    const participants = resultsResponse.value?.participants || []
+    if (!selectedCategoryId.value) return []
 
     // Filter by category and sort by score (mock data for now as per original code)
-    return participants
+    return props.participants
         .filter(p => p.category_id === selectedCategoryId.value)
         .map((p) => ({
             id: p.id,

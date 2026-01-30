@@ -26,38 +26,39 @@
         </div>
 
         <!-- Athletes Grid -->
-        <div v-if="isLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 opacity-60">
-            <div v-for="i in 6" :key="i" class="h-48 bg-white rounded-2xl animate-pulse border border-gray-100"></div>
-        </div>
+        <div v-if="paginatedAthletes.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-10">
+            <div v-for="athlete in paginatedAthletes" :key="athlete.id"
+                class="group bg-white rounded-2xl p-5 pt-10 shadow-sm border border-gray-100 hover:border-primary transition-all hover:shadow-md relative mt-6">
 
-        <div v-else-if="athletes.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div v-for="athlete in athletes" :key="athlete.id"
-                class="group bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:border-primary transition-all hover:shadow-md">
-                <div class="flex items-center gap-4 mb-4">
-                    <div class="w-16 h-16 rounded-full overflow-hidden border-2 border-gray-50 bg-gray-100 shrink-0">
-                        <img :src="athlete.photo" :alt="athlete.name" class="w-full h-full object-cover">
-                    </div>
-                    <div>
-                        <div class="flex items-center gap-1">
-                            <NuxtLink v-if="athlete.username" :to="`/archers/${athlete.username}`"
-                                class="font-bold text-navy truncate hover:text-primary transition-colors">
-                                {{ athlete.name }}
-                            </NuxtLink>
-                            <span v-else class="font-bold text-navy truncate">
-                                {{ athlete.name }}
-                            </span>
-                            <Icon v-if="athlete.verified" icon="ph:check-circle-fill" class="text-blue-500 text-sm" />
-                        </div>
-                        <p class="text-xs text-gray-500 font-medium">{{ athlete.club }}</p>
-                    </div>
+                <!-- Avatar (Absolute Top Center) -->
+                <div
+                    class="absolute -top-8 left-1/2 -translate-x-1/2 w-16 h-16 rounded-full overflow-hidden border-4 border-white shadow-md bg-gray-100 shrink-0 z-10">
+                    <img :src="athlete.photo" :alt="athlete.name" class="w-full h-full object-cover">
                 </div>
 
-                <div class="flex flex-wrap gap-2 mb-4">
+                <div class="text-center mb-4 mt-2">
+                    <div class="flex items-center justify-center gap-1 mb-1">
+                        <NuxtLink v-if="athlete.username" :to="`/archers/${athlete.username}`"
+                            class="font-bold text-navy hover:text-primary transition-colors text-lg line-clamp-2 leading-tight px-4"
+                            :title="athlete.name">
+                            {{ athlete.name }}
+                        </NuxtLink>
+                        <span v-else class="font-bold text-navy text-lg line-clamp-2 leading-tight px-4"
+                            :title="athlete.name">
+                            {{ athlete.name }}
+                        </span>
+                        <Icon v-if="athlete.verified" icon="ph:check-circle-fill"
+                            class="text-blue-500 text-sm shrink-0" />
+                    </div>
+                    <p class="text-sm text-gray-500 font-medium">{{ athlete.club }}</p>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-2 mb-4">
                     <span
-                        class="px-2 py-1 bg-gray-50 text-gray-600 rounded text-[10px] font-bold uppercase tracking-wider">{{
+                        class="px-2 py-1 bg-gray-50 text-gray-600 rounded text-[10px] font-bold uppercase tracking-wider text-center">{{
                             athlete.division }}</span>
                     <span
-                        class="px-2 py-1 bg-gray-50 text-gray-600 rounded text-[10px] font-bold uppercase tracking-wider">{{
+                        class="px-2 py-1 bg-gray-50 text-gray-600 rounded text-[10px] font-bold uppercase tracking-wider text-center">{{
                             athlete.category }}</span>
                 </div>
 
@@ -68,7 +69,7 @@
                             ${athlete.rank}` }}</span>
                     </div>
                     <NuxtLink v-if="athlete.username" :to="`/archers/${athlete.username}`"
-                        class="text-primary font-bold text-xs hover:underline flex items-center gap-1">
+                        class="textfont-bold text-xs hover:underline flex items-center gap-1">
                         Profil
                         <Icon icon="ph:arrow-square-out" class="text-sm" />
                     </NuxtLink>
@@ -77,7 +78,7 @@
             </div>
         </div>
 
-        <div v-else class="bg-white rounded-2xl p-12 text-center border border-gray-100 shadow-sm">
+        <div v-else class="bg-white rounded-2xl p-12 text-center border border-gray-100 shadow-sm mt-8">
             <Icon icon="ph:users-three" class="text-6xl text-gray-200 mb-4 mx-auto" />
             <p class="text-gray-500 font-medium">Belum ada peserta yang terdaftar untuk kategori ini.</p>
         </div>
@@ -104,29 +105,21 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 
-const route = useRoute()
-const slug = route.params.slug
-const config = useRuntimeConfig()
-const apiBaseUrl = config.public.apiBaseUrl
+const props = defineProps({
+    participants: {
+        type: Array,
+        default: () => []
+    }
+})
 
 const activeCategory = ref('Semua')
 const searchQuery = ref('')
 const currentPage = ref(1)
 const limit = 12
 
-// SSR Data Fetching for Categories
-const { data: categoriesData } = await useAsyncData(
-    `event-categories-${slug}`,
-    () => $fetch(`${apiBaseUrl}/events/${slug}/participants`, {
-        query: { limit: 1000, offset: 0 }
-    }),
-    { server: true }
-)
-
 const categories = computed(() => {
-    const participants = categoriesData.value?.participants || []
     const categorySet = new Set(['Semua'])
-    participants.forEach(p => {
+    props.participants.forEach(p => {
         if (p.division_name && p.gender_division_name) {
             categorySet.add(`${p.division_name} ${p.gender_division_name}`)
         }
@@ -134,26 +127,27 @@ const categories = computed(() => {
     return Array.from(categorySet).sort()
 })
 
-// SSR Data Fetching for Participants
-const { data: participantsData, pending: isLoading, refresh } = await useAsyncData(
-    `event-participants-${slug}`,
-    () => {
-        const offset = (currentPage.value - 1) * limit
-        const query = { limit, offset }
-        if (searchQuery.value) query.search = searchQuery.value
-        if (activeCategory.value !== 'Semua') query.category = activeCategory.value
-        return $fetch(`${apiBaseUrl}/events/${slug}/participants`, { query })
-    },
-    {
-        watch: [currentPage, activeCategory, searchQuery],
-        server: true
-    }
-)
+const filteredAthletes = computed(() => {
+    let result = props.participants
 
-const athletes = computed(() => {
-    if (!participantsData.value) return []
-    const participants = participantsData.value.participants || []
-    return participants.map(p => ({
+    // Filter by Search
+    if (searchQuery.value) {
+        const query = searchQuery.value.toLowerCase()
+        result = result.filter(p =>
+            p.full_name?.toLowerCase().includes(query) ||
+            p.club_name?.toLowerCase().includes(query)
+        )
+    }
+
+    // Filter by Category
+    if (activeCategory.value !== 'Semua') {
+        result = result.filter(p => {
+            const catName = `${p.division_name} ${p.gender_division_name}`
+            return catName === activeCategory.value
+        })
+    }
+
+    return result.map(p => ({
         id: p.id || p.archer_id || p.event_archer_id,
         username: p.username || null,
         name: p.full_name || 'Archery Athlete',
@@ -166,9 +160,11 @@ const athletes = computed(() => {
     }))
 })
 
-const totalPages = computed(() => {
-    const total = participantsData.value?.total || 0
-    return Math.ceil(total / limit) || 1
+const totalPages = computed(() => Math.ceil(filteredAthletes.value.length / limit) || 1)
+
+const paginatedAthletes = computed(() => {
+    const start = (currentPage.value - 1) * limit
+    return filteredAthletes.value.slice(start, start + limit)
 })
 
 // Reset to page 1 when category or search changes

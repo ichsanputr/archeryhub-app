@@ -818,11 +818,12 @@ const removeFeeField = (index) => {
 }
 
 const addScheduleField = () => {
+    const lastSchedule = form.value.schedules.length > 0 ? form.value.schedules[form.value.schedules.length - 1] : null
     form.value.schedules.push({
         id: null,
         title: '',
         description: '',
-        day_order: (form.value.schedules.length > 0 ? Math.max(...form.value.schedules.map(s => s.day_order || 0)) : 0) + 1,
+        day_order: lastSchedule ? (lastSchedule.day_order || 1) : 1,
         sort_order: (form.value.schedules.length > 0 ? Math.max(...form.value.schedules.map(s => s.sort_order || 0)) : 0) + 1,
         location: '',
         start_time: '',

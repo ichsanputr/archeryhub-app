@@ -217,10 +217,11 @@
                         </section>
                     </div>
 
-                    <TournamentScheduleTab v-else-if="activeTab === 'Jadwal Lomba'" :event-id="slug" />
-                    <TournamentAthletesTab v-else-if="activeTab === 'Peserta'" />
+                    <TournamentScheduleTab v-else-if="activeTab === 'Jadwal Lomba'" :event-id="slug"
+                        :schedules="schedulesData" />
+                    <TournamentAthletesTab v-else-if="activeTab === 'Peserta'" :participants="participantsData" />
                     <TournamentResultsTab v-else-if="activeTab === 'Hasil'" :event-id="slug"
-                        :results="tournament.results" />
+                        :results="tournament.results" :categories="categoriesList" :participants="participantsData" />
                     <TournamentVenueTab v-else-if="activeTab === 'Lokasi'" :venue="tournament.venue"
                         :address="tournament.address" :gmaps-link="tournament.gmaps_link" />
 
@@ -651,11 +652,18 @@ const divisions = [
 const { data: eventData, error: eventError } = await useAsyncData(
     `event-${slug}`,
     async () => {
-        const [eventRes, categoriesRes] = await Promise.all([
+        const [eventRes, categoriesRes, schedulesRes, participantsRes] = await Promise.all([
             $fetch(`${config.public.apiBaseUrl}/events/${slug}`),
-            $fetch(`${config.public.apiBaseUrl}/events/${slug}/categories`).catch(() => null)
+            $fetch(`${config.public.apiBaseUrl}/events/${slug}/categories`).catch(() => null),
+            $fetch(`${config.public.apiBaseUrl}/events/${slug}/schedule`).catch(() => null),
+            $fetch(`${config.public.apiBaseUrl}/events/${slug}/participants?limit=2000`).catch(() => null)
         ])
-        return { event: eventRes, categories: categoriesRes }
+        return {
+            event: eventRes,
+            categories: categoriesRes,
+            schedules: schedulesRes,
+            participants: participantsRes
+        }
     }
 )
 
@@ -666,6 +674,10 @@ if (eventData.value?.event) {
 if (eventData.value?.categories?.events) {
     divisionsData.value = processDivisions(eventData.value.categories.events)
 }
+
+const schedulesData = computed(() => eventData.value?.schedules?.schedules || eventData.value?.schedules?.data?.schedules || [])
+const participantsData = computed(() => eventData.value?.participants?.participants || [])
+const categoriesList = computed(() => eventData.value?.categories?.events || [])
 
 // Throw 404 if event not found
 if (eventError.value || !eventData.value?.event || !tournament.value.name) {

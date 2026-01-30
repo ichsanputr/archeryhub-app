@@ -55,28 +55,19 @@
 </template>
 
 <script setup>
-import { useApi } from '~/composables/useApi'
-
 const props = defineProps({
     eventId: {
         type: String,
         required: true
+    },
+    schedules: {
+        type: Array,
+        default: () => []
     }
 })
 
-const config = useRuntimeConfig()
-const apiBaseUrl = config.public.apiBaseUrl
-
 const activeDay = ref(1)
-
-// SSR Data Fetching
-const { data: scheduleData, pending: isLoading } = await useAsyncData(
-    `event-schedule-${props.eventId}`,
-    () => $fetch(`${apiBaseUrl}/events/${props.eventId}/schedule`),
-    { server: true }
-)
-
-const schedules = computed(() => scheduleData.value?.schedules || scheduleData.value?.data?.schedules || [])
+const schedules = computed(() => props.schedules)
 
 const groupedByDay = computed(() => {
     const groups = {}
