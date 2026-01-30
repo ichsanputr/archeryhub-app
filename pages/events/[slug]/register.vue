@@ -185,9 +185,9 @@
                                             user.name }}</h3>
                                         <p class="text-sm text-gray-500 mb-1">{{ archerProfile?.email || user.email }}
                                         </p>
-                                        <p v-if="archerProfile?.athlete_code"
+                                        <p v-if="archerProfile?.id"
                                             class="text-xs text-primary font-bold bg-primary/10 px-2 py-0.5 rounded-md inline-block">
-                                            {{ archerProfile.athlete_code }}</p>
+                                            {{ archerProfile.id }}</p>
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
@@ -210,7 +210,7 @@
                                         <p class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">
                                             Pengalaman</p>
                                         <p class="text-sm font-bold text-navy">{{ archerProfile?.experience_years || 0
-                                        }} Tahun</p>
+                                            }} Tahun</p>
                                     </div>
                                     <div
                                         class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100 col-span-2">

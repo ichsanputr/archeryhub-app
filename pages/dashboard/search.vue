@@ -72,20 +72,21 @@
 
         <!-- Athletes Tab -->
         <div v-if="activeTab === 'athletes'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div v-for="athlete in results.athletes" :key="athlete.id"
+          <div v-for="athlete in results.athletes" :key="athlete.uuid || athlete.id"
             class="glass-card p-4 flex items-center gap-4 hover:border-primary/50 transition-all cursor-pointer"
-            @click="navigateTo(`/athletes/${athlete.id}`)">
+            @click="navigateTo(`/archers/${athlete.username || athlete.slug}`)">
             <div
               class="size-16 rounded-full bg-surface-highlight flex items-center justify-center overflow-hidden shrink-0 border-2 border-surface-highlight group-hover:border-primary/30 transition-colors">
               <img v-if="athlete.photo_url" :src="athlete.photo_url" class="size-full object-cover" />
               <Icon v-else icon="ph:user" class="text-3xl text-brand-gold/30" />
             </div>
             <div class="flex-1 min-w-0">
-              <h3 class="text-base font-bold text-white truncate">{{ athlete.first_name }} {{ athlete.last_name }}</h3>
-              <p class="text-xs text-brand-gold/60 truncate">{{ athlete.club || 'Independent' }}</p>
+              <h3 class="text-base font-bold text-white truncate">{{ athlete.full_name }}</h3>
+              <p class="text-xs text-brand-gold/60 truncate">{{ athlete.club_name || 'Independent' }}
+              </p>
               <div class="flex items-center gap-2 mt-2">
                 <span class="px-1.5 py-0.5 rounded bg-surface-highlight text-[10px] text-white">
-                  {{ athlete.athlete_code }}
+                  {{ athlete.id }}
                 </span>
                 <span class="text-[10px] text-brand-gold/40">
                   {{ athlete.city || '-' }}
@@ -136,11 +137,11 @@ const fetchData = async () => {
   try {
     const [tournamentsRes, athletesRes] = await Promise.all([
       get(`/events?search=${encodeURIComponent(q.value)}&limit=20`),
-      get(`/athletes?search=${encodeURIComponent(q.value)}&limit=20`)
+      get(`/archers?search=${encodeURIComponent(q.value)}&limit=20`)
     ])
 
     results.value.tournaments = tournamentsRes.tournaments || []
-    results.value.athletes = athletesRes.athletes || []
+    results.value.athletes = athletesRes.archers || athletesRes.athletes || []
 
     // Auto-switch to tab with results if current is empty
     if (results.value.tournaments.length === 0 && results.value.athletes.length > 0) {

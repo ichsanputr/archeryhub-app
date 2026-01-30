@@ -94,8 +94,9 @@
                                 <BaseInput v-model="form.event_archer.phone" label="No. WhatsApp" placeholder="0812..."
                                     icon="ph:whatsapp-logo" />
 
-                                <BaseInput v-model="form.event_archer.club" label="Klub / Sekolah"
-                                    placeholder="Nama Klub" icon="ph:buildings" />
+                                <BaseSelect v-model="form.event_archer.club_id" label="Klub / Sekolah"
+                                    placeholder="Pilih Klub" icon="ph:buildings" :items="clubs" item-title="name"
+                                    item-value="uuid" />
 
                                 <BaseInput v-model="form.event_archer.city" label="Kota / Kabupaten"
                                     placeholder="Asal Kota" icon="ph:map-pin" />
@@ -273,6 +274,7 @@ const isLoading = ref(true)
 const participant = ref(null)
 const event = ref(null)
 const categories = ref([])
+const clubs = ref([])
 const isSubmitting = ref(false)
 const isKicking = ref(false)
 
@@ -293,7 +295,7 @@ const form = reactive({
         phone: '',
         city: '',
         school: '',
-        club: '',
+        club_id: '',
         bow_type: '',
         gender: ''
     }
@@ -326,7 +328,7 @@ const fetchParticipant = async () => {
                             phone: archerData.phone || '',
                             city: archerData.city || '',
                             school: archerData.school || '',
-                            club: archerData.club || '',
+                            club_id: archerData.club_id || '',
                             bow_type: archerData.bow_type || '',
                             gender: archerData.gender || ''
                         }
@@ -350,6 +352,10 @@ const fetchParticipant = async () => {
                 description: `${cat.event_type_name || ''} ${cat.gender_division_name ? '(' + cat.gender_division_name + ')' : ''}`.trim()
             }))
         }
+
+        // Fetch clubs
+        const clubsRes = await get('/clubs?limit=1000')
+        clubs.value = clubsRes.clubs || []
     } catch (error) {
         console.error('Failed to fetch participant:', error)
         const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || 'Gagal memuat data peserta'

@@ -28,9 +28,9 @@
                                     <h1 class="text-2xl md:text-4xl font-black text-navy leading-tight">{{
                                         archer.full_name }}
                                     </h1>
-                                    <span v-if="archer.athlete_code"
+                                    <span v-if="archer.id"
                                         class="px-3 py-1.5 bg-primary/10 text-primary text-[10px] md:text-xs font-black rounded-full uppercase tracking-wider">
-                                        {{ archer.athlete_code }}
+                                        {{ archer.id }}
                                     </span>
                                 </div>
                                 <div class="flex flex-wrap items-center gap-4 text-gray-500 text-sm font-medium">
@@ -42,9 +42,9 @@
                                         <Icon icon="ph:target-bold" />
                                         {{ bowTypeLabel }}
                                     </span>
-                                    <span v-if="archer.club_name || archer.club" class="flex items-center gap-1.5">
+                                    <span v-if="archer.club_name" class="flex items-center gap-1.5">
                                         <Icon icon="ph:users-three-bold" />
-                                        {{ archer.club_name || archer.club }}
+                                        {{ archer.club_name }}
                                     </span>
                                 </div>
                             </div>
@@ -185,8 +185,7 @@
                     </div>
 
                     <!-- Club Information (Kept in sidebar but styled) -->
-                    <div v-if="archer.club_name || archer.club"
-                        class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                    <div v-if="archer.club_name" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
                         <h3 class="font-black text-navy text-base mb-4 flex items-center gap-3">
                             <Icon icon="ph:shield-bold" class="text-primary" />
                             Afiliasi Klub
@@ -202,7 +201,7 @@
                                         Klub Saat Ini</p>
                                     <p
                                         class="text-navy font-black text-sm truncate group-hover:text-primary transition-colors">
-                                        {{ archer.club_name || archer.club }}
+                                        {{ archer.club_name }}
                                     </p>
                                 </div>
                                 <Icon icon="ph:caret-right-bold"
@@ -216,7 +215,7 @@
                                     <p class="text-xs text-gray-400 font-bold uppercase tracking-wider mb-0.5">
                                         Klub Saat Ini</p>
                                     <p class="text-navy font-bold text-sm truncate">
-                                        {{ archer.club_name || archer.club }}
+                                        {{ archer.club_name }}
                                     </p>
                                 </div>
                             </div>

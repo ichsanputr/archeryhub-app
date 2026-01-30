@@ -63,9 +63,9 @@
                             </div>
                             <div v-if="searchArcherQuery && searchArcherQuery.length >= 2"
                                 class="max-h-64 overflow-y-auto border border-gray-100 rounded-xl">
-                                <button v-for="archer in filteredArchers" :key="archer.id || archer.uuid"
+                                <button v-for="archer in filteredArchers" :key="archer.uuid || archer.id"
                                     @click="selectArcher(archer)"
-                                    :class="selectedArcher?.id === archer.id ? 'bg-primary/10 border-primary' : 'hover:bg-gray-50'"
+                                    :class="selectedArcher?.uuid === archer.uuid ? 'bg-primary/10 border-primary' : 'hover:bg-gray-50'"
                                     class="w-full p-4 text-left border-b border-gray-100 last:border-b-0 transition-colors">
                                     <div class="flex items-center gap-3">
                                         <div
@@ -79,9 +79,9 @@
                                         </div>
                                         <div class="flex-1">
                                             <p class="font-bold text-navy">{{ archer.full_name }}</p>
-                                            <p class="text-xs text-gray-400">{{ archer.club_name || '-' }}</p>
+                                            <p class="text-xs text-gray-400">{{ archer.id || '-' }}</p>
                                         </div>
-                                        <Icon v-if="selectedArcher?.id === archer.id" icon="ph:check-circle"
+                                        <Icon v-if="selectedArcher?.uuid === archer.uuid" icon="ph:check-circle"
                                             class="text-primary text-xl" />
                                     </div>
                                 </button>
@@ -245,7 +245,7 @@
                     </div>
                     <div>
                         <p class="font-bold text-navy">{{ selectedArcher.full_name }}</p>
-                        <p class="text-xs text-gray-400">{{ selectedArcher.athlete_code || '-' }}</p>
+                        <p class="text-xs text-gray-400">{{ selectedArcher.id || '-' }}</p>
                     </div>
                 </div>
             </div>
@@ -298,7 +298,7 @@ const form = reactive({
 const newArcherForm = reactive({
     full_name: '',
     username: '',
-    athlete_code: '',
+    id: '',
     email: '',
     password: '',
     phone: '',
@@ -496,7 +496,7 @@ const submit = async () => {
     isSubmitting.value = true
 
     try {
-        let archerId = selectedArcher.value?.id || selectedArcher.value?.uuid
+        let archerId = selectedArcher.value?.uuid || selectedArcher.value?.id
         let eventArcherId = null
 
         // Create new archer if needed
@@ -515,9 +515,10 @@ const submit = async () => {
                     school: newArcherForm.school || undefined,
                     club_id: newArcherForm.club_id || undefined,
                     address: newArcherForm.address || undefined,
-                    avatar_url: newArcherForm.avatar_url || undefined
+                    avatar_url: newArcherForm.avatar_url || undefined,
+                    id: newArcherForm.id || undefined
                 })
-                archerId = archerResponse.archer_id || archerResponse.id || archerResponse.uuid
+                archerId = archerResponse.uuid || archerResponse.id
                 eventArcherId = null
             } else {
                 // Create event-only archer (no global account)

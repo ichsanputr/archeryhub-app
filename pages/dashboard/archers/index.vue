@@ -71,18 +71,18 @@
                   </div>
                   <div>
                     <p class="text-white text-sm font-bold group-hover:text-primary transition-colors cursor-pointer"
-                      @click="$router.push(`/athletes/${athlete.id}`)">
-                      {{ athlete.first_name }} {{ athlete.last_name }}
+                      @click="$router.push(`/dashboard/archers/${athlete.uuid || athlete.id}`)">
+                      {{ athlete.full_name }}
                     </p>
                     <p class="text-brand-gold text-xs mt-0.5">
-                      ID: {{ athlete.athlete_code }} • {{ athlete.email }}
+                      ID: {{ athlete.id }} • {{ athlete.email }}
                     </p>
                   </div>
                 </div>
               </td>
               <td class="table-cell">
                 <div class="flex flex-col">
-                  <span class="text-white text-sm font-medium">{{ athlete.club || 'Independent' }}</span>
+                  <span class="text-white text-sm font-medium">{{ athlete.club_name || 'Independent' }}</span>
                   <span class="text-brand-gold text-xs">{{ athlete.city || '-' }}</span>
                 </div>
               </td>
@@ -106,7 +106,7 @@
               <td class="table-cell text-right">
                 <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   <BaseButton variant="ghost" size="sm" icon="ph:user" class="!p-1.5"
-                    @click="$router.push(`/dashboard/archers/${athlete.id}`)" />
+                    @click="$router.push(`/dashboard/archers/${athlete.uuid || athlete.id}`)" />
                   <BaseButton variant="ghost" size="sm" icon="ph:pencil-simple"
                     class="!p-1.5 text-navy hover:text-primary" />
                   <BaseButton variant="ghost" size="sm" icon="ph:prohibit"
@@ -179,8 +179,9 @@ const fetchData = async () => {
     const offset = (currentPage.value - 1) * itemsPerPage
     const response = await get(`/archers?search=${encodeURIComponent(searchQuery.value)}&status=${status}&limit=${itemsPerPage}&offset=${offset}`)
 
-    if (response && response.athletes) {
-      athletes.value = response.athletes
+    if (response) {
+      const data = response.archers || response.athletes || []
+      athletes.value = data
       totalItems.value = response.total || 0
 
       // Update tab counts if on "all" tab

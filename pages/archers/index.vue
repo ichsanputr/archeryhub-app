@@ -115,7 +115,7 @@
                                 </div>
                                 <span class="text-xs font-black text-navy truncate capitalize">{{ archer.bow_type ||
                                     'Recurve'
-                                }}</span>
+                                    }}</span>
                             </div>
                         </div>
                         <div class="bg-gray-50/50 rounded-2xl p-3 border border-gray-50 transition-all">
@@ -301,7 +301,7 @@ const archers = computed(() => {
         uuid: archer.uuid || archer.id,
         slug: archer.username || archer.slug,
         full_name: archer.full_name,
-        athlete_code: archer.athlete_code,
+        athlete_code: archer.id,
         city: archer.city,
         province: archer.province,
         bow_type: archer.bow_type || 'recurve',

@@ -16,8 +16,7 @@
       <div class="flex gap-3">
         <button
           class="inline-flex items-center gap-2 px-4 py-2.5 bg-navy text-white rounded-xl font-semibold text-sm shadow-lg shadow-primary/20 hover:bg-navy-dark transition"
-          :disabled="isSubmitting"
-          @click="submit">
+          :disabled="isSubmitting" @click="submit">
           <Icon v-if="!isSubmitting" icon="ph:floppy-disk" class="text-lg" />
           <LoadingSpinner v-else size="sm" />
           <span>{{ isSubmitting ? 'Menyimpan...' : 'Simpan Anggota' }}</span>
@@ -32,12 +31,13 @@
           <BaseInput v-model="form.full_name" label="Nama Lengkap" placeholder="Nama sesuai identitas" required />
           <BaseInput v-model="form.nickname" label="Nama Panggilan" placeholder="Opsional" />
           <BaseInput v-model="form.email" label="Email" type="email" placeholder="email@example.com" required />
-          <BaseInput v-model="form.password" label="Password" type="password" placeholder="Minimal 6 karakter" required />
+          <BaseInput v-model="form.password" label="Password" type="password" placeholder="Minimal 6 karakter"
+            required />
           <BaseInput v-model="form.phone" label="No. Telepon" type="tel" placeholder="08xxxxxxxxxx" />
           <BaseInput v-model="form.date_of_birth" label="Tanggal Lahir" type="date" />
           <BaseSelect v-model="form.gender" label="Jenis Kelamin" :items="genderOptions" />
           <BaseSelect v-model="form.bow_type" label="Jenis Busur" :items="bowOptions" />
-          <BaseInput v-model="form.athlete_code" label="Kode Atlet (opsional)" placeholder="ARC-2025-001" />
+          <BaseInput v-model="form.id" label="Kode Atlet (opsional)" placeholder="ARC-2025-001" />
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -47,12 +47,13 @@
 
         <div class="grid grid-cols-1 gap-5">
           <BaseTextarea v-model="form.address" label="Alamat" placeholder="Alamat domisili lengkap" :rows="3" />
-          <BaseInput v-model="form.photo_url" label="Foto (URL)" placeholder="https://..." />
+          <BaseInput v-model="form.avatar_url" label="Foto (URL)" placeholder="https://..." />
         </div>
 
 
         <div class="bg-gray-50/60 border border-gray-100 rounded-xl p-4 text-sm text-gray-600">
-          Anggota baru akan otomatis ditandai sebagai <span class="font-semibold text-navy">pemanah klub</span> dan dapat login menggunakan email dan password yang Anda buat.
+          Anggota baru akan otomatis ditandai sebagai <span class="font-semibold text-navy">pemanah klub</span> dan
+          dapat login menggunakan email dan password yang Anda buat.
         </div>
       </div>
 
@@ -99,11 +100,11 @@ const form = reactive({
   date_of_birth: '',
   gender: 'male',
   bow_type: 'recurve',
-  athlete_code: '',
+  id: '',
   city: '',
   school: '',
   address: '',
-  photo_url: '',
+  avatar_url: '',
 })
 
 const genderOptions = [
@@ -152,11 +153,11 @@ const submit = async () => {
       date_of_birth: form.date_of_birth || undefined,
       gender: form.gender === 'male' ? 'male' : 'female',
       bow_type: form.bow_type,
-      athlete_code: form.athlete_code || undefined,
+      id: form.id || undefined,
       city: form.city || undefined,
       school: form.school || undefined,
       address: form.address || undefined,
-      photo_url: form.photo_url || undefined
+      avatar_url: form.avatar_url || undefined
     }
 
     await post('/archers', payload)
@@ -171,4 +172,3 @@ const submit = async () => {
   }
 }
 </script>
-
