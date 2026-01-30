@@ -18,19 +18,13 @@
 
     <!-- Tab Navigation -->
     <div
-      class="flex items-center gap-1 bg-white p-1 rounded-2xl border border-gray-100 shadow-sm overflow-x-auto no-scrollbar"
-    >
-      <button
-        v-for="tab in tabs"
-        :key="tab.id"
-        @click="activeTab = tab.id"
-        :class="[
-          'px-5 py-2.5 rounded-xl text-sm font-black transition-all whitespace-nowrap flex items-center gap-2',
-          activeTab === tab.id
-            ? 'bg-navy text-white shadow-lg shadow-navy/20'
-            : 'text-gray-400 hover:text-navy hover:bg-gray-50'
-        ]"
-      >
+      class="flex items-center gap-1 bg-white p-1 rounded-2xl border border-gray-100 shadow-sm overflow-x-auto no-scrollbar">
+      <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id" :class="[
+        'px-5 py-2.5 rounded-xl text-sm font-black transition-all whitespace-nowrap flex items-center gap-2',
+        activeTab === tab.id
+          ? 'bg-navy text-white shadow-lg shadow-navy/20'
+          : 'text-gray-400 hover:text-navy hover:bg-gray-50'
+      ]">
         <Icon :icon="tab.icon" class="text-lg" />
         {{ tab.label }}
       </button>
@@ -41,42 +35,30 @@
       <div class="lg:col-span-2 space-y-6">
         <!-- Tab: Profil (Bio, Prestasi, Statistik, Riwayat Event) -->
         <div v-if="activeTab === 'profile'" class="space-y-6">
-          <div
-            v-if="profileSections.length === 0"
-            class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm text-center py-12"
-          >
+          <div v-if="profileSections.length === 0"
+            class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm text-center py-12">
             <Icon icon="ph:identification-card" class="text-4xl text-gray-300 mx-auto mb-3" />
-            <p class="text-sm text-gray-500 font-medium">Belum ada komponen profil. Tambahkan dari tab <strong>Tampilan</strong>.</p>
+            <p class="text-sm text-gray-500 font-medium">Belum ada komponen profil. Tambahkan dari tab
+              <strong>Tampilan</strong>.</p>
           </div>
-          <div
-            v-for="section in profileSections"
-            :key="section.type"
-            class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6"
-          >
+          <div v-for="section in profileSections" :key="section.type"
+            class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
             <h3 class="text-sm font-black text-navy uppercase tracking-widest flex items-center gap-2">
               <Icon :icon="section.icon" class="text-primary text-xl" />
               {{ section.label }}
             </h3>
 
             <div v-if="section.type === 'bio'" class="space-y-4">
-              <BaseTextarea
-                v-model="profile.bio"
-                label="Deskripsi Diri"
-                placeholder="Ceritakan sejarah panahan Anda, filosofi, atau informasi menarik lainnya..."
-                :rows="5"
-              />
+              <BaseTextarea v-model="profile.bio" label="Deskripsi Diri"
+                placeholder="Ceritakan sejarah panahan Anda, filosofi, atau informasi menarik lainnya..." :rows="5" />
               <p class="text-[10px] text-gray-400 font-medium italic">
                 * Bio akan ditampilkan di halaman profil publik Anda untuk dilihat oleh klub dan penyelenggara event.
               </p>
             </div>
 
             <div v-if="section.type === 'achievements'" class="space-y-4">
-              <BaseTextarea
-                v-model="profile.achievements"
-                label="Daftar Prestasi"
-                placeholder="Contoh: Juara 1 Kejurnas 2023, Pemanah Terbaik Piala Walikota..."
-                :rows="6"
-              />
+              <BaseTextarea v-model="profile.achievements" label="Daftar Prestasi"
+                placeholder="Contoh: Juara 1 Kejurnas 2023, Pemanah Terbaik Piala Walikota..." :rows="6" />
               <p class="text-[10px] text-gray-400 font-medium italic">
                 * Masukkan prestasi Anda (satu per baris atau gunakan format teks bebas).
               </p>
@@ -113,18 +95,14 @@
 
         <!-- Tab: Kontak & Sosial -->
         <div v-if="activeTab === 'contact'" class="space-y-6">
-          <div
-            v-if="contactSections.length === 0"
-            class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm text-center py-12"
-          >
+          <div v-if="contactSections.length === 0"
+            class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm text-center py-12">
             <Icon icon="ph:phone" class="text-4xl text-gray-300 mx-auto mb-3" />
-            <p class="text-sm text-gray-500 font-medium">Belum ada komponen kontak/sosial. Tambahkan dari tab <strong>Tampilan</strong>.</p>
+            <p class="text-sm text-gray-500 font-medium">Belum ada komponen kontak/sosial. Tambahkan dari tab
+              <strong>Tampilan</strong>.</p>
           </div>
-          <div
-            v-for="section in contactSections"
-            :key="section.type"
-            class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6"
-          >
+          <div v-for="section in contactSections" :key="section.type"
+            class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
             <h3 class="text-sm font-black text-navy uppercase tracking-widest flex items-center gap-2">
               <Icon :icon="section.icon" class="text-primary text-xl" />
               {{ section.label }}
@@ -143,10 +121,8 @@
                   <Icon icon="ph:phone" class="text-primary" />
                   <span class="text-sm text-gray-700">{{ user.phone }}</span>
                 </div>
-                <NuxtLink
-                  to="/dashboard/settings"
-                  class="inline-flex items-center gap-2 text-sm text-primary font-bold hover:underline"
-                >
+                <NuxtLink to="/dashboard/settings"
+                  class="inline-flex items-center gap-2 text-sm text-primary font-bold hover:underline">
                   <Icon icon="ph:pencil-simple" />
                   Edit Kontak di Settings
                 </NuxtLink>
@@ -158,30 +134,19 @@
               <div class="space-y-3">
                 <div class="flex items-center gap-3">
                   <Icon icon="ph:instagram-logo" class="text-primary text-xl" />
-                  <input
-                    v-model="profile.socialLinks.instagram"
-                    type="text"
+                  <input v-model="profile.socialLinks.instagram" type="text"
                     placeholder="https://instagram.com/username"
-                    class="flex-1 px-4 py-2 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                  />
+                    class="flex-1 px-4 py-2 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" />
                 </div>
                 <div class="flex items-center gap-3">
                   <Icon icon="ph:facebook-logo" class="text-primary text-xl" />
-                  <input
-                    v-model="profile.socialLinks.facebook"
-                    type="text"
-                    placeholder="https://facebook.com/username"
-                    class="flex-1 px-4 py-2 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                  />
+                  <input v-model="profile.socialLinks.facebook" type="text" placeholder="https://facebook.com/username"
+                    class="flex-1 px-4 py-2 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" />
                 </div>
                 <div class="flex items-center gap-3">
                   <Icon icon="ph:youtube-logo" class="text-primary text-xl" />
-                  <input
-                    v-model="profile.socialLinks.youtube"
-                    type="text"
-                    placeholder="https://youtube.com/@username"
-                    class="flex-1 px-4 py-2 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                  />
+                  <input v-model="profile.socialLinks.youtube" type="text" placeholder="https://youtube.com/@username"
+                    class="flex-1 px-4 py-2 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" />
                 </div>
               </div>
             </div>
@@ -195,12 +160,8 @@
               <Icon icon="ph:bow-arrow-bold" class="text-primary text-xl" />
               Peralatan Panahan
             </h3>
-            <BaseTextarea
-              v-model="profile.equipment"
-              label="Peralatan Panahan"
-              placeholder="Contoh: Recurve Bow - Hoyt, Arrows - Easton, Stabilizer - Beiter..."
-              :rows="4"
-            />
+            <BaseTextarea v-model="profile.equipment" label="Peralatan Panahan"
+              placeholder="Contoh: Recurve Bow - Hoyt, Arrows - Easton, Stabilizer - Beiter..." :rows="4" />
             <p class="text-[10px] text-gray-400 font-medium italic">
               * Daftar peralatan panahan yang Anda gunakan.
             </p>
@@ -232,11 +193,8 @@
             </p>
 
             <div class="space-y-4 mb-8">
-              <div
-                v-for="(section, index) in activeSections"
-                :key="section.type"
-                class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-200 hover:border-primary/30 transition-all cursor-move"
-              >
+              <div v-for="(section, index) in activeSections" :key="section.type"
+                class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-200 hover:border-primary/30 transition-all cursor-move">
                 <div class="flex items-center gap-3 flex-1">
                   <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                     <Icon :icon="section.icon" class="text-primary text-xl" />
@@ -247,22 +205,16 @@
                   </div>
                   <div class="flex items-center gap-2">
                     <label class="relative inline-flex items-center cursor-pointer">
-                      <input
-                        type="checkbox"
-                        v-model="section.isVisible"
-                        class="sr-only peer"
-                        @change="updateSectionVisibility(section.type, section.isVisible)"
-                      />
+                      <input type="checkbox" v-model="section.isVisible" class="sr-only peer"
+                        @change="updateSectionVisibility(section.type, section.isVisible)" />
                       <div
-                        class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"
-                      ></div>
+                        class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
+                      </div>
                     </label>
                   </div>
                 </div>
-                <button
-                  @click="removeSection(section.type)"
-                  class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                >
+                <button @click="removeSection(section.type)"
+                  class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
                   <Icon icon="ph:trash" class="text-lg" />
                 </button>
               </div>
@@ -271,12 +223,8 @@
             <div v-if="availableSections.length > 0">
               <h4 class="text-sm font-black text-navy mb-4 uppercase tracking-wider">Tambahkan Komponen</h4>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <button
-                  v-for="section in availableSections"
-                  :key="section.type"
-                  @click="addSection(section.type)"
-                  class="flex items-center gap-3 p-4 bg-white border-2 border-dashed border-gray-200 rounded-xl hover:border-primary hover:bg-primary/5 transition-all text-left"
-                >
+                <button v-for="section in availableSections" :key="section.type" @click="addSection(section.type)"
+                  class="flex items-center gap-3 p-4 bg-white border-2 border-dashed border-gray-200 rounded-xl hover:border-primary hover:bg-primary/5 transition-all text-left">
                   <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
                     <Icon :icon="section.icon" class="text-primary text-xl" />
                   </div>
@@ -298,15 +246,9 @@
         <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm overflow-hidden relative">
           <div class="absolute top-0 left-0 w-full h-2 bg-primary"></div>
           <div class="flex flex-col items-center text-center mt-4">
-            <div
-              class="w-24 h-24 rounded-full bg-primary/10 border-4 border-primary/20 p-1 mb-4 overflow-hidden"
-            >
-              <img
-                v-if="user?.avatar_url"
-                :src="user.avatar_url"
-                class="w-full h-full object-cover rounded-full"
-              />
-              <Icon v-else icon="ph:user" class="w-full h-full text-primary p-4" />
+            <div class="w-24 h-24 rounded-full bg-primary/10 border-4 border-primary/20 p-1 mb-4 overflow-hidden">
+              <img :src="useImageOrDefault(user?.avatar_url, user?.full_name)"
+                class="w-full h-full object-cover rounded-full" />
             </div>
             <h4 class="font-black text-navy text-lg leading-tight">{{ user?.full_name }}</h4>
             <p class="text-gray-400 text-xs font-bold uppercase tracking-tighter mt-1">{{ user?.username }}</p>
@@ -510,11 +452,11 @@ const updateSectionVisibility = (sectionType, isVisible) => {
 // Initialize from user data
 onMounted(async () => {
   initializeSections()
-  
+
   if (user.value) {
     profile.value.bio = user.value.bio || ''
     profile.value.achievements = user.value.achievements || ''
-    
+
     // Fetch user stats
     try {
       const stats = await get('/archers/me/stats')

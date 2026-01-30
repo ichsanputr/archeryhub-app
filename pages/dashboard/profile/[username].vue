@@ -34,7 +34,8 @@
             <div class="relative px-6 pb-6">
               <!-- Avatar -->
               <div class="absolute -top-16 left-6">
-                <img :src="profile.avatar_url" :alt="profile.name || profile.username"
+                <img :src="useImageOrDefault(profile.avatar_url, profile.name || profile.username)"
+                  :alt="profile.name || profile.username"
                   class="w-32 h-32 rounded-full border-4 border-white shadow-lg" />
               </div>
 
@@ -194,6 +195,7 @@ import Container from '~/components/Container.vue'
 import UserLevelBadge from '~/components/UserLevelBadge.vue'
 import ActivityHeatmap from '~/components/ActivityHeatmap.vue'
 import { useApi } from '~/composables/useApi'
+import { useImageOrDefault } from '~/composables/useImageHelper'
 
 const route = useRoute()
 const { apiBaseUrl } = useApi()

@@ -16,12 +16,7 @@
                     <!-- Avatar -->
                     <div
                         class="w-28 h-28 md:w-36 md:h-36 rounded-2xl bg-white border-2 border-gray-100 shadow-lg overflow-hidden flex-shrink-0">
-                        <div v-if="!archer.photo_url && !archer.avatar_url"
-                            class="w-full h-full bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center">
-                            <span class="text-4xl md:text-5xl font-black text-navy">{{ archer.full_name?.charAt(0) ||
-                                'A' }}</span>
-                        </div>
-                        <img v-else :src="useImageOrDefault(archer.photo_url || archer.avatar_url)"
+                        <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
                             class="w-full h-full object-cover" />
                     </div>
 
@@ -56,7 +51,8 @@
 
                             <!-- Actions -->
                             <div class="flex gap-3">
-                                <button @click="openShareDialog" class="p-3 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all">
+                                <button @click="openShareDialog"
+                                    class="p-3 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all">
                                     <Icon icon="ph:share-network-bold" class="text-xl text-gray-600" />
                                 </button>
                             </div>
@@ -234,10 +230,12 @@
         <!-- Share Dialog -->
         <div v-if="showShareDialog" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
             <!-- Overlay -->
-            <div @click="closeShareDialog" class="absolute inset-0 bg-navy/60 backdrop-blur-sm transition-opacity"></div>
+            <div @click="closeShareDialog" class="absolute inset-0 bg-navy/60 backdrop-blur-sm transition-opacity">
+            </div>
 
             <!-- Modal -->
-            <div class="relative w-full max-w-md transform overflow-hidden rounded-3xl bg-white p-8 text-left align-middle shadow-2xl transition-all">
+            <div
+                class="relative w-full max-w-md transform overflow-hidden rounded-3xl bg-white p-8 text-left align-middle shadow-2xl transition-all">
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-xl font-black text-navy">Bagikan Profil Pemanah</h3>
                     <button @click="closeShareDialog" class="text-gray-400 hover:text-navy transition-colors">
@@ -248,39 +246,41 @@
                 <div class="space-y-6">
                     <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl">
                         <div class="w-12 h-12 rounded-xl bg-white shadow-sm overflow-hidden shrink-0">
-                            <div v-if="!archer.photo_url && !archer.avatar_url"
-                                class="w-full h-full bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center">
-                                <span class="text-xl font-black text-navy">{{ archer.full_name?.charAt(0) || 'A' }}</span>
-                            </div>
-                            <img v-else :src="useImageOrDefault(archer.photo_url || archer.avatar_url)" class="w-full h-full object-cover" />
+                            <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
+                                class="w-full h-full object-cover" />
                         </div>
                         <div class="min-w-0 flex-1">
                             <p class="font-bold text-navy truncate">{{ archer.full_name }}</p>
-                            <p class="text-xs text-gray-400 truncate">{{ archer.city }}{{ archer.province ? ', ' + archer.province : '' }}</p>
+                            <p class="text-xs text-gray-400 truncate">{{ archer.city }}{{ archer.province ? ', ' +
+                                archer.province : '' }}</p>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-4 gap-4">
                         <button @click="shareTo('whatsapp')" class="flex flex-col items-center gap-2 group">
-                            <div class="w-12 h-12 rounded-2xl bg-green-50 text-green-500 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white transition-all">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-green-50 text-green-500 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white transition-all">
                                 <Icon icon="ph:whatsapp-logo-fill" class="text-2xl" />
                             </div>
                             <span class="text-[10px] font-bold text-gray-500">WhatsApp</span>
                         </button>
                         <button @click="shareTo('facebook')" class="flex flex-col items-center gap-2 group">
-                            <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all">
                                 <Icon icon="ph:facebook-logo-fill" class="text-2xl" />
                             </div>
                             <span class="text-[10px] font-bold text-gray-500">Facebook</span>
                         </button>
                         <button @click="shareTo('twitter')" class="flex flex-col items-center gap-2 group">
-                            <div class="w-12 h-12 rounded-2xl bg-sky-50 text-sky-500 flex items-center justify-center group-hover:bg-sky-500 group-hover:text-white transition-all">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-sky-50 text-sky-500 flex items-center justify-center group-hover:bg-sky-500 group-hover:text-white transition-all">
                                 <Icon icon="ph:twitter-logo-fill" class="text-2xl" />
                             </div>
                             <span class="text-[10px] font-bold text-gray-500">Twitter</span>
                         </button>
                         <button @click="copyLink" class="flex flex-col items-center gap-2 group">
-                            <div class="w-12 h-12 rounded-2xl bg-gray-50 text-gray-600 flex items-center justify-center group-hover:bg-navy group-hover:text-white transition-all">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-gray-50 text-gray-600 flex items-center justify-center group-hover:bg-navy group-hover:text-white transition-all">
                                 <Icon icon="ph:link-bold" class="text-2xl" />
                             </div>
                             <span class="text-[10px] font-bold text-gray-500">{{ copied ? 'Tersalin' : 'Salin' }}</span>
@@ -314,55 +314,31 @@ const route = useRoute()
 const config = useRuntimeConfig()
 const apiBaseUrl = config.public.apiBaseUrl
 
-// Dummy data fallback
-const dummyArcher = {
-    uuid: '1',
-    slug: 'budi-santoso',
-    full_name: 'Budi Santoso',
-    athlete_code: 'ARC-2024-001',
-    city: 'Jakarta',
-    province: 'DKI Jakarta',
-    bow_type: 'recurve',
-    gender: 'male',
-    date_of_birth: '1995-05-15',
-    photo_url: null,
-    club: 'Jakarta Elite Archery',
-    club_name: 'Jakarta Elite Archery',
-    club_slug: 'jakarta-elite-archery',
-    total_events: 12,
-    completed_events: 10,
-    best_score: 680,
-    current_ranking: 5,
-    experience_years: 8,
-    dominant_hand: 'right',
-    phone: '+628123456789',
-    email: 'budi.santoso@example.com',
-    address: 'Jl. Sudirman No. 123, Jakarta Selatan',
-    bio: 'Pemanah profesional dengan pengalaman lebih dari 8 tahun. Spesialisasi di divisi Recurve dengan fokus pada kompetisi nasional dan internasional.',
-    achievements: 'Juara 1 Kejurda Jabar 2023\nJuara 2 Piala Presiden 2022\nJuara 3 Kejurda DKI Jakarta 2021',
-    status: 'active'
-}
-
 // SSR Data Fetching
-const { data: archerResponse, pending: isLoading } = await useAsyncData(
+const { data: archerResponse, pending: isLoading, error: archerError } = await useAsyncData(
     `archer-${route.params.slug}`,
-    () => $fetch(`${apiBaseUrl}/archers/${route.params.slug}`),
+    async () => {
+        try {
+            const [archerData, eventsData] = await Promise.all([
+                $fetch(`${apiBaseUrl}/archers/${route.params.slug}`),
+                $fetch(`${apiBaseUrl}/archers/${route.params.slug}/events`).catch(() => ({ events: [] }))
+            ])
+            return { archer: archerData, events: eventsData.events || [] }
+        } catch (e) {
+            console.error("Failed to fetch archer data")
+            throw createError({ statusCode: 404, statusMessage: 'Archer Not Found' })
+        }
+    },
     { server: true }
 )
 
 const archer = computed(() => {
-    const data = archerResponse.value
-    if (!data || Object.keys(data).length === 0) {
-        return { ...dummyArcher, username: route.params.slug, slug: route.params.slug }
-    }
-    return data
+    return archerResponse.value?.archer || {}
 })
 
-const eventHistory = ref([
-    { id: 1, name: 'Kejurda Jabar 2023', location: 'Bandung', date: '15 Mar 2023', score: 680 },
-    { id: 2, name: 'Piala Presiden 2022', location: 'Jakarta', date: '20 Nov 2022', score: 675 },
-    { id: 3, name: 'Kejurda DKI Jakarta 2021', location: 'Jakarta', date: '10 Sep 2021', score: 670 }
-])
+const eventHistory = computed(() => {
+    return archerResponse.value?.events || []
+})
 
 const bowTypeLabel = computed(() => {
     const labels = {
@@ -371,11 +347,11 @@ const bowTypeLabel = computed(() => {
         barebow: 'Barebow',
         traditional: 'Traditional'
     }
-    return labels[archer.value.bow_type] || archer.value.bow_type || '-'
+    return labels[archer.value?.bow_type] || archer.value?.bow_type || '-'
 })
 
 const genderLabel = computed(() => {
-    return archer.value.gender === 'male' ? 'Laki-laki' : archer.value.gender === 'female' ? 'Perempuan' : '-'
+    return archer.value?.gender === 'male' ? 'Laki-laki' : archer.value?.gender === 'female' ? 'Perempuan' : '-'
 })
 
 
@@ -385,7 +361,7 @@ const statusLabel = computed(() => {
         inactive: 'Tidak Aktif',
         suspended: 'Ditangguhkan'
     }
-    return labels[archer.value.status] || archer.value.status || '-'
+    return labels[archer.value?.status] || archer.value?.status || '-'
 })
 
 const formatDate = (date) => {
@@ -421,7 +397,7 @@ const copyLink = async () => {
 }
 
 const shareTo = (platform) => {
-    const text = encodeURIComponent(`Lihat profil ${archer.value.full_name} di Archeryhub.id`)
+    const text = encodeURIComponent(`Lihat profil ${archer.value?.full_name} di Archeryhub.id`)
     const url = encodeURIComponent(shareUrl.value)
     let shareLink = ''
 

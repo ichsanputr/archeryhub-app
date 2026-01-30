@@ -59,11 +59,8 @@
                     <div class="p-6 -mt-10 relative">
                         <!-- Logo -->
                         <div class="w-16 h-16 rounded-xl bg-white border-2 border-white shadow-sm overflow-hidden mb-4">
-                            <img v-if="org.avatar_url" :src="org.avatar_url" class="w-full h-full object-cover" />
-                            <div v-else
-                                class="w-full h-full bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center">
-                                <span class="text-2xl font-black text-navy">{{ org.name?.charAt(0) }}</span>
-                            </div>
+                            <img :src="useImageOrDefault(org.avatar_url, org.name)"
+                                class="w-full h-full object-cover" />
                         </div>
 
                         <div class="flex items-start justify-between gap-2 mb-3">
@@ -105,6 +102,7 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { ref, onMounted } from 'vue'
+import { useImageOrDefault } from '~/composables/useImageHelper'
 
 definePageMeta({
     layout: 'landing'

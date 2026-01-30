@@ -119,11 +119,8 @@
                             class="flex items-center gap-4 p-5 bg-gray-50 rounded-2xl border border-gray-100 relative z-10">
                             <div
                                 class="h-16 w-16 rounded-xl bg-white shadow-sm flex items-center justify-center text-navy font-bold text-xl uppercase border border-gray-100 overflow-hidden">
-                                <img v-if="participant.avatar_url" :src="participant.avatar_url"
+                                <img :src="useImageOrDefault(participant.avatar_url, participant.full_name)"
                                     class="w-full h-full object-cover">
-                                <template v-else>
-                                    {{participant.full_name?.split(' ').map(n => n[0]).join('') || 'U'}}
-                                </template>
                             </div>
                             <div>
                                 <div class="flex items-center gap-2 mb-1">
@@ -363,10 +360,12 @@ const fetchParticipant = async () => {
 }
 
 const formatCategoryName = (category) => {
-    const parts = []
-    if (category.division_name) parts.push(category.division_name)
-    if (category.category_name) parts.push(category.category_name)
-    return parts.join(' - ') || 'Kategori'
+    return [
+        category.division_name || category.division,
+        category.category_name || category.category || category.age_category || category.class_category,
+        category.event_type_name || category.event_type,
+        category.gender_division_name || category.gender
+    ].filter(Boolean).join(' - ') || 'Kategori'
 }
 
 const formatDate = (dateStr) => {

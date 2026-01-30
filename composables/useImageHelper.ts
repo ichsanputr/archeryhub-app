@@ -37,10 +37,22 @@ export const useRandomImage = (): string => {
  * @param url - The image URL to check
  */
 export const useImageOrDefault = (
-  url: string | null | undefined
+  url: string | null | undefined,
+  name?: string
 ): string => {
   if (url?.trim()) {
+    // If it's already a full URL, return it
+    if (url.startsWith('http')) return url
+    // If it's a relative path, prepend API URL if needed (adjust based on your setup)
     return url
   }
+
+  // If name provided, use DiceBear
+  if (name?.trim()) {
+    const seed = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
+    return `https://api.dicebear.com/7.x/initials/svg?seed=${seed}`
+  }
+
+  // Fallback to random image if no name
   return useRandomImage()
 }

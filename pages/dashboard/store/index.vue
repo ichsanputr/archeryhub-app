@@ -29,11 +29,8 @@
                     <!-- Logo -->
                     <div class="-mt-16 relative">
                         <div class="w-32 h-32 rounded-2xl bg-white border-4 border-white shadow-xl overflow-hidden">
-                            <img v-if="store.logoUrl" :src="store.logoUrl" class="w-full h-full object-cover" />
-                            <div v-else
-                                class="w-full h-full bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center">
-                                <span class="text-4xl font-black text-navy">{{ store.name.charAt(0) }}</span>
-                            </div>
+                            <img :src="useImageOrDefault(store.logoUrl, store.name)"
+                                class="w-full h-full object-cover" />
                         </div>
                         <button
                             class="absolute -bottom-2 -right-2 p-2 bg-primary rounded-full text-navy hover:bg-primary-hover transition-colors">
@@ -215,6 +212,7 @@
 import { Icon } from '@iconify/vue'
 import { ref, onMounted } from 'vue'
 import { useToast } from '~/composables/useToast'
+import { useImageOrDefault } from '~/composables/useImageHelper'
 
 const tabs = [
     { id: 'basic', label: 'Profil Dasar' },

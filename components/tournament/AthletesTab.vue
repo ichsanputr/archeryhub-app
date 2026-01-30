@@ -152,7 +152,7 @@ const filteredAthletes = computed(() => {
         username: p.username || null,
         name: p.full_name || 'Archery Athlete',
         club: p.club_name || 'Independent',
-        photo: p.avatar_url || 'https://lh3.googleusercontent.com/aida-public/AB6AXuAN1PKK-zE7gHxiw_aZW8rQ0RXGOUpoAcMX2PerB54W68JgnLtpC0teJYHN1wn5e5Hh5e7o7hzPx_gF8FzvqgkTykuPW2RnCBPrctcfBT9awfftTun8hn_I_2ZdxlhEv7PrrhUSinekRNDYnLyMPUAORFdirFzIiXQuRgcjinT9Jt1Bm_tkVNee3C9NqqYUBs1lYfaFEzgXRZeUvKrEP8FnQOWtp5St5c_s1o-sIV5ALK6iV0TBRUhB2AFDYY_qRHsVDugx540fhIw',
+        photo: useImageOrDefault(p.avatar_url, p.full_name),
         division: p.division_name || 'N/A',
         category: `${p.category_name || ''}${p.event_type_name ? ' - ' + p.event_type_name : ''}${p.gender_division_name ? ' - ' + p.gender_division_name : ''}`.trim() || 'N/A',
         rank: p.rank || '-',

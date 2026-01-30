@@ -4,9 +4,7 @@
     :class="[
       isSidebarOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full md:translate-x-0',
       isSidebarCollapsed ? 'md:w-20' : 'md:w-64'
-    ]"
-    aria-hidden="false"
-    :aria-label="isSidebarOpen ? 'Menu navigasi terbuka' : 'Menu navigasi tertutup'">
+    ]" aria-hidden="false" :aria-label="isSidebarOpen ? 'Menu navigasi terbuka' : 'Menu navigasi tertutup'">
 
     <!-- Logo/Brand -->
     <div class="h-16 flex items-center gap-3 px-6 border-b border-white/10 shrink-0">
@@ -88,6 +86,7 @@ import { Icon } from '@iconify/vue'
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
+import { useImageOrDefault } from '~/composables/useImageHelper'
 
 const route = useRoute()
 const router = useRouter()
@@ -96,7 +95,7 @@ const { user, logout } = useAuth()
 const isSidebarOpen = useState('mobile-sidebar-open', () => false)
 const isSidebarCollapsed = useState('sidebar-collapsed', () => false)
 
-const userAvatar = computed(() => user.value?.avatar_url || `https://ui-avatars.com/api/?name=${user.value?.name || 'User'}&background=FFD700&color=0F172A`)
+const userAvatar = computed(() => useImageOrDefault(user.value?.avatar_url, user.value?.full_name || user.value?.name || 'User'))
 
 // Close sidebar on route change for mobile
 watch(() => route.path, () => {

@@ -27,9 +27,9 @@
         <div class="relative">
           <div
             class="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden border-4 border-primary/20">
-            <img v-if="userData?.avatar_url" :src="userData.avatar_url" class="w-full h-full object-cover" />
-            <img v-else-if="userData?.logo_url" :src="userData.logo_url" class="w-full h-full object-cover" />
-            <Icon v-else icon="ph:user" class="text-4xl text-primary" />
+            <img
+              :src="useImageOrDefault(userData?.avatar_url || userData?.logo_url, userData?.full_name || userData?.name)"
+              class="w-full h-full object-cover" />
           </div>
         </div>
         <div>
@@ -197,6 +197,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useAuth } from '~/composables/useAuth'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
+import { useImageOrDefault } from '~/composables/useImageHelper'
 
 definePageMeta({
   title: 'Pengaturan',

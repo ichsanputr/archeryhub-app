@@ -75,14 +75,8 @@
                             <div
                                 class="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-amber-400 p-0.5 overflow-hidden shadow-sm transition-transform duration-500">
                                 <div class="w-full h-full rounded-[14px] overflow-hidden bg-white">
-                                    <img v-if="archer.photo_url || archer.avatar_url"
-                                        :src="useImageOrDefault(archer.photo_url || archer.avatar_url)"
+                                    <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
                                         class="w-full h-full object-cover transition-transform duration-500" />
-                                    <div v-else class="w-full h-full flex items-center justify-center bg-gray-50">
-                                        <span class="text-2xl font-black text-navy">{{ archer.full_name?.charAt(0) ||
-                                            'A'
-                                            }}</span>
-                                    </div>
                                 </div>
                             </div>
                             <div
@@ -145,13 +139,8 @@
                     <NuxtLink :to="`/archers/${archer.slug}`" class="flex items-center gap-6 group">
                         <div
                             class="w-20 h-20 rounded-xl bg-gradient-to-br from-primary to-amber-400 overflow-hidden flex-shrink-0">
-                            <img v-if="archer.photo_url || archer.avatar_url"
-                                :src="useImageOrDefault(archer.photo_url || archer.avatar_url)"
+                            <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
                                 class="w-full h-full object-cover" />
-                            <div v-else class="w-full h-full flex items-center justify-center">
-                                <span class="text-2xl font-black text-navy">{{ archer.full_name?.charAt(0) || 'A'
-                                }}</span>
-                            </div>
                         </div>
                         <div class="flex-1 min-w-0">
                             <h3 class="font-black text-navy text-xl transition-colors">
@@ -214,6 +203,7 @@ const pageSize = ref(12)
 
 const bowTypes = [
     { label: 'Semua', value: 'all' },
+    { label: 'Standard', value: 'standard' },
     { label: 'Recurve', value: 'recurve' },
     { label: 'Compound', value: 'compound' },
     { label: 'Barebow', value: 'barebow' },

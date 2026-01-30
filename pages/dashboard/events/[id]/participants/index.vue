@@ -101,22 +101,19 @@
                                 class="group hover:bg-gray-50/50 transition-colors">
                                 <td class="px-6 py-4">
                                     <span class="text-sm font-bold text-gray-400">{{ (page - 1) * limit + index + 1
-                                    }}</span>
+                                        }}</span>
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-3">
                                         <div
                                             class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs uppercase border border-gray-200 overflow-hidden">
-                                            <img v-if="participant.avatar_url" :src="participant.avatar_url"
+                                            <img :src="useImageOrDefault(participant.avatar_url, participant.full_name)"
                                                 class="w-full h-full object-cover">
-                                            <template v-else>
-                                                {{participant.full_name?.split(' ').map(n => n[0]).join('') || 'U'}}
-                                            </template>
                                         </div>
                                         <div>
                                             <div class="flex items-center gap-2">
                                                 <p class="font-black text-navy tracking-tight">{{ participant.full_name
-                                                }}
+                                                    }}
                                                 </p>
                                                 <span v-if="participant.archer_id"
                                                     class="inline-flex items-center gap-0.5 px-1.5 py-0.5 bg-blue-50 text-blue-600 rounded-md text-[9px] font-black uppercase tracking-wider border border-blue-100">
@@ -126,13 +123,13 @@
                                             </div>
                                             <div class="flex items-center gap-2">
                                                 <p class="text-xs text-gray-500 font-medium">{{ participant.email || '-'
-                                                }}</p>
+                                                    }}</p>
                                             </div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 text-gray-500 font-medium text-xs">{{ participant.club_name || '-'
-                                }}
+                                    }}
                                 </td>
                                 <td class="px-6 py-4">
                                     <p class="text-navy font-bold text-sm">{{ getCategoryName(participant) }}</p>

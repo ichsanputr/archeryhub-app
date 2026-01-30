@@ -90,9 +90,8 @@
                 <div class="flex flex-col items-center gap-5 p-6 bg-gray-50 rounded-3xl border border-gray-100">
                   <div
                     class="w-32 h-32 rounded-2xl bg-white border-2 border-dashed border-gray-200 overflow-hidden flex items-center justify-center shadow-inner group">
-                    <img v-if="form.logoUrl" :src="form.logoUrl"
+                    <img :src="useImageOrDefault(form.logoUrl, form.name)"
                       class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                    <Icon v-else icon="ph:shield-bold" class="text-5xl text-gray-200" />
                   </div>
                   <div class="flex gap-2 w-full">
                     <button type="button" @click="openMediaLibrary('logo')"
@@ -307,6 +306,7 @@ import { useRouter } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useAuth } from '~/composables/useAuth'
 import { useToast } from '~/composables/useToast'
+import { useImageOrDefault } from '~/composables/useImageHelper'
 
 definePageMeta({
   title: 'Profil Organisasi',

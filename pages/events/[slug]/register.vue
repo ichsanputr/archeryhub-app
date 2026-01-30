@@ -176,11 +176,9 @@
                                 <div class="flex items-center gap-5 mb-6 pb-6 border-b border-gray-100">
                                     <div
                                         class="h-20 w-20 rounded-2xl bg-gradient-to-br from-navy to-navy-light flex items-center justify-center text-primary font-black text-2xl shrink-0 overflow-hidden border-2 border-white shadow-lg">
-                                        <img v-if="archerProfile?.avatar_url" :src="archerProfile.avatar_url"
+                                        <img :src="useImageOrDefault(archerProfile?.avatar_url, archerProfile?.full_name || user.name)"
                                             :alt="archerProfile?.full_name || user.name"
                                             class="w-full h-full object-cover" />
-                                        <span v-else class="text-white">{{ getInitials(archerProfile?.full_name ||
-                                            user.name) }}</span>
                                     </div>
                                     <div class="flex-1 min-w-0">
                                         <h3 class="text-xl font-black text-navy mb-1">{{ archerProfile?.full_name ||
@@ -403,6 +401,7 @@
 <script setup>
 import { useAuth } from '~/composables/useAuth'
 import { useApi } from '~/composables/useApi'
+import { useImageOrDefault } from '~/composables/useImageHelper'
 
 definePageMeta({
     layout: 'landing'

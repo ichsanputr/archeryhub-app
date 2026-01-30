@@ -22,12 +22,8 @@
                 <div class="flex flex-col md:flex-row gap-6 md:gap-8">
                     <div
                         class="w-28 h-28 md:w-36 md:h-36 rounded-2xl bg-white border-2 border-white shadow-sm overflow-hidden flex-shrink-0 -mt-20 md:-mt-24 relative z-20">
-                        <img v-if="club.logoUrl" :src="club.logoUrl" :alt="club.name"
+                        <img :src="useImageOrDefault(club.logoUrl, club.name)" :alt="club.name"
                             class="w-full h-full object-cover" />
-                        <div v-else-if="!club.logoUrl"
-                            class="w-full h-full bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center">
-                            <span class="text-4xl md:text-5xl font-black text-navy">{{ club.name.charAt(0) }}</span>
-                        </div>
                     </div>
 
                     <!-- Info -->
@@ -176,10 +172,8 @@
                                 class="text-center p-5 rounded-2xl border border-gray-100 hover:border-primary/50 hover:bg-primary/5 hover:shadow-xl hover:shadow-primary/5 transition-all cursor-pointer group block bg-white">
                                 <div
                                     class="w-20 h-20 rounded-full bg-gradient-to-br from-gray-50 to-gray-100 mx-auto mb-4 flex items-center justify-center overflow-hidden border-2 border-white shadow-md group-hover:scale-105 transition-transform">
-                                    <img v-if="member.avatar" :src="getImageUrl(member.avatar)" :alt="member.name"
+                                    <img :src="useImageOrDefault(member.avatar, member.name)" :alt="member.name"
                                         class="w-full h-full object-cover" />
-                                    <Icon v-else icon="ph:user-bold"
-                                        class="text-3xl text-gray-300 group-hover:text-primary transition-colors" />
                                 </div>
                                 <h4
                                     class="font-bold text-navy text-sm group-hover:text-primary transition-colors truncate px-1">
@@ -375,6 +369,7 @@ import { Navigation as SwiperNavigation, Pagination as SwiperPagination, Autopla
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
+import { useImageOrDefault } from '~/composables/useImageHelper'
 
 definePageMeta({
     layout: 'landing'

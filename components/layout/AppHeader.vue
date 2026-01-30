@@ -45,11 +45,8 @@
         <div class="flex items-center gap-3">
           <div
             class="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center bg-white shadow-sm transition-transform hover:scale-110 duration-300">
-            <img v-if="user?.logo_url" :src="getImageUrl(user.logo_url)" :alt="user?.full_name || 'Club'"
-              class="w-full h-full object-cover" />
-            <img v-else-if="user?.avatar_url" :src="getImageUrl(user.avatar_url)" :alt="user?.full_name || 'Club'"
-              class="w-full h-full object-cover" />
-            <Icon v-else icon="ph:shield-check-fill" class="text-primary text-2xl" />
+            <img :src="useImageOrDefault(user.logo_url || user.avatar_url, user?.full_name || 'Club')"
+              :alt="user?.full_name || 'Club'" class="w-full h-full object-cover" />
           </div>
           <h2 class="text-lg font-black text-navy truncate max-w-sm tracking-tight">
             {{ user?.full_name || user?.name || 'Klub Panahan' }}
@@ -63,11 +60,8 @@
         <div class="flex items-center gap-3">
           <div
             class="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center bg-white shadow-sm transition-transform hover:scale-110 duration-300">
-            <img v-if="user?.logo_url" :src="getImageUrl(user.logo_url)" :alt="user?.name || 'Organization'"
-              class="w-full h-full object-cover" />
-            <img v-else-if="user?.avatar_url" :src="getImageUrl(user.avatar_url)" :alt="user?.name || 'Organization'"
-              class="w-full h-full object-cover" />
-            <Icon v-else icon="ph:building-office-fill" class="text-primary text-2xl" />
+            <img :src="useImageOrDefault(user.logo_url || user.avatar_url, user?.name || 'Organization')"
+              :alt="user?.name || 'Organization'" class="w-full h-full object-cover" />
           </div>
           <h2 class="text-lg font-black text-navy truncate max-w-sm tracking-tight">
             {{ user?.full_name || 'Organisasi' }}
@@ -138,6 +132,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 import { useEventContext } from '~/composables/useEventContext'
 import { onClickOutside } from '@vueuse/core'
+import { useImageOrDefault } from '~/composables/useImageHelper'
 
 const config = useRuntimeConfig()
 

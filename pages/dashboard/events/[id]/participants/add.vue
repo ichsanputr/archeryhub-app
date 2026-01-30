@@ -116,112 +116,150 @@
                                     </label>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <BaseInput v-model="newArcherForm.full_name" label="Nama Lengkap"
-                                    placeholder="Nama sesuai identitas" required @input="generateUsername" />
-                                <BaseInput v-model="newArcherForm.email" label="Email" type="email"
-                                    :placeholder="newArcherType === 'account' ? 'email@example.com (wajib)' : 'email@example.com (opsional)'"
-                                    :required="newArcherType === 'account'" />
-                                <BaseInput v-model="newArcherForm.phone" label="No. Telepon" type="tel"
-                                    placeholder="08xxxxxxxxxx" />
-                                <BaseInput v-model="newArcherForm.date_of_birth" label="Tanggal Lahir" type="date" />
-                                <BaseSelect v-model="newArcherForm.gender" label="Jenis Kelamin"
-                                    :items="genderOptions" />
-                                <BaseSelect v-model="newArcherForm.bow_type" label="Jenis Busur" :items="bowOptions" />
-                                <BaseInput v-model="newArcherForm.city" label="Kota" placeholder="Jakarta" />
-                                <BaseInput v-model="newArcherForm.school" label="Sekolah"
-                                    placeholder="Nama sekolah (opsional)" />
+                        <!-- Avatar Upload -->
+                        <div class="flex items-center gap-4 p-4 bg-white border border-gray-100 rounded-xl">
+                            <div
+                                class="relative w-16 h-16 rounded-full bg-gray-50 border border-gray-100 overflow-hidden flex-shrink-0 group">
+                                <img v-if="newArcherForm.avatar_url" :src="newArcherForm.avatar_url"
+                                    class="w-full h-full object-cover">
+                                <div v-else class="w-full h-full flex items-center justify-center text-gray-300">
+                                    <Icon icon="ph:user" class="text-3xl" />
+                                </div>
+                                <button @click="showMediaLibrary = true"
+                                    class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white">
+                                    <Icon icon="ph:pencil-simple" />
+                                </button>
                             </div>
-                            <BaseSelect v-model="newArcherForm.club_id" label="Klub" :items="clubOptions" />
-                            <BaseTextarea v-model="newArcherForm.address" label="Alamat" placeholder="Alamat lengkap"
-                                :rows="2" />
-                            <p class="text-xs text-gray-400">
-                                Field bertanda * wajib diisi untuk membuat pemanah baru.
-                            </p>
+                            <div class="flex-1">
+                                <p class="text-sm font-bold text-navy mb-1">Foto Profil</p>
+                                <div class="flex gap-2">
+                                    <button @click="showMediaLibrary = true"
+                                        class="text-xs text-primary font-bold hover:underline">
+                                        {{ newArcherForm.avatar_url ? 'Ganti Foto' : 'Upload Foto' }}
+                                    </button>
+                                    <button v-if="newArcherForm.avatar_url" @click="newArcherForm.avatar_url = ''"
+                                        class="text-xs text-red-500 font-bold hover:underline">
+                                        Hapus
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
 
-                <!-- Step 2: Select Category -->
-                <div>
-                    <h3 class="text-lg font-black text-navy mb-4 pb-4 border-b-2 border-gray-200">Kategori Lomba</h3>
-                    <div class="space-y-4">
-                        <BaseSelect v-model="form.category_id" label="Kategori" :items="categoryOptions" required />
-                        <div v-if="selectedCategory" class="bg-gray-50/50 border border-gray-100 rounded-xl p-4">
-                            <p class="text-sm font-bold text-navy mb-1">{{ selectedCategory.division_name ||
-                                selectedCategory.division }} - {{ selectedCategory.category_name ||
-                                    selectedCategory.category }}</p>
-                            <p class="text-xs text-gray-500">Kategori yang dipilih untuk peserta ini</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <BaseInput v-model="newArcherForm.full_name" label="Nama Lengkap"
+                                placeholder="Nama sesuai identitas" required @input="generateUsername" />
+                            <BaseInput v-model="newArcherForm.email" label="Email" type="email"
+                                :placeholder="newArcherType === 'account' ? 'email@example.com (wajib)' : 'email@example.com (opsional)'"
+                                :required="newArcherType === 'account'" />
+                            <BaseInput v-model="newArcherForm.phone" label="No. Telepon" type="tel"
+                                placeholder="08xxxxxxxxxx" />
+                            <BaseInput v-model="newArcherForm.date_of_birth" label="Tanggal Lahir" type="date" />
+                            <BaseSelect v-model="newArcherForm.gender" label="Jenis Kelamin" :items="genderOptions" />
+                            <BaseSelect v-model="newArcherForm.bow_type" label="Jenis Busur" :items="bowOptions" />
+                            <BaseInput v-model="newArcherForm.city" label="Kota" placeholder="Jakarta" />
+                            <BaseInput v-model="newArcherForm.school" label="Sekolah"
+                                placeholder="Nama sekolah (opsional)" />
                         </div>
+                        <BaseSelect v-model="newArcherForm.club_id" label="Klub" :items="clubOptions" />
+                        <BaseTextarea v-model="newArcherForm.address" label="Alamat" placeholder="Alamat lengkap"
+                            :rows="2" />
+                        <p class="text-xs text-gray-400">
+                            Field bertanda * wajib diisi untuk membuat pemanah baru.
+                        </p>
                     </div>
-                </div>
-
-                <!-- Step 3: Additional Info -->
-                <div>
-                    <h3 class="text-lg font-black text-navy mb-4 pb-4 border-b-2 border-gray-200">Informasi Tambahan
-                    </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <BaseSelect v-model="form.payment_status" label="Status Pembayaran"
-                            :items="paymentStatusOptions" />
-                        <BaseInput v-model="form.payment_amount" label="Jumlah Pembayaran" placeholder="0"
-                            kind="currency" />
-                    </div>
-                    <BaseTextarea v-model="form.notes" label="Catatan" placeholder="Catatan tambahan (opsional)"
-                        :rows="3" class="mt-4" />
                 </div>
             </div>
 
-            <!-- Side Card -->
-            <div class="space-y-4">
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-4">
-                    <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em]">Informasi Event</h3>
-                    <div v-if="event">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div
-                                class="h-10 w-10 rounded-xl bg-navy/5 flex items-center justify-center text-navy font-bold">
-                                <Icon icon="ph:trophy" class="text-xl" />
-                            </div>
-                            <div>
-                                <p class="font-semibold text-navy">{{ event.name }}</p>
-                                <p class="text-xs text-gray-400">{{ event.code }}</p>
-                            </div>
-                        </div>
-                        <div class="space-y-2 text-sm">
-                            <div class="flex items-center gap-2 text-gray-600">
-                                <Icon icon="ph:calendar" class="text-gray-400" />
-                                <span>{{ formatDate(event.start_date) }}</span>
-                            </div>
-                            <div class="flex items-center gap-2 text-gray-600">
-                                <Icon icon="ph:map-pin" class="text-gray-400" />
-                                <span>{{ event.venue || 'TBD' }}</span>
-                            </div>
-                        </div>
+            <!-- Step 2: Select Category -->
+            <div>
+                <h3 class="text-lg font-black text-navy mb-4 pb-4 border-b-2 border-gray-200">Kategori Lomba</h3>
+                <div class="space-y-4">
+                    <BaseSelect v-model="form.category_id" label="Kategori" :items="categoryOptions" required />
+                    <div v-if="selectedCategory" class="bg-gray-50/50 border border-gray-100 rounded-xl p-4">
+                        <p class="text-sm font-bold text-navy mb-1">
+                            {{ [
+                                selectedCategory.division_name || selectedCategory.division,
+                                selectedCategory.category_name || selectedCategory.category || selectedCategory.age_category
+                                || selectedCategory.class_category,
+                                selectedCategory.event_type_name || selectedCategory.event_type,
+                                selectedCategory.gender_division_name || selectedCategory.gender
+                            ].filter(Boolean).join(' - ') }}
+                        </p>
+                        <p class="text-xs text-gray-500">Kategori yang dipilih untuk peserta ini</p>
                     </div>
-                    <div v-else class="text-gray-400 text-sm">Memuat informasi event...</div>
                 </div>
+            </div>
 
-                <div v-if="selectedArcher" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-4">
-                    <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em]">Pemanah Terpilih</h3>
-                    <div class="flex items-center gap-3">
+            <!-- Step 3: Additional Info -->
+            <div>
+                <h3 class="text-lg font-black text-navy mb-4 pb-4 border-b-2 border-gray-200">Informasi Tambahan
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <BaseSelect v-model="form.payment_status" label="Status Pembayaran" :items="paymentStatusOptions" />
+                    <BaseInput v-model="form.payment_amount" label="Jumlah Pembayaran" placeholder="0"
+                        kind="currency" />
+                </div>
+                <BaseTextarea v-model="form.notes" label="Catatan" placeholder="Catatan tambahan (opsional)" :rows="3"
+                    class="mt-4" />
+            </div>
+        </div>
+
+        <!-- Side Card -->
+        <div class="space-y-4">
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-4">
+                <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em]">Informasi Event</h3>
+                <div v-if="event">
+                    <div class="flex items-center gap-3 mb-3">
                         <div
-                            class="h-12 w-12 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-sm uppercase">
-                            {{selectedArcher.full_name?.split(' ').map(n => n[0]).join('') || 'U'}}
+                            class="h-10 w-10 rounded-xl bg-navy/5 flex items-center justify-center text-navy font-bold">
+                            <Icon icon="ph:trophy" class="text-xl" />
                         </div>
                         <div>
-                            <p class="font-bold text-navy">{{ selectedArcher.full_name }}</p>
-                            <p class="text-xs text-gray-400">{{ selectedArcher.athlete_code || '-' }}</p>
+                            <p class="font-semibold text-navy">{{ event.name }}</p>
+                            <p class="text-xs text-gray-400">{{ event.code }}</p>
                         </div>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex items-center gap-2 text-gray-600">
+                            <Icon icon="ph:calendar" class="text-gray-400" />
+                            <span>{{ formatDate(event.start_date) }}</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-gray-600">
+                            <Icon icon="ph:map-pin" class="text-gray-400" />
+                            <span>{{ event.venue || 'TBD' }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div v-else class="text-gray-400 text-sm">Memuat informasi event...</div>
+            </div>
+
+            <div v-if="selectedArcher" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-4">
+                <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em]">Pemanah Terpilih</h3>
+                <div class="flex items-center gap-3">
+                    <div
+                        class="h-12 w-12 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-sm uppercase overflow-hidden border border-gray-200">
+                        <img :src="useImageOrDefault(selectedArcher.photo_url || selectedArcher.avatar_url, selectedArcher.full_name)"
+                            class="w-full h-full object-cover" />
+                    </div>
+                    <div>
+                        <p class="font-bold text-navy">{{ selectedArcher.full_name }}</p>
+                        <p class="text-xs text-gray-400">{{ selectedArcher.athlete_code || '-' }}</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    </div>
+
+    <MediaLibrary :show="showMediaLibrary" @close="showMediaLibrary = false" @select="handleAvatarSelect" />
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
+import MediaLibrary from '~/components/common/MediaLibrary.vue'
+import { ref, computed, onMounted, onBeforeUnmount, watch, reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useEventContext } from '~/composables/useEventContext'
@@ -248,6 +286,7 @@ const archerMode = ref('existing')
 const searchArcherQuery = ref('')
 const selectedArcher = ref(null)
 const isSubmitting = ref(false)
+const showMediaLibrary = ref(false)
 
 const form = reactive({
     category_id: '',
@@ -270,7 +309,8 @@ const newArcherForm = reactive({
     city: '',
     school: '',
     club_id: '',
-    address: ''
+    address: '',
+    avatar_url: ''
 })
 
 // account (global archer) or event_only (event_archers)
@@ -284,6 +324,7 @@ const genderOptions = [
 
 const bowOptions = [
     { title: 'Pilih Jenis Busur', value: '' },
+    { title: 'Standard', value: 'standard' },
     { title: 'Recurve', value: 'recurve' },
     { title: 'Compound', value: 'compound' },
     { title: 'Barebow', value: 'barebow' },
@@ -306,7 +347,12 @@ const categoryOptions = computed(() => {
     return [
         { title: 'Pilih Kategori', value: '' },
         ...categories.value.map(cat => ({
-            title: `${cat.division_name || cat.division} - ${cat.category_name || cat.category}`,
+            title: [
+                cat.division_name || cat.division,
+                cat.category_name || cat.category || cat.age_category || cat.class_category,
+                cat.event_type_name || cat.event_type,
+                cat.gender_division_name || cat.gender
+            ].filter(Boolean).join(' - '),
             value: cat.id || cat.uuid
         }))
     ]
@@ -469,7 +515,8 @@ const submit = async () => {
                     city: newArcherForm.city || undefined,
                     school: newArcherForm.school || undefined,
                     club_id: newArcherForm.club_id || undefined,
-                    address: newArcherForm.address || undefined
+                    address: newArcherForm.address || undefined,
+                    avatar_url: newArcherForm.avatar_url || undefined
                 })
                 archerId = archerResponse.archer_id || archerResponse.id || archerResponse.uuid
                 eventArcherId = null
@@ -486,7 +533,8 @@ const submit = async () => {
                     city: newArcherForm.city || undefined,
                     school: newArcherForm.school || undefined,
                     club_id: newArcherForm.club_id || undefined,
-                    address: newArcherForm.address || undefined
+                    address: newArcherForm.address || undefined,
+                    avatar_url: newArcherForm.avatar_url || undefined
                 })
                 eventArcherId = eventArcherResponse.id || eventArcherResponse.uuid
                 archerId = null
@@ -511,6 +559,10 @@ const submit = async () => {
     } finally {
         isSubmitting.value = false
     }
+}
+
+const handleAvatarSelect = (media) => {
+    newArcherForm.avatar_url = media.url
 }
 
 let searchTimeout

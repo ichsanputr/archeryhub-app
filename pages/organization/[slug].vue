@@ -13,12 +13,8 @@
                 <div class="flex flex-col md:flex-row gap-6 md:gap-8">
                     <div
                         class="w-28 h-28 md:w-36 md:h-36 rounded-2xl bg-white border-2 border-white shadow-sm overflow-hidden flex-shrink-0 -mt-20 md:-mt-24 relative z-20">
-                        <img v-if="org.avatar_url" :src="org.avatar_url" :alt="org.name"
+                        <img :src="useImageOrDefault(org.avatar_url, org.name)" :alt="org.name"
                             class="w-full h-full object-cover" />
-                        <div v-else
-                            class="w-full h-full bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center">
-                            <span class="text-4xl md:text-5xl font-black text-navy">{{ org.name?.charAt(0) }}</span>
-                        </div>
                     </div>
 
                     <!-- Info -->
@@ -329,11 +325,8 @@
                 <div class="space-y-6">
                     <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl">
                         <div class="w-12 h-12 rounded-xl bg-white shadow-sm overflow-hidden shrink-0">
-                            <img v-if="org.avatar_url" :src="org.avatar_url" class="w-full h-full object-cover" />
-                            <div v-else
-                                class="w-full h-full bg-primary flex items-center justify-center font-black text-navy">
-                                {{ org.name?.charAt(0) }}
-                            </div>
+                            <img :src="useImageOrDefault(org.avatar_url, org.name)"
+                                class="w-full h-full object-cover" />
                         </div>
                         <div class="min-w-0 flex-1">
                             <p class="font-bold text-navy truncate">{{ org.name }}</p>
@@ -390,6 +383,7 @@
 import { Icon } from '@iconify/vue'
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { useImageOrDefault } from '~/composables/useImageHelper'
 
 definePageMeta({
     layout: 'landing'
