@@ -55,9 +55,13 @@
             </NuxtLink>
         </div>
 
-        <div v-else class="flex-1 flex flex-col items-center justify-center py-16 text-center">
-            <Icon icon="ph:calendar-blank-light" class="text-7xl text-gray-200 mb-4" />
-            <p class="text-sm text-gray-400">Belum ada event terbaru.</p>
+        <div v-else class="flex-1 flex flex-col items-center justify-center h-full pb-24 text-center">
+            <div class="flex flex-col items-center gap-2">
+                <div>
+                    <Icon icon="ph:calendar-blank-light" class="text-7xl text-gray-200 mb-4" />
+                </div>
+                <div class="text-sm text-gray-400">Belum ada event terbaru.</div>
+            </div>
         </div>
     </div>
 </template>

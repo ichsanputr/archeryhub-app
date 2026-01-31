@@ -20,7 +20,7 @@
                         Lengkapi <span class="text-primary">Peralatan</span><br />
                         Panahan Terbaikmu
                     </h1>
-                    <p class="text-white/90 text-lg md:text-xl leading-relaxed max-w-xl">
+                    <p class="text-white/90 text-base sm:text-lg leading-relaxed max-w-xl">
                         Temukan peralatan berkualitas dari berbagai klub dan organisasi terpercaya di seluruh Indonesia.
                     </p>
                 </div>

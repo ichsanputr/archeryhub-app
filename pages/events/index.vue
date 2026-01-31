@@ -19,7 +19,7 @@
                         Temukan <span class="text-primary">Target</span><br />
                         Kemenanganmu
                     </h1>
-                    <p class="text-white/90 text-lg md:text-xl leading-relaxed max-w-xl mb-8">
+                    <p class="text-white/90 text-base sm:text-lg leading-relaxed max-w-xl mb-8">
                         Ikuti berbagai turnamen panahan bergengsi di seluruh Indonesia. Dari tingkat klub hingga
                         nasional, semua tersedia dalam satu platform.
                     </p>

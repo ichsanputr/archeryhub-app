@@ -14,12 +14,12 @@
                     <div
                         class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold uppercase tracking-widest mb-6">
                         <Icon icon="ph:question-bold" class="text-lg" />
-                        <span>Support Center</span>
+                        <span class="text-xs">Support Center</span>
                     </div>
                     <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
                         Pertanyaan <span class="text-primary">Sering Diajukan</span>
                     </h1>
-                    <p class="text-white/90 text-lg md:text-xl leading-relaxed max-w-xl mx-auto md:mx-0">
+                    <p class="text-white/90 text-base sm:text-lg leading-relaxed max-w-xl mx-auto md:mx-0">
                         Temukan jawaban cepat untuk pertanyaan umum mengenai pendaftaran, manajemen klub, dan sistem
                         scoring Archeryhub.id.
                     </p>
@@ -31,11 +31,11 @@
         <section class="container mx-auto px-4 max-w-4xl py-16">
             <div class="space-y-4">
                 <div v-for="(faq, index) in faqs" :key="index"
-                    class="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-all">
+                    class="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-sm transition-all">
                     <button @click="toggleFaq(index)"
                         class="w-full px-6 py-5 flex items-center justify-between text-left group">
                         <span class="font-bold text-navy group-hover:text-primary transition-colors">{{ faq.question
-                            }}</span>
+                        }}</span>
                         <Icon icon="ph:caret-down-bold"
                             :class="['text-gray-400 transition-transform duration-300', activeFaq === index ? 'rotate-180' : '']" />
                     </button>

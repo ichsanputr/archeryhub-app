@@ -20,7 +20,7 @@
                         Temukan <span class="text-primary">Inspirasi</span> & <br />
                         Koneksi Pemanah Indonesia
                     </h1>
-                    <p class="text-white/90 text-lg md:text-xl leading-relaxed max-w-xl">
+                    <p class="text-white/90 text-base sm:text-lg leading-relaxed max-w-xl">
                         Jelajahi profil para pemanah berbakat dari seluruh penjuru nusantara. Lihat prestasi, klub, dan
                         dedikasi mereka dalam dunia panahan.
                     </p>
@@ -128,7 +128,7 @@
                                 </div>
                                 <span class="text-xs font-black text-navy truncate capitalize">{{ archer.bow_type ||
                                     'Recurve'
-                                }}</span>
+                                    }}</span>
                             </div>
                         </div>
                         <div class="bg-gray-50/50 rounded-2xl p-3 border border-gray-50 transition-all">

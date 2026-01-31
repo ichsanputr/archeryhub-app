@@ -20,7 +20,7 @@
                         Kabar Terbaru <br />
                         <span class="text-primary">Dunia Panahan</span>
                     </h1>
-                    <p class="text-white/90 text-lg md:text-xl leading-relaxed max-w-xl">
+                    <p class="text-white/90 text-base sm:text-lg leading-relaxed max-w-xl">
                         Ikuti perkembangan terbaru turnamen, prestasi atlet, dan berita seputar komunitas panahan
                         Indonesia.
                     </p>

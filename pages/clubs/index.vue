@@ -20,7 +20,7 @@
                         Temukan <span class="text-primary">Klub Panahan</span><br />
                         Terbaik di Indonesia
                     </h1>
-                    <p class="text-white/90 text-lg md:text-xl leading-relaxed max-w-xl">
+                    <p class="text-white/90 text-base sm:text-lg leading-relaxed max-w-xl">
                         Bergabunglah dengan komunitas pemanah dan tingkatkan kemampuan bersama pelatih dan fasilitas
                         terbaik.
                     </p>
