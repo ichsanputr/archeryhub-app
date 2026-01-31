@@ -573,73 +573,116 @@
         <!-- Hasil Tab -->
         <div v-if="activeTab === 'hasil'" class="space-y-6">
             <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="p-5 border-b border-gray-100 bg-gray-50/50">
-                    <h2 class="text-lg font-bold text-navy flex items-center gap-2">
-                        <Icon icon="iconoir:leaderboard" class="text-primary text-xl" />
-                        Upload Hasil Lomba
-                    </h2>
-                    <p class="text-sm text-gray-500 mt-1">Upload dokumen hasil lomba (mendukung PDF, JPG, PNG). Anda
-                        dapat mengupload beberapa file.</p>
+                <div class="p-6 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
+                    <div>
+                        <h2 class="text-lg font-black text-navy flex items-center gap-3">
+                            <div class="p-2 bg-primary/10 rounded-lg">
+                                <Icon icon="iconoir:leaderboard" class="text-primary text-xl" />
+                            </div>
+                            Dokumen Hasil Lomba
+                        </h2>
+                        <p class="text-sm text-gray-500 mt-1 font-medium">Upload dan kelola dokumen hasil lomba publik</p>
+                    </div>
+                    <BaseButton variant="primary" size="sm" icon="ph:plus-bold" @click="$refs.resultsFileInput?.click()">
+                        Tambah File
+                    </BaseButton>
                 </div>
-                <div class="p-6 space-y-5">
-                    <!-- Upload Area -->
-                    <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-primary transition-colors cursor-pointer"
+
+                <div class="p-8">
+                    <!-- Upload Area (Compact when files exist) -->
+                    <div v-if="!form.results || form.results.length === 0"
+                        class="border-2 border-dashed border-gray-200 rounded-3xl p-12 text-center hover:border-primary hover:bg-primary/5 transition-all cursor-pointer group"
                         @click="$refs.resultsFileInput?.click()" @dragover.prevent="isDragging = true"
                         @dragleave.prevent="isDragging = false" @drop.prevent="handleResultsDrop"
                         :class="isDragging ? 'border-primary bg-primary/5' : ''">
-                        <div class="flex flex-col items-center gap-3">
-                            <div class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center">
-                                <Icon icon="ph:upload-simple" class="text-3xl text-gray-400" />
+                        <div class="flex flex-col items-center gap-4">
+                            <div
+                                class="w-20 h-20 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-white group-hover:shadow-xl group-hover:shadow-primary/20 transition-all">
+                                <Icon icon="ph:cloud-arrow-up" class="text-4xl text-gray-300 group-hover:text-primary" />
                             </div>
-                            <div>
-                                <p class="text-sm font-bold text-navy">Klik untuk upload atau drag & drop</p>
-                                <p class="text-xs text-gray-500 mt-1">PDF, JPG, PNG (Max 10MB per file)</p>
+                            <div class="max-w-xs mx-auto">
+                                <p class="text-base font-black text-navy group-hover:text-primary transition-colors">
+                                    Upload Hasil Lomba</p>
+                                <p class="text-sm text-gray-500 mt-1 font-medium italic">Drag & drop beberapa file di
+                                    sini. Mendukung PDF, JPG, & PNG.</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <span class="px-3 py-1 bg-gray-100 rounded-full text-[10px] font-black uppercase text-gray-400">Max 10MB/file</span>
                             </div>
                         </div>
-                        <input ref="resultsFileInput" type="file" class="hidden" accept=".pdf,.jpg,.jpeg,.png" multiple
-                            @change="handleResultsUpload" />
                     </div>
 
-                    <!-- Uploaded Files List -->
-                    <div v-if="form.results && form.results.length > 0" class="space-y-3">
-                        <h3 class="text-sm font-bold text-gray-700">Dokumen yang Diupload ({{ form.results.length }})
-                        </h3>
-                        <div class="space-y-2">
+                    <!-- Uploaded Files List (Revamped) -->
+                    <div v-if="form.results && form.results.length > 0" class="space-y-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                             <div v-for="(file, index) in form.results" :key="index"
-                                class="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-200 hover:border-primary/50 transition-colors">
-                                <div class="flex items-center gap-3 flex-1">
-                                    <div
-                                        class="w-10 h-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center flex-shrink-0">
-                                        <Icon :icon="getFileIcon(file.url)" class="text-xl text-primary" />
+                                class="group relative bg-white rounded-2xl border border-gray-100 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 transition-all p-5">
+                                
+                                <div class="flex gap-5">
+                                    <!-- File Icon / Preview -->
+                                    <div class="w-16 h-20 rounded-xl bg-gray-50 border border-gray-100 flex flex-col items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                                        <Icon :icon="getFileIcon(file.url)" class="text-3xl text-primary" />
+                                        <span class="text-[9px] font-black text-gray-400 uppercase mt-1">{{ getFileExt(file.url) }}</span>
                                     </div>
-                                    <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-bold text-navy truncate">{{ file.name ||
-                                            getFileName(file.url) }}</p>
-                                        <p class="text-xs text-gray-500">{{ formatFileSize(file.size) }}</p>
+
+                                    <!-- File Metadata & Actions -->
+                                    <div class="flex-1 min-w-0 flex flex-col justify-between py-1">
+                                        <div class="space-y-3">
+                                            <!-- Title Input -->
+                                            <div class="space-y-1">
+                                                <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-1">Judul Tampilan</label>
+                                                <input v-model="file.title" type="text"
+                                                    placeholder="Contoh: Hasil Kualifikasi Recurve"
+                                                    class="w-full px-3 py-2 text-sm font-bold text-navy bg-gray-50 border border-transparent focus:bg-white focus:border-primary rounded-lg outline-none transition-all" />
+                                            </div>
+
+                                            <!-- Filename Input -->
+                                            <div class="space-y-1">
+                                                <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-1">Nama File Download</label>
+                                                <div class="flex items-center gap-2">
+                                                    <input v-model="file.name" type="text"
+                                                        placeholder="nama-file"
+                                                        class="flex-1 px-3 py-2 text-[11px] font-medium text-gray-500 bg-gray-50 border border-transparent focus:bg-white focus:border-primary rounded-lg outline-none transition-all" />
+                                                    <span class="text-[10px] font-bold text-gray-400">.{{ getFileExt(file.url) }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Footer Actions -->
+                                        <div class="flex items-center justify-between mt-4">
+                                            <p class="text-[10px] font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md">
+                                                {{ formatFileSize(file.size) }}
+                                            </p>
+                                            <div class="flex items-center gap-2">
+                                                <a :href="file.url" target="_blank"
+                                                    class="p-2 text-gray-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-all"
+                                                    title="Pratinjau">
+                                                    <Icon icon="ph:eye-bold" class="text-lg" />
+                                                </a>
+                                                <button @click="removeResultFile(index)"
+                                                    class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
+                                                    title="Hapus">
+                                                    <Icon icon="ph:trash-bold" class="text-lg" />
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="flex items-center gap-2">
-                                    <a :href="file.url" target="_blank"
-                                        class="px-3 py-1.5 text-xs font-bold text-primary hover:bg-primary/10 rounded-lg transition-colors">
-                                        Lihat
-                                    </a>
-                                    <button @click="removeResultFile(index)"
-                                        class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
-                                        <Icon icon="ph:trash" class="text-lg" />
-                                    </button>
+                            </div>
+
+                            <!-- Add More Area -->
+                            <div @click="$refs.resultsFileInput?.click()"
+                                class="border-2 border-dashed border-gray-100 rounded-2xl flex flex-col items-center justify-center p-8 hover:border-primary hover:bg-primary/5 transition-all group cursor-pointer border-brand-border">
+                                <div class="p-3 bg-gray-50 rounded-full group-hover:bg-primary group-hover:text-white transition-all text-gray-400">
+                                    <Icon icon="ph:plus-bold" class="text-xl" />
                                 </div>
+                                <p class="text-xs font-black text-gray-400 mt-3 uppercase tracking-widest group-hover:text-primary">Tambah File Lagi</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Empty State -->
-                    <div v-else class="text-center py-8">
-                        <div class="w-16 h-16 mx-auto rounded-full bg-gray-100 flex items-center justify-center mb-3">
-                            <Icon icon="ph:files" class="text-3xl text-gray-400" />
-                        </div>
-                        <p class="text-sm font-bold text-gray-500">Belum ada dokumen hasil yang diupload</p>
-                        <p class="text-xs text-gray-400 mt-1">Klik area di atas untuk mulai upload</p>
-                    </div>
+                    <input ref="resultsFileInput" type="file" class="hidden" accept=".pdf,.jpg,.jpeg,.png" multiple
+                        @change="handleResultsUpload" />
                 </div>
             </section>
         </div>
@@ -922,7 +965,8 @@ const uploadResultFiles = async (files) => {
 
             form.value.results.push({
                 url: response.url,
-                name: file.name,
+                title: file.name.replace(/\.[^/.]+$/, "").replace(/[_-]/g, ' '),
+                name: file.name.replace(/\.[^/.]+$/, ""),
                 size: file.size,
                 type: file.type
             })
@@ -944,12 +988,16 @@ const removeResultFile = (index) => {
     form.value.results.splice(index, 1)
 }
 
+const getFileExt = (url) => {
+    if (!url) return ''
+    return url.split('.').pop()?.toLowerCase() || ''
+}
+
 const getFileIcon = (url) => {
-    if (!url) return 'ph:file'
-    const ext = url.split('.').pop()?.toLowerCase()
-    if (ext === 'pdf') return 'ph:file-pdf'
-    if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext)) return 'ph:file-image'
-    return 'ph:file'
+    const ext = getFileExt(url)
+    if (ext === 'pdf') return 'ph:file-pdf-duotone'
+    if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext)) return 'ph:file-image-duotone'
+    return 'ph:file-duotone'
 }
 
 const getFileName = (url) => {

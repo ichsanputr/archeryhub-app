@@ -24,10 +24,10 @@
         </section>
 
         <!-- Filter Bar -->
-        <section class="container mx-auto px-4 max-w-7xl py-8">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <section class="container mx-auto px-4 max-w-7xl py-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
                 <!-- Bow Type Filters -->
-                <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 md:pb-0">
+                <div class="lg:col-span-4 flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 md:pb-0">
                     <button v-for="type in bowTypes" :key="type.value" @click="activeBowType = type.value" :class="[
                         'px-5 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all border-2',
                         activeBowType === type.value
@@ -38,19 +38,27 @@
                     </button>
                 </div>
 
+                <!-- Search Archer -->
+                <div class="lg:col-span-5 relative group">
+                    <Icon icon="ph:magnifying-glass-bold"
+                        class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-navy transition-colors text-lg" />
+                    <input v-model="searchQuery" type="text" placeholder="Cari pemanah, kota, atau klub..."
+                        class="w-full pl-12 pr-4 py-3.5 bg-white border-2 border-gray-100 rounded-2xl text-sm font-bold focus:border-navy focus:ring-4 focus:ring-navy/5 outline-none transition-all placeholder:text-gray-400 shadow-sm" />
+                </div>
+
                 <!-- View Toggle & Count -->
-                <div class="flex items-center gap-4">
-                    <p class="text-gray-500 text-sm font-medium">
-                        <span class="font-bold text-navy">{{ archers.length }}</span> pemanah ditemukan
+                <div class="lg:col-span-3 flex items-center justify-between lg:justify-end gap-6">
+                    <p class="text-gray-500 text-sm font-medium whitespace-nowrap">
+                        <span class="font-bold text-navy">{{ totalArchers }}</span> pemanah
                     </p>
-                    <div class="flex items-center gap-1 bg-gray-100 p-1 rounded-lg">
+                    <div class="flex items-center gap-1 bg-gray-100 p-1.5 rounded-xl">
                         <button @click="viewMode = 'grid'"
-                            :class="['p-2 rounded-lg transition-all', viewMode === 'grid' ? 'bg-white shadow-sm text-navy' : 'text-gray-400 hover:text-navy']">
-                            <Icon icon="ph:squares-four-bold" class="text-lg" />
+                            :class="['p-2.5 rounded-lg transition-all', viewMode === 'grid' ? 'bg-white shadow-sm text-navy' : 'text-gray-400 hover:text-navy']">
+                            <Icon icon="ph:squares-four-bold" class="text-xl" />
                         </button>
                         <button @click="viewMode = 'list'"
-                            :class="['p-2 rounded-lg transition-all', viewMode === 'list' ? 'bg-white shadow-sm text-navy' : 'text-gray-400 hover:text-navy']">
-                            <Icon icon="ph:list-bold" class="text-lg" />
+                            :class="['p-2.5 rounded-lg transition-all', viewMode === 'list' ? 'bg-white shadow-sm text-navy' : 'text-gray-400 hover:text-navy']">
+                            <Icon icon="ph:list-bold" class="text-xl" />
                         </button>
                     </div>
                 </div>
@@ -115,7 +123,7 @@
                                 </div>
                                 <span class="text-xs font-black text-navy truncate capitalize">{{ archer.bow_type ||
                                     'Recurve'
-                                    }}</span>
+                                }}</span>
                             </div>
                         </div>
                         <div class="bg-gray-50/50 rounded-2xl p-3 border border-gray-50 transition-all">

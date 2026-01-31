@@ -7,7 +7,7 @@
                     <div class="w-12 h-12 rounded-xl bg-navy/5 flex items-center justify-center">
                         <Icon icon="ph:file-pdf-bold" class="text-2xl text-navy" />
                     </div>
-                    Hasil Scoring Manual
+                    Hasil Perlombaan
                 </h3>
                 <p class="text-gray-600 text-sm font-medium mb-6">Download berkas hasil pertandingan resmi yang
                     diunggah oleh penyelenggara.</p>

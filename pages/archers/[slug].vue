@@ -134,7 +134,7 @@
                                 </div>
                                 <div class="flex-1 min-w-0">
                                     <h4 class="font-black text-navy text-lg mb-1">{{ event.name }}</h4>
-                                    <p class="text-gray-500 text-sm">{{ event.location }} • {{ event.date }}</p>
+                                    <p class="text-gray-500 text-sm">{{ event.city }} • {{ formatDate(event.date) }}</p>
                                 </div>
                                 <div class="text-right">
                                     <p class="text-2xl font-black text-navy">{{ event.score || '-' }}</p>
@@ -179,7 +179,7 @@
                                     <Icon icon="ph:map-pin-bold" class="text-gray-400" />
                                 </div>
                                 <span class="text-navy text-sm font-medium leading-relaxed">{{ archer.address
-                                    }}</span>
+                                }}</span>
                             </div>
                         </div>
                     </div>
@@ -227,76 +227,85 @@
         </section>
 
         <!-- Share Dialog -->
-        <div v-if="showShareDialog" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
-            <!-- Overlay -->
-            <div @click="closeShareDialog" class="absolute inset-0 bg-navy/60 backdrop-blur-sm transition-opacity">
-            </div>
+        <Transition name="modal">
+            <div v-if="showShareDialog"
+                class="fixed inset-0 z-[100] flex items-center justify-center p-4 overflow-hidden">
+                <!-- Overlay -->
+                <Transition name="fade" appear>
+                    <div @click="closeShareDialog" class="absolute inset-0 bg-navy/80 backdrop-blur-sm">
+                    </div>
+                </Transition>
 
-            <!-- Modal -->
-            <div
-                class="relative w-full max-w-md transform overflow-hidden rounded-3xl bg-white p-8 text-left align-middle shadow-2xl transition-all">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-xl font-black text-navy">Bagikan Profil Pemanah</h3>
-                    <button @click="closeShareDialog" class="text-gray-400 hover:text-navy transition-colors">
-                        <Icon icon="ph:x-bold" class="text-xl" />
-                    </button>
-                </div>
-
-                <div class="space-y-6">
-                    <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl">
-                        <div class="w-12 h-12 rounded-xl bg-white shadow-sm overflow-hidden shrink-0">
-                            <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
-                                class="w-full h-full object-cover" />
+                <!-- Modal -->
+                <Transition name="scale" appear>
+                    <div
+                        class="relative w-full max-w-md transform rounded-3xl bg-white p-8 text-left shadow-2xl transition-all border border-white/20">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-xl font-black text-navy">Bagikan Profil Pemanah</h3>
+                            <button @click="closeShareDialog" class="text-gray-400 hover:text-navy transition-colors">
+                                <Icon icon="ph:x-bold" class="text-xl" />
+                            </button>
                         </div>
-                        <div class="min-w-0 flex-1">
-                            <p class="font-bold text-navy truncate">{{ archer.full_name }}</p>
-                            <p class="text-xs text-gray-400 truncate">{{ archer.city }}{{ archer.province ? ', ' +
-                                archer.province : '' }}</p>
+
+                        <div class="space-y-6">
+                            <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl">
+                                <div class="w-12 h-12 rounded-xl bg-white shadow-sm overflow-hidden shrink-0">
+                                    <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
+                                        class="w-full h-full object-cover" />
+                                </div>
+                                <div class="min-w-0 flex-1">
+                                    <p class="font-bold text-navy truncate">{{ archer.full_name }}</p>
+                                    <p class="text-xs text-gray-400 truncate">{{ archer.city }}{{ archer.province ? ', '
+                                        +
+                                        archer.province : '' }}</p>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-4 gap-4">
+                                <button @click="shareTo('whatsapp')" class="flex flex-col items-center gap-2 group">
+                                    <div
+                                        class="w-12 h-12 rounded-2xl bg-green-50 text-green-500 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white transition-all">
+                                        <Icon icon="ph:whatsapp-logo-fill" class="text-2xl" />
+                                    </div>
+                                    <span class="text-[10px] font-bold text-gray-500">WhatsApp</span>
+                                </button>
+                                <button @click="shareTo('facebook')" class="flex flex-col items-center gap-2 group">
+                                    <div
+                                        class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all">
+                                        <Icon icon="ph:facebook-logo-fill" class="text-2xl" />
+                                    </div>
+                                    <span class="text-[10px] font-bold text-gray-500">Facebook</span>
+                                </button>
+                                <button @click="shareTo('twitter')" class="flex flex-col items-center gap-2 group">
+                                    <div
+                                        class="w-12 h-12 rounded-2xl bg-sky-50 text-sky-500 flex items-center justify-center group-hover:bg-sky-500 group-hover:text-white transition-all">
+                                        <Icon icon="ph:twitter-logo-fill" class="text-2xl" />
+                                    </div>
+                                    <span class="text-[10px] font-bold text-gray-500">Twitter</span>
+                                </button>
+                                <button @click="copyLink" class="flex flex-col items-center gap-2 group">
+                                    <div
+                                        class="w-12 h-12 rounded-2xl bg-gray-50 text-gray-600 flex items-center justify-center group-hover:bg-navy group-hover:text-white transition-all">
+                                        <Icon icon="ph:link-bold" class="text-2xl" />
+                                    </div>
+                                    <span class="text-[10px] font-bold text-gray-500">{{ copied ? 'Tersalin' : 'Salin'
+                                        }}</span>
+                                </button>
+                            </div>
+
+                            <div class="relative group mt-4">
+                                <input type="text" readonly :value="shareUrl"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-bold text-gray-500 outline-none" />
+                                <button @click="copyLink"
+                                    class="absolute right-2 top-1.5 px-3 py-1.5 bg-white border border-gray-100 rounded-lg text-[10px] font-black hover:bg-gray-50 transition-colors shadow-sm">
+                                    {{ copied ? 'Berhasil' : 'Salin' }}
+                                </button>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="grid grid-cols-4 gap-4">
-                        <button @click="shareTo('whatsapp')" class="flex flex-col items-center gap-2 group">
-                            <div
-                                class="w-12 h-12 rounded-2xl bg-green-50 text-green-500 flex items-center justify-center group-hover:bg-green-500 group-hover:text-white transition-all">
-                                <Icon icon="ph:whatsapp-logo-fill" class="text-2xl" />
-                            </div>
-                            <span class="text-[10px] font-bold text-gray-500">WhatsApp</span>
-                        </button>
-                        <button @click="shareTo('facebook')" class="flex flex-col items-center gap-2 group">
-                            <div
-                                class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all">
-                                <Icon icon="ph:facebook-logo-fill" class="text-2xl" />
-                            </div>
-                            <span class="text-[10px] font-bold text-gray-500">Facebook</span>
-                        </button>
-                        <button @click="shareTo('twitter')" class="flex flex-col items-center gap-2 group">
-                            <div
-                                class="w-12 h-12 rounded-2xl bg-sky-50 text-sky-500 flex items-center justify-center group-hover:bg-sky-500 group-hover:text-white transition-all">
-                                <Icon icon="ph:twitter-logo-fill" class="text-2xl" />
-                            </div>
-                            <span class="text-[10px] font-bold text-gray-500">Twitter</span>
-                        </button>
-                        <button @click="copyLink" class="flex flex-col items-center gap-2 group">
-                            <div
-                                class="w-12 h-12 rounded-2xl bg-gray-50 text-gray-600 flex items-center justify-center group-hover:bg-navy group-hover:text-white transition-all">
-                                <Icon icon="ph:link-bold" class="text-2xl" />
-                            </div>
-                            <span class="text-[10px] font-bold text-gray-500">{{ copied ? 'Tersalin' : 'Salin' }}</span>
-                        </button>
-                    </div>
-
-                    <div class="relative group mt-4">
-                        <input type="text" readonly :value="shareUrl"
-                            class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-bold text-gray-500 outline-none" />
-                        <button @click="copyLink"
-                            class="absolute right-2 top-1.5 px-3 py-1.5 bg-white border border-gray-100 rounded-lg text-[10px] font-black hover:bg-gray-50 transition-colors shadow-sm">
-                            {{ copied ? 'Berhasil' : 'Salin' }}
-                        </button>
-                    </div>
-                </div>
+                </Transition>
             </div>
-        </div>
+        </Transition>
     </div>
 </template>
 
@@ -304,6 +313,7 @@
 import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { useDateFormat } from '@vueuse/core'
 
 definePageMeta({
     layout: 'landing'
@@ -363,10 +373,9 @@ const statusLabel = computed(() => {
     return labels[archer.value?.status] || archer.value?.status || '-'
 })
 
-const formatDate = (date) => {
+const formatDate = (date, format = 'DD MMMM YYYY') => {
     if (!date) return '-'
-    const d = new Date(date)
-    return d.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })
+    return useDateFormat(date, format, { locales: 'id-ID' }).value
 }
 
 // Share dialog
@@ -418,3 +427,47 @@ const shareTo = (platform) => {
     }
 }
 </script>
+
+<style scoped>
+.modal-enter-active,
+.modal-leave-active {
+    transition: opacity 0.3s ease;
+}
+
+.modal-enter-from,
+.modal-leave-to {
+    opacity: 0;
+}
+
+.modal-enter-active .scale,
+.modal-leave-active .scale {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-enter-from .scale,
+.modal-leave-to .scale {
+    transform: scale(0.9) translateY(20px);
+}
+
+/* Base transitions */
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+
+.scale-enter-active,
+.scale-leave-active {
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.scale-enter-from,
+.scale-leave-to {
+    transform: scale(0.9);
+    opacity: 0;
+}
+</style>
