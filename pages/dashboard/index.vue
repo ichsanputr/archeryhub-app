@@ -391,12 +391,9 @@
             </NuxtLink>
           </div>
           <div class="p-5 space-y-4 flex-1 overflow-y-auto">
-            <div
-              v-for="event in orgCompletedEvents"
-              :key="event.id"
+            <div v-for="event in orgCompletedEvents" :key="event.id"
               class="flex items-center justify-between p-4 rounded-xl bg-gray-50 border border-gray-100 hover:border-primary/30 transition-all cursor-pointer group"
-              @click="router.push(`/dashboard/events/${event.id}/overview`)"
-            >
+              @click="router.push(`/dashboard/events/${event.id}/overview`)">
               <div class="flex items-center gap-4 flex-1 min-w-0">
                 <div
                   class="w-12 h-12 rounded-lg bg-white border border-gray-100 flex flex-col items-center justify-center shrink-0">
@@ -404,7 +401,8 @@
                   <span class="text-lg font-black text-navy leading-none">{{ event.dayLabel }}</span>
                 </div>
                 <div class="flex-1 min-w-0">
-                  <h4 class="font-bold text-navy group-hover:text-primary transition-colors truncate">{{ event.name }}</h4>
+                  <h4 class="font-bold text-navy group-hover:text-primary transition-colors truncate">{{ event.name }}
+                  </h4>
                   <div class="flex items-center gap-4 mt-1">
                     <p class="text-xs text-gray-500">{{ event.statusLabel }}</p>
                     <div class="flex items-center gap-3 text-xs text-gray-500">
@@ -425,7 +423,8 @@
             </div>
             <div v-if="!orgCompletedEvents.length" class="text-center py-10">
               <Icon icon="ph:chart-line-up" class="text-4xl text-gray-200 mx-auto mb-2" />
-              <p class="text-gray-400 text-sm">Belum ada event yang selesai. Rekap akan muncul setelah event selesai.</p>
+              <p class="text-gray-400 text-sm">Belum ada event yang selesai. Rekap akan muncul setelah event selesai.
+              </p>
             </div>
           </div>
         </div>
@@ -461,7 +460,7 @@
                   <td class="px-6 py-3.5">
                     <div class="text-navy-dark font-bold group-hover:text-primary-hover transition-colors">{{
                       archer.name
-                    }}</div>
+                      }}</div>
                     <div class="text-gray-400 text-xs">{{ archer.category }}</div>
                   </td>
                   <td
@@ -527,7 +526,7 @@ const chartOptions = {
 
 // Redirect archer users to dashboard/events
 onMounted(async () => {
-  if (userRole.value === 'archer') {
+  if (userRole.value === 'archer' || userRole.value === 'organization') {
     router.replace('/dashboard/events')
   }
 
