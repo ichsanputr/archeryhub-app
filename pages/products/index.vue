@@ -23,6 +23,21 @@
                     <p class="text-white/90 text-base sm:text-lg leading-relaxed max-w-xl">
                         Temukan peralatan berkualitas dari berbagai klub dan organisasi terpercaya di seluruh Indonesia.
                     </p>
+
+                    <!-- Search Bar CTA -->
+                    <div class="mt-10 flex flex-col sm:flex-row gap-4 max-w-xl">
+                        <div class="relative flex-1">
+                            <Icon icon="ph:magnifying-glass-bold"
+                                class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl" />
+                            <input v-model="searchQuery" type="text" placeholder="Cari produk seperti busur, arrow..."
+                                class="w-full pl-12 pr-4 py-4 rounded-xl bg-white text-navy font-medium placeholder:text-gray-400 focus:ring-4 focus:ring-primary/30 outline-none transition-all text-base" />
+                        </div>
+                        <button
+                            class="px-8 py-4 bg-primary hover:bg-primary-hover text-navy font-black rounded-xl transition-all shadow-lg shadow-primary/30 flex items-center justify-center gap-2">
+                            <Icon icon="ph:magnifying-glass-bold" />
+                            Cari
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>

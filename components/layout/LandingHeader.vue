@@ -18,7 +18,7 @@
                     <div class="relative" @mouseenter="showMegaMenu = true" @mouseleave="showMegaMenu = false">
                         <button
                             class="text-sm font-semibold transition-all duration-300 flex items-center gap-1 hover:text-primary px-3 py-1.5 rounded-lg"
-                            :class="[navLinkClasses, { 'bg-primary text-black font-bold': isActive('/events') }]">
+                            :class="[navLinkClasses, { 'bg-primary !text-black hover:!text-black font-bold': isActive('/events') }]">
                             Event
                             <Icon icon="ph:caret-down" class="text-xs transition-transform"
                                 :class="{ 'rotate-180': showMegaMenu }" />
@@ -106,16 +106,20 @@
 
                     <NuxtLink to="/clubs"
                         class="font-black text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
-                        :class="[navLinkClasses, { 'bg-primary text-black': isActive('/clubs') }]">Klub</NuxtLink>
+                        :class="[navLinkClasses, { 'bg-primary !text-black hover:!text-black': isActive('/clubs') }]">
+                        Klub</NuxtLink>
                     <NuxtLink to="/archers"
                         class="font-black text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
-                        :class="[navLinkClasses, { 'bg-primary text-black': isActive('/archers') }]">Pemanah</NuxtLink>
+                        :class="[navLinkClasses, { 'bg-primary !text-black hover:!text-black': isActive('/archers') }]">
+                        Pemanah</NuxtLink>
                     <NuxtLink to="/news"
                         class="font-black text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
-                        :class="[navLinkClasses, { 'bg-primary text-black': isActive('/news') }]">Berita</NuxtLink>
+                        :class="[navLinkClasses, { 'bg-primary !text-black hover:!text-black': isActive('/news') }]">
+                        Berita</NuxtLink>
                     <NuxtLink to="/products"
                         class="font-black text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
-                        :class="[navLinkClasses, { 'bg-primary text-black': isActive('/products') }]">Marketplace
+                        :class="[navLinkClasses, { 'bg-primary !text-black hover:!text-black': isActive('/products') }]">
+                        Marketplace
                     </NuxtLink>
                 </nav>
 
