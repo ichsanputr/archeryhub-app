@@ -47,9 +47,9 @@
                 </div>
             </div>
 
-            <div v-else class="text-center py-20 bg-white rounded-2xl border border-dashed border-gray-200">
-                <Icon icon="ph:video-camera-slash-light" class="text-5xl text-gray-200 mb-4 mx-auto" />
-                <p class="text-sm text-gray-400">Saat ini belum ada event yang sedang berlangsung.</p>
+            <div v-else class="text-center py-16">
+                <Icon icon="ph:video-camera-slash-light" class="text-7xl text-gray-200 mb-4 mx-auto" />
+                <p class="text-sm text-gray-400 font-medium">Saat ini belum ada event yang sedang berlangsung.</p>
             </div>
         </div>
     </section>

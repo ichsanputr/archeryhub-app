@@ -9,13 +9,18 @@
                 </div>
             </div>
 
-            <div class="container mx-auto px-4 max-w-7xl relative z-10 text-center md:text-left">
+            <div class="container mx-auto px-4 max-w-7xl relative z-10">
                 <div class="max-w-3xl">
-                    <h1 class="text-3xl md:text-5xl font-black text-white leading-tight mb-6">
+                    <div
+                        class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold uppercase tracking-widest mb-6">
+                        <Icon icon="ph:user-circle-gear-bold" class="text-lg" />
+                        <span>Komunitas Pemanah</span>
+                    </div>
+                    <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
                         Temukan <span class="text-primary">Inspirasi</span> & <br />
                         Koneksi Pemanah Indonesia
                     </h1>
-                    <p class="text-white/90 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto md:mx-0">
+                    <p class="text-white/90 text-lg md:text-xl leading-relaxed max-w-xl">
                         Jelajahi profil para pemanah berbakat dari seluruh penjuru nusantara. Lihat prestasi, klub, dan
                         dedikasi mereka dalam dunia panahan.
                     </p>
@@ -171,9 +176,7 @@
 
             <!-- Empty State -->
             <div v-if="archers.length === 0 && !isLoading" class="text-center py-20">
-                <div class="w-24 h-24 bg-gray-100 rounded-full mx-auto flex items-center justify-center mb-6">
-                    <Icon icon="ph:user-focus" class="text-5xl text-gray-300" />
-                </div>
+                <Icon icon="ph:user-focus-light" class="text-7xl text-gray-200 mb-6 mx-auto" />
                 <h3 class="text-2xl font-black text-navy mb-3">Pemanah Tidak Ditemukan</h3>
                 <p class="text-gray-500 max-w-md mx-auto">Coba ubah filter atau kata kunci pencarian untuk menemukan
                     pemanah yang sesuai.</p>
@@ -218,50 +221,7 @@ const bowTypes = [
     { label: 'Traditional', value: 'traditional' },
 ]
 
-// Dummy data fallback
-const dummyArchers = [
-    {
-        uuid: '1',
-        slug: 'budi-santoso',
-        full_name: 'Budi Santoso',
-        athlete_code: 'ARC-2024-001',
-        city: 'Jakarta',
-        province: 'DKI Jakarta',
-        bow_type: 'recurve',
-        photo_url: null,
-        club: 'Jakarta Elite Archery',
-        club_name: 'Jakarta Elite Archery',
-        total_events: 12,
-    },
-    {
-        uuid: '2',
-        slug: 'siti-aminah',
-        full_name: 'Siti Aminah',
-        athlete_code: 'ARC-2024-002',
-        city: 'Bandung',
-        province: 'Jawa Barat',
-        bow_type: 'compound',
-        photo_url: null,
-        club: 'Bandung Archery Club',
-        club_name: 'Bandung Archery Club',
-        total_events: 8,
-        best_score: 695
-    },
-    {
-        uuid: '3',
-        slug: 'rahmat-hidayat',
-        full_name: 'Rahmat Hidayat',
-        athlete_code: 'ARC-2024-003',
-        city: 'Surabaya',
-        province: 'Jawa Timur',
-        bow_type: 'barebow',
-        photo_url: null,
-        club: 'Surabaya Archery',
-        club_name: 'Surabaya Archery',
-        total_events: 15,
-    },
-]
-
+// Pagination state
 const { data: archerResponse, pending: isLoading } = await useAsyncData('archers', () => $fetch(`${apiBaseUrl}/archers`, {
     query: {
         search: searchQuery.value || undefined,
@@ -300,10 +260,6 @@ const archers = computed(() => {
             Array.isArray(rawData.archers) ? rawData.archers : []
     }
 
-    if (archersData.length === 0 && !searchQuery.value) {
-        archersData = dummyArchers
-    }
-
     return archersData.map(archer => ({
         ...archer,
         uuid: archer.uuid || archer.id,
@@ -320,7 +276,7 @@ const archers = computed(() => {
 })
 
 const totalArchers = computed(() => {
-    return archerResponse.value?.total || dummyArchers.length
+    return archerResponse.value?.total || archerResponse.value?.meta?.total_items || 0
 })
 
 const activeArchers = computed(() => {

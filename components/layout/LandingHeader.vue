@@ -31,12 +31,13 @@
                             leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 translate-y-1">
                             <div v-if="showMegaMenu" class="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-[700px]">
                                 <div class="bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden">
-                                    <div class="grid grid-cols-12 gap-0">
+                                    <div class="grid grid-cols-12 gap-0 min-h-[350px]">
                                         <!-- Featured Event -->
-                                        <div class="col-span-5 bg-gradient-to-br from-navy to-navy-light p-6">
+                                        <div
+                                            class="col-span-5 bg-gradient-to-br from-navy to-navy-light p-6 flex flex-col">
                                             <span class="text-primary text-xs font-bold uppercase tracking-wider">Event
                                                 Unggulan</span>
-                                            <div class="mt-3" v-if="featuredEvent">
+                                            <div class="mt-3 flex-1 flex flex-col justify-center" v-if="featuredEvent">
                                                 <div class="aspect-video bg-white/10 rounded-lg overflow-hidden mb-3">
                                                     <img :src="featuredEvent.image" :alt="featuredEvent.name"
                                                         class="w-full h-full object-cover" />
@@ -52,10 +53,16 @@
                                                     <Icon icon="ph:arrow-right" />
                                                 </NuxtLink>
                                             </div>
+                                            <div v-else
+                                                class="flex-1 flex flex-col items-center justify-center text-center">
+                                                <Icon icon="ph:calendar-blank-light"
+                                                    class="text-4xl text-white/20 mb-3" />
+                                                <p class="text-white/40 text-xs">Belum ada event unggulan.</p>
+                                            </div>
                                         </div>
 
                                         <!-- Latest Events -->
-                                        <div class="col-span-7 p-6">
+                                        <div class="col-span-7 p-6 flex flex-col">
                                             <div class="flex items-center justify-between mb-3">
                                                 <span
                                                     class="text-gray-400 text-xs font-bold uppercase tracking-wider">Event
@@ -65,7 +72,8 @@
                                                     Lihat
                                                     Semua</NuxtLink>
                                             </div>
-                                            <div class="space-y-2">
+                                            <div v-if="latestEvents.length > 0"
+                                                class="space-y-2 flex-1 flex flex-col justify-center">
                                                 <NuxtLink v-for="event in latestEvents.slice(0, 5)" :key="event.id"
                                                     :to="`/events/${event.slug || event.id}`"
                                                     class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors group">
@@ -82,6 +90,12 @@
                                                             event.location }} • {{ event.date }}</span>
                                                     </div>
                                                 </NuxtLink>
+                                            </div>
+                                            <div v-else
+                                                class="flex-1 flex flex-col items-center justify-center text-center">
+                                                <Icon icon="ph:calendar-blank-light"
+                                                    class="text-4xl text-gray-100 mb-2" />
+                                                <p class="text-gray-400 text-xs">Belum ada event terbaru.</p>
                                             </div>
                                         </div>
                                     </div>

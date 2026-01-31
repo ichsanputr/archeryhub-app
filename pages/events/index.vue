@@ -1,7 +1,7 @@
 <template>
     <div class="min-h-screen bg-background-light font-body text-navy">
         <!-- Hero Section: List Events -->
-        <div class="bg-navy relative overflow-hidden py-20 md:py-28 lg:py-32">
+        <div class="bg-navy relative overflow-hidden py-16 md:py-24">
             <div class="absolute inset-0 z-0">
                 <img src="/hero-event.jpeg" class="w-full h-full object-cover" />
                 <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
@@ -15,12 +15,11 @@
                         <Icon icon="ph:calendar-bold" class="text-lg" />
                         <span>Event Panahan</span>
                     </div>
-                    <h1
-                        class="text-white text-4xl md:text-5xl lg:text-7xl font-black leading-tight tracking-tight mb-6">
+                    <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
                         Temukan <span class="text-primary">Target</span><br />
                         Kemenanganmu
                     </h1>
-                    <p class="text-white/90 text-lg md:text-xl mb-8 leading-relaxed max-w-2xl">
+                    <p class="text-white/90 text-lg md:text-xl leading-relaxed max-w-xl mb-8">
                         Ikuti berbagai turnamen panahan bergengsi di seluruh Indonesia. Dari tingkat klub hingga
                         nasional, semua tersedia dalam satu platform.
                     </p>
@@ -139,22 +138,16 @@
                     </div>
 
                     <!-- Empty State -->
-                    <div v-else-if="!isLoading && filteredTournaments.length === 0"
-                        class="text-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
-                        <div class="rounded-2xl p-12 max-w-sm mx-auto">
-                            <div
-                                class="h-20 w-20 bg-white shadow-sm rounded-2xl mx-auto flex items-center justify-center mb-6">
-                                <Icon icon="ph:calendar-x-bold" class="text-4xl text-gray-300" />
-                            </div>
-                            <h3 class="text-xl font-black text-navy mb-2">Belum Ada Event</h3>
-                            <p class="text-gray-500 text-sm leading-relaxed mb-8">
-                                Coba ubah pencarian atau filter Anda untuk menemukan event yang tersedia.
-                            </p>
-                            <BaseButton v-if="searchQuery" variant="primary" @click="searchQuery = ''"
-                                class="shadow-sm shadow-primary/20">
-                                Hapus Pencarian
-                            </BaseButton>
-                        </div>
+                    <div v-else-if="!isLoading && filteredTournaments.length === 0" class="text-center py-20">
+                        <Icon icon="ph:calendar-x-light" class="text-7xl text-gray-200 mb-6 mx-auto" />
+                        <h3 class="text-2xl font-black text-navy mb-3">Belum Ada Event</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed max-w-sm mx-auto mb-8">
+                            Coba ubah pencarian atau filter Anda untuk menemukan event yang tersedia.
+                        </p>
+                        <BaseButton v-if="searchQuery" variant="primary" @click="searchQuery = ''"
+                            class="shadow-sm shadow-primary/20">
+                            Hapus Pencarian
+                        </BaseButton>
                     </div>
 
                     <!-- Grid -->

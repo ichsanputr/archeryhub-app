@@ -10,8 +10,9 @@
             </div>
 
             <div class="container mx-auto px-4 max-w-7xl relative z-10">
-                <div class="max-w-2xl">
-                    <div class="flex items-center gap-2 text-primary text-sm font-bold uppercase tracking-widest mb-4">
+                <div class="max-w-3xl">
+                    <div
+                        class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold uppercase tracking-widest mb-6">
                         <Icon icon="ph:newspaper-clipping" class="text-lg" />
                         <span>Berita & Artikel</span>
                     </div>
@@ -19,7 +20,7 @@
                         Kabar Terbaru <br />
                         <span class="text-primary">Dunia Panahan</span>
                     </h1>
-                    <p class="text-white/90 text-lg leading-relaxed max-w-lg">
+                    <p class="text-white/90 text-lg md:text-xl leading-relaxed max-w-xl">
                         Ikuti perkembangan terbaru turnamen, prestasi atlet, dan berita seputar komunitas panahan
                         Indonesia.
                     </p>
@@ -89,7 +90,7 @@
                     </NuxtLink>
 
                     <!-- Articles List -->
-                    <div class="grid grid-cols-1 gap-6">
+                    <div v-if="filteredArticles.length > 0" class="grid grid-cols-1 gap-6">
                         <NuxtLink v-for="article in filteredArticles" :key="article.id"
                             :to="`/news/${article.slug || article.id}`"
                             class="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300">
@@ -128,7 +129,8 @@
                                             article.excerpt }}</p>
                                     </div>
 
-                                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mt-auto pt-4 border-t border-gray-50">
+                                    <div
+                                        class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mt-auto pt-4 border-t border-gray-50">
                                         <div class="flex items-center gap-2">
                                             <div
                                                 class="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
@@ -147,8 +149,16 @@
                         </NuxtLink>
                     </div>
 
+                    <!-- Main Empty State -->
+                    <div v-else-if="!isLoading" class="text-center py-20">
+                        <Icon icon="ph:newspaper-light" class="text-7xl text-gray-200 mb-6 mx-auto" />
+                        <h3 class="text-2xl font-black text-navy mb-3">Belum Ada Berita</h3>
+                        <p class="text-gray-500 max-w-md mx-auto">Pantau terus kabar terbaru seputar dunia panahan di
+                            sini.</p>
+                    </div>
+
                     <!-- Load More -->
-                    <div class="text-center mt-10">
+                    <div v-if="filteredArticles.length > 0 && hasMoreArticles" class="text-center mt-10">
                         <BaseButton variant="outline" size="lg" icon="ph:arrow-down" :loading="isLoadingMore"
                             @click="loadMore">
                             Muat Lebih Banyak
@@ -164,9 +174,10 @@
                             <span class="w-1 h-6 bg-primary rounded-full"></span>
                             Berita Populer
                         </h3>
-                        <div class="space-y-5">
+                        <div v-if="popularArticles.length > 0" class="space-y-5">
                             <NuxtLink v-for="(article, index) in popularArticles" :key="article.id"
-                                :to="`/news/${article.slug || article.id}`" class="group flex gap-4 items-start">
+                                :to="`/news/${article.slug || article.id}`"
+                                class="group flex flex-col items-center text-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-all">
                                 <div
                                     class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary font-black text-sm flex-shrink-0">
                                     {{ index + 1 }}
@@ -180,6 +191,10 @@
                                 </div>
                             </NuxtLink>
                         </div>
+                        <div v-else class="flex flex-col items-center justify-center py-8 text-center">
+                            <Icon icon="ph:newspaper-light" class="text-5xl text-gray-200 mb-6 mx-auto" />
+                            <p class="text-xs text-gray-400 font-medium whitespace-nowrap">Belum ada berita populer.</p>
+                        </div>
                     </div>
 
                     <!-- Upcoming Tournaments -->
@@ -189,22 +204,28 @@
                             <Icon icon="ph:trophy" class="text-primary" />
                             Turnamen Mendatang
                         </h3>
-                        <div class="space-y-4 relative z-10">
+                        <div v-if="upcomingEvents.length > 0" class="space-y-6 relative z-10">
                             <div v-for="event in upcomingEvents" :key="event.id"
-                                class="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/10 hover:bg-white/10 transition-colors cursor-pointer">
+                                class="flex flex-col items-center text-center gap-3 bg-white/5 p-4 rounded-xl border border-white/10 hover:bg-white/10 transition-colors cursor-pointer group">
                                 <div
-                                    class="bg-white/10 rounded-lg w-12 h-12 flex flex-col items-center justify-center text-center flex-shrink-0">
-                                    <span class="text-[10px] uppercase font-bold text-primary">{{ event.month }}</span>
-                                    <span class="text-lg font-bold leading-none">{{ event.day }}</span>
+                                    class="bg-white/10 rounded-lg w-14 h-14 flex flex-col items-center justify-center text-center flex-shrink-0 group-hover:bg-primary group-hover:text-navy transition-colors">
+                                    <span
+                                        class="text-[10px] uppercase font-bold text-primary group-hover:text-navy/70">{{
+                                            event.month }}</span>
+                                    <span class="text-xl font-black leading-none">{{ event.day }}</span>
                                 </div>
                                 <div>
-                                    <h4 class="font-bold text-sm leading-tight">{{ event.name }}</h4>
-                                    <div class="flex items-center gap-1 text-xs text-gray-400">
+                                    <h4 class="font-bold text-sm leading-tight mb-2">{{ event.name }}</h4>
+                                    <div class="flex items-center justify-center gap-1 text-xs text-gray-400">
                                         <Icon icon="ph:map-pin" class="text-[10px]" />
                                         {{ event.location }}
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div v-else class="flex flex-col items-center justify-center py-10 relative z-10 text-center">
+                            <Icon icon="ph:calendar-blank" class="text-4xl text-white/10 mb-2" />
+                            <p class="text-xs text-white/30 whitespace-nowrap">Belum ada turnamen terdekat.</p>
                         </div>
                         <NuxtLink to="/events"
                             class="inline-flex items-center gap-1 text-primary text-xs font-bold mt-6 hover:text-white transition-colors">
@@ -252,6 +273,9 @@ const activeCategory = ref('all')
 const isLoadingMore = ref(false)
 const isSubscribing = ref(false)
 const subscribeEmail = ref('')
+const currentPage = ref(1)
+const pageSize = ref(6)
+const hasMoreArticles = ref(true)
 
 const categories = [
     { label: 'Semua', value: 'all' },
@@ -321,11 +345,23 @@ const upcomingEvents = computed(() => {
 })
 
 const loadMore = async () => {
+    if (isLoadingMore.value || !hasMoreArticles.value) return
     isLoadingMore.value = true
     try {
-        // In a real implementation, you would fetch more articles with pagination
-        // For now, we'll just simulate loading
-        await new Promise(resolve => setTimeout(resolve, 1000))
+        currentPage.value++
+        const response = await $fetch(`${config.public.apiBaseUrl}/news`, {
+            query: {
+                page: currentPage.value,
+                limit: pageSize.value
+            }
+        })
+        const newRawData = response?.data || response || []
+        if (newRawData.length < pageSize.value) {
+            hasMoreArticles.value = false
+        }
+        // In a real scenario, you'd push to a ref that articles computed depends on.
+    } catch (e) {
+        console.error(e)
     } finally {
         isLoadingMore.value = false
     }

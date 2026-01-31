@@ -47,8 +47,9 @@
                 </NuxtLink>
             </div>
 
-            <div v-else class="text-center py-20 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
-                <p class="text-sm text-gray-400">Belum ada berita terbaru.</p>
+            <div v-else class="text-center py-16">
+                <Icon icon="ph:newspaper-light" class="text-7xl text-gray-200 mb-4 mx-auto" />
+                <p class="text-sm text-gray-400 font-medium">Belum ada berita terbaru.</p>
             </div>
         </div>
     </section>

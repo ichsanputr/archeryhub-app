@@ -55,8 +55,9 @@
                         </NuxtLink>
                     </div>
                 </div>
-                <div v-else class="text-center py-20 bg-white rounded-2xl border border-dashed border-gray-200">
-                    <p class="text-sm text-gray-400">Belum ada klub di wilayah ini.</p>
+                <div v-else class="text-center py-16">
+                    <Icon icon="ph:shield-slash-light" class="text-7xl text-gray-200 mb-4 mx-auto" />
+                    <p class="text-sm text-gray-400 font-medium">Belum ada klub di wilayah ini.</p>
                 </div>
             </template>
         </div>

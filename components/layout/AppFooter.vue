@@ -92,10 +92,6 @@
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 FAQ
               </NuxtLink>
-              <NuxtLink to="/tutorial"
-                class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Tutorial
-              </NuxtLink>
             </div>
           </div>
         </div>

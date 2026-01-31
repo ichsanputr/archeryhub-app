@@ -55,19 +55,9 @@
             </NuxtLink>
         </div>
 
-        <div v-else class="flex flex-col items-center justify-center py-20 text-center">
-            <Icon icon="ph:calendar-blank-light" class="text-5xl text-gray-200 mb-4" />
+        <div v-else class="flex-1 flex flex-col items-center justify-center py-16 text-center">
+            <Icon icon="ph:calendar-blank-light" class="text-7xl text-gray-200 mb-4" />
             <p class="text-sm text-gray-400">Belum ada event terbaru.</p>
-        </div>
-
-        <!-- View More Footer -->
-        <div class="mt-8 flex justify-center">
-            <NuxtLink to="/events"
-                class="flex items-center gap-2 text-navy text-sm font-bold hover:text-primary transition-colors group">
-                Cek Semua Event
-                <span
-                    class="material-symbols-outlined text-base group-hover:translate-x-1 transition-transform">arrow_forward</span>
-            </NuxtLink>
         </div>
     </div>
 </template>

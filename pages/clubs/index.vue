@@ -48,20 +48,22 @@
             <div
                 class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 grid grid-cols-2 md:grid-cols-4 gap-6">
                 <div class="text-center">
-                    <p class="text-2xl md:text-4xl font-black text-navy tracking-tight">120+</p>
+                    <p class="text-2xl md:text-4xl font-black text-navy tracking-tight">{{ totalItems }}+</p>
                     <p class="text-[10px] md:text-sm text-gray-500 font-bold uppercase tracking-wide mt-1">Klub</p>
                 </div>
                 <div class="text-center border-l border-gray-100">
-                    <p class="text-2xl md:text-4xl font-black text-navy tracking-tight">2.5k+</p>
-                    <p class="text-[10px] md:text-sm text-gray-500 font-bold uppercase tracking-wide mt-1">Anggota</p>
+                    <p class="text-2xl md:text-4xl font-black text-navy tracking-tight">{{ stats?.totalArchers || '0' }}
+                    </p>
+                    <p class="text-[10px] md:text-sm text-gray-500 font-bold uppercase tracking-wide mt-1">Pemanah</p>
+                </div>
+                <div class="text-center border-l border-gray-100">
+                    <p class="text-2xl md:text-4xl font-black text-navy tracking-tight">{{ stats?.activeEvents || '0' }}
+                    </p>
+                    <p class="text-[10px] md:text-sm text-gray-500 font-bold uppercase tracking-wide mt-1">Event</p>
                 </div>
                 <div class="text-center border-l border-gray-100">
                     <p class="text-2xl md:text-4xl font-black text-navy tracking-tight">34</p>
                     <p class="text-[10px] md:text-sm text-gray-500 font-bold uppercase tracking-wide mt-1">Provinsi</p>
-                </div>
-                <div class="text-center border-l border-gray-100">
-                    <p class="text-2xl md:text-4xl font-black text-navy tracking-tight">500+</p>
-                    <p class="text-[10px] md:text-sm text-gray-500 font-bold uppercase tracking-wide mt-1">Event</p>
                 </div>
             </div>
         </section>
@@ -250,6 +252,13 @@ const viewMode = ref('grid')
 // Pagination state
 const currentPage = ref(1)
 const itemsPerPage = ref(9)
+
+// Fetch dashboard stats
+const { data: statsData } = await useAsyncData('dashboard-stats', () => {
+    return $fetch(`${config.public.apiBaseUrl}/stats/dashboard`)
+}, { server: true })
+
+const stats = computed(() => statsData.value || {})
 
 // Fetch data with useAsyncData for SSR support
 const { data, pending: isLoading, refresh } = await useAsyncData('clubs', () => {

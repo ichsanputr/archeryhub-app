@@ -9,17 +9,20 @@
                 <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90">
                 </div>
             </div>
-            <div class="container mx-auto px-4 max-w-7xl relative z-10 text-center md:text-left">
-                <div class="flex flex-col md:flex-row items-center justify-between gap-8">
-                    <div class="max-w-xl">
-                        <h1 class="text-4xl md:text-5xl font-black text-white tracking-tight mb-4">
-                            Marketplace <span class="text-primary">Panahan</span>
-                        </h1>
-                        <p class="text-white/90 text-lg leading-relaxed">
-                            Temukan peralatan panahan berkualitas dari berbagai klub dan organisasi terpercaya di
-                            Indonesia.
-                        </p>
+            <div class="container mx-auto px-4 max-w-7xl relative z-10">
+                <div class="max-w-3xl">
+                    <div
+                        class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold uppercase tracking-widest mb-6">
+                        <Icon icon="ph:shopping-bag-bold" class="text-lg" />
+                        <span>Marketplace Panahan</span>
                     </div>
+                    <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
+                        Lengkapi <span class="text-primary">Peralatan</span><br />
+                        Panahan Terbaikmu
+                    </h1>
+                    <p class="text-white/90 text-lg md:text-xl leading-relaxed max-w-xl">
+                        Temukan peralatan berkualitas dari berbagai klub dan organisasi terpercaya di seluruh Indonesia.
+                    </p>
                 </div>
             </div>
         </section>
@@ -78,9 +81,12 @@
                 <Icon icon="ph:spinner-gap-bold" class="text-4xl text-primary animate-spin mb-4" />
                 <p class="text-gray-500 font-medium">Memuat produk...</p>
             </div>
-            <div v-else-if="filteredProducts.length === 0" class="flex flex-col items-center justify-center py-20">
-                <Icon icon="ph:package" class="text-5xl text-gray-300 mb-4" />
-                <p class="text-gray-500 font-medium">Tidak ada produk ditemukan</p>
+            <div v-else-if="filteredProducts.length === 0 && !isLoading"
+                class="flex flex-col items-center justify-center py-20">
+                <Icon icon="ph:package-light" class="text-7xl text-gray-200 mb-6" />
+                <h3 class="text-2xl font-black text-navy mb-3">Produk Tidak Ditemukan</h3>
+                <p class="text-gray-500 max-w-md mx-auto text-center">Coba ubah filter atau kata kunci pencarian untuk
+                    menemukan produk yang sesuai.</p>
             </div>
             <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                 <!-- Product Card Premium -->
