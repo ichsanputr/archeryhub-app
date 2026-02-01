@@ -22,7 +22,7 @@
         </div>
 
         <div v-else-if="events.length > 0"
-            class="grid grid-cols-1 sm:grid-cols-2 gap-4 px-1 max-h-[550px] overflow-y-auto scrollbar-thin scrollbar-track-gray-50 scrollbar-thumb-gray-200 hover:scrollbar-thumb-primary/30 transition-colors pr-2 custom-scrollbar">
+            class="grid grid-cols-1 gap-4 px-1 max-h-[550px] overflow-y-auto scrollbar-thin scrollbar-track-gray-50 scrollbar-thumb-gray-200 hover:scrollbar-thumb-primary/30 transition-colors pr-2 custom-scrollbar">
             <NuxtLink v-for="(event, index) in events" :key="event.uuid || index"
                 :to="`/events/${event.slug || event.uuid}`"
                 class="group bg-white rounded-2xl border border-gray-100 p-4 sm:p-5 hover:border-primary/50 hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] transition-all duration-300 relative overflow-hidden block">
@@ -50,6 +50,13 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Hover Button (Desktop Only) -->
+                    <div
+                        class="hidden lg:flex items-center gap-2 bg-primary text-navy text-xs font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-300">
+                        <span>Lihat</span>
+                        <Icon icon="ph:arrow-right-bold" />
                     </div>
                 </div>
             </NuxtLink>
