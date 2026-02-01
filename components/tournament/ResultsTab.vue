@@ -1,35 +1,91 @@
 <template>
     <div class="space-y-6">
         <!-- Manual Results / Files -->
-        <div v-if="results && results.length > 0" class="space-y-4">
-            <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
-                <h3 class="text-xl font-black text-navy mb-2 flex items-center gap-3">
-                    <div class="w-12 h-12 rounded-xl bg-navy/5 flex items-center justify-center">
-                        <Icon icon="ph:file-pdf-bold" class="text-2xl text-navy" />
+        <div v-if="results && results.length > 0" class="space-y-10">
+            <section class="relative overflow-hidden">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+                    <div>
+                        <h2 class="text-2xl md:text-3xl font-black text-navy flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-2xl bg-navy/5 flex items-center justify-center shrink-0">
+                                <Icon icon="iconoir:leaderboard" class="text-2xl text-navy" />
+                            </div>
+                            Hasil & Dokumen Lomba
+                        </h2>
+                        <p class="text-sm md:text-base text-gray-500 mt-2 font-medium max-w-xl leading-relaxed">
+                            Unduh dokumen resmi, pengumuman pemenang, dan sertifikat yang telah diterbitkan oleh
+                            panitia.
+                        </p>
                     </div>
-                    Hasil Perlombaan
-                </h3>
-                <p class="text-gray-600 text-sm font-medium mb-6">Download berkas hasil pertandingan resmi yang
-                    diunggah oleh penyelenggara.</p>
+                </div>
+            </section>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <a v-for="(file, fIdx) in results" :key="fIdx" :href="getImageUrl(file.url)" target="_blank"
-                        class="flex items-center gap-4 p-5 bg-gray-50 border border-gray-100 rounded-xl hover:bg-navy/5 hover:border-navy transition-all group">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
+                <div v-for="(file, index) in results" :key="index"
+                    class="group bg-white rounded-3xl overflow-hidden border border-gray-100 hover:border-gray-200 hover:shadow-xl transition-all duration-500 flex flex-col h-full">
+
+                    <!-- Preview Area -->
+                    <div
+                        class="relative aspect-[4/3] overflow-hidden bg-white border-b border-gray-50 flex items-center justify-center">
+                        <!-- Image Preview -->
+                        <template v-if="isImage(file.url)">
+                            <img :src="file.url" :alt="file.name"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                        </template>
+                        <!-- PDF/Doc Preview (Live) -->
+                        <template v-else-if="getFileExt(file.url) === 'pdf'">
+                            <div class="w-full h-full bg-white relative">
+                                <iframe
+                                    :src="'https://docs.google.com/viewer?url=' + encodeURIComponent(file.url) + '&embedded=true'"
+                                    class="w-full h-full pointer-events-none border-none scale-[1.01]"
+                                    loading="lazy"></iframe>
+                                <!-- Fallback/Loading overlay if needed -->
+                                <div
+                                    class="absolute inset-0 bg-transparent flex items-center justify-center pointer-events-none">
+                                    <Icon :icon="getFileIcon(file.url)" class="text-4xl text-gray-100 opacity-20" />
+                                </div>
+                            </div>
+                        </template>
+                        <!-- Other Doc Placeholder -->
+                        <template v-else>
+                            <div
+                                class="w-full h-full flex flex-col items-center justify-center p-8 bg-white transition-all duration-500">
+                                <Icon :icon="getFileIcon(file.url)"
+                                    class="text-6xl text-gray-200 group-hover:text-navy/20 transition-all duration-500" />
+                                <span class="mt-4 text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                                    {{ getFileExt(file.url) }} Document
+                                </span>
+                            </div>
+                        </template>
+
+                        <!-- Hover Overlay -->
                         <div
-                            class="w-12 h-12 rounded-xl bg-navy/5 flex items-center justify-center text-navy group-hover:bg-navy group-hover:text-white transition-all">
-                            <Icon :icon="getFileIcon(file.url)" class="text-2xl" />
+                            class="absolute inset-0 bg-navy/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[1px]">
+                            <a :href="file.url" target="_blank"
+                                class="px-6 py-2 bg-white rounded-full text-navy text-xs font-bold shadow-sm border border-gray-100 hover:bg-navy hover:text-white transition-all">
+                                Lihat Berkas
+                            </a>
                         </div>
-                        <div class="flex-grow min-w-0">
-                            <h4 class="text-navy font-bold truncate group-hover:text-navy transition-colors">{{
-                                file.name || 'Berkas Hasil' }}</h4>
-                            <p class="text-gray-500 text-[10px] font-black uppercase tracking-wider mt-0.5">{{
-                                getFileType(file.url) }}</p>
+                    </div>
+
+                    <!-- Info Area & Actions -->
+                    <div class="p-5 flex flex-col gap-4">
+                        <div class="flex gap-3">
+                            <a :href="file.url" target="_blank"
+                                class="flex-1 py-3 bg-gray-50 hover:bg-navy hover:text-white text-navy font-black text-[11px] rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 border border-transparent">
+                                <Icon icon="ph:eye-bold" class="text-sm" />
+                                Lihat
+                            </a>
+                            <a :href="file.url" :download="(file.name || 'hasil-lomba') + '.' + getFileExt(file.url)"
+                                class="flex-1 py-3 bg-primary hover:bg-primary-hover text-navy font-black text-[11px] rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 shadow-sm shadow-primary/10">
+                                <Icon icon="ph:download-simple-bold" class="text-sm" />
+                                Unduh
+                            </a>
                         </div>
-                        <Icon icon="ph:download-simple-bold"
-                            class="text-gray-400 group-hover:text-navy transition-colors" />
-                    </a>
+                    </div>
                 </div>
             </div>
+
+            <div class="h-px bg-gray-100 my-12"></div>
         </div>
 
         <!-- Category Selector (Only show if no manual results or explicitly requested) -->
@@ -156,6 +212,16 @@ const getFileType = (url) => {
 }
 
 const getImageUrl = (url) => useImageOrDefault(url)
+
+const getFileExt = (url) => {
+    if (!url) return ''
+    return url.split('.').pop()?.toLowerCase() || ''
+}
+
+const isImage = (url) => {
+    const ext = getFileExt(url)
+    return ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext)
+}
 
 const selectedCategoryId = ref('')
 
