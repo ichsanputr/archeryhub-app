@@ -172,70 +172,49 @@
                 </div>
             </div>
 
-            <!-- Step 2: Select Category -->
-            <div>
-                <h3 class="text-lg font-black text-navy mb-4 pb-4 border-b-2 border-gray-200">Kategori Lomba</h3>
-                <div class="space-y-4">
-                    <BaseSelect v-model="form.category_id" label="Kategori" :items="categoryOptions" required />
-                    <div v-if="selectedCategory" class="bg-gray-50/50 border border-gray-100 rounded-xl p-4">
-                        <p class="text-sm font-bold text-navy mb-1">
-                            {{ [
-                                selectedCategory.division_name || selectedCategory.division,
-                                selectedCategory.category_name || selectedCategory.category || selectedCategory.age_category
-                                || selectedCategory.class_category,
-                                selectedCategory.event_type_name || selectedCategory.event_type,
-                                selectedCategory.gender_division_name || selectedCategory.gender
-                            ].filter(Boolean).join(' - ') }}
-                        </p>
-                        <p class="text-xs text-gray-500">Kategori yang dipilih untuk peserta ini</p>
+            <!-- Step 2 & 3: Sidebar Columns -->
+            <div class="lg:col-span-1 space-y-6">
+                <!-- Step 2: Select Category -->
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                    <h3 class="text-lg font-black text-navy mb-4 pb-4 border-b-2 border-gray-200">Kategori Lomba</h3>
+                    <div class="space-y-4">
+                        <BaseSelect v-model="form.category_id" label="Kategori" :items="categoryOptions" required />
+                        <div v-if="selectedCategory" class="bg-gray-50/50 border border-gray-100 rounded-xl p-4">
+                            <p class="text-sm font-bold text-navy mb-1">
+                                {{ [
+                                    selectedCategory.division_name || selectedCategory.division,
+                                    selectedCategory.category_name || selectedCategory.category ||
+                                    selectedCategory.age_category
+                                    || selectedCategory.class_category,
+                                    selectedCategory.event_type_name || selectedCategory.event_type,
+                                    selectedCategory.gender_division_name || selectedCategory.gender
+                                ].filter(Boolean).join(' - ') }}
+                            </p>
+                            <p class="text-xs text-gray-500">Kategori yang dipilih untuk peserta ini</p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Step 3: Additional Info -->
-            <div>
-                <h3 class="text-lg font-black text-navy mb-4 pb-4 border-b-2 border-gray-200">Informasi Tambahan
-                </h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <BaseSelect v-model="form.payment_status" label="Status Pembayaran" :items="paymentStatusOptions" />
-                    <BaseInput v-model="form.payment_amount" label="Jumlah Pembayaran" placeholder="0"
-                        kind="currency" />
+                <!-- Step 3: Additional Info -->
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                    <h3 class="text-lg font-black text-navy mb-4 pb-4 border-b-2 border-gray-200">Informasi Tambahan
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <BaseSelect v-model="form.payment_status" label="Status Pembayaran"
+                            :items="paymentStatusOptions" />
+                        <BaseInput v-model="form.payment_amount" label="Jumlah Pembayaran" placeholder="0"
+                            kind="currency" />
+                    </div>
+                    <BaseTextarea v-model="form.notes" label="Catatan" placeholder="Catatan tambahan (opsional)"
+                        :rows="3" class="mt-4" />
                 </div>
-                <BaseTextarea v-model="form.notes" label="Catatan" placeholder="Catatan tambahan (opsional)" :rows="3"
-                    class="mt-4" />
             </div>
         </div>
 
         <!-- Side Card -->
         <div class="space-y-4">
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-4">
-                <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em]">Informasi Event</h3>
-                <div v-if="event">
-                    <div class="flex items-center gap-3 mb-3">
-                        <div
-                            class="h-10 w-10 rounded-xl bg-navy/5 flex items-center justify-center text-navy font-bold">
-                            <Icon icon="ph:trophy" class="text-xl" />
-                        </div>
-                        <div>
-                            <p class="font-semibold text-navy">{{ event.name }}</p>
-                            <p class="text-xs text-gray-400">{{ event.code }}</p>
-                        </div>
-                    </div>
-                    <div class="space-y-2 text-sm">
-                        <div class="flex items-center gap-2 text-gray-600">
-                            <Icon icon="ph:calendar" class="text-gray-400" />
-                            <span>{{ formatDate(event.start_date) }}</span>
-                        </div>
-                        <div class="flex items-center gap-2 text-gray-600">
-                            <Icon icon="ph:map-pin" class="text-gray-400" />
-                            <span>{{ event.venue || 'TBD' }}</span>
-                        </div>
-                    </div>
-                </div>
-                <div v-else class="text-gray-400 text-sm">Memuat informasi event...</div>
-            </div>
 
-            <div v-if="selectedArcher" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-4">
+            <div v-if="selectedArcher" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
                 <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em]">Pemanah Terpilih</h3>
                 <div class="flex items-center gap-3">
                     <div
