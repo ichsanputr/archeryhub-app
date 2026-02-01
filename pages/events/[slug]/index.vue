@@ -192,7 +192,7 @@
                                     <div class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Juara 1
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{ displayValue(tournament.prizes?.first)
-                                    }}</div>
+                                        }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ firstPrizeCaption }}</div>
                                 </div>
                                 <div
@@ -210,7 +210,7 @@
                                     <div class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Juara 3
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{ displayValue(tournament.prizes?.third)
-                                    }}</div>
+                                        }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ thirdPrizeCaption }}</div>
                                 </div>
                             </div>
@@ -281,40 +281,84 @@
                 <aside v-if="activeTab !== 'Hasil'" class="space-y-8">
                     <!-- Registration Card -->
                     <div class="bg-white rounded-2xl p-6 shadow-sm border-t-4 border-primary relative">
-                        <h3 class="text-lg font-bold text-navy mb-4">Pendaftaran Ditutup Dalam</h3>
+                        <h3 class="text-lg font-bold text-navy mb-4">
+                            {{ countdown.isClosed ? 'Pendaftaran Telah Ditutup' : 'Pendaftaran Ditutup Dalam' }}
+                        </h3>
                         <div class="flex gap-3 mb-6">
-                            <div class="flex-1 bg-gray-50 rounded-lg p-3 text-center">
-                                <span class="block text-2xl font-bold text-navy">04</span>
+                            <div class="flex-1 bg-gray-50 rounded-lg p-3 text-center"
+                                :class="{ 'opacity-50': countdown.isClosed }">
+                                <span class="block text-2xl font-bold text-navy">{{ String(countdown.days).padStart(2,
+                                    '0') }}</span>
                                 <span class="text-xs text-gray-500 uppercase">Hari</span>
                             </div>
-                            <div class="flex-1 bg-gray-50 rounded-lg p-3 text-center">
-                                <span class="block text-2xl font-bold text-navy">12</span>
+                            <div class="flex-1 bg-gray-50 rounded-lg p-3 text-center"
+                                :class="{ 'opacity-50': countdown.isClosed }">
+                                <span class="block text-2xl font-bold text-navy">{{ String(countdown.hours).padStart(2,
+                                    '0') }}</span>
                                 <span class="text-xs text-gray-500 uppercase">Jam</span>
                             </div>
-                            <div class="flex-1 bg-gray-50 rounded-lg p-3 text-center">
-                                <span class="block text-2xl font-bold text-navy">45</span>
+                            <div class="flex-1 bg-gray-50 rounded-lg p-3 text-center"
+                                :class="{ 'opacity-50': countdown.isClosed }">
+                                <span class="block text-2xl font-bold text-navy">{{
+                                    String(countdown.minutes).padStart(2, '0') }}</span>
                                 <span class="text-xs text-gray-500 uppercase">Menit</span>
                             </div>
                         </div>
-                        <div v-if="tournament.max_participants != null && tournament.max_participants > 0"
-                            class="space-y-4 mb-6">
-                            <div class="flex justify-between items-center text-sm pb-1">
-                                <span class="text-gray-500">Slot Tersedia</span>
-                                <span class="font-bold text-primary">{{ tournament.max_participants -
-                                    (tournament.participant_count || 0) }} / {{ tournament.max_participants }}
-                                    Tersisa</span>
+                        <!-- New Per-Category Quota Section -->
+                        <!-- New Per-Category Quota Section (Always Scrollable) -->
+                        <div class="mb-6">
+                            <div class="flex items-center justify-between mb-3 px-1">
+                                <span class="text-xs font-black text-gray-400 uppercase tracking-widest">Ketersediaan
+                                    Slot</span>
+                                <span class="text-xs font-bold text-navy bg-gray-100 px-2 py-1 rounded-md">
+                                    {{ tournament.participant_count || 0 }} Terdaftar
+                                </span>
                             </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2">
-                                <div class="bg-primary h-2 rounded-full"
-                                    :style="{ width: `${Math.min(100, ((tournament.participant_count || 0) / tournament.max_participants) * 100)}%` }">
+
+                            <div v-if="categoriesList && categoriesList.length > 0"
+                                class="space-y-4 max-h-[320px] overflow-y-auto pr-2 custom-scrollbar border border-gray-50 rounded-xl p-3 bg-gray-50/30">
+                                <div v-for="cat in categoriesList" :key="cat.id"
+                                    class="space-y-1.5 bg-white p-3 rounded-xl border border-gray-100 shadow-sm">
+                                    <div class="flex justify-between items-start gap-4">
+                                        <span
+                                            class="text-[10px] font-black text-navy leading-tight line-clamp-2 uppercase tracking-tight">
+                                            {{ cat.division_name }} - {{ cat.category_name }}
+                                        </span>
+                                        <div class="text-right shrink-0">
+                                            <div class="text-[10px] font-black text-navy">
+                                                {{ cat.participant_count }} / {{ cat.max_participants > 0 ?
+                                                    cat.max_participants : 'Tidak Terbatas' }}
+                                            </div>
+                                            <div class="text-[9px] text-gray-400 font-bold uppercase tracking-tighter">
+                                                Peserta</div>
+                                        </div>
+                                    </div>
+
+                                    <div v-if="cat.max_participants > 0"
+                                        class="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
+                                        <div class="bg-primary h-full transition-all duration-1000"
+                                            :style="{ width: `${Math.min(100, (cat.participant_count / cat.max_participants) * 100)}%` }">
+                                        </div>
+                                    </div>
+                                    <div v-else class="w-full bg-gray-100 rounded-full h-1.5 bg-primary/10">
+                                        <div class="bg-primary/30 h-full w-full rounded-full"></div>
+                                    </div>
                                 </div>
                             </div>
+                            <div v-else
+                                class="text-xs text-gray-400 italic text-center py-4 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                                Informasi kuota belum tersedia.
+                            </div>
                         </div>
-                        <p v-else class="text-xs text-gray-500 mb-6">Kuota peserta per kategori. Lihat daftar kategori
-                            untuk detail.</p>
                         <!-- Auth-aware registration CTA: Only show for non-logged-in or logged-in archers -->
-                        <template v-if="!isLoggedIn || isArcher">
-                            <template v-if="!isLoggedIn">
+                        <template v-if="(!isLoggedIn || isArcher)">
+                            <template v-if="countdown.isClosed">
+                                <div
+                                    class="w-full py-4 bg-gray-100 text-gray-400 font-bold rounded-xl text-center cursor-not-allowed">
+                                    Pendaftaran Ditutup
+                                </div>
+                            </template>
+                            <template v-else-if="!isLoggedIn">
                                 <NuxtLink :to="loginUrl"
                                     class="w-full block py-4 bg-primary hover:bg-primary-hover text-navy font-bold rounded-xl transition-colors shadow-md text-center">
                                     Login untuk Mendaftar
@@ -432,7 +476,7 @@
 /* eslint-disable vue/multi-word-component-names */
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed, onMounted, watch, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 import { definePageMeta, useSeoMeta } from '#imports'
@@ -562,7 +606,9 @@ const transformEventData = (data) => ({
     faq: data.faq ? (typeof data.faq === 'string' ? JSON.parse(data.faq) : data.faq) : [],
     prizes: data.page_settings ? (JSON.parse(data.page_settings).prizes || { first: '-', second: '-', third: '-' }) : { first: '-', second: '-', third: '-' },
     fees: data.page_settings ? (JSON.parse(data.page_settings).fees || []) : [],
-    results: data.page_settings ? (JSON.parse(data.page_settings).results || []) : []
+    results: data.page_settings ? (JSON.parse(data.page_settings).results || []) : [],
+    registration_deadline: data.registration_deadline || null,
+    participant_count: data.participant_count || 0
 })
 
 // Google Maps embed URL
@@ -765,6 +811,40 @@ const copyPublicUrl = async () => {
     }
 }
 
+const countdown = ref({ days: 0, hours: 0, minutes: 0, isClosed: false })
+
+const updateCountdown = () => {
+    if (!tournament.value.registration_deadline) {
+        countdown.value.isClosed = true
+        return
+    }
+
+    const deadline = new Date(tournament.value.registration_deadline)
+    const now = new Date()
+    const diff = deadline - now
+
+    if (diff <= 0) {
+        countdown.value = { days: 0, hours: 0, minutes: 0, isClosed: true }
+        return
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
+
+    countdown.value = { days, hours, minutes, isClosed: false }
+}
+
+let countdownTimer
+onMounted(() => {
+    updateCountdown()
+    countdownTimer = setInterval(updateCountdown, 10000) // Update every 10s
+})
+
+onUnmounted(() => {
+    if (countdownTimer) clearInterval(countdownTimer)
+})
+
 const shareTo = (platform) => {
     const url = encodeURIComponent(publicEventUrl.value)
     const text = encodeURIComponent(tournament.value.name || 'Event Panahan')
@@ -788,5 +868,22 @@ const shareTo = (platform) => {
 <style scoped>
 .no-scrollbar::-webkit-scrollbar {
     display: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #cbd5e1;
 }
 </style>
