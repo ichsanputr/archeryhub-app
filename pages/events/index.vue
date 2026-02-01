@@ -263,6 +263,10 @@ const transformEventData = (event) => {
         const start = new Date(startDate)
         const end = new Date(endDate)
 
+        if (start.getTime() === end.getTime() || start.toDateString() === end.toDateString()) {
+            return formatDate(startDate)
+        }
+
         if (start.getMonth() === end.getMonth() && start.getFullYear() === end.getFullYear()) {
             return `${start.getDate()} - ${end.getDate()} ${start.toLocaleDateString('id-ID', { month: 'short', year: 'numeric' })}`
         }

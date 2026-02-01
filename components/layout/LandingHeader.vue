@@ -73,7 +73,7 @@
                                                     Semua</NuxtLink>
                                             </div>
                                             <div v-if="latestEvents.length > 0"
-                                                class="space-y-2 flex-1 flex flex-col justify-center">
+                                                class="space-y-2 flex-1 flex flex-col justify-start">
                                                 <NuxtLink v-for="event in latestEvents.slice(0, 5)" :key="event.id"
                                                     :to="`/events/${event.slug || event.id}`"
                                                     class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors group">
@@ -145,7 +145,7 @@
                                 <img v-if="user?.avatar_url" :src="user.avatar_url"
                                     class="w-full h-full object-cover" />
                                 <span v-else class="text-navy font-bold text-sm">{{ user?.full_name?.charAt(0) || 'U'
-                                }}</span>
+                                    }}</span>
                             </div>
                         </button>
 
@@ -255,7 +255,7 @@
                                 <img v-if="user?.avatar_url" :src="user.avatar_url"
                                     class="w-full h-full object-cover" />
                                 <span v-else class="text-navy font-black text-xl">{{ user?.full_name?.charAt(0) || 'U'
-                                }}</span>
+                                    }}</span>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <p class="text-navy font-black truncate">{{ user?.full_name || 'User' }}</p>

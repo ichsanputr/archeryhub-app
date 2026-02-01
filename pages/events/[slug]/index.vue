@@ -192,7 +192,7 @@
                                     <div class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Juara 1
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{ displayValue(tournament.prizes?.first)
-                                        }}</div>
+                                    }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ firstPrizeCaption }}</div>
                                 </div>
                                 <div
@@ -210,7 +210,7 @@
                                     <div class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Juara 3
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{ displayValue(tournament.prizes?.third)
-                                        }}</div>
+                                    }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ thirdPrizeCaption }}</div>
                                 </div>
                             </div>
@@ -523,9 +523,17 @@ watch(() => tabs.value, () => {
 
 const transformEventData = (data) => ({
     name: data.name || data.title || '',
-    date: data.start_date
-        ? `${new Date(data.start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${new Date(data.end_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
-        : data.date || '',
+    date: (() => {
+        if (!data.start_date) return data.date || ''
+        const start = new Date(data.start_date)
+        const end = data.end_date ? new Date(data.end_date) : null
+
+        if (!end || start.toDateString() === end.toDateString()) {
+            return start.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+        }
+
+        return `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${end.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
+    })(),
     location: data.venue || data.location || '',
     venue: data.venue || data.location || '',
     gmaps_link: data.gmaps_link || '',

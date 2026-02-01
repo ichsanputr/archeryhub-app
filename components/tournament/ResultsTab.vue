@@ -69,6 +69,9 @@
 
                     <!-- Info Area & Actions -->
                     <div class="p-5 flex flex-col gap-4">
+                        <h4 class="font-bold text-navy text-sm line-clamp-2" :title="file.name">
+                            {{ file.name || 'Dokumen Hasil' }}
+                        </h4>
                         <div class="flex gap-3">
                             <a :href="file.url" target="_blank"
                                 class="flex-1 py-3 bg-gray-50 hover:bg-navy hover:text-white text-navy font-black text-[11px] rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 border border-transparent">
