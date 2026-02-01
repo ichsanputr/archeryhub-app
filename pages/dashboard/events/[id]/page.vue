@@ -137,7 +137,8 @@
                                 <select v-model="form.location_type"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
                                     <option value="">Pilih Tipe Lokasi</option>
-                                    <option v-for="discipline in disciplines" :key="discipline.id" :value="discipline.name">
+                                    <option v-for="discipline in disciplines" :key="discipline.id"
+                                        :value="discipline.name">
                                         {{ discipline.name }}
                                     </option>
                                 </select>
@@ -381,22 +382,31 @@
                 </div>
                 <div class="p-6 space-y-5">
                     <div class="space-y-2">
-                        <label class="text-sm font-bold text-gray-700">Nama Venue</label>
-                        <input v-model="form.venue" type="text"
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                        <label class="text-sm font-bold text-gray-700 flex items-center gap-1">
+                            Nama Venue
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <input v-model="form.venue" type="text" required
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-medium"
                             placeholder="Contoh: Lapangan Panahan GBK" />
                     </div>
                     <div class="space-y-2">
-                        <label class="text-sm font-bold text-gray-700">Alamat Lengkap</label>
-                        <textarea v-model="form.address" rows="2"
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none resize-none transition-all"
-                            placeholder="Alamat detail..."></textarea>
+                        <label class="text-sm font-bold text-gray-700 flex items-center gap-1">
+                            Alamat Lengkap
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <textarea v-model="form.address" rows="2" required
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none resize-none transition-all font-medium"
+                            placeholder="Tuliskan alamat lengkap lokasi event..."></textarea>
                     </div>
                     <div class="space-y-2">
-                        <label class="text-sm font-bold text-gray-700">Link Google Maps</label>
-                        <input v-model="form.gmaps_link" type="url"
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                            placeholder="https://maps.app.goo.gl/..." />
+                        <label class="text-sm font-bold text-gray-700 flex items-center gap-1">
+                            Link Google Maps
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <input v-model="form.gmaps_link" type="url" required
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all font-medium"
+                            placeholder="https://maps.app.goo.gl/pxDpbaZ1GTtXHTD28" />
                         <div v-if="gmapsEmbedUrl"
                             class="mt-4 rounded-xl overflow-hidden border border-gray-200 aspect-video">
                             <iframe width="100%" height="100%" style="border:0" loading="lazy"
@@ -581,9 +591,11 @@
                             </div>
                             Dokumen Hasil Lomba
                         </h2>
-                        <p class="text-sm text-gray-500 mt-1 font-medium">Upload dan kelola dokumen hasil lomba publik</p>
+                        <p class="text-sm text-gray-500 mt-1 font-medium">Upload dan kelola dokumen hasil lomba publik
+                        </p>
                     </div>
-                    <BaseButton variant="primary" size="sm" icon="ph:plus-bold" @click="$refs.resultsFileInput?.click()">
+                    <BaseButton variant="primary" size="sm" icon="ph:plus-bold"
+                        @click="$refs.resultsFileInput?.click()">
                         Tambah File
                     </BaseButton>
                 </div>
@@ -598,7 +610,8 @@
                         <div class="flex flex-col items-center gap-4">
                             <div
                                 class="w-20 h-20 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-white group-hover:shadow-xl group-hover:shadow-primary/20 transition-all">
-                                <Icon icon="ph:cloud-arrow-up" class="text-4xl text-gray-300 group-hover:text-primary" />
+                                <Icon icon="ph:cloud-arrow-up"
+                                    class="text-4xl text-gray-300 group-hover:text-primary" />
                             </div>
                             <div class="max-w-xs mx-auto">
                                 <p class="text-base font-black text-navy group-hover:text-primary transition-colors">
@@ -607,7 +620,9 @@
                                     sini. Mendukung PDF, JPG, & PNG.</p>
                             </div>
                             <div class="flex gap-2">
-                                <span class="px-3 py-1 bg-gray-100 rounded-full text-[10px] font-black uppercase text-gray-400">Max 10MB/file</span>
+                                <span
+                                    class="px-3 py-1 bg-gray-100 rounded-full text-[10px] font-black uppercase text-gray-400">Max
+                                    10MB/file</span>
                             </div>
                         </div>
                     </div>
@@ -617,12 +632,14 @@
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                             <div v-for="(file, index) in form.results" :key="index"
                                 class="group relative bg-white rounded-2xl border border-gray-100 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 transition-all p-5">
-                                
+
                                 <div class="flex gap-5">
                                     <!-- File Icon / Preview -->
-                                    <div class="w-16 h-20 rounded-xl bg-gray-50 border border-gray-100 flex flex-col items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                                    <div
+                                        class="w-16 h-20 rounded-xl bg-gray-50 border border-gray-100 flex flex-col items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
                                         <Icon :icon="getFileIcon(file.url)" class="text-3xl text-primary" />
-                                        <span class="text-[9px] font-black text-gray-400 uppercase mt-1">{{ getFileExt(file.url) }}</span>
+                                        <span class="text-[9px] font-black text-gray-400 uppercase mt-1">{{
+                                            getFileExt(file.url) }}</span>
                                     </div>
 
                                     <!-- File Metadata & Actions -->
@@ -630,7 +647,9 @@
                                         <div class="space-y-3">
                                             <!-- Title Input -->
                                             <div class="space-y-1">
-                                                <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-1">Judul Tampilan</label>
+                                                <label
+                                                    class="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-1">Judul
+                                                    Tampilan</label>
                                                 <input v-model="file.title" type="text"
                                                     placeholder="Contoh: Hasil Kualifikasi Recurve"
                                                     class="w-full px-3 py-2 text-sm font-bold text-navy bg-gray-50 border border-transparent focus:bg-white focus:border-primary rounded-lg outline-none transition-all" />
@@ -638,19 +657,22 @@
 
                                             <!-- Filename Input -->
                                             <div class="space-y-1">
-                                                <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-1">Nama File Download</label>
+                                                <label
+                                                    class="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-1">Nama
+                                                    File Download</label>
                                                 <div class="flex items-center gap-2">
-                                                    <input v-model="file.name" type="text"
-                                                        placeholder="nama-file"
+                                                    <input v-model="file.name" type="text" placeholder="nama-file"
                                                         class="flex-1 px-3 py-2 text-[11px] font-medium text-gray-500 bg-gray-50 border border-transparent focus:bg-white focus:border-primary rounded-lg outline-none transition-all" />
-                                                    <span class="text-[10px] font-bold text-gray-400">.{{ getFileExt(file.url) }}</span>
+                                                    <span class="text-[10px] font-bold text-gray-400">.{{
+                                                        getFileExt(file.url) }}</span>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <!-- Footer Actions -->
                                         <div class="flex items-center justify-between mt-4">
-                                            <p class="text-[10px] font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md">
+                                            <p
+                                                class="text-[10px] font-bold text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md">
                                                 {{ formatFileSize(file.size) }}
                                             </p>
                                             <div class="flex items-center gap-2">
@@ -673,10 +695,13 @@
                             <!-- Add More Area -->
                             <div @click="$refs.resultsFileInput?.click()"
                                 class="border-2 border-dashed border-gray-100 rounded-2xl flex flex-col items-center justify-center p-8 hover:border-primary hover:bg-primary/5 transition-all group cursor-pointer border-brand-border">
-                                <div class="p-3 bg-gray-50 rounded-full group-hover:bg-primary group-hover:text-white transition-all text-gray-400">
+                                <div
+                                    class="p-3 bg-gray-50 rounded-full group-hover:bg-primary group-hover:text-white transition-all text-gray-400">
                                     <Icon icon="ph:plus-bold" class="text-xl" />
                                 </div>
-                                <p class="text-xs font-black text-gray-400 mt-3 uppercase tracking-widest group-hover:text-primary">Tambah File Lagi</p>
+                                <p
+                                    class="text-xs font-black text-gray-400 mt-3 uppercase tracking-widest group-hover:text-primary">
+                                    Tambah File Lagi</p>
                             </div>
                         </div>
                     </div>
@@ -1178,6 +1203,14 @@ const fetchEventData = async () => {
 }
 
 const saveEventPage = async () => {
+    // Validation
+    const toast = useToast()
+    if (!form.value.venue || !form.value.address || !form.value.gmaps_link) {
+        toast.error('Mohon lengkapi Nama Venue, Alamat, dan Link Google Maps')
+        activeTab.value = 'lokasi' // Switch to location tab if any of these are missing
+        return
+    }
+
     saving.value = true
     try {
         // Prepare data for API
