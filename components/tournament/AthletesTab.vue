@@ -64,9 +64,11 @@
 
                 <div class="pt-4 border-t border-gray-50 flex items-center justify-between">
                     <div class="flex items-center gap-1 text-gray-400">
-                        <Icon icon="ph:trophy" class="text-sm" />
-                        <span class="text-[10px] font-bold">{{ athlete.rank === '-' ? 'Belum ada ranking' : `Rank
-                            ${athlete.rank}` }}</span>
+                        <div>
+                            <Icon icon="ph:trophy" class="text-sm" />
+                        </div>
+                        <div class="text-[10px] mt-0.5 font-bold">{{ athlete.rank === '-' ? 'Belum ada ranking' : `Rank
+                            ${athlete.rank}` }}</div>
                     </div>
                     <NuxtLink v-if="athlete.username" :to="`/archers/${athlete.username}`"
                         class="textfont-bold text-xs hover:underline flex items-center gap-1">
