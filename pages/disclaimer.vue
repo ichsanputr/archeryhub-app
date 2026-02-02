@@ -16,44 +16,44 @@
                         Legal
                     </div>
                     <h1 class="text-3xl md:text-5xl font-black text-white leading-tight mb-4">
-                        Disclaimer
+                        Penyangkalan
                     </h1>
                     <p class="text-slate-300 text-lg leading-relaxed max-w-2xl">
-                        Informational platform notice and professional disclaimer.
+                        Pemberitahuan platform informasi dan penyangkalan profesional.
                     </p>
                     <p class="text-slate-400 text-sm mt-6">
-                        Last updated: October 24, 2024
+                        Terakhir diperbarui: 24 Oktober 2024
                     </p>
                 </div>
             </div>
         </div>
 
         <!-- Main Content -->
-        <main class="flex-grow max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 -mt-8 mb-20 relative z-20">
+        <main class="flex-grow max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 mb-20 relative z-20">
             <div
                 class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 md:p-12">
                 <div class="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-400 p-6 rounded-r-lg mb-8">
                     <p class="text-yellow-800 dark:text-yellow-200 font-medium italic">
-                        "Archery involves the use of equipment that can be dangerous if mishandled. Archery Hub
-                        is an informational platform and is not responsible for any injuries or accidents that
-                        occur at listed clubs or events."
+                        "Panahan melibatkan penggunaan peralatan yang dapat berbahaya jika ditangani dengan salah. Archery Hub
+                        adalah platform informasi dan tidak bertanggung jawab atas cedera atau kecelakaan apa pun yang
+                        terjadi di klub atau event yang terdaftar."
                     </p>
                 </div>
                 <div class="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300">
-                    <h3 class="text-xl font-bold text-navy dark:text-white mt-8 mb-4">1. General Information</h3>
+                    <h3 class="text-xl font-bold text-navy dark:text-white mt-8 mb-4">1. Informasi Umum</h3>
                     <p class="mb-4">
-                        The information provided by Archery Hub Indonesia on this website is for general
-                        informational purposes only. All information on the Site is provided in good faith,
-                        however we make no representation or warranty of any kind, express or implied, regarding
-                        the accuracy, adequacy, validity, reliability, availability or completeness of any
-                        information on the Site.
+                        Informasi yang disediakan oleh Archery Hub Indonesia di situs web ini hanya untuk tujuan
+                        informasi umum. Semua informasi di Situs disediakan dengan itikad baik,
+                        namun kami tidak membuat pernyataan atau jaminan apa pun, baik tersurat maupun tersirat, mengenai
+                        keakuratan, kecukupan, validitas, keandalan, ketersediaan atau kelengkapan informasi apa pun
+                        di Situs.
                     </p>
-                    <h3 class="text-xl font-bold text-navy dark:text-white mt-8 mb-4">2. Professional Disclaimer</h3>
+                    <h3 class="text-xl font-bold text-navy dark:text-white mt-8 mb-4">2. Penyangkalan Profesional</h3>
                     <p class="mb-4">
-                        The Site cannot and does not contain professional sports advice. The archery information
-                        is provided for general informational and educational purposes only and is not a
-                        substitute for professional advice. Accordingly, before taking any actions based upon
-                        such information, we encourage you to consult with the appropriate professionals.
+                        Situs tidak dapat dan tidak mengandung nasihat olahraga profesional. Informasi panahan
+                        disediakan hanya untuk tujuan informasi dan pendidikan umum dan bukan merupakan
+                        pengganti nasihat profesional. Oleh karena itu, sebelum mengambil tindakan berdasarkan
+                        informasi tersebut, kami mendorong Anda untuk berkonsultasi dengan profesional yang tepat.
                     </p>
                 </div>
             </div>
@@ -68,6 +68,6 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Disclaimer - Archeryhub.id'
+    title: 'Penyangkalan - Archeryhub.id'
 })
 </script>

@@ -15,53 +15,48 @@
             Legal
           </div>
           <h1 class="text-3xl md:text-5xl font-black text-white leading-tight mb-4">
-            Terms of Service
+            Syarat dan Ketentuan
           </h1>
           <p class="text-slate-300 text-lg leading-relaxed max-w-2xl">
-            Please read these Terms of Service carefully before using our platform.
+            Harap baca Syarat dan Ketentuan ini dengan teliti sebelum menggunakan platform kami.
           </p>
           <p class="text-slate-400 text-sm mt-6">
-            Last updated: October 24, 2024
+            Terakhir diperbarui: 24 Oktober 2024
           </p>
         </div>
       </div>
     </div>
 
     <!-- Main Content -->
-    <main class="flex-grow max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 -mt-8 mb-20 relative z-20">
+    <main class="flex-grow max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 mb-20 relative z-20">
       <div
         class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 md:p-12">
         <div class="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300">
           <p class="mb-6 leading-relaxed">
-            Please read these Terms of Service ("Terms", "Terms of Service") carefully before using
-            the Archery Hub website (the "Service") operated by Archery Hub Indonesia ("us", "we",
-            or "our").
+            Harap baca Syarat dan Ketentuan ("Syarat", "Syarat dan Ketentuan") ini dengan teliti sebelum menggunakan
+            situs web Archery Hub (the "Layanan") yang dioperasikan oleh Archery Hub Indonesia ("kami", "kita",
+            atau "milik kami").
           </p>
-          <h3 class="text-xl font-bold text-navy dark:text-white mt-8 mb-4">1. Acceptance of Terms</h3>
+          <h3 class="text-xl font-bold text-navy dark:text-white mt-8 mb-4">1. Penerimaan Syarat</h3>
           <p class="mb-4">
-            By accessing or using the Service you agree to be bound by these Terms. If you disagree
-            with any part of the terms then you may not access the Service.
+            Dengan mengakses atau menggunakan Layanan, Anda setuju untuk terikat oleh Syarat ini. Jika Anda tidak setuju
+            dengan bagian mana pun dari syarat tersebut, maka Anda tidak boleh mengakses Layanan.
           </p>
-          <h3 class="text-xl font-bold text-navy dark:text-white mt-8 mb-4">2. Club Directory & Verification</h3>
+          <h3 class="text-xl font-bold text-navy dark:text-white mt-8 mb-4">2. Direktori Klub & Verifikasi</h3>
           <p class="mb-4">
-            Archery Hub provides a directory of archery clubs in Indonesia. While we strive to
-            verify clubs, we cannot guarantee the complete accuracy
-            of all club details, including training schedules and fees.
+            Archery Hub menyediakan direktori klub panahan di Indonesia. Meskipun kami berusaha untuk
+            memverifikasi klub, kami tidak dapat menjamin keakuratan lengkap
+            semua detail klub, termasuk jadwal latihan dan biaya.
           </p>
           <ol class="list-decimal pl-6 space-y-2 mb-6 marker:text-navy marker:font-bold">
-            <li><strong>Club Information:</strong> Information about clubs is provided for informational purposes.</li>
-            <li><strong>Member Reviews:</strong> Users are responsible for the content of their
-              reviews. We reserve the right to remove reviews that violate our community
-              guidelines.</li>
-            <li><strong>Disputes:</strong> Any disputes between a user and a club found through our
-              platform must be resolved directly between the parties. Archery Hub is not liable
-              for club operations.</li>
+            <li><strong>Informasi Klub:</strong> Informasi tentang klub disediakan untuk tujuan informasi.</li>
+            <li><strong>Ulasan Anggota:</strong> Pengguna bertanggung jawab atas konten ulasan mereka. Kami berhak menghapus ulasan yang melanggar pedoman komunitas kami.</li>
+            <li><strong>Perselisihan:</strong> Perselisihan apa pun antara pengguna dan klub yang ditemukan melalui platform kami harus diselesaikan langsung antara para pihak. Archery Hub tidak bertanggung jawab atas operasi klub.</li>
           </ol>
-          <h3 class="text-xl font-bold text-navy dark:text-white mt-8 mb-4">3. Termination</h3>
+          <h3 class="text-xl font-bold text-navy dark:text-white mt-8 mb-4">3. Penghentian</h3>
           <p class="mb-4">
-            We may terminate or suspend access to our Service immediately, without prior notice or
-            liability, for any reason whatsoever, including without limitation if you breach the
-            Terms.
+            Kami dapat menghentikan atau menangguhkan akses ke Layanan kami secara segera, tanpa pemberitahuan sebelumnya atau
+            tanggung jawab, untuk alasan apa pun, termasuk tanpa batasan jika Anda melanggar Syarat.
           </p>
         </div>
       </div>
@@ -76,6 +71,6 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Terms of Service - Archeryhub.id'
+  title: 'Syarat dan Ketentuan - Archeryhub.id'
 })
 </script>

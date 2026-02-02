@@ -15,56 +15,51 @@
             Legal
           </div>
           <h1 class="text-3xl md:text-5xl font-black text-white leading-tight mb-4">
-            Privacy Policy
+            Kebijakan Privasi
           </h1>
           <p class="text-slate-300 text-lg leading-relaxed max-w-2xl">
-            At Archery Hub Indonesia, we take your privacy seriously.
+            Di Archery Hub Indonesia, kami sangat menjaga privasi Anda.
           </p>
           <p class="text-slate-400 text-sm mt-6">
-            Last updated: October 24, 2024
+            Terakhir diperbarui: 24 Oktober 2024
           </p>
         </div>
       </div>
     </div>
 
     <!-- Main Content -->
-    <main class="flex-grow max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 -mt-8 mb-20 relative z-20">
+    <main class="flex-grow max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 mb-20 relative z-20">
       <div
         class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 md:p-12">
         <div class="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300">
           <p class="mb-6 leading-relaxed">
-            This Privacy Policy explains how we collect, use, disclosure, and safeguard your information when you visit
-            our
-            website including any other media form, media channel, mobile website, or mobile
-            application related or connected thereto.
+            Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, mengungkapkan, dan melindungi informasi Anda ketika Anda mengunjungi
+            situs web kami termasuk bentuk media lainnya, saluran media, situs web seluler, atau
+            aplikasi seluler yang terkait atau terhubung dengannya.
           </p>
-          <h3 class="text-xl font-bold text-navy dark:text-white mt-8 mb-4">1. Collection of Your Information</h3>
-          <p class="mb-4">We may collect information about you in a variety of ways. The information
-            we may collect on the Site includes:</p>
+          <h3 class="text-xl font-bold text-navy dark:text-white mt-8 mb-4">1. Pengumpulan Informasi Anda</h3>
+          <p class="mb-4">Kami dapat mengumpulkan informasi tentang Anda dengan berbagai cara. Informasi
+            yang mungkin kami kumpulkan di Situs meliputi:</p>
           <ul class="list-disc pl-6 space-y-2 mb-6 marker:text-primary">
-            <li><strong>Personal Data:</strong> Personally identifiable information, such as your
-              name, shipping address, email address, and telephone number, and demographic
-              information.</li>
-            <li><strong>Derivative Data:</strong> Information our servers automatically collect when
-              you access the Site, such as your IP address, your browser type, your operating
-              system, your access times, and the pages you have viewed directly before and after
-              accessing the Site.</li>
-            <li><strong>Financial Data:</strong> Financial information, such as data related to your
-              payment method (e.g. valid credit card number, card brand, expiration date) that we
-              may collect when you purchase, order, return, exchange, or request information about
-              our services from the Site.</li>
+            <li><strong>Data Pribadi:</strong> Informasi yang dapat diidentifikasi secara pribadi, seperti nama Anda, alamat pengiriman, alamat email, dan nomor telepon, serta informasi demografis.</li>
+            <li><strong>Data Turunan:</strong> Informasi yang secara otomatis dikumpulkan server kami ketika
+              Anda mengakses Situs, seperti alamat IP Anda, jenis browser, sistem operasi, waktu akses, dan halaman yang telah Anda lihat langsung sebelum dan setelah
+              mengakses Situs.</li>
+            <li><strong>Data Keuangan:</strong> Informasi keuangan, seperti data terkait metode pembayaran Anda (misalnya nomor kartu kredit yang valid, merek kartu, tanggal kedaluwarsa) yang
+              mungkin kami kumpulkan ketika Anda membeli, memesan, mengembalikan, menukar, atau meminta informasi tentang
+              layanan kami dari Situs.</li>
           </ul>
-          <h3 class="text-xl font-bold text-navy dark:text-white mt-8 mb-4">2. Use of Your Information</h3>
-          <p class="mb-4">Having accurate information about you permits us to provide you with a
-            smooth, efficient, and customized experience. Specifically, we may use information
-            collected about you via the Site to:</p>
+          <h3 class="text-xl font-bold text-navy dark:text-white mt-8 mb-4">2. Penggunaan Informasi Anda</h3>
+          <p class="mb-4">Memiliki informasi yang akurat tentang Anda memungkinkan kami memberikan Anda
+            pengalaman yang lancar, efisien, dan disesuaikan. Secara khusus, kami dapat menggunakan informasi
+            yang dikumpulkan tentang Anda melalui Situs untuk:</p>
           <ol class="list-decimal pl-6 space-y-2 mb-6 marker:text-navy marker:font-bold">
-            <li>Create and manage your account.</li>
-            <li>Process your subscription to club memberships and tournament registrations.</li>
-            <li>Email you regarding your account or order.</li>
-            <li>Enable user-to-user communications.</li>
-            <li>Fulfill and manage purchases, orders, payments, and other transactions related to
-              the Site.</li>
+            <li>Membuat dan mengelola akun Anda.</li>
+            <li>Memproses langganan keanggotaan klub dan pendaftaran turnamen.</li>
+            <li>Mengirim email kepada Anda mengenai akun atau pesanan Anda.</li>
+            <li>Memungkinkan komunikasi antar pengguna.</li>
+            <li>Memenuhi dan mengelola pembelian, pesanan, pembayaran, dan transaksi lainnya terkait
+              Situs.</li>
           </ol>
         </div>
       </div>
@@ -79,6 +74,6 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Privacy Policy - Archeryhub.id'
+  title: 'Kebijakan Privasi - Archeryhub.id'
 })
 </script>

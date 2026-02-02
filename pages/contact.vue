@@ -10,11 +10,11 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="max-w-3xl">
           <h1 class="text-white text-3xl md:text-5xl font-black leading-tight tracking-tight mb-4">
-            Contact Us
+            Hubungi Kami
           </h1>
           <p class="text-slate-300 text-lg leading-relaxed max-w-2xl">
-            Have questions about the platform? Whether you're a club owner, an athlete, or an event organizer, we're
-            here to help you hit the mark.
+            Ada pertanyaan tentang platform? Baik Anda pemilik klub, atlet, atau penyelenggara event, kami
+            di sini untuk membantu Anda mencapai target.
           </p>
         </div>
       </div>
@@ -25,46 +25,45 @@
         <div class="lg:col-span-8">
           <div
             class="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 h-full">
-            <h2 class="text-2xl font-bold text-navy dark:text-white mb-6">Send us a message</h2>
+            <h2 class="text-2xl font-bold text-navy dark:text-white mb-6">Kirim pesan kepada kami</h2>
             <form class="space-y-6" @submit.prevent="handleSubmit">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Your Name</label>
+                  <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Nama Anda</label>
                   <input v-model="form.name"
                     class="w-full px-4 py-3 bg-background-light dark:bg-gray-900 border-transparent rounded-xl text-sm text-slate-800 focus:border-navy focus:bg-white focus:ring-0 transition-colors placeholder:text-slate-400"
-                    placeholder="Enter your full name" type="text" required />
+                    placeholder="Masukkan nama lengkap Anda" type="text" required />
                 </div>
                 <div>
-                  <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Email
-                    Address</label>
+                  <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Alamat Email</label>
                   <input v-model="form.email"
                     class="w-full px-4 py-3 bg-background-light dark:bg-gray-900 border-transparent rounded-xl text-sm text-slate-800 focus:border-navy focus:bg-white focus:ring-0 transition-colors placeholder:text-slate-400"
-                    placeholder="name@example.com" type="email" required />
+                    placeholder="nama@example.com" type="email" required />
                 </div>
               </div>
               <div>
-                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Subject</label>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Subjek</label>
                 <select v-model="form.subject"
                   class="w-full px-4 py-3 bg-background-light dark:bg-gray-900 border-transparent rounded-xl text-sm text-slate-800 focus:border-navy focus:bg-white focus:ring-0 transition-colors cursor-pointer"
                   required>
-                  <option disabled value="">Select a topic</option>
-                  <option value="general">General Inquiry</option>
-                  <option value="club">Club Registration Support</option>
-                  <option value="tech">Technical Issue</option>
-                  <option value="partnership">Partnership</option>
+                  <option disabled value="">Pilih topik</option>
+                  <option value="general">Pertanyaan Umum</option>
+                  <option value="club">Dukungan Pendaftaran Klub</option>
+                  <option value="tech">Masalah Teknis</option>
+                  <option value="partnership">Kemitraan</option>
                 </select>
               </div>
               <div>
-                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Message</label>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Pesan</label>
                 <textarea v-model="form.message"
                   class="w-full px-4 py-3 bg-background-light dark:bg-gray-900 border-transparent rounded-xl text-sm text-slate-800 focus:border-navy focus:bg-white focus:ring-0 transition-colors placeholder:text-slate-400 resize-none"
-                  placeholder="How can we help you?" rows="5" required></textarea>
+                  placeholder="Bagaimana kami dapat membantu Anda?" rows="5" required></textarea>
               </div>
               <div class="pt-2">
                 <button
                   class="w-full md:w-auto bg-primary hover:bg-primary-hover text-navy px-8 py-3.5 rounded-xl text-sm font-bold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 transform active:scale-95"
                   type="submit" :disabled="loading">
-                  <span>{{ loading ? 'Sending...' : 'Send Message' }}</span>
+                  <span>{{ loading ? 'Mengirim...' : 'Kirim Pesan' }}</span>
                   <Icon icon="ph:paper-plane-tilt-bold" class="text-lg" />
                 </button>
               </div>
@@ -77,16 +76,16 @@
             <div class="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
               <Icon icon="ph:globe-hemisphere-west-bold" class="text-9xl" />
             </div>
-            <h3 class="font-bold text-xl mb-6 relative z-10">Contact Information</h3>
+            <h3 class="font-bold text-xl mb-6 relative z-10">Informasi Kontak</h3>
             <div class="space-y-6 relative z-10">
               <div class="flex items-start gap-4">
                 <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
                   <Icon icon="ph:map-pin-fill" class="text-primary" />
                 </div>
                 <div>
-                  <h4 class="text-sm font-bold text-slate-300 uppercase tracking-wide mb-1">Head Office</h4>
+                  <h4 class="text-sm font-bold text-slate-300 uppercase tracking-wide mb-1">Kantor Pusat</h4>
                   <p class="text-white leading-relaxed text-sm">
-                    Gelora Bung Karno Sports Complex<br />
+                    Kompleks Olahraga Gelora Bung Karno<br />
                     Jl. Pintu Satu Senayan<br />
                     Jakarta Pusat, DKI Jakarta 10270
                   </p>
@@ -97,7 +96,7 @@
                   <Icon icon="ph:envelope-simple-fill" class="text-primary" />
                 </div>
                 <div>
-                  <h4 class="text-sm font-bold text-slate-300 uppercase tracking-wide mb-1">Email Support</h4>
+                  <h4 class="text-sm font-bold text-slate-300 uppercase tracking-wide mb-1">Dukungan Email</h4>
                   <a class="text-white hover:text-primary transition-colors text-sm font-medium"
                     href="mailto:support@archeryhub.id">support@archeryhub.id</a>
                 </div>
@@ -107,15 +106,15 @@
                   <Icon icon="ph:phone-fill" class="text-primary" />
                 </div>
                 <div>
-                  <h4 class="text-sm font-bold text-slate-300 uppercase tracking-wide mb-1">Phone</h4>
+                  <h4 class="text-sm font-bold text-slate-300 uppercase tracking-wide mb-1">Telepon</h4>
                   <a class="text-white hover:text-primary transition-colors text-sm font-medium"
                     href="tel:+62215758888">+62 21 575 8888</a>
-                  <div class="text-xs text-slate-400 mt-1">Mon-Fri, 9am - 5pm WIB</div>
+                  <div class="text-xs text-slate-400 mt-1">Senin-Jumat, 09.00 - 17.00 WIB</div>
                 </div>
               </div>
             </div>
             <div class="mt-8 pt-8 border-t border-white/10 relative z-10">
-              <h4 class="text-sm font-bold text-slate-300 uppercase tracking-wide mb-4">Follow Us</h4>
+              <h4 class="text-sm font-bold text-slate-300 uppercase tracking-wide mb-4">Ikuti Kami</h4>
               <div class="flex gap-4">
                 <a href="#"
                   class="w-10 h-10 rounded-lg bg-white/10 hover:bg-primary hover:text-navy transition-all flex items-center justify-center group">
@@ -144,13 +143,13 @@
           <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
             <h3 class="font-bold text-navy dark:text-white mb-2 flex items-center gap-2">
               <Icon icon="ph:question-bold" class="text-primary" />
-              Quick Help
+              Bantuan Cepat
             </h3>
-            <p class="text-sm text-slate-500 mb-3">Looking for frequently asked questions? Visit our Help Center for
-              instant answers.</p>
+            <p class="text-sm text-slate-500 mb-3">Mencari pertanyaan yang sering diajukan? Kunjungi Pusat Bantuan kami untuk
+              jawaban instan.</p>
             <NuxtLink to="/faq"
               class="text-xs font-bold text-navy dark:text-white border-b-2 border-primary hover:border-navy transition-colors pb-0.5 inline-block">
-              Visit Help Center</NuxtLink>
+              Kunjungi Pusat Bantuan</NuxtLink>
           </div>
         </div>
       </div>
@@ -177,7 +176,7 @@ const handleSubmit = async () => {
   // Simulate API call
   await new Promise(resolve => setTimeout(resolve, 1500))
   loading.value = false
-  alert('Thank you! Your message has been sent.')
+  alert('Terima kasih! Pesan Anda telah dikirim.')
   // Reset form
   form.name = ''
   form.email = ''

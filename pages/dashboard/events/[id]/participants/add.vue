@@ -7,8 +7,7 @@
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h1 class="text-2xl md:text-3xl font-extrabold text-navy tracking-tight">Tambah Peserta</h1>
-                    <p class="text-gray-500 font-medium mt-1 text-sm md:text-base">Daftarkan pemanah baru atau pilih
-                        yang sudah terdaftar.</p>
+                    <p class="text-gray-500 font-medium mt-1 text-sm md:text-base">Daftarkan satu atau beberapa pemanah sekaligus atau buat yang baru.</p>
                 </div>
                 <div class="flex gap-3">
                     <BaseButton variant="white" :to="`/dashboard/events/${route.params.id}/participants`"
@@ -48,34 +47,8 @@
 
                         <!-- Existing Archer Selection -->
                         <div v-if="archerMode === 'existing'" class="space-y-4">
-                            <!-- Selected State -->
-                            <div v-if="selectedArcher"
-                                class="bg-blue-50 border border-blue-100 rounded-xl p-4 relative overflow-hidden group">
-                                <div class="absolute right-0 top-0 p-4 opacity-10">
-                                    <Icon icon="ph:check-circle-fill" class="text-8xl text-primary" />
-                                </div>
-                                <div class="relative z-10 flex items-center gap-4">
-                                    <div
-                                        class="h-16 w-16 rounded-full bg-white flex items-center justify-center text-navy font-bold text-xl uppercase overflow-hidden border-2 border-white shadow-sm">
-                                        <img :src="useImageOrDefault(selectedArcher.photo_url || selectedArcher.avatar_url, selectedArcher.full_name)"
-                                            class="w-full h-full object-cover" />
-                                    </div>
-                                    <div class="flex-1">
-                                        <p class="text-xs font-bold text-blue-600 uppercase tracking-wider mb-1">Pemanah
-                                            Terpilih</p>
-                                        <p class="font-black text-navy text-lg">{{ selectedArcher.full_name }}</p>
-                                        <p class="text-sm text-gray-500 font-medium">{{ selectedArcher.club_name || '-'
-                                            }}</p>
-                                    </div>
-                                    <button @click="selectedArcher = null"
-                                        class="h-10 px-4 bg-white text-red-500 text-sm font-bold rounded-lg border border-red-100 hover:bg-red-50 transition-colors shadow-sm">
-                                        Ganti
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- Search State -->
-                            <div v-else class="space-y-4">
+                            <!-- Search Input (Always visible) -->
+                            <div class="space-y-4">
                                 <BaseInput v-model="searchArcherQuery" icon="ph:magnifying-glass"
                                     placeholder="Cari nama lengkap atau email pemanah..." label="Cari Pemanah" />
 
@@ -84,27 +57,33 @@
                                     class="max-h-64 overflow-y-auto border border-gray-100 rounded-xl bg-white shadow-sm">
                                     <template v-if="filteredArchers.length > 0">
                                         <button v-for="archer in filteredArchers" :key="archer.uuid || archer.id"
-                                            @click="selectArcher(archer)"
-                                            class="w-full p-4 text-left border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors group">
+                                            @click="toggleArcher(archer)"
+                                            :class="isArcherSelected(archer) ? 'bg-blue-50 border-blue-200' : 'hover:bg-gray-50'"
+                                            class="w-full p-4 text-left border-b border-gray-100 last:border-b-0 transition-colors group">
                                             <div class="flex items-center gap-3">
+                                                <div class="flex-shrink-0">
+                                                    <div v-if="isArcherSelected(archer)"
+                                                        class="h-5 w-5 rounded-full bg-primary flex items-center justify-center">
+                                                        <Icon icon="ph:check" class="text-white text-xs" />
+                                                    </div>
+                                                    <div v-else class="h-5 w-5 rounded-full border-2 border-gray-300"></div>
+                                                </div>
                                                 <div
                                                     class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs uppercase overflow-hidden border border-gray-200 group-hover:border-primary/50 transition-colors">
                                                     <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
                                                         class="w-full h-full object-cover" />
                                                 </div>
-                                                <div class="flex-1">
-                                                    <p
-                                                        class="font-bold text-navy group-hover:text-primary transition-colors">
+                                                <div class="flex-1 min-w-0">
+                                                    <p :class="isArcherSelected(archer) ? 'text-primary' : 'text-navy'"
+                                                        class="font-bold group-hover:text-primary transition-colors truncate">
                                                         {{ archer.full_name }}</p>
-                                                    <div class="flex items-center gap-2 text-xs text-gray-400">
+                                                    <p class="text-xs text-gray-500 truncate">{{ archer.email || archer.phone || '-' }}</p>
+                                                    <div class="flex items-center gap-2 text-xs text-gray-400 mt-1">
                                                         <span>{{ archer.club_name || 'Individual' }}</span>
-                                                        <span v-if="archer.city"
-                                                            class="w-1 h-1 rounded-full bg-gray-300"></span>
+                                                        <span v-if="archer.city" class="w-1 h-1 rounded-full bg-gray-300"></span>
                                                         <span v-if="archer.city">{{ archer.city }}</span>
                                                     </div>
                                                 </div>
-                                                <Icon icon="ph:plus-circle-bold"
-                                                    class="text-gray-300 group-hover:text-primary text-xl transition-colors" />
                                             </div>
                                         </button>
                                     </template>
@@ -125,8 +104,7 @@
                                         <Icon icon="ph:magnifying-glass" class="text-2xl text-gray-300" />
                                     </div>
                                     <p class="text-sm font-bold text-gray-500">Cari Pemanah Terdaftar</p>
-                                    <p class="text-xs text-gray-400 max-w-[200px] mt-1">Ketik nama atau email untuk
-                                        mencari data pemanah</p>
+                                    <p class="text-xs text-gray-400 max-w-[200px] mt-1">Ketik nama atau email untuk mencari dan pilih beberapa pemanah</p>
                                 </div>
 
                                 <div v-if="isSearchingArchers"
@@ -134,6 +112,35 @@
                                     <span
                                         class="inline-block h-4 w-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></span>
                                     Mencari pemanah...
+                                </div>
+                            </div>
+
+                            <!-- Selected Archers (at bottom) -->
+                            <div v-if="selectedArchers.length > 0" class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <p class="text-sm font-bold text-navy">Pemanah Terpilih ({{ selectedArchers.length }})</p>
+                                    <button @click="selectedArchers = []" class="text-xs text-red-500 font-bold hover:underline">
+                                        Hapus Semua
+                                    </button>
+                                </div>
+                                <div class="space-y-2 max-h-48 overflow-y-auto">
+                                    <div v-for="(archer, index) in selectedArchers" :key="archer.uuid || archer.id"
+                                        class="bg-blue-50 border border-blue-100 rounded-lg p-3 relative group">
+                                        <div class="flex items-center gap-3">
+                                            <div class="h-10 w-10 rounded-full bg-white flex items-center justify-center text-navy font-bold text-xs uppercase overflow-hidden border border-gray-200">
+                                                <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
+                                                    class="w-full h-full object-cover" />
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <p class="font-bold text-navy text-sm truncate">{{ archer.full_name }}</p>
+                                                <p class="text-xs text-gray-500 truncate">{{ archer.email || archer.phone || '-' }}</p>
+                                            </div>
+                                            <button @click="removeArcher(index)"
+                                                class="h-6 w-6 rounded-full bg-red-100 text-red-500 flex items-center justify-center hover:bg-red-200 transition-colors opacity-0 group-hover:opacity-100">
+                                                <Icon icon="ph:x" class="text-xs" />
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -292,12 +299,11 @@ const archerMode = ref('existing')
 const breadcrumbItems = computed(() => [
     { label: 'Dashboard', path: '/dashboard' },
     { label: 'Events', path: '/dashboard/events' },
-    { label: 'Control Panel', path: `/dashboard/events/${route.params.id}/overview` },
     { label: 'Peserta', path: `/dashboard/events/${route.params.id}/participants` }
 ])
 
 const searchArcherQuery = ref('')
-const selectedArcher = ref(null)
+const selectedArchers = ref([])
 const isSubmitting = ref(false)
 const showMediaLibrary = ref(false)
 
@@ -433,6 +439,23 @@ const selectArcher = (archer) => {
     selectedArcher.value = archer
 }
 
+const toggleArcher = (archer) => {
+    const index = selectedArchers.value.findIndex(a => (a.uuid || a.id) === (archer.uuid || archer.id))
+    if (index > -1) {
+        selectedArchers.value.splice(index, 1)
+    } else {
+        selectedArchers.value.push(archer)
+    }
+}
+
+const removeArcher = (index) => {
+    selectedArchers.value.splice(index, 1)
+}
+
+const isArcherSelected = (archer) => {
+    return selectedArchers.value.some(a => (a.uuid || a.id) === (archer.uuid || archer.id))
+}
+
 const formatDate = (dateStr) => {
     if (!dateStr) return 'TBD'
     return new Date(dateStr).toLocaleDateString('id-ID', {
@@ -475,23 +498,12 @@ const validateNewArcherForm = () => {
         }
     }
 
-    // Validation: Phone + Password rule
-    if (newArcherForm.phone && newArcherForm.phone.trim()) {
-        if (!newArcherForm.email && !newArcherForm.password) {
-            toast.error('Jika menggunakan No. Telepon tanpa Email, Password wajib diisi')
-            return false
-        }
-    }
-
-    // Logic as requested: if phone is filled, password needs to be defined (unless email is there? USER SAID: "if admin know about the archer's email the password is optional")
-    // Let's stick closer to user request: "if admin fill wa number they need to define the password"
+    // Password validation rules:
+    // - If phone is filled → password required
+    // - If email is filled (no phone) → password optional
     if (newArcherForm.phone && newArcherForm.phone.trim() && !newArcherForm.password) {
-        // But user also said "if admin know about the archer's email the password is optional"
-        // This implies if Email is present, Password is NOT required even if Phone is present.
-        if (!newArcherForm.email) {
-            toast.error('Password wajib diisi jika menggunakan No. Telepon')
-            return false
-        }
+        toast.error('Password wajib diisi jika menggunakan No. Telepon')
+        return false
     }
 
     if (!newArcherForm.gender) {
@@ -511,8 +523,8 @@ const submit = async () => {
         return
     }
 
-    if (archerMode.value === 'existing' && !selectedArcher.value) {
-        toast.error('Pilih pemanah terlebih dahulu')
+    if (archerMode.value === 'existing' && selectedArchers.value.length === 0) {
+        toast.error('Pilih minimal satu pemanah')
         return
     }
 
@@ -523,11 +535,21 @@ const submit = async () => {
     isSubmitting.value = true
 
     try {
-        let archerId = selectedArcher.value?.uuid || selectedArcher.value?.id
+        if (archerMode.value === 'existing') {
+            // Register multiple existing archers
+            const registrationPromises = selectedArchers.value.map(async (archer) => {
+                const payload = {
+                    athlete_id: archer.uuid || archer.id,
+                    event_category_id: form.category_id,
+                    payment_amount: form.payment_amount || 0
+                }
+                return post(`/events/${route.params.id}/participants`, payload)
+            })
 
-        // Create new archer if needed
-        if (archerMode.value === 'new') {
-            // Create global archer account
+            await Promise.all(registrationPromises)
+            toast.success(`${selectedArchers.value.length} peserta berhasil ditambahkan`)
+        } else {
+            // Create new archer and register
             const archerResponse = await post('/archers', {
                 full_name: newArcherForm.full_name,
                 username: newArcherForm.username || undefined,
@@ -543,18 +565,20 @@ const submit = async () => {
                 avatar_url: newArcherForm.avatar_url || undefined,
                 id: newArcherForm.id || undefined
             })
-            archerId = archerResponse.uuid || archerResponse.id
+
+            const archerId = archerResponse.uuid || archerResponse.id
+
+            // Register the new archer
+            const payload = {
+                athlete_id: archerId,
+                event_category_id: form.category_id,
+                payment_amount: form.payment_amount || 0
+            }
+
+            await post(`/events/${route.params.id}/participants`, payload)
+            toast.success('Peserta berhasil ditambahkan')
         }
 
-        // Register participant
-        const payload = {
-            athlete_id: archerId,
-            event_category_id: form.category_id,
-            payment_amount: form.payment_amount || 0
-        }
-
-        await post(`/events/${route.params.id}/participants`, payload)
-        toast.success('Peserta berhasil ditambahkan')
         router.push(`/dashboard/events/${route.params.id}/participants`)
     } catch (error) {
         console.error('Failed to add participant:', error)

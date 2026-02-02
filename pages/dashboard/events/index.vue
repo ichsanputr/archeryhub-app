@@ -173,7 +173,7 @@
                       <Icon icon="ph:dots-three-vertical-bold" class="text-xl" />
                     </button>
                     <div v-if="openDropdownId === event.id"
-                      class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                      class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-[9999] animate-in fade-in slide-in-from-top-2 duration-200">
                       <button @click="confirmDeleteEvent(event)"
                         class="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors">
                         <Icon icon="ph:trash" class="text-lg" />

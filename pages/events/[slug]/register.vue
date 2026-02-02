@@ -17,7 +17,7 @@
                 <h2 class="text-2xl font-black text-navy mb-3">Login Diperlukan</h2>
                 <p class="text-gray-500 mb-6">Anda perlu login sebagai atlet untuk mendaftar event ini.</p>
                 <NuxtLink :to="loginUrl"
-                    class="w-full block py-4 bg-primary hover:bg-primary-hover text-navy font-bold rounded-xl transition-colors text-center mb-3">
+                    class="w-full block py-4 bg-navy hover:bg-navy-light text-white font-bold rounded-xl transition-colors text-center mb-3">
                     Login Sekarang
                 </NuxtLink>
                 <NuxtLink :to="`/events/${slug}`" class="text-sm text-gray-400 hover:text-navy transition-colors">
@@ -65,7 +65,7 @@
                 </div>
                 <div class="flex gap-3">
                     <NuxtLink to="/dashboard/events"
-                        class="flex-1 py-3 bg-primary hover:bg-primary-hover text-navy font-bold rounded-xl transition-colors text-center">
+                        class="flex-1 py-3 bg-navy hover:bg-navy-light text-white font-bold rounded-xl transition-colors text-center">
                         Lihat Status Pendaftaran
                     </NuxtLink>
                     <NuxtLink :to="`/events/${slug}`"
@@ -78,91 +78,53 @@
 
         <!-- Main Registration Flow -->
         <template v-else>
-            <!-- Header -->
-            <div class="bg-gradient-to-br from-navy via-navy to-navy-light relative overflow-hidden py-12 sm:py-16">
+            <!-- Header with Event Background -->
+            <div class="bg-navy relative overflow-hidden h-[400px] flex items-center">
                 <div class="absolute inset-0 z-0">
-                    <div class="absolute inset-0 bg-navy/95 z-10"></div>
-                    <img v-if="event.image" :alt="event.name"
-                        class="w-full h-full object-cover opacity-20 mix-blend-overlay" :src="event.image" />
-                    <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent z-10"></div>
+                    <img :alt="event.name" class="w-full h-full object-cover object-center" :src="event.image" />
+                    <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90"></div>
                 </div>
-                <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <nav class="flex items-center gap-2 text-sm text-gray-300 mb-6">
-                        <NuxtLink to="/events" class="hover:text-white transition-colors font-medium">Events</NuxtLink>
-                        <span class="material-symbols-outlined text-base text-gray-400">chevron_right</span>
-                        <NuxtLink :to="`/events/${slug}`"
-                            class="hover:text-white transition-colors font-medium truncate max-w-[200px] sm:max-w-none">
-                            {{ event.name }}</NuxtLink>
-                        <span class="material-symbols-outlined text-base text-gray-400">chevron_right</span>
-                        <span class="text-primary font-bold">Konfirmasi Pendaftaran</span>
-                    </nav>
-                    <div class="flex items-start gap-4">
-                        <div class="flex-1">
-                            <h1 class="text-white text-3xl sm:text-4xl font-black tracking-tight mb-3">Konfirmasi
-                                Pendaftaran</h1>
-                            <p class="text-gray-300 text-base sm:text-lg">Periksa data Anda sebelum mendaftar ke event
-                                ini</p>
+                <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mt-4 md:mt-6">
+                    <!-- Breadcrumb -->
+                    <div class="mb-8">
+                        <Breadcrumbs :items="[{ label: 'Event', path: '/events' }]" :current="event.name || 'Event'"
+                            class="!text-gray-300" />
+                    </div>
+
+                    <div class="flex flex-col lg:flex-row items-end justify-between gap-8 mb-12">
+                        <div class="max-w-3xl">
+                            <h1
+                                class="text-3xl md:text-5xl font-black leading-tight tracking-tight mb-6 font-display text-white">
+                                {{ event.name }}
+                            </h1>
+                            <div class="flex flex-wrap items-center gap-2 text-white/80 text-sm sm:text-base">
+                                <div class="flex items-center gap-2">
+                                    <Icon icon="ph:calendar-blank" class="text-primary" />
+                                    <span>{{ displayValue(event.date) }}</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <Icon icon="ph:map-pin" class="text-primary" />
+                                    <span>{{ displayValue(event.location) }}</span>
+                                </div>
+                            </div>
                         </div>
-                        <NuxtLink :to="`/events/${slug}`"
-                            class="hidden sm:flex items-center gap-2 px-4 py-2.5 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-xl text-white font-bold text-sm transition-all border border-white/20">
-                            <span class="material-symbols-outlined text-lg">arrow_back</span>
-                            Kembali
-                        </NuxtLink>
                     </div>
                 </div>
             </div>
 
             <!-- Main Content -->
-            <main class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-10 -mt-6 relative z-30">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
-                    <!-- Left Column - Event & Profile Info -->
-                    <div class="lg:col-span-2 space-y-6">
-                        <!-- Event Overview Card -->
-                        <section class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
-                            <div class="p-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white">
-                                <h2 class="text-xl font-black text-navy flex items-center gap-3">
-                                    <div class="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                                        <span class="material-symbols-outlined text-primary text-xl">emoji_events</span>
-                                    </div>
-                                    Informasi Event
-                                </h2>
-                            </div>
-                            <div class="p-6 space-y-6">
-                                <div class="flex items-start gap-6">
-                                    <div v-if="event.image"
-                                        class="w-24 h-24 rounded-2xl overflow-hidden shrink-0 bg-gray-100 shadow-s border-2 border-gray-100">
-                                        <img :src="event.image" :alt="event.name" class="w-full h-full object-cover" />
-                                    </div>
-                                    <div class="flex-1 min-w-0">
-                                        <h3 class="text-2xl font-black text-navy mb-3 leading-tight">{{ event.name }}
-                                        </h3>
-                                        <div class="flex flex-wrap gap-4 text-sm">
-                                            <div class="flex items-center gap-2 text-gray-600">
-                                                <span
-                                                    class="material-symbols-outlined text-primary text-lg">calendar_month</span>
-                                                <span class="font-semibold">{{ event.date || 'TBA' }}</span>
-                                            </div>
-                                            <div class="flex items-center gap-2 text-gray-600">
-                                                <span
-                                                    class="material-symbols-outlined text-primary text-lg">location_on</span>
-                                                <span class="font-semibold">{{ event.location || 'TBA' }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div v-if="event.description" class="pt-4 border-t border-gray-100">
-                                    <p class="text-sm text-gray-700 leading-relaxed">{{ event.description }}</p>
-                                </div>
-                            </div>
-                        </section>
-
-                        <!-- Archer Profile Card -->
+            <main class="max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-10 -mt-6 relative z-30">
+                <div class="grid grid-cols-1 gap-6 sm:gap-8">
+                    <!-- Single Column Content -->
+                    <div class="space-y-6">
+                        <!-- Archer Profile Card (Data Atlet) - Moved to top -->
                         <section class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
                             <div
                                 class="p-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white flex items-center justify-between">
                                 <h2 class="text-xl font-black text-navy flex items-center gap-3">
-                                    <div class="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                                        <span class="material-symbols-outlined text-primary text-xl">person</span>
+                                    <div class="h-10 w-10 rounded-xl bg-navy/10 flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-navy text-xl">person</span>
                                     </div>
                                     Data Atlet
                                 </h2>
@@ -230,16 +192,91 @@
                             </div>
                         </section>
 
-                        <!-- Payment Proof Upload -->
+                        <!-- Event Overview Card (Informasi Event) - Moved below Data Atlet -->
+                        <section class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+                            <div class="p-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white">
+                                <h2 class="text-xl font-black text-navy flex items-center gap-3">
+                                    <div class="h-10 w-10 rounded-xl bg-navy/10 flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-navy text-xl">emoji_events</span>
+                                    </div>
+                                    Informasi Event
+                                </h2>
+                            </div>
+                            <div class="p-6 space-y-6">
+                                <div class="flex items-start gap-6">
+                                    <div v-if="event.image"
+                                        class="w-24 h-24 rounded-2xl overflow-hidden shrink-0 bg-gray-100 shadow-s border-2 border-gray-100">
+                                        <img :src="event.image" :alt="event.name" class="w-full h-full object-cover" />
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h3 class="text-2xl font-black text-navy mb-3 leading-tight">{{ event.name }}
+                                        </h3>
+                                        <div class="flex flex-wrap gap-4 text-sm">
+                                            <div class="flex items-center gap-2 text-gray-600">
+                                                <span
+                                                    class="material-symbols-outlined text-primary text-lg">calendar_month</span>
+                                                <span class="font-semibold">{{ event.date || 'TBA' }}</span>
+                                            </div>
+                                            <div class="flex items-center gap-2 text-gray-600">
+                                                <span
+                                                    class="material-symbols-outlined text-primary text-lg">location_on</span>
+                                                <span class="font-semibold">{{ event.location || 'TBA' }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-if="event.description" class="pt-4 border-t border-gray-100">
+                                    <div class="prose max-w-none text-gray-700 leading-relaxed" v-html="event.description"></div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Category Selection -->
+                        <section class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+                            <div class="p-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white">
+                                <h2 class="text-xl font-black text-navy flex items-center gap-3">
+                                    <div class="h-10 w-10 rounded-xl bg-navy/10 flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-navy text-xl">category</span>
+                                    </div>
+                                    Pilih Kategori Event
+                                </h2>
+                            </div>
+                            <div class="p-6 space-y-5">
+                                <div class="space-y-3">
+                                    <label class="text-sm font-bold text-gray-700 block">Kategori *</label>
+                                    <select v-model="form.category_id" required
+                                        class="w-full px-4 py-3.5 text-sm rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-white font-medium">
+                                        <option value="" disabled>Pilih Kategori yang Sesuai</option>
+                                        <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}
+                                        </option>
+                                    </select>
+                                    <p class="text-xs text-gray-500">Pilih kategori sesuai dengan divisi, usia, dan
+                                        jenis busur Anda</p>
+                                </div>
+                                <div v-if="categories.length === 0 && !pending"
+                                    class="p-4 bg-amber-50 border-2 border-amber-100 rounded-xl">
+                                    <div class="flex items-center gap-2">
+                                        <span
+                                            class="material-symbols-outlined text-amber-500 text-xl shrink-0">info</span>
+                                        <p class="text-sm text-amber-700 font-medium">
+                                            Kategori untuk event ini belum tersedia. Silakan hubungi penyelenggara untuk
+                                            informasi lebih lanjut.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Payment & Summary Section -->
                         <section v-if="event.registration_fee > 0"
                             class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
                             <div
                                 class="p-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white flex items-center justify-between">
                                 <h2 class="text-xl font-black text-navy flex items-center gap-3">
-                                    <div class="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                                        <span class="material-symbols-outlined text-primary text-xl">upload_file</span>
+                                    <div class="h-10 w-10 rounded-xl bg-navy/10 flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-navy text-xl">receipt_long</span>
                                     </div>
-                                    Unggah Bukti Pembayaran
+                                    Pembayaran & Ringkasan Pendaftaran
                                 </h2>
                             </div>
                             <div class="p-6">
@@ -284,7 +321,7 @@
                                     @change="handleProofUpload" />
 
                                 <div
-                                    class="flex items-center gap-3 p-4 bg-primary/5 border border-primary/20 rounded-xl">
+                                    class="flex items-center gap-3 p-4 bg-primary/5 border border-primary/20 rounded-xl mb-6">
                                     <span class="material-symbols-outlined text-primary">info</span>
                                     <p class="text-xs text-navy/70 font-medium leading-relaxed">
                                         Pastikan bukti transfer menampilkan <strong>Nominal</strong>,
@@ -292,106 +329,62 @@
                                         Format file: JPG, PNG (Maks 5MB).
                                     </p>
                                 </div>
-                            </div>
-                        </section>
 
-                        <!-- Category Selection -->
-                        <section class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
-                            <div class="p-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white">
-                                <h2 class="text-xl font-black text-navy flex items-center gap-3">
-                                    <div class="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                                        <span class="material-symbols-outlined text-primary text-xl">category</span>
+                                <!-- Payment Methods & Summary -->
+                                <div class="space-y-4">
+                                    <!-- Payment Methods -->
+                                    <div v-if="paymentMethods.length > 0" class="pt-3 border-t border-gray-200">
+                                        <p class="text-xs font-black text-gray-700 mb-3 uppercase tracking-wider">Metode
+                                            Pembayaran</p>
+                                        <div class="space-y-2.5">
+                                            <div v-for="method in paymentMethods" :key="method.uuid"
+                                                class="flex items-start gap-3 p-3 bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-100">
+                                                <div
+                                                    class="h-8 w-8 rounded-lg bg-navy/10 flex items-center justify-center shrink-0">
+                                                    <span
+                                                        class="material-symbols-outlined text-navy text-base">payments</span>
+                                                </div>
+                                                <div class="flex-1 min-w-0">
+                                                    <p class="font-bold text-navy text-sm mb-1">{{ method.payment_method }}
+                                                    </p>
+                                                    <p v-if="method.account_name" class="text-xs text-gray-600 mb-0.5">{{
+                                                        method.account_name }}</p>
+                                                    <p v-if="method.account_number"
+                                                        class="text-xs font-mono text-gray-700 bg-gray-100 px-2 py-0.5 rounded inline-block">
+                                                        {{ method.account_number }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    Pilih Kategori Event
-                                </h2>
-                            </div>
-                            <div class="p-6 space-y-5">
-                                <div class="space-y-3">
-                                    <label class="text-sm font-bold text-gray-700 block">Kategori *</label>
-                                    <select v-model="form.category_id" required
-                                        class="w-full px-4 py-3.5 text-sm rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-white font-medium">
-                                        <option value="" disabled>Pilih Kategori yang Sesuai</option>
-                                        <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}
-                                        </option>
-                                    </select>
-                                    <p class="text-xs text-gray-500">Pilih kategori sesuai dengan divisi, usia, dan
-                                        jenis busur Anda</p>
+
+                                    <div class="flex justify-between items-center pt-3 border-t-2 border-primary/20">
+                                        <span class="text-base font-black text-navy">Biaya Pendaftaran</span>
+                                        <span class="text-2xl font-black text-primary">{{ event.registration_fee ? `Rp
+                                            ${event.registration_fee.toLocaleString('id-ID')}` : 'Gratis' }}</span>
+                                    </div>
                                 </div>
-                                <div v-if="categories.length === 0 && !pending"
-                                    class="p-4 bg-amber-50 border-2 border-amber-100 rounded-xl">
+
+                                <button @click="handleSubmit" :disabled="loading || !isFormValid"
+                                    class="w-full py-4 bg-navy hover:bg-navy-light text-white font-black text-base rounded-xl transition-all shadow-s hover:shadow-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed mt-6">
+                                    <span v-if="loading" class="material-symbols-outlined animate-spin text-xl">sync</span>
+                                    <span v-else class="material-symbols-outlined text-xl">how_to_reg</span>
+                                    Daftar Sekarang
+                                </button>
+
+                                <p v-if="error" class="text-center text-sm text-red-500 mt-3 font-medium">{{ error }}</p>
+
+                                <div class="mt-6 p-4 bg-blue-50 border border-blue-100 rounded-xl">
                                     <div class="flex items-start gap-3">
-                                        <span
-                                            class="material-symbols-outlined text-amber-500 text-xl shrink-0">info</span>
-                                        <p class="text-sm text-amber-700 font-medium">
-                                            Kategori untuk event ini belum tersedia. Silakan hubungi penyelenggara untuk
-                                            informasi lebih lanjut.
+                                        <span class="material-symbols-outlined text-blue-500 text-lg shrink-0">info</span>
+                                        <p class="text-xs text-gray-600 leading-relaxed font-medium">
+                                            Setelah mendaftar, Anda akan menerima konfirmasi dari penyelenggara. Pastikan
+                                            data Anda sudah benar sebelum melanjutkan.
                                         </p>
                                     </div>
                                 </div>
                             </div>
                         </section>
                     </div>
-
-                    <!-- Right Column - Summary & Submit -->
-                    <aside class="space-y-6">
-                        <div class="bg-white rounded-2xl p-6 shadow-s border-2 border-gray-200 lg:sticky lg:top-6">
-                            <h3 class="text-xl font-black text-navy mb-5 flex items-center gap-2">
-                                <span class="material-symbols-outlined text-primary text-xl">receipt_long</span>
-                                Ringkasan Pendaftaran
-                            </h3>
-                            <div class="space-y-4 mb-6">
-                                <!-- Payment Methods -->
-                                <div v-if="paymentMethods.length > 0" class="pt-3 border-t border-gray-200">
-                                    <p class="text-xs font-black text-gray-700 mb-3 uppercase tracking-wider">Metode
-                                        Pembayaran</p>
-                                    <div class="space-y-2.5">
-                                        <div v-for="method in paymentMethods" :key="method.uuid"
-                                            class="flex items-start gap-3 p-3 bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-100">
-                                            <div
-                                                class="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                                                <span
-                                                    class="material-symbols-outlined text-primary text-base">payments</span>
-                                            </div>
-                                            <div class="flex-1 min-w-0">
-                                                <p class="font-bold text-navy text-sm mb-1">{{ method.payment_method }}
-                                                </p>
-                                                <p v-if="method.account_name" class="text-xs text-gray-600 mb-0.5">{{
-                                                    method.account_name }}</p>
-                                                <p v-if="method.account_number"
-                                                    class="text-xs font-mono text-gray-700 bg-gray-100 px-2 py-0.5 rounded inline-block">
-                                                    {{ method.account_number }}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="flex justify-between items-center pt-3 border-t-2 border-primary/20">
-                                    <span class="text-base font-black text-navy">Biaya Pendaftaran</span>
-                                    <span class="text-2xl font-black text-primary">{{ event.registration_fee ? `Rp
-                                        ${event.registration_fee.toLocaleString('id-ID')}` : 'Gratis' }}</span>
-                                </div>
-                            </div>
-
-                            <button @click="handleSubmit" :disabled="loading || !isFormValid"
-                                class="w-full py-4 bg-primary hover:bg-primary-hover text-navy font-black text-base rounded-xl transition-all shadow-s hover:shadow-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
-                                <span v-if="loading" class="material-symbols-outlined animate-spin text-xl">sync</span>
-                                <span v-else class="material-symbols-outlined text-xl">how_to_reg</span>
-                                Daftar Sekarang
-                            </button>
-
-                            <p v-if="error" class="text-center text-sm text-red-500 mt-3 font-medium">{{ error }}</p>
-
-                            <div class="mt-6 p-4 bg-blue-50 border border-blue-100 rounded-xl">
-                                <div class="flex items-start gap-3">
-                                    <span class="material-symbols-outlined text-blue-500 text-lg shrink-0">info</span>
-                                    <p class="text-xs text-gray-600 leading-relaxed font-medium">
-                                        Setelah mendaftar, Anda akan menerima konfirmasi dari penyelenggara. Pastikan
-                                        data Anda sudah benar sebelum melanjutkan.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </aside>
                 </div>
             </main>
         </template>
@@ -399,19 +392,25 @@
 </template>
 
 <script setup>
+definePageMeta({
+  layout: 'blank'
+})
 import { useAuth } from '~/composables/useAuth'
 import { useApi } from '~/composables/useApi'
 import { useImageOrDefault } from '~/composables/useImageHelper'
-
-definePageMeta({
-    layout: 'landing'
-})
+import Breadcrumbs from '~/components/common/Breadcrumbs.vue'
+import { Icon } from '@iconify/vue'
 
 const route = useRoute()
 const router = useRouter()
 const slug = route.params.slug
 
 const { user, isLoggedIn } = useAuth()
+
+// Helper function to display values with fallbacks
+const displayValue = (value) => {
+    return value || 'TBA'
+}
 
 // Auth checks
 const isArcher = computed(() => user.value?.type === 'archer' || user.value?.role === 'archer')

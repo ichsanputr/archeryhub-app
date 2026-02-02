@@ -11,6 +11,18 @@
         <Icon icon="ph:list" class="text-2xl" />
       </div>
 
+      <!-- Mobile Organization Branding (Only on dashboard for orgs/clubs) -->
+      <div v-if="isDashboard && (user?.role === 'organization' || user?.role === 'club') && !isEventManageMode"
+        class="lg:hidden flex items-center gap-2 mx-auto">
+        <div class="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center bg-white shadow-sm">
+          <img :src="useImageOrDefault(user.logo_url || user.avatar_url, user?.name || user?.full_name || 'Org')"
+            :alt="user?.name || user?.full_name || 'Organization'" class="w-full h-full object-cover" />
+        </div>
+        <span class="text-sm font-black text-navy truncate max-w-[120px]">
+          {{ getFirstWord(user?.full_name || user?.name || 'Dashboard') }}
+        </span>
+      </div>
+
       <!-- Main Navigation (Visible only on Landing/Home context) -->
       <nav v-if="transparent || !isDashboard" class="hidden lg:flex items-center gap-6 xl:gap-8 ml-4">
         <NuxtLink to="/"
@@ -249,5 +261,10 @@ const getImageUrl = (url) => {
   // Backend now provides full URLs, so just return as-is
   if (!url) return ''
   return url
+}
+
+const getFirstWord = (text) => {
+  if (!text) return ''
+  return text.split(' ')[0]
 }
 </script>

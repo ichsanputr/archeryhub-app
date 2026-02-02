@@ -181,11 +181,11 @@
 
         <!-- Action Buttons -->
         <div
-          class="flex flex-col-reverse md:flex-row items-center justify-end gap-3 pt-8 border-t border-gray-100 mt-4">
-          <BaseButton to="/dashboard/events" variant="ghost" class="px-8">
+          class="flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-3 pt-8 border-t border-gray-100 mt-4">
+          <BaseButton to="/dashboard/events" variant="ghost" class="px-8 whitespace-nowrap">
             Batal
           </BaseButton>
-          <BaseButton type="submit" variant="primary" :loading="isSubmitting" class="px-10">
+          <BaseButton type="submit" variant="primary" :loading="isSubmitting" class="px-10 whitespace-nowrap">
             Buat event
           </BaseButton>
         </div>
