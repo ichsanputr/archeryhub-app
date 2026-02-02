@@ -31,7 +31,7 @@
                             <div>
                                 <span class="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-1">{{
                                     formatTimeRange(session) }}</span>
-                                <h3 class="text-xl font-black text-navy">{{ session.title }}</h3>
+                                <h3 class="text-lg sm:text-xl font-black text-navy">{{ session.title }}</h3>
                             </div>
                         </div>
                         <p v-if="session.description" class="text-sm text-gray-600 mb-4">

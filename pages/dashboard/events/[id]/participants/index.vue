@@ -22,50 +22,52 @@
 
         <!-- Stats Cards -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div
-                class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+            <template v-if="isLoading">
+                <div v-for="i in 4" :key="i"
+                    class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
+                    <div class="size-10 bg-gray-50 animate-pulse rounded-lg"></div>
+                    <div class="space-y-2">
+                        <div class="h-2 w-16 bg-gray-100 animate-pulse rounded"></div>
+                        <div class="h-6 w-10 bg-gray-100 animate-pulse rounded"></div>
+                    </div>
+                </div>
+            </template>
+            <template v-else>
                 <div
-                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-                    <Icon icon="ph:users-three" class="text-2xl" />
+                    class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                    <div
+                        class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+                        <Icon icon="ph:users-three" class="text-2xl" />
+                    </div>
+                    <div>
+                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Total Peserta</p>
+                        <p class="text-xl font-black text-navy">{{ total }}</p>
+                    </div>
                 </div>
-                <div>
-                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Total Peserta</p>
-                    <p class="text-xl font-black text-navy">{{ total }}</p>
-                </div>
-            </div>
-            <div
-                class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+
                 <div
-                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-                    <Icon icon="ph:check-circle" class="text-2xl" />
+                    class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                    <div
+                        class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+                        <Icon icon="ph:clock" class="text-2xl" />
+                    </div>
+                    <div>
+                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Pending</p>
+                        <p class="text-xl font-black text-navy">{{ pendingCount }}</p>
+                    </div>
                 </div>
-                <div>
-                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Terverifikasi</p>
-                    <p class="text-xl font-black text-navy">{{ verifiedCount }}</p>
-                </div>
-            </div>
-            <div
-                class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
                 <div
-                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-                    <Icon icon="ph:clock" class="text-2xl" />
+                    class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                    <div
+                        class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+                        <Icon icon="ph:buildings" class="text-2xl" />
+                    </div>
+                    <div>
+                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Klub</p>
+                        <p class="text-xl font-black text-navy">{{ uniqueClubs }}</p>
+                    </div>
                 </div>
-                <div>
-                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Pending</p>
-                    <p class="text-xl font-black text-navy">{{ pendingCount }}</p>
-                </div>
-            </div>
-            <div
-                class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div
-                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-                    <Icon icon="ph:buildings" class="text-2xl" />
-                </div>
-                <div>
-                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Klub</p>
-                    <p class="text-xl font-black text-navy">{{ uniqueClubs }}</p>
-                </div>
-            </div>
+            </template>
         </div>
 
 
@@ -85,23 +87,44 @@
                     </thead>
                     <tbody class="divide-y divide-gray-50">
                         <!-- Loading State -->
-                        <tr v-if="isLoading">
-                            <td colspan="6" class="px-6 py-12">
-                                <div class="flex flex-col items-center justify-center gap-4">
-                                    <div
-                                        class="h-10 w-10 border-4 border-primary border-t-transparent animate-spin rounded-full">
+                        <template v-if="isLoading">
+                            <tr v-for="i in 5" :key="i">
+                                <td class="px-6 py-4">
+                                    <div class="h-4 w-4 bg-gray-100 animate-pulse rounded"></div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="h-10 w-10 bg-gray-100 animate-pulse rounded-full"></div>
+                                        <div class="space-y-2">
+                                            <div class="h-4 w-32 bg-gray-100 animate-pulse rounded"></div>
+                                            <div class="h-3 w-40 bg-gray-50 animate-pulse rounded"></div>
+                                        </div>
                                     </div>
-                                    <p class="text-xs text-gray-500 font-medium">Memuat data peserta...</p>
-                                </div>
-                            </td>
-                        </tr>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="h-4 w-24 bg-gray-100 animate-pulse rounded"></div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="h-4 w-48 bg-gray-100 animate-pulse rounded"></div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="h-6 w-20 bg-gray-100 animate-pulse rounded-full"></div>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <div class="flex justify-end gap-2">
+                                        <div class="size-8 bg-gray-50 animate-pulse rounded-lg"></div>
+                                        <div class="size-8 bg-gray-50 animate-pulse rounded-lg"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
 
                         <template v-else>
                             <tr v-for="(participant, index) in filteredParticipants" :key="participant.id"
                                 class="group hover:bg-gray-50/50 transition-colors">
                                 <td class="px-6 py-4">
                                     <span class="text-sm font-bold text-gray-400">{{ (page - 1) * limit + index + 1
-                                        }}</span>
+                                    }}</span>
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-3">
@@ -111,25 +134,20 @@
                                                 class="w-full h-full object-cover">
                                         </div>
                                         <div>
-                                            <div class="flex items-center gap-2">
-                                                <p class="font-black text-navy tracking-tight">{{ participant.full_name
+                                            <div class="flex items-center gap-1.5 min-w-0">
+                                                <p class="text-sm font-bold text-navy truncate">{{ participant.full_name
                                                     }}
                                                 </p>
-                                                <span v-if="participant.archer_id"
-                                                    class="inline-flex items-center gap-0.5 px-1.5 py-0.5 bg-blue-50 text-blue-600 rounded-md text-[9px] font-black uppercase tracking-wider border border-blue-100">
-                                                    <Icon icon="ph:seal-check-fill" />
-                                                    Verified
-                                                </span>
                                             </div>
                                             <div class="flex items-center gap-2">
                                                 <p class="text-xs text-gray-500 font-medium">{{ participant.email || '-'
-                                                    }}</p>
+                                                }}</p>
                                             </div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 text-gray-500 font-medium text-xs">{{ participant.club_name || '-'
-                                    }}
+                                }}
                                 </td>
                                 <td class="px-6 py-4">
                                     <p class="text-navy font-bold text-sm">{{ getCategoryName(participant) }}</p>

@@ -162,10 +162,11 @@
                                             class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm">
                                             <Icon icon="ph:user-bold" class="text-2xl text-navy" />
                                         </div>
-                                        <span class="font-bold text-navy">Individu</span>
+                                        <span class="font-bold text-navy">Semua Kategori</span>
                                     </div>
-                                    <div class="text-3xl font-black text-navy mb-1">IDR {{ (tournament.entry_fee ||
-                                        0).toLocaleString('id-ID') }}</div>
+                                    <div class="text-xl sm:text-3xl font-black text-navy mb-1">IDR {{
+                                        (tournament.entry_fee ||
+                                            0).toLocaleString('id-ID') }}</div>
                                     <p class="text-xs text-gray-500 font-medium">Per peserta per divisi</p>
                                 </div>
                             </div>
@@ -192,7 +193,7 @@
                                     <div class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Juara 1
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{ displayValue(tournament.prizes?.first)
-                                        }}</div>
+                                    }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ firstPrizeCaption }}</div>
                                 </div>
                                 <div
@@ -210,7 +211,7 @@
                                     <div class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Juara 3
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{ displayValue(tournament.prizes?.third)
-                                        }}</div>
+                                    }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ thirdPrizeCaption }}</div>
                                 </div>
                             </div>

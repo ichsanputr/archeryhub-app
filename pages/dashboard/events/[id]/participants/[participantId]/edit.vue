@@ -82,33 +82,8 @@
                         Informasi Profil Peserta
                     </h2>
                     <div class="space-y-6">
-                        <!-- If Event Archer, show editable fields -->
-                        <template v-if="participant.event_archer_id">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <BaseInput v-model="form.event_archer.full_name" label="Nama Lengkap" required
-                                    placeholder="Nama Sesuai KTP" icon="ph:user-focus" />
-
-                                <BaseInput v-model="form.event_archer.email" label="Email" type="email"
-                                    placeholder="email@example.com" icon="ph:envelope" />
-
-                                <BaseInput v-model="form.event_archer.phone" label="No. WhatsApp" placeholder="0812..."
-                                    icon="ph:whatsapp-logo" />
-
-                                <BaseSelect v-model="form.event_archer.club_id" label="Klub / Sekolah"
-                                    placeholder="Pilih Klub" icon="ph:buildings" :items="clubs" item-title="name"
-                                    item-value="uuid" />
-
-                                <BaseInput v-model="form.event_archer.city" label="Kota / Kabupaten"
-                                    placeholder="Asal Kota" icon="ph:map-pin" />
-
-                                <BaseSelect v-model="form.event_archer.gender" label="Jenis Kelamin"
-                                    :items="[{ title: 'Laki-laki', value: 'male' }, { title: 'Perempuan', value: 'female' }]"
-                                    icon="ph:gender-intersex" />
-                            </div>
-                        </template>
-
-                        <!-- If Global Archer, show read-only info -->
-                        <div v-else class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <!-- Participant Profile Info (Read-only for now) -->
+                        <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
                             <div
                                 class="h-16 w-16 rounded-xl bg-gray-100 flex items-center justify-center text-navy font-bold text-xl uppercase border border-gray-200 overflow-hidden">
                                 <img :src="useImageOrDefault(participant.avatar_url, participant.full_name)"
@@ -119,12 +94,10 @@
                                 <div class="flex items-center gap-2 mt-1">
                                     <span class="text-xs text-gray-500 font-medium">@{{ participant.username ||
                                         'user' }}</span>
-                                    <span v-if="participant.archer_id"
-                                        class="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-full text-[10px] font-bold uppercase tracking-wider">Akun
-                                        Terverifikasi</span>
-                                    <span v-else
-                                        class="px-2 py-0.5 bg-gray-100 text-gray-500 rounded-full text-[10px] font-bold uppercase tracking-wider">Guest
-                                        Registrant</span>
+                                    <span
+                                        class="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                                        Archeryhub Account
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -287,18 +260,7 @@ const form = reactive({
     category_id: '',
     status: 'Menunggu Acc',
     payment_amount: 0,
-    payment_proof_urls: [],
-    // Event Archer details
-    event_archer: {
-        full_name: '',
-        email: '',
-        phone: '',
-        city: '',
-        school: '',
-        club_id: '',
-        bow_type: '',
-        gender: ''
-    }
+    payment_proof_urls: []
 })
 
 const fetchParticipant = async () => {
@@ -315,28 +277,6 @@ const fetchParticipant = async () => {
             form.status = found.status || 'Menunggu Acc'
             form.payment_amount = found.payment_amount || 0
             form.payment_proof_urls = found.payment_proof_urls ? found.payment_proof_urls.split(',') : []
-
-            // If event_archer_id exists, fetch archer details
-            if (found.event_archer_id) {
-                try {
-                    const archersRes = await get(`/events/${eventId}/event-archers`)
-                    const archerData = archersRes.data?.find(a => a.id === found.event_archer_id)
-                    if (archerData) {
-                        form.event_archer = {
-                            full_name: archerData.full_name || '',
-                            email: archerData.email || '',
-                            phone: archerData.phone || '',
-                            city: archerData.city || '',
-                            school: archerData.school || '',
-                            club_id: archerData.club_id || '',
-                            bow_type: archerData.bow_type || '',
-                            gender: archerData.gender || ''
-                        }
-                    }
-                } catch (e) {
-                    console.error('Failed to fetch event archer details', e)
-                }
-            }
         }
 
         // Fetch event details and categories
@@ -397,22 +337,6 @@ const handleSubmit = async () => {
             status: form.status,
             payment_amount: form.payment_amount || 0,
             payment_proof_urls: form.payment_proof_urls
-        }
-
-        // If it's an event archer, update its profile first
-        if (participant.value?.event_archer_id) {
-            // Sanitize payload: convert empty strings to null to avoid validation errors
-            const archerPayload = { ...form.event_archer }
-            Object.keys(archerPayload).forEach(key => {
-                if (archerPayload[key] === '') {
-                    archerPayload[key] = null
-                }
-            })
-
-            await put(`/events/${eventId}/event-archers/${participant.value.event_archer_id}`, {
-                ...archerPayload,
-                status: 'active'
-            })
         }
 
         // Use stable UUID if available, otherwise fallback to route param

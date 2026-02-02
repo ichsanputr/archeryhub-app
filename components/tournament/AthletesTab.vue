@@ -150,7 +150,7 @@ const filteredAthletes = computed(() => {
     }
 
     return result.map(p => ({
-        id: p.id || p.archer_id || p.event_archer_id,
+        id: p.id || p.archer_id,
         username: p.username || null,
         name: p.full_name || 'Archery Athlete',
         club: p.club_name || 'Independent',

@@ -2,26 +2,9 @@
     <div class="space-y-6">
         <!-- Manual Results / Files -->
         <div v-if="results && results.length > 0" class="space-y-10">
-            <section class="relative overflow-hidden">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
-                    <div>
-                        <h2 class="text-2xl md:text-3xl font-black text-navy flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-2xl bg-navy/5 flex items-center justify-center shrink-0">
-                                <Icon icon="iconoir:leaderboard" class="text-2xl text-navy" />
-                            </div>
-                            Hasil & Dokumen Lomba
-                        </h2>
-                        <p class="text-sm md:text-base text-gray-500 mt-2 font-medium max-w-xl leading-relaxed">
-                            Unduh dokumen resmi, pengumuman pemenang, dan sertifikat yang telah diterbitkan oleh
-                            panitia.
-                        </p>
-                    </div>
-                </div>
-            </section>
-
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
                 <div v-for="(file, index) in results" :key="index"
-                    class="group bg-white rounded-3xl overflow-hidden border border-gray-100 hover:border-gray-200 hover:shadow-xl transition-all duration-500 flex flex-col h-full">
+                    class="group bg-white rounded-3xl overflow-hidden border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all duration-500 flex flex-col h-full">
 
                     <!-- Preview Area -->
                     <div

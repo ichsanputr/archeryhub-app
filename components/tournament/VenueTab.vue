@@ -12,21 +12,20 @@
             </div>
             <div class="p-6 md:p-8 flex flex-col md:flex-row gap-8 justify-between items-start">
                 <div class="flex-grow space-y-4">
-                    <h2 class="text-2xl font-bold text-navy">{{ venue }}</h2>
-                    <div class="flex items-start gap-2 text-gray-600">
-                        <span class="material-symbols-outlined text-primary shrink-0">location_on</span>
-                        <p>{{ address }}</p>
-                    </div>
-                    <div class="flex flex-wrap gap-4 pt-2">
-                        <div
-                            class="flex items-center gap-2 text-sm text-gray-500 bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100">
-                            <span class="material-symbols-outlined text-sm">directions_car</span>
-                            Terjangkau Mobil/Motor
+                    <div class="flex items-center gap-2">
+                        <div>
+                            <Icon icon="ph:map-pin" class="text-2xl text-primary" />
                         </div>
-                        <div
+                        <h2 class="text-xl sm:text-2xl font-bold text-navy">{{ venue }}</h2>
+                    </div>
+                    <div class="flex items-start gap-2 text-gray-600">
+                        <div class="text-sm sm:text-base">{{ address }}</div>
+                    </div>
+                    <div v-if="accessibility && accessibility.length > 0" class="flex flex-wrap gap-4 pt-2">
+                        <div v-for="option in accessibility" :key="option"
                             class="flex items-center gap-2 text-sm text-gray-500 bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100">
-                            <span class="material-symbols-outlined text-sm">train</span>
-                            Dekat MRT/TransJakarta
+                            <span class="material-symbols-outlined text-sm">{{ getAccessibilityIcon(option) }}</span>
+                            {{ option }}
                         </div>
                     </div>
                 </div>
@@ -40,7 +39,11 @@ const props = defineProps({
     venue: String,
     address: String,
     gmapsEmbed: String, // Optional direct embed URL
-    gmapsLink: String   // Optional direct link
+    gmapsLink: String,  // Optional direct link
+    accessibility: {
+        type: Array,
+        default: () => []
+    }
 })
 
 // Google Maps embed URL
@@ -65,6 +68,21 @@ const gmapsEmbedUrl = computed(() => {
         return `https://www.google.com/maps?q=${encodeURIComponent(searchQuery)}&output=embed`
     }
 })
+
+const getAccessibilityIcon = (option) => {
+    const icons = {
+        'Terjangkau Mobil/Motor': 'directions_car',
+        'Akses Transportasi Umum': 'train',
+        'Parkir Luas': 'local_parking',
+        'Fasilitas Toilet': 'wc',
+        'Area Makan': 'restaurant',
+        'Tempat Duduk': 'chair',
+        'Akses Disabilitas': 'accessible',
+        'Area Parkir Motor': 'moped',
+        'Area Parkir Mobil': 'directions_car'
+    }
+    return icons[option] || 'info'
+}
 
 const facilities = [
     { name: 'Musholla', icon: 'mosque' },

@@ -91,30 +91,12 @@
                             </div>
                         </div>
 
-                        <!-- New Archer Form -->
+                        <!-- New Archer Form Info -->
                         <div v-if="archerMode === 'new'"
                             class="space-y-4 border border-gray-100 rounded-xl p-4 bg-gray-50/50">
-                            <!-- Choose archer type -->
-                            <div class="flex flex-col gap-2">
-                                <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">Tipe Pemanah Baru
-                                </p>
-                                <div class="flex flex-col sm:flex-row gap-3">
-                                    <label
-                                        class="flex-1 inline-flex items-center gap-3 px-4 py-3 rounded-xl border-2 text-sm font-bold cursor-pointer transition-all"
-                                        :class="newArcherType === 'account' ? 'border-navy bg-navy text-white shadow-md' : 'border-gray-100 bg-white text-gray-500 hover:border-gray-200'">
-                                        <input type="radio" v-model="newArcherType" value="account" class="sr-only" />
-                                        <Icon icon="ph:user-circle-bold" class="text-xl" />
-                                        <span>Buat Akun Archeryhub (bisa login)</span>
-                                    </label>
-                                    <label
-                                        class="flex-1 inline-flex items-center gap-3 px-4 py-3 rounded-xl border-2 text-sm font-bold cursor-pointer transition-all"
-                                        :class="newArcherType === 'event_only' ? 'border-navy bg-navy text-white shadow-md' : 'border-gray-100 bg-white text-gray-500 hover:border-gray-200'">
-                                        <input type="radio" v-model="newArcherType" value="event_only"
-                                            class="sr-only" />
-                                        <Icon icon="ph:target-bold" class="text-xl" />
-                                        <span>Pemanah Khusus Event Ini Saja</span>
-                                    </label>
-                                </div>
+                            <div class="flex items-center gap-3 text-navy font-bold">
+                                <Icon icon="ph:info-bold" class="text-xl text-primary" />
+                                <span>Pemanah baru akan dibuat sebagai akun Archeryhub global.</span>
                             </div>
                         </div>
 
@@ -151,8 +133,7 @@
                             <BaseInput v-model="newArcherForm.full_name" label="Nama Lengkap"
                                 placeholder="Nama sesuai identitas" required @input="generateUsername" />
                             <BaseInput v-model="newArcherForm.email" label="Email" type="email"
-                                :placeholder="newArcherType === 'account' ? 'email@example.com (wajib)' : 'email@example.com (opsional)'"
-                                :required="newArcherType === 'account'" />
+                                placeholder="email@example.com (opsional)" />
                             <BaseInput v-model="newArcherForm.phone" label="No. Telepon" type="tel"
                                 placeholder="08xxxxxxxxxx" />
                             <BaseInput v-model="newArcherForm.date_of_birth" label="Tanggal Lahir" type="date" />
@@ -290,9 +271,6 @@ const newArcherForm = reactive({
     address: '',
     avatar_url: ''
 })
-
-// account (global archer) or event_only (event_archers)
-const newArcherType = ref('account')
 
 const genderOptions = [
     { title: 'Pilih Jenis Kelamin', value: '' },
@@ -433,11 +411,7 @@ const validateNewArcherForm = () => {
         return false
     }
 
-    // Email is required for global account
-    if (newArcherType.value === 'account' && !newArcherForm.email?.trim()) {
-        toast.error('Email wajib diisi untuk pembuatan akun Archeryhub')
-        return false
-    }
+
 
     if (newArcherForm.email && newArcherForm.email.trim()) {
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -476,54 +450,31 @@ const submit = async () => {
 
     try {
         let archerId = selectedArcher.value?.uuid || selectedArcher.value?.id
-        let eventArcherId = null
 
         // Create new archer if needed
         if (archerMode.value === 'new') {
-            if (newArcherType.value === 'account') {
-                // Create global archer account
-                const archerResponse = await post('/archers', {
-                    full_name: newArcherForm.full_name,
-                    username: newArcherForm.username || undefined,
-                    email: newArcherForm.email || undefined,
-                    phone: newArcherForm.phone || undefined,
-                    date_of_birth: newArcherForm.date_of_birth || undefined,
-                    gender: newArcherForm.gender || undefined,
-                    bow_type: newArcherForm.bow_type || undefined,
-                    city: newArcherForm.city || undefined,
-                    school: newArcherForm.school || undefined,
-                    club_id: newArcherForm.club_id || undefined,
-                    address: newArcherForm.address || undefined,
-                    avatar_url: newArcherForm.avatar_url || undefined,
-                    id: newArcherForm.id || undefined
-                })
-                archerId = archerResponse.uuid || archerResponse.id
-                eventArcherId = null
-            } else {
-                // Create event-only archer (no global account)
-                const eventArcherResponse = await post(`/events/${route.params.id}/event-archers`, {
-                    full_name: newArcherForm.full_name,
-                    username: newArcherForm.username || undefined,
-                    email: newArcherForm.email || undefined,
-                    phone: newArcherForm.phone || undefined,
-                    date_of_birth: newArcherForm.date_of_birth || undefined,
-                    gender: newArcherForm.gender || undefined,
-                    bow_type: newArcherForm.bow_type || undefined,
-                    city: newArcherForm.city || undefined,
-                    school: newArcherForm.school || undefined,
-                    club_id: newArcherForm.club_id || undefined,
-                    address: newArcherForm.address || undefined,
-                    avatar_url: newArcherForm.avatar_url || undefined
-                })
-                eventArcherId = eventArcherResponse.id || eventArcherResponse.uuid
-                archerId = null
-            }
+            // Create global archer account
+            const archerResponse = await post('/archers', {
+                full_name: newArcherForm.full_name,
+                username: newArcherForm.username || undefined,
+                email: newArcherForm.email || undefined,
+                phone: newArcherForm.phone || undefined,
+                date_of_birth: newArcherForm.date_of_birth || undefined,
+                gender: newArcherForm.gender || undefined,
+                bow_type: newArcherForm.bow_type || undefined,
+                city: newArcherForm.city || undefined,
+                school: newArcherForm.school || undefined,
+                club_id: newArcherForm.club_id || undefined,
+                address: newArcherForm.address || undefined,
+                avatar_url: newArcherForm.avatar_url || undefined,
+                id: newArcherForm.id || undefined
+            })
+            archerId = archerResponse.uuid || archerResponse.id
         }
 
         // Register participant
         const payload = {
             athlete_id: archerId,
-            event_archer_id: eventArcherId,
             event_category_id: form.category_id,
             payment_amount: form.payment_amount || 0
         }

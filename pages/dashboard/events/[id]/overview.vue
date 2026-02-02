@@ -25,21 +25,28 @@
 
                         <!-- Title Section -->
                         <div class="flex-1">
-                            <div class="flex items-center gap-3 mb-2">
-                                <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight">
-                                    {{ isLoading ? 'Memuat...' : event?.name || 'Ringkasan Event' }}
-                                </h1>
+                            <div v-if="isLoading" class="space-y-3">
+                                <div class="h-8 w-64 bg-white/10 animate-pulse rounded-lg"></div>
+                                <div class="h-4 w-48 bg-white/5 animate-pulse rounded"></div>
+                                <div class="h-4 w-24 bg-white/5 animate-pulse rounded"></div>
                             </div>
-                            <p v-if="event" class="text-slate-300 text-sm mb-2">
-                                {{ event.venue || 'Lokasi Event' }} • {{ event.location || 'Alamat' }}
-                            </p>
-                            <div class="flex flex-wrap items-center gap-4">
-                                <div
-                                    class="flex items-center gap-2 text-slate-300 text-xs font-bold uppercase tracking-wider">
-                                    <Icon icon="ph:hash-bold" class="text-primary text-sm" />
-                                    <span>{{ event?.code }}</span>
+                            <template v-else>
+                                <div class="flex items-center gap-3 mb-2">
+                                    <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight">
+                                        {{ event?.name || 'Ringkasan Event' }}
+                                    </h1>
                                 </div>
-                            </div>
+                                <p v-if="event" class="text-slate-300 text-sm mb-2">
+                                    {{ event.venue || 'Lokasi Event' }} • {{ event.location || 'Alamat' }}
+                                </p>
+                                <div class="flex flex-wrap items-center gap-4">
+                                    <div
+                                        class="flex items-center gap-2 text-slate-300 text-xs font-bold uppercase tracking-wider">
+                                        <Icon icon="ph:hash-bold" class="text-primary text-sm" />
+                                        <span>{{ event?.code }}</span>
+                                    </div>
+                                </div>
+                            </template>
                         </div>
                     </div>
 
@@ -57,13 +64,66 @@
         <!-- Main Content (Overview) -->
 
         <!-- Loading State -->
-        <div v-if="isLoading">
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                <div class="lg:col-span-1 space-y-8">
-                    <div class="h-32 bg-gray-50 animate-pulse rounded-2xl"></div>
-                    <div class="h-32 bg-gray-50 animate-pulse rounded-2xl"></div>
+        <div v-if="isLoading" class="space-y-8">
+            <!-- Stats Grid Skeleton -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div v-for="i in 4" :key="i" class="bg-white rounded-xl p-5 h-32 border border-gray-100 shadow-sm flex flex-col justify-between">
+                    <div class="flex justify-between items-start">
+                        <div class="space-y-2">
+                            <div class="h-3 w-20 bg-gray-100 animate-pulse rounded"></div>
+                            <div class="h-8 w-12 bg-gray-100 animate-pulse rounded-lg"></div>
+                        </div>
+                        <div class="size-10 bg-gray-50 animate-pulse rounded-lg"></div>
+                    </div>
+                    <div class="h-3 w-24 bg-gray-50 animate-pulse rounded mt-auto"></div>
                 </div>
-                <div class="lg:col-span-3 h-96 bg-gray-50 animate-pulse rounded-2xl"></div>
+            </div>
+
+            <!-- Main Content Grid Skeleton -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Analytics Skeleton -->
+                <div class="lg:col-span-2 bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                    <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
+                        <div class="h-6 w-40 bg-gray-100 animate-pulse rounded"></div>
+                        <div class="h-4 w-20 bg-gray-50 animate-pulse rounded"></div>
+                    </div>
+                    <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8 bg-gray-50/10">
+                        <div class="space-y-5">
+                            <div class="h-3 w-24 bg-gray-100 animate-pulse rounded mb-6"></div>
+                            <div v-for="i in 5" :key="i" class="space-y-2">
+                                <div class="flex justify-between">
+                                    <div class="h-4 w-32 bg-gray-100 animate-pulse rounded"></div>
+                                    <div class="h-4 w-8 bg-gray-50 animate-pulse rounded"></div>
+                                </div>
+                                <div class="h-1.5 w-full bg-gray-100 animate-pulse rounded-full"></div>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="h-3 w-32 bg-gray-100 animate-pulse rounded mb-6"></div>
+                            <div v-for="i in 3" :key="i" class="h-20 bg-white border border-gray-50 rounded-xl animate-pulse"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Leaderboard Skeleton -->
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                    <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
+                        <div class="h-6 w-32 bg-gray-100 animate-pulse rounded"></div>
+                        <div class="h-4 w-16 bg-gray-50 animate-pulse rounded"></div>
+                    </div>
+                    <div class="p-0">
+                        <div v-for="i in 5" :key="i" class="border-b border-gray-50 p-4 px-6 flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <div class="size-6 bg-gray-100 animate-pulse rounded"></div>
+                                <div class="space-y-2">
+                                    <div class="h-4 w-32 bg-gray-100 animate-pulse rounded"></div>
+                                    <div class="h-3 w-20 bg-gray-50 animate-pulse rounded"></div>
+                                </div>
+                            </div>
+                            <div class="h-6 w-10 bg-gray-100 animate-pulse rounded"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
