@@ -21,19 +21,20 @@
                     </div>
 
                     <!-- Info -->
-                    <div class="flex-1">
-                        <div class="flex flex-wrap items-start justify-between gap-4">
+                    <div class="flex-1 min-w-0">
+                        <div class="flex flex-col gap-4">
                             <div>
-                                <div class="flex flex-wrap items-center gap-3 mb-3">
-                                    <h1 class="text-2xl md:text-4xl font-black text-navy leading-tight">{{
+                                <div class="flex flex-wrap items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+                                    <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-navy leading-tight">{{
                                         archer.full_name }}
                                     </h1>
                                     <span v-if="archer.id"
-                                        class="px-3 py-1.5 bg-primary/10 text-primary text-[10px] md:text-xs font-black rounded-full uppercase tracking-wider">
+                                        class="px-2.5 py-1 sm:px-3 sm:py-1.5 bg-primary/10 text-primary text-[10px] sm:text-xs font-black rounded-full uppercase tracking-wider shrink-0">
                                         {{ archer.id }}
                                     </span>
                                 </div>
-                                <div class="flex flex-wrap items-center gap-4 text-gray-500 text-sm font-medium">
+                                <div
+                                    class="flex flex-wrap items-center gap-3 sm:gap-4 text-gray-500 text-xs sm:text-sm font-medium">
                                     <span v-if="archer.city" class="flex items-center gap-1.5">
                                         <Icon icon="ph:map-pin-fill" class="text-primary" />
                                         {{ archer.city }}{{ archer.province ? ', ' + archer.province : '' }}
@@ -50,10 +51,10 @@
                             </div>
 
                             <!-- Actions -->
-                            <div class="flex gap-3">
+                            <div class="flex gap-2 sm:gap-3">
                                 <button @click="openShareDialog"
-                                    class="p-3 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all">
-                                    <Icon icon="ph:share-network-bold" class="text-xl text-gray-600" />
+                                    class="p-2.5 sm:p-3 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all">
+                                    <Icon icon="ph:share-network-bold" class="text-lg sm:text-xl text-gray-600" />
                                 </button>
                             </div>
                         </div>
@@ -127,18 +128,15 @@
                         </h2>
                         <div v-if="eventHistory.length > 0" class="space-y-4">
                             <div v-for="event in eventHistory" :key="event.id"
-                                class="flex items-center gap-5 p-5 bg-gradient-to-r from-gray-50 to-white rounded-xl border border-gray-100 hover:border-primary/30 transition-all">
+                                class="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5 p-5 bg-gradient-to-r from-gray-50 to-white rounded-xl border border-gray-100 hover:border-primary/30 transition-all">
                                 <div
-                                    class="w-14 h-14 rounded-xl bg-navy flex items-center justify-center text-primary shrink-0">
-                                    <Icon icon="ph:trophy-fill" class="text-2xl" />
+                                    class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-navy flex items-center justify-center text-primary shrink-0">
+                                    <Icon icon="ph:trophy-fill" class="text-xl sm:text-2xl" />
                                 </div>
                                 <div class="flex-1 min-w-0">
-                                    <h4 class="font-black text-navy text-lg mb-1">{{ event.name }}</h4>
-                                    <p class="text-gray-500 text-sm">{{ event.city }} • {{ formatDate(event.date) }}</p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-2xl font-black text-navy">{{ event.score || '-' }}</p>
-                                    <p class="text-xs text-gray-400">Score</p>
+                                    <h4 class="font-black text-navy text-base sm:text-lg mb-1">{{ event.name }}</h4>
+                                    <p class="text-gray-500 text-xs sm:text-sm">{{ event.city }} • {{
+                                        formatDate(event.date) }}</p>
                                 </div>
                             </div>
                         </div>

@@ -120,13 +120,14 @@ const currentPage = ref(1)
 const limit = 12
 
 const categories = computed(() => {
-    const categorySet = new Set(['Semua'])
+    const categorySet = new Set()
     props.participants.forEach(p => {
         if (p.division_name && p.gender_division_name) {
             categorySet.add(`${p.division_name} ${p.gender_division_name}`)
         }
     })
-    return Array.from(categorySet).sort()
+    const sorted = Array.from(categorySet).sort()
+    return ['Semua', ...sorted]
 })
 
 const filteredAthletes = computed(() => {
