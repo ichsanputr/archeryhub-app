@@ -282,6 +282,8 @@ const transformEventData = (event) => {
         location: event.venue || event.location || 'Lokasi TBA',
         status: event.status || 'upcoming',
         category: event.location_type || event.category || null,
+        organizer: event.organizer_name || event.organizer || 'Penyelenggara',
+        organizer_logo: useImageOrDefault(event.organizer_avatar_url || event.organizer_logo || null),
         image: useImageOrDefault(event.logo_url || event.banner_url)
     }
 }

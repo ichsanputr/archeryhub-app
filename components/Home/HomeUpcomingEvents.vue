@@ -42,11 +42,21 @@
                                 class="text-navy text-sm sm:text-lg font-bold group-hover:text-primary transition-colors font-display line-clamp-1">
                                 {{ event.name }}
                             </h3>
-                            <div class="flex items-center gap-2 mt-0.5 sm:mt-1 text-[10px] sm:text-sm text-text-sub">
-                                <div class="flex items-center gap-1">
+                            <div class="flex flex-wrap items-center gap-3 mt-1.5 min-w-0">
+                                <div
+                                    class="flex items-center gap-1.5 text-[10px] sm:text-xs text-text-sub font-medium min-w-0">
+                                    <Icon icon="ph:map-pin-bold" class="text-primary flex-shrink-0" />
+                                    <span class="truncate">{{ event.location }}</span>
+                                </div>
+
+                                <div class="hidden sm:block w-1 h-1 rounded-full bg-gray-300"></div>
+
+                                <div class="flex items-center gap-1.5 min-w-0">
+                                    <img :src="event.organizer_logo" :alt="event.organizer"
+                                        class="w-4 h-4 sm:w-5 sm:h-5 rounded-full object-cover border border-gray-100 flex-shrink-0 bg-gray-50">
                                     <span
-                                        class="material-symbols-outlined text-sm sm:text-base text-primary/60">location_on</span>
-                                    <span class="truncate">{{ event.location || event.city }}</span>
+                                        class="text-[10px] sm:text-xs text-text-sub truncate font-medium max-w-[120px]">{{
+                                            event.organizer }}</span>
                                 </div>
                             </div>
                         </div>
@@ -98,7 +108,20 @@ const { data: eventsData, pending: loading } = await useAsyncData(
     })
 )
 
-const events = computed(() => eventsData.value?.events || [])
+const transformEvent = (event) => ({
+    uuid: event.uuid || event.id,
+    slug: event.slug || event.uuid || event.id,
+    name: event.name,
+    start_date: event.start_date,
+    location: event.venue || event.location || event.city,
+    organizer: event.organizer_name || 'Penyelenggara',
+    organizer_logo: useImageOrDefault(event.organizer_avatar_url || null)
+})
+
+const events = computed(() => {
+    const rawEvents = eventsData.value?.events || []
+    return rawEvents.map(transformEvent)
+})
 </script>
 
 <style scoped>
