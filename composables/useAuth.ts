@@ -117,22 +117,6 @@ export const useAuth = () => {
         credentials: 'include' as const
       }
 
-      // If user state is not populated (e.g. client side refresh), try to fetch generic user info
-      // using the /user/ endpoint which acts as a session check
-      if (!user.value) {
-        try {
-          const response = await $fetch<AuthUser | { data?: AuthUser }>(`${baseUrl}/user/`, fetchOptions)
-          const userData = (response as { data?: AuthUser }).data ?? (response as AuthUser)
-          if (userData && (userData.id ?? userData.uuid)) {
-            user.value = userData
-          }
-        } catch (e) {
-          // Token invalid or expired
-          user.value = null
-          return
-        }
-      }
-
       if (user.value) {
         const userType = user.value.user_type ?? user.value.type ?? user.value.role
 
