@@ -207,8 +207,14 @@ const handleDownload = async (file, index) => {
         const link = document.createElement('a')
         link.href = url
 
-        // Use the title or original filename
-        const downloadName = (file.name || filename).replace(/[/\\?%*:|"<>]/g, '-')
+        // Use the title or original filename, but ensure extension is preserved
+        let downloadName = (file.name || filename).replace(/[/\\?%*:|"<>]/g, '-')
+        const parts = filename.split('.')
+        const ext = parts.length > 1 ? parts.pop() : ''
+        
+        if (ext && !downloadName.toLowerCase().endsWith(`.${ext.toLowerCase()}`)) {
+            downloadName += `.${ext}`
+        }
         link.setAttribute('download', downloadName)
 
         document.body.appendChild(link)
