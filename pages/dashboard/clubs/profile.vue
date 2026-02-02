@@ -393,7 +393,7 @@ useHead({
 
 const router = useRouter()
 const { get, put, upload } = useApi()
-const { user, clubProfile, fetchUser } = useAuth()
+const { user, clubProfile } = useAuth()
 const toast = useToast()
 
 const saving = ref(false)
@@ -538,11 +538,7 @@ const removeSocialMedia = (index) => {
 
 const loadProfile = async () => {
   try {
-    // Check global state first
-    if (!clubProfile.value) {
-      await fetchUser()
-    }
-
+    // Use clubProfile (already loaded by server middleware)
     const data = clubProfile.value
     if (data) {
       form.name = data.name || ''

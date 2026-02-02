@@ -309,7 +309,7 @@ definePageMeta({
   layout: 'dashboard'
 })
 
-const { user, archerProfile, fetchUser } = useAuth()
+const { user, archerProfile } = useAuth()
 const { get, put } = useApi()
 const toast = useToast()
 
@@ -455,11 +455,7 @@ const updateSectionVisibility = (sectionType, isVisible) => {
 onMounted(async () => {
   initializeSections()
 
-  // Use global archerProfile if available, otherwise fetch it
-  if (!archerProfile.value) {
-    await fetchUser()
-  }
-
+  // Use global archerProfile (already loaded by server middleware)
   if (archerProfile.value) {
     const data = archerProfile.value
     profile.value.bio = data.bio || ''
@@ -502,8 +498,7 @@ const saveProfile = async () => {
       social_links: profile.value.socialLinks
     })
     toast.success('Profil publik berhasil diperbarui')
-    // Refresh global profile states
-    await fetchUser()
+    // Profile will be refreshed on next page load from server middleware
   } catch (error) {
     toast.error(error.message || 'Gagal menyimpan profil')
   } finally {

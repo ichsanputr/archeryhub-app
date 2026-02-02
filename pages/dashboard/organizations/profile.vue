@@ -316,7 +316,7 @@ definePageMeta({
 
 const router = useRouter()
 const { get, put } = useApi()
-const { user, organizationProfile, fetchUser } = useAuth()
+const { user, organizationProfile } = useAuth()
 const toast = useToast()
 
 const saving = ref(false)
@@ -454,10 +454,7 @@ const removeFAQ = (index) => {
 
 const loadProfile = async () => {
   try {
-    if (!organizationProfile.value) {
-      await fetchUser()
-    }
-
+    // Use organizationProfile (already loaded by server middleware)
     const org = organizationProfile.value
 
     if (org && (org.id || org.uuid)) {

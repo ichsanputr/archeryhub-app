@@ -228,7 +228,7 @@ definePageMeta({
     layout: 'dashboard'
 })
 
-const { user, fetchUser } = useAuth()
+const { user } = useAuth()
 const { put, get } = useApi()
 const toast = useToast()
 const isSaving = ref(false)
@@ -353,7 +353,7 @@ const saveStore = async () => {
         ])
 
         toast.success('Profil toko berhasil diperbarui!')
-        await fetchUser() // Refresh global user state
+        // Profile will be refreshed on next page load from server middleware
     } catch (error) {
         toast.error(error.message || 'Gagal menyimpan profil toko')
     } finally {

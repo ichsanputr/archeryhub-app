@@ -26,7 +26,7 @@ function getPath(url: string): string {
     return url?.split('?')[0] || '/'
 }
 
-export default defineEventHandler((event: H3Event) => {
+export default defineEventHandler(async (event: H3Event) => {
 
     const url = event.node.req.url || '/'
 

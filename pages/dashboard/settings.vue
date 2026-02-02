@@ -209,7 +209,7 @@ useHead({
   title: 'Pengaturan Akun - ArcheryHub Dashboard'
 })
 
-const { user, fetchUser } = useAuth()
+const { user } = useAuth()
 const { get, put } = useApi()
 const toast = useToast()
 
@@ -282,8 +282,8 @@ const saveSettings = async () => {
     await put('/user/profile', {
       username: accountForm.value.username
     })
-    await fetchUser()
     toast.success('Pengaturan berhasil disimpan')
+    // Profile will be refreshed on next page load from server middleware
   } catch (error) {
     console.error('Failed to save settings:', error)
     const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || 'Gagal menyimpan pengaturan'

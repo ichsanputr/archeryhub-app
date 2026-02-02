@@ -111,7 +111,8 @@ export const useAuth = () => {
       credentials: 'include'
     })
     if (response.user) {
-      await fetchUser() // Fetch detailed profile after login
+      user.value = response.user
+      await fetchProfileSSR()
     }
     return response
   }
@@ -125,7 +126,8 @@ export const useAuth = () => {
       credentials: 'include'
     })
     if (response.user) {
-      await fetchUser() // Fetch detailed profile after register
+      user.value = response.user
+      await fetchProfileSSR()
     }
     return response
   }
@@ -148,21 +150,22 @@ export const useAuth = () => {
     }
   }
 
-  const fetchUser = async (headers?: any): Promise<void> => {
+  const fetchProfileSSR = async (): Promise<void> => {
+    if (import.meta.server) {
+      return // Profile is already loaded by server middleware
+    }
+
     try {
       isUserLoading.value = true
       const baseUrl = config.public.apiBaseUrl as string
       const fetchOptions = {
-        headers: { ...headers },
         credentials: 'include' as const
       }
 
       if (user.value) {
         const userType = user.value.user_type ?? user.value.type ?? user.value.role
 
-        // Step 2: Populate detailed profile states
-        // Since server middleware might have already fetched the full profile and merged it into user.value,
-        // we can copy it from there.
+        // Populate detailed profile states on client-side only
         if (userType === 'archer') {
           if (user.value.bio || user.value.date_of_birth) {
             archerProfile.value = { ...user.value }
@@ -209,14 +212,15 @@ export const useAuth = () => {
       credentials: 'include'
     })
     if (response.user) {
-      await fetchUser()
+      user.value = response.user
+      await fetchProfileSSR()
     }
     return response
   }
 
   const initializeAuth = async (): Promise<void> => {
     if (import.meta.client && !user.value) {
-      await fetchUser()
+      await fetchProfileSSR()
     }
   }
 
@@ -232,7 +236,7 @@ export const useAuth = () => {
     loginWithEmail,
     register,
     logout,
-    fetchUser,
+    fetchProfileSSR,
     handleCallback,
     initializeAuth
   }
