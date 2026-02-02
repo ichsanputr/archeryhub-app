@@ -8,50 +8,15 @@
             </div>
         </div>
 
-        <!-- Auth Guard - Not logged in -->
-        <div v-else-if="!isLoggedIn" class="min-h-screen flex items-center justify-center px-4">
-            <div class="bg-white rounded-2xl p-8 shadow-s border border-gray-100 max-w-md w-full text-center">
-                <div class="h-16 w-16 mx-auto bg-navy/5 rounded-2xl flex items-center justify-center mb-6">
-                    <span class="material-symbols-outlined text-3xl text-navy">login</span>
-                </div>
-                <h2 class="text-2xl font-black text-navy mb-3">Login Diperlukan</h2>
-                <p class="text-gray-500 mb-6">Anda perlu login sebagai atlet untuk mendaftar event ini.</p>
-                <NuxtLink :to="loginUrl"
-                    class="w-full block py-4 bg-navy hover:bg-navy-light text-white font-bold rounded-xl transition-colors text-center mb-3">
-                    Login Sekarang
-                </NuxtLink>
-                <NuxtLink :to="`/events/${slug}`" class="text-sm text-gray-400 hover:text-navy transition-colors">
-                    ← Kembali ke Detail Event
-                </NuxtLink>
-            </div>
-        </div>
-
-        <!-- Auth Guard - Not an archer -->
-        <div v-else-if="!isArcher" class="min-h-screen flex items-center justify-center px-4">
-            <div class="bg-white rounded-2xl p-8 shadow-s border border-gray-100 max-w-md w-full text-center">
-                <div class="h-16 w-16 mx-auto bg-amber-50 rounded-2xl flex items-center justify-center mb-6">
-                    <span class="material-symbols-outlined text-3xl text-amber-500">warning</span>
-                </div>
-                <h2 class="text-2xl font-black text-navy mb-3">Akun Atlet Diperlukan</h2>
-                <p class="text-gray-500 mb-6">Anda perlu terdaftar sebagai atlet untuk mendaftar event ini.</p>
-                <NuxtLink to="/auth/register?type=archer"
-                    class="w-full block py-4 bg-navy hover:bg-navy-light text-white font-bold rounded-xl transition-colors text-center mb-3">
-                    Daftar sebagai Atlet
-                </NuxtLink>
-                <NuxtLink :to="`/events/${slug}`" class="text-sm text-gray-400 hover:text-navy transition-colors">
-                    ← Kembali ke Detail Event
-                </NuxtLink>
-            </div>
-        </div>
-
-        <!-- Registration Success State -->
+        <!-- Registration Success State (Maintain separate for clarity) -->
         <div v-else-if="registrationSuccess" class="min-h-screen flex items-center justify-center px-4">
-            <div class="bg-white rounded-2xl p-8 shadow-s border border-gray-100 max-w-lg w-full text-center">
-                <div class="h-20 w-20 mx-auto bg-green-50 rounded-full flex items-center justify-center mb-6">
-                    <span class="material-symbols-outlined text-4xl text-green-500">check_circle</span>
+            <div class="bg-white rounded-2xl p-6 md:p-8 border border-gray-100 max-w-lg w-full text-left">
+                <div class="h-16 w-16 bg-green-50 rounded-full flex items-center justify-center mb-6">
+                    <span class="material-symbols-outlined text-3xl text-green-500">check_circle</span>
                 </div>
-                <h2 class="text-2xl font-black text-navy mb-3">Pendaftaran Berhasil!</h2>
-                <p class="text-gray-500 mb-6">Pendaftaran Anda telah diterima dan sedang menunggu konfirmasi dari
+                <h2 class="text-xl font-black text-navy mb-3">Pendaftaran Berhasil!</h2>
+                <p class="text-xs text-gray-500 mb-6">Pendaftaran Anda telah diterima dan sedang menunggu konfirmasi
+                    dari
                     penyelenggara.</p>
                 <div class="bg-amber-50 border border-amber-100 rounded-xl p-4 mb-6">
                     <div class="flex items-start gap-3">
@@ -63,40 +28,34 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex gap-3">
-                    <NuxtLink to="/dashboard/events"
-                        class="flex-1 py-3 bg-navy hover:bg-navy-light text-white font-bold rounded-xl transition-colors text-center">
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <BaseButton to="/dashboard/events" variant="navy" size="md" block class="flex-1">
                         Lihat Status Pendaftaran
-                    </NuxtLink>
-                    <NuxtLink :to="`/events/${slug}`"
-                        class="flex-1 py-3 bg-gray-100 hover:bg-gray-200 text-navy font-bold rounded-xl transition-colors text-center">
+                    </BaseButton>
+                    <BaseButton :to="`/events/${slug}`" variant="white" size="md" block class="flex-1">
                         Kembali
-                    </NuxtLink>
+                    </BaseButton>
                 </div>
             </div>
         </div>
 
         <!-- Main Registration Flow -->
         <template v-else>
-            <!-- Header with Event Background -->
-            <div class="bg-navy relative overflow-hidden h-[400px] flex items-center">
+            <!-- Hero Header (Verbatim sync from index.vue) -->
+            <div class="bg-navy relative overflow-hidden h-[280px] md:h-[400px] flex items-center">
                 <div class="absolute inset-0 z-0">
-                    <img :alt="event.name" class="w-full h-full object-cover object-center" :src="event.image" />
+                    <img :alt="event.name" class="w-full h-full object-cover object-center"
+                        src="/hero-event-detail.jpeg" />
                     <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
-                    <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90"></div>
-                </div>
-                <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mt-4 md:mt-6">
-                    <!-- Breadcrumb -->
-                    <div class="mb-8">
-                        <Breadcrumbs :items="[{ label: 'Event', path: '/events' }]" :current="event.name || 'Event'"
-                            class="!text-gray-300" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90">
                     </div>
-
+                </div>
+                <div class="relative z-20 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-2 md:mt-6">
                     <div class="flex flex-col lg:flex-row items-end justify-between gap-8 mb-12">
                         <div class="max-w-3xl">
                             <h1
-                                class="text-3xl md:text-5xl font-black leading-tight tracking-tight mb-6 font-display text-white">
-                                {{ event.name }}
+                                class="text-xl md:text-2xl font-black leading-tight tracking-tight mb-4 md:mb-6 font-display text-white">
+                                Registrasi {{ event.name }}
                             </h1>
                             <div class="flex flex-wrap items-center gap-2 text-white/80 text-sm sm:text-base">
                                 <div class="flex items-center gap-2">
@@ -118,115 +77,174 @@
                 <div class="grid grid-cols-1 gap-6 sm:gap-8">
                     <!-- Single Column Content -->
                     <div class="space-y-6">
-                        <!-- Archer Profile Card (Data Atlet) - Moved to top -->
+                        <!-- Archer Profile Card (Data Atlet) -->
                         <section class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
                             <div
                                 class="p-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white flex items-center justify-between">
-                                <h2 class="text-xl font-black text-navy flex items-center gap-3">
-                                    <div class="h-10 w-10 rounded-xl bg-navy/10 flex items-center justify-center">
-                                        <span class="material-symbols-outlined text-navy text-xl">person</span>
+                                <h2 class="text-lg font-black text-navy flex items-center gap-3">
+                                    <div
+                                        class="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-navy shadow-sm">
+                                        <span class="material-symbols-outlined text-lg">person</span>
                                     </div>
                                     Data Atlet
                                 </h2>
-                                <NuxtLink to="/dashboard/archer/profile"
-                                    class="text-sm text-primary font-bold hover:text-primary-hover transition-colors flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-primary/5">
-                                    <span class="material-symbols-outlined text-base">edit</span>
+                                <BaseButton v-if="isLoggedIn && isArcher" to="/dashboard/archer/profile" variant="white"
+                                    size="sm" icon="edit">
                                     Edit Profil
-                                </NuxtLink>
+                                </BaseButton>
                             </div>
                             <div class="p-6">
-                                <div class="flex items-center gap-5 mb-6 pb-6 border-b border-gray-100">
-                                    <div
-                                        class="h-20 w-20 rounded-2xl bg-gradient-to-br from-navy to-navy-light flex items-center justify-center text-primary font-black text-2xl shrink-0 overflow-hidden border-2 border-white shadow-lg">
-                                        <img :src="useImageOrDefault(archerProfile?.avatar_url, archerProfile?.full_name || user.name)"
-                                            :alt="archerProfile?.full_name || user.name"
-                                            class="w-full h-full object-cover" />
+                                <!-- Not logged in state -->
+                                <div v-if="!isLoggedIn"
+                                    class="py-10 px-5 md:px-6 bg-gradient-to-b from-gray-50 to-white rounded-3xl border border-gray-100 flex flex-col items-center text-center">
+                                    <div class="relative mb-5">
+                                        <div class="absolute inset-0 bg-primary/20 blur-2xl rounded-full"></div>
+                                        <div
+                                            class="relative h-12 w-12 md:h-16 md:w-16 bg-primary rounded-xl md:rounded-2xl flex items-center justify-center shadow-xl shadow-primary/20 transform rotate-6 hover:rotate-0 transition-all duration-500">
+                                            <span
+                                                class="material-symbols-outlined text-2xl md:text-3xl text-navy">account_circle</span>
+                                        </div>
                                     </div>
-                                    <div class="flex-1 min-w-0">
-                                        <h3 class="text-xl font-black text-navy mb-1">{{ archerProfile?.full_name ||
-                                            user.name }}</h3>
-                                        <p class="text-sm text-gray-500 mb-1">{{ archerProfile?.email || user.email }}
-                                        </p>
-                                        <p v-if="archerProfile?.id"
-                                            class="text-xs text-primary font-bold bg-primary/10 px-2 py-0.5 rounded-md inline-block">
-                                            {{ archerProfile.id }}</p>
-                                    </div>
+                                    <h3 class="text-base md:text-lg font-black text-navy mb-2">Login Diperlukan
+                                    </h3>
+                                    <p
+                                        class="text-gray-500 mb-6 max-w-sm leading-relaxed text-[10px] md:text-sm mx-auto">
+                                        Hanya satu langkah lagi! Silakan login sebagai atlet untuk mendaftar event seru
+                                        ini.</p>
+                                    <BaseButton :to="loginUrl" variant="navy" size="md" icon="login">
+                                        Login Sekarang
+                                    </BaseButton>
                                 </div>
-                                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                                    <div
-                                        class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100">
-                                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">
-                                            Jenis Kelamin</p>
-                                        <p class="text-sm font-bold text-navy">{{ archerProfile?.gender === 'male' ?
-                                            'Pria' : archerProfile?.gender === 'female' ? 'Wanita' : '-' }}</p>
+
+                                <!-- Not an archer state -->
+                                <div v-else-if="!isArcher"
+                                    class="py-10 px-5 md:px-6 bg-gradient-to-b from-gray-50 to-white rounded-3xl border border-gray-100 flex flex-col items-center text-center">
+                                    <div class="relative mb-5">
+                                        <div class="absolute inset-0 bg-primary/20 blur-2xl rounded-full"></div>
+                                        <div
+                                            class="relative h-12 w-12 md:h-16 md:w-16 bg-primary rounded-xl md:rounded-2xl flex items-center justify-center shadow-xl shadow-primary/20 transform -rotate-6 hover:rotate-0 transition-all duration-500">
+                                            <span
+                                                class="material-symbols-outlined text-2xl md:text-3xl text-navy">person_add</span>
+                                        </div>
                                     </div>
-                                    <div
-                                        class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100">
-                                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">
-                                            Jenis Busur</p>
-                                        <p class="text-sm font-bold text-navy capitalize">{{ archerProfile?.bow_type ||
-                                            '-' }}</p>
+                                    <h3 class="text-base md:text-lg font-black text-navy mb-2">Akun Atlet
+                                        Diperlukan</h3>
+                                    <p
+                                        class="text-gray-500 mb-6 max-w-sm leading-relaxed text-[10px] md:text-sm mx-auto">
+                                        Pendaftaran ini khusus untuk profil atlet. Silakan daftar sebagai atlet untuk
+                                        melanjutkan.</p>
+                                    <BaseButton to="/auth/register?type=archer" variant="navy" size="md"
+                                        icon="how_to_reg">
+                                        Daftar Sekarang
+                                    </BaseButton>
+                                </div>
+
+                                <!-- Logged in and Archer state -->
+                                <div v-else>
+                                    <div class="flex items-center gap-5 mb-6 pb-6 border-b border-gray-100">
+                                        <div
+                                            class="h-16 w-16 md:h-16 md:w-16 rounded-2xl bg-gradient-to-br from-navy to-navy-light flex items-center justify-center text-primary font-black text-xl shrink-0 overflow-hidden border-2 border-white">
+                                            <img :src="useImageOrDefault(archerProfile?.avatar_url, archerProfile?.full_name || user.name)"
+                                                :alt="archerProfile?.full_name || user.name"
+                                                class="w-full h-full object-cover" />
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <h3 class="text-lg font-black text-navy mb-1">{{ archerProfile?.full_name ||
+                                                user.name }}</h3>
+                                            <p class="text-sm text-gray-500 mb-1">{{ archerProfile?.email || user.email
+                                            }}
+                                            </p>
+                                            <p v-if="archerProfile?.id"
+                                                class="text-xs text-navy font-bold bg-gray-100 px-2 py-0.5 rounded-md inline-block">
+                                                {{ archerProfile.id }}</p>
+                                        </div>
                                     </div>
-                                    <div
-                                        class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100">
-                                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">
-                                            Pengalaman</p>
-                                        <p class="text-sm font-bold text-navy">{{ archerProfile?.experience_years || 0
+                                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                                        <div
+                                            class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100">
+                                            <p
+                                                class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">
+                                                Jenis Kelamin</p>
+                                            <p class="text-sm font-bold text-navy">{{ archerProfile?.gender === 'male' ?
+                                                'Pria' : archerProfile?.gender === 'female' ? 'Wanita' : '-' }}</p>
+                                        </div>
+                                        <div
+                                            class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100">
+                                            <p
+                                                class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">
+                                                Jenis Busur</p>
+                                            <p class="text-sm font-bold text-navy capitalize">{{ archerProfile?.bow_type
+                                                ||
+                                                '-' }}</p>
+                                        </div>
+                                        <div
+                                            class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100">
+                                            <p
+                                                class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">
+                                                Pengalaman</p>
+                                            <p class="text-sm font-bold text-navy">{{ archerProfile?.experience_years ||
+                                                0
                                             }} Tahun</p>
-                                    </div>
-                                    <div
-                                        class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100 col-span-2">
-                                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">
-                                            Klub</p>
-                                        <p class="text-sm font-bold text-navy truncate">{{ archerProfile?.club_name ||
-                                            'Belum terdaftar' }}</p>
-                                    </div>
-                                    <div v-if="archerProfile?.city"
-                                        class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100 col-span-2 sm:col-span-3">
-                                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">
-                                            Kota/Provinsi</p>
-                                        <p class="text-sm font-bold text-navy">{{ archerProfile.city }}{{
-                                            archerProfile.province ? ', ' + archerProfile.province : '' }}</p>
+                                        </div>
+                                        <div
+                                            class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100 col-span-2">
+                                            <p
+                                                class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">
+                                                Klub</p>
+                                            <p class="text-sm font-bold text-navy truncate">{{ archerProfile?.club_name
+                                                ||
+                                                'Belum terdaftar' }}</p>
+                                        </div>
+                                        <div v-if="archerProfile?.city"
+                                            class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100 col-span-2 sm:col-span-3">
+                                            <p
+                                                class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">
+                                                Kota/Provinsi</p>
+                                            <p class="text-sm font-bold text-navy">{{ archerProfile.city }}{{
+                                                archerProfile.province ? ', ' + archerProfile.province : '' }}</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </section>
 
-                        <!-- Event Overview Card (Informasi Event) - Moved below Data Atlet -->
+                        <!-- Event Overview Card (Informasi Event) -->
                         <section class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
                             <div class="p-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white">
-                                <h2 class="text-xl font-black text-navy flex items-center gap-3">
-                                    <div class="h-10 w-10 rounded-xl bg-navy/10 flex items-center justify-center">
-                                        <span class="material-symbols-outlined text-navy text-xl">emoji_events</span>
+                                <h2 class="text-lg font-black text-navy flex items-center gap-3">
+                                    <div
+                                        class="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-navy shadow-sm">
+                                        <span class="material-symbols-outlined text-lg">emoji_events</span>
                                     </div>
                                     Informasi Event
                                 </h2>
                             </div>
                             <div class="p-6 space-y-6">
-                                <div class="flex items-start gap-6">
+                                <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6">
                                     <div v-if="event.image"
-                                        class="w-24 h-24 rounded-2xl overflow-hidden shrink-0 bg-gray-100 shadow-s border-2 border-gray-100">
+                                        class="w-full sm:w-32 h-48 sm:h-32 rounded-2xl overflow-hidden shrink-0 bg-gray-100 border-2 border-gray-100">
                                         <img :src="event.image" :alt="event.name" class="w-full h-full object-cover" />
                                     </div>
-                                    <div class="flex-1 min-w-0">
-                                        <h3 class="text-2xl font-black text-navy mb-3 leading-tight">{{ event.name }}
+                                    <div class="flex-1 min-w-0 text-left">
+                                        <h3 class="text-xl font-black text-navy mb-3 leading-tight">{{ event.name }}
                                         </h3>
-                                        <div class="flex flex-wrap gap-4 text-sm">
+                                        <div class="flex flex-wrap justify-start gap-4 text-sm">
                                             <div class="flex items-center gap-2 text-gray-600">
                                                 <span
-                                                    class="material-symbols-outlined text-primary text-lg">calendar_month</span>
-                                                <span class="font-semibold">{{ event.date || 'TBA' }}</span>
+                                                    class="material-symbols-outlined text-navy text-lg">calendar_month</span>
+                                                <span class="font-bold">{{ event.date || 'TBA' }}</span>
                                             </div>
                                             <div class="flex items-center gap-2 text-gray-600">
                                                 <span
-                                                    class="material-symbols-outlined text-primary text-lg">location_on</span>
-                                                <span class="font-semibold">{{ event.location || 'TBA' }}</span>
+                                                    class="material-symbols-outlined text-navy text-lg">location_on</span>
+                                                <span class="font-bold">{{ event.location || 'TBA' }}</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div v-if="event.description" class="pt-4 border-t border-gray-100">
-                                    <div class="prose max-w-none text-gray-700 leading-relaxed" v-html="event.description"></div>
+                                <div v-if="event.description" class="pt-6 border-t border-gray-100">
+                                    <div class="prose max-w-none text-gray-700 leading-relaxed text-sm md:text-base"
+                                        v-html="event.description"></div>
                                 </div>
                             </div>
                         </section>
@@ -234,9 +252,10 @@
                         <!-- Category Selection -->
                         <section class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
                             <div class="p-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white">
-                                <h2 class="text-xl font-black text-navy flex items-center gap-3">
-                                    <div class="h-10 w-10 rounded-xl bg-navy/10 flex items-center justify-center">
-                                        <span class="material-symbols-outlined text-navy text-xl">category</span>
+                                <h2 class="text-lg font-black text-navy flex items-center gap-3">
+                                    <div
+                                        class="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-navy shadow-sm">
+                                        <span class="material-symbols-outlined text-lg">category</span>
                                     </div>
                                     Pilih Kategori Event
                                 </h2>
@@ -245,7 +264,7 @@
                                 <div class="space-y-3">
                                     <label class="text-sm font-bold text-gray-700 block">Kategori *</label>
                                     <select v-model="form.category_id" required
-                                        class="w-full px-4 py-3.5 text-sm rounded-xl border-2 border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all bg-white font-medium">
+                                        class="w-full px-4 py-3.5 text-sm rounded-xl border-2 border-gray-200 focus:border-navy focus:ring-2 focus:ring-navy/5 outline-none transition-all bg-white font-medium">
                                         <option value="" disabled>Pilih Kategori yang Sesuai</option>
                                         <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}
                                         </option>
@@ -254,7 +273,7 @@
                                         jenis busur Anda</p>
                                 </div>
                                 <div v-if="categories.length === 0 && !pending"
-                                    class="p-4 bg-amber-50 border-2 border-amber-100 rounded-xl">
+                                    class="p-4 bg-amber-50 border border-amber-100 rounded-xl">
                                     <div class="flex items-center gap-2">
                                         <span
                                             class="material-symbols-outlined text-amber-500 text-xl shrink-0">info</span>
@@ -272,11 +291,12 @@
                             class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
                             <div
                                 class="p-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white flex items-center justify-between">
-                                <h2 class="text-xl font-black text-navy flex items-center gap-3">
-                                    <div class="h-10 w-10 rounded-xl bg-navy/10 flex items-center justify-center">
-                                        <span class="material-symbols-outlined text-navy text-xl">receipt_long</span>
+                                <h2 class="text-lg font-black text-navy flex items-center gap-3">
+                                    <div
+                                        class="h-9 w-9 rounded-xl bg-primary flex items-center justify-center text-navy shadow-sm">
+                                        <span class="material-symbols-outlined text-lg">receipt_long</span>
                                     </div>
-                                    Pembayaran & Ringkasan Pendaftaran
+                                    Pembayaran & Ringkasan
                                 </h2>
                             </div>
                             <div class="p-6">
@@ -287,29 +307,25 @@
                                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-6">
                                     <!-- Previews -->
                                     <div v-for="(img, idx) in paymentPreviews" :key="idx"
-                                        class="relative aspect-square rounded-2xl overflow-hidden border-2 border-gray-100 group shadow-sm">
+                                        class="relative aspect-square rounded-2xl overflow-hidden border-2 border-gray-100 group">
                                         <img :src="img.url" class="w-full h-full object-cover" />
                                         <div
                                             class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <button @click="removeProof(idx)"
-                                                class="p-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition-colors shadow-lg">
-                                                <span class="material-symbols-outlined text-base">delete</span>
-                                            </button>
+                                            <BaseButton @click="removeProof(idx)" variant="danger" size="sm"
+                                                icon="delete" />
                                         </div>
                                         <div v-if="img.uploading"
                                             class="absolute inset-0 bg-white/80 flex items-center justify-center">
-                                            <span
-                                                class="material-symbols-outlined animate-spin text-primary">sync</span>
+                                            <span class="material-symbols-outlined animate-spin text-navy">sync</span>
                                         </div>
                                     </div>
 
                                     <!-- Add Button -->
                                     <button @click="triggerProofUpload"
-                                        class="aspect-square rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50 hover:border-primary hover:bg-primary/5 transition-all flex flex-col items-center justify-center gap-2 group cursor-pointer">
+                                        class="aspect-square rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50 hover:border-navy hover:bg-navy/5 transition-all flex flex-col items-center justify-center gap-2 group cursor-pointer">
                                         <div
-                                            class="h-10 w-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-                                            <span
-                                                class="material-symbols-outlined text-2xl text-primary">add_a_photo</span>
+                                            class="h-10 w-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform text-navy">
+                                            <span class="material-symbols-outlined text-2xl">add_a_photo</span>
                                         </div>
                                         <span
                                             class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Tambah
@@ -321,11 +337,11 @@
                                     @change="handleProofUpload" />
 
                                 <div
-                                    class="flex items-center gap-3 p-4 bg-primary/5 border border-primary/20 rounded-xl mb-6">
-                                    <span class="material-symbols-outlined text-primary">info</span>
+                                    class="flex items-center gap-3 p-4 bg-gray-50 border border-gray-100 rounded-xl mb-6">
+                                    <span class="material-symbols-outlined text-navy">info</span>
                                     <p class="text-xs text-navy/70 font-medium leading-relaxed">
                                         Pastikan bukti transfer menampilkan <strong>Nominal</strong>,
-                                        <strong>Tanggal</strong>, and <strong>Nama Pengirim</strong> dengan jelas.
+                                        <strong>Tanggal</strong>, dan <strong>Nama Pengirim</strong> dengan jelas.
                                         Format file: JPG, PNG (Maks 5MB).
                                     </p>
                                 </div>
@@ -336,49 +352,48 @@
                                     <div v-if="paymentMethods.length > 0" class="pt-3 border-t border-gray-200">
                                         <p class="text-xs font-black text-gray-700 mb-3 uppercase tracking-wider">Metode
                                             Pembayaran</p>
-                                        <div class="space-y-2.5">
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                             <div v-for="method in paymentMethods" :key="method.uuid"
-                                                class="flex items-start gap-3 p-3 bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-100">
+                                                class="flex items-start gap-3 p-4 bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-100">
                                                 <div
-                                                    class="h-8 w-8 rounded-lg bg-navy/10 flex items-center justify-center shrink-0">
-                                                    <span
-                                                        class="material-symbols-outlined text-navy text-base">payments</span>
+                                                    class="h-8 w-8 rounded-lg bg-navy/10 flex items-center justify-center shrink-0 text-navy">
+                                                    <span class="material-symbols-outlined text-base">payments</span>
                                                 </div>
                                                 <div class="flex-1 min-w-0">
-                                                    <p class="font-bold text-navy text-sm mb-1">{{ method.payment_method }}
+                                                    <p class="font-bold text-navy text-sm mb-1 line-clamp-1">{{
+                                                        method.payment_method }}
                                                     </p>
-                                                    <p v-if="method.account_name" class="text-xs text-gray-600 mb-0.5">{{
-                                                        method.account_name }}</p>
+                                                    <p v-if="method.account_name"
+                                                        class="text-xs text-gray-500 mb-1 font-medium truncate">{{
+                                                            method.account_name }}</p>
                                                     <p v-if="method.account_number"
-                                                        class="text-xs font-mono text-gray-700 bg-gray-100 px-2 py-0.5 rounded inline-block">
+                                                        class="text-xs font-mono font-bold text-navy bg-white border border-gray-200 px-2 py-1 rounded-md inline-block">
                                                         {{ method.account_number }}</p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="flex justify-between items-center pt-3 border-t-2 border-primary/20">
-                                        <span class="text-base font-black text-navy">Biaya Pendaftaran</span>
-                                        <span class="text-2xl font-black text-primary">{{ event.registration_fee ? `Rp
+                                    <div class="flex items-center justify-between pt-6 border-t border-gray-100">
+                                        <span class="text-sm font-black text-navy">Biaya Pendaftaran</span>
+                                        <span class="text-2xl font-black text-navy">{{ event.registration_fee ? `Rp
                                             ${event.registration_fee.toLocaleString('id-ID')}` : 'Gratis' }}</span>
                                     </div>
                                 </div>
 
-                                <button @click="handleSubmit" :disabled="loading || !isFormValid"
-                                    class="w-full py-4 bg-navy hover:bg-navy-light text-white font-black text-base rounded-xl transition-all shadow-s hover:shadow-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed mt-6">
-                                    <span v-if="loading" class="material-symbols-outlined animate-spin text-xl">sync</span>
-                                    <span v-else class="material-symbols-outlined text-xl">how_to_reg</span>
+                                <BaseButton @click="handleSubmit" :loading="loading" :disabled="!isFormValid"
+                                    variant="navy" size="lg" block icon="how_to_reg" class="mt-8">
                                     Daftar Sekarang
-                                </button>
+                                </BaseButton>
 
-                                <p v-if="error" class="text-center text-sm text-red-500 mt-3 font-medium">{{ error }}</p>
+                                <p v-if="error" class="text-sm text-red-500 mt-4 font-bold text-left">{{ error }}</p>
 
-                                <div class="mt-6 p-4 bg-blue-50 border border-blue-100 rounded-xl">
+                                <div class="mt-8 p-4 bg-gray-50 border border-gray-100 rounded-xl">
                                     <div class="flex items-start gap-3">
-                                        <span class="material-symbols-outlined text-blue-500 text-lg shrink-0">info</span>
-                                        <p class="text-xs text-gray-600 leading-relaxed font-medium">
-                                            Setelah mendaftar, Anda akan menerima konfirmasi dari penyelenggara. Pastikan
-                                            data Anda sudah benar sebelum melanjutkan.
+                                        <span class="material-symbols-outlined text-navy text-lg shrink-0">info</span>
+                                        <p class="text-xs text-gray-500 leading-relaxed font-medium">
+                                            Pendaftaran akan diverifikasi oleh penyelenggara dalam 1-3 hari kerja. Anda
+                                            akan menerima notifikasi status pendaftaran Anda.
                                         </p>
                                     </div>
                                 </div>
@@ -393,11 +408,12 @@
 
 <script setup>
 definePageMeta({
-  layout: 'blank'
+    layout: 'blank'
 })
 import { useAuth } from '~/composables/useAuth'
 import { useApi } from '~/composables/useApi'
 import { useImageOrDefault } from '~/composables/useImageHelper'
+import BaseButton from '~/components/common/BaseButton.vue'
 import Breadcrumbs from '~/components/common/Breadcrumbs.vue'
 import { Icon } from '@iconify/vue'
 
@@ -536,10 +552,16 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
         if (!eventResponse) return null
 
         const eventId = eventResponse.uuid || eventResponse.id
+        const formatDate = (dateString) => {
+            if (!dateString) return ''
+            const d = new Date(dateString)
+            return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`
+        }
+
         const eventData = {
             id: eventId,
             name: eventResponse.name || eventResponse.title || 'Event',
-            date: eventResponse.start_date ? `${new Date(eventResponse.start_date).toLocaleDateString('id-ID')} - ${eventResponse.end_date ? new Date(eventResponse.end_date).toLocaleDateString('id-ID') : ''}` : eventResponse.date || '',
+            date: eventResponse.start_date ? `${formatDate(eventResponse.start_date)}${eventResponse.end_date ? ' - ' + formatDate(eventResponse.end_date) : ''}` : eventResponse.date || '',
             location: eventResponse.location || eventResponse.venue || '',
             image: eventResponse.image || eventResponse.banner_url || '',
             description: eventResponse.description || '',

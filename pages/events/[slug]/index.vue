@@ -361,14 +361,10 @@
                                 </div>
                             </template>
                             <template v-else-if="!isLoggedIn">
-                                <NuxtLink :to="loginUrl"
+                                <NuxtLink :to="registerUrl"
                                     class="w-full block py-4 bg-primary hover:bg-primary-hover text-navy font-bold rounded-xl transition-colors shadow-md text-center">
-                                    Login untuk Mendaftar
+                                    Daftar Sekarang
                                 </NuxtLink>
-                                <p class="text-center text-xs text-gray-400 mt-3">Belum punya akun?
-                                    <NuxtLink class="text-navy font-bold hover:underline" to="/auth/register">Daftar
-                                    </NuxtLink>
-                                </p>
                             </template>
                             <template v-else>
                                 <NuxtLink :to="registerUrl"

@@ -77,7 +77,7 @@ export default defineEventHandler((event: H3Event) => {
     const isProtected =
         path.startsWith('/dashboard') ||
         path.startsWith('/profile') ||
-        (path.includes('/register') && !path.startsWith('/auth')) ||
+        (path.includes('/register') && !path.startsWith('/auth') && !path.startsWith('/events/')) ||
         path.includes('/payment')
 
     if (isProtected && !user) {
