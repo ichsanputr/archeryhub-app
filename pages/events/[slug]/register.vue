@@ -154,7 +154,7 @@
                                                 'Atlet Baru' }}</h3>
                                             <p class="text-sm text-gray-500 mb-2">{{ archerProfile?.email ||
                                                 userDisplay.email
-                                            }}</p>
+                                                }}</p>
                                             <div class="flex flex-wrap gap-2">
                                                 <span v-if="archerProfile?.id"
                                                     class="text-[10px] text-navy font-bold bg-gray-100 px-2.5 py-1 rounded-full border border-gray-200 uppercase tracking-wider">
@@ -428,15 +428,27 @@ const { user, isLoggedIn, archerProfile: globalArcherProfile } = useAuth()
 
 // 1. DATA FETCHING (Define 'data' early)
 const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-register-${slug}`, async () => {
-    // Correctly get cookies for SSR request
-    const headers = useRequestHeaders(['cookie'])
-    const fetchOptions = { headers }
+    const token = useCookie('auth_token').value
+    const headers = {
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        ...useRequestHeaders(['cookie'])
+    }
+    const fetchOptions = { headers, credentials: 'include' }
 
     try {
-        // Fetch event and categories concurrently
-        const [eventResponse, categoriesResponse] = await Promise.all([
+        // Fetch all data concurrently
+        const [eventResponse, categoriesResponse, bowTypesRes, citiesRes, profileResponse, paymentMethodsResponseData] = await Promise.all([
             $fetch(`${apiBaseUrl}/events/${slug}`),
-            $fetch(`${apiBaseUrl}/events/${slug}/categories`).catch(() => ({ events: [] }))
+            $fetch(`${apiBaseUrl}/events/${slug}/categories`).catch(() => ({ events: [] })),
+            $fetch(`${apiBaseUrl}/bow-types`).catch(() => ({ bow_types: [] })),
+            $fetch(`${apiBaseUrl}/cities`).catch(() => ({ cities: [] })),
+            token ? $fetch(`${apiBaseUrl}/archer/me`, fetchOptions).catch(() => null) : Promise.resolve(null),
+            (async () => {
+                if (!token) return []
+                const eventId = eventResponse?.uuid || eventResponse?.id
+                if (!eventId) return []
+                return $fetch(`${apiBaseUrl}/events/${eventId}/payment-methods`, fetchOptions).catch(() => [])
+            })()
         ])
 
         if (!eventResponse) return null
@@ -464,43 +476,20 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
         }
 
         // Fetch profile and payment methods if logged in
-        let archerProfileData = null
+        let archerProfileData = profileResponse?.data || profileResponse
+        
+        console.log('=== ARCHER PROFILE DEBUG ===')
+        console.log('Token exists:', !!token)
+        console.log('Profile Response:', profileResponse)
+        console.log('Profile Data:', archerProfileData)
+        console.log('============================')
+        
+        // Get payment methods for this event  
         let paymentMethodsData = []
-
-        // Use the new public endpoint for registration profile, using UUID from hydrated user state
-        // user variable is available from outer scope (useAuth)
-        const userUuid = user.value?.uuid || user.value?.id
-
-        const promises = [
-            $fetch(`${apiBaseUrl}/events/${eventId}/payment-methods`).catch(() => [])
-        ]
-
-        if (userUuid) {
-            const profilePromise = $fetch(`${apiBaseUrl}/archers/registration-profile/${userUuid}`).catch(() => null)
-            // Using Promise.all with differing return types needs care
-            // We'll manage them separately
-            const [paymentMethodsResponse, profileResponse] = await Promise.all([
-                promises[0],
-                profilePromise
-            ])
-
-            archerProfileData = profileResponse?.data || profileResponse
-
-            console.log(archerProfileData)
-            paymentMethodsData = paymentMethodsResponse // no .data usually for list unless wrapped
-            // Standardize payment methods list
-            if (paymentMethodsData?.data) paymentMethodsData = paymentMethodsData.data
-            if (!Array.isArray(paymentMethodsData)) paymentMethodsData = []
-        } else {
-            // Not logged in or no UUID
-            const [paymentMethodsResponse] = await Promise.all(promises)
-            paymentMethodsData = paymentMethodsResponse?.data || paymentMethodsResponse || []
-            if (!Array.isArray(paymentMethodsData)) paymentMethodsData = []
+        if (token) {
+            const paymentMethodsResponse = await $fetch(`${apiBaseUrl}/events/${eventId}/payment-methods`, fetchOptions).catch(() => [])
+            paymentMethodsData = (Array.isArray(paymentMethodsResponse) ? paymentMethodsResponse : paymentMethodsResponse?.data || []).filter(m => m.is_active !== false)
         }
-
-        // Filter active payment methods
-        paymentMethodsData = paymentMethodsData.filter(m => m.is_active !== false)
-
 
         if (archerProfileData?.club_id && !archerProfileData.club_name) {
             try {
@@ -514,13 +503,18 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
             name: `${cat.division_name || cat.division || ''} - ${cat.category_name || cat.category || ''} ${cat.event_type_name ? '- ' + cat.event_type_name : ''} ${cat.gender_division_name ? '- ' + cat.gender_division_name : ''}`.trim()
         }))
 
+        // Process bow types and cities
+        const bowTypesOptions = (bowTypesRes.bow_types || []).map(b => ({ title: b.name, value: b.name }))
+        const citiesOptions = (citiesRes.cities || []).map(c => ({ title: c, value: c }))
+
         return {
-            // This usage in useAsyncData return is causing ReferenceError
-            isLoggedIn: !!archerProfileData,
+            isLoggedIn: !!token || !!archerProfileData,
             event: eventData,
             categories: categoriesData,
             archerProfile: archerProfileData,
-            paymentMethods: paymentMethodsData
+            paymentMethods: paymentMethodsData,
+            bowTypes: bowTypesOptions,
+            cities: citiesOptions
         }
     } catch (err) {
         console.error('Failed to fetch registration data:', err)
@@ -538,8 +532,8 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
 const loading = ref(false)
 const error = ref('')
 const registrationSuccess = ref(false)
-const bowTypeOptions = ref([])
-const cityOptions = ref([])
+const bowTypeOptions = computed(() => data.value?.bowTypes || [])
+const cityOptions = computed(() => data.value?.cities || [])
 const proofInput = ref(null)
 const paymentPreviews = ref([])
 
@@ -625,22 +619,16 @@ const getSelectedCategoryName = () => {
 }
 
 // 5. HOOKS & WATCHERS
-onMounted(async () => {
-    try {
-        const [bowTypesRes, citiesRes] = await Promise.all([
-            $fetch(`${apiBaseUrl}/bow-types`),
-            $fetch(`${apiBaseUrl}/cities`)
-        ])
-        bowTypeOptions.value = (bowTypesRes.bow_types || []).map(b => ({ title: b.name, value: b.name }))
-        cityOptions.value = (citiesRes.cities || []).map(c => ({ title: c, value: c }))
-    } catch (e) {
-        console.error('Failed to fetch reference data:', e)
-    }
-})
-
 // Populate profileForm when archerProfile changes
 watch(() => archerProfile.value, (profile) => {
+    console.log('=== PROFILE WATCH TRIGGERED ===')
+    console.log('Profile:', profile)
+    console.log('globalArcherProfile:', globalArcherProfile.value)
+    console.log('data.archerProfile:', data.value?.archerProfile)
+    console.log('================================')
+    
     if (profile) {
+        console.log('Populating profileForm with:', profile)
         profileForm.value = {
             full_name: profile.full_name || profile.name || '',
             gender: profile.gender || '',
@@ -652,6 +640,7 @@ watch(() => archerProfile.value, (profile) => {
             bow_type: profile.bow_type || '',
             experience_years: profile.experience_years || 0
         }
+        console.log('profileForm updated:', profileForm.value)
     }
 }, { immediate: true })
 
@@ -702,7 +691,9 @@ const handleProofUpload = async (ev) => {
             const response = await $fetch(`${apiBaseUrl}/media/upload`, {
                 method: 'POST',
                 body: formData,
-                credentials: 'include'
+                headers: {
+                    'Authorization': `Bearer ${token.value}`
+                }
             })
 
             const idx = paymentPreviews.value.findIndex(p => p.id === previewId)
@@ -745,7 +736,9 @@ const handleSubmit = async () => {
                     bow_type: profileForm.value.bow_type,
                     club_id: profileForm.value.club_id
                 },
-                credentials: 'include'
+                headers: {
+                    'Authorization': `Bearer ${token.value}`
+                }
             })
         }
 
@@ -759,7 +752,9 @@ const handleSubmit = async () => {
         await $fetch(`${apiBaseUrl}/events/${event.value.id}/participants`, {
             method: 'POST',
             body: payload,
-            credentials: 'include'
+            headers: {
+                'Authorization': `Bearer ${token.value}`
+            }
         })
 
         registrationSuccess.value = true

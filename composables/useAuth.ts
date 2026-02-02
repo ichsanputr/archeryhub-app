@@ -75,10 +75,46 @@ export const useAuth = () => {
     }
     return null
   })
-  const archerProfile = useState<any | null>('auth.archerProfile', () => null)
-  const organizationProfile = useState<any | null>('auth.organizationProfile', () => null)
-  const clubProfile = useState<any | null>('auth.clubProfile', () => null)
-  const sellerProfile = useState<any | null>('auth.sellerProfile', () => null)
+  const archerProfile = useState<any | null>('auth.archerProfile', () => {
+    // Populate archerProfile from server context if user is an archer
+    if (import.meta.server) {
+      const event = useRequestEvent()
+      if (event?.context?.user && (event.context.user.role === 'archer' || event.context.user.user_type === 'archer')) {
+        return event.context.user
+      }
+    }
+    return null
+  })
+  const organizationProfile = useState<any | null>('auth.organizationProfile', () => {
+    // Populate organizationProfile from server context if user is an organization
+    if (import.meta.server) {
+      const event = useRequestEvent()
+      if (event?.context?.user && (event.context.user.role === 'organization' || event.context.user.user_type === 'organization')) {
+        return event.context.user
+      }
+    }
+    return null
+  })
+  const clubProfile = useState<any | null>('auth.clubProfile', () => {
+    // Populate clubProfile from server context if user is a club
+    if (import.meta.server) {
+      const event = useRequestEvent()
+      if (event?.context?.user && (event.context.user.role === 'club' || event.context.user.user_type === 'club')) {
+        return event.context.user
+      }
+    }
+    return null
+  })
+  const sellerProfile = useState<any | null>('auth.sellerProfile', () => {
+    // Populate sellerProfile from server context if user is a seller
+    if (import.meta.server) {
+      const event = useRequestEvent()
+      if (event?.context?.user && (event.context.user.role === 'seller' || event.context.user.user_type === 'seller')) {
+        return event.context.user
+      }
+    }
+    return null
+  })
 
   const isUserLoading = useState<boolean>('auth.isUserLoading', () => false)
   const isLoggedIn = computed(() => !!user.value)
