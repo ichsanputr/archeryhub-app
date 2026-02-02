@@ -11,15 +11,19 @@
         <Icon icon="ph:list" class="text-2xl" />
       </div>
 
-      <!-- Mobile Organization Branding (Only on dashboard for orgs/clubs) -->
-      <div v-if="isDashboard && (user?.role === 'organization' || user?.role === 'club') && !isEventManageMode"
-        class="lg:hidden flex items-center gap-2 mx-auto">
+      <!-- Mobile Logo/Branding (Centered between hamburger and notification) -->
+      <div v-if="isDashboard" class="lg:hidden flex items-center gap-2 mx-auto">
         <div class="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center bg-white shadow-sm">
-          <img :src="useImageOrDefault(user.logo_url || user.avatar_url, user?.name || user?.full_name || 'Org')"
+          <img v-if="user?.role === 'organization' || user?.role === 'club'"
+            :src="useImageOrDefault(user.logo_url || user.avatar_url, user?.name || user?.full_name || 'Org')"
             :alt="user?.name || user?.full_name || 'Organization'" class="w-full h-full object-cover" />
+          <img v-else src="/logo.png" alt="ArcheryHub" class="w-full h-full object-contain" />
         </div>
-        <span class="text-sm font-black text-navy truncate max-w-[120px]">
+        <span v-if="user?.role === 'organization' || user?.role === 'club'" class="text-sm font-black text-navy truncate max-w-[120px]">
           {{ getFirstWord(user?.full_name || user?.name || 'Dashboard') }}
+        </span>
+        <span v-else class="text-sm font-black text-navy">
+          ArcheryHub
         </span>
       </div>
 

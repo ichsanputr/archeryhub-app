@@ -1,22 +1,36 @@
 <template>
     <div class="space-y-8 pb-12">
         <!-- Header -->
-        <div class="bg-navy relative overflow-hidden py-8 rounded-3xl">
-            <div class="absolute inset-0 z-0">
-                <div class="absolute inset-0 bg-navy/90 z-10"></div>
-                <img alt="background pattern"
-                    class="w-full h-full object-cover object-center opacity-30 mix-blend-overlay"
-                    :src="useImageOrDefault('https://images.unsplash.com/photo-1541535881962-3bb380b08458?auto=format&fit=crop&q=80&w=1200')" />
+        <div
+            class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
+            <!-- Background Pattern -->
+            <div class="absolute inset-0 opacity-20"
+                style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);">
             </div>
-            <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Decorative Background Elements -->
+            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
+
+            <!-- Header Content -->
+            <div class="relative p-6 sm:p-8">
                 <div class="flex items-center gap-2 text-sm text-white/60 mb-4">
                     <NuxtLink to="/dashboard" class="hover:text-white transition-colors">Dashboard</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-base" />
-                    <NuxtLink to="/events" class="hover:text-white transition-colors">Events</NuxtLink>
-                    <Icon icon="ph:caret-right-bold" class="text-base" />
-                    <span class="text-primary font-medium">Registration & Payment</span>
+                    <span class="text-primary font-medium">Keranjang Belanja</span>
                 </div>
-                <h1 class="text-white text-3xl font-black tracking-tight">Registration & Payment</h1>
+                <div class="flex items-start gap-4">
+                    <!-- Icon Badge -->
+                    <div
+                        class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
+                        <Icon icon="ph:shopping-cart" class="text-primary text-2xl" />
+                    </div>
+                    <div>
+                        <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight">Keranjang Belanja</h1>
+                        <p class="text-slate-300 text-sm mt-1">Kelola produk yang akan Anda beli</p>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -26,16 +40,15 @@
             <p class="text-gray-500 font-medium">Memuat data registrasi...</p>
         </div>
 
-        <div v-else-if="registrations.length === 0"
+        <div v-else-if="cartItems.length === 0"
             class="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-gray-100">
             <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-6">
-                <Icon icon="ph:clipboard-light" class="text-4xl text-gray-300" />
+                <Icon icon="ph:shopping-cart" class="text-4xl text-gray-300" />
             </div>
-            <h3 class="text-xl font-bold text-navy mb-2">Belum Ada Registrasi</h3>
-            <p class="text-gray-500 mb-8 px-6 text-center">Anda belum mendaftar ke event manapun. Mulai daftar ke event
-                yang tersedia!</p>
-            <NuxtLink to="/events">
-                <BaseButton variant="primary" size="lg">Cari Event</BaseButton>
+            <h3 class="text-xl font-bold text-navy mb-2">Keranjang Kosong</h3>
+            <p class="text-gray-500 mb-8 px-6 text-center">Belum ada produk di keranjang. Mulai belanja produk archery sekarang!</p>
+            <NuxtLink to="/products">
+                <BaseButton variant="primary" size="lg" icon="ph:shopping-bag">Belanja Produk</BaseButton>
             </NuxtLink>
         </div>
 
@@ -312,6 +325,10 @@ definePageMeta({
     layout: 'dashboard'
 })
 
+useHead({
+    title: 'Keranjang Belanja - ArcheryHub Dashboard'
+})
+
 const { user } = useAuth()
 const { get, post, put } = useApi()
 const toast = useToast()
@@ -320,6 +337,7 @@ const isLoading = ref(true)
 const isEditing = ref(false)
 const isProcessing = ref(false)
 const registrations = ref([])
+const cartItems = computed(() => registrations.value || [])
 const archers = ref([])
 const eventCategories = ref([])
 const events = ref([])

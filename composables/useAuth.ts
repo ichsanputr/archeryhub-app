@@ -20,7 +20,6 @@ export interface AuthUser {
   date_of_birth?: string
   bow_type?: string
   city?: string
-  province?: string
   club_id?: string
   achievements?: string | string[]
   store_name?: string
@@ -58,7 +57,6 @@ export const useAuth = () => {
           date_of_birth: event.context.user.date_of_birth,
           bow_type: event.context.user.bow_type,
           city: event.context.user.city,
-          province: event.context.user.province,
           club_id: event.context.user.club_id,
           achievements: event.context.user.achievements,
           store_name: event.context.user.store_name,

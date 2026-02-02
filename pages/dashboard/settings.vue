@@ -47,9 +47,47 @@
         <h3 class="text-xl font-bold text-navy mb-2">Informasi Akun</h3>
         <p class="text-gray-500 text-sm mb-6">Data dasar akun Anda</p>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <BaseInput v-model="accountForm.email" label="Email" type="email" placeholder="email@example.com" disabled />
-          <BaseInput v-model="accountForm.username" label="Username" placeholder="username" />
+        <div class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <BaseInput v-model="accountForm.full_name" label="Nama Lengkap" placeholder="Nama lengkap Anda" required />
+            <BaseInput v-model="accountForm.username" label="Username" placeholder="username" />
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <BaseInput v-model="accountForm.email" label="Email" type="email" placeholder="email@example.com" disabled />
+            <BaseInput v-model="accountForm.phone" label="Nomor Telepon" type="tel" placeholder="+62 812-3456-7890" />
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <BaseInput v-model="accountForm.date_of_birth" label="Tanggal Lahir" type="date" />
+            <BaseSelect v-model="accountForm.gender" label="Jenis Kelamin" :items="[
+              { title: 'Laki-laki', value: 'M' },
+              { title: 'Perempuan', value: 'F' },
+              { title: 'Lainnya', value: 'X' }
+            ]" />
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <BaseInput v-model="accountForm.city" label="Kota" placeholder="Kota tempat tinggal" />
+            <BaseInput v-model="accountForm.school" label="Sekolah / Universitas" placeholder="Nama sekolah / universitas" />
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <BaseInput v-model="accountForm.address" label="Alamat" placeholder="Alamat lengkap" />
+            <BaseSelect v-model="accountForm.bow_type" label="Tipe Busur" :items="[
+              { title: 'Recurve', value: 'recurve' },
+              { title: 'Compound', value: 'compound' },
+              { title: 'Barebow', value: 'barebow' },
+              { title: 'Traditional', value: 'traditional' },
+              { title: 'Standard', value: 'standard' }
+            ]" />
+          </div>
+
+          <div class="mt-6">
+            <BaseButton variant="gold" size="md" icon="ph:floppy-disk" @click="saveAccountInfo" :loading="isSaving">
+              Simpan Informasi Akun
+            </BaseButton>
+          </div>
         </div>
       </div>
     </div>
@@ -201,8 +239,7 @@ import { useImageOrDefault } from '~/composables/useImageHelper'
 
 definePageMeta({
   title: 'Pengaturan',
-  layout: 'dashboard',
-  middleware: ['auth']
+  layout: 'dashboard'
 })
 
 useHead({
@@ -215,19 +252,29 @@ const toast = useToast()
 
 const tabs = computed(() => {
   const allTabs = [
-    { label: 'Akun', value: 'account', icon: 'ph:user-circle' },
     { label: 'Keamanan', value: 'security', icon: 'ph:shield-check' },
     { label: 'Umum', value: 'general', icon: 'ph:gear' },
     { label: 'Notifikasi', value: 'notifications', icon: 'ph:bell' },
   ]
 
-  if (user.value?.role === 'organization') {
-    return allTabs.filter(t => t.value !== 'account')
+  // Archer users don't need Account tab - they edit profile via /dashboard/archers/profile
+  if (user.value?.role === 'archer') {
+    return allTabs
   }
-  return allTabs
+
+  // Add Account tab for non-archer users
+  if (user.value?.role === 'organization') {
+    return allTabs
+  }
+  
+  // For other users, include Account tab
+  return [
+    { label: 'Akun', value: 'account', icon: 'ph:user-circle' },
+    ...allTabs
+  ]
 })
 
-const activeTab = ref(user.value?.role === 'organization' ? 'security' : 'account')
+const activeTab = ref(user.value?.role === 'archer' || user.value?.role === 'organization' ? 'security' : 'account')
 const isSaving = ref(false)
 const isSavingPassword = ref(false)
 const userData = ref(null)
@@ -245,7 +292,15 @@ const userTypeIcon = computed(() => {
 
 const accountForm = ref({
   email: '',
-  username: ''
+  username: '',
+  full_name: '',
+  phone: '',
+  date_of_birth: '',
+  gender: '',
+  city: '',
+  address: '',
+  school: '',
+  bow_type: ''
 })
 
 const settings = ref({
@@ -270,27 +325,48 @@ onMounted(async () => {
     userData.value = response
     accountForm.value.email = response.email || ''
     accountForm.value.username = response.username || ''
+    accountForm.value.full_name = response.full_name || ''
+    accountForm.value.phone = response.phone || ''
+    accountForm.value.date_of_birth = response.date_of_birth ? new Date(response.date_of_birth).toISOString().split('T')[0] : ''
+    accountForm.value.gender = response.gender || ''
+    accountForm.value.city = response.city || ''
+    accountForm.value.address = response.address || ''
+    accountForm.value.school = response.school || ''
+    accountForm.value.bow_type = response.bow_type || ''
   } catch (error) {
     console.error('Failed to load user data:', error)
     toast.error('Gagal memuat data pengguna')
   }
 })
 
-const saveSettings = async () => {
+const saveAccountInfo = async () => {
   isSaving.value = true
   try {
     await put('/user/profile', {
-      username: accountForm.value.username
+      username: accountForm.value.username,
+      full_name: accountForm.value.full_name,
+      phone: accountForm.value.phone,
+      date_of_birth: accountForm.value.date_of_birth,
+      gender: accountForm.value.gender,
+      city: accountForm.value.city,
+      address: accountForm.value.address,
+      school: accountForm.value.school,
+      bow_type: accountForm.value.bow_type
     })
-    toast.success('Pengaturan berhasil disimpan')
+    toast.success('Informasi akun berhasil disimpan')
     // Profile will be refreshed on next page load from server middleware
   } catch (error) {
-    console.error('Failed to save settings:', error)
-    const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || 'Gagal menyimpan pengaturan'
+    console.error('Failed to save account info:', error)
+    const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || 'Gagal menyimpan informasi'
     toast.error(errorMessage)
   } finally {
     isSaving.value = false
   }
+}
+
+const saveSettings = async () => {
+  // This is for general settings like language, timezone, notifications
+  toast.info('Pengaturan umum akan disimpan')
 }
 
 // Password handling

@@ -8,6 +8,34 @@
             </div>
         </div>
 
+        <!-- Error State -->
+        <div v-else-if="fetchError" class="min-h-screen flex items-center justify-center px-4">
+            <div class="text-center max-w-md">
+                <div class="h-16 w-16 bg-red-50 rounded-full flex items-center justify-center mb-4 mx-auto">
+                    <span class="material-symbols-outlined text-3xl text-red-500">error</span>
+                </div>
+                <h2 class="text-xl font-black text-navy mb-3">Gagal Memuat Data</h2>
+                <p class="text-gray-500 mb-6">{{ fetchError.message || 'Terjadi kesalahan saat memuat data event' }}</p>
+                <BaseButton @click="refresh()" variant="navy" size="md">
+                    Coba Lagi
+                </BaseButton>
+            </div>
+        </div>
+
+        <!-- No Data State -->
+        <div v-else-if="!data || !data.event" class="min-h-screen flex items-center justify-center px-4">
+            <div class="text-center max-w-md">
+                <div class="h-16 w-16 bg-amber-50 rounded-full flex items-center justify-center mb-4 mx-auto">
+                    <span class="material-symbols-outlined text-3xl text-amber-500">info</span>
+                </div>
+                <h2 class="text-xl font-black text-navy mb-3">Event Tidak Ditemukan</h2>
+                <p class="text-gray-500 mb-6">Event yang Anda cari tidak tersedia</p>
+                <BaseButton to="/events" variant="navy" size="md">
+                    Lihat Event Lain
+                </BaseButton>
+            </div>
+        </div>
+
         <!-- Registration Success State (Maintain separate for clarity) -->
         <div v-else-if="registrationSuccess" class="min-h-screen flex items-center justify-center px-4">
             <div class="bg-white rounded-2xl p-6 md:p-8 border border-gray-100 max-w-lg w-full text-left">
@@ -174,22 +202,19 @@
                                             icon="ph:gender-intersex" />
 
                                         <BaseInput v-model="profileForm.date_of_birth" label="Tanggal Lahir" type="date"
-                                            required icon="calendar_today" />
+                                            required icon="mingcute:calendar-line" />
 
                                         <BaseSelect v-model="profileForm.bow_type" :items="bowTypeOptions"
                                             label="Jenis Busur" placeholder="Pilih jenis busur" required
                                             icon="ph:bow-arrow" />
 
-                                        <BaseInput v-model="profileForm.province" label="Provinsi"
-                                            placeholder="Masukkan provinsi" icon="map" />
-
                                         <BaseSelect v-model="profileForm.city" :items="cityOptions"
-                                            label="Kota / Kabupaten" placeholder="Pilih kota" icon="location_city" />
+                                            label="Kota / Kabupaten" placeholder="Pilih kota" icon="mingcute:building-2-line" />
 
                                         <div class="sm:col-span-2">
                                             <BaseInput v-model="profileForm.club_name" label="Klub / Instansi"
-                                                placeholder="Nama klub atau instansi asal Anda" icon="groups"
-                                                hint="Jika tidak memiliki klub, isi dengan - atau nama kota asal" />
+                                                placeholder="Nama klub atau instansi asal Anda" icon="mingcute:group-line"
+                                                hint="Informasi klub Anda (tidak dapat diubah di sini)" disabled readonly />
                                         </div>
                                     </div>
 
@@ -246,7 +271,7 @@
                         </section>
 
                         <!-- Category Selection -->
-                        <section class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+                        <section class="bg-white rounded-2xl border border-gray-200">
                             <div class="p-6 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white">
                                 <h2 class="text-lg font-black text-navy flex items-center gap-3">
                                     <div
@@ -425,35 +450,40 @@ const apiBaseUrl = config.public.apiBaseUrl
 
 // Use Auth composable for authentication
 const { user, isLoggedIn, archerProfile: globalArcherProfile } = useAuth()
+const { upload } = useApi()
 
 // 1. DATA FETCHING (Define 'data' early)
 const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-register-${slug}`, async () => {
     const token = useCookie('auth_token').value
-    const headers = {
-        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
-        ...useRequestHeaders(['cookie'])
-    }
+    const headers = token ? { 'Authorization': `Bearer ${token}` } : {}
     const fetchOptions = { headers, credentials: 'include' }
 
     try {
-        // Fetch all data concurrently
-        const [eventResponse, categoriesResponse, bowTypesRes, citiesRes, profileResponse, paymentMethodsResponseData] = await Promise.all([
-            $fetch(`${apiBaseUrl}/events/${slug}`),
+        console.log('[SSR] Fetching event data for slug:', slug)
+        
+        // Fetch event first
+        const eventResponse = await $fetch(`${apiBaseUrl}/events/${slug}`)
+        
+        if (!eventResponse) {
+            console.error('[SSR] No event response')
+            return null
+        }
+
+        const eventId = eventResponse.uuid || eventResponse.id
+        console.log('[SSR] Event fetched:', eventId, eventResponse.name)
+
+        // Fetch all other data concurrently
+        const [categoriesResponse, bowTypesRes, citiesRes, profileResponse, paymentMethodsResponseData] = await Promise.all([
             $fetch(`${apiBaseUrl}/events/${slug}/categories`).catch(() => ({ events: [] })),
             $fetch(`${apiBaseUrl}/bow-types`).catch(() => ({ bow_types: [] })),
             $fetch(`${apiBaseUrl}/cities`).catch(() => ({ cities: [] })),
             token ? $fetch(`${apiBaseUrl}/archer/me`, fetchOptions).catch(() => null) : Promise.resolve(null),
             (async () => {
-                if (!token) return []
-                const eventId = eventResponse?.uuid || eventResponse?.id
-                if (!eventId) return []
+                if (!token || !eventId) return []
                 return $fetch(`${apiBaseUrl}/events/${eventId}/payment-methods`, fetchOptions).catch(() => [])
             })()
         ])
 
-        if (!eventResponse) return null
-
-        const eventId = eventResponse.uuid || eventResponse.id
         const formatDate = (dateString) => {
             if (!dateString) return ''
             return useDateFormat(dateString, 'DD MMM YYYY', { locales: 'id-ID' }).value
@@ -507,7 +537,7 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
         const bowTypesOptions = (bowTypesRes.bow_types || []).map(b => ({ title: b.name, value: b.name }))
         const citiesOptions = (citiesRes.cities || []).map(c => ({ title: c, value: c }))
 
-        return {
+        const result = {
             isLoggedIn: !!token || !!archerProfileData,
             event: eventData,
             categories: categoriesData,
@@ -516,16 +546,21 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
             bowTypes: bowTypesOptions,
             cities: citiesOptions
         }
+
+        console.log('[SSR] Returning data:', {
+            eventName: result.event.name,
+            categoriesCount: result.categories.length,
+            hasProfile: !!result.archerProfile
+        })
+
+        return result
     } catch (err) {
-        console.error('Failed to fetch registration data:', err)
+        console.error('[SSR] Failed to fetch registration data:', err)
         throw createError({
             statusCode: 500,
             message: 'Gagal memuat data pendaftaran'
         })
     }
-}, {
-    server: true,
-    lazy: true
 })
 
 // 2. REFS (Basic State)
@@ -547,7 +582,6 @@ const profileForm = ref({
     full_name: '',
     gender: '',
     date_of_birth: '',
-    province: '',
     city: '',
     club_name: '',
     club_id: null,
@@ -561,18 +595,30 @@ const genderOptions = [
 ]
 
 // 3. COMPUTED (Derived State)
-const event = computed(() => data.value?.event || {
-    name: '',
-    date: '',
-    location: '',
-    image: '',
-    description: '',
-    registration_fee: 0
+const event = computed(() => {
+    if (!data.value?.event) {
+        return {
+            name: '',
+            date: '',
+            location: '',
+            image: '',
+            description: '',
+            registration_fee: 0
+        }
+    }
+    return data.value.event
 })
 
-const categories = computed(() => data.value?.categories || [])
+const categories = computed(() => {
+    if (!data.value?.categories) return []
+    return data.value.categories
+})
+
 const archerProfile = computed(() => globalArcherProfile.value || data.value?.archerProfile)
-const paymentMethods = computed(() => data.value?.paymentMethods || [])
+const paymentMethods = computed(() => {
+    if (!data.value?.paymentMethods) return []
+    return data.value.paymentMethods
+})
 
 // Simplified auth checks using useAuth composable
 const isArcher = computed(() => {
@@ -619,6 +665,16 @@ const getSelectedCategoryName = () => {
 }
 
 // 5. HOOKS & WATCHERS
+// Debug watcher for data changes
+watch(() => data.value, (newData) => {
+    console.log('[CLIENT] Data changed:', {
+        hasData: !!newData,
+        hasEvent: !!newData?.event,
+        eventName: newData?.event?.name,
+        eventId: newData?.event?.id
+    })
+}, { immediate: true })
+
 // Populate profileForm when archerProfile changes
 watch(() => archerProfile.value, (profile) => {
     console.log('=== PROFILE WATCH TRIGGERED ===')
@@ -633,7 +689,6 @@ watch(() => archerProfile.value, (profile) => {
             full_name: profile.full_name || profile.name || '',
             gender: profile.gender || '',
             date_of_birth: profile.date_of_birth ? new Date(profile.date_of_birth).toISOString().split('T')[0] : '',
-            province: profile.province || '',
             city: profile.city || '',
             club_name: profile.club_name || '',
             club_id: profile.club_id || null,
@@ -686,15 +741,12 @@ const handleProofUpload = async (ev) => {
 
         const formData = new FormData()
         formData.append('file', file)
+        formData.append('caption', 'payment-proof')
 
         try {
-            const response = await $fetch(`${apiBaseUrl}/media/upload`, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Authorization': `Bearer ${token.value}`
-                }
-            })
+            console.log('[Upload] Starting upload for:', file.name)
+            const response = await upload('/media/upload', formData)
+            console.log('[Upload] Success:', response)
 
             const idx = paymentPreviews.value.findIndex(p => p.id === previewId)
             if (idx !== -1) {
@@ -703,9 +755,10 @@ const handleProofUpload = async (ev) => {
             }
             form.value.payment_proofs.push(response.url)
         } catch (err) {
-            console.error('Upload failed:', err)
+            console.error('[Upload] Failed:', err)
             paymentPreviews.value = paymentPreviews.value.filter(p => p.id !== previewId)
-            alert(`Gagal mengunggah ${file.name}`)
+            const errorMsg = err?.data?.error || err?.message || 'Gagal mengunggah file'
+            alert(`Upload gagal: ${errorMsg}`)
         }
     }
     ev.target.value = ''
@@ -724,6 +777,7 @@ const handleSubmit = async () => {
     error.value = ''
 
     try {
+        const authToken = useCookie('auth_token').value
         if (archerProfile.value?.uuid) {
             await $fetch(`${apiBaseUrl}/archers/${archerProfile.value.uuid}`, {
                 method: 'PUT',
@@ -731,13 +785,12 @@ const handleSubmit = async () => {
                     full_name: profileForm.value.full_name,
                     gender: profileForm.value.gender,
                     date_of_birth: profileForm.value.date_of_birth,
-                    province: profileForm.value.province,
                     city: profileForm.value.city,
                     bow_type: profileForm.value.bow_type,
                     club_id: profileForm.value.club_id
                 },
                 headers: {
-                    'Authorization': `Bearer ${token.value}`
+                    'Authorization': `Bearer ${authToken}`
                 }
             })
         }
@@ -753,7 +806,7 @@ const handleSubmit = async () => {
             method: 'POST',
             body: payload,
             headers: {
-                'Authorization': `Bearer ${token.value}`
+                'Authorization': `Bearer ${authToken}`
             }
         })
 

@@ -84,7 +84,7 @@
                   <BaseButton v-if="searchQuery || statusFilter" variant="outline" size="sm" @click="resetFilters">
                     Hapus Filter
                   </BaseButton>
-                  <BaseButton v-else to="/dashboard/events/create" variant="primary" size="sm" icon="ph:plus-bold">
+                  <BaseButton v-else-if="canCreateEvent" to="/dashboard/events/create" variant="primary" size="sm" icon="ph:plus-bold">
                     Buat Event Pertama
                   </BaseButton>
                 </div>

@@ -1,10 +1,31 @@
 <template>
   <div class="space-y-6">
     <!-- Header -->
-    <div class="flex flex-wrap items-center justify-between gap-4">
-      <div>
-        <h1 class="text-3xl font-black text-navy tracking-tight">Klub Saya</h1>
-        <p class="text-gray-500 mt-1 font-medium">Kelola keanggotaan klub panahan Anda</p>
+    <div
+      class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
+      <!-- Background Pattern -->
+      <div class="absolute inset-0 opacity-20"
+        style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);">
+      </div>
+
+      <!-- Decorative Background Elements -->
+      <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+      <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
+      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
+
+      <!-- Header Content -->
+      <div class="relative p-6 sm:p-8">
+        <div class="flex items-start gap-4">
+          <!-- Icon Badge -->
+          <div
+            class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
+            <Icon icon="ph:buildings" class="text-primary text-2xl" />
+          </div>
+          <div>
+            <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight">Klub Saya</h1>
+            <p class="text-slate-300 text-sm mt-1">Kelola keanggotaan klub panahan Anda</p>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -85,17 +106,6 @@
 
     <!-- No Membership / Directory Search -->
     <div v-else class="space-y-8">
-      <div class="bg-white rounded-2xl border border-gray-100 p-10 text-center space-y-4">
-        <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto">
-          <Icon icon="ph:buildings-bold" class="text-5xl text-gray-200" />
-        </div>
-        <div>
-          <h3 class="text-xl font-black text-navy">Belum Bergabung dengan Klub</h3>
-          <p class="text-gray-500 max-w-md mx-auto mt-2">Cari dan temukan klub panahan di sekitar Anda untuk mulai
-            berlatih dan berprestasi bersama.</p>
-        </div>
-      </div>
-
       <!-- Search Section -->
       <div class="space-y-6">
         <div class="flex flex-col md:flex-row gap-4">
@@ -109,6 +119,17 @@
             Cari Klub
           </BaseButton>
         </div>
+
+      <div class="bg-white rounded-2xl border border-gray-100 p-10 text-center space-y-4">
+        <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto">
+          <Icon icon="ph:buildings-bold" class="text-5xl text-gray-200" />
+        </div>
+        <div>
+          <h3 class="text-xl font-black text-navy">Belum Bergabung dengan Klub</h3>
+          <p class="text-gray-500 max-w-md mx-auto mt-2">Cari dan temukan klub panahan di sekitar Anda untuk mulai
+            berlatih dan berprestasi bersama.</p>
+        </div>
+      </div>
 
         <!-- Club Results -->
         <div v-if="isSearching"
@@ -170,6 +191,10 @@ import { useToast } from '~/composables/useToast'
 
 definePageMeta({
   layout: 'dashboard'
+})
+
+useHead({
+  title: 'Klub Saya - ArcheryHub Dashboard'
 })
 
 const { get, post, del } = useApi()

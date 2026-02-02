@@ -65,22 +65,6 @@
               </p>
             </div>
 
-            <div v-if="section.type === 'stats'" class="space-y-4">
-              <p class="text-sm text-gray-600">
-                Statistik akan otomatis diambil dari data event dan performa Anda.
-              </p>
-              <div class="grid grid-cols-2 gap-4 p-4 bg-gray-50 rounded-xl">
-                <div>
-                  <p class="text-xs text-gray-500 font-bold uppercase">Total Event</p>
-                  <p class="text-2xl font-black text-navy">{{ userStats.totalEvents || 0 }}</p>
-                </div>
-                <div>
-                  <p class="text-xs text-gray-500 font-bold uppercase">Best Score</p>
-                  <p class="text-2xl font-black text-navy">{{ userStats.bestScore || '-' }}</p>
-                </div>
-              </div>
-            </div>
-
             <div v-if="section.type === 'event_history'" class="space-y-4">
               <p class="text-sm text-gray-600">
                 Riwayat event akan otomatis ditampilkan dari data event yang Anda ikuti.
@@ -309,6 +293,10 @@ definePageMeta({
   layout: 'dashboard'
 })
 
+useHead({
+  title: 'Profil Pemanah - ArcheryHub Dashboard'
+})
+
 const { user, archerProfile } = useAuth()
 const { get, put } = useApi()
 const toast = useToast()
@@ -344,13 +332,6 @@ const allSections = [
     label: 'Prestasi & Penghargaan',
     description: 'Daftar prestasi dan penghargaan',
     icon: 'ph:medal-bold',
-    defaultVisible: true
-  },
-  {
-    type: 'stats',
-    label: 'Statistik',
-    description: 'Statistik performa dan event',
-    icon: 'ph:chart-line-bold',
     defaultVisible: true
   },
   {
@@ -406,7 +387,7 @@ const availableSections = computed(() => {
 })
 
 const profileSections = computed(() => {
-  const types = ['bio', 'achievements', 'stats', 'event_history']
+  const types = ['bio', 'achievements', 'event_history']
   return activeSections.value.filter((s) => types.includes(s.type))
 })
 
@@ -417,8 +398,8 @@ const contactSections = computed(() => {
 
 // Initialize sections
 const initializeSections = () => {
-  // Default sections: bio, achievements, stats
-  const defaultSections = ['bio', 'achievements', 'stats']
+  // Default sections: bio, achievements (removed stats)
+  const defaultSections = ['bio', 'achievements']
   activeSections.value = allSections
     .filter((s) => defaultSections.includes(s.type))
     .map((s) => ({
