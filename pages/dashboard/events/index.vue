@@ -298,6 +298,10 @@ definePageMeta({
   layout: 'dashboard'
 })
 
+useHead({
+  title: 'Daftar Event - ArcheryHub Dashboard'
+})
+
 const { user } = useAuth()
 const { get, del } = useApi()
 const router = useRouter()
@@ -327,7 +331,7 @@ const statusOptions = [
 const fetchEvents = async () => {
   isLoading.value = true
   try {
-    const response = await get('/events')
+    const response = await get('/events/my')
     events.value = response?.events || []
   } catch (error) {
     console.error('Failed to fetch events:', error)

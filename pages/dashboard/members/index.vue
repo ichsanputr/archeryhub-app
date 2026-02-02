@@ -2,37 +2,42 @@
 <template>
   <div class="flex flex-col gap-8">
     <!-- Header -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-      <div>
-        <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
-          <NuxtLink to="/dashboard" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
-          <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-          <span class="text-navy">Anggota Klub</span>
+    <!-- Header -->
+    <div class="flex flex-col gap-4">
+      <Breadcrumbs :items="breadcrumbItems" current="Anggota Klub" />
+
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 class="text-2xl md:text-3xl font-extrabold text-navy tracking-tight">Roster Anggota Klub</h1>
+          <p class="text-gray-500 font-medium mt-1 text-sm md:text-base">Kelola seluruh pemanah yang terdaftar di klub
+            Anda.</p>
         </div>
-        <h1 class="text-3xl font-extrabold text-navy tracking-tight">Roster Anggota Klub</h1>
-        <p class="text-gray-500 font-medium mt-1">Kelola seluruh pemanah yang terdaftar di klub Anda.</p>
-      </div>
-      <div class="flex gap-3">
-        <button
-          class="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-xl font-semibold text-sm text-navy shadow-sm hover:bg-gray-50 transition"
-          @click="openInviteModal">
-          <Icon icon="ph:user-plus" class="text-lg" />
-          Invite Archery
-        </button>
-        <NuxtLink to="/dashboard/members/create">
+        <div class="flex gap-2">
           <button
-            class="inline-flex items-center gap-2 px-4 py-2.5 bg-navy text-white rounded-xl font-semibold text-sm shadow-lg shadow-primary/20 hover:bg-navy-dark transition">
-            <Icon icon="ph:plus-bold" class="text-lg" />
-            Tambah Anggota
+            class="inline-flex items-center gap-2 px-3 md:px-4 py-2 bg-white border border-gray-200 rounded-xl font-semibold text-xs md:text-sm text-navy shadow-sm hover:bg-gray-50 transition"
+            @click="openInviteModal">
+            <Icon icon="ph:user-plus" class="text-lg" />
+            <span class="hidden sm:inline">Invite Archery</span>
+            <span class="sm:hidden">Invite</span>
           </button>
-        </NuxtLink>
+          <NuxtLink to="/dashboard/members/create">
+            <button
+              class="inline-flex items-center gap-2 px-3 md:px-4 py-2 bg-navy text-white rounded-xl font-semibold text-xs md:text-sm shadow-lg shadow-primary/20 hover:bg-navy-dark transition">
+              <Icon icon="ph:plus-bold" class="text-lg" />
+              <span class="hidden sm:inline">Tambah Anggota</span>
+              <span class="sm:hidden">Tambah</span>
+            </button>
+          </NuxtLink>
+        </div>
       </div>
     </div>
 
     <!-- Stats -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-        <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+      <div
+        class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+        <div
+          class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
           <Icon icon="ph:users-three" class="text-xl" />
         </div>
         <div>
@@ -40,26 +45,32 @@
           <p class="text-lg font-bold text-navy">{{ members.length }}</p>
         </div>
       </div>
-      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-        <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+      <div
+        class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+        <div
+          class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
           <Icon icon="ph:gender-male" class="text-xl" />
         </div>
         <div>
           <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Putra</p>
-          <p class="text-lg font-bold text-navy">{{ members.filter(m => m.gender === 'M').length }}</p>
+          <p class="text-lg font-bold text-navy">{{members.filter(m => m.gender === 'M').length}}</p>
         </div>
       </div>
-      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-        <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+      <div
+        class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+        <div
+          class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
           <Icon icon="ph:gender-female" class="text-xl" />
         </div>
         <div>
           <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Putri</p>
-          <p class="text-lg font-bold text-navy">{{ members.filter(m => m.gender === 'F').length }}</p>
+          <p class="text-lg font-bold text-navy">{{members.filter(m => m.gender === 'F').length}}</p>
         </div>
       </div>
-      <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-        <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+      <div
+        class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+        <div
+          class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
           <Icon icon="ph:target" class="text-xl" />
         </div>
         <div>
@@ -98,8 +109,10 @@
               <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Anggota</th>
               <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Kategori</th>
               <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Jenis Busur</th>
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Event Terakhir</th>
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest text-right">Aksi</th>
+              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Event Terakhir
+              </th>
+              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest text-right">Aksi
+              </th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-50">
@@ -118,7 +131,8 @@
                       {{ member.full_name }}
                     </NuxtLink>
                     <div class="flex items-center gap-2 text-xs text-gray-400">
-                      <Icon :icon="member.gender === 'M' ? 'ph:gender-male' : member.gender === 'F' ? 'ph:gender-female' : 'ph:gender-neuter'"
+                      <Icon
+                        :icon="member.gender === 'M' ? 'ph:gender-male' : member.gender === 'F' ? 'ph:gender-female' : 'ph:gender-neuter'"
                         :class="member.gender === 'M' ? 'text-blue-500' : member.gender === 'F' ? 'text-pink-500' : 'text-gray-400'" />
                       <span>{{ calculateAge(member.date_of_birth) }} tahun</span>
                       <span class="text-gray-300">•</span>
@@ -153,8 +167,7 @@
                     class="p-2 text-gray-400 hover:text-navy hover:bg-gray-100 rounded-lg transition-colors">
                     <Icon icon="ph:eye" class="text-lg" />
                   </NuxtLink>
-                  <button
-                    class="p-2 text-gray-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors">
+                  <button class="p-2 text-gray-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors">
                     <Icon icon="ph:chart-line-up" class="text-lg" />
                   </button>
                 </div>
@@ -193,7 +206,8 @@
         </div>
         <div class="p-6 space-y-4">
           <p class="text-sm text-gray-500">Daftar akun pemanah yang belum tergabung klub.</p>
-          <div class="bg-gray-50/60 rounded-xl border border-gray-100 max-h-[380px] overflow-y-auto divide-y divide-gray-100">
+          <div
+            class="bg-gray-50/60 rounded-xl border border-gray-100 max-h-[380px] overflow-y-auto divide-y divide-gray-100">
             <div v-for="archer in inviteList" :key="archer.id || archer.uuid"
               class="flex items-center justify-between px-4 py-3 hover:bg-white transition">
               <div class="flex items-center gap-3">
@@ -229,6 +243,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import Breadcrumbs from '~/components/common/Breadcrumbs.vue'
 import { ref, computed } from 'vue'
 import { definePageMeta, onMounted } from '#imports'
 import { useApi } from '~/composables/useApi'
@@ -241,9 +256,17 @@ definePageMeta({
   middleware: ['auth']
 })
 
-const { get } = useApi()
+useHead({
+  title: 'Anggota Klub - ArcheryHub Dashboard'
+})
+
+const { get, post } = useApi()
 const { user } = useAuth()
 const toast = useToast()
+
+const breadcrumbItems = computed(() => [
+  { label: 'Dashboard', path: '/dashboard' }
+])
 
 const members = ref([])
 const inviteList = ref([])

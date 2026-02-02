@@ -9,9 +9,10 @@
                 <h1 class="text-3xl font-extrabold text-navy tracking-tight">Manajemen Produk</h1>
                 <p class="text-gray-500 font-medium mt-1">Kelola katalog produk yang Anda jual di marketplace.</p>
             </div>
-            <BaseButton variant="primary" icon="ph:plus-bold" class="shadow-lg shadow-primary/20"
-                @click="openCreateModal">
-                Tambah Produk
+            <BaseButton variant="primary" icon="ph:plus-bold"
+                class="shadow-lg shadow-primary/20 h-10 md:h-11 px-4 md:px-6" @click="openCreateModal">
+                <span class="hidden sm:inline">Tambah Produk</span>
+                <span class="sm:hidden">Tambah</span>
             </BaseButton>
         </div>
 
@@ -291,6 +292,10 @@ import { ref, computed } from 'vue'
 definePageMeta({
     title: 'Marketplace',
     layout: 'dashboard'
+})
+
+useHead({
+    title: 'Manajemen Produk - ArcheryHub Dashboard'
 })
 
 const { get, post, put, delete: del } = useApi()

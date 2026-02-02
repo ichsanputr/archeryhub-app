@@ -1,31 +1,26 @@
 <template>
     <div class="flex flex-col gap-8 pb-12">
         <!-- Header -->
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div>
-                <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
-                    <NuxtLink to="/dashboard/events" class="hover:text-navy transition-colors">Events</NuxtLink>
-                    <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <NuxtLink :to="`/dashboard/events/${route.params.id}/overview`"
-                        class="hover:text-navy transition-colors">Control Panel</NuxtLink>
-                    <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <NuxtLink :to="`/dashboard/events/${route.params.id}/participants`"
-                        class="hover:text-navy transition-colors">Peserta</NuxtLink>
-                    <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <span class="text-navy">Tambah Peserta</span>
+        <div class="flex flex-col gap-4">
+            <Breadcrumbs :items="breadcrumbItems" current="Tambah Peserta" />
+
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-extrabold text-navy tracking-tight">Tambah Peserta</h1>
+                    <p class="text-gray-500 font-medium mt-1 text-sm md:text-base">Daftarkan pemanah baru atau pilih
+                        yang sudah terdaftar.</p>
                 </div>
-                <h1 class="text-3xl font-extrabold text-navy tracking-tight">Tambah Peserta Event</h1>
-                <p class="text-gray-500 font-medium mt-1">Daftarkan pemanah baru atau pilih pemanah yang sudah terdaftar
-                    untuk event ini.</p>
-            </div>
-            <div class="flex gap-3">
-                <BaseButton variant="white" :to="`/dashboard/events/${route.params.id}/participants`" class="h-11">
-                    Batal
-                </BaseButton>
-                <BaseButton variant="primary" @click="submit" :loading="isSubmitting"
-                    class="h-11 shadow-lg shadow-primary/20">
-                    Simpan Peserta
-                </BaseButton>
+                <div class="flex gap-3">
+                    <BaseButton variant="white" :to="`/dashboard/events/${route.params.id}/participants`"
+                        class="h-10 md:h-11 px-4 md:px-6">
+                        Batal
+                    </BaseButton>
+                    <BaseButton variant="primary" @click="submit" :loading="isSubmitting"
+                        class="h-10 md:h-11 px-4 md:px-6 shadow-lg shadow-primary/20">
+                        <span class="hidden sm:inline">Simpan Peserta</span>
+                        <span class="sm:hidden">Simpan</span>
+                    </BaseButton>
+                </div>
             </div>
         </div>
 
@@ -40,115 +35,168 @@
                             <button @click="archerMode = 'existing'"
                                 :class="archerMode === 'existing' ? 'bg-navy text-white' : 'bg-gray-50 text-gray-600 hover:bg-gray-100'"
                                 class="flex-1 px-4 py-3 rounded-xl font-bold text-sm transition-colors">
-                                Pilih Pemanah Terdaftar
+                                <span class="hidden sm:inline">Pilih Pemanah Terdaftar</span>
+                                <span class="sm:hidden">Pilih Pemanah</span>
                             </button>
                             <button @click="archerMode = 'new'"
                                 :class="archerMode === 'new' ? 'bg-navy text-white' : 'bg-gray-50 text-gray-600 hover:bg-gray-100'"
                                 class="flex-1 px-4 py-3 rounded-xl font-bold text-sm transition-colors">
-                                Buat Pemanah Baru
+                                <span class="hidden sm:inline">Buat Pemanah Baru</span>
+                                <span class="sm:hidden">Buat Baru</span>
                             </button>
                         </div>
 
                         <!-- Existing Archer Selection -->
                         <div v-if="archerMode === 'existing'" class="space-y-4">
-                            <BaseInput v-model="searchArcherQuery" icon="ph:magnifying-glass"
-                                placeholder="Cari nama lengkap atau email pemanah..." label="Cari Pemanah" />
-                            <p v-if="searchArcherQuery && searchArcherQuery.length < 2" class="text-xs text-gray-400">
-                                Ketik minimal 2 karakter untuk mulai mencari.
-                            </p>
-                            <div v-if="isSearchingArchers" class="flex items-center gap-2 text-xs text-gray-400">
-                                <span
-                                    class="inline-block h-3 w-3 border-2 border-primary border-t-transparent rounded-full animate-spin"></span>
-                                Mencari pemanah...
-                            </div>
-                            <div v-if="searchArcherQuery && searchArcherQuery.length >= 2"
-                                class="max-h-64 overflow-y-auto border border-gray-100 rounded-xl">
-                                <button v-for="archer in filteredArchers" :key="archer.uuid || archer.id"
-                                    @click="selectArcher(archer)"
-                                    :class="selectedArcher?.uuid === archer.uuid ? 'bg-primary/10 border-primary' : 'hover:bg-gray-50'"
-                                    class="w-full p-4 text-left border-b border-gray-100 last:border-b-0 transition-colors">
-                                    <div class="flex items-center gap-3">
-                                        <div
-                                            class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs uppercase overflow-hidden border border-gray-200">
-                                            <img v-if="archer.photo_url || archer.avatar_url"
-                                                :src="useImageOrDefault(archer.photo_url || archer.avatar_url)"
-                                                class="w-full h-full object-cover" />
-                                            <span v-else>
-                                                {{archer.full_name?.split(' ').map(n => n[0]).join('') || 'U'}}
-                                            </span>
-                                        </div>
-                                        <div class="flex-1">
-                                            <p class="font-bold text-navy">{{ archer.full_name }}</p>
-                                            <p class="text-xs text-gray-400">{{ archer.id || '-' }}</p>
-                                        </div>
-                                        <Icon v-if="selectedArcher?.uuid === archer.uuid" icon="ph:check-circle"
-                                            class="text-primary text-xl" />
+                            <!-- Selected State -->
+                            <div v-if="selectedArcher"
+                                class="bg-blue-50 border border-blue-100 rounded-xl p-4 relative overflow-hidden group">
+                                <div class="absolute right-0 top-0 p-4 opacity-10">
+                                    <Icon icon="ph:check-circle-fill" class="text-8xl text-primary" />
+                                </div>
+                                <div class="relative z-10 flex items-center gap-4">
+                                    <div
+                                        class="h-16 w-16 rounded-full bg-white flex items-center justify-center text-navy font-bold text-xl uppercase overflow-hidden border-2 border-white shadow-sm">
+                                        <img :src="useImageOrDefault(selectedArcher.photo_url || selectedArcher.avatar_url, selectedArcher.full_name)"
+                                            class="w-full h-full object-cover" />
                                     </div>
-                                </button>
-                                <div v-if="filteredArchers.length === 0" class="p-4 text-center text-gray-400 text-sm">
-                                    Tidak ada pemanah ditemukan
+                                    <div class="flex-1">
+                                        <p class="text-xs font-bold text-blue-600 uppercase tracking-wider mb-1">Pemanah
+                                            Terpilih</p>
+                                        <p class="font-black text-navy text-lg">{{ selectedArcher.full_name }}</p>
+                                        <p class="text-sm text-gray-500 font-medium">{{ selectedArcher.club_name || '-'
+                                            }}</p>
+                                    </div>
+                                    <button @click="selectedArcher = null"
+                                        class="h-10 px-4 bg-white text-red-500 text-sm font-bold rounded-lg border border-red-100 hover:bg-red-50 transition-colors shadow-sm">
+                                        Ganti
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Search State -->
+                            <div v-else class="space-y-4">
+                                <BaseInput v-model="searchArcherQuery" icon="ph:magnifying-glass"
+                                    placeholder="Cari nama lengkap atau email pemanah..." label="Cari Pemanah" />
+
+                                <!-- Search Results -->
+                                <div v-if="searchArcherQuery && searchArcherQuery.length >= 2"
+                                    class="max-h-64 overflow-y-auto border border-gray-100 rounded-xl bg-white shadow-sm">
+                                    <template v-if="filteredArchers.length > 0">
+                                        <button v-for="archer in filteredArchers" :key="archer.uuid || archer.id"
+                                            @click="selectArcher(archer)"
+                                            class="w-full p-4 text-left border-b border-gray-100 last:border-b-0 hover:bg-gray-50 transition-colors group">
+                                            <div class="flex items-center gap-3">
+                                                <div
+                                                    class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs uppercase overflow-hidden border border-gray-200 group-hover:border-primary/50 transition-colors">
+                                                    <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
+                                                        class="w-full h-full object-cover" />
+                                                </div>
+                                                <div class="flex-1">
+                                                    <p
+                                                        class="font-bold text-navy group-hover:text-primary transition-colors">
+                                                        {{ archer.full_name }}</p>
+                                                    <div class="flex items-center gap-2 text-xs text-gray-400">
+                                                        <span>{{ archer.club_name || 'Individual' }}</span>
+                                                        <span v-if="archer.city"
+                                                            class="w-1 h-1 rounded-full bg-gray-300"></span>
+                                                        <span v-if="archer.city">{{ archer.city }}</span>
+                                                    </div>
+                                                </div>
+                                                <Icon icon="ph:plus-circle-bold"
+                                                    class="text-gray-300 group-hover:text-primary text-xl transition-colors" />
+                                            </div>
+                                        </button>
+                                    </template>
+                                    <!-- Empty Result State -->
+                                    <div v-else class="p-8 text-center">
+                                        <Icon icon="ph:user-minus" class="text-3xl text-gray-300 mx-auto mb-2" />
+                                        <p class="text-sm font-bold text-gray-500">Pemanah tidak ditemukan</p>
+                                        <p class="text-xs text-gray-400 mt-1">Coba kata kunci lain atau buat pemanah
+                                            baru</p>
+                                    </div>
+                                </div>
+
+                                <!-- Initial Search Empty State (No Query) -->
+                                <div v-else-if="!searchArcherQuery && !isSearchingArchers"
+                                    class="py-12 border-2 border-dashed border-gray-100 rounded-xl flex flex-col items-center justify-center text-center">
+                                    <div
+                                        class="h-12 w-12 rounded-full bg-gray-50 flex items-center justify-center mb-3">
+                                        <Icon icon="ph:magnifying-glass" class="text-2xl text-gray-300" />
+                                    </div>
+                                    <p class="text-sm font-bold text-gray-500">Cari Pemanah Terdaftar</p>
+                                    <p class="text-xs text-gray-400 max-w-[200px] mt-1">Ketik nama atau email untuk
+                                        mencari data pemanah</p>
+                                </div>
+
+                                <div v-if="isSearchingArchers"
+                                    class="flex items-center justify-center py-8 gap-2 text-sm text-gray-400 font-medium">
+                                    <span
+                                        class="inline-block h-4 w-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></span>
+                                    Mencari pemanah...
                                 </div>
                             </div>
                         </div>
 
                         <!-- New Archer Form Info -->
-                        <div v-if="archerMode === 'new'"
-                            class="space-y-4 border border-gray-100 rounded-xl p-4 bg-gray-50/50">
-                            <div class="flex items-center gap-3 text-navy font-bold">
+                        <div v-if="archerMode === 'new'" class="space-y-4">
+                            <div
+                                class="flex items-center gap-3 text-navy font-bold p-4 border border-blue-100 bg-blue-50/50 rounded-xl text-sm">
                                 <Icon icon="ph:info-bold" class="text-xl text-primary" />
                                 <span>Pemanah baru akan dibuat sebagai akun Archeryhub global.</span>
                             </div>
-                        </div>
 
-                        <!-- Avatar Upload -->
-                        <div class="flex items-center gap-4 p-4 bg-white border border-gray-100 rounded-xl">
-                            <div
-                                class="relative w-16 h-16 rounded-full bg-gray-50 border border-gray-100 overflow-hidden flex-shrink-0 group">
-                                <img v-if="newArcherForm.avatar_url" :src="newArcherForm.avatar_url"
-                                    class="w-full h-full object-cover">
-                                <div v-else class="w-full h-full flex items-center justify-center text-gray-300">
-                                    <Icon icon="ph:user" class="text-3xl" />
-                                </div>
-                                <button @click="showMediaLibrary = true"
-                                    class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white">
-                                    <Icon icon="ph:pencil-simple" />
-                                </button>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-sm font-bold text-navy mb-1">Foto Profil</p>
-                                <div class="flex gap-2">
+                            <!-- Avatar Upload -->
+                            <div class="flex items-center gap-4 p-4 bg-white border border-gray-100 rounded-xl">
+                                <div
+                                    class="relative w-16 h-16 rounded-full bg-gray-50 border border-gray-100 overflow-hidden flex-shrink-0 group">
+                                    <img v-if="newArcherForm.avatar_url" :src="newArcherForm.avatar_url"
+                                        class="w-full h-full object-cover">
+                                    <div v-else class="w-full h-full flex items-center justify-center text-gray-300">
+                                        <Icon icon="ph:user" class="text-3xl" />
+                                    </div>
                                     <button @click="showMediaLibrary = true"
-                                        class="text-xs text-primary font-bold hover:underline">
-                                        {{ newArcherForm.avatar_url ? 'Ganti Foto' : 'Upload Foto' }}
-                                    </button>
-                                    <button v-if="newArcherForm.avatar_url" @click="newArcherForm.avatar_url = ''"
-                                        class="text-xs text-red-500 font-bold hover:underline">
-                                        Hapus
+                                        class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white">
+                                        <Icon icon="ph:pencil-simple" />
                                     </button>
                                 </div>
+                                <div class="flex-1">
+                                    <p class="text-sm font-bold text-navy mb-1">Foto Profil</p>
+                                    <div class="flex gap-2">
+                                        <button @click="showMediaLibrary = true"
+                                            class="text-xs text-primary font-bold hover:underline">
+                                            {{ newArcherForm.avatar_url ? 'Ganti Foto' : 'Upload Foto' }}
+                                        </button>
+                                        <button v-if="newArcherForm.avatar_url" @click="newArcherForm.avatar_url = ''"
+                                            class="text-xs text-red-500 font-bold hover:underline">
+                                            Hapus
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <BaseInput v-model="newArcherForm.full_name" label="Nama Lengkap"
-                                placeholder="Nama sesuai identitas" required @input="generateUsername" />
-                            <BaseInput v-model="newArcherForm.email" label="Email" type="email"
-                                placeholder="email@example.com (opsional)" />
-                            <BaseInput v-model="newArcherForm.phone" label="No. Telepon" type="tel"
-                                placeholder="08xxxxxxxxxx" />
-                            <BaseInput v-model="newArcherForm.date_of_birth" label="Tanggal Lahir" type="date" />
-                            <BaseSelect v-model="newArcherForm.gender" label="Jenis Kelamin" :items="genderOptions" />
-                            <BaseSelect v-model="newArcherForm.bow_type" label="Jenis Busur" :items="bowOptions" />
-                            <BaseInput v-model="newArcherForm.city" label="Kota" placeholder="Jakarta" />
-                            <BaseInput v-model="newArcherForm.school" label="Sekolah"
-                                placeholder="Nama sekolah (opsional)" />
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <BaseInput v-model="newArcherForm.full_name" label="Nama Lengkap"
+                                    placeholder="Nama sesuai identitas" required @input="generateUsername" />
+                                <BaseInput v-model="newArcherForm.email" label="Email" type="email"
+                                    placeholder="email@example.com (opsional)" />
+                                <BaseInput v-model="newArcherForm.phone" label="No. Telepon" type="tel"
+                                    placeholder="08xxxxxxxxxx" />
+                                <BaseInput v-model="newArcherForm.date_of_birth" label="Tanggal Lahir" type="date" />
+                                <BaseSelect v-model="newArcherForm.gender" label="Jenis Kelamin"
+                                    :items="genderOptions" />
+                                <BaseSelect v-model="newArcherForm.bow_type" label="Jenis Busur" :items="bowOptions" />
+                                <BaseInput v-model="newArcherForm.city" label="Kota" placeholder="Jakarta" />
+                                <BaseInput v-model="newArcherForm.school" label="Sekolah"
+                                    placeholder="Nama sekolah (opsional)" />
+                            </div>
+                            <BaseSelect v-model="newArcherForm.club_id" label="Klub" :items="clubOptions" />
+                            <BaseTextarea v-model="newArcherForm.address" label="Alamat" placeholder="Alamat lengkap"
+                                :rows="2" />
+                            <p class="text-xs text-gray-400">
+                                Field bertanda * wajib diisi untuk membuat pemanah baru.
+                            </p>
                         </div>
-                        <BaseSelect v-model="newArcherForm.club_id" label="Klub" :items="clubOptions" />
-                        <BaseTextarea v-model="newArcherForm.address" label="Alamat" placeholder="Alamat lengkap"
-                            :rows="2" />
-                        <p class="text-xs text-gray-400">
-                            Field bertanda * wajib diisi untuk membuat pemanah baru.
-                        </p>
                     </div>
                 </div>
             </div>
@@ -192,24 +240,6 @@
             </div>
         </div>
 
-        <!-- Side Card -->
-        <div class="space-y-4">
-
-            <div v-if="selectedArcher" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
-                <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em]">Pemanah Terpilih</h3>
-                <div class="flex items-center gap-3">
-                    <div
-                        class="h-12 w-12 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-sm uppercase overflow-hidden border border-gray-200">
-                        <img :src="useImageOrDefault(selectedArcher.photo_url || selectedArcher.avatar_url, selectedArcher.full_name)"
-                            class="w-full h-full object-cover" />
-                    </div>
-                    <div>
-                        <p class="font-bold text-navy">{{ selectedArcher.full_name }}</p>
-                        <p class="text-xs text-gray-400">{{ selectedArcher.id || '-' }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <MediaLibrary :show="showMediaLibrary" @close="showMediaLibrary = false" @select="handleAvatarSelect" />
@@ -217,6 +247,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import Breadcrumbs from '~/components/common/Breadcrumbs.vue'
 import MediaLibrary from '~/components/common/MediaLibrary.vue'
 import { ref, computed, onMounted, onBeforeUnmount, watch, reactive } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -228,6 +259,10 @@ import { useAuth } from '~/composables/useAuth'
 definePageMeta({
     layout: 'dashboard',
     middleware: ['auth']
+})
+
+useHead({
+    title: 'Tambah Peserta - ArcheryHub Dashboard'
 })
 
 const route = useRoute()
@@ -242,6 +277,14 @@ const archers = ref([])
 const categories = ref([])
 const clubs = ref([])
 const archerMode = ref('existing')
+
+const breadcrumbItems = computed(() => [
+    { label: 'Dashboard', path: '/dashboard' },
+    { label: 'Events', path: '/dashboard/events' },
+    { label: 'Control Panel', path: `/dashboard/events/${route.params.id}/overview` },
+    { label: 'Peserta', path: `/dashboard/events/${route.params.id}/participants` }
+])
+
 const searchArcherQuery = ref('')
 const selectedArcher = ref(null)
 const isSubmitting = ref(false)

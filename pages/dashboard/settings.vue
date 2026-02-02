@@ -205,6 +205,10 @@ definePageMeta({
   middleware: ['auth']
 })
 
+useHead({
+  title: 'Pengaturan Akun - ArcheryHub Dashboard'
+})
+
 const { user, fetchUser } = useAuth()
 const { get, put } = useApi()
 const toast = useToast()

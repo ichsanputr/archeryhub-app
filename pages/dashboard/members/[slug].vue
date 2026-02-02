@@ -60,8 +60,7 @@
         <div class="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100">
           <div>
             <p class="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-1">Jenis Busur</p>
-            <p class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold"
-               :class="bowBadgeClass">
+            <p class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold" :class="bowBadgeClass">
               <Icon icon="ph:bow-and-arrow" class="text-base" />
               <span>{{ member?.bow_type || 'Recurve' }}</span>
             </p>
@@ -152,12 +151,9 @@
           <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em]">Catatan Pelatih</h3>
           <span class="text-[11px] text-gray-400">Hanya terlihat oleh staf klub</span>
         </div>
-        <textarea
-          v-model="coachNotes"
-          rows="6"
+        <textarea v-model="coachNotes" rows="6"
           class="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/60 resize-none"
-          placeholder="Tuliskan evaluasi teknik, mental, dan rekomendasi latihan untuk pemanah ini..."
-        />
+          placeholder="Tuliskan evaluasi teknik, mental, dan rekomendasi latihan untuk pemanah ini..." />
         <button
           class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-navy text-white rounded-xl font-semibold text-sm shadow-sm hover:bg-navy-dark transition">
           <Icon icon="ph:floppy-disk" class="text-lg" />
@@ -182,6 +178,10 @@ definePageMeta({
   title: 'Detail Anggota Klub',
   layout: 'dashboard',
   middleware: ['auth']
+})
+
+useHead({
+  title: 'Detail Anggota - ArcheryHub Dashboard'
 })
 
 const calculateAge = (dob) => {
@@ -242,4 +242,3 @@ onMounted(() => {
   fetchMember()
 })
 </script>
-

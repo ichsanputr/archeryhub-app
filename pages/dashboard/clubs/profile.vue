@@ -387,6 +387,10 @@ definePageMeta({
   middleware: ['auth']
 })
 
+useHead({
+  title: 'Profil Klub - ArcheryHub Dashboard'
+})
+
 const router = useRouter()
 const { get, put, upload } = useApi()
 const { user } = useAuth()

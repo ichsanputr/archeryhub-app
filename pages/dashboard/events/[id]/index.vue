@@ -64,6 +64,10 @@ const divisions = [
   { name: 'Divisi Compound', dist: '50m', icon: 'ph:target-bold', categories: ['Individu Putra', 'Individu Putri', 'Beregu Campuran'] }
 ]
 
+useHead({
+  title: 'Tentang Event - ArcheryHub Dashboard'
+})
+
 const prizes = [
   { pos: 'Juara 1', amount: 'Rp 15.000.000', emoji: '🥇', extra: '+ Medali Emas & Sertifikat', bg: 'from-yellow-400/10 to-transparent border-yellow-400/20' },
   { pos: 'Juara 2', amount: 'Rp 10.000.000', emoji: '🥈', extra: '+ Medali Perak & Sertifikat', bg: 'from-gray-400/10 to-transparent border-gray-400/20' },

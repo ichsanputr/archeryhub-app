@@ -1,22 +1,28 @@
 <template>
     <div class="flex flex-col gap-6 pb-12">
         <!-- Header -->
-        <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
-            <div class="space-y-1">
-                <h1 class="text-3xl font-black text-navy tracking-tight">Daftar Peserta Event</h1>
-                <p class="text-gray-500 text-sm">Lihat dan kelola semua peserta yang terdaftar dalam event ini.</p>
-            </div>
+        <div class="flex flex-col gap-4">
+            <Breadcrumbs :items="breadcrumbItems" current="Peserta" />
 
-            <!-- Action Buttons -->
-            <div class="flex gap-3 flex-shrink-0">
-                <BaseButton variant="white" icon="ph:download" class="h-11 px-5">
-                    Export CSV
-                </BaseButton>
-                <BaseButton :to="`/dashboard/events/${route.params.id}/participants/add`" variant="primary"
-                    icon="ph:plus-bold"
-                    class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all">
-                    Tambah Peserta
-                </BaseButton>
+            <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
+                <div class="space-y-1">
+                    <h1 class="text-2xl md:text-3xl font-black text-navy tracking-tight">Daftar Peserta</h1>
+                    <p class="text-gray-500 text-sm">Lihat dan kelola semua peserta yang terdaftar.</p>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex gap-3 flex-shrink-0">
+                    <BaseButton variant="white" icon="ph:download" class="h-10 md:h-11 px-4 md:px-5">
+                        <span class="hidden sm:inline">Export CSV</span>
+                        <span class="sm:hidden">Export</span>
+                    </BaseButton>
+                    <BaseButton :to="`/dashboard/events/${route.params.id}/participants/add`" variant="primary"
+                        icon="ph:plus-bold"
+                        class="h-10 md:h-11 px-4 md:px-5 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all">
+                        <span class="hidden sm:inline">Tambah Peserta</span>
+                        <span class="sm:hidden">Tambah</span>
+                    </BaseButton>
+                </div>
             </div>
         </div>
 
@@ -219,6 +225,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import Breadcrumbs from '~/components/common/Breadcrumbs.vue'
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
 import { useApi } from '~/composables/useApi'
@@ -228,9 +235,19 @@ definePageMeta({
     layout: 'dashboard'
 })
 
+useHead({
+    title: 'Daftar Peserta - ArcheryHub Dashboard'
+})
+
 const route = useRoute()
 const { get } = useApi()
 const { setEvent, clearEvent } = useEventContext()
+
+const breadcrumbItems = computed(() => [
+    { label: 'Dashboard', path: '/dashboard' },
+    { label: 'Events', path: '/dashboard/events' },
+    { label: 'Control Panel', path: `/dashboard/events/${route.params.id}/overview` }
+])
 
 const participants = ref([])
 const total = ref(0)

@@ -1,5 +1,7 @@
 <template>
-    <div class="flex flex-col gap-8 pb-12">
+    <div class="flex flex-col gap-6 pb-12">
+        <Breadcrumbs :items="breadcrumbItems" current="Control Panel" />
+
         <!-- Enhanced Header -->
         <div
             class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
@@ -67,7 +69,8 @@
         <div v-if="isLoading" class="space-y-8">
             <!-- Stats Grid Skeleton -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-                <div v-for="i in 4" :key="i" class="bg-white rounded-xl p-5 h-32 border border-gray-100 shadow-sm flex flex-col justify-between">
+                <div v-for="i in 4" :key="i"
+                    class="bg-white rounded-xl p-5 h-32 border border-gray-100 shadow-sm flex flex-col justify-between">
                     <div class="flex justify-between items-start">
                         <div class="space-y-2">
                             <div class="h-3 w-20 bg-gray-100 animate-pulse rounded"></div>
@@ -100,7 +103,9 @@
                         </div>
                         <div class="space-y-4">
                             <div class="h-3 w-32 bg-gray-100 animate-pulse rounded mb-6"></div>
-                            <div v-for="i in 3" :key="i" class="h-20 bg-white border border-gray-50 rounded-xl animate-pulse"></div>
+                            <div v-for="i in 3" :key="i"
+                                class="h-20 bg-white border border-gray-50 rounded-xl animate-pulse">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -112,7 +117,8 @@
                         <div class="h-4 w-16 bg-gray-50 animate-pulse rounded"></div>
                     </div>
                     <div class="p-0">
-                        <div v-for="i in 5" :key="i" class="border-b border-gray-50 p-4 px-6 flex items-center justify-between">
+                        <div v-for="i in 5" :key="i"
+                            class="border-b border-gray-50 p-4 px-6 flex items-center justify-between">
                             <div class="flex items-center gap-4">
                                 <div class="size-6 bg-gray-100 animate-pulse rounded"></div>
                                 <div class="space-y-2">
@@ -461,6 +467,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import Breadcrumbs from '~/components/common/Breadcrumbs.vue'
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useApi } from '~/composables/useApi'
@@ -470,9 +477,19 @@ definePageMeta({
     layout: 'dashboard'
 })
 
+useHead({
+    title: 'Panel Kontrol Event - ArcheryHub Dashboard'
+})
+
 const route = useRoute()
 const { get, post } = useApi()
 const { setEvent, clearEvent } = useEventContext()
+
+const breadcrumbItems = computed(() => [
+    { label: 'Dashboard', path: '/dashboard' },
+    { label: 'Events', path: '/dashboard/events' }
+])
+
 const event = ref(null)
 const eventCategories = ref([])
 const participants = ref([])

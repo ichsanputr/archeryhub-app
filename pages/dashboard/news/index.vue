@@ -62,7 +62,7 @@
                 <div>
                     <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Total View</p>
                     <p class="text-lg font-bold text-navy">{{news.reduce((acc, n) => acc + n.views, 0).toLocaleString()
-                    }}</p>
+                        }}</p>
                 </div>
             </div>
         </div>
@@ -186,6 +186,10 @@ import { ref, computed } from 'vue'
 definePageMeta({
     title: 'Berita',
     layout: 'dashboard'
+})
+
+useHead({
+    title: 'Manajemen Berita - ArcheryHub Dashboard'
 })
 
 const { get, delete: del } = useApi()

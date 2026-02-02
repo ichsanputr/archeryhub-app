@@ -1,5 +1,7 @@
 <template>
     <div class="flex flex-col gap-6 pb-12">
+        <Breadcrumbs :items="breadcrumbItems" current="Detail Peserta" />
+
         <!-- Enhanced Header -->
         <div
             class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
@@ -16,7 +18,7 @@
             <!-- Header Content -->
             <div class="relative p-6 sm:p-8">
                 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-                    <div class="flex items-start gap-4">
+                    <div class="flex flex-col sm:flex-row sm:items-start gap-4 flex-1">
                         <!-- Icon Badge -->
                         <div
                             class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
@@ -24,16 +26,8 @@
                         </div>
 
                         <!-- Title Section -->
-                        <div class="flex-1">
-                            <div class="flex items-center gap-2 text-sm text-slate-300 mb-2 font-bold tracking-tight">
-                                <NuxtLink :to="`/dashboard/events/${route.params.id}/participants`"
-                                    class="hover:text-white transition-colors">
-                                    Daftar Peserta
-                                </NuxtLink>
-                                <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                                <span class="text-white">Detail Peserta</span>
-                            </div>
-                            <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
+                        <div class="flex-1 min-w-0">
+                            <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2 truncate">
                                 Detail Peserta
                             </h1>
                             <p class="text-slate-300 text-sm max-w-2xl">
@@ -46,13 +40,14 @@
                     <div class="flex gap-3 flex-shrink-0">
                         <NuxtLink
                             :to="`/dashboard/events/${route.params.id}/participants/${route.params.participantId}/edit`"
-                            class="h-11 px-6 bg-primary text-navy font-black rounded-xl flex items-center gap-2 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all">
+                            class="h-10 md:h-11 px-4 md:px-6 bg-primary text-navy font-black rounded-xl flex items-center gap-2 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all">
                             <Icon icon="ph:pencil-simple-bold" />
-                            Edit Peserta
+                            <span class="hidden sm:inline">Edit Peserta</span>
+                            <span class="sm:hidden">Edit</span>
                         </NuxtLink>
-                        <BaseButton variant="white" icon="ph:arrow-left" class="h-11 px-5 font-bold"
+                        <BaseButton variant="white" icon="ph:arrow-left" class="h-10 md:h-11 px-4 md:px-5 font-bold"
                             @click="$router.push(`/dashboard/events/${route.params.id}/participants`)">
-                            Kembali
+                            <span class="hidden sm:inline">Kembali</span>
                         </BaseButton>
                     </div>
                 </div>
@@ -123,63 +118,53 @@
                                     class="w-full h-full object-cover">
                             </div>
                             <div>
-                                <div class="flex items-center gap-2 mb-1">
-                                    <p class="font-black text-navy text-lg">{{ participant.full_name }}</p>
-                                    <span v-if="participant.archer_id"
-                                        class="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-full text-[10px] font-bold uppercase tracking-wider border border-blue-100">
-                                        Verified
-                                    </span>
-                                    <span v-else
-                                        class="px-2 py-0.5 bg-gray-100 text-gray-500 rounded-full text-[10px] font-bold uppercase tracking-wider border border-gray-200">
-                                        Guest
-                                    </span>
-                                </div>
-                                <p class="text-sm font-bold text-gray-500 flex items-center gap-1.5">
-                                    <Icon icon="ph:identification-card" />
-                                    {{ participant.athlete_code || '-' }}
-                                </p>
+                                <p class="font-black text-navy text-lg">{{ participant.full_name }}</p>
                             </div>
+                            <p class="text-sm font-bold text-gray-500 flex items-center gap-1.5">
+                                <Icon icon="ph:identification-card" />
+                                {{ participant.athlete_code || '-' }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Participant Competition Data -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                    <div>
+                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-1.5 opacity-70">
+                            Divisi & Kategori</p>
+                        <div class="flex items-center gap-2.5 text-slate-600">
+                            <div
+                                class="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center text-black transition-transform">
+                                <Icon icon="ph:trophy-bold" class="text-lg" />
+                            </div>
+
+                            <p class="font-bold tracking-tight">{{ getCategoryName(participant) }}</p>
                         </div>
                     </div>
 
-                    <!-- Participant Competition Data -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-                        <div>
-                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-1.5 opacity-70">
-                                Divisi & Kategori</p>
-                            <div class="flex items-center gap-2.5 text-slate-600">
-                                <div
-                                    class="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center text-black transition-transform">
-                                    <Icon icon="ph:trophy-bold" class="text-lg" />
-                                </div>
-
-                                <p class="font-bold tracking-tight">{{ getCategoryName(participant) }}</p>
+                    <div>
+                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-1.5 opacity-70">
+                            Nomor Target</p>
+                        <div class="flex items-center gap-2.5 text-slate-600">
+                            <div
+                                class="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center text-black transition-transform">
+                                <Icon icon="ph:target-bold" class="text-lg" />
                             </div>
+                            <p class="font-bold tracking-tight">{{ targetNumberText }}</p>
                         </div>
+                    </div>
 
-                        <div>
-                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-1.5 opacity-70">
-                                Nomor Target</p>
-                            <div class="flex items-center gap-2.5 text-slate-600">
-                                <div
-                                    class="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center text-black transition-transform">
-                                    <Icon icon="ph:target-bold" class="text-lg" />
-                                </div>
-                                <p class="font-bold tracking-tight">{{ targetNumberText }}</p>
+                    <div>
+                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-1.5 opacity-70">
+                            Tanggal Pendaftaran</p>
+                        <div class="flex items-center gap-2.5 text-slate-600">
+                            <div
+                                class="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center text-black transition-transform">
+                                <Icon icon="ph:calendar-check-bold" class="text-lg" />
                             </div>
-                        </div>
-
-                        <div>
-                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-1.5 opacity-70">
-                                Tanggal Pendaftaran</p>
-                            <div class="flex items-center gap-2.5 text-slate-600">
-                                <div
-                                    class="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center text-black transition-transform">
-                                    <Icon icon="ph:calendar-check-bold" class="text-lg" />
-                                </div>
-                                <p class="font-bold tracking-tight">{{
-                                    formatDate(participant?.registration_date) }}</p>
-                            </div>
+                            <p class="font-bold tracking-tight">{{
+                                formatDate(participant?.registration_date) }}</p>
                         </div>
                     </div>
                 </div>
@@ -288,6 +273,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import Breadcrumbs from '~/components/common/Breadcrumbs.vue'
 import QrcodeVue from 'qrcode.vue'
 import { ref, reactive, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -299,10 +285,21 @@ definePageMeta({
     layout: 'dashboard'
 })
 
+useHead({
+    title: 'Detail Peserta - ArcheryHub Dashboard'
+})
+
 const route = useRoute()
 const router = useRouter()
 const { get, put } = useApi()
 const toast = useToast()
+
+const breadcrumbItems = computed(() => [
+    { label: 'Dashboard', path: '/dashboard' },
+    { label: 'Events', path: '/dashboard/events' },
+    { label: 'Control Panel', path: `/dashboard/events/${route.params.id}/overview` },
+    { label: 'Peserta', path: `/dashboard/events/${route.params.id}/participants` }
+])
 
 const eventId = route.params.id
 const participantId = route.params.participantId

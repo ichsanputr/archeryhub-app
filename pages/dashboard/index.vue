@@ -460,7 +460,7 @@
                   <td class="px-6 py-3.5">
                     <div class="text-navy-dark font-bold group-hover:text-primary-hover transition-colors">{{
                       archer.name
-                      }}</div>
+                    }}</div>
                     <div class="text-gray-400 text-xs">{{ archer.category }}</div>
                   </td>
                   <td
@@ -488,8 +488,13 @@ import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, Li
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
+
 definePageMeta({
   layout: 'dashboard'
+})
+
+useHead({
+  title: 'Dashboard - ArcheryHub'
 })
 
 const router = useRouter()

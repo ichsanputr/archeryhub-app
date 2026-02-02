@@ -164,6 +164,10 @@ const city = ref('')
 const level = ref('')
 const sortBy = ref('name')
 
+useHead({
+    title: 'Cari Klub - ArcheryHub'
+})
+
 const provinces = ['DKI Jakarta', 'Jawa Barat', 'Jawa Timur', 'Bali']
 const cities = ['Jakarta Selatan', 'Bandung', 'Surabaya', 'Denpasar']
 

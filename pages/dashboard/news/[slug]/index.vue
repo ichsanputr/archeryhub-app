@@ -176,6 +176,10 @@ definePageMeta({
     layout: 'dashboard'
 })
 
+useHead({
+    title: 'Detail Berita - ArcheryHub Dashboard'
+})
+
 const route = useRoute()
 const router = useRouter()
 const toast = useToast()

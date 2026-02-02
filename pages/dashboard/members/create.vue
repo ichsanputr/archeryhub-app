@@ -85,6 +85,10 @@ definePageMeta({
   middleware: ['auth']
 })
 
+useHead({
+  title: 'Tambah Anggota - ArcheryHub Dashboard'
+})
+
 const router = useRouter()
 const { get, post } = useApi()
 const { user } = useAuth()

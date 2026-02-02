@@ -1,20 +1,21 @@
 <template>
   <div class="flex flex-col gap-8">
     <!-- Header Section -->
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-      <div>
-        <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
-          <NuxtLink to="/dashboard" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
-          <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-          <span class="text-navy">Tim</span>
+    <div class="flex flex-col gap-4">
+      <Breadcrumbs :items="breadcrumbItems" current="Tim" />
+
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 class="text-2xl md:text-3xl font-extrabold text-navy tracking-tight">Manajemen Tim</h1>
+          <p class="text-gray-500 font-medium mt-1 text-sm md:text-base">Kelola tim dan peserta grup dalam event Anda.
+          </p>
         </div>
-        <h1 class="text-3xl font-extrabold text-navy tracking-tight">Manajemen Tim</h1>
-        <p class="text-gray-500 font-medium mt-1">Kelola tim dan peserta grup dalam event Anda.</p>
+        <BaseButton variant="primary" icon="ph:plus-bold" class="shadow-lg shadow-primary/20 h-10 md:h-11 px-4 md:px-6"
+          @click="showCreateModal = true">
+          <span class="hidden sm:inline">Buat Tim Baru</span>
+          <span class="sm:hidden">Buat Tim</span>
+        </BaseButton>
       </div>
-      <BaseButton variant="primary" icon="ph:plus-bold" class="shadow-lg shadow-primary/20"
-        @click="showCreateModal = true">
-        Buat Tim Baru
-      </BaseButton>
     </div>
 
     <!-- Quick Stats -->
@@ -182,6 +183,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import Breadcrumbs from '~/components/common/Breadcrumbs.vue'
 import { ref, computed } from 'vue'
 
 definePageMeta({
@@ -189,8 +191,16 @@ definePageMeta({
   layout: 'dashboard'
 })
 
+useHead({
+  title: 'Manajemen Tim - ArcheryHub Dashboard'
+})
+
 const { get, delete: del } = useApi()
 const toast = useToast()
+
+const breadcrumbItems = computed(() => [
+  { label: 'Dashboard', path: '/dashboard' }
+])
 
 const teams = ref([])
 const isLoading = ref(true)

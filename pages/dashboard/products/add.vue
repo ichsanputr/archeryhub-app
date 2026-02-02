@@ -9,7 +9,8 @@
                     <span class="text-navy">Tambah Produk</span>
                 </div>
                 <h1 class="text-3xl font-extrabold text-navy tracking-tight">Tambah Produk Baru</h1>
-                <p class="text-gray-500 font-medium mt-1">Lengkapi informasi produk untuk ditambahkan ke marketplace.</p>
+                <p class="text-gray-500 font-medium mt-1">Lengkapi informasi produk untuk ditambahkan ke marketplace.
+                </p>
             </div>
         </div>
 
@@ -68,7 +69,8 @@
                                 <div>
                                     <label class="block text-sm font-bold text-gray-700 mb-2">Harga Normal *</label>
                                     <div class="relative">
-                                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">Rp</span>
+                                        <span
+                                            class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">Rp</span>
                                         <input v-model.number="form.price" type="number" min="0" step="1000" required
                                             class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                                             placeholder="0" />
@@ -77,7 +79,8 @@
                                 <div>
                                     <label class="block text-sm font-bold text-gray-700 mb-2">Harga Diskon</label>
                                     <div class="relative">
-                                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">Rp</span>
+                                        <span
+                                            class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">Rp</span>
                                         <input v-model.number="form.sale_price" type="number" min="0" step="1000"
                                             class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                                             placeholder="0 (opsional)" />
@@ -107,13 +110,16 @@
                                 <p class="text-xs text-gray-400 mt-1">URL gambar utama produk</p>
                             </div>
                             <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2">Gambar Tambahan (URL, satu per baris)</label>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Gambar Tambahan (URL, satu per
+                                    baris)</label>
                                 <textarea v-model="additionalImagesText" rows="4"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
                                     placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg"></textarea>
-                                <p class="text-xs text-gray-400 mt-1">Masukkan URL gambar tambahan, satu URL per baris</p>
+                                <p class="text-xs text-gray-400 mt-1">Masukkan URL gambar tambahan, satu URL per baris
+                                </p>
                             </div>
-                            <div v-if="form.images && form.images.length > 0" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div v-if="form.images && form.images.length > 0"
+                                class="grid grid-cols-2 md:grid-cols-4 gap-4">
                                 <div v-for="(img, idx) in form.images" :key="idx" class="relative group">
                                     <img :src="img" :alt="`Image ${idx + 1}`"
                                         class="w-full aspect-square object-cover rounded-xl border border-gray-200" />
@@ -154,7 +160,8 @@
                     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sticky top-24">
                         <h3 class="text-lg font-bold text-navy mb-4">Aksi</h3>
                         <div class="space-y-3">
-                            <BaseButton type="submit" variant="primary" size="lg" class="w-full" :loading="isSubmitting">
+                            <BaseButton type="submit" variant="primary" size="lg" class="w-full"
+                                :loading="isSubmitting">
                                 Simpan Produk
                             </BaseButton>
                             <BaseButton type="button" variant="white" size="lg" class="w-full" @click="$router.back()">
@@ -195,6 +202,10 @@ import { useAuth } from '~/composables/useAuth'
 
 definePageMeta({
     layout: 'dashboard'
+})
+
+useHead({
+    title: 'Tambah Produk - ArcheryHub Dashboard'
 })
 
 const router = useRouter()

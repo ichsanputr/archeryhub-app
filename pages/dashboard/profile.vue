@@ -284,7 +284,7 @@ definePageMeta({
 
 const route = useRoute()
 useSeoMeta({
-  title: 'Profil Saya - Archeryhub.id',
+  title: 'Profil Saya - ArcheryHub Dashboard',
   description: 'Lihat progres dan pencapaian kamu di Archeryhub.id'
 })
 useHead({
