@@ -154,15 +154,11 @@
                                                 'Atlet Baru' }}</h3>
                                             <p class="text-sm text-gray-500 mb-2">{{ archerProfile?.email ||
                                                 userDisplay.email
-                                                }}</p>
+                                            }}</p>
                                             <div class="flex flex-wrap gap-2">
                                                 <span v-if="archerProfile?.id"
                                                     class="text-[10px] text-navy font-bold bg-gray-100 px-2.5 py-1 rounded-full border border-gray-200 uppercase tracking-wider">
                                                     ID: {{ archerProfile.id }}
-                                                </span>
-                                                <span
-                                                    class="text-[10px] text-primary font-bold bg-navy px-2.5 py-1 rounded-full uppercase tracking-wider">
-                                                    Archer Profile
                                                 </span>
                                             </div>
                                         </div>
@@ -424,18 +420,17 @@ import { useDateFormat } from '@vueuse/core'
 const route = useRoute()
 const router = useRouter()
 const slug = route.params.slug
-const token = useCookie('auth_token')
 const config = useRuntimeConfig()
 const apiBaseUrl = config.public.apiBaseUrl
 
+// Use Auth composable for authentication
+const { user, isLoggedIn, archerProfile: globalArcherProfile } = useAuth()
+
 // 1. DATA FETCHING (Define 'data' early)
 const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-register-${slug}`, async () => {
-    const token = useCookie('auth_token').value
-    const headers = {
-        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
-        ...useRequestHeaders(['cookie'])
-    }
-    const fetchOptions = { headers, credentials: 'include' }
+    // Correctly get cookies for SSR request
+    const headers = useRequestHeaders(['cookie'])
+    const fetchOptions = { headers }
 
     try {
         // Fetch event and categories concurrently
@@ -472,14 +467,40 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
         let archerProfileData = null
         let paymentMethodsData = []
 
-        // If we have a token (SSR) or we are on client (where credentials: 'include' will work)
-        const [profileResponse, paymentMethodsResponse] = await Promise.all([
-            $fetch(`${apiBaseUrl}/archer/me`, fetchOptions).catch(() => null),
-            $fetch(`${apiBaseUrl}/events/${eventId}/payment-methods`, fetchOptions).catch(() => [])
-        ])
+        // Use the new public endpoint for registration profile, using UUID from hydrated user state
+        // user variable is available from outer scope (useAuth)
+        const userUuid = user.value?.uuid || user.value?.id
 
-        archerProfileData = profileResponse
-        paymentMethodsData = (Array.isArray(paymentMethodsResponse) ? paymentMethodsResponse : paymentMethodsResponse?.data || []).filter(m => m.is_active !== false)
+        const promises = [
+            $fetch(`${apiBaseUrl}/events/${eventId}/payment-methods`).catch(() => [])
+        ]
+
+        if (userUuid) {
+            const profilePromise = $fetch(`${apiBaseUrl}/archers/registration-profile/${userUuid}`).catch(() => null)
+            // Using Promise.all with differing return types needs care
+            // We'll manage them separately
+            const [paymentMethodsResponse, profileResponse] = await Promise.all([
+                promises[0],
+                profilePromise
+            ])
+
+            archerProfileData = profileResponse?.data || profileResponse
+
+            console.log(archerProfileData)
+            paymentMethodsData = paymentMethodsResponse // no .data usually for list unless wrapped
+            // Standardize payment methods list
+            if (paymentMethodsData?.data) paymentMethodsData = paymentMethodsData.data
+            if (!Array.isArray(paymentMethodsData)) paymentMethodsData = []
+        } else {
+            // Not logged in or no UUID
+            const [paymentMethodsResponse] = await Promise.all(promises)
+            paymentMethodsData = paymentMethodsResponse?.data || paymentMethodsResponse || []
+            if (!Array.isArray(paymentMethodsData)) paymentMethodsData = []
+        }
+
+        // Filter active payment methods
+        paymentMethodsData = paymentMethodsData.filter(m => m.is_active !== false)
+
 
         if (archerProfileData?.club_id && !archerProfileData.club_name) {
             try {
@@ -494,7 +515,8 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
         }))
 
         return {
-            isLoggedIn: !!token || !!archerProfileData,
+            // This usage in useAsyncData return is causing ReferenceError
+            isLoggedIn: !!archerProfileData,
             event: eventData,
             categories: categoriesData,
             archerProfile: archerProfileData,
@@ -555,15 +577,19 @@ const event = computed(() => data.value?.event || {
 })
 
 const categories = computed(() => data.value?.categories || [])
-const archerProfile = computed(() => data.value?.archerProfile)
+const archerProfile = computed(() => globalArcherProfile.value || data.value?.archerProfile)
 const paymentMethods = computed(() => data.value?.paymentMethods || [])
-const isLoggedIn = computed(() => !!token.value || !!data.value?.isLoggedIn)
-const isArcher = computed(() => !!archerProfile.value?.uuid || !!archerProfile.value?.id)
+
+// Simplified auth checks using useAuth composable
+const isArcher = computed(() => {
+    const userType = user.value?.type || user.value?.role || user.value?.user_type
+    return userType === 'archer'
+})
 
 const userDisplay = computed(() => ({
-    name: archerProfile.value?.full_name || archerProfile.value?.name || '',
-    email: archerProfile.value?.email || '',
-    avatar: archerProfile.value?.avatar_url || ''
+    name: archerProfile.value?.full_name || user.value?.full_name || user.value?.name || '',
+    email: archerProfile.value?.email || user.value?.email || '',
+    avatar: archerProfile.value?.avatar_url || user.value?.avatar_url || ''
 }))
 
 const isFormValid = computed(() => {
@@ -676,9 +702,7 @@ const handleProofUpload = async (ev) => {
             const response = await $fetch(`${apiBaseUrl}/media/upload`, {
                 method: 'POST',
                 body: formData,
-                headers: {
-                    'Authorization': `Bearer ${token.value}`
-                }
+                credentials: 'include'
             })
 
             const idx = paymentPreviews.value.findIndex(p => p.id === previewId)
@@ -721,9 +745,7 @@ const handleSubmit = async () => {
                     bow_type: profileForm.value.bow_type,
                     club_id: profileForm.value.club_id
                 },
-                headers: {
-                    'Authorization': `Bearer ${token.value}`
-                }
+                credentials: 'include'
             })
         }
 
@@ -737,9 +759,7 @@ const handleSubmit = async () => {
         await $fetch(`${apiBaseUrl}/events/${event.value.id}/participants`, {
             method: 'POST',
             body: payload,
-            headers: {
-                'Authorization': `Bearer ${token.value}`
-            }
+            credentials: 'include'
         })
 
         registrationSuccess.value = true
