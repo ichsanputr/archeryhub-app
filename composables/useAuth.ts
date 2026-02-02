@@ -34,6 +34,7 @@ export interface AuthUser {
 }
 
 export const useAuth = () => {
+  console.log("KONTOL 2")
   const user = useState<AuthUser | null>('auth.user', () => null)
   const archerProfile = useState<any | null>('auth.archerProfile', () => null)
   const organizationProfile = useState<any | null>('auth.organizationProfile', () => null)

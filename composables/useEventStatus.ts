@@ -2,8 +2,16 @@
  * Helper to calculate public-facing event status based on dates
  * Returns: 'Mendatang' (Upcoming), 'Ongoing', or 'Selesai' (Completed)
  */
+export interface EventStatusInput {
+    start_date?: string | Date | null
+    end_date?: string | Date | null
+    [key: string]: any
+}
+
+export type EventStatus = 'Mendatang' | 'Ongoing' | 'Selesai'
+
 export const useEventStatus = () => {
-    const getPublicStatus = (event) => {
+    const getPublicStatus = (event: EventStatusInput | null | undefined): EventStatus => {
         if (!event) return 'Mendatang'
 
         const now = new Date()
@@ -29,8 +37,8 @@ export const useEventStatus = () => {
         return 'Mendatang'
     }
 
-    const getPublicStatusClass = (status) => {
-        const classes = {
+    const getPublicStatusClass = (status: EventStatus | string): string => {
+        const classes: Record<string, string> = {
             'Mendatang': 'bg-blue-50 text-blue-700 border-blue-100',
             'Ongoing': 'bg-primary/10 text-primary-dark border-primary/20',
             'Selesai': 'bg-gray-50 text-gray-500 border-gray-100'
@@ -38,8 +46,8 @@ export const useEventStatus = () => {
         return classes[status] || 'bg-gray-50 text-gray-500 border-gray-100'
     }
 
-    const getPublicStatusDotClass = (status) => {
-        const classes = {
+    const getPublicStatusDotClass = (status: EventStatus | string): string => {
+        const classes: Record<string, string> = {
             'Mendatang': 'bg-blue-500',
             'Ongoing': 'bg-primary animate-pulse',
             'Selesai': 'bg-gray-300'

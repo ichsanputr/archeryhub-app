@@ -27,6 +27,8 @@ function getPath(url: string): string {
 }
 
 export default defineEventHandler((event: H3Event) => {
+
+    console.log("KONTOL 1")
     const url = event.node.req.url || '/'
 
     // Skip non-page requests (assets, _nuxt, __nuxt, etc.)
