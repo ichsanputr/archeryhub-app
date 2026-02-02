@@ -116,9 +116,9 @@
                                         </span>
                                     </p>
                                 </div>
-                                <span :class="statusClass(event.status)"
+                                <span :class="statusClass(event)"
                                     class="px-4 py-2 text-sm font-black rounded-full border">
-                                    {{ statusLabel(event.status) }}
+                                    {{ statusLabel(event) }}
                                 </span>
                             </NuxtLink>
                         </div>
@@ -475,24 +475,32 @@ const formatDate = (dateStr) => {
     return new Date(dateStr).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
 }
 
-const statusClass = (status) => {
+// Calculate public status based on event dates
+const getEventPublicStatus = (event) => {
+    const now = new Date()
+    const startDate = event.start_date ? new Date(event.start_date) : null
+    const endDate = event.end_date ? new Date(event.end_date) : null
+
+    if (!startDate && !endDate) return 'Mendatang'
+    if (endDate && now > endDate) return 'Selesai'
+    if (startDate && now >= startDate) {
+        if (!endDate || now <= endDate) return 'Ongoing'
+    }
+    return 'Mendatang'
+}
+
+const statusClass = (event) => {
+    const status = getEventPublicStatus(event)
     const classes = {
-        published: 'bg-green-50 text-green-600 border-green-200',
-        live: 'bg-red-50 text-red-600 border-red-200',
-        completed: 'bg-gray-50 text-gray-600 border-gray-200',
-        draft: 'bg-amber-50 text-amber-600 border-amber-200'
+        'Mendatang': 'bg-blue-50 text-blue-600 border-blue-200',
+        'Ongoing': 'bg-primary/10 text-primary border-primary/20',
+        'Selesai': 'bg-gray-50 text-gray-600 border-gray-200'
     }
     return classes[status] || 'bg-gray-50 text-gray-600 border-gray-200'
 }
 
-const statusLabel = (status) => {
-    const labels = {
-        published: 'Open',
-        live: 'Live',
-        completed: 'Selesai',
-        draft: 'Draft'
-    }
-    return labels[status] || status
+const statusLabel = (event) => {
+    return getEventPublicStatus(event)
 }
 
 useHead({

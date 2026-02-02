@@ -9,11 +9,11 @@
                     halaman publik event.</p>
             </div>
             <div class="flex items-center justify-center sm:justify-end gap-2 sm:gap-3">
-                <BaseButton variant="outline" icon="ph:eye" :to="`/events/${eventData.slug}`" target="_blank" size="sm"
+                <BaseButton variant="outline" icon="ph:eye" :to="`/events/${eventData.slug}`" target="_blank" size="md"
                     class="flex-1 sm:flex-none">
                     Lihat
                 </BaseButton>
-                <BaseButton variant="primary" icon="ph:floppy-disk" @click="saveEventPage" :loading="saving" size="sm"
+                <BaseButton variant="primary" icon="ph:floppy-disk" @click="saveEventPage" :loading="saving" size="md"
                     class="flex-1 sm:flex-none">
                     Simpan
                 </BaseButton>
@@ -148,9 +148,7 @@
                                 <select v-model="form.status"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
                                     <option value="draft">Draft (Belum dipublikasi)</option>
-                                    <option value="published">Published (Aktif)</option>
-                                    <option value="ongoing">Ongoing (Sedang Berlangsung)</option>
-                                    <option value="completed">Completed (Selesai)</option>
+                                    <option value="active">Aktif (Dipublikasikan)</option>
                                 </select>
                             </div>
                         </div>

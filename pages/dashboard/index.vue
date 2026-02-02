@@ -666,7 +666,7 @@ const orgCompletedEvents = computed(() => {
   return list.map((e) => {
     const endDate = e.end_date || e.end_at || e.date
     const d = endDate ? new Date(endDate) : new Date()
-    const statusMap = { draft: 'Draft', published: 'Publik', registration: 'Pendaftaran', ongoing: 'Berlangsung', completed: 'Selesai' }
+    const statusMap = { draft: 'Draft', active: 'Aktif' }
     return {
       id: e.id || e.uuid,
       name: e.name || e.title || 'Event',

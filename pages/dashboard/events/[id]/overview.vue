@@ -191,7 +191,7 @@
                                 <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">
                                     Penyelesaian</p>
                                 <p class="text-navy-dark text-3xl font-extrabold tracking-tight">{{ completionPercentage
-                                }}%</p>
+                                    }}%</p>
                             </div>
                             <div
                                 class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
@@ -722,33 +722,24 @@ watch(event, (newEvent) => {
 
 const getStatusClass = (status) => {
     const classes = {
-        'published': 'bg-green-50 text-green-700 border-green-100 shadow-green-100/50',
-        'draft': 'bg-amber-50 text-amber-700 border-amber-100 shadow-amber-100/50',
-        'ongoing': 'bg-primary/20 text-navy border-primary/20 shadow-primary/10',
-        'upcoming': 'bg-blue-50 text-blue-700 border-blue-100 shadow-blue-100/50',
-        'completed': 'bg-gray-100 text-gray-600 border-gray-200'
+        'active': 'bg-green-50 text-green-700 border-green-100 shadow-green-100/50',
+        'draft': 'bg-amber-50 text-amber-700 border-amber-100 shadow-amber-100/50'
     }
     return classes[status] || 'bg-gray-100 text-gray-600 border-gray-200'
 }
 
 const getStatusDotClass = (status) => {
     const classes = {
-        'published': 'bg-green-500',
-        'draft': 'bg-amber-500',
-        'ongoing': 'bg-primary animate-pulse',
-        'upcoming': 'bg-blue-500',
-        'completed': 'bg-gray-300'
+        'active': 'bg-green-500',
+        'draft': 'bg-amber-500'
     }
     return classes[status] || 'bg-gray-300'
 }
 
 const getStatusLabel = (status) => {
     const labels = {
-        'published': 'Terbit',
-        'draft': 'Draf',
-        'ongoing': 'Berlangsung',
-        'upcoming': 'Dijadwalkan',
-        'completed': 'Selesai'
+        'active': 'Aktif',
+        'draft': 'Draft'
     }
     return labels[status] || status
 }

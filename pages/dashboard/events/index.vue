@@ -321,11 +321,8 @@ const canCreateEvent = computed(() => {
 
 const statusOptions = [
   { title: 'Semua Status', value: '' },
-  { title: 'Published', value: 'published' },
-  { title: 'Draft', value: 'draft' },
-  { title: 'Ongoing', value: 'ongoing' },
-  { title: 'Akan Datang', value: 'upcoming' },
-  { title: 'Selesai', value: 'completed' }
+  { title: 'Aktif', value: 'active' },
+  { title: 'Draft', value: 'draft' }
 ]
 
 const fetchEvents = async () => {
@@ -367,33 +364,24 @@ const filteredEvents = computed(() => {
 
 const getStatusClass = (status) => {
   const classes = {
-    'published': 'bg-green-50 text-green-700 border-green-100',
-    'draft': 'bg-amber-50 text-amber-700 border-amber-100',
-    'ongoing': 'bg-primary/10 text-primary-dark border-primary/20',
-    'upcoming': 'bg-blue-50 text-blue-700 border-blue-100',
-    'completed': 'bg-gray-50 text-gray-500 border-gray-100'
+    'active': 'bg-green-50 text-green-700 border-green-100',
+    'draft': 'bg-amber-50 text-amber-700 border-amber-100'
   }
   return classes[status] || 'bg-gray-50 text-gray-500 border-gray-100'
 }
 
 const getStatusDotClass = (status) => {
   const classes = {
-    'published': 'bg-green-500',
-    'draft': 'bg-amber-500',
-    'ongoing': 'bg-primary animate-pulse',
-    'upcoming': 'bg-blue-500',
-    'completed': 'bg-gray-300'
+    'active': 'bg-green-500',
+    'draft': 'bg-amber-500'
   }
   return classes[status] || 'bg-gray-300'
 }
 
 const getStatusLabel = (status) => {
   const labels = {
-    'published': 'Published',
-    'draft': 'Draft',
-    'ongoing': 'Sedang Berlangsung',
-    'upcoming': 'Akan Datang',
-    'completed': 'Selesai'
+    'active': 'Aktif',
+    'draft': 'Draft'
   }
   return labels[status] || status
 }

@@ -141,9 +141,17 @@
                         <!-- New Archer Form Info -->
                         <div v-if="archerMode === 'new'" class="space-y-4">
                             <div
-                                class="flex items-center gap-3 text-navy font-bold p-4 border border-blue-100 bg-blue-50/50 rounded-xl text-sm">
-                                <Icon icon="ph:info-bold" class="text-xl text-primary" />
-                                <span>Pemanah baru akan dibuat sebagai akun Archeryhub global.</span>
+                                class="flex flex-col sm:flex-row items-start sm:items-center gap-3 p-4 border border-blue-100 bg-blue-50/50 rounded-xl">
+                                <Icon icon="ph:info-bold" class="text-2xl text-primary flex-shrink-0" />
+                                <div class="text-xs sm:text-sm text-navy font-medium leading-relaxed">
+                                    <p class="font-bold mb-1">Ketentuan Password:</p>
+                                    <ul class="space-y-1 ml-4 list-disc">
+                                        <li><strong>Isi No. Telepon</strong> → Password <strong>wajib</strong> diisi
+                                        </li>
+                                        <li><strong>Isi Email</strong> → Password opsional (peserta bisa buat/reset
+                                            sendiri)</li>
+                                    </ul>
+                                </div>
                             </div>
 
                             <!-- Avatar Upload -->
@@ -182,6 +190,9 @@
                                     placeholder="email@example.com (opsional)" />
                                 <BaseInput v-model="newArcherForm.phone" label="No. Telepon" type="tel"
                                     placeholder="08xxxxxxxxxx" />
+                                <BaseInput v-model="newArcherForm.password" label="Password Akun" type="password"
+                                    placeholder="Buat password minimal 6 karakter"
+                                    :required="!!newArcherForm.phone && !newArcherForm.email" />
                                 <BaseInput v-model="newArcherForm.date_of_birth" label="Tanggal Lahir" type="date" />
                                 <BaseSelect v-model="newArcherForm.gender" label="Jenis Kelamin"
                                     :items="genderOptions" />
@@ -463,6 +474,26 @@ const validateNewArcherForm = () => {
             return false
         }
     }
+
+    // Validation: Phone + Password rule
+    if (newArcherForm.phone && newArcherForm.phone.trim()) {
+        if (!newArcherForm.email && !newArcherForm.password) {
+            toast.error('Jika menggunakan No. Telepon tanpa Email, Password wajib diisi')
+            return false
+        }
+    }
+
+    // Logic as requested: if phone is filled, password needs to be defined (unless email is there? USER SAID: "if admin know about the archer's email the password is optional")
+    // Let's stick closer to user request: "if admin fill wa number they need to define the password"
+    if (newArcherForm.phone && newArcherForm.phone.trim() && !newArcherForm.password) {
+        // But user also said "if admin know about the archer's email the password is optional"
+        // This implies if Email is present, Password is NOT required even if Phone is present.
+        if (!newArcherForm.email) {
+            toast.error('Password wajib diisi jika menggunakan No. Telepon')
+            return false
+        }
+    }
+
     if (!newArcherForm.gender) {
         toast.error('Pilih jenis kelamin pemanah')
         return false

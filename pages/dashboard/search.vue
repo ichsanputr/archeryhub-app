@@ -169,10 +169,9 @@ const formatDate = (dateStr) => {
 const getStatusClass = (status) => {
   const base = 'px-2 py-0.5 rounded-full text-[10px] font-bold uppercase'
   switch (status?.toLowerCase()) {
-    case 'published': return `${base} bg-green-500/10 text-green-500`
-    case 'ongoing': return `${base} bg-blue-500/10 text-blue-500`
-    case 'completed': return `${base} bg-brand-gold/10 text-brand-gold`
-    default: return `${base} bg-brand-gold/10 text-brand-gold`
+    case 'active': return `${base} bg-green-500/10 text-green-500`
+    case 'draft': return `${base} bg-amber-500/10 text-amber-500`
+    default: return `${base} bg-gray-500/10 text-gray-500`
   }
 }
 
