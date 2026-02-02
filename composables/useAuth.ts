@@ -34,8 +34,47 @@ export interface AuthUser {
 }
 
 export const useAuth = () => {
-  console.log("KONTOL 2")
-  const user = useState<AuthUser | null>('auth.user', () => null)
+  const user = useState<AuthUser | null>('auth.user', () => {
+    // Server-side hydration from auth middleware context
+    if (import.meta.server) {
+      const event = useRequestEvent()
+      if (event?.context?.user) {
+        return {
+          id: event.context.user.id,
+          uuid: event.context.user.id,
+          email: event.context.user.email,
+          name: event.context.user.full_name,
+          full_name: event.context.user.full_name,
+          avatar_url: event.context.user.avatar_url,
+          role: event.context.user.role,
+          user_type: event.context.user.user_type,
+          type: event.context.user.user_type ?? event.context.user.role,
+
+          // Extended fields
+          username: event.context.user.username,
+          slug: event.context.user.slug,
+          bio: event.context.user.bio,
+          gender: event.context.user.gender,
+          date_of_birth: event.context.user.date_of_birth,
+          bow_type: event.context.user.bow_type,
+          city: event.context.user.city,
+          province: event.context.user.province,
+          club_id: event.context.user.club_id,
+          achievements: event.context.user.achievements,
+          store_name: event.context.user.store_name,
+          store_slug: event.context.user.store_slug,
+          description: event.context.user.description,
+          banner_url: event.context.user.banner_url,
+          logo_url: event.context.user.logo_url,
+          google_id: event.context.user.google_id,
+          is_active: event.context.user.is_active,
+          created_at: event.context.user.created_at,
+          updated_at: event.context.user.updated_at,
+        } as AuthUser
+      }
+    }
+    return null
+  })
   const archerProfile = useState<any | null>('auth.archerProfile', () => null)
   const organizationProfile = useState<any | null>('auth.organizationProfile', () => null)
   const clubProfile = useState<any | null>('auth.clubProfile', () => null)
@@ -121,19 +160,37 @@ export const useAuth = () => {
       if (user.value) {
         const userType = user.value.user_type ?? user.value.type ?? user.value.role
 
-        // Step 2: Fetch detailed profile based on type
+        // Step 2: Populate detailed profile states
+        // Since server middleware might have already fetched the full profile and merged it into user.value,
+        // we can copy it from there.
         if (userType === 'archer') {
-          const profileRes = await $fetch<{ data: any }>(`${baseUrl}/archer/me`, fetchOptions).catch(() => null)
-          archerProfile.value = profileRes?.data || profileRes
+          if (user.value.bio || user.value.date_of_birth) {
+            archerProfile.value = { ...user.value }
+          } else {
+            const profileRes = await $fetch<{ data: any }>(`${baseUrl}/archer/me`, fetchOptions).catch(() => null)
+            archerProfile.value = profileRes?.data || profileRes
+          }
         } else if (userType === 'organization') {
-          const profileRes = await $fetch<{ data: any }>(`${baseUrl}/organization/me`, fetchOptions).catch(() => null)
-          organizationProfile.value = profileRes?.data || profileRes
+          if (user.value.logo_url || user.value.city) {
+            organizationProfile.value = { ...user.value }
+          } else {
+            const profileRes = await $fetch<{ data: any }>(`${baseUrl}/organization/me`, fetchOptions).catch(() => null)
+            organizationProfile.value = profileRes?.data || profileRes
+          }
         } else if (userType === 'club') {
-          const profileRes = await $fetch<{ data: any }>(`${baseUrl}/club/me`, fetchOptions).catch(() => null)
-          clubProfile.value = profileRes?.data || profileRes
+          if (user.value.club_id || user.value.logo_url) {
+            clubProfile.value = { ...user.value }
+          } else {
+            const profileRes = await $fetch<{ data: any }>(`${baseUrl}/club/me`, fetchOptions).catch(() => null)
+            clubProfile.value = profileRes?.data || profileRes
+          }
         } else if (userType === 'seller') {
-          const profileRes = await $fetch<{ data: any }>(`${baseUrl}/seller/me`, fetchOptions).catch(() => null)
-          sellerProfile.value = profileRes?.data || profileRes
+          if (user.value.store_name) {
+            sellerProfile.value = { ...user.value }
+          } else {
+            const profileRes = await $fetch<{ data: any }>(`${baseUrl}/seller/me`, fetchOptions).catch(() => null)
+            sellerProfile.value = profileRes?.data || profileRes
+          }
         }
       }
     } catch (error: unknown) {

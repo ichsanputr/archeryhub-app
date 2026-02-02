@@ -28,7 +28,6 @@ function getPath(url: string): string {
 
 export default defineEventHandler((event: H3Event) => {
 
-    console.log("KONTOL 1")
     const url = event.node.req.url || '/'
 
     // Skip non-page requests (assets, _nuxt, __nuxt, etc.)
@@ -52,6 +51,34 @@ export default defineEventHandler((event: H3Event) => {
                 avatar_url: payload.avatar,
                 role: payload.role,
                 user_type: payload.user_type
+            }
+
+            // Fetch detailed profile server-side
+            try {
+                const config = useRuntimeConfig()
+                const apiBaseUrl = config.public.apiBaseUrl
+                let endpoint = ''
+
+                if (payload.role === 'archer') endpoint = '/archer/me'
+                else if (payload.role === 'organization') endpoint = '/organization/me'
+                else if (payload.role === 'club') endpoint = '/club/me'
+                else if (payload.role === 'seller') endpoint = '/seller/me'
+
+                if (endpoint && apiBaseUrl) {
+                    const response = await $fetch<any>(`${apiBaseUrl}${endpoint}`, {
+                        headers: {
+                            Cookie: `auth_token=${token}`
+                        }
+                    })
+
+                    const profileData = response.data || response // APIs return { data: ... } or just date
+                    if (profileData) {
+                        // Merge profile data into context user
+                        Object.assign(event.context.user, profileData)
+                    }
+                }
+            } catch (error) {
+                console.error('Auth Middleware: Failed to fetch profile', error)
             }
         } else {
             event.context.user = null
