@@ -58,6 +58,8 @@ export default defineEventHandler((event: H3Event) => {
 
     const user = event.context.user
 
+    console.log(user)
+
     // ——— 2. Auth pages: if logged in → redirect to dashboard ———
     if (path.startsWith('/auth')) {
         if (user) {

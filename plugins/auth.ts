@@ -33,14 +33,20 @@ export default defineNuxtPlugin(async () => {
   const { user, fetchUser, initializeAuth } = useAuth()
 
   if (import.meta.server) {
-    const headers = useRequestHeaders(['cookie'])
-    if (headers.cookie) {
-      await fetchUser(headers)
+    const event = useRequestEvent()
+    if (event?.context?.user) {
+      user.value = mapContextUserToAuthUser(event.context.user)
+      if (user.value) {
+        await fetchUser() // Fetch detailed profile
+      }
     }
     return
   }
 
   // Client: restore from API if state wasn't hydrated
+  // Only call initializeAuth if we have a cookie but no user state
+  // We can't easily check for cookie existence here without useCookie, which is reactive
+  // But initializeAuth usually does fetchUser anyway
   if (!user.value) {
     await initializeAuth()
   }

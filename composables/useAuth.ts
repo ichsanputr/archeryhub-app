@@ -112,19 +112,29 @@ export const useAuth = () => {
     try {
       isUserLoading.value = true
       const baseUrl = config.public.apiBaseUrl as string
-
-      // Step 1: Get basic session
       const fetchOptions = {
         headers: { ...headers },
         credentials: 'include' as const
       }
 
-      const response = await $fetch<AuthUser | { data?: AuthUser }>(`${baseUrl}/auth/me`, fetchOptions)
-      const userData = (response as { data?: AuthUser }).data ?? (response as AuthUser)
+      // If user state is not populated (e.g. client side refresh), try to fetch generic user info
+      // using the /user/ endpoint which acts as a session check
+      if (!user.value) {
+        try {
+          const response = await $fetch<AuthUser | { data?: AuthUser }>(`${baseUrl}/user/`, fetchOptions)
+          const userData = (response as { data?: AuthUser }).data ?? (response as AuthUser)
+          if (userData && (userData.id ?? userData.uuid)) {
+            user.value = userData
+          }
+        } catch (e) {
+          // Token invalid or expired
+          user.value = null
+          return
+        }
+      }
 
-      if (userData && (userData.id ?? userData.uuid)) {
-        user.value = userData
-        const userType = userData.user_type ?? userData.type ?? userData.role
+      if (user.value) {
+        const userType = user.value.user_type ?? user.value.type ?? user.value.role
 
         // Step 2: Fetch detailed profile based on type
         if (userType === 'archer') {
@@ -140,8 +150,6 @@ export const useAuth = () => {
           const profileRes = await $fetch<{ data: any }>(`${baseUrl}/seller/me`, fetchOptions).catch(() => null)
           sellerProfile.value = profileRes?.data || profileRes
         }
-      } else {
-        user.value = null
       }
     } catch (error: unknown) {
       user.value = null
