@@ -316,7 +316,7 @@ definePageMeta({
 
 const router = useRouter()
 const { get, put } = useApi()
-const { user } = useAuth()
+const { user, organizationProfile, fetchUser } = useAuth()
 const toast = useToast()
 
 const saving = ref(false)
@@ -454,9 +454,11 @@ const removeFAQ = (index) => {
 
 const loadProfile = async () => {
   try {
-    const resp = await get('/organizations/me')
-    const data = resp?.data || resp || {}
-    const org = data.organization || data
+    if (!organizationProfile.value) {
+      await fetchUser()
+    }
+
+    const org = organizationProfile.value
 
     if (org && (org.id || org.uuid)) {
       form.name = org.name || ''
@@ -474,36 +476,18 @@ const loadProfile = async () => {
       form.mission = org.mission || ''
       form.history = org.history || ''
 
-      form.faq = []
-      const rawFaq = org.faq || data.faq
-      if (rawFaq) {
-        if (typeof rawFaq === 'string') {
-          try {
-            form.faq = JSON.parse(rawFaq)
-          } catch (e) {
-            console.error('Failed to parse faq', e)
-          }
-        } else if (Array.isArray(rawFaq)) {
-          form.faq = rawFaq
+      const parseOrRaw = (val) => {
+        if (typeof val === 'string' && (val.startsWith('[') || val.startsWith('{'))) {
+          try { return JSON.parse(val) } catch (e) { return [] }
         }
+        return val || []
       }
 
-      form.socialMedia = []
-      const rawSocial = org.social_media || data.social_media
-      if (rawSocial) {
-        if (typeof rawSocial === 'string') {
-          try {
-            form.socialMedia = JSON.parse(rawSocial)
-          } catch (e) {
-            console.error('Failed to parse social_media', e)
-          }
-        } else if (Array.isArray(rawSocial)) {
-          form.socialMedia = rawSocial
-        }
-      }
+      form.faq = parseOrRaw(org.faq)
+      form.socialMedia = parseOrRaw(org.social_media)
 
       // Load page settings
-      const rawPageSettings = data.page_settings || org.page_settings
+      const rawPageSettings = org.page_settings
       if (rawPageSettings) {
         try {
           const parsed = typeof rawPageSettings === 'string' ? JSON.parse(rawPageSettings) : rawPageSettings
@@ -517,8 +501,7 @@ const loadProfile = async () => {
     }
   } catch (error) {
     console.error('Load profile error:', error)
-    const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || 'Gagal memuat profil organisasi'
-    toast.error(errorMessage)
+    toast.error('Gagal memuat profil organisasi')
   }
 }
 

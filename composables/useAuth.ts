@@ -16,6 +16,12 @@ export interface AuthUser {
   user_type?: string
   slug?: string
   bio?: string
+  gender?: string
+  date_of_birth?: string
+  bow_type?: string
+  city?: string
+  province?: string
+  club_id?: string
   achievements?: string | string[]
   store_name?: string
   store_slug?: string
@@ -29,6 +35,11 @@ export interface AuthUser {
 
 export const useAuth = () => {
   const user = useState<AuthUser | null>('auth.user', () => null)
+  const archerProfile = useState<any | null>('auth.archerProfile', () => null)
+  const organizationProfile = useState<any | null>('auth.organizationProfile', () => null)
+  const clubProfile = useState<any | null>('auth.clubProfile', () => null)
+  const sellerProfile = useState<any | null>('auth.sellerProfile', () => null)
+
   const isUserLoading = useState<boolean>('auth.isUserLoading', () => false)
   const isLoggedIn = computed(() => !!user.value)
   const config = useRuntimeConfig()
@@ -60,22 +71,7 @@ export const useAuth = () => {
       credentials: 'include'
     })
     if (response.user) {
-      user.value = {
-        id: response.user.id ?? response.user.uuid,
-        username: response.user.username,
-        name: response.user.full_name ?? response.user.name,
-        email: response.user.email,
-        avatar_url: response.user.avatar_url ?? (response.user as { avatar?: string }).avatar,
-        role: response.user.role,
-        type: response.user.type ?? response.user.user_type ?? response.user.role,
-        slug: response.user.slug ?? response.user.username,
-        bio: response.user.bio,
-        achievements: response.user.achievements,
-        store_name: response.user.store_name,
-        store_slug: response.user.slug ?? response.user.username,
-        description: response.user.description,
-        banner_url: response.user.banner_url
-      }
+      await fetchUser() // Fetch detailed profile after login
     }
     return response
   }
@@ -89,22 +85,7 @@ export const useAuth = () => {
       credentials: 'include'
     })
     if (response.user) {
-      user.value = {
-        id: response.user.id ?? response.user.uuid,
-        username: response.user.username,
-        name: response.user.full_name ?? response.user.name,
-        email: response.user.email,
-        avatar_url: response.user.avatar_url ?? (response.user as { avatar?: string }).avatar,
-        role: response.user.role,
-        type: response.user.type ?? response.user.user_type ?? response.user.role,
-        slug: response.user.slug ?? response.user.username,
-        bio: response.user.bio,
-        achievements: response.user.achievements,
-        store_name: response.user.store_name,
-        store_slug: response.user.slug ?? response.user.username,
-        description: response.user.description,
-        banner_url: response.user.banner_url
-      }
+      await fetchUser() // Fetch detailed profile after register
     }
     return response
   }
@@ -117,55 +98,52 @@ export const useAuth = () => {
       credentials: 'include'
     })
     user.value = null
+    archerProfile.value = null
+    organizationProfile.value = null
+    clubProfile.value = null
+    sellerProfile.value = null
+
     if (import.meta.client) {
       window.location.href = '/'
     }
   }
 
-  const fetchUser = async (): Promise<void> => {
+  const fetchUser = async (headers?: any): Promise<void> => {
     try {
       isUserLoading.value = true
-      if (import.meta.server) {
-        isUserLoading.value = false
-        return
-      }
       const baseUrl = config.public.apiBaseUrl as string
-      const response = await $fetch<AuthUser | { data?: AuthUser }>(`${baseUrl}/user`, {
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include'
-      })
+
+      // Step 1: Get basic session
+      const fetchOptions = {
+        headers: { ...headers },
+        credentials: 'include' as const
+      }
+
+      const response = await $fetch<AuthUser | { data?: AuthUser }>(`${baseUrl}/auth/me`, fetchOptions)
       const userData = (response as { data?: AuthUser }).data ?? (response as AuthUser)
+
       if (userData && (userData.id ?? userData.uuid)) {
-        user.value = {
-          id: userData.id ?? userData.uuid,
-          google_id: userData.google_id,
-          username: userData.username,
-          name: userData.full_name ?? userData.name,
-          full_name: userData.full_name ?? userData.name,
-          email: userData.email,
-          avatar_url: userData.avatar_url ?? (userData as { avatar?: string }).avatar,
-          logo_url: userData.logo_url,
-          role: userData.role,
-          type: userData.type ?? userData.user_type ?? userData.role,
-          slug: userData.slug ?? userData.username,
-          bio: userData.bio,
-          achievements: userData.achievements,
-          store_name: userData.store_name,
-          store_slug: userData.slug ?? userData.username,
-          description: userData.description,
-          banner_url: userData.banner_url,
-          is_active: userData.is_active,
-          created_at: userData.created_at,
-          updated_at: userData.updated_at
+        user.value = userData
+        const userType = userData.user_type ?? userData.type ?? userData.role
+
+        // Step 2: Fetch detailed profile based on type
+        if (userType === 'archer') {
+          const profileRes = await $fetch<{ data: any }>(`${baseUrl}/archer/me`, fetchOptions).catch(() => null)
+          archerProfile.value = profileRes?.data || profileRes
+        } else if (userType === 'organization') {
+          const profileRes = await $fetch<{ data: any }>(`${baseUrl}/organization/me`, fetchOptions).catch(() => null)
+          organizationProfile.value = profileRes?.data || profileRes
+        } else if (userType === 'club') {
+          const profileRes = await $fetch<{ data: any }>(`${baseUrl}/club/me`, fetchOptions).catch(() => null)
+          clubProfile.value = profileRes?.data || profileRes
+        } else if (userType === 'seller') {
+          const profileRes = await $fetch<{ data: any }>(`${baseUrl}/seller/me`, fetchOptions).catch(() => null)
+          sellerProfile.value = profileRes?.data || profileRes
         }
       } else {
         user.value = null
       }
     } catch (error: unknown) {
-      const err = error as { status?: number; statusCode?: number }
-      if (err?.status !== 401 && err?.statusCode !== 401) {
-        console.error('Error fetching user:', error)
-      }
       user.value = null
     } finally {
       isUserLoading.value = false
@@ -181,22 +159,7 @@ export const useAuth = () => {
       credentials: 'include'
     })
     if (response.user) {
-      user.value = {
-        id: response.user.id,
-        username: response.user.username,
-        name: response.user.full_name,
-        email: response.user.email,
-        avatar_url: response.user.avatar_url,
-        role: response.user.role,
-        type: response.user.user_type,
-        slug: response.user.slug ?? response.user.username,
-        bio: response.user.bio,
-        achievements: response.user.achievements,
-        store_name: response.user.store_name,
-        store_slug: response.user.slug ?? response.user.username,
-        description: response.user.description,
-        banner_url: response.user.banner_url
-      }
+      await fetchUser()
     }
     return response
   }
@@ -209,6 +172,10 @@ export const useAuth = () => {
 
   return {
     user: readonly(user) as Ref<AuthUser | null>,
+    archerProfile: readonly(archerProfile),
+    organizationProfile: readonly(organizationProfile),
+    clubProfile: readonly(clubProfile),
+    sellerProfile: readonly(sellerProfile),
     isUserLoading: readonly(isUserLoading),
     isLoggedIn,
     login,

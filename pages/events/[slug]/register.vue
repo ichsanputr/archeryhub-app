@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen bg-background-light font-body text-navy pb-20">
+    <div class="min-h-screen bg-background-light font-body text-navy pb-4">
         <!-- Loading State -->
         <div v-if="pending" class="min-h-screen flex items-center justify-center">
             <div class="text-center">
@@ -88,10 +88,6 @@
                                     </div>
                                     Data Atlet
                                 </h2>
-                                <BaseButton v-if="isLoggedIn && isArcher" to="/dashboard/archer/profile" variant="white"
-                                    size="sm" icon="edit">
-                                    Edit Profil
-                                </BaseButton>
                             </div>
                             <div class="p-6">
                                 <!-- Not logged in state -->
@@ -140,69 +136,73 @@
                                 </div>
 
                                 <!-- Logged in and Archer state -->
-                                <div v-else>
+                                <div v-else class="space-y-6">
                                     <div class="flex items-center gap-5 mb-6 pb-6 border-b border-gray-100">
                                         <div
-                                            class="h-16 w-16 md:h-16 md:w-16 rounded-2xl bg-gradient-to-br from-navy to-navy-light flex items-center justify-center text-primary font-black text-xl shrink-0 overflow-hidden border-2 border-white">
-                                            <img :src="useImageOrDefault(archerProfile?.avatar_url, archerProfile?.full_name || user.name)"
-                                                :alt="archerProfile?.full_name || user.name"
+                                            class="h-16 w-16 md:h-20 md:w-20 rounded-2xl bg-gradient-to-br from-navy to-navy-light flex items-center justify-center text-primary font-black text-xl shrink-0 overflow-hidden border-2 border-white group relative">
+                                            <img :src="useImageOrDefault(archerProfile?.avatar_url, archerProfile?.full_name || userDisplay.name)"
+                                                :alt="archerProfile?.full_name || userDisplay.name"
                                                 class="w-full h-full object-cover" />
+                                            <div
+                                                class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer">
+                                                <span
+                                                    class="material-symbols-outlined text-white text-xl">camera_alt</span>
+                                            </div>
                                         </div>
                                         <div class="flex-1 min-w-0">
-                                            <h3 class="text-lg font-black text-navy mb-1">{{ archerProfile?.full_name ||
-                                                user.name }}</h3>
-                                            <p class="text-sm text-gray-500 mb-1">{{ archerProfile?.email || user.email
-                                                }}
-                                            </p>
-                                            <p v-if="archerProfile?.id"
-                                                class="text-xs text-navy font-bold bg-gray-100 px-2 py-0.5 rounded-md inline-block">
-                                                {{ archerProfile.id }}</p>
+                                            <h3 class="text-xl font-black text-navy mb-1">{{ profileForm.full_name ||
+                                                'Atlet Baru' }}</h3>
+                                            <p class="text-sm text-gray-500 mb-2">{{ archerProfile?.email ||
+                                                userDisplay.email
+                                                }}</p>
+                                            <div class="flex flex-wrap gap-2">
+                                                <span v-if="archerProfile?.id"
+                                                    class="text-[10px] text-navy font-bold bg-gray-100 px-2.5 py-1 rounded-full border border-gray-200 uppercase tracking-wider">
+                                                    ID: {{ archerProfile.id }}
+                                                </span>
+                                                <span
+                                                    class="text-[10px] text-primary font-bold bg-navy px-2.5 py-1 rounded-full uppercase tracking-wider">
+                                                    Archer Profile
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                                        <div
-                                            class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100">
-                                            <p
-                                                class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">
-                                                Jenis Kelamin</p>
-                                            <p class="text-sm font-bold text-navy">{{ archerProfile?.gender === 'male' ?
-                                                'Pria' : archerProfile?.gender === 'female' ? 'Wanita' : '-' }}</p>
+
+                                    <!-- Form Fields for Admin Needs -->
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                        <BaseInput v-model="profileForm.full_name" label="Nama Lengkap"
+                                            placeholder="Masukkan nama lengkap" required icon="person" />
+
+                                        <BaseSelect v-model="profileForm.gender" :items="genderOptions"
+                                            label="Jenis Kelamin" placeholder="Pilih jenis kelamin" required
+                                            icon="ph:gender-intersex" />
+
+                                        <BaseInput v-model="profileForm.date_of_birth" label="Tanggal Lahir" type="date"
+                                            required icon="calendar_today" />
+
+                                        <BaseSelect v-model="profileForm.bow_type" :items="bowTypeOptions"
+                                            label="Jenis Busur" placeholder="Pilih jenis busur" required
+                                            icon="ph:bow-arrow" />
+
+                                        <BaseInput v-model="profileForm.province" label="Provinsi"
+                                            placeholder="Masukkan provinsi" icon="map" />
+
+                                        <BaseSelect v-model="profileForm.city" :items="cityOptions"
+                                            label="Kota / Kabupaten" placeholder="Pilih kota" icon="location_city" />
+
+                                        <div class="sm:col-span-2">
+                                            <BaseInput v-model="profileForm.club_name" label="Klub / Instansi"
+                                                placeholder="Nama klub atau instansi asal Anda" icon="groups"
+                                                hint="Jika tidak memiliki klub, isi dengan - atau nama kota asal" />
                                         </div>
-                                        <div
-                                            class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100">
-                                            <p
-                                                class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">
-                                                Jenis Busur</p>
-                                            <p class="text-sm font-bold text-navy capitalize">{{ archerProfile?.bow_type
-                                                ||
-                                                '-' }}</p>
-                                        </div>
-                                        <div
-                                            class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100">
-                                            <p
-                                                class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">
-                                                Pengalaman</p>
-                                            <p class="text-sm font-bold text-navy">{{ archerProfile?.experience_years ||
-                                                0
-                                                }} Tahun</p>
-                                        </div>
-                                        <div
-                                            class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100 col-span-2">
-                                            <p
-                                                class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">
-                                                Klub</p>
-                                            <p class="text-sm font-bold text-navy truncate">{{ archerProfile?.club_name
-                                                ||
-                                                'Belum terdaftar' }}</p>
-                                        </div>
-                                        <div v-if="archerProfile?.city"
-                                            class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100 col-span-2 sm:col-span-3">
-                                            <p
-                                                class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-2">
-                                                Kota/Provinsi</p>
-                                            <p class="text-sm font-bold text-navy">{{ archerProfile.city }}{{
-                                                archerProfile.province ? ', ' + archerProfile.province : '' }}</p>
-                                        </div>
+                                    </div>
+
+                                    <div class="p-4 bg-primary/10 border border-primary/20 rounded-2xl flex gap-3">
+                                        <span class="material-symbols-outlined text-navy shrink-0">info</span>
+                                        <p class="text-xs text-navy/80 font-medium leading-relaxed">
+                                            Data di atas sangat penting untuk administrasi dan sertifikat event.
+                                            Pastikan data sudah benar sebelum melanjutkan pendaftaran.
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -262,13 +262,9 @@
                             </div>
                             <div class="p-6 space-y-5">
                                 <div class="space-y-3">
-                                    <label class="text-sm font-bold text-gray-700 block">Kategori *</label>
-                                    <select v-model="form.category_id" required
-                                        class="w-full px-4 py-3.5 text-sm rounded-xl border-2 border-gray-200 focus:border-navy focus:ring-2 focus:ring-navy/5 outline-none transition-all bg-white font-medium">
-                                        <option value="" disabled>Pilih Kategori yang Sesuai</option>
-                                        <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}
-                                        </option>
-                                    </select>
+                                    <BaseSelect v-model="form.category_id" :items="categories" label="Kategori Event"
+                                        item-title="name" item-value="id" required
+                                        placeholder="Pilih Kategori yang Sesuai" icon="ph:list-bullets-bold" />
                                     <p class="text-xs text-gray-500">Pilih kategori sesuai dengan divisi, usia, dan
                                         jenis busur Anda</p>
                                 </div>
@@ -416,10 +412,11 @@
 definePageMeta({
     layout: 'blank'
 })
-import { useAuth } from '~/composables/useAuth'
 import { useApi } from '~/composables/useApi'
 import { useImageOrDefault } from '~/composables/useImageHelper'
 import BaseButton from '~/components/common/BaseButton.vue'
+import BaseInput from '~/components/common/BaseInput.vue'
+import BaseSelect from '~/components/common/BaseSelect.vue'
 import Breadcrumbs from '~/components/common/Breadcrumbs.vue'
 import { Icon } from '@iconify/vue'
 import { useDateFormat } from '@vueuse/core'
@@ -427,128 +424,18 @@ import { useDateFormat } from '@vueuse/core'
 const route = useRoute()
 const router = useRouter()
 const slug = route.params.slug
-
-const { user, isLoggedIn } = useAuth()
-
-// Helper function to display values with fallbacks
-const displayValue = (value) => {
-    return value || 'TBA'
-}
-
-// Auth checks
-const isArcher = computed(() => user.value?.type === 'archer' || user.value?.role === 'archer')
-const loginUrl = computed(() => `/auth/login?redirect=${encodeURIComponent(route.fullPath)}`)
-
-// State
-const loading = ref(false)
-const error = ref('')
-const registrationSuccess = ref(false)
-
-const form = ref({
-    category_id: '',
-    payment_amount: 0,
-    payment_proofs: []
-})
-
-const proofInput = ref(null)
-const paymentPreviews = ref([])
-
-const triggerProofUpload = () => {
-    if (!isLoggedIn.value) return
-    proofInput.value?.click()
-}
-
-const handleProofUpload = async (event) => {
-    const files = Array.from(event.target.files)
-    if (!files.length) return
-
-    for (const file of files) {
-        // Validation
-        if (file.size > 5 * 1024 * 1024) {
-            alert(`File ${file.name} terlalu besar (Maks 5MB)`)
-            continue
-        }
-
-        // Create preview
-        const reader = new FileReader()
-        const previewId = Date.now() + Math.random()
-
-        reader.onload = (e) => {
-            paymentPreviews.value.push({
-                id: previewId,
-                url: e.target.result,
-                uploading: true
-            })
-        }
-        reader.readAsDataURL(file)
-
-        // Upload to server
-        const formData = new FormData()
-        formData.append('file', file)
-
-        try {
-            // Use $fetch for media upload
-            const response = await $fetch(`${apiBaseUrl}/media/upload`, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Authorization': `Bearer ${useCookie('auth_token').value}`
-                }
-            })
-
-            // Find and update preview
-            const idx = paymentPreviews.value.findIndex(p => p.id === previewId)
-            if (idx !== -1) {
-                paymentPreviews.value[idx].uploading = false
-                paymentPreviews.value[idx].finalUrl = response.url
-            }
-
-            form.value.payment_proofs.push(response.url)
-        } catch (err) {
-            console.error('Upload failed:', err)
-            // Remove preview on failure
-            paymentPreviews.value = paymentPreviews.value.filter(p => p.id !== previewId)
-            alert(`Gagal mengunggah ${file.name}`)
-        }
-    }
-
-    // Reset input
-    event.target.value = ''
-}
-
-const removeProof = (index) => {
-    const removedUrl = paymentPreviews.value[index].finalUrl
-    paymentPreviews.value.splice(index, 1)
-    form.value.payment_proofs = form.value.payment_proofs.filter(url => url !== removedUrl)
-}
-
-const isFormValid = computed(() => {
-    const categorySelected = !!form.value.category_id
-    const archerProfileExists = !!data.value?.archerProfile
-    const paymentProofProvided = event.value.registration_fee > 0 ? form.value.payment_proofs.length > 0 : true
-
-    return categorySelected && archerProfileExists && paymentProofProvided
-})
-
-const getInitials = (name) => {
-    if (!name) return '?'
-    const words = name.trim().split(/\s+/)
-    if (words.length === 1) return words[0].substring(0, 2).toUpperCase()
-    return (words[0][0] + words[words.length - 1][0]).toUpperCase()
-}
-
-const getSelectedCategoryName = () => {
-    const cat = data.value?.categories?.find(c => c.id === form.value.category_id)
-    return cat ? cat.name : '-'
-}
-
+const token = useCookie('auth_token')
 const config = useRuntimeConfig()
 const apiBaseUrl = config.public.apiBaseUrl
 
-// Fetch event data using useAsyncData
+// 1. DATA FETCHING (Define 'data' early)
 const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-register-${slug}`, async () => {
     const token = useCookie('auth_token').value
-    const headers = token ? { 'Authorization': `Bearer ${token}` } : {}
+    const headers = {
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        ...useRequestHeaders(['cookie'])
+    }
+    const fetchOptions = { headers, credentials: 'include' }
 
     try {
         // Fetch event and categories concurrently
@@ -585,21 +472,20 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
         let archerProfileData = null
         let paymentMethodsData = []
 
-        if (token) {
-            const [profileResponse, paymentMethodsResponse] = await Promise.all([
-                $fetch(`${apiBaseUrl}/archers/me`, { headers }).catch(() => $fetch(`${apiBaseUrl}/auth/me`, { headers }).catch(() => null)),
-                $fetch(`${apiBaseUrl}/events/${eventId}/payment-methods`, { headers }).catch(() => [])
-            ])
+        // If we have a token (SSR) or we are on client (where credentials: 'include' will work)
+        const [profileResponse, paymentMethodsResponse] = await Promise.all([
+            $fetch(`${apiBaseUrl}/archer/me`, fetchOptions).catch(() => null),
+            $fetch(`${apiBaseUrl}/events/${eventId}/payment-methods`, fetchOptions).catch(() => [])
+        ])
 
-            archerProfileData = profileResponse
-            paymentMethodsData = (Array.isArray(paymentMethodsResponse) ? paymentMethodsResponse : paymentMethodsResponse?.data || []).filter(m => m.is_active !== false)
+        archerProfileData = profileResponse
+        paymentMethodsData = (Array.isArray(paymentMethodsResponse) ? paymentMethodsResponse : paymentMethodsResponse?.data || []).filter(m => m.is_active !== false)
 
-            if (archerProfileData?.club_id && !archerProfileData.club_name) {
-                try {
-                    const clubRes = await $fetch(`${apiBaseUrl}/clubs/${archerProfileData.club_id}`)
-                    archerProfileData.club_name = clubRes?.name || clubRes?.data?.name
-                } catch (e) { }
-            }
+        if (archerProfileData?.club_id && !archerProfileData.club_name) {
+            try {
+                const clubRes = await $fetch(`${apiBaseUrl}/clubs/${archerProfileData.club_id}`)
+                archerProfileData.club_name = clubRes?.name || clubRes?.data?.name
+            } catch (e) { }
         }
 
         const categoriesData = (categoriesResponse.events || categoriesResponse.categories || []).map(cat => ({
@@ -608,6 +494,7 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
         }))
 
         return {
+            isLoggedIn: !!token || !!archerProfileData,
             event: eventData,
             categories: categoriesData,
             archerProfile: archerProfileData,
@@ -625,7 +512,39 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
     lazy: true
 })
 
-// Computed properties for easier access
+// 2. REFS (Basic State)
+const loading = ref(false)
+const error = ref('')
+const registrationSuccess = ref(false)
+const bowTypeOptions = ref([])
+const cityOptions = ref([])
+const proofInput = ref(null)
+const paymentPreviews = ref([])
+
+const form = ref({
+    category_id: '',
+    payment_amount: 0,
+    payment_proofs: []
+})
+
+const profileForm = ref({
+    full_name: '',
+    gender: '',
+    date_of_birth: '',
+    province: '',
+    city: '',
+    club_name: '',
+    club_id: null,
+    bow_type: '',
+    experience_years: 0
+})
+
+const genderOptions = [
+    { title: 'Pria', value: 'male' },
+    { title: 'Wanita', value: 'female' }
+]
+
+// 3. COMPUTED (Derived State)
 const event = computed(() => data.value?.event || {
     name: '',
     date: '',
@@ -638,22 +557,151 @@ const event = computed(() => data.value?.event || {
 const categories = computed(() => data.value?.categories || [])
 const archerProfile = computed(() => data.value?.archerProfile)
 const paymentMethods = computed(() => data.value?.paymentMethods || [])
+const isLoggedIn = computed(() => !!token.value || !!data.value?.isLoggedIn)
+const isArcher = computed(() => !!archerProfile.value?.uuid || !!archerProfile.value?.id)
 
-// Initialize payment amount when event data is loaded
+const userDisplay = computed(() => ({
+    name: archerProfile.value?.full_name || archerProfile.value?.name || '',
+    email: archerProfile.value?.email || '',
+    avatar: archerProfile.value?.avatar_url || ''
+}))
+
+const isFormValid = computed(() => {
+    const categorySelected = !!form.value.category_id
+    const archerProfileExists = !!archerProfile.value
+
+    // Validasi form data atlet
+    const profileComplete = !!profileForm.value.full_name &&
+        !!profileForm.value.gender &&
+        !!profileForm.value.date_of_birth &&
+        !!profileForm.value.bow_type
+
+    const paymentProofProvided = event.value.registration_fee > 0 ? form.value.payment_proofs.length > 0 : true
+
+    return categorySelected && archerProfileExists && profileComplete && paymentProofProvided
+})
+
+const loginUrl = computed(() => `/auth/login?redirect=${encodeURIComponent(route.fullPath)}`)
+
+// 4. UTILITIES
+const displayValue = (value) => value || 'TBA'
+
+const getInitials = (name) => {
+    if (!name) return '?'
+    const words = name.trim().split(/\s+/)
+    if (words.length === 1) return words[0].substring(0, 2).toUpperCase()
+    return (words[0][0] + words[words.length - 1][0]).toUpperCase()
+}
+
+const getSelectedCategoryName = () => {
+    const cat = categories.value.find(c => c.id === form.value.category_id)
+    return cat ? cat.name : '-'
+}
+
+// 5. HOOKS & WATCHERS
+onMounted(async () => {
+    try {
+        const [bowTypesRes, citiesRes] = await Promise.all([
+            $fetch(`${apiBaseUrl}/bow-types`),
+            $fetch(`${apiBaseUrl}/cities`)
+        ])
+        bowTypeOptions.value = (bowTypesRes.bow_types || []).map(b => ({ title: b.name, value: b.name }))
+        cityOptions.value = (citiesRes.cities || []).map(c => ({ title: c, value: c }))
+    } catch (e) {
+        console.error('Failed to fetch reference data:', e)
+    }
+})
+
+// Populate profileForm when archerProfile changes
+watch(() => archerProfile.value, (profile) => {
+    if (profile) {
+        profileForm.value = {
+            full_name: profile.full_name || profile.name || '',
+            gender: profile.gender || '',
+            date_of_birth: profile.date_of_birth ? new Date(profile.date_of_birth).toISOString().split('T')[0] : '',
+            province: profile.province || '',
+            city: profile.city || '',
+            club_name: profile.club_name || '',
+            club_id: profile.club_id || null,
+            bow_type: profile.bow_type || '',
+            experience_years: profile.experience_years || 0
+        }
+    }
+}, { immediate: true })
+
 watch(() => event.value.registration_fee, (fee) => {
     if (fee && form.value.payment_amount === 0) {
         form.value.payment_amount = fee
     }
 }, { immediate: true })
 
-// Set error from fetchError
 watch(fetchError, (err) => {
     if (err) {
         error.value = err.message || 'Gagal memuat data event'
     }
 })
 
-// Submit registration
+// 6. METHODS
+const triggerProofUpload = () => {
+    if (!isLoggedIn.value) return
+    proofInput.value?.click()
+}
+
+const handleProofUpload = async (ev) => {
+    const files = Array.from(ev.target.files)
+    if (!files.length) return
+
+    for (const file of files) {
+        if (file.size > 5 * 1024 * 1024) {
+            alert(`File ${file.name} terlalu besar (Maks 5MB)`)
+            continue
+        }
+
+        const reader = new FileReader()
+        const previewId = Date.now() + Math.random()
+
+        reader.onload = (e) => {
+            paymentPreviews.value.push({
+                id: previewId,
+                url: e.target.result,
+                uploading: true
+            })
+        }
+        reader.readAsDataURL(file)
+
+        const formData = new FormData()
+        formData.append('file', file)
+
+        try {
+            const response = await $fetch(`${apiBaseUrl}/media/upload`, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Authorization': `Bearer ${token.value}`
+                }
+            })
+
+            const idx = paymentPreviews.value.findIndex(p => p.id === previewId)
+            if (idx !== -1) {
+                paymentPreviews.value[idx].uploading = false
+                paymentPreviews.value[idx].finalUrl = response.url
+            }
+            form.value.payment_proofs.push(response.url)
+        } catch (err) {
+            console.error('Upload failed:', err)
+            paymentPreviews.value = paymentPreviews.value.filter(p => p.id !== previewId)
+            alert(`Gagal mengunggah ${file.name}`)
+        }
+    }
+    ev.target.value = ''
+}
+
+const removeProof = (index) => {
+    const removedUrl = paymentPreviews.value[index].finalUrl
+    paymentPreviews.value.splice(index, 1)
+    form.value.payment_proofs = form.value.payment_proofs.filter(url => url !== removedUrl)
+}
+
 const handleSubmit = async () => {
     if (!isFormValid.value) return
 
@@ -661,8 +709,26 @@ const handleSubmit = async () => {
     error.value = ''
 
     try {
+        if (archerProfile.value?.uuid) {
+            await $fetch(`${apiBaseUrl}/archers/${archerProfile.value.uuid}`, {
+                method: 'PUT',
+                body: {
+                    full_name: profileForm.value.full_name,
+                    gender: profileForm.value.gender,
+                    date_of_birth: profileForm.value.date_of_birth,
+                    province: profileForm.value.province,
+                    city: profileForm.value.city,
+                    bow_type: profileForm.value.bow_type,
+                    club_id: profileForm.value.club_id
+                },
+                headers: {
+                    'Authorization': `Bearer ${token.value}`
+                }
+            })
+        }
+
         const payload = {
-            athlete_id: archerProfile.value?.uuid || archerProfile.value?.id || user.value?.id,
+            athlete_id: archerProfile.value?.uuid || archerProfile.value?.id,
             event_category_id: form.value.category_id,
             payment_amount: form.value.payment_amount || 0,
             payment_proof_urls: form.value.payment_proofs
@@ -672,15 +738,14 @@ const handleSubmit = async () => {
             method: 'POST',
             body: payload,
             headers: {
-                'Authorization': `Bearer ${useCookie('auth_token').value}`
+                'Authorization': `Bearer ${token.value}`
             }
         })
 
         registrationSuccess.value = true
     } catch (err) {
         console.error('Registration failed:', err)
-        const errorMsg = err.response?.data?.error || err.data?.error || err.message || 'Gagal melakukan pendaftaran. Silakan coba lagi.'
-        error.value = errorMsg
+        error.value = err.response?.data?.error || err.data?.error || err.message || 'Gagal melakukan pendaftaran.'
     } finally {
         loading.value = false
     }

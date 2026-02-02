@@ -39,7 +39,8 @@
             class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm text-center py-12">
             <Icon icon="ph:identification-card" class="text-4xl text-gray-300 mx-auto mb-3" />
             <p class="text-sm text-gray-500 font-medium">Belum ada komponen profil. Tambahkan dari tab
-              <strong>Tampilan</strong>.</p>
+              <strong>Tampilan</strong>.
+            </p>
           </div>
           <div v-for="section in profileSections" :key="section.type"
             class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
@@ -99,7 +100,8 @@
             class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm text-center py-12">
             <Icon icon="ph:phone" class="text-4xl text-gray-300 mx-auto mb-3" />
             <p class="text-sm text-gray-500 font-medium">Belum ada komponen kontak/sosial. Tambahkan dari tab
-              <strong>Tampilan</strong>.</p>
+              <strong>Tampilan</strong>.
+            </p>
           </div>
           <div v-for="section in contactSections" :key="section.type"
             class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
@@ -307,7 +309,7 @@ definePageMeta({
   layout: 'dashboard'
 })
 
-const { user, fetchUser } = useAuth()
+const { user, archerProfile, fetchUser } = useAuth()
 const { get, put } = useApi()
 const toast = useToast()
 
@@ -453,11 +455,28 @@ const updateSectionVisibility = (sectionType, isVisible) => {
 onMounted(async () => {
   initializeSections()
 
-  if (user.value) {
-    profile.value.bio = user.value.bio || ''
-    profile.value.achievements = user.value.achievements || ''
+  // Use global archerProfile if available, otherwise fetch it
+  if (!archerProfile.value) {
+    await fetchUser()
+  }
 
-    // Fetch user stats
+  if (archerProfile.value) {
+    const data = archerProfile.value
+    profile.value.bio = data.bio || ''
+    profile.value.achievements = data.achievements || ''
+    profile.value.equipment = data.equipment || ''
+
+    if (data.social_links) {
+      if (typeof data.social_links === 'string') {
+        try {
+          profile.value.socialLinks = JSON.parse(data.social_links)
+        } catch (e) { }
+      } else {
+        profile.value.socialLinks = { ...profile.value.socialLinks, ...data.social_links }
+      }
+    }
+
+    // Fetch user stats (this is separate from basic profile)
     try {
       const stats = await get('/archers/me/stats')
       if (stats) {
@@ -471,13 +490,7 @@ onMounted(async () => {
   }
 })
 
-// Also watch user object for changes
-watch(user, (newUser) => {
-  if (newUser && !profile.value.bio && !profile.value.achievements) {
-    profile.value.bio = newUser.bio || ''
-    profile.value.achievements = newUser.achievements || ''
-  }
-}, { immediate: true })
+// ... watch etc ...
 
 const saveProfile = async () => {
   isSaving.value = true
@@ -489,7 +502,8 @@ const saveProfile = async () => {
       social_links: profile.value.socialLinks
     })
     toast.success('Profil publik berhasil diperbarui')
-    await fetchUser() // Refresh local user state
+    // Refresh global profile states
+    await fetchUser()
   } catch (error) {
     toast.error(error.message || 'Gagal menyimpan profil')
   } finally {

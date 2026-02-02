@@ -30,24 +30,18 @@ function mapContextUserToAuthUser(ctx: ServerContextUser): AuthUser {
 }
 
 export default defineNuxtPlugin(async () => {
-  const userState = useState<AuthUser | null>('auth.user', () => null)
+  const { user, fetchUser, initializeAuth } = useAuth()
 
   if (import.meta.server) {
-    try {
-      const event = useRequestEvent()
-      const ctxUser = event?.context?.user as ServerContextUser | undefined
-      if (ctxUser && (ctxUser.id ?? ctxUser.email)) {
-        userState.value = mapContextUserToAuthUser(ctxUser)
-      }
-    } catch (_) {
-      // useRequestEvent() can throw outside request context
+    const headers = useRequestHeaders(['cookie'])
+    if (headers.cookie) {
+      await fetchUser(headers)
     }
     return
   }
 
-  // Client: restore from API if state wasn't hydrated (e.g. client-side nav to home)
-  if (!userState.value) {
-    const { initializeAuth } = useAuth()
+  // Client: restore from API if state wasn't hydrated
+  if (!user.value) {
     await initializeAuth()
   }
 })

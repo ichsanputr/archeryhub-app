@@ -393,7 +393,7 @@ useHead({
 
 const router = useRouter()
 const { get, put, upload } = useApi()
-const { user } = useAuth()
+const { user, clubProfile, fetchUser } = useAuth()
 const toast = useToast()
 
 const saving = ref(false)
@@ -538,8 +538,12 @@ const removeSocialMedia = (index) => {
 
 const loadProfile = async () => {
   try {
-    const resp = await get('/clubs/me')
-    const data = resp?.data || resp || {}
+    // Check global state first
+    if (!clubProfile.value) {
+      await fetchUser()
+    }
+
+    const data = clubProfile.value
     if (data) {
       form.name = data.name || ''
       form.slug = data.slug || ''
@@ -555,21 +559,29 @@ const loadProfile = async () => {
       form.email = data.email || ''
       form.website = data.website || ''
       form.address = data.address || ''
-      form.facilities = Array.isArray(data.facilities) ? data.facilities : []
-      form.schedules = Array.isArray(data.schedules) ? data.schedules : []
-      form.socialMedia = Array.isArray(data.social_media) ? data.social_media : []
+
+      // Handle JSON strings if necessary
+      const parseOrRaw = (val) => {
+        if (typeof val === 'string' && val.startsWith('[')) {
+          try { return JSON.parse(val) } catch (e) { return [] }
+        }
+        return Array.isArray(val) ? val : []
+      }
+
+      form.facilities = parseOrRaw(data.facilities)
+      form.schedules = parseOrRaw(data.schedules)
+      form.socialMedia = parseOrRaw(data.social_media)
 
       // Set city search for autocomplete
       citySearch.value = data.city || ''
 
-      // Lock slug if it was already set (not empty/default)
+      // Lock slug if it was already set
       slugLocked.value = !!(data.slug && data.slug.length > 0 && data.slug_changed)
 
       // Load page settings
       if (data.page_settings) {
         try {
           const parsed = typeof data.page_settings === 'string' ? JSON.parse(data.page_settings) : data.page_settings
-          // Handle page settings sections (visibility toggles)
           if (parsed.sections && !Array.isArray(parsed.sections)) {
             Object.assign(pageSettings.sections, parsed.sections || {})
           }
@@ -577,12 +589,10 @@ const loadProfile = async () => {
           console.error('Failed to parse page_settings', e)
         }
       }
-
     }
   } catch (error) {
     console.error('Load profile error:', error)
-    const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || 'Gagal memuat profil klub'
-    toast.error(errorMessage)
+    toast.error('Gagal memuat profil klub')
   }
 }
 

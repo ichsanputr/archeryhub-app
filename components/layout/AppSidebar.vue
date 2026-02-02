@@ -90,12 +90,41 @@ import { useImageOrDefault } from '~/composables/useImageHelper'
 
 const route = useRoute()
 const router = useRouter()
-const { user, logout } = useAuth()
+const { user, archerProfile, clubProfile, organizationProfile, sellerProfile, logout } = useAuth()
 
 const isSidebarOpen = useState('mobile-sidebar-open', () => false)
 const isSidebarCollapsed = useState('sidebar-collapsed', () => false)
 
-const userAvatar = computed(() => useImageOrDefault(user.value?.avatar_url, user.value?.full_name || user.value?.name || 'User'))
+const userAvatar = computed(() => {
+  const role = user.value?.role || user.value?.type || 'archer'
+  let url = user.value?.avatar_url
+
+  if (role === 'club' && clubProfile.value?.logo_url) {
+    url = clubProfile.value.logo_url
+  } else if (role === 'organization' && (organizationProfile.value?.avatar_url || organizationProfile.value?.logo_url)) {
+    url = organizationProfile.value.avatar_url || organizationProfile.value.logo_url
+  } else if (role === 'seller' && sellerProfile.value?.avatar_url) {
+    url = sellerProfile.value.avatar_url
+  } else if (role === 'archer' && archerProfile.value?.avatar_url) {
+    url = archerProfile.value.avatar_url
+  }
+
+  return useImageOrDefault(url, user.value?.full_name || user.value?.name || 'User')
+})
+
+const displayName = computed(() => {
+  const role = user.value?.role || user.value?.type || 'archer'
+
+  if (role === 'club' && clubProfile.value?.name) {
+    return clubProfile.value.name
+  } else if (role === 'organization' && organizationProfile.value?.name) {
+    return organizationProfile.value.name
+  } else if (role === 'seller' && sellerProfile.value?.store_name) {
+    return sellerProfile.value.store_name
+  }
+
+  return user.value?.full_name || user.value?.name || 'Guest'
+})
 
 // Close sidebar on route change for mobile
 watch(() => route.path, () => {
