@@ -61,11 +61,13 @@
                                 <Icon icon="ph:eye-bold" class="text-sm" />
                                 Lihat
                             </a>
-                            <a :href="file.url" :download="(file.name || 'hasil-lomba') + '.' + getFileExt(file.url)"
-                                class="flex-1 py-3 bg-primary hover:bg-primary-hover text-navy font-black text-[11px] rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 shadow-sm shadow-primary/10">
-                                <Icon icon="ph:download-simple-bold" class="text-sm" />
+                            <BaseButton variant="primary" size="sm"
+                                class="flex-1 !rounded-2xl !py-4 font-black text-[11px] h-auto"
+                                :loading="downloadingIndex === index" @click="handleDownload(file, index)">
+                                <Icon v-if="downloadingIndex !== index" icon="ph:download-simple-bold"
+                                    class="text-sm mr-2" />
                                 Unduh
-                            </a>
+                            </BaseButton>
                         </div>
                     </div>
                 </div>
@@ -162,6 +164,9 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { ref, computed, watch, onMounted } from 'vue'
+import BaseButton from '~/components/common/BaseButton.vue'
+
+const config = useRuntimeConfig()
 
 const props = defineProps({
     eventId: {
@@ -181,6 +186,43 @@ const props = defineProps({
         default: () => []
     }
 })
+
+const downloadingIndex = ref(null)
+
+const handleDownload = async (file, index) => {
+    if (!file.url) return
+
+    downloadingIndex.value = index
+    try {
+        const filename = file.url.split('/').pop()
+        const downloadUrl = `${config.public.apiBaseUrl}/media/download/${filename}`
+
+        // Fetch the file as a blob to show spinner during download
+        const blob = await $fetch(downloadUrl, {
+            responseType: 'blob'
+        })
+
+        // Create a temporary object URL for the blob
+        const url = window.URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url
+
+        // Use the title or original filename
+        const downloadName = (file.name || filename).replace(/[/\\?%*:|"<>]/g, '-')
+        link.setAttribute('download', downloadName)
+
+        document.body.appendChild(link)
+        link.click()
+
+        // Cleanup
+        document.body.removeChild(link)
+        window.URL.revokeObjectURL(url)
+    } catch (error) {
+        console.error('Download failed:', error)
+    } finally {
+        downloadingIndex.value = null
+    }
+}
 
 const getFileIcon = (url) => {
     if (!url) return 'ph:file-bold'

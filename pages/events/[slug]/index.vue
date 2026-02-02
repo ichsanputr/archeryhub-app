@@ -193,7 +193,7 @@
                                     <div class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Juara 1
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{ displayValue(tournament.prizes?.first)
-                                    }}</div>
+                                        }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ firstPrizeCaption }}</div>
                                 </div>
                                 <div
@@ -211,7 +211,7 @@
                                     <div class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Juara 3
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{ displayValue(tournament.prizes?.third)
-                                    }}</div>
+                                        }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ thirdPrizeCaption }}</div>
                                 </div>
                             </div>
@@ -224,7 +224,8 @@
                     <TournamentResultsTab v-else-if="activeTab === 'Hasil'" :event-id="slug"
                         :results="tournament.results" :categories="categoriesList" :participants="participantsData" />
                     <TournamentVenueTab v-else-if="activeTab === 'Lokasi'" :venue="tournament.venue"
-                        :address="tournament.address" :gmaps-link="tournament.gmaps_link" />
+                        :address="tournament.address" :gmaps-link="tournament.gmaps_link"
+                        :accessibility="tournament.location_accessibility" />
 
                     <!-- FAQ Tab -->
                     <div v-else-if="activeTab === 'FAQ'" class="space-y-8">
@@ -609,7 +610,8 @@ const transformEventData = (data) => ({
     fees: data.page_settings ? (JSON.parse(data.page_settings).fees || []) : [],
     results: data.page_settings ? (JSON.parse(data.page_settings).results || []) : [],
     registration_deadline: data.registration_deadline || null,
-    participant_count: data.participant_count || 0
+    participant_count: data.participant_count || 0,
+    location_accessibility: data.page_settings ? (JSON.parse(data.page_settings).location_accessibility || []) : []
 })
 
 // Google Maps embed URL
