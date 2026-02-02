@@ -54,10 +54,10 @@
                     <div class="flex flex-col lg:flex-row items-end justify-between gap-8 mb-12">
                         <div class="max-w-3xl">
                             <h1
-                                class="text-xl md:text-2xl font-black leading-tight tracking-tight mb-4 md:mb-6 font-display text-white">
+                                class="text-3xl md:text-5xl font-black leading-tight tracking-tight mb-4 md:mb-6 font-display text-white">
                                 Registrasi {{ event.name }}
                             </h1>
-                            <div class="flex flex-wrap items-center gap-2 text-white/80 text-sm sm:text-base">
+                            <div class="flex flex-wrap items-center gap-4 text-white/80 text-base md:text-lg">
                                 <div class="flex items-center gap-2">
                                     <Icon icon="ph:calendar-blank" class="text-primary" />
                                     <span>{{ displayValue(event.date) }}</span>
@@ -152,7 +152,7 @@
                                             <h3 class="text-lg font-black text-navy mb-1">{{ archerProfile?.full_name ||
                                                 user.name }}</h3>
                                             <p class="text-sm text-gray-500 mb-1">{{ archerProfile?.email || user.email
-                                            }}
+                                                }}
                                             </p>
                                             <p v-if="archerProfile?.id"
                                                 class="text-xs text-navy font-bold bg-gray-100 px-2 py-0.5 rounded-md inline-block">
@@ -184,7 +184,7 @@
                                                 Pengalaman</p>
                                             <p class="text-sm font-bold text-navy">{{ archerProfile?.experience_years ||
                                                 0
-                                            }} Tahun</p>
+                                                }} Tahun</p>
                                         </div>
                                         <div
                                             class="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border border-gray-100 col-span-2">
@@ -321,7 +321,7 @@
                                     </div>
 
                                     <!-- Add Button -->
-                                    <button @click="triggerProofUpload"
+                                    <button v-if="isLoggedIn" @click="triggerProofUpload"
                                         class="aspect-square rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50 hover:border-navy hover:bg-navy/5 transition-all flex flex-col items-center justify-center gap-2 group cursor-pointer">
                                         <div
                                             class="h-10 w-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform text-navy">
@@ -331,6 +331,12 @@
                                             class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Tambah
                                             Foto</span>
                                     </button>
+                                    <div v-else
+                                        class="aspect-square rounded-2xl border-2 border-dashed border-gray-100 bg-gray-50 flex flex-col items-center justify-center gap-2 text-center p-2 opacity-60">
+                                        <span class="material-symbols-outlined text-2xl text-gray-400">lock</span>
+                                        <span class="text-[9px] font-bold text-gray-400 uppercase tracking-tight">Login
+                                            Pemanah <br /> untuk Unggah</span>
+                                    </div>
                                 </div>
 
                                 <input ref="proofInput" type="file" multiple accept="image/*" class="hidden"
@@ -416,6 +422,7 @@ import { useImageOrDefault } from '~/composables/useImageHelper'
 import BaseButton from '~/components/common/BaseButton.vue'
 import Breadcrumbs from '~/components/common/Breadcrumbs.vue'
 import { Icon } from '@iconify/vue'
+import { useDateFormat } from '@vueuse/core'
 
 const route = useRoute()
 const router = useRouter()
@@ -447,6 +454,7 @@ const proofInput = ref(null)
 const paymentPreviews = ref([])
 
 const triggerProofUpload = () => {
+    if (!isLoggedIn.value) return
     proofInput.value?.click()
 }
 
@@ -554,14 +562,19 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
         const eventId = eventResponse.uuid || eventResponse.id
         const formatDate = (dateString) => {
             if (!dateString) return ''
-            const d = new Date(dateString)
-            return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`
+            return useDateFormat(dateString, 'DD MMM YYYY', { locales: 'id-ID' }).value
         }
 
         const eventData = {
             id: eventId,
             name: eventResponse.name || eventResponse.title || 'Event',
-            date: eventResponse.start_date ? `${formatDate(eventResponse.start_date)}${eventResponse.end_date ? ' - ' + formatDate(eventResponse.end_date) : ''}` : eventResponse.date || '',
+            date: (() => {
+                if (!eventResponse.start_date) return eventResponse.date || ''
+                const start = formatDate(eventResponse.start_date)
+                const end = eventResponse.end_date ? formatDate(eventResponse.end_date) : null
+                if (!end || start === end) return start
+                return `${start} - ${end}`
+            })(),
             location: eventResponse.location || eventResponse.venue || '',
             image: eventResponse.image || eventResponse.banner_url || '',
             description: eventResponse.description || '',

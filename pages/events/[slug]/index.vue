@@ -21,7 +21,7 @@
                             class="text-3xl md:text-5xl font-black leading-tight tracking-tight mb-6 font-display text-white">
                             {{ tournament.name }}
                         </h1>
-                        <div class="flex flex-wrap items-center gap-2 text-white/80 text-sm sm:text-base">
+                        <div class="flex flex-wrap items-center gap-4 text-white/80 text-base md:text-lg">
                             <div class="flex items-center gap-2">
                                 <Icon icon="ph:calendar-blank" class="text-primary" />
                                 <span>{{ displayValue(tournament.date) }}</span>
@@ -478,6 +478,7 @@ import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 import { definePageMeta, useSeoMeta } from '#imports'
+import { useDateFormat } from '@vueuse/core'
 
 const route = useRoute()
 const slug = route.params.slug
@@ -567,14 +568,12 @@ const transformEventData = (data) => ({
     name: data.name || data.title || '',
     date: (() => {
         if (!data.start_date) return data.date || ''
-        const start = new Date(data.start_date)
-        const end = data.end_date ? new Date(data.end_date) : null
+        const start = useDateFormat(data.start_date, 'DD MMM YYYY', { locales: 'id-ID' }).value
+        const end = data.end_date ? useDateFormat(data.end_date, 'DD MMM YYYY', { locales: 'id-ID' }).value : null
 
-        if (!end || start.toDateString() === end.toDateString()) {
-            return start.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-        }
+        if (!end || start === end) return start
 
-        return `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${end.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
+        return `${start} - ${end}`
     })(),
     location: data.venue || data.location || '',
     venue: data.venue || data.location || '',
