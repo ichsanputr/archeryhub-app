@@ -18,3 +18,26 @@ export const useTitleCase = (str: string | null | undefined): string => {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ')
 }
+
+/**
+ * Convert a string to a URL-friendly slug
+ * @param str - The string to convert
+ * @returns The slugified string
+ */
+export const useStringHelper = () => {
+  const slugify = (str: string | null | undefined): string => {
+    if (!str) return ''
+    
+    return str
+      .toString()
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/[^\w\-]+/g, '')
+      .replace(/\-\-+/g, '-')
+      .replace(/^-+/, '')
+      .replace(/-+$/, '')
+  }
+
+  return { slugify }
+}

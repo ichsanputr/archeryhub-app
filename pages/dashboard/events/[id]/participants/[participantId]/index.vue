@@ -1,7 +1,5 @@
 <template>
     <div class="flex flex-col gap-6 pb-12">
-        <Breadcrumbs :items="breadcrumbItems" current="Detail Peserta" />
-
         <!-- Enhanced Header -->
         <div
             class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">

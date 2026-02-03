@@ -2,8 +2,6 @@
     <div class="flex flex-col gap-8 pb-12">
         <!-- Header -->
         <div class="flex flex-col gap-4">
-            <Breadcrumbs :items="breadcrumbItems" current="Tambah Peserta" />
-
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h1 class="text-2xl md:text-3xl font-extrabold text-navy tracking-tight">Tambah Peserta</h1>

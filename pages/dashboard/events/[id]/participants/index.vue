@@ -2,8 +2,6 @@
     <div class="flex flex-col gap-6 pb-12">
         <!-- Header -->
         <div class="flex flex-col gap-4">
-            <Breadcrumbs :items="breadcrumbItems" current="Peserta" />
-
             <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
                 <div class="space-y-1">
                     <h1 class="text-2xl md:text-3xl font-black text-navy tracking-tight">Daftar Peserta</h1>
@@ -234,7 +232,7 @@
                 enter-from-class="opacity-0" enter-to-class="opacity-100"
                 leave-active-class="transition duration-150 ease-in"
                 leave-from-class="opacity-100" leave-to-class="opacity-0">
-                <div v-if="showQR" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+                <div v-if="showQR" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm"
                     @click="showQR = false">
                     <div class="relative bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full mx-4" @click.stop>
                         <button @click="showQR = false"
@@ -248,7 +246,7 @@
                                 <p class="text-sm text-gray-500 font-medium">{{ selectedParticipant?.full_name }}</p>
                             </div>
                             
-                            <div class="bg-gray-50 p-8 rounded-2xl border border-gray-200">
+                            <div class="bg-gray-50 p-8 rounded-2xl border flex justify-center border-gray-200">
                                 <qrcode-vue :value="selectedParticipant?.qr_raw || 'N/A'" :size="300" level="H" render-as="svg" />
                             </div>
                             

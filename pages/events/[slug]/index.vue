@@ -172,6 +172,48 @@
                             </div>
                         </section>
 
+                        <!-- Payment Methods Section -->
+                        <section v-if="tournament.page_settings?.sections?.payment_methods !== false && tournament.payment_methods && tournament.payment_methods.length > 0"
+                            class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
+                            <h2 class="text-lg sm:text-xl font-bold text-navy mb-6 flex items-center gap-2">
+                                <Icon icon="ph:credit-card-bold" class="text-navy" />
+                                Metode Pembayaran
+                            </h2>
+                            <div class="space-y-4">
+                                <div v-for="(method, idx) in tournament.payment_methods" :key="idx"
+                                    class="bg-gray-50 rounded-xl p-5 border border-gray-100 hover:border-navy/30 transition-colors">
+                                    <div class="flex items-start gap-4">
+                                        <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm shrink-0">
+                                            <Icon 
+                                                :icon="method.type === 'bank' ? 'ph:bank-bold' : method.type === 'qris' ? 'ph:qr-code-bold' : 'ph:wallet-bold'"
+                                                class="text-2xl text-navy" />
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex items-center gap-2 mb-1">
+                                                <span class="font-bold text-navy">{{ displayValue(method.bank_name) }}</span>
+                                                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider px-2 py-0.5 bg-gray-200 rounded">
+                                                    {{ method.type === 'bank' ? 'Bank' : method.type === 'qris' ? 'QRIS' : 'E-Wallet' }}
+                                                </span>
+                                            </div>
+                                            <div class="space-y-1">
+                                                <p class="text-sm text-gray-600">
+                                                    <span class="font-medium">Nomor:</span> 
+                                                    <span class="font-bold text-navy">{{ displayValue(method.account_number) }}</span>
+                                                </p>
+                                                <p class="text-sm text-gray-600">
+                                                    <span class="font-medium">Atas Nama:</span> 
+                                                    <span class="font-semibold">{{ displayValue(method.account_name) }}</span>
+                                                </p>
+                                                <p v-if="method.instructions" class="text-xs text-gray-500 mt-2 italic">
+                                                    {{ method.instructions }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
                         <section v-if="tournament.page_settings?.sections?.prizes !== false"
                             class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 relative overflow-hidden">
                             <div
@@ -509,6 +551,7 @@ const fallbackTournament = {
             about: true,
             divisions: true,
             fees: true,
+            payment_methods: true,
             prizes: true,
             schedule: true,
             location: true
@@ -589,6 +632,7 @@ const transformEventData = (data) => ({
     image: data.banner_url || data.image || '/hero-event-detail.jpeg',
     thumbnail: data.logo_url || data.thumbnail || null,
     fees: data.fees || [],
+    payment_methods: data.payment_methods || [],
     description: data.description || '',
     total_prize: data.total_prize || 0,
     technical_guidebook_url: data.technical_guidebook_url || null,

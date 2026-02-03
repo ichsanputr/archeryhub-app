@@ -247,7 +247,7 @@
                                     <Icon icon="ph:plus-bold" class="mr-1" /> Tambah Biaya
                                 </BaseButton>
                             </div>
-                            <div v-if="form.fees.length === 0"
+                            <div v-if="!form.fees || form.fees.length === 0"
                                 class="text-center py-8 bg-gray-50 rounded-xl border border-dashed border-gray-200">
                                 <p class="text-xs text-gray-400">Belum ada biaya pendaftaran. Tambahkan untuk memudahkan
                                     pendaftar.</p>
@@ -284,6 +284,68 @@
                                 <label class="text-sm font-bold text-gray-700">Biaya Pendaftaran (Rp)</label>
                                 <input v-model.number="form.entry_fee" type="number" placeholder="350000"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Metode Pembayaran Section -->
+                <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="p-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
+                        <h2 class="text-lg font-bold text-navy flex items-center gap-2">
+                            <Icon icon="ph:credit-card" class="text-primary text-xl" />
+                            Metode Pembayaran
+                        </h2>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold text-gray-400">Tampilkan di Halaman Publik</span>
+                            <button @click="form.page_settings.sections.payment_methods = !form.page_settings.sections.payment_methods"
+                                class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none"
+                                :class="form.page_settings.sections.payment_methods ? 'bg-primary' : 'bg-gray-200'">
+                                <span
+                                    class="inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform"
+                                    :class="form.page_settings.sections.payment_methods ? 'translate-x-5.5' : 'translate-x-1'"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-6 space-y-5">
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between">
+                                <label class="text-sm font-bold text-gray-700">Daftar Metode Pembayaran</label>
+                                <BaseButton variant="outline" size="xs" @click="addPaymentMethodField">
+                                    <Icon icon="ph:plus-bold" class="mr-1" /> Tambah Metode
+                                </BaseButton>
+                            </div>
+                            <div v-if="!form.payment_methods || form.payment_methods.length === 0"
+                                class="text-center py-8 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                                <p class="text-xs text-gray-400">Belum ada metode pembayaran. Tambahkan untuk informasi peserta.</p>
+                            </div>
+                            <div v-else class="space-y-3">
+                                <div v-for="(method, index) in form.payment_methods" :key="index"
+                                    class="flex gap-3 items-start bg-gray-50 p-4 rounded-xl border border-gray-100">
+                                    <div class="flex-grow space-y-3">
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                            <input v-model="method.bank_name" type="text" placeholder="Nama Bank/E-Wallet"
+                                                class="w-full px-4 py-2 rounded-lg border border-gray-200 text-sm" />
+                                            <input v-model="method.account_number" type="text" placeholder="Nomor Rekening/Akun"
+                                                class="w-full px-4 py-2 rounded-lg border border-gray-200 text-sm" />
+                                        </div>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                            <input v-model="method.account_name" type="text" placeholder="Nama Pemilik Rekening"
+                                                class="w-full px-4 py-2 rounded-lg border border-gray-200 text-sm" />
+                                            <select v-model="method.type"
+                                                class="w-full px-4 py-2 rounded-lg border border-gray-200 text-sm">
+                                                <option value="bank">Bank Transfer</option>
+                                                <option value="ewallet">E-Wallet</option>
+                                                <option value="qris">QRIS</option>
+                                            </select>
+                                        </div>
+                                        <input v-model="method.instructions" type="text" placeholder="Instruksi tambahan (opsional)"
+                                            class="w-full px-4 py-2 rounded-lg border border-gray-200 text-xs" />
+                                    </div>
+                                    <button @click="removePaymentMethodField(index)" class="p-2 text-gray-400 hover:text-red-500">
+                                        <Icon icon="ph:trash" />
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -826,6 +888,7 @@ const form = ref({
     logo_url: '',
     event_images: [],
     fees: [],
+    payment_methods: [],
     schedules: [],
     registration_deadline: '',
     entry_fee: 0,
@@ -847,6 +910,7 @@ const form = ref({
             about: true,
             divisions: true,
             fees: true,
+            payment_methods: true,
             prizes: true,
             schedule: true,
             location: true,
@@ -872,6 +936,9 @@ const removeFAQField = (index) => {
 }
 
 const addFeeField = () => {
+    if (!form.value.fees) {
+        form.value.fees = []
+    }
     form.value.fees.push({
         name: '',
         amount: 0,
@@ -881,6 +948,23 @@ const addFeeField = () => {
 
 const removeFeeField = (index) => {
     form.value.fees.splice(index, 1)
+}
+
+const addPaymentMethodField = () => {
+    if (!form.value.payment_methods) {
+        form.value.payment_methods = []
+    }
+    form.value.payment_methods.push({
+        bank_name: '',
+        account_number: '',
+        account_name: '',
+        type: 'bank',
+        instructions: ''
+    })
+}
+
+const removePaymentMethodField = (index) => {
+    form.value.payment_methods.splice(index, 1)
 }
 
 const addScheduleField = () => {
@@ -1172,6 +1256,7 @@ const fetchEventData = async () => {
                     is_primary: img.is_primary || false
                 })) : [],
                 fees: pageSettings.fees || [],
+                payment_methods: pageSettings.payment_methods || [],
                 schedules: schedules.map(s => ({
                     id: s.id || s.uuid,
                     title: s.title || '',
@@ -1239,6 +1324,7 @@ const saveEventPage = async () => {
                 ...form.value.page_settings,
                 location_accessibility: form.value.location_accessibility || [],
                 fees: form.value.fees || [],
+                payment_methods: form.value.payment_methods || [],
                 prizes: form.value.prizes || {},
                 results: form.value.results || []
             })
