@@ -88,6 +88,7 @@
                             <th class="px-6 py-4">Klub</th>
                             <th class="px-6 py-4">Kategori Lomba</th>
                             <th class="px-6 py-4">Status</th>
+                            <th class="px-6 py-4">Registrasi Ulang</th>
                             <th class="px-6 py-4 text-right">Aksi</th>
                         </tr>
                     </thead>
@@ -115,6 +116,9 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="h-6 w-20 bg-gray-100 animate-pulse rounded-full"></div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="h-8 w-24 bg-gray-100 animate-pulse rounded"></div>
                                 </td>
                                 <td class="px-6 py-4 text-right">
                                     <div class="flex justify-end gap-2">
@@ -164,6 +168,15 @@
                                         {{ participant.status || 'Menunggu Acc' }}
                                     </span>
                                 </td>
+                                <td class="px-6 py-4">
+                                    <BaseButton v-if="participant.status === 'Terdaftar' && participant.qr_raw" 
+                                        variant="outline" size="sm" icon="ph:qr-code" 
+                                        @click="showQRDialog(participant)"
+                                        class="h-8 text-xs">
+                                        Lihat QR
+                                    </BaseButton>
+                                    <span v-else class="text-xs text-gray-400 font-medium">-</span>
+                                </td>
                                 <td class="px-6 py-4 text-right">
                                     <div class="flex items-center justify-end gap-2">
                                         <NuxtLink
@@ -172,17 +185,11 @@
                                             title="Lihat Detail">
                                             <Icon icon="ph:eye" class="text-lg" />
                                         </NuxtLink>
-                                        <NuxtLink
-                                            :to="`/dashboard/events/${route.params.id}/participants/${participant.username || participant.id}/edit`"
-                                            class="p-2 text-navy/40 hover:text-navy transition-colors"
-                                            title="Edit Peserta">
-                                            <Icon icon="ph:pencil-simple" class="text-lg" />
-                                        </NuxtLink>
                                     </div>
                                 </td>
                             </tr>
                             <tr v-if="filteredParticipants.length === 0">
-                                <td colspan="6" class="px-6 py-12 text-center text-gray-400 italic font-medium">
+                                <td colspan="7" class="px-6 py-12 text-center text-gray-400 italic font-medium">
                                     Tidak ada peserta yang ditemukan.
                                 </td>
                             </tr>
@@ -220,12 +227,51 @@
                 </div>
             </div>
         </div>
+
+        <!-- QR Code Dialog -->
+        <Teleport to="body">
+            <Transition enter-active-class="transition duration-200 ease-out"
+                enter-from-class="opacity-0" enter-to-class="opacity-100"
+                leave-active-class="transition duration-150 ease-in"
+                leave-from-class="opacity-100" leave-to-class="opacity-0">
+                <div v-if="showQR" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+                    @click="showQR = false">
+                    <div class="relative bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full mx-4" @click.stop>
+                        <button @click="showQR = false"
+                            class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors p-2 hover:bg-gray-100 rounded-lg">
+                            <Icon icon="ph:x" class="text-2xl" />
+                        </button>
+                        
+                        <div class="text-center space-y-6">
+                            <div>
+                                <h3 class="text-2xl font-black text-navy mb-2">QR Code Registrasi Ulang</h3>
+                                <p class="text-sm text-gray-500 font-medium">{{ selectedParticipant?.full_name }}</p>
+                            </div>
+                            
+                            <div class="bg-gray-50 p-8 rounded-2xl border border-gray-200">
+                                <qrcode-vue :value="selectedParticipant?.qr_raw || 'N/A'" :size="300" level="H" render-as="svg" />
+                            </div>
+                            
+                            <div class="text-xs text-gray-500 space-y-1">
+                                <p class="font-bold">{{ selectedParticipant?.email }}</p>
+                                <p>{{ selectedParticipant?.club_name || '-' }}</p>
+                            </div>
+                            
+                            <BaseButton variant="primary" block icon="ph:download-simple" @click="downloadQR">
+                                Download QR Code
+                            </BaseButton>
+                        </div>
+                    </div>
+                </div>
+            </Transition>
+        </Teleport>
     </div>
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue'
 import Breadcrumbs from '~/components/common/Breadcrumbs.vue'
+import QrcodeVue from 'qrcode.vue'
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
 import { useApi } from '~/composables/useApi'
@@ -245,8 +291,7 @@ const { setEvent, clearEvent } = useEventContext()
 
 const breadcrumbItems = computed(() => [
     { label: 'Dashboard', path: '/dashboard' },
-    { label: 'Events', path: '/dashboard/events' },
-    { label: 'Control Panel', path: `/dashboard/events/${route.params.id}/overview` }
+    { label: 'Events', path: '/dashboard/events' }
 ])
 
 const participants = ref([])
@@ -261,6 +306,8 @@ const searchQuery = ref('')
 const activeDiv = ref('Semua')
 const filterDivs = ['Semua', 'Recurve', 'Compound', 'Barebow']
 const isLoading = ref(true)
+const showQR = ref(false)
+const selectedParticipant = ref(null)
 
 const fetchEventDetails = async () => {
     try {
@@ -328,6 +375,39 @@ const getCategoryName = (participant) => {
     if (participant.gender_division_name) parts.push(participant.gender_division_name)
 
     return parts.length > 0 ? parts.join(' - ') : '-'
+}
+
+const showQRDialog = (participant) => {
+    selectedParticipant.value = participant
+    showQR.value = true
+}
+
+const downloadQR = () => {
+    // Get the SVG element from the QR code
+    const svg = document.querySelector('.bg-gray-50 svg')
+    if (!svg) return
+
+    // Create a canvas to convert SVG to image
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d')
+    const svgData = new XMLSerializer().serializeToString(svg)
+    const img = new Image()
+    
+    img.onload = () => {
+        canvas.width = 300
+        canvas.height = 300
+        ctx.fillStyle = 'white'
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
+        ctx.drawImage(img, 0, 0)
+        
+        // Download the image
+        const link = document.createElement('a')
+        link.download = `qr-${selectedParticipant.value?.full_name || 'code'}.png`
+        link.href = canvas.toDataURL()
+        link.click()
+    }
+    
+    img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)))
 }
 
 onMounted(() => {

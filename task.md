@@ -42,3 +42,13 @@ PHASE 3
  
 Proxy(Object)
  'render function'
+
+PHASE 4
+
+- Please on register event page id is column id on table database dont use same like this, please use mcp mysql to learn schema table { "id": "f3fa277a-ea0c-46dd-8949-e3b1b44ef1ac", "uuid": "f3fa277a-ea0c-46dd-8949-e3b1b44ef1ac", "email": "tutxaei@gmail.com", "full_name": "Muhammad Ichsan", "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocKQ_cZ1-w8Fbljykq6kA8EciN1RkIZ2PmhO50l02uNLr7PyHS8=s96-c", "role": "archer", "user_type": "archer" }
+
+- On this page dashboard profile for archer /dashboard/archers/profile, where the form for setting information about the user? gender, kota, jenis busur and more?
+
+- /dashboard/archers/profile Please remove tab panel tampilan, because we use page settings column like club or organization, so please create new column on archer called page setting that will show some section configuration about the profile and will be shown on archers/slug page
+
+- /dashboard/archers/profile on this page also please if bg primary the text dont primary also, use text black instead same like register page

@@ -1,7 +1,7 @@
 <template>
     <div class="min-h-screen bg-background-light font-body text-navy antialiased flex flex-col">
         <!-- Main Content -->
-        <main class="flex-grow max-w-[1280px] mx-auto w-full px-4 sm:px-6 lg:px-8 py-4 md:py-6">
+        <main class="flex-grow max-w-[1280px] mx-auto w-full">
             <div class="w-full">
                 <!-- NuxtPage for nested routes -->
                 <NuxtPage />

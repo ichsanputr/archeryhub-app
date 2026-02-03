@@ -33,13 +33,58 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <!-- Main Content -->
       <div class="lg:col-span-2 space-y-6">
+        <!-- Tab: Informasi (Personal Data) -->
+        <div v-if="activeTab === 'information'" class="space-y-6">
+          <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
+            <h3 class="text-sm font-black text-navy uppercase tracking-widest flex items-center gap-2">
+              <Icon icon="ph:user-circle" class="text-black text-xl" />
+              Data Pribadi
+            </h3>
+            <p class="text-sm text-gray-600">
+              Informasi ini akan digunakan untuk keperluan administrasi event dan tampilan profil publik.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+              <BaseInput v-model="accountForm.full_name" label="Nama Lengkap" placeholder="Nama lengkap Anda" required />
+              <BaseInput v-model="accountForm.username" label="Username" placeholder="username" hint="Untuk URL profil publik" />
+
+              <BaseInput v-model="accountForm.date_of_birth" label="Tanggal Lahir" type="date" icon="mingcute:calendar-line" />
+              <BaseSelect v-model="accountForm.gender" label="Jenis Kelamin" :items="[
+                { title: 'Laki-laki', value: 'male' },
+                { title: 'Perempuan', value: 'female' }
+              ]" icon="ph:gender-intersex" />
+
+              <BaseInput v-model="accountForm.phone" label="Nomor Telepon" type="tel" placeholder="+62 812-3456-7890" icon="ph:phone" />
+              <BaseSelect v-model="accountForm.city" label="Kota / Kabupaten" :items="cityOptions" placeholder="Pilih kota" icon="mingcute:building-2-line" />
+
+              <BaseInput v-model="accountForm.school" label="Sekolah / Universitas" placeholder="Nama sekolah / universitas" icon="ph:student" />
+              <BaseSelect v-model="accountForm.bow_type" label="Tipe Busur" :items="[
+                { title: 'Recurve', value: 'recurve' },
+                { title: 'Compound', value: 'compound' },
+                { title: 'Barebow', value: 'barebow' },
+                { title: 'Traditional', value: 'traditional' }
+              ]" icon="hugeicons:archer" />
+
+              <div class="md:col-span-2">
+                <BaseTextarea v-model="accountForm.address" label="Alamat Lengkap" placeholder="Alamat lengkap Anda" :rows="3" icon="ph:house" />
+              </div>
+            </div>
+
+            <div class="flex justify-end mt-6 pt-6 border-t border-gray-100">
+              <BaseButton variant="gold" size="md" icon="ph:floppy-disk" @click="saveAccountInfo" :loading="isSavingAccount">
+                Simpan Informasi
+              </BaseButton>
+            </div>
+          </div>
+        </div>
+
         <!-- Tab: Profil (Bio, Prestasi, Statistik, Riwayat Event) -->
         <div v-if="activeTab === 'profile'" class="space-y-6">
           <div v-if="profileSections.length === 0"
             class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm text-center py-12">
             <Icon icon="ph:identification-card" class="text-4xl text-gray-300 mx-auto mb-3" />
             <p class="text-sm text-gray-500 font-medium">Belum ada komponen profil. Tambahkan dari tab
-              <strong>Tampilan</strong>.
+              <strong>Pengaturan</strong>.
             </p>
           </div>
           <div v-for="section in profileSections" :key="section.type"
@@ -84,7 +129,7 @@
             class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm text-center py-12">
             <Icon icon="ph:phone" class="text-4xl text-gray-300 mx-auto mb-3" />
             <p class="text-sm text-gray-500 font-medium">Belum ada komponen kontak/sosial. Tambahkan dari tab
-              <strong>Tampilan</strong>.
+              <strong>Pengaturan</strong>.
             </p>
           </div>
           <div v-for="section in contactSections" :key="section.type"
@@ -167,12 +212,12 @@
           </div>
         </div>
 
-        <!-- Tab: Tampilan (Komponen Profil) -->
-        <div v-if="activeTab === 'display'" class="space-y-6">
+        <!-- Tab: Settings (Page Configuration) -->
+        <div v-if="activeTab === 'settings'" class="space-y-6">
           <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm">
             <h3 class="text-lg font-black text-navy mb-6 flex items-center gap-2">
-              <Icon icon="ph:grid-four-bold" class="text-primary text-xl" />
-              Komponen Profil Tersedia
+              <Icon icon="ph:gear" class="text-black text-xl" />
+              Pengaturan Halaman Profil
             </h3>
             <p class="text-sm text-gray-500 mb-6">
               Pilih komponen yang ingin ditampilkan di profil publik Anda. Seret untuk mengubah urutan.
@@ -183,7 +228,7 @@
                 class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-200 hover:border-primary/30 transition-all cursor-move">
                 <div class="flex items-center gap-3 flex-1">
                   <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                    <Icon :icon="section.icon" class="text-primary text-xl" />
+                    <Icon :icon="section.icon" class="text-black text-xl" />
                   </div>
                   <div class="flex-1">
                     <h4 class="font-bold text-navy">{{ section.label }}</h4>
@@ -212,13 +257,13 @@
                 <button v-for="section in availableSections" :key="section.type" @click="addSection(section.type)"
                   class="flex items-center gap-3 p-4 bg-white border-2 border-dashed border-gray-200 rounded-xl hover:border-primary hover:bg-primary/5 transition-all text-left">
                   <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                    <Icon :icon="section.icon" class="text-primary text-xl" />
+                    <Icon :icon="section.icon" class="text-black text-xl" />
                   </div>
                   <div class="flex-1">
                     <h5 class="font-bold text-navy text-sm">{{ section.label }}</h5>
                     <p class="text-xs text-gray-500">{{ section.description }}</p>
                   </div>
-                  <Icon icon="ph:plus-circle" class="text-primary text-xl" />
+                  <Icon icon="ph:plus-circle" class="text-black text-xl" />
                 </button>
               </div>
             </div>
@@ -261,18 +306,18 @@
         <!-- Helpful Tips -->
         <div class="bg-navy rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
           <Icon icon="ph:lightbulb" class="absolute -right-4 -bottom-4 text-8xl text-white/5 rotate-12" />
-          <h4 class="font-black text-primary mb-3 flex items-center gap-2">Tips Profil</h4>
+          <h4 class="font-black text-white mb-3 flex items-center gap-2">Tips Profil</h4>
           <ul class="text-xs space-y-3 text-gray-300 font-medium">
             <li class="flex gap-2">
-              <Icon icon="ph:check-circle-fill" class="text-primary shrink-0 text-base" />
+              <Icon icon="ph:check-circle-fill" class="text-white shrink-0 text-base" />
               Gunakan foto profil yang profesional dengan peralatan panah Anda.
             </li>
             <li class="flex gap-2">
-              <Icon icon="ph:check-circle-fill" class="text-primary shrink-0 text-base" />
+              <Icon icon="ph:check-circle-fill" class="text-white shrink-0 text-base" />
               Cantumkan prestasi terbaru di bagian paling atas.
             </li>
             <li class="flex gap-2">
-              <Icon icon="ph:check-circle-fill" class="text-primary shrink-0 text-base" />
+              <Icon icon="ph:check-circle-fill" class="text-white shrink-0 text-base" />
               Bio yang menarik membantu klub mengenal karakter Anda.
             </li>
           </ul>
@@ -302,6 +347,7 @@ const { get, put } = useApi()
 const toast = useToast()
 
 const isSaving = ref(false)
+const isSavingAccount = ref(false)
 const profile = ref({
   bio: '',
   achievements: '',
@@ -312,6 +358,20 @@ const profile = ref({
     youtube: ''
   }
 })
+
+const accountForm = ref({
+  full_name: '',
+  username: '',
+  date_of_birth: '',
+  gender: '',
+  phone: '',
+  city: '',
+  school: '',
+  bow_type: '',
+  address: ''
+})
+
+const cityOptions = ref([])
 
 const userStats = ref({
   totalEvents: 0,
@@ -371,12 +431,13 @@ const allSections = [
   }
 ]
 
-const activeTab = ref('profile')
+const activeTab = ref('information')
 const tabs = [
+  { id: 'information', label: 'Informasi', icon: 'ph:user-circle-bold' },
   { id: 'profile', label: 'Profil', icon: 'ph:identification-card-bold' },
   { id: 'contact', label: 'Kontak & Sosial', icon: 'ph:phone-bold' },
   { id: 'equipment', label: 'Peralatan & Galeri', icon: 'ph:bow-arrow-bold' },
-  { id: 'display', label: 'Tampilan', icon: 'ph:grid-four-bold' }
+  { id: 'settings', label: 'Pengaturan', icon: 'ph:gear-bold' }
 ]
 
 const activeSections = ref([])
@@ -435,6 +496,17 @@ const updateSectionVisibility = (sectionType, isVisible) => {
 // Initialize from user data
 onMounted(async () => {
   initializeSections()
+  
+  // Load cities
+  try {
+    const citiesRes = await get('/cities')
+    cityOptions.value = (citiesRes.data || []).map(c => ({ title: c.name, value: c.name }))
+  } catch (e) {
+    console.error('Failed to load cities:', e)
+  }
+
+  // Load profile and account data
+  await loadProfile()
 
   // Use global archerProfile (already loaded by server middleware)
   if (archerProfile.value) {
@@ -467,7 +539,55 @@ onMounted(async () => {
   }
 })
 
-// ... watch etc ...
+// Load profile data
+const loadProfile = async () => {
+  try {
+    const response = await get('/archer/me')
+    
+    // Load account information
+    accountForm.value = {
+      full_name: response.full_name || '',
+      username: response.username || '',
+      date_of_birth: response.date_of_birth ? new Date(response.date_of_birth).toISOString().split('T')[0] : '',
+      gender: response.gender || '',
+      phone: response.phone || '',
+      city: response.city || '',
+      school: response.school || '',
+      bow_type: response.bow_type || '',
+      address: response.address || ''
+    }
+    
+    if (response.page_settings) {
+      try {
+        const settings = typeof response.page_settings === 'string' 
+          ? JSON.parse(response.page_settings) 
+          : response.page_settings
+        
+        if (settings.sections) {
+          activeSections.value = settings.sections
+        }
+      } catch (e) {
+        console.error('Failed to parse page_settings:', e)
+      }
+    }
+  } catch (error) {
+    console.error('Failed to load profile:', error)
+  }
+}
+
+// Save account information
+const saveAccountInfo = async () => {
+  isSavingAccount.value = true
+  try {
+    await put('/user/profile', accountForm.value)
+    toast.success('Informasi berhasil disimpan')
+  } catch (error) {
+    console.error('Failed to save account info:', error)
+    toast.error('Gagal menyimpan informasi')
+  } finally {
+    isSavingAccount.value = false
+  }
+}
 
 const saveProfile = async () => {
   isSaving.value = true
@@ -476,10 +596,12 @@ const saveProfile = async () => {
       bio: profile.value.bio,
       achievements: profile.value.achievements,
       equipment: profile.value.equipment,
-      social_links: profile.value.socialLinks
+      social_links: profile.value.socialLinks,
+      page_settings: JSON.stringify({
+        sections: activeSections.value
+      })
     })
-    toast.success('Profil publik berhasil diperbarui')
-    // Profile will be refreshed on next page load from server middleware
+    toast.success('Profil berhasil disimpan')
   } catch (error) {
     toast.error(error.message || 'Gagal menyimpan profil')
   } finally {

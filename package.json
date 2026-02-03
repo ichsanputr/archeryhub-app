@@ -61,6 +61,7 @@
     "highlight.js": "^11.11.1",
     "highlightjs-line-numbers.js": "^2.9.1",
     "highlightjs-solidity": "^2.0.6",
+    "jsqr": "^1.4.0",
     "marked": "^17.0.1",
     "papaparse": "^5.5.3",
     "qrcode.vue": "^3.6.0",

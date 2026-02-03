@@ -45,7 +45,6 @@ export default defineEventHandler(async (event: H3Event) => {
         const payload = decodeJWT(token)
         if (payload && payload.user_id) {
             event.context.user = {
-                id: payload.user_id,
                 uuid: payload.user_id,
                 email: payload.email,
                 full_name: payload.name,

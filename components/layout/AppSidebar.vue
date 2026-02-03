@@ -176,6 +176,7 @@ const eventLinks = computed(() => {
     { label: 'Scoring', icon: 'ic:outline-scoreboard', path: `/dashboard/events/${eventId.value}/scoring` },
     { label: 'Kualifikasi', icon: 'fluent:table-freeze-column-20-regular', path: `/dashboard/events/${eventId.value}/qualification` },
     { label: 'Eliminasi', icon: 'mdi:bracket', path: `/dashboard/events/${eventId.value}/elimination` },
+    { label: 'Scan QR', icon: 'ph:qr-code', path: '/scan/qr' },
   )
 
   return links

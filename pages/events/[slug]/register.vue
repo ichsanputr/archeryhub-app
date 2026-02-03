@@ -37,31 +37,38 @@
         </div>
 
         <!-- Registration Success State (Maintain separate for clarity) -->
-        <div v-else-if="registrationSuccess" class="min-h-screen flex items-center justify-center px-4">
-            <div class="bg-white rounded-2xl p-6 md:p-8 border border-gray-100 max-w-lg w-full text-left">
-                <div class="h-16 w-16 bg-green-50 rounded-full flex items-center justify-center mb-6">
-                    <span class="material-symbols-outlined text-3xl text-green-500">check_circle</span>
+        <div v-else-if="registrationSuccess" class="min-h-screen flex items-center justify-center px-4 bg-gray-50">
+            <div class="bg-white rounded-3xl p-8 md:p-12 border-2 border-gray-200 max-w-md w-full">
+                <div class="flex flex-col items-center text-center mb-8">
+                    <div class="h-20 w-20 bg-green-500 rounded-full flex items-center justify-center mb-6">
+                        <Icon icon="ph:check-circle-fill" class="text-5xl text-white" />
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-black text-navy mb-3">Pendaftaran Berhasil!</h2>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        Pendaftaran Anda telah diterima dan sedang menunggu konfirmasi dari penyelenggara.
+                    </p>
                 </div>
-                <h2 class="text-xl font-black text-navy mb-3">Pendaftaran Berhasil!</h2>
-                <p class="text-xs text-gray-500 mb-6">Pendaftaran Anda telah diterima dan sedang menunggu konfirmasi
-                    dari
-                    penyelenggara.</p>
-                <div class="bg-amber-50 border border-amber-100 rounded-xl p-4 mb-6">
-                    <div class="flex items-start gap-3">
-                        <span class="material-symbols-outlined text-amber-500 shrink-0">schedule</span>
+
+                <div class="bg-amber-50 border-2 border-amber-200 rounded-2xl p-5 mb-8">
+                    <div class="flex items-start gap-4">
+                        <div class="h-10 w-10 bg-amber-500 rounded-xl flex items-center justify-center shrink-0">
+                            <Icon icon="ph:clock-fill" class="text-xl text-white" />
+                        </div>
                         <div class="text-left">
-                            <p class="text-sm font-bold text-navy">Menunggu Konfirmasi</p>
-                            <p class="text-xs text-gray-500">Anda akan menerima notifikasi setelah pendaftaran
-                                dikonfirmasi.</p>
+                            <p class="text-sm font-black text-navy mb-1">Menunggu Konfirmasi</p>
+                            <p class="text-xs text-gray-600 leading-relaxed">
+                                Anda akan menerima notifikasi setelah pendaftaran dikonfirmasi oleh penyelenggara.
+                            </p>
                         </div>
                     </div>
                 </div>
-                <div class="flex flex-col sm:flex-row gap-3">
-                    <BaseButton to="/dashboard/events" variant="navy" size="md" block class="flex-1">
+
+                <div class="flex flex-col gap-3">
+                    <BaseButton to="/dashboard/events" variant="navy" size="lg" block>
                         Lihat Status Pendaftaran
                     </BaseButton>
-                    <BaseButton :to="`/events/${slug}`" variant="white" size="md" block class="flex-1">
-                        Kembali
+                    <BaseButton :to="`/events/${slug}`" variant="outline" size="lg" block>
+                        Kembali ke Event
                     </BaseButton>
                 </div>
             </div>
@@ -85,14 +92,14 @@
                                 class="text-3xl md:text-5xl font-black leading-tight tracking-tight mb-4 md:mb-6 font-display text-white">
                                 Registrasi {{ event.name }}
                             </h1>
-                            <div class="flex flex-wrap items-center gap-4 text-white/80 text-base md:text-lg">
+                            <div class="flex flex-wrap items-center gap-2 text-white/80 text-base md:text-lg">
                                 <div class="flex items-center gap-2">
                                     <Icon icon="ph:calendar-blank" class="text-primary" />
-                                    <span>{{ displayValue(event.date) }}</span>
+                                    <span class="text-sm sm:text-base">{{ displayValue(event.date) }}</span>
                                 </div>
                                 <div class="flex items-center gap-2">
                                     <Icon icon="ph:map-pin" class="text-primary" />
-                                    <span>{{ displayValue(event.location) }}</span>
+                                    <span class="text-sm sm:text-base">{{ displayValue(event.location) }}</span>
                                 </div>
                             </div>
                         </div>
@@ -205,8 +212,8 @@
                                             required icon="mingcute:calendar-line" />
 
                                         <BaseSelect v-model="profileForm.bow_type" :items="bowTypeOptions"
-                                            label="Jenis Busur" placeholder="Pilih jenis busur" required
-                                            icon="ph:bow-arrow" />
+                                            label="Jenis Busur" placeholder="Pilih tipe busur" required
+                                            icon="hugeicons:archer" />
 
                                         <BaseSelect v-model="profileForm.city" :items="cityOptions"
                                             label="Kota / Kabupaten" placeholder="Pilih kota" icon="mingcute:building-2-line" />
@@ -450,7 +457,7 @@ const apiBaseUrl = config.public.apiBaseUrl
 
 // Use Auth composable for authentication
 const { user, isLoggedIn, archerProfile: globalArcherProfile } = useAuth()
-const { upload } = useApi()
+const { upload, put, post } = useApi()
 
 // 1. DATA FETCHING (Define 'data' early)
 const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-register-${slug}`, async () => {
@@ -476,7 +483,7 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
         const [categoriesResponse, bowTypesRes, citiesRes, profileResponse, paymentMethodsResponseData] = await Promise.all([
             $fetch(`${apiBaseUrl}/events/${slug}/categories`).catch(() => ({ events: [] })),
             $fetch(`${apiBaseUrl}/bow-types`).catch(() => ({ bow_types: [] })),
-            $fetch(`${apiBaseUrl}/cities`).catch(() => ({ cities: [] })),
+            $fetch(`${apiBaseUrl}/cities`).catch(() => ({ data: [] })),
             token ? $fetch(`${apiBaseUrl}/archer/me`, fetchOptions).catch(() => null) : Promise.resolve(null),
             (async () => {
                 if (!token || !eventId) return []
@@ -534,8 +541,8 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
         }))
 
         // Process bow types and cities
-        const bowTypesOptions = (bowTypesRes.bow_types || []).map(b => ({ title: b.name, value: b.name }))
-        const citiesOptions = (citiesRes.cities || []).map(c => ({ title: c, value: c }))
+        const bowTypesOptions = (bowTypesRes.bow_types || []).map(b => ({ title: b.name, value: b.code }))
+        const citiesOptions = (citiesRes.data || []).map(c => ({ title: c.name, value: c.name }))
 
         const result = {
             isLoggedIn: !!token || !!archerProfileData,
@@ -777,24 +784,19 @@ const handleSubmit = async () => {
     error.value = ''
 
     try {
-        const authToken = useCookie('auth_token').value
+        // Update archer profile if exists
         if (archerProfile.value?.uuid) {
-            await $fetch(`${apiBaseUrl}/archers/${archerProfile.value.uuid}`, {
-                method: 'PUT',
-                body: {
-                    full_name: profileForm.value.full_name,
-                    gender: profileForm.value.gender,
-                    date_of_birth: profileForm.value.date_of_birth,
-                    city: profileForm.value.city,
-                    bow_type: profileForm.value.bow_type,
-                    club_id: profileForm.value.club_id
-                },
-                headers: {
-                    'Authorization': `Bearer ${authToken}`
-                }
+            await put(`/archers/${archerProfile.value.uuid}`, {
+                full_name: profileForm.value.full_name,
+                gender: profileForm.value.gender,
+                date_of_birth: profileForm.value.date_of_birth,
+                city: profileForm.value.city,
+                bow_type: profileForm.value.bow_type,
+                club_id: profileForm.value.club_id
             })
         }
 
+        // Create participant registration
         const payload = {
             athlete_id: archerProfile.value?.uuid || archerProfile.value?.id,
             event_category_id: form.value.category_id,
@@ -802,13 +804,7 @@ const handleSubmit = async () => {
             payment_proof_urls: form.value.payment_proofs
         }
 
-        await $fetch(`${apiBaseUrl}/events/${event.value.id}/participants`, {
-            method: 'POST',
-            body: payload,
-            headers: {
-                'Authorization': `Bearer ${authToken}`
-            }
-        })
+        await post(`/events/${event.value.id}/participants`, payload)
 
         registrationSuccess.value = true
     } catch (err) {

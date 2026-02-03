@@ -39,8 +39,8 @@ export const useAuth = () => {
       const event = useRequestEvent()
       if (event?.context?.user) {
         return {
+          uuid: event.context.user.uuid,
           id: event.context.user.id,
-          uuid: event.context.user.id,
           email: event.context.user.email,
           name: event.context.user.full_name,
           full_name: event.context.user.full_name,
