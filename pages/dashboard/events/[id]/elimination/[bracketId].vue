@@ -76,7 +76,7 @@
 
                             <button v-if="!currentRoundNo && (bracket.status === 'draft' || !bracket.generated_at)"
                                 @click="generateBracket"
-                                class="h-11 px-5 bg-primary text-navy rounded-xl font-black text-xs tracking-wider shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all flex items-center gap-2">
+                                class="h-11 px-5 bg-primary text-navy rounded-xl font-black text-xs tracking-wider shadow-lg shadow-primary/30 hover:shadow-primary/40 transition-all flex items-center gap-2">
                                 <Icon icon="ph:magic-wand" class="text-lg" />
                                 Generate Bracket
                             </button>
@@ -102,7 +102,7 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                             <div v-for="match in roundMatches" :key="match.id"
-                                class="bg-gray-50/50 rounded-3xl border border-gray-100 p-6 hover:bg-white hover:shadow-xl hover:shadow-navy/5 transition-all group">
+                                class="bg-gray-50/50 rounded-3xl border border-gray-100 p-6 hover:bg-white hover:shadow-navy/5 transition-all group">
                                 <div class="flex items-center justify-between mb-6">
                                     <div class="flex items-center gap-3">
                                         <div
@@ -244,7 +244,7 @@
                         <div v-if="selectedScoringMatch" class="space-y-6">
                             <!-- Match Summary Header -->
                             <div
-                                class="bg-navy rounded-[40px] p-8 sm:p-12 flex flex-col items-center justify-center gap-8 text-white shadow-xl overflow-hidden relative border border-white/5">
+                                class="bg-navy rounded-[40px] p-8 sm:p-12 flex flex-col items-center justify-center gap-8 text-white shadow-md overflow-hidden relative border border-white/5">
                                 <div class="absolute inset-0 opacity-5 pointer-events-none">
                                     <Icon icon="ph:target"
                                         class="text-[400px] absolute -right-20 -bottom-20 rotate-12" />
@@ -279,7 +279,7 @@
                                             class="px-6 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
                                             <span
                                                 class="text-[10px] font-black tracking-[0.4em] text-white/40 uppercase">{{
-                                                getTargetName(selectedScoringMatch.target_id) }}</span>
+                                                    getTargetName(selectedScoringMatch.target_id) }}</span>
                                         </div>
 
                                         <div class="flex items-center gap-6 sm:gap-10">
@@ -1113,9 +1113,7 @@ onMounted(() => {
     height: 140px;
 }
 
-.match-node-card:hover {
-    @apply shadow-xl border-primary/40 -translate-y-1 z-20;
-}
+.match-node-card:hover {}
 
 .match-node-card.selected {
     @apply ring-8 ring-primary/10 border-primary shadow-sm z-20;
