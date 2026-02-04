@@ -67,7 +67,8 @@
             <tr v-else v-for="target in targets" :key="target.id" class="hover:bg-gray-50 transition-colors group">
               <td class="px-6 py-4">
                 <div class="flex items-center gap-3">
-                  <div class="size-10 rounded-lg bg-navy text-white flex items-center justify-center font-black text-sm">
+                  <div
+                    class="size-10 rounded-lg bg-navy text-white flex items-center justify-center font-black text-sm">
                     {{ target.target_number }}
                   </div>
                 </div>
@@ -168,7 +169,8 @@
       <Transition enter-active-class="transition duration-200 ease-out" enter-from-class="opacity-0"
         enter-to-class="opacity-100" leave-active-class="transition duration-150 ease-in" leave-from-class="opacity-100"
         leave-to-class="opacity-0">
-        <div v-if="showDeleteDialog" class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+        <div v-if="showDeleteDialog"
+          class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
           @click.self="showDeleteDialog = false">
           <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full">
             <div class="p-6">
@@ -179,7 +181,8 @@
                 <div>
                   <h3 class="text-xl font-black text-navy mb-2">Konfirmasi Hapus</h3>
                   <p class="text-gray-600">
-                    Apakah Anda yakin ingin menghapus <strong class="text-navy">{{ targetToDelete?.target_name }}</strong>?
+                    Apakah Anda yakin ingin menghapus <strong class="text-navy">{{ targetToDelete?.target_name
+                      }}</strong>?
                     Tindakan ini tidak dapat dibatalkan.
                   </p>
                 </div>
@@ -229,6 +232,10 @@ const currentTargetId = ref(null)
 
 definePageMeta({
   layout: 'dashboard'
+})
+
+useHead({
+  title: 'Manajemen Target - Dashboard'
 })
 
 const breadcrumbItems = computed(() => [

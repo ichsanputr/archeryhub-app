@@ -298,7 +298,8 @@
                         </h2>
                         <div class="flex items-center gap-2">
                             <span class="text-xs font-bold text-gray-400">Tampilkan di Halaman Publik</span>
-                            <button @click="form.page_settings.sections.payment_methods = !form.page_settings.sections.payment_methods"
+                            <button
+                                @click="form.page_settings.sections.payment_methods = !form.page_settings.sections.payment_methods"
                                 class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none"
                                 :class="form.page_settings.sections.payment_methods ? 'bg-primary' : 'bg-gray-200'">
                                 <span
@@ -317,20 +318,24 @@
                             </div>
                             <div v-if="!form.payment_methods || form.payment_methods.length === 0"
                                 class="text-center py-8 bg-gray-50 rounded-xl border border-dashed border-gray-200">
-                                <p class="text-xs text-gray-400">Belum ada metode pembayaran. Tambahkan untuk informasi peserta.</p>
+                                <p class="text-xs text-gray-400">Belum ada metode pembayaran. Tambahkan untuk informasi
+                                    peserta.</p>
                             </div>
                             <div v-else class="space-y-3">
                                 <div v-for="(method, index) in form.payment_methods" :key="index"
                                     class="flex gap-3 items-start bg-gray-50 p-4 rounded-xl border border-gray-100">
                                     <div class="flex-grow space-y-3">
                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                            <input v-model="method.bank_name" type="text" placeholder="Nama Bank/E-Wallet"
+                                            <input v-model="method.bank_name" type="text"
+                                                placeholder="Nama Bank/E-Wallet"
                                                 class="w-full px-4 py-2 rounded-lg border border-gray-200 text-sm" />
-                                            <input v-model="method.account_number" type="text" placeholder="Nomor Rekening/Akun"
+                                            <input v-model="method.account_number" type="text"
+                                                placeholder="Nomor Rekening/Akun"
                                                 class="w-full px-4 py-2 rounded-lg border border-gray-200 text-sm" />
                                         </div>
                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                            <input v-model="method.account_name" type="text" placeholder="Nama Pemilik Rekening"
+                                            <input v-model="method.account_name" type="text"
+                                                placeholder="Nama Pemilik Rekening"
                                                 class="w-full px-4 py-2 rounded-lg border border-gray-200 text-sm" />
                                             <select v-model="method.type"
                                                 class="w-full px-4 py-2 rounded-lg border border-gray-200 text-sm">
@@ -339,10 +344,12 @@
                                                 <option value="qris">QRIS</option>
                                             </select>
                                         </div>
-                                        <input v-model="method.instructions" type="text" placeholder="Instruksi tambahan (opsional)"
+                                        <input v-model="method.instructions" type="text"
+                                            placeholder="Instruksi tambahan (opsional)"
                                             class="w-full px-4 py-2 rounded-lg border border-gray-200 text-xs" />
                                     </div>
-                                    <button @click="removePaymentMethodField(index)" class="p-2 text-gray-400 hover:text-red-500">
+                                    <button @click="removePaymentMethodField(index)"
+                                        class="p-2 text-gray-400 hover:text-red-500">
                                         <Icon icon="ph:trash" />
                                     </button>
                                 </div>
@@ -785,6 +792,10 @@ import { useApi } from '~/composables/useApi'
 
 definePageMeta({
     layout: 'dashboard'
+})
+
+useHead({
+    title: 'Edit Event - Dashboard'
 })
 
 const route = useRoute()

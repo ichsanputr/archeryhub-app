@@ -207,6 +207,10 @@ definePageMeta({
   layout: 'default',
 })
 
+useHead({
+  title: 'Setup Turnamen - Dashboard'
+})
+
 const route = useRoute()
 const tournamentId = route.params.id
 const tournamentName = ref('Summer Cup 2024')

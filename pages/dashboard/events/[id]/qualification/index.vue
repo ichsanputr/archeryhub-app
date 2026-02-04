@@ -121,7 +121,7 @@
                 </span>
               </div>
               <div
-                class="flex items-center gap-1 font-black text-[10px] uppercase tracking-widest text-primary group-hover:gap-2 transition-all">
+                class="flex items-center gap-1 font-black text-[10px] uppercase tracking-widest group-hover:gap-2 transition-all">
                 <span>Kelola</span>
                 <Icon icon="ph:arrow-right-bold" class="text-sm" />
               </div>
@@ -207,12 +207,12 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(archer, index) in reportEntries" :key="archer.id || archer.uuid || index"
+                <tr v-for="(archer, index) in paginatedEntries" :key="archer.id || archer.uuid || index"
                   class="border-b border-gray-50 hover:bg-gray-50/50 transition-all">
                   <td class="px-6 py-4">
                     <span
                       class="inline-flex items-center justify-center size-8 rounded-lg bg-navy text-white font-bold text-sm">{{
-                        index + 1 }}</span>
+                        (currentPage - 1) * pageSize + index + 1 }}</span>
                   </td>
                   <td class="px-6 py-4">
                     <div class="flex items-center gap-3">
@@ -229,6 +229,39 @@
                 </tr>
               </tbody>
             </table>
+
+            <!-- Pagination Controls -->
+            <div v-if="totalPages > 1"
+              class="px-6 py-4 bg-gray-50/30 border-t border-gray-100 flex items-center justify-between">
+              <p class="text-xs text-gray-400 font-bold">
+                Menampilkan <span class="text-navy">{{ (currentPage - 1) * pageSize + 1 }}</span> -
+                <span class="text-navy">{{ Math.min(currentPage * pageSize, reportEntries.length) }}</span> dari
+                <span class="text-navy">{{ reportEntries.length }}</span> pemanah
+              </p>
+              <div class="flex items-center gap-2">
+                <button @click="currentPage = Math.max(1, currentPage - 1)" :disabled="currentPage === 1"
+                  class="size-8 rounded-lg border border-gray-200 flex items-center justify-center text-gray-500 hover:border-primary hover:text-primary disabled:opacity-30 disabled:hover:border-gray-200 disabled:hover:text-gray-500 transition-all shadow-sm bg-white">
+                  <Icon icon="ph:caret-left-bold" />
+                </button>
+
+                <div class="flex items-center gap-1">
+                  <button v-for="page in totalPages" :key="page" @click="currentPage = page" :class="[
+                    'size-8 rounded-lg text-xs font-black transition-all',
+                    currentPage === page
+                      ? 'bg-primary text-navy shadow-md shadow-primary/20'
+                      : 'bg-white border border-gray-200 text-gray-400 hover:border-primary hover:text-primary'
+                  ]">
+                    {{ page }}
+                  </button>
+                </div>
+
+                <button @click="currentPage = Math.min(totalPages, currentPage + 1)"
+                  :disabled="currentPage === totalPages"
+                  class="size-8 rounded-lg border border-gray-200 flex items-center justify-center text-gray-500 hover:border-primary hover:text-primary disabled:opacity-30 disabled:hover:border-gray-200 disabled:hover:text-gray-500 transition-all shadow-sm bg-white">
+                  <Icon icon="ph:caret-right-bold" />
+                </button>
+              </div>
+            </div>
           </div>
 
           <div v-else-if="selectedCategory"
@@ -393,6 +426,8 @@ const qualificationSessions = ref([])
 const categories = ref([])
 const selectedCategory = ref(null)
 const reportEntries = ref([])
+const currentPage = ref(1)
+const pageSize = ref(10)
 
 // Loading States
 const loadingSessions = ref(false)
@@ -409,6 +444,18 @@ const newSessionStart = ref('08:00')
 const newSessionEnd = ref('12:00')
 const newSessionEnds = ref(12)
 const newSessionArrows = ref(6)
+
+// Pagination Computed
+const totalPages = computed(() => Math.ceil(reportEntries.value.length / pageSize.value))
+const paginatedEntries = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value
+  const end = start + pageSize.value
+  return reportEntries.value.slice(start, end)
+})
+
+watch(reportEntries, () => {
+  currentPage.value = 1
+})
 
 // Computed Properties
 const modalTitle = computed(() => editingSessionId.value ? 'Edit Sesi Kualifikasi' : 'Sesi Kualifikasi Baru')

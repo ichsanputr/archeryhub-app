@@ -154,13 +154,13 @@
                                         stand.name }}</div>
                                     <span
                                         class="px-1.5 py-0.5 rounded text-[8px] bg-navy/5 text-navy font-black border border-navy/10">{{
-                                        stand.prov }}</span>
+                                            stand.prov }}</span>
                                 </div>
                             </td>
                             <td class="px-6 py-4 text-center font-bold text-text-sub tabular-nums">{{ stand.s1 }}</td>
                             <td class="px-6 py-4 text-center font-bold text-text-sub tabular-nums">{{ stand.s2 }}</td>
                             <td class="px-6 py-4 text-center text-text-sub/50 font-medium tabular-nums">{{ stand.tens
-                                }}/{{ stand.xs }}</td>
+                            }}/{{ stand.xs }}</td>
                             <td class="px-6 py-4 text-right font-black text-navy text-base tabular-nums">{{ stand.s1 +
                                 stand.s2 }}</td>
                         </tr>
@@ -176,6 +176,14 @@
 </template>
 
 <script setup>
+definePageMeta({
+    layout: 'dashboard'
+})
+
+useHead({
+    title: 'Hasil Pertandingan - Dashboard'
+})
+
 const selectedDivision = ref('Recurve Men')
 const selectedRound = ref('Babak Eliminasi')
 

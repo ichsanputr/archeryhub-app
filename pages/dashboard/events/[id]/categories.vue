@@ -47,55 +47,6 @@
             </div>
         </div>
 
-        <!-- Stats Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <template v-if="isLoading">
-                <div v-for="i in 3" :key="i"
-                    class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
-                    <div class="size-10 bg-gray-50 animate-pulse rounded-lg"></div>
-                    <div class="space-y-2">
-                        <div class="h-2 w-16 bg-gray-100 animate-pulse rounded"></div>
-                        <div class="h-6 w-10 bg-gray-100 animate-pulse rounded"></div>
-                    </div>
-                </div>
-            </template>
-            <template v-else>
-                <div
-                    class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                    <div
-                        class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-                        <Icon icon="ph:tag" class="text-2xl" />
-                    </div>
-                    <div>
-                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Total Kategori</p>
-                        <p class="text-xl font-black text-navy">{{ categories.length }}</p>
-                    </div>
-                </div>
-                <div
-                    class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                    <div
-                        class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-                        <Icon icon="ph:check-circle" class="text-2xl" />
-                    </div>
-                    <div>
-                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Aktif</p>
-                        <p class="text-xl font-black text-navy">{{ activeCount }}</p>
-                    </div>
-                </div>
-                <div
-                    class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                    <div
-                        class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-                        <Icon icon="ph:users" class="text-2xl" />
-                    </div>
-                    <div>
-                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Total Kuota</p>
-                        <p class="text-xl font-black text-navy">{{ totalQuota }}</p>
-                    </div>
-                </div>
-            </template>
-        </div>
-
         <!-- Categories List -->
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             <div class="p-6 border-b border-gray-100">
@@ -248,6 +199,10 @@ import { useToast } from '~/composables/useToast'
 
 definePageMeta({
     layout: 'dashboard'
+})
+
+useHead({
+    title: 'Kategori Lomba - Dashboard'
 })
 
 const route = useRoute()

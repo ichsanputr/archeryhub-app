@@ -103,6 +103,14 @@
 </template>
 
 <script setup>
+definePageMeta({
+    layout: 'dashboard'
+})
+
+useHead({
+    title: 'Edit Pendaftaran - Dashboard'
+})
+
 const form = reactive({
     idNumber: 'INA-2024-8832',
     category: 'Recurve Men - 70m',

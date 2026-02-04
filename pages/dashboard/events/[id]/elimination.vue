@@ -6,4 +6,8 @@
 definePageMeta({
     layout: 'dashboard'
 })
+
+useHead({
+    title: 'Eliminasi - Dashboard'
+})
 </script>

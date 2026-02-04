@@ -156,6 +156,10 @@ definePageMeta({
     layout: 'dashboard'
 })
 
+useHead({
+    title: 'Pembayaran - Dashboard'
+})
+
 const route = useRoute()
 const { get, post } = useApi()
 

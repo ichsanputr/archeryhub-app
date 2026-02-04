@@ -125,6 +125,15 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+
+definePageMeta({
+    layout: 'dashboard'
+})
+
+useHead({
+    title: 'Pendaftaran - Dashboard'
+})
+
 const step = ref(1)
 const form = reactive({
     athlete: '',

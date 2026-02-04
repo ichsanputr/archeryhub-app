@@ -61,6 +61,14 @@
 </template>
 
 <script setup>
+definePageMeta({
+    layout: 'dashboard'
+})
+
+useHead({
+    title: 'Timeline - Dashboard'
+})
+
 const activeDay = ref(1)
 
 const days = [

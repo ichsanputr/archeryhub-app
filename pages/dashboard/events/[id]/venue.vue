@@ -51,6 +51,14 @@
 </template>
 
 <script setup>
+definePageMeta({
+    layout: 'dashboard'
+})
+
+useHead({
+    title: 'Lokasi Venue - Dashboard'
+})
+
 const facilities = [
     { name: 'Mushola', icon: 'mosque' },
     { name: 'Kantin', icon: 'restaurant' },

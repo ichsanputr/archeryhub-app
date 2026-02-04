@@ -8,12 +8,6 @@
                     <p class="text-gray-500 text-sm">Review dan sinkronisasi tim untuk babak eliminasi {{ eventName }}
                     </p>
                 </div>
-                <div class="flex flex-wrap gap-3">
-                    <BaseButton variant="primary" size="sm" icon="ph:arrows-clockwise-bold"
-                        class="h-10 shadow-lg shadow-primary/20" :loading="generatingTeams" @click="handleGlobalSync">
-                        Update Data Team
-                    </BaseButton>
-                </div>
             </div>
         </div>
 
@@ -102,10 +96,10 @@
 
                 <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div v-for="team in officialTeams" :key="team.uuid"
-                        class="bg-white rounded-3xl border border-gray-100 p-6 hover:shadow-xl hover:shadow-navy/5 transition-all group border-b-4 border-b-gray-100 hover:border-b-primary relative">
+                        class="bg-white rounded-3xl border border-gray-100 p-6 hover:shadow-sm hover:shadow-navy/5 transition-all group border-b-4 border-b-gray-100 hover:border-b-primary relative">
                         <!-- Rank Badge -->
                         <div
-                            class="absolute -top-3 -right-3 size-10 bg-navy text-primary rounded-xl flex items-center justify-center font-black text-lg shadow-xl border-4 border-white group-hover:bg-primary group-hover:text-navy transition-colors">
+                            class="absolute -top-3 -right-3 size-10 bg-navy text-primary rounded-xl flex items-center justify-center font-black text-lg shadow-sm border-4 border-white group-hover:bg-primary group-hover:text-navy transition-colors">
                             {{ team.team_rank || '-' }}
                         </div>
 
@@ -133,17 +127,20 @@
                                 <Icon icon="ph:identification-card-bold" />
                                 Anggota Tim & Skor
                             </p>
-                            <div v-for="(name, index) in parseMembers(team.member_names)" :key="index"
-                                class="flex items-center justify-between group/member">
-                                <span
-                                    class="text-sm font-bold text-navy truncate flex-1 pr-2 group-hover/member:text-primary transition-colors">
-                                    {{ name }}
-                                </span>
-                                <span
-                                    class="px-2 py-0.5 bg-white border border-gray-100 rounded-md text-[11px] font-black text-navy shadow-sm">
-                                    {{ parseScores(team.member_scores)[index] || 0 }}
-                                </span>
+                            <div v-if="team.members && team.members.length > 0">
+                                <div v-for="(member, index) in team.members" :key="member.id || index"
+                                    class="flex items-center justify-between group/member py-1">
+                                    <span
+                                        class="text-sm font-bold text-navy truncate flex-1 pr-2 group-hover/member:text-primary transition-colors">
+                                        {{ member.full_name || '-' }}
+                                    </span>
+                                    <span
+                                        class="px-2 py-0.5 bg-white border border-gray-100 rounded-md text-[11px] font-black text-navy shadow-sm">
+                                        {{ member.total_score || 0 }}
+                                    </span>
+                                </div>
                             </div>
+                            <div v-else class="text-sm text-gray-400 italic">Tidak ada anggota</div>
                         </div>
 
                         <div class="flex items-center justify-between pt-4 border-t border-gray-100">
@@ -180,6 +177,10 @@ const toast = useToast()
 
 definePageMeta({
     layout: 'dashboard'
+})
+
+useHead({
+    title: 'Manajemen Tim - Dashboard'
 })
 
 // State Management
@@ -227,46 +228,34 @@ const fetchCategories = async () => {
     }
 }
 
-const selectCategory = (category) => {
+const selectCategory = async (category) => {
     selectedCategory.value = category
-    fetchOfficialTeams(category.id)
+    await syncAndFetchTeams(category.id)
 }
 
-const fetchOfficialTeams = async (categoryId) => {
+const syncAndFetchTeams = async (categoryId) => {
     loadingTeams.value = true
+    generatingTeams.value = true
     try {
+        // First sync to generate latest teams
+        await post(`/teams/event/${eventId}/sync`, {
+            category_id: categoryId
+        })
+
+        // Then fetch the teams
         const response = await get(`/teams/event/${eventId}`, {
             params: { category_id: categoryId }
         })
         officialTeams.value = response?.teams || []
     } catch (error) {
-        console.error('Failed to fetch official teams:', error)
+        console.error('Failed to sync/fetch teams:', error)
         officialTeams.value = []
     } finally {
         loadingTeams.value = false
-    }
-}
-
-const parseMembers = (names) => names ? names.split(', ') : []
-const parseScores = (scores) => scores ? scores.split(', ') : []
-
-const handleGlobalSync = async () => {
-    if (!selectedCategory.value) return
-
-    generatingTeams.value = true
-    try {
-        await post(`/teams/event/${eventId}/sync`, {
-            category_id: selectedCategory.value.id
-        })
-        toast.success('Sync data kualifikasi berhasil')
-        fetchOfficialTeams(selectedCategory.value.id)
-    } catch (error) {
-        console.error('Direct sync failed:', error)
-        toast.error('Gagal melakukan sinkronisasi data')
-    } finally {
         generatingTeams.value = false
     }
 }
+
 
 const getCategoryName = (category) => {
     if (!category) return ''
