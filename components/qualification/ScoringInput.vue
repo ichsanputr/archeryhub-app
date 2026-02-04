@@ -7,7 +7,8 @@
                 class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none">
                 <option value="">-- Pilih Peserta --</option>
                 <option v-for="participant in participants" :key="participant.uuid" :value="participant.uuid">
-                    {{ participant.target_name || 'Target ' + participant.target_number }}{{ participant.target_position }} - {{ participant.archer_name }}
+                    {{ participant.target_name || 'Target ' + participant.target_number }}{{ participant.target_position
+                    }} - {{ participant.archer_name }}
                 </option>
             </select>
         </div>
@@ -15,32 +16,30 @@
         <!-- Scoring Grid -->
         <div v-if="selectedParticipant">
             <div v-if="loadingScores" class="text-center py-12">
-                <div class="inline-block h-8 w-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                <div
+                    class="inline-block h-8 w-8 border-4 border-primary border-t-transparent rounded-full animate-spin">
+                </div>
                 <p class="text-sm text-gray-500 mt-3">Memuat skor...</p>
             </div>
 
             <div v-else class="space-y-4">
                 <!-- End Scores -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div v-for="end in ends" :key="end.end_number"
-                        class="bg-white border-2 rounded-xl p-4"
+                    <div v-for="end in ends" :key="end.end_number" class="bg-white border-2 rounded-xl p-4"
                         :class="end.is_complete ? 'border-green-200 bg-green-50/30' : 'border-gray-200'">
                         <div class="flex items-center justify-between mb-3">
                             <h4 class="font-bold text-navy">End {{ end.end_number }}</h4>
                             <div class="text-right">
                                 <div class="text-xl font-black text-navy">{{ end.end_total || 0 }}</div>
-                                <div class="text-xs text-gray-500">X:{{ end.end_x_count || 0 }} 10:{{ end.end_10_count || 0 }}</div>
+                                <div class="text-xs text-gray-500">X:{{ end.end_x_count || 0 }} 10:{{ end.end_10_count
+                                    || 0 }}</div>
                             </div>
                         </div>
                         <div class="grid grid-cols-3 gap-2">
-                            <input v-for="arrow in 6" :key="arrow"
-                                v-model="end[`arrow_${arrow}`]"
-                                @input="calculateEndTotal(end)"
-                                @blur="saveEndScore(end)"
-                                type="text"
-                                maxlength="2"
+                            <input v-for="arrow in 6" :key="arrow" v-model="end[`arrow_${arrow}`]"
+                                @input="calculateEndTotal(end)" @blur="saveEndScore(end)" type="text" maxlength="2"
                                 placeholder="0"
-                                class="w-full px-3 py-2 text-center font-bold rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none uppercase">
+                                class="w-full px-3 py-2 text-center font-bold rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none ">
                         </div>
                     </div>
                 </div>
@@ -119,7 +118,7 @@ const fetchScores = async () => {
     try {
         const response = await get(`/qualification/assignments/${selectedParticipant.value}/scores`)
         const scores = response?.scores || []
-        
+
         // Initialize 12 ends (can be configurable)
         ends.value = []
         for (let i = 1; i <= 12; i++) {
@@ -168,7 +167,7 @@ const calculateEndTotal = (end) => {
     let tenCount = 0
 
     for (let i = 1; i <= 6; i++) {
-        const arrow = (end[`arrow_${i}`] || '').toUpperCase()
+        const arrow = (end[`arrow_${i}`] || '').to()
         if (arrow === 'X') {
             total += 10
             xCount++
@@ -196,10 +195,10 @@ const saveEndScore = async (end) => {
         for (let i = 1; i <= 6; i++) {
             const arrowValue = end[`arrow_${i}`] || ''
             if (arrowValue) {
-                arrows.push(arrowValue.toString().toUpperCase())
+                arrows.push(arrowValue.toString().to())
             }
         }
-        
+
         await post(`/qualification/assignments/${selectedParticipant.value}/scores`, {
             end_number: end.end_number,
             arrows: arrows

@@ -36,7 +36,7 @@
           <h3 class="text-xl font-bold text-navy">{{ userData?.full_name || userData?.name || 'Pengguna' }}</h3>
           <p class="text-gray-500">{{ userData?.email }}</p>
           <span
-            class="inline-flex items-center gap-1 mt-2 px-3 py-1 rounded-full text-xs font-bold uppercase bg-primary/10 text-primary-dark">
+            class="inline-flex items-center gap-1 mt-2 px-3 py-1 rounded-full text-xs font-bold  bg-primary/10 text-primary-dark">
             <Icon :icon="userTypeIcon" />
             {{ userTypeLabel }}
           </span>
@@ -54,7 +54,8 @@
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <BaseInput v-model="accountForm.email" label="Email" type="email" placeholder="email@example.com" disabled />
+            <BaseInput v-model="accountForm.email" label="Email" type="email" placeholder="email@example.com"
+              disabled />
             <BaseInput v-model="accountForm.phone" label="Nomor Telepon" type="tel" placeholder="+62 812-3456-7890" />
           </div>
 
@@ -69,7 +70,8 @@
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <BaseInput v-model="accountForm.city" label="Kota" placeholder="Kota tempat tinggal" />
-            <BaseInput v-model="accountForm.school" label="Sekolah / Universitas" placeholder="Nama sekolah / universitas" />
+            <BaseInput v-model="accountForm.school" label="Sekolah / Universitas"
+              placeholder="Nama sekolah / universitas" />
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -118,7 +120,7 @@
 
         <!-- Connected Login Methods -->
         <div class="mb-8">
-          <h4 class="text-sm font-black text-navy uppercase tracking-widest mb-4 flex items-center gap-2">
+          <h4 class="text-sm font-black text-navy  tracking-widest mb-4 flex items-center gap-2">
             <Icon icon="ph:link-bold" class="text-primary" />
             Metode Login Terhubung
           </h4>
@@ -159,7 +161,7 @@
 
         <!-- Set Password Form -->
         <div class="border-t border-gray-100 pt-8">
-          <h4 class="text-sm font-black text-navy uppercase tracking-widest mb-4 flex items-center gap-2">
+          <h4 class="text-sm font-black text-navy  tracking-widest mb-4 flex items-center gap-2">
             <Icon icon="ph:key-bold" class="text-primary" />
             {{ hasPassword ? 'Ubah Password' : 'Atur Password Baru' }}
           </h4>
@@ -266,7 +268,7 @@ const tabs = computed(() => {
   if (user.value?.role === 'organization') {
     return allTabs
   }
-  
+
   // For other users, include Account tab
   return [
     { label: 'Akun', value: 'account', icon: 'ph:user-circle' },

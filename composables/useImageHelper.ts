@@ -49,7 +49,7 @@ export const useImageOrDefault = (
 
   // If name provided, use DiceBear
   if (name?.trim()) {
-    const seed = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
+    const seed = name.split(' ').map(n => n[0]).join('').substring(0, 2).to()
     return `https://api.dicebear.com/7.x/initials/svg?seed=${seed}`
   }
 

@@ -34,7 +34,7 @@
         <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-20">
           <!-- Column 2: Navigation -->
           <div class="flex flex-col gap-5">
-            <h4 class="text-xs font-black uppercase tracking-widest text-white border-b border-white/10 pb-2">
+            <h4 class="text-xs font-black  tracking-widest text-white border-b border-white/10 pb-2">
               Navigasi
             </h4>
             <div class="flex flex-col gap-3">
@@ -59,7 +59,7 @@
 
           <!-- Column 3: About -->
           <div class="flex flex-col gap-5">
-            <h4 class="text-xs font-black uppercase tracking-widest text-white border-b border-white/10 pb-2">
+            <h4 class="text-xs font-black  tracking-widest text-white border-b border-white/10 pb-2">
               Perusahaan
             </h4>
             <div class="flex flex-col gap-3">
@@ -80,7 +80,7 @@
 
           <!-- Column 4: Support -->
           <div class="flex flex-col gap-5">
-            <h4 class="text-xs font-black uppercase tracking-widest text-white border-b border-white/10 pb-2">
+            <h4 class="text-xs font-black  tracking-widest text-white border-b border-white/10 pb-2">
               Dukungan
             </h4>
             <div class="flex flex-col gap-3">

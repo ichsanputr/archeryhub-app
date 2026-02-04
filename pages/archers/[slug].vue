@@ -29,7 +29,7 @@
                                         archer.full_name }}
                                     </h1>
                                     <span v-if="archer.id"
-                                        class="px-2.5 py-1 sm:px-3 sm:py-1.5 bg-primary/10 text-primary text-[10px] sm:text-xs font-black rounded-full uppercase tracking-wider shrink-0">
+                                        class="px-2.5 py-1 sm:px-3 sm:py-1.5 bg-primary/10 text-primary text-[10px] sm:text-xs font-black rounded-full  tracking-wider shrink-0">
                                         {{ archer.id }}
                                     </span>
                                 </div>
@@ -87,21 +87,21 @@
                                 <div v-if="archer.date_of_birth" class="flex items-center gap-3">
                                     <Icon icon="ph:calendar-bold" class="text-primary text-xl" />
                                     <div>
-                                        <p class="text-xs text-gray-400 font-bold uppercase">Tanggal Lahir</p>
+                                        <p class="text-xs text-gray-400 font-bold ">Tanggal Lahir</p>
                                         <p class="text-navy font-bold">{{ formatDate(archer.date_of_birth) }}</p>
                                     </div>
                                 </div>
                                 <div v-if="archer.gender" class="flex items-center gap-3">
                                     <Icon icon="ph:user-bold" class="text-primary text-xl" />
                                     <div>
-                                        <p class="text-xs text-gray-400 font-bold uppercase">Jenis Kelamin</p>
+                                        <p class="text-xs text-gray-400 font-bold ">Jenis Kelamin</p>
                                         <p class="text-navy font-bold">{{ genderLabel }}</p>
                                     </div>
                                 </div>
                                 <div v-if="archer.experience_years" class="flex items-center gap-3">
                                     <Icon icon="ph:clock-bold" class="text-primary text-xl" />
                                     <div>
-                                        <p class="text-xs text-gray-400 font-bold uppercase">Pengalaman</p>
+                                        <p class="text-xs text-gray-400 font-bold ">Pengalaman</p>
                                         <p class="text-navy font-bold">{{ archer.experience_years }} Tahun</p>
                                     </div>
                                 </div>
@@ -177,7 +177,7 @@
                                     <Icon icon="ph:map-pin-bold" class="text-gray-400" />
                                 </div>
                                 <span class="text-navy text-sm font-medium leading-relaxed">{{ archer.address
-                                }}</span>
+                                    }}</span>
                             </div>
                         </div>
                     </div>
@@ -195,7 +195,7 @@
                                     <Icon icon="ph:buildings-bold" class="text-navy" />
                                 </div>
                                 <div class="flex-1 min-w-0">
-                                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider mb-0.5">
+                                    <p class="text-xs text-gray-400 font-bold  tracking-wider mb-0.5">
                                         Klub Saat Ini</p>
                                     <p
                                         class="text-navy font-black text-sm truncate group-hover:text-primary transition-colors">
@@ -210,7 +210,7 @@
                                     <Icon icon="ph:buildings-bold" class="text-navy" />
                                 </div>
                                 <div class="flex-1 min-w-0">
-                                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider mb-0.5">
+                                    <p class="text-xs text-gray-400 font-bold  tracking-wider mb-0.5">
                                         Klub Saat Ini</p>
                                     <p class="text-navy font-bold text-sm truncate">
                                         {{ archer.club_name }}
@@ -287,7 +287,7 @@
                                         <Icon icon="ph:link-bold" class="text-2xl" />
                                     </div>
                                     <span class="text-[10px] font-bold text-gray-500">{{ copied ? 'Tersalin' : 'Salin'
-                                        }}</span>
+                                    }}</span>
                                 </button>
                             </div>
 

@@ -13,8 +13,7 @@
             <article class="lg:col-span-8">
                 <div class="mb-8">
                     <div class="flex items-center gap-3 mb-4">
-                        <span
-                            class="bg-primary/10 text-navy px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+                        <span class="bg-primary/10 text-navy px-3 py-1 rounded-full text-xs font-bold  tracking-wider">
                             {{ tutorial.category }}
                         </span>
                         <div
@@ -80,7 +79,7 @@
                                 class="font-bold text-navy text-sm leading-snug mb-1 group-hover:text-primary transition-colors line-clamp-2">
                                 {{ guide.title }}
                             </h4>
-                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{{
+                            <span class="text-[10px] text-slate-400 font-bold  tracking-wider">{{
                                 guide.category }}</span>
                         </NuxtLink>
                     </div>

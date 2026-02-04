@@ -53,7 +53,7 @@
                             </p>
                             <div class="flex flex-wrap items-center gap-2">
                                 <span
-                                    class="px-2 py-0.5 bg-primary/50 rounded-md text-[10px] font-black uppercase tracking-tighter">
+                                    class="px-2 py-0.5 bg-primary/50 rounded-md text-[10px] font-black  tracking-tighter">
                                     {{ category.event_type_name }}
                                 </span>
                                 <div class="flex items-center gap-1 text-[10px] font-bold text-gray-400">
@@ -113,7 +113,7 @@
                                     <h3
                                         class="font-black text-navy text-lg group-hover:text-primary transition-colors line-clamp-1">
                                         {{ team.team_name }}</h3>
-                                    <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">
+                                    <p class="text-xs font-bold text-gray-400  tracking-widest">
                                         {{ team.country_code || 'KLUB' }}
                                     </p>
                                 </div>
@@ -123,7 +123,7 @@
                         <!-- Members list -->
                         <div class="space-y-3 mb-6 bg-gray-50/50 p-4 rounded-2xl border border-gray-100">
                             <p
-                                class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+                                class="text-[10px] font-black text-gray-400  tracking-widest mb-2 flex items-center gap-2">
                                 <Icon icon="ph:identification-card-bold" />
                                 Anggota Tim & Skor
                             </p>
@@ -145,12 +145,12 @@
 
                         <div class="flex items-center justify-between pt-4 border-t border-gray-100">
                             <div class="flex flex-col">
-                                <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Total
+                                <span class="text-[10px] font-black text-gray-400  tracking-widest">Total
                                     Skor</span>
                                 <span class="text-xl font-black text-navy">{{ team.total_score }}</span>
                             </div>
                             <div class="flex flex-col items-end">
-                                <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Total
+                                <span class="text-[10px] font-black text-gray-400  tracking-widest">Total
                                     X</span>
                                 <div class="flex items-center gap-1 text-navy font-black">
                                     <Icon icon="ph:crosshair-bold" class="text-primary" />

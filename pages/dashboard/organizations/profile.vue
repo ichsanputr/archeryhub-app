@@ -41,7 +41,7 @@
           <!-- Identitas -->
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
             <div class="flex items-center justify-between">
-              <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
+              <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
                 <Icon icon="ph:identification-badge-bold" class="text-primary text-lg" /> Identitas Utama
               </h3>
             </div>
@@ -79,7 +79,7 @@
 
           <!-- Logo & Banner -->
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-8">
-            <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
+            <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
               <Icon icon="ph:image-bold" class="text-primary text-lg" /> Branding Visual
             </h3>
 
@@ -117,7 +117,7 @@
                       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     <div v-else class="text-center p-6">
                       <Icon icon="ph:image-square-bold" class="text-4xl text-gray-200 mx-auto mb-2" />
-                      <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Upload banner 1200x400</p>
+                      <p class="text-[10px] text-gray-400 font-bold  tracking-wider">Upload banner 1200x400</p>
                     </div>
                   </div>
                   <div class="mt-4 flex gap-2">
@@ -140,7 +140,7 @@
         <!-- Tab: Kontak -->
         <div v-if="activeTab === 'contact'" class="space-y-8">
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
-            <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
+            <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
               <Icon icon="ph:phone-bold" class="text-primary text-xl" /> Informasi Kontak
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -155,7 +155,7 @@
           </div>
 
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
-            <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
+            <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
               <Icon icon="ph:share-network-bold" class="text-primary text-xl" /> Kehadiran Media Sosial
             </h3>
             <p class="text-sm text-gray-500 font-medium">Hubungkan organisasi dengan anggota melalui platform sosial
@@ -194,7 +194,7 @@
                 <Icon icon="ph:plus-circle-bold" class="text-xl group-hover:rotate-90 transition-transform" />
                 Tambah Platform Baru
               </button>
-              <p v-else class="text-[10px] text-gray-400 text-center font-bold tracking-widest uppercase">Maksimal 5
+              <p v-else class="text-[10px] text-gray-400 text-center font-bold tracking-widest ">Maksimal 5
                 platform media sosial</p>
             </div>
           </div>
@@ -203,7 +203,7 @@
         <!-- Tab: Visi, Misi & Sejarah -->
         <div v-if="activeTab === 'about'" class="space-y-8">
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
-            <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
+            <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
               <Icon icon="ph:eye-bold" class="text-primary text-xl" /> Visi & Misi
             </h3>
             <BaseTextarea v-model="form.vision" label="Visi" rows="3" placeholder="Tuliskan visi organisasi..." />
@@ -212,7 +212,7 @@
           </div>
 
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
-            <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
+            <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
               <Icon icon="ph:book-open-bold" class="text-primary text-xl" /> Sejarah Organisasi
             </h3>
             <BaseTextarea v-model="form.history" label="Sejarah Singkat" rows="8"
@@ -224,7 +224,7 @@
         <div v-if="activeTab === 'faq'" class="space-y-8">
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
             <div class="flex items-center justify-between">
-              <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
+              <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
                 <Icon icon="ph:question-bold" class="text-primary text-xl" /> Pertanyaan Sering Diajukan (FAQ)
               </h3>
               <button @click="addFAQ"
@@ -249,7 +249,7 @@
               <div v-if="form.faq.length === 0"
                 class="text-center py-12 border-2 border-dashed border-gray-100 rounded-3xl">
                 <Icon icon="ph:chat-centered-dots-bold" class="text-4xl text-gray-200 mx-auto mb-2" />
-                <p class="text-sm text-gray-400 font-bold uppercase tracking-widest">Belum ada FAQ</p>
+                <p class="text-sm text-gray-400 font-bold  tracking-widest">Belum ada FAQ</p>
                 <button @click="addFAQ"
                   class="mt-4 px-4 py-2 bg-navy text-white text-xs font-black rounded-xl shadow-md hover:bg-navy-dark transition">Buat
                   FAQ Pertama</button>
@@ -262,7 +262,7 @@
       <!-- Side card -->
       <div class="space-y-4">
         <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-5">
-          <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
+          <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
             <Icon icon="ph:gear-six-bold" class="text-primary text-lg" /> Visibilitas Halaman
           </h3>
           <p class="text-xs text-gray-500 font-medium">Atur bagian mana yang dapat dilihat publik.</p>

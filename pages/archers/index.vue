@@ -12,7 +12,7 @@
             <div class="container mx-auto px-4 max-w-7xl relative z-10">
                 <div class="max-w-3xl">
                     <div
-                        class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold uppercase tracking-widest mb-6">
+                        class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold  tracking-widest mb-6">
                         <Icon icon="ph:user-circle-gear-bold" class="text-lg" />
                         <span>Komunitas Pemanah</span>
                     </div>
@@ -109,7 +109,7 @@
                                     <span class="truncate">{{ archer.club_name || archer.club || 'Independent' }}</span>
                                 </span>
                                 <span v-if="archer.city"
-                                    class="text-gray-400 text-[11px] font-bold flex items-center gap-1.5 uppercase tracking-wider">
+                                    class="text-gray-400 text-[11px] font-bold flex items-center gap-1.5  tracking-wider">
                                     <Icon icon="ph:map-pin-bold" class="text-xs" />
                                     {{ archer.city }}
                                 </span>
@@ -121,19 +121,19 @@
                     <div class="grid grid-cols-2 gap-3 mt-8">
                         <div class="bg-gray-50/50 rounded-2xl p-3 border border-gray-50 transition-all">
                             <span
-                                class="block text-[10px] text-gray-400 font-black uppercase tracking-widest mb-1.5">Divisi</span>
+                                class="block text-[10px] text-gray-400 font-black  tracking-widest mb-1.5">Divisi</span>
                             <div class="flex items-center gap-2">
                                 <div class="w-6 h-6 rounded-md bg-navy/5 flex items-center justify-center">
                                     <Icon icon="ph:target-bold" class="text-navy text-xs" />
                                 </div>
                                 <span class="text-xs font-black text-navy truncate capitalize">{{ archer.bow_type ||
                                     'Recurve'
-                                    }}</span>
+                                }}</span>
                             </div>
                         </div>
                         <div class="bg-gray-50/50 rounded-2xl p-3 border border-gray-50 transition-all">
                             <span
-                                class="block text-[10px] text-gray-400 font-black uppercase tracking-widest mb-1.5">Kompetisi</span>
+                                class="block text-[10px] text-gray-400 font-black  tracking-widest mb-1.5">Kompetisi</span>
                             <div class="flex items-center gap-2">
                                 <div class="w-6 h-6 rounded-md bg-amber-50 flex items-center justify-center">
                                     <Icon icon="ph:medal-bold" class="text-amber-500 text-xs" />

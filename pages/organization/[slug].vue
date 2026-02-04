@@ -25,7 +25,7 @@
                                     <h1 class="text-2xl md:text-4xl font-black text-navy leading-tight">{{ org.name }}
                                     </h1>
                                     <span v-if="org.verification_status === 'verified'"
-                                        class="flex items-center gap-1 px-3 py-1.5 bg-blue-50 text-blue-600 text-[10px] md:text-xs font-black rounded-full uppercase tracking-wider">
+                                        class="flex items-center gap-1 px-3 py-1.5 bg-blue-50 text-blue-600 text-[10px] md:text-xs font-black rounded-full  tracking-wider">
                                         <Icon icon="ph:seal-check-fill" />
                                         Verified
                                     </span>
@@ -159,12 +159,12 @@
                         </h2>
                         <div class="space-y-6">
                             <div v-if="org.vision">
-                                <h3 class="text-sm font-black text-gray-400 uppercase tracking-widest mb-2">Visi</h3>
+                                <h3 class="text-sm font-black text-gray-400  tracking-widest mb-2">Visi</h3>
                                 <p class="text-gray-600 leading-relaxed text-lg whitespace-pre-line">{{ org.vision }}
                                 </p>
                             </div>
                             <div v-if="org.mission">
-                                <h3 class="text-sm font-black text-gray-400 uppercase tracking-widest mb-2">Misi</h3>
+                                <h3 class="text-sm font-black text-gray-400  tracking-widest mb-2">Misi</h3>
                                 <p class="text-gray-600 leading-relaxed text-lg whitespace-pre-line">{{ org.mission }}
                                 </p>
                             </div>
@@ -246,7 +246,7 @@
                                     <Icon icon="ph:whatsapp-logo-fill" class="text-lg text-gray-600" />
                                 </div>
                                 <div>
-                                    <p class="text-gray-400 text-xs font-bold uppercase">WhatsApp</p>
+                                    <p class="text-gray-400 text-xs font-bold ">WhatsApp</p>
                                     <p class="font-bold text-navy">{{ org.whatsapp_no }}</p>
                                 </div>
                             </div>
@@ -255,7 +255,7 @@
                                     <Icon icon="ph:envelope-fill" class="text-lg text-gray-600" />
                                 </div>
                                 <div>
-                                    <p class="text-gray-400 text-xs font-bold uppercase">Email</p>
+                                    <p class="text-gray-400 text-xs font-bold ">Email</p>
                                     <p class="font-bold text-navy">{{ org.email }}</p>
                                 </div>
                             </div>
@@ -264,7 +264,7 @@
                                     <Icon icon="ph:map-pin-fill" class="text-lg text-gray-600" />
                                 </div>
                                 <div>
-                                    <p class="text-gray-400 text-xs font-bold uppercase">Alamat</p>
+                                    <p class="text-gray-400 text-xs font-bold ">Alamat</p>
                                     <p class="font-bold text-navy text-sm">{{ org.address }}</p>
                                 </div>
                             </div>

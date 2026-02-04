@@ -37,7 +37,7 @@
                                 class="text-slate-500 font-bold mb-4 flex items-center justify-center md:justify-start gap-2">
                                 <span class="text-primary">@{{ userProfile.username }}</span>
                                 <span class="w-1 h-1 bg-slate-300 rounded-full"></span>
-                                <span class="text-xs uppercase tracking-wider">{{ userProfile.division }}</span>
+                                <span class="text-xs  tracking-wider">{{ userProfile.division }}</span>
                             </p>
 
                             <div class="flex flex-wrap items-center justify-center md:justify-start gap-4 mb-6">
@@ -52,7 +52,7 @@
                                     {{ userProfile.club.name }}
                                 </NuxtLink>
                                 <div v-else
-                                    class="text-xs text-slate-400 font-bold uppercase tracking-widest px-4 py-2 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                                    class="text-xs text-slate-400 font-bold  tracking-widest px-4 py-2 bg-gray-50 rounded-xl border border-dashed border-gray-200">
                                     Free Agent
                                 </div>
                             </div>
@@ -75,7 +75,7 @@
                         class="p-6 text-center border-r border-gray-100 last:border-0">
                         <p class="text-3xl font-black text-navy mb-1">{{ stat.value }}</p>
                         <div
-                            class="flex items-center justify-center gap-1 text-slate-400 text-xs font-bold uppercase tracking-widest">
+                            class="flex items-center justify-center gap-1 text-slate-400 text-xs font-bold  tracking-widest">
                             <Icon :icon="stat.icon" class="text-sm" />
                             {{ stat.label }}
                         </div>
@@ -104,7 +104,7 @@
                                 </div>
                                 <div>
                                     <p class="text-sm font-black text-navy leading-tight">{{ medali.title }}</p>
-                                    <p class="text-[10px] text-slate-400 font-bold uppercase">{{ medali.event }}</p>
+                                    <p class="text-[10px] text-slate-400 font-bold ">{{ medali.event }}</p>
                                 </div>
                             </div>
                         </div>
@@ -119,7 +119,7 @@
                         <div class="space-y-3">
                             <div v-for="(gear, type) in userProfile.equipment" :key="type"
                                 class="bg-white/5 p-4 rounded-xl border border-white/10">
-                                <p class="text-[10px] text-slate-400 font-bold uppercase mb-1">{{ type }}</p>
+                                <p class="text-[10px] text-slate-400 font-bold  mb-1">{{ type }}</p>
                                 <p class="text-sm font-black text-white">{{ gear }}</p>
                             </div>
                         </div>
@@ -141,7 +141,7 @@
                                 class="flex items-center gap-5 p-5 bg-gray-50/50 rounded-2xl border border-gray-100 hover:border-primary/30 transition-all group cursor-pointer">
                                 <div
                                     class="w-14 h-14 rounded-xl bg-navy flex flex-col items-center justify-center text-white shrink-0">
-                                    <span class="text-[10px] uppercase font-bold text-primary">{{ event.month }}</span>
+                                    <span class="text-[10px]  font-bold text-primary">{{ event.month }}</span>
                                     <span class="text-lg font-bold leading-none">{{ event.day }}</span>
                                 </div>
                                 <div class="flex-1 min-w-0">
@@ -153,7 +153,7 @@
                                 </div>
                                 <div class="text-right">
                                     <p class="text-2xl font-black text-navy leading-none">{{ event.score }}</p>
-                                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Total Skor
+                                    <p class="text-[10px] text-slate-400 font-bold  tracking-wider">Total Skor
                                     </p>
                                 </div>
                             </div>

@@ -46,7 +46,8 @@
                 <Icon icon="ph:shopping-cart" class="text-4xl text-gray-300" />
             </div>
             <h3 class="text-xl font-bold text-navy mb-2">Keranjang Kosong</h3>
-            <p class="text-gray-500 mb-8 px-6 text-center">Belum ada produk di keranjang. Mulai belanja produk archery sekarang!</p>
+            <p class="text-gray-500 mb-8 px-6 text-center">Belum ada produk di keranjang. Mulai belanja produk archery
+                sekarang!</p>
             <NuxtLink to="/products">
                 <BaseButton variant="primary" size="lg" icon="ph:shopping-bag">Belanja Produk</BaseButton>
             </NuxtLink>
@@ -89,8 +90,7 @@
                                     </div>
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                         <div>
-                                            <label
-                                                class="block mb-2 text-xs font-bold uppercase tracking-wider text-gray-500">ID
+                                            <label class="block mb-2 text-xs font-bold  tracking-wider text-gray-500">ID
                                                 Number</label>
                                             <select v-if="isEditing" v-model="reg.archer_id"
                                                 class="bg-gray-50 border border-gray-300 text-navy text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5">
@@ -105,7 +105,7 @@
                                         </div>
                                         <div>
                                             <label
-                                                class="block mb-2 text-xs font-bold uppercase tracking-wider text-gray-500">Category</label>
+                                                class="block mb-2 text-xs font-bold  tracking-wider text-gray-500">Category</label>
                                             <select v-if="isEditing" v-model="reg.category_id"
                                                 class="bg-gray-50 border border-gray-300 text-navy text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5">
                                                 <option v-for="cat in eventCategories" :key="cat.id" :value="cat.id">
@@ -123,7 +123,7 @@
                                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
                                             <div>
                                                 <label
-                                                    class="block mb-2 text-xs font-bold uppercase tracking-wider text-gray-500">Jersey
+                                                    class="block mb-2 text-xs font-bold  tracking-wider text-gray-500">Jersey
                                                     Size</label>
                                                 <select v-model="reg.jersey_size"
                                                     class="bg-gray-50 border border-gray-300 text-navy text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5">
@@ -169,7 +169,7 @@
                                     <div class="flex justify-between items-center text-sm">
                                         <span class="text-gray-600">Entry Fee ({{ reg.category_name }})</span>
                                         <span class="font-bold text-navy">Rp {{ formatPrice(reg.entry_fee || 350000)
-                                            }}</span>
+                                        }}</span>
                                     </div>
                                 </div>
                                 <div class="flex justify-between items-center text-sm">
@@ -179,7 +179,7 @@
                                 <div class="border-t border-gray-200 my-2 pt-2 flex justify-between items-center">
                                     <span class="text-base font-bold text-navy">Total Payment</span>
                                     <span class="text-xl font-black text-primary">Rp {{ formatPrice(totalPayment)
-                                        }}</span>
+                                    }}</span>
                                 </div>
                             </div>
                         </div>
@@ -187,7 +187,7 @@
                             <h3 class="text-sm font-bold text-navy mb-4">Select Payment Method</h3>
                             <div class="space-y-4">
                                 <div>
-                                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 ml-1">
+                                    <p class="text-xs font-bold text-gray-400  tracking-wider mb-2 ml-1">
                                         Virtual Accounts</p>
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                         <label v-for="method in vaMethods" :key="method.value"
@@ -210,7 +210,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 ml-1">
+                                    <p class="text-xs font-bold text-gray-400  tracking-wider mb-2 ml-1">
                                         E-Wallets & QRIS</p>
                                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                         <label v-for="method in ewalletMethods" :key="method.value"
@@ -267,7 +267,7 @@
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                         <div class="absolute bottom-4 left-4 right-4">
                             <span
-                                class="inline-block px-2 py-1 mb-2 rounded bg-primary text-navy text-[10px] font-bold uppercase tracking-wider">
+                                class="inline-block px-2 py-1 mb-2 rounded bg-primary text-navy text-[10px] font-bold  tracking-wider">
                                 {{ event.type || 'National Series' }}
                             </span>
                             <h3 class="text-white font-bold text-lg leading-tight">{{ event.name }}</h3>
@@ -280,7 +280,7 @@
                                 <Icon icon="ph:calendar-bold" class="text-sm" />
                             </div>
                             <div>
-                                <span class="block text-xs text-gray-500 uppercase font-bold">Date</span>
+                                <span class="block text-xs text-gray-500  font-bold">Date</span>
                                 <span class="text-sm font-semibold text-navy">
                                     {{ formatDate(event.start_date) }} - {{ formatDate(event.end_date) }}
                                 </span>
@@ -292,7 +292,7 @@
                                 <Icon icon="ph:map-pin-bold" class="text-sm" />
                             </div>
                             <div>
-                                <span class="block text-xs text-gray-500 uppercase font-bold">Venue</span>
+                                <span class="block text-xs text-gray-500  font-bold">Venue</span>
                                 <span class="text-sm font-semibold text-navy">{{ event.venue || 'TBA' }}</span>
                             </div>
                         </div>
@@ -302,7 +302,7 @@
                                 <Icon icon="ph:headset-bold" class="text-sm" />
                             </div>
                             <div>
-                                <span class="block text-xs text-gray-500 uppercase font-bold">Need Help?</span>
+                                <span class="block text-xs text-gray-500  font-bold">Need Help?</span>
                                 <a class="text-sm font-semibold text-primary hover:underline" href="#">Contact
                                     Organizer</a>
                             </div>

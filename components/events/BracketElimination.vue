@@ -146,7 +146,7 @@ const calculatePath = (i, step, startCenterOffset, targetCenter) => {
 }
 
 .round-label {
-    @apply text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] py-2 px-6 bg-white rounded-full shadow-sm border border-gray-100 shrink-0 flex items-center justify-center;
+    @apply text-[10px] font-black text-gray-400 tracking-[0.2em] py-2 px-6 bg-white rounded-full shadow-sm border border-gray-100 shrink-0 flex items-center justify-center;
     height: 28px;
     margin-bottom: 32px;
     /* Total header height = 60px */

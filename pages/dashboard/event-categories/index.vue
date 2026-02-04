@@ -25,7 +25,7 @@
       <!-- Left: Reference Filters -->
       <div class="space-y-4">
         <section class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
-          <h2 class="text-sm font-bold text-gray-400 uppercase tracking-[0.2em] mb-1">Referensi</h2>
+          <h2 class="text-sm font-bold text-gray-400  tracking-[0.2em] mb-1">Referensi</h2>
           <div class="space-y-3">
             <div>
               <p class="text-xs font-bold text-gray-500 mb-1.5">Jenis Busur</p>
@@ -51,7 +51,7 @@
         </section>
 
         <section class="bg-blue-50/60 border border-blue-100 rounded-2xl p-4 space-y-2">
-          <h3 class="text-xs font-bold text-blue-900 uppercase tracking-[0.2em] flex items-center gap-1.5">
+          <h3 class="text-xs font-bold text-blue-900  tracking-[0.2em] flex items-center gap-1.5">
             <Icon icon="ph:info-bold" class="text-blue-500 text-base" />
             Tips
           </h3>
@@ -121,9 +121,9 @@
                       {{ cat.name }}
                     </p>
                     <p class="text-[11px] text-gray-500 font-medium flex items-center gap-2">
-                      <span class="uppercase tracking-[0.14em]">{{ cat.bow_name }}</span>
+                      <span class=" tracking-[0.14em]">{{ cat.bow_name }}</span>
                       <span class="w-1 h-1 rounded-full bg-gray-300"></span>
-                      <span class="uppercase tracking-[0.14em]">{{ cat.age_name }}</span>
+                      <span class=" tracking-[0.14em]">{{ cat.age_name }}</span>
                     </p>
                   </div>
                 </div>
@@ -167,14 +167,14 @@
 
         <form class="space-y-4" @submit.prevent="saveCategory">
           <div class="space-y-2">
-            <label class="text-xs font-bold text-gray-600 uppercase tracking-[0.18em]">Nama Kategori</label>
+            <label class="text-xs font-bold text-gray-600  tracking-[0.18em]">Nama Kategori</label>
             <input v-model="form.name" type="text"
               class="w-full px-3 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none text-sm"
               placeholder="Misalnya: Recurve Men 70m" required />
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="space-y-2">
-              <label class="text-xs font-bold text-gray-600 uppercase tracking-[0.18em]">Jenis Busur</label>
+              <label class="text-xs font-bold text-gray-600  tracking-[0.18em]">Jenis Busur</label>
               <select v-model="form.bow_type_id"
                 class="w-full px-3 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none text-sm"
                 required>
@@ -185,7 +185,7 @@
               </select>
             </div>
             <div class="space-y-2">
-              <label class="text-xs font-bold text-gray-600 uppercase tracking-[0.18em]">Kelompok Umur</label>
+              <label class="text-xs font-bold text-gray-600  tracking-[0.18em]">Kelompok Umur</label>
               <select v-model="form.age_group_id"
                 class="w-full px-3 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none text-sm"
                 required>
@@ -198,7 +198,7 @@
           </div>
 
           <div class="space-y-2">
-            <label class="text-xs font-bold text-gray-600 uppercase tracking-[0.18em]">Status</label>
+            <label class="text-xs font-bold text-gray-600  tracking-[0.18em]">Status</label>
             <select v-model="form.status"
               class="w-full px-3 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none text-sm">
               <option value="active">Aktif</option>

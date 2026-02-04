@@ -50,7 +50,8 @@
         <template v-if="isLoading">
             <!-- Loading State -->
             <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 text-center">
-                <div class="inline-block h-8 w-8 border-4 border-primary border-t-transparent animate-spin rounded-full">
+                <div
+                    class="inline-block h-8 w-8 border-4 border-primary border-t-transparent animate-spin rounded-full">
                 </div>
                 <p class="text-gray-500 mt-4 font-medium">Memuat data peserta...</p>
             </div>
@@ -66,20 +67,23 @@
                 <div class="relative z-10 flex flex-col md:flex-row items-center gap-8">
                     <div
                         class="bg-white p-4 rounded-2xl shadow-inner-lg transform transition-transform group-hover:scale-105 duration-500">
-                        <qrcode-vue :value="participant?.qr_raw" :size="180" level="H" render-as="svg" foreground="#000000" />
+                        <qrcode-vue :value="participant?.qr_raw" :size="180" level="H" render-as="svg"
+                            foreground="#000000" />
                     </div>
                     <div class="flex-1 text-center md:text-left">
                         <span
-                            class="inline-flex items-center gap-1.5 px-3 py-1 bg-primary/20 text-primary border border-primary/30 rounded-full text-[10px] font-black uppercase tracking-widest mb-4">
+                            class="inline-flex items-center gap-1.5 px-3 py-1 bg-primary/20 text-primary border border-primary/30 rounded-full text-[10px] font-black  tracking-widest mb-4">
                             <Icon icon="ph:seal-check-fill" />
                             ID Peserta Terverifikasi
                         </span>
                         <h2 class="text-2xl font-black mb-2 tracking-tight">QR Code Registrasi Ulang</h2>
                         <p class="text-slate-300 text-sm max-w-md mb-6 font-medium">
-                            Tunjukkan QR Code ini kepada panitia untuk proses registrasi ulang dan verifikasi di lokasi event.
+                            Tunjukkan QR Code ini kepada panitia untuk proses registrasi ulang dan verifikasi di lokasi
+                            event.
                         </p>
                         <div class="flex flex-wrap justify-center md:justify-start gap-3">
-                            <BaseButton variant="white" class="h-10 px-4 text-xs font-bold" icon="ph:printer">Cetak QR Code
+                            <BaseButton variant="white" class="h-10 px-4 text-xs font-bold" icon="ph:printer">Cetak QR
+                                Code
                             </BaseButton>
                             <BaseButton variant="white" class="h-10 px-4 text-xs font-bold" icon="ph:download-simple">
                                 Download QR</BaseButton>
@@ -90,159 +94,165 @@
 
             <!-- Edit Form (Unified Page) -->
             <form @submit.prevent="handleSubmit" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- Main Form Column -->
-            <div class="lg:col-span-2 space-y-6">
-                <!-- Participant Info -->
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 overflow-hidden relative">
-                    <!-- Approved Badge Watermark -->
-                    <div v-if="form.accreditation_status === 'approved'"
-                        class="absolute -right-8 -top-8 rotate-12 opacity-[0.03] select-none pointer-events-none">
-                        <Icon icon="ph:seal-check-fill" class="text-[200px]" />
-                    </div>
+                <!-- Main Form Column -->
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- Participant Info -->
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 overflow-hidden relative">
+                        <!-- Approved Badge Watermark -->
+                        <div v-if="form.accreditation_status === 'approved'"
+                            class="absolute -right-8 -top-8 rotate-12 opacity-[0.03] select-none pointer-events-none">
+                            <Icon icon="ph:seal-check-fill" class="text-[200px]" />
+                        </div>
 
-                    <h2 class="text-lg font-bold text-navy mb-6 flex items-center gap-2">
-                        <Icon icon="ph:user" class="text-primary" />
-                        Informasi Peserta
-                    </h2>
+                        <h2 class="text-lg font-bold text-navy mb-6 flex items-center gap-2">
+                            <Icon icon="ph:user" class="text-primary" />
+                            Informasi Peserta
+                        </h2>
 
-                    <div class="space-y-6">
-                        <div
-                            class="flex flex-col md:flex-row items-start md:items-center gap-4 p-5 bg-gray-50 rounded-2xl border border-gray-100 relative z-10">
+                        <div class="space-y-6">
                             <div
-                                class="h-16 w-16 rounded-xl bg-white shadow-sm flex items-center justify-center text-navy font-bold text-xl uppercase border border-gray-100 overflow-hidden shrink-0">
-                                <img :src="useImageOrDefault(participant.avatar_url, participant.full_name)"
-                                    class="w-full h-full object-cover">
+                                class="flex flex-col md:flex-row items-start md:items-center gap-4 p-5 bg-gray-50 rounded-2xl border border-gray-100 relative z-10">
+                                <div
+                                    class="h-16 w-16 rounded-xl bg-white shadow-sm flex items-center justify-center text-navy font-bold text-xl  border border-gray-100 overflow-hidden shrink-0">
+                                    <img :src="useImageOrDefault(participant.avatar_url, participant.full_name)"
+                                        class="w-full h-full object-cover">
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="font-black text-navy text-lg">{{ participant.full_name }}</p>
+                                    <div class="flex flex-wrap items-center gap-3 mt-2">
+                                        <p class="text-sm font-bold text-gray-500 flex items-center gap-1.5">
+                                            <Icon icon="ph:identification-card" />
+                                            {{ participant.athlete_code || '-' }}
+                                        </p>
+                                        <span class="text-gray-300">•</span>
+                                        <span :class="getStatusClass(form.status)"
+                                            class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold border">
+                                            {{ form.status || 'Menunggu Acc' }}
+                                        </span>
+                                        <span class="text-gray-300">•</span>
+                                        <p class="text-xs font-bold text-gray-500 flex items-center gap-1.5">
+                                            <Icon icon="ph:calendar-check" />
+                                            {{ formatDate(participant?.registration_date) }}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="flex-1 min-w-0">
-                                <p class="font-black text-navy text-lg">{{ participant.full_name }}</p>
-                                <div class="flex flex-wrap items-center gap-3 mt-2">
-                                    <p class="text-sm font-bold text-gray-500 flex items-center gap-1.5">
-                                        <Icon icon="ph:identification-card" />
-                                        {{ participant.athlete_code || '-' }}
-                                    </p>
-                                    <span class="text-gray-300">•</span>
-                                    <span :class="getStatusClass(form.status)"
-                                        class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold border">
-                                        {{ form.status || 'Menunggu Acc' }}
-                                    </span>
-                                    <span class="text-gray-300">•</span>
-                                    <p class="text-xs font-bold text-gray-500 flex items-center gap-1.5">
-                                        <Icon icon="ph:calendar-check" />
-                                        {{ formatDate(participant?.registration_date) }}
-                                    </p>
+
+                            <div class="grid grid-cols-1 gap-6 mt-6">
+                                <div>
+                                    <BaseSelect v-model="form.category_id" label="Divisi & Kategori" required
+                                        placeholder="Pilih Kategori" icon="ph:trophy" :items="categories"
+                                        item-title="label" item-value="id" />
                                 </div>
                             </div>
                         </div>
-
-                        <div class="grid grid-cols-1 gap-6 mt-6">
-                            <div>
-                                <BaseSelect v-model="form.category_id" label="Divisi & Kategori" required
-                                    placeholder="Pilih Kategori" icon="ph:trophy" :items="categories" item-title="label"
-                                    item-value="id" />
-                            </div>
-                        </div>
                     </div>
-                </div>
 
-                <!-- Payment Info -->
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-                    <h2 class="text-lg font-bold text-navy mb-6 flex items-center gap-2">
-                        <Icon icon="ph:currency-circle-dollar" class="text-primary" />
-                        Status & Pembayaran
-                    </h2>
-                    <div class="space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <BaseSelect v-model="form.payment_status" label="Status Pembayaran" required icon="ph:currency-circle-dollar"
-                                :items="paymentStatusOptions" item-title="label" item-value="value" />
+                    <!-- Payment Info -->
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                        <h2 class="text-lg font-bold text-navy mb-6 flex items-center gap-2">
+                            <Icon icon="ph:currency-circle-dollar" class="text-primary" />
+                            Status & Pembayaran
+                        </h2>
+                        <div class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <BaseSelect v-model="form.payment_status" label="Status Pembayaran" required
+                                    icon="ph:currency-circle-dollar" :items="paymentStatusOptions" item-title="label"
+                                    item-value="value" />
 
-                            <BaseInput v-model="form.payment_amount" label="Jumlah Pembayaran" placeholder="0"
-                                icon="ph:money" kind="currency" />
-                        </div>
+                                <BaseInput v-model="form.payment_amount" label="Jumlah Pembayaran" placeholder="0"
+                                    icon="ph:money" kind="currency" />
+                            </div>
 
-                        <!-- Payment Proof Images -->
-                        <div class="pt-4 border-t border-gray-100">
-                            <label class="block text-sm font-bold text-gray-700 mb-4 flex items-center gap-2">
-                                <Icon icon="ph:image" />
-                                Bukti Pembayaran
-                            </label>
+                            <!-- Payment Proof Images -->
+                            <div class="pt-4 border-t border-gray-100">
+                                <label class="block text-sm font-bold text-gray-700 mb-4 flex items-center gap-2">
+                                    <Icon icon="ph:image" />
+                                    Bukti Pembayaran
+                                </label>
 
-                            <div v-if="form.payment_proof_urls?.length" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                                <template v-for="(url, index) in form.payment_proof_urls" :key="index">
-                                    <div
-                                        class="group relative aspect-square rounded-xl overflow-hidden border border-gray-200 bg-gray-50">
-                                        <img :src="url.startsWith('http') ? url : `http://localhost:8001${url}`"
-                                            class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                            alt="Bukti Pembayaran" />
+                                <div v-if="form.payment_proof_urls?.length"
+                                    class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                                    <template v-for="(url, index) in form.payment_proof_urls" :key="index">
                                         <div
-                                            class="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all flex items-center justify-center">
-                                            <a :href="url.startsWith('http') ? url : `http://localhost:8001${url}`"
-                                                target="_blank"
-                                                class="opacity-0 group-hover:opacity-100 p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/40 transition-all">
-                                                <Icon icon="ph:magnifying-glass-plus" class="text-xl" />
-                                            </a>
+                                            class="group relative aspect-square rounded-xl overflow-hidden border border-gray-200 bg-gray-50">
+                                            <img :src="url.startsWith('http') ? url : `http://localhost:8001${url}`"
+                                                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                                alt="Bukti Pembayaran" />
+                                            <div
+                                                class="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all flex items-center justify-center">
+                                                <a :href="url.startsWith('http') ? url : `http://localhost:8001${url}`"
+                                                    target="_blank"
+                                                    class="opacity-0 group-hover:opacity-100 p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/40 transition-all">
+                                                    <Icon icon="ph:magnifying-glass-plus" class="text-xl" />
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
-                                </template>
-                            </div>
-                            <div v-else
-                                class="p-8 bg-gray-50 rounded-xl border border-dashed border-gray-200 text-center text-gray-400">
-                                <Icon icon="ph:image-slash" class="text-3xl mx-auto mb-2 opacity-50" />
-                                <p class="text-xs font-bold uppercase tracking-widest opacity-60">Belum ada
-                                    bukti</p>
+                                    </template>
+                                </div>
+                                <div v-else
+                                    class="p-8 bg-gray-50 rounded-xl border border-dashed border-gray-200 text-center text-gray-400">
+                                    <Icon icon="ph:image-slash" class="text-3xl mx-auto mb-2 opacity-50" />
+                                    <p class="text-xs font-bold  tracking-widest opacity-60">Belum ada
+                                        bukti</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Sidebar -->
-            <div class="space-y-6">
+                <!-- Sidebar -->
+                <div class="space-y-6">
 
-                <!-- Kick Participant -->
-                <div class="bg-red-50 rounded-2xl border border-red-100 shadow-sm p-6">
-                    <h3 class="text-sm font-bold text-red-600 mb-2 flex items-center gap-2">
-                        <Icon icon="ph:warning-circle" class="text-lg" />
-                        Kick Participant
-                    </h3>
-                    <p class="text-[10px] text-red-500/80 mb-4 leading-relaxed font-bold">
-                        Hapus peserta dari event ini secara permanen. Tindakan ini juga akan menghapus data target dan
-                        skor yang terkait.
-                    </p>
-                    <BaseButton variant="danger" block icon="ph:user-minus"
-                        class="h-10 text-xs shadow-lg shadow-red-200" @click="showKickDialog = true">
+                    <!-- Kick Participant -->
+                    <div class="bg-red-50 rounded-2xl border border-red-100 shadow-sm p-6">
+                        <h3 class="text-sm font-bold text-red-600 mb-2 flex items-center gap-2">
+                            <Icon icon="ph:warning-circle" class="text-lg" />
+                            Kick Participant
+                        </h3>
+                        <p class="text-[10px] text-red-500/80 mb-4 leading-relaxed font-bold">
+                            Hapus peserta dari event ini secara permanen. Tindakan ini juga akan menghapus data target
+                            dan
+                            skor yang terkait.
+                        </p>
+                        <BaseButton variant="danger" block icon="ph:user-minus"
+                            class="h-10 text-xs shadow-lg shadow-red-200" @click="showKickDialog = true">
+                            Keluarkan Peserta
+                        </BaseButton>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Kick Participant Confirmation Dialog -->
+            <BaseDialogForm v-model="showKickDialog" header="Kick Participant">
+                <div class="space-y-4">
+                    <div class="flex flex-col items-center text-center gap-4">
+                        <div class="h-16 w-16 rounded-2xl bg-red-50 flex items-center justify-center">
+                            <Icon icon="ph:warning-circle" class="text-4xl text-red-500" />
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-navy mb-2">Keluarkan Peserta?</h3>
+                            <p class="text-gray-500 text-sm leading-relaxed">
+                                Apakah Anda yakin ingin mengeluarkan <span class="font-bold text-navy">{{
+                                    participant?.full_name
+                                    }}</span> dari event ini?
+                            </p>
+                            <p class="text-red-600 text-xs mt-2 font-semibold">
+                                Tindakan ini akan menghapus semua data target dan skor yang terkait dan tidak dapat
+                                dibatalkan.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <template #action>
+                    <BaseButton variant="white" @click="showKickDialog = false">Batal</BaseButton>
+                    <BaseButton variant="danger" @click="handleKickUser" :loading="isKicking">
+                        <Icon icon="ph:user-minus" class="mr-2" />
                         Keluarkan Peserta
                     </BaseButton>
-                </div>
-            </div>
-        </form>
-
-        <!-- Kick Participant Confirmation Dialog -->
-        <BaseDialogForm v-model="showKickDialog" header="Kick Participant">
-            <div class="space-y-4">
-                <div class="flex flex-col items-center text-center gap-4">
-                    <div class="h-16 w-16 rounded-2xl bg-red-50 flex items-center justify-center">
-                        <Icon icon="ph:warning-circle" class="text-4xl text-red-500" />
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-bold text-navy mb-2">Keluarkan Peserta?</h3>
-                        <p class="text-gray-500 text-sm leading-relaxed">
-                            Apakah Anda yakin ingin mengeluarkan <span class="font-bold text-navy">{{ participant?.full_name }}</span> dari event ini?
-                        </p>
-                        <p class="text-red-600 text-xs mt-2 font-semibold">
-                            Tindakan ini akan menghapus semua data target dan skor yang terkait dan tidak dapat dibatalkan.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <template #action>
-                <BaseButton variant="white" @click="showKickDialog = false">Batal</BaseButton>
-                <BaseButton variant="danger" @click="handleKickUser" :loading="isKicking">
-                    <Icon icon="ph:user-minus" class="mr-2" />
-                    Keluarkan Peserta
-                </BaseButton>
-            </template>
-        </BaseDialogForm>
+                </template>
+            </BaseDialogForm>
         </template>
 
         <!-- Error State -->

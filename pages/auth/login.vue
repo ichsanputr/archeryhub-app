@@ -81,7 +81,7 @@
 
                     <div class="space-y-2">
                         <div class="flex items-center justify-between px-1">
-                            <label class="text-xs font-bold text-navy uppercase tracking-wider">Kata Sandi</label>
+                            <label class="text-xs font-bold text-navy  tracking-wider">Kata Sandi</label>
                         </div>
                         <BaseInput v-model="form.password" placeholder="••••••••" type="password" icon="lock" required
                             :error="errors.password" @blur="validate('password', form.password, [rules.required()])" />

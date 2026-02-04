@@ -41,7 +41,7 @@
                                 </p>
                                 <div class="flex flex-wrap items-center gap-4">
                                     <div
-                                        class="flex items-center gap-2 text-slate-300 text-xs font-bold uppercase tracking-wider">
+                                        class="flex items-center gap-2 text-slate-300 text-xs font-bold  tracking-wider">
                                         <Icon icon="ph:hash-bold" class="text-primary text-sm" />
                                         <span>{{ event?.code }}</span>
                                     </div>
@@ -141,7 +141,7 @@
                         class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-md hover:shadow-md transition-all border border-gray-100 group">
                         <div class="flex justify-between items-start">
                             <div>
-                                <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Total
+                                <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Total
                                     Pemanah</p>
                                 <p class="text-navy-dark text-3xl font-extrabold tracking-tight">{{
                                     event?.participant_count || 0 }}</p>
@@ -163,7 +163,7 @@
                         class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-md hover:shadow-md transition-all border border-gray-100 group">
                         <div class="flex justify-between items-start">
                             <div>
-                                <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Target
+                                <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Target
                                     Aktif</p>
                                 <p class="text-navy-dark text-3xl font-extrabold tracking-tight">
                                     {{ Math.ceil((event?.participant_count || 0) / 4) }}<span
@@ -186,10 +186,10 @@
                         class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-md hover:shadow-md transition-all border border-gray-100 group">
                         <div class="flex justify-between items-start">
                             <div>
-                                <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">
+                                <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">
                                     Penyelesaian</p>
                                 <p class="text-navy-dark text-3xl font-extrabold tracking-tight">{{ completionPercentage
-                                }}%</p>
+                                    }}%</p>
                             </div>
                             <div
                                 class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
@@ -205,7 +205,7 @@
                         class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-md hover:shadow-md transition-all border border-gray-100 group">
                         <div class="flex justify-between items-start">
                             <div>
-                                <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Sisa
+                                <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Sisa
                                     Waktu</p>
                                 <p class="text-navy-dark text-3xl font-extrabold tracking-tight tabular-nums">{{
                                     timeLeft }}</p>
@@ -236,7 +236,7 @@
                         <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8 bg-gray-50/30">
                             <!-- By Category -->
                             <div>
-                                <h4 class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Sebaran
+                                <h4 class="text-[10px] font-black text-gray-400  tracking-[0.2em] mb-4">Sebaran
                                     Kategori</h4>
                                 <div class="space-y-4">
                                     <div v-for="cat in registrationStats.categories.slice(0, 5)" :key="cat.name"
@@ -264,7 +264,7 @@
                             </div>
                             <!-- Payment Status -->
                             <div>
-                                <h4 class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Status
+                                <h4 class="text-[10px] font-black text-gray-400  tracking-[0.2em] mb-4">Status
                                     Pembayaran</h4>
                                 <div class="space-y-3">
                                     <div
@@ -336,13 +336,12 @@
                             <table class="w-full text-left text-sm">
                                 <thead class="bg-gray-50 text-gray-500 font-semibold border-b border-gray-100">
                                     <tr>
-                                        <th
-                                            class="px-6 py-3 font-medium text-xs uppercase tracking-wider whitespace-nowrap">
+                                        <th class="px-6 py-3 font-medium text-xs  tracking-wider whitespace-nowrap">
                                             #</th>
-                                        <th class="px-6 py-3 font-medium text-xs uppercase tracking-wider">Pos</th>
-                                        <th class="px-6 py-3 font-medium text-xs uppercase tracking-wider">Pemanah</th>
+                                        <th class="px-6 py-3 font-medium text-xs  tracking-wider">Pos</th>
+                                        <th class="px-6 py-3 font-medium text-xs  tracking-wider">Pemanah</th>
                                         <th
-                                            class="px-6 py-3 text-right font-medium text-xs uppercase tracking-wider whitespace-nowrap">
+                                            class="px-6 py-3 text-right font-medium text-xs  tracking-wider whitespace-nowrap">
                                             Skor</th>
                                     </tr>
                                 </thead>
@@ -408,7 +407,7 @@
                 </div>
 
                 <div class="space-y-2">
-                    <p class="text-[11px] font-bold text-gray-400 uppercase tracking-[0.18em]">Link Publik
+                    <p class="text-[11px] font-bold text-gray-400  tracking-[0.18em]">Link Publik
                         Event</p>
                     <div class="flex items-center gap-2">
                         <div
@@ -426,7 +425,7 @@
                 </div>
 
                 <div class="pt-3 border-t border-gray-100 space-y-3">
-                    <p class="text-[11px] font-bold text-gray-400 uppercase tracking-[0.18em]">Bagikan ke
+                    <p class="text-[11px] font-bold text-gray-400  tracking-[0.18em]">Bagikan ke
                         Sosial Media</p>
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                         <button type="button" @click="shareTo('whatsapp')"

@@ -167,7 +167,7 @@ const formatDate = (dateStr) => {
 }
 
 const getStatusClass = (status) => {
-  const base = 'px-2 py-0.5 rounded-full text-[10px] font-bold uppercase'
+  const base = 'px-2 py-0.5 rounded-full text-[10px] font-bold '
   switch (status?.toLowerCase()) {
     case 'active': return `${base} bg-green-500/10 text-green-500`
     case 'draft': return `${base} bg-amber-500/10 text-amber-500`

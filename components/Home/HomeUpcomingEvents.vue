@@ -31,7 +31,7 @@
                         <!-- Date Badge -->
                         <div
                             class="flex-shrink-0 flex flex-col items-center justify-center w-11 h-11 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-navy text-white shadow-sm group-hover:bg-primary group-hover:text-navy transition-colors duration-300">
-                            <span class="text-[8px] sm:text-xs font-bold uppercase tracking-wider opacity-80">{{
+                            <span class="text-[8px] sm:text-xs font-bold  tracking-wider opacity-80">{{
                                 formatDate(event.start_date, 'MMM') }}</span>
                             <span class="text-sm sm:text-2xl font-black leading-none">{{ formatDate(event.start_date,
                                 'DD') }}</span>

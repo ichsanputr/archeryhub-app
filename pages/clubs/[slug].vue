@@ -117,7 +117,7 @@
                                 Prestasi Klub
                             </h2>
                             <div
-                                class="px-4 py-1.5 bg-gray-50 rounded-full border border-gray-100 text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                                class="px-4 py-1.5 bg-gray-50 rounded-full border border-gray-100 text-[10px] font-black text-gray-400  tracking-widest">
                                 Highlights
                             </div>
                         </div>
@@ -137,7 +137,7 @@
                                     </div>
                                     <div class="flex flex-col items-end">
                                         <span
-                                            class="px-3 py-1 bg-primary text-navy text-[10px] font-black rounded-lg uppercase tracking-tight shadow-sm">
+                                            class="px-3 py-1 bg-primary text-navy text-[10px] font-black rounded-lg  tracking-tight shadow-sm">
                                             {{ event.result }}
                                         </span>
                                     </div>
@@ -179,8 +179,7 @@
                                     class="font-bold text-navy text-sm group-hover:text-primary transition-colors truncate px-1">
                                     {{
                                         member.name }}</h4>
-                                <p
-                                    class="text-[10px] font-black text-gray-400 uppercase tracking-wider mt-1.5 opacity-60">
+                                <p class="text-[10px] font-black text-gray-400  tracking-wider mt-1.5 opacity-60">
                                     {{ member.division || 'Archer' }}</p>
                             </NuxtLink>
                         </div>
@@ -269,7 +268,7 @@
                                     <Icon icon="ph:phone-fill" class="text-lg text-gray-600" />
                                 </div>
                                 <div>
-                                    <p class="text-gray-400 text-xs font-bold uppercase">Telepon</p>
+                                    <p class="text-gray-400 text-xs font-bold ">Telepon</p>
                                     <p class="font-bold text-navy">{{ club.phone }}</p>
                                 </div>
                             </div>
@@ -278,7 +277,7 @@
                                     <Icon icon="ph:whatsapp-logo-fill" class="text-lg text-gray-600" />
                                 </div>
                                 <div>
-                                    <p class="text-gray-400 text-xs font-bold uppercase">WhatsApp</p>
+                                    <p class="text-gray-400 text-xs font-bold ">WhatsApp</p>
                                     <p class="font-bold text-navy">{{ club.whatsapp }}</p>
                                 </div>
                             </div>
@@ -287,7 +286,7 @@
                                     <Icon icon="ph:envelope-fill" class="text-lg text-gray-600" />
                                 </div>
                                 <div>
-                                    <p class="text-gray-400 text-xs font-bold uppercase">Email</p>
+                                    <p class="text-gray-400 text-xs font-bold ">Email</p>
                                     <p class="font-bold text-navy">{{ club.email }}</p>
                                 </div>
                             </div>
@@ -296,7 +295,7 @@
                                     <Icon icon="ph:map-pin-fill" class="text-lg text-gray-600" />
                                 </div>
                                 <div>
-                                    <p class="text-gray-400 text-xs font-bold uppercase">Alamat</p>
+                                    <p class="text-gray-400 text-xs font-bold ">Alamat</p>
                                     <p class="font-bold text-navy text-sm">{{ club.address }}</p>
                                 </div>
                             </div>

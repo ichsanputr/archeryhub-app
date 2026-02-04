@@ -250,7 +250,7 @@ const getFileIcon = (mimeType) => {
 const getFileExt = (url) => {
     if (!url) return ''
     const parts = url.split('.')
-    return parts.length > 1 ? parts.pop().toUpperCase() : ''
+    return parts.length > 1 ? parts.pop().to() : ''
 }
 
 // Computed for upload zone text

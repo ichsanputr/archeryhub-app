@@ -41,7 +41,7 @@
             <img :src="useImageOrDefault(member?.photo_url, member?.full_name)" class="w-full h-full object-cover" />
           </div>
           <div>
-            <p class="text-xs font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Anggota Klub</p>
+            <p class="text-xs font-black text-gray-400  tracking-[0.2em] mb-1">Anggota Klub</p>
             <h2 class="text-xl font-extrabold text-navy leading-tight">
               {{ member?.full_name || 'Nama Anggota' }}
             </h2>
@@ -56,28 +56,27 @@
 
         <div class="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100">
           <div>
-            <p class="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-1">Jenis Busur</p>
+            <p class="text-[11px] font-black text-gray-400  tracking-widest mb-1">Jenis Busur</p>
             <p class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold" :class="bowBadgeClass">
               <Icon icon="ph:bow-and-arrow" class="text-base" />
               <span>{{ member?.bow_type || 'Recurve' }}</span>
             </p>
           </div>
           <div>
-            <p class="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-1">Kategori Usia</p>
+            <p class="text-[11px] font-black text-gray-400  tracking-widest mb-1">Kategori Usia</p>
             <p class="text-sm font-semibold text-navy">
               {{ member?.age_group || ageLabel }}
             </p>
           </div>
           <div>
-            <p class="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-1">Kota</p>
+            <p class="text-[11px] font-black text-gray-400  tracking-widest mb-1">Kota</p>
             <p class="text-sm font-semibold text-navy">
               {{ member?.city || '—' }}
             </p>
           </div>
           <div>
-            <p class="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-1">Status</p>
-            <span
-              class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest"
+            <p class="text-[11px] font-black text-gray-400  tracking-widest mb-1">Status</p>
+            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-black  tracking-widest"
               :class="statusBadgeClass">
               <span class="h-1.5 w-1.5 rounded-full bg-current"></span>
               {{ member?.status || 'Aktif' }}
@@ -89,17 +88,17 @@
       <!-- Summary Stats -->
       <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-2">
-          <p class="text-[11px] font-black text-gray-400 uppercase tracking-widest">Total Event Diikuti</p>
+          <p class="text-[11px] font-black text-gray-400  tracking-widest">Total Event Diikuti</p>
           <p class="text-3xl font-black text-navy">{{ member?.total_events || 0 }}</p>
           <p class="text-xs text-gray-400">Sejak bergabung dengan klub</p>
         </div>
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-2">
-          <p class="text-[11px] font-black text-gray-400 uppercase tracking-widest">Best Qualification</p>
+          <p class="text-[11px] font-black text-gray-400  tracking-widest">Best Qualification</p>
           <p class="text-3xl font-black text-navy">{{ member?.best_qualification || '-' }}</p>
           <p class="text-xs text-gray-400">Skor tertinggi kualifikasi</p>
         </div>
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-2">
-          <p class="text-[11px] font-black text-gray-400 uppercase tracking-widest">Podium Finish</p>
+          <p class="text-[11px] font-black text-gray-400  tracking-widest">Podium Finish</p>
           <p class="text-3xl font-black text-navy">{{ member?.podium_count || 0 }}</p>
           <p class="text-xs text-gray-400">Jumlah medali/podium</p>
         </div>
@@ -111,7 +110,7 @@
       <!-- Event History -->
       <div class="lg:col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50/60">
-          <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em]">Riwayat Event</h3>
+          <h3 class="text-[11px] font-black text-navy  tracking-[0.2em]">Riwayat Event</h3>
           <span class="text-xs text-gray-400 font-semibold">
             {{ (member?.events || []).length }} event
           </span>
@@ -126,11 +125,11 @@
             </div>
             <div class="flex items-center gap-4">
               <div class="text-right">
-                <p class="text-xs text-gray-400 uppercase font-black tracking-widest">Kualifikasi</p>
+                <p class="text-xs text-gray-400  font-black tracking-widest">Kualifikasi</p>
                 <p class="text-sm font-bold text-navy">{{ ev.qualification_score || '-' }}</p>
               </div>
               <div class="text-right">
-                <p class="text-xs text-gray-400 uppercase font-black tracking-widest">Hasil Akhir</p>
+                <p class="text-xs text-gray-400  font-black tracking-widest">Hasil Akhir</p>
                 <p class="text-sm font-bold text-navy">{{ ev.final_rank || '-' }}</p>
               </div>
             </div>
@@ -145,7 +144,7 @@
       <!-- Coach Notes -->
       <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
         <div class="flex items-center justify-between">
-          <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em]">Catatan Pelatih</h3>
+          <h3 class="text-[11px] font-black text-navy  tracking-[0.2em]">Catatan Pelatih</h3>
           <span class="text-[11px] text-gray-400">Hanya terlihat oleh staf klub</span>
         </div>
         <textarea v-model="coachNotes" rows="6"

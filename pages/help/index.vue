@@ -12,7 +12,7 @@
             <div class="container mx-auto px-4 max-w-7xl relative z-10">
                 <div class="max-w-3xl text-center md:text-left">
                     <div
-                        class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold uppercase tracking-widest mb-6">
+                        class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold  tracking-widest mb-6">
                         <Icon icon="ph:lifebuoy-bold" class="text-lg" />
                         <span>Pusat Bantuan</span>
                     </div>

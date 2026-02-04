@@ -11,7 +11,7 @@
             <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="max-w-3xl">
                     <div
-                        class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold uppercase tracking-widest mb-6">
+                        class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold  tracking-widest mb-6">
                         <Icon icon="ph:calendar-bold" class="text-lg" />
                         <span>Event Panahan</span>
                     </div>
@@ -113,7 +113,7 @@
                                 filteredTournaments.length }}</span>
                         </h2>
                         <div class="flex items-center gap-3 bg-white p-2 rounded-xl border border-gray-100 shadow-sm">
-                            <span class="text-xs font-black text-gray-400 uppercase tracking-wider ml-2">Urutan:</span>
+                            <span class="text-xs font-black text-gray-400  tracking-wider ml-2">Urutan:</span>
                             <select v-model="sortBy"
                                 class="border-none bg-transparent text-sm font-bold text-navy py-1.5 pl-2 pr-8 focus:ring-0 cursor-pointer">
                                 <option value="newest">Paling Baru</option>
@@ -161,7 +161,7 @@
                                     :src="tournament.image" />
                                 <div class="absolute top-4 left-4">
                                     <span
-                                        class="px-3 py-1.5 bg-white/90 backdrop-blur-sm text-navy text-[10px] font-black rounded-lg uppercase tracking-wider shadow-sm">
+                                        class="px-3 py-1.5 bg-white/90 backdrop-blur-sm text-navy text-[10px] font-black rounded-lg  tracking-wider shadow-sm">
                                         {{ tournament.category || 'Open' }}
                                     </span>
                                 </div>

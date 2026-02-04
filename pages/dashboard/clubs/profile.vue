@@ -41,7 +41,7 @@
           <!-- Identitas -->
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
             <div class="flex items-center justify-between">
-              <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
+              <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
                 <Icon icon="ph:identification-badge-bold" class="text-primary text-lg" /> Identitas Utama
               </h3>
             </div>
@@ -108,7 +108,7 @@
 
           <!-- Logo & Banner -->
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-8">
-            <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
+            <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
               <Icon icon="ph:image-bold" class="text-primary text-lg" /> Branding Visual
             </h3>
 
@@ -147,7 +147,7 @@
                       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     <div v-else class="text-center p-6">
                       <Icon icon="ph:image-square-bold" class="text-4xl text-gray-200 mx-auto mb-2" />
-                      <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Upload banner 1200x400</p>
+                      <p class="text-[10px] text-gray-400 font-bold  tracking-wider">Upload banner 1200x400</p>
                     </div>
                   </div>
                   <div class="mt-4 flex gap-2">
@@ -170,7 +170,7 @@
         <!-- Tab: Kontak -->
         <div v-if="activeTab === 'contact'" class="space-y-8">
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
-            <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
+            <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
               <Icon icon="ph:phone-bold" class="text-primary text-xl" /> Informasi Kontak
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -184,7 +184,7 @@
           </div>
 
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
-            <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
+            <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
               <Icon icon="ph:share-network-bold" class="text-primary text-xl" /> Kehadiran Media Sosial
             </h3>
             <p class="text-sm text-gray-500 font-medium">Hubungkan klub dengan member melalui platform sosial favorit.
@@ -223,7 +223,7 @@
                 <Icon icon="ph:plus-circle-bold" class="text-xl group-hover:rotate-90 transition-transform" />
                 Tambah Platform Baru
               </button>
-              <p v-else class="text-[10px] text-gray-400 text-center font-bold tracking-widest uppercase">Maksimal 5
+              <p v-else class="text-[10px] text-gray-400 text-center font-bold tracking-widest ">Maksimal 5
                 platform media sosial</p>
             </div>
           </div>
@@ -233,7 +233,7 @@
         <div v-if="activeTab === 'facilities'" class="space-y-8">
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
             <div class="flex items-center justify-between">
-              <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
+              <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
                 <Icon icon="ph:check-circle-bold" class="text-primary text-xl" /> Daftar Fasilitas
               </h3>
             </div>
@@ -269,7 +269,7 @@
 
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
             <div class="flex items-center justify-between">
-              <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
+              <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
                 <Icon icon="ph:calendar-bold" class="text-primary text-xl" /> Jadwal Latihan Rutin
               </h3>
               <button
@@ -299,7 +299,7 @@
               <div v-if="!form.schedules.length"
                 class="text-center py-10 bg-gray-50/50 rounded-2xl border border-dashed border-gray-100">
                 <Icon icon="ph:clock-light" class="text-4xl text-gray-200 mx-auto mb-2" />
-                <p class="text-sm text-gray-400 font-bold uppercase tracking-widest">Jadwal belum diatur</p>
+                <p class="text-sm text-gray-400 font-bold  tracking-widest">Jadwal belum diatur</p>
               </div>
             </div>
           </div>
@@ -310,7 +310,7 @@
       <!-- Side card -->
       <div class="space-y-4">
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-4">
-          <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em]">Pengaturan Tampilan</h3>
+          <h3 class="text-[11px] font-black text-navy  tracking-[0.2em]">Pengaturan Tampilan</h3>
           <p class="text-sm text-gray-500">Pilih section yang ingin ditampilkan di halaman publik.</p>
           <div class="space-y-3">
             <BaseCheckbox v-model="pageSettings.sections.identity" label="Identitas Klub" />
@@ -336,7 +336,7 @@
       <!-- Side card -->
       <div class="space-y-4">
         <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-5">
-          <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em] flex items-center gap-2">
+          <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
             <Icon icon="ph:gear-six-bold" class="text-primary text-lg" /> Visibilitas Halaman
           </h3>
           <p class="text-xs text-gray-500 font-medium">Atur bagian mana yang dapat dilihat publik.</p>

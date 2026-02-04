@@ -189,10 +189,10 @@
                                                 'Atlet Baru' }}</h3>
                                             <p class="text-sm text-gray-500 mb-2">{{ archerProfile?.email ||
                                                 userDisplay.email
-                                                }}</p>
+                                            }}</p>
                                             <div class="flex flex-wrap gap-2">
                                                 <span v-if="archerProfile?.id"
-                                                    class="text-[10px] text-navy font-bold bg-gray-100 px-2.5 py-1 rounded-full border border-gray-200 uppercase tracking-wider">
+                                                    class="text-[10px] text-navy font-bold bg-gray-100 px-2.5 py-1 rounded-full border border-gray-200  tracking-wider">
                                                     ID: {{ archerProfile.id }}
                                                 </span>
                                             </div>
@@ -216,12 +216,15 @@
                                             icon="hugeicons:archer" />
 
                                         <BaseSelect v-model="profileForm.city" :items="cityOptions"
-                                            label="Kota / Kabupaten" placeholder="Pilih kota" icon="mingcute:building-2-line" />
+                                            label="Kota / Kabupaten" placeholder="Pilih kota"
+                                            icon="mingcute:building-2-line" />
 
                                         <div class="sm:col-span-2">
                                             <BaseInput v-model="profileForm.club_name" label="Klub / Instansi"
-                                                placeholder="Nama klub atau instansi asal Anda" icon="mingcute:group-line"
-                                                hint="Informasi klub Anda (tidak dapat diubah di sini)" disabled readonly />
+                                                placeholder="Nama klub atau instansi asal Anda"
+                                                icon="mingcute:group-line"
+                                                hint="Informasi klub Anda (tidak dapat diubah di sini)" disabled
+                                                readonly />
                                         </div>
                                     </div>
 
@@ -351,14 +354,13 @@
                                             class="h-10 w-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform text-navy">
                                             <span class="material-symbols-outlined text-2xl">add_a_photo</span>
                                         </div>
-                                        <span
-                                            class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Tambah
+                                        <span class="text-[10px] font-black text-gray-400  tracking-widest">Tambah
                                             Foto</span>
                                     </button>
                                     <div v-else
                                         class="aspect-square rounded-2xl border-2 border-dashed border-gray-100 bg-gray-50 flex flex-col items-center justify-center gap-2 text-center p-2 opacity-60">
                                         <span class="material-symbols-outlined text-2xl text-gray-400">lock</span>
-                                        <span class="text-[9px] font-bold text-gray-400 uppercase tracking-tight">Login
+                                        <span class="text-[9px] font-bold text-gray-400  tracking-tight">Login
                                             Pemanah <br /> untuk Unggah</span>
                                     </div>
                                 </div>
@@ -380,7 +382,7 @@
                                 <div class="space-y-4">
                                     <!-- Payment Methods -->
                                     <div v-if="paymentMethods.length > 0" class="pt-3 border-t border-gray-200">
-                                        <p class="text-xs font-black text-gray-700 mb-3 uppercase tracking-wider">Metode
+                                        <p class="text-xs font-black text-gray-700 mb-3  tracking-wider">Metode
                                             Pembayaran</p>
                                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                             <div v-for="method in paymentMethods" :key="method.uuid"
@@ -467,10 +469,10 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
 
     try {
         console.log('[SSR] Fetching event data for slug:', slug)
-        
+
         // Fetch event first
         const eventResponse = await $fetch(`${apiBaseUrl}/events/${slug}`)
-        
+
         if (!eventResponse) {
             console.error('[SSR] No event response')
             return null
@@ -514,13 +516,13 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
 
         // Fetch profile and payment methods if logged in
         let archerProfileData = profileResponse?.data || profileResponse
-        
+
         console.log('=== ARCHER PROFILE DEBUG ===')
         console.log('Token exists:', !!token)
         console.log('Profile Response:', profileResponse)
         console.log('Profile Data:', archerProfileData)
         console.log('============================')
-        
+
         // Get payment methods for this event  
         let paymentMethodsData = []
         if (token) {
@@ -662,8 +664,8 @@ const displayValue = (value) => value || 'TBA'
 const getInitials = (name) => {
     if (!name) return '?'
     const words = name.trim().split(/\s+/)
-    if (words.length === 1) return words[0].substring(0, 2).toUpperCase()
-    return (words[0][0] + words[words.length - 1][0]).toUpperCase()
+    if (words.length === 1) return words[0].substring(0, 2).to()
+    return (words[0][0] + words[words.length - 1][0]).to()
 }
 
 const getSelectedCategoryName = () => {
@@ -689,7 +691,7 @@ watch(() => archerProfile.value, (profile) => {
     console.log('globalArcherProfile:', globalArcherProfile.value)
     console.log('data.archerProfile:', data.value?.archerProfile)
     console.log('================================')
-    
+
     if (profile) {
         console.log('Populating profileForm with:', profile)
         profileForm.value = {

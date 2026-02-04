@@ -27,7 +27,7 @@
           <Icon icon="ph:users-four" class="text-xl" />
         </div>
         <div>
-          <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Total Tim</p>
+          <p class="text-xs text-gray-400 font-bold  tracking-wider">Total Tim</p>
           <p class="text-lg font-bold text-navy">{{ teams.length }}</p>
         </div>
       </div>
@@ -38,7 +38,7 @@
           <Icon icon="ph:check-circle" class="text-xl" />
         </div>
         <div>
-          <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Aktif</p>
+          <p class="text-xs text-gray-400 font-bold  tracking-wider">Aktif</p>
           <p class="text-lg font-bold text-navy">{{teams.filter(t => t.status === 'active').length}}</p>
         </div>
       </div>
@@ -49,7 +49,7 @@
           <Icon icon="ph:user" class="text-xl" />
         </div>
         <div>
-          <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Total Anggota</p>
+          <p class="text-xs text-gray-400 font-bold  tracking-wider">Total Anggota</p>
           <p class="text-lg font-bold text-navy">{{teams.reduce((acc, t) => acc + t.memberCount, 0)}}</p>
         </div>
       </div>
@@ -60,7 +60,7 @@
           <Icon icon="ph:trophy" class="text-xl" />
         </div>
         <div>
-          <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Event Aktif</p>
+          <p class="text-xs text-gray-400 font-bold  tracking-wider">Event Aktif</p>
           <p class="text-lg font-bold text-navy">{{[...new Set(teams.map(t => t.eventId))].length}}</p>
         </div>
       </div>
@@ -91,7 +91,7 @@
             <div class="flex items-center gap-4">
               <div
                 class="h-14 w-14 rounded-xl bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center text-navy font-black text-xl shadow-md shadow-primary/20">
-                {{ team.name.substring(0, 2).toUpperCase() }}
+                {{ team.name.substring(0, 2).to() }}
               </div>
               <div>
                 <h3 class="font-bold text-navy text-lg group-hover:text-primary transition-colors">{{ team.name }}</h3>
@@ -99,7 +99,7 @@
               </div>
             </div>
             <span :class="[
-              'px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider',
+              'px-3 py-1 rounded-full text-xs font-bold  tracking-wider',
               team.status === 'active' ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-gray-500'
             ]">
               {{ team.status === 'active' ? 'Aktif' : 'Tidak Aktif' }}

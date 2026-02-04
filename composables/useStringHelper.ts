@@ -15,7 +15,7 @@ export const useTitleCase = (str: string | null | undefined): string => {
   return withSpaces
     .split(' ')
     .filter((word) => word.length > 0)
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .map((word) => word.charAt(0).to() + word.slice(1))
     .join(' ')
 }
 
@@ -27,7 +27,7 @@ export const useTitleCase = (str: string | null | undefined): string => {
 export const useStringHelper = () => {
   const slugify = (str: string | null | undefined): string => {
     if (!str) return ''
-    
+
     return str
       .toString()
       .toLowerCase()

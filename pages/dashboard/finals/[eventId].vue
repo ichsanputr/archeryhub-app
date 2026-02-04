@@ -156,10 +156,10 @@
             <table class="w-full">
               <thead class="bg-[#4a4421]/30 sticky top-0">
                 <tr>
-                  <th class="px-6 py-4 text-left text-[#ccc38e] text-xs font-semibold uppercase">Rank</th>
-                  <th class="px-6 py-4 text-left text-[#ccc38e] text-xs font-semibold uppercase">Athlete</th>
-                  <th class="px-6 py-4 text-left text-[#ccc38e] text-xs font-semibold uppercase">Medal</th>
-                  <th class="px-6 py-4 text-left text-[#ccc38e] text-xs font-semibold uppercase">Phase</th>
+                  <th class="px-6 py-4 text-left text-[#ccc38e] text-xs font-semibold ">Rank</th>
+                  <th class="px-6 py-4 text-left text-[#ccc38e] text-xs font-semibold ">Athlete</th>
+                  <th class="px-6 py-4 text-left text-[#ccc38e] text-xs font-semibold ">Medal</th>
+                  <th class="px-6 py-4 text-left text-[#ccc38e] text-xs font-semibold ">Phase</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-[#4a4421]">

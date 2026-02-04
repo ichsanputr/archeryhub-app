@@ -48,7 +48,7 @@
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 relative z-10">
         <div v-for="prize in prizes" :key="prize.pos" :class="prize.bg" class="border rounded-xl p-6 text-center">
           <div class="text-4xl mb-2">{{ prize.emoji }}</div>
-          <div class="text-xs font-bold text-text-sub uppercase tracking-wider mb-1">{{ prize.pos }}</div>
+          <div class="text-xs font-bold text-text-sub  tracking-wider mb-1">{{ prize.pos }}</div>
           <div class="text-xl font-black text-navy">{{ prize.amount }}</div>
           <div class="text-[10px] text-text-sub mt-2">{{ prize.extra }}</div>
         </div>

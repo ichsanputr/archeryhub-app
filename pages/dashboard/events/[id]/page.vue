@@ -67,15 +67,13 @@
                             </button>
                             <div class="space-y-4">
                                 <div class="space-y-2">
-                                    <label
-                                        class="text-xs font-bold text-gray-400 uppercase tracking-widest">Pertanyaan</label>
+                                    <label class="text-xs font-bold text-gray-400  tracking-widest">Pertanyaan</label>
                                     <input v-model="item.question" type="text"
                                         placeholder="Contoh: Berapa biaya pendaftaran?"
                                         class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
                                 </div>
                                 <div class="space-y-2">
-                                    <label
-                                        class="text-xs font-bold text-gray-400 uppercase tracking-widest">Jawaban</label>
+                                    <label class="text-xs font-bold text-gray-400  tracking-widest">Jawaban</label>
                                     <textarea v-model="item.answer" rows="3"
                                         class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none resize-none transition-all"
                                         placeholder="Tuliskan jawaban yang detail..."></textarea>
@@ -609,32 +607,32 @@
                             </button>
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                                 <div class="lg:col-span-2 space-y-1">
-                                    <label class="text-[10px] font-bold text-gray-400 uppercase">Judul Sesi</label>
+                                    <label class="text-[10px] font-bold text-gray-400 ">Judul Sesi</label>
                                     <input v-model="session.title" type="text" placeholder="Contoh: Kualifikasi Recurve"
                                         class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm" />
                                 </div>
                                 <div class="space-y-1">
-                                    <label class="text-[10px] font-bold text-gray-400 uppercase">Hari Ke-</label>
+                                    <label class="text-[10px] font-bold text-gray-400 ">Hari Ke-</label>
                                     <input v-model.number="session.day_order" type="number"
                                         class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm" />
                                 </div>
                                 <div class="space-y-1">
-                                    <label class="text-[10px] font-bold text-gray-400 uppercase">Mulai</label>
+                                    <label class="text-[10px] font-bold text-gray-400 ">Mulai</label>
                                     <input v-model="session.start_time" type="datetime-local"
                                         class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm" />
                                 </div>
                                 <div class="space-y-1">
-                                    <label class="text-[10px] font-bold text-gray-400 uppercase">Selesai</label>
+                                    <label class="text-[10px] font-bold text-gray-400 ">Selesai</label>
                                     <input v-model="session.end_time" type="datetime-local"
                                         class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm" />
                                 </div>
                                 <div class="space-y-1">
-                                    <label class="text-[10px] font-bold text-gray-400 uppercase">Lokasi</label>
+                                    <label class="text-[10px] font-bold text-gray-400 ">Lokasi</label>
                                     <input v-model="session.location" type="text"
                                         class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm" />
                                 </div>
                                 <div class="lg:col-span-3 space-y-1">
-                                    <label class="text-[10px] font-bold text-gray-400 uppercase">Deskripsi
+                                    <label class="text-[10px] font-bold text-gray-400 ">Deskripsi
                                         (Opsional)</label>
                                     <textarea v-model="session.description" rows="2"
                                         class="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm resize-none"
@@ -688,7 +686,7 @@
                             </div>
                             <div class="flex gap-2">
                                 <span
-                                    class="px-3 py-1 bg-gray-100 rounded-full text-[10px] font-black uppercase text-gray-400">Max
+                                    class="px-3 py-1 bg-gray-100 rounded-full text-[10px] font-black  text-gray-400">Max
                                     10MB/file</span>
                             </div>
                         </div>
@@ -705,7 +703,7 @@
                                     <div
                                         class="w-16 h-20 rounded-xl bg-gray-50 border border-gray-100 flex flex-col items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
                                         <Icon :icon="getFileIcon(file.url)" class="text-3xl text-primary" />
-                                        <span class="text-[9px] font-black text-gray-400 uppercase mt-1">{{
+                                        <span class="text-[9px] font-black text-gray-400  mt-1">{{
                                             getFileExt(file.url) }}</span>
                                     </div>
 
@@ -715,7 +713,7 @@
                                             <!-- Title Input -->
                                             <div class="space-y-1">
                                                 <label
-                                                    class="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-1">Judul
+                                                    class="text-[10px] font-black text-gray-400  tracking-widest pl-1">Judul
                                                     Tampilan</label>
                                                 <input v-model="file.title" type="text"
                                                     placeholder="Contoh: Hasil Kualifikasi Recurve"
@@ -725,7 +723,7 @@
                                             <!-- Filename Input -->
                                             <div class="space-y-1">
                                                 <label
-                                                    class="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-1">Nama
+                                                    class="text-[10px] font-black text-gray-400  tracking-widest pl-1">Nama
                                                     File Download</label>
                                                 <div class="flex items-center gap-2">
                                                     <input v-model="file.name" type="text" placeholder="nama-file"
@@ -767,7 +765,7 @@
                                     <Icon icon="ph:plus-bold" class="text-xl" />
                                 </div>
                                 <p
-                                    class="text-xs font-black text-gray-400 mt-3 uppercase tracking-widest group-hover:text-primary">
+                                    class="text-xs font-black text-gray-400 mt-3  tracking-widest group-hover:text-primary">
                                     Tambah File Lagi</p>
                             </div>
                         </div>

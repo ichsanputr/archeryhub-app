@@ -87,7 +87,7 @@
                 </div>
               </td>
               <td class="table-cell text-brand-gold text-sm">
-                <div class="flex items-center gap-1.5 uppercase font-bold text-[10px]">
+                <div class="flex items-center gap-1.5  font-bold text-[10px]">
                   <Icon icon="ph:flag-banner" class="text-[16px]" />
                   {{ athlete.city || '-' }}
                 </div>

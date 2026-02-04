@@ -36,7 +36,7 @@
         <!-- Tab: Informasi (Personal Data) -->
         <div v-if="activeTab === 'information'" class="space-y-6">
           <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
-            <h3 class="text-sm font-black text-navy uppercase tracking-widest flex items-center gap-2">
+            <h3 class="text-sm font-black text-navy  tracking-widest flex items-center gap-2">
               <Icon icon="ph:user-circle" class="text-black text-xl" />
               Data Pribadi
             </h3>
@@ -45,19 +45,25 @@
             </p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-              <BaseInput v-model="accountForm.full_name" label="Nama Lengkap" placeholder="Nama lengkap Anda" required />
-              <BaseInput v-model="accountForm.username" label="Username" placeholder="username" hint="Untuk URL profil publik" />
+              <BaseInput v-model="accountForm.full_name" label="Nama Lengkap" placeholder="Nama lengkap Anda"
+                required />
+              <BaseInput v-model="accountForm.username" label="Username" placeholder="username"
+                hint="Untuk URL profil publik" />
 
-              <BaseInput v-model="accountForm.date_of_birth" label="Tanggal Lahir" type="date" icon="mingcute:calendar-line" />
+              <BaseInput v-model="accountForm.date_of_birth" label="Tanggal Lahir" type="date"
+                icon="mingcute:calendar-line" />
               <BaseSelect v-model="accountForm.gender" label="Jenis Kelamin" :items="[
                 { title: 'Laki-laki', value: 'male' },
                 { title: 'Perempuan', value: 'female' }
               ]" icon="ph:gender-intersex" />
 
-              <BaseInput v-model="accountForm.phone" label="Nomor Telepon" type="tel" placeholder="+62 812-3456-7890" icon="ph:phone" />
-              <BaseSelect v-model="accountForm.city" label="Kota / Kabupaten" :items="cityOptions" placeholder="Pilih kota" icon="mingcute:building-2-line" />
+              <BaseInput v-model="accountForm.phone" label="Nomor Telepon" type="tel" placeholder="+62 812-3456-7890"
+                icon="ph:phone" />
+              <BaseSelect v-model="accountForm.city" label="Kota / Kabupaten" :items="cityOptions"
+                placeholder="Pilih kota" icon="mingcute:building-2-line" />
 
-              <BaseInput v-model="accountForm.school" label="Sekolah / Universitas" placeholder="Nama sekolah / universitas" icon="ph:student" />
+              <BaseInput v-model="accountForm.school" label="Sekolah / Universitas"
+                placeholder="Nama sekolah / universitas" icon="ph:student" />
               <BaseSelect v-model="accountForm.bow_type" label="Tipe Busur" :items="[
                 { title: 'Recurve', value: 'recurve' },
                 { title: 'Compound', value: 'compound' },
@@ -66,12 +72,14 @@
               ]" icon="hugeicons:archer" />
 
               <div class="md:col-span-2">
-                <BaseTextarea v-model="accountForm.address" label="Alamat Lengkap" placeholder="Alamat lengkap Anda" :rows="3" icon="ph:house" />
+                <BaseTextarea v-model="accountForm.address" label="Alamat Lengkap" placeholder="Alamat lengkap Anda"
+                  :rows="3" icon="ph:house" />
               </div>
             </div>
 
             <div class="flex justify-end mt-6 pt-6 border-t border-gray-100">
-              <BaseButton variant="gold" size="md" icon="ph:floppy-disk" @click="saveAccountInfo" :loading="isSavingAccount">
+              <BaseButton variant="gold" size="md" icon="ph:floppy-disk" @click="saveAccountInfo"
+                :loading="isSavingAccount">
                 Simpan Informasi
               </BaseButton>
             </div>
@@ -89,7 +97,7 @@
           </div>
           <div v-for="section in profileSections" :key="section.type"
             class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
-            <h3 class="text-sm font-black text-navy uppercase tracking-widest flex items-center gap-2">
+            <h3 class="text-sm font-black text-navy  tracking-widest flex items-center gap-2">
               <Icon :icon="section.icon" class="text-primary text-xl" />
               {{ section.label }}
             </h3>
@@ -134,7 +142,7 @@
           </div>
           <div v-for="section in contactSections" :key="section.type"
             class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
-            <h3 class="text-sm font-black text-navy uppercase tracking-widest flex items-center gap-2">
+            <h3 class="text-sm font-black text-navy  tracking-widest flex items-center gap-2">
               <Icon :icon="section.icon" class="text-primary text-xl" />
               {{ section.label }}
             </h3>
@@ -187,7 +195,7 @@
         <!-- Tab: Peralatan & Galeri -->
         <div v-if="activeTab === 'equipment'" class="space-y-6">
           <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
-            <h3 class="text-sm font-black text-navy uppercase tracking-widest flex items-center gap-2">
+            <h3 class="text-sm font-black text-navy  tracking-widest flex items-center gap-2">
               <Icon icon="ph:bow-arrow-bold" class="text-primary text-xl" />
               Peralatan Panahan
             </h3>
@@ -198,7 +206,7 @@
             </p>
           </div>
           <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
-            <h3 class="text-sm font-black text-navy uppercase tracking-widest flex items-center gap-2">
+            <h3 class="text-sm font-black text-navy  tracking-widest flex items-center gap-2">
               <Icon icon="ph:images-bold" class="text-primary text-xl" />
               Galeri
             </h3>
@@ -252,7 +260,7 @@
             </div>
 
             <div v-if="availableSections.length > 0">
-              <h4 class="text-sm font-black text-navy mb-4 uppercase tracking-wider">Tambahkan Komponen</h4>
+              <h4 class="text-sm font-black text-navy mb-4  tracking-wider">Tambahkan Komponen</h4>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <button v-for="section in availableSections" :key="section.type" @click="addSection(section.type)"
                   class="flex items-center gap-3 p-4 bg-white border-2 border-dashed border-gray-200 rounded-xl hover:border-primary hover:bg-primary/5 transition-all text-left">
@@ -282,7 +290,7 @@
                 class="w-full h-full object-cover rounded-full" />
             </div>
             <h4 class="font-black text-navy text-lg leading-tight">{{ user?.full_name }}</h4>
-            <p class="text-gray-400 text-xs font-bold uppercase tracking-tighter mt-1">{{ user?.username }}</p>
+            <p class="text-gray-400 text-xs font-bold  tracking-tighter mt-1">{{ user?.username }}</p>
 
             <div v-if="profile.bio" class="mt-4 px-2">
               <p class="text-xs text-gray-500 italic line-clamp-3">"{{ profile.bio }}"</p>
@@ -292,11 +300,11 @@
 
             <div class="grid grid-cols-2 w-full gap-4">
               <div class="text-center">
-                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Events</p>
+                <p class="text-[10px] font-black text-gray-400  tracking-widest">Events</p>
                 <p class="text-navy font-black">{{ userStats.totalEvents || 0 }}</p>
               </div>
               <div class="text-center border-l border-gray-50">
-                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Best Score</p>
+                <p class="text-[10px] font-black text-gray-400  tracking-widest">Best Score</p>
                 <p class="text-navy font-black">{{ userStats.bestScore || '-' }}</p>
               </div>
             </div>
@@ -496,7 +504,7 @@ const updateSectionVisibility = (sectionType, isVisible) => {
 // Initialize from user data
 onMounted(async () => {
   initializeSections()
-  
+
   // Load cities
   try {
     const citiesRes = await get('/cities')
@@ -543,7 +551,7 @@ onMounted(async () => {
 const loadProfile = async () => {
   try {
     const response = await get('/archer/me')
-    
+
     // Load account information
     accountForm.value = {
       full_name: response.full_name || '',
@@ -556,13 +564,13 @@ const loadProfile = async () => {
       bow_type: response.bow_type || '',
       address: response.address || ''
     }
-    
+
     if (response.page_settings) {
       try {
-        const settings = typeof response.page_settings === 'string' 
-          ? JSON.parse(response.page_settings) 
+        const settings = typeof response.page_settings === 'string'
+          ? JSON.parse(response.page_settings)
           : response.page_settings
-        
+
         if (settings.sections) {
           activeSections.value = settings.sections
         }

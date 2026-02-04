@@ -8,13 +8,13 @@
                     Data Pendaftaran
                 </h2>
                 <button v-if="step > 1" @click="step = 1"
-                    class="text-xs text-primary font-bold hover:underline uppercase tracking-widest">Ubah</button>
+                    class="text-xs text-primary font-bold hover:underline  tracking-widest">Ubah</button>
             </div>
 
             <div v-if="step === 1" class="p-6 md:p-8 space-y-8">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-2">
-                        <label class="text-[10px] font-black text-text-sub/50 uppercase tracking-widest ml-1">Pilih
+                        <label class="text-[10px] font-black text-text-sub/50  tracking-widest ml-1">Pilih
                             Atlet</label>
                         <select v-model="form.athlete"
                             class="w-full p-4 bg-gray-50 border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all">
@@ -23,8 +23,7 @@
                         </select>
                     </div>
                     <div class="space-y-2">
-                        <label
-                            class="text-[10px] font-black text-text-sub/50 uppercase tracking-widest ml-1">Kategori</label>
+                        <label class="text-[10px] font-black text-text-sub/50  tracking-widest ml-1">Kategori</label>
                         <select v-model="form.category"
                             class="w-full p-4 bg-gray-50 border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all">
                             <option value="">-- Pilih Kategori --</option>
@@ -55,7 +54,7 @@
                     </div>
                     <div>
                         <h4 class="font-bold text-navy text-sm">{{ form.athlete }}</h4>
-                        <p class="text-[10px] text-text-sub/50 font-bold uppercase tracking-widest">{{ form.category }}
+                        <p class="text-[10px] text-text-sub/50 font-bold  tracking-widest">{{ form.category }}
                         </p>
                     </div>
                 </div>
@@ -73,7 +72,7 @@
             </div>
             <div class="p-6 md:p-8 space-y-8">
                 <div>
-                    <h3 class="text-xs font-black text-text-sub/50 uppercase tracking-widest mb-4">Metode Pembayaran
+                    <h3 class="text-xs font-black text-text-sub/50  tracking-widest mb-4">Metode Pembayaran
                     </h3>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div v-for="method in paymentMethods" :key="method.id" @click="form.paymentMethod = method.id"
@@ -101,7 +100,7 @@
                         <span class="font-bold text-navy">Rp 5.000</span>
                     </div>
                     <div class="pt-3 border-t border-gray-200 flex justify-between items-center">
-                        <span class="text-base font-black text-navy uppercase tracking-widest">Total Bayar</span>
+                        <span class="text-base font-black text-navy  tracking-widest">Total Bayar</span>
                         <span class="text-2xl font-black text-primary tabular-nums">Rp 355.000</span>
                     </div>
                 </div>
@@ -113,9 +112,9 @@
                         <Icon icon="ph:wallet" />
                     </button>
                     <div class="flex justify-center items-center gap-6 opacity-40 grayscale">
-                        <span class="text-[8px] font-black uppercase tracking-tighter">Secure Payment Gateway</span>
+                        <span class="text-[8px] font-black  tracking-tighter">Secure Payment Gateway</span>
                         <div class="w-px h-3 bg-navy/20"></div>
-                        <span class="text-[8px] font-black uppercase tracking-tighter">SSL Encrypted</span>
+                        <span class="text-[8px] font-black  tracking-tighter">SSL Encrypted</span>
                     </div>
                 </div>
             </div>

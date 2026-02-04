@@ -106,7 +106,7 @@
                     session.name }}</h3>
                   <div class="flex items-center gap-1.5 mt-1">
                     <span
-                      class="text-[10px] font-black uppercase tracking-widest text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{{
+                      class="text-[10px] font-black  tracking-widest text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">{{
                         session.session_code }}</span>
                   </div>
                 </div>
@@ -152,7 +152,7 @@
                 </span>
               </div>
               <div
-                class="flex items-center gap-1 font-black text-[10px] uppercase tracking-widest group-hover:gap-2 transition-all">
+                class="flex items-center gap-1 font-black text-[10px]  tracking-widest group-hover:gap-2 transition-all">
                 <span>Kelola</span>
                 <Icon icon="ph:arrow-right-bold" class="text-sm" />
               </div>
@@ -228,12 +228,11 @@
             <table class="w-full">
               <thead>
                 <tr class="bg-gray-50/50 border-b border-gray-100">
-                  <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest w-24">
+                  <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400  tracking-widest w-24">
                     Posisi</th>
-                  <th
-                    class="px-6 py-4 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest min-w-[350px]">
+                  <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400  tracking-widest min-w-[350px]">
                     Nama Pemanah</th>
-                  <th class="px-6 py-4 text-right text-[10px] font-black text-gray-400 uppercase tracking-widest w-40">
+                  <th class="px-6 py-4 text-right text-[10px] font-black text-gray-400  tracking-widest w-40">
                     Nilai</th>
                 </tr>
               </thead>
@@ -339,7 +338,7 @@
           <div class="p-8 space-y-6">
             <div class="space-y-4">
               <div>
-                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 px-1">Judul
+                <label class="block text-[10px] font-black text-gray-400  tracking-widest mb-2 px-1">Judul
                   Sesi</label>
                 <div class="relative group">
                   <Icon icon="ph:text-t-bold"
@@ -350,7 +349,7 @@
               </div>
 
               <div>
-                <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 px-1">Tanggal
+                <label class="block text-[10px] font-black text-gray-400  tracking-widest mb-2 px-1">Tanggal
                   Sesi</label>
                 <div class="relative group">
                   <Icon icon="ph:calendar-bold"
@@ -362,7 +361,7 @@
 
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 px-1">Jam
+                  <label class="block text-[10px] font-black text-gray-400  tracking-widest mb-2 px-1">Jam
                     Mulai</label>
                   <div class="relative group">
                     <Icon icon="ph:clock-bold"
@@ -372,7 +371,7 @@
                   </div>
                 </div>
                 <div>
-                  <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 px-1">Jam
+                  <label class="block text-[10px] font-black text-gray-400  tracking-widest mb-2 px-1">Jam
                     Selesai</label>
                   <div class="relative group">
                     <Icon icon="ph:clock-afternoon-bold"
@@ -386,8 +385,7 @@
               <div class="grid grid-cols-2 gap-4 pt-2">
                 <div
                   class="p-4 bg-gray-50 rounded-2xl border-2 border-transparent hover:border-gray-100 transition-all">
-                  <label
-                    class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 text-center">Jumlah
+                  <label class="block text-[10px] font-black text-gray-400  tracking-widest mb-3 text-center">Jumlah
                     End</label>
                   <div class="flex items-center justify-between gap-3">
                     <button @click="newSessionEnds = Math.max(1, newSessionEnds - 1)"
@@ -403,8 +401,7 @@
                 </div>
                 <div
                   class="p-4 bg-gray-50 rounded-2xl border-2 border-transparent hover:border-gray-100 transition-all">
-                  <label
-                    class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 text-center">Panah
+                  <label class="block text-[10px] font-black text-gray-400  tracking-widest mb-3 text-center">Panah
                     per End</label>
                   <div class="flex items-center justify-between gap-3">
                     <button @click="newSessionArrows = Math.max(1, newSessionArrows - 1)"
@@ -425,11 +422,11 @@
           <!-- Modal Footer -->
           <div class="p-8 bg-gray-50 flex gap-4">
             <button @click="showSessionDialog = false"
-              class="flex-1 px-6 py-4 bg-white border-2 border-gray-200 text-gray-500 rounded-2xl font-black hover:bg-gray-100 hover:border-gray-300 transition-all uppercase tracking-widest text-xs">
+              class="flex-1 px-6 py-4 bg-white border-2 border-gray-200 text-gray-500 rounded-2xl font-black hover:bg-gray-100 hover:border-gray-300 transition-all  tracking-widest text-xs">
               Batal
             </button>
             <button @click="saveSession" :disabled="creatingSession || !newSessionName"
-              class="flex-[2] px-6 py-4 bg-primary text-navy rounded-2xl font-black hover:shadow-md hover:shadow-primary/20 transform hover:-translate-y-0.5 active:translate-y-0 shadow-md shadow-primary/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3 uppercase tracking-widest text-xs">
+              class="flex-[2] px-6 py-4 bg-primary text-navy rounded-2xl font-black hover:shadow-md hover:shadow-primary/20 transform hover:-translate-y-0.5 active:translate-y-0 shadow-md shadow-primary/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3  tracking-widest text-xs">
               <Icon v-if="creatingSession" icon="ph:circle-notch" class="text-lg animate-spin" />
               {{ submitButtonLabel }}
             </button>

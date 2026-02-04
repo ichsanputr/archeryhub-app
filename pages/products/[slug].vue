@@ -197,7 +197,7 @@ const { isLoggedIn, user } = useAuth()
 const breadcrumbCategory = computed(() => {
     const cat = product.value?.category || ''
     if (!cat) return ''
-    return cat.charAt(0).toUpperCase() + cat.slice(1)
+    return cat.charAt(0).to() + cat.slice(1)
 })
 
 const tabs = [

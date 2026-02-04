@@ -39,7 +39,7 @@
                         <!-- Category Badge -->
                         <div class="absolute top-6 left-6">
                             <span :class="[
-                                'px-4 py-1.5 rounded-full text-sm font-bold uppercase tracking-wider backdrop-blur-sm',
+                                'px-4 py-1.5 rounded-full text-sm font-bold  tracking-wider backdrop-blur-sm',
                                 article.category === 'Event' ? 'bg-blue-500/90 text-white' :
                                     article.category === 'Pengumuman' ? 'bg-amber-500/90 text-white' :
                                         article.category === 'Prestasi' ? 'bg-green-500/90 text-white' :

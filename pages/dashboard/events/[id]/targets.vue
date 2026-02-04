@@ -28,7 +28,7 @@
       <div class="overflow-x-auto">
         <table class="w-full text-left">
           <thead class="bg-gray-50/50 border-b border-gray-100">
-            <tr class="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+            <tr class="text-[10px] font-black text-gray-400  tracking-widest">
               <th class="px-6 py-4">No Target</th>
               <th class="px-6 py-4">Nama Target</th>
               <th class="px-6 py-4 text-right">Aksi</th>
@@ -182,7 +182,7 @@
                   <h3 class="text-xl font-black text-navy mb-2">Konfirmasi Hapus</h3>
                   <p class="text-gray-600">
                     Apakah Anda yakin ingin menghapus <strong class="text-navy">{{ targetToDelete?.target_name
-                      }}</strong>?
+                    }}</strong>?
                     Tindakan ini tidak dapat dibatalkan.
                   </p>
                 </div>

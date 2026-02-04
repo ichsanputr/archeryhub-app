@@ -9,17 +9,17 @@
                 </div>
                 <div>
                     <h1 class="text-xl font-black tracking-tight">LIVE LEADERBOARD</h1>
-                    <p class="text-[10px] font-bold text-primary uppercase tracking-[0.3em]">Indonesian Open 2024</p>
+                    <p class="text-[10px] font-bold text-primary  tracking-[0.3em]">Indonesian Open 2024</p>
                 </div>
             </div>
             <div class="flex items-center gap-8">
                 <div class="text-right hidden sm:block">
-                    <span class="block text-[10px] font-black text-white/30 uppercase tracking-widest">Target
+                    <span class="block text-[10px] font-black text-white/30  tracking-widest">Target
                         Area</span>
                     <span class="text-lg font-black text-white">TARGET 12 - 24</span>
                 </div>
                 <div class="text-right">
-                    <span class="block text-[10px] font-black text-white/30 uppercase tracking-widest">Session
+                    <span class="block text-[10px] font-black text-white/30  tracking-widest">Session
                         Time</span>
                     <span class="text-lg font-black text-white tabular-nums">{{ currentTime }}</span>
                 </div>
@@ -32,15 +32,15 @@
             <div class="flex justify-between items-end px-2">
                 <div class="flex items-center gap-4">
                     <span
-                        class="px-4 py-1.5 bg-primary text-navy font-black text-sm rounded-full tracking-widest uppercase shadow-md shadow-primary/20">
+                        class="px-4 py-1.5 bg-primary text-navy font-black text-sm rounded-full tracking-widest  shadow-md shadow-primary/20">
                         RECURVE MEN 70m
                     </span>
-                    <span class="text-xs font-bold text-white/40 uppercase tracking-widest">Qualification Session
+                    <span class="text-xs font-bold text-white/40  tracking-widest">Qualification Session
                         1</span>
                 </div>
                 <div class="flex gap-2">
                     <div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
-                    <span class="text-[10px] font-bold text-primary uppercase tracking-widest">Live Updates</span>
+                    <span class="text-[10px] font-bold text-primary  tracking-widest">Live Updates</span>
                 </div>
             </div>
 
@@ -60,8 +60,7 @@
 
                     <!-- Target -->
                     <div class="w-12 md:w-16 shrink-0 text-center border-x border-white/5 py-1">
-                        <span
-                            class="block text-[10px] font-black text-white/20 uppercase tracking-tighter mb-1">Target</span>
+                        <span class="block text-[10px] font-black text-white/20  tracking-tighter mb-1">Target</span>
                         <span class="text-lg font-black text-white tabular-nums">{{ athlete.target }}</span>
                     </div>
 
@@ -73,9 +72,9 @@
                                 class="w-full h-full object-cover">
                         </div>
                         <div class="min-w-0">
-                            <h3 class="text-lg md:text-2xl font-black truncate leading-tight tracking-tight uppercase">
+                            <h3 class="text-lg md:text-2xl font-black truncate leading-tight tracking-tight ">
                                 {{ athlete.name }}</h3>
-                            <p class="text-[10px] md:text-xs font-bold text-white/40 uppercase tracking-widest">{{
+                            <p class="text-[10px] md:text-xs font-bold text-white/40  tracking-widest">{{
                                 athlete.club }}</p>
                         </div>
                     </div>
@@ -83,14 +82,13 @@
                     <!-- Stats -->
                     <div class="hidden md:flex gap-12 shrink-0">
                         <div class="text-center">
-                            <span
-                                class="block text-[10px] font-black text-white/20 uppercase tracking-widest mb-1">10s+X</span>
+                            <span class="block text-[10px] font-black text-white/20  tracking-widest mb-1">10s+X</span>
                             <span class="text-xl font-black text-white tabular-nums">{{ athlete.tens }}/{{ athlete.xs
-                            }}</span>
+                                }}</span>
                         </div>
                         <div class="text-center">
                             <span
-                                class="block text-[10px] font-black text-white/20 uppercase tracking-widest mb-1">Average</span>
+                                class="block text-[10px] font-black text-white/20  tracking-widest mb-1">Average</span>
                             <span class="text-xl font-black text-primary tabular-nums">{{ ((athlete.score /
                                 72)).toFixed(2) }}</span>
                         </div>
@@ -98,10 +96,9 @@
 
                     <!-- Total -->
                     <div class="w-24 md:w-32 shrink-0 text-right bg-white/10 rounded-xl py-3 px-4">
-                        <span
-                            class="block text-[10px] font-black text-white/20 uppercase tracking-[0.2em] mb-1">Total</span>
+                        <span class="block text-[10px] font-black text-white/20  tracking-[0.2em] mb-1">Total</span>
                         <span class="text-2xl md:text-4xl font-black text-primary tabular-nums">{{ athlete.score
-                        }}</span>
+                            }}</span>
                     </div>
                 </div>
             </div>
@@ -109,7 +106,7 @@
             <!-- Footer Ticker -->
             <div class="bg-black/30 py-3 px-6 rounded-xl flex items-center gap-6 shrink-0 border border-white/5">
                 <span
-                    class="text-[10px] font-black text-primary uppercase tracking-[0.3em] shrink-0 border-r border-white/10 pr-6">Next
+                    class="text-[10px] font-black text-primary  tracking-[0.3em] shrink-0 border-r border-white/10 pr-6">Next
                     Schedule</span>
                 <div class="flex-grow overflow-hidden relative">
                     <div class="flex gap-12 animate-marquee whitespace-nowrap">

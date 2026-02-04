@@ -85,7 +85,7 @@
                         <!-- Participant Profile Info (Read-only for now) -->
                         <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
                             <div
-                                class="h-16 w-16 rounded-xl bg-gray-100 flex items-center justify-center text-navy font-bold text-xl uppercase border border-gray-200 overflow-hidden">
+                                class="h-16 w-16 rounded-xl bg-gray-100 flex items-center justify-center text-navy font-bold text-xl  border border-gray-200 overflow-hidden">
                                 <img :src="useImageOrDefault(participant.avatar_url, participant.full_name)"
                                     class="w-full h-full object-cover">
                             </div>
@@ -95,7 +95,7 @@
                                     <span class="text-xs text-gray-500 font-medium">@{{ participant.username ||
                                         'user' }}</span>
                                     <span
-                                        class="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                                        class="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-full text-[10px] font-bold  tracking-wider">
                                         Archeryhub Account
                                     </span>
                                 </div>

@@ -12,7 +12,7 @@
             <div class="container mx-auto px-4 max-w-7xl relative z-10">
                 <div class="max-w-3xl">
                     <div
-                        class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold uppercase tracking-widest mb-6">
+                        class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold  tracking-widest mb-6">
                         <Icon icon="ph:users-three-bold" class="text-lg" />
                         <span>Komunitas Pemanah</span>
                     </div>
@@ -49,21 +49,21 @@
                 class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 grid grid-cols-2 md:grid-cols-4 gap-6">
                 <div class="text-center">
                     <p class="text-2xl md:text-4xl font-black text-navy tracking-tight">{{ totalItems }}+</p>
-                    <p class="text-[10px] md:text-sm text-gray-500 font-bold uppercase tracking-wide mt-1">Klub</p>
+                    <p class="text-[10px] md:text-sm text-gray-500 font-bold  tracking-wide mt-1">Klub</p>
                 </div>
                 <div class="text-center border-l border-gray-100">
                     <p class="text-2xl md:text-4xl font-black text-navy tracking-tight">{{ stats?.totalArchers || '0' }}
                     </p>
-                    <p class="text-[10px] md:text-sm text-gray-500 font-bold uppercase tracking-wide mt-1">Pemanah</p>
+                    <p class="text-[10px] md:text-sm text-gray-500 font-bold  tracking-wide mt-1">Pemanah</p>
                 </div>
                 <div class="text-center border-l border-gray-100">
                     <p class="text-2xl md:text-4xl font-black text-navy tracking-tight">{{ stats?.activeEvents || '0' }}
                     </p>
-                    <p class="text-[10px] md:text-sm text-gray-500 font-bold uppercase tracking-wide mt-1">Event</p>
+                    <p class="text-[10px] md:text-sm text-gray-500 font-bold  tracking-wide mt-1">Event</p>
                 </div>
                 <div class="text-center border-l border-gray-100">
                     <p class="text-2xl md:text-4xl font-black text-navy tracking-tight">34</p>
-                    <p class="text-[10px] md:text-sm text-gray-500 font-bold uppercase tracking-wide mt-1">Provinsi</p>
+                    <p class="text-[10px] md:text-sm text-gray-500 font-bold  tracking-wide mt-1">Provinsi</p>
                 </div>
             </div>
         </section>
@@ -144,7 +144,7 @@
                             {{ club.name }}
                         </h3>
                         <div
-                            class="flex items-center justify-center gap-1.5 text-gray-500 text-xs font-bold uppercase tracking-wider mb-6">
+                            class="flex items-center justify-center gap-1.5 text-gray-500 text-xs font-bold  tracking-wider mb-6">
                             <Icon icon="ph:map-pin-bold" class="text-primary" />
                             <span>{{ club.city || club.province || 'Indonesia' }}</span>
                         </div>
@@ -153,14 +153,12 @@
                         <div class="grid grid-cols-2 gap-3 mb-6">
                             <div
                                 class="bg-gray-50 rounded-2xl p-3 flex flex-col items-center justify-center border border-gray-100">
-                                <span
-                                    class="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1">Anggota</span>
+                                <span class="text-[9px] font-black text-gray-400  tracking-widest mb-1">Anggota</span>
                                 <span class="text-base font-black text-navy">{{ club.member_count || 0 }}</span>
                             </div>
                             <div
                                 class="bg-gray-50 rounded-2xl p-3 flex flex-col items-center justify-center border border-gray-100">
-                                <span
-                                    class="text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1">Prestasi</span>
+                                <span class="text-[9px] font-black text-gray-400  tracking-widest mb-1">Prestasi</span>
                                 <span class="text-base font-black text-navy">{{ club.achievements || 0 }}</span>
                             </div>
                         </div>

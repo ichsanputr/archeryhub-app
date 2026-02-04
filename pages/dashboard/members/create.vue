@@ -60,7 +60,7 @@
       <!-- Side Card -->
       <div class="space-y-4">
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-4">
-          <h3 class="text-[11px] font-black text-navy uppercase tracking-[0.2em]">Informasi</h3>
+          <h3 class="text-[11px] font-black text-navy  tracking-[0.2em]">Informasi</h3>
           <div class="flex items-center gap-3">
             <div class="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-bold">
               {{ clubInitial }}

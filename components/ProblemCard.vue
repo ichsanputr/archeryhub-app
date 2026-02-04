@@ -133,11 +133,11 @@ const parsedCategories = computed(() => {
       </div>
       <div class="flex items-center space-x-2">
         <span v-if="problem.category_name"
-          class="bg-primary/20 text-navy px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">
+          class="bg-primary/20 text-navy px-2 py-1 rounded-full text-[10px] font-bold  tracking-wider">
           {{ problem.category_name }}
         </span>
         <div v-if="problem.featured"
-          class="bg-amber-100 text-amber-700 px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">
+          class="bg-amber-100 text-amber-700 px-2 py-1 rounded-full text-[10px] font-bold  tracking-wider">
           Featured
         </div>
       </div>
@@ -151,11 +151,11 @@ const parsedCategories = computed(() => {
     <!-- Categories (hide for random problems with category_name) -->
     <div v-if="!problem.category_name" class="flex flex-wrap gap-1 sm:gap-2 mb-3 sm:mb-4">
       <span v-for="category in parsedCategories.slice(0, 3)" :key="category"
-        class="px-2 py-0.5 rounded-full border border-gray-200 text-[10px] font-bold text-gray-500 uppercase tracking-wider">
+        class="px-2 py-0.5 rounded-full border border-gray-200 text-[10px] font-bold text-gray-500  tracking-wider">
         {{ category }}
       </span>
       <span v-if="parsedCategories.length > 3"
-        class="px-2 py-0.5 rounded-full border border-gray-100 bg-gray-50 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+        class="px-2 py-0.5 rounded-full border border-gray-100 bg-gray-50 text-[10px] font-bold text-gray-400  tracking-wider">
         +{{ parsedCategories.length - 3 }}
       </span>
     </div>

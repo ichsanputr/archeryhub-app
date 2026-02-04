@@ -29,7 +29,7 @@
                     <div class="flex-grow pb-8" :class="{ 'border-b border-gray-50': index !== sessions.length - 1 }">
                         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
                             <div>
-                                <span class="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-1">{{
+                                <span class="text-xs font-bold text-gray-400  tracking-widest block mb-1">{{
                                     formatTimeRange(session) }}</span>
                                 <h3 class="text-lg sm:text-xl font-black text-navy">{{ session.title }}</h3>
                             </div>
@@ -39,7 +39,7 @@
                         </p>
                         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                             <div class="bg-gray-50 p-3 rounded-xl border border-gray-100">
-                                <p class="text-[10px] text-gray-400 uppercase font-black tracking-widest mb-1">
+                                <p class="text-[10px] text-gray-400  font-black tracking-widest mb-1">
                                     LOKASI
                                 </p>
                                 <p class="text-sm font-bold text-navy">

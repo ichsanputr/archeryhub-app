@@ -29,20 +29,20 @@
             <form class="space-y-6" @submit.prevent="handleSubmit">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Nama Anda</label>
+                  <label class="block text-xs font-bold text-slate-500  tracking-wider mb-2">Nama Anda</label>
                   <input v-model="form.name"
                     class="w-full px-4 py-3 bg-background-light dark:bg-gray-900 border-transparent rounded-xl text-sm text-slate-800 focus:border-navy focus:bg-white focus:ring-0 transition-colors placeholder:text-slate-400"
                     placeholder="Masukkan nama lengkap Anda" type="text" required />
                 </div>
                 <div>
-                  <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Alamat Email</label>
+                  <label class="block text-xs font-bold text-slate-500  tracking-wider mb-2">Alamat Email</label>
                   <input v-model="form.email"
                     class="w-full px-4 py-3 bg-background-light dark:bg-gray-900 border-transparent rounded-xl text-sm text-slate-800 focus:border-navy focus:bg-white focus:ring-0 transition-colors placeholder:text-slate-400"
                     placeholder="nama@example.com" type="email" required />
                 </div>
               </div>
               <div>
-                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Subjek</label>
+                <label class="block text-xs font-bold text-slate-500  tracking-wider mb-2">Subjek</label>
                 <select v-model="form.subject"
                   class="w-full px-4 py-3 bg-background-light dark:bg-gray-900 border-transparent rounded-xl text-sm text-slate-800 focus:border-navy focus:bg-white focus:ring-0 transition-colors cursor-pointer"
                   required>
@@ -54,7 +54,7 @@
                 </select>
               </div>
               <div>
-                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Pesan</label>
+                <label class="block text-xs font-bold text-slate-500  tracking-wider mb-2">Pesan</label>
                 <textarea v-model="form.message"
                   class="w-full px-4 py-3 bg-background-light dark:bg-gray-900 border-transparent rounded-xl text-sm text-slate-800 focus:border-navy focus:bg-white focus:ring-0 transition-colors placeholder:text-slate-400 resize-none"
                   placeholder="Bagaimana kami dapat membantu Anda?" rows="5" required></textarea>
@@ -83,7 +83,7 @@
                   <Icon icon="ph:map-pin-fill" class="text-primary" />
                 </div>
                 <div>
-                  <h4 class="text-sm font-bold text-slate-300 uppercase tracking-wide mb-1">Kantor Pusat</h4>
+                  <h4 class="text-sm font-bold text-slate-300  tracking-wide mb-1">Kantor Pusat</h4>
                   <p class="text-white leading-relaxed text-sm">
                     Kompleks Olahraga Gelora Bung Karno<br />
                     Jl. Pintu Satu Senayan<br />
@@ -96,7 +96,7 @@
                   <Icon icon="ph:envelope-simple-fill" class="text-primary" />
                 </div>
                 <div>
-                  <h4 class="text-sm font-bold text-slate-300 uppercase tracking-wide mb-1">Dukungan Email</h4>
+                  <h4 class="text-sm font-bold text-slate-300  tracking-wide mb-1">Dukungan Email</h4>
                   <a class="text-white hover:text-primary transition-colors text-sm font-medium"
                     href="mailto:support@archeryhub.id">support@archeryhub.id</a>
                 </div>
@@ -106,7 +106,7 @@
                   <Icon icon="ph:phone-fill" class="text-primary" />
                 </div>
                 <div>
-                  <h4 class="text-sm font-bold text-slate-300 uppercase tracking-wide mb-1">Telepon</h4>
+                  <h4 class="text-sm font-bold text-slate-300  tracking-wide mb-1">Telepon</h4>
                   <a class="text-white hover:text-primary transition-colors text-sm font-medium"
                     href="tel:+62215758888">+62 21 575 8888</a>
                   <div class="text-xs text-slate-400 mt-1">Senin-Jumat, 09.00 - 17.00 WIB</div>
@@ -114,7 +114,7 @@
               </div>
             </div>
             <div class="mt-8 pt-8 border-t border-white/10 relative z-10">
-              <h4 class="text-sm font-bold text-slate-300 uppercase tracking-wide mb-4">Ikuti Kami</h4>
+              <h4 class="text-sm font-bold text-slate-300  tracking-wide mb-4">Ikuti Kami</h4>
               <div class="flex gap-4">
                 <a href="#"
                   class="w-10 h-10 rounded-lg bg-white/10 hover:bg-primary hover:text-navy transition-all flex items-center justify-center group">
@@ -145,7 +145,8 @@
               <Icon icon="ph:question-bold" class="text-primary" />
               Bantuan Cepat
             </h3>
-            <p class="text-sm text-slate-500 mb-3">Mencari pertanyaan yang sering diajukan? Kunjungi Pusat Bantuan kami untuk
+            <p class="text-sm text-slate-500 mb-3">Mencari pertanyaan yang sering diajukan? Kunjungi Pusat Bantuan kami
+              untuk
               jawaban instan.</p>
             <NuxtLink to="/faq"
               class="text-xs font-bold text-navy dark:text-white border-b-2 border-primary hover:border-navy transition-colors pb-0.5 inline-block">

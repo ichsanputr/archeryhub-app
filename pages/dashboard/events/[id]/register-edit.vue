@@ -16,14 +16,14 @@
                     </div>
                     <div class="flex-grow w-full space-y-6">
                         <div>
-                            <h3 class="text-xl font-black text-navy uppercase tracking-tight">Budi Santoso</h3>
-                            <p class="text-xs text-text-sub font-bold uppercase tracking-widest opacity-50">Jakarta
+                            <h3 class="text-xl font-black text-navy  tracking-tight">Budi Santoso</h3>
+                            <p class="text-xs text-text-sub font-bold  tracking-widest opacity-50">Jakarta
                                 Archery Club</p>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                             <div class="space-y-2">
-                                <label class="text-[10px] font-black text-text-sub/50 uppercase tracking-widest ml-1">ID
+                                <label class="text-[10px] font-black text-text-sub/50  tracking-widest ml-1">ID
                                     Card / KTP</label>
                                 <select v-model="form.idNumber"
                                     class="w-full p-4 bg-gray-50 border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-2 focus:ring-primary">
@@ -32,8 +32,7 @@
                                 </select>
                             </div>
                             <div class="space-y-2">
-                                <label
-                                    class="text-[10px] font-black text-text-sub/50 uppercase tracking-widest ml-1">Divisi
+                                <label class="text-[10px] font-black text-text-sub/50  tracking-widest ml-1">Divisi
                                     & Kategori</label>
                                 <select v-model="form.category"
                                     class="w-full p-4 bg-gray-50 border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-2 focus:ring-primary">
@@ -44,12 +43,11 @@
                         </div>
 
                         <div class="pt-6 border-t border-gray-50">
-                            <h4 class="text-xs font-black text-navy uppercase tracking-widest mb-4">Informasi Tambahan
+                            <h4 class="text-xs font-black text-navy  tracking-widest mb-4">Informasi Tambahan
                             </h4>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                 <div class="space-y-2">
-                                    <label
-                                        class="text-[10px] font-black text-text-sub/50 uppercase tracking-widest ml-1">Ukuran
+                                    <label class="text-[10px] font-black text-text-sub/50  tracking-widest ml-1">Ukuran
                                         Jersey</label>
                                     <select v-model="form.jerseySize"
                                         class="w-full p-4 bg-gray-50 border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-2 focus:ring-primary">
@@ -60,8 +58,7 @@
                                     </select>
                                 </div>
                                 <div class="space-y-2">
-                                    <label
-                                        class="text-[10px] font-black text-text-sub/50 uppercase tracking-widest ml-1">Kontak
+                                    <label class="text-[10px] font-black text-text-sub/50  tracking-widest ml-1">Kontak
                                         Darurat</label>
                                     <input v-model="form.emergencyContact" type="text"
                                         class="w-full p-4 bg-gray-50 border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-2 focus:ring-primary"

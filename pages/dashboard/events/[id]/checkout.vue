@@ -41,7 +41,7 @@
                     <div v-else class="space-y-6">
                         <!-- Virtual Account -->
                         <div v-if="channelGroups.va?.length">
-                            <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">Virtual Account
+                            <h3 class="text-sm font-bold text-gray-500  tracking-wider mb-3">Virtual Account
                             </h3>
                             <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
                                 <button v-for="channel in channelGroups.va" :key="channel.code"
@@ -56,7 +56,7 @@
 
                         <!-- E-Wallet -->
                         <div v-if="channelGroups.ewallet?.length">
-                            <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">E-Wallet</h3>
+                            <h3 class="text-sm font-bold text-gray-500  tracking-wider mb-3">E-Wallet</h3>
                             <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
                                 <button v-for="channel in channelGroups.ewallet" :key="channel.code"
                                     @click="selectChannel(channel)"
@@ -70,7 +70,7 @@
 
                         <!-- Convenience Store -->
                         <div v-if="channelGroups.cstore?.length">
-                            <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">Convenience Store
+                            <h3 class="text-sm font-bold text-gray-500  tracking-wider mb-3">Convenience Store
                             </h3>
                             <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
                                 <button v-for="channel in channelGroups.cstore" :key="channel.code"
@@ -130,7 +130,7 @@
             <template #default>
                 <div class="space-y-4">
                     <div v-if="paymentData?.pay_code" class="bg-gray-50 rounded-xl p-4 text-center">
-                        <p class="text-xs text-gray-500 uppercase font-bold mb-2">Kode Pembayaran / VA</p>
+                        <p class="text-xs text-gray-500  font-bold mb-2">Kode Pembayaran / VA</p>
                         <p class="text-2xl font-black text-navy tracking-widest">{{ paymentData.pay_code }}</p>
                     </div>
                     <div v-if="paymentData?.qr_url" class="flex justify-center">

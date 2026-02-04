@@ -12,7 +12,7 @@
             <div class="container mx-auto px-4 max-w-7xl relative z-10">
                 <div class="max-w-3xl">
                     <div
-                        class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold uppercase tracking-widest mb-6">
+                        class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold  tracking-widest mb-6">
                         <Icon icon="ph:shopping-bag-bold" class="text-lg" />
                         <span>Marketplace Panahan</span>
                     </div>
@@ -143,7 +143,7 @@
                         <!-- Category & Status -->
                         <div class="flex items-center justify-between mb-3">
                             <span
-                                class="text-[10px] font-black text-primary uppercase tracking-widest bg-primary/5 px-2 py-0.5 rounded-md">
+                                class="text-[10px] font-black text-primary  tracking-widest bg-primary/5 px-2 py-0.5 rounded-md">
                                 {{ product.category }}
                             </span>
                             <span v-if="product.stock > 0"

@@ -28,10 +28,10 @@
             <div class="bg-navy px-6 py-3 flex justify-between items-center text-white">
                 <div class="flex items-center gap-2">
                     <span class="w-2 h-2 rounded-full bg-primary"></span>
-                    <span class="text-[10px] font-bold uppercase tracking-wider text-primary">1/4 Elimination • Target
+                    <span class="text-[10px] font-bold  tracking-wider text-primary">1/4 Elimination • Target
                         2</span>
                 </div>
-                <span class="text-[10px] text-white/50 font-bold uppercase">{{ selectedDivision }}</span>
+                <span class="text-[10px] text-white/50 font-bold ">{{ selectedDivision }}</span>
             </div>
             <div class="p-6 md:p-8">
                 <div class="flex flex-col md:flex-row items-center justify-between gap-8 mb-8">
@@ -43,14 +43,14 @@
                                 src="https://i.pravatar.cc/150?u=arif" />
                         </div>
                         <h3 class="text-lg font-bold text-navy text-center font-display">Arif Dwi Pangestu</h3>
-                        <p class="text-xs text-text-sub font-bold uppercase tracking-widest opacity-50">DKI Jakarta</p>
-                        <div class="mt-2 px-2 py-0.5 rounded text-[10px] font-black bg-navy text-white uppercase">Rank 1
+                        <p class="text-xs text-text-sub font-bold  tracking-widest opacity-50">DKI Jakarta</p>
+                        <div class="mt-2 px-2 py-0.5 rounded text-[10px] font-black bg-navy text-white ">Rank 1
                         </div>
                     </div>
 
                     <!-- Score -->
                     <div class="flex flex-col items-center px-4 md:px-8 relative">
-                        <div class="text-[10px] font-black text-text-sub/30 uppercase tracking-[0.2em] mb-1">Set Score
+                        <div class="text-[10px] font-black text-text-sub/30  tracking-[0.2em] mb-1">Set Score
                         </div>
                         <div class="flex items-center gap-6">
                             <span class="text-5xl md:text-7xl font-black text-navy tabular-nums">6</span>
@@ -58,7 +58,7 @@
                             <span class="text-5xl md:text-7xl font-black text-text-sub/30 tabular-nums">4</span>
                         </div>
                         <span
-                            class="px-3 py-1 mt-4 rounded-full bg-primary/10 text-navy text-[10px] font-black uppercase tracking-widest border border-primary/20">Match
+                            class="px-3 py-1 mt-4 rounded-full bg-primary/10 text-navy text-[10px] font-black  tracking-widest border border-primary/20">Match
                             Won</span>
                     </div>
 
@@ -70,9 +70,8 @@
                                 src="https://i.pravatar.cc/150?u=ega" />
                         </div>
                         <h3 class="text-lg font-bold text-text-sub/50 text-center font-display">Riau Ega Agatha</h3>
-                        <p class="text-xs text-text-sub/30 font-bold uppercase tracking-widest">Jawa Timur</p>
-                        <div
-                            class="mt-2 px-2 py-0.5 rounded text-[10px] font-black bg-gray-100 text-text-sub/40 uppercase">
+                        <p class="text-xs text-text-sub/30 font-bold  tracking-widest">Jawa Timur</p>
+                        <div class="mt-2 px-2 py-0.5 rounded text-[10px] font-black bg-gray-100 text-text-sub/40 ">
                             Rank 8</div>
                     </div>
                 </div>
@@ -80,7 +79,7 @@
                 <!-- Last Set Values -->
                 <div class="border-t border-gray-50 pt-6">
                     <div class="text-center mb-4">
-                        <span class="text-[10px] font-black text-text-sub/30 uppercase tracking-widest">Set 5 - Arrow
+                        <span class="text-[10px] font-black text-text-sub/30  tracking-widest">Set 5 - Arrow
                             Values</span>
                     </div>
                     <div
@@ -119,7 +118,7 @@
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col overflow-hidden">
             <div class="p-5 border-b border-gray-50 flex justify-between items-center bg-gray-50/50">
                 <h3 class="font-bold text-navy text-lg font-display">Klasemen Kualifikasi</h3>
-                <span class="text-[10px] font-black text-primary flex items-center gap-1 uppercase tracking-widest">
+                <span class="text-[10px] font-black text-primary flex items-center gap-1  tracking-widest">
                     <span class="relative flex h-2 w-2">
                         <span
                             class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
@@ -131,7 +130,7 @@
             <div class="overflow-x-auto no-scrollbar">
                 <table class="w-full text-left text-sm whitespace-nowrap">
                     <thead
-                        class="bg-white text-text-sub/50 uppercase text-[10px] font-black tracking-widest border-b border-gray-50">
+                        class="bg-white text-text-sub/50  text-[10px] font-black tracking-widest border-b border-gray-50">
                         <tr>
                             <th class="px-6 py-4 w-16">Rank</th>
                             <th class="px-6 py-4 w-20">Target</th>
@@ -160,7 +159,7 @@
                             <td class="px-6 py-4 text-center font-bold text-text-sub tabular-nums">{{ stand.s1 }}</td>
                             <td class="px-6 py-4 text-center font-bold text-text-sub tabular-nums">{{ stand.s2 }}</td>
                             <td class="px-6 py-4 text-center text-text-sub/50 font-medium tabular-nums">{{ stand.tens
-                            }}/{{ stand.xs }}</td>
+                                }}/{{ stand.xs }}</td>
                             <td class="px-6 py-4 text-right font-black text-navy text-base tabular-nums">{{ stand.s1 +
                                 stand.s2 }}</td>
                         </tr>
@@ -168,7 +167,7 @@
                 </table>
             </div>
             <div class="p-4 border-t border-gray-50 text-center bg-gray-50/30">
-                <button class="text-navy font-bold text-xs hover:underline uppercase tracking-widest">Unduh Hasil
+                <button class="text-navy font-bold text-xs hover:underline  tracking-widest">Unduh Hasil
                     Lengkap (PDF)</button>
             </div>
         </div>

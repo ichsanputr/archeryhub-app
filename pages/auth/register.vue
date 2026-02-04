@@ -80,8 +80,7 @@
                         <div class="space-y-4">
                             <!-- Archer: Nama Lengkap -->
                             <div v-if="form.userType === 'archer'">
-                                <h4
-                                    class="text-xs font-black text-navy uppercase tracking-widest flex items-center gap-2 mb-4">
+                                <h4 class="text-xs font-black text-navy  tracking-widest flex items-center gap-2 mb-4">
                                     <Icon icon="ph:user-bold" class="text-primary text-lg" />
                                     Data Pemanah
                                 </h4>
@@ -95,8 +94,7 @@
 
                             <!-- Organization: Nama Organisasi -->
                             <div v-if="form.userType === 'organization'">
-                                <h4
-                                    class="text-xs font-black text-navy uppercase tracking-widest flex items-center gap-2 mb-4">
+                                <h4 class="text-xs font-black text-navy  tracking-widest flex items-center gap-2 mb-4">
                                     <Icon icon="ph:buildings-bold" class="text-primary text-lg" />
                                     Data Organisasi
                                 </h4>
@@ -110,8 +108,7 @@
 
                             <!-- Club: Nama Klub -->
                             <div v-if="form.userType === 'club'">
-                                <h4
-                                    class="text-xs font-black text-navy uppercase tracking-widest flex items-center gap-2 mb-4">
+                                <h4 class="text-xs font-black text-navy  tracking-widest flex items-center gap-2 mb-4">
                                     <Icon icon="ph:users-three-bold" class="text-primary text-lg" />
                                     Data Klub
                                 </h4>
@@ -125,8 +122,7 @@
 
                             <!-- Seller: Nama Toko -->
                             <div v-if="form.userType === 'seller'">
-                                <h4
-                                    class="text-xs font-black text-navy uppercase tracking-widest flex items-center gap-2 mb-4">
+                                <h4 class="text-xs font-black text-navy  tracking-widest flex items-center gap-2 mb-4">
                                     <Icon icon="ph:storefront-bold" class="text-primary text-lg" />
                                     Data Toko
                                 </h4>

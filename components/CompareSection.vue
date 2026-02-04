@@ -14,7 +14,7 @@
         <div
           class="inline-flex items-center gap-2 rounded-full bg-white/80 backdrop-blur-sm border border-yellow-200 px-4 py-2 mb-6">
           <div class="h-2 w-2 rounded-full bg-yellow-500 animate-pulse" />
-          <span class="text-xs font-bold tracking-wider text-yellow-600 uppercase">
+          <span class="text-xs font-bold tracking-wider text-yellow-600 ">
             Platform Comparison
           </span>
         </div>

@@ -11,7 +11,7 @@
                 <div class="mb-8">
                     <div class="flex items-center gap-3 mb-4">
                         <span
-                            class="bg-navy/10 text-navy dark:bg-primary/10 dark:text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+                            class="bg-navy/10 text-navy dark:bg-primary/10 dark:text-primary px-3 py-1 rounded-full text-xs font-bold  tracking-wider">
                             {{ article.category }}
                         </span>
                         <div
@@ -40,7 +40,7 @@
                         </div>
                         <div class="ml-auto flex items-center gap-3">
                             <span
-                                class="hidden sm:block text-xs font-bold text-slate-400 uppercase tracking-wider">Bagikan:</span>
+                                class="hidden sm:block text-xs font-bold text-slate-400  tracking-wider">Bagikan:</span>
                             <div class="flex gap-2">
                                 <button
                                     class="p-2 text-slate-400 hover:text-green-500 transition-all rounded-xl bg-gray-50 hover:bg-green-50">
@@ -152,7 +152,7 @@
                             class="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/10 hover:bg-white/10 transition-colors cursor-pointer">
                             <div
                                 class="bg-white/10 rounded-lg w-12 h-12 flex flex-col items-center justify-center text-center flex-shrink-0">
-                                <span class="text-[10px] uppercase font-bold text-primary">{{ t.month }}</span>
+                                <span class="text-[10px]  font-bold text-primary">{{ t.month }}</span>
                                 <span class="text-lg font-bold leading-none">{{ t.day }}</span>
                             </div>
                             <div>
@@ -281,7 +281,7 @@ const upcomingTournaments = computed(() => {
     const rawData = upcomingResponse.value?.data || upcomingResponse.value || []
     const events = Array.isArray(rawData) ? rawData : []
     const now = new Date()
-    
+
     // Filter only upcoming events (start_date >= today) and map
     return events
         .filter(e => {

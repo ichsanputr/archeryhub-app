@@ -40,7 +40,7 @@
                 </p>
 
                 <a href="https://www.instagram.com/archeryhub.id/" target="_blank"
-                    class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-tr from-[#833ab4] via-[#fd1d1d] to-[#fcb045] text-white rounded-2xl font-black text-sm uppercase tracking-widest shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all">
+                    class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-tr from-[#833ab4] via-[#fd1d1d] to-[#fcb045] text-white rounded-2xl font-black text-sm  tracking-widest shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all">
                     <Icon icon="ph:instagram-logo-fill" class="text-xl" />
                     Follow @archeryhub.id
                 </a>

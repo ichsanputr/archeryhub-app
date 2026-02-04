@@ -13,7 +13,7 @@
                     <div ref="heroBadge"
                         class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 w-fit mb-6 border border-white/10 backdrop-blur-md opacity-0 translate-y-4">
                         <span class="w-2 h-2 rounded-full bg-primary"></span>
-                        <span class="text-white/90 text-xs font-medium tracking-wide uppercase">Platform Panahan
+                        <span class="text-white/90 text-xs font-medium tracking-wide ">Platform Panahan
                             No.1 di
                             Indonesia</span>
                     </div>

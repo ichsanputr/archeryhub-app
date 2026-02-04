@@ -46,20 +46,20 @@
         <table class="w-full text-left border-collapse min-w-[800px]">
           <thead>
             <tr class="bg-gray-50/50 border-b border-gray-100">
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Informasi
+              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">Informasi
                 Event
               </th>
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Jadwal & Lokasi
+              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">Jadwal & Lokasi
               </th>
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Status
+              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">Status
                 Pendaftaran
               </th>
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Status
+              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">Status
                 Pembayaran
               </th>
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Registrasi QR
+              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">Registrasi QR
               </th>
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest text-right">Aksi
+              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest text-right">Aksi
               </th>
             </tr>
           </thead>
@@ -87,7 +87,8 @@
                   <div class="space-y-1">
                     <p class="text-lg font-bold text-navy">Belum Ada Event</p>
                     <p class="text-sm text-gray-500 font-medium leading-relaxed">
-                      {{ searchQuery ? 'Tidak ada event yang sesuai dengan pencarian Anda.' : 'Anda belum terdaftar di event manapun.' }}
+                      {{ searchQuery ? 'Tidak ada event yang sesuai dengan pencarian Anda.' : 'Anda belum terdaftar di
+                      event manapun.' }}
                     </p>
                   </div>
                   <BaseButton v-if="searchQuery" variant="outline" size="sm" @click="resetFilters">
@@ -116,9 +117,9 @@
                       class="text-[15px] font-bold text-navy truncate group-hover:text-primary-dark transition-colors">
                       {{ event.name }}</div>
                     <div class="flex items-center gap-2 mt-0.5">
-                      <span class="text-[11px] font-bold text-gray-400 tracking-wide uppercase">{{ event.code }}</span>
+                      <span class="text-[11px] font-bold text-gray-400 tracking-wide ">{{ event.code }}</span>
                       <span class="text-gray-300">•</span>
-                      <span class="text-[11px] font-bold text-primary-dark uppercase tracking-wide">{{
+                      <span class="text-[11px] font-bold text-primary-dark  tracking-wide">{{
                         event.location_type || 'Event' }}</span>
                     </div>
                   </div>
@@ -151,8 +152,7 @@
                 </span>
               </td>
               <td class="px-6 py-5">
-                <BaseButton v-if="event.participant_status === 'Terdaftar' && event.qr_raw"
-                  @click="showQRDialog(event)"
+                <BaseButton v-if="event.participant_status === 'Terdaftar' && event.qr_raw" @click="showQRDialog(event)"
                   variant="primary" size="sm" icon="ph:qr-code" class="h-9 font-bold">
                   Lihat QR
                 </BaseButton>
@@ -174,7 +174,7 @@
       <!-- Pagination Card Footer -->
       <div v-if="filteredEvents.length > 0"
         class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <span class="text-xs text-gray-500 font-bold uppercase tracking-wider">
+        <span class="text-xs text-gray-500 font-bold  tracking-wider">
           Menampilkan <span class="text-navy">{{ filteredEvents.length }}</span> dari <span class="text-navy">{{
             events.length }}</span> Event
         </span>
@@ -195,12 +195,10 @@
 
     <!-- QR Code Dialog - Fullscreen -->
     <Teleport to="body">
-      <Transition enter-active-class="transition duration-300 ease-out"
-        enter-from-class="opacity-0" enter-to-class="opacity-100"
-        leave-active-class="transition duration-200 ease-in"
-        leave-from-class="opacity-100" leave-to-class="opacity-0">
-        <div v-if="showQR" class="fixed inset-0 z-[9999] bg-white"
-          @click="showQR = false">
+      <Transition enter-active-class="transition duration-300 ease-out" enter-from-class="opacity-0"
+        enter-to-class="opacity-100" leave-active-class="transition duration-200 ease-in" leave-from-class="opacity-100"
+        leave-to-class="opacity-0">
+        <div v-if="showQR" class="fixed inset-0 z-[9999] bg-white" @click="showQR = false">
           <!-- Content Container -->
           <div class="relative h-full w-full flex items-center justify-center p-4" @click.stop>
             <!-- Close Button -->
@@ -219,7 +217,8 @@
 
               <!-- QR Code -->
               <div class="bg-white p-4 sm:p-6 rounded-2xl border-2 border-gray-200 shadow-lg">
-                <qrcode-vue :value="selectedEvent?.qr_raw || 'N/A'" :size="isMobile ? 280 : 350" level="H" render-as="svg" />
+                <qrcode-vue :value="selectedEvent?.qr_raw || 'N/A'" :size="isMobile ? 280 : 350" level="H"
+                  render-as="svg" />
               </div>
             </div>
           </div>
@@ -290,21 +289,21 @@ const downloadQR = () => {
   const ctx = canvas.getContext('2d')
   const svgData = new XMLSerializer().serializeToString(svg)
   const img = new Image()
-  
+
   img.onload = () => {
     canvas.width = 300
     canvas.height = 300
     ctx.fillStyle = 'white'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
     ctx.drawImage(img, 0, 0)
-    
+
     // Download the image
     const link = document.createElement('a')
     link.download = `qr-${selectedEvent.value?.name || 'code'}.png`
     link.href = canvas.toDataURL()
     link.click()
   }
-  
+
   img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)))
 }
 

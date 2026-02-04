@@ -41,7 +41,7 @@
           <Icon icon="ph:users-three" class="text-xl" />
         </div>
         <div>
-          <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Total Anggota</p>
+          <p class="text-xs text-gray-400 font-bold  tracking-wider">Total Anggota</p>
           <p class="text-lg font-bold text-navy">{{ members.length }}</p>
         </div>
       </div>
@@ -52,7 +52,7 @@
           <Icon icon="ph:gender-male" class="text-xl" />
         </div>
         <div>
-          <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Putra</p>
+          <p class="text-xs text-gray-400 font-bold  tracking-wider">Putra</p>
           <p class="text-lg font-bold text-navy">{{members.filter(m => m.gender === 'M').length}}</p>
         </div>
       </div>
@@ -63,7 +63,7 @@
           <Icon icon="ph:gender-female" class="text-xl" />
         </div>
         <div>
-          <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Putri</p>
+          <p class="text-xs text-gray-400 font-bold  tracking-wider">Putri</p>
           <p class="text-lg font-bold text-navy">{{members.filter(m => m.gender === 'F').length}}</p>
         </div>
       </div>
@@ -74,7 +74,7 @@
           <Icon icon="ph:target" class="text-xl" />
         </div>
         <div>
-          <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Event Diikuti</p>
+          <p class="text-xs text-gray-400 font-bold  tracking-wider">Event Diikuti</p>
           <p class="text-lg font-bold text-navy">{{ totalEvents }}</p>
         </div>
       </div>
@@ -106,12 +106,12 @@
         <table class="w-full text-left border-collapse min-w-[900px]">
           <thead>
             <tr class="bg-gray-50/50 border-b border-gray-100">
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Anggota</th>
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Kategori</th>
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Jenis Busur</th>
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Event Terakhir
+              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">Anggota</th>
+              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">Kategori</th>
+              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">Jenis Busur</th>
+              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">Event Terakhir
               </th>
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest text-right">Aksi
+              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest text-right">Aksi
               </th>
             </tr>
           </thead>
@@ -147,7 +147,7 @@
               </td>
               <td class="px-6 py-4">
                 <span :class="[
-                  'px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider',
+                  'px-3 py-1 rounded-full text-xs font-bold  tracking-wider',
                   member.bow_type === 'Recurve' ? 'bg-blue-50 text-blue-600' :
                     member.bow_type === 'Compound' ? 'bg-purple-50 text-purple-600' :
                       member.bow_type === 'Barebow' ? 'bg-amber-50 text-amber-600' :

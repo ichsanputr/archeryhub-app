@@ -35,7 +35,7 @@
                     <div v-for="club in filteredClubs" :key="club.name"
                         class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-sm hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center relative group">
                         <div v-if="club.verified"
-                            class="absolute top-3 right-3 bg-primary text-navy px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 shadow-sm">
+                            class="absolute top-3 right-3 bg-primary text-navy px-2 py-0.5 rounded text-[10px] font-bold  tracking-wider flex items-center gap-1 shadow-sm">
                             <span class="material-symbols-outlined text-[14px] fill-1">verified</span> Verifikasi
                         </div>
                         <div

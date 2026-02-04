@@ -17,8 +17,7 @@
                                     class="text-xl group-hover:-translate-x-1 transition-transform" />
                             </button>
                             <div class="min-w-0">
-                                <h1
-                                    class="text-2xl md:text-4xl font-black text-navy leading-tight tracking-tight uppercase">
+                                <h1 class="text-2xl md:text-4xl font-black text-navy leading-tight tracking-tight">
                                     {{ pageTitle }}
                                 </h1>
                                 <div
@@ -42,14 +41,14 @@
                         <div class="flex flex-wrap items-center gap-3">
                             <!-- Format & Status -->
                             <div class="flex flex-col items-end gap-1.5 order-2 md:order-1">
-                                <span class="text-[10px] font-black uppercase tracking-widest text-gray-400">Status
+                                <span class="text-[10px] font-black tracking-widest text-gray-400">Status
                                     Bracket</span>
                                 <div class="flex items-center gap-2">
                                     <span
-                                        class="px-3 py-1 rounded-full bg-gray-100 text-[10px] font-black uppercase text-gray-600 border border-gray-200">
+                                        class="px-3 py-1 rounded-full bg-gray-100 text-[10px] font-black text-gray-600 border border-gray-200">
                                         {{ getFormatLabel(bracket.format) }}
                                     </span>
-                                    <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase shadow-sm"
+                                    <span class="px-3 py-1 rounded-full text-[10px] font-black shadow-sm"
                                         :class="statusBadgeClasses">
                                         {{ getStatusLabel(bracket.status) }}
                                     </span>
@@ -60,7 +59,7 @@
                             <div v-if="currentRoundNo"
                                 class="bg-gray-100 p-1.5 rounded-2xl flex gap-1 order-1 md:order-2">
                                 <button v-for="t in tabs" :key="t.id" @click="activeTab = t.id"
-                                    class="px-5 py-2.5 text-xs font-black uppercase tracking-wider rounded-xl transition-all flex items-center gap-2"
+                                    class="px-5 py-2.5 text-xs font-black tracking-wider rounded-xl transition-all flex items-center gap-2"
                                     :class="activeTab === t.id ? 'bg-white text-navy shadow-sm' : 'text-gray-500 hover:text-navy hover:bg-white/50'">
                                     <Icon :icon="t.icon" class="text-lg" />
                                     {{ t.label }}
@@ -73,7 +72,7 @@
                 <!-- Secondary Actions Bar -->
                 <div v-if="!currentRoundNo"
                     class="bg-slate-50 border-t border-gray-100 px-8 py-4 flex items-center justify-between">
-                    <div class="flex items-center gap-8 text-[11px] font-bold text-gray-400 uppercase tracking-widest">
+                    <div class="flex items-center gap-8 text-[11px] font-bold text-gray-400 tracking-widest">
                         <div class="flex items-center gap-2">
                             <Icon icon="ph:calendar-blank" class="text-lg text-primary" />
                             <span>{{ formatDate(bracket.created_at) }}</span>
@@ -87,7 +86,7 @@
 
                     <div class="flex items-center gap-2">
                         <button v-if="bracket.status === 'draft' || !bracket.generated_at" @click="generateBracket"
-                            class="px-4 py-2 rounded-xl bg-navy text-primary text-xs font-black uppercase tracking-wider hover:brightness-110 shadow-lg shadow-navy/20 transition-all flex items-center gap-2">
+                            class="px-4 py-2 rounded-xl bg-navy text-primary text-xs font-black tracking-wider hover:brightness-110 shadow-lg shadow-navy/20 transition-all flex items-center gap-2">
                             <Icon icon="ph:magic-wand" class="text-lg" />
                             Generate Bracket
                         </button>
@@ -103,7 +102,7 @@
                     <div class="p-6 md:p-8">
                         <div class="flex items-center justify-between mb-8 pb-4 border-b border-gray-50">
                             <div>
-                                <h2 class="text-xl font-black text-navy uppercase tracking-tight">Penempatan Target
+                                <h2 class="text-xl font-black text-navy tracking-tight">Penempatan Target
                                     Match</h2>
                                 <p class="text-sm text-gray-500 mt-1">Alokasikan target (bantalan) untuk setiap
                                     pertandingan di
@@ -115,16 +114,13 @@
                             <table class="w-full text-left">
                                 <thead class="bg-slate-50 border-y border-gray-100">
                                     <tr>
-                                        <th
-                                            class="px-8 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                                        <th class="px-8 py-4 text-[10px] font-black text-gray-400 tracking-widest">
                                             Match
                                         </th>
-                                        <th
-                                            class="px-8 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                                        <th class="px-8 py-4 text-[10px] font-black text-gray-400 tracking-widest">
                                             Pemanah
                                             & Seed</th>
-                                        <th
-                                            class="px-8 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest w-72">
+                                        <th class="px-8 py-4 text-[10px] font-black text-gray-400 tracking-widest w-72">
                                             Target Penilaian</th>
                                     </tr>
                                 </thead>
@@ -155,7 +151,7 @@
                                                             }}</span>
                                                     </div>
                                                     <span
-                                                        class="text-[9px] font-black uppercase text-gray-400 tracking-tighter">Side
+                                                        class="text-[9px] font-black text-gray-400 tracking-tighter">Side
                                                         A</span>
                                                 </div>
                                                 <div
@@ -171,7 +167,7 @@
                                                                 match.entry_b_name || 'TBD' }}</span>
                                                     </div>
                                                     <span
-                                                        class="text-[9px] font-black uppercase text-gray-400 tracking-tighter">Side
+                                                        class="text-[9px] font-black text-gray-400 tracking-tighter">Side
                                                         B</span>
                                                 </div>
                                             </div>
@@ -198,8 +194,7 @@
                     <!-- Matches Navigation / Selector -->
                     <div class="lg:col-span-4 xl:col-span-3">
                         <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 sticky top-6">
-                            <h3
-                                class="text-xs font-black uppercase tracking-widest text-gray-400 mb-6 flex items-center gap-2">
+                            <h3 class="text-xs font-black tracking-widest text-gray-400 mb-6 flex items-center gap-2">
                                 <Icon icon="ph:list-bullets" class="text-lg" />
                                 Match List
                             </h3>
@@ -212,7 +207,7 @@
                                         : 'border-transparent bg-slate-50 hover:bg-white hover:border-gray-200'">
 
                                     <div class="flex justify-between items-center mb-3">
-                                        <span class="text-[10px] font-black uppercase tracking-tighter"
+                                        <span class="text-[10px] font-black tracking-tighter"
                                             :class="selectedScoringMatch?.id === match.id ? 'text-primary' : 'text-gray-400'">Match
                                             {{ match.match_no }}</span>
                                         <div v-if="match.status === 'finished'"
@@ -225,9 +220,9 @@
                                         <div class="flex items-center justify-between">
                                             <span class="text-xs font-bold text-navy truncate pr-2">{{
                                                 match.entry_a_name || 'TBD'
-                                                }}</span>
+                                            }}</span>
                                             <span class="text-xs font-black text-navy">{{ getMatchScore(match, 'A')
-                                                }}</span>
+                                            }}</span>
                                         </div>
                                         <div class="h-1 bg-gray-200 rounded-full overflow-hidden">
                                             <div class="h-full bg-primary"
@@ -236,9 +231,9 @@
                                         <div class="flex items-center justify-between">
                                             <span class="text-xs font-bold text-navy truncate pr-2">{{
                                                 match.entry_b_name || 'TBD'
-                                                }}</span>
+                                            }}</span>
                                             <span class="text-xs font-black text-navy">{{ getMatchScore(match, 'B')
-                                                }}</span>
+                                            }}</span>
                                         </div>
                                     </div>
                                 </button>
@@ -259,19 +254,19 @@
 
                                 <div class="flex flex-col items-center gap-4 text-center md:flex-1">
                                     <img :src="getAvatarUrl(selectedScoringMatch.entry_a_name)"
-                                        class="size-20 rounded-2xl border-4 border-white/20 shadow-md" />
+                                        class="size-20 rounded-2xl border-4 border-white/20" />
                                     <div class="max-w-[150px]">
                                         <h4 class="font-black text-xl leading-tight truncate">{{
                                             selectedScoringMatch.entry_a_name
                                             || 'TBD' }}</h4>
-                                        <span class="text-[10px] font-black uppercase tracking-widest text-primary">Seed
+                                        <span class="text-[10px] font-black tracking-widest text-primary">Seed
                                             {{
                                                 selectedScoringMatch.entry_a_seed || '-' }}</span>
                                     </div>
                                 </div>
 
                                 <div class="flex flex-col items-center justify-center gap-2 md:order-2">
-                                    <div class="text-[10px] font-black uppercase tracking-widest text-white/40">Versus
+                                    <div class="text-[10px] font-black tracking-widest text-white/40">Versus
                                     </div>
                                     <div class="flex items-center gap-6">
                                         <span class="text-5xl font-black text-primary drop-shadow-lg">{{
@@ -281,7 +276,7 @@
                                             getMatchScore(selectedScoringMatch, 'B') }}</span>
                                     </div>
                                     <div
-                                        class="px-4 py-1.5 rounded-full bg-white/10 text-[10px] font-black uppercase tracking-widest">
+                                        class="px-4 py-1.5 rounded-full bg-white/10 text-[10px] font-black tracking-widest">
                                         {{ getTargetName(selectedScoringMatch.target_id) }}
                                     </div>
                                 </div>
@@ -293,8 +288,7 @@
                                         <h4 class="font-black text-xl leading-tight truncate">{{
                                             selectedScoringMatch.entry_b_name
                                             || 'TBD' }}</h4>
-                                        <span
-                                            class="text-[10px] font-black uppercase tracking-widest text-white/60">Seed
+                                        <span class="text-[10px] font-black tracking-widest text-white/60">Seed
                                             {{
                                                 selectedScoringMatch.entry_b_seed || '-' }}</span>
                                     </div>
@@ -308,8 +302,7 @@
                                         <div v-for="i in (bracket?.ends_per_match || 5)" :key="i"
                                             @click="currentEnd = i"
                                             class="flex flex-col items-center gap-1 cursor-pointer group">
-                                            <span
-                                                class="text-[10px] font-black uppercase tracking-widest transition-colors"
+                                            <span class="text-[10px] font-black tracking-widest transition-colors"
                                                 :class="currentEnd === i ? 'text-navy' : 'text-gray-400 group-hover:text-gray-600'">End
                                                 {{ i }}</span>
                                             <div class="size-10 rounded-xl flex items-center justify-center text-sm font-black transition-all"
@@ -321,7 +314,7 @@
 
                                     <div v-if="canFinishMatch(selectedScoringMatch)"
                                         @click="finishMatchAction(selectedScoringMatch)"
-                                        class="px-6 py-3 rounded-2xl bg-green-500 text-white font-black uppercase tracking-widest text-xs hover:brightness-110 shadow-lg shadow-green-200 transition-all cursor-pointer flex items-center gap-2">
+                                        class="px-6 py-3 rounded-2xl bg-green-500 text-white font-black tracking-widest text-xs hover:brightness-110 shadow-lg shadow-green-200 transition-all cursor-pointer flex items-center gap-2">
                                         <Icon icon="ph:check-circle-bold" class="text-xl" />
                                         Finish Match
                                     </div>
@@ -335,11 +328,11 @@
                                             @click="activeSide = 'A'">
                                             <div class="flex justify-between items-center mb-4">
                                                 <span
-                                                    class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">ARCHER
+                                                    class="text-[10px] font-black tracking-[0.2em] text-gray-400">ARCHER
                                                     A</span>
                                                 <span class="text-xs font-black text-navy">{{
                                                     selectedScoringMatch.entry_a_name
-                                                    }}</span>
+                                                }}</span>
                                             </div>
                                             <div class="flex items-center gap-2">
                                                 <div v-for="i in (bracket?.arrows_per_end || 3)" :key="i"
@@ -382,7 +375,7 @@
                                             @click="activeSide = 'B'">
                                             <div class="flex justify-between items-center mb-4">
                                                 <span
-                                                    class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">ARCHER
+                                                    class="text-[10px] font-black tracking-[0.2em] text-gray-400">ARCHER
                                                     B</span>
                                                 <span class="text-xs font-black text-navy">{{
                                                     selectedScoringMatch.entry_b_name ||
@@ -429,7 +422,7 @@
                             <div class="size-24 rounded-full bg-white shadow-md flex items-center justify-center mb-6">
                                 <Icon icon="ph:hand-pointing-bold" class="text-4xl text-gray-300" />
                             </div>
-                            <h3 class="text-2xl font-black text-navy uppercase tracking-tight">Pilih Match Untuk Input
+                            <h3 class="text-2xl font-black text-navy tracking-tight">Pilih Match Untuk Input
                                 Skor</h3>
                             <p class="text-gray-400 mt-2 max-w-xs">Pilih salah satu pertandingan dari daftar di samping
                                 untuk
@@ -440,7 +433,7 @@
             </div>
 
             <!-- BRACKET VIEW MODE -->
-            <div v-else class="bracket-visualization rounded-[40px] shadow-md overflow-hidden border border-gray-100">
+            <div v-else class="bracket-visualization rounded-[40px] shadow-sm overflow-hidden border border-gray-100">
                 <div class="bracket-scroll-container no-scrollbar">
                     <div v-if="Object.keys(rounds).length > 0" class="flex gap-0 min-w-max">
                         <!-- Each Round -->
@@ -455,8 +448,7 @@
                                         <span>{{ getRoundName(parseInt(roundNo)) }}</span>
                                     </div>
                                     <div class="size-1 w-px h-4 bg-gray-200 mx-3 group-hover:bg-primary/30"></div>
-                                    <span
-                                        class="text-[9px] font-black uppercase tracking-widest text-primary">Manage</span>
+                                    <span class="text-[9px] font-black tracking-widest text-primary">Manage</span>
                                 </button>
 
                                 <div class="slots-container" :style="{ height: getTotalHeight + 'px' }">
@@ -541,13 +533,13 @@
                             class="size-32 rounded-full bg-white shadow-md flex items-center justify-center mx-auto mb-8 border border-gray-100">
                             <Icon icon="ph:brackets-curly-bold" class="text-6xl text-gray-200" />
                         </div>
-                        <h2 class="text-3xl font-black text-navy uppercase tracking-tight">Bracket Belum Di-generate
+                        <h2 class="text-3xl font-black text-navy tracking-tight">Bracket Belum Di-generate
                         </h2>
                         <p class="text-gray-400 mt-2 max-w-sm mx-auto">Tentukan partisipan dan generate struktur
                             pertandingan
                             eliminasi untuk memulai babak ini.</p>
                         <button @click="generateBracket"
-                            class="mt-10 px-8 py-4 rounded-2xl bg-navy text-primary font-black uppercase tracking-widest hover:brightness-110 shadow-md shadow-navy/30 active:scale-95 transition-all flex items-center gap-3 mx-auto">
+                            class="mt-10 px-8 py-4 rounded-2xl bg-navy text-primary font-black tracking-widest hover:brightness-110 shadow-md shadow-navy/30 active:scale-95 transition-all flex items-center gap-3 mx-auto">
                             <Icon icon="ph:magic-wand-bold" class="text-2xl" />
                             Generate Bracket Sekarang
                         </button>
@@ -559,10 +551,10 @@
         <!-- Not Found -->
         <div v-else class="text-center py-20 bg-white rounded-[40px] border border-gray-100 shadow-sm">
             <Icon icon="ph:warning-circle-bold" class="text-8xl text-red-50 mb-4 mx-auto" />
-            <h2 class="text-3xl font-black text-navy uppercase tracking-tight">Bracket Tidak Ditemukan</h2>
+            <h2 class="text-3xl font-black text-navy tracking-tight">Bracket Tidak Ditemukan</h2>
             <p class="text-gray-400 mt-2">UUID bracket atau ID pertandingan tidak valid.</p>
             <button @click="navigateTo(`/dashboard/events/${eventId}/elimination`)"
-                class="mt-10 px-6 py-3 rounded-2xl border-2 border-navy text-navy font-black uppercase tracking-widest hover:bg-navy hover:text-white transition-all">
+                class="mt-10 px-6 py-3 rounded-2xl border-2 border-navy text-navy font-black tracking-widest hover:bg-navy hover:text-white transition-all">
                 Kembali ke Daftar
             </button>
         </div>
@@ -843,7 +835,7 @@ const saveAndNext = async () => {
             activeSide.value = 'B'
         } else {
             activeSide.value = 'A'
-            if (currentEnd.value < 5) currentEnd.value++
+            if (currentEnd.value < (bracket.value?.ends_per_match || 5)) currentEnd.value++
         }
     } catch (e) {
         toast.error('Gagal menyimpan skor')
@@ -983,7 +975,7 @@ onMounted(() => {
 }
 
 .round-label {
-    @apply text-[11px] font-black text-navy uppercase tracking-widest py-3 px-8 bg-white rounded-2xl shadow-md border border-gray-100 shrink-0 flex items-center justify-center mb-16;
+    @apply text-[11px] font-black text-navy tracking-widest py-3 px-8 bg-white rounded-2xl shadow-md border border-gray-100 shrink-0 flex items-center justify-center mb-16;
 }
 
 .final-label {
@@ -1016,7 +1008,7 @@ onMounted(() => {
 }
 
 .status-badge {
-    @apply text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg;
+    @apply text-[9px] font-bold tracking-wider px-2.5 py-1 rounded-lg;
 }
 
 .match-meta {

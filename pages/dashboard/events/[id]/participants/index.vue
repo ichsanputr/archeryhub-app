@@ -44,7 +44,7 @@
                         <Icon icon="ph:users-three" class="text-2xl" />
                     </div>
                     <div>
-                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Total Peserta</p>
+                        <p class="text-[10px] text-gray-400 font-bold  tracking-wider">Total Peserta</p>
                         <p class="text-xl font-black text-navy">{{ total }}</p>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                         <Icon icon="ph:clock" class="text-2xl" />
                     </div>
                     <div>
-                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Pending</p>
+                        <p class="text-[10px] text-gray-400 font-bold  tracking-wider">Pending</p>
                         <p class="text-xl font-black text-navy">{{ pendingCount }}</p>
                     </div>
                 </div>
@@ -67,7 +67,7 @@
                         <Icon icon="ph:buildings" class="text-2xl" />
                     </div>
                     <div>
-                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Klub</p>
+                        <p class="text-[10px] text-gray-400 font-bold  tracking-wider">Klub</p>
                         <p class="text-xl font-black text-navy">{{ uniqueClubs }}</p>
                     </div>
                 </div>
@@ -80,7 +80,7 @@
             <div class="overflow-x-auto">
                 <table class="w-full text-left">
                     <thead class="bg-gray-50/50 border-b border-gray-100">
-                        <tr class="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                        <tr class="text-[10px] font-black text-gray-400  tracking-widest">
                             <th class="px-6 py-4">No</th>
                             <th class="px-6 py-4">Nama Peserta</th>
                             <th class="px-6 py-4">Klub</th>
@@ -132,44 +132,43 @@
                                 class="group hover:bg-gray-50/50 transition-colors">
                                 <td class="px-6 py-4">
                                     <span class="text-sm font-bold text-gray-400">{{ (page - 1) * limit + index + 1
-                                    }}</span>
+                                        }}</span>
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-3">
                                         <div
-                                            class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs uppercase border border-gray-200 overflow-hidden">
+                                            class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs  border border-gray-200 overflow-hidden">
                                             <img :src="useImageOrDefault(participant.avatar_url, participant.full_name)"
                                                 class="w-full h-full object-cover">
                                         </div>
                                         <div>
                                             <div class="flex items-center gap-1.5 min-w-0">
                                                 <p class="text-sm font-bold text-navy truncate">{{ participant.full_name
-                                                    }}
+                                                }}
                                                 </p>
                                             </div>
                                             <div class="flex items-center gap-2">
                                                 <p class="text-xs text-gray-500 font-medium">{{ participant.email || '-'
-                                                }}</p>
+                                                    }}</p>
                                             </div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 text-gray-500 font-medium text-xs">{{ participant.club_name || '-'
-                                }}
+                                    }}
                                 </td>
                                 <td class="px-6 py-4">
                                     <p class="text-navy font-bold text-sm">{{ getCategoryName(participant) }}</p>
                                 </td>
                                 <td class="px-6 py-4">
                                     <span :class="getStatusClass(participant.status)"
-                                        class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest border">
+                                        class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black  tracking-widest border">
                                         {{ participant.status || 'Menunggu Acc' }}
                                     </span>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <BaseButton v-if="participant.status === 'Terdaftar' && participant.qr_raw" 
-                                        variant="outline" size="sm" icon="ph:qr-code" 
-                                        @click="showQRDialog(participant)"
+                                    <BaseButton v-if="participant.status === 'Terdaftar' && participant.qr_raw"
+                                        variant="outline" size="sm" icon="ph:qr-code" @click="showQRDialog(participant)"
                                         class="h-8 text-xs">
                                         Lihat QR
                                     </BaseButton>
@@ -199,7 +198,7 @@
             <!-- Pagination Controls -->
             <div v-if="totalPages > 1"
                 class="px-6 py-4 border-t border-gray-100 bg-gray-50/30 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div class="text-xs font-bold text-gray-400 uppercase tracking-widest">
+                <div class="text-xs font-bold text-gray-400  tracking-widest">
                     Showing {{ (page - 1) * limit + 1 }} to {{ Math.min(page * limit, total) }} of {{ total }}
                     participants
                 </div>
@@ -228,33 +227,34 @@
 
         <!-- QR Code Dialog -->
         <Teleport to="body">
-            <Transition enter-active-class="transition duration-200 ease-out"
-                enter-from-class="opacity-0" enter-to-class="opacity-100"
-                leave-active-class="transition duration-150 ease-in"
+            <Transition enter-active-class="transition duration-200 ease-out" enter-from-class="opacity-0"
+                enter-to-class="opacity-100" leave-active-class="transition duration-150 ease-in"
                 leave-from-class="opacity-100" leave-to-class="opacity-0">
-                <div v-if="showQR" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm"
+                <div v-if="showQR"
+                    class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm"
                     @click="showQR = false">
                     <div class="relative bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full mx-4" @click.stop>
                         <button @click="showQR = false"
                             class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors p-2 hover:bg-gray-100 rounded-lg">
                             <Icon icon="ph:x" class="text-2xl" />
                         </button>
-                        
+
                         <div class="text-center space-y-6">
                             <div>
                                 <h3 class="text-2xl font-black text-navy mb-2">QR Code Registrasi Ulang</h3>
                                 <p class="text-sm text-gray-500 font-medium">{{ selectedParticipant?.full_name }}</p>
                             </div>
-                            
+
                             <div class="bg-gray-50 p-8 rounded-2xl border flex justify-center border-gray-200">
-                                <qrcode-vue :value="selectedParticipant?.qr_raw || 'N/A'" :size="300" level="H" render-as="svg" />
+                                <qrcode-vue :value="selectedParticipant?.qr_raw || 'N/A'" :size="300" level="H"
+                                    render-as="svg" />
                             </div>
-                            
+
                             <div class="text-xs text-gray-500 space-y-1">
                                 <p class="font-bold">{{ selectedParticipant?.email }}</p>
                                 <p>{{ selectedParticipant?.club_name || '-' }}</p>
                             </div>
-                            
+
                             <BaseButton variant="primary" block icon="ph:download-simple" @click="downloadQR">
                                 Download QR Code
                             </BaseButton>
@@ -390,21 +390,21 @@ const downloadQR = () => {
     const ctx = canvas.getContext('2d')
     const svgData = new XMLSerializer().serializeToString(svg)
     const img = new Image()
-    
+
     img.onload = () => {
         canvas.width = 300
         canvas.height = 300
         ctx.fillStyle = 'white'
         ctx.fillRect(0, 0, canvas.width, canvas.height)
         ctx.drawImage(img, 0, 0)
-        
+
         // Download the image
         const link = document.createElement('a')
         link.download = `qr-${selectedParticipant.value?.full_name || 'code'}.png`
         link.href = canvas.toDataURL()
         link.click()
     }
-    
+
     img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)))
 }
 

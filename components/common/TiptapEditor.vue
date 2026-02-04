@@ -83,7 +83,7 @@
 
                         <!-- Table operations (only shown when inside a table) -->
                         <template v-if="editor.isActive('table')">
-                            <div class="px-3 py-1 text-xs font-semibold text-gray-500 uppercase">Rows</div>
+                            <div class="px-3 py-1 text-xs font-semibold text-gray-500 ">Rows</div>
                             <button type="button"
                                 @click="editor.chain().focus().addRowBefore().run(); tableMenuOpen = false"
                                 class="w-full px-3 py-2 text-left text-sm hover:bg-gray-100 flex items-center gap-2">
@@ -104,7 +104,7 @@
                             </button>
 
                             <div class="border-t border-gray-100 my-1"></div>
-                            <div class="px-3 py-1 text-xs font-semibold text-gray-500 uppercase">Columns</div>
+                            <div class="px-3 py-1 text-xs font-semibold text-gray-500 ">Columns</div>
                             <button type="button"
                                 @click="editor.chain().focus().addColumnBefore().run(); tableMenuOpen = false"
                                 class="w-full px-3 py-2 text-left text-sm hover:bg-gray-100 flex items-center gap-2">
@@ -125,7 +125,7 @@
                             </button>
 
                             <div class="border-t border-gray-100 my-1"></div>
-                            <div class="px-3 py-1 text-xs font-semibold text-gray-500 uppercase">Cells</div>
+                            <div class="px-3 py-1 text-xs font-semibold text-gray-500 ">Cells</div>
                             <button type="button"
                                 @click="editor.chain().focus().mergeCells().run(); tableMenuOpen = false"
                                 class="w-full px-3 py-2 text-left text-sm hover:bg-gray-100 flex items-center gap-2">

@@ -55,7 +55,7 @@
                     </div>
 
                     <div>
-                        <label class="block text-xs font-bold text-navy uppercase tracking-wider mb-2">
+                        <label class="block text-xs font-bold text-navy  tracking-wider mb-2">
                             Kutipan Singkat
                         </label>
                         <textarea v-model="form.excerpt"

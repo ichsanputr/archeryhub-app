@@ -12,7 +12,7 @@
             <div class="container mx-auto px-4 max-w-7xl relative z-10">
                 <div class="max-w-3xl">
                     <div
-                        class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold uppercase tracking-widest mb-6">
+                        class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold  tracking-widest mb-6">
                         <Icon icon="ph:newspaper-clipping" class="text-lg" />
                         <span>Berita & Artikel</span>
                     </div>
@@ -71,7 +71,7 @@
                             </div>
                             <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8">
                                 <span
-                                    class="px-3 py-1 bg-primary text-navy text-xs font-bold rounded-full uppercase tracking-wider">
+                                    class="px-3 py-1 bg-primary text-navy text-xs font-bold rounded-full  tracking-wider">
                                     {{ featuredArticle.category }}
                                 </span>
                                 <h2
@@ -108,7 +108,7 @@
                                     <div>
                                         <div class="flex items-center gap-3 mb-3">
                                             <span :class="[
-                                                'px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider',
+                                                'px-3 py-1 rounded-lg text-[10px] font-black  tracking-wider',
                                                 article.category === 'event' ? 'bg-blue-50 text-blue-600' :
                                                     article.category === 'pengumuman' ? 'bg-amber-50 text-amber-600' :
                                                         article.category === 'prestasi' ? 'bg-green-50 text-green-600' :
@@ -139,7 +139,7 @@
                                             <span class="text-xs font-bold text-navy">{{ article.author }}</span>
                                         </div>
                                         <span
-                                            class="text-primary font-black text-xs uppercase tracking-wider flex items-center gap-1 group-hover:translate-x-1 transition-transform self-start sm:self-auto">
+                                            class="text-primary font-black text-xs  tracking-wider flex items-center gap-1 group-hover:translate-x-1 transition-transform self-start sm:self-auto">
                                             Baca Selengkapnya
                                             <Icon icon="ph:arrow-right-bold" />
                                         </span>
@@ -209,9 +209,8 @@
                                 class="flex flex-col items-center text-center gap-3 bg-white/5 p-4 rounded-xl border border-white/10 hover:bg-white/10 transition-colors cursor-pointer group">
                                 <div
                                     class="bg-white/10 rounded-lg w-14 h-14 flex flex-col items-center justify-center text-center flex-shrink-0 group-hover:bg-primary group-hover:text-navy transition-colors">
-                                    <span
-                                        class="text-[10px] uppercase font-bold text-primary group-hover:text-navy/70">{{
-                                            event.month }}</span>
+                                    <span class="text-[10px]  font-bold text-primary group-hover:text-navy/70">{{
+                                        event.month }}</span>
                                     <span class="text-xl font-black leading-none">{{ event.day }}</span>
                                 </div>
                                 <div>

@@ -79,7 +79,7 @@ defineProps({
 }
 
 .status-badge {
-    @apply text-[8px] font-black uppercase tracking-wider bg-green-100 text-green-700 px-2 py-0.5 rounded-md;
+    @apply text-[8px] font-black tracking-wider bg-green-100 text-green-700 px-2 py-0.5 rounded-md;
 }
 
 .status-badge.waiting {

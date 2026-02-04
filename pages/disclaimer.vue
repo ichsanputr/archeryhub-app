@@ -11,7 +11,7 @@
             </div>
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div class="max-w-3xl">
-                    <div class="flex items-center gap-2 text-primary text-sm font-bold uppercase tracking-wider mb-3">
+                    <div class="flex items-center gap-2 text-primary text-sm font-bold  tracking-wider mb-3">
                         <Icon icon="ph:warning" class="text-lg" />
                         Legal
                     </div>
@@ -34,7 +34,8 @@
                 class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 md:p-12">
                 <div class="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-400 p-6 rounded-r-lg mb-8">
                     <p class="text-yellow-800 dark:text-yellow-200 font-medium italic">
-                        "Panahan melibatkan penggunaan peralatan yang dapat berbahaya jika ditangani dengan salah. Archery Hub
+                        "Panahan melibatkan penggunaan peralatan yang dapat berbahaya jika ditangani dengan salah.
+                        Archery Hub
                         adalah platform informasi dan tidak bertanggung jawab atas cedera atau kecelakaan apa pun yang
                         terjadi di klub atau event yang terdaftar."
                     </p>
@@ -44,7 +45,8 @@
                     <p class="mb-4">
                         Informasi yang disediakan oleh Archery Hub Indonesia di situs web ini hanya untuk tujuan
                         informasi umum. Semua informasi di Situs disediakan dengan itikad baik,
-                        namun kami tidak membuat pernyataan atau jaminan apa pun, baik tersurat maupun tersirat, mengenai
+                        namun kami tidak membuat pernyataan atau jaminan apa pun, baik tersurat maupun tersirat,
+                        mengenai
                         keakuratan, kecukupan, validitas, keandalan, ketersediaan atau kelengkapan informasi apa pun
                         di Situs.
                     </p>

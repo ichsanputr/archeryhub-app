@@ -26,7 +26,7 @@
       <aside class="w-80 border-r border-brand-border flex flex-col bg-surface-dark">
         <div class="p-4 border-b border-brand-border">
           <div class="flex justify-between items-center mb-3">
-            <h3 class="text-sm font-bold uppercase tracking-wider text-brand-gold">Queue ({{ queue.length }})</h3>
+            <h3 class="text-sm font-bold  tracking-wider text-brand-gold">Queue ({{ queue.length }})</h3>
             <button class="text-brand-gold hover:text-white">
               <Icon icon="ph:funnel" class="text-[20px]" />
             </button>
@@ -114,8 +114,7 @@
             <div class="p-6 space-y-8">
               <!-- Applicant Details -->
               <section>
-                <h4
-                  class="text-xs font-bold uppercase tracking-wider text-brand-gold mb-4 border-b border-brand-border pb-2">
+                <h4 class="text-xs font-bold  tracking-wider text-brand-gold mb-4 border-b border-brand-border pb-2">
                   Applicant Details</h4>
                 <div class="flex items-start gap-4">
                   <div class="size-16 rounded-lg bg-gray-600 shrink-0"></div>
@@ -142,8 +141,7 @@
 
               <!-- Payment Reconciliation -->
               <section>
-                <h4
-                  class="text-xs font-bold uppercase tracking-wider text-brand-gold mb-4 border-b border-brand-border pb-2">
+                <h4 class="text-xs font-bold  tracking-wider text-brand-gold mb-4 border-b border-brand-border pb-2">
                   Payment Reconciliation</h4>
                 <div class="grid grid-cols-2 gap-4">
                   <div class="p-4 rounded-lg bg-surface-dark border border-brand-border">

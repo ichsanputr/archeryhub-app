@@ -25,7 +25,7 @@
                 <div v-for="facility in facilities" :key="facility.name"
                     class="flex flex-col items-center p-4 bg-gray-50 rounded-xl text-center hover:bg-white hover:shadow-md transition-all">
                     <Icon :icon="facility.icon" class="text-primary text-3xl mb-2" />
-                    <span class="text-[10px] font-bold text-navy uppercase">{{ facility.name }}</span>
+                    <span class="text-[10px] font-bold text-navy ">{{ facility.name }}</span>
                 </div>
             </div>
         </section>

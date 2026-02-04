@@ -30,7 +30,7 @@
                             </div>
 
                             <div v-else v-for="(group, name) in groupedChannels" :key="name" class="space-y-4">
-                                <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">{{ name }}
+                                <h3 class="text-xs font-bold text-gray-400  tracking-wider ml-1">{{ name }}
                                 </h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <label v-for="channel in group" :key="channel.code"
@@ -103,7 +103,7 @@
                             <div class="pt-4 border-t border-gray-100 flex justify-between items-center">
                                 <span class="text-base font-bold text-navy">Total Bayar</span>
                                 <span class="text-xl font-black text-primary">IDR {{ totalAmount.toLocaleString()
-                                }}</span>
+                                    }}</span>
                             </div>
                         </div>
                     </div>

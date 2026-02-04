@@ -44,7 +44,7 @@
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
             <label class="flex flex-col gap-1.5">
-              <span class="text-xs font-semibold uppercase tracking-wider text-brand-gold">Bow Style</span>
+              <span class="text-xs font-semibold  tracking-wider text-brand-gold">Bow Style</span>
               <select v-model="newCategory.bowStyle" class="input">
                 <option value="">Select Style</option>
                 <option v-for="type in bowTypes" :key="type.id" :value="type.id">
@@ -54,7 +54,7 @@
             </label>
 
             <label class="flex flex-col gap-1.5">
-              <span class="text-xs font-semibold uppercase tracking-wider text-brand-gold">Age Class</span>
+              <span class="text-xs font-semibold  tracking-wider text-brand-gold">Age Class</span>
               <select v-model="newCategory.ageClass" class="input">
                 <option value="">Select Age</option>
                 <option v-for="group in ageGroups" :key="group.id" :value="group.id">
@@ -64,7 +64,7 @@
             </label>
 
             <label class="flex flex-col gap-1.5">
-              <span class="text-xs font-semibold uppercase tracking-wider text-brand-gold">Gender</span>
+              <span class="text-xs font-semibold  tracking-wider text-brand-gold">Gender</span>
               <select v-model="newCategory.gender" class="input">
                 <option value="">Select Gender</option>
                 <option>Both (Creates 2)</option>

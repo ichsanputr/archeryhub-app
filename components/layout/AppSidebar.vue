@@ -24,7 +24,7 @@
       <!-- Main Navigation (Menu Utama) - Hide when on any event sub-page (including edit) -->
       <template v-if="!isOnEventSubPage">
         <div v-if="!isSidebarCollapsed" class="px-3 mb-2">
-          <p class="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Menu Utama</p>
+          <p class="text-[10px] font-black text-gray-500  tracking-[0.2em]">Menu Utama</p>
         </div>
         <NuxtLink v-for="item in navLinks" :key="item.path" :to="item.path"
           class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group" :class="isActive(item.path)
@@ -34,7 +34,7 @@
             :class="isActive(item.path) ? 'text-navy' : 'group-hover:scale-110'" />
           <span v-if="!isSidebarCollapsed" class="text-sm font-bold whitespace-nowrap">{{ item.label }}</span>
           <span v-if="item.badge && !isSidebarCollapsed"
-            class="ml-auto bg-primary/20 text-primary text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-tighter">
+            class="ml-auto bg-primary/20 text-primary text-[10px] font-black px-2 py-0.5 rounded-full  tracking-tighter">
             {{ item.badge }}
           </span>
         </NuxtLink>
@@ -44,7 +44,7 @@
       <div v-if="eventId && canManageEvents" class="flex flex-col gap-1" :class="isEventManagePage ? '' : 'mt-4'">
         <div v-if="!isOnEventSubPage && !isEventManagePage" class="h-px bg-white/10 mb-2 mx-3"></div>
         <div v-if="!isSidebarCollapsed" class="px-3 mb-2">
-          <p class="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Manajemen Event</p>
+          <p class="text-[10px] font-black text-gray-500  tracking-[0.2em]">Manajemen Event</p>
         </div>
         <NuxtLink v-for="item in eventLinks" :key="item.path" :to="item.path"
           class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group" :class="isActive(item.path)
@@ -68,7 +68,7 @@
           </div>
           <div v-if="!isSidebarCollapsed" class="flex flex-col min-w-0">
             <span class="text-white text-sm font-bold truncate">{{ user?.full_name || 'Guest' }}</span>
-            <span class="text-[10px] text-gray-500 font-black uppercase tracking-widest">{{ userRoleLabel }}</span>
+            <span class="text-[10px] text-gray-500 font-black  tracking-widest">{{ userRoleLabel }}</span>
           </div>
         </div>
         <button @click="handleLogout"

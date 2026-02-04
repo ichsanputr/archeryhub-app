@@ -10,7 +10,7 @@
       </div>
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="max-w-3xl">
-          <div class="flex items-center gap-2 text-primary text-sm font-bold uppercase tracking-wider mb-3">
+          <div class="flex items-center gap-2 text-primary text-sm font-bold  tracking-wider mb-3">
             <Icon icon="ph:shield-check" class="text-lg" />
             Legal
           </div>
@@ -33,7 +33,8 @@
         class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 md:p-12">
         <div class="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300">
           <p class="mb-6 leading-relaxed">
-            Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, mengungkapkan, dan melindungi informasi Anda ketika Anda mengunjungi
+            Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, mengungkapkan, dan melindungi
+            informasi Anda ketika Anda mengunjungi
             situs web kami termasuk bentuk media lainnya, saluran media, situs web seluler, atau
             aplikasi seluler yang terkait atau terhubung dengannya.
           </p>
@@ -41,12 +42,16 @@
           <p class="mb-4">Kami dapat mengumpulkan informasi tentang Anda dengan berbagai cara. Informasi
             yang mungkin kami kumpulkan di Situs meliputi:</p>
           <ul class="list-disc pl-6 space-y-2 mb-6 marker:text-primary">
-            <li><strong>Data Pribadi:</strong> Informasi yang dapat diidentifikasi secara pribadi, seperti nama Anda, alamat pengiriman, alamat email, dan nomor telepon, serta informasi demografis.</li>
+            <li><strong>Data Pribadi:</strong> Informasi yang dapat diidentifikasi secara pribadi, seperti nama Anda,
+              alamat pengiriman, alamat email, dan nomor telepon, serta informasi demografis.</li>
             <li><strong>Data Turunan:</strong> Informasi yang secara otomatis dikumpulkan server kami ketika
-              Anda mengakses Situs, seperti alamat IP Anda, jenis browser, sistem operasi, waktu akses, dan halaman yang telah Anda lihat langsung sebelum dan setelah
+              Anda mengakses Situs, seperti alamat IP Anda, jenis browser, sistem operasi, waktu akses, dan halaman yang
+              telah Anda lihat langsung sebelum dan setelah
               mengakses Situs.</li>
-            <li><strong>Data Keuangan:</strong> Informasi keuangan, seperti data terkait metode pembayaran Anda (misalnya nomor kartu kredit yang valid, merek kartu, tanggal kedaluwarsa) yang
-              mungkin kami kumpulkan ketika Anda membeli, memesan, mengembalikan, menukar, atau meminta informasi tentang
+            <li><strong>Data Keuangan:</strong> Informasi keuangan, seperti data terkait metode pembayaran Anda
+              (misalnya nomor kartu kredit yang valid, merek kartu, tanggal kedaluwarsa) yang
+              mungkin kami kumpulkan ketika Anda membeli, memesan, mengembalikan, menukar, atau meminta informasi
+              tentang
               layanan kami dari Situs.</li>
           </ul>
           <h3 class="text-xl font-bold text-navy dark:text-white mt-8 mb-4">2. Penggunaan Informasi Anda</h3>

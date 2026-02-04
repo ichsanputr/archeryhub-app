@@ -25,7 +25,7 @@
                     <Icon icon="ph:package" class="text-xl" />
                 </div>
                 <div>
-                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Total Produk</p>
+                    <p class="text-xs text-gray-400 font-bold  tracking-wider">Total Produk</p>
                     <p class="text-lg font-bold text-navy">{{ products.length }}</p>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                     <Icon icon="ph:check-circle" class="text-xl" />
                 </div>
                 <div>
-                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Aktif</p>
+                    <p class="text-xs text-gray-400 font-bold  tracking-wider">Aktif</p>
                     <p class="text-lg font-bold text-navy">{{products.filter(p => p.status === 'active').length}}</p>
                 </div>
             </div>
@@ -47,7 +47,7 @@
                     <Icon icon="ph:eye" class="text-xl" />
                 </div>
                 <div>
-                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Total View</p>
+                    <p class="text-xs text-gray-400 font-bold  tracking-wider">Total View</p>
                     <p class="text-lg font-bold text-navy">{{products.reduce((acc, p) => acc + p.views,
                         0).toLocaleString()}}</p>
                 </div>
@@ -59,7 +59,7 @@
                     <Icon icon="ph:shopping-cart" class="text-xl" />
                 </div>
                 <div>
-                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Terjual</p>
+                    <p class="text-xs text-gray-400 font-bold  tracking-wider">Terjual</p>
                     <p class="text-lg font-bold text-navy">{{products.reduce((acc, p) => acc + p.sold, 0)}}</p>
                 </div>
             </div>
@@ -89,18 +89,17 @@
                 <table class="w-full text-left border-collapse min-w-[900px]">
                     <thead>
                         <tr class="bg-gray-50/50 border-b border-gray-100">
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">
+                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">
                                 Produk</th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">
+                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">
                                 Kategori</th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">
+                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">
                                 Harga</th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">
+                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">
                                 Stok</th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">
+                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">
                                 Status</th>
-                            <th
-                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest text-right">
+                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest text-right">
                                 Aksi</th>
                         </tr>
                     </thead>
@@ -142,7 +141,7 @@
                             <!-- Category -->
                             <td class="px-6 py-4">
                                 <span :class="[
-                                    'px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider',
+                                    'px-3 py-1 rounded-full text-xs font-bold  tracking-wider',
                                     product.category === 'equipment' ? 'bg-blue-50 text-blue-600' :
                                         product.category === 'apparel' ? 'bg-purple-50 text-purple-600' :
                                             product.category === 'accessories' ? 'bg-amber-50 text-amber-600' :
@@ -175,7 +174,7 @@
                             <!-- Status -->
                             <td class="px-6 py-4">
                                 <span :class="[
-                                    'px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider',
+                                    'px-3 py-1 rounded-full text-xs font-bold  tracking-wider',
                                     product.status === 'active' ? 'bg-green-50 text-green-600' :
                                         product.status === 'draft' ? 'bg-gray-100 text-gray-500' :
                                             product.status === 'sold_out' ? 'bg-red-50 text-red-600' :

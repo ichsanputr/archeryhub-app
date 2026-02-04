@@ -27,7 +27,7 @@
                     <Icon icon="ph:newspaper" class="text-xl" />
                 </div>
                 <div>
-                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Total Berita</p>
+                    <p class="text-xs text-gray-400 font-bold  tracking-wider">Total Berita</p>
                     <p class="text-lg font-bold text-navy">{{ news.length }}</p>
                 </div>
             </div>
@@ -38,7 +38,7 @@
                     <Icon icon="ph:check-circle" class="text-xl" />
                 </div>
                 <div>
-                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Dipublikasi</p>
+                    <p class="text-xs text-gray-400 font-bold  tracking-wider">Dipublikasi</p>
                     <p class="text-lg font-bold text-navy">{{news.filter(n => n.status === 'published').length}}</p>
                 </div>
             </div>
@@ -49,7 +49,7 @@
                     <Icon icon="ph:file-text" class="text-xl" />
                 </div>
                 <div>
-                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Draft</p>
+                    <p class="text-xs text-gray-400 font-bold  tracking-wider">Draft</p>
                     <p class="text-lg font-bold text-navy">{{news.filter(n => n.status === 'draft').length}}</p>
                 </div>
             </div>
@@ -60,9 +60,9 @@
                     <Icon icon="ph:eye" class="text-xl" />
                 </div>
                 <div>
-                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Total View</p>
+                    <p class="text-xs text-gray-400 font-bold  tracking-wider">Total View</p>
                     <p class="text-lg font-bold text-navy">{{news.reduce((acc, n) => acc + n.views, 0).toLocaleString()
-                        }}</p>
+                    }}</p>
                 </div>
             </div>
         </div>
@@ -101,7 +101,7 @@
                     <!-- Category Badge -->
                     <div class="absolute top-4 left-4">
                         <span :class="[
-                            'px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-sm',
+                            'px-3 py-1 rounded-full text-xs font-bold  tracking-wider backdrop-blur-sm',
                             item.category === 'Event' ? 'bg-blue-500/90 text-white' :
                                 item.category === 'Pengumuman' ? 'bg-amber-500/90 text-white' :
                                     item.category === 'Prestasi' ? 'bg-green-500/90 text-white' :

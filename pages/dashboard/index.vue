@@ -30,7 +30,7 @@
             <span class="text-[10px] font-black text-green-500 bg-green-50 px-2 py-1 rounded-full">+12%</span>
           </div>
           <div>
-            <p class="text-gray-400 text-[10px] font-black uppercase tracking-widest mb-1">{{ stat.label }}</p>
+            <p class="text-gray-400 text-[10px] font-black  tracking-widest mb-1">{{ stat.label }}</p>
             <p class="text-navy text-3xl font-black tracking-tight">{{ stat.value }}</p>
             <p class="text-gray-500 text-xs mt-2 font-medium">{{ stat.desc }}</p>
           </div>
@@ -54,7 +54,7 @@
               <div class="flex items-center gap-4">
                 <div
                   class="w-12 h-12 rounded-lg bg-white border border-gray-100 flex flex-col items-center justify-center shrink-0">
-                  <span class="text-[10px] font-black text-primary uppercase">{{ event.date.split(' ')[1] }}</span>
+                  <span class="text-[10px] font-black text-primary ">{{ event.date.split(' ')[1] }}</span>
                   <span class="text-lg font-black text-navy leading-none">{{ event.date.split(' ')[0] }}</span>
                 </div>
                 <div>
@@ -76,7 +76,7 @@
         <!-- Quick Actions & New Members -->
         <div class="space-y-6">
           <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
-            <h3 class="font-black text-navy mb-4 text-xs uppercase tracking-[0.2em] flex items-center gap-2">
+            <h3 class="font-black text-navy mb-4 text-xs  tracking-[0.2em] flex items-center gap-2">
               <Icon icon="ph:lightning-bold" class="text-primary" />
               Aksi Cepat
             </h3>
@@ -84,18 +84,18 @@
               <NuxtLink to="/dashboard/members"
                 class="flex flex-col items-center gap-2 p-4 rounded-xl bg-gray-50 hover:bg-primary/5 hover:border-primary/20 border border-transparent transition-all group">
                 <Icon icon="ph:user-list" class="text-2xl text-primary" />
-                <span class="text-[9px] font-black text-navy uppercase text-center">Data Anggota</span>
+                <span class="text-[9px] font-black text-navy  text-center">Data Anggota</span>
               </NuxtLink>
               <NuxtLink to="/dashboard/news"
                 class="flex flex-col items-center gap-2 p-4 rounded-xl bg-gray-50 hover:bg-primary/5 hover:border-primary/20 border border-transparent transition-all group">
                 <Icon icon="ph:newspaper-clipping" class="text-2xl text-primary" />
-                <span class="text-[9px] font-black text-navy uppercase text-center">Buat Berita</span>
+                <span class="text-[9px] font-black text-navy  text-center">Buat Berita</span>
               </NuxtLink>
             </div>
           </div>
 
           <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
-            <h3 class="font-black text-navy mb-4 text-xs uppercase tracking-[0.2em] flex items-center gap-2">
+            <h3 class="font-black text-navy mb-4 text-xs  tracking-[0.2em] flex items-center gap-2">
               <Icon icon="ph:user-plus-bold" class="text-primary" />
               Anggota Terbaru
             </h3>
@@ -107,10 +107,10 @@
                 </div>
                 <div class="flex-1 min-w-0">
                   <p class="text-sm font-bold text-navy truncate">{{ member.name }}</p>
-                  <p class="text-[10px] text-gray-400 uppercase tracking-tighter">{{ member.joinDate }}</p>
+                  <p class="text-[10px] text-gray-400  tracking-tighter">{{ member.joinDate }}</p>
                 </div>
                 <span :class="member.status === 'Active' ? 'text-green-500 bg-green-50' : 'text-amber-500 bg-amber-50'"
-                  class="text-[9px] font-black px-2 py-0.5 rounded-full uppercase">{{ member.status }}</span>
+                  class="text-[9px] font-black px-2 py-0.5 rounded-full ">{{ member.status }}</span>
               </div>
             </div>
             <NuxtLink to="/dashboard/members"
@@ -156,7 +156,7 @@
           </div>
 
           <div class="relative z-10">
-            <p class="text-gray-400 text-[10px] font-black uppercase tracking-widest mb-1">{{ stat.label }}</p>
+            <p class="text-gray-400 text-[10px] font-black  tracking-widest mb-1">{{ stat.label }}</p>
             <p class="text-navy text-3xl font-black tracking-tight tabular-nums">{{ stat.value }}</p>
             <p class="text-gray-400 text-xs mt-2 font-medium">{{ stat.desc }}</p>
           </div>
@@ -182,17 +182,17 @@
               <table class="w-full text-left border-collapse">
                 <thead>
                   <tr class="bg-gray-50/50">
-                    <th class="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">ID Pesanan</th>
-                    <th class="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Total</th>
-                    <th class="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Status</th>
-                    <th class="px-6 py-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">Aksi</th>
+                    <th class="px-6 py-4 text-[10px] font-black text-gray-400  tracking-widest">ID Pesanan</th>
+                    <th class="px-6 py-4 text-[10px] font-black text-gray-400  tracking-widest">Total</th>
+                    <th class="px-6 py-4 text-[10px] font-black text-gray-400  tracking-widest">Status</th>
+                    <th class="px-6 py-4 text-[10px] font-black text-gray-400  tracking-widest">Aksi</th>
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-50">
                   <tr v-for="order in sellerRecentOrders" :key="order.uuid"
                     class="hover:bg-gray-50/50 transition-colors group">
                     <td class="px-6 py-4">
-                      <span class="font-bold text-navy text-sm">{{ order.uuid.substring(0, 8).toUpperCase() }}</span>
+                      <span class="font-bold text-navy text-sm">{{ order.uuid.substring(0, 8).to() }}</span>
                       <p class="text-[10px] text-gray-400 font-medium">{{ formatDate(order.created_at) }}</p>
                     </td>
                     <td class="px-6 py-4">
@@ -200,7 +200,7 @@
                     </td>
                     <td class="px-6 py-4">
                       <span :class="getStatusBadgeClass(order.status)"
-                        class="text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-tighter ring-1 ring-inset">
+                        class="text-[9px] font-black px-2.5 py-1 rounded-full  tracking-tighter ring-1 ring-inset">
                         {{ order.status }}
                       </span>
                     </td>
@@ -239,7 +239,7 @@
         <div class="space-y-8">
           <!-- Inventory Alerts -->
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
-            <h3 class="font-black text-navy mb-6 text-xs uppercase tracking-[0.2em] flex items-center gap-2">
+            <h3 class="font-black text-navy mb-6 text-xs  tracking-[0.2em] flex items-center gap-2">
               <Icon icon="ph:warning-circle-bold" class="text-amber-500" />
               Stok Menipis
             </h3>
@@ -256,7 +256,7 @@
                   <p class="text-sm font-bold text-navy truncate group-hover:text-primary transition-colors">{{
                     product.name }}</p>
                   <div class="flex items-center gap-2 mt-1">
-                    <span class="text-[10px] font-black text-red-500 bg-red-50 px-2 py-0.5 rounded-full uppercase">Sisa
+                    <span class="text-[10px] font-black text-red-500 bg-red-50 px-2 py-0.5 rounded-full ">Sisa
                       {{ product.stock }}</span>
                   </div>
                 </div>
@@ -268,7 +268,7 @@
               </div>
             </div>
             <NuxtLink to="/dashboard/products"
-              class="block w-full text-center mt-6 text-[10px] font-black text-gray-400 hover:text-primary uppercase tracking-widest transition-colors">
+              class="block w-full text-center mt-6 text-[10px] font-black text-gray-400 hover:text-primary  tracking-widest transition-colors">
               Kelola Semua Produk
             </NuxtLink>
           </div>
@@ -301,7 +301,7 @@
           class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-md hover:shadow-md transition-all border border-gray-100 group">
           <div class="flex justify-between items-start">
             <div>
-              <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Total Atlet</p>
+              <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Total Atlet</p>
               <p class="text-navy-dark text-3xl font-extrabold tracking-tight">124</p>
             </div>
             <div
@@ -322,7 +322,7 @@
           class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-md hover:shadow-md transition-all border border-gray-100 group">
           <div class="flex justify-between items-start">
             <div>
-              <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Target Aktif</p>
+              <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Target Aktif</p>
               <p class="text-navy-dark text-3xl font-extrabold tracking-tight">32<span
                   class="text-lg text-gray-400 font-medium ml-1">/ 35</span></p>
             </div>
@@ -344,7 +344,7 @@
           class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-md hover:shadow-md transition-all border border-gray-100 group">
           <div class="flex justify-between items-start">
             <div>
-              <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Penyelesaian</p>
+              <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Penyelesaian</p>
               <p class="text-navy-dark text-3xl font-extrabold tracking-tight">85%</p>
             </div>
             <div
@@ -362,7 +362,7 @@
           class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-md hover:shadow-md transition-all border border-gray-100 group">
           <div class="flex justify-between items-start">
             <div>
-              <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Time Left</p>
+              <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Time Left</p>
               <p class="text-navy-dark text-3xl font-extrabold tracking-tight tabular-nums">45:20</p>
             </div>
             <div
@@ -396,7 +396,7 @@
               <div class="flex items-center gap-4 flex-1 min-w-0">
                 <div
                   class="w-12 h-12 rounded-lg bg-white border border-gray-100 flex flex-col items-center justify-center shrink-0">
-                  <span class="text-[10px] font-black text-primary uppercase">{{ event.dateLabel }}</span>
+                  <span class="text-[10px] font-black text-primary ">{{ event.dateLabel }}</span>
                   <span class="text-lg font-black text-navy leading-none">{{ event.dayLabel }}</span>
                 </div>
                 <div class="flex-1 min-w-0">
@@ -440,9 +440,9 @@
             <table class="w-full text-left text-sm">
               <thead class="bg-gray-50 text-gray-500 font-semibold border-b border-gray-100">
                 <tr>
-                  <th class="px-6 py-3 font-medium text-xs uppercase tracking-wider">Rk</th>
-                  <th class="px-6 py-3 font-medium text-xs uppercase tracking-wider">Archer</th>
-                  <th class="px-6 py-3 text-right font-medium text-xs uppercase tracking-wider">Score</th>
+                  <th class="px-6 py-3 font-medium text-xs  tracking-wider">Rk</th>
+                  <th class="px-6 py-3 font-medium text-xs  tracking-wider">Archer</th>
+                  <th class="px-6 py-3 text-right font-medium text-xs  tracking-wider">Score</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-100">

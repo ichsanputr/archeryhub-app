@@ -22,12 +22,12 @@
             <!-- Bow Types / Divisions -->
             <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
                 <div class="flex items-center justify-between">
-                    <label class="text-xs font-black text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                    <label class="text-xs font-black text-gray-400  tracking-widest flex items-center gap-2">
                         <Icon icon="ph:bow-arrow-bold" class="text-primary text-sm" />
                         Tipe Busur / Divisi
                     </label>
                     <button @click="toggleAll(divisions, selectedDivisions)"
-                        class="text-[10px] font-black text-primary-dark hover:underline uppercase tracking-widest">
+                        class="text-[10px] font-black text-primary-dark hover:underline  tracking-widest">
                         {{ selectedDivisions.length === divisions.length ? 'Deselect All' : 'Select All' }}
                     </button>
                 </div>
@@ -43,9 +43,9 @@
                         <div class="min-w-0">
                             <span class="text-sm font-bold block"
                                 :class="selectedDivisions.includes(div.uuid) ? 'text-navy' : 'text-gray-600'">{{
-                                div.name }}</span>
-                            <span class="text-[10px] font-medium text-gray-400 uppercase tracking-wide">Ref: {{ div.code
-                                }}</span>
+                                    div.name }}</span>
+                            <span class="text-[10px] font-medium text-gray-400  tracking-wide">Ref: {{ div.code
+                            }}</span>
                         </div>
                     </div>
                 </div>
@@ -54,12 +54,12 @@
             <!-- Age Groups -->
             <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4 text-left">
                 <div class="flex items-center justify-between">
-                    <label class="text-xs font-black text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                    <label class="text-xs font-black text-gray-400  tracking-widest flex items-center gap-2">
                         <Icon icon="ph:identification-card-bold" class="text-primary text-sm" />
                         Kelas Umur
                     </label>
                     <button @click="toggleAll(ageGroups, selectedAgeGroups)"
-                        class="text-[10px] font-black text-primary-dark hover:underline uppercase tracking-widest">
+                        class="text-[10px] font-black text-primary-dark hover:underline  tracking-widest">
                         {{ selectedAgeGroups.length === ageGroups.length ? 'Deselect All' : 'Select All' }}
                     </button>
                 </div>
@@ -75,8 +75,8 @@
                         <div class="min-w-0">
                             <span class="text-sm font-bold block"
                                 :class="selectedAgeGroups.includes(age.uuid) ? 'text-navy' : 'text-gray-600'">{{
-                                age.name }}</span>
-                            <span class="text-[10px] font-medium text-gray-400 uppercase tracking-wide">{{ age.min_age
+                                    age.name }}</span>
+                            <span class="text-[10px] font-medium text-gray-400  tracking-wide">{{ age.min_age
                                 || 'Any' }} - {{ age.max_age || 'Any' }} Tahun</span>
                         </div>
                     </div>

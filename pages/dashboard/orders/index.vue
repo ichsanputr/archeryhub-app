@@ -30,7 +30,7 @@
           <div :class="stat.colorClass" class="p-2 rounded-lg">
             <Icon :icon="stat.icon" class="text-xl" />
           </div>
-          <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">{{ stat.label }}</p>
+          <p class="text-[10px] font-black text-gray-400  tracking-widest">{{ stat.label }}</p>
         </div>
         <div>
           <p class="text-navy text-2xl font-black tracking-tight">{{ stat.value }}</p>
@@ -50,7 +50,7 @@
           <div class="flex p-1 bg-gray-50 rounded-xl">
             <button v-for="tab in tabs" :key="tab.value" @click="activeTab = tab.value"
               :class="activeTab === tab.value ? 'bg-white text-navy shadow-sm' : 'text-gray-400 hover:text-gray-600'"
-              class="px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition-all">
+              class="px-4 py-2 rounded-lg text-xs font-black  tracking-wider transition-all">
               {{ tab.label }}
             </button>
           </div>
@@ -72,8 +72,7 @@
 
         <table class="w-full text-left">
           <thead>
-            <tr
-              class="bg-gray-50/50 text-[10px] font-black text-gray-400 uppercase tracking-widest border-b border-gray-50">
+            <tr class="bg-gray-50/50 text-[10px] font-black text-gray-400  tracking-widest border-b border-gray-50">
               <th class="px-6 py-4">ID Pesanan</th>
               <th class="px-6 py-4">Tanggal</th>
               <th class="px-6 py-4 text-right">Total</th>
@@ -84,11 +83,11 @@
           <tbody class="divide-y divide-gray-50">
             <tr v-for="order in filteredOrders" :key="order.uuid" class="hover:bg-gray-50/50 transition-colors group">
               <td class="px-6 py-4">
-                <p class="font-black text-navy text-sm">#{{ order.uuid.substring(0, 8).toUpperCase() }}</p>
+                <p class="font-black text-navy text-sm">#{{ order.uuid.substring(0, 8).to() }}</p>
                 <div class="flex items-center gap-1 mt-0.5">
                   <span class="w-1.5 h-1.5 rounded-full"
                     :class="order.payment_status === 'paid' ? 'bg-green-500' : 'bg-red-500'"></span>
-                  <span class="text-[10px] text-gray-400 font-bold uppercase">{{ order.payment_status }}</span>
+                  <span class="text-[10px] text-gray-400 font-bold ">{{ order.payment_status }}</span>
                 </div>
               </td>
               <td class="px-6 py-4">
@@ -99,7 +98,7 @@
               </td>
               <td class="px-6 py-4">
                 <span :class="getStatusClass(order.status)"
-                  class="text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-tighter">
+                  class="text-[9px] font-black px-2 py-0.5 rounded-full  tracking-tighter">
                   {{ getStatusLabel(order.status) }}
                 </span>
               </td>

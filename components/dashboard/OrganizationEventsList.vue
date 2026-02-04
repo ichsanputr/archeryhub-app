@@ -52,15 +52,15 @@
         <table class="w-full text-left border-collapse min-w-[800px]">
           <thead>
             <tr class="bg-gray-50/50 border-b border-gray-100">
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Informasi
+              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">Informasi
                 Event
               </th>
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Jadwal & Lokasi
+              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">Jadwal & Lokasi
               </th>
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Peserta /
+              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">Peserta /
                 Kategori</th>
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Status</th>
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest text-right">Aksi
+              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">Status</th>
+              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest text-right">Aksi
               </th>
             </tr>
           </thead>
@@ -117,9 +117,9 @@
                       class="text-[15px] font-bold text-navy truncate group-hover:text-primary-dark transition-colors">
                       {{ event.name }}</div>
                     <div class="flex items-center gap-2 mt-0.5">
-                      <span class="text-[11px] font-bold text-gray-400 tracking-wide uppercase">{{ event.code }}</span>
+                      <span class="text-[11px] font-bold text-gray-400 tracking-wide ">{{ event.code }}</span>
                       <span class="text-gray-300">•</span>
-                      <span class="text-[11px] font-bold text-primary-dark uppercase tracking-wide">{{
+                      <span class="text-[11px] font-bold text-primary-dark  tracking-wide">{{
                         event.location_type || 'Event' }}</span>
                     </div>
                   </div>
@@ -185,7 +185,7 @@
       <!-- Pagination Card Footer -->
       <div v-if="filteredEvents.length > 0"
         class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <span class="text-xs text-gray-500 font-bold uppercase tracking-wider">
+        <span class="text-xs text-gray-500 font-bold  tracking-wider">
           Menampilkan <span class="text-navy">{{ filteredEvents.length }}</span> dari <span class="text-navy">{{
             events.length }}</span> Event
         </span>

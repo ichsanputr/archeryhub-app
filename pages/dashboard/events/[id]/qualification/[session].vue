@@ -101,11 +101,10 @@
           <table class="w-full">
             <thead>
               <tr class="bg-gray-50/50 border-b border-gray-100">
-                <th
-                  class="px-6 py-4 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest min-w-[350px]">
+                <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400  tracking-widest min-w-[350px]">
                   Pemanah
                 </th>
-                <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest w-64">
+                <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400  tracking-widest w-64">
                   Pilih
                   Target</th>
               </tr>
@@ -202,7 +201,7 @@
                     </span>
                     <span class="text-xs font-semibold text-gray-500">/ {{ sessionData?.total_ends || 0 }}</span>
                   </div>
-                  <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                  <span class="text-[10px] font-bold text-gray-400  tracking-wider">
                     {{ sessionData?.arrows_per_end || 0 }} Arrows
                   </span>
                 </div>

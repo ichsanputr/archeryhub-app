@@ -10,7 +10,7 @@
       </div>
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="max-w-3xl">
-          <div class="flex items-center gap-2 text-primary text-sm font-bold uppercase tracking-wider mb-3">
+          <div class="flex items-center gap-2 text-primary text-sm font-bold  tracking-wider mb-3">
             <Icon icon="ph:gavel" class="text-lg" />
             Legal
           </div>
@@ -50,12 +50,16 @@
           </p>
           <ol class="list-decimal pl-6 space-y-2 mb-6 marker:text-navy marker:font-bold">
             <li><strong>Informasi Klub:</strong> Informasi tentang klub disediakan untuk tujuan informasi.</li>
-            <li><strong>Ulasan Anggota:</strong> Pengguna bertanggung jawab atas konten ulasan mereka. Kami berhak menghapus ulasan yang melanggar pedoman komunitas kami.</li>
-            <li><strong>Perselisihan:</strong> Perselisihan apa pun antara pengguna dan klub yang ditemukan melalui platform kami harus diselesaikan langsung antara para pihak. Archery Hub tidak bertanggung jawab atas operasi klub.</li>
+            <li><strong>Ulasan Anggota:</strong> Pengguna bertanggung jawab atas konten ulasan mereka. Kami berhak
+              menghapus ulasan yang melanggar pedoman komunitas kami.</li>
+            <li><strong>Perselisihan:</strong> Perselisihan apa pun antara pengguna dan klub yang ditemukan melalui
+              platform kami harus diselesaikan langsung antara para pihak. Archery Hub tidak bertanggung jawab atas
+              operasi klub.</li>
           </ol>
           <h3 class="text-xl font-bold text-navy dark:text-white mt-8 mb-4">3. Penghentian</h3>
           <p class="mb-4">
-            Kami dapat menghentikan atau menangguhkan akses ke Layanan kami secara segera, tanpa pemberitahuan sebelumnya atau
+            Kami dapat menghentikan atau menangguhkan akses ke Layanan kami secara segera, tanpa pemberitahuan
+            sebelumnya atau
             tanggung jawab, untuk alasan apa pun, termasuk tanpa batasan jika Anda melanggar Syarat.
           </p>
         </div>

@@ -119,7 +119,7 @@
                                         </div>
                                         <div class="flex flex-wrap gap-2">
                                             <span v-for="cat in division.categories" :key="cat"
-                                                class="text-[10px] font-bold text-gray-500 bg-gray-100 px-2 py-1 rounded-full uppercase tracking-wider">
+                                                class="text-[10px] font-bold text-gray-500 bg-gray-100 px-2 py-1 rounded-full  tracking-wider">
                                                 {{ cat }}
                                             </span>
                                         </div>
@@ -173,7 +173,8 @@
                         </section>
 
                         <!-- Payment Methods Section -->
-                        <section v-if="tournament.page_settings?.sections?.payment_methods !== false && tournament.payment_methods && tournament.payment_methods.length > 0"
+                        <section
+                            v-if="tournament.page_settings?.sections?.payment_methods !== false && tournament.payment_methods && tournament.payment_methods.length > 0"
                             class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
                             <h2 class="text-lg sm:text-xl font-bold text-navy mb-6 flex items-center gap-2">
                                 <Icon icon="ph:credit-card-bold" class="text-navy" />
@@ -183,26 +184,32 @@
                                 <div v-for="(method, idx) in tournament.payment_methods" :key="idx"
                                     class="bg-gray-50 rounded-xl p-5 border border-gray-100 hover:border-navy/30 transition-colors">
                                     <div class="flex items-start gap-4">
-                                        <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm shrink-0">
-                                            <Icon 
+                                        <div
+                                            class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm shrink-0">
+                                            <Icon
                                                 :icon="method.type === 'bank' ? 'ph:bank-bold' : method.type === 'qris' ? 'ph:qr-code-bold' : 'ph:wallet-bold'"
                                                 class="text-2xl text-navy" />
                                         </div>
                                         <div class="flex-1 min-w-0">
                                             <div class="flex items-center gap-2 mb-1">
-                                                <span class="font-bold text-navy">{{ displayValue(method.bank_name) }}</span>
-                                                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider px-2 py-0.5 bg-gray-200 rounded">
-                                                    {{ method.type === 'bank' ? 'Bank' : method.type === 'qris' ? 'QRIS' : 'E-Wallet' }}
+                                                <span class="font-bold text-navy">{{ displayValue(method.bank_name)
+                                                    }}</span>
+                                                <span
+                                                    class="text-[10px] font-bold text-gray-400  tracking-wider px-2 py-0.5 bg-gray-200 rounded">
+                                                    {{ method.type === 'bank' ? 'Bank' : method.type === 'qris' ? 'QRIS'
+                                                    : 'E-Wallet' }}
                                                 </span>
                                             </div>
                                             <div class="space-y-1">
                                                 <p class="text-sm text-gray-600">
-                                                    <span class="font-medium">Nomor:</span> 
-                                                    <span class="font-bold text-navy">{{ displayValue(method.account_number) }}</span>
+                                                    <span class="font-medium">Nomor:</span>
+                                                    <span class="font-bold text-navy">{{
+                                                        displayValue(method.account_number) }}</span>
                                                 </p>
                                                 <p class="text-sm text-gray-600">
-                                                    <span class="font-medium">Atas Nama:</span> 
-                                                    <span class="font-semibold">{{ displayValue(method.account_name) }}</span>
+                                                    <span class="font-medium">Atas Nama:</span>
+                                                    <span class="font-semibold">{{ displayValue(method.account_name)
+                                                        }}</span>
                                                 </p>
                                                 <p v-if="method.instructions" class="text-xs text-gray-500 mt-2 italic">
                                                     {{ method.instructions }}
@@ -232,16 +239,16 @@
                                 <div
                                     class="bg-gradient-to-br from-[#FFD700]/10 to-transparent border border-[#FFD700]/30 rounded-xl p-6 text-center">
                                     <div class="text-4xl mb-2">🥇</div>
-                                    <div class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Juara 1
+                                    <div class="text-sm font-bold text-gray-500  tracking-wider mb-1">Juara 1
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{ displayValue(tournament.prizes?.first)
-                                        }}</div>
+                                    }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ firstPrizeCaption }}</div>
                                 </div>
                                 <div
                                     class="bg-gradient-to-br from-[#C0C0C0]/10 to-transparent border border-[#C0C0C0]/30 rounded-xl p-6 text-center">
                                     <div class="text-4xl mb-2">🥈</div>
-                                    <div class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Juara 2
+                                    <div class="text-sm font-bold text-gray-500  tracking-wider mb-1">Juara 2
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{
                                         displayValue(tournament.prizes?.second) }}</div>
@@ -250,10 +257,10 @@
                                 <div
                                     class="bg-gradient-to-br from-[#CD7F32]/10 to-transparent border border-[#CD7F32]/30 rounded-xl p-6 text-center">
                                     <div class="text-4xl mb-2">🥉</div>
-                                    <div class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-1">Juara 3
+                                    <div class="text-sm font-bold text-gray-500  tracking-wider mb-1">Juara 3
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{ displayValue(tournament.prizes?.third)
-                                        }}</div>
+                                    }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ thirdPrizeCaption }}</div>
                                 </div>
                             </div>
@@ -333,26 +340,26 @@
                                 :class="{ 'opacity-50': countdown.isClosed }">
                                 <span class="block text-2xl font-bold text-navy">{{ String(countdown.days).padStart(2,
                                     '0') }}</span>
-                                <span class="text-xs text-gray-500 uppercase">Hari</span>
+                                <span class="text-xs text-gray-500 ">Hari</span>
                             </div>
                             <div class="flex-1 bg-gray-50 rounded-lg p-3 text-center"
                                 :class="{ 'opacity-50': countdown.isClosed }">
                                 <span class="block text-2xl font-bold text-navy">{{ String(countdown.hours).padStart(2,
                                     '0') }}</span>
-                                <span class="text-xs text-gray-500 uppercase">Jam</span>
+                                <span class="text-xs text-gray-500 ">Jam</span>
                             </div>
                             <div class="flex-1 bg-gray-50 rounded-lg p-3 text-center"
                                 :class="{ 'opacity-50': countdown.isClosed }">
                                 <span class="block text-2xl font-bold text-navy">{{
                                     String(countdown.minutes).padStart(2, '0') }}</span>
-                                <span class="text-xs text-gray-500 uppercase">Menit</span>
+                                <span class="text-xs text-gray-500 ">Menit</span>
                             </div>
                         </div>
                         <!-- New Per-Category Quota Section -->
                         <!-- New Per-Category Quota Section (Always Scrollable) -->
                         <div class="mb-6">
                             <div class="flex items-center justify-between mb-3 px-1">
-                                <span class="text-xs font-black text-gray-400 uppercase tracking-widest">Ketersediaan
+                                <span class="text-xs font-black text-gray-400  tracking-widest">Ketersediaan
                                     Slot</span>
                                 <span class="text-xs font-bold text-navy bg-gray-100 px-2 py-1 rounded-md">
                                     {{ tournament.participant_count || 0 }} Terdaftar
@@ -365,7 +372,7 @@
                                     class="space-y-1.5 bg-white p-3 rounded-xl border border-gray-100 shadow-sm">
                                     <div class="flex justify-between items-start gap-4">
                                         <span
-                                            class="text-[10px] font-black text-navy leading-tight line-clamp-2 uppercase tracking-tight">
+                                            class="text-[10px] font-black text-navy leading-tight line-clamp-2  tracking-tight">
                                             {{ cat.division_name }} - {{ cat.category_name }}
                                         </span>
                                         <div class="text-right shrink-0">
@@ -373,7 +380,7 @@
                                                 {{ cat.participant_count }} / {{ cat.max_participants > 0 ?
                                                     cat.max_participants : 'Tidak Terbatas' }}
                                             </div>
-                                            <div class="text-[9px] text-gray-400 font-bold uppercase tracking-tighter">
+                                            <div class="text-[9px] text-gray-400 font-bold  tracking-tighter">
                                                 Peserta</div>
                                         </div>
                                     </div>
@@ -484,7 +491,7 @@
                     <!-- Share Section -->
                     <div
                         class="flex flex-col items-center gap-4 justify-center bg-gray-50/50 p-6 rounded-2xl border border-gray-100">
-                        <span class="text-xs font-black text-gray-400 uppercase tracking-widest">Bagikan Event
+                        <span class="text-xs font-black text-gray-400  tracking-widest">Bagikan Event
                             Ini</span>
                         <div class="flex gap-4">
                             <button @click="shareTo('whatsapp')"

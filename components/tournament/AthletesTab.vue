@@ -14,7 +14,7 @@
 
             <!-- Tipe / Divisi -->
             <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
-                <p class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-3">Tipe / Divisi</p>
+                <p class="text-xs font-bold text-gray-500  tracking-widest mb-3">Tipe / Divisi</p>
                 <div class="flex items-center gap-2 overflow-x-auto no-scrollbar">
                     <button v-for="cat in categories" :key="cat" @click="activeCategory = cat; currentPage = 1"
                         class="px-4 py-2 rounded-lg text-sm font-bold transition-all whitespace-nowrap shadow-sm border"
@@ -55,10 +55,10 @@
 
                 <div class="flex flex-wrap justify-center gap-2 mb-4">
                     <span
-                        class="px-2 py-1 bg-gray-50 text-gray-600 rounded text-[10px] font-bold uppercase tracking-wider text-center">{{
+                        class="px-2 py-1 bg-gray-50 text-gray-600 rounded text-[10px] font-bold  tracking-wider text-center">{{
                             athlete.division }}</span>
                     <span
-                        class="px-2 py-1 bg-gray-50 text-gray-600 rounded text-[10px] font-bold uppercase tracking-wider text-center">{{
+                        class="px-2 py-1 bg-gray-50 text-gray-600 rounded text-[10px] font-bold  tracking-wider text-center">{{
                             athlete.category }}</span>
                 </div>
 

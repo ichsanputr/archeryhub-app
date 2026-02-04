@@ -25,25 +25,22 @@
                 <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
                     <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
                         <div class="md:col-span-4">
-                            <label class="block text-xs font-bold text-text-sub uppercase tracking-wider mb-1">Nama
+                            <label class="block text-xs font-bold text-text-sub  tracking-wider mb-1">Nama
                                 Klub</label>
                             <BaseInput v-model="searchQuery" placeholder="Cari klub..." icon="ph:magnifying-glass" />
                         </div>
                         <div class="md:col-span-3">
-                            <label
-                                class="block text-xs font-bold text-text-sub uppercase tracking-wider mb-1">Provinsi</label>
+                            <label class="block text-xs font-bold text-text-sub  tracking-wider mb-1">Provinsi</label>
                             <BaseSelect v-model="province" :options="provinces.map(p => ({ value: p, label: p }))"
                                 placeholder="Semua Provinsi" />
                         </div>
                         <div class="md:col-span-3">
-                            <label
-                                class="block text-xs font-bold text-text-sub uppercase tracking-wider mb-1">Kota</label>
+                            <label class="block text-xs font-bold text-text-sub  tracking-wider mb-1">Kota</label>
                             <BaseSelect v-model="city" :options="cities.map(c => ({ value: c, label: c }))"
                                 placeholder="Semua Kota" />
                         </div>
                         <div class="md:col-span-2">
-                            <label
-                                class="block text-xs font-bold text-text-sub uppercase tracking-wider mb-1">Level</label>
+                            <label class="block text-xs font-bold text-text-sub  tracking-wider mb-1">Level</label>
                             <BaseSelect v-model="level" :options="[
                                 { value: 'Pro', label: 'Pro' },
                                 { value: 'Community', label: 'Community' }
@@ -130,14 +127,13 @@
                             <div class="grid grid-cols-2 gap-2 mb-6 py-3 border-y border-gray-50">
                                 <div class="text-center border-r border-gray-50">
                                     <span class="block font-bold text-navy">{{ club.members }}</span>
-                                    <span class="text-[10px] text-text-sub uppercase tracking-wide">Anggota</span>
+                                    <span class="text-[10px] text-text-sub  tracking-wide">Anggota</span>
                                 </div>
                                 <div class="text-center">
                                     <span
                                         :class="club.level === 'Pro' ? 'bg-primary/10 text-navy' : 'bg-gray-100 text-text-sub'"
                                         class="px-2 py-0.5 rounded font-bold text-[11px]">{{ club.level }}</span>
-                                    <span
-                                        class="block text-[10px] text-text-sub uppercase tracking-wide mt-0.5">Level</span>
+                                    <span class="block text-[10px] text-text-sub  tracking-wide mt-0.5">Level</span>
                                 </div>
                             </div>
                             <BaseButton variant="primary" block size="md"

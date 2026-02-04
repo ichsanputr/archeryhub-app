@@ -38,7 +38,7 @@
                     class="bg-white rounded-xl p-5 flex flex-col justify-between min-h-[120px] shadow-sm hover:shadow-md transition-all border border-gray-100 group">
                     <div class="flex justify-between items-start gap-2">
                         <div class="min-w-0">
-                            <p class="text-gray-400 text-[10px] font-black uppercase tracking-wider mb-1 truncate">{{
+                            <p class="text-gray-400 text-[10px] font-black  tracking-wider mb-1 truncate">{{
                                 stat.label }}</p>
                             <p class="text-navy text-2xl font-black tracking-tight tabular-nums">{{ stat.value }}</p>
                         </div>
@@ -70,11 +70,11 @@
                         <table class="w-full text-left min-w-[500px]">
                             <thead class="bg-gray-50/50 text-gray-500 font-bold border-b border-gray-100">
                                 <tr>
-                                    <th class="px-6 py-3 text-[10px] uppercase tracking-wider">Atlet</th>
-                                    <th class="px-6 py-3 text-[10px] uppercase tracking-wider">Kategori</th>
-                                    <th class="px-6 py-3 text-[10px] uppercase tracking-wider text-center">Avg Score
+                                    <th class="px-6 py-3 text-[10px]  tracking-wider">Atlet</th>
+                                    <th class="px-6 py-3 text-[10px]  tracking-wider">Kategori</th>
+                                    <th class="px-6 py-3 text-[10px]  tracking-wider text-center">Avg Score
                                     </th>
-                                    <th class="px-6 py-3 text-[10px] uppercase tracking-wider text-right">Trend</th>
+                                    <th class="px-6 py-3 text-[10px]  tracking-wider text-right">Trend</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-50">
@@ -92,7 +92,7 @@
                                     <td class="px-6 py-4">
                                         <span
                                             class="text-xs font-bold text-gray-500 bg-gray-100 px-2 py-1 rounded-lg">{{
-                                            athlete.category }}</span>
+                                                athlete.category }}</span>
                                     </td>
                                     <td class="px-6 py-4 text-center">
                                         <span class="text-navy font-black">{{ athlete.avgScore }}</span>
@@ -112,7 +112,7 @@
 
                 <!-- Category Distribution -->
                 <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-                    <h3 class="text-navy font-black text-sm uppercase tracking-widest mb-6 flex items-center gap-2">
+                    <h3 class="text-navy font-black text-sm  tracking-widest mb-6 flex items-center gap-2">
                         <Icon icon="ph:chart-pie-slice-bold" class="text-primary" />
                         Sebaran Kategori
                     </h3>
@@ -140,11 +140,11 @@
                     <div class="flex justify-between items-start gap-2">
                         <div class="min-w-0">
                             <p
-                                class="text-text-secondary text-[10px] md:text-xs font-bold uppercase tracking-wider mb-1 truncate">
+                                class="text-text-secondary text-[10px] md:text-xs font-bold  tracking-wider mb-1 truncate">
                                 {{ stat.label }}</p>
                             <p class="text-navy text-2xl md:text-3xl font-black tracking-tight tabular-nums">{{
                                 stat.value
-                                }}</p>
+                            }}</p>
                         </div>
                         <div
                             class="bg-gray-50 p-2 rounded-lg text-primary-dark group-hover:bg-primary group-hover:text-navy transition-colors shrink-0">
@@ -176,11 +176,11 @@
                         <table class="w-full text-left min-w-[500px]">
                             <thead class="bg-gray-50/50 text-gray-500 font-bold border-b border-gray-100">
                                 <tr>
-                                    <th class="px-4 md:px-6 py-3 text-[10px] uppercase tracking-wider">Peringkat</th>
-                                    <th class="px-4 md:px-6 py-3 text-[10px] uppercase tracking-wider">Atlet</th>
-                                    <th class="px-4 md:px-6 py-3 text-[10px] uppercase tracking-wider text-center">Skor
+                                    <th class="px-4 md:px-6 py-3 text-[10px]  tracking-wider">Peringkat</th>
+                                    <th class="px-4 md:px-6 py-3 text-[10px]  tracking-wider">Atlet</th>
+                                    <th class="px-4 md:px-6 py-3 text-[10px]  tracking-wider text-center">Skor
                                         Tertinggi</th>
-                                    <th class="px-4 md:px-6 py-3 text-[10px] uppercase tracking-wider text-right">
+                                    <th class="px-4 md:px-6 py-3 text-[10px]  tracking-wider text-right">
                                         Turnamen
                                     </th>
                                 </tr>
@@ -203,9 +203,9 @@
                                                 <div
                                                     class="text-sm font-bold text-navy group-hover:text-primary-hover transition-colors truncate">
                                                     {{ athlete.name }}</div>
-                                                <div class="text-[10px] text-gray-400 font-bold uppercase">{{
+                                                <div class="text-[10px] text-gray-400 font-bold ">{{
                                                     athlete.club
-                                                    }}</div>
+                                                }}</div>
                                             </div>
                                         </div>
                                     </td>
@@ -242,7 +242,7 @@
                         </div>
 
                         <div class="pt-4 border-t border-gray-100">
-                            <h4 class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4">Distribusi
+                            <h4 class="text-[10px] font-black text-gray-400  tracking-[0.2em] mb-4">Distribusi
                                 Geografis</h4>
                             <div class="flex items-center gap-2">
                                 <div class="flex-1 h-3 bg-gray-100 rounded-lg flex overflow-hidden">
@@ -284,8 +284,8 @@
                             <p class="text-sm font-bold text-navy">{{ activity.title }}</p>
                             <p class="text-xs text-text-secondary mt-1 leading-relaxed">{{ activity.description }}</p>
                         </div>
-                        <span class="text-[10px] text-text-secondary font-black uppercase shrink-0">{{ activity.time
-                        }}</span>
+                        <span class="text-[10px] text-text-secondary font-black  shrink-0">{{ activity.time
+                            }}</span>
                     </div>
                 </div>
             </div>

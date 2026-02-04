@@ -30,7 +30,7 @@
                     </p>
 
                     <div v-if="transaction.status === 'pending'" class="bg-navy/5 rounded-xl p-4 inline-block">
-                        <p class="text-xs text-gray-500 uppercase font-bold tracking-widest mb-1">Batas Waktu Pembayaran
+                        <p class="text-xs text-gray-500  font-bold tracking-widest mb-1">Batas Waktu Pembayaran
                         </p>
                         <p class="text-xl font-black text-navy">{{ timeLeft }}</p>
                     </div>
@@ -43,7 +43,7 @@
                         class="p-6 border-b border-gray-100 bg-gray-50 font-bold text-navy flex items-center justify-between">
                         <span>Rincian Pembayaran</span>
                         <span class="text-xs text-primary bg-primary/10 px-2 py-1 rounded">{{ transaction.payment_method
-                            }}</span>
+                        }}</span>
                     </div>
 
                     <div class="p-6 md:p-8 space-y-8 text-center">
@@ -73,7 +73,7 @@
                         <div class="py-6 border-t border-dashed border-gray-200">
                             <p class="text-sm font-bold text-gray-500 mb-2">Total yang harus dibayar:</p>
                             <p class="text-4xl font-black text-primary">IDR {{ transaction.total_amount.toLocaleString()
-                                }}</p>
+                            }}</p>
                         </div>
                     </div>
                 </div>

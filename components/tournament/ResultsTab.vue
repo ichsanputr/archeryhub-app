@@ -34,7 +34,7 @@
                                 class="w-full h-full flex flex-col items-center justify-center p-8 bg-white transition-all duration-500">
                                 <Icon :icon="getFileIcon(file.url)"
                                     class="text-6xl text-gray-200 group-hover:text-navy/20 transition-all duration-500" />
-                                <span class="mt-4 text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                                <span class="mt-4 text-[10px] font-bold  tracking-widest text-gray-400">
                                     {{ getFileExt(file.url) }} Document
                                 </span>
                             </div>
@@ -101,8 +101,7 @@
             <div class="overflow-x-auto">
                 <table class="w-full">
                     <thead>
-                        <tr
-                            class="text-[10px] text-gray-400 uppercase font-black tracking-widest border-b border-gray-50">
+                        <tr class="text-[10px] text-gray-400  font-black tracking-widest border-b border-gray-50">
                             <th class="px-4 py-3 text-left">Peringkat</th>
                             <th class="px-4 py-3 text-left">Atlet</th>
                             <th class="px-4 py-3 text-center">X+10</th>
@@ -123,7 +122,7 @@
                                 <div class="flex items-center gap-3">
                                     <div
                                         class="w-10 h-10 rounded-full bg-gray-100 overflow-hidden shrink-0 flex items-center justify-center">
-                                        <span class="text-xs font-bold text-gray-400 uppercase">
+                                        <span class="text-xs font-bold text-gray-400 ">
                                             {{ getInitials(result.full_name) }}
                                         </span>
                                     </div>
@@ -211,7 +210,7 @@ const handleDownload = async (file, index) => {
         let downloadName = (file.name || filename).replace(/[/\\?%*:|"<>]/g, '-')
         const parts = filename.split('.')
         const ext = parts.length > 1 ? parts.pop() : ''
-        
+
         if (ext && !downloadName.toLowerCase().endsWith(`.${ext.toLowerCase()}`)) {
             downloadName += `.${ext}`
         }
@@ -241,7 +240,7 @@ const getFileIcon = (url) => {
 
 const getFileType = (url) => {
     if (!url) return 'DOCUMENT'
-    const ext = url.split('.').pop().toUpperCase()
+    const ext = url.split('.').pop().to()
     return ext || 'DOCUMENT'
 }
 
@@ -289,7 +288,7 @@ const showElimination = computed(() => {
 const getInitials = (name) => {
     if (!name) return '?'
     const words = name.trim().split(/\s+/)
-    if (words.length === 1) return words[0].substring(0, 2).toUpperCase()
-    return (words[0][0] + words[words.length - 1][0]).toUpperCase()
+    if (words.length === 1) return words[0].substring(0, 2).to()
+    return (words[0][0] + words[words.length - 1][0]).to()
 }
 </script>

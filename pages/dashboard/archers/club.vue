@@ -63,7 +63,7 @@
                 <h2 class="text-2xl font-black text-navy">{{ myMembership.club_name }}</h2>
                 <p class="text-gray-500 font-medium">Status:
                   <span :class="myMembership.status === 'active' ? 'text-green-500' : 'text-amber-500'"
-                    class="font-bold uppercase tracking-tighter ml-1">
+                    class="font-bold  tracking-tighter ml-1">
                     {{ myMembership.status === 'active' ? 'Aktif' : 'Menunggu Persetujuan' }}
                   </span>
                 </p>
@@ -78,11 +78,11 @@
 
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-10">
               <div>
-                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Peran</p>
+                <p class="text-[10px] font-black text-gray-400  tracking-widest mb-1">Peran</p>
                 <p class="text-navy font-bold">{{ myMembership.role === 'member' ? 'Anggota' : 'Admin' }}</p>
               </div>
               <div>
-                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Bergabung Sejak</p>
+                <p class="text-[10px] font-black text-gray-400  tracking-widest mb-1">Bergabung Sejak</p>
                 <p class="text-navy font-bold">{{ formatDate(myMembership.joined_at || myMembership.created_at) }}</p>
               </div>
             </div>
@@ -120,16 +120,16 @@
           </BaseButton>
         </div>
 
-      <div class="bg-white rounded-2xl border border-gray-100 p-10 text-center space-y-4">
-        <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto">
-          <Icon icon="ph:buildings-bold" class="text-5xl text-gray-200" />
+        <div class="bg-white rounded-2xl border border-gray-100 p-10 text-center space-y-4">
+          <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto">
+            <Icon icon="ph:buildings-bold" class="text-5xl text-gray-200" />
+          </div>
+          <div>
+            <h3 class="text-xl font-black text-navy">Belum Bergabung dengan Klub</h3>
+            <p class="text-gray-500 max-w-md mx-auto mt-2">Cari dan temukan klub panahan di sekitar Anda untuk mulai
+              berlatih dan berprestasi bersama.</p>
+          </div>
         </div>
-        <div>
-          <h3 class="text-xl font-black text-navy">Belum Bergabung dengan Klub</h3>
-          <p class="text-gray-500 max-w-md mx-auto mt-2">Cari dan temukan klub panahan di sekitar Anda untuk mulai
-            berlatih dan berprestasi bersama.</p>
-        </div>
-      </div>
 
         <!-- Club Results -->
         <div v-if="isSearching"
@@ -145,8 +145,8 @@
               <div v-else class="w-full h-full bg-gradient-to-br from-navy to-navy-light"></div>
               <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
               <div class="absolute bottom-3 left-4 flex items-center gap-2">
-                <span v-if="club.city"
-                  class="text-[10px] font-black bg-white/90 px-2 py-0.5 rounded-full text-navy uppercase">{{ club.city
+                <span v-if="club.city" class="text-[10px] font-black bg-white/90 px-2 py-0.5 rounded-full text-navy ">{{
+                  club.city
                   }}</span>
               </div>
             </div>
@@ -158,7 +158,7 @@
                 </div>
                 <div class="min-w-0">
                   <h4 class="font-bold text-navy truncate">{{ club.name }}</h4>
-                  <p class="text-[10px] text-gray-400 font-bold uppercase">{{ club.member_count || 0 }} Anggota</p>
+                  <p class="text-[10px] text-gray-400 font-bold ">{{ club.member_count || 0 }} Anggota</p>
                 </div>
               </div>
               <div class="mt-4">

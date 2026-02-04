@@ -35,7 +35,7 @@
                                         <!-- Featured Event -->
                                         <div
                                             class="col-span-5 bg-gradient-to-br from-navy to-navy-light p-6 flex flex-col">
-                                            <span class="text-primary text-xs font-bold uppercase tracking-wider">Event
+                                            <span class="text-primary text-xs font-bold  tracking-wider">Event
                                                 Unggulan</span>
                                             <div class="mt-3 flex-1 flex flex-col justify-center" v-if="featuredEvent">
                                                 <div class="aspect-video bg-white/10 rounded-lg overflow-hidden mb-3">
@@ -64,8 +64,7 @@
                                         <!-- Latest Events -->
                                         <div class="col-span-7 p-6 flex flex-col">
                                             <div class="flex items-center justify-between mb-3">
-                                                <span
-                                                    class="text-gray-400 text-xs font-bold uppercase tracking-wider">Event
+                                                <span class="text-gray-400 text-xs font-bold  tracking-wider">Event
                                                     Terakhir</span>
                                                 <NuxtLink to="/events"
                                                     class="text-navy hover:text-primary text-xs font-bold transition-colors">
@@ -145,7 +144,7 @@
                                 <img v-if="user?.avatar_url" :src="user.avatar_url"
                                     class="w-full h-full object-cover" />
                                 <span v-else class="text-navy font-bold text-sm">{{ user?.full_name?.charAt(0) || 'U'
-                                }}</span>
+                                    }}</span>
                             </div>
                         </button>
 
@@ -255,13 +254,13 @@
                                 <img v-if="user?.avatar_url" :src="user.avatar_url"
                                     class="w-full h-full object-cover" />
                                 <span v-else class="text-navy font-black text-xl">{{ user?.full_name?.charAt(0) || 'U'
-                                }}</span>
+                                    }}</span>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <p class="text-navy font-black truncate">{{ user?.full_name || 'User' }}</p>
                                 <p class="text-xs text-gray-400 truncate">{{ user?.email }}</p>
                                 <span
-                                    class="inline-block mt-2 px-2 py-0.5 bg-primary/20 text-navy text-[10px] font-black rounded uppercase tracking-wider">
+                                    class="inline-block mt-2 px-2 py-0.5 bg-primary/20 text-navy text-[10px] font-black rounded  tracking-wider">
                                     {{ user?.user_type || 'Archer' }}
                                 </span>
                             </div>
@@ -280,7 +279,7 @@
                             class="flex items-center gap-4 p-4 rounded-2xl transition-all group"
                             :class="isActive(link.to) ? 'bg-primary text-navy' : 'text-gray-500 hover:bg-gray-50 hover:text-navy'">
                             <Icon :icon="link.icon" class="text-xl" />
-                            <span class="font-black text-sm uppercase tracking-wide">{{ link.label }}</span>
+                            <span class="font-black text-sm  tracking-wide">{{ link.label }}</span>
                         </NuxtLink>
 
                         <!-- Mobile Turnamen with Accordion -->
@@ -289,7 +288,7 @@
                                 class="w-full flex items-center justify-between p-4 rounded-2xl transition-all text-gray-500 hover:bg-gray-50 hover:text-navy">
                                 <div class="flex items-center gap-4">
                                     <Icon icon="ph:target-bold" class="text-xl" />
-                                    <span class="font-black text-sm uppercase tracking-wide">Event</span>
+                                    <span class="font-black text-sm  tracking-wide">Event</span>
                                 </div>
                                 <Icon icon="ph:caret-down-bold" class="text-xs transition-transform duration-300"
                                     :class="{ 'rotate-180': mobileSubmenuOpen }" />
@@ -321,23 +320,23 @@
                 <div class="p-6 border-t border-gray-50 bg-white">
                     <div v-if="isLoggedIn" class="space-y-3">
                         <NuxtLink to="/dashboard" @click="mobileMenuOpen = false"
-                            class="flex items-center justify-center gap-2 w-full py-3.5 bg-navy text-white rounded-2xl text-sm font-black uppercase tracking-wider shadow-lg shadow-navy/20 active:scale-95 transition-all">
+                            class="flex items-center justify-center gap-2 w-full py-3.5 bg-navy text-white rounded-2xl text-sm font-black  tracking-wider shadow-lg shadow-navy/20 active:scale-95 transition-all">
                             <Icon icon="ph:layout-bold" />
                             Dashboard
                         </NuxtLink>
                         <button @click="handleLogout(); mobileMenuOpen = false"
-                            class="flex items-center justify-center gap-2 w-full py-3.5 border-2 border-red-50 text-red-500 rounded-2xl text-sm font-black uppercase tracking-wider hover:bg-red-50 active:scale-95 transition-all">
+                            class="flex items-center justify-center gap-2 w-full py-3.5 border-2 border-red-50 text-red-500 rounded-2xl text-sm font-black  tracking-wider hover:bg-red-50 active:scale-95 transition-all">
                             <Icon icon="ph:sign-out-bold" />
                             Keluar
                         </button>
                     </div>
                     <div v-else class="grid grid-cols-2 gap-3">
                         <NuxtLink to="/auth/login" @click="mobileMenuOpen = false"
-                            class="flex items-center justify-center py-3.5 border-2 border-gray-50 text-navy rounded-2xl text-sm font-black uppercase tracking-wider hover:bg-gray-50 active:scale-95 transition-all">
+                            class="flex items-center justify-center py-3.5 border-2 border-gray-50 text-navy rounded-2xl text-sm font-black  tracking-wider hover:bg-gray-50 active:scale-95 transition-all">
                             Masuk
                         </NuxtLink>
                         <NuxtLink to="/auth/register" @click="mobileMenuOpen = false"
-                            class="flex items-center justify-center py-3.5 bg-primary text-navy rounded-2xl text-sm font-black uppercase tracking-wider shadow-lg shadow-primary/20 active:scale-95 transition-all">
+                            class="flex items-center justify-center py-3.5 bg-primary text-navy rounded-2xl text-sm font-black  tracking-wider shadow-lg shadow-primary/20 active:scale-95 transition-all">
                             Daftar
                         </NuxtLink>
                     </div>

@@ -48,7 +48,7 @@
                 <div class="lg:col-span-1 flex flex-col gap-8 md:gap-10 order-2">
                     <div class="space-y-6">
                         <span
-                            class="inline-block py-1 px-3 bg-primary text-navy text-[10px] font-black uppercase tracking-[0.2em] rounded-md">Ekosistem
+                            class="inline-block py-1 px-3 bg-primary text-navy text-[10px] font-black  tracking-[0.2em] rounded-md">Ekosistem
                             Presisi</span>
                         <h2 class="text-3xl md:text-4xl lg:text-5xl font-black text-navy leading-[1.1] font-display">
                             Semua Makin <span

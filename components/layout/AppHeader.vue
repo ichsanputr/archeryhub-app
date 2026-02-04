@@ -19,7 +19,8 @@
             :alt="user?.name || user?.full_name || 'Organization'" class="w-full h-full object-cover" />
           <img v-else src="/logo.png" alt="ArcheryHub" class="w-full h-full object-contain" />
         </div>
-        <span v-if="user?.role === 'organization' || user?.role === 'club'" class="text-sm font-black text-navy truncate max-w-[120px]">
+        <span v-if="user?.role === 'organization' || user?.role === 'club'"
+          class="text-sm font-black text-navy truncate max-w-[120px]">
           {{ getFirstWord(user?.full_name || user?.name || 'Dashboard') }}
         </span>
         <span v-else class="text-sm font-black text-navy">
@@ -231,9 +232,9 @@ const pageTitle = computed(() => {
   if (pathSegments.length === 0) return ''
   // If it's the second segment of dashboard (e.g. /dashboard/events)
   if (pathSegments[0] === 'dashboard' && pathSegments[1]) {
-    return pathSegments[1].charAt(0).toUpperCase() + pathSegments[1].slice(1)
+    return pathSegments[1].charAt(0).to() + pathSegments[1].slice(1)
   }
-  return pathSegments[0].charAt(0).toUpperCase() + pathSegments[0].slice(1)
+  return pathSegments[0].charAt(0).to() + pathSegments[0].slice(1)
 })
 
 const dashboardTitle = computed(() => {

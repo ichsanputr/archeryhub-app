@@ -211,15 +211,15 @@ definePageMeta({
           <div v-if="user && !loading && problemResults.length > 0" class="grid grid-cols-3 gap-4 lg:gap-6">
             <div class="bg-white/5 backdrop-blur rounded-2xl p-4 text-center border border-white/10 shadow-xl">
               <div class="text-2xl lg:text-3xl font-black text-primary">{{ totalAttempts }}</div>
-              <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Sesi</div>
+              <div class="text-xs font-bold text-slate-400  tracking-widest mt-1">Sesi</div>
             </div>
             <div class="bg-white/5 backdrop-blur rounded-2xl p-4 text-center border border-white/10 shadow-xl">
               <div class="text-2xl lg:text-3xl font-black text-primary">{{ averageTimeSpent }}</div>
-              <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Rata-rata</div>
+              <div class="text-xs font-bold text-slate-400  tracking-widest mt-1">Rata-rata</div>
             </div>
             <div class="bg-white/5 backdrop-blur rounded-2xl p-4 text-center border border-white/10 shadow-xl">
               <div class="text-2xl lg:text-3xl font-black text-primary">{{ bestExecutionTime }}ms</div>
-              <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Terbaik</div>
+              <div class="text-xs font-bold text-slate-400  tracking-widest mt-1">Terbaik</div>
             </div>
           </div>
         </div>

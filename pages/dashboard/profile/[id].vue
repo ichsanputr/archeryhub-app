@@ -53,7 +53,7 @@
                     <div
                         class="hidden lg:block bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-5 w-64 text-white">
                         <div class="flex items-center justify-between mb-2">
-                            <span class="text-white/40 text-xs font-bold uppercase tracking-wider">Status Saat
+                            <span class="text-white/40 text-xs font-bold  tracking-wider">Status Saat
                                 Ini</span>
                             <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                         </div>
@@ -76,7 +76,7 @@
                 <div v-for="metric in metrics" :key="metric.label"
                     class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between group hover:border-primary/50 transition-colors">
                     <div>
-                        <p class="text-text-sub text-xs font-bold uppercase tracking-wider mb-1">{{ metric.label }}</p>
+                        <p class="text-text-sub text-xs font-bold  tracking-wider mb-1">{{ metric.label }}</p>
                         <div class="flex items-baseline gap-2">
                             <h3 class="text-4xl font-black text-navy">{{ metric.value }}</h3>
                             <span v-if="metric.trend" :class="metric.trend > 0 ? 'text-green-500' : 'text-red-500'"
@@ -132,7 +132,7 @@
                                 <Icon :icon="item.icon" class="text-xl" />
                             </div>
                             <div>
-                                <p class="text-xs text-text-sub font-bold uppercase">{{ item.label }}</p>
+                                <p class="text-xs text-text-sub font-bold ">{{ item.label }}</p>
                                 <p class="font-bold text-navy text-sm">{{ item.value }}</p>
                             </div>
                         </div>
@@ -154,7 +154,7 @@
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm">
                         <thead>
-                            <tr class="bg-gray-50 border-b border-gray-100 text-xs uppercase text-text-sub">
+                            <tr class="bg-gray-50 border-b border-gray-100 text-xs  text-text-sub">
                                 <th class="px-6 py-4 font-bold">Turnamen</th>
                                 <th class="px-6 py-4 font-bold">Tanggal</th>
                                 <th class="px-6 py-4 font-bold">Kategori</th>

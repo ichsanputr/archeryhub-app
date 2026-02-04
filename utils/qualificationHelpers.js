@@ -167,7 +167,7 @@ export function convertLegacyScoreToArrows(oldScore) {
   for (let i = 1; i <= 6; i++) {
     const arrowValue = oldScore[`arrow_${i}`] || ''
     if (arrowValue) {
-      arrows.push(arrowValue.toString().toUpperCase())
+      arrows.push(arrowValue.toString().to())
     }
   }
   return arrows

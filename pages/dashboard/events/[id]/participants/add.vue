@@ -69,7 +69,7 @@
                                                     </div>
                                                 </div>
                                                 <div
-                                                    class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs uppercase overflow-hidden border border-gray-200 group-hover:border-primary/50 transition-colors">
+                                                    class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs  overflow-hidden border border-gray-200 group-hover:border-primary/50 transition-colors">
                                                     <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
                                                         class="w-full h-full object-cover" />
                                                 </div>
@@ -123,7 +123,7 @@
                             <div v-if="selectedArchers.length > 0" class="space-y-3">
                                 <div class="flex items-center justify-between">
                                     <p class="text-sm font-bold text-navy">Pemanah Terpilih ({{ selectedArchers.length
-                                        }})</p>
+                                    }})</p>
                                     <button @click="selectedArchers = []"
                                         class="text-xs text-red-500 font-bold hover:underline">
                                         Hapus Semua
@@ -134,7 +134,7 @@
                                         class="bg-blue-50 border border-blue-100 rounded-lg p-3 relative group">
                                         <div class="flex items-center gap-3">
                                             <div
-                                                class="h-10 w-10 rounded-full bg-white flex items-center justify-center text-navy font-bold text-xs uppercase overflow-hidden border border-gray-200">
+                                                class="h-10 w-10 rounded-full bg-white flex items-center justify-center text-navy font-bold text-xs  overflow-hidden border border-gray-200">
                                                 <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
                                                     class="w-full h-full object-cover" />
                                             </div>
