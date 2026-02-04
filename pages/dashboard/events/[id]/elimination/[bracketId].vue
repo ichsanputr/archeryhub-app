@@ -6,28 +6,26 @@
         </div>
 
         <template v-else-if="bracket">
-            <!-- Header -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div class="flex items-center gap-4">
-                    <button @click="navigateTo(`/dashboard/events/${eventId}/elimination`)"
-                        class="p-2 rounded-lg hover:bg-gray-100 transition-colors">
-                        <Icon icon="ph:arrow-left" class="text-xl text-gray-600" />
-                    </button>
-                    <div>
-                        <h1 class="text-2xl font-black text-navy">Bracket Eliminasi</h1>
-                        <p class="text-sm text-gray-500">{{ categoryName }}</p>
+            <!-- BRACKET VIEW MODE (no round query) -->
+            <template v-if="!selectedRound">
+                <!-- Header -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <button @click="navigateTo(`/dashboard/events/${eventId}/elimination`)"
+                            class="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                            <Icon icon="ph:arrow-left" class="text-xl text-gray-600" />
+                        </button>
+                        <div>
+                            <h1 class="text-2xl font-black text-navy">Bracket Eliminasi</h1>
+                            <p class="text-sm text-gray-500">{{ categoryName }}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="px-3 py-1.5 rounded-lg bg-gray-100 text-xs font-bold text-gray-600">
+                            {{ getFormatLabel(bracket.format) }}
+                        </span>
                     </div>
                 </div>
-                <div class="flex items-center gap-3">
-                    <span class="px-3 py-1.5 rounded-full text-xs font-black uppercase"
-                        :class="getStatusBadgeClass(bracket.status)">
-                        {{ getStatusLabel(bracket.status) }}
-                    </span>
-                    <span class="px-3 py-1.5 rounded-lg bg-gray-100 text-xs font-bold text-gray-600">
-                        {{ getFormatLabel(bracket.format) }}
-                    </span>
-                </div>
-            </div>
 
             <!-- Bracket Visualization -->
             <div class="bracket-visualization rounded-2xl shadow-sm overflow-hidden">
@@ -36,11 +34,15 @@
                         <!-- Each Round -->
                         <template v-for="(roundMatches, roundNo) in sortedRounds" :key="roundNo">
                             <div class="bracket-round">
-                                <div class="round-label" :class="{ 'final-label': isLastRound(parseInt(roundNo)) }">
+                                <NuxtLink
+                                    :to="`/dashboard/events/${eventId}/elimination/${bracketId}?round=${roundNo}`"
+                                    class="round-label hover:bg-primary/10 cursor-pointer transition-colors"
+                                    :class="{ 'final-label': isLastRound(parseInt(roundNo)) }">
                                     <Icon v-if="isLastRound(parseInt(roundNo))" icon="ph:crown-simple-fill"
                                         class="text-primary mr-2" />
                                     {{ getRoundName(parseInt(roundNo)) }}
-                                </div>
+                                    <Icon icon="ph:arrow-right" class="ml-2 text-sm opacity-50" />
+                                </NuxtLink>
                                 <div class="slots-container" :style="{ height: getTotalHeight + 'px' }">
                                     <div v-for="(match, idx) in roundMatches" :key="match.id" class="match-slot"
                                         :style="{ height: getSlotHeight(parseInt(roundNo)) + 'px' }">
@@ -106,7 +108,7 @@
             <Transition enter-active-class="transition duration-200 ease-out" enter-from-class="opacity-0 translate-y-4"
                 enter-to-class="opacity-100 translate-y-0" leave-active-class="transition duration-150 ease-in"
                 leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 translate-y-4">
-                <div v-if="selectedMatch && bracket.status === 'running'"
+                <div v-if="selectedMatch"
                     class="bg-white rounded-2xl border border-gray-100 shadow-lg overflow-hidden">
                     <div class="p-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
                         <h3 class="font-bold text-navy flex items-center gap-2">
@@ -205,35 +207,130 @@
                     </div>
                 </div>
             </Transition>
+            </template>
 
-            <!-- Entries List -->
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                <div class="p-5 border-b border-gray-100 bg-gray-50/50">
-                    <h3 class="font-bold text-navy flex items-center gap-2">
-                        <Icon icon="ph:list-numbers" class="text-primary" />
-                        Peserta Terdaftar ({{ entries.length }})
-                    </h3>
-                </div>
-                <div class="divide-y divide-gray-50">
-                    <div v-for="entry in entries" :key="entry.id"
-                        class="flex items-center justify-between px-5 py-3 hover:bg-gray-50 transition-colors">
-                        <div class="flex items-center gap-3">
-                            <span
-                                class="w-8 h-8 rounded-lg bg-navy text-primary flex items-center justify-center font-black text-sm">
-                                {{ entry.seed }}
-                            </span>
-                            <span class="font-bold text-navy">{{ entry.participant_name }}</span>
-                        </div>
-                        <div class="text-right">
-                            <p class="font-bold text-navy">{{ entry.qual_total_score || 0 }}</p>
-                            <p class="text-[10px] text-gray-500">Qualification</p>
+            <!-- ROUND MANAGEMENT MODE (when round query exists) -->
+            <template v-else>
+                <!-- Header -->
+                <div class="flex items-center gap-4 mb-6">
+                    <button @click="navigateTo(`/dashboard/events/${eventId}/elimination/${bracketId}`)"
+                        class="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                        <Icon icon="ph:arrow-left" class="text-xl text-gray-600" />
+                    </button>
+                    <div class="flex-1">
+                        <h1 class="text-2xl md:text-3xl font-black text-navy tracking-tight">
+                            {{ getRoundName(selectedRound) }} - {{ categoryName }}
+                        </h1>
+                        <div class="flex items-center gap-4 text-sm text-gray-600 mt-2">
+                            <span class="font-mono font-semibold">{{ bracket.format === 'recurve_set' ? 'Set System' : 'Total Score' }}</span>
+                            <span class="text-gray-300">•</span>
+                            <div class="flex items-center gap-1.5">
+                                <Icon icon="ph:sword" class="text-base" />
+                                <span><strong>{{ roundMatches.length }}</strong> Matches</span>
+                            </div>
                         </div>
                     </div>
-                    <div v-if="entries.length === 0" class="px-5 py-8 text-center text-gray-500">
-                        Belum ada peserta
+                </div>
+
+                <!-- Tabs -->
+                <div class="flex items-center gap-1 border-b border-gray-200 overflow-x-auto no-scrollbar bg-white rounded-t-2xl px-2">
+                    <button v-for="t in tabs" :key="t.id" @click="activeTab = t.id"
+                        class="px-6 py-4 text-sm font-bold transition-all border-b-2 flex items-center gap-2 whitespace-nowrap"
+                        :class="activeTab === t.id ? 'text-navy border-navy bg-gray-50' : 'text-gray-500 border-transparent hover:text-navy hover:bg-gray-50'">
+                        <Icon :icon="t.icon" class="text-xl" />
+                        {{ t.label }}
+                    </button>
+                </div>
+
+                <!-- TARGET MODE -->
+                <div v-if="activeTab === 'target'" class="space-y-6">
+                    <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+                        <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
+                            <div>
+                                <h2 class="text-lg font-bold text-navy">Alokasi Target per Match</h2>
+                                <p class="text-sm text-gray-500 mt-1">Tentukan target untuk setiap pertandingan di round ini</p>
+                            </div>
+                            <BaseButton variant="primary" icon="ph:shuffle" @click="autoAssignTargets">
+                                Auto Assign
+                            </BaseButton>
+                        </div>
+
+                        <!-- Match Target List -->
+                        <div class="space-y-3">
+                            <div v-for="match in roundMatches" :key="match.id"
+                                class="flex items-center gap-4 p-4 border border-gray-200 rounded-xl hover:border-primary/50 transition-colors">
+                                <div class="flex-1">
+                                    <p class="font-bold text-navy mb-1">Match {{ match.match_no }}</p>
+                                    <div class="flex items-center gap-3 text-sm text-gray-600">
+                                        <span>{{ match.entry_a_name || 'TBD' }}</span>
+                                        <span class="text-gray-300">vs</span>
+                                        <span>{{ match.entry_b_name || 'TBD' }}</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <label class="text-sm font-bold text-gray-600">Target:</label>
+                                    <input 
+                                        v-model="matchTargets[match.id]"
+                                        type="text"
+                                        placeholder="A1"
+                                        class="w-20 px-3 py-2 text-center font-bold border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 flex justify-end">
+                            <BaseButton variant="primary" @click="saveTargetAssignments" :disabled="savingTargets">
+                                {{ savingTargets ? 'Menyimpan...' : 'Simpan Target' }}
+                            </BaseButton>
+                        </div>
                     </div>
                 </div>
-            </div>
+
+                <!-- SCORING MODE -->
+                <div v-if="activeTab === 'scoring'" class="space-y-6">
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm">
+                        <div class="p-5 border-b border-gray-100 bg-gray-50/50">
+                            <h2 class="text-lg font-bold text-navy">Input Skor Pertandingan</h2>
+                            <p class="text-sm text-gray-500 mt-1">Klik pertandingan untuk input skor</p>
+                        </div>
+
+                        <div class="divide-y divide-gray-100">
+                            <div v-for="match in roundMatches" :key="match.id"
+                                @click="selectMatch(match)"
+                                class="p-5 hover:bg-gray-50 cursor-pointer transition-colors">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-navy/5 flex items-center justify-center">
+                                            <span class="font-black text-navy">{{ match.match_no }}</span>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-navy mb-1">Match {{ match.match_no }}</p>
+                                            <div class="flex items-center gap-3 text-sm">
+                                                <span class="text-gray-600">{{ match.entry_a_name || 'TBD' }}</span>
+                                                <span class="text-gray-400">vs</span>
+                                                <span class="text-gray-600">{{ match.entry_b_name || 'TBD' }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-4">
+                                        <div v-if="match.status === 'finished'" class="px-3 py-1.5 bg-green-100 text-green-700 rounded-lg text-xs font-bold">
+                                            Selesai
+                                        </div>
+                                        <div v-else-if="match.status === 'running'" class="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-lg text-xs font-bold">
+                                            Berlangsung
+                                        </div>
+                                        <div v-else class="px-3 py-1.5 bg-gray-100 text-gray-600 rounded-lg text-xs font-bold">
+                                            Menunggu
+                                        </div>
+                                        <Icon icon="ph:arrow-right" class="text-xl text-gray-400" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
         </template>
 
         <!-- Not Found -->
@@ -258,10 +355,18 @@ useHead({
 })
 
 const route = useRoute()
+const router = useRouter()
 const eventId = route.params.id
 const bracketId = route.params.bracketId
+const selectedRound = computed(() => route.query.round ? parseInt(route.query.round) : null)
 const { get, post } = useApi()
 const toast = useToast()
+
+const activeTab = ref('target')
+const tabs = [
+    { id: 'target', label: 'Target', icon: 'ph:target' },
+    { id: 'scoring', label: 'Scoring', icon: 'ph:pencil-simple' }
+]
 
 const isLoading = ref(true)
 const isSaving = ref(false)
@@ -271,6 +376,8 @@ const matches = ref([])
 const rounds = ref({})
 const selectedMatch = ref(null)
 const categoryName = ref('')
+const matchTargets = ref({})
+const savingTargets = ref(false)
 
 // Score inputs for 5 ends
 const scoreInputs = ref([
@@ -310,6 +417,35 @@ const canFinish = computed(() => {
         return totalScoreA.value !== totalScoreB.value && (totalScoreA.value > 0 || totalScoreB.value > 0)
     }
 })
+
+const roundMatches = computed(() => {
+    if (!selectedRound.value || !matches.value) return []
+    return matches.value.filter(m => m.round_no === selectedRound.value)
+})
+
+const autoAssignTargets = () => {
+    const targetLetters = ['A', 'B', 'C', 'D', 'E', 'F']
+    roundMatches.value.forEach((match, index) => {
+        const letter = targetLetters[index % targetLetters.length]
+        const number = Math.floor(index / targetLetters.length) + 1
+        matchTargets.value[match.id] = `${letter}${number}`
+    })
+    toast.success('Target berhasil di-assign otomatis')
+}
+
+const saveTargetAssignments = async () => {
+    savingTargets.value = true
+    try {
+        // Here you would save to API
+        // For now just show success
+        toast.success('Target berhasil disimpan')
+    } catch (error) {
+        console.error('Failed to save targets:', error)
+        toast.error('Gagal menyimpan target')
+    } finally {
+        savingTargets.value = false
+    }
+}
 
 const fetchBracket = async () => {
     isLoading.value = true

@@ -1,0 +1,373 @@
+<template>
+  <div class="flex flex-col gap-6 pb-12">
+    <!-- Enhanced Header -->
+    <div
+      class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
+      <!-- Background Pattern -->
+      <div class="absolute inset-0 opacity-20"
+        style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);">
+      </div>
+
+      <!-- Decorative Background Elements -->
+      <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+      <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
+      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
+
+      <!-- Header Content -->
+      <div class="relative p-6 sm:p-8">
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+          <div class="flex items-start gap-4">
+            <!-- Icon Badge -->
+            <div
+              class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
+              <Icon icon="ph:brackets-curly" class="text-primary text-2xl" />
+            </div>
+
+            <!-- Title Section -->
+            <div class="flex-1">
+              <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
+                Manajemen Eliminasi
+              </h1>
+              <p class="text-slate-300 text-sm max-w-2xl">
+                Kelola bracket eliminasi untuk {{ eventName }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex gap-3 flex-shrink-0">
+            <BaseButton variant="primary" icon="ph:plus-bold"
+              class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all"
+              @click="showCreateDialog = true">
+              Buat Bracket Baru
+            </BaseButton>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Brackets List -->
+    <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h2 class="text-lg font-bold text-navy">Daftar Bracket Eliminasi</h2>
+          <p class="text-sm text-gray-500 mt-1">Kelola dan monitor bracket pertandingan eliminasi</p>
+        </div>
+      </div>
+
+      <div v-if="loadingBrackets" class="flex gap-4 overflow-x-auto pb-2">
+        <div v-for="i in 4" :key="i" class="flex-shrink-0 w-72 p-5 rounded-xl border border-gray-100 animate-pulse">
+          <div class="flex items-start gap-3">
+            <div class="size-12 bg-gray-100 rounded-xl"></div>
+            <div class="flex-1">
+              <div class="h-5 bg-gray-100 rounded mb-2"></div>
+              <div class="h-4 bg-gray-50 rounded w-24"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div v-else-if="brackets.length === 0" class="text-center py-12 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
+        <Icon icon="ph:brackets-curly" class="text-4xl text-gray-300 mx-auto mb-3" />
+        <p class="text-sm font-bold text-gray-600 mb-1">Belum Ada Bracket Eliminasi</p>
+        <p class="text-xs text-gray-400">Buat bracket pertama untuk memulai pertandingan eliminasi</p>
+      </div>
+
+      <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <NuxtLink
+          v-for="bracket in brackets"
+          :key="bracket.id"
+          :to="`/dashboard/events/${eventId}/elimination/${bracket.id}`"
+          class="p-5 bg-gradient-to-br from-white to-gray-50 rounded-xl border-2 border-gray-200 hover:border-primary hover:shadow-lg transition-all text-left group">
+          
+          <!-- Header -->
+          <div class="flex items-start justify-between mb-4">
+            <div class="flex items-center gap-3 flex-1">
+              <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                <Icon icon="ph:brackets-curly" class="text-xl text-primary" />
+              </div>
+              <div class="min-w-0 flex-1">
+                <p class="font-bold text-navy group-hover:text-primary transition-colors line-clamp-2">
+                  {{ getBracketName(bracket) }}
+                </p>
+                <p class="text-xs text-gray-500 font-mono mt-1">{{ bracket.id }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Details -->
+          <div class="space-y-2 mb-4">
+            <div class="flex items-center gap-2 text-xs text-gray-600">
+              <Icon icon="ph:users-three" class="text-sm" />
+              <span class="font-semibold">{{ bracket.bracket_size }} peserta</span>
+            </div>
+            <div class="flex items-center gap-2 text-xs text-gray-600">
+              <Icon icon="ph:crosshair" class="text-sm" />
+              <span class="font-semibold">{{ getFormatLabel(bracket.format) }}</span>
+            </div>
+            <div class="flex items-center gap-2 text-xs text-gray-600">
+              <Icon icon="ph:list" class="text-sm" />
+              <span class="font-semibold">{{ getBracketTypeLabel(bracket.bracket_type) }}</span>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="flex items-center justify-between pt-3 border-t border-gray-200">
+            <span class="text-xs font-mono text-gray-400">{{ formatDate(bracket.created_at) }}</span>
+            <div class="flex items-center gap-1 font-bold text-xs group-hover:gap-2 transition-all">
+              <span>Buka</span>
+              <Icon icon="ph:arrow-right" class="text-sm" />
+            </div>
+          </div>
+        </NuxtLink>
+      </div>
+    </div>
+
+    <!-- Create Bracket Modal -->
+    <Transition
+      enter-active-class="transition duration-300 ease-out"
+      enter-from-class="opacity-0 scale-95"
+      enter-to-class="opacity-100 scale-100"
+      leave-active-class="transition duration-200 ease-in"
+      leave-from-class="opacity-100 scale-100"
+      leave-to-class="opacity-0 scale-95">
+      <div v-if="showCreateDialog" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" @click.self="showCreateDialog = false">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full">
+          <!-- Modal Header -->
+          <div class="p-6 border-b border-gray-100">
+            <div class="flex items-center justify-between">
+              <h2 class="text-xl font-black text-navy">Buat Bracket Baru</h2>
+              <button @click="showCreateDialog = false" class="text-gray-400 hover:text-gray-600">
+                <Icon icon="ph:x" class="text-2xl" />
+              </button>
+            </div>
+            <p class="text-sm text-gray-500 mt-2">Konfigurasikan bracket eliminasi untuk kategori</p>
+          </div>
+
+          <!-- Modal Body -->
+          <div class="p-6 space-y-4 max-h-[60vh] overflow-y-auto">
+            <!-- Category Selection -->
+            <div>
+              <label class="block text-sm font-bold text-navy mb-2">Kategori</label>
+              <select
+                v-model="newBracket.categoryId"
+                class="w-full px-4 py-3 rounded-xl border border-gray-200 text-navy font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
+                <option value="">-- Pilih Kategori --</option>
+                <option v-for="cat in categories" :key="cat.id" :value="cat.id">
+                  {{ getCategoryName(cat) }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Bracket Type -->
+            <div>
+              <label class="block text-sm font-bold text-navy mb-2">Tipe Bracket</label>
+              <select
+                v-model="newBracket.bracketType"
+                class="w-full px-4 py-3 rounded-xl border border-gray-200 text-navy font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
+                <option value="individual">Perorangan</option>
+                <option value="team3">Tim 3 Orang</option>
+                <option value="mixed2">Tim Campuran 2 Orang</option>
+              </select>
+            </div>
+
+            <!-- Format -->
+            <div>
+              <label class="block text-sm font-bold text-navy mb-2">Format</label>
+              <select
+                v-model="newBracket.format"
+                class="w-full px-4 py-3 rounded-xl border border-gray-200 text-navy font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
+                <option value="recurve_set">Set System (untuk Recurve)</option>
+                <option value="compound_total">Total Score (untuk Compound)</option>
+              </select>
+            </div>
+
+            <!-- Bracket Size -->
+            <div>
+              <label class="block text-sm font-bold text-navy mb-2">Ukuran Bracket</label>
+              <select
+                v-model.number="newBracket.bracketSize"
+                class="w-full px-4 py-3 rounded-xl border border-gray-200 text-navy font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
+                <option :value="4">4 Peserta</option>
+                <option :value="8">8 Peserta</option>
+                <option :value="16">16 Peserta</option>
+                <option :value="32">32 Peserta</option>
+                <option :value="64">64 Peserta</option>
+                <option :value="128">128 Peserta</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Modal Footer -->
+          <div class="p-6 border-t border-gray-100 flex gap-3">
+            <button
+              @click="showCreateDialog = false"
+              class="flex-1 px-4 py-3 rounded-xl border border-gray-200 text-navy font-bold hover:bg-gray-50 transition-colors">
+              Batal
+            </button>
+            <button
+              @click="createBracket"
+              :disabled="!newBracket.categoryId || creatingBracket"
+              class="flex-1 px-4 py-3 rounded-xl bg-primary text-navy font-bold hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+              <span v-if="!creatingBracket">Buat Bracket</span>
+              <span v-else class="flex items-center gap-2">
+                <span class="size-4 border-2 border-navy/30 border-t-navy rounded-full animate-spin"></span>
+                Membuat...
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </Transition>
+  </div>
+</template>
+
+<script setup>
+import { Icon } from '@iconify/vue'
+import { useApi } from '~/composables/useApi'
+import { useToast } from '~/composables/useToast'
+
+definePageMeta({
+  layout: 'dashboard'
+})
+
+useHead({
+  title: 'Manajemen Eliminasi - Dashboard'
+})
+
+const route = useRoute()
+const eventId = route.params.id
+const { get, post } = useApi()
+const { showToast } = useToast()
+
+const eventName = ref('Event')
+const brackets = ref([])
+const categories = ref([])
+const loadingBrackets = ref(false)
+const creatingBracket = ref(false)
+const showCreateDialog = ref(false)
+
+const newBracket = ref({
+  categoryId: '',
+  bracketType: 'individual',
+  format: 'recurve_set',
+  bracketSize: 8
+})
+
+const fetchEventName = async () => {
+  try {
+    const response = await get(`/events/${eventId}`)
+    eventName.value = response?.event?.name || response?.name || 'Event'
+  } catch (error) {
+    console.error('Failed to fetch event:', error)
+  }
+}
+
+const fetchBrackets = async () => {
+  loadingBrackets.value = true
+  try {
+    const response = await get(`/events/${eventId}/elimination/brackets`)
+    brackets.value = response?.brackets || []
+  } catch (error) {
+    console.error('Failed to fetch brackets:', error)
+    brackets.value = []
+  } finally {
+    loadingBrackets.value = false
+  }
+}
+
+const fetchCategories = async () => {
+  try {
+    const response = await get(`/events/${eventId}/categories`)
+    const fetchedCategories = response?.events || response.data?.events || response?.categories || response.data?.categories || []
+    categories.value = fetchedCategories
+  } catch (error) {
+    console.error('Failed to fetch categories:', error)
+    categories.value = []
+  }
+}
+
+const createBracket = async () => {
+  if (!newBracket.value.categoryId) {
+    showToast('Pilih kategori terlebih dahulu', 'warning')
+    return
+  }
+
+  creatingBracket.value = true
+  try {
+    const response = await post(`/events/${eventId}/elimination/brackets`, {
+      category_id: newBracket.value.categoryId,
+      bracket_type: newBracket.value.bracketType,
+      format: newBracket.value.format,
+      bracket_size: newBracket.value.bracketSize
+    })
+
+    if (response?.bracket?.id) {
+      showToast('Bracket berhasil dibuat', 'success')
+      showCreateDialog.value = false
+      newBracket.value = {
+        categoryId: '',
+        bracketType: 'individual',
+        format: 'recurve_set',
+        bracketSize: 8
+      }
+      await fetchBrackets()
+    } else {
+      showToast('Gagal membuat bracket', 'error')
+    }
+  } catch (error) {
+    console.error('Failed to create bracket:', error)
+    showToast(error?.response?.data?.error || 'Gagal membuat bracket', 'error')
+  } finally {
+    creatingBracket.value = false
+  }
+}
+
+const getBracketName = (bracket) => {
+  // Use category_name from API response if available
+  if (bracket.category_name) {
+    return bracket.category_name
+  }
+  // Fallback to matching with categories
+  const category = categories.value.find(c => c.id === bracket.category_id)
+  return getCategoryName(category) || `Bracket ${bracket.id}`
+}
+
+const getCategoryName = (category) => {
+  if (!category) return ''
+  const parts = [
+    category.division_name,
+    category.category_name,
+    category.event_type_name,
+    category.gender_division_name
+  ].filter(Boolean)
+  return parts.join(' ')
+}
+
+const getFormatLabel = (format) => {
+  const labels = {
+    recurve_set: 'Set System',
+    compound_total: 'Total Score'
+  }
+  return labels[format] || format
+}
+
+const getBracketTypeLabel = (type) => {
+  const labels = {
+    individual: 'Perorangan',
+    team3: 'Tim 3 Orang',
+    mixed2: 'Tim Campuran 2 Orang'
+  }
+  return labels[type] || type
+}
+
+const formatDate = (dateString) => {
+  if (!dateString) return ''
+  const date = new Date(dateString)
+  return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+}
+
+onMounted(async () => {
+  await Promise.all([fetchEventName(), fetchBrackets(), fetchCategories()])
+})
+</script>
