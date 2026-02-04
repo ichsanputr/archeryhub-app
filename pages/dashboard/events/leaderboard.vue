@@ -4,8 +4,7 @@
         <div
             class="bg-black/20 backdrop-blur-md border-b border-white/5 py-4 px-6 md:px-12 flex justify-between items-center shrink-0">
             <div class="flex items-center gap-4">
-                <div
-                    class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center shadow-[0_0_20px_rgba(183,251,35,0.3)]">
+                <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center shadow-md">
                     <Icon icon="ph:target-bold" class="text-navy text-2xl" />
                 </div>
                 <div>
@@ -33,7 +32,7 @@
             <div class="flex justify-between items-end px-2">
                 <div class="flex items-center gap-4">
                     <span
-                        class="px-4 py-1.5 bg-primary text-navy font-black text-sm rounded-full tracking-widest uppercase shadow-lg shadow-primary/20">
+                        class="px-4 py-1.5 bg-primary text-navy font-black text-sm rounded-full tracking-widest uppercase shadow-md shadow-primary/20">
                         RECURVE MEN 70m
                     </span>
                     <span class="text-xs font-bold text-white/40 uppercase tracking-widest">Qualification Session
@@ -87,7 +86,7 @@
                             <span
                                 class="block text-[10px] font-black text-white/20 uppercase tracking-widest mb-1">10s+X</span>
                             <span class="text-xl font-black text-white tabular-nums">{{ athlete.tens }}/{{ athlete.xs
-                                }}</span>
+                            }}</span>
                         </div>
                         <div class="text-center">
                             <span
@@ -102,7 +101,7 @@
                         <span
                             class="block text-[10px] font-black text-white/20 uppercase tracking-[0.2em] mb-1">Total</span>
                         <span class="text-2xl md:text-4xl font-black text-primary tabular-nums">{{ athlete.score
-                            }}</span>
+                        }}</span>
                     </div>
                 </div>
             </div>
@@ -133,10 +132,17 @@ import { Icon } from '@iconify/vue'
 import { ref, onMounted } from 'vue'
 const currentTime = ref('00:00:00')
 
+const updateTime = () => {
+    currentTime.value = new Date().toLocaleTimeString('en-GB')
+}
+
 onMounted(() => {
-    setInterval(() => {
-        currentTime.value = new Date().toLocaleTimeString('en-GB')
-    }, 1000)
+    updateTime()
+    setInterval(updateTime, 1000)
+})
+
+useHead({
+    title: 'Live Leaderboard - ArcheryHub Dashboard'
 })
 
 const leaderboard = [

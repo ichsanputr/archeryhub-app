@@ -8,7 +8,7 @@
       </div>
       <div class="flex gap-3">
         <button
-          class="inline-flex items-center gap-2 px-4 py-2.5 bg-navy text-white rounded-xl font-semibold text-sm shadow-lg shadow-primary/20 hover:bg-navy-dark transition"
+          class="inline-flex items-center gap-2 px-4 py-2.5 bg-navy text-white rounded-xl font-semibold text-sm shadow-md shadow-primary/20 hover:bg-navy-dark transition"
           :disabled="saving" @click="saveProfile">
           <LoadingSpinner v-if="saving" size="sm" />
           <Icon v-else icon="ph:floppy-disk" class="text-lg" />
@@ -23,7 +23,7 @@
       <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id" :class="[
         'px-5 py-2.5 rounded-xl text-sm font-black transition-all whitespace-nowrap flex items-center gap-2',
         activeTab === tab.id
-          ? 'bg-navy text-white shadow-lg shadow-navy/20'
+          ? 'bg-navy text-white shadow-md shadow-navy/20'
           : 'text-gray-400 hover:text-navy hover:bg-gray-50'
       ]">
         <Icon :icon="tab.icon" class="text-lg" />
@@ -61,7 +61,7 @@
                   @input="handleCitySearch" />
 
                 <div v-if="showCityDropdown && filteredCities.length > 0"
-                  class="absolute z-50 w-full mt-2 bg-white border border-gray-100 rounded-2xl shadow-2xl max-h-60 overflow-y-auto p-1 py-2">
+                  class="absolute z-50 w-full mt-2 bg-white border border-gray-100 rounded-2xl shadow-md max-h-60 overflow-y-auto p-1 py-2">
                   <button v-for="city in filteredCities" :key="city" type="button"
                     class="w-full px-4 py-2.5 text-left text-sm font-bold text-navy hover:bg-gray-50 rounded-xl transition-colors"
                     @mousedown.prevent="selectCity(city)">
@@ -251,7 +251,7 @@
                 <Icon icon="ph:chat-centered-dots-bold" class="text-4xl text-gray-200 mx-auto mb-2" />
                 <p class="text-sm text-gray-400 font-bold uppercase tracking-widest">Belum ada FAQ</p>
                 <button @click="addFAQ"
-                  class="mt-4 px-4 py-2 bg-navy text-white text-xs font-black rounded-xl shadow-lg hover:bg-navy-dark transition">Buat
+                  class="mt-4 px-4 py-2 bg-navy text-white text-xs font-black rounded-xl shadow-md hover:bg-navy-dark transition">Buat
                   FAQ Pertama</button>
               </div>
             </div>
@@ -276,7 +276,7 @@
 
         <!-- Public Profile Link -->
         <div
-          class="bg-gradient-to-br from-navy to-navy-light rounded-3xl p-6 text-white shadow-xl shadow-navy/20 relative overflow-hidden group">
+          class="bg-gradient-to-br from-navy to-navy-light rounded-3xl p-6 text-white shadow-md shadow-navy/20 relative overflow-hidden group">
           <Icon icon="ph:broadcast-bold"
             class="absolute -right-4 -top-4 text-8xl text-white/5 -rotate-12 group-hover:rotate-0 transition-transform duration-700" />
           <h3 class="font-black mb-2 flex items-center gap-2 relative z-10">
@@ -286,7 +286,7 @@
           <p class="text-xs text-blue-200 mb-6 relative z-10 leading-relaxed font-medium">Profil Anda aktif dan dapat
             diakses publik melalui URL unik Archery Hub.</p>
           <NuxtLink v-if="form.slug" :to="`/organization/${form.slug}`" target="_blank"
-            class="relative z-10 block w-full py-3.5 bg-primary text-navy font-black rounded-2xl text-center hover:bg-primary-hover hover:scale-[1.02] transition-all shadow-lg active:scale-95">
+            class="relative z-10 block w-full py-3.5 bg-primary text-navy font-black rounded-2xl text-center hover:bg-primary-hover hover:scale-[1.02] transition-all shadow-md active:scale-95">
             Lihat Halaman Publik
           </NuxtLink>
           <p v-else class="text-xs text-blue-300 italic relative z-10">Slug belum diatur</p>
@@ -312,6 +312,10 @@ definePageMeta({
   title: 'Profil Organisasi',
   layout: 'dashboard',
   middleware: ['auth']
+})
+
+useHead({
+  title: 'Profil Organisasi - ArcheryHub Dashboard'
 })
 
 const router = useRouter()

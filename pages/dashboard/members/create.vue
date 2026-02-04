@@ -15,7 +15,7 @@
       </div>
       <div class="flex gap-3">
         <button
-          class="inline-flex items-center gap-2 px-4 py-2.5 bg-navy text-white rounded-xl font-semibold text-sm shadow-lg shadow-primary/20 hover:bg-navy-dark transition"
+          class="inline-flex items-center gap-2 px-4 py-2.5 bg-navy text-white rounded-xl font-semibold text-sm shadow-md shadow-primary/20 hover:bg-navy-dark transition"
           :disabled="isSubmitting" @click="submit">
           <Icon v-if="!isSubmitting" icon="ph:floppy-disk" class="text-lg" />
           <LoadingSpinner v-else size="sm" />

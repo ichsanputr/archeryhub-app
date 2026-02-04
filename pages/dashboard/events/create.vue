@@ -81,7 +81,7 @@
               <!-- Image Thumbnails -->
               <div v-for="(img, index) in form.images" :key="index"
                 class="relative group w-32 h-32 rounded-xl overflow-hidden border-2 transition-all"
-                :class="img.isPrimary ? 'border-primary shadow-lg shadow-primary/20' : 'border-gray-200'">
+                :class="img.isPrimary ? 'border-primary shadow-md shadow-primary/20' : 'border-gray-200'">
                 <img :src="img.url" :alt="img.caption || 'Event image'" class="w-full h-full object-cover" />
 
                 <!-- Overlay Actions -->
@@ -207,6 +207,10 @@ import { useToast } from '~/composables/useToast'
 
 definePageMeta({
   layout: 'dashboard'
+})
+
+useHead({
+  title: 'Buat Event Baru - ArcheryHub Dashboard'
 })
 
 const router = useRouter()

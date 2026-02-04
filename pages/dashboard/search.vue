@@ -44,7 +44,7 @@
         <!-- Tournaments Tab -->
         <div v-if="activeTab === 'tournaments'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div v-for="tournament in results.tournaments" :key="tournament.id"
-            class="bg-white border border-gray-200 rounded-xl p-5 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 transition-all group cursor-pointer"
+            class="bg-white border border-gray-200 rounded-xl p-5 hover:border-primary/50 hover:shadow-md hover:shadow-primary/5 transition-all group cursor-pointer"
             @click="navigateTo(`/dashboard/events/${tournament.id}`)">
             <div class="flex justify-between items-start mb-4">
               <span class="px-2 py-1 rounded bg-navy text-white text-[10px] font-black tracking-widest">

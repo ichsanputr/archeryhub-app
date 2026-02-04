@@ -23,7 +23,7 @@
                 <div class="flex items-start gap-4">
                     <!-- Icon Badge -->
                     <div
-                        class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
+                        class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md flex-shrink-0">
                         <Icon icon="ph:shopping-cart" class="text-primary text-2xl" />
                     </div>
                     <div>
@@ -260,7 +260,7 @@
             <!-- Sidebar -->
             <aside class="space-y-6">
                 <div v-for="event in events" :key="event.id"
-                    class="bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 sticky top-24">
+                    class="bg-white rounded-2xl overflow-hidden shadow-md border border-gray-100 sticky top-24">
                     <div class="relative h-48">
                         <img :alt="event.name" class="w-full h-full object-cover"
                             :src="useImageOrDefault(event.banner_url)" />

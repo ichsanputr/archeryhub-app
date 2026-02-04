@@ -12,7 +12,7 @@
                 <p class="text-gray-500 font-medium mt-1">Kelola berita dan pengumuman organisasi Anda.</p>
             </div>
             <NuxtLink to="/dashboard/news/create">
-                <BaseButton variant="primary" icon="ph:plus-bold" class="shadow-lg shadow-primary/20">
+                <BaseButton variant="primary" icon="ph:plus-bold" class="shadow-md shadow-primary/20">
                     Buat Berita Baru
                 </BaseButton>
             </NuxtLink>
@@ -88,7 +88,7 @@
         <!-- News Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div v-for="item in filteredNews" :key="item.id"
-                class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-xl hover:border-primary/30 transition-all group">
+                class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md hover:border-primary/30 transition-all group">
 
                 <!-- Featured Image -->
                 <div class="relative h-48 bg-gradient-to-br from-navy to-blue-800 overflow-hidden">

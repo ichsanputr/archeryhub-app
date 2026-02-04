@@ -36,7 +36,7 @@
                     <div class="max-w-4xl mx-auto flex items-end">
                         <div class="relative group cursor-pointer">
                             <div
-                                class="w-28 h-28 md:w-36 md:h-36 rounded-full border-4 border-white shadow-xl overflow-hidden bg-gray-800 relative">
+                                class="w-28 h-28 md:w-36 md:h-36 rounded-full border-4 border-white shadow-md overflow-hidden bg-gray-800 relative">
                                 <img :src="profileData.avatar" :alt="profileData.name"
                                     class="w-full h-full object-cover" />
                                 <div
@@ -45,7 +45,7 @@
                                 </div>
                             </div>
                             <div
-                                class="absolute bottom-1 right-1 w-10 h-10 bg-primary rounded-full flex items-center justify-center shadow-lg border-2 border-white">
+                                class="absolute bottom-1 right-1 w-10 h-10 bg-primary rounded-full flex items-center justify-center shadow-md border-2 border-white">
                                 <Icon icon="ph:pencil-simple-bold" class="text-navy text-lg" />
                             </div>
                         </div>
@@ -195,6 +195,11 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+
+useHead({
+    title: 'Edit Profil - ArcheryHub Dashboard'
+})
+
 const profileData = ref({
     name: 'Arif Dwi Pangestu',
     username: 'arifpangestu',

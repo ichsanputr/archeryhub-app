@@ -98,7 +98,7 @@
             <!-- Image -->
             <div class="flex-1 flex items-center justify-center p-8 bg-[#151515]">
               <img :src="useImageOrDefault()" alt="Payment receipt"
-                class="max-w-full max-h-full object-contain shadow-2xl rounded-sm" />
+                class="max-w-full max-h-full object-contain shadow-md rounded-sm" />
             </div>
 
             <!-- Metadata -->
@@ -185,7 +185,7 @@
                 Request Info
               </button>
               <button
-                class="flex-[2] h-14 rounded-lg bg-primary text-background-dark hover:bg-yellow-400 shadow-lg shadow-primary/20 transition-all font-bold flex items-center justify-center gap-2">
+                class="flex-[2] h-14 rounded-lg bg-primary text-background-dark hover:bg-yellow-400 shadow-md shadow-primary/20 transition-all font-bold flex items-center justify-center gap-2">
                 <Icon icon="ph:seal-check-fill" />
                 Verify & Approve
               </button>
@@ -202,8 +202,12 @@ import { Icon } from '@iconify/vue'
 import { ref, computed } from 'vue'
 
 definePageMeta({
-  title: 'Registration Verification',
+  title: 'Verifikasi Pendaftaran - ArcheryHub Dashboard',
   layout: 'default'
+})
+
+useHead({
+  title: 'Verifikasi Pendaftaran - ArcheryHub Dashboard'
 })
 
 const selectedIndex = ref(0)

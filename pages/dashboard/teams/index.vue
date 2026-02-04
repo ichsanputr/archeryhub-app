@@ -10,7 +10,7 @@
           <p class="text-gray-500 font-medium mt-1 text-sm md:text-base">Kelola tim dan peserta grup dalam event Anda.
           </p>
         </div>
-        <BaseButton variant="primary" icon="ph:plus-bold" class="shadow-lg shadow-primary/20 h-10 md:h-11 px-4 md:px-6"
+        <BaseButton variant="primary" icon="ph:plus-bold" class="shadow-md shadow-primary/20 h-10 md:h-11 px-4 md:px-6"
           @click="showCreateModal = true">
           <span class="hidden sm:inline">Buat Tim Baru</span>
           <span class="sm:hidden">Buat Tim</span>
@@ -83,14 +83,14 @@
     <!-- Teams Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div v-for="team in filteredTeams" :key="team.id"
-        class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg hover:border-primary/30 transition-all group">
+        class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md hover:border-primary/30 transition-all group">
 
         <!-- Team Header -->
         <div class="p-6 border-b border-gray-100">
           <div class="flex items-start justify-between gap-4">
             <div class="flex items-center gap-4">
               <div
-                class="h-14 w-14 rounded-xl bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center text-navy font-black text-xl shadow-lg shadow-primary/20">
+                class="h-14 w-14 rounded-xl bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center text-navy font-black text-xl shadow-md shadow-primary/20">
                 {{ team.name.substring(0, 2).toUpperCase() }}
               </div>
               <div>

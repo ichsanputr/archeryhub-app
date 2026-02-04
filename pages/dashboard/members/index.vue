@@ -22,7 +22,7 @@
           </button>
           <NuxtLink to="/dashboard/members/create">
             <button
-              class="inline-flex items-center gap-2 px-3 md:px-4 py-2 bg-navy text-white rounded-xl font-semibold text-xs md:text-sm shadow-lg shadow-primary/20 hover:bg-navy-dark transition">
+              class="inline-flex items-center gap-2 px-3 md:px-4 py-2 bg-navy text-white rounded-xl font-semibold text-xs md:text-sm shadow-md shadow-primary/20 hover:bg-navy-dark transition">
               <Icon icon="ph:plus-bold" class="text-lg" />
               <span class="hidden sm:inline">Tambah Anggota</span>
               <span class="sm:hidden">Tambah</span>
@@ -196,7 +196,7 @@
     <!-- Invite Modal -->
     <div v-if="isInviteOpen"
       class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
-      <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl border border-gray-100 overflow-hidden">
+      <div class="bg-white rounded-2xl shadow-md w-full max-w-3xl border border-gray-100 overflow-hidden">
         <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
           <h3 class="text-lg font-extrabold text-navy">Invite Archery ke Klub</h3>
           <button class="p-2 text-gray-400 hover:text-navy hover:bg-gray-100 rounded-lg" @click="isInviteOpen = false">

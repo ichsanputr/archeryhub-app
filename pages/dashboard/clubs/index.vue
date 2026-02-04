@@ -22,7 +22,7 @@
             </div>
             <!-- Search Bar Floating overlay -->
             <div class="relative z-30 max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 -mt-20">
-                <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
+                <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-100">
                     <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
                         <div class="md:col-span-4">
                             <label class="block text-xs font-bold text-text-sub uppercase tracking-wider mb-1">Nama
@@ -59,7 +59,7 @@
             <div class="flex flex-col lg:flex-row gap-8">
                 <!-- Sidebar: Featured Clubs -->
                 <aside class="w-full lg:w-80 flex-shrink-0 space-y-6 order-2 lg:order-1">
-                    <div class="bg-navy rounded-2xl shadow-lg overflow-hidden relative">
+                    <div class="bg-navy rounded-2xl shadow-md overflow-hidden relative">
                         <div class="p-6 relative z-10">
                             <h3 class="text-white font-bold text-lg mb-1 flex items-center gap-2 font-display">
                                 <Icon icon="ph:sketch-logo" class="text-primary" />
@@ -110,7 +110,7 @@
 
                     <div v-if="filteredClubs.length > 0" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                         <div v-for="club in filteredClubs" :key="club.id"
-                            class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 hover:shadow-lg transition-all duration-300 flex flex-col relative group">
+                            class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-all duration-300 flex flex-col relative group">
                             <div class="flex items-start gap-4 mb-4">
                                 <div
                                     class="w-16 h-16 rounded-xl overflow-hidden shadow-sm border border-gray-100 flex-shrink-0">

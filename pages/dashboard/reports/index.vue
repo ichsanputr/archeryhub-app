@@ -18,7 +18,7 @@
                     </button>
                     <!-- Simple Dropdown Placeholder -->
                     <div
-                        class="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-100 rounded-xl shadow-xl overflow-hidden z-20 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-all">
+                        class="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-100 rounded-xl shadow-md overflow-hidden z-20 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-all">
                         <div v-for="range in rangeOptions" :key="range" @click="dateRange = range"
                             class="px-4 py-2.5 text-xs font-bold text-navy hover:bg-primary transition-colors cursor-pointer">
                             {{ range }}

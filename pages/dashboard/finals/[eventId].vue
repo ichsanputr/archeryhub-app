@@ -235,8 +235,12 @@
 
 <script setup>
 definePageMeta({
-  title: 'Finals Bracket',
+  title: 'Finals Bracket - ArcheryHub Dashboard',
   layout: 'default',
+})
+
+useHead({
+  title: 'Finals Bracket - ArcheryHub Dashboard'
 })
 
 const route = useRoute()

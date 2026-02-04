@@ -143,7 +143,7 @@
       <!-- Seller Stats Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         <div v-for="stat in renderedSellerStats" :key="stat.label"
-          class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm hover:shadow-xl hover:shadow-gray-200/50 transition-all group overflow-hidden relative">
+          class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-all group overflow-hidden relative">
           <div
             class="absolute -right-4 -top-4 w-24 h-24 bg-gray-50 rounded-full group-hover:bg-primary/5 transition-colors duration-500">
           </div>
@@ -298,7 +298,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         <!-- Total Archers -->
         <div
-          class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-all border border-gray-100 group">
+          class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-md hover:shadow-md transition-all border border-gray-100 group">
           <div class="flex justify-between items-start">
             <div>
               <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Total Atlet</p>
@@ -319,7 +319,7 @@
 
         <!-- Active Targets -->
         <div
-          class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-all border border-gray-100 group">
+          class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-md hover:shadow-md transition-all border border-gray-100 group">
           <div class="flex justify-between items-start">
             <div>
               <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Target Aktif</p>
@@ -341,7 +341,7 @@
 
         <!-- Completion -->
         <div
-          class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-all border border-gray-100 group">
+          class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-md hover:shadow-md transition-all border border-gray-100 group">
           <div class="flex justify-between items-start">
             <div>
               <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Penyelesaian</p>
@@ -359,7 +359,7 @@
 
         <!-- Time Left -->
         <div
-          class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-all border border-gray-100 group">
+          class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-md hover:shadow-md transition-all border border-gray-100 group">
           <div class="flex justify-between items-start">
             <div>
               <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Time Left</p>
@@ -379,8 +379,7 @@
       <!-- Main Content Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Event Recap (Organization overview – replaces Target Status) -->
-        <div
-          class="lg:col-span-2 bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+        <div class="lg:col-span-2 bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-md">
           <div class="p-4 px-6 border-b border-gray-100 flex items-center justify-between bg-white">
             <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">
               <Icon icon="ph:chart-line-up-bold" class="text-primary" />
@@ -430,8 +429,7 @@
         </div>
 
         <!-- Leaderboard -->
-        <div
-          class="bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+        <div class="bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-md">
           <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
             <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">Leaderboard</h3>
             <BaseButton variant="ghost" size="sm">

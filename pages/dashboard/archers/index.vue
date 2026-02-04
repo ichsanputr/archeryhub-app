@@ -230,4 +230,8 @@ watch(activeTab, () => {
 onMounted(() => {
   fetchData()
 })
+
+useHead({
+  title: 'Manajemen Atlet - ArcheryHub Dashboard'
+})
 </script>

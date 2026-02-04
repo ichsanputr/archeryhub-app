@@ -28,7 +28,7 @@
                 <div class="flex flex-col md:flex-row gap-6 items-start">
                     <!-- Logo -->
                     <div class="-mt-16 relative">
-                        <div class="w-32 h-32 rounded-2xl bg-white border-4 border-white shadow-xl overflow-hidden">
+                        <div class="w-32 h-32 rounded-2xl bg-white border-4 border-white shadow-md overflow-hidden">
                             <img :src="useImageOrDefault(store.logoUrl, store.name)"
                                 class="w-full h-full object-cover" />
                         </div>
@@ -167,7 +167,7 @@
                         <div class="flex gap-3">
                             <button v-for="color in themeColors" :key="color" @click="profile.theme_color = color"
                                 class="w-10 h-10 rounded-full border-4 transition-all"
-                                :class="profile.theme_color === color ? 'border-navy shadow-lg scale-110' : 'border-transparent opacity-50'"
+                                :class="profile.theme_color === color ? 'border-navy shadow-md scale-110' : 'border-transparent opacity-50'"
                                 :style="{ backgroundColor: color }"></button>
                         </div>
                     </div>

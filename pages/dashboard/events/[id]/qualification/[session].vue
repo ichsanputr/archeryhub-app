@@ -504,6 +504,10 @@ const fetchQualificationReport = async (categoryId) => {
 const selectCategory = async (categoryId) => {
   selectedCategory.value = categoryId
 
+  // Reset scoring state before loading new category
+  targetAssignments.value = []
+  currentScoringAssignment.value = null
+
   // Load existing assignments for this category
   await loadExistingAssignments(categoryId)
 
@@ -511,6 +515,9 @@ const selectCategory = async (categoryId) => {
   await checkTargetAssignments(categoryId)
   if (assignmentsComplete.value) {
     await fetchTargetAssignments(categoryId)
+  } else {
+    targetAssignments.value = []
+    currentScoringAssignment.value = null
   }
 }
 
@@ -552,9 +559,15 @@ const checkTargetAssignments = async (categoryId) => {
     const allAssigned = archers.every(archer => assignedArcherIds.has(archer.uuid))
 
     assignmentsComplete.value = allAssigned && archers.length > 0
+    if (!assignmentsComplete.value) {
+      targetAssignments.value = []
+      currentScoringAssignment.value = null
+    }
   } catch (error) {
     console.error('Failed to check assignments:', error)
     assignmentsComplete.value = false
+    targetAssignments.value = []
+    currentScoringAssignment.value = null
   } finally {
     checkingAssignments.value = false
   }

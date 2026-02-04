@@ -37,7 +37,7 @@
           <!-- Action Buttons -->
           <div class="flex gap-3 flex-shrink-0">
             <BaseButton variant="primary" icon="ph:plus-bold"
-              class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all"
+              class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all"
               @click="showCreateDialog = true">
               Buat Bracket Baru
             </BaseButton>
@@ -67,23 +67,23 @@
         </div>
       </div>
 
-      <div v-else-if="brackets.length === 0" class="text-center py-12 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
+      <div v-else-if="brackets.length === 0"
+        class="text-center py-12 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
         <Icon icon="ph:brackets-curly" class="text-4xl text-gray-300 mx-auto mb-3" />
         <p class="text-sm font-bold text-gray-600 mb-1">Belum Ada Bracket Eliminasi</p>
         <p class="text-xs text-gray-400">Buat bracket pertama untuk memulai pertandingan eliminasi</p>
       </div>
 
       <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <NuxtLink
-          v-for="bracket in brackets"
-          :key="bracket.id"
+        <NuxtLink v-for="bracket in brackets" :key="bracket.id"
           :to="`/dashboard/events/${eventId}/elimination/${bracket.id}`"
           class="p-5 bg-gradient-to-br from-white to-gray-50 rounded-xl border-2 border-gray-200 hover:border-primary hover:shadow-lg transition-all text-left group">
-          
+
           <!-- Header -->
           <div class="flex items-start justify-between mb-4">
             <div class="flex items-center gap-3 flex-1">
-              <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+              <div
+                class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                 <Icon icon="ph:brackets-curly" class="text-xl text-primary" />
               </div>
               <div class="min-w-0 flex-1">
@@ -123,16 +123,43 @@
       </div>
     </div>
 
+    <!-- Suggested Categories Section -->
+    <div v-if="categoriesWithoutBracket.length > 0" class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h2 class="text-lg font-bold text-navy">Kategori Tanpa Bracket</h2>
+          <p class="text-sm text-gray-500 mt-1">Saran kategori yang belum memiliki bracket eliminasi</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div v-for="cat in categoriesWithoutBracket" :key="cat.id"
+          class="p-4 bg-gray-50 hover:bg-white rounded-xl border border-gray-200 hover:border-primary hover:shadow-md transition-all cursor-pointer group"
+          @click="openCreateForCategory(cat)">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-10 h-10 bg-white rounded-lg border border-gray-100 flex items-center justify-center group-hover:border-primary group-hover:bg-primary/5 transition-all">
+              <Icon :icon="getCategoryIcon(cat)" class="text-xl text-gray-400 group-hover:text-primary" />
+            </div>
+            <div class="min-w-0 flex-1">
+              <p class="text-sm font-bold text-navy group-hover:text-primary transition-colors truncate">
+                {{ getCategoryName(cat) }}
+              </p>
+              <p class="text-[10px] text-gray-500 font-medium">Klik untuk membuat bracket</p>
+            </div>
+            <Icon icon="ph:plus" class="text-gray-300 group-hover:text-primary" />
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Create Bracket Modal -->
-    <Transition
-      enter-active-class="transition duration-300 ease-out"
-      enter-from-class="opacity-0 scale-95"
-      enter-to-class="opacity-100 scale-100"
-      leave-active-class="transition duration-200 ease-in"
-      leave-from-class="opacity-100 scale-100"
-      leave-to-class="opacity-0 scale-95">
-      <div v-if="showCreateDialog" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" @click.self="showCreateDialog = false">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full">
+    <Transition enter-active-class="transition duration-300 ease-out" enter-from-class="opacity-0 scale-95"
+      enter-to-class="opacity-100 scale-100" leave-active-class="transition duration-200 ease-in"
+      leave-from-class="opacity-100 scale-100" leave-to-class="opacity-0 scale-95">
+      <div v-if="showCreateDialog" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+        @click.self="showCreateDialog = false">
+        <div class="bg-white rounded-2xl shadow-md max-w-md w-full">
           <!-- Modal Header -->
           <div class="p-6 border-b border-gray-100">
             <div class="flex items-center justify-between">
@@ -149,8 +176,7 @@
             <!-- Category Selection -->
             <div>
               <label class="block text-sm font-bold text-navy mb-2">Kategori</label>
-              <select
-                v-model="newBracket.categoryId"
+              <select v-model="newBracket.categoryId"
                 class="w-full px-4 py-3 rounded-xl border border-gray-200 text-navy font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
                 <option value="">-- Pilih Kategori --</option>
                 <option v-for="cat in categories" :key="cat.id" :value="cat.id">
@@ -162,20 +188,18 @@
             <!-- Bracket Type -->
             <div>
               <label class="block text-sm font-bold text-navy mb-2">Tipe Bracket</label>
-              <select
-                v-model="newBracket.bracketType"
+              <select v-model="newBracket.bracketType"
                 class="w-full px-4 py-3 rounded-xl border border-gray-200 text-navy font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
-                <option value="individual">Perorangan</option>
-                <option value="team3">Tim 3 Orang</option>
-                <option value="mixed2">Tim Campuran 2 Orang</option>
+                <option v-for="type in availableBracketTypes" :key="type.value" :value="type.value">
+                  {{ type.label }}
+                </option>
               </select>
             </div>
 
             <!-- Format -->
             <div>
               <label class="block text-sm font-bold text-navy mb-2">Format</label>
-              <select
-                v-model="newBracket.format"
+              <select v-model="newBracket.format"
                 class="w-full px-4 py-3 rounded-xl border border-gray-200 text-navy font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
                 <option value="recurve_set">Set System (untuk Recurve)</option>
                 <option value="compound_total">Total Score (untuk Compound)</option>
@@ -183,31 +207,41 @@
             </div>
 
             <!-- Bracket Size -->
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-bold text-navy mb-2">Ukuran Bracket</label>
+                <select v-model.number="newBracket.bracketSize"
+                  class="w-full px-4 py-3 rounded-xl border border-gray-200 text-navy font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
+                  <option :value="4">4 Peserta</option>
+                  <option :value="8">8 Peserta</option>
+                  <option :value="16">16 Peserta</option>
+                  <option :value="32">32 Peserta</option>
+                  <option :value="64">64 Peserta</option>
+                  <option :value="128">128 Peserta</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-bold text-navy mb-2">Ends per Match</label>
+                <input v-model.number="newBracket.endsPerMatch" type="number" min="1" max="15"
+                  class="w-full px-4 py-3 rounded-xl border border-gray-200 text-navy font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" />
+              </div>
+            </div>
+
+            <!-- Arrows per End -->
             <div>
-              <label class="block text-sm font-bold text-navy mb-2">Ukuran Bracket</label>
-              <select
-                v-model.number="newBracket.bracketSize"
-                class="w-full px-4 py-3 rounded-xl border border-gray-200 text-navy font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
-                <option :value="4">4 Peserta</option>
-                <option :value="8">8 Peserta</option>
-                <option :value="16">16 Peserta</option>
-                <option :value="32">32 Peserta</option>
-                <option :value="64">64 Peserta</option>
-                <option :value="128">128 Peserta</option>
-              </select>
+              <label class="block text-sm font-bold text-navy mb-2">Anak Panah per End</label>
+              <input v-model.number="newBracket.arrowsPerEnd" type="number" min="1" max="12"
+                class="w-full px-4 py-3 rounded-xl border border-gray-200 text-navy font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" />
             </div>
           </div>
 
           <!-- Modal Footer -->
           <div class="p-6 border-t border-gray-100 flex gap-3">
-            <button
-              @click="showCreateDialog = false"
+            <button @click="showCreateDialog = false"
               class="flex-1 px-4 py-3 rounded-xl border border-gray-200 text-navy font-bold hover:bg-gray-50 transition-colors">
               Batal
             </button>
-            <button
-              @click="createBracket"
-              :disabled="!newBracket.categoryId || creatingBracket"
+            <button @click="createBracket" :disabled="!newBracket.categoryId || creatingBracket"
               class="flex-1 px-4 py-3 rounded-xl bg-primary text-navy font-bold hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
               <span v-if="!creatingBracket">Buat Bracket</span>
               <span v-else class="flex items-center gap-2">
@@ -251,7 +285,9 @@ const newBracket = ref({
   categoryId: '',
   bracketType: 'individual',
   format: 'recurve_set',
-  bracketSize: 8
+  bracketSize: 8,
+  endsPerMatch: 5,
+  arrowsPerEnd: 3
 })
 
 const fetchEventName = async () => {
@@ -299,17 +335,21 @@ const createBracket = async () => {
       category_id: newBracket.value.categoryId,
       bracket_type: newBracket.value.bracketType,
       format: newBracket.value.format,
-      bracket_size: newBracket.value.bracketSize
+      bracket_size: newBracket.value.bracketSize,
+      ends_per_match: newBracket.value.endsPerMatch,
+      arrows_per_end: newBracket.value.arrowsPerEnd
     })
 
-    if (response?.bracket?.id) {
+    if (response?.bracket?.id || response?.id) {
       showToast('Bracket berhasil dibuat', 'success')
       showCreateDialog.value = false
       newBracket.value = {
         categoryId: '',
         bracketType: 'individual',
         format: 'recurve_set',
-        bracketSize: 8
+        bracketSize: 8,
+        endsPerMatch: 5,
+        arrowsPerEnd: 3
       }
       await fetchBrackets()
     } else {
@@ -321,6 +361,53 @@ const createBracket = async () => {
   } finally {
     creatingBracket.value = false
   }
+}
+
+const bracketTypes = [
+  { value: 'individual', label: 'Perorangan', icon: 'ph:user' },
+  { value: 'team3', label: 'Tim 3 Orang', icon: 'ph:users-three' },
+  { value: 'mixed2', label: 'Tim Campuran 2 Orang', icon: 'ph:gender-intersex' }
+]
+
+const availableBracketTypes = computed(() => {
+  const selectedCat = categories.value.find(c => c.id === newBracket.value.categoryId)
+  if (!selectedCat) return bracketTypes
+
+  const eventType = (selectedCat.event_type_name || '').toLowerCase()
+
+  if (eventType === 'individual') {
+    return bracketTypes.filter(t => t.value === 'individual')
+  } else if (eventType.includes('team') || eventType.includes('berregu') || eventType.includes('campuran') || eventType.includes('mixed')) {
+    return bracketTypes.filter(t => t.value !== 'individual')
+  }
+
+  return bracketTypes
+})
+
+const categoriesWithoutBracket = computed(() => {
+  const bracketCatIds = brackets.value.map(b => b.category_id)
+  return categories.value.filter(c => !bracketCatIds.includes(c.id))
+})
+
+const getCategoryIcon = (category) => {
+  const eventType = (category?.event_type_name || '').toLowerCase()
+  if (eventType === 'individual') return 'ph:user'
+  if (eventType.includes('mixed') || eventType.includes('campuran')) return 'ph:gender-intersex'
+  return 'ph:users-three'
+}
+
+const openCreateForCategory = (category) => {
+  newBracket.value.categoryId = category.id
+  // Auto-set the bracket type
+  const eventType = (category.event_type_name || '').toLowerCase()
+  if (eventType === 'individual') {
+    newBracket.value.bracketType = 'individual'
+  } else if (eventType.includes('mixed') || eventType.includes('campuran')) {
+    newBracket.value.bracketType = 'mixed2'
+  } else {
+    newBracket.value.bracketType = 'team3'
+  }
+  showCreateDialog.value = true
 }
 
 const getBracketName = (bracket) => {

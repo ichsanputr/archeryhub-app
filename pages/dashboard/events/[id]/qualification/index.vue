@@ -19,7 +19,7 @@
           <div class="flex items-start gap-4">
             <!-- Icon Badge -->
             <div
-              class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
+              class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md flex-shrink-0">
               <Icon icon="ph:crosshair" class="text-primary text-2xl" />
             </div>
 
@@ -37,7 +37,7 @@
           <!-- Action Buttons -->
           <div class="flex gap-3 flex-shrink-0">
             <BaseButton variant="primary" icon="ph:plus-bold"
-              class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all"
+              class="h-11 px-5 shadow-md shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all"
               @click="openCreateModal">
               Tambah Sesi Kualifikasi
             </BaseButton>
@@ -80,7 +80,7 @@
 
         <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div v-for="session in qualificationSessions" :key="session.uuid" @click="goToSession(session)"
-            class="p-5 bg-gradient-to-br from-white to-gray-50 rounded-3xl border-2 border-gray-100 hover:border-primary hover:shadow-2xl hover:shadow-primary/10 transition-all cursor-pointer group flex flex-col h-full relative overflow-hidden">
+            class="p-5 bg-gradient-to-br from-white to-gray-50 rounded-3xl border-2 border-gray-100 hover:border-primary hover:shadow-md hover:shadow-primary/10 transition-all cursor-pointer group flex flex-col h-full relative overflow-hidden">
 
             <!-- Action Icons -->
             <div
@@ -316,12 +316,12 @@
       <div v-if="showSessionDialog"
         class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
         @click.self="showSessionDialog = false">
-        <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden border border-white/20">
+        <div class="bg-white rounded-3xl shadow-md max-w-lg w-full overflow-hidden border border-white/20">
           <!-- Modal Header -->
           <div class="bg-navy p-6 flex items-center justify-between">
             <div class="flex items-center gap-4">
               <div
-                class="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20">
+                class="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center shadow-md shadow-primary/20">
                 <Icon icon="ph:calendar-plus-bold" class="text-2xl text-navy" />
               </div>
               <div>
@@ -429,7 +429,7 @@
               Batal
             </button>
             <button @click="saveSession" :disabled="creatingSession || !newSessionName"
-              class="flex-[2] px-6 py-4 bg-primary text-navy rounded-2xl font-black hover:shadow-xl hover:shadow-primary/20 transform hover:-translate-y-0.5 active:translate-y-0 shadow-lg shadow-primary/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3 uppercase tracking-widest text-xs">
+              class="flex-[2] px-6 py-4 bg-primary text-navy rounded-2xl font-black hover:shadow-md hover:shadow-primary/20 transform hover:-translate-y-0.5 active:translate-y-0 shadow-md shadow-primary/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3 uppercase tracking-widest text-xs">
               <Icon v-if="creatingSession" icon="ph:circle-notch" class="text-lg animate-spin" />
               {{ submitButtonLabel }}
             </button>
@@ -449,6 +449,10 @@ const eventId = route.params.id
 
 definePageMeta({
   layout: 'dashboard'
+})
+
+useHead({
+  title: 'Manajemen Kualifikasi - ArcheryHub Dashboard'
 })
 
 // State Management

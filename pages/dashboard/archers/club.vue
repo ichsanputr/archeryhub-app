@@ -18,7 +18,7 @@
         <div class="flex items-start gap-4">
           <!-- Icon Badge -->
           <div
-            class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
+            class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md flex-shrink-0">
             <Icon icon="ph:buildings" class="text-primary text-2xl" />
           </div>
           <div>
@@ -50,7 +50,7 @@
             </div>
             <div class="absolute inset-0 bg-gradient-to-t from-navy to-transparent"></div>
             <div class="absolute -bottom-10 left-8">
-              <div class="w-20 h-20 rounded-2xl bg-white border-4 border-white shadow-xl overflow-hidden">
+              <div class="w-20 h-20 rounded-2xl bg-white border-4 border-white shadow-md overflow-hidden">
                 <img
                   :src="useImageOrDefault(myMembership.club_avatar_url || myMembership.avatar_url, myMembership.club_name)"
                   class="w-full h-full object-cover" />
@@ -153,7 +153,7 @@
             <div class="p-5">
               <div class="flex items-start gap-3">
                 <div
-                  class="w-10 h-10 -mt-8 rounded-lg bg-white border-2 border-white shadow-lg overflow-hidden shrink-0">
+                  class="w-10 h-10 -mt-8 rounded-lg bg-white border-2 border-white shadow-md overflow-hidden shrink-0">
                   <img :src="useImageOrDefault(club.avatar_url, club.name)" class="w-full h-full object-cover" />
                 </div>
                 <div class="min-w-0">

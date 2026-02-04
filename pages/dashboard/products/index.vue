@@ -10,7 +10,7 @@
                 <p class="text-gray-500 font-medium mt-1">Kelola katalog produk yang Anda jual di marketplace.</p>
             </div>
             <BaseButton variant="primary" icon="ph:plus-bold"
-                class="shadow-lg shadow-primary/20 h-10 md:h-11 px-4 md:px-6" @click="openCreateModal">
+                class="shadow-md shadow-primary/20 h-10 md:h-11 px-4 md:px-6" @click="openCreateModal">
                 <span class="hidden sm:inline">Tambah Produk</span>
                 <span class="sm:hidden">Tambah</span>
             </BaseButton>
@@ -229,7 +229,7 @@
         <div v-if="showCreateModal"
             class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-navy/40 backdrop-blur-sm">
             <div
-                class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col animate-in fade-in zoom-in duration-200">
+                class="bg-white rounded-3xl shadow-md w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col animate-in fade-in zoom-in duration-200">
                 <!-- Modal Header -->
                 <div class="p-6 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
                     <div>

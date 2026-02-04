@@ -22,7 +22,7 @@
       <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id" :class="[
         'px-5 py-2.5 rounded-xl text-sm font-black transition-all whitespace-nowrap flex items-center gap-2',
         activeTab === tab.id
-          ? 'bg-navy text-white shadow-lg shadow-navy/20'
+          ? 'bg-navy text-white shadow-md shadow-navy/20'
           : 'text-gray-400 hover:text-navy hover:bg-gray-50'
       ]">
         <Icon :icon="tab.icon" class="text-lg" />
@@ -304,7 +304,7 @@
         </div>
 
         <!-- Helpful Tips -->
-        <div class="bg-navy rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
+        <div class="bg-navy rounded-2xl p-6 text-white shadow-md relative overflow-hidden">
           <Icon icon="ph:lightbulb" class="absolute -right-4 -bottom-4 text-8xl text-white/5 rotate-12" />
           <h4 class="font-black text-white mb-3 flex items-center gap-2">Tips Profil</h4>
           <ul class="text-xs space-y-3 text-gray-300 font-medium">

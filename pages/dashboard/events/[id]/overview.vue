@@ -19,7 +19,7 @@
                     <div class="flex items-start gap-4">
                         <!-- Icon Badge -->
                         <div
-                            class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
+                            class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md flex-shrink-0">
                             <Icon icon="ph:calendar-check" class="text-primary text-2xl" />
                         </div>
 
@@ -138,7 +138,7 @@
                 <!-- Stats Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
                     <div
-                        class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-all border border-gray-100 group">
+                        class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-md hover:shadow-md transition-all border border-gray-100 group">
                         <div class="flex justify-between items-start">
                             <div>
                                 <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Total
@@ -160,7 +160,7 @@
                     </div>
 
                     <div
-                        class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-all border border-gray-100 group">
+                        class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-md hover:shadow-md transition-all border border-gray-100 group">
                         <div class="flex justify-between items-start">
                             <div>
                                 <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Target
@@ -183,13 +183,13 @@
                     </div>
 
                     <div
-                        class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-all border border-gray-100 group">
+                        class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-md hover:shadow-md transition-all border border-gray-100 group">
                         <div class="flex justify-between items-start">
                             <div>
                                 <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">
                                     Penyelesaian</p>
                                 <p class="text-navy-dark text-3xl font-extrabold tracking-tight">{{ completionPercentage
-                                    }}%</p>
+                                }}%</p>
                             </div>
                             <div
                                 class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
@@ -202,7 +202,7 @@
                     </div>
 
                     <div
-                        class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-all border border-gray-100 group">
+                        class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-md hover:shadow-md transition-all border border-gray-100 group">
                         <div class="flex justify-between items-start">
                             <div>
                                 <p class="text-text-secondary text-xs font-bold uppercase tracking-wider mb-1">Sisa
@@ -225,7 +225,7 @@
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <!-- Registration Analytics -->
                     <div
-                        class="lg:col-span-2 bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+                        class="lg:col-span-2 bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-md">
                         <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
                             <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">Analisis Pendaftaran
                             </h3>
@@ -325,8 +325,7 @@
                     </div>
 
                     <!-- Leaderboard -->
-                    <div
-                        class="bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+                    <div class="bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-md">
                         <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
                             <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">Papan Peringkat</h3>
                             <button
@@ -388,7 +387,7 @@
         <div v-if="showShareDialog"
             class="fixed inset-0 z-40 flex items-center justify-center bg-black/40 backdrop-blur-sm">
             <div
-                class="bg-white rounded-2xl shadow-xl border border-gray-100 w-full max-w-md mx-4 p-6 space-y-5 relative">
+                class="bg-white rounded-2xl shadow-md border border-gray-100 w-full max-w-md mx-4 p-6 space-y-5 relative">
                 <button class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 transition-colors"
                     @click="closeShareDialog">
                     <Icon icon="ph:x-bold" class="text-lg" />
