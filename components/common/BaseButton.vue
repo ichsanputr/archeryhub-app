@@ -1,7 +1,7 @@
 <template>
     <!-- Use NuxtLink if 'to' prop is provided -->
     <NuxtLink v-if="to" :to="to" :disabled="disabled || loading"
-        class="inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]"
+        class="inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
         :class="[sizeClass, variantClass, (fullWidth || block) ? 'w-full' : '']" @click="$emit('click', $event)">
         <LoadingSpinner v-if="loading" size="sm" />
         <template v-else>
@@ -10,14 +10,14 @@
             <slot />
             <Icon v-if="iconRight && isIconify(iconRight)" :icon="iconRight" :class="iconSizeClass" />
             <span v-else-if="iconRight" class="material-symbols-outlined shrink-0" :class="iconSizeClass">{{ iconRight
-            }}</span>
+                }}</span>
         </template>
         <span v-if="!loading && loadingText" class="ml-2">{{ loadingText }}</span>
     </NuxtLink>
 
     <!-- Use regular button otherwise -->
     <button v-else :type="type" :disabled="disabled || loading"
-        class="inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]"
+        class="inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
         :class="[sizeClass, variantClass, (fullWidth || block) ? 'w-full' : '']" @click="$emit('click', $event)">
         <LoadingSpinner v-if="loading" size="sm" />
         <template v-else>
@@ -26,7 +26,7 @@
             <slot />
             <Icon v-if="iconRight && isIconify(iconRight)" :icon="iconRight" :class="iconSizeClass" />
             <span v-else-if="iconRight" class="material-symbols-outlined shrink-0" :class="iconSizeClass">{{ iconRight
-            }}</span>
+                }}</span>
         </template>
         <span v-if="!loading && loadingText" class="ml-2">{{ loadingText }}</span>
     </button>

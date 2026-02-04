@@ -25,7 +25,7 @@
                     class="min-w-[300px] md:min-w-[380px] lg:min-w-0 snap-center group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-sm hover:border-primary/50 transition-all duration-300 flex flex-col">
                     <div class="relative h-48 overflow-hidden">
                         <img :src="live.image || '/logo.png'" :alt="live.name"
-                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                            class="w-full h-full object-cover transition-transform duration-500" />
                     </div>
                     <div class="p-5 flex-1 flex flex-col">
                         <h3

@@ -48,7 +48,7 @@
           </div>
 
           <div
-            class="relative bg-gradient-to-br from-white to-yellow-50/50 rounded-2xl border-2 border-yellow-400 shadow-xl p-6 h-full transform transition-all duration-300 hover:scale-105 hover:shadow-2xl">
+            class="relative bg-gradient-to-br from-white to-yellow-50/50 rounded-2xl border-2 border-yellow-400 shadow-xl p-6 h-full transition-all duration-300 hover:shadow-2xl">
             <!-- Platform Header -->
             <div class="text-center mb-6">
               <div
@@ -84,7 +84,7 @@
         <!-- LeetCode Card -->
         <div class="relative group">
           <div
-            class="bg-white rounded-2xl border border-gray-200 shadow-md p-6 h-full transform transition-all duration-300 hover:scale-105 hover:shadow-xl hover:border-gray-300">
+            class="bg-white rounded-2xl border border-gray-200 shadow-md p-6 h-full transition-all duration-300 hover:shadow-xl hover:border-gray-300">
             <!-- Platform Header -->
             <div class="text-center mb-6">
               <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gray-100 mb-4">
@@ -117,7 +117,7 @@
         <!-- Codewars Card -->
         <div class="relative group">
           <div
-            class="bg-white rounded-2xl border border-gray-200 shadow-md p-6 h-full transform transition-all duration-300 hover:scale-105 hover:shadow-xl hover:border-gray-300">
+            class="bg-white rounded-2xl border border-gray-200 shadow-md p-6 h-full transition-all duration-300 hover:shadow-xl hover:border-gray-300">
             <!-- Platform Header -->
             <div class="text-center mb-6">
               <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gray-100 mb-4">

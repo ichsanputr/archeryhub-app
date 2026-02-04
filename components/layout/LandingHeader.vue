@@ -144,7 +144,7 @@
                                 <img v-if="user?.avatar_url" :src="user.avatar_url"
                                     class="w-full h-full object-cover" />
                                 <span v-else class="text-navy font-bold text-sm">{{ user?.full_name?.charAt(0) || 'U'
-                                    }}</span>
+                                }}</span>
                             </div>
                         </button>
 
@@ -239,7 +239,7 @@
                                 class="text-logo-id">.id</span></span>
                     </NuxtLink>
                     <button @click="mobileMenuOpen = false"
-                        class="p-2 hover:bg-gray-100 rounded-xl transition-all scale-100 active:scale-90">
+                        class="p-2 hover:bg-gray-100 rounded-xl transition-all scale-100">
                         <Icon icon="ph:x-bold" class="text-xl text-navy" />
                     </button>
                 </div>
@@ -254,7 +254,7 @@
                                 <img v-if="user?.avatar_url" :src="user.avatar_url"
                                     class="w-full h-full object-cover" />
                                 <span v-else class="text-navy font-black text-xl">{{ user?.full_name?.charAt(0) || 'U'
-                                    }}</span>
+                                }}</span>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <p class="text-navy font-black truncate">{{ user?.full_name || 'User' }}</p>
@@ -320,23 +320,23 @@
                 <div class="p-6 border-t border-gray-50 bg-white">
                     <div v-if="isLoggedIn" class="space-y-3">
                         <NuxtLink to="/dashboard" @click="mobileMenuOpen = false"
-                            class="flex items-center justify-center gap-2 w-full py-3.5 bg-navy text-white rounded-2xl text-sm font-black  tracking-wider shadow-lg shadow-navy/20 active:scale-95 transition-all">
+                            class="flex items-center justify-center gap-2 w-full py-3.5 bg-navy text-white rounded-2xl text-sm font-black  tracking-wider shadow-lg shadow-navy/20 transition-all">
                             <Icon icon="ph:layout-bold" />
                             Dashboard
                         </NuxtLink>
                         <button @click="handleLogout(); mobileMenuOpen = false"
-                            class="flex items-center justify-center gap-2 w-full py-3.5 border-2 border-red-50 text-red-500 rounded-2xl text-sm font-black  tracking-wider hover:bg-red-50 active:scale-95 transition-all">
+                            class="flex items-center justify-center gap-2 w-full py-3.5 border-2 border-red-50 text-red-500 rounded-2xl text-sm font-black  tracking-wider hover:bg-red-50 transition-all">
                             <Icon icon="ph:sign-out-bold" />
                             Keluar
                         </button>
                     </div>
                     <div v-else class="grid grid-cols-2 gap-3">
                         <NuxtLink to="/auth/login" @click="mobileMenuOpen = false"
-                            class="flex items-center justify-center py-3.5 border-2 border-gray-50 text-navy rounded-2xl text-sm font-black  tracking-wider hover:bg-gray-50 active:scale-95 transition-all">
+                            class="flex items-center justify-center py-3.5 border-2 border-gray-50 text-navy rounded-2xl text-sm font-black  tracking-wider hover:bg-gray-50 transition-all">
                             Masuk
                         </NuxtLink>
                         <NuxtLink to="/auth/register" @click="mobileMenuOpen = false"
-                            class="flex items-center justify-center py-3.5 bg-primary text-navy rounded-2xl text-sm font-black  tracking-wider shadow-lg shadow-primary/20 active:scale-95 transition-all">
+                            class="flex items-center justify-center py-3.5 bg-primary text-navy rounded-2xl text-sm font-black  tracking-wider shadow-lg shadow-primary/20 transition-all">
                             Daftar
                         </NuxtLink>
                     </div>

@@ -1,37 +1,26 @@
 <template>
   <div class="user-level-badge">
     <!-- Compact Badge -->
-    <div 
-      v-if="compact" 
-      class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r cursor-pointer hover:scale-105 transition-transform duration-200"
-      :class="badgeGradient"
-      @click="showDetails = !showDetails"
-    >
+    <div v-if="compact"
+      class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r cursor-pointer transition-transform duration-200"
+      :class="badgeGradient" @click="showDetails = !showDetails">
       <Icon :icon="badgeIcon" class="w-4 h-4 text-white" />
       <span class="text-xs font-bold text-white">Lv. {{ level }}</span>
     </div>
 
     <!-- Full Badge with Stats -->
-    <div 
-      v-else 
-      class="bg-white rounded-xl border-2 p-4 shadow-sm hover:shadow-md transition-shadow duration-200"
-      :class="`border-${levelColor}-200`"
-    >
+    <div v-else class="bg-white rounded-xl border-2 p-4 shadow-sm hover:shadow-md transition-shadow duration-200"
+      :class="`border-${levelColor}-200`">
       <!-- Header -->
       <div class="flex items-center justify-between mb-3">
         <div class="flex items-center gap-3">
-          <div 
-            class="w-12 h-12 rounded-full bg-gradient-to-br flex items-center justify-center shadow-lg"
-            :class="badgeGradient"
-          >
+          <div class="w-12 h-12 rounded-full bg-gradient-to-br flex items-center justify-center shadow-lg"
+            :class="badgeGradient">
             <Icon :icon="badgeIcon" class="w-6 h-6 text-white" />
           </div>
           <div>
             <h3 class="text-sm font-bold text-gray-900">Level {{ level }}</h3>
-            <p 
-              class="text-xs font-semibold"
-              :style="{ color: titleColor }"
-            >
+            <p class="text-xs font-semibold" :style="{ color: titleColor }">
               {{ levelTitle }}
             </p>
           </div>
@@ -49,11 +38,8 @@
           <span class="font-semibold text-gray-900">{{ progressPercent }}%</span>
         </div>
         <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
-          <div 
-            class="h-full bg-gradient-to-r transition-all duration-500 ease-out"
-            :class="badgeGradient"
-            :style="{ width: `${progressPercent}%` }"
-          />
+          <div class="h-full bg-gradient-to-r transition-all duration-500 ease-out" :class="badgeGradient"
+            :style="{ width: `${progressPercent}%` }" />
         </div>
         <p class="text-xs text-gray-500 text-center">
           {{ xpToNextLevel }} XP to next level
@@ -63,29 +49,19 @@
 
     <!-- Tooltip/Details Modal -->
     <Teleport to="body">
-      <div 
-        v-if="showDetails && compact"
+      <div v-if="showDetails && compact"
         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/20 backdrop-blur-sm"
-        @click="showDetails = false"
-      >
-        <div 
-          class="bg-white rounded-2xl shadow-2xl p-6 max-w-sm w-full border-2"
-          :class="`border-${levelColor}-200`"
-          @click.stop
-        >
+        @click="showDetails = false">
+        <div class="bg-white rounded-2xl shadow-2xl p-6 max-w-sm w-full border-2" :class="`border-${levelColor}-200`"
+          @click.stop>
           <!-- Level Badge Large -->
           <div class="text-center mb-6">
-            <div 
-              class="inline-flex w-20 h-20 rounded-full bg-gradient-to-br items-center justify-center shadow-xl mb-3"
-              :class="badgeGradient"
-            >
+            <div class="inline-flex w-20 h-20 rounded-full bg-gradient-to-br items-center justify-center shadow-xl mb-3"
+              :class="badgeGradient">
               <Icon :icon="badgeIcon" class="w-10 h-10 text-white" />
             </div>
             <h3 class="text-2xl font-bold text-gray-900">Level {{ level }}</h3>
-            <p 
-              class="text-lg font-semibold mt-1"
-              :style="{ color: titleColor }"
-            >
+            <p class="text-lg font-semibold mt-1" :style="{ color: titleColor }">
               {{ levelTitle }}
             </p>
           </div>
@@ -104,11 +80,8 @@
                 <span class="font-bold text-gray-900">{{ progressPercent }}%</span>
               </div>
               <div class="h-3 bg-gray-200 rounded-full overflow-hidden">
-                <div 
-                  class="h-full bg-gradient-to-r transition-all duration-500"
-                  :class="badgeGradient"
-                  :style="{ width: `${progressPercent}%` }"
-                />
+                <div class="h-full bg-gradient-to-r transition-all duration-500" :class="badgeGradient"
+                  :style="{ width: `${progressPercent}%` }" />
               </div>
               <p class="text-xs text-gray-500 mt-2 text-center">
                 {{ xpToNextLevel }} XP needed for Level {{ level + 1 }}
@@ -129,10 +102,8 @@
           </div>
 
           <!-- Close Button -->
-          <button 
-            @click="showDetails = false"
-            class="mt-6 w-full py-2 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg transition-colors"
-          >
+          <button @click="showDetails = false"
+            class="mt-6 w-full py-2 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-lg transition-colors">
             Close
           </button>
         </div>

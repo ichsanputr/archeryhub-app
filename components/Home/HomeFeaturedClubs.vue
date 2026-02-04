@@ -39,7 +39,7 @@
                             <span class="material-symbols-outlined text-[14px] fill-1">verified</span> Verifikasi
                         </div>
                         <div
-                            class="w-20 h-20 rounded-2xl bg-navy/5 text-navy flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 overflow-hidden">
+                            class="w-20 h-20 rounded-2xl bg-navy/5 text-navy flex items-center justify-center mb-4 transition-transform duration-300 overflow-hidden">
                             <img v-if="club.logo_url" :src="useImageOrDefault(club.logo_url)" :alt="club.name"
                                 class="w-full h-full object-cover" />
                             <span v-else class="material-symbols-outlined text-4xl">{{ club.icon }}</span>

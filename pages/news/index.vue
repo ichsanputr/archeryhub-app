@@ -66,7 +66,7 @@
                         class="block group mb-10">
                         <div class="relative rounded-2xl overflow-hidden aspect-video bg-gray-200 shadow-xl">
                             <img :src="useImageOrDefault(featuredArticle.image || featuredArticle.image_url)"
-                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                                class="w-full h-full object-cover transition-transform duration-700" />
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent">
                             </div>
                             <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8">
@@ -100,7 +100,7 @@
                                 <div
                                     class="w-full sm:w-48 md:w-56 h-48 sm:h-auto overflow-hidden bg-gray-100 flex-shrink-0">
                                     <img :src="useImageOrDefault(article.image || article.image_url)"
-                                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                                        class="w-full h-full object-cover transition-transform duration-700" />
                                 </div>
 
                                 <!-- Content -->

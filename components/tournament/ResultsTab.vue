@@ -12,7 +12,7 @@
                         <!-- Image Preview -->
                         <template v-if="isImage(file.url)">
                             <img :src="file.url" :alt="file.name"
-                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                                class="w-full h-full object-cover transition-transform duration-700" />
                         </template>
                         <!-- PDF/Doc Preview (Live) -->
                         <template v-else-if="getFileExt(file.url) === 'pdf'">

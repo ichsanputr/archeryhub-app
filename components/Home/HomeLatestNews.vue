@@ -17,7 +17,7 @@
                     class="flex flex-col group cursor-pointer">
                     <div class="relative h-60 rounded-2xl overflow-hidden mb-5">
                         <img :src="useImageOrDefault(news.image)" :alt="news.title"
-                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                            class="w-full h-full object-cover transition-transform duration-500" />
                         <div
                             class="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/60 to-transparent">
                         </div>

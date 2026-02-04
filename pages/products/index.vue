@@ -112,7 +112,7 @@
                     <!-- Product Image Container -->
                     <div class="relative pt-[100%] bg-gray-50 overflow-hidden">
                         <img :src="useImageOrDefault(product.image_url)" :alt="product.name"
-                            class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                            class="absolute inset-0 w-full h-full object-cover transition-transform duration-700" />
 
                         <!-- Premium Overlays -->
                         <div

@@ -31,7 +31,7 @@
             ? 'bg-primary text-navy shadow-lg shadow-primary/20'
             : 'text-gray-400 hover:bg-white/5 hover:text-white'">
           <Icon :icon="item.icon.includes(':') ? item.icon : `ph:${item.icon}`" class="text-xl transition-transform"
-            :class="isActive(item.path) ? 'text-navy' : 'group-hover:scale-110'" />
+            :class="isActive(item.path) ? 'text-navy' : ''" />
           <span v-if="!isSidebarCollapsed" class="text-sm font-bold whitespace-nowrap">{{ item.label }}</span>
           <span v-if="item.badge && !isSidebarCollapsed"
             class="ml-auto bg-primary/20 text-primary text-[10px] font-black px-2 py-0.5 rounded-full  tracking-tighter">
@@ -50,7 +50,7 @@
           class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group" :class="isActive(item.path)
             ? 'bg-primary text-navy shadow-lg shadow-primary/20'
             : 'text-gray-400 hover:bg-white/5 hover:text-white'">
-          <Icon :icon="item.icon" :class="isActive(item.path) ? 'text-navy' : 'group-hover:scale-110'"
+          <Icon :icon="item.icon" :class="isActive(item.path) ? 'text-navy' : ''"
             class="text-xl transition-transform" />
           <span v-if="!isSidebarCollapsed" class="text-sm font-bold whitespace-nowrap">{{ item.label }}</span>
         </NuxtLink>

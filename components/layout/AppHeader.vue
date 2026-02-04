@@ -61,7 +61,7 @@
       <div v-if="isDashboard && user?.role === 'club' && !isEventManageMode" class="hidden md:flex items-center gap-3">
         <div class="flex items-center gap-3">
           <div
-            class="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center bg-white shadow-sm transition-transform hover:scale-110 duration-300">
+            class="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center bg-white shadow-sm duration-300">
             <img :src="useImageOrDefault(user.logo_url || user.avatar_url, user?.full_name || 'Club')"
               :alt="user?.full_name || 'Club'" class="w-full h-full object-cover" />
           </div>
@@ -76,7 +76,7 @@
         class="hidden md:flex items-center gap-3">
         <div class="flex items-center gap-3">
           <div
-            class="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center bg-white shadow-sm transition-transform hover:scale-110 duration-300">
+            class="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center bg-white shadow-sm duration-300">
             <img :src="useImageOrDefault(user.logo_url || user.avatar_url, user?.name || 'Organization')"
               :alt="user?.name || 'Organization'" class="w-full h-full object-cover" />
           </div>
@@ -122,7 +122,7 @@
             ? 'bg-gray-100 dark:bg-surface-highlight text-gray-700 dark:text-white hover:bg-gray-200'
             : 'bg-white/10 text-white hover:bg-white/20'
         ]" class="size-10 flex items-center justify-center rounded-lg transition-colors relative group">
-          <Icon icon="ph:bell" class="text-[20px] group-hover:scale-110 transition-transform" />
+          <Icon icon="ph:bell" class="text-[20px] transition-transform" />
           <span v-if="notifications.some(n => !n.read)"
             class="absolute top-2 right-2 size-2.5 bg-primary rounded-full border border-white dark:border-surface-highlight"></span>
         </button>

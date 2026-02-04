@@ -6,46 +6,58 @@
         </div>
 
         <template v-else-if="bracket">
-            <!-- Header Section -->
-            <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden mb-2">
-                <div class="p-6 md:p-8">
-                    <div class="flex flex-col md:flex-row md:items-start justify-between gap-6">
+            <!-- Enhanced Header Section -->
+            <div
+                class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm mb-6">
+                <!-- Background Pattern -->
+                <div class="absolute inset-0 opacity-20"
+                    style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);">
+                </div>
+
+                <!-- Decorative Background Elements -->
+                <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+                <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary">
+                </div>
+
+                <div class="relative p-6 sm:p-8">
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
                         <div class="flex items-start gap-4 flex-1 min-w-0">
                             <button @click="handleBack"
-                                class="p-3 rounded-2xl bg-gray-50 text-navy hover:bg-navy hover:text-primary transition-all group shrink-0">
+                                class="p-3 rounded-2xl bg-white/10 text-white hover:bg-primary hover:text-navy transition-all group shrink-0 backdrop-blur-sm border border-white/20">
                                 <Icon icon="ph:arrow-left-bold"
                                     class="text-xl group-hover:-translate-x-1 transition-transform" />
                             </button>
                             <div class="min-w-0">
-                                <h1 class="text-2xl md:text-4xl font-black text-navy leading-tight tracking-tight">
+                                <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
                                     {{ pageTitle }}
                                 </h1>
                                 <div
-                                    class="flex flex-wrap items-center gap-y-1 mt-2 text-sm text-gray-500 font-medium whitespace-nowrap overflow-hidden">
+                                    class="flex flex-wrap items-center gap-y-1 text-xs sm:text-sm text-slate-300 font-medium overflow-hidden">
                                     <template v-if="categoryInfo">
-                                        <span class="px-2 py-0.5 rounded-md bg-primary/10 text-primary font-bold">{{
+                                        <span class="px-2 py-0.5 rounded-md bg-primary text-navy font-bold">{{
                                             categoryInfo.division_name }}</span>
-                                        <Icon icon="ph:dot-bold" class="text-gray-300 text-lg mx-0.5" />
+                                        <Icon icon="ph:dot-bold" class="text-white/20 text-lg mx-0.5" />
                                         <span>{{ categoryInfo.category_name }}</span>
-                                        <Icon icon="ph:dot-bold" class="text-gray-300 text-lg mx-0.5" />
+                                        <Icon icon="ph:dot-bold" class="text-white/20 text-lg mx-0.5" />
                                         <span>{{ categoryInfo.event_type_name }}</span>
-                                        <Icon icon="ph:dot-bold" class="text-gray-300 text-lg mx-0.5" />
+                                        <Icon icon="ph:dot-bold" class="text-white/20 text-lg mx-0.5" />
                                         <span>{{ categoryInfo.gender_division_name }}</span>
-                                        <Icon icon="ph:dot-bold" class="text-gray-300 text-lg mx-0.5" />
+                                        <Icon icon="ph:dot-bold" class="text-white/20 text-lg mx-0.5" />
                                     </template>
-                                    <span class="font-mono text-navy/40">{{ bracket.bracket_size }} Peserta</span>
+                                    <span class="font-mono text-white/40">{{ bracket.bracket_size }} Peserta</span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="flex flex-wrap items-center gap-3">
                             <!-- Format & Status -->
-                            <div class="flex flex-col items-end gap-1.5 order-2 md:order-1">
-                                <span class="text-[10px] font-black tracking-widest text-gray-400">Status
+                            <div class="flex flex-col items-end gap-1.5 order-2 md:order-1 hidden sm:flex">
+                                <span class="text-[10px] font-black tracking-widest text-white/40">Status
                                     Bracket</span>
                                 <div class="flex items-center gap-2">
                                     <span
-                                        class="px-3 py-1 rounded-full bg-gray-100 text-[10px] font-black text-gray-600 border border-gray-200">
+                                        class="px-3 py-1 rounded-full bg-white/10 text-[10px] font-black text-primary border border-white/10">
                                         {{ getFormatLabel(bracket.format) }}
                                     </span>
                                 </div>
@@ -53,39 +65,22 @@
 
                             <!-- Tab Switcher (Management Mode) -->
                             <div v-if="currentRoundNo"
-                                class="bg-gray-100 p-1.5 rounded-2xl flex gap-1 order-1 md:order-2">
+                                class="bg-white/10 p-1.5 rounded-2xl flex gap-1 order-1 md:order-2 backdrop-blur-sm border border-white/20">
                                 <button v-for="t in tabs" :key="t.id" @click="activeTab = t.id"
                                     class="px-5 py-2.5 text-xs font-black tracking-wider rounded-xl transition-all flex items-center gap-2"
-                                    :class="activeTab === t.id ? 'bg-white text-navy shadow-sm' : 'text-gray-500 hover:text-navy hover:bg-white/50'">
+                                    :class="activeTab === t.id ? 'bg-primary text-navy shadow-sm' : 'text-slate-300 hover:text-white hover:bg-white/10'">
                                     <Icon :icon="t.icon" class="text-lg" />
                                     {{ t.label }}
                                 </button>
                             </div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Secondary Actions Bar -->
-                <div v-if="!currentRoundNo"
-                    class="bg-slate-50 border-t border-gray-100 px-8 py-4 flex items-center justify-between">
-                    <div class="flex items-center gap-8 text-[11px] font-bold text-gray-400 tracking-widest">
-                        <div class="flex items-center gap-2">
-                            <Icon icon="ph:calendar-blank" class="text-lg text-primary" />
-                            <span>{{ formatDate(bracket.created_at) }}</span>
+                            <button v-if="!currentRoundNo && (bracket.status === 'draft' || !bracket.generated_at)"
+                                @click="generateBracket"
+                                class="h-11 px-5 bg-primary text-navy rounded-xl font-black text-xs tracking-wider shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all flex items-center gap-2">
+                                <Icon icon="ph:magic-wand" class="text-lg" />
+                                Generate Bracket
+                            </button>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <Icon icon="ph:cpu" class="text-lg text-primary" />
-                            <span v-if="bracket.generated_at">Generated {{ timeAgo(bracket.generated_at) }}</span>
-                            <span v-else>Belum Di-generate</span>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center gap-2">
-                        <button v-if="bracket.status === 'draft' || !bracket.generated_at" @click="generateBracket"
-                            class="px-4 py-2 rounded-xl bg-navy text-primary text-xs font-black tracking-wider hover:brightness-110 shadow-lg shadow-navy/20 transition-all flex items-center gap-2">
-                            <Icon icon="ph:magic-wand" class="text-lg" />
-                            Generate Bracket
-                        </button>
                     </div>
                 </div>
             </div>
@@ -98,89 +93,86 @@
                     <div class="p-6 md:p-8">
                         <div class="flex items-center justify-between mb-8 pb-4 border-b border-gray-50">
                             <div>
-                                <h2 class="text-xl font-black text-navy tracking-tight">Penempatan Target
-                                    Match</h2>
+                                <h2 class="text-xl font-black text-navy tracking-tight">Penempatan Target</h2>
                                 <p class="text-sm text-gray-500 mt-1">Alokasikan target (bantalan) untuk setiap
                                     pertandingan di
                                     babak ini</p>
                             </div>
                         </div>
 
-                        <div class="overflow-x-auto -mx-6 md:mx-0">
-                            <table class="w-full text-left">
-                                <thead class="bg-slate-50 border-y border-gray-100">
-                                    <tr>
-                                        <th class="px-8 py-4 text-[10px] font-black text-gray-400 tracking-widest">
-                                            Match
-                                        </th>
-                                        <th class="px-8 py-4 text-[10px] font-black text-gray-400 tracking-widest">
-                                            Pemanah
-                                            & Seed</th>
-                                        <th class="px-8 py-4 text-[10px] font-black text-gray-400 tracking-widest w-72">
-                                            Target Penilaian</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-50">
-                                    <tr v-for="match in roundMatches" :key="match.id"
-                                        class="hover:bg-slate-50 transition-all group">
-                                        <td class="px-8 py-6">
-                                            <div class="flex items-center gap-3">
-                                                <div
-                                                    class="size-10 rounded-xl bg-navy/5 flex items-center justify-center text-navy font-black text-xs">
-                                                    M{{ match.match_no }}
-                                                </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                            <div v-for="match in roundMatches" :key="match.id"
+                                class="bg-gray-50/50 rounded-3xl border border-gray-100 p-6 hover:bg-white hover:shadow-xl hover:shadow-navy/5 transition-all group">
+                                <div class="flex items-center justify-between mb-6">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="size-10 rounded-2xl bg-navy text-primary flex items-center justify-center text-xs font-black shadow-lg shadow-navy/20">
+                                            M{{ match.match_no }}
+                                        </div>
+                                        <span
+                                            class="text-[10px] font-black text-gray-400 tracking-widest uppercase">Match
+                                            Detail</span>
+                                    </div>
+                                    <div v-if="match.status === 'finished'"
+                                        class="size-6 rounded-full bg-green-500 text-white flex items-center justify-center">
+                                        <Icon icon="ph:check-bold" class="text-xs" />
+                                    </div>
+                                </div>
+
+                                <div class="space-y-3 mb-6">
+                                    <div
+                                        class="flex items-center justify-between bg-white rounded-2xl p-3 border border-gray-100 shadow-sm">
+                                        <div class="flex items-center gap-3 overflow-hidden">
+                                            <div
+                                                class="size-8 rounded-xl bg-navy/5 flex items-center justify-center text-[10px] font-black text-navy/40 border border-navy/5 shrink-0">
+                                                {{ match.entry_a_seed || '-' }}
                                             </div>
-                                        </td>
-                                        <td class="px-8 py-6">
-                                            <div class="flex flex-col gap-3">
-                                                <div
-                                                    class="flex items-center justify-between bg-gray-50 rounded-xl p-2.5 pr-4 border border-gray-100 min-w-[280px]">
-                                                    <div class="flex items-center gap-3">
-                                                        <span
-                                                            class="size-6 rounded-lg bg-white border border-gray-200 text-[10px] flex items-center justify-center font-black text-navy shadow-sm">{{
-                                                                match.entry_a_seed || '-' }}</span>
-                                                        <img :src="getAvatarUrl(match.entry_a_name)"
-                                                            class="size-8 rounded-full border-2 border-white shadow-sm" />
-                                                        <span
-                                                            class="text-sm font-bold text-navy truncate max-w-[150px]">{{
-                                                                match.entry_a_name || (match.is_bye ? 'BYE' : 'TBD')
-                                                            }}</span>
-                                                    </div>
-                                                    <span
-                                                        class="text-[9px] font-black text-gray-400 tracking-tighter">Side
-                                                        A</span>
-                                                </div>
-                                                <div
-                                                    class="flex items-center justify-between bg-gray-50 rounded-xl p-2.5 pr-4 border border-gray-100 min-w-[280px]">
-                                                    <div class="flex items-center gap-3">
-                                                        <span
-                                                            class="size-6 rounded-lg bg-white border border-gray-200 text-[10px] flex items-center justify-center font-black text-navy shadow-sm">{{
-                                                                match.entry_b_seed || '-' }}</span>
-                                                        <img :src="getAvatarUrl(match.entry_b_name)"
-                                                            class="size-8 rounded-full border-2 border-white shadow-sm" />
-                                                        <span
-                                                            class="text-sm font-bold text-navy truncate max-w-[150px]">{{
-                                                                match.entry_b_name || 'TBD' }}</span>
-                                                    </div>
-                                                    <span
-                                                        class="text-[9px] font-black text-gray-400 tracking-tighter">Side
-                                                        B</span>
-                                                </div>
+                                            <img :src="getAvatarUrl(match.entry_a_name)"
+                                                class="size-8 rounded-full border-2 border-white shadow-sm shrink-0" />
+                                            <span class="text-xs font-bold text-navy truncate">{{ match.entry_a_name ||
+                                                (match.is_bye ? 'BYE' : 'TBD') }}</span>
+                                        </div>
+                                        <span
+                                            class="text-[9px] font-black text-gray-300 tracking-tighter shrink-0 ml-2">SIDE
+                                            A</span>
+                                    </div>
+                                    <div
+                                        class="flex items-center justify-between bg-white rounded-2xl p-3 border border-gray-100 shadow-sm">
+                                        <div class="flex items-center gap-3 overflow-hidden">
+                                            <div
+                                                class="size-8 rounded-xl bg-navy/5 flex items-center justify-center text-[10px] font-black text-navy/40 border border-navy/5 shrink-0">
+                                                {{ match.entry_b_seed || '-' }}
                                             </div>
-                                        </td>
-                                        <td class="px-8 py-6">
-                                            <select v-model="match.target_id" @change="updateTarget(match)"
-                                                class="w-full px-5 py-3 rounded-2xl bg-white border-2 border-gray-100 text-navy font-bold focus:border-primary focus:outline-none transition-all text-sm appearance-none shadow-sm cursor-pointer hover:border-gray-200">
-                                                <option value="">-- Tandai Target --</option>
-                                                <option v-for="target in availableTargets" :key="target.id"
-                                                    :value="target.id">
-                                                    Target {{ target.name }}
-                                                </option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                            <img :src="getAvatarUrl(match.entry_b_name)"
+                                                class="size-8 rounded-full border-2 border-white shadow-sm shrink-0" />
+                                            <span class="text-xs font-bold text-navy truncate">{{ match.entry_b_name ||
+                                                'TBD'
+                                                }}</span>
+                                        </div>
+                                        <span
+                                            class="text-[9px] font-black text-gray-300 tracking-tighter shrink-0 ml-2">SIDE
+                                            B</span>
+                                    </div>
+                                </div>
+
+                                <div class="relative">
+                                    <label
+                                        class="text-[9px] font-black text-gray-400 tracking-widest uppercase mb-2 block ml-1">Alokasi
+                                        Target</label>
+                                    <div class="relative group/select">
+                                        <select v-model="match.target_id" @change="updateTarget(match)"
+                                            class="w-full px-5 py-3.5 rounded-2xl bg-white border-2 border-gray-200 text-navy font-bold focus:border-primary focus:outline-none transition-all text-sm appearance-none shadow-sm cursor-pointer group-hover/select:border-gray-300">
+                                            <option value="">-- Pilih Target --</option>
+                                            <option v-for="target in availableTargets" :key="target.id"
+                                                :value="target.id">
+                                                Target {{ target.name }}
+                                            </option>
+                                        </select>
+                                        <Icon icon="ph:caret-down-bold"
+                                            class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none group-hover/select:text-navy transition-colors" />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -199,7 +191,7 @@
                                     @click="selectMatchForScoring(match)"
                                     class="group p-4 rounded-2xl border-2 text-left transition-all relative overflow-hidden"
                                     :class="selectedScoringMatch?.id === match.id
-                                        ? 'border-primary bg-primary/5 shadow-sm -translate-y-1'
+                                        ? 'border-primary bg-primary/5 shadow-sm'
                                         : 'border-transparent bg-slate-50 hover:bg-white hover:border-gray-200'">
 
                                     <div class="flex justify-between items-center mb-3">
@@ -212,23 +204,33 @@
                                         </div>
                                     </div>
 
-                                    <div class="flex flex-col gap-1.5">
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-xs font-bold text-navy truncate pr-2">{{
-                                                match.entry_a_name || 'TBD'
-                                            }}</span>
-                                            <span class="text-xs font-black text-navy">{{ getMatchScore(match, 'A')
+                                    <div class="flex flex-col gap-2">
+                                        <div class="flex items-center justify-between gap-3">
+                                            <div class="flex items-center gap-2 min-w-0 overflow-hidden">
+                                                <img :src="getAvatarUrl(match.entry_a_name)"
+                                                    class="size-6 rounded-full border border-gray-100 shadow-sm shrink-0" />
+                                                <span class="text-[11px] font-bold text-navy truncate">{{
+                                                    match.entry_a_name || 'TBD'
+                                                }}</span>
+                                            </div>
+                                            <span class="text-xs font-black text-navy shrink-0">{{ getMatchScore(match,
+                                                'A')
                                             }}</span>
                                         </div>
                                         <div class="h-1 bg-gray-200 rounded-full overflow-hidden">
                                             <div class="h-full bg-primary"
                                                 :style="{ width: getMatchProgress(match) + '%' }"></div>
                                         </div>
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-xs font-bold text-navy truncate pr-2">{{
-                                                match.entry_b_name || 'TBD'
-                                            }}</span>
-                                            <span class="text-xs font-black text-navy">{{ getMatchScore(match, 'B')
+                                        <div class="flex items-center justify-between gap-3">
+                                            <div class="flex items-center gap-2 min-w-0 overflow-hidden">
+                                                <img :src="getAvatarUrl(match.entry_b_name)"
+                                                    class="size-6 rounded-full border border-gray-100 shadow-sm shrink-0" />
+                                                <span class="text-[11px] font-bold text-navy truncate">{{
+                                                    match.entry_b_name || 'TBD'
+                                                }}</span>
+                                            </div>
+                                            <span class="text-xs font-black text-navy shrink-0">{{ getMatchScore(match,
+                                                'B')
                                             }}</span>
                                         </div>
                                     </div>
@@ -242,51 +244,96 @@
                         <div v-if="selectedScoringMatch" class="space-y-6">
                             <!-- Match Summary Header -->
                             <div
-                                class="bg-navy rounded-3xl p-8 flex flex-col md:flex-row items-center justify-between gap-8 text-white shadow-sm overflow-hidden relative">
-                                <div class="absolute inset-0 opacity-10 pointer-events-none">
-                                    <Icon icon="ph:sword"
-                                        class="text-[300px] -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 absolute" />
+                                class="bg-navy rounded-[40px] p-8 sm:p-12 flex flex-col items-center justify-center gap-8 text-white shadow-xl overflow-hidden relative border border-white/5">
+                                <div class="absolute inset-0 opacity-5 pointer-events-none">
+                                    <Icon icon="ph:target"
+                                        class="text-[400px] absolute -right-20 -bottom-20 rotate-12" />
                                 </div>
 
-                                <div class="flex flex-col items-center gap-4 text-center md:flex-1">
-                                    <img :src="getAvatarUrl(selectedScoringMatch.entry_a_name)"
-                                        class="size-20 rounded-2xl border-4 border-white/20" />
-                                    <div class="max-w-[150px]">
-                                        <h4 class="font-black text-xl leading-tight truncate">{{
-                                            selectedScoringMatch.entry_a_name
-                                            || 'TBD' }}</h4>
-                                        <span class="text-[10px] font-black tracking-widest text-primary">Seed
-                                            {{
-                                                selectedScoringMatch.entry_a_seed || '-' }}</span>
+                                <div
+                                    class="relative z-10 flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16 w-full">
+                                    <!-- Side A -->
+                                    <div class="flex flex-col items-center gap-4 text-center">
+                                        <div class="relative">
+                                            <img :src="getAvatarUrl(selectedScoringMatch.entry_a_name)"
+                                                class="size-20 sm:size-28 rounded-[2rem] border-4 border-white/10 shadow-2xl" />
+                                            <div
+                                                class="absolute -bottom-2 -left-2 size-8 bg-navy border-2 border-primary rounded-xl flex items-center justify-center text-[10px] font-black text-primary">
+                                                {{ selectedScoringMatch.entry_a_seed || '-' }}
+                                            </div>
+                                        </div>
+                                        <div class="space-y-1">
+                                            <span
+                                                class="text-[10px] font-black tracking-[0.3em] text-primary/60 uppercase">Archer
+                                                A</span>
+                                            <h4
+                                                class="font-black text-xl sm:text-2xl leading-tight max-w-[200px] truncate">
+                                                {{ selectedScoringMatch.entry_a_name || 'TBD' }}
+                                            </h4>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="flex flex-col items-center justify-center gap-2 md:order-2">
-                                    <div class="text-[10px] font-black tracking-widest text-white/40">Versus
-                                    </div>
-                                    <div class="flex items-center gap-6">
-                                        <span class="text-5xl font-black text-primary drop-shadow-lg">{{
-                                            getMatchScore(selectedScoringMatch, 'A') }}</span>
-                                        <div class="size-1 w-px bg-white/20 h-12"></div>
-                                        <span class="text-5xl font-black text-white drop-shadow-lg">{{
-                                            getMatchScore(selectedScoringMatch, 'B') }}</span>
-                                    </div>
-                                    <div
-                                        class="px-4 py-1.5 rounded-full bg-white/10 text-[10px] font-black tracking-widest">
-                                        {{ getTargetName(selectedScoringMatch.target_id) }}
-                                    </div>
-                                </div>
+                                    <!-- Central Scoreboard -->
+                                    <div class="flex flex-col items-center gap-4">
+                                        <div
+                                            class="px-6 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
+                                            <span
+                                                class="text-[10px] font-black tracking-[0.4em] text-white/40 uppercase">{{
+                                                getTargetName(selectedScoringMatch.target_id) }}</span>
+                                        </div>
 
-                                <div class="flex flex-col items-center gap-4 text-center md:flex-1 md:order-3">
-                                    <img :src="getAvatarUrl(selectedScoringMatch.entry_b_name)"
-                                        class="size-20 rounded-2xl border-4 border-white/20 shadow-sm" />
-                                    <div class="max-w-[150px]">
-                                        <h4 class="font-black text-xl leading-tight truncate">{{
-                                            selectedScoringMatch.entry_b_name
-                                            || 'TBD' }}</h4>
-                                        <span class="text-[10px] font-black tracking-widest text-white/60">Seed
-                                            {{
-                                                selectedScoringMatch.entry_b_seed || '-' }}</span>
+                                        <div class="flex items-center gap-6 sm:gap-10">
+                                            <div class="flex flex-col items-center">
+                                                <span
+                                                    class="text-5xl sm:text-7xl font-black text-primary drop-shadow-[0_0_30px_rgba(255,193,7,0.3)]">
+                                                    {{ getMatchScore(selectedScoringMatch, 'A') }}
+                                                </span>
+                                            </div>
+
+                                            <div class="flex flex-col items-center">
+                                                <div class="w-px h-16 bg-white/10 relative">
+                                                    <div class="absolute inset-0 bg-white/20 blur-sm"></div>
+                                                    <div
+                                                        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-navy px-2 py-1 border border-white/10 rounded-lg text-[8px] font-black tracking-widest text-white/40">
+                                                        VS</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="flex flex-col items-center">
+                                                <span
+                                                    class="text-5xl sm:text-7xl font-black text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]">
+                                                    {{ getMatchScore(selectedScoringMatch, 'B') }}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div v-if="selectedScoringMatch.status === 'finished'"
+                                            class="px-4 py-1.5 rounded-xl bg-green-500/20 border border-green-500/30">
+                                            <span
+                                                class="text-[9px] font-black tracking-[0.2em] text-green-400 uppercase italic">MATCH
+                                                FINISHED</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Side B -->
+                                    <div class="flex flex-col items-center gap-4 text-center">
+                                        <div class="relative">
+                                            <img :src="getAvatarUrl(selectedScoringMatch.entry_b_name)"
+                                                class="size-20 sm:size-28 rounded-[2rem] border-4 border-white/10 shadow-2xl" />
+                                            <div
+                                                class="absolute -bottom-2 -right-2 size-8 bg-navy border-2 border-white/40 rounded-xl flex items-center justify-center text-[10px] font-black text-white/60">
+                                                {{ selectedScoringMatch.entry_b_seed || '-' }}
+                                            </div>
+                                        </div>
+                                        <div class="space-y-1">
+                                            <span
+                                                class="text-[10px] font-black tracking-[0.3em] text-white/40 uppercase">Archer
+                                                B</span>
+                                            <h4
+                                                class="font-black text-xl sm:text-2xl leading-tight max-w-[200px] truncate">
+                                                {{ selectedScoringMatch.entry_b_name || 'TBD' }}
+                                            </h4>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -347,19 +394,26 @@
                                             <button v-for="num in [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 'X', 'M']" :key="num"
                                                 @click="addArrowScore(num)"
                                                 class="aspect-square rounded-2xl text-xl font-black shadow-sm transition-all flex items-center justify-center"
-                                                :class="num === 'X' ? 'bg-yellow-400 text-navy hover:scale-105' : num === 'M' ? 'bg-slate-200 text-gray-400' : 'bg-white border-2 border-gray-100 text-navy hover:border-primary hover:text-primary'">
+                                                :class="num === 'X' ? 'bg-yellow-400 text-navy' : num === 'M' ? 'bg-slate-200 text-gray-400' : 'bg-white border-2 border-gray-100 text-navy hover:border-primary hover:text-primary'">
                                                 {{ num }}
                                             </button>
                                             <button @click="deleteLastArrow"
-                                                class="col-span-2 aspect-[2/1] rounded-2xl bg-red-50 text-red-600 font-black flex items-center justify-center gap-2 hover:bg-red-100 transition-colors">
-                                                <Icon icon="ph:backspace-bold" class="text-2xl" /> HAPUS
+                                                class="col-span-2 aspect-[2/1] rounded-2xl bg-red-50 text-red-600 font-black flex items-center justify-center hover:bg-red-100 transition-colors">
+                                                <div class="flex items-center gap-2">
+                                                    <Icon icon="ph:backspace-bold" class="text-2xl" />
+                                                    <span>HAPUS</span>
+                                                </div>
                                             </button>
                                             <button @click="saveAndNext" :disabled="isSaving"
-                                                class="col-span-2 aspect-[2/1] rounded-2xl bg-navy text-primary font-black flex flex-col items-center justify-center shadow-lg hover:brightness-110 active:scale-95 transition-all">
-                                                <span class="text-[10px]">SAVE & NEXT</span>
-                                                <Icon v-if="isSaving" icon="ph:circle-notch-bold"
-                                                    class="animate-spin mt-1" />
-                                                <Icon v-else icon="ph:caret-right-bold" class="mt-1" />
+                                                class="col-span-2 aspect-[2/1] rounded-2xl bg-navy text-primary font-black flex items-center justify-center shadow-lg hover:brightness-110 transition-all">
+                                                <div class="flex flex-col items-center">
+                                                    <span class="text-[10px] mb-1">SAVE & NEXT</span>
+                                                    <div class="flex items-center gap-2">
+                                                        <Icon v-if="isSaving" icon="ph:circle-notch-bold"
+                                                            class="animate-spin text-lg" />
+                                                        <Icon v-else icon="ph:caret-right-bold" class="text-lg" />
+                                                    </div>
+                                                </div>
                                             </button>
                                         </div>
                                     </div>
@@ -394,19 +448,26 @@
                                             <button v-for="num in [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 'X', 'M']" :key="num"
                                                 @click="addArrowScore(num)"
                                                 class="aspect-square rounded-2xl text-xl font-black shadow-sm transition-all flex items-center justify-center"
-                                                :class="num === 'X' ? 'bg-yellow-400 text-navy hover:scale-105' : num === 'M' ? 'bg-slate-200 text-gray-400' : 'bg-white border-2 border-gray-100 text-navy hover:border-primary hover:text-primary'">
+                                                :class="num === 'X' ? 'bg-yellow-400 text-navy' : num === 'M' ? 'bg-slate-200 text-gray-400' : 'bg-white border-2 border-gray-100 text-navy hover:border-primary hover:text-primary'">
                                                 {{ num }}
                                             </button>
                                             <button @click="deleteLastArrow"
-                                                class="col-span-2 aspect-[2/1] rounded-2xl bg-red-50 text-red-600 font-black flex items-center justify-center gap-2 hover:bg-red-100 transition-colors">
-                                                <Icon icon="ph:backspace-bold" class="text-2xl" /> HAPUS
+                                                class="col-span-2 aspect-[2/1] rounded-2xl bg-red-50 text-red-600 font-black flex items-center justify-center hover:bg-red-100 transition-colors">
+                                                <div class="flex items-center gap-2">
+                                                    <Icon icon="ph:backspace-bold" class="text-2xl" />
+                                                    <span>HAPUS</span>
+                                                </div>
                                             </button>
                                             <button @click="saveAndNext" :disabled="isSaving"
-                                                class="col-span-2 aspect-[2/1] rounded-2xl bg-navy text-primary font-black flex flex-col items-center justify-center shadow-lg hover:brightness-110 active:scale-95 transition-all">
-                                                <span class="text-[10px]">SAVE & NEXT</span>
-                                                <Icon v-if="isSaving" icon="ph:circle-notch-bold"
-                                                    class="animate-spin mt-1" />
-                                                <Icon v-else icon="ph:caret-right-bold" class="mt-1" />
+                                                class="col-span-2 aspect-[2/1] rounded-2xl bg-navy text-primary font-black flex items-center justify-center shadow-lg hover:brightness-110 transition-all">
+                                                <div class="flex flex-col items-center">
+                                                    <span class="text-[10px] mb-1">SAVE & NEXT</span>
+                                                    <div class="flex items-center gap-2">
+                                                        <Icon v-if="isSaving" icon="ph:circle-notch-bold"
+                                                            class="animate-spin text-lg" />
+                                                        <Icon v-else icon="ph:caret-right-bold" class="text-lg" />
+                                                    </div>
+                                                </div>
                                             </button>
                                         </div>
                                     </div>
@@ -436,7 +497,7 @@
                         <template v-for="(roundMatchesInBracket, roundNo) in sortedRounds" :key="roundNo">
                             <div class="bracket-round">
                                 <button type="button" @click="navigateToRound(roundNo)"
-                                    class="round-label group hover:scale-105 active:scale-95 transition-all"
+                                    class="round-label group transition-all"
                                     :class="{ 'final-label': isLastRound(parseInt(roundNo)) }">
                                     <div class="flex items-center gap-3">
                                         <Icon v-if="isLastRound(parseInt(roundNo))" icon="ph:crown-simple-fill"
@@ -457,9 +518,15 @@
                                             'selected': selectedMatch?.id === match.id
                                         }" @click="selectMatch(match)">
                                             <div class="match-card-header">
-                                                <span class="status-badge" :class="getMatchStatusClass(match.status)">
+                                                <span v-if="match.status !== 'scheduled'" class="status-badge"
+                                                    :class="getMatchStatusClass(match.status)">
                                                     {{ getStatusLabel(match.status) }}
                                                 </span>
+                                                <div v-else class="flex items-center gap-1.5 opacity-40">
+                                                    <Icon icon="ph:clock" class="text-[10px]" />
+                                                    <span
+                                                        class="text-[8px] font-black tracking-widest uppercase">Pending</span>
+                                                </div>
                                                 <span class="match-meta">#{{ match.match_no }}</span>
                                             </div>
                                             <!-- Side A -->
@@ -535,7 +602,7 @@
                             pertandingan
                             eliminasi untuk memulai babak ini.</p>
                         <button @click="generateBracket"
-                            class="mt-10 px-8 py-4 rounded-2xl bg-navy text-primary font-black tracking-widest hover:brightness-110 shadow-sm shadow-navy/30 active:scale-95 transition-all flex items-center gap-3 mx-auto">
+                            class="mt-10 px-8 py-4 rounded-2xl bg-navy text-primary font-black tracking-widest hover:brightness-110 shadow-sm shadow-navy/30 transition-all flex items-center gap-3 mx-auto">
                             <Icon icon="ph:magic-wand-bold" class="text-2xl" />
                             Generate Bracket Sekarang
                         </button>
@@ -605,8 +672,9 @@ const roundMatches = computed(() => {
 })
 
 const pageTitle = computed(() => {
+    const catName = categoryInfo.value?.category_name || ''
     if (!currentRoundNo.value) return 'Bracket Eliminasi'
-    return `Review ${getRoundName(parseInt(currentRoundNo.value))}`
+    return `Review ${catName} - ${getRoundName(parseInt(currentRoundNo.value))}`
 })
 
 const statusBadgeClasses = computed(() => {
@@ -655,10 +723,12 @@ const fetchCategoryDetails = async (categoryUuid) => {
 
 const fetchAvailableTargets = async () => {
     try {
-        const response = await get(`/events/${eventId}/target-names`)
-        // The API returns options directly or in .options
-        const opts = response?.options || response || []
-        availableTargets.value = opts.map(o => ({ id: o.uuid || o.id, name: o.name || o.target_no }))
+        const response = await get(`/events/${eventId}/targets/options`)
+        const options = response?.options || response.data?.options || []
+        availableTargets.value = options.map(o => ({
+            id: o.uuid || o.id,
+            name: o.value || o.name || o.target_no
+        }))
     } catch (error) {
         console.error('Failed to fetch targets:', error)
     }
@@ -734,20 +804,63 @@ const getAvatarUrl = (name) => {
 
 const getMatchScore = (match, side) => {
     const isRecurve = bracket.value?.format === 'recurve_set'
+    const sideKey = side === 'A' ? 'A' : 'B'
+    const otherSideKey = side === 'A' ? 'B' : 'A'
+
     if (match.status === 'finished') {
         const isWinner = match.winner_entry_id === (side === 'A' ? match.entry_a_id : match.entry_b_id)
-        if (isRecurve) return isWinner ? '6' : '0'
+        if (isRecurve) {
+            // For simplicity in display, show set points if we can calculate them, otherwise show W/L
+            const m = matchEnds.value[match.id]
+            if (m) {
+                return calculateSetPoints(match.id, sideKey)
+            }
+            return isWinner ? '6' : '0'
+        }
         return isWinner ? 'W' : 'L'
     } else if (match.status === 'running') {
-        // Dynamic scoring from local state
-        const sideKey = side === 'A' ? 'A' : 'B'
+        const m = matchEnds.value[match.id]
+        if (!m) return '-'
+
         if (isRecurve) {
-            // Recurve set point simplified
-            return '-'
+            return calculateSetPoints(match.id, sideKey)
         }
-        return Object.values(matchEnds.value[match.id]?.[sideKey] || {}).reduce((s, e) => s + (e.total || 0), 0) || '-'
+        return Object.values(m[sideKey] || {}).reduce((s, e) => s + (e.total || 0), 0) || '0'
     }
     return '-'
+}
+
+const calculateSetPoints = (matchId, side) => {
+    const m = matchEnds.value[matchId]
+    if (!m) return 0
+
+    let setPointsA = 0
+    let setPointsB = 0
+
+    const totalEnds = bracket.value?.ends_per_match || 5
+    const arrowsPerEnd = bracket.value?.arrows_per_end || 3
+
+    for (let i = 1; i <= totalEnds; i++) {
+        const endA = m.A[i]
+        const endB = m.B[i]
+
+        // Only count if both have finished the end
+        if (endA.arrows.length === arrowsPerEnd && endB.arrows.length === arrowsPerEnd) {
+            if (endA.total > endB.total) {
+                setPointsA += 2
+            } else if (endA.total < endB.total) {
+                setPointsB += 2
+            } else {
+                setPointsA += 1
+                setPointsB += 1
+            }
+        }
+
+        // Stop if someone reached 6 points
+        if (setPointsA >= 6 || setPointsB >= 6) break
+    }
+
+    return side === 'A' ? setPointsA : setPointsB
 }
 
 const getMatchProgress = (match) => {
@@ -853,17 +966,31 @@ const updateTarget = async (match) => {
 }
 
 const canFinishMatch = (match) => {
-    return match.status !== 'finished' &&
-        matchEnds.value[match.id]?.A[1]?.arrows.length === 3 &&
-        matchEnds.value[match.id]?.B[1]?.arrows.length === 3
+    if (!match || match.status === 'finished') return false
+    const m = matchEnds.value[match.id]
+    if (!m) return false
+
+    // Check if at least one arrow is scored to enable finishing
+    const hasAnyArrow = Object.values(m.A).some(e => e.arrows.length > 0) ||
+        Object.values(m.B).some(e => e.arrows.length > 0)
+
+    return hasAnyArrow
 }
 
 const finishMatchAction = async (match) => {
     try {
-        const totalA = Object.values(matchEnds.value[match.id].A).reduce((s, e) => s + e.total, 0)
-        const totalB = Object.values(matchEnds.value[match.id].B).reduce((s, e) => s + e.total, 0)
+        const isRecurve = bracket.value?.format === 'recurve_set'
+        let winnerId;
 
-        const winnerId = totalA >= totalB ? match.entry_a_id : match.entry_b_id
+        if (isRecurve) {
+            const pointsA = calculateSetPoints(match.id, 'A')
+            const pointsB = calculateSetPoints(match.id, 'B')
+            winnerId = pointsA >= pointsB ? match.entry_a_id : match.entry_b_id
+        } else {
+            const totalA = Object.values(matchEnds.value[match.id].A).reduce((s, e) => s + e.total, 0)
+            const totalB = Object.values(matchEnds.value[match.id].B).reduce((s, e) => s + e.total, 0)
+            winnerId = totalA >= totalB ? match.entry_a_id : match.entry_b_id
+        }
 
         await post(`/events/${eventId}/elimination/brackets/${bracketId}/matches/${match.id}/finish`, {
             winner_entry_id: winnerId
@@ -934,7 +1061,6 @@ const getRoundName = (roundNo) => {
 const getStatusLabel = (status) => {
     const labels = {
         draft: 'Draft',
-        scheduled: 'Terjadwal',
         generated: 'Siap',
         running: 'Berlangsung',
         finished: 'Selesai',
@@ -971,7 +1097,7 @@ onMounted(() => {
 }
 
 .round-label {
-    @apply text-[11px] font-black text-navy tracking-widest py-3 px-8 bg-white rounded-2xl shadow-sm border border-gray-100 shrink-0 flex items-center justify-center mb-16;
+    @apply text-[11px] font-black text-primary tracking-widest py-3 px-8 bg-navy rounded-2xl shadow-lg border border-white/10 shrink-0 flex items-center justify-center mb-16;
 }
 
 .final-label {
@@ -983,12 +1109,12 @@ onMounted(() => {
 }
 
 .match-node-card {
-    @apply relative w-[300px] bg-white rounded-3xl border-2 border-transparent shadow-sm transition-all duration-500 cursor-pointer overflow-hidden;
+    @apply relative w-[300px] bg-white rounded-3xl border border-gray-100 shadow-sm transition-all duration-500 cursor-pointer overflow-hidden;
     height: 140px;
 }
 
 .match-node-card:hover {
-    @apply shadow-sm scale-[1.02] border-primary/20 -translate-y-1 z-20;
+    @apply shadow-xl border-primary/40 -translate-y-1 z-20;
 }
 
 .match-node-card.selected {
@@ -1032,23 +1158,23 @@ onMounted(() => {
 }
 
 .score-display {
-    @apply text-xl font-black text-navy tabular-nums min-w-[32px] text-right;
+    @apply text-xl font-black text-navy tabular-nums min-w-[40px] text-right flex items-center justify-end px-4 h-full border-l border-gray-50 bg-gray-50/30;
 }
 
 .is-winner {
-    @apply bg-primary/5;
-}
-
-.is-winner .archer-name {
-    @apply text-primary font-black;
+    @apply bg-primary/[0.03];
 }
 
 .is-winner .score-display {
-    @apply text-primary text-2xl drop-shadow-sm;
+    @apply text-primary text-2xl drop-shadow-sm bg-primary/[0.05] border-primary/10;
+}
+
+.is-winner .archer-name {
+    @apply text-navy font-black;
 }
 
 .is-loser {
-    @apply opacity-40 grayscale-[0.8];
+    @apply opacity-50 grayscale-[0.5];
 }
 
 .connector-space {
