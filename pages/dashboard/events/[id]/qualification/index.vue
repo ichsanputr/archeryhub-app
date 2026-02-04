@@ -557,11 +557,16 @@ const fetchCategories = async () => {
     // Fetch categories from the same endpoint as used in scoring page
     const response = await get(`/events/${eventId}/categories`)
     const fetchedCategories = response?.events || response.data?.events || response?.categories || response.data?.categories || []
-    categories.value = fetchedCategories
+    // Filter only individual categories for qualification
+    const individualCategories = fetchedCategories.filter(cat =>
+      cat.event_type_name?.toLowerCase() === 'individual' ||
+      !cat.event_type_name // Default to individual if not specified
+    )
+    categories.value = individualCategories
 
     // Auto-select first category if available
-    if (fetchedCategories.length > 0) {
-      await selectCategory(fetchedCategories[0].id)
+    if (individualCategories.length > 0) {
+      await selectCategory(individualCategories[0].id)
     }
   } catch (error) {
     console.error('Failed to fetch categories:', error)

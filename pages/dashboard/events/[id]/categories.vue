@@ -1,40 +1,43 @@
 <template>
     <div class="flex flex-col gap-6 pb-12">
         <!-- Enhanced Header -->
-        <div class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
+        <div
+            class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
             <!-- Background Pattern -->
-            <div class="absolute inset-0 opacity-20" style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);"></div>
-            
+            <div class="absolute inset-0 opacity-20"
+                style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);">
+            </div>
+
             <!-- Decorative Background Elements -->
             <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
             <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
-            
+
             <!-- Header Content -->
             <div class="relative p-6 sm:p-8">
                 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
                     <div class="flex items-start gap-4">
                         <!-- Icon Badge -->
-                        <div class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
+                        <div
+                            class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
                             <Icon icon="ph:tag" class="text-primary text-2xl" />
                         </div>
-                        
+
                         <!-- Title Section -->
                         <div class="flex-1">
                             <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
                                 Kategori Lomba
                             </h1>
                             <p class="text-slate-300 text-sm max-w-2xl">
-                                Kelola kategori lomba untuk event ini. Setiap kategori dapat memiliki maksimal peserta yang berbeda.
+                                Kelola kategori lomba untuk event ini. Setiap kategori dapat memiliki maksimal peserta
+                                yang berbeda.
                             </p>
                         </div>
                     </div>
-                    
+
                     <!-- Action Buttons -->
                     <div class="flex gap-3 flex-shrink-0">
-                        <BaseButton 
-                            variant="primary" 
-                            icon="ph:plus-bold" 
+                        <BaseButton variant="primary" icon="ph:plus-bold"
                             class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all"
                             @click="openCreateDialog">
                             Tambah Kategori
@@ -47,7 +50,8 @@
         <!-- Stats Cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <template v-if="isLoading">
-                <div v-for="i in 3" :key="i" class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
+                <div v-for="i in 3" :key="i"
+                    class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
                     <div class="size-10 bg-gray-50 animate-pulse rounded-lg"></div>
                     <div class="space-y-2">
                         <div class="h-2 w-16 bg-gray-100 animate-pulse rounded"></div>
@@ -130,7 +134,9 @@
                         <div class="min-w-0 flex-1">
                             <div class="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
                                 <h3 class="text-base sm:text-lg font-bold text-navy break-words min-w-0">
-                                    {{ category.division_name }} – {{ category.category_name }} – {{ category.event_type_name }} – {{ category.gender_division_name }}
+                                    {{ category.division_name }} – {{ category.category_name }} – {{
+                                        category.event_type_name }}
+                                    – {{ category.gender_division_name }}
                                 </h3>
                                 <span
                                     :class="category.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'"
@@ -141,7 +147,13 @@
                             <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-6 text-sm text-gray-500">
                                 <div class="flex items-center gap-2 min-w-0">
                                     <Icon icon="ph:users" class="text-base shrink-0" />
-                                    <span class="break-words">Maks. Peserta: <strong class="text-navy">{{ category.max_participants || 'Tidak terbatas' }}</strong></span>
+                                    <span class="break-words">Maks. Peserta: <strong class="text-navy">{{
+                                        category.max_participants || 'Tidak terbatas' }}</strong></span>
+                                </div>
+                                <div v-if="category.team_size > 0" class="flex items-center gap-2 min-w-0">
+                                    <Icon icon="ph:users-three" class="text-base shrink-0" />
+                                    <span class="break-words">Kapasitas Tim: <strong class="text-navy">{{
+                                        category.team_size }} Orang</strong></span>
                                 </div>
                                 <div class="flex items-center gap-2 min-w-0">
                                     <Icon icon="ph:calendar" class="text-base shrink-0" />
@@ -149,7 +161,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex justify-end sm:justify-start shrink-0 pt-2 sm:pt-0 border-t border-gray-100 sm:border-t-0">
+                        <div
+                            class="flex justify-end sm:justify-start shrink-0 pt-2 sm:pt-0 border-t border-gray-100 sm:border-t-0">
                             <BaseButton variant="white" size="sm" icon="ph:pencil" @click="openEditDialog(category)">
                                 Edit
                             </BaseButton>
@@ -189,7 +202,7 @@
                                     eventType.name }}</option>
                             </select>
                         </div>
-                        <div class="space-y-2">
+                        <div v-if="!isMixedTeam" class="space-y-2">
                             <label class="text-sm font-bold text-gray-700">Divisi Gender *</label>
                             <select v-model="form.gender_division_uuid"
                                 class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
@@ -200,12 +213,21 @@
                         </div>
                     </div>
 
-                    <div class="space-y-2">
-                        <label class="text-sm font-bold text-gray-700">Maksimal Peserta</label>
-                        <input v-model.number="form.max_participants" type="number" min="0"
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                            placeholder="Kosongkan untuk tidak terbatas" />
-                        <p class="text-xs text-gray-400">Biarkan kosong jika tidak ada batasan jumlah peserta</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold text-gray-700">Maksimal Peserta (Pemanah)</label>
+                            <input v-model.number="form.max_participants" type="number" min="0"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                                placeholder="Kosongkan untuk tidak terbatas" />
+                            <p class="text-[10px] text-gray-400">Total kuota pendaftar individu</p>
+                        </div>
+                        <div v-if="isTeamEvent" class="space-y-2">
+                            <label class="text-sm font-bold text-gray-700">Anggota Per Tim</label>
+                            <input v-model.number="form.team_size" type="number" min="1"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                                placeholder="Contoh: 3 untuk Beregu, 2 untuk Mixed" />
+                            <p class="text-[10px] text-gray-400">Jumlah pemanah yang membentuk satu tim</p>
+                        </div>
                     </div>
                 </div>
             </template>
@@ -249,7 +271,31 @@ const form = ref({
     event_type_uuid: '',
     gender_division_uuid: '',
     max_participants: null,
+    team_size: 3,
     status: 'active'
+})
+
+const isMixedTeam = computed(() => {
+    const selected = eventTypes.value.find(et => et.id === form.value.event_type_uuid)
+    return selected?.name?.toLowerCase().includes('mixed') || selected?.code === 'mixed_team'
+})
+
+const isTeamEvent = computed(() => {
+    const selected = eventTypes.value.find(et => et.id === form.value.event_type_uuid)
+    return selected?.name?.toLowerCase() !== 'individual'
+})
+
+watch(() => form.value.event_type_uuid, (newId) => {
+    if (!newId) return
+    const selected = eventTypes.value.find(et => et.id === newId)
+    const type = selected?.name?.toLowerCase() || ''
+    if (type.includes('mixed')) {
+        form.value.team_size = 2
+    } else if (type !== 'individual') {
+        form.value.team_size = 3
+    } else {
+        form.value.team_size = 0
+    }
 })
 
 const activeCount = computed(() => categories.value.filter(c => c.status === 'active').length)
@@ -301,6 +347,7 @@ const openCreateDialog = () => {
         event_type_uuid: '',
         gender_division_uuid: '',
         max_participants: null,
+        team_size: 0,
         status: 'active'
     }
     showDialog.value = true
@@ -314,6 +361,7 @@ const openEditDialog = (category) => {
         event_type_uuid: category.event_type_id || '',
         gender_division_uuid: category.gender_division_id || '',
         max_participants: category.max_participants,
+        team_size: category.team_size || 0,
         status: category.status || 'active'
     }
     showDialog.value = true
@@ -325,8 +373,14 @@ const closeDialog = () => {
 }
 
 const saveCategory = async () => {
-    if (!form.value.division_uuid || !form.value.category_uuid || !form.value.event_type_uuid || !form.value.gender_division_uuid) {
+    const isMixed = isMixedTeam.value
+    if (!form.value.division_uuid || !form.value.category_uuid || !form.value.event_type_uuid || (!isMixed && !form.value.gender_division_uuid)) {
         toast.error('Harap lengkapi semua field yang wajib diisi')
+        return
+    }
+
+    if (isTeamEvent.value && (!form.value.team_size || form.value.team_size <= 1)) {
+        toast.error('Jumlah anggota per tim harus lebih dari 1 bagi kategori beregu/mixed')
         return
     }
 
@@ -336,8 +390,9 @@ const saveCategory = async () => {
             division_uuid: form.value.division_uuid,
             category_uuid: form.value.category_uuid,
             event_type_uuid: form.value.event_type_uuid,
-            gender_division_uuid: form.value.gender_division_uuid,
+            gender_division_uuid: isMixed ? null : form.value.gender_division_uuid,
             max_participants: form.value.max_participants || null,
+            team_size: isTeamEvent.value ? form.value.team_size : 0,
             status: form.value.status
         }
 
