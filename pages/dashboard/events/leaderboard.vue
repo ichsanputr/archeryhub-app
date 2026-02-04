@@ -70,7 +70,8 @@
                     <div class="flex-grow flex items-center gap-4 min-w-0">
                         <div
                             class="w-12 h-12 md:w-14 md:h-14 rounded-full border-2 border-white/10 shrink-0 overflow-hidden">
-                            <img :src="athlete.image" :alt="athlete.name" class="w-full h-full object-cover">
+                            <img :src="useImageOrDefault(athlete.image, athlete.name)" :alt="athlete.name"
+                                class="w-full h-full object-cover">
                         </div>
                         <div class="min-w-0">
                             <h3 class="text-lg md:text-2xl font-black truncate leading-tight tracking-tight uppercase">
@@ -86,7 +87,7 @@
                             <span
                                 class="block text-[10px] font-black text-white/20 uppercase tracking-widest mb-1">10s+X</span>
                             <span class="text-xl font-black text-white tabular-nums">{{ athlete.tens }}/{{ athlete.xs
-                            }}</span>
+                                }}</span>
                         </div>
                         <div class="text-center">
                             <span
@@ -101,7 +102,7 @@
                         <span
                             class="block text-[10px] font-black text-white/20 uppercase tracking-[0.2em] mb-1">Total</span>
                         <span class="text-2xl md:text-4xl font-black text-primary tabular-nums">{{ athlete.score
-                        }}</span>
+                            }}</span>
                     </div>
                 </div>
             </div>

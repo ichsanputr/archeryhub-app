@@ -4,7 +4,8 @@
     <div class="flex flex-col gap-4">
       <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
         <div class="space-y-2">
-          <h1 class="text-2xl md:text-3xl font-black text-navy tracking-tight">{{ sessionData?.name || 'Loading...' }}</h1>
+          <h1 class="text-2xl md:text-3xl font-black text-navy tracking-tight">{{ sessionData?.name || 'Loading...' }}
+          </h1>
           <div class="flex items-center gap-4 text-sm text-gray-600">
             <span class="font-mono font-semibold">{{ sessionData?.session_code }}</span>
             <span class="text-gray-300">•</span>
@@ -19,8 +20,7 @@
             </div>
           </div>
         </div>
-        <NuxtLink
-          :to="`/dashboard/events/${eventId}/qualification`"
+        <NuxtLink :to="`/dashboard/events/${eventId}/qualification`"
           class="flex items-center gap-2 px-5 py-3 bg-gray-100 text-gray-700 rounded-xl font-bold hover:bg-gray-200 transition-colors">
           <Icon icon="ph:arrow-left" class="text-xl" />
           Kembali ke Daftar Sesi
@@ -29,7 +29,8 @@
     </div>
 
     <!-- Tabs for Session Management -->
-    <div class="flex items-center gap-1 border-b border-gray-200 overflow-x-auto no-scrollbar bg-white rounded-t-2xl px-2">
+    <div
+      class="flex items-center gap-1 border-b border-gray-200 overflow-x-auto no-scrollbar bg-white rounded-t-2xl px-2">
       <button v-for="t in tabs" :key="t.id" @click="activeTab = t.id"
         class="px-6 py-4 text-sm font-bold transition-all border-b-2 flex items-center gap-2 whitespace-nowrap"
         :class="activeTab === t.id ? 'text-navy border-navy bg-gray-50' : 'text-gray-500 border-transparent hover:text-navy hover:bg-gray-50'">
@@ -41,7 +42,7 @@
     <!-- Category Selection (Shared for both tabs) -->
     <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
       <h2 class="text-base font-bold text-navy mb-4">Pilih Kategori Lomba</h2>
-      
+
       <div v-if="loadingCategories" class="flex gap-4 overflow-x-auto pb-2">
         <div v-for="i in 4" :key="i" class="flex-shrink-0 w-72 p-5 rounded-xl border border-gray-100 animate-pulse">
           <div class="flex items-start gap-3">
@@ -53,30 +54,30 @@
           </div>
         </div>
       </div>
-      
+
       <div v-else-if="categories.length === 0" class="text-center py-8 text-gray-400">
         <Icon icon="ph:folder-notch-open" class="text-4xl mx-auto mb-2" />
         <p>Kategori tidak ditemukan</p>
       </div>
-      
+
       <div v-else class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
-        <button
-          v-for="category in categories"
-          :key="category.id"
-          @click="selectCategory(category.id)"
-          :class="[
-            'flex-shrink-0 w-72 p-5 rounded-xl border-2 transition-all text-left group hover:shadow-md relative',
-            selectedCategory === category.id
-              ? 'border-primary bg-primary/5 shadow-sm'
-              : 'border-gray-200 bg-white hover:border-gray-300'
-          ]">
-          <div class="absolute top-0 left-0 w-1.5 h-full rounded-l-xl transition-colors" :class="selectedCategory === category.id ? 'bg-primary' : 'bg-transparent'"></div>
+        <button v-for="category in categories" :key="category.id" @click="selectCategory(category.id)" :class="[
+          'flex-shrink-0 w-72 p-5 rounded-xl border-2 transition-all text-left group hover:shadow-md relative',
+          selectedCategory === category.id
+            ? 'border-primary bg-primary/5 shadow-sm'
+            : 'border-gray-200 bg-white hover:border-gray-300'
+        ]">
+          <div class="absolute top-0 left-0 w-1.5 h-full rounded-l-xl transition-colors"
+            :class="selectedCategory === category.id ? 'bg-primary' : 'bg-transparent'"></div>
           <div class="flex items-start gap-3 pl-2">
-            <div class="size-12 bg-gradient-to-br from-navy/90 to-navy rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm">
+            <div
+              class="size-12 bg-gradient-to-br from-navy/90 to-navy rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm">
               <Icon icon="ph:target" class="text-xl text-primary" />
             </div>
             <div class="flex-1 min-w-0">
-              <p class="font-bold text-navy group-hover:text-primary transition-colors leading-tight mb-1.5 line-clamp-2">{{ getCategoryName(category) }}</p>
+              <p
+                class="font-bold text-navy group-hover:text-primary transition-colors leading-tight mb-1.5 line-clamp-2">
+                {{ getCategoryName(category) }}</p>
               <div class="flex items-center gap-2 text-xs text-gray-500">
                 <Icon icon="ph:users-three" class="text-base" />
                 <span class="font-semibold">{{ category.participant_count || 0 }} pemanah</span>
@@ -104,23 +105,24 @@
           <table class="w-full">
             <thead>
               <tr class="bg-gray-50/50 border-b border-gray-100">
-                <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest">Pemanah</th>
-                <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest">Pilih Target</th>
+                <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest">Pemanah
+                </th>
+                <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest">Pilih
+                  Target</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="archer in filteredArchersInput" :key="archer.uuid" class="border-b border-gray-50 hover:bg-gray-50/50 transition-all">
+              <tr v-for="archer in filteredArchersInput" :key="archer.uuid"
+                class="border-b border-gray-50 hover:bg-gray-50/50 transition-all">
                 <td class="px-6 py-4">
                   <div class="flex items-center gap-3">
-                    <img
-                      :src="getAvatarUrl(archer.name, archer.avatar_url)"
+                    <img :src="useImageOrDefault(archer.avatar_url, archer.name)"
                       class="size-9 rounded-lg object-cover border border-gray-100" />
                     <p class="font-bold text-navy">{{ archer.name }}</p>
                   </div>
                 </td>
                 <td class="px-6 py-4">
-                  <select
-                    v-model="archer.assignedTarget"
+                  <select v-model="archer.assignedTarget"
                     class="px-4 py-2 rounded-lg border border-gray-200 text-navy font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
                     <option value="">-- Pilih Target --</option>
                     <option v-for="target in getAvailableTargetsForArcher(archer)" :key="target.id" :value="target.id">
@@ -133,9 +135,7 @@
           </table>
         </div>
 
-        <button
-          @click="submitAssignments"
-          :disabled="!allAssigned || submittingAssignments"
+        <button @click="submitAssignments" :disabled="!allAssigned || submittingAssignments"
           class="mt-6 px-6 py-3 rounded-xl bg-primary text-navy font-bold hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 w-full md:w-auto">
           <Icon icon="ph:check-circle" class="text-xl" />
           {{ submittingAssignments ? 'Menyimpan...' : 'Simpan Penempatan' }}
@@ -154,22 +154,21 @@
       <div v-if="selectedCategory && targetAssignments.length > 0" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <!-- Archers List -->
         <div class="lg:col-span-7 xl:col-span-8 flex flex-col gap-4">
-          <div
-            v-for="(assignment, index) in targetAssignments"
-            :key="assignment.uuid"
-            @click="selectArcherForScoring(assignment)"
-            :class="[
+          <div v-for="(assignment, index) in targetAssignments" :key="assignment.uuid"
+            @click="selectArcherForScoring(assignment)" :class="[
               'bg-white rounded-xl shadow-sm border-2 overflow-hidden transition-all cursor-pointer',
               currentScoringAssignment?.uuid === assignment.uuid
                 ? 'border-primary ring-2 ring-primary/20'
                 : 'border-gray-100 hover:border-gray-200'
             ]">
-            <div :class="['absolute top-0 left-0 w-2 h-full', currentScoringAssignment?.uuid === assignment.uuid ? 'bg-primary' : 'bg-gray-200']"></div>
+            <div
+              :class="['absolute top-0 left-0 w-2 h-full', currentScoringAssignment?.uuid === assignment.uuid ? 'bg-primary' : 'bg-gray-200']">
+            </div>
             <div class="p-5 pl-7 relative">
               <div class="flex justify-between items-center mb-4">
                 <div class="flex items-center gap-3 flex-1 min-w-0">
                   <img
-                    :src="getAvatarUrl(assignment.archer_name)"
+                    :src="useImageOrDefault(assignment.archer_avatar_url || assignment.avatar_url, assignment.archer_name)"
                     :alt="assignment.archer_name"
                     class="size-9 sm:size-10 rounded-lg object-cover border border-gray-100 flex-shrink-0" />
                   <div class="min-w-0">
@@ -179,18 +178,16 @@
                     </div>
                   </div>
                 </div>
-                <div v-if="currentScoringAssignment?.uuid === assignment.uuid" class="flex items-center gap-2 ml-3 flex-shrink-0">
-                  <button
-                    @click.stop="selectArcherForScoring(assignment); goPrevEnd()"
+                <div v-if="currentScoringAssignment?.uuid === assignment.uuid"
+                  class="flex items-center gap-2 ml-3 flex-shrink-0">
+                  <button @click.stop="selectArcherForScoring(assignment); goPrevEnd()"
                     :disabled="(assignment.currentEnd || 1) <= 1"
                     :title="(assignment.currentEnd || 1) <= 1 ? 'Sudah di end pertama' : 'End sebelumnya'"
                     class="size-8 sm:size-9 rounded-lg border border-gray-300 bg-white text-navy flex items-center justify-center hover:bg-gray-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed">
                     <Icon icon="ph:arrow-left" class="text-base sm:text-lg" />
                   </button>
-                  <button
-                    v-if="(assignment.currentEnd || 1) < (sessionData?.total_ends || 0)"
-                    @click.stop="selectArcherForScoring(assignment); goNextEnd()"
-                    :title="'End berikutnya'"
+                  <button v-if="(assignment.currentEnd || 1) < (sessionData?.total_ends || 0)"
+                    @click.stop="selectArcherForScoring(assignment); goNextEnd()" :title="'End berikutnya'"
                     class="size-8 sm:size-9 rounded-lg bg-primary text-navy flex items-center justify-center hover:bg-primary/90 transition-colors">
                     <Icon icon="ph:arrow-right" class="text-base sm:text-lg" />
                   </button>
@@ -211,19 +208,17 @@
                   </span>
                 </div>
                 <div class="flex gap-2 sm:gap-3">
-                  <div
-                    v-for="(score, i) in sessionData.arrows_per_end"
-                    :key="i"
-                    :class="[
-                      'flex-1 aspect-square rounded-lg shadow-sm flex items-center justify-center text-lg sm:text-xl font-bold',
-                      assignment.currentEndScores[i] !== undefined
-                        ? 'bg-white border-2 border-gray-200 text-navy'
-                        : 'bg-gray-100 border-dashed border-2 border-gray-300 text-gray-400'
-                    ]">
+                  <div v-for="(score, i) in sessionData.arrows_per_end" :key="i" :class="[
+                    'flex-1 aspect-square rounded-lg shadow-sm flex items-center justify-center text-lg sm:text-xl font-bold',
+                    assignment.currentEndScores[i] !== undefined
+                      ? 'bg-white border-2 border-gray-200 text-navy'
+                      : 'bg-gray-100 border-dashed border-2 border-gray-300 text-gray-400'
+                  ]">
                     {{ assignment.currentEndScores[i] !== undefined ? assignment.currentEndScores[i] : '' }}
                   </div>
                   <div class="w-px bg-gray-300 mx-1"></div>
-                  <div class="flex-1 aspect-square bg-navy text-primary rounded-lg flex flex-col items-center justify-center shadow-sm">
+                  <div
+                    class="flex-1 aspect-square bg-navy text-primary rounded-lg flex flex-col items-center justify-center shadow-sm">
                     <span class="text-lg sm:text-xl font-bold">{{ calculateEndSum(assignment.currentEndScores) }}</span>
                   </div>
                 </div>
@@ -233,7 +228,8 @@
             </div>
           </div>
 
-          <div v-if="!targetAssignments || targetAssignments.length === 0" class="bg-white rounded-xl border border-gray-100 p-12 text-center">
+          <div v-if="!targetAssignments || targetAssignments.length === 0"
+            class="bg-white rounded-xl border border-gray-100 p-12 text-center">
             <Icon icon="ph:users" class="text-5xl text-gray-300 mx-auto mb-4" />
             <p class="text-gray-500">No archers assigned to targets yet</p>
           </div>
@@ -251,75 +247,51 @@
 
             <!-- Score Buttons -->
             <div class="grid grid-cols-3 gap-3 mb-4">
-              <button
-                @click="addScore('X')"
-                :disabled="!currentScoringAssignment"
+              <button @click="addScore('X')" :disabled="!currentScoringAssignment"
                 class="key-btn h-12 sm:h-16 rounded-lg bg-[#FFE500] border-b-4 border-[#e6ce00] text-navy text-xl sm:text-2xl font-black hover:brightness-105 transition-all active:border-b-0 active:translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed">
                 X
               </button>
-              <button
-                @click="addScore(10)"
-                :disabled="!currentScoringAssignment"
+              <button @click="addScore(10)" :disabled="!currentScoringAssignment"
                 class="key-btn h-12 sm:h-16 rounded-lg bg-[#FFE500] border-b-4 border-[#e6ce00] text-navy text-xl sm:text-2xl font-black hover:brightness-105 transition-all active:border-b-0 active:translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed">
                 10
               </button>
-              <button
-                @click="addScore(9)"
-                :disabled="!currentScoringAssignment"
+              <button @click="addScore(9)" :disabled="!currentScoringAssignment"
                 class="key-btn h-12 sm:h-16 rounded-lg bg-[#FFE500] border-b-4 border-[#e6ce00] text-navy text-xl sm:text-2xl font-black hover:brightness-105 transition-all active:border-b-0 active:translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed">
                 9
               </button>
-              <button
-                @click="addScore(8)"
-                :disabled="!currentScoringAssignment"
+              <button @click="addScore(8)" :disabled="!currentScoringAssignment"
                 class="key-btn h-12 sm:h-16 rounded-lg bg-[#EF4444] border-b-4 border-red-700 text-white text-xl sm:text-2xl font-black hover:brightness-110 transition-all active:border-b-0 active:translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed">
                 8
               </button>
-              <button
-                @click="addScore(7)"
-                :disabled="!currentScoringAssignment"
+              <button @click="addScore(7)" :disabled="!currentScoringAssignment"
                 class="key-btn h-12 sm:h-16 rounded-lg bg-[#EF4444] border-b-4 border-red-700 text-white text-xl sm:text-2xl font-black hover:brightness-110 transition-all active:border-b-0 active:translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed">
                 7
               </button>
-              <button
-                @click="addScore(6)"
-                :disabled="!currentScoringAssignment"
+              <button @click="addScore(6)" :disabled="!currentScoringAssignment"
                 class="key-btn h-12 sm:h-16 rounded-lg bg-[#3B82F6] border-b-4 border-blue-700 text-white text-xl sm:text-2xl font-black hover:brightness-110 transition-all active:border-b-0 active:translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed">
                 6
               </button>
-              <button
-                @click="addScore(5)"
-                :disabled="!currentScoringAssignment"
+              <button @click="addScore(5)" :disabled="!currentScoringAssignment"
                 class="key-btn h-12 sm:h-16 rounded-lg bg-[#3B82F6] border-b-4 border-blue-700 text-white text-xl sm:text-2xl font-black hover:brightness-110 transition-all active:border-b-0 active:translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed">
                 5
               </button>
-              <button
-                @click="addScore(4)"
-                :disabled="!currentScoringAssignment"
+              <button @click="addScore(4)" :disabled="!currentScoringAssignment"
                 class="key-btn h-12 sm:h-16 rounded-lg bg-[#111827] border-b-4 border-gray-900 text-white text-xl sm:text-2xl font-black hover:bg-gray-800 transition-all active:border-b-0 active:translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed">
                 4
               </button>
-              <button
-                @click="addScore(3)"
-                :disabled="!currentScoringAssignment"
+              <button @click="addScore(3)" :disabled="!currentScoringAssignment"
                 class="key-btn h-12 sm:h-16 rounded-lg bg-[#111827] border-b-4 border-gray-900 text-white text-xl sm:text-2xl font-black hover:bg-gray-800 transition-all active:border-b-0 active:translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed">
                 3
               </button>
-              <button
-                @click="addScore(2)"
-                :disabled="!currentScoringAssignment"
+              <button @click="addScore(2)" :disabled="!currentScoringAssignment"
                 class="key-btn h-12 sm:h-16 rounded-lg bg-white border border-gray-200 border-b-4 border-b-gray-300 text-navy text-xl sm:text-2xl font-black hover:bg-gray-50 transition-all active:border-b-0 active:translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed">
                 2
               </button>
-              <button
-                @click="addScore(1)"
-                :disabled="!currentScoringAssignment"
+              <button @click="addScore(1)" :disabled="!currentScoringAssignment"
                 class="key-btn h-12 sm:h-16 rounded-lg bg-white border border-gray-200 border-b-4 border-b-gray-300 text-navy text-xl sm:text-2xl font-black hover:bg-gray-50 transition-all active:border-b-0 active:translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed">
                 1
               </button>
-              <button
-                @click="addScore('M')"
-                :disabled="!currentScoringAssignment"
+              <button @click="addScore('M')" :disabled="!currentScoringAssignment"
                 class="key-btn h-12 sm:h-16 rounded-lg bg-gray-100 border border-gray-200 border-b-4 border-b-gray-300 text-gray-500 text-xl sm:text-2xl font-black hover:bg-gray-200 transition-all active:border-b-0 active:translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed">
                 M
               </button>
@@ -327,15 +299,13 @@
 
             <!-- Action Buttons -->
             <div class="grid grid-cols-2 gap-3 mt-6 pt-6 border-t border-gray-100">
-              <button
-                @click="deleteLastScore"
+              <button @click="deleteLastScore"
                 :disabled="!currentScoringAssignment || !currentScoringAssignment.currentEndScores?.length"
                 class="flex items-center justify-center gap-2 h-12 rounded-lg border border-gray-300 bg-white text-navy font-bold hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                 <Icon icon="ph:backspace" class="text-lg" />
                 Hapus
               </button>
-              <button
-                @click="saveEndAndNext"
+              <button @click="saveEndAndNext"
                 :disabled="!currentScoringAssignment || !currentScoringAssignment.currentEndScores?.length || savingScore"
                 class="flex items-center justify-center gap-2 h-12 rounded-lg bg-navy text-white font-bold hover:bg-navy/90 transition-colors shadow-lg disabled:opacity-50 disabled:cursor-not-allowed">
                 <span v-if="savingScore" class="inline-flex items-center gap-2">
@@ -364,7 +334,7 @@
 <script setup>
 const route = useRoute()
 const { get, post } = useApi()
-const { showToast } = useToast()
+const toast = useToast()
 const eventId = route.params.id
 const sessionCode = route.params.session
 
@@ -449,11 +419,7 @@ const getCategoryName = (category) => {
   return parts.join(' ')
 }
 
-const getAvatarUrl = (name, url) => {
-  if (url && url !== 'null' && url !== 'undefined' && url !== '') return url
-  const seed = encodeURIComponent(name || 'Pemanah')
-  return `https://api.dicebear.com/7.x/initials/svg?seed=${seed}&radius=8&backgroundColor=b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf&textColor=0f172a`
-}
+// No local getAvatarUrl helper needed as we use useImageOrDefault from composables
 
 const fetchSessionData = async () => {
   loading.value = true
@@ -473,7 +439,7 @@ const fetchCategories = async () => {
   try {
     const response = await get(`/events/${eventId}/categories`)
     categories.value = response?.events || response.data?.events || []
-    
+
     for (const category of categories.value) {
       await fetchArchersForCategory(category.id)
     }
@@ -513,7 +479,7 @@ const fetchArchersForCategory = async (categoryId) => {
 
 const fetchQualificationReport = async (categoryId) => {
   if (!categoryId) return
-  
+
   loadingReport.value = true
   try {
     const response = await get(`/events/${eventId}/qualification/leaderboard`, {
@@ -538,10 +504,10 @@ const fetchQualificationReport = async (categoryId) => {
 
 const selectCategory = async (categoryId) => {
   selectedCategory.value = categoryId
-  
+
   // Load existing assignments for this category
   await loadExistingAssignments(categoryId)
-  
+
   // Check assignments for scoring tab
   await checkTargetAssignments(categoryId)
   if (assignmentsComplete.value) {
@@ -551,14 +517,14 @@ const selectCategory = async (categoryId) => {
 
 const loadExistingAssignments = async (categoryId) => {
   if (!sessionData.value) return
-  
+
   try {
     const response = await get(`/qualification/sessions/${sessionData.value.uuid}/assignments`)
     const assignments = response?.assignments || response.data?.assignments || []
-    
+
     // Get archers for this category
     const categoryArchers = archersByCategory.value[categoryId] || []
-    
+
     // Map existing assignments to archers
     categoryArchers.forEach(archer => {
       const existingAssignment = assignments.find(a => a.archer_uuid === archer.uuid)
@@ -575,17 +541,17 @@ const loadExistingAssignments = async (categoryId) => {
 
 const checkTargetAssignments = async (categoryId) => {
   if (!sessionData.value) return
-  
+
   checkingAssignments.value = true
   try {
     const archers = archersByCategory.value[categoryId] || []
     const response = await get(`/qualification/sessions/${sessionData.value.uuid}/assignments`)
     const assignments = response?.assignments || response.data?.assignments || []
-    
+
     // Check if all archers in category have assignments
     const assignedArcherIds = new Set(assignments.map(a => a.archer_uuid))
     const allAssigned = archers.every(archer => assignedArcherIds.has(archer.uuid))
-    
+
     assignmentsComplete.value = allAssigned && archers.length > 0
   } catch (error) {
     console.error('Failed to check assignments:', error)
@@ -597,15 +563,15 @@ const checkTargetAssignments = async (categoryId) => {
 
 const fetchTargetAssignments = async (categoryId) => {
   if (!sessionData.value) return
-  
+
   try {
     const response = await get(`/qualification/sessions/${sessionData.value.uuid}/assignments`)
     let assignments = response?.assignments || response.data?.assignments || []
-    
+
     // Filter by category
     const archerIds = new Set((archersByCategory.value[categoryId] || []).map(a => a.uuid))
     assignments = assignments.filter(a => archerIds.has(a.archer_uuid))
-    
+
     // Initialize scoring state for each assignment
     targetAssignments.value = assignments.map(a => ({
       ...a,
@@ -613,9 +579,9 @@ const fetchTargetAssignments = async (categoryId) => {
       currentEndScores: [],
       allEndScores: {} // { endNumber: [scores] }
     }))
-    
+
     await Promise.all(targetAssignments.value.map((assignment) => loadAssignmentScores(assignment)))
-    
+
     // Auto-select first archer
     if (targetAssignments.value.length > 0) {
       currentScoringAssignment.value = targetAssignments.value[0]
@@ -634,10 +600,10 @@ const loadAssignmentScores = async (assignment) => {
     const allEndScores = {}
     scores.forEach((endScore) => {
       const arrows = Array.from({ length: sessionData.value?.arrows_per_end || 0 }, () => undefined)
-      ;(endScore.arrows || []).forEach((arrow) => {
-        const value = arrow.is_x ? 10 : arrow.score
-        arrows[arrow.arrow_number - 1] = value
-      })
+        ; (endScore.arrows || []).forEach((arrow) => {
+          const value = arrow.is_x ? 10 : arrow.score
+          arrows[arrow.arrow_number - 1] = value
+        })
       allEndScores[endScore.end_number] = arrows
     })
 
@@ -669,7 +635,7 @@ const selectArcherForScoring = (assignment) => {
 
 const addScore = (score) => {
   if (!currentScoringAssignment.value) return
-  
+
   // Convert X to 10 for storage
   const numericScore = score === 'X' ? 10 : (score === 'M' ? 0 : score)
   const arrowsPerEnd = sessionData.value?.arrows_per_end || 6
@@ -744,50 +710,50 @@ const goNextEnd = () => {
 
 const calculateTotalScore = (assignment) => {
   let total = 0
-  
+
   // Add all saved end scores
   if (assignment.allEndScores) {
     Object.values(assignment.allEndScores).forEach(endScores => {
       total += calculateEndSum(endScores)
     })
   }
-  
+
   // Add current end scores if not saved yet
   if (assignment.currentEndScores?.length) {
     total += calculateEndSum(assignment.currentEndScores)
   }
-  
+
   return total
 }
 
 const saveEndAndNext = async () => {
   if (!currentScoringAssignment.value || !currentScoringAssignment.value.currentEndScores?.length) return
-  
+
   savingScore.value = true
   try {
     const endNumber = currentScoringAssignment.value.currentEnd
     const scores = currentScoringAssignment.value.currentEndScores
     const filledScores = (scores || []).filter((score) => score !== undefined && score !== null)
-    
+
     // Convert scores to arrow format (X=10, M=0, others as string)
     const arrows = filledScores.map(score => {
       if (score === 10) return 'X'
       if (score === 0) return 'M'
       return String(score)
     })
-    
+
     // Save scores to backend
     await post(`/qualification/assignments/${currentScoringAssignment.value.uuid}/scores`, {
       end_number: endNumber,
       arrows: arrows
     })
-    
+
     // Store in local state
     if (!currentScoringAssignment.value.allEndScores) {
       currentScoringAssignment.value.allEndScores = {}
     }
     currentScoringAssignment.value.allEndScores[endNumber] = [...scores]
-    
+
     // Move to next end or next archer
     if (endNumber < sessionData.value.total_ends) {
       currentScoringAssignment.value.currentEnd = endNumber + 1
@@ -799,15 +765,15 @@ const saveEndAndNext = async () => {
         currentScoringAssignment.value = targetAssignments.value[currentIndex + 1]
       } else {
         // All done
-        showToast('Semua pemanah selesai!', 'success')
+        toast.success('Semua pemanah selesai!')
         currentScoringAssignment.value.currentEndScores = []
       }
     }
-    
-    showToast('Nilai berhasil disimpan', 'success')
+
+    toast.success('Nilai berhasil disimpan')
   } catch (error) {
     console.error('Failed to save score:', error)
-    showToast('Gagal menyimpan nilai', 'error')
+    toast.error('Gagal menyimpan nilai')
   } finally {
     savingScore.value = false
   }
@@ -832,12 +798,12 @@ const submitAssignments = async () => {
     submittingAssignments.value = true
 
     if (!sessionData.value) {
-      showToast('Pilih sesi terlebih dahulu', 'warning')
+      toast.warning('Pilih sesi terlebih dahulu')
       return
     }
-    
+
     if (!allAssigned.value) {
-      showToast('Harap tetapkan semua pemanah ke target', 'error')
+      toast.error('Harap tetapkan semua pemanah ke target')
       return
     }
 
@@ -850,11 +816,11 @@ const submitAssignments = async () => {
       category_id: selectedCategory.value,
       assignments: payload
     })
-    
-    showToast('Penempatan target berhasil disimpan', 'success')
+
+    toast.success('Penempatan target berhasil disimpan')
   } catch (error) {
     console.error('Failed to save assignments:', error)
-    showToast('Gagal menyimpan penempatan', 'error')
+    toast.error('Gagal menyimpan penempatan')
   } finally {
     submittingAssignments.value = false
   }
@@ -865,9 +831,9 @@ const getAvailableTargetsForArcher = (archer) => {
   const assignedTargetIds = filteredArchersInput.value
     .filter(a => a.uuid !== archer.uuid && a.assignedTarget)
     .map(a => a.assignedTarget)
-  
+
   // Return targets that are not assigned or is the current archer's target
-  return availableTargets.value.filter(target => 
+  return availableTargets.value.filter(target =>
     !assignedTargetIds.includes(target.id) || target.id === archer.assignedTarget
   )
 }
@@ -878,7 +844,7 @@ onMounted(async () => {
   await fetchAllParticipants()
   await fetchCategories()
   await fetchTargets()
-  
+
   // Auto-select first category and load existing assignments
   if (categories.value.length > 0) {
     const firstCategoryId = categories.value[0].id

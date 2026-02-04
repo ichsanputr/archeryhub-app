@@ -55,6 +55,10 @@ export const useApi = () => {
     return await apiCall<T>(url, { method: 'PUT', body, ...options })
   }
 
+  const patch = async <T = unknown>(url: string, body: unknown = null, options: FetchOptions = {}): Promise<T> => {
+    return await apiCall<T>(url, { method: 'PATCH', body, ...options })
+  }
+
   const del = async <T = unknown>(url: string, options: FetchOptions = {}): Promise<T> => {
     return await apiCall<T>(url, { method: 'DELETE', ...options })
   }
@@ -74,6 +78,7 @@ export const useApi = () => {
     get,
     post,
     put,
+    patch,
     upload,
     delete: del
   }

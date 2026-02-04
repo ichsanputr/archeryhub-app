@@ -5,7 +5,8 @@
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h1 class="text-2xl md:text-3xl font-extrabold text-navy tracking-tight">Tambah Peserta</h1>
-                    <p class="text-gray-500 font-medium mt-1 text-sm md:text-base">Daftarkan satu atau beberapa pemanah sekaligus atau buat yang baru.</p>
+                    <p class="text-gray-500 font-medium mt-1 text-sm md:text-base">Daftarkan satu atau beberapa pemanah
+                        sekaligus atau buat yang baru.</p>
                 </div>
                 <div class="flex gap-3">
                     <BaseButton variant="white" :to="`/dashboard/events/${route.params.id}/participants`"
@@ -64,7 +65,8 @@
                                                         class="h-5 w-5 rounded-full bg-primary flex items-center justify-center">
                                                         <Icon icon="ph:check" class="text-white text-xs" />
                                                     </div>
-                                                    <div v-else class="h-5 w-5 rounded-full border-2 border-gray-300"></div>
+                                                    <div v-else class="h-5 w-5 rounded-full border-2 border-gray-300">
+                                                    </div>
                                                 </div>
                                                 <div
                                                     class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs uppercase overflow-hidden border border-gray-200 group-hover:border-primary/50 transition-colors">
@@ -75,10 +77,12 @@
                                                     <p :class="isArcherSelected(archer) ? 'text-primary' : 'text-navy'"
                                                         class="font-bold group-hover:text-primary transition-colors truncate">
                                                         {{ archer.full_name }}</p>
-                                                    <p class="text-xs text-gray-500 truncate">{{ archer.email || archer.phone || '-' }}</p>
+                                                    <p class="text-xs text-gray-500 truncate">{{ archer.email ||
+                                                        archer.phone || '-' }}</p>
                                                     <div class="flex items-center gap-2 text-xs text-gray-400 mt-1">
                                                         <span>{{ archer.club_name || 'Individual' }}</span>
-                                                        <span v-if="archer.city" class="w-1 h-1 rounded-full bg-gray-300"></span>
+                                                        <span v-if="archer.city"
+                                                            class="w-1 h-1 rounded-full bg-gray-300"></span>
                                                         <span v-if="archer.city">{{ archer.city }}</span>
                                                     </div>
                                                 </div>
@@ -102,7 +106,9 @@
                                         <Icon icon="ph:magnifying-glass" class="text-2xl text-gray-300" />
                                     </div>
                                     <p class="text-sm font-bold text-gray-500">Cari Pemanah Terdaftar</p>
-                                    <p class="text-xs text-gray-400 max-w-[200px] mt-1">Ketik nama atau email untuk mencari dan pilih beberapa pemanah</p>
+                                    <p class="text-xs text-gray-400 max-w-[200px] mt-1">Ketik nama atau email untuk
+                                        mencari dan pilih beberapa pemanah
+                                    </p>
                                 </div>
 
                                 <div v-if="isSearchingArchers"
@@ -116,8 +122,10 @@
                             <!-- Selected Archers (at bottom) -->
                             <div v-if="selectedArchers.length > 0" class="space-y-3">
                                 <div class="flex items-center justify-between">
-                                    <p class="text-sm font-bold text-navy">Pemanah Terpilih ({{ selectedArchers.length }})</p>
-                                    <button @click="selectedArchers = []" class="text-xs text-red-500 font-bold hover:underline">
+                                    <p class="text-sm font-bold text-navy">Pemanah Terpilih ({{ selectedArchers.length
+                                        }})</p>
+                                    <button @click="selectedArchers = []"
+                                        class="text-xs text-red-500 font-bold hover:underline">
                                         Hapus Semua
                                     </button>
                                 </div>
@@ -125,13 +133,16 @@
                                     <div v-for="(archer, index) in selectedArchers" :key="archer.uuid || archer.id"
                                         class="bg-blue-50 border border-blue-100 rounded-lg p-3 relative group">
                                         <div class="flex items-center gap-3">
-                                            <div class="h-10 w-10 rounded-full bg-white flex items-center justify-center text-navy font-bold text-xs uppercase overflow-hidden border border-gray-200">
+                                            <div
+                                                class="h-10 w-10 rounded-full bg-white flex items-center justify-center text-navy font-bold text-xs uppercase overflow-hidden border border-gray-200">
                                                 <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
                                                     class="w-full h-full object-cover" />
                                             </div>
                                             <div class="flex-1 min-w-0">
-                                                <p class="font-bold text-navy text-sm truncate">{{ archer.full_name }}</p>
-                                                <p class="text-xs text-gray-500 truncate">{{ archer.email || archer.phone || '-' }}</p>
+                                                <p class="font-bold text-navy text-sm truncate">{{ archer.full_name }}
+                                                </p>
+                                                <p class="text-xs text-gray-500 truncate">{{ archer.email ||
+                                                    archer.phone || '-' }}</p>
                                             </div>
                                             <button @click="removeArcher(index)"
                                                 class="h-6 w-6 rounded-full bg-red-100 text-red-500 flex items-center justify-center hover:bg-red-200 transition-colors opacity-0 group-hover:opacity-100">
@@ -163,11 +174,8 @@
                             <div class="flex items-center gap-4 p-4 bg-white border border-gray-100 rounded-xl">
                                 <div
                                     class="relative w-16 h-16 rounded-full bg-gray-50 border border-gray-100 overflow-hidden flex-shrink-0 group">
-                                    <img v-if="newArcherForm.avatar_url" :src="newArcherForm.avatar_url"
+                                    <img :src="useImageOrDefault(newArcherForm.avatar_url, newArcherForm.full_name)"
                                         class="w-full h-full object-cover">
-                                    <div v-else class="w-full h-full flex items-center justify-center text-gray-300">
-                                        <Icon icon="ph:user" class="text-3xl" />
-                                    </div>
                                     <button @click="showMediaLibrary = true"
                                         class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white">
                                         <Icon icon="ph:pencil-simple" />

@@ -101,9 +101,9 @@
             </h3>
             <div class="space-y-4">
               <div v-for="(member, index) in recentMembers" :key="index" class="flex items-center gap-3">
-                <div
-                  class="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center font-black text-primary text-xs shrink-0">
-                  {{ member.name.charAt(0) }}
+                <div class="w-9 h-9 rounded-full bg-navy flex items-center justify-center overflow-hidden shrink-0">
+                  <img :src="useImageOrDefault(member.avatar_url || member.photo_url, member.name)"
+                    class="w-full h-full object-cover">
                 </div>
                 <div class="flex-1 min-w-0">
                   <p class="text-sm font-bold text-navy truncate">{{ member.name }}</p>

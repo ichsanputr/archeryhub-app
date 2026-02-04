@@ -120,10 +120,9 @@
               class="hover:bg-primary/5 transition-colors group">
               <td class="px-6 py-4">
                 <div class="flex items-center gap-4">
-                  <div
-                    class="h-12 w-12 rounded-xl bg-gradient-to-br from-navy to-blue-800 flex items-center justify-center overflow-hidden">
-                    <img v-if="member.photo_url" :src="member.photo_url" class="w-full h-full object-cover" />
-                    <span v-else class="text-white font-bold text-lg">{{ member.full_name?.charAt(0) || 'A' }}</span>
+                  <div class="h-12 w-12 rounded-xl bg-navy flex items-center justify-center overflow-hidden">
+                    <img :src="useImageOrDefault(member.photo_url, member.full_name)"
+                      class="w-full h-full object-cover" />
                   </div>
                   <div>
                     <NuxtLink :to="`/dashboard/members/${member.uuid || member.id}`"
@@ -211,8 +210,9 @@
             <div v-for="archer in inviteList" :key="archer.id || archer.uuid"
               class="flex items-center justify-between px-4 py-3 hover:bg-white transition">
               <div class="flex items-center gap-3">
-                <div class="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-bold">
-                  {{ archer.full_name?.charAt(0) || 'A' }}
+                <div class="h-10 w-10 rounded-xl bg-navy flex items-center justify-center overflow-hidden">
+                  <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
+                    class="w-full h-full object-cover" />
                 </div>
                 <div>
                   <p class="font-semibold text-navy">{{ archer.full_name }}</p>

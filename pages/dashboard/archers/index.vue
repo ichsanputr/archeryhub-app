@@ -65,9 +65,9 @@
               <td class="table-cell">
                 <div class="flex items-center gap-4">
                   <div
-                    class="size-10 rounded-full bg-cover bg-center shrink-0 border border-surface-highlight flex items-center justify-center overflow-hidden"
-                    :style="athlete.photo_url ? `background-image: url('${athlete.photo_url}')` : ''">
-                    <Icon v-if="!athlete.photo_url" icon="ph:user" class="text-brand-gold/30 text-xl" />
+                    class="size-10 rounded-full shrink-0 border border-surface-highlight flex items-center justify-center overflow-hidden bg-navy">
+                    <img :src="useImageOrDefault(athlete.photo_url, athlete.full_name)"
+                      class="w-full h-full object-cover" />
                   </div>
                   <div>
                     <p class="text-white text-sm font-bold group-hover:text-primary transition-colors cursor-pointer"

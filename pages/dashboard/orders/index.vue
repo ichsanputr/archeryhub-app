@@ -159,7 +159,7 @@ useHead({
 })
 
 const { get, put } = useApi()
-const { showToast } = useToast()
+const toast = useToast()
 
 const breadcrumbItems = computed(() => [
   { label: 'Dashboard', path: '/dashboard' }
@@ -189,7 +189,7 @@ const fetchOrdersData = async () => {
     orders.value = ordersRes.data || []
     sellerStatsRaw.value = statsRes.data
   } catch (error) {
-    showToast('Gagal mengambil data pesanan', 'error')
+    toast.error('Gagal mengambil data pesanan')
   } finally {
     isLoading.value = false
   }
@@ -259,10 +259,10 @@ const filteredOrders = computed(() => {
 const updateStatus = async (orderId, newStatus) => {
   try {
     await put(`/orders/status/${orderId}`, { status: newStatus })
-    showToast('Status pesanan diperbarui', 'success')
+    toast.success('Status pesanan diperbarui')
     fetchOrdersData()
   } catch (error) {
-    showToast('Gagal memperbarui status', 'error')
+    toast.error('Gagal memperbarui status')
   }
 }
 

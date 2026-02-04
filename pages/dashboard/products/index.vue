@@ -299,7 +299,7 @@ useHead({
 })
 
 const { get, post, put, delete: del } = useApi()
-const { showToast } = useToast()
+const toast = useToast()
 
 const products = ref([])
 const isLoading = ref(true)
@@ -335,7 +335,7 @@ const fetchProducts = async () => {
             sold: p.sold || 0 // Assuming 'sold' is handled by backend or aggregation
         }))
     } catch (error) {
-        showToast('Gagal mengambil data produk', 'error')
+        toast.error('Gagal mengambil data produk')
     } finally {
         isLoading.value = false
     }
@@ -408,7 +408,7 @@ const editProduct = (product) => {
 
 const handleSubmit = async () => {
     if (!productForm.value.name || !productForm.value.price) {
-        showToast('Nama dan harga harus diisi', 'warning')
+        toast.warning('Nama dan harga harus diisi')
         return
     }
 
@@ -423,15 +423,15 @@ const handleSubmit = async () => {
 
         if (isEditing.value) {
             await put(`/products/${currentProductId.value}`, payload)
-            showToast('Produk berhasil diperbarui', 'success')
+            toast.success('Produk berhasil diperbarui')
         } else {
             await post('/products', payload)
-            showToast('Produk berhasil ditambahkan', 'success')
+            toast.success('Produk berhasil ditambahkan')
         }
         showCreateModal.value = false
         fetchProducts()
     } catch (error) {
-        showToast('Gagal menyimpan produk', 'error')
+        toast.error('Gagal menyimpan produk')
     } finally {
         isSubmitting.value = false
     }
@@ -442,10 +442,10 @@ const deleteProduct = async (product) => {
 
     try {
         await del(`/products/${product.id}`)
-        showToast('Produk berhasil dihapus', 'success')
+        toast.success('Produk berhasil dihapus')
         fetchProducts()
     } catch (error) {
-        showToast('Gagal menghapus produk', 'error')
+        toast.error('Gagal menghapus produk')
     }
 }
 </script>

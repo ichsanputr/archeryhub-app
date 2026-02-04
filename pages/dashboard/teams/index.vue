@@ -119,11 +119,9 @@
           <div class="flex items-center justify-between">
             <div class="flex -space-x-2">
               <div v-for="(member, idx) in team.members.slice(0, 4)" :key="idx"
-                class="h-8 w-8 rounded-full border-2 border-white bg-gray-100 overflow-hidden">
-                <img v-if="member.avatar" :src="member.avatar" class="w-full h-full object-cover" />
-                <div v-else class="w-full h-full flex items-center justify-center text-xs font-bold text-gray-400">
-                  {{ member.name.charAt(0) }}
-                </div>
+                class="h-8 w-8 rounded-full border-2 border-white bg-navy overflow-hidden">
+                <img :src="useImageOrDefault(member.avatar || member.photo_url || member.avatar_url, member.name)"
+                  class="w-full h-full object-cover" />
               </div>
               <div v-if="team.members.length > 4"
                 class="h-8 w-8 rounded-full border-2 border-white bg-navy text-white flex items-center justify-center text-xs font-bold">

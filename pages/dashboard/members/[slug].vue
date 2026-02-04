@@ -37,11 +37,8 @@
       <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-5">
         <div class="flex items-center gap-4">
           <div
-            class="w-20 h-20 rounded-2xl bg-gradient-to-br from-navy to-blue-800 flex items-center justify-center overflow-hidden border-4 border-primary/20">
-            <img v-if="member?.photo_url" :src="member.photo_url" class="w-full h-full object-cover" />
-            <span v-else class="text-3xl font-black text-white">
-              {{ member?.full_name?.charAt(0) || 'A' }}
-            </span>
+            class="w-20 h-20 rounded-2xl bg-navy flex items-center justify-center overflow-hidden border-4 border-primary/20">
+            <img :src="useImageOrDefault(member?.photo_url, member?.full_name)" class="w-full h-full object-cover" />
           </div>
           <div>
             <p class="text-xs font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Anggota Klub</p>
