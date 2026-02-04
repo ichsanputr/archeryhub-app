@@ -197,12 +197,13 @@
             <table class="w-full">
               <thead>
                 <tr class="bg-gray-50/50 border-b border-gray-100">
-                  <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest">Posisi
-                  </th>
-                  <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest">Nama
-                    Pemanah</th>
-                  <th class="px-6 py-4 text-right text-[10px] font-black text-gray-400 uppercase tracking-widest">Nilai
-                  </th>
+                  <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest w-24">
+                    Posisi</th>
+                  <th
+                    class="px-6 py-4 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest min-w-[350px]">
+                    Nama Pemanah</th>
+                  <th class="px-6 py-4 text-right text-[10px] font-black text-gray-400 uppercase tracking-widest w-40">
+                    Nilai</th>
                 </tr>
               </thead>
               <tbody>
@@ -218,7 +219,8 @@
                       <img
                         :src="useImageOrDefault(archer.avatar_url || archer.photo_url, archer.name || archer.archer_name)"
                         class="size-9 rounded-lg object-cover border border-gray-100" />
-                      <p class="font-bold text-navy">{{ archer.name || archer.archer_name }}</p>
+                      <p class="text-[11px] sm:text-base font-bold text-navy">{{ archer.name || archer.archer_name }}
+                      </p>
                     </div>
                   </td>
                   <td class="px-6 py-4 text-right">

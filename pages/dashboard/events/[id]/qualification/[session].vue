@@ -20,11 +20,7 @@
             </div>
           </div>
         </div>
-        <NuxtLink :to="`/dashboard/events/${eventId}/qualification`"
-          class="flex items-center gap-2 px-5 py-3 bg-gray-100 text-gray-700 rounded-xl font-bold hover:bg-gray-200 transition-colors">
-          <Icon icon="ph:arrow-left" class="text-xl" />
-          Kembali ke Daftar Sesi
-        </NuxtLink>
+
       </div>
     </div>
 
@@ -97,7 +93,7 @@
             <h2 class="text-lg font-bold text-navy">Tempatkan Pemanah ke Target</h2>
             <p class="text-sm text-gray-500 mt-1">Alokasikan pemanah ke target penilaian mereka</p>
           </div>
-          <span class="px-3 py-1 rounded-lg bg-blue-50 text-blue-700 text-xs font-bold">TARGET</span>
+
         </div>
 
         <!-- Assignment Table -->
@@ -105,9 +101,12 @@
           <table class="w-full">
             <thead>
               <tr class="bg-gray-50/50 border-b border-gray-100">
-                <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest">Pemanah
+                <th
+                  class="px-6 py-4 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest min-w-[350px]">
+                  Pemanah
                 </th>
-                <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest">Pilih
+                <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400 uppercase tracking-widest w-64">
+                  Pilih
                   Target</th>
               </tr>
             </thead>
