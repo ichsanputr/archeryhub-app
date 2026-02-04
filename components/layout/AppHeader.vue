@@ -232,9 +232,9 @@ const pageTitle = computed(() => {
   if (pathSegments.length === 0) return ''
   // If it's the second segment of dashboard (e.g. /dashboard/events)
   if (pathSegments[0] === 'dashboard' && pathSegments[1]) {
-    return pathSegments[1].charAt(0).to() + pathSegments[1].slice(1)
+    return pathSegments[1].charAt(0).toUpperCase() + pathSegments[1].slice(1)
   }
-  return pathSegments[0].charAt(0).to() + pathSegments[0].slice(1)
+  return pathSegments[0].charAt(0).toUpperCase() + pathSegments[0].slice(1)
 })
 
 const dashboardTitle = computed(() => {

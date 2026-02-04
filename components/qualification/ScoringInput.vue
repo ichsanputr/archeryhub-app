@@ -167,7 +167,7 @@ const calculateEndTotal = (end) => {
     let tenCount = 0
 
     for (let i = 1; i <= 6; i++) {
-        const arrow = (end[`arrow_${i}`] || '').to()
+        const arrow = (end[`arrow_${i}`] || '').toUpperCase()
         if (arrow === 'X') {
             total += 10
             xCount++
@@ -195,7 +195,7 @@ const saveEndScore = async (end) => {
         for (let i = 1; i <= 6; i++) {
             const arrowValue = end[`arrow_${i}`] || ''
             if (arrowValue) {
-                arrows.push(arrowValue.toString().to())
+                arrows.push(arrowValue.toString().toUpperCase())
             }
         }
 

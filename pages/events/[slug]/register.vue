@@ -189,7 +189,7 @@
                                                 'Atlet Baru' }}</h3>
                                             <p class="text-sm text-gray-500 mb-2">{{ archerProfile?.email ||
                                                 userDisplay.email
-                                            }}</p>
+                                                }}</p>
                                             <div class="flex flex-wrap gap-2">
                                                 <span v-if="archerProfile?.id"
                                                     class="text-[10px] text-navy font-bold bg-gray-100 px-2.5 py-1 rounded-full border border-gray-200  tracking-wider">
@@ -664,8 +664,8 @@ const displayValue = (value) => value || 'TBA'
 const getInitials = (name) => {
     if (!name) return '?'
     const words = name.trim().split(/\s+/)
-    if (words.length === 1) return words[0].substring(0, 2).to()
-    return (words[0][0] + words[words.length - 1][0]).to()
+    if (words.length === 1) return words[0].substring(0, 2).toUpperCase()
+    return (words[0][0] + words[words.length - 1][0]).toUpperCase()
 }
 
 const getSelectedCategoryName = () => {

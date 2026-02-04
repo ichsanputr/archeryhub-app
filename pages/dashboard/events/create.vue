@@ -390,7 +390,7 @@ const handleSubmit = async () => {
     }
 
     const payload = {
-      code: form.name.substring(0, 3).to() + Math.random().toString(36).substring(2, 5).to(),
+      code: form.name.substring(0, 3).toUpperCase() + Math.random().toString(36).substring(2, 5).toUpperCase(),
       name: form.name,
       venue: form.venue,
       city: form.city,

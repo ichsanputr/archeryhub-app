@@ -91,7 +91,7 @@
             <div class="flex items-center gap-4">
               <div
                 class="h-14 w-14 rounded-xl bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center text-navy font-black text-xl shadow-md shadow-primary/20">
-                {{ team.name.substring(0, 2).to() }}
+                {{ team.name.substring(0, 2).toUpperCase() }}
               </div>
               <div>
                 <h3 class="font-bold text-navy text-lg group-hover:text-primary transition-colors">{{ team.name }}</h3>

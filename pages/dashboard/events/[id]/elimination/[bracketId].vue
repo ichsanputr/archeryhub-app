@@ -48,10 +48,6 @@
                                         class="px-3 py-1 rounded-full bg-gray-100 text-[10px] font-black text-gray-600 border border-gray-200">
                                         {{ getFormatLabel(bracket.format) }}
                                     </span>
-                                    <span class="px-3 py-1 rounded-full text-[10px] font-black shadow-sm"
-                                        :class="statusBadgeClasses">
-                                        {{ getStatusLabel(bracket.status) }}
-                                    </span>
                                 </div>
                             </div>
 
@@ -203,7 +199,7 @@
                                     @click="selectMatchForScoring(match)"
                                     class="group p-4 rounded-2xl border-2 text-left transition-all relative overflow-hidden"
                                     :class="selectedScoringMatch?.id === match.id
-                                        ? 'border-primary bg-primary/5 shadow-md -translate-y-1'
+                                        ? 'border-primary bg-primary/5 shadow-sm -translate-y-1'
                                         : 'border-transparent bg-slate-50 hover:bg-white hover:border-gray-200'">
 
                                     <div class="flex justify-between items-center mb-3">
@@ -246,7 +242,7 @@
                         <div v-if="selectedScoringMatch" class="space-y-6">
                             <!-- Match Summary Header -->
                             <div
-                                class="bg-navy rounded-3xl p-8 flex flex-col md:flex-row items-center justify-between gap-8 text-white shadow-md overflow-hidden relative">
+                                class="bg-navy rounded-3xl p-8 flex flex-col md:flex-row items-center justify-between gap-8 text-white shadow-sm overflow-hidden relative">
                                 <div class="absolute inset-0 opacity-10 pointer-events-none">
                                     <Icon icon="ph:sword"
                                         class="text-[300px] -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 absolute" />
@@ -283,7 +279,7 @@
 
                                 <div class="flex flex-col items-center gap-4 text-center md:flex-1 md:order-3">
                                     <img :src="getAvatarUrl(selectedScoringMatch.entry_b_name)"
-                                        class="size-20 rounded-2xl border-4 border-white/20 shadow-md" />
+                                        class="size-20 rounded-2xl border-4 border-white/20 shadow-sm" />
                                     <div class="max-w-[150px]">
                                         <h4 class="font-black text-xl leading-tight truncate">{{
                                             selectedScoringMatch.entry_b_name
@@ -306,7 +302,7 @@
                                                 :class="currentEnd === i ? 'text-navy' : 'text-gray-400 group-hover:text-gray-600'">End
                                                 {{ i }}</span>
                                             <div class="size-10 rounded-xl flex items-center justify-center text-sm font-black transition-all"
-                                                :class="currentEnd === i ? 'bg-navy text-primary shadow-md scale-110' : 'bg-slate-50 text-gray-400 group-hover:bg-gray-100'">
+                                                :class="currentEnd === i ? 'bg-navy text-primary shadow-sm scale-110' : 'bg-slate-50 text-gray-400 group-hover:bg-gray-100'">
                                                 {{ i }}
                                             </div>
                                         </div>
@@ -341,7 +337,7 @@
                                                 </div>
                                                 <div class="w-1.5 h-12 bg-gray-200 rounded-full mx-1"></div>
                                                 <div
-                                                    class="flex-1 aspect-square bg-navy text-primary rounded-2xl flex items-center justify-center text-2xl font-black shadow-md">
+                                                    class="flex-1 aspect-square bg-navy text-primary rounded-2xl flex items-center justify-center text-2xl font-black shadow-sm">
                                                     {{ calculateEndTotal(selectedScoringMatch.id, currentEnd, 'A') }}
                                                 </div>
                                             </div>
@@ -388,7 +384,7 @@
                                                 </div>
                                                 <div class="w-1.5 h-12 bg-gray-200 rounded-full mx-1"></div>
                                                 <div
-                                                    class="flex-1 aspect-square bg-navy text-primary rounded-2xl flex items-center justify-center text-2xl font-black shadow-md">
+                                                    class="flex-1 aspect-square bg-navy text-primary rounded-2xl flex items-center justify-center text-2xl font-black shadow-sm">
                                                     {{ calculateEndTotal(selectedScoringMatch.id, currentEnd, 'B') }}
                                                 </div>
                                             </div>
@@ -419,7 +415,7 @@
                         </div>
                         <div v-else
                             class="bg-gray-50 rounded-[40px] border-4 border-dashed border-gray-200 p-20 text-center flex flex-col items-center justify-center">
-                            <div class="size-24 rounded-full bg-white shadow-md flex items-center justify-center mb-6">
+                            <div class="size-24 rounded-full bg-white shadow-sm flex items-center justify-center mb-6">
                                 <Icon icon="ph:hand-pointing-bold" class="text-4xl text-gray-300" />
                             </div>
                             <h3 class="text-2xl font-black text-navy tracking-tight">Pilih Match Untuk Input
@@ -530,7 +526,7 @@
 
                     <div v-else class="text-center py-40">
                         <div
-                            class="size-32 rounded-full bg-white shadow-md flex items-center justify-center mx-auto mb-8 border border-gray-100">
+                            class="size-32 rounded-full bg-white shadow-sm flex items-center justify-center mx-auto mb-8 border border-gray-100">
                             <Icon icon="ph:brackets-curly-bold" class="text-6xl text-gray-200" />
                         </div>
                         <h2 class="text-3xl font-black text-navy tracking-tight">Bracket Belum Di-generate
@@ -539,7 +535,7 @@
                             pertandingan
                             eliminasi untuk memulai babak ini.</p>
                         <button @click="generateBracket"
-                            class="mt-10 px-8 py-4 rounded-2xl bg-navy text-primary font-black tracking-widest hover:brightness-110 shadow-md shadow-navy/30 active:scale-95 transition-all flex items-center gap-3 mx-auto">
+                            class="mt-10 px-8 py-4 rounded-2xl bg-navy text-primary font-black tracking-widest hover:brightness-110 shadow-sm shadow-navy/30 active:scale-95 transition-all flex items-center gap-3 mx-auto">
                             <Icon icon="ph:magic-wand-bold" class="text-2xl" />
                             Generate Bracket Sekarang
                         </button>
@@ -975,7 +971,7 @@ onMounted(() => {
 }
 
 .round-label {
-    @apply text-[11px] font-black text-navy tracking-widest py-3 px-8 bg-white rounded-2xl shadow-md border border-gray-100 shrink-0 flex items-center justify-center mb-16;
+    @apply text-[11px] font-black text-navy tracking-widest py-3 px-8 bg-white rounded-2xl shadow-sm border border-gray-100 shrink-0 flex items-center justify-center mb-16;
 }
 
 .final-label {
@@ -987,16 +983,16 @@ onMounted(() => {
 }
 
 .match-node-card {
-    @apply relative w-[300px] bg-white rounded-3xl border-2 border-transparent shadow-md transition-all duration-500 cursor-pointer overflow-hidden;
+    @apply relative w-[300px] bg-white rounded-3xl border-2 border-transparent shadow-sm transition-all duration-500 cursor-pointer overflow-hidden;
     height: 140px;
 }
 
 .match-node-card:hover {
-    @apply shadow-md scale-[1.02] border-primary/20 -translate-y-1 z-20;
+    @apply shadow-sm scale-[1.02] border-primary/20 -translate-y-1 z-20;
 }
 
 .match-node-card.selected {
-    @apply ring-8 ring-primary/10 border-primary shadow-md z-20;
+    @apply ring-8 ring-primary/10 border-primary shadow-sm z-20;
 }
 
 .match-node-card.completed {

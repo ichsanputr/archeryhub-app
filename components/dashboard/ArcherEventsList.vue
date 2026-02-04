@@ -87,8 +87,7 @@
                   <div class="space-y-1">
                     <p class="text-lg font-bold text-navy">Belum Ada Event</p>
                     <p class="text-sm text-gray-500 font-medium leading-relaxed">
-                      {{ searchQuery ? 'Tidak ada event yang sesuai dengan pencarian Anda.' : 'Anda belum terdaftar di
-                      event manapun.' }}
+                      {{ emptyStateMessage }}
                     </p>
                   </div>
                   <BaseButton v-if="searchQuery" variant="outline" size="sm" @click="resetFilters">
@@ -117,7 +116,8 @@
                       class="text-[15px] font-bold text-navy truncate group-hover:text-primary-dark transition-colors">
                       {{ event.name }}</div>
                     <div class="flex items-center gap-2 mt-0.5">
-                      <span class="text-[11px] font-bold text-gray-400 tracking-wide ">{{ event.code }}</span>
+                      <span class="text-[11px] font-bold text-gray-400 tracking-wide ">{{ event.code?.toUpperCase()
+                        }}</span>
                       <span class="text-gray-300">•</span>
                       <span class="text-[11px] font-bold text-primary-dark  tracking-wide">{{
                         event.location_type || 'Event' }}</span>
@@ -317,6 +317,13 @@ const filteredEvents = computed(() => {
       (event.location?.toLowerCase() || '').includes(q)
     return matchesSearch
   })
+})
+
+const emptyStateMessage = computed(() => {
+  if (searchQuery.value) {
+    return 'Tidak ada event yang sesuai dengan pencarian Anda.'
+  }
+  return 'Anda belum terdaftar di event manapun.'
 })
 
 const formatDate = (dateStr) => {

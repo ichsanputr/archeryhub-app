@@ -83,7 +83,7 @@
           <tbody class="divide-y divide-gray-50">
             <tr v-for="order in filteredOrders" :key="order.uuid" class="hover:bg-gray-50/50 transition-colors group">
               <td class="px-6 py-4">
-                <p class="font-black text-navy text-sm">#{{ order.uuid.substring(0, 8).to() }}</p>
+                <p class="font-black text-navy text-sm">#{{ order.uuid.substring(0, 8).toUpperCase() }}</p>
                 <div class="flex items-center gap-1 mt-0.5">
                   <span class="w-1.5 h-1.5 rounded-full"
                     :class="order.payment_status === 'paid' ? 'bg-green-500' : 'bg-red-500'"></span>

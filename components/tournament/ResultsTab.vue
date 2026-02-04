@@ -240,7 +240,7 @@ const getFileIcon = (url) => {
 
 const getFileType = (url) => {
     if (!url) return 'DOCUMENT'
-    const ext = url.split('.').pop().to()
+    const ext = url.split('.').pop().toUpperCase()
     return ext || 'DOCUMENT'
 }
 
@@ -288,7 +288,7 @@ const showElimination = computed(() => {
 const getInitials = (name) => {
     if (!name) return '?'
     const words = name.trim().split(/\s+/)
-    if (words.length === 1) return words[0].substring(0, 2).to()
-    return (words[0][0] + words[words.length - 1][0]).to()
+    if (words.length === 1) return words[0].substring(0, 2).toUpperCase()
+    return (words[0][0] + words[words.length - 1][0]).toUpperCase()
 }
 </script>

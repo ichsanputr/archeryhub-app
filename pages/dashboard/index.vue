@@ -192,7 +192,7 @@
                   <tr v-for="order in sellerRecentOrders" :key="order.uuid"
                     class="hover:bg-gray-50/50 transition-colors group">
                     <td class="px-6 py-4">
-                      <span class="font-bold text-navy text-sm">{{ order.uuid.substring(0, 8).to() }}</span>
+                      <span class="font-bold text-navy text-sm">{{ order.uuid.substring(0, 8).toUpperCase() }}</span>
                       <p class="text-[10px] text-gray-400 font-medium">{{ formatDate(order.created_at) }}</p>
                     </td>
                     <td class="px-6 py-4">
