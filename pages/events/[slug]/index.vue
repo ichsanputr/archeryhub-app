@@ -270,8 +270,7 @@
                     <TournamentScheduleTab v-else-if="activeTab === 'Jadwal Lomba'" :event-id="slug"
                         :schedules="schedulesData" />
                     <TournamentAthletesTab v-else-if="activeTab === 'Peserta'" :participants="participantsData" />
-                    <TournamentResultsTab v-else-if="activeTab === 'Hasil'" :event-id="slug"
-                        :results="tournament.results" :categories="categoriesList" :participants="participantsData" />
+                    <TournamentResultsTab v-else-if="activeTab === 'Hasil'" :event-id="slug" />
                     <TournamentVenueTab v-else-if="activeTab === 'Lokasi'" :venue="tournament.venue"
                         :address="tournament.address" :gmaps-link="tournament.gmaps_link"
                         :accessibility="tournament.location_accessibility" />
