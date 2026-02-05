@@ -220,7 +220,7 @@
             <!-- Arrows per End -->
             <div>
               <BaseInput v-model.number="newBracket.arrowsPerEnd" type="number" label="Anak Panah per End" min="1"
-                max="12" required />
+                max="6" required />
             </div>
           </div>
 
