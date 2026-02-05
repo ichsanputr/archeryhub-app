@@ -1,26 +1,49 @@
 <template>
   <div class="flex flex-col gap-6 pb-12">
-    <!-- Header -->
-    <div class="flex flex-col gap-4">
-      <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
-        <div class="space-y-2">
-          <h1 class="text-2xl md:text-3xl font-black text-navy tracking-tight">{{ sessionData?.name || 'Loading...' }}
-          </h1>
-          <div class="flex items-center gap-4 text-sm text-gray-600">
-            <span class="font-mono font-semibold">{{ sessionData?.session_code }}</span>
-            <span class="text-gray-300">•</span>
-            <div class="flex items-center gap-1.5">
-              <Icon icon="ph:arrow-clockwise" class="text-base" />
-              <span><strong>{{ sessionData?.total_ends || 0 }}</strong> Ends</span>
-            </div>
-            <span class="text-gray-300">•</span>
-            <div class="flex items-center gap-1.5">
-              <Icon icon="ph:crosshair" class="text-base" />
-              <span><strong>{{ sessionData?.arrows_per_end || 0 }}</strong> Arrows/End</span>
+    <!-- Enhanced Header -->
+    <div
+      class="relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm mb-2">
+      <!-- Background Pattern -->
+      <div class="absolute inset-0 opacity-20"
+        style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);">
+      </div>
+
+      <!-- Decorative Background Elements -->
+      <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+      <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
+      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
+
+      <!-- Header Content -->
+      <div class="relative p-5 sm:p-8">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div class="flex items-center sm:items-start gap-4 flex-1 min-w-0">
+            <button @click="navigateTo(`/dashboard/events/${eventId}/qualification`)"
+              class="p-2.5 rounded-xl bg-white/10 text-white hover:bg-primary hover:text-navy transition-all group shrink-0 backdrop-blur-sm border border-white/20">
+              <Icon icon="ph:arrow-left-bold" class="text-lg group-hover:-translate-x-1 transition-transform" />
+            </button>
+            <div class="min-w-0">
+              <h1 class="text-xl sm:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2 truncate">
+                {{ sessionData?.name || 'Loading...' }}
+              </h1>
+              <div
+                class="flex flex-wrap items-center gap-1.5 sm:gap-4 text-[10px] sm:text-xs text-slate-300 font-bold uppercase tracking-widest">
+                <span class="px-2 py-0.5 rounded bg-white/10 border border-white/10 font-mono">{{
+                  sessionData?.session_code
+                  }}</span>
+                <span class="opacity-20 hidden sm:inline">•</span>
+                <div class="flex items-center gap-1.5">
+                  <Icon icon="ph:arrow-clockwise-bold" class="text-xs sm:text-sm text-primary" />
+                  <span>{{ sessionData?.total_ends || 0 }} Ends</span>
+                </div>
+                <span class="opacity-20 hidden sm:inline">•</span>
+                <div class="flex items-center gap-1.5">
+                  <Icon icon="ph:crosshair-bold" class="text-xs sm:text-sm text-primary" />
+                  <span>{{ sessionData?.arrows_per_end || 0 }} Arr/End</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
       </div>
     </div>
 

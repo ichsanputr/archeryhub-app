@@ -14,32 +14,32 @@
       <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
 
       <!-- Header Content -->
-      <div class="relative p-6 sm:p-8">
-        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-          <div class="flex items-start gap-4">
+      <div class="relative p-5 sm:p-8">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div class="flex items-center sm:items-start gap-4 flex-1">
             <!-- Icon Badge -->
             <div
-              class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
-              <Icon icon="ph:brackets-curly" class="text-primary text-2xl" />
+              class="h-12 w-12 sm:h-14 sm:w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
+              <Icon icon="ph:brackets-curly" class="text-primary text-xl sm:text-2xl" />
             </div>
 
             <!-- Title Section -->
-            <div class="flex-1">
-              <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
+            <div class="min-w-0">
+              <h1 class="text-xl sm:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2 truncate">
                 Manajemen Eliminasi
               </h1>
-              <p class="text-slate-300 text-sm max-w-2xl">
+              <p class="text-slate-300 text-xs sm:text-sm max-w-2xl line-clamp-1 sm:line-clamp-none">
                 Kelola bracket eliminasi untuk {{ eventName }}
               </p>
             </div>
           </div>
 
           <!-- Action Buttons -->
-          <div class="flex gap-3 flex-shrink-0">
+          <div class="flex flex-col sm:flex-row gap-3">
             <BaseButton variant="primary" icon="ph:plus-bold"
-              class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all"
-              @click="showCreateDialog = true">
-              Buat Bracket Baru
+              class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black uppercase tracking-widest"
+              @click="resetForm(); showCreateDialog = true">
+              Buat Bracket
             </BaseButton>
           </div>
         </div>
@@ -84,7 +84,7 @@
             <div class="flex items-center gap-3 flex-1">
               <div
                 class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                <Icon icon="ph:brackets-curly" class="text-xl text-primary" />
+                <Icon icon="ph:brackets-curly" class="text-xl" />
               </div>
               <div class="min-w-0 flex-1">
                 <p class="font-bold text-navy group-hover:text-primary transition-colors line-clamp-2">
@@ -93,6 +93,10 @@
                 <p class="text-xs text-gray-500 font-mono mt-1">{{ bracket.id }}</p>
               </div>
             </div>
+            <button @click.stop.prevent="openEditBracket(bracket)"
+              class="p-2 rounded-lg bg-gray-100 text-gray-400 hover:bg-primary/20 hover:text-primary transition-all">
+              <Icon icon="ph:pencil-simple-bold" class="text-lg" />
+            </button>
           </div>
 
           <!-- Details -->
@@ -108,6 +112,16 @@
             <div class="flex items-center gap-2 text-xs text-gray-600">
               <Icon icon="ph:list" class="text-sm" />
               <span class="font-semibold">{{ getBracketTypeLabel(bracket.bracket_type) }}</span>
+            </div>
+            <div class="flex items-center gap-3 pt-1">
+              <div class="flex items-center gap-1.5 text-[10px] text-gray-500 bg-gray-100 px-2 py-0.5 rounded-md">
+                <Icon icon="ph:stack-bold" class="text-xs" />
+                <span class="font-bold">{{ bracket.ends_per_match }} End/Match</span>
+              </div>
+              <div class="flex items-center gap-1.5 text-[10px] text-gray-500 bg-gray-100 px-2 py-0.5 rounded-md">
+                <Icon icon="ph:target-bold" class="text-xs" />
+                <span class="font-bold">{{ bracket.arrows_per_end }} Arrow/End</span>
+              </div>
             </div>
           </div>
 
@@ -163,8 +177,8 @@
           <!-- Modal Header -->
           <div class="p-6 border-b border-gray-100">
             <div class="flex items-center justify-between">
-              <h2 class="text-xl font-black text-navy">Buat Bracket Baru</h2>
-              <button @click="showCreateDialog = false" class="text-gray-400 hover:text-gray-600">
+              <h2 class="text-xl font-black text-navy">{{ isEditing ? 'Edit Bracket' : 'Buat Bracket Baru' }}</h2>
+              <button @click="showCreateDialog = false; resetForm()" class="text-gray-400 hover:text-gray-600">
                 <Icon icon="ph:x" class="text-2xl" />
               </button>
             </div>
@@ -237,16 +251,16 @@
 
           <!-- Modal Footer -->
           <div class="p-6 border-t border-gray-100 flex gap-3">
-            <button @click="showCreateDialog = false"
+            <button @click="showCreateDialog = false; resetForm()"
               class="flex-1 px-4 py-3 rounded-xl border border-gray-200 text-navy font-bold hover:bg-gray-50 transition-colors">
               Batal
             </button>
-            <button @click="createBracket" :disabled="!newBracket.categoryId || creatingBracket"
+            <button @click="handleCreateOrUpdate" :disabled="!newBracket.categoryId || creatingBracket"
               class="flex-1 px-4 py-3 rounded-xl bg-primary text-navy font-bold hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-              <span v-if="!creatingBracket">Buat Bracket</span>
+              <span v-if="!creatingBracket">{{ isEditing ? 'Update Bracket' : 'Buat Bracket' }}</span>
               <span v-else class="flex items-center gap-2">
                 <span class="size-4 border-2 border-navy/30 border-t-navy rounded-full animate-spin"></span>
-                Membuat...
+                {{ isEditing ? 'Mengupdate...' : 'Membuat...' }}
               </span>
             </button>
           </div>
@@ -280,6 +294,9 @@ const categories = ref([])
 const loadingBrackets = ref(false)
 const creatingBracket = ref(false)
 const showCreateDialog = ref(false)
+
+const editBracketId = ref(null)
+const isEditing = computed(() => !!editBracketId.value)
 
 const newBracket = ref({
   categoryId: '',
@@ -323,6 +340,63 @@ const fetchCategories = async () => {
   }
 }
 
+const openEditBracket = (bracket) => {
+  editBracketId.value = bracket.id || bracket.uuid
+  newBracket.value = {
+    categoryId: bracket.category_id,
+    bracketType: bracket.bracket_type,
+    format: bracket.format,
+    bracketSize: bracket.bracket_size,
+    endsPerMatch: bracket.ends_per_match,
+    arrowsPerEnd: bracket.arrows_per_end
+  }
+  showCreateDialog.value = true
+}
+
+const handleCreateOrUpdate = async () => {
+  if (isEditing.value) {
+    await updateBracket()
+  } else {
+    await createBracket()
+  }
+}
+
+const updateBracket = async () => {
+  creatingBracket.value = true
+  try {
+    const response = await put(`/events/${eventId}/elimination/brackets/${editBracketId.value}`, {
+      category_id: newBracket.value.categoryId,
+      bracket_type: newBracket.value.bracketType,
+      format: newBracket.value.format,
+      bracket_size: newBracket.value.bracketSize,
+      ends_per_match: newBracket.value.endsPerMatch,
+      arrows_per_end: newBracket.value.arrowsPerEnd
+    })
+
+    showToast('Bracket berhasil diupdate', 'success')
+    showCreateDialog.value = false
+    resetForm()
+    await fetchBrackets()
+  } catch (error) {
+    console.error('Failed to update bracket:', error)
+    showToast(error?.response?.data?.error || 'Gagal update bracket', 'error')
+  } finally {
+    creatingBracket.value = false
+  }
+}
+
+const resetForm = () => {
+  editBracketId.value = null
+  newBracket.value = {
+    categoryId: '',
+    bracketType: 'individual',
+    format: 'recurve_set',
+    bracketSize: 8,
+    endsPerMatch: 5,
+    arrowsPerEnd: 3
+  }
+}
+
 const createBracket = async () => {
   if (!newBracket.value.categoryId) {
     showToast('Pilih kategori terlebih dahulu', 'warning')
@@ -343,14 +417,7 @@ const createBracket = async () => {
     if (response?.bracket?.id || response?.id) {
       showToast('Bracket berhasil dibuat', 'success')
       showCreateDialog.value = false
-      newBracket.value = {
-        categoryId: '',
-        bracketType: 'individual',
-        format: 'recurve_set',
-        bracketSize: 8,
-        endsPerMatch: 5,
-        arrowsPerEnd: 3
-      }
+      resetForm()
       await fetchBrackets()
     } else {
       showToast('Gagal membuat bracket', 'error')
