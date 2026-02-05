@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-8">
-    <section class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
+    <section class="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100">
       <h2 class="text-xl font-bold text-navy mb-6 flex items-center gap-2 font-display">
         <Icon icon="ph:info-bold" class="text-primary" /> Tentang Turnamen
       </h2>
@@ -18,7 +18,7 @@
         </div>
       </div>
     </section>
-    <section class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
+    <section class="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100">
       <h2 class="text-xl font-bold text-navy mb-6 flex items-center gap-2 font-display">
         <Icon icon="ph:squares-four-bold" class="text-primary" /> Divisi Kompetisi
       </h2>
@@ -40,7 +40,7 @@
         </div>
       </div>
     </section>
-    <section class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 relative overflow-hidden">
+    <section class="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100 relative overflow-hidden">
       <div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
       <h2 class="text-xl font-bold text-navy mb-6 flex items-center gap-2 relative z-10 font-display">
         <Icon icon="ph:trophy-bold" class="text-primary" /> Total Hadiah

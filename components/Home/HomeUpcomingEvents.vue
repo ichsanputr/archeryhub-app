@@ -45,7 +45,7 @@
                             <div class="flex flex-wrap items-center gap-3 mt-1.5 min-w-0">
                                 <div
                                     class="flex items-center gap-1.5 text-[10px] sm:text-xs text-text-sub font-medium min-w-0">
-                                    <Icon icon="ph:map-pin-bold" class="text-primary flex-shrink-0" />
+                                    <Icon icon="ph:map-pin-bold" class="flex-shrink-0" />
                                     <span class="truncate">{{ event.location }}</span>
                                 </div>
 

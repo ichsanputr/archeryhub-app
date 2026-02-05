@@ -15,7 +15,7 @@
                 </div>
             </div>
         </section>
-        <section class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
+        <section class="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100">
             <h2 class="text-xl font-bold text-navy mb-4 font-display">Lapangan Panahan GBK</h2>
             <p class="text-text-sub text-sm flex items-center gap-2 mb-6">
                 <Icon icon="ph:map-pin" class="text-text-sub/50" />
@@ -30,7 +30,7 @@
             </div>
         </section>
 
-        <section class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
+        <section class="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100">
             <h3 class="text-lg font-bold text-navy mb-6 flex items-center gap-2 font-display">
                 <Icon icon="ph:car-bold" class="text-primary" /> Cara Ke Sana
             </h3>

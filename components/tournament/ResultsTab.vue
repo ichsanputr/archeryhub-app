@@ -96,7 +96,7 @@
 
         <!-- Qualification Results (Only show if category is selected and no manual results) -->
         <div v-if="(!results || results.length === 0) && selectedCategoryId && showQualification"
-            class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
+            class="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100">
             <h3 class="text-xl font-bold text-navy mb-6">Hasil Kualifikasi</h3>
             <div class="overflow-x-auto">
                 <table class="w-full">

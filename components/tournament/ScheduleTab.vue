@@ -10,7 +10,7 @@
         </div>
 
         <!-- Timeline -->
-        <div class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
+        <div class="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100">
             <div
                 class="space-y-8 relative before:absolute before:inset-0 before:left-[15px] before:w-0.5 before:bg-gray-100 before:h-full before:z-0">
                 <div v-if="isLoading" class="py-10 flex items-center justify-center text-gray-400 text-sm font-medium">

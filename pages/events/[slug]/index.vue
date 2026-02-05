@@ -59,13 +59,13 @@
                     <div v-if="activeTab === 'Ringkasan'" class="space-y-8">
                         <!-- About Section -->
                         <section v-if="tournament.page_settings?.sections?.about !== false"
-                            class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
+                            class="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100">
                             <h2 class="text-lg sm:text-xl font-bold text-navy mb-6 flex items-center gap-2">
                                 <Icon icon="ph:info-bold" class="text-navy" />
                                 Tentang Event
                             </h2>
                             <div class="prose max-w-none text-gray-600 leading-relaxed space-y-4">
-                                <div v-if="tournament.description" v-html="tournament.description">
+                                <div v-if="tournament.description" v-html="tournament.description" class="event-description text-sm md:text-base leading-relaxed md:leading-loose">
                                 </div>
                                 <div v-else class="italic text-gray-400">
                                     Belum ada deskripsi untuk event ini.
@@ -88,7 +88,7 @@
                         <!-- Divisions Section -->
                         <section
                             v-if="tournament.page_settings?.sections?.divisions !== false && divisionsData.length > 0"
-                            class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
+                            class="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100">
                             <div class="flex items-center justify-between mb-6">
                                 <h2 class="text-lg sm:text-xl font-bold text-navy">
                                     Divisi Kompetisi
@@ -130,7 +130,7 @@
 
                         <!-- Registration Fees Section -->
                         <section v-if="tournament.page_settings?.sections?.fees !== false"
-                            class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
+                            class="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100">
                             <h2 class="text-lg sm:text-xl font-bold text-navy mb-6 flex items-center gap-2">
                                 <Icon icon="ph:currency-circle-dollar-bold" class="text-navy" />
                                 Biaya Pendaftaran
@@ -175,7 +175,7 @@
                         <!-- Payment Methods Section -->
                         <section
                             v-if="tournament.page_settings?.sections?.payment_methods !== false && tournament.payment_methods && tournament.payment_methods.length > 0"
-                            class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
+                            class="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100">
                             <h2 class="text-lg sm:text-xl font-bold text-navy mb-6 flex items-center gap-2">
                                 <Icon icon="ph:credit-card-bold" class="text-navy" />
                                 Metode Pembayaran
@@ -222,7 +222,7 @@
                         </section>
 
                         <section v-if="tournament.page_settings?.sections?.prizes !== false"
-                            class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 relative overflow-hidden">
+                            class="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100 relative overflow-hidden">
                             <div
                                 class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2">
                             </div>
@@ -338,19 +338,19 @@
                         <div class="flex gap-3 mb-6">
                             <div class="flex-1 bg-gray-50 rounded-lg p-3 text-center"
                                 :class="{ 'opacity-50': countdown.isClosed }">
-                                <span class="block text-2xl font-bold text-navy">{{ String(countdown.days).padStart(2,
+                                <span class="block text-xl sm:text-2xl font-bold text-navy">{{ String(countdown.days).padStart(2,
                                     '0') }}</span>
                                 <span class="text-xs text-gray-500 ">Hari</span>
                             </div>
                             <div class="flex-1 bg-gray-50 rounded-lg p-3 text-center"
                                 :class="{ 'opacity-50': countdown.isClosed }">
-                                <span class="block text-2xl font-bold text-navy">{{ String(countdown.hours).padStart(2,
+                                <span class="block text-xl sm:text-2xl font-bold text-navy">{{ String(countdown.hours).padStart(2,
                                     '0') }}</span>
                                 <span class="text-xs text-gray-500 ">Jam</span>
                             </div>
                             <div class="flex-1 bg-gray-50 rounded-lg p-3 text-center"
                                 :class="{ 'opacity-50': countdown.isClosed }">
-                                <span class="block text-2xl font-bold text-navy">{{
+                                <span class="block text-xl sm:text-2xl font-bold text-navy">{{
                                     String(countdown.minutes).padStart(2, '0') }}</span>
                                 <span class="text-xs text-gray-500 ">Menit</span>
                             </div>

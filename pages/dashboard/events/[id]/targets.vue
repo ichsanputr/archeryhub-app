@@ -1,24 +1,52 @@
 <template>
   <div class="flex flex-col gap-6 pb-12">
     <!-- Header -->
-    <div class="flex flex-col gap-4">
-      <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
-        <div class="space-y-1">
-          <h1 class="text-2xl md:text-3xl font-black text-navy tracking-tight">Manajemen Target</h1>
-          <p class="text-gray-500 text-sm">Kelola target dan bantalan untuk event {{ eventName }}</p>
-        </div>
+    <!-- Enhanced Header -->
+    <div
+      class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
+      <!-- Background Pattern -->
+      <div class="absolute inset-0 opacity-20"
+        style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);">
+      </div>
 
-        <!-- Action Buttons -->
-        <div class="flex gap-3 flex-shrink-0">
-          <BaseButton variant="white" icon="ph:download" class="h-10 md:h-11 px-4 md:px-5">
-            <span class="hidden sm:inline">Ekspor Data</span>
-            <span class="sm:hidden">Ekspor</span>
-          </BaseButton>
-          <BaseButton @click="showCreateDialog = true" variant="primary" icon="ph:plus-bold"
-            class="h-10 md:h-11 px-4 md:px-5 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all">
-            <span class="hidden sm:inline">Tambah Target Baru</span>
-            <span class="sm:hidden">Tambah</span>
-          </BaseButton>
+      <!-- Decorative Background Elements -->
+      <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+      <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
+      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
+
+      <!-- Header Content -->
+      <div class="relative p-6 sm:p-8">
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+          <div class="flex items-start gap-4">
+            <!-- Icon Badge -->
+            <div
+              class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
+              <Icon icon="ph:target" class="text-primary text-2xl" />
+            </div>
+
+            <!-- Title Section -->
+            <div class="flex-1">
+              <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
+                Manajemen Target
+              </h1>
+              <p class="text-slate-300 text-sm max-w-2xl">
+                Kelola target dan bantalan untuk event {{ eventName }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex gap-3 flex-shrink-0">
+            <BaseButton variant="white" icon="ph:download" class="h-11 px-5">
+              <span class="hidden sm:inline">Ekspor Data</span>
+              <span class="sm:hidden">Ekspor</span>
+            </BaseButton>
+            <BaseButton @click="showCreateDialog = true" variant="primary" icon="ph:plus-bold"
+              class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all">
+              <span class="hidden sm:inline">Tambah Target Baru</span>
+              <span class="sm:hidden">Tambah</span>
+            </BaseButton>
+          </div>
         </div>
       </div>
     </div>
@@ -93,6 +121,28 @@
             </tr>
           </tbody>
         </table>
+      </div>
+
+
+      <!-- Pagination Footer -->
+      <div v-if="targets.length > 0 || page > 1"
+        class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
+        <span class="text-sm text-gray-500">
+          Menampilkan {{ (page - 1) * limit + 1 }} - {{ Math.min(page * limit, total) }} dari {{ total }} target
+        </span>
+        <div class="flex items-center gap-2">
+          <button @click="prevPage" :disabled="page === 1"
+            class="p-2 border border-gray-200 rounded-lg hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-gray-600">
+            <Icon icon="ph:caret-left-bold" />
+          </button>
+          <span class="text-sm font-medium text-navy px-2">
+            Halaman {{ page }} dari {{ totalPages }}
+          </span>
+          <button @click="nextPage" :disabled="page >= totalPages"
+            class="p-2 border border-gray-200 rounded-lg hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-gray-600">
+            <Icon icon="ph:caret-right-bold" />
+          </button>
+        </div>
       </div>
     </div>
 
@@ -217,6 +267,13 @@ const targets = ref([])
 const loading = ref(false)
 const submitting = ref(false)
 
+// Pagination state
+const page = ref(1)
+const limit = ref(10)
+const total = ref(0) // Total items from API
+
+const totalPages = computed(() => Math.ceil(total.value / limit.value))
+
 const showCreateDialog = ref(false)
 const showEditDialog = ref(false)
 const showDeleteDialog = ref(false)
@@ -254,13 +311,33 @@ const parseTargetNumbers = (value) => {
 const fetchTargets = async () => {
   loading.value = true
   try {
-    const response = await get(`/events/${eventId}/targets`)
+    const response = await get(`/events/${eventId}/targets`, {
+      params: {
+        page: page.value,
+        limit: limit.value
+      }
+    })
     targets.value = response?.targets || []
+    total.value = response?.total || 0
   } catch (error) {
     console.error('Failed to fetch targets:', error)
     toast.error('Failed to load targets')
   } finally {
     loading.value = false
+  }
+}
+
+const nextPage = () => {
+  if (page.value < totalPages.value) {
+    page.value++
+    fetchTargets()
+  }
+}
+
+const prevPage = () => {
+  if (page.value > 1) {
+    page.value--
+    fetchTargets()
   }
 }
 

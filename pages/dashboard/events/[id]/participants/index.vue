@@ -1,25 +1,54 @@
 <template>
     <div class="flex flex-col gap-6 pb-12">
         <!-- Header -->
-        <div class="flex flex-col gap-4">
-            <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                <div class="space-y-1">
-                    <h1 class="text-2xl md:text-3xl font-black text-navy tracking-tight">Daftar Peserta</h1>
-                    <p class="text-gray-500 text-sm">Lihat dan kelola semua peserta yang terdaftar.</p>
-                </div>
+        <!-- Enhanced Header -->
+        <div
+            class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
+            <!-- Background Pattern -->
+            <div class="absolute inset-0 opacity-20"
+                style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);">
+            </div>
 
-                <!-- Action Buttons -->
-                <div class="flex gap-3 flex-shrink-0">
-                    <BaseButton variant="white" icon="ph:download" class="h-10 md:h-11 px-4 md:px-5">
-                        <span class="hidden sm:inline">Export CSV</span>
-                        <span class="sm:hidden">Export</span>
-                    </BaseButton>
-                    <BaseButton :to="`/dashboard/events/${route.params.id}/participants/add`" variant="primary"
-                        icon="ph:plus-bold"
-                        class="h-10 md:h-11 px-4 md:px-5 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all">
-                        <span class="hidden sm:inline">Tambah Peserta</span>
-                        <span class="sm:hidden">Tambah</span>
-                    </BaseButton>
+            <!-- Decorative Background Elements -->
+            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary">
+            </div>
+
+            <!-- Header Content -->
+            <div class="relative p-6 sm:p-8">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                    <div class="flex items-start gap-4">
+                        <!-- Icon Badge -->
+                        <div
+                            class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
+                            <Icon icon="ph:users" class="text-primary text-2xl" />
+                        </div>
+
+                        <!-- Title Section -->
+                        <div class="flex-1">
+                            <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
+                                Daftar Peserta
+                            </h1>
+                            <p class="text-slate-300 text-sm max-w-2xl">
+                                Lihat dan kelola semua peserta yang terdaftar dalam event ini.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex gap-3 flex-shrink-0">
+                        <BaseButton variant="white" icon="ph:download" class="h-11 px-5">
+                            <span class="hidden sm:inline">Export CSV</span>
+                            <span class="sm:hidden">Export</span>
+                        </BaseButton>
+                        <BaseButton :to="`/dashboard/events/${route.params.id}/participants/add`" variant="primary"
+                            icon="ph:plus-bold"
+                            class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all">
+                            <span class="hidden sm:inline">Tambah Peserta</span>
+                            <span class="sm:hidden">Tambah</span>
+                        </BaseButton>
+                    </div>
                 </div>
             </div>
         </div>
@@ -132,7 +161,7 @@
                                 class="group hover:bg-gray-50/50 transition-colors">
                                 <td class="px-6 py-4">
                                     <span class="text-sm font-bold text-gray-400">{{ (page - 1) * limit + index + 1
-                                        }}</span>
+                                    }}</span>
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-3">
@@ -144,18 +173,18 @@
                                         <div>
                                             <div class="flex items-center gap-1.5 min-w-0">
                                                 <p class="text-sm font-bold text-navy truncate">{{ participant.full_name
-                                                }}
+                                                    }}
                                                 </p>
                                             </div>
                                             <div class="flex items-center gap-2">
                                                 <p class="text-xs text-gray-500 font-medium">{{ participant.email || '-'
-                                                    }}</p>
+                                                }}</p>
                                             </div>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 text-gray-500 font-medium text-xs">{{ participant.club_name || '-'
-                                    }}
+                                }}
                                 </td>
                                 <td class="px-6 py-4">
                                     <p class="text-navy font-bold text-sm">{{ getCategoryName(participant) }}</p>
