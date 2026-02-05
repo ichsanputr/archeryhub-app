@@ -1,19 +1,44 @@
 <template>
     <div class="flex flex-col gap-8">
-        <!-- Header Section -->
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div>
-                <div class="mb-2">
-                    <Breadcrumbs :current="'Manajemen Produk'" />
-                </div>
-                <h1 class="text-3xl font-extrabold text-navy tracking-tight">Manajemen Produk</h1>
-                <p class="text-gray-500 font-medium mt-1">Kelola katalog produk yang Anda jual di marketplace.</p>
+        <!-- Enhanced Header -->
+        <div
+            class="relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm mb-2">
+            <!-- Background Pattern -->
+            <div class="absolute inset-0 opacity-10"
+                style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.05) 10px, rgba(255,255,255,0.05) 20px);">
             </div>
-            <BaseButton variant="primary" icon="ph:plus-bold"
-                class="shadow-md shadow-primary/20 h-10 md:h-11 px-4 md:px-6" @click="openCreateModal">
-                <span class="hidden sm:inline">Tambah Produk</span>
-                <span class="sm:hidden">Tambah</span>
-            </BaseButton>
+
+            <div class="relative p-5 sm:p-8">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div class="flex items-center sm:items-start gap-4 flex-1">
+                        <!-- Icon Badge -->
+                        <div
+                            class="h-12 w-12 sm:h-14 sm:w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md flex-shrink-0">
+                            <Icon icon="ph:package-bold" class="text-primary text-xl sm:text-2xl" />
+                        </div>
+
+                        <!-- Title Section -->
+                        <div class="min-w-0">
+                            <h1
+                                class="text-xl sm:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2 truncate">
+                                Manajemen Produk
+                            </h1>
+                            <p class="text-slate-300 text-xs sm:text-sm max-w-2xl line-clamp-1 sm:line-clamp-none">
+                                Kelola katalog produk yang Anda jual di marketplace
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Action Button -->
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <BaseButton variant="primary" icon="ph:plus-bold"
+                            class="w-full sm:w-auto h-10 sm:h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-[10px] sm:text-xs"
+                            @click="openCreateModal">
+                            Tambah Produk
+                        </BaseButton>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Quick Stats -->

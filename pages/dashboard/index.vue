@@ -3,18 +3,32 @@
     <!-- Club Dashboard View -->
     <template v-if="userRole === 'club'">
       <!-- Club Header -->
-      <div class="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h1 class="text-3xl font-black text-navy tracking-tight">{{ user?.full_name || 'Panel Kontrol Klub' }}</h1>
-          <p class="text-gray-500 mt-1 font-medium">Monitoring performa dan manajemen anggota klub Anda secara
-            real-time.</p>
+      <div
+        class="relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
+        <div class="absolute inset-0 opacity-10"
+          style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.05) 10px, rgba(255,255,255,0.05) 20px);">
         </div>
-        <div class="flex gap-3">
-          <NuxtLink to="/dashboard/members">
-            <BaseButton variant="primary" size="sm" icon="ph:user-plus">
-              Tambah Anggota
-            </BaseButton>
-          </NuxtLink>
+        <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div class="flex items-center gap-4">
+            <div
+              class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0">
+              <Icon icon="ph:house-line-bold" class="text-primary text-2xl sm:text-3xl" />
+            </div>
+            <div>
+              <h1 class="text-xl sm:text-3xl font-black tracking-tight">{{ user?.full_name || 'Panel Kontrol Klub' }}
+              </h1>
+              <p class="text-slate-300 text-xs sm:text-sm font-medium mt-1">Monitoring performa dan manajemen anggota
+                klub secara real-time</p>
+            </div>
+          </div>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <NuxtLink to="/dashboard/members" class="w-full sm:w-auto">
+              <BaseButton variant="primary" icon="ph:user-plus-bold"
+                class="w-full h-10 sm:h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-xs">
+                Tambah Anggota
+              </BaseButton>
+            </NuxtLink>
+          </div>
         </div>
       </div>
 
@@ -125,18 +139,32 @@
     <!-- Seller Dashboard View -->
     <template v-else-if="userRole === 'seller'">
       <!-- Seller Header -->
-      <div class="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h1 class="text-3xl font-black text-navy tracking-tight">Ringkasan Toko</h1>
-          <p class="text-gray-500 mt-1 font-medium">Selamat datang di dashboard penjual Anda, <span
-              class="text-navy font-bold">{{ user?.store_name || user?.full_name }}</span></p>
+      <div
+        class="relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
+        <div class="absolute inset-0 opacity-10"
+          style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.05) 10px, rgba(255,255,255,0.05) 20px);">
         </div>
-        <div class="flex gap-3">
-          <NuxtLink to="/dashboard/products">
-            <BaseButton variant="primary" size="sm" icon="ph:plus-circle">
-              Tambah Produk
-            </BaseButton>
-          </NuxtLink>
+        <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div class="flex items-center gap-4">
+            <div
+              class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0">
+              <Icon icon="ph:storefront-bold" class="text-primary text-2xl sm:text-3xl" />
+            </div>
+            <div>
+              <h1 class="text-xl sm:text-3xl font-black tracking-tight">Ringkasan Toko</h1>
+              <p class="text-slate-300 text-xs sm:text-sm font-medium mt-1">Selamat datang di dashboard penjual Anda,
+                <span class="text-white font-bold">{{ user?.store_name || user?.full_name }}</span>
+              </p>
+            </div>
+          </div>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <NuxtLink to="/dashboard/products" class="w-full sm:w-auto">
+              <BaseButton variant="primary" icon="ph:plus-circle-bold"
+                class="w-full h-10 sm:h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-xs">
+                Tambah Produk
+              </BaseButton>
+            </NuxtLink>
+          </div>
         </div>
       </div>
 
@@ -279,18 +307,31 @@
     <!-- Original Dashboard View (for Org/Admin/Other) -->
     <template v-else>
       <!-- Header Section -->
-      <div class="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h1 class="text-3xl font-black text-navy tracking-tight">Overview</h1>
-          <p class="text-gray-500 mt-1 font-medium">Selamat datang kembali, <span class="text-navy font-bold">{{
-            user?.full_name }}</span></p>
+      <div
+        class="relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
+        <div class="absolute inset-0 opacity-10"
+          style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.05) 10px, rgba(255,255,255,0.05) 20px);">
         </div>
-        <div class="flex gap-3">
-          <NuxtLink to="/dashboard/events">
-            <BaseButton variant="primary" size="sm" icon="ph:trophy">
-              Kelola Event
-            </BaseButton>
-          </NuxtLink>
+        <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div class="flex items-center gap-4">
+            <div
+              class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0">
+              <Icon icon="ph:chart-pie-slice-bold" class="text-primary text-2xl sm:text-3xl" />
+            </div>
+            <div>
+              <h1 class="text-xl sm:text-3xl font-black tracking-tight">Overview</h1>
+              <p class="text-slate-300 text-xs sm:text-sm font-medium mt-1">Selamat datang kembali, <span
+                  class="text-white font-bold">{{ user?.full_name }}</span></p>
+            </div>
+          </div>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <NuxtLink to="/dashboard/events" class="w-full sm:w-auto">
+              <BaseButton variant="primary" icon="ph:trophy-bold"
+                class="w-full h-10 sm:h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-xs">
+                Kelola Event
+              </BaseButton>
+            </NuxtLink>
+          </div>
         </div>
       </div>
 

@@ -14,16 +14,24 @@
       <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
 
       <!-- Header Content -->
-      <div class="relative p-6 sm:p-8">
-        <div class="flex items-start gap-4">
-          <!-- Icon Badge -->
-          <div
-            class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
-            <Icon icon="ph:calendar-blank" class="text-primary text-2xl" />
-          </div>
-          <div>
-            <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight">Event Saya</h1>
-            <p class="text-slate-300 text-sm mt-1">Event yang Anda ikuti</p>
+      <div class="relative p-5 sm:p-8">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div class="flex items-center sm:items-start gap-4 flex-1">
+            <!-- Icon Badge -->
+            <div
+              class="h-12 w-12 sm:h-14 sm:w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md flex-shrink-0">
+              <Icon icon="ph:calendar-blank" class="text-primary text-xl sm:text-2xl" />
+            </div>
+
+            <!-- Title Section -->
+            <div class="min-w-0">
+              <h1 class="text-xl sm:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2 truncate">
+                Event Saya
+              </h1>
+              <p class="text-slate-300 text-xs sm:text-sm max-w-2xl line-clamp-1 sm:line-clamp-none">
+                Event yang Anda ikuti
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -117,7 +125,7 @@
                       {{ event.name }}</div>
                     <div class="flex items-center gap-2 mt-0.5">
                       <span class="text-[11px] font-bold text-gray-400 tracking-wide ">{{ event.code?.toUpperCase()
-                        }}</span>
+                      }}</span>
                       <span class="text-gray-300">•</span>
                       <span class="text-[11px] font-bold text-primary-dark  tracking-wide">{{
                         event.location_type || 'Event' }}</span>
