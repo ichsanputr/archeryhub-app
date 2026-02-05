@@ -13,22 +13,13 @@
 
             <div v-if="step === 1" class="p-6 md:p-8 space-y-8">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="space-y-2">
-                        <label class="text-[10px] font-black text-text-sub/50  tracking-widest ml-1">Pilih
-                            Atlet</label>
-                        <select v-model="form.athlete"
-                            class="w-full p-4 bg-gray-50 border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all">
-                            <option value="">-- Pilih Atlet --</option>
-                            <option v-for="a in myAthletes" :key="a" :value="a">{{ a }}</option>
-                        </select>
+                    <div>
+                        <BaseSelect v-model="form.athlete" :items="myAthletes" label="Pilih Atlet"
+                            placeholder="-- Pilih Atlet --" />
                     </div>
-                    <div class="space-y-2">
-                        <label class="text-[10px] font-black text-text-sub/50  tracking-widest ml-1">Kategori</label>
-                        <select v-model="form.category"
-                            class="w-full p-4 bg-gray-50 border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all">
-                            <option value="">-- Pilih Kategori --</option>
-                            <option v-for="c in categories" :key="c" :value="c">{{ c }}</option>
-                        </select>
+                    <div>
+                        <BaseSelect v-model="form.category" :items="categories" label="Kategori"
+                            placeholder="-- Pilih Kategori --" />
                     </div>
                 </div>
 
@@ -124,6 +115,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import BaseSelect from '~/components/common/BaseSelect.vue'
 
 definePageMeta({
     layout: 'dashboard'

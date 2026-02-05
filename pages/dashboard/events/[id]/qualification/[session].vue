@@ -29,7 +29,7 @@
                 class="flex flex-wrap items-center gap-1.5 sm:gap-4 text-[10px] sm:text-xs text-slate-300 font-bold uppercase tracking-widest">
                 <span class="px-2 py-0.5 rounded bg-white/10 border border-white/10 font-mono">{{
                   sessionData?.session_code
-                  }}</span>
+                }}</span>
                 <span class="opacity-20 hidden sm:inline">•</span>
                 <div class="flex items-center gap-1.5">
                   <Icon icon="ph:arrow-clockwise-bold" class="text-xs sm:text-sm text-primary" />
@@ -143,13 +143,8 @@
                   </div>
                 </td>
                 <td class="px-6 py-4">
-                  <select v-model="archer.assignedTarget"
-                    class="px-4 py-2 rounded-lg border border-gray-200 text-navy font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
-                    <option value="">-- Pilih Target --</option>
-                    <option v-for="target in getAvailableTargetsForArcher(archer)" :key="target.id" :value="target.id">
-                      {{ target.name }}
-                    </option>
-                  </select>
+                  <BaseSelect v-model="archer.assignedTarget" :items="getAvailableTargetsForArcher(archer)"
+                    item-value="id" item-title="name" placeholder="-- Pilih Target --" />
                 </td>
               </tr>
             </tbody>
@@ -356,6 +351,7 @@
 const route = useRoute()
 const { get, post } = useApi()
 const toast = useToast()
+import BaseSelect from '~/components/common/BaseSelect.vue'
 const eventId = route.params.id
 const sessionCode = route.params.session
 

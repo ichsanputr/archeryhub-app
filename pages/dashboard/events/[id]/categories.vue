@@ -128,39 +128,21 @@
             <template #default>
                 <div class="space-y-5">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700">Jenis Busur *</label>
-                            <select v-model="form.division_uuid"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
-                                <option value="">Pilih Jenis Busur</option>
-                                <option v-for="bow in bowTypes" :key="bow.id" :value="bow.id">{{ bow.name }}</option>
-                            </select>
+                        <div>
+                            <BaseSelect v-model="form.division_uuid" :items="bowOptions" label="Jenis Busur"
+                                placeholder="Pilih Jenis Busur" required />
                         </div>
-                        <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700">Kelompok Umur *</label>
-                            <select v-model="form.category_uuid"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
-                                <option value="">Pilih Kelompok Umur</option>
-                                <option v-for="age in ageGroups" :key="age.id" :value="age.id">{{ age.name }}</option>
-                            </select>
+                        <div>
+                            <BaseSelect v-model="form.category_uuid" :items="ageOptions" label="Kelompok Umur"
+                                placeholder="Pilih Kelompok Umur" required />
                         </div>
-                        <div class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700">Jenis Team *</label>
-                            <select v-model="form.event_type_uuid"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
-                                <option value="">Pilih Jenis Team</option>
-                                <option v-for="eventType in eventTypes" :key="eventType.id" :value="eventType.id">{{
-                                    eventType.name }}</option>
-                            </select>
+                        <div>
+                            <BaseSelect v-model="form.event_type_uuid" :items="eventTypeOptions" label="Jenis Team"
+                                placeholder="Pilih Jenis Team" required />
                         </div>
-                        <div v-if="!isMixedTeam" class="space-y-2">
-                            <label class="text-sm font-bold text-gray-700">Divisi Gender *</label>
-                            <select v-model="form.gender_division_uuid"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
-                                <option value="">Pilih Divisi Gender</option>
-                                <option v-for="gender in genderDivisions" :key="gender.id" :value="gender.id">{{
-                                    gender.name }}</option>
-                            </select>
+                        <div v-if="!isMixedTeam">
+                            <BaseSelect v-model="form.gender_division_uuid" :items="genderOptions" label="Divisi Gender"
+                                placeholder="Pilih Divisi Gender" required />
                         </div>
                     </div>
 
@@ -194,6 +176,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import BaseSelect from '~/components/common/BaseSelect.vue'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 
@@ -219,6 +202,22 @@ const eventTypes = ref([])
 const genderDivisions = ref([])
 const showDialog = ref(false)
 const editingCategory = ref(null)
+
+const bowOptions = computed(() => {
+    return bowTypes.value.map(bow => ({ value: bow.id, title: bow.name }))
+})
+
+const ageOptions = computed(() => {
+    return ageGroups.value.map(age => ({ value: age.id, title: age.name }))
+})
+
+const eventTypeOptions = computed(() => {
+    return eventTypes.value.map(type => ({ value: type.id, title: type.name }))
+})
+
+const genderOptions = computed(() => {
+    return genderDivisions.value.map(gender => ({ value: gender.id, title: gender.name }))
+})
 
 const form = ref({
     division_uuid: '',

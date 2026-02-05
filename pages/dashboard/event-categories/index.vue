@@ -173,37 +173,18 @@
               placeholder="Misalnya: Recurve Men 70m" required />
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="space-y-2">
-              <label class="text-xs font-bold text-gray-600  tracking-[0.18em]">Jenis Busur</label>
-              <select v-model="form.bow_type_id"
-                class="w-full px-3 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none text-sm"
-                required>
-                <option value="" disabled>Pilih jenis busur</option>
-                <option v-for="bow in bowTypes" :key="bow.id" :value="bow.id">
-                  {{ bow.name }}
-                </option>
-              </select>
+            <div>
+              <BaseSelect v-model="form.bow_type_id" :items="bowOptions" label="Jenis Busur"
+                placeholder="Pilih jenis busur" required />
             </div>
-            <div class="space-y-2">
-              <label class="text-xs font-bold text-gray-600  tracking-[0.18em]">Kelompok Umur</label>
-              <select v-model="form.age_group_id"
-                class="w-full px-3 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none text-sm"
-                required>
-                <option value="" disabled>Pilih kelompok umur</option>
-                <option v-for="age in ageGroups" :key="age.id" :value="age.id">
-                  {{ age.name }}
-                </option>
-              </select>
+            <div>
+              <BaseSelect v-model="form.age_group_id" :items="ageOptions" label="Kelompok Umur"
+                placeholder="Pilih kelompok umur" required />
             </div>
           </div>
 
-          <div class="space-y-2">
-            <label class="text-xs font-bold text-gray-600  tracking-[0.18em]">Status</label>
-            <select v-model="form.status"
-              class="w-full px-3 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none text-sm">
-              <option value="active">Aktif</option>
-              <option value="inactive">Nonaktif</option>
-            </select>
+          <div>
+            <BaseSelect v-model="form.status" :items="statusOptions" label="Status" />
           </div>
 
           <div class="flex justify-end gap-3 pt-3 border-t border-gray-100 mt-2">
@@ -224,6 +205,7 @@
 import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted } from 'vue'
 import { useApi } from '~/composables/useApi'
+import BaseSelect from '~/components/common/BaseSelect.vue'
 
 definePageMeta({
   layout: 'dashboard'
@@ -236,6 +218,13 @@ const isSaving = ref(false)
 const bowTypes = ref([])
 const ageGroups = ref([])
 const categories = ref([])
+
+const bowOptions = computed(() => bowTypes.value.map(b => ({ value: b.id, title: b.name })))
+const ageOptions = computed(() => ageGroups.value.map(a => ({ value: a.id, title: a.name })))
+const statusOptions = [
+  { value: 'active', title: 'Aktif' },
+  { value: 'inactive', title: 'Nonaktif' }
+]
 
 const activeBow = ref('')
 const searchQuery = ref('')

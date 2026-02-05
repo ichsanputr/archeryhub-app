@@ -130,24 +130,12 @@
                             </div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="space-y-2">
-                                <label class="text-sm font-bold text-gray-700">Tipe Lokasi</label>
-                                <select v-model="form.location_type"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
-                                    <option value="">Pilih Tipe Lokasi</option>
-                                    <option v-for="discipline in disciplines" :key="discipline.id"
-                                        :value="discipline.name">
-                                        {{ discipline.name }}
-                                    </option>
-                                </select>
+                            <div>
+                                <BaseSelect v-model="form.location_type" :items="disciplines" item-value="name"
+                                    item-title="name" label="Tipe Lokasi" placeholder="Pilih Tipe Lokasi" />
                             </div>
-                            <div class="space-y-2">
-                                <label class="text-sm font-bold text-gray-700">Status Event</label>
-                                <select v-model="form.status"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
-                                    <option value="draft">Draft (Belum dipublikasi)</option>
-                                    <option value="active">Aktif (Dipublikasikan)</option>
-                                </select>
+                            <div>
+                                <BaseSelect v-model="form.status" :items="statusOptions" label="Status Event" />
                             </div>
                         </div>
                     </div>
@@ -335,12 +323,7 @@
                                             <input v-model="method.account_name" type="text"
                                                 placeholder="Nama Pemilik Rekening"
                                                 class="w-full px-4 py-2 rounded-lg border border-gray-200 text-sm" />
-                                            <select v-model="method.type"
-                                                class="w-full px-4 py-2 rounded-lg border border-gray-200 text-sm">
-                                                <option value="bank">Bank Transfer</option>
-                                                <option value="ewallet">E-Wallet</option>
-                                                <option value="qris">QRIS</option>
-                                            </select>
+                                            <BaseSelect v-model="method.type" :items="paymentMethodTypes" />
                                         </div>
                                         <input v-model="method.instructions" type="text"
                                             placeholder="Instruksi tambahan (opsional)"
@@ -786,7 +769,19 @@
 import { Icon } from '@iconify/vue'
 import TiptapEditor from '~/components/common/TiptapEditor.vue'
 import MediaLibrary from '~/components/common/MediaLibrary.vue'
+import BaseSelect from '~/components/common/BaseSelect.vue'
 import { useApi } from '~/composables/useApi'
+
+const statusOptions = [
+    { value: 'draft', title: 'Draft (Belum dipublikasi)' },
+    { value: 'active', title: 'Aktif (Dipublikasikan)' }
+]
+
+const paymentMethodTypes = [
+    { value: 'bank', title: 'Bank Transfer' },
+    { value: 'ewallet', title: 'E-Wallet' },
+    { value: 'qris', title: 'QRIS' }
+]
 
 definePageMeta({
     layout: 'dashboard'

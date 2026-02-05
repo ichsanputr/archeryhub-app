@@ -189,63 +189,38 @@
           <div class="p-6 space-y-4 max-h-[60vh] overflow-y-auto">
             <!-- Category Selection -->
             <div>
-              <label class="block text-sm font-bold text-navy mb-2">Kategori</label>
-              <select v-model="newBracket.categoryId"
-                class="w-full px-4 py-3 rounded-xl border border-gray-200 text-navy font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
-                <option value="">-- Pilih Kategori --</option>
-                <option v-for="cat in categories" :key="cat.id" :value="cat.id">
-                  {{ getCategoryName(cat) }}
-                </option>
-              </select>
+              <BaseSelect v-model="newBracket.categoryId" :items="categoryOptions" label="Kategori"
+                placeholder="Pilih Kategori" required :disabled="isEditing" />
             </div>
 
             <!-- Bracket Type -->
             <div>
-              <label class="block text-sm font-bold text-navy mb-2">Tipe Bracket</label>
-              <select v-model="newBracket.bracketType"
-                class="w-full px-4 py-3 rounded-xl border border-gray-200 text-navy font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
-                <option v-for="type in availableBracketTypes" :key="type.value" :value="type.value">
-                  {{ type.label }}
-                </option>
-              </select>
+              <BaseSelect v-model="newBracket.bracketType" :items="availableBracketTypes" label="Tipe Bracket"
+                placeholder="Pilih Tipe Bracket" required />
             </div>
 
             <!-- Format -->
             <div>
-              <label class="block text-sm font-bold text-navy mb-2">Format</label>
-              <select v-model="newBracket.format"
-                class="w-full px-4 py-3 rounded-xl border border-gray-200 text-navy font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
-                <option value="recurve_set">Set System (untuk Recurve)</option>
-                <option value="compound_total">Total Score (untuk Compound)</option>
-              </select>
+              <BaseSelect v-model="newBracket.format" :items="formatOptions" label="Format" placeholder="Pilih Format"
+                required />
             </div>
 
             <!-- Bracket Size -->
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm font-bold text-navy mb-2">Ukuran Bracket</label>
-                <select v-model.number="newBracket.bracketSize"
-                  class="w-full px-4 py-3 rounded-xl border border-gray-200 text-navy font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
-                  <option :value="4">4 Peserta</option>
-                  <option :value="8">8 Peserta</option>
-                  <option :value="16">16 Peserta</option>
-                  <option :value="32">32 Peserta</option>
-                  <option :value="64">64 Peserta</option>
-                  <option :value="128">128 Peserta</option>
-                </select>
+                <BaseSelect v-model="newBracket.bracketSize" :items="bracketSizeOptions" label="Ukuran Bracket"
+                  placeholder="Pilih Ukuran" required />
               </div>
               <div>
-                <label class="block text-sm font-bold text-navy mb-2">Ends per Match</label>
-                <input v-model.number="newBracket.endsPerMatch" type="number" min="1" max="15"
-                  class="w-full px-4 py-3 rounded-xl border border-gray-200 text-navy font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" />
+                <BaseInput v-model.number="newBracket.endsPerMatch" type="number" label="Ends per Match" min="1"
+                  max="15" required />
               </div>
             </div>
 
             <!-- Arrows per End -->
             <div>
-              <label class="block text-sm font-bold text-navy mb-2">Anak Panah per End</label>
-              <input v-model.number="newBracket.arrowsPerEnd" type="number" min="1" max="12"
-                class="w-full px-4 py-3 rounded-xl border border-gray-200 text-navy font-medium focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" />
+              <BaseInput v-model.number="newBracket.arrowsPerEnd" type="number" label="Anak Panah per End" min="1"
+                max="12" required />
             </div>
           </div>
 
@@ -257,7 +232,7 @@
             </button>
             <button @click="handleCreateOrUpdate" :disabled="!newBracket.categoryId || creatingBracket"
               class="flex-1 px-4 py-3 rounded-xl bg-primary text-navy font-bold hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-              <span v-if="!creatingBracket">{{ isEditing ? 'Update Bracket' : 'Buat Bracket' }}</span>
+              <span v-if="!creatingBracket">{{ isEditing ? 'Update' : 'Buat' }}</span>
               <span v-else class="flex items-center gap-2">
                 <span class="size-4 border-2 border-navy/30 border-t-navy rounded-full animate-spin"></span>
                 {{ isEditing ? 'Mengupdate...' : 'Membuat...' }}
@@ -272,6 +247,8 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import BaseSelect from '~/components/common/BaseSelect.vue'
+import BaseInput from '~/components/common/BaseInput.vue'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 
@@ -285,8 +262,8 @@ useHead({
 
 const route = useRoute()
 const eventId = route.params.id
-const { get, post } = useApi()
-const { showToast } = useToast()
+const { get, post, put } = useApi()
+const toast = useToast()
 
 const eventName = ref('Event')
 const brackets = ref([])
@@ -373,13 +350,13 @@ const updateBracket = async () => {
       arrows_per_end: newBracket.value.arrowsPerEnd
     })
 
-    showToast('Bracket berhasil diupdate', 'success')
+    toast.success('Bracket berhasil diupdate')
     showCreateDialog.value = false
     resetForm()
     await fetchBrackets()
   } catch (error) {
     console.error('Failed to update bracket:', error)
-    showToast(error?.response?.data?.error || 'Gagal update bracket', 'error')
+    toast.error(error?.response?.data?.error || 'Gagal update bracket')
   } finally {
     creatingBracket.value = false
   }
@@ -399,7 +376,7 @@ const resetForm = () => {
 
 const createBracket = async () => {
   if (!newBracket.value.categoryId) {
-    showToast('Pilih kategori terlebih dahulu', 'warning')
+    toast.warning('Pilih kategori terlebih dahulu')
     return
   }
 
@@ -415,25 +392,25 @@ const createBracket = async () => {
     })
 
     if (response?.bracket?.id || response?.id) {
-      showToast('Bracket berhasil dibuat', 'success')
+      toast.success('Bracket berhasil dibuat')
       showCreateDialog.value = false
       resetForm()
       await fetchBrackets()
     } else {
-      showToast('Gagal membuat bracket', 'error')
+      toast.error('Gagal membuat bracket')
     }
   } catch (error) {
     console.error('Failed to create bracket:', error)
-    showToast(error?.response?.data?.error || 'Gagal membuat bracket', 'error')
+    toast.error(error?.response?.data?.error || 'Gagal membuat bracket')
   } finally {
     creatingBracket.value = false
   }
 }
 
 const bracketTypes = [
-  { value: 'individual', label: 'Perorangan', icon: 'ph:user' },
-  { value: 'team3', label: 'Tim 3 Orang', icon: 'ph:users-three' },
-  { value: 'mixed2', label: 'Tim Campuran 2 Orang', icon: 'ph:gender-intersex' }
+  { value: 'individual', title: 'Perorangan', icon: 'ph:user' },
+  { value: 'team3', title: 'Tim 3 Orang', icon: 'ph:users-three' },
+  { value: 'mixed2', title: 'Tim Campuran 2 Orang', icon: 'ph:gender-intersex' }
 ]
 
 const availableBracketTypes = computed(() => {
@@ -450,6 +427,27 @@ const availableBracketTypes = computed(() => {
 
   return bracketTypes
 })
+
+const categoryOptions = computed(() => {
+  return categories.value.map(cat => ({
+    value: cat.id,
+    title: getCategoryName(cat)
+  }))
+})
+
+const formatOptions = [
+  { value: 'recurve_set', title: 'Set System (untuk Recurve)' },
+  { value: 'compound_total', title: 'Total Score (untuk Compound)' }
+]
+
+const bracketSizeOptions = [
+  { value: 4, title: '4 Peserta' },
+  { value: 8, title: '8 Peserta' },
+  { value: 16, title: '16 Peserta' },
+  { value: 32, title: '32 Peserta' },
+  { value: 64, title: '64 Peserta' },
+  { value: 128, title: '128 Peserta' }
+]
 
 const categoriesWithoutBracket = computed(() => {
   const bracketCatIds = brackets.value.map(b => b.category_id)

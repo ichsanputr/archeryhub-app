@@ -43,36 +43,11 @@
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
-            <label class="flex flex-col gap-1.5">
-              <span class="text-xs font-semibold  tracking-wider text-brand-gold">Bow Style</span>
-              <select v-model="newCategory.bowStyle" class="input">
-                <option value="">Select Style</option>
-                <option v-for="type in bowTypes" :key="type.id" :value="type.id">
-                  {{ type.name }}
-                </option>
-              </select>
-            </label>
-
-            <label class="flex flex-col gap-1.5">
-              <span class="text-xs font-semibold  tracking-wider text-brand-gold">Age Class</span>
-              <select v-model="newCategory.ageClass" class="input">
-                <option value="">Select Age</option>
-                <option v-for="group in ageGroups" :key="group.id" :value="group.id">
-                  {{ group.name }}
-                </option>
-              </select>
-            </label>
-
-            <label class="flex flex-col gap-1.5">
-              <span class="text-xs font-semibold  tracking-wider text-brand-gold">Gender</span>
-              <select v-model="newCategory.gender" class="input">
-                <option value="">Select Gender</option>
-                <option>Both (Creates 2)</option>
-                <option>Men</option>
-                <option>Women</option>
-                <option>Mixed Team</option>
-              </select>
-            </label>
+            <BaseSelect v-model="newCategory.bowStyle" :items="bowOptions" label="Bow Style"
+              placeholder="Select Style" />
+            <BaseSelect v-model="newCategory.ageClass" :items="ageOptions" label="Age Class" placeholder="Select Age" />
+            <BaseSelect v-model="newCategory.gender" :items="genderOptions" label="Gender"
+              placeholder="Select Gender" />
           </div>
 
           <button @click="addCategory" class="btn-primary flex items-center gap-2">
@@ -201,6 +176,8 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import BaseSelect from '~/components/common/BaseSelect.vue'
+import { useApi } from '~/composables/useApi'
 
 definePageMeta({
   title: 'Tournament Setup',
@@ -224,6 +201,21 @@ const newCategory = ref({
 const bowTypes = ref([])
 const ageGroups = ref([])
 const { get } = useApi()
+
+const genderOptions = [
+  { value: 'Both (Creates 2)', title: 'Both (Creates 2)' },
+  { value: 'Men', title: 'Men' },
+  { value: 'Women', title: 'Women' },
+  { value: 'Mixed Team', title: 'Mixed Team' }
+]
+
+const bowOptions = computed(() => {
+  return bowTypes.value.map(type => ({ value: type.id, title: type.name }))
+})
+
+const ageOptions = computed(() => {
+  return ageGroups.value.map(group => ({ value: group.id, title: group.name }))
+})
 
 onMounted(async () => {
   try {

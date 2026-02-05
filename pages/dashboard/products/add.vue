@@ -36,26 +36,12 @@
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div>
-                                    <label class="block text-sm font-bold text-gray-700 mb-2">Kategori *</label>
-                                    <select v-model="form.category" required
-                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
-                                        <option value="">Pilih Kategori</option>
-                                        <option value="equipment">Peralatan</option>
-                                        <option value="apparel">Pakaian</option>
-                                        <option value="accessories">Aksesoris</option>
-                                        <option value="training">Training</option>
-                                        <option value="other">Lainnya</option>
-                                    </select>
+                                    <BaseSelect v-model="form.category" :items="categoryOptions" label="Kategori"
+                                        placeholder="Pilih Kategori" required />
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-bold text-gray-700 mb-2">Status</label>
-                                    <select v-model="form.status"
-                                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all">
-                                        <option value="draft">Draft</option>
-                                        <option value="active">Aktif</option>
-                                        <option value="sold_out">Habis</option>
-                                        <option value="archived">Arsip</option>
-                                    </select>
+                                    <BaseSelect v-model="form.status" :items="statusOptions" label="Status"
+                                        placeholder="Pilih Status" />
                                 </div>
                             </div>
                         </div>
@@ -216,6 +202,21 @@ const { user } = useAuth()
 const isSubmitting = ref(false)
 const additionalImagesText = ref('')
 const specifications = ref([{ key: '', value: '' }])
+
+const categoryOptions = [
+    { value: 'equipment', title: 'Peralatan' },
+    { value: 'apparel', title: 'Pakaian' },
+    { value: 'accessories', title: 'Aksesoris' },
+    { value: 'training', title: 'Training' },
+    { value: 'other', title: 'Lainnya' }
+]
+
+const statusOptions = [
+    { value: 'draft', title: 'Draft' },
+    { value: 'active', title: 'Aktif' },
+    { value: 'sold_out', title: 'Habis' },
+    { value: 'archived', title: 'Arsip' }
+]
 
 const form = ref({
     name: '',

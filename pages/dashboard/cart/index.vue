@@ -90,31 +90,29 @@
                                     </div>
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                         <div>
-                                            <label class="block mb-2 text-xs font-bold  tracking-wider text-gray-500">ID
-                                                Number</label>
-                                            <select v-if="isEditing" v-model="reg.archer_id"
-                                                class="bg-gray-50 border border-gray-300 text-navy text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5">
-                                                <option v-for="archer in archers" :key="archer.id" :value="archer.id">{{
-                                                    archer.id_number }}</option>
-                                                <option value="">Add New ID...</option>
-                                            </select>
-                                            <div v-else class="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
-                                                <span class="text-sm font-semibold text-navy font-mono">{{
-                                                    reg.archer_id_number || 'INA-2024-XXXX' }}</span>
+                                            <BaseSelect v-if="isEditing" v-model="reg.archer_id" :items="archerOptions"
+                                                label="ID Number" />
+                                            <div v-else>
+                                                <label
+                                                    class="block mb-2 text-xs font-bold tracking-wider text-gray-500">ID
+                                                    Number</label>
+                                                <div class="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
+                                                    <span class="text-sm font-semibold text-navy font-mono">{{
+                                                        reg.archer_id_number || 'INA-2024-XXXX' }}</span>
+                                                </div>
                                             </div>
                                         </div>
                                         <div>
-                                            <label
-                                                class="block mb-2 text-xs font-bold  tracking-wider text-gray-500">Category</label>
-                                            <select v-if="isEditing" v-model="reg.category_id"
-                                                class="bg-gray-50 border border-gray-300 text-navy text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5">
-                                                <option v-for="cat in eventCategories" :key="cat.id" :value="cat.id">
-                                                    {{ cat.division_name }} - {{ cat.category_name }}
-                                                </option>
-                                            </select>
-                                            <div v-else class="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
-                                                <span class="text-sm font-semibold text-navy">{{ reg.category_name ||
-                                                    'Category Name' }}</span>
+                                            <BaseSelect v-if="isEditing" v-model="reg.category_id"
+                                                :items="categoryOptions" label="Category" />
+                                            <div v-else>
+                                                <label
+                                                    class="block mb-2 text-xs font-bold tracking-wider text-gray-500">Category</label>
+                                                <div class="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
+                                                    <span class="text-sm font-semibold text-navy">{{ reg.category_name
+                                                        ||
+                                                        'Category Name' }}</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -122,18 +120,8 @@
                                         <h4 class="text-sm font-bold text-navy mb-4">Additional Information</h4>
                                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
                                             <div>
-                                                <label
-                                                    class="block mb-2 text-xs font-bold  tracking-wider text-gray-500">Jersey
-                                                    Size</label>
-                                                <select v-model="reg.jersey_size"
-                                                    class="bg-gray-50 border border-gray-300 text-navy text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5">
-                                                    <option disabled value="">Select Size</option>
-                                                    <option>S</option>
-                                                    <option>M</option>
-                                                    <option>L</option>
-                                                    <option>XL</option>
-                                                    <option>XXL</option>
-                                                </select>
+                                                <BaseSelect v-model="reg.jersey_size" :items="jerseySizeOptions"
+                                                    label="Jersey Size" placeholder="Select Size" />
                                             </div>
                                         </div>
                                     </div>
@@ -169,7 +157,7 @@
                                     <div class="flex justify-between items-center text-sm">
                                         <span class="text-gray-600">Entry Fee ({{ reg.category_name }})</span>
                                         <span class="font-bold text-navy">Rp {{ formatPrice(reg.entry_fee || 350000)
-                                        }}</span>
+                                            }}</span>
                                     </div>
                                 </div>
                                 <div class="flex justify-between items-center text-sm">
@@ -179,7 +167,7 @@
                                 <div class="border-t border-gray-200 my-2 pt-2 flex justify-between items-center">
                                     <span class="text-base font-bold text-navy">Total Payment</span>
                                     <span class="text-xl font-black text-primary">Rp {{ formatPrice(totalPayment)
-                                    }}</span>
+                                        }}</span>
                                 </div>
                             </div>
                         </div>
@@ -320,6 +308,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useAuth } from '~/composables/useAuth'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
+import BaseSelect from '~/components/common/BaseSelect.vue'
 
 definePageMeta({
     layout: 'dashboard'
@@ -342,6 +331,19 @@ const archers = ref([])
 const eventCategories = ref([])
 const events = ref([])
 const selectedPaymentMethod = ref(null)
+
+const archerOptions = computed(() => {
+    const opts = archers.value.map(a => ({ value: a.id, title: a.id_number }))
+    opts.push({ value: '', title: 'Add New ID...' })
+    return opts
+})
+
+const categoryOptions = computed(() => eventCategories.value.map(c => ({
+    value: c.id,
+    title: `${c.division_name} - ${c.category_name}`
+})))
+
+const jerseySizeOptions = ['S', 'M', 'L', 'XL', 'XXL']
 
 const platformFee = 5000
 

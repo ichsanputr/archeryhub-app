@@ -166,18 +166,9 @@
                 <div v-for="(social, idx) in form.socialMedia" :key="idx"
                   class="flex items-center gap-4 p-5 bg-gray-50 rounded-2xl border border-gray-100 group">
                   <div class="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="relative md:col-span-1">
-                      <select v-model="social.platform"
-                        class="w-full bg-white border border-gray-200 text-sm font-black text-navy rounded-xl px-4 py-3 outline-none focus:border-navy appearance-none">
-                        <option value="instagram">Instagram</option>
-                        <option value="facebook">Facebook</option>
-                        <option value="twitter">X (Twitter)</option>
-                        <option value="youtube">YouTube</option>
-                        <option value="tiktok">TikTok</option>
-                        <option value="linkedin">LinkedIn</option>
-                      </select>
-                      <Icon icon="ph:caret-down-bold"
-                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                    <div class="md:col-span-1">
+                      <BaseSelect v-model="social.platform" :items="socialPlatformOptions"
+                        placeholder="Pilih Platform" />
                     </div>
                     <BaseInput v-model="social.username" placeholder="Username atau Link Profil"
                       class="md:col-span-2 !bg-white" />
@@ -341,6 +332,16 @@ const pageSettings = reactive({
     faq: true
   }
 })
+
+const socialPlatformOptions = [
+  { value: 'instagram', title: 'Instagram', icon: 'ph:instagram-logo' },
+  { value: 'facebook', title: 'Facebook', icon: 'ph:facebook-logo' },
+  { value: 'twitter', title: 'X (Twitter)', icon: 'ph:x-logo' },
+  { value: 'youtube', title: 'YouTube', icon: 'ph:youtube-logo' },
+  { value: 'tiktok', title: 'TikTok', icon: 'ph:tiktok-logo' },
+  { value: 'linkedin', title: 'LinkedIn', icon: 'ph:linkedin-logo' }
+]
+
 
 const form = reactive({
   name: '',

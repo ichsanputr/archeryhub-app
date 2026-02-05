@@ -22,23 +22,12 @@
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                            <div class="space-y-2">
-                                <label class="text-[10px] font-black text-text-sub/50  tracking-widest ml-1">ID
-                                    Card / KTP</label>
-                                <select v-model="form.idNumber"
-                                    class="w-full p-4 bg-gray-50 border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-2 focus:ring-primary">
-                                    <option>INA-2024-8832</option>
-                                    <option>INA-2023-1102</option>
-                                </select>
+                            <div>
+                                <BaseSelect v-model="form.idNumber" :items="idNumberOptions" label="ID Card / KTP" />
                             </div>
-                            <div class="space-y-2">
-                                <label class="text-[10px] font-black text-text-sub/50  tracking-widest ml-1">Divisi
-                                    & Kategori</label>
-                                <select v-model="form.category"
-                                    class="w-full p-4 bg-gray-50 border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-2 focus:ring-primary">
-                                    <option>Recurve Men - 70m</option>
-                                    <option>Compound Men - 50m</option>
-                                </select>
+                            <div>
+                                <BaseSelect v-model="form.category" :items="categoryOptions"
+                                    label="Divisi & Kategori" />
                             </div>
                         </div>
 
@@ -46,23 +35,13 @@
                             <h4 class="text-xs font-black text-navy  tracking-widest mb-4">Informasi Tambahan
                             </h4>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                                <div class="space-y-2">
-                                    <label class="text-[10px] font-black text-text-sub/50  tracking-widest ml-1">Ukuran
-                                        Jersey</label>
-                                    <select v-model="form.jerseySize"
-                                        class="w-full p-4 bg-gray-50 border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-2 focus:ring-primary">
-                                        <option>S</option>
-                                        <option>M</option>
-                                        <option>L</option>
-                                        <option>XL</option>
-                                    </select>
+                                <div>
+                                    <BaseSelect v-model="form.jerseySize" :items="jerseySizeOptions"
+                                        label="Ukuran Jersey" />
                                 </div>
-                                <div class="space-y-2">
-                                    <label class="text-[10px] font-black text-text-sub/50  tracking-widest ml-1">Kontak
-                                        Darurat</label>
-                                    <input v-model="form.emergencyContact" type="text"
-                                        class="w-full p-4 bg-gray-50 border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-2 focus:ring-primary"
-                                        placeholder="Nama Kontak">
+                                <div>
+                                    <BaseInput v-model="form.emergencyContact" label="Kontak Darurat"
+                                        placeholder="Nama Kontak" />
                                 </div>
                             </div>
                         </div>
@@ -100,6 +79,10 @@
 </template>
 
 <script setup>
+import { reactive } from 'vue'
+import BaseSelect from '~/components/common/BaseSelect.vue'
+import BaseInput from '~/components/common/BaseInput.vue'
+
 definePageMeta({
     layout: 'dashboard'
 })
@@ -107,6 +90,10 @@ definePageMeta({
 useHead({
     title: 'Edit Pendaftaran - Dashboard'
 })
+
+const idNumberOptions = ['INA-2024-8832', 'INA-2023-1102']
+const categoryOptions = ['Recurve Men - 70m', 'Compound Men - 50m']
+const jerseySizeOptions = ['S', 'M', 'L', 'XL']
 
 const form = reactive({
     idNumber: 'INA-2024-8832',

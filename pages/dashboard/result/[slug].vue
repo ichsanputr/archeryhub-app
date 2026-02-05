@@ -7,6 +7,7 @@ import { useFormattedDatePreset } from '~/composables/useDateHelper'
 import { useApi } from '~/composables/useApi'
 import LoginRequired from '~/components/LoginRequired.vue'
 import CodeHiglighter from '~/components/CodeHiglighter.vue'
+import BaseSelect from '~/components/common/BaseSelect.vue'
 
 defineOptions({
   name: 'ProblemResultsPage'
@@ -49,6 +50,13 @@ const statusOptions = [
   { id: 13, description: "Internal Error" },
   { id: 14, description: "Exec Format Error" }
 ]
+
+const statusFilterOptions = computed(() => {
+  return [
+    { value: '', title: 'All Statuses' },
+    ...statusOptions.map(s => ({ value: s.description, title: s.description }))
+  ]
+})
 
 const fetchResults = async () => {
   if (!user.value) {
@@ -289,16 +297,8 @@ definePageMeta({
               <p class="text-gray-600">Filter submissions by status to analyze your performance</p>
             </div>
             <div class="flex items-center gap-4">
-              <div class="relative">
-                <select v-model="filters.status"
-                  class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white pr-12 min-w-[220px] text-sm font-medium">
-                  <option value="">All Statuses</option>
-                  <option v-for="status in statusOptions" :key="status.id" :value="status.description">
-                    {{ status.description }}
-                  </option>
-                </select>
-                <Icon :ssr="true" icon="ph:caret-down"
-                  class="absolute right-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+              <div class="min-w-[220px]">
+                <BaseSelect v-model="filters.status" :items="statusFilterOptions" placeholder="All Statuses" />
               </div>
               <BaseButton v-if="filters.status" variant="outline" size="sm" icon="ph:x" @click="filters.status = ''">
                 Bersihkan

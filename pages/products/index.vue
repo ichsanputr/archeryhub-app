@@ -55,21 +55,13 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-3 w-full md:w-auto">
-                        <select v-model="categoryFilter"
-                            class="px-4 py-3 rounded-xl border border-gray-200 text-sm font-medium bg-white min-w-[150px]">
-                            <option value="all">Semua Kategori</option>
-                            <option value="equipment">Peralatan</option>
-                            <option value="apparel">Pakaian</option>
-                            <option value="accessories">Aksesoris</option>
-                            <option value="training">Training</option>
-                        </select>
-                        <select v-model="sortBy"
-                            class="px-4 py-3 rounded-xl border border-gray-200 text-sm font-medium bg-white min-w-[150px]">
-                            <option value="newest">Terbaru</option>
-                            <option value="price-low">Harga Terendah</option>
-                            <option value="price-high">Harga Tertinggi</option>
-                            <option value="popular">Terpopuler</option>
-                        </select>
+                        <div class="min-w-[150px]">
+                            <BaseSelect v-model="categoryFilter" :items="categories" item-title="label"
+                                item-value="value" placeholder="Semua Kategori" />
+                        </div>
+                        <div class="min-w-[150px]">
+                            <BaseSelect v-model="sortBy" :items="sortOptions" placeholder="Urutan" />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -202,6 +194,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import BaseSelect from '~/components/common/BaseSelect.vue'
 const config = useRuntimeConfig()
 const apiBaseUrl = config.public.apiBaseUrl
 
@@ -220,6 +213,13 @@ const categories = [
     { label: 'Aksesoris', value: 'accessories', icon: 'ph:bag' },
     { label: 'Training', value: 'training', icon: 'ph:graduation-cap' },
     { label: 'Lainnya', value: 'other', icon: 'ph:package' },
+]
+
+const sortOptions = [
+    { value: 'newest', title: 'Terbaru' },
+    { value: 'price-low', title: 'Harga Terendah' },
+    { value: 'price-high', title: 'Harga Tertinggi' },
+    { value: 'popular', title: 'Terpopuler' }
 ]
 
 const { data: productResponse, pending: isLoading } = await useAsyncData('products', () => $fetch(`${apiBaseUrl}/products`), {

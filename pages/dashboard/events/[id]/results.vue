@@ -12,14 +12,8 @@
                 <h2 class="text-xl font-bold text-navy font-display">Live Dashboard</h2>
             </div>
             <div class="flex gap-3 w-full md:w-auto">
-                <select v-model="selectedDivision"
-                    class="bg-gray-50 border-gray-100 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 font-bold text-navy outline-none">
-                    <option v-for="div in divisions" :key="div">{{ div }}</option>
-                </select>
-                <select v-model="selectedRound"
-                    class="bg-gray-50 border-gray-100 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 font-bold text-navy outline-none">
-                    <option v-for="round in rounds" :key="round">{{ round }}</option>
-                </select>
+                <BaseSelect v-model="selectedDivision" :items="divisions" placeholder="Pilih Divisi" />
+                <BaseSelect v-model="selectedRound" :items="rounds" placeholder="Pilih Babak" />
             </div>
         </div>
 
@@ -175,6 +169,8 @@
 </template>
 
 <script setup>
+import BaseSelect from '~/components/common/BaseSelect.vue'
+
 definePageMeta({
     layout: 'dashboard'
 })

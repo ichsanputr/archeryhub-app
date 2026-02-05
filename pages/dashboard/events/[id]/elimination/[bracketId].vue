@@ -142,7 +142,7 @@
                                                 class="size-8 rounded-full border-2 border-white shadow-sm shrink-0" />
                                             <span class="text-xs font-bold text-navy truncate">{{ match.entry_b_name ||
                                                 'TBD'
-                                            }}</span>
+                                                }}</span>
                                         </div>
                                         <span
                                             class="text-[9px] font-black text-gray-300 tracking-tighter shrink-0 ml-2">SIDE
@@ -155,16 +155,9 @@
                                         class="text-[9px] font-black text-gray-400 tracking-widest uppercase mb-2 block ml-1">Alokasi
                                         Target</label>
                                     <div class="relative group/select">
-                                        <select v-model="match.target_id" @change="updateTarget(match)"
-                                            class="w-full px-5 py-3.5 rounded-2xl bg-white border-2 border-gray-200 text-navy font-bold focus:border-primary focus:outline-none transition-all text-sm appearance-none shadow-sm cursor-pointer group-hover/select:border-gray-300">
-                                            <option value="">-- Pilih Target --</option>
-                                            <option v-for="target in availableTargets" :key="target.id"
-                                                :value="target.id">
-                                                Target {{ target.name }}
-                                            </option>
-                                        </select>
-                                        <Icon icon="ph:caret-down-bold"
-                                            class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none group-hover/select:text-navy transition-colors" />
+                                        <BaseSelect :model-value="match.target_id" :items="targetOptions"
+                                            item-title="displayName" item-value="id" placeholder="-- Pilih Target --"
+                                            @update:modelValue="val => { match.target_id = val; updateTarget(match) }" />
                                     </div>
                                 </div>
                             </div>
@@ -387,7 +380,7 @@
                                                     A</span>
                                                 <span class="text-xs font-black text-navy">{{
                                                     selectedScoringMatch.entry_a_name
-                                                    }}</span>
+                                                }}</span>
                                             </div>
                                             <div class="flex items-center gap-2">
                                                 <div v-for="i in (bracket?.arrows_per_end || 3)" :key="i"
@@ -633,6 +626,7 @@
 import { Icon } from '@iconify/vue'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
+import BaseSelect from '~/components/common/BaseSelect.vue'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 
@@ -662,6 +656,13 @@ const matches = ref([])
 const rounds = ref({})
 const selectedMatch = ref(null)
 const availableTargets = ref([])
+
+const targetOptions = computed(() => {
+    return availableTargets.value.map(t => ({
+        ...t,
+        displayName: `Target ${t.name}`
+    }))
+})
 
 // Round Management States
 const activeTab = ref('target')

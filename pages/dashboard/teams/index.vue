@@ -182,6 +182,7 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import Breadcrumbs from '~/components/common/Breadcrumbs.vue'
+import BaseSelect from '~/components/common/BaseSelect.vue'
 import { ref, computed } from 'vue'
 
 definePageMeta({
@@ -205,6 +206,12 @@ const isLoading = ref(true)
 const searchQuery = ref('')
 const statusFilter = ref('all')
 const showCreateModal = ref(false)
+
+const statusOptions = [
+  { value: 'all', title: 'Semua Status' },
+  { value: 'active', title: 'Aktif' },
+  { value: 'inactive', title: 'Tidak Aktif' }
+]
 
 const fetchTeams = async () => {
   isLoading.value = true
