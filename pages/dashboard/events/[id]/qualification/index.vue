@@ -199,8 +199,9 @@
                 :class="selectedCategory === category.id ? 'bg-primary' : 'bg-transparent'"></div>
               <div class="flex items-start gap-3 pl-2">
                 <div
-                  class="size-12 bg-gradient-to-br from-navy/90 to-navy rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm">
-                  <Icon icon="ph:target" class="text-xl text-primary" />
+                  class="size-12 bg-navy rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm overflow-hidden p-2 group-hover:bg-primary transition-colors">
+                  <img :src="'/' + getCategoryIcon(category.division_name)" :alt="category.division_name"
+                    class="w-full h-full object-contain invert group-hover:invert-0 transition-all" />
                 </div>
                 <div class="flex-1 min-w-0">
                   <p
@@ -442,6 +443,7 @@ const route = useRoute()
 const router = useRouter()
 const { get, post, patch, delete: del } = useApi()
 const toast = useToast()
+import { getCategoryIcon } from '~/utils/logoArcheryCategory'
 const eventId = route.params.id
 
 definePageMeta({

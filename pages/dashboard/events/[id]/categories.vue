@@ -82,33 +82,43 @@
                 <div v-for="category in categories" :key="category.id"
                     class="p-4 sm:p-6 hover:bg-gray-50 transition-colors group">
                     <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
-                        <div class="min-w-0 flex-1">
-                            <div class="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
-                                <h3 class="text-base sm:text-lg font-bold text-navy break-words min-w-0">
-                                    {{ category.division_name }} – {{ category.category_name }} – {{
-                                        category.event_type_name }}
-                                    – {{ category.gender_division_name }}
-                                </h3>
-                                <span
-                                    :class="category.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'"
-                                    class="px-2.5 py-0.5 rounded-full text-xs font-bold shrink-0">
-                                    {{ category.status === 'active' ? 'Aktif' : 'Nonaktif' }}
-                                </span>
+                        <div class="flex items-start gap-4 flex-1 min-w-0">
+                            <!-- Category Icon -->
+                            <div
+                                class="h-12 w-12 rounded-xl border border-gray-100 bg-gray-50 flex items-center justify-center shadow-sm shrink-0 transition-all group-hover:bg-navy p-2 overflow-hidden">
+                                <img :src="'/' + getCategoryIcon(category.division_name)" :alt="category.division_name"
+                                    class="w-full h-full object-contain group-hover:invert transition-all" />
                             </div>
-                            <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-6 text-sm text-gray-500">
-                                <div class="flex items-center gap-2 min-w-0">
-                                    <Icon icon="ph:users" class="text-base shrink-0" />
-                                    <span class="break-words">Maks. Peserta: <strong class="text-navy">{{
-                                        category.max_participants || 'Tidak terbatas' }}</strong></span>
+
+                            <div class="min-w-0 flex-1">
+                                <div class="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
+                                    <h3 class="text-base sm:text-lg font-bold text-navy break-words min-w-0">
+                                        {{ category.division_name }} – {{ category.category_name }} – {{
+                                            category.event_type_name }}
+                                        – {{ category.gender_division_name }}
+                                    </h3>
+                                    <span
+                                        :class="category.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'"
+                                        class="px-2.5 py-0.5 rounded-full text-xs font-bold shrink-0">
+                                        {{ category.status === 'active' ? 'Aktif' : 'Nonaktif' }}
+                                    </span>
                                 </div>
-                                <div v-if="category.team_size > 0" class="flex items-center gap-2 min-w-0">
-                                    <Icon icon="ph:users-three" class="text-base shrink-0" />
-                                    <span class="break-words">Kapasitas Tim: <strong class="text-navy">{{
-                                        category.team_size }} Orang</strong></span>
-                                </div>
-                                <div class="flex items-center gap-2 min-w-0">
-                                    <Icon icon="ph:calendar" class="text-base shrink-0" />
-                                    <span class="break-words">Dibuat: {{ formatDate(category.created_at) }}</span>
+                                <div
+                                    class="flex flex-col gap-1 sm:flex-row sm:items-center sm:gap-6 text-sm text-gray-500">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <Icon icon="ph:users" class="text-base shrink-0" />
+                                        <span class="break-words">Maks. Peserta: <strong class="text-navy">{{
+                                            category.max_participants || 'Tidak terbatas' }}</strong></span>
+                                    </div>
+                                    <div v-if="category.team_size > 0" class="flex items-center gap-2 min-w-0">
+                                        <Icon icon="ph:users-three" class="text-base shrink-0" />
+                                        <span class="break-words">Kapasitas Tim: <strong class="text-navy">{{
+                                            category.team_size }} Orang</strong></span>
+                                    </div>
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <Icon icon="ph:calendar" class="text-base shrink-0" />
+                                        <span class="break-words">Dibuat: {{ formatDate(category.created_at) }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -179,6 +189,7 @@ import { Icon } from '@iconify/vue'
 import BaseSelect from '~/components/common/BaseSelect.vue'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
+import { getCategoryIcon, getCategoryColorClass } from '~/utils/logoArcheryCategory'
 
 definePageMeta({
     layout: 'dashboard'

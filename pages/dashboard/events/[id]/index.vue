@@ -26,8 +26,9 @@
         <div v-for="division in divisions" :key="division.name"
           class="border border-gray-100 rounded-xl p-5 hover:border-primary transition-colors">
           <div class="flex items-center justify-between mb-4">
-            <div class="w-12 h-12 bg-navy/5 rounded-lg flex items-center justify-center text-navy">
-              <Icon :icon="division.icon" class="text-3xl" />
+            <div class="w-12 h-12 bg-navy rounded-lg flex items-center justify-center p-2 overflow-hidden shadow-sm">
+              <img :src="'/' + getCategoryIcon(division.name)" :alt="division.name"
+                class="w-full h-full object-contain invert transition-all" />
             </div>
             <span class="bg-navy text-white text-xs font-bold px-2 py-1 rounded">{{ division.dist }}</span>
           </div>
@@ -59,6 +60,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import { getCategoryIcon } from '~/utils/logoArcheryCategory'
 const divisions = [
   { name: 'Divisi Recurve', dist: '70m', icon: 'ph:target', categories: ['Individu Putra', 'Individu Putri', 'Beregu Campuran'] },
   { name: 'Divisi Compound', dist: '50m', icon: 'ph:target-bold', categories: ['Individu Putra', 'Individu Putri', 'Beregu Campuran'] }

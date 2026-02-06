@@ -241,10 +241,16 @@
                                 <div class="space-y-4">
                                     <div v-for="cat in registrationStats.categories.slice(0, 5)" :key="cat.name"
                                         class="space-y-1.5">
-                                        <div class="flex justify-between text-sm">
+                                        <div class="flex items-center gap-3 text-sm">
+                                            <div
+                                                class="size-8 rounded-lg bg-navy/5 flex items-center justify-center p-1.5 shrink-0">
+                                                <img :src="'/' + getCategoryIcon(cat.division)" :alt="cat.division"
+                                                    class="w-full h-full object-contain" />
+                                            </div>
                                             <span class="font-bold text-navy-dark truncate pr-2">{{ cat.division }} - {{
                                                 cat.name }}</span>
-                                            <span class="text-navy font-black font-mono shrink-0">{{ cat.count }}</span>
+                                            <span class="text-navy font-black font-mono shrink-0 ml-auto">{{ cat.count
+                                            }}</span>
                                         </div>
                                         <div class="w-full bg-gray-200 rounded-full h-1.5">
                                             <div class="bg-navy h-1.5 rounded-full transition-all duration-500"
@@ -463,6 +469,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import { getCategoryIcon } from '~/utils/logoArcheryCategory'
 import Breadcrumbs from '~/components/common/Breadcrumbs.vue'
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRoute } from 'vue-router'

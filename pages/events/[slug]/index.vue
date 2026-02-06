@@ -66,7 +66,7 @@
                             </h2>
                             <div class="tentang-event prose max-w-none text-gray-600 leading-relaxed space-y-4">
                                 <div v-if="tournament.description" v-html="tournament.description"
-                                    class="event-description text-base sm:text-lg leading-relaxed md:leading-loose">
+                                    class="event-description text-base sm:text-lg leading-relaxed">
                                 </div>
                                 <div v-else class="italic text-gray-400">
                                     Belum ada deskripsi untuk event ini.
@@ -89,40 +89,61 @@
                         <!-- Divisions Section -->
                         <section
                             v-if="tournament.page_settings?.sections?.divisions !== false && divisionsData.length > 0"
-                            class="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100">
-                            <div class="flex items-center justify-between mb-6">
-                                <h2 class="text-lg sm:text-xl font-bold text-navy">
-                                    Divisi Kompetisi
-                                </h2>
-                                <div class="hidden md:flex items-center gap-2" v-if="divisionsData.length > 3">
+                            class="bg-white rounded-3xl p-8 md:p-10 shadow-sm border border-gray-100 relative overflow-hidden">
+
+
+                            <div class="flex items-center justify-between mb-10 relative z-10">
+                                <div>
+                                    <h2 class="sm:text-xl text-lg font-black text-navy flex items-center gap-3">
+                                        <Icon icon="ph:squares-four-bold" class="text-xl text-navy" />
+                                        Kategori Lomba
+                                    </h2>
+                                    <p class="text-sm text-gray-400 font-medium mt-1">Kategori lomba yang
+                                        tersedia dalam event ini</p>
+                                </div>
+                                <div class="flex gap-2">
                                     <button @click="scroll('left')"
-                                        class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-navy hover:border-navy hover:bg-navy hover:text-white transition-all">
-                                        <Icon icon="ph:caret-left" />
+                                        class="w-11 h-11 rounded-full border border-gray-200 flex items-center justify-center text-navy hover:border-navy hover:bg-navy hover:text-white transition-all shadow-sm">
+                                        <Icon icon="ph:caret-left-bold" />
                                     </button>
                                     <button @click="scroll('right')"
-                                        class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-navy hover:border-navy hover:bg-navy hover:text-white transition-all">
-                                        <Icon icon="ph:caret-right" />
+                                        class="w-11 h-11 rounded-full border border-gray-200 flex items-center justify-center text-navy hover:border-navy hover:bg-navy hover:text-white transition-all shadow-sm">
+                                        <Icon icon="ph:caret-right-bold" />
                                     </button>
                                 </div>
                             </div>
 
-                            <div class="relative">
+                            <div class="relative z-10">
                                 <div ref="scrollContainer"
-                                    class="flex gap-6 overflow-x-auto no-scrollbar scroll-smooth pb-4 -mx-1 px-1">
+                                    class="flex gap-6 overflow-x-auto no-scrollbar scroll-smooth pb-8 -mx-1 px-1">
                                     <div v-for="division in divisionsData" :key="division.name"
-                                        class="min-w-[280px] md:min-w-[320px] group border border-gray-200 rounded-xl p-5 hover:border-navy transition-colors bg-white">
-                                        <div class="flex items-center gap-3 mb-3">
+                                        class="min-w-[300px] md:min-w-[340px] group relative bg-gray-50 border border-gray-100 rounded-[2rem] p-7">
+                                        <!-- Card Header -->
+                                        <div class="flex items-center gap-4 mb-6">
                                             <div
-                                                class="w-10 h-10 bg-gray-50 rounded-lg flex items-center justify-center group-hover:bg-navy group-hover:text-white transition-colors">
-                                                <Icon :icon="division.icon" class="text-2xl" />
+                                                class="w-12 h-12 bg-navy rounded-2xl flex items-center justify-center p-3 shadow-sm shadow-navy/20 overflow-hidden">
+                                                <img :src="'/' + division.icon" :alt="division.name"
+                                                    class="w-full h-full object-contain invert" />
                                             </div>
-                                            <h3 class="font-bold text-navy">{{ division.name }}</h3>
+                                            <div>
+                                                <h3 class="font-black text-navy text-xl">{{ division.name }}
+                                                </h3>
+                                                <span
+                                                    class="text-[10px] font-black tracking-[0.2em] uppercase">Tournament
+                                                    Division</span>
+                                            </div>
                                         </div>
-                                        <div class="flex flex-wrap gap-2">
-                                            <span v-for="cat in division.categories" :key="cat"
-                                                class="text-[10px] font-bold text-gray-500 bg-gray-100 px-2 py-1 rounded-full  tracking-wider">
-                                                {{ cat }}
-                                            </span>
+
+                                        <!-- Categories List -->
+                                        <div class="space-y-3">
+                                            <div v-for="cat in division.categories" :key="cat"
+                                                class="flex items-start gap-3 p-3 rounded-2xl bg-gray-50 border border-transparent bg-white border-gray-100 shadow-sm transition-all duration-300">
+                                                <Icon icon="ph:check-circle-fill"
+                                                    class="text-primary mt-0.5 shrink-0" />
+                                                <span class="text-[13px] font-bold text-navy leading-tight">
+                                                    {{ cat }}
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -193,12 +214,14 @@
                                         </div>
                                         <div class="flex-1 min-w-0">
                                             <div class="flex items-center gap-2 mb-1">
-                                                <span class="font-bold text-navy">{{ displayValue(method.bank_name)
-                                                    }}</span>
+                                                <span class="font-bold text-navy">{{
+                                                    displayValue(method.bank_name)
+                                                }}</span>
                                                 <span
                                                     class="text-[10px] font-bold text-gray-400  tracking-wider px-2 py-0.5 bg-gray-200 rounded">
-                                                    {{ method.type === 'bank' ? 'Bank' : method.type === 'qris' ? 'QRIS'
-                                                    : 'E-Wallet' }}
+                                                    {{ method.type === 'bank' ? 'Bank' : method.type === 'qris'
+                                                        ? 'QRIS'
+                                                        : 'E-Wallet' }}
                                                 </span>
                                             </div>
                                             <div class="space-y-1">
@@ -209,8 +232,9 @@
                                                 </p>
                                                 <p class="text-sm text-gray-600">
                                                     <span class="font-medium">Atas Nama:</span>
-                                                    <span class="font-semibold">{{ displayValue(method.account_name)
-                                                        }}</span>
+                                                    <span class="font-semibold">{{
+                                                        displayValue(method.account_name)
+                                                    }}</span>
                                                 </p>
                                                 <p v-if="method.instructions" class="text-xs text-gray-500 mt-2 italic">
                                                     {{ method.instructions }}
@@ -242,7 +266,8 @@
                                     <div class="text-4xl mb-2">🥇</div>
                                     <div class="text-sm font-bold text-gray-500  tracking-wider mb-1">Juara 1
                                     </div>
-                                    <div class="text-2xl font-black text-navy">{{ displayValue(tournament.prizes?.first)
+                                    <div class="text-2xl font-black text-navy">{{
+                                        displayValue(tournament.prizes?.first)
                                     }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ firstPrizeCaption }}</div>
                                 </div>
@@ -260,7 +285,8 @@
                                     <div class="text-4xl mb-2">🥉</div>
                                     <div class="text-sm font-bold text-gray-500  tracking-wider mb-1">Juara 3
                                     </div>
-                                    <div class="text-2xl font-black text-navy">{{ displayValue(tournament.prizes?.third)
+                                    <div class="text-2xl font-black text-navy">{{
+                                        displayValue(tournament.prizes?.third)
                                     }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ thirdPrizeCaption }}</div>
                                 </div>
@@ -293,7 +319,8 @@
                                         </div>
                                         Tanya Jawab (FAQ)
                                     </h2>
-                                    <p class="text-sm text-gray-400 font-medium">Informasi penting seputar event ini</p>
+                                    <p class="text-sm text-gray-400 font-medium">Informasi penting seputar event
+                                        ini</p>
                                 </div>
                             </div>
 
@@ -338,14 +365,16 @@
                         <div class="flex gap-3 mb-6">
                             <div class="flex-1 bg-gray-50 rounded-lg p-3 text-center"
                                 :class="{ 'opacity-50': countdown.isClosed }">
-                                <span class="block text-xl sm:text-2xl font-bold text-navy">{{ String(countdown.days).padStart(2,
-                                    '0') }}</span>
+                                <span class="block text-xl sm:text-2xl font-bold text-navy">{{
+                                    String(countdown.days).padStart(2,
+                                        '0') }}</span>
                                 <span class="text-xs text-gray-500 ">Hari</span>
                             </div>
                             <div class="flex-1 bg-gray-50 rounded-lg p-3 text-center"
                                 :class="{ 'opacity-50': countdown.isClosed }">
-                                <span class="block text-xl sm:text-2xl font-bold text-navy">{{ String(countdown.hours).padStart(2,
-                                    '0') }}</span>
+                                <span class="block text-xl sm:text-2xl font-bold text-navy">{{
+                                    String(countdown.hours).padStart(2,
+                                        '0') }}</span>
                                 <span class="text-xs text-gray-500 ">Jam</span>
                             </div>
                             <div class="flex-1 bg-gray-50 rounded-lg p-3 text-center"
@@ -421,7 +450,8 @@
                                     Yuk Daftar Sekarang
                                 </NuxtLink>
                                 <p class="text-center text-xs text-gray-400 mt-3">Sudah terdaftar?
-                                    <NuxtLink class="text-navy font-bold hover:underline" :to="`/dashboard/events`">Cek
+                                    <NuxtLink class="text-navy font-bold hover:underline" :to="`/dashboard/events`">
+                                        Cek
                                         status
                                     </NuxtLink>
                                 </p>
@@ -511,7 +541,8 @@
                                 <Icon icon="ph:link-bold" class="text-2xl" />
                             </button>
                         </div>
-                        <p v-if="copySuccess" class="text-[10px] font-bold text-green-600">Link berhasil disalin!</p>
+                        <p v-if="copySuccess" class="text-[10px] font-bold text-green-600">Link berhasil disalin!
+                        </p>
                     </div>
                 </aside>
             </div>
@@ -528,6 +559,7 @@ import { useRoute } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 import { definePageMeta, useSeoMeta } from '#imports'
 import { useDateFormat } from '@vueuse/core'
+import { getCategoryIcon } from '~/utils/logoArcheryCategory'
 
 const route = useRoute()
 const slug = route.params.slug
@@ -535,6 +567,16 @@ const config = useRuntimeConfig()
 
 // Auth state
 const { user, isLoggedIn } = useAuth()
+
+const scrollContainer = ref(null)
+const scroll = (direction) => {
+    if (!scrollContainer.value) return
+    const scrollAmount = 400
+    scrollContainer.value.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+    })
+}
 const isArcher = computed(() => user.value?.type === 'archer' || user.value?.role === 'archer')
 
 // Generate login URL with redirect
@@ -584,17 +626,6 @@ const tabs = computed(() => {
     return list
 })
 const activeTab = ref('Ringkasan')
-const scrollContainer = ref(null)
-
-const scroll = (direction) => {
-    if (scrollContainer.value) {
-        const scrollAmount = 350
-        scrollContainer.value.scrollBy({
-            left: direction === 'left' ? -scrollAmount : scrollAmount,
-            behavior: 'smooth'
-        })
-    }
-}
 
 // Helper function to decode tab name from URL
 const decodeTabName = (tab) => {
@@ -718,24 +749,22 @@ const processDivisions = (events) => {
                 categories: new Set()
             }
         }
-        grouped[e.division_name].categories.add(e.category_name)
+        // Barebow – Senior – Team – Men
+        const fullName = [
+            e.division_name,
+            e.category_name,
+            e.event_type_name,
+            e.gender_division_name
+        ].filter(Boolean).join(' – ')
+
+        grouped[e.division_name].categories.add(fullName)
     })
 
     return Object.values(grouped).map(d => ({
         name: d.name,
         categories: Array.from(d.categories),
-        icon: getDivisionIcon(d.name)
+        icon: getCategoryIcon(d.name)
     }))
-}
-
-const getDivisionIcon = (name) => {
-    const lower = (name || '').toLowerCase()
-    if (lower.includes('recurve')) return 'ph:target'
-    if (lower.includes('compound')) return 'ph:crosshair-simple'
-    if (lower.includes('barebow')) return 'ph:target'
-    if (lower.includes('nasional')) return 'ph:flag-bold'
-    if (lower.includes('traditional')) return 'ph:bow-arrow'
-    return 'ph:strategy'
 }
 
 const displayValue = (value) => {

@@ -152,8 +152,9 @@
           @click="openCreateForCategory(cat)">
           <div class="flex items-center gap-3">
             <div
-              class="w-10 h-10 bg-white rounded-lg border border-gray-100 flex items-center justify-center group-hover:border-primary group-hover:bg-primary/5 transition-all">
-              <Icon :icon="getCategoryIcon(cat)" class="text-xl text-gray-400 group-hover:text-primary" />
+              class="w-10 h-10 bg-white rounded-lg border border-gray-100 flex items-center justify-center group-hover:bg-navy transition-all overflow-hidden p-1.5">
+              <img :src="'/' + getCategoryIcon(cat.division_name)" :alt="cat.division_name"
+                class="w-full h-full object-contain group-hover:invert transition-all" />
             </div>
             <div class="min-w-0 flex-1">
               <p class="text-sm font-bold text-navy group-hover:text-primary transition-colors truncate">
@@ -251,6 +252,7 @@ import BaseSelect from '~/components/common/BaseSelect.vue'
 import BaseInput from '~/components/common/BaseInput.vue'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
+import { getCategoryIcon } from '~/utils/logoArcheryCategory'
 
 definePageMeta({
   layout: 'dashboard'
@@ -454,12 +456,6 @@ const categoriesWithoutBracket = computed(() => {
   return categories.value.filter(c => !bracketCatIds.includes(c.id))
 })
 
-const getCategoryIcon = (category) => {
-  const eventType = (category?.event_type_name || '').toLowerCase()
-  if (eventType === 'individual') return 'ph:user'
-  if (eventType.includes('mixed') || eventType.includes('campuran')) return 'ph:gender-intersex'
-  return 'ph:users-three'
-}
 
 const openCreateForCategory = (category) => {
   newBracket.value.categoryId = category.id
