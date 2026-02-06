@@ -66,7 +66,7 @@
                             </h2>
                             <div class="tentang-event prose max-w-none text-gray-600 leading-relaxed space-y-4">
                                 <div v-if="tournament.description" v-html="tournament.description"
-                                    class="event-description text-base sm:text-lg leading-relaxed">
+                                    class="event-description text-sm sm:text-base leading-relaxed">
                                 </div>
                                 <div v-else class="italic text-gray-400">
                                     Belum ada deskripsi untuk event ini.

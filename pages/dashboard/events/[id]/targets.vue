@@ -176,10 +176,10 @@
             <form @submit.prevent="submitForm" class="p-6 space-y-5">
               <div>
                 <label class="block text-sm font-bold text-gray-700 mb-2">Nama Target *</label>
-                <input v-model="form.target_name" type="text" required
+                <input v-model="form.target_name" type="number" required
                   class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                  placeholder="Contoh: 10" />
-                <p class="text-xs text-gray-500 mt-1.5">Nama target digunakan bersama untuk beberapa nomor.</p>
+                  placeholder="Contoh: 6" />
+                <p class="text-xs text-gray-500 mt-1.5">Nomor urut bantalan target.</p>
               </div>
 
               <div v-if="showEditDialog">
@@ -190,11 +190,8 @@
               </div>
 
               <div v-else>
-                <label class="block text-sm font-bold text-gray-700 mb-2">Nomor Target (pisahkan dengan koma) *</label>
-                <input v-model="form.target_numbers" type="text" required
-                  class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                  placeholder="A, X, Z" />
-                <p class="text-xs text-gray-500 mt-1.5">Sistem akan membuat satu baris untuk setiap nomor.</p>
+                <BaseSelect v-model="form.target_count" label="Nomor Target" :items="targetCountOptions" required />
+                <p class="text-xs text-gray-500 mt-1.5">Sistem akan membuat bantalan A, B, C, D sesuai pilihan Anda.</p>
               </div>
 
               <!-- Dialog Footer -->
@@ -282,8 +279,15 @@ const targetToDelete = ref(null)
 const form = ref({
   target_name: '',
   target_number: '',
-  target_numbers: ''
+  target_count: 1
 })
+
+const targetCountOptions = [
+  { title: '1 Target', value: 1 },
+  { title: '2 Target', value: 2 },
+  { title: '3 Target', value: 3 },
+  { title: '4 Target', value: 4 }
+]
 
 const currentTargetId = ref(null)
 
@@ -360,9 +364,17 @@ const submitForm = async () => {
       })
       toast.success('Target berhasil diperbarui')
     } else {
-      const targetNumbers = parseTargetNumbers(form.value.target_numbers)
+      const count = parseInt(form.value.target_count)
+      const prefix = form.value.target_name
+      const letters = ['A', 'B', 'C', 'D']
+      const targetNumbers = []
+
+      for (let i = 0; i < count; i++) {
+        targetNumbers.push(`${prefix}${letters[i]}`)
+      }
+
       await post(`/events/${eventId}/targets`, {
-        target_name: form.value.target_name,
+        target_name: form.value.target_name.toString(),
         target_numbers: targetNumbers
       })
       toast.success('Target berhasil dibuat')
@@ -382,7 +394,7 @@ const editTarget = (target) => {
   form.value = {
     target_number: target.target_number,
     target_name: target.target_name,
-    target_numbers: ''
+    target_count: 1
   }
   showEditDialog.value = true
 }
@@ -414,7 +426,7 @@ const closeDialog = () => {
   form.value = {
     target_name: '',
     target_number: '',
-    target_numbers: ''
+    target_count: 1
   }
 }
 

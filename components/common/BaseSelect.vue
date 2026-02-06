@@ -46,7 +46,7 @@
                 leave-to-class="translate-y-2 opacity-0 scale-95">
 
                 <div v-if="isOpen"
-                    class="absolute z-[9999] w-full mt-2 bg-white border border-gray-100 rounded-2xl shadow-2xl shadow-navy/10 flex flex-col overflow-hidden max-h-[300px]">
+                    class="absolute !z-[9999999] w-full mt-2 bg-white border border-gray-100 rounded-2xl shadow-2xl shadow-navy/10 flex flex-col overflow-hidden max-h-[300px]">
 
                     <div class="overflow-y-auto p-1.5 space-y-1 custom-scrollbar">
                         <div v-if="filteredItems.length === 0" class="p-8 text-center">
