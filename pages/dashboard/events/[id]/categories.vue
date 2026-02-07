@@ -154,6 +154,15 @@
                             <BaseSelect v-model="form.gender_division_uuid" :items="genderOptions" label="Divisi Gender"
                                 placeholder="Pilih Divisi Gender" required />
                         </div>
+                        <div v-else>
+                            <div class="space-y-2">
+                                <label class="text-sm font-bold text-gray-700 block">Divisi Gender</label>
+                                <div
+                                    class="px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-500 text-sm font-medium">
+                                    Mixed (Otomatis)
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -164,12 +173,14 @@
                                 placeholder="Kosongkan untuk tidak terbatas" />
                             <p class="text-[10px] text-gray-400">Total kuota pendaftar individu</p>
                         </div>
-                        <div v-if="isTeamEvent" class="space-y-2">
+                        <div class="space-y-2">
                             <label class="text-sm font-bold text-gray-700">Anggota Per Tim</label>
-                            <input v-model.number="form.team_size" type="number" min="1"
-                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                placeholder="Contoh: 3 untuk Beregu, 2 untuk Mixed" />
-                            <p class="text-[10px] text-gray-400">Jumlah pemanah yang membentuk satu tim</p>
+                            <div class="px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 text-navy font-bold">
+                                {{ form.team_size || (isTeamEvent ? (isMixedTeam ? 2 : 3) : 1) }} Orang
+                            </div>
+                            <p class="text-[10px] text-gray-400">
+                                {{ teamTypeDescription }}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -227,7 +238,9 @@ const eventTypeOptions = computed(() => {
 })
 
 const genderOptions = computed(() => {
-    return genderDivisions.value.map(gender => ({ value: gender.id, title: gender.name }))
+    return genderDivisions.value
+        .filter(gender => gender.code !== 'mixed')
+        .map(gender => ({ value: gender.id, title: gender.name }))
 })
 
 const form = ref({
@@ -250,16 +263,35 @@ const isTeamEvent = computed(() => {
     return selected?.name?.toLowerCase() !== 'individual'
 })
 
+const teamTypeDescription = computed(() => {
+    if (isMixedTeam.value) return 'Tim campuran (1 Putra + 1 Putri)'
+    if (isTeamEvent.value) return 'Tim dengan gender yang sama'
+    return 'Pemanah individu'
+})
+
 watch(() => form.value.event_type_uuid, (newId) => {
     if (!newId) return
     const selected = eventTypes.value.find(et => et.id === newId)
     const type = selected?.name?.toLowerCase() || ''
     if (type.includes('mixed')) {
         form.value.team_size = 2
-    } else if (type !== 'individual') {
+        // Auto-select mixed gender if available
+        const mixed = genderDivisions.value.find(g => g.code === 'mixed')
+        if (mixed) form.value.gender_division_uuid = mixed.id
+    } else if (type === 'team') {
         form.value.team_size = 3
+        // If it was mixed before, clear it to force selection
+        const mixed = genderDivisions.value.find(g => g.code === 'mixed')
+        if (form.value.gender_division_uuid === mixed?.id) {
+            form.value.gender_division_uuid = ''
+        }
     } else {
-        form.value.team_size = 0
+        form.value.team_size = 1
+        // If it was mixed before, clear it
+        const mixed = genderDivisions.value.find(g => g.code === 'mixed')
+        if (form.value.gender_division_uuid === mixed?.id) {
+            form.value.gender_division_uuid = ''
+        }
     }
 })
 
@@ -312,7 +344,7 @@ const openCreateDialog = () => {
         event_type_uuid: '',
         gender_division_uuid: '',
         max_participants: null,
-        team_size: 0,
+        team_size: 1,
         status: 'active'
     }
     showDialog.value = true
@@ -355,9 +387,8 @@ const saveCategory = async () => {
             division_uuid: form.value.division_uuid,
             category_uuid: form.value.category_uuid,
             event_type_uuid: form.value.event_type_uuid,
-            gender_division_uuid: isMixed ? null : form.value.gender_division_uuid,
+            gender_division_uuid: isMixed ? (genderDivisions.value.find(g => g.code === 'mixed')?.id || form.value.gender_division_uuid) : form.value.gender_division_uuid,
             max_participants: form.value.max_participants || null,
-            team_size: isTeamEvent.value ? form.value.team_size : 0,
             status: form.value.status
         }
 

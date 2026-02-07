@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col gap-1.5 w-full relative" v-click-outside="closeDropdown">
+    <div class="flex flex-col gap-1.5 w-full relative" :class="{ 'z-[9999]': isOpen }" v-click-outside="closeDropdown">
         <label v-if="label" class="text-navy text-sm font-bold ml-1 flex items-center gap-1">
             {{ label }}
             <span v-if="required" class="text-red-500">*</span>

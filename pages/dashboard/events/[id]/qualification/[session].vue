@@ -190,7 +190,7 @@
                   <div class="min-w-0">
                     <h3 class="text-base sm:text-lg font-bold text-navy leading-tight">{{ assignment.archer_name }}</h3>
                     <div class="text-xs text-gray-500 font-medium truncate">
-                      Target {{ assignment.target_number }} - {{ assignment.target_name }}
+                      Target {{ assignment.target_name }}
                     </div>
                   </div>
                 </div>
@@ -815,7 +815,7 @@ const fetchTargets = async () => {
     const options = response?.options || response.data?.options || []
     availableTargets.value = options.map((opt) => ({
       id: opt.id || opt.uuid,
-      name: opt.value || `${opt.name} - ${opt.number}`
+      name: opt.target_name || opt.value || opt.name
     }))
   } catch (error) {
     console.error('Failed to fetch targets:', error)

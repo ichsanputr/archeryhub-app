@@ -4,8 +4,10 @@
         <div class="bg-gray-50 rounded-xl p-5 border border-gray-200">
             <h4 class="font-bold text-navy mb-4">Atur Bantalan Otomatis</h4>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <BaseInput v-model.number="autoAssignParams.start_target" type="number" label="Bantalan Awal" placeholder="1" />
-                <BaseInput v-model.number="autoAssignParams.archers_per_target" type="number" label="Atlet per Bantalan" placeholder="4" />
+                <BaseInput v-model.number="autoAssignParams.start_target" type="number" label="Bantalan Awal"
+                    placeholder="1" />
+                <BaseInput v-model.number="autoAssignParams.archers_per_target" type="number" label="Atlet per Bantalan"
+                    placeholder="4" />
                 <div class="flex items-end">
                     <BaseButton variant="primary" icon="ph:magic-wand" @click="autoAssign" :loading="assigning" block>
                         Atur Otomatis
@@ -16,7 +18,8 @@
 
         <!-- Assignments List -->
         <div v-if="loading" class="text-center py-12">
-            <div class="inline-block h-8 w-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+            <div class="inline-block h-8 w-8 border-4 border-primary border-t-transparent rounded-full animate-spin">
+            </div>
             <p class="text-sm text-gray-500 mt-3">Memuat data...</p>
         </div>
 
@@ -26,16 +29,17 @@
         </div>
 
         <div v-else class="space-y-6">
-            <div v-for="(group, targetNumber) in groupedAssignments" :key="targetNumber">
+            <div v-for="(group, targetName) in groupedAssignments" :key="targetName">
                 <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
                     <div class="bg-navy text-white px-4 py-3 font-bold">
-                        Bantalan {{ targetNumber }}
+                        Bantalan {{ targetName }}
                     </div>
                     <div class="divide-y divide-gray-100">
                         <div v-for="assignment in group" :key="assignment.uuid"
                             class="px-4 py-3 flex items-center justify-between hover:bg-gray-50">
                             <div class="flex items-center gap-4">
-                                <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center font-bold text-primary">
+                                <div
+                                    class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center font-bold text-primary">
                                     {{ assignment.target_position }}
                                 </div>
                                 <div>
@@ -88,7 +92,7 @@ const autoAssignParams = ref({
 const groupedAssignments = computed(() => {
     const grouped = {}
     assignments.value.forEach(assignment => {
-        const targetKey = assignment.target_name || assignment.target_number || 'Unknown'
+        const targetKey = assignment.target_name || 'Unknown'
         if (!grouped[targetKey]) {
             grouped[targetKey] = []
         }

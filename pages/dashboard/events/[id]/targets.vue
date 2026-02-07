@@ -37,10 +37,6 @@
 
           <!-- Action Buttons -->
           <div class="flex gap-3 flex-shrink-0">
-            <BaseButton variant="white" icon="ph:download" class="h-11 px-5">
-              <span class="hidden sm:inline">Ekspor Data</span>
-              <span class="sm:hidden">Ekspor</span>
-            </BaseButton>
             <BaseButton @click="showCreateDialog = true" variant="primary" icon="ph:plus-bold"
               class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all">
               <span class="hidden sm:inline">Tambah Target Baru</span>
@@ -57,14 +53,23 @@
         <table class="w-full text-left">
           <thead class="bg-gray-50/50 border-b border-gray-100">
             <tr class="text-[10px] font-black text-gray-400  tracking-widest">
-              <th class="px-6 py-4">No Target</th>
               <th class="px-6 py-4">Nama Target</th>
               <th class="px-6 py-4 text-right">Aksi</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-50">
-            <!-- Loading State -->
-            <tr v-if="loading">
+          <tbody class="divide-y divide-gray-50 relative min-h-[200px]">
+            <!-- Table Row Loading Overlay -->
+            <Transition enter-active-class="transition-opacity duration-300" enter-from-class="opacity-0"
+              enter-to-class="opacity-100" leave-active-class="transition-opacity duration-200"
+              leave-from-class="opacity-100" leave-to-class="opacity-0">
+              <div v-if="loading && targets.length > 0"
+                class="absolute inset-0 bg-white/50 backdrop-blur-[1px] z-10 flex items-center justify-center">
+                <div class="animate-spin rounded-full h-8 w-8 border-3 border-primary border-t-transparent"></div>
+              </div>
+            </Transition>
+
+            <!-- Loading State (Initial) -->
+            <tr v-if="loading && targets.length === 0">
               <td colspan="3" class="px-6 py-12">
                 <div class="flex flex-col items-center justify-center gap-3">
                   <div class="animate-spin rounded-full h-10 w-10 border-4 border-primary border-t-transparent"></div>
@@ -96,14 +101,9 @@
               <td class="px-6 py-4">
                 <div class="flex items-center gap-3">
                   <div
-                    class="size-10 rounded-lg bg-navy text-white flex items-center justify-center font-black text-sm">
-                    {{ target.target_number }}
+                    class="size-11 rounded-lg bg-navy text-white flex items-center justify-center font-black text-sm shadow-sm font-mono">
+                    {{ target.target_name }}
                   </div>
-                </div>
-              </td>
-              <td class="px-6 py-4">
-                <div>
-                  <p class="text-sm font-bold text-navy">{{ target.target_name }}</p>
                 </div>
               </td>
               <td class="px-6 py-4">
@@ -126,20 +126,22 @@
 
       <!-- Pagination Footer -->
       <div v-if="targets.length > 0 || page > 1"
-        class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
-        <span class="text-sm text-gray-500">
+        class="px-6 py-5 bg-gray-50 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <span class="text-sm text-gray-500 font-medium">
           Menampilkan {{ (page - 1) * limit + 1 }} - {{ Math.min(page * limit, total) }} dari {{ total }} target
         </span>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-3">
           <button @click="prevPage" :disabled="page === 1"
-            class="p-2 border border-gray-200 rounded-lg hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-gray-600">
+            class="h-10 w-10 flex items-center justify-center border border-gray-200 rounded-xl hover:bg-white hover:border-navy hover:text-navy disabled:opacity-50 disabled:cursor-not-allowed transition-all text-gray-600 bg-white shadow-sm">
             <Icon icon="ph:caret-left-bold" />
           </button>
-          <span class="text-sm font-medium text-navy px-2">
-            Halaman {{ page }} dari {{ totalPages }}
-          </span>
+          <div class="bg-white border border-gray-200 rounded-xl px-4 h-10 flex items-center shadow-sm">
+            <span class="text-xs font-bold text-navy">
+              Halaman {{ page }} <span class="text-gray-400 mx-1">dari</span> {{ totalPages }}
+            </span>
+          </div>
           <button @click="nextPage" :disabled="page >= totalPages"
-            class="p-2 border border-gray-200 rounded-lg hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-gray-600">
+            class="h-10 w-10 flex items-center justify-center border border-gray-200 rounded-xl hover:bg-white hover:border-navy hover:text-navy disabled:opacity-50 disabled:cursor-not-allowed transition-all text-gray-600 bg-white shadow-sm">
             <Icon icon="ph:caret-right-bold" />
           </button>
         </div>
@@ -154,7 +156,7 @@
         <div v-if="showCreateDialog || showEditDialog"
           class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
           @click.self="closeDialog">
-          <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+          <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-visible">
             <!-- Dialog Header -->
             <div class="sticky top-0 bg-white px-6 py-4 rounded-t-2xl border-b border-gray-200 z-10">
               <div class="flex items-center justify-between">
@@ -183,10 +185,10 @@
               </div>
 
               <div v-if="showEditDialog">
-                <label class="block text-sm font-bold text-gray-700 mb-2">Nomor Target *</label>
-                <input v-model="form.target_number" type="text" required
+                <label class="block text-sm font-bold text-gray-700 mb-2">Nama Target *</label>
+                <input v-model="form.target_name" type="text" required
                   class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                  placeholder="A" />
+                  placeholder="A1" />
               </div>
 
               <div v-else>
@@ -278,7 +280,6 @@ const targetToDelete = ref(null)
 
 const form = ref({
   target_name: '',
-  target_number: '',
   target_count: 1
 })
 
@@ -318,7 +319,9 @@ const fetchTargets = async () => {
     const response = await get(`/events/${eventId}/targets`, {
       params: {
         page: page.value,
-        limit: limit.value
+        limit: limit.value,
+        order_by: 'created_at',
+        order_dir: 'desc'
       }
     })
     targets.value = response?.targets || []
@@ -359,18 +362,16 @@ const submitForm = async () => {
   try {
     if (showEditDialog.value) {
       await put(`/events/${eventId}/targets/${currentTargetId.value}`, {
-        target_number: form.value.target_number,
         target_name: form.value.target_name
       })
       toast.success('Target berhasil diperbarui')
     } else {
       const count = parseInt(form.value.target_count)
-      const prefix = form.value.target_name
       const letters = ['A', 'B', 'C', 'D']
       const targetNumbers = []
 
       for (let i = 0; i < count; i++) {
-        targetNumbers.push(`${prefix}${letters[i]}`)
+        targetNumbers.push(letters[i])
       }
 
       await post(`/events/${eventId}/targets`, {
@@ -392,7 +393,6 @@ const submitForm = async () => {
 const editTarget = (target) => {
   currentTargetId.value = target.id
   form.value = {
-    target_number: target.target_number,
     target_name: target.target_name,
     target_count: 1
   }
@@ -425,7 +425,6 @@ const closeDialog = () => {
   currentTargetId.value = null
   form.value = {
     target_name: '',
-    target_number: '',
     target_count: 1
   }
 }

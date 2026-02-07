@@ -189,7 +189,7 @@
                                 <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">
                                     Penyelesaian</p>
                                 <p class="text-navy-dark text-3xl font-extrabold tracking-tight">{{ completionPercentage
-                                    }}%</p>
+                                }}%</p>
                             </div>
                             <div
                                 class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
@@ -250,7 +250,7 @@
                                             <span class="font-bold text-navy-dark truncate pr-2">{{ cat.division }} - {{
                                                 cat.name }}</span>
                                             <span class="text-navy font-black font-mono shrink-0 ml-auto">{{ cat.count
-                                            }}</span>
+                                                }}</span>
                                         </div>
                                         <div class="w-full bg-gray-200 rounded-full h-1.5">
                                             <div class="bg-navy h-1.5 rounded-full transition-all duration-500"
@@ -522,11 +522,11 @@ const tabs = [
 const groupedTargets = computed(() => {
     const targets = {}
     participants.value.forEach(p => {
-        if (!p.target_number) return
-        if (!targets[p.target_number]) {
-            targets[p.target_number] = []
+        if (!p.target_name) return
+        if (!targets[p.target_name]) {
+            targets[p.target_name] = []
         }
-        targets[p.target_number].push(p)
+        targets[p.target_name].push(p)
     })
     return targets
 })
@@ -534,9 +534,13 @@ const groupedTargets = computed(() => {
 const maxTargets = computed(() => {
     try {
         if (!groupedTargets.value || typeof groupedTargets.value !== 'object') return 20
-        const targetNumbers = Object.keys(groupedTargets.value)
-            .map(Number)
+        const targetNames = Object.keys(groupedTargets.value)
+        if (targetNames.length === 0) return 20
+        // Extract numbers from target_name (e.g., "A6" -> 6)
+        const targetNumbers = targetNames
+            .map(name => parseInt(name.replace(/^\D+/g, '')))
             .filter(n => !isNaN(n) && isFinite(n) && n > 0)
+
         if (targetNumbers.length === 0) return 20
         const max = Math.max(...targetNumbers, 20)
         return isFinite(max) && max > 0 ? max : 20
@@ -549,7 +553,7 @@ const maxTargets = computed(() => {
 const completionPercentage = computed(() => {
     if (!event.value || !participants.value.length) return 0
     // Simple calculation - can be enhanced with actual completion data
-    const assigned = participants.value.filter(p => p.target_number).length
+    const assigned = participants.value.filter(p => p.target_name).length
     return Math.round((assigned / participants.value.length) * 100)
 })
 
@@ -662,13 +666,13 @@ const shareTo = (platform) => {
 const alerts = computed(() => {
     // Generate alerts based on event status
     const alertList = []
-    if (participants.value.filter(p => !p.target_number).length > 0) {
+    if (participants.value.filter(p => !p.target_name).length > 0) {
         alertList.push({
             id: 1,
             type: 'info',
             icon: 'ph:user-plus',
             title: 'Peserta Belum Diatur',
-            message: `${participants.value.filter(p => !p.target_number).length} peserta belum memiliki nomor bantalan.`
+            message: `${participants.value.filter(p => !p.target_name).length} peserta belum memiliki nomor bantalan.`
         })
     }
     return alertList

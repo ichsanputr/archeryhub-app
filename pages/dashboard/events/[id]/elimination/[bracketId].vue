@@ -142,7 +142,7 @@
                                                 class="size-8 rounded-full border-2 border-white shadow-sm shrink-0" />
                                             <span class="text-xs font-bold text-navy truncate">{{ match.entry_b_name ||
                                                 'TBD'
-                                                }}</span>
+                                            }}</span>
                                         </div>
                                         <span
                                             class="text-[9px] font-black text-gray-300 tracking-tighter shrink-0 ml-2">SIDE
@@ -195,7 +195,7 @@
                                                 :class="selectedScoringMatch?.id === match.id ? 'bg-primary text-navy' : 'bg-slate-200 text-slate-500'">
                                                 {{ match.match_no }}
                                             </span>
-                                            <span v-if="match.target_number || match.target_name"
+                                            <span v-if="match.target_name"
                                                 class="text-[9px] font-medium text-slate-400">
                                                 {{ getFullTargetName(match) }}
                                             </span>
@@ -584,7 +584,7 @@
                                                 <div class="archer-info">
                                                     <span class="seed-badge">{{ match.entry_b_seed || '-' }}</span>
                                                     <span class="archer-name">{{ match.entry_b_name || 'TBD'
-                                                    }}</span>
+                                                        }}</span>
                                                 </div>
                                                 <span class="score-display">{{ getMatchScore(match, 'B') }}</span>
                                             </div>
@@ -899,7 +899,7 @@ const fetchAvailableTargets = async () => {
         const options = response?.options || response.data?.options || []
         availableTargets.value = options.map(o => ({
             id: o.uuid || o.id,
-            name: o.value || o.name || o.target_no
+            name: o.target_name || o.value || o.name
         }))
     } catch (error) {
         console.error('Failed to fetch targets:', error)
@@ -1204,8 +1204,6 @@ const finishMatchAction = async (match) => {
 
 const getFullTargetName = (match) => {
     if (!match) return 'Belum Ada Target'
-    if (match.target_number && match.target_name) return `Target ${match.target_number} - ${match.target_name}`
-    if (match.target_number) return `Target ${match.target_number}`
     if (match.target_name) return match.target_name.startsWith('Target') ? match.target_name : `Target ${match.target_name}`
     return getTargetName(match.target_id || match.target_uuid)
 }

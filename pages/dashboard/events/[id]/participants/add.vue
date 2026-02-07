@@ -123,7 +123,7 @@
                             <div v-if="selectedArchers.length > 0" class="space-y-3">
                                 <div class="flex items-center justify-between">
                                     <p class="text-sm font-bold text-navy">Pemanah Terpilih ({{ selectedArchers.length
-                                    }})</p>
+                                        }})</p>
                                     <button @click="selectedArchers = []"
                                         class="text-xs text-red-500 font-bold hover:underline">
                                         Hapus Semua
@@ -315,7 +315,6 @@ const showMediaLibrary = ref(false)
 
 const form = reactive({
     category_id: '',
-    target_number: '',
     payment_status: 'pending',
     payment_amount: 0,
     notes: ''

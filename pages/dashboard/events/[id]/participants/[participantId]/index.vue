@@ -235,7 +235,7 @@
                             <p class="text-gray-500 text-sm leading-relaxed">
                                 Apakah Anda yakin ingin mengeluarkan <span class="font-bold text-navy">{{
                                     participant?.full_name
-                                    }}</span> dari event ini?
+                                }}</span> dari event ini?
                             </p>
                             <p class="text-red-600 text-xs mt-2 font-semibold">
                                 Tindakan ini akan menghapus semua data target dan skor yang terkait dan tidak dapat
@@ -329,7 +329,7 @@ const statusOptions = [
 ]
 
 const targetNumberText = computed(() => {
-    return participant.value?.target_number || 'Belum Ditentukan'
+    return participant.value?.target_name || 'Belum Ditentukan'
 })
 
 const fetchParticipant = async () => {
