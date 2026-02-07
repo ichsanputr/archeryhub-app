@@ -442,8 +442,7 @@ const handleSubmit = async () => {
     }
   } catch (error) {
     console.error('Failed to create tournament:', error)
-    const errorMessage = error?.data?.error || error?.response?.data?.error || error?.response?._data?.error || error?.message || 'Gagal membuat event'
-    toast.error(errorMessage)
+    toast.error(getApiErrorMessage(error, 'Gagal membuat event'))
   } finally {
     isSubmitting.value = false
   }

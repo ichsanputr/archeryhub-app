@@ -193,24 +193,9 @@
       </div>
 
       <!-- Pagination Card Footer -->
-      <div v-if="filteredEvents.length > 0"
-        class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <span class="text-xs text-gray-500 font-bold  tracking-wider">
-          Menampilkan <span class="text-navy">{{ filteredEvents.length }}</span> dari <span class="text-navy">{{
-            events.length }}</span> Event
-        </span>
-        <div class="flex items-center gap-2">
-          <BaseButton variant="white" size="sm" disabled class="h-9 min-w-[100px]">
-            Sebelumnya
-          </BaseButton>
-          <div class="flex gap-1">
-            <button
-              class="h-9 w-9 rounded-lg bg-primary text-navy font-bold text-xs shadow-sm shadow-primary/20">1</button>
-          </div>
-          <BaseButton variant="white" size="sm" disabled class="h-9 min-w-[100px]">
-            Berikutnya
-          </BaseButton>
-        </div>
+      <div v-if="events.length > 0" class="px-6 py-6 bg-gray-50 border-t border-gray-100">
+        <BasePagination v-model:items-per-page="limit" :current-page="currentPage" :total-items="totalItems"
+          :no-margin="true" @change-page="handlePageChange" />
       </div>
     </div>
 
@@ -252,6 +237,7 @@ import { Icon } from '@iconify/vue'
 import { useEventContext } from '~/composables/useEventContext'
 import { useToast } from '~/composables/useToast'
 import { useRouter } from 'vue-router'
+import BasePagination from '~/components/common/BasePagination.vue'
 
 const { get, del } = useApi()
 const router = useRouter()
@@ -265,18 +251,48 @@ const openDropdownId = ref(null)
 const showDeleteDialog = ref(false)
 const eventToDelete = ref(null)
 
+// Pagination state
+const currentPage = ref(1)
+const totalItems = ref(0)
+const limit = ref(10)
+
+watch(searchQuery, () => {
+  currentPage.value = 1
+  fetchEvents()
+})
+
+watch(limit, () => {
+  currentPage.value = 1
+  fetchEvents()
+})
+
 const fetchEvents = async () => {
   isLoading.value = true
   try {
-    const response = await get('/events/my')
+    const offset = (currentPage.value - 1) * limit.value
+    const params = new URLSearchParams({
+      limit: limit.value.toString(),
+      offset: offset.toString()
+    })
+
+    if (searchQuery.value) {
+      params.append('search', searchQuery.value)
+    }
+
+    const response = await get(`/events/my?${params.toString()}`)
     events.value = response?.events || []
+    totalItems.value = response?.total || 0
   } catch (error) {
     console.error('Failed to fetch events:', error)
-    const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || 'Gagal memuat daftar event'
-    toast.error(errorMessage)
+    toast.error(getApiErrorMessage(error, 'Gagal memuat daftar event'))
   } finally {
     isLoading.value = false
   }
+}
+
+const handlePageChange = (page) => {
+  currentPage.value = page
+  fetchEvents()
 }
 
 onMounted(() => {
@@ -287,17 +303,7 @@ const resetFilters = () => {
   searchQuery.value = ''
 }
 
-const filteredEvents = computed(() => {
-  return events.value.filter(event => {
-    const q = searchQuery.value.toLowerCase()
-    const matchesSearch = !q ||
-      (event.name?.toLowerCase() || '').includes(q) ||
-      (event.venue?.toLowerCase() || '').includes(q) ||
-      (event.code?.toLowerCase() || '').includes(q) ||
-      (event.location?.toLowerCase() || '').includes(q)
-    return matchesSearch
-  })
-})
+const filteredEvents = computed(() => events.value)
 
 const formatDate = (dateStr) => {
   if (!dateStr) return '-'

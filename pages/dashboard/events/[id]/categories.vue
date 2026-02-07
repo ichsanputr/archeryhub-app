@@ -49,8 +49,14 @@
 
         <!-- Categories List -->
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-            <div class="p-6 border-b border-gray-100">
+            <div
+                class="p-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <h2 class="text-lg font-bold text-navy">Daftar Kategori</h2>
+                <div class="flex items-center gap-3">
+                    <span class="text-sm font-medium text-gray-500 hidden sm:inline">Filter Busur:</span>
+                    <BaseSelect v-model="selectedBowType" :items="bowFilterOptions" placeholder="Semua Busur"
+                        class="w-full sm:w-48" />
+                </div>
             </div>
             <!-- Skeleton Loader -->
             <div v-if="isLoading" class="divide-y divide-gray-100">
@@ -132,6 +138,10 @@
                     </div>
                 </div>
             </div>
+            <div v-if="categories.length > 0" class="p-6 border-t border-gray-100">
+                <BasePagination :current-page="currentPage" :total-items="totalItems" :items-per-page="limit"
+                    @change-page="handlePageChange" />
+            </div>
         </div>
 
         <!-- Create/Edit Dialog -->
@@ -199,6 +209,7 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import BaseSelect from '~/components/common/BaseSelect.vue'
+import BasePagination from '~/components/common/BasePagination.vue'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { getCategoryIcon, getCategoryColorClass } from '~/utils/logoArcheryCategory'
@@ -225,6 +236,24 @@ const eventTypes = ref([])
 const genderDivisions = ref([])
 const showDialog = ref(false)
 const editingCategory = ref(null)
+
+// Pagination & Filtering
+const currentPage = ref(1)
+const totalItems = ref(0)
+const limit = ref(10)
+const selectedBowType = ref('all')
+
+const bowFilterOptions = computed(() => {
+    return [
+        { value: 'all', title: 'Semua Busur' },
+        ...bowTypes.value.map(bow => ({ value: bow.code, title: bow.name }))
+    ]
+})
+
+watch(selectedBowType, () => {
+    currentPage.value = 1
+    fetchCategories()
+})
 
 const bowOptions = computed(() => {
     return bowTypes.value.map(bow => ({ value: bow.id, title: bow.name }))
@@ -317,24 +346,40 @@ const formatDate = (dateStr) => {
 const fetchCategories = async () => {
     isLoading.value = true
     try {
+        const offset = (currentPage.value - 1) * limit.value
+        const params = new URLSearchParams({
+            limit: limit.value.toString(),
+            offset: offset.toString()
+        })
+
+        if (selectedBowType.value !== 'all') {
+            params.append('bow_type', selectedBowType.value)
+        }
+
         const [categoriesRes, bowRes, ageRes, eventTypeRes, genderRes] = await Promise.all([
-            get(`/events/${eventId}/categories`),
+            get(`/events/${eventId}/categories?${params.toString()}`),
             get('/bow-types'),
             get('/age-groups'),
             get('/team-types'),
             get('/gender-divisions')
         ])
         categories.value = categoriesRes?.events || categoriesRes?.data?.events || []
+        totalItems.value = categoriesRes?.total || categoriesRes?.data?.total || 0
         bowTypes.value = bowRes?.bow_types || bowRes?.data?.bow_types || []
-        ageGroups.value = ageRes?.age_groups || ageRes?.data?.age_groups || []
-        eventTypes.value = eventTypeRes?.team_types || eventTypeRes?.event_types || eventTypeRes?.data?.team_types || eventTypeRes?.data?.event_types || []
-        genderDivisions.value = genderRes?.gender_divisions || genderRes?.data?.gender_divisions || []
+        ageGroups.value = ageGroups.value.length > 0 ? ageGroups.value : (ageRes?.age_groups || ageRes?.data?.age_groups || [])
+        eventTypes.value = eventTypes.value.length > 0 ? eventTypes.value : (eventTypeRes?.team_types || eventTypeRes?.event_types || eventTypeRes?.data?.team_types || eventTypeRes?.data?.event_types || [])
+        genderDivisions.value = genderDivisions.value.length > 0 ? genderDivisions.value : (genderRes?.gender_divisions || genderRes?.data?.gender_divisions || [])
     } catch (error) {
         console.error('Failed to fetch categories:', error)
-        toast.error('Gagal memuat kategori')
+        toast.error(getApiErrorMessage(error, 'Gagal memuat kategori'))
     } finally {
         isLoading.value = false
     }
+}
+
+const handlePageChange = (page) => {
+    currentPage.value = page
+    fetchCategories()
 }
 
 const openCreateDialog = () => {
@@ -404,7 +449,7 @@ const saveCategory = async () => {
         closeDialog()
     } catch (error) {
         console.error('Failed to save category:', error)
-        toast.error('Gagal menyimpan kategori')
+        toast.error(getApiErrorMessage(error, 'Gagal menyimpan kategori'))
     } finally {
         saving.value = false
     }

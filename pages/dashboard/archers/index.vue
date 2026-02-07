@@ -118,28 +118,9 @@
         </table>
       </div>
 
-      <div class="bg-gray-50 border-t border-gray-100 px-6 py-4 flex items-center justify-between">
-        <p class="text-xs text-text-secondary font-medium">
-          Menampilkan <span class="font-bold text-navy">{{ ((currentPage - 1) * itemsPerPage) + 1 }}</span> sampai <span
-            class="font-bold text-navy">{{ Math.min(currentPage * itemsPerPage, totalItems) }}</span> dari <span
-            class="font-bold text-navy">{{ totalItems }}</span> atlet
-        </p>
-        <div class="flex gap-2">
-          <BaseButton variant="outline" size="sm" :disabled="currentPage === 1" @click="currentPage--; fetchData()">
-            Sebelumnya
-          </BaseButton>
-          <div class="flex gap-1">
-            <BaseButton v-for="p in Math.min(5, Math.ceil(totalItems / itemsPerPage))" :key="p"
-              :variant="currentPage === p ? 'primary' : 'outline'" size="sm" class="!px-3"
-              @click="currentPage = p; fetchData()">
-              {{ p }}
-            </BaseButton>
-          </div>
-          <BaseButton variant="outline" size="sm" :disabled="currentPage >= Math.ceil(totalItems / itemsPerPage)"
-            @click="currentPage++; fetchData()">
-            Selanjutnya
-          </BaseButton>
-        </div>
+      <div class="px-6 py-6 bg-gray-50 border-t border-gray-100">
+        <BasePagination v-model:items-per-page="itemsPerPage" :current-page="currentPage" :total-items="totalItems"
+          :no-margin="true" @change-page="(p) => { currentPage = p; fetchData() }" />
       </div>
     </div>
   </div>
@@ -147,7 +128,8 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref } from 'vue'
+import { ref, watch, onMounted } from 'vue'
+import BasePagination from '~/components/common/BasePagination.vue'
 
 definePageMeta({
   title: 'Athletes Management',
@@ -155,6 +137,7 @@ definePageMeta({
 })
 
 const { get } = useApi()
+const toast = useToast()
 
 const loading = ref(false)
 const searchQuery = ref('')
@@ -169,15 +152,20 @@ const tabs = ref([
 
 const athletes = ref([])
 const totalItems = ref(0)
-const itemsPerPage = 10
+const itemsPerPage = ref(10)
 const currentPage = ref(1)
+
+watch(itemsPerPage, () => {
+  currentPage.value = 1
+  fetchData()
+})
 
 const fetchData = async () => {
   loading.value = true
   try {
     const status = activeTab.value === 'all' ? '' : activeTab.value
-    const offset = (currentPage.value - 1) * itemsPerPage
-    const response = await get(`/archers?search=${encodeURIComponent(searchQuery.value)}&status=${status}&limit=${itemsPerPage}&offset=${offset}`)
+    const offset = (currentPage.value - 1) * itemsPerPage.value
+    const response = await get(`/archers?search=${encodeURIComponent(searchQuery.value)}&status=${status}&limit=${itemsPerPage.value}&offset=${offset}`)
 
     if (response) {
       const data = response.archers || response.athletes || []
@@ -191,6 +179,7 @@ const fetchData = async () => {
     }
   } catch (error) {
     console.error('Failed to fetch athletes:', error)
+    toast.error(getApiErrorMessage(error, 'Gagal memuat daftar atlet'))
   } finally {
     loading.value = false
   }

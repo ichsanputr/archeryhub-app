@@ -54,41 +54,25 @@ const getIconClasses = (type) => {
 <template>
   <!-- Toast Container -->
   <Teleport to="body">
-    <div class="fixed top-4 right-4 z-[9999] space-y-2 max-w-sm">
-      <TransitionGroup
-        name="toast"
-        tag="div"
-        class="space-y-2"
-      >
-        <div
-          v-for="toast in toasts"
-          :key="toast.id"
-          :class="[
-            'flex items-center p-4 rounded-lg border shadow-lg transition-all duration-300',
-            getToastClasses(toast.type)
-          ]"
-        >
+    <div class="fixed top-4 right-4 !z-[9999999] space-y-2 max-w-sm">
+      <TransitionGroup name="toast" tag="div" class="space-y-2">
+        <div v-for="toast in toasts" :key="toast.id" :class="[
+          'flex items-center p-4 rounded-lg border shadow-lg transition-all duration-300',
+          getToastClasses(toast.type)
+        ]">
           <div>
-            <Icon :ssr="true" 
-            :icon="getToastIcon(toast.type)" 
-            :class="['w-5 h-5 mr-3 flex-shrink-0', getIconClasses(toast.type)]"
-          />
+            <Icon :ssr="true" :icon="getToastIcon(toast.type)"
+              :class="['w-5 h-5 mr-3 flex-shrink-0', getIconClasses(toast.type)]" />
           </div>
           <div class="flex-1 text-sm font-medium">{{ toast.message }}</div>
           <div class="flex items-center space-x-2">
             <!-- Action Button -->
-            <button
-              v-if="toast.action"
-              @click="toast.action.onClick"
-              class="px-3 py-1 text-xs font-medium rounded-md bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
-            >
+            <button v-if="toast.action" @click="toast.action.onClick"
+              class="px-3 py-1 text-xs font-medium rounded-md bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors">
               {{ toast.action.label }}
             </button>
             <!-- Close Button -->
-            <button
-              @click="removeToast(toast.id)"
-              class="text-gray-400 ml-2 hover:text-gray-600 transition-colors"
-            >
+            <button @click="removeToast(toast.id)" class="text-gray-400 ml-2 hover:text-gray-600 transition-colors">
               <Icon :ssr="true" icon="ph:x" class="w-4 h-4" />
             </button>
           </div>
