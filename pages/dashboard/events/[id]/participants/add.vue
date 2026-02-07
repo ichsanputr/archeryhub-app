@@ -123,7 +123,7 @@
                             <div v-if="selectedArchers.length > 0" class="space-y-3">
                                 <div class="flex items-center justify-between">
                                     <p class="text-sm font-bold text-navy">Pemanah Terpilih ({{ selectedArchers.length
-                                        }})</p>
+                                    }})</p>
                                     <button @click="selectedArchers = []"
                                         class="text-xs text-red-500 font-bold hover:underline">
                                         Hapus Semua
@@ -214,7 +214,7 @@
                                 <BaseInput v-model="newArcherForm.school" label="Sekolah"
                                     placeholder="Nama sekolah (opsional)" />
                             </div>
-                            <BaseSelect v-model="newArcherForm.club_id" label="Klub" :items="clubOptions" />
+                            <BaseSelect v-model="newArcherForm.club_id" label="Klub" :items="clubOptions" required />
                             <BaseTextarea v-model="newArcherForm.address" label="Alamat" placeholder="Alamat lengkap"
                                 :rows="2" />
                             <p class="text-xs text-gray-400">
@@ -354,7 +354,6 @@ const bowOptions = [
 
 const paymentStatusOptions = [
     { title: 'Menunggu ACC', value: 'menunggu_acc' },
-    { title: 'Belum Lunas', value: 'belum_lunas' },
     { title: 'Lunas', value: 'lunas' }
 ]
 
@@ -517,6 +516,10 @@ const validateNewArcherForm = () => {
     }
     if (!newArcherForm.bow_type) {
         toast.error('Pilih jenis busur pemanah')
+        return false
+    }
+    if (!newArcherForm.club_id) {
+        toast.error('Pilih klub pemanah')
         return false
     }
     return true

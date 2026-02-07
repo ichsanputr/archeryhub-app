@@ -1,34 +1,37 @@
 /**
  * Utility to get the appropriate icon for an archery category/division
  * @param name The name of the division or category
- * @returns Filename of the SVG icon in /public
+ * @returns Filename of the SVG icon in /public/category-icon
  */
 export const getCategoryIcon = (name) => {
     const lower = (name || '').toLowerCase();
 
-    // Determine gender
+    // Determine team type first
+    if (lower.includes('mix') || lower.includes('mixed')) {
+        return 'category-icon/mix-team.svg';
+    }
+
+    if (lower.includes('beregu') || lower.includes('team')) {
+        if (lower.includes('putri') || lower.includes('woman') || lower.includes('women') || lower.includes('female')) {
+            return 'category-icon/woman-team.svg';
+        }
+        return 'category-icon/men-team.svg';
+    }
+
+    // Determine gender for single
     let gender = 'men';
     if (lower.includes('putri') || lower.includes('woman') || lower.includes('women') || lower.includes('female')) {
         gender = 'woman';
     }
 
-    // Determine type (default to single as most icons are single)
-    let type = 'single';
-    if (lower.includes('beregu') || lower.includes('team')) {
-        // Special case: we have woman-team-compound.svg
-        if (gender === 'woman' && lower.includes('compound')) {
-            return 'woman-team-compound.svg';
-        }
-        // Fallback or more team icons if they existed, but for now we follow the available files
-    }
+    // Determine bow type
+    let bow = 'recurve';
+    if (lower.includes('compound')) bow = 'compound';
+    else if (lower.includes('barebow')) bow = 'barebow';
+    else if (lower.includes('standard') || lower.includes('nasional')) bow = 'standard';
+    else if (lower.includes('traditional')) bow = 'traditional';
 
-    if (lower.includes('recurve')) return `${gender}-single-recurve.svg`;
-    if (lower.includes('compound')) return `${gender}-single-compound.svg`;
-    if (lower.includes('barebow')) return `${gender}-single-barebow.svg`;
-    if (lower.includes('traditional')) return `${gender}-single-traditional.svg`;
-
-    // Default fallback
-    return 'men-single-recurve.svg';
+    return `category-icon/${gender}-single-${bow}.svg`;
 };
 
 /**

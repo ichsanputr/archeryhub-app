@@ -72,7 +72,8 @@
                     <div class="flex items-start gap-3 pl-2">
                         <div
                             class="size-12 bg-navy rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm overflow-hidden p-2 group-hover:bg-primary transition-colors">
-                            <img :src="'/' + getCategoryIcon(category.division_name)" :alt="category.division_name"
+                            <img :src="'/' + getCategoryIcon(`${category.division_name} ${category.event_type_name} ${category.gender_division_name}`)"
+                                :alt="category.division_name"
                                 class="w-full h-full object-contain invert group-hover:invert-0 transition-all" />
                         </div>
                         <div class="flex-1 min-w-0">

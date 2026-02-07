@@ -53,6 +53,6 @@ export const useImageOrDefault = (
     return `https://api.dicebear.com/7.x/initials/svg?seed=${seed}`
   }
 
-  // Fallback to random image if no name
-  return useRandomImage()
+  // Fallback to default avatar if no name
+  return '/avatar-default.svg'
 }

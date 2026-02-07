@@ -101,7 +101,7 @@
                                     <p class="text-sm text-gray-400 font-medium mt-1">Kategori lomba yang
                                         tersedia dalam event ini</p>
                                 </div>
-                                <div class="flex gap-2">
+                                <div class="hidden md:flex gap-2">
                                     <button @click="scroll('left')"
                                         class="w-11 h-11 rounded-full border border-gray-200 flex items-center justify-center text-navy hover:border-navy hover:bg-navy hover:text-white transition-all shadow-sm">
                                         <Icon icon="ph:caret-left-bold" />
@@ -114,6 +114,18 @@
                             </div>
 
                             <div class="relative z-10">
+                                <!-- Mobile Arrows -->
+                                <div
+                                    class="flex md:hidden absolute top-1/2 -translate-y-1/2 left-0 right-0 justify-between pointer-events-none z-20 px-2">
+                                    <button @click="scroll('left')"
+                                        class="w-10 h-10 rounded-full bg-white/90 border border-gray-200 flex items-center justify-center text-navy shadow-lg pointer-events-auto">
+                                        <Icon icon="ph:caret-left-bold" />
+                                    </button>
+                                    <button @click="scroll('right')"
+                                        class="w-10 h-10 rounded-full bg-white/90 border border-gray-200 flex items-center justify-center text-navy shadow-lg pointer-events-auto">
+                                        <Icon icon="ph:caret-right-bold" />
+                                    </button>
+                                </div>
                                 <div ref="scrollContainer"
                                     class="flex gap-6 overflow-x-auto no-scrollbar scroll-smooth pb-8 -mx-1 px-1">
                                     <div v-for="division in divisionsData" :key="division.name"
@@ -121,7 +133,7 @@
                                         <!-- Card Header -->
                                         <div class="flex items-center gap-4 mb-6">
                                             <div
-                                                class="w-12 h-12 bg-navy rounded-2xl flex items-center justify-center p-3 shadow-sm shadow-navy/20 overflow-hidden">
+                                                class="w-12 h-12 bg-navy rounded-2xl flex items-center justify-center p-1.5 shadow-sm shadow-navy/20 overflow-hidden">
                                                 <img :src="'/' + division.icon" :alt="division.name"
                                                     class="w-full h-full object-contain invert" />
                                             </div>
@@ -216,7 +228,7 @@
                                             <div class="flex items-center gap-2 mb-1">
                                                 <span class="font-bold text-navy">{{
                                                     displayValue(method.bank_name)
-                                                }}</span>
+                                                    }}</span>
                                                 <span
                                                     class="text-[10px] font-bold text-gray-400  tracking-wider px-2 py-0.5 bg-gray-200 rounded">
                                                     {{ method.type === 'bank' ? 'Bank' : method.type === 'qris'
@@ -234,7 +246,7 @@
                                                     <span class="font-medium">Atas Nama:</span>
                                                     <span class="font-semibold">{{
                                                         displayValue(method.account_name)
-                                                    }}</span>
+                                                        }}</span>
                                                 </p>
                                                 <p v-if="method.instructions" class="text-xs text-gray-500 mt-2 italic">
                                                     {{ method.instructions }}
@@ -268,7 +280,7 @@
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{
                                         displayValue(tournament.prizes?.first)
-                                    }}</div>
+                                        }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ firstPrizeCaption }}</div>
                                 </div>
                                 <div
@@ -287,7 +299,7 @@
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{
                                         displayValue(tournament.prizes?.third)
-                                    }}</div>
+                                        }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ thirdPrizeCaption }}</div>
                                 </div>
                             </div>

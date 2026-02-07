@@ -53,56 +53,6 @@
             </div>
         </div>
 
-        <!-- Stats Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <template v-if="isLoading">
-                <div v-for="i in 4" :key="i"
-                    class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
-                    <div class="size-10 bg-gray-50 animate-pulse rounded-lg"></div>
-                    <div class="space-y-2">
-                        <div class="h-2 w-16 bg-gray-100 animate-pulse rounded"></div>
-                        <div class="h-6 w-10 bg-gray-100 animate-pulse rounded"></div>
-                    </div>
-                </div>
-            </template>
-            <template v-else>
-                <div
-                    class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                    <div
-                        class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-                        <Icon icon="ph:users-three" class="text-2xl" />
-                    </div>
-                    <div>
-                        <p class="text-[10px] text-gray-400 font-bold  tracking-wider">Total Peserta</p>
-                        <p class="text-xl font-black text-navy">{{ total }}</p>
-                    </div>
-                </div>
-
-                <div
-                    class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                    <div
-                        class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-                        <Icon icon="ph:clock" class="text-2xl" />
-                    </div>
-                    <div>
-                        <p class="text-[10px] text-gray-400 font-bold  tracking-wider">Pending</p>
-                        <p class="text-xl font-black text-navy">{{ pendingCount }}</p>
-                    </div>
-                </div>
-                <div
-                    class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                    <div
-                        class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-                        <Icon icon="ph:buildings" class="text-2xl" />
-                    </div>
-                    <div>
-                        <p class="text-[10px] text-gray-400 font-bold  tracking-wider">Klub</p>
-                        <p class="text-xl font-black text-navy">{{ uniqueClubs }}</p>
-                    </div>
-                </div>
-            </template>
-        </div>
-
 
         <!-- Participants Table -->
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
@@ -196,15 +146,23 @@
                                     </span>
                                 </td>
                                 <td class="px-6 py-4">
-                                    <BaseButton v-if="participant.status === 'Terdaftar' && participant.qr_raw"
-                                        variant="outline" size="sm" icon="ph:qr-code" @click="showQRDialog(participant)"
-                                        class="h-8 text-xs">
-                                        Lihat QR
-                                    </BaseButton>
-                                    <span v-else class="text-xs text-gray-400 font-medium">-</span>
+                                    <span v-if="participant.last_reregistration_at"
+                                        class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-black tracking-widest bg-green-100 text-green-600 border border-green-200 uppercase">
+                                        Sudah
+                                    </span>
+                                    <span v-else
+                                        class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-black tracking-widest bg-gray-100 text-gray-400 border border-gray-200 uppercase">
+                                        Belum
+                                    </span>
                                 </td>
                                 <td class="px-6 py-4 text-right">
-                                    <div class="flex items-center justify-end gap-2">
+                                    <div class="flex items-center justify-end gap-1">
+                                        <button v-if="participant.status === 'Terdaftar' && participant.qr_raw"
+                                            @click="showQRDialog(participant)"
+                                            class="p-2 text-navy/40 hover:text-primary transition-colors"
+                                            title="Lihat QR Code">
+                                            <Icon icon="ph:qr-code" class="text-lg" />
+                                        </button>
                                         <NuxtLink
                                             :to="`/dashboard/events/${route.params.id}/participants/${participant.username || participant.id}`"
                                             class="p-2 text-navy/40 hover:text-navy transition-colors"

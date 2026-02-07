@@ -189,7 +189,7 @@
                                 <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">
                                     Penyelesaian</p>
                                 <p class="text-navy-dark text-3xl font-extrabold tracking-tight">{{ completionPercentage
-                                }}%</p>
+                                    }}%</p>
                             </div>
                             <div
                                 class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
@@ -244,13 +244,13 @@
                                         <div class="flex items-center gap-3 text-sm">
                                             <div
                                                 class="size-8 rounded-lg bg-navy/5 flex items-center justify-center p-1.5 shrink-0">
-                                                <img :src="'/' + getCategoryIcon(cat.division)" :alt="cat.division"
-                                                    class="w-full h-full object-contain" />
+                                                <img :src="'/' + getCategoryIcon(`${cat.division} ${cat.event_type} ${cat.gender}`)"
+                                                    :alt="cat.division" class="w-full h-full object-contain" />
                                             </div>
                                             <span class="font-bold text-navy-dark truncate pr-2">{{ cat.division }} - {{
                                                 cat.name }}</span>
                                             <span class="text-navy font-black font-mono shrink-0 ml-auto">{{ cat.count
-                                                }}</span>
+                                            }}</span>
                                         </div>
                                         <div class="w-full bg-gray-200 rounded-full h-1.5">
                                             <div class="bg-navy h-1.5 rounded-full transition-all duration-500"
@@ -598,6 +598,8 @@ const registrationStats = computed(() => {
             stats.byCategory[catId] = {
                 name: p.category_name || 'Tanpa Kategori',
                 division: p.division_name || 'N/A',
+                event_type: p.event_type_name || '',
+                gender: p.gender_division_name || '',
                 count: 0
             }
         }

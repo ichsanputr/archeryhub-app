@@ -153,8 +153,9 @@
           <div class="flex items-center gap-3">
             <div
               class="w-10 h-10 bg-white rounded-lg border border-gray-100 flex items-center justify-center group-hover:bg-navy transition-all overflow-hidden p-1.5">
-              <img :src="'/' + getCategoryIcon(cat.division_name)" :alt="cat.division_name"
-                class="w-full h-full object-contain group-hover:invert transition-all" />
+              <img
+                :src="'/' + getCategoryIcon(`${cat.division_name} ${cat.event_type_name} ${cat.gender_division_name}`)"
+                :alt="cat.division_name" class="w-full h-full object-contain group-hover:invert transition-all" />
             </div>
             <div class="min-w-0 flex-1">
               <p class="text-sm font-bold text-navy group-hover:text-primary transition-colors truncate">

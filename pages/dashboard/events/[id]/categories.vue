@@ -86,7 +86,8 @@
                             <!-- Category Icon -->
                             <div
                                 class="h-12 w-12 rounded-xl border border-gray-100 bg-gray-50 flex items-center justify-center shadow-sm shrink-0 transition-all group-hover:bg-navy p-2 overflow-hidden">
-                                <img :src="'/' + getCategoryIcon(category.division_name)" :alt="category.division_name"
+                                <img :src="'/' + getCategoryIcon(`${category.division_name} ${category.event_type_name} ${category.gender_division_name}`)"
+                                    :alt="category.division_name"
                                     class="w-full h-full object-contain group-hover:invert transition-all" />
                             </div>
 
