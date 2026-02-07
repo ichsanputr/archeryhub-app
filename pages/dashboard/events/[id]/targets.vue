@@ -53,7 +53,8 @@
         <table class="w-full text-left">
           <thead class="bg-gray-50/50 border-b border-gray-100">
             <tr class="text-[10px] font-black text-gray-400  tracking-widest">
-              <th class="px-6 py-4">Nama Target</th>
+              <th class="px-6 py-4">Nomor</th>
+              <th class="px-6 py-4">Nomor Target</th>
               <th class="px-6 py-4 text-right">Aksi</th>
             </tr>
           </thead>
@@ -97,14 +98,18 @@
             </tr>
 
             <!-- Data Rows -->
-            <tr v-else v-for="target in targets" :key="target.id" class="hover:bg-gray-50 transition-colors group">
+            <tr v-else v-for="target in targets" :key="target.target_number"
+              class="hover:bg-gray-50 transition-colors group">
               <td class="px-6 py-4">
                 <div class="flex items-center gap-3">
                   <div
                     class="size-11 rounded-lg bg-navy text-white flex items-center justify-center font-black text-sm shadow-sm font-mono">
-                    {{ target.target_name }}
+                    {{ target.target_number }}
                   </div>
                 </div>
+              </td>
+              <td class="px-6 py-4">
+                <span class="font-bold text-navy text-sm">{{ target.letters }}</span>
               </td>
               <td class="px-6 py-4">
                 <div class="flex items-center justify-end gap-2">
@@ -184,14 +189,7 @@
                 <p class="text-xs text-gray-500 mt-1.5">Nomor urut bantalan target.</p>
               </div>
 
-              <div v-if="showEditDialog">
-                <label class="block text-sm font-bold text-gray-700 mb-2">Nama Target *</label>
-                <input v-model="form.target_name" type="text" required
-                  class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-                  placeholder="A1" />
-              </div>
-
-              <div v-else>
+              <div>
                 <BaseSelect v-model="form.target_count" label="Nomor Target" :items="targetCountOptions" required />
                 <p class="text-xs text-gray-500 mt-1.5">Sistem akan membuat bantalan A, B, C, D sesuai pilihan Anda.</p>
               </div>
@@ -277,6 +275,7 @@ const showCreateDialog = ref(false)
 const showEditDialog = ref(false)
 const showDeleteDialog = ref(false)
 const targetToDelete = ref(null)
+const targetToEdit = ref(null)
 
 const form = ref({
   target_name: '',
@@ -361,18 +360,41 @@ const submitForm = async () => {
   submitting.value = true
   try {
     if (showEditDialog.value) {
-      await put(`/events/${eventId}/targets/${currentTargetId.value}`, {
-        target_name: form.value.target_name
-      })
+      const oldIds = targetToEdit.value.target_ids.split(',')
+      const newCount = parseInt(form.value.target_count)
+      const letters = ['A', 'B', 'C', 'D']
+      const newBase = form.value.target_name.toString()
+
+      // 1. Update existing targets
+      const updateCount = Math.min(oldIds.length, newCount)
+      for (let i = 0; i < updateCount; i++) {
+        await put(`/events/${eventId}/targets/${oldIds[i]}`, {
+          target_name: `${newBase}${letters[i]}`
+        })
+      }
+
+      // 2. Add new targets if count increased
+      if (newCount > oldIds.length) {
+        const newLetters = letters.slice(oldIds.length, newCount)
+        await post(`/events/${eventId}/targets`, {
+          target_name: newBase,
+          target_numbers: newLetters
+        })
+      }
+
+      // 3. Delete extra targets if count decreased
+      if (newCount < oldIds.length) {
+        const extraIds = oldIds.slice(newCount)
+        for (const id of extraIds) {
+          await deleteApi(`/events/${eventId}/targets/${id}`)
+        }
+      }
+
       toast.success('Target berhasil diperbarui')
     } else {
       const count = parseInt(form.value.target_count)
       const letters = ['A', 'B', 'C', 'D']
-      const targetNumbers = []
-
-      for (let i = 0; i < count; i++) {
-        targetNumbers.push(letters[i])
-      }
+      const targetNumbers = letters.slice(0, count)
 
       await post(`/events/${eventId}/targets`, {
         target_name: form.value.target_name.toString(),
@@ -391,11 +413,13 @@ const submitForm = async () => {
 }
 
 const editTarget = (target) => {
-  currentTargetId.value = target.id
-  form.value = {
-    target_name: target.target_name,
-    target_count: 1
-  }
+  targetToEdit.value = target
+  currentTargetId.value = target.target_ids.split(',')[0]
+
+  // Set form values individually for better reactivity tracking
+  form.value.target_name = Number(target.target_number) || target.target_number
+  form.value.target_count = target.letters ? target.letters.split(',').filter(l => l.trim()).length : 1
+
   showEditDialog.value = true
 }
 
@@ -407,7 +431,10 @@ const confirmDelete = (target) => {
 const deleteTarget = async () => {
   submitting.value = true
   try {
-    await deleteApi(`/events/${eventId}/targets/${targetToDelete.value.id}`)
+    const ids = targetToDelete.value.target_ids.split(',')
+    for (const id of ids) {
+      await deleteApi(`/events/${eventId}/targets/${id}`)
+    }
     toast.success('Target berhasil dihapus')
     showDeleteDialog.value = false
     await fetchTargets()
