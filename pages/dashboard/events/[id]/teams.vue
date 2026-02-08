@@ -56,7 +56,7 @@
         <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
             <h2 class="text-base font-bold text-navy mb-4">Pilih Kategori Lomba</h2>
 
-            <div v-if="loadingCategories" class="flex gap-4 overflow-x-auto pb-2">
+            <div v-if="loadingCategories" class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
                 <div v-for="i in 4" :key="i"
                     class="flex-shrink-0 w-72 p-5 rounded-xl border border-gray-100 animate-pulse">
                     <div class="flex items-start gap-3">
@@ -562,6 +562,10 @@ const fetchCategories = async () => {
         const teamCategories = data.filter(cat =>
             cat.event_type_name?.toLowerCase() !== 'individual'
         )
+
+        // Sort by participant_count descending
+        teamCategories.sort((a, b) => (b.participant_count || 0) - (a.participant_count || 0))
+
         categories.value = teamCategories
 
         if (teamCategories.length > 0) {

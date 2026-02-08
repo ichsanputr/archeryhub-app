@@ -641,7 +641,9 @@ const fetchCategories = async () => {
       cat.event_type_name?.toLowerCase() === 'individual' ||
       !cat.event_type_name
     )
-    categories.value = individualCategories
+    // Sort categories by participant count (descending)
+    const sortedCategories = individualCategories.sort((a, b) => (b.participant_count || 0) - (a.participant_count || 0))
+    categories.value = sortedCategories
 
     // Auto-select first category if available
     if (categories.value.length > 0) {

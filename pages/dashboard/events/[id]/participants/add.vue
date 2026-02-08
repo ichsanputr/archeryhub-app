@@ -123,7 +123,7 @@
                             <div v-if="selectedArchers.length > 0" class="space-y-3">
                                 <div class="flex items-center justify-between">
                                     <p class="text-sm font-bold text-navy">Pemanah Terpilih ({{ selectedArchers.length
-                                    }})</p>
+                                        }})</p>
                                     <button @click="selectedArchers = []"
                                         class="text-xs text-red-500 font-bold hover:underline">
                                         Hapus Semua
@@ -424,7 +424,12 @@ const searchArchers = async (query) => {
 const fetchCategories = async () => {
     try {
         const response = await get(`/events/${route.params.id}/categories`)
-        categories.value = response?.events || response?.categories || []
+        const cats = response?.events || response?.categories || []
+
+        // Sort by participant_count descending
+        cats.sort((a, b) => (b.participant_count || 0) - (a.participant_count || 0))
+
+        categories.value = cats
     } catch (error) {
         console.error('Failed to fetch categories:', error)
     }

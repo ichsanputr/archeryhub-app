@@ -58,39 +58,6 @@
         </template>
 
         <template v-else-if="participant">
-            <!-- Registered Participant QR Card -->
-            <div v-if="form.status === 'Terdaftar' && participant?.qr_raw"
-                class="bg-navy rounded-2xl p-6 text-white overflow-hidden relative border border-white/10 shadow-sm group">
-                <div
-                    class="absolute -right-20 -bottom-20 h-64 w-64 rounded-full bg-primary/10 blur-3xl group-hover:bg-primary/20 transition-all duration-700">
-                </div>
-                <div class="relative z-10 flex flex-col md:flex-row items-center gap-8">
-                    <div
-                        class="bg-white p-4 rounded-2xl shadow-inner-lg transform transition-transform group-hover:scale-105 duration-500">
-                        <qrcode-vue :value="participant?.qr_raw" :size="180" level="H" render-as="svg"
-                            foreground="#000000" />
-                    </div>
-                    <div class="flex-1 text-center md:text-left">
-                        <span
-                            class="inline-flex items-center gap-1.5 px-3 py-1 bg-primary/20 text-primary border border-primary/30 rounded-full text-[10px] font-black  tracking-widest mb-4">
-                            <Icon icon="ph:seal-check-fill" />
-                            ID Peserta Terverifikasi
-                        </span>
-                        <h2 class="text-2xl font-black mb-2 tracking-tight">QR Code Registrasi Ulang</h2>
-                        <p class="text-slate-300 text-sm max-w-md mb-6 font-medium">
-                            Tunjukkan QR Code ini kepada panitia untuk proses registrasi ulang dan verifikasi di lokasi
-                            event.
-                        </p>
-                        <div class="flex flex-wrap justify-center md:justify-start gap-3">
-                            <BaseButton variant="white" class="h-10 px-4 text-xs font-bold" icon="ph:printer">Cetak QR
-                                Code
-                            </BaseButton>
-                            <BaseButton variant="white" class="h-10 px-4 text-xs font-bold" icon="ph:download-simple">
-                                Download QR</BaseButton>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <!-- Edit Form (Unified Page) -->
             <form @submit.prevent="handleSubmit" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -272,7 +239,6 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import Breadcrumbs from '~/components/common/Breadcrumbs.vue'
-import QrcodeVue from 'qrcode.vue'
 import { ref, reactive, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useApi } from '~/composables/useApi'
@@ -317,7 +283,6 @@ const form = reactive({
 })
 
 const paymentStatusOptions = [
-    { label: 'Belum Lunas', value: 'belum_lunas' },
     { label: 'Lunas', value: 'lunas' },
     { label: 'Menunggu Acc', value: 'menunggu_acc' }
 ]

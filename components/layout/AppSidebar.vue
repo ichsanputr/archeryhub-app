@@ -40,8 +40,9 @@
         </NuxtLink>
       </template>
 
-      <!-- Dynamic Event Navigation (Manajemen Event) - Only for org/club/admin when in event scope -->
-      <div v-if="eventId && canManageEvents" class="flex flex-col gap-1" :class="isEventManagePage ? '' : 'mt-4'">
+      <!-- Dynamic Event Navigation (Manajemen Event) -->
+      <div v-if="eventId && (canManageEvents || isArcher)" class="flex flex-col gap-1"
+        :class="isEventManagePage ? '' : 'mt-4'">
         <div v-if="!isOnEventSubPage && !isEventManagePage" class="h-px bg-white/10 mb-2 mx-3"></div>
         <div v-if="!isSidebarCollapsed" class="px-3 mb-2">
           <p class="text-[10px] font-black text-gray-500  tracking-[0.2em]">Manajemen Event</p>
@@ -157,6 +158,15 @@ const isEventManagePage = computed(() => {
 const eventLinks = computed(() => {
   const role = user.value?.role || user.value?.type || 'archer'
   const isOrganization = role === 'organization'
+  const isArcher = role === 'archer'
+
+  if (isArcher) {
+    return [
+      { label: 'Ringkasan', icon: 'ph:squares-four', path: `/dashboard/events/${eventId.value}/overview` },
+      { label: 'Hasil Saya', icon: 'ph:chart-line-up-bold', path: `/dashboard/events/${eventId.value}/result-user` },
+      { label: 'Scan QR', icon: 'ph:qr-code', path: '/scan/qr' },
+    ]
+  }
 
   const links = [
     { label: 'Ringkasan', icon: 'ph:squares-four', path: `/dashboard/events/${eventId.value}/overview` },

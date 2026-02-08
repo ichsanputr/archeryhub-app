@@ -171,12 +171,6 @@
                                                     {{ cat.event_type_name }} {{ cat.gender_division_name ? '• ' +
                                                         cat.gender_division_name : '' }}
                                                 </div>
-                                                <button v-if="cat.status === 'Terdaftar' && cat.participant_id"
-                                                    @click.stop="showQRDialog(participant, cat)"
-                                                    class="text-navy/30 hover:text-primary transition-colors p-1 rounded-md hover:bg-primary/5"
-                                                    title="QR Code Registrasi">
-                                                    <Icon icon="ph:qr-code-bold" class="text-sm" />
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -210,51 +204,12 @@
             </div>
         </div>
 
-        <!-- QR Code Dialog -->
-        <Teleport to="body">
-            <Transition enter-active-class="transition duration-200 ease-out" enter-from-class="opacity-0"
-                enter-to-class="opacity-100" leave-active-class="transition duration-150 ease-in"
-                leave-from-class="opacity-100" leave-to-class="opacity-0">
-                <div v-if="showQR"
-                    class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm"
-                    @click="showQR = false">
-                    <div class="relative bg-white rounded-2xl shadow-2xl p-8 max-w-lg w-full mx-4" @click.stop>
-                        <button @click="showQR = false"
-                            class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors p-2 hover:bg-gray-100 rounded-lg">
-                            <Icon icon="ph:x" class="text-2xl" />
-                        </button>
-
-                        <div class="text-center space-y-6">
-                            <div>
-                                <h3 class="text-2xl font-black text-navy mb-2">QR Code Registrasi Ulang</h3>
-                                <p class="text-sm text-gray-500 font-medium">{{ selectedParticipant?.full_name }}</p>
-                            </div>
-
-                            <div class="bg-gray-50 p-8 rounded-2xl border flex justify-center border-gray-200">
-                                <qrcode-vue :value="selectedParticipant?.qr_raw || 'N/A'" :size="300" level="H"
-                                    render-as="svg" />
-                            </div>
-
-                            <div class="text-xs text-gray-500 space-y-1">
-                                <p class="font-bold">{{ selectedParticipant?.email }}</p>
-                                <p>{{ selectedParticipant?.club_name || '-' }}</p>
-                            </div>
-
-                            <BaseButton variant="primary" block icon="ph:download-simple" @click="downloadQR">
-                                Download QR Code
-                            </BaseButton>
-                        </div>
-                    </div>
-                </div>
-            </Transition>
-        </Teleport>
     </div>
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue'
 import Breadcrumbs from '~/components/common/Breadcrumbs.vue'
-import QrcodeVue from 'qrcode.vue'
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
 import { useApi } from '~/composables/useApi'
@@ -290,8 +245,6 @@ const searchQuery = ref('')
 const activeDiv = ref('Semua')
 const filterDivs = ['Semua', 'Recurve', 'Compound', 'Barebow']
 const isLoading = ref(true)
-const showQR = ref(false)
-const selectedParticipant = ref(null)
 
 const searchTimeout = ref(null)
 
@@ -373,38 +326,6 @@ const getCategoryName = (participant) => {
     return parts.length > 0 ? parts.join(' - ') : '-'
 }
 
-const showQRDialog = (participant) => {
-    selectedParticipant.value = participant
-    showQR.value = true
-}
-
-const downloadQR = () => {
-    // Get the SVG element from the QR code
-    const svg = document.querySelector('.bg-gray-50 svg')
-    if (!svg) return
-
-    // Create a canvas to convert SVG to image
-    const canvas = document.createElement('canvas')
-    const ctx = canvas.getContext('2d')
-    const svgData = new XMLSerializer().serializeToString(svg)
-    const img = new Image()
-
-    img.onload = () => {
-        canvas.width = 300
-        canvas.height = 300
-        ctx.fillStyle = 'white'
-        ctx.fillRect(0, 0, canvas.width, canvas.height)
-        ctx.drawImage(img, 0, 0)
-
-        // Download the image
-        const link = document.createElement('a')
-        link.download = `qr-${selectedParticipant.value?.full_name || 'code'}.png`
-        link.href = canvas.toDataURL()
-        link.click()
-    }
-
-    img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)))
-}
 
 onMounted(() => {
     fetchEventDetails()

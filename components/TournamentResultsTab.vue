@@ -18,12 +18,13 @@
                 </div>
 
                 <div v-else class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
-                    <button v-for="category in categories" :key="category.uuid" @click="selectCategory(category.uuid)" :class="[
-                        'flex-shrink-0 w-72 p-5 rounded-xl border-2 transition-all text-left group hover:shadow-md relative',
-                        selectedCategory === category.uuid
-                            ? 'border-primary bg-primary/5 shadow-sm'
-                            : 'border-gray-200 bg-white hover:border-gray-300'
-                    ]">
+                    <button v-for="category in categories" :key="category.uuid" @click="selectCategory(category.uuid)"
+                        :class="[
+                            'flex-shrink-0 w-72 p-5 rounded-xl border-2 transition-all text-left group hover:shadow-md relative',
+                            selectedCategory === category.uuid
+                                ? 'border-primary bg-primary/5 shadow-sm'
+                                : 'border-gray-200 bg-white hover:border-gray-300'
+                        ]">
                         <div class="absolute top-0 left-0 w-1.5 h-full rounded-l-xl transition-colors"
                             :class="selectedCategory === category.uuid ? 'bg-primary' : 'bg-transparent'"></div>
                         <div class="flex items-start gap-3 pl-2">
@@ -65,11 +66,12 @@
             <div v-if="activePhase === 'qualification' && selectedCategory"
                 class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div v-if="qualificationLoading" class="p-12 text-center">
-                    <div class="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent mx-auto"></div>
+                    <div
+                        class="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent mx-auto">
+                    </div>
                 </div>
 
-                <div v-else-if="!currentQualResults || currentQualResults.length === 0"
-                    class="p-12 text-center">
+                <div v-else-if="!currentQualResults || currentQualResults.length === 0" class="p-12 text-center">
                     <div class="flex flex-col items-center">
                         <Icon icon="ph:clipboard-text" class="text-6xl text-gray-300 mb-4" />
                         <p class="text-gray-500 font-medium">Hasil kualifikasi belum tersedia</p>
@@ -91,30 +93,38 @@
                         <table class="w-full">
                             <thead class="bg-gray-50 border-b-2 border-gray-200">
                                 <tr>
-                                    <th rowspan="2" class="px-4 py-3 text-left text-xs font-black text-gray-500 uppercase tracking-wider sticky left-0 bg-gray-50 z-10 border-r border-gray-200">
+                                    <th rowspan="2"
+                                        class="px-4 py-3 text-left text-xs font-black text-gray-500 uppercase tracking-wider sticky left-0 bg-gray-50 z-10 border-r border-gray-200">
                                         Rank
                                     </th>
-                                    <th rowspan="2" class="px-4 py-3 text-left text-xs font-black text-gray-500 uppercase tracking-wider min-w-[200px]">
+                                    <th rowspan="2"
+                                        class="px-4 py-3 text-left text-xs font-black text-gray-500 uppercase tracking-wider min-w-[200px]">
                                         Atlet
                                     </th>
-                                    <th rowspan="2" class="px-4 py-3 text-center text-xs font-black text-gray-500 uppercase tracking-wider">
+                                    <th rowspan="2"
+                                        class="px-4 py-3 text-center text-xs font-black text-gray-500 uppercase tracking-wider">
                                         Klub
                                     </th>
-                                    <th :colspan="totalEnds" class="px-4 py-2 text-center text-xs font-black text-gray-500 uppercase tracking-wider border-b border-gray-300">
+                                    <th :colspan="totalEnds"
+                                        class="px-4 py-2 text-center text-xs font-black text-gray-500 uppercase tracking-wider border-b border-gray-300">
                                         Skor Per End
                                     </th>
-                                    <th rowspan="2" class="px-4 py-3 text-center text-xs font-black text-navy uppercase tracking-wider bg-navy/5 border-l-2 border-navy/20">
+                                    <th rowspan="2"
+                                        class="px-4 py-3 text-center text-xs font-black text-navy uppercase tracking-wider bg-navy/5 border-l-2 border-navy/20">
                                         Total
                                     </th>
-                                    <th rowspan="2" class="px-4 py-3 text-center text-xs font-black text-gray-500 uppercase tracking-wider">
+                                    <th rowspan="2"
+                                        class="px-4 py-3 text-center text-xs font-black text-gray-500 uppercase tracking-wider">
                                         10+X
                                     </th>
-                                    <th rowspan="2" class="px-4 py-3 text-center text-xs font-black text-gray-500 uppercase tracking-wider">
+                                    <th rowspan="2"
+                                        class="px-4 py-3 text-center text-xs font-black text-gray-500 uppercase tracking-wider">
                                         X
                                     </th>
                                 </tr>
                                 <tr>
-                                    <th v-for="i in totalEnds" :key="i" class="px-2 py-2 text-center text-xs font-bold text-gray-400 border-x border-gray-200">
+                                    <th v-for="i in totalEnds" :key="i"
+                                        class="px-2 py-2 text-center text-xs font-bold text-gray-400 border-x border-gray-200">
                                         {{ i }}
                                     </th>
                                 </tr>
@@ -122,9 +132,9 @@
                             <tbody class="divide-y divide-gray-100">
                                 <tr v-for="result in currentQualResults" :key="result.archer_uuid"
                                     class="hover:bg-gray-50 transition-colors"
-                                    :class="{'bg-yellow-50/50': result.rank === 1, 'bg-gray-100/50': result.rank === 2, 'bg-orange-50/50': result.rank === 3}">
+                                    :class="{ 'bg-yellow-50/50': result.rank === 1, 'bg-gray-100/50': result.rank === 2, 'bg-orange-50/50': result.rank === 3 }">
                                     <td class="px-4 py-4 whitespace-nowrap sticky left-0 bg-white z-10 border-r border-gray-100"
-                                        :class="{'bg-yellow-50/50': result.rank === 1, 'bg-gray-100/50': result.rank === 2, 'bg-orange-50/50': result.rank === 3}">
+                                        :class="{ 'bg-yellow-50/50': result.rank === 1, 'bg-gray-100/50': result.rank === 2, 'bg-orange-50/50': result.rank === 3 }">
                                         <div class="flex items-center gap-2">
                                             <span v-if="result.rank <= 3" class="text-2xl">
                                                 {{ result.rank === 1 ? '🥇' : result.rank === 2 ? '🥈' : '🥉' }}
@@ -142,9 +152,11 @@
                                     <td class="px-4 py-4 text-center text-sm text-gray-600">
                                         {{ result.club_name || '-' }}
                                     </td>
-                                    <td v-for="i in totalEnds" :key="i" class="px-2 py-4 text-center text-sm font-bold border-x border-gray-100"
+                                    <td v-for="i in totalEnds" :key="i"
+                                        class="px-2 py-4 text-center text-sm font-bold border-x border-gray-100"
                                         :class="getEndScoreClass(result.end_scores[i - 1])">
-                                        {{ result.end_scores && result.end_scores[i - 1] !== undefined ? result.end_scores[i - 1] : '-' }}
+                                        {{ result.end_scores && result.end_scores[i - 1] !== undefined ?
+                                            result.end_scores[i - 1] : '-' }}
                                     </td>
                                     <td class="px-4 py-4 text-center bg-navy/5 border-l-2 border-navy/20">
                                         <span class="text-xl font-black text-navy">{{ result.total_score }}</span>
@@ -164,8 +176,11 @@
 
             <!-- Elimination Results (Bracket Style) -->
             <div v-if="activePhase === 'elimination' && selectedCategory">
-                <div v-if="eliminationLoading" class="bg-white rounded-2xl p-12 text-center border border-gray-100 shadow-sm">
-                    <div class="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent mx-auto"></div>
+                <div v-if="eliminationLoading"
+                    class="bg-white rounded-2xl p-12 text-center border border-gray-100 shadow-sm">
+                    <div
+                        class="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent mx-auto">
+                    </div>
                 </div>
 
                 <div v-else-if="!currentElimBracket"
@@ -176,7 +191,8 @@
                     </div>
                 </div>
 
-                <div v-else class="bracket-visualization rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm">
+                <div v-else
+                    class="bracket-visualization rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm">
                     <!-- Bracket Header -->
                     <div class="bg-gradient-to-r from-navy to-navy-light p-6 border-b border-gray-200">
                         <div class="flex items-center justify-between">
@@ -186,7 +202,9 @@
                                     {{ currentCategoryName }}
                                 </h3>
                                 <p class="text-sm text-gray-300 mt-1">
-                                    {{ currentElimBracket.bracket_type === 'individual' ? 'Individual' : currentElimBracket.bracket_type === 'team3' ? 'Team (3 Orang)' : 'Mixed Team (2 Orang)' }}
+                                    {{ currentElimBracket.bracket_type === 'individual' ? 'Individual' :
+                                        currentElimBracket.bracket_type === 'team3' ? 'Team (3 Orang)' : 'Mixed Team (2
+                                    Orang) ' }}
                                     • {{ currentElimBracket.bracket_size }} Peserta
                                 </p>
                             </div>
@@ -202,13 +220,13 @@
                             <!-- Each Round -->
                             <template v-for="(roundMatches, roundNo) in sortedElimRounds" :key="roundNo">
                                 <div class="bracket-round">
-                                    <div class="round-label"
-                                        :class="{ 'final-label': isLastRound(parseInt(roundNo)) }">
+                                    <div class="round-label" :class="{ 'final-label': isLastRound(parseInt(roundNo)) }">
                                         <Icon v-if="isLastRound(parseInt(roundNo))" icon="ph:crown-simple-fill"
                                             class="text-primary mr-2" />
                                         {{ getRoundName(parseInt(roundNo), currentElimBracket.bracket_size) }}
                                     </div>
-                                    <div class="slots-container" :style="{ height: getTotalHeight(currentElimBracket.bracket_size) + 'px' }">
+                                    <div class="slots-container"
+                                        :style="{ height: getTotalHeight(currentElimBracket.bracket_size) + 'px' }">
                                         <div v-for="match in roundMatches" :key="match.uuid" class="match-slot"
                                             :style="{ height: getSlotHeight(parseInt(roundNo), currentElimBracket.bracket_size) + 'px' }">
                                             <!-- Match Card -->
@@ -217,7 +235,8 @@
                                                 'completed': match.status === 'finished'
                                             }">
                                                 <div class="match-card-header">
-                                                    <div v-if="match.status === 'finished'" class="status-badge finished">Selesai</div>
+                                                    <div v-if="match.status === 'finished'"
+                                                        class="status-badge finished">Selesai</div>
                                                     <div v-else-if="match.is_bye" class="status-badge bye">BYE</div>
                                                     <div v-else class="status-badge waiting">Menunggu</div>
                                                     <span class="match-meta">M{{ match.match_no }}</span>
@@ -228,13 +247,16 @@
                                                     'is-loser': match.winner_entry_uuid && match.winner_entry_uuid !== match.entry_a_uuid
                                                 }">
                                                     <div class="avatar-wrapper">
-                                                        <img :src="`https://api.dicebear.com/7.x/avataaars/svg?seed=${match.entry_a_name}`" alt="avatar" class="avatar-img" />
+                                                        <img :src="`https://api.dicebear.com/7.x/avataaars/svg?seed=${match.entry_a_name}`"
+                                                            alt="avatar" class="avatar-img" />
                                                     </div>
                                                     <div class="archer-info">
                                                         <span class="seed-badge">{{ match.entry_a_seed || '-' }}</span>
-                                                        <span class="archer-name">{{ match.entry_a_name || 'TBD' }}</span>
+                                                        <span class="archer-name">{{ match.entry_a_name || 'TBD'
+                                                        }}</span>
                                                     </div>
-                                                    <span class="score-display">{{ getMatchScore(match, 'A', currentElimBracket.format) }}</span>
+                                                    <span class="score-display">{{ getMatchScore(match, 'A',
+                                                        currentElimBracket.format) }}</span>
                                                 </div>
                                                 <!-- Side B -->
                                                 <div class="archer-item" :class="{
@@ -242,13 +264,16 @@
                                                     'is-loser': match.winner_entry_uuid && match.winner_entry_uuid !== match.entry_b_uuid
                                                 }">
                                                     <div class="avatar-wrapper">
-                                                        <img :src="`https://api.dicebear.com/7.x/avataaars/svg?seed=${match.entry_b_name}`" alt="avatar" class="avatar-img" />
+                                                        <img :src="`https://api.dicebear.com/7.x/avataaars/svg?seed=${match.entry_b_name}`"
+                                                            alt="avatar" class="avatar-img" />
                                                     </div>
                                                     <div class="archer-info">
                                                         <span class="seed-badge">{{ match.entry_b_seed || '-' }}</span>
-                                                        <span class="archer-name">{{ match.entry_b_name || 'TBD' }}</span>
+                                                        <span class="archer-name">{{ match.entry_b_name || 'TBD'
+                                                        }}</span>
                                                     </div>
-                                                    <span class="score-display">{{ getMatchScore(match, 'B', currentElimBracket.format) }}</span>
+                                                    <span class="score-display">{{ getMatchScore(match, 'B',
+                                                        currentElimBracket.format) }}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -258,10 +283,13 @@
                                 <!-- Connector lines between rounds -->
                                 <div v-if="!isLastRound(parseInt(roundNo))" class="connector-space"
                                     :style="{ height: getTotalHeight(currentElimBracket.bracket_size) + 'px' }">
-                                    <svg class="bracket-svg" :viewBox="`0 0 60 ${getTotalHeight(currentElimBracket.bracket_size)}`"
+                                    <svg class="bracket-svg"
+                                        :viewBox="`0 0 60 ${getTotalHeight(currentElimBracket.bracket_size)}`"
                                         preserveAspectRatio="none">
-                                        <path v-for="i in getMatchesInRound(parseInt(roundNo), currentElimBracket.bracket_size) / 2" :key="i"
-                                            class="connector-line" :d="calculateConnectorPath(i, parseInt(roundNo), currentElimBracket.bracket_size)" />
+                                        <path
+                                            v-for="i in getMatchesInRound(parseInt(roundNo), currentElimBracket.bracket_size) / 2"
+                                            :key="i" class="connector-line"
+                                            :d="calculateConnectorPath(i, parseInt(roundNo), currentElimBracket.bracket_size)" />
                                     </svg>
                                 </div>
                             </template>
@@ -323,8 +351,8 @@ const fetchCategories = async () => {
     try {
         const response = await get(`/events/${props.eventId}/categories`)
         const cats = response?.events || []
-        
-        categories.value = cats.map(cat => ({
+
+        const mappedCats = cats.map(cat => ({
             uuid: cat.id,
             category_name: [
                 cat.division_name,
@@ -334,6 +362,11 @@ const fetchCategories = async () => {
             ].filter(Boolean).join(' '),
             participant_count: cat.participant_count || 0
         }))
+
+        // Sort by participant_count descending
+        mappedCats.sort((a, b) => (b.participant_count || 0) - (a.participant_count || 0))
+
+        categories.value = mappedCats
     } catch (error) {
         console.error('Failed to fetch categories:', error)
     }
@@ -341,7 +374,7 @@ const fetchCategories = async () => {
 
 const selectCategory = async (categoryUuid) => {
     selectedCategory.value = categoryUuid
-    
+
     // Load both qualification and elimination for this category
     await Promise.all([
         loadQualificationResults(categoryUuid),
@@ -351,7 +384,7 @@ const selectCategory = async (categoryUuid) => {
 
 const loadQualificationResults = async (categoryUuid) => {
     if (qualificationData.value[categoryUuid]) return
-    
+
     qualificationLoading.value = true
     try {
         const response = await get(`/events/${props.eventId}/results/qualification?category_id=${categoryUuid}`)
@@ -367,7 +400,7 @@ const loadQualificationResults = async (categoryUuid) => {
 
 const loadEliminationBracket = async (categoryUuid) => {
     if (eliminationData.value[categoryUuid]) return
-    
+
     eliminationLoading.value = true
     try {
         const response = await get(`/events/${props.eventId}/results/elimination?category_id=${categoryUuid}`)
@@ -389,7 +422,7 @@ const getEndScoreClass = (score) => {
 
 const getMatchScore = (match, side, format) => {
     if (match.status !== 'finished') return '-'
-    
+
     if (format === 'recurve_set') {
         return side === 'A' ? match.set_points_a || 0 : match.set_points_b || 0
     } else {
@@ -587,5 +620,9 @@ onMounted(async () => {
 .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
 }
 </style>
