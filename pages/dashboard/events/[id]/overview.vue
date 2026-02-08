@@ -225,7 +225,7 @@
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <!-- Registration Analytics -->
                     <div
-                        class="lg:col-span-2 bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-md">
+                        class="lg:col-span-2 bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-sm">
                         <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
                             <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">Analisis Pendaftaran
                             </h3>
@@ -331,7 +331,7 @@
                     </div>
 
                     <!-- Leaderboard -->
-                    <div class="bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-md">
+                    <div class="bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-sm">
                         <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
                             <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">Papan Peringkat</h3>
                             <button

@@ -311,7 +311,8 @@ const fetchBrackets = async () => {
 
 const fetchCategories = async () => {
   try {
-    const response = await get(`/events/${eventId}/categories`)
+    // Fetch all categories (increased limit from default 10)
+    const response = await get(`/events/${eventId}/categories`, { params: { limit: 1000 } })
     const fetchedCategories = response?.events || response.data?.events || response?.categories || response.data?.categories || []
     categories.value = fetchedCategories
   } catch (error) {

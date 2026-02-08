@@ -130,10 +130,15 @@
                             </div>
                         </div>
                         <div
-                            class="flex justify-end sm:justify-start shrink-0 pt-2 sm:pt-0 border-t border-gray-100 sm:border-t-0">
+                            class="flex items-center justify-end sm:justify-start shrink-0 pt-2 sm:pt-0 border-t border-gray-100 sm:border-t-0 gap-2">
                             <BaseButton variant="white" size="sm" icon="ph:pencil" @click="openEditDialog(category)">
                                 Edit
                             </BaseButton>
+                            <button @click="deleteCategory(category)"
+                                class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors group/del"
+                                title="Hapus Kategori">
+                                <Icon icon="ph:trash" class="text-lg group-hover/del:scale-110 transition-transform" />
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -203,6 +208,47 @@
                 </BaseButton>
             </template>
         </BaseDialogForm>
+
+        <!-- Delete Confirmation Dialog -->
+        <Teleport to="body">
+            <Transition enter-active-class="transition duration-300 ease-out" enter-from-class="opacity-0"
+                enter-to-class="opacity-100" leave-active-class="transition duration-200 ease-in"
+                leave-from-class="opacity-100" leave-to-class="opacity-0">
+                <div v-if="showDeleteDialog"
+                    class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+                    @click.self="showDeleteDialog = false">
+                    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex items-start gap-4 mb-6">
+                                <div class="size-12 bg-red-100 rounded-full flex items-center justify-center shrink-0">
+                                    <Icon icon="ph:warning-bold" class="text-2xl text-red-600" />
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-black text-navy mb-2">Hapus Kategori?</h3>
+                                    <p class="text-gray-600 leading-relaxed">
+                                        Apakah Anda yakin ingin menghapus kategori <strong class="text-navy">{{
+                                            categoryToDelete?.division_name }} {{ categoryToDelete?.category_name
+                                            }}</strong>?
+                                        Tindakan ini tidak dapat dibatalkan jika berhasil.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <button type="button" @click="showDeleteDialog = false"
+                                    class="flex-1 px-4 py-3 border-2 border-gray-100 text-gray-500 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-gray-50 transition-all">
+                                    Batal
+                                </button>
+                                <button @click="confirmDeleteCategory" :disabled="saving"
+                                    class="flex-1 px-4 py-3 bg-red-600 text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-red-700 shadow-lg shadow-red-200 transition-all disabled:opacity-50 flex items-center justify-center gap-2">
+                                    <Icon v-if="saving" icon="ph:circle-notch" class="animate-spin text-lg" />
+                                    <span>{{ saving ? 'Menghapus...' : 'Ya, Hapus' }}</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Transition>
+        </Teleport>
     </div>
 </template>
 
@@ -224,7 +270,7 @@ useHead({
 
 const route = useRoute()
 const eventId = route.params.id
-const { get, post, put } = useApi()
+const { get, post, put, delete: delApi } = useApi()
 const toast = useToast()
 
 const isLoading = ref(true)
@@ -236,6 +282,8 @@ const eventTypes = ref([])
 const genderDivisions = ref([])
 const showDialog = ref(false)
 const editingCategory = ref(null)
+const showDeleteDialog = ref(false)
+const categoryToDelete = ref(null)
 
 // Pagination & Filtering
 const currentPage = ref(1)
@@ -413,6 +461,28 @@ const openEditDialog = (category) => {
 const closeDialog = () => {
     showDialog.value = false
     editingCategory.value = null
+}
+
+const deleteCategory = (category) => {
+    categoryToDelete.value = category
+    showDeleteDialog.value = true
+}
+
+const confirmDeleteCategory = async () => {
+    if (!categoryToDelete.value) return
+
+    saving.value = true
+    try {
+        await delApi(`/events/${eventId}/categories/${categoryToDelete.value.id}`)
+        toast.success('Kategori berhasil dihapus')
+        showDeleteDialog.value = false
+        await fetchCategories()
+    } catch (error) {
+        console.error('Failed to delete category:', error)
+        toast.error(getApiErrorMessage(error, 'Gagal menghapus kategori'))
+    } finally {
+        saving.value = false
+    }
 }
 
 const saveCategory = async () => {

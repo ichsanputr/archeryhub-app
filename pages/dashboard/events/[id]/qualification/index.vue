@@ -89,10 +89,6 @@
                 class="size-9 bg-white shadow-md rounded-xl flex items-center justify-center text-gray-400 hover:text-navy hover:scale-110 active:scale-95 transition-all">
                 <Icon icon="ph:pencil-simple-bold" class="text-lg" />
               </button>
-              <button @click.stop="confirmDeleteSession(session)"
-                class="size-9 bg-white shadow-md rounded-xl flex items-center justify-center text-gray-300 hover:text-red-500 hover:scale-110 active:scale-95 transition-all">
-                <Icon icon="ph:trash-bold" class="text-lg" />
-              </button>
             </div>
 
             <div class="flex items-start justify-between mb-4">
@@ -637,19 +633,19 @@ const fetchEventName = async () => {
 const fetchCategories = async () => {
   loadingCategories.value = true
   try {
-    // Fetch categories from the same endpoint as used in scoring page
-    const response = await get(`/events/${eventId}/categories`)
+    // Fetch all categories (increased limit from default 10)
+    const response = await get(`/events/${eventId}/categories`, { params: { limit: 1000 } })
     const fetchedCategories = response?.events || response.data?.events || response?.categories || response.data?.categories || []
-    // Filter only individual categories for qualification
+    // Filter only individual categories for qualification leaderboard
     const individualCategories = fetchedCategories.filter(cat =>
       cat.event_type_name?.toLowerCase() === 'individual' ||
-      !cat.event_type_name // Default to individual if not specified
+      !cat.event_type_name
     )
     categories.value = individualCategories
 
     // Auto-select first category if available
-    if (individualCategories.length > 0) {
-      await selectCategory(individualCategories[0].id)
+    if (categories.value.length > 0) {
+      await selectCategory(categories.value[0].id)
     }
   } catch (error) {
     console.error('Failed to fetch categories:', error)

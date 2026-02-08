@@ -22,10 +22,17 @@
               <Icon icon="ph:arrow-left-bold" class="text-lg group-hover:-translate-x-1 transition-transform" />
             </button>
             <div class="min-w-0">
-              <h1 class="text-xl sm:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2 truncate">
-                {{ sessionData?.name || 'Loading...' }}
+              <div v-if="isLoading && !sessionData"
+                class="h-8 w-48 sm:h-10 sm:w-64 bg-white/10 rounded-lg animate-pulse mb-2"></div>
+              <h1 v-else class="text-xl sm:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2 truncate">
+                {{ sessionData?.name || 'Sesi Kualifikasi' }}
               </h1>
-              <div
+
+              <div v-if="isLoading && !sessionData" class="flex gap-4">
+                <div class="h-5 w-20 bg-white/5 rounded animate-pulse"></div>
+                <div class="h-5 w-24 bg-white/5 rounded animate-pulse"></div>
+              </div>
+              <div v-else
                 class="flex flex-wrap items-center gap-1.5 sm:gap-4 text-[10px] sm:text-xs text-slate-300 font-bold uppercase tracking-widest">
                 <span class="px-2 py-0.5 rounded bg-white/10 border border-white/10 font-mono">{{
                   sessionData?.session_code
@@ -90,8 +97,11 @@
             :class="selectedCategory === category.id ? 'bg-primary' : 'bg-transparent'"></div>
           <div class="flex items-start gap-3 pl-2">
             <div
-              class="size-12 bg-gradient-to-br from-navy/90 to-navy rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm">
-              <Icon icon="ph:target" class="text-xl text-primary" />
+              class="size-12 bg-navy rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm overflow-hidden p-2 group-hover:bg-primary transition-colors">
+              <img
+                :src="'/' + getCategoryIcon(`${category.division_name} ${category.event_type_name} ${category.gender_division_name}`)"
+                :alt="category.division_name"
+                class="w-full h-full object-contain invert group-hover:invert-0 transition-all" />
             </div>
             <div class="flex-1 min-w-0">
               <p
@@ -132,7 +142,20 @@
                   Target</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody v-if="isLoading">
+              <tr v-for="i in 5" :key="i" class="border-b border-gray-50">
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-3">
+                    <div class="size-9 bg-gray-100 rounded-lg animate-pulse"></div>
+                    <div class="h-5 w-32 bg-gray-100 rounded animate-pulse"></div>
+                  </div>
+                </td>
+                <td class="px-6 py-4">
+                  <div class="h-10 w-full bg-gray-50 rounded-lg animate-pulse"></div>
+                </td>
+              </tr>
+            </tbody>
+            <tbody v-else>
               <tr v-for="archer in filteredArchersInput" :key="archer.uuid"
                 class="border-b border-gray-50 hover:bg-gray-50/50 transition-all">
                 <td class="px-6 py-4">
@@ -170,7 +193,18 @@
       <div v-if="selectedCategory && targetAssignments.length > 0" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <!-- Archers List -->
         <div class="lg:col-span-7 xl:col-span-8 flex flex-col gap-4">
-          <div v-for="(assignment, index) in targetAssignments" :key="assignment.uuid"
+          <div v-if="isLoading" v-for="i in 3" :key="i"
+            class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 pl-7 animate-pulse">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="size-10 bg-gray-100 rounded-lg"></div>
+              <div class="flex-1 space-y-2">
+                <div class="h-4 w-1/3 bg-gray-100 rounded"></div>
+                <div class="h-3 w-1/4 bg-gray-50 rounded"></div>
+              </div>
+            </div>
+            <div class="h-24 bg-gray-50 rounded-lg"></div>
+          </div>
+          <div v-else v-for="(assignment, index) in targetAssignments" :key="assignment.uuid"
             @click="selectArcherForScoring(assignment)" :class="[
               'bg-white rounded-xl shadow-sm border-2 overflow-hidden transition-all cursor-pointer',
               currentScoringAssignment?.uuid === assignment.uuid
@@ -188,7 +222,8 @@
                     :alt="assignment.archer_name"
                     class="size-9 sm:size-10 rounded-lg object-cover border border-gray-100 flex-shrink-0" />
                   <div class="min-w-0">
-                    <h3 class="text-base sm:text-lg font-bold text-navy leading-tight">{{ assignment.archer_name }}</h3>
+                    <h3 class="text-base sm:text-lg font-bold text-navy leading-tight">{{ assignment.archer_name }}
+                    </h3>
                     <div class="text-xs text-gray-500 font-medium truncate">
                       Target {{ assignment.target_name }}
                     </div>
@@ -235,7 +270,8 @@
                   <div class="w-px bg-gray-300 mx-1"></div>
                   <div
                     class="flex-1 aspect-square bg-navy text-primary rounded-lg flex flex-col items-center justify-center shadow-sm">
-                    <span class="text-lg sm:text-xl font-bold">{{ calculateEndSum(assignment.currentEndScores) }}</span>
+                    <span class="text-lg sm:text-xl font-bold">{{ calculateEndSum(assignment.currentEndScores)
+                    }}</span>
                   </div>
                 </div>
 
@@ -348,6 +384,9 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
+import { getCategoryIcon } from '~/utils/logoArcheryCategory'
+import { ref, computed, onMounted } from 'vue'
 const route = useRoute()
 const { get, post } = useApi()
 const toast = useToast()
@@ -371,6 +410,7 @@ const archersByCategory = ref({})
 const availableTargets = ref([])
 const targetAssignments = ref([])
 const currentScoringAssignment = ref(null)
+const isLoading = ref(true)
 const checkingAssignments = ref(false)
 const assignmentsComplete = ref(false)
 const savingScore = ref(false)
@@ -454,15 +494,24 @@ const fetchSessionData = async () => {
 const fetchCategories = async () => {
   loadingCategories.value = true
   try {
-    const response = await get(`/events/${eventId}/categories`)
-    categories.value = response?.events || response.data?.events || []
+    const response = await get(`/events/${eventId}/categories`, { params: { limit: 1000 } })
+    const fetchedCategories = response?.events || response.data?.events || response?.categories || response.data?.categories || []
+
+    console.log('Fetched categories:', fetchedCategories.length)
+    // Filter only individual categories for qualification
+    const individual = fetchedCategories.filter(cat =>
+      cat.event_type_name?.toLowerCase() === 'individual' ||
+      !cat.event_type_name
+    )
+    categories.value = individual
+    console.log('Individual categories:', categories.value.length)
 
     for (const category of categories.value) {
       await fetchArchersForCategory(category.id)
     }
   } catch (error) {
     console.error('Failed to fetch categories:', error)
-    showToast('Failed to load categories', 'error')
+    toast.error('Gagal memuat kategori')
   } finally {
     loadingCategories.value = false
   }
@@ -473,7 +522,9 @@ const fetchAllParticipants = async () => {
     const response = await get(`/events/${eventId}/participants`, {
       params: { limit: 1000, offset: 0 }
     })
-    allParticipants.value = response?.participants || response.data?.participants || []
+    const participants = response?.participants || response.data?.participants || []
+    allParticipants.value = participants
+    console.log('Total participants fetched:', participants.length)
   } catch (error) {
     console.error('Failed to fetch participants:', error)
     allParticipants.value = []
@@ -513,7 +564,7 @@ const fetchQualificationReport = async (categoryId) => {
   } catch (error) {
     console.error('Failed to fetch report:', error)
     reportEntries.value = []
-    showToast('Gagal memuat laporan', 'error')
+    toast.error('Gagal memuat laporan')
   } finally {
     loadingReport.value = false
   }
@@ -870,15 +921,22 @@ const getAvailableTargetsForArcher = (archer) => {
 
 // Lifecycle
 onMounted(async () => {
-  await fetchSessionData()
-  await fetchAllParticipants()
-  await fetchCategories()
-  await fetchTargets()
+  isLoading.value = true
+  try {
+    await fetchSessionData()
+    await fetchAllParticipants()
+    await fetchCategories()
+    await fetchTargets()
 
-  // Auto-select first category and load existing assignments
-  if (categories.value.length > 0) {
-    const firstCategoryId = categories.value[0].id
-    await selectCategory(firstCategoryId)
+    // Auto-select first category and load existing assignments
+    if (categories.value.length > 0) {
+      const firstCategoryId = categories.value[0].id
+      await selectCategory(firstCategoryId)
+    }
+  } catch (error) {
+    console.error('Initial fetch failed:', error)
+  } finally {
+    isLoading.value = false
   }
 })
 </script>

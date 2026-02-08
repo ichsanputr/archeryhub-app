@@ -59,13 +59,11 @@
             <div class="overflow-x-auto">
                 <table class="w-full text-left">
                     <thead class="bg-gray-50/50 border-b border-gray-100">
-                        <tr class="text-[10px] font-black text-gray-400  tracking-widest">
+                        <tr class="text-[10px] font-black text-gray-400  tracking-widest capitalize">
                             <th class="px-6 py-4">No</th>
-                            <th class="px-6 py-4">Nama Peserta</th>
-                            <th class="px-6 py-4">Klub</th>
-                            <th class="px-6 py-4">Kategori Lomba</th>
-                            <th class="px-6 py-4">Status</th>
-                            <th class="px-6 py-4">Registrasi Ulang</th>
+                            <th class="px-6 py-4">Nama Peserta / Email</th>
+                            <th class="px-6 py-4">Klub / Kota</th>
+                            <th class="px-6 py-4">Kategori Lomba yang Diikuti</th>
                             <th class="px-6 py-4 text-right">Aksi</th>
                         </tr>
                     </thead>
@@ -107,73 +105,77 @@
                         </template>
 
                         <template v-else>
-                            <tr v-for="(participant, index) in filteredParticipants" :key="participant.id"
+                            <tr v-for="(participant, index) in filteredParticipants" :key="participant.archer_id"
                                 class="group hover:bg-gray-50/50 transition-colors">
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 align-top text-center w-16">
                                     <span class="text-sm font-bold text-gray-400">{{ (page - 1) * limit + index + 1
                                     }}</span>
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 align-top min-w-[250px]">
                                     <div class="flex items-center gap-3">
                                         <div
-                                            class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs  border border-gray-200 overflow-hidden">
+                                            class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs  border border-gray-200 overflow-hidden shrink-0 shadow-sm">
                                             <img :src="useImageOrDefault(participant.avatar_url, participant.full_name)"
                                                 class="w-full h-full object-cover">
                                         </div>
-                                        <div>
-                                            <div class="flex items-center gap-1.5 min-w-0">
-                                                <p class="text-sm font-bold text-navy truncate">{{ participant.full_name
-                                                    }}
-                                                </p>
+                                        <div class="min-w-0">
+                                            <p class="text-sm font-black text-navy truncate leading-snug">{{
+                                                participant.full_name }}</p>
+                                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">{{
+                                                participant.email || '-' }}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 align-top min-w-[150px]">
+                                    <div class="flex flex-col">
+                                        <span class="text-xs font-bold text-gray-600 leading-snug">{{
+                                            participant.club_name || '-' }}</span>
+                                        <span v-if="participant.city"
+                                            class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">{{
+                                            participant.city }}</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 align-top">
+                                    <div class="flex flex-wrap gap-2">
+                                        <div v-for="cat in participant.categories" :key="cat.participant_id"
+                                            class="flex flex-col gap-1 p-2.5 rounded-xl bg-white border border-gray-100 shadow-sm hover:border-primary/40 hover:shadow-md transition-all duration-200 group/chip min-w-[180px]">
+                                            <div class="flex items-center justify-between gap-3">
+                                                <span class="text-[11px] font-black text-navy leading-none">
+                                                    {{ cat.division_name }} - {{ cat.category_name }}
+                                                </span>
+                                                <span :class="getStatusClass(cat.status)"
+                                                    class="px-1.5 py-0.5 rounded-md text-[8px] font-black uppercase tracking-tighter border whitespace-nowrap">
+                                                    {{ cat.status }}
+                                                </span>
                                             </div>
-                                            <div class="flex items-center gap-2">
-                                                <p class="text-xs text-gray-500 font-medium">{{ participant.email || '-'
-                                                }}</p>
+                                            <div class="flex items-center justify-between mt-1">
+                                                <div class="text-[9px] text-gray-400 font-bold italic truncate">
+                                                    {{ cat.event_type_name }} {{ cat.gender_division_name ? '• ' +
+                                                    cat.gender_division_name : '' }}
+                                                </div>
+                                                <button v-if="cat.status === 'Terdaftar' && cat.participant_id"
+                                                    @click.stop="showQRDialog(participant, cat)"
+                                                    class="text-navy/30 hover:text-primary transition-colors p-1 rounded-md hover:bg-primary/5"
+                                                    title="QR Code Registrasi">
+                                                    <Icon icon="ph:qr-code-bold" class="text-sm" />
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 text-gray-500 font-medium text-xs">{{ participant.club_name || '-'
-                                }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    <p class="text-navy font-bold text-sm">{{ getCategoryName(participant) }}</p>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span :class="getStatusClass(participant.status)"
-                                        class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black  tracking-widest border">
-                                        {{ participant.status || 'Menunggu Acc' }}
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <span v-if="participant.last_reregistration_at"
-                                        class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-black tracking-widest bg-green-100 text-green-600 border border-green-200 uppercase">
-                                        Sudah
-                                    </span>
-                                    <span v-else
-                                        class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-black tracking-widest bg-gray-100 text-gray-400 border border-gray-200 uppercase">
-                                        Belum
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 text-right">
-                                    <div class="flex items-center justify-end gap-1">
-                                        <button v-if="participant.status === 'Terdaftar' && participant.qr_raw"
-                                            @click="showQRDialog(participant)"
-                                            class="p-2 text-navy/40 hover:text-primary transition-colors"
-                                            title="Lihat QR Code">
-                                            <Icon icon="ph:qr-code" class="text-lg" />
-                                        </button>
+                                <td class="px-6 py-4 text-right align-top w-20">
+                                    <div class="flex items-center justify-end">
                                         <NuxtLink
-                                            :to="`/dashboard/events/${route.params.id}/participants/${participant.username || participant.id}`"
-                                            class="p-2 text-navy/40 hover:text-navy transition-colors"
-                                            title="Lihat Detail">
-                                            <Icon icon="ph:eye" class="text-lg" />
+                                            :to="`/dashboard/events/${route.params.id}/participants/${participant.archer_id}`"
+                                            class="size-10 flex items-center justify-center rounded-xl bg-white border border-gray-100 text-gray-400 hover:text-navy hover:border-navy/20 hover:shadow-sm transition-all"
+                                            title="Lihat Detail Profil">
+                                            <Icon icon="ph:arrow-square-out-bold" class="text-xl" />
                                         </NuxtLink>
                                     </div>
                                 </td>
                             </tr>
                             <tr v-if="filteredParticipants.length === 0">
-                                <td colspan="7" class="px-6 py-12 text-center text-gray-400 italic font-medium">
+                                <td colspan="5" class="px-6 py-12 text-center text-gray-400 italic font-medium">
                                     Tidak ada peserta yang ditemukan.
                                 </td>
                             </tr>
@@ -183,32 +185,10 @@
             </div>
 
             <!-- Pagination Controls -->
-            <div v-if="totalPages > 1"
-                class="px-6 py-4 border-t border-gray-100 bg-gray-50/30 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div class="text-xs font-bold text-gray-400  tracking-widest">
-                    Showing {{ (page - 1) * limit + 1 }} to {{ Math.min(page * limit, total) }} of {{ total }}
-                    participants
-                </div>
-                <div class="flex items-center gap-2">
-                    <button @click="changePage(page - 1)" :disabled="page === 1"
-                        class="p-2 rounded-lg border border-gray-200 bg-white text-navy/60 hover:text-navy disabled:opacity-30 disabled:cursor-not-allowed transition-all">
-                        <Icon icon="ph:caret-left-bold" />
-                    </button>
-
-                    <div class="flex items-center gap-1">
-                        <button v-for="p in totalPages" :key="p" @click="changePage(p)"
-                            class="h-10 w-10 rounded-lg border text-sm font-black transition-all" :class="page === p
-                                ? 'bg-navy border-navy text-white shadow-md'
-                                : 'bg-white border-gray-200 text-navy/60 hover:bg-gray-50 hover:text-navy'">
-                            {{ p }}
-                        </button>
-                    </div>
-
-                    <button @click="changePage(page + 1)" :disabled="page === totalPages"
-                        class="p-2 rounded-lg border border-gray-200 bg-white text-navy/60 hover:text-navy disabled:opacity-30 disabled:cursor-not-allowed transition-all">
-                        <Icon icon="ph:caret-right-bold" />
-                    </button>
-                </div>
+            <div class="px-6 py-6 border-t border-gray-100 bg-gray-50/10">
+                <BasePagination :current-page="page" :total-items="total" :items-per-page="limit"
+                    @change-page="p => { page = p; fetchParticipants(); }"
+                    @update:items-per-page="v => { limit = v; page = 1; fetchParticipants(); }" />
             </div>
         </div>
 
@@ -261,6 +241,7 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRoute } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useEventContext } from '~/composables/useEventContext'
+import BasePagination from '~/components/common/BasePagination.vue'
 
 definePageMeta({
     layout: 'dashboard'
@@ -309,7 +290,7 @@ const fetchParticipants = async () => {
     isLoading.value = true
     try {
         const offset = (page.value - 1) * limit.value
-        const response = await get(`/events/${route.params.id}/participants?limit=${limit.value}&offset=${offset}`)
+        const response = await get(`/events/${route.params.id}/participants?limit=${limit.value}&offset=${offset}&group_by=archer&search=${searchQuery.value}`)
         participants.value = response?.participants || []
         total.value = response?.total || 0
         verifiedCount.value = response?.verified_count || 0
