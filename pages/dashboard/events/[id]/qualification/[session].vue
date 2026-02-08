@@ -118,72 +118,140 @@
     </div>
 
     <!-- TARGET MODE -->
-    <div v-if="activeTab === 'target'" class="space-y-6">
-      <!-- Archer Assignment -->
-      <div v-if="selectedCategory" class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-        <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
+    <div v-if="activeTab === 'target'" class="space-y-8">
+
+      <!-- Target Assignment Grid -->
+      <div v-if="selectedCategory" class="space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h2 class="text-lg font-bold text-navy">Tempatkan Pemanah ke Target</h2>
-            <p class="text-sm text-gray-500 mt-1">Alokasikan pemanah ke target penilaian mereka</p>
+            <h2 class="text-xl font-black text-navy leading-tight">Pengaturan Target</h2>
+            <p class="text-sm text-gray-500 mt-1">Kelola penempatan pemanah pada target kualifikasi</p>
           </div>
-
+          <div class="flex items-center gap-3">
+            <button @click="autoAssignTargets" :disabled="submittingAssignments || unassignedArchersCount === 0"
+              class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-navy hover:bg-primary/90 font-bold text-sm transition-all shadow-md shadow-primary/20 disabled:opacity-50 group">
+              <Icon icon="fa7-solid:random" class="text-xl group-hover:rotate-12 transition-transform" />
+              Auto-Assign
+            </button>
+            <button @click="submitAssignments" :disabled="!isAssignmentChanged || submittingAssignments"
+              class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-navy text-white hover:bg-navy/90 font-bold text-sm transition-all shadow-lg disabled:opacity-50">
+              <Icon icon="ph:floppy-disk-bold" class="text-xl" />
+              {{ submittingAssignments ? 'Menyimpan...' : 'Simpan Perubahan' }}
+            </button>
+          </div>
         </div>
 
-        <!-- Assignment Table -->
-        <div class="overflow-x-auto">
-          <table class="w-full">
-            <thead>
-              <tr class="bg-gray-50/50 border-b border-gray-100">
-                <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400  tracking-widest min-w-[350px]">
-                  Pemanah
-                </th>
-                <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400  tracking-widest w-64">
-                  Pilih
-                  Target</th>
-              </tr>
-            </thead>
-            <tbody v-if="isLoading">
-              <tr v-for="i in 5" :key="i" class="border-b border-gray-50">
-                <td class="px-6 py-4">
-                  <div class="flex items-center gap-3">
-                    <div class="size-9 bg-gray-100 rounded-lg animate-pulse"></div>
-                    <div class="h-5 w-32 bg-gray-100 rounded animate-pulse"></div>
-                  </div>
-                </td>
-                <td class="px-6 py-4">
-                  <div class="h-10 w-full bg-gray-50 rounded-lg animate-pulse"></div>
-                </td>
-              </tr>
-            </tbody>
-            <tbody v-else>
-              <tr v-for="archer in filteredArchersInput" :key="archer.uuid"
-                class="border-b border-gray-50 hover:bg-gray-50/50 transition-all">
-                <td class="px-6 py-4">
-                  <div class="flex items-center gap-3">
-                    <img :src="useImageOrDefault(archer.avatar_url, archer.name)"
-                      class="size-9 rounded-lg object-cover border border-gray-100" />
-                    <p class="font-bold text-navy">{{ archer.name }}</p>
-                  </div>
-                </td>
-                <td class="px-6 py-4">
-                  <BaseSelect v-model="archer.assignedTarget" :items="getAvailableTargetsForArcher(archer)"
-                    item-value="id" item-title="name" placeholder="-- Pilih Target --" />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <!-- Target Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
+          <div v-for="target in targetGrid" :key="target.name"
+            class="bg-white rounded-2xl shadow-sm border relative border-gray-100 flex flex-col hover:shadow-md transition-all group/card"
+            :class="{ 'z-[100]': openDropdown?.targetId === target.name }">
+            <!-- Card Header -->
+            <div
+              class="px-5 py-3 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center rounded-t-2xl">
+              <div class="flex items-center gap-3">
+                <div class="bg-navy text-primary font-black text-xs px-2 py-1 rounded-lg shadow-sm">
+                  {{ target.name.split(' ').pop() }}
+                </div>
+              </div>
+              <span :class="[
+                'text-[10px] font-black uppercase tracking-wider px-2 py-1 rounded-full',
+                target.assignedCount === target.availableLetters.length ? 'bg-green-100 text-green-700' :
+                  target.assignedCount === 0 ? 'bg-gray-100 text-gray-400' : 'bg-blue-100 text-blue-700'
+              ]">
+                {{ target.assignedCount === target.availableLetters.length ? 'Full' :
+                  target.assignedCount === 0 ? 'Empty' : `${target.availableLetters.length - target.assignedCount} Slots
+                Open` }}
+              </span>
+            </div>
 
-        <button @click="submitAssignments" :disabled="!allAssigned || submittingAssignments"
-          class="mt-6 px-6 py-3 rounded-xl bg-primary text-navy font-bold hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 w-full md:w-auto">
-          <Icon icon="ph:check-circle" class="text-xl" />
-          {{ submittingAssignments ? 'Menyimpan...' : 'Simpan Penempatan' }}
-        </button>
+            <div class="p-4 space-y-3">
+              <div v-for="pos in target.availableLetters" :key="pos" class="group">
+                <div v-if="target.slots[pos]"
+                  class="flex items-center gap-3 p-2.5 rounded-xl bg-gray-50 border border-transparent hover:border-primary/30 transition-all">
+                  <span
+                    class="flex items-center justify-center size-7 rounded-lg bg-white border border-gray-200 text-xs font-black text-navy shadow-sm shrink-0">
+                    {{ pos }}
+                  </span>
+                  <div class="size-8 rounded-full border border-gray-200 overflow-hidden shrink-0 bg-white">
+                    <img :src="useImageOrDefault(target.slots[pos].avatar_url, target.slots[pos].name)"
+                      class="w-full h-full object-cover" :alt="target.slots[pos].name" />
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-bold text-navy truncate leading-tight">{{ target.slots[pos].name }}</p>
+                    <p class="text-[10px] text-gray-500 truncate font-medium uppercase tracking-tight">{{
+                      target.slots[pos].club || 'Independen' }}</p>
+                  </div>
+                  <button @click="unassignArcherFromTarget(target, pos)"
+                    class="size-7 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-all opacity-0 group-hover:opacity-100 flex items-center justify-center">
+                    <Icon icon="ph:x-bold" class="text-sm" />
+                  </button>
+                </div>
+
+                <!-- Custom Archer Dropdown -->
+                <div v-else class="relative archer-dropdown-container">
+                  <div @click.stop="toggleDropdown(target.name, pos)"
+                    class="flex items-center gap-3 p-2.5 rounded-xl border border-dashed border-gray-200 bg-white hover:bg-gray-50/50 hover:border-primary/50 transition-all cursor-pointer group/slot">
+                    <span
+                      class="flex items-center justify-center size-7 rounded-lg bg-gray-50 border border-gray-100 text-xs font-bold text-gray-400 shrink-0">
+                      {{ pos }}
+                    </span>
+                    <div class="flex-1 min-w-0">
+                      <p class="text-sm font-medium text-gray-400">Pilih Pemanah...</p>
+                    </div>
+                    <Icon icon="ph:plus-circle-bold"
+                      class="text-gray-300 text-xl group-hover/slot:text-primary transition-colors" />
+                  </div>
+
+                  <!-- Dropdown Menu -->
+                  <div v-if="openDropdown?.targetId === target.name && openDropdown?.pos === pos"
+                    class="absolute !z-[10000] mt-1 w-full min-w-[280px] bg-white rounded-xl shadow-2xl border border-gray-100 py-2 left-0 top-full">
+                    <div class="px-3 pb-2 border-b border-gray-50">
+                      <div class="relative">
+                        <Icon icon="ph:magnifying-glass"
+                          class="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                        <input v-model="filterText" type="text" placeholder="Cari pemanah..."
+                          class="w-full pl-8 pr-3 py-1.5 text-xs border border-gray-100 rounded-lg focus:ring-1 focus:ring-primary focus:border-primary"
+                          @click.stop />
+                      </div>
+                    </div>
+                    <div class="max-h-60 overflow-y-auto pt-1 no-scrollbar">
+                      <div v-if="unassignedArcherListFiltered.length === 0"
+                        class="px-4 py-3 text-center text-gray-400 text-xs">
+                        Tidak ada pemanah tersedia
+                      </div>
+                      <button v-for="archer in unassignedArcherListFiltered" :key="archer.uuid"
+                        @click="assignArcherToTarget(target, pos, archer.uuid)"
+                        class="w-full px-4 py-2.5 text-left hover:bg-gray-50 flex items-center gap-3 transition-colors border-b border-gray-50 last:border-0 group/archer-item">
+                        <div
+                          class="size-9 rounded-full border border-gray-100 overflow-hidden shrink-0 bg-gray-50 ring-2 ring-transparent group-hover/archer-item:ring-primary/20 transition-all">
+                          <img :src="useImageOrDefault(archer.avatar_url, archer.name)"
+                            class="w-full h-full object-cover" :alt="archer.name" />
+                        </div>
+                        <div class="flex-1 min-w-0">
+                          <p class="text-sm font-bold text-navy truncate leading-tight mb-0.5">{{ archer.name }}</p>
+                          <p v-if="archer.club"
+                            class="text-[10px] text-gray-500 font-medium truncate uppercase tracking-tighter">{{
+                              archer.club }}</p>
+                          <p v-else class="text-[10px] text-gray-400 italic">Independen</p>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div v-else class="bg-white rounded-2xl border border-gray-100 p-12 text-center">
-        <Icon icon="ph:selection" class="text-5xl text-gray-300 mx-auto mb-4" />
-        <p class="text-gray-500">Pilih kategori untuk penempatan target</p>
+      <div v-else class="bg-white rounded-3xl border border-dashed border-gray-200 p-20 text-center">
+        <div class="size-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
+          <Icon icon="ph:cursor-click-bold" class="text-4xl text-gray-300" />
+        </div>
+        <h3 class="text-xl font-bold text-navy mb-2">Kategori Belum Dipilih</h3>
+        <p class="text-gray-500 max-w-xs mx-auto">Silakan pilih salah satu kategori di atas untuk mulai mengelola
+          penempatan target kualifikasi.</p>
       </div>
     </div>
 
@@ -226,6 +294,8 @@
                     </h3>
                     <div class="text-xs text-gray-500 font-medium truncate">
                       Target {{ assignment.target_name }}
+                      <span v-if="assignment.club_name" class="opacity-30 mx-1.5">•</span>
+                      <span v-if="assignment.club_name">{{ assignment.club_name }}</span>
                     </div>
                   </div>
                 </div>
@@ -503,7 +573,7 @@ const fetchCategories = async () => {
       cat.event_type_name?.toLowerCase() === 'individual' ||
       !cat.event_type_name
     )
-    categories.value = individual
+    categories.value = individual.sort((a, b) => (b.participant_count || 0) - (a.participant_count || 0))
     console.log('Individual categories:', categories.value.length)
 
     for (const category of categories.value) {
@@ -543,6 +613,237 @@ const fetchArchersForCategory = async (categoryId) => {
     isScored: false
   }))
   archersByCategory.value[categoryId] = archers
+}
+
+// New computed properties for target management
+const assignedArchersCount = computed(() => {
+  return filteredArchersInput.value.filter(a => a.assignedTarget).length
+})
+
+const unassignedArchersCount = computed(() => {
+  return filteredArchersInput.value.filter(a => !a.assignedTarget).length
+})
+
+const unassignedArcherList = computed(() => {
+  return filteredArchersInput.value.filter(a => !a.assignedTarget)
+})
+
+const availableSlotsCount = computed(() => {
+  return (availableTargets.value.length * 4) - assignedArchersCount.value
+})
+
+const isAssignmentChanged = ref(true) // Always allow saving for now
+
+const openDropdown = ref(null) // { targetId, pos }
+const filterText = ref('')
+
+// Track which dropdown is open
+const toggleDropdown = (targetId, pos) => {
+  if (openDropdown.value?.targetId === targetId && openDropdown.value?.pos === pos) {
+    openDropdown.value = null
+  } else {
+    openDropdown.value = { targetId, pos }
+    filterText.value = ''
+  }
+}
+
+// Close dropdown on outside click
+onMounted(() => {
+  window.addEventListener('click', (e) => {
+    if (!e.target.closest('.archer-dropdown-container')) {
+      openDropdown.value = null
+    }
+  })
+})
+
+const unassignedArcherListFiltered = computed(() => {
+  if (!filterText.value) return unassignedArcherList.value
+  const query = filterText.value.toLowerCase()
+  return unassignedArcherList.value.filter(a =>
+    a.name.toLowerCase().includes(query) ||
+    (a.club && a.club.toLowerCase().includes(query))
+  )
+})
+
+const targetGrid = computed(() => {
+  if (!selectedCategory.value || !availableTargets.value.length) return []
+
+  const archers = filteredArchersInput.value
+
+  // Group physical targets by base name (e.g., "Target 5" from "Target 5A/5B")
+  const grouped = {}
+
+  availableTargets.value.forEach(t => {
+    // Extract base name (e.g. from "Target 5A" get "Target 5")
+    const baseName = t.name.replace(/[A-Za-z]$/, '').trim()
+    const letterMatch = t.name.match(/[A-D]$/i)
+    const letter = letterMatch ? letterMatch[0].toUpperCase() : 'A'
+
+    if (!grouped[baseName]) {
+      grouped[baseName] = {
+        name: baseName,
+        targetIds: [],
+        availableLetters: [],
+        slots: {},
+        assignedCount: 0
+      }
+    }
+    grouped[baseName].targetIds.push(t.id)
+    if (!grouped[baseName].availableLetters.includes(letter)) {
+      grouped[baseName].availableLetters.push(letter)
+      grouped[baseName].availableLetters.sort()
+      grouped[baseName].slots[letter] = null
+    }
+
+    // Find archers assigned to this specific target record
+    const targetArchers = archers.filter(a => a.assignedTarget === t.id)
+    targetArchers.forEach((archer) => {
+      if (grouped[baseName].slots[letter] === null) {
+        grouped[baseName].slots[letter] = {
+          ...archer,
+          actualTargetId: t.id
+        }
+        grouped[baseName].assignedCount++
+      }
+    })
+  })
+
+  return Object.values(grouped).sort((a, b) => {
+    const numA = parseInt(a.name.match(/\d+/)?.[0] || 0)
+    const numB = parseInt(b.name.match(/\d+/)?.[0] || 0)
+    return numA - numB
+  })
+})
+
+const assignArcherToTarget = (baseTarget, position, archerUuid) => {
+  const archer = filteredArchersInput.value.find(a => a.uuid === archerUuid)
+  if (archer) {
+    let targetId = baseTarget.targetIds[0]
+    if (baseTarget.targetIds.length > 1) {
+      const matched = availableTargets.value.find(t =>
+        baseTarget.targetIds.includes(t.id) &&
+        t.name.toUpperCase().endsWith(position)
+      )
+      if (matched) targetId = matched.id
+    }
+
+    archer.assignedTarget = targetId
+    archer.assignedPosition = position
+    openDropdown.value = null
+  }
+}
+
+const unassignArcherFromTarget = (baseTarget, position) => {
+  const slotData = baseTarget.slots[position]
+  if (slotData) {
+    const archer = filteredArchersInput.value.find(a => a.uuid === slotData.uuid)
+    if (archer) {
+      archer.assignedTarget = ''
+      archer.assignedPosition = ''
+    }
+  }
+}
+
+const autoAssignTargets = () => {
+  const archers = filteredArchersInput.value || []
+  const unassignedArchers = archers.filter(a => !a.assignedTarget)
+
+  if (unassignedArchers.length === 0) {
+    toast.warning('Semua pemanah sudah memiliki target')
+    return
+  }
+
+  // Get physical target map from the grid
+  const grid = targetGrid.value
+  if (!grid.length) {
+    toast.error('Tidak ada target tersedia')
+    return
+  }
+
+  // Identify all available slots across the entire grid
+  let availableSlots = []
+  grid.forEach(target => {
+    target.availableLetters.forEach(pos => {
+      if (!target.slots[pos]) {
+        availableSlots.push({
+          baseName: target.name,
+          targetIds: target.targetIds,
+          position: pos
+        })
+      }
+    })
+  })
+
+  if (availableSlots.length < unassignedArchers.length) {
+    toast.warning('Slot tidak mencukupi untuk semua pemanah')
+  }
+
+  // Shuffle archers to vary results, or just sort by name? Let's just process.
+  // Actually, sorting by club helps in distributing them better.
+  const sortedArchers = [...unassignedArchers].sort((a, b) => {
+    const clubA = a.club || 'ZZZ'
+    const clubB = b.club || 'ZZZ'
+    return clubA.localeCompare(clubB)
+  })
+
+  let assignedCount = 0
+
+  sortedArchers.forEach(archer => {
+    if (availableSlots.length === 0) return
+
+    // Find a slot where no one from the same club is already assigned to this base target
+    let bestSlotIndex = -1
+
+    if (archer.club) {
+      bestSlotIndex = availableSlots.findIndex(slot => {
+        // Check if this base target already has someone from this club
+        const targetInGrid = grid.find(g => g.name === slot.baseName)
+        if (!targetInGrid) return false
+
+        const hasSameClub = Object.values(targetInGrid.slots).some(s => s && s.club === archer.club)
+        return !hasSameClub
+      })
+    }
+
+    // fallback to first available slot if no "clean" slot found
+    const finalIndex = bestSlotIndex !== -1 ? bestSlotIndex : 0
+    const slot = availableSlots[finalIndex]
+
+    // Pick the actual DB record ID. 
+    // If target has multiple records (e.g. 5A record, 5B record), find the one matching the letter
+    let targetId = slot.targetIds[0]
+    if (slot.targetIds.length > 1) {
+      const matchedRecord = availableTargets.value.find(t =>
+        slot.targetIds.includes(t.id) &&
+        t.name.toUpperCase().endsWith(slot.position)
+      )
+      if (matchedRecord) targetId = matchedRecord.id
+    }
+
+    // Assign locally
+    const archerRef = archers.find(a => a.uuid === archer.uuid)
+    if (archerRef) {
+      archerRef.assignedTarget = targetId
+      archerRef.assignedPosition = slot.position
+      assignedCount++
+
+      // Mark as occupied in our local grid reference for the next loop iteration check
+      const g = grid.find(tg => tg.name === slot.baseName)
+      if (g) g.slots[slot.position] = { club: archer.club }
+    }
+
+    // Remove slot from availability
+    availableSlots.splice(finalIndex, 1)
+  })
+
+  // Trigger grid refresh (computed property relies on archer mutations)
+  isAssignmentChanged.value = true
+
+  if (assignedCount > 0) {
+    toast.success(`${assignedCount} pemanah berhasil ditempatkan secara otomatis`)
+  } else {
+    toast.error('Gagal melakukan penempatan otomatis')
+  }
 }
 
 const fetchQualificationReport = async (categoryId) => {
@@ -605,8 +906,10 @@ const loadExistingAssignments = async (categoryId) => {
       const existingAssignment = assignments.find(a => a.archer_uuid === archer.uuid)
       if (existingAssignment) {
         archer.assignedTarget = existingAssignment.target_uuid
+        archer.assignedPosition = existingAssignment.target_position
       } else {
         archer.assignedTarget = ''
+        archer.assignedPosition = ''
       }
     })
   } catch (error) {
@@ -888,10 +1191,13 @@ const submitAssignments = async () => {
       return
     }
 
-    const payload = filteredArchersInput.value.map(a => ({
-      archer_uuid: a.uuid,
-      target_id: a.assignedTarget
-    }))
+    const payload = filteredArchersInput.value
+      .filter(a => a.assignedTarget)
+      .map(a => ({
+        archer_uuid: a.uuid,
+        target_id: a.assignedTarget,
+        target_position: a.assignedPosition || 'A'
+      }))
 
     await post(`/events/${eventId}/qualification/sessions/${sessionData.value.uuid}/assignments`, {
       category_id: selectedCategory.value,

@@ -53,6 +53,24 @@
             </div>
         </div>
 
+        <!-- Search and Filter Bar -->
+        <div
+            class="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm flex flex-col sm:flex-row gap-4 justify-between items-center">
+            <div class="relative w-full sm:max-w-md">
+                <Icon icon="ph:magnifying-glass"
+                    class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
+                <input v-model="searchQuery" type="text" placeholder="Cari nama peserta atau email..."
+                    class="w-full pl-11 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium"
+                    @input="handleSearch" />
+            </div>
+
+            <div class="flex items-center gap-2">
+                <span class="text-xs font-bold text-gray-400 uppercase tracking-widest hidden sm:inline">Total:</span>
+                <div class="px-3 py-1.5 bg-navy/5 text-navy rounded-lg font-black text-xs border border-navy/10">
+                    {{ total }} Peserta
+                </div>
+            </div>
+        </div>
 
         <!-- Participants Table -->
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
@@ -109,7 +127,7 @@
                                 class="group hover:bg-gray-50/50 transition-colors">
                                 <td class="px-6 py-4 align-top text-center w-16">
                                     <span class="text-sm font-bold text-gray-400">{{ (page - 1) * limit + index + 1
-                                    }}</span>
+                                        }}</span>
                                 </td>
                                 <td class="px-6 py-4 align-top min-w-[250px]">
                                     <div class="flex items-center gap-3">
@@ -132,7 +150,7 @@
                                             participant.club_name || '-' }}</span>
                                         <span v-if="participant.city"
                                             class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">{{
-                                            participant.city }}</span>
+                                                participant.city }}</span>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 align-top">
@@ -151,7 +169,7 @@
                                             <div class="flex items-center justify-between mt-1">
                                                 <div class="text-[9px] text-gray-400 font-bold italic truncate">
                                                     {{ cat.event_type_name }} {{ cat.gender_division_name ? '• ' +
-                                                    cat.gender_division_name : '' }}
+                                                        cat.gender_division_name : '' }}
                                                 </div>
                                                 <button v-if="cat.status === 'Terdaftar' && cat.participant_id"
                                                     @click.stop="showQRDialog(participant, cat)"
@@ -275,6 +293,18 @@ const isLoading = ref(true)
 const showQR = ref(false)
 const selectedParticipant = ref(null)
 
+const searchTimeout = ref(null)
+
+const handleSearch = () => {
+    if (searchTimeout.value) {
+        clearTimeout(searchTimeout.value)
+    }
+    searchTimeout.value = setTimeout(() => {
+        page.value = 1
+        fetchParticipants()
+    }, 500)
+}
+
 const fetchEventDetails = async () => {
     try {
         const eventRes = await get(`/events/${route.params.id}`)
@@ -379,6 +409,12 @@ const downloadQR = () => {
 onMounted(() => {
     fetchEventDetails()
     fetchParticipants()
+})
+
+onBeforeUnmount(() => {
+    if (searchTimeout.value) {
+        clearTimeout(searchTimeout.value)
+    }
 })
 </script>
 
