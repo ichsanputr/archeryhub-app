@@ -40,7 +40,7 @@
                             <div class="flex items-center gap-4">
                                 <div
                                     class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center font-bold text-primary">
-                                    {{ assignment.target_position }}
+                                    {{ assignment.target_name ? assignment.target_name.slice(-1) : '?' }}
                                 </div>
                                 <div>
                                     <p class="font-semibold text-navy">{{ assignment.archer_name }}</p>

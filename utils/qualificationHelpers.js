@@ -200,9 +200,7 @@ export function enhanceParticipantsWithTargets(participants, assignments) {
     return {
       ...participant,
       target_info: assignment ? {
-        target_number: assignment.target_number,
         target_name: assignment.target_name,
-        target_position: assignment.target_position,
         assignment_uuid: assignment.uuid
       } : null
     }

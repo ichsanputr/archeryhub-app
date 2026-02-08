@@ -7,7 +7,7 @@
                 class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none">
                 <option value="">-- Pilih Peserta --</option>
                 <option v-for="participant in participants" :key="participant.uuid" :value="participant.uuid">
-                    {{ participant.target_name }}{{ participant.target_position }} - {{ participant.archer_name }}
+                    {{ participant.target_name }} - {{ participant.archer_name }}
                 </option>
             </select>
         </div>

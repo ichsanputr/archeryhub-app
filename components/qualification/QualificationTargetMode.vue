@@ -284,7 +284,7 @@ const handleDropOnTarget = async (targetRecord, pos) => {
         isSyncing.value = true
         // If there's an archer already in the target slot, we should ideally handle a swap
         // but for now, the upsert in backend will replace it if it's the same archer,
-        // or fail if it's someone else (due to uq_qta_session_target_pos).
+        // or fail if it's someone else (due to uq_qta_session_target).
         // To be safe, let's just use assignArcherToTarget which calls the API.
 
         await assignArcherToTarget(targetRecord, pos, movingArcher.uuid)
@@ -335,8 +335,7 @@ const assignArcherToTarget = async (baseTarget, position, archerUuid) => {
             assignments: [
                 {
                     participant_id: archerUuid,
-                    target_id: targetId,
-                    target_position: position
+                    target_id: targetId
                 }
             ]
         }

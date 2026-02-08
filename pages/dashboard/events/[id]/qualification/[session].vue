@@ -257,7 +257,7 @@ const fetchArchersForCategory = async (categoryId) => {
     club: p.club_name || p.club,
     avatar_url: p.avatar_url || p.photo_url,
     assignedTarget: '',
-    assignedPosition: ''
+    assignmentId: null
   }))
 }
 
@@ -286,11 +286,9 @@ const loadExistingAssignments = async (categoryId) => {
       const existing = assignments.find(a => a.participant_id === archer.uuid)
       if (existing) {
         archer.assignedTarget = existing.target_id
-        archer.assignedPosition = existing.target_position
-        archer.assignmentId = existing.id
+        archer.assignmentId = existing.uuid || existing.id
       } else {
         archer.assignedTarget = ''
-        archer.assignedPosition = ''
         archer.assignmentId = null
       }
     })
