@@ -121,7 +121,7 @@
     <div class="relative">
       <!-- Loading Overlay -->
       <div v-if="isLoadingAssignments"
-        class="absolute inset-0 z-[50] flex items-center justify-center bg-white/60 backdrop-blur-sm rounded-3xl min-h-[400px]">
+        class="absolute inset-0 z-[50] flex items-center justify-center bg-white/60 backdrop-blur-sm min-h-[400px]">
         <div class="flex flex-col items-center gap-3">
           <div class="size-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
           <p class="text-xs font-bold text-navy animate-pulse uppercase tracking-widest">Memuat Data...</p>

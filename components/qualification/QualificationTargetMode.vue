@@ -34,21 +34,34 @@
                         <p class="text-[10px] font-bold">Semua sudah terbagi</p>
                     </div>
 
-                    <div v-else class="flex flex-col gap-2 max-h-[700px] overflow-y-auto no-scrollbar pb-10">
-                        <div v-for="archer in unassignedArcherList" :key="archer.uuid" draggable="true"
-                            @dragstart="handleDragStart(archer)" @dragend="handleDragEnd"
-                            class="bg-white p-3 rounded-xl border border-gray-100 shadow-sm cursor-grab active:cursor-grabbing hover:border-primary/50 hover:shadow-md transition-all flex items-center gap-3 group">
-                            <div class="size-9 rounded-full border border-gray-100 overflow-hidden shrink-0 bg-gray-50">
-                                <img :src="useImageOrDefault(archer.avatar_url, archer.name)"
-                                    class="w-full h-full object-cover">
+                    <div v-else class="flex flex-col gap-0 max-h-[700px] overflow-y-auto no-scrollbar pb-10">
+                        <div v-for="group in unassignedArchersByClub" :key="group.clubName" class="space-y-2">
+                            <!-- Group Divider -->
+                            <div class="flex items-center gap-3 px-2 py-3">
+                                <div class="flex-1 h-[1px] bg-gray-200"></div>
+                                <span
+                                    class="text-[9px] font-black text-gray-400 uppercase tracking-widest whitespace-nowrap bg-gray-50 px-2 rounded-full border border-gray-100 shadow-sm">
+                                    {{ group.clubName }}
+                                </span>
+                                <div class="flex-1 h-[1px] bg-gray-200"></div>
                             </div>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-[11px] font-black text-navy truncate">{{ archer.name }}</p>
-                                <p class="text-[9px] text-gray-400 font-bold truncate uppercase tracking-tighter">{{
-                                    archer.club ||
-                                    'Independen' }}</p>
+
+                            <div v-for="archer in group.archers" :key="archer.uuid" draggable="true"
+                                @dragstart="handleDragStart(archer)" @dragend="handleDragEnd"
+                                class="bg-white p-3 rounded-xl border border-gray-100 shadow-sm cursor-grab active:cursor-grabbing hover:border-primary/50 hover:shadow-md transition-all flex items-center gap-3 group mx-1">
+                                <div
+                                    class="size-9 rounded-full border border-gray-100 overflow-hidden shrink-0 bg-gray-50">
+                                    <img :src="useImageOrDefault(archer.avatar_url, archer.name)"
+                                        class="w-full h-full object-cover">
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-[11px] font-black text-navy truncate">{{ archer.name }}</p>
+                                    <p class="text-[9px] text-gray-400 font-bold truncate uppercase tracking-tighter">
+                                        {{ archer.club || 'Independen' }}
+                                    </p>
+                                </div>
+                                <Icon icon="ph:dots-six-vertical-bold" class="text-gray-300 group-hover:text-primary" />
                             </div>
-                            <Icon icon="ph:dots-six-vertical-bold" class="text-gray-300 group-hover:text-primary" />
                         </div>
                     </div>
                 </div>
@@ -126,7 +139,7 @@
                                             class="text-gray-200 text-lg group-hover/slot:text-primary transition-colors" />
                                     </div>
                                     <div v-if="openDropdown?.targetId === target.name && openDropdown?.pos === pos"
-                                        class="absolute !z-[10000] mt-1 w-full min-w-[280px] bg-white rounded-xl shadow-2xl border border-gray-100 py-2 left-0 top-full">
+                                        class="absolute !z-[10000] mt-1 w-full min-w-[280px] bg-white shadow-2xl border border-gray-100 py-2 left-0 top-full">
                                         <div class="px-3 pb-2 border-b border-gray-50">
                                             <div class="relative">
                                                 <Icon icon="ph:magnifying-glass"
@@ -205,6 +218,29 @@ const unassignedArcherList = computed(() => {
 })
 
 const unassignedArchersCount = computed(() => unassignedArcherList.value.length)
+
+const unassignedArchersByClub = computed(() => {
+    const list = unassignedArcherList.value
+    const grouped = {}
+
+    list.forEach(archer => {
+        const clubName = archer.club || 'Independen'
+        if (!grouped[clubName]) {
+            grouped[clubName] = []
+        }
+        grouped[clubName].push(archer)
+    })
+
+    // Sort: Clubs first (A-Z), then Independen at the end
+    return Object.keys(grouped).sort((a, b) => {
+        if (a === 'Independen') return 1
+        if (b === 'Independen') return -1
+        return a.localeCompare(b)
+    }).map(clubName => ({
+        clubName,
+        archers: grouped[clubName].sort((a, b) => a.name.localeCompare(b.name))
+    }))
+})
 
 const unassignedArcherListFiltered = computed(() => {
     if (!filterText.value) return unassignedArcherList.value

@@ -4,78 +4,100 @@
         <div v-if="selectedCategory && targetAssignments.length > 0" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <!-- Archers List -->
             <div class="lg:col-span-7 xl:col-span-8 flex flex-col gap-4">
-                <div v-for="(assignment, index) in targetAssignments" :key="assignment.uuid"
-                    @click="selectArcherForScoring(assignment)" :class="[
-                        'bg-white rounded-xl shadow-sm border-2 overflow-hidden transition-all cursor-pointer',
-                        currentScoringAssignment?.uuid === assignment.uuid
-                            ? 'border-primary ring-2 ring-primary/20'
-                            : 'border-gray-100 hover:border-gray-200'
-                    ]">
-                    <div
-                        :class="['absolute top-0 left-0 w-2 h-full', currentScoringAssignment?.uuid === assignment.uuid ? 'bg-primary' : 'bg-gray-200']">
+                <div v-for="group in groupedAssignments" :key="group.number" class="space-y-4">
+                    <!-- Target Divider -->
+                    <div class="flex items-center gap-4 pt-4 pb-2">
+                        <div class="flex-1 h-px bg-gray-200"></div>
+                        <div
+                            class="bg-gray-50 px-4 py-1.5 rounded-full border border-gray-200 flex items-center gap-2 shadow-sm">
+                            <Icon icon="ph:target-bold" class="text-navy/40 text-sm" />
+                            <span class="text-[10px] font-black text-navy uppercase tracking-widest">Target {{
+                                group.number }}</span>
+                        </div>
+                        <div class="flex-1 h-px bg-gray-200"></div>
                     </div>
-                    <div class="p-5 pl-7 relative">
-                        <div class="flex justify-between items-center mb-4">
-                            <div class="flex items-center gap-3 flex-1 min-w-0">
-                                <img :src="useImageOrDefault(assignment.archer_avatar_url || assignment.avatar_url, assignment.archer_name)"
-                                    :alt="assignment.archer_name"
-                                    class="size-9 sm:size-10 rounded-lg object-cover border border-gray-100 flex-shrink-0" />
-                                <div class="min-w-0">
-                                    <h3 class="text-base sm:text-lg font-bold text-navy leading-tight">{{
-                                        assignment.archer_name }}</h3>
-                                    <div class="text-xs text-gray-500 font-medium truncate">
-                                        Target {{ assignment.target_name }}
-                                        <span v-if="assignment.club_name" class="opacity-30 mx-1.5">•</span>
-                                        <span v-if="assignment.club_name">{{ assignment.club_name }}</span>
+
+                    <div v-for="assignment in group.assignments" :key="assignment.uuid"
+                        @click="selectArcherForScoring(assignment)" :class="[
+                            'bg-white rounded-xl shadow-sm border-2 overflow-hidden transition-all cursor-pointer relative',
+                            currentScoringAssignment?.uuid === assignment.uuid
+                                ? 'border-primary ring-2 ring-primary/20'
+                                : 'border-gray-100 hover:border-gray-200'
+                        ]">
+                        <div
+                            :class="['absolute top-0 left-0 w-1.5 h-full', currentScoringAssignment?.uuid === assignment.uuid ? 'bg-primary' : 'bg-gray-100']">
+                        </div>
+                        <div class="p-5 pl-7 relative">
+                            <div class="flex justify-between items-center mb-4">
+                                <div class="flex items-center gap-3 flex-1 min-w-0">
+                                    <img :src="useImageOrDefault(assignment.archer_avatar_url || assignment.avatar_url, assignment.archer_name)"
+                                        :alt="assignment.archer_name"
+                                        class="size-9 sm:size-10 rounded-lg object-cover border border-gray-100 flex-shrink-0" />
+                                    <div class="min-w-0">
+                                        <div class="flex items-center gap-2 mb-0.5">
+                                            <span
+                                                class="bg-navy text-primary text-[10px] font-black px-1.5 py-0.5 rounded shadow-sm">
+                                                {{ assignment.target_name }}
+                                            </span>
+                                            <h3 class="text-base font-black text-navy leading-tight truncate">{{
+                                                assignment.archer_name }}</h3>
+                                        </div>
+                                        <div
+                                            class="text-[10px] text-gray-400 font-bold truncate uppercase tracking-tighter">
+                                            {{ assignment.club_name || 'Independen' }}
+                                        </div>
                                     </div>
                                 </div>
+                                <div v-if="currentScoringAssignment?.uuid === assignment.uuid"
+                                    class="flex items-center gap-2 ml-3 flex-shrink-0">
+                                    <button @click.stop="goPrevEnd" :disabled="(assignment.currentEnd || 1) <= 1"
+                                        class="size-8 sm:size-9 rounded-lg border border-gray-300 bg-white text-navy flex items-center justify-center hover:bg-gray-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed">
+                                        <Icon icon="ph:arrow-left" class="text-base" />
+                                    </button>
+                                    <button v-if="(assignment.currentEnd || 1) < (sessionData?.total_ends || 0)"
+                                        @click.stop="goNextEnd"
+                                        class="size-8 sm:size-9 rounded-lg bg-primary text-navy flex items-center justify-center hover:bg-primary/90 transition-colors">
+                                        <Icon icon="ph:arrow-right" class="text-base" />
+                                    </button>
+                                </div>
                             </div>
-                            <div v-if="currentScoringAssignment?.uuid === assignment.uuid"
-                                class="flex items-center gap-2 ml-3 flex-shrink-0">
-                                <button @click.stop="goPrevEnd" :disabled="(assignment.currentEnd || 1) <= 1"
-                                    class="size-8 sm:size-9 rounded-lg border border-gray-300 bg-white text-navy flex items-center justify-center hover:bg-gray-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed">
-                                    <Icon icon="ph:arrow-left" class="text-base" />
-                                </button>
-                                <button v-if="(assignment.currentEnd || 1) < (sessionData?.total_ends || 0)"
-                                    @click.stop="goNextEnd"
-                                    class="size-8 sm:size-9 rounded-lg bg-primary text-navy flex items-center justify-center hover:bg-primary/90 transition-colors">
-                                    <Icon icon="ph:arrow-right" class="text-base" />
-                                </button>
-                            </div>
-                        </div>
 
-                        <!-- Current End Display -->
-                        <div class="bg-gray-50 rounded-lg p-4 border border-gray-100">
-                            <div class="flex justify-between items-center mb-3">
-                                <div class="flex items-center gap-2">
-                                    <span class="text-sm sm:text-base font-black text-navy">
-                                        End {{ assignment.currentEnd || 1 }}
+                            <!-- Current End Display -->
+                            <div class="bg-gray-50 rounded-lg p-4 border border-gray-100">
+                                <div class="flex justify-between items-center mb-3">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-sm sm:text-base font-black text-navy">
+                                            End {{ assignment.currentEnd || 1 }}
+                                        </span>
+                                        <span class="text-xs font-semibold text-gray-500">/ {{ sessionData?.total_ends
+                                            || 0
+                                            }}</span>
+                                    </div>
+                                    <span class="text-[10px] font-bold text-gray-400 tracking-wider">
+                                        {{ sessionData?.arrows_per_end || 0 }} Arrows
                                     </span>
-                                    <span class="text-xs font-semibold text-gray-500">/ {{ sessionData?.total_ends || 0
-                                    }}</span>
                                 </div>
-                                <span class="text-[10px] font-bold text-gray-400 tracking-wider">
-                                    {{ sessionData?.arrows_per_end || 0 }} Arrows
-                                </span>
-                            </div>
-                            <div class="flex gap-2 sm:gap-3">
-                                <div v-for="(score, i) in sessionData?.arrows_per_end || 0" :key="i" :class="[
-                                    'flex-1 aspect-square rounded-lg shadow-sm flex items-center justify-center text-lg sm:text-xl font-bold',
-                                    assignment.currentEndScores && assignment.currentEndScores[i - 1] !== undefined
-                                        ? 'bg-white border-2 border-gray-200 text-navy'
-                                        : 'bg-gray-100 border-dashed border-2 border-gray-300 text-gray-400'
-                                ]">
-                                    {{ (assignment.currentEndScores && assignment.currentEndScores[i - 1] !== undefined)
-                                        ?
-                                        (assignment.currentEndScores[i - 1] === 10 ? 'X' : (assignment.currentEndScores[i -
-                                            1] === 0 ? 'M' :
-                                            assignment.currentEndScores[i - 1])) : '' }}
-                                </div>
-                                <div class="w-px bg-gray-300 mx-1"></div>
-                                <div
-                                    class="flex-1 aspect-square bg-navy text-primary rounded-lg flex flex-col items-center justify-center shadow-sm">
-                                    <span class="text-lg sm:text-xl font-bold">{{
-                                        calculateEndSum(assignment.currentEndScores) }}</span>
+                                <div class="flex gap-2 sm:gap-3">
+                                    <div v-for="(score, i) in sessionData?.arrows_per_end || 0" :key="i" :class="[
+                                        'flex-1 aspect-square rounded-lg shadow-sm flex items-center justify-center text-lg sm:text-xl font-bold',
+                                        assignment.currentEndScores && assignment.currentEndScores[i - 1] !== undefined
+                                            ? 'bg-white border-2 border-gray-200 text-navy'
+                                            : 'bg-gray-100 border-dashed border-2 border-gray-300 text-gray-400'
+                                    ]">
+                                        {{ (assignment.currentEndScores && assignment.currentEndScores[i - 1] !==
+                                            undefined)
+                                            ?
+                                            (assignment.currentEndScores[i - 1] === 10 ? 'X' :
+                                                (assignment.currentEndScores[i -
+                                                    1] === 0 ? 'M' :
+                                        assignment.currentEndScores[i - 1])) : '' }}
+                                    </div>
+                                    <div class="w-px bg-gray-300 mx-1"></div>
+                                    <div
+                                        class="flex-1 aspect-square bg-navy text-primary rounded-lg flex flex-col items-center justify-center shadow-sm">
+                                        <span class="text-lg sm:text-xl font-bold">{{
+                                            calculateEndSum(assignment.currentEndScores) }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -150,7 +172,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { useImageOrDefault } from '~/composables/useImageHelper'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
@@ -175,6 +197,25 @@ watch(() => props.targetAssignments, (newVal) => {
         currentScoringAssignment.value = newVal[0]
     }
 }, { immediate: true })
+
+const groupedAssignments = computed(() => {
+    const groups = {}
+    props.targetAssignments.forEach(a => {
+        const match = (a.target_name || '').match(/\d+/)
+        const num = match ? parseInt(match[0]) : 0
+        if (!groups[num]) {
+            groups[num] = []
+        }
+        groups[num].push(a)
+    })
+
+    return Object.keys(groups)
+        .sort((a, b) => parseInt(a) - parseInt(b))
+        .map(num => ({
+            number: num,
+            assignments: groups[num].sort((a, b) => (a.target_name || '').localeCompare(b.target_name || ''))
+        }))
+})
 
 const selectArcherForScoring = (assignment) => {
     currentScoringAssignment.value = assignment
