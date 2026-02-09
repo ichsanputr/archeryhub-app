@@ -11,7 +11,7 @@
                         <div
                             class="bg-navy text-primary px-5 py-1.5 rounded-xl border border-white/5 flex items-center gap-2 shadow-sm">
                             <Icon icon="ph:target-bold" class="text-xs" />
-                            <span class="text-[10px] font-black uppercase tracking-widest">Bantalan {{
+                            <span class="text-[10px] font-black uppercase tracking-widest">Target {{
                                 group.number }}</span>
                         </div>
                         <div class="flex-1 h-px bg-gray-100"></div>
@@ -24,12 +24,8 @@
                                 ? 'border-primary ring-4 ring-primary/5'
                                 : 'border-gray-50 hover:border-gray-200'
                         ]">
-                        <!-- Selection Indicator Stripe -->
-                        <div
-                            :class="['absolute top-0 left-0 w-1.5 h-full transition-colors duration-500', currentScoringAssignment?.uuid === assignment.uuid ? 'bg-primary' : 'bg-gray-100']">
-                        </div>
 
-                        <div class="p-5 sm:p-6 pl-8 sm:pl-10 relative">
+                        <div class="p-5 sm:p-6 pl-8 sm:pl-10 relative rounded-xl">
                             <div class="flex justify-between items-center mb-4">
                                 <div class="flex items-center gap-4 flex-1 min-w-0">
                                     <div class="relative group">
@@ -80,32 +76,18 @@
                             </div>
 
                             <!-- Current End Display area -->
-                            <div class="bg-slate-50/50 rounded-[1.5rem] p-4 sm:p-5 border border-slate-100 relative overflow-hidden group/end"
-                                :class="{ 'ring-2 ring-primary/10 bg-white shadow-inner': currentScoringAssignment?.uuid === assignment.uuid }">
+                            <div class="relative overflow-hidden group/end"
+                                :class="{ 'bg-white': currentScoringAssignment?.uuid === assignment.uuid }">
 
-                                <div class="flex justify-between items-center mb-4">
-                                    <div class="flex items-center gap-2.5">
-                                        <div
-                                            class="size-7 rounded-lg bg-navy text-primary flex items-center justify-center shadow-sm group-hover/end:rotate-6 transition-transform">
-                                            <Icon icon="ph:scroll-bold" class="text-[10px]" />
-                                        </div>
-                                        <span
-                                            class="text-[10px] sm:text-[11px] font-black text-navy tracking-tight uppercase">
-                                            Penilaian Rambahan {{ assignment.currentEnd || 1 }}
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div class="flex flex-wrap gap-2.5 sm:gap-3">
+                                <div class="flex flex-wrap gap-2.5 sm:gap-3 py-2">
                                     <div v-for="(score, i) in sessionData?.arrows_per_end || 0" :key="i"
                                         @click.stop="selectArrowBox(assignment, i)" :class="[
-                                            'size-11 sm:size-13 rounded-xl shadow-sm flex items-center justify-center text-lg font-black cursor-pointer transition-all duration-300 relative border-2',
-                                            assignment.currentEndScores && assignment.currentEndScores[i] !== undefined
-                                                ? 'bg-white border-slate-100 text-navy'
-                                                : 'bg-white/50 border-dashed border-slate-200 text-gray-300',
+                                            'size-14 sm:size-16 rounded-xl shadow-sm flex items-center justify-center text-lg sm:text-xl font-black cursor-pointer transition-all duration-300 relative border-4',
                                             currentScoringAssignment?.uuid === assignment.uuid && selectedArrowIndex === i
-                                                ? 'border-primary bg-white shadow-sm scale-110 z-10'
-                                                : 'hover:border-slate-300'
+                                                ? 'border-primary bg-white shadow-sm scale-110 z-10 border-solid'
+                                                : (assignment.currentEndScores && assignment.currentEndScores[i] !== undefined
+                                                    ? 'bg-white border-slate-100 text-navy border-solid'
+                                                    : 'bg-white border-dashed border-gray-100 text-gray-300'),
                                         ]">
                                         <span class="text-navy">
                                             {{ (assignment.currentEndScores && assignment.currentEndScores[i] !==
@@ -120,16 +102,14 @@
                                             class="absolute -top-5 text-primary animate-bounce text-sm" />
 
                                         <div v-if="assignment.currentEndScores?.[i] === undefined && !(currentScoringAssignment?.uuid === assignment.uuid && selectedArrowIndex === i)"
-                                            class="size-1.5 rounded-full bg-slate-200"></div>
+                                            class="size-1.5 rounded-full bg-slate-100"></div>
                                     </div>
 
                                     <!-- End Summary -->
                                     <div class="flex-1 flex flex-col items-end justify-center min-w-[60px]">
-                                        <span
-                                            class="text-[8px] font-black text-slate-300 tracking-[0.2em] mb-0.5 uppercase">TOTAL</span>
                                         <div
-                                            class="size-11 sm:size-13 bg-navy text-primary rounded-xl flex flex-col items-center justify-center shadow-sm shadow-navy/10 transform hover:scale-105 transition-transform">
-                                            <span class="text-lg font-black leading-none">{{
+                                            class="size-14 sm:size-16 bg-navy text-primary rounded-xl flex flex-col items-center justify-center shadow-sm shadow-navy/10 transform hover:scale-105 transition-transform">
+                                            <span class="text-lg sm:text-xl font-black leading-none">{{
                                                 calculateEndSum(assignment.currentEndScores) }}</span>
                                         </div>
                                     </div>
@@ -156,10 +136,9 @@
                 <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 p-6 sm:p-8 sticky top-6">
                     <div class="flex justify-between items-center mb-8 pb-4 border-b border-gray-100">
                         <h3 class="font-black text-sm text-navy flex items-center gap-2">
-                            <Icon icon="ph:keypad-fill" class="text-lg text-primary" />
-                            Numerical Keypad
+                            <Icon icon="si:keypad-line" class="text-lg text-primary" />
+                            Input Score
                         </h3>
-                        <span class="text-[9px] font-black text-slate-300 tracking-[0.2em] uppercase">Tactical</span>
                     </div>
 
                     <!-- Score Buttons Grid -->

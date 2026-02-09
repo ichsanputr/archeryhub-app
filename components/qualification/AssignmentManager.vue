@@ -2,11 +2,11 @@
     <div class="space-y-6">
         <!-- Auto Assign Section -->
         <div class="bg-gray-50 rounded-xl p-5 border border-gray-200">
-            <h4 class="font-bold text-navy mb-4">Atur Bantalan Otomatis</h4>
+            <h4 class="font-bold text-navy mb-4">Atur Target Otomatis</h4>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <BaseInput v-model.number="autoAssignParams.start_target" type="number" label="Bantalan Awal"
+                <BaseInput v-model.number="autoAssignParams.start_target" type="number" label="Target Awal"
                     placeholder="1" />
-                <BaseInput v-model.number="autoAssignParams.archers_per_target" type="number" label="Atlet per Bantalan"
+                <BaseInput v-model.number="autoAssignParams.archers_per_target" type="number" label="Atlet per Target"
                     placeholder="4" />
                 <div class="flex items-end">
                     <BaseButton variant="primary" icon="ph:magic-wand" @click="autoAssign" :loading="assigning" block>
@@ -24,7 +24,7 @@
         </div>
 
         <div v-else-if="assignments.length === 0" class="text-center py-12">
-            <p class="text-gray-500">Belum ada peserta yang diatur ke bantalan</p>
+            <p class="text-gray-500">Belum ada peserta yang diatur ke target</p>
             <p class="text-sm text-gray-400 mt-1">Gunakan fitur atur otomatis di atas</p>
         </div>
 
@@ -32,7 +32,7 @@
             <div v-for="(group, targetName) in groupedAssignments" :key="targetName">
                 <div class="bg-white border border-gray-200 rounded-xl overflow-hidden">
                     <div class="bg-navy text-white px-4 py-3 font-bold">
-                        Bantalan {{ targetName }}
+                        Target {{ targetName }}
                     </div>
                     <div class="divide-y divide-gray-100">
                         <div v-for="assignment in group" :key="assignment.uuid"
@@ -121,23 +121,23 @@ const autoAssign = async () => {
             ...autoAssignParams.value,
             category_id: props.categoryId
         })
-        toast.success('Bantalan berhasil diatur')
+        toast.success('Target berhasil diatur')
         await fetchAssignments()
         emit('updated')
     } catch (error) {
         console.error('Failed to auto assign:', error)
-        toast.error(error?.data?.error || 'Gagal mengatur bantalan')
+        toast.error(error?.data?.error || 'Gagal mengatur target')
     } finally {
         assigning.value = false
     }
 }
 
 const removeAssignment = async (assignmentId) => {
-    if (!confirm('Hapus pengaturan bantalan ini?')) return
+    if (!confirm('Hapus pengaturan target ini?')) return
 
     try {
         await del(`/qualification/assignments/${assignmentId}`)
-        toast.success('Pengaturan bantalan dihapus')
+        toast.success('Pengaturan target dihapus')
         await fetchAssignments()
         emit('updated')
     } catch (error) {

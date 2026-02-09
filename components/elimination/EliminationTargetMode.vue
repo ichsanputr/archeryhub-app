@@ -30,31 +30,39 @@
                     <div class="space-y-3 mb-6">
                         <div
                             class="flex items-center justify-between bg-white rounded-2xl p-3 border border-gray-100 shadow-sm">
-                            <div class="flex items-center gap-3 overflow-hidden">
-                                <div
-                                    class="size-8 rounded-xl bg-navy/5 flex items-center justify-center text-[10px] font-black text-navy/40 border border-navy/5 shrink-0">
-                                    {{ match.entry_a_seed || '-' }}
+                            <div class="flex items-center gap-3">
+                                <div class="relative shrink-0">
+                                    <img :src="getAvatarUrl(match.entry_a_name)"
+                                        class="size-9 rounded-full border-2 border-white shadow-sm" />
+                                    <div v-if="match.entry_a_seed"
+                                        class="absolute -top-1 -left-1 size-5 z-10 rounded-full bg-navy text-primary text-[8px] font-black flex items-center justify-center border-2 border-white shadow-sm ring-1 ring-navy/10">
+                                        {{ match.entry_a_seed }}
+                                    </div>
                                 </div>
-                                <img :src="getAvatarUrl(match.entry_a_name)"
-                                    class="size-8 rounded-full border-2 border-white shadow-sm shrink-0" />
-                                <span class="text-xs font-bold text-navy truncate">{{ match.entry_a_name ||
-                                    (match.is_bye ? 'BYE' : 'TBD') }}</span>
+                                <div class="min-w-0">
+                                    <span class="text-xs font-bold text-navy truncate block">{{ match.entry_a_name ||
+                                        (match.is_bye ? 'BYE' : 'TBD') }}</span>
+                                </div>
                             </div>
                             <span class="text-[9px] font-black text-gray-300 tracking-tighter shrink-0 ml-2">SIDE
                                 A</span>
                         </div>
                         <div
                             class="flex items-center justify-between bg-white rounded-2xl p-3 border border-gray-100 shadow-sm">
-                            <div class="flex items-center gap-3 overflow-hidden">
-                                <div
-                                    class="size-8 rounded-xl bg-navy/5 flex items-center justify-center text-[10px] font-black text-navy/40 border border-navy/5 shrink-0">
-                                    {{ match.entry_b_seed || '-' }}
+                            <div class="flex items-center gap-3">
+                                <div class="relative shrink-0">
+                                    <img :src="getAvatarUrl(match.entry_b_name)"
+                                        class="size-9 rounded-full border-2 border-white shadow-sm" />
+                                    <div v-if="match.entry_b_seed"
+                                        class="absolute -top-1 -left-1 size-5 rounded-full z-10 bg-navy text-primary text-[8px] font-black flex items-center justify-center border-2 border-white shadow-sm ring-1 ring-navy/10">
+                                        {{ match.entry_b_seed }}
+                                    </div>
                                 </div>
-                                <img :src="getAvatarUrl(match.entry_b_name)"
-                                    class="size-8 rounded-full border-2 border-white shadow-sm shrink-0" />
-                                <span class="text-xs font-bold text-navy truncate">{{ match.entry_b_name ||
-                                    'TBD'
+                                <div class="min-w-0">
+                                    <span class="text-xs font-bold text-navy truncate block">{{ match.entry_b_name ||
+                                        'TBD'
                                     }}</span>
+                                </div>
                             </div>
                             <span class="text-[9px] font-black text-gray-300 tracking-tighter shrink-0 ml-2">SIDE
                                 B</span>
