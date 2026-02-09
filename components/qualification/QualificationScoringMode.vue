@@ -67,34 +67,31 @@
                                 <div class="flex justify-between items-center mb-3">
                                     <div class="flex items-center gap-2">
                                         <span class="text-sm sm:text-base font-black text-navy">
-                                            End {{ assignment.currentEnd || 1 }}
+                                            Rambahan {{ assignment.currentEnd || 1 }}
                                         </span>
                                         <span class="text-xs font-semibold text-gray-500">/ {{ sessionData?.total_ends
                                             || 0
-                                        }}</span>
+                                            }}</span>
                                     </div>
                                     <span class="text-[10px] font-bold text-gray-400 tracking-wider uppercase">
                                         {{ sessionData?.arrows_per_end || 0 }} Anak Panah
                                     </span>
                                 </div>
                                 <div class="flex gap-2 sm:gap-3">
+                                    <!-- Box Score Input -->
                                     <div v-for="(score, i) in sessionData?.arrows_per_end || 0" :key="i"
-                                        @click.stop="selectArrowBox(i - 1)" :class="[
+                                        @click.stop="selectArrowBox(assignment, i)" :class="[
                                             'flex-1 aspect-square rounded-lg shadow-sm flex items-center justify-center text-lg sm:text-xl font-bold cursor-pointer transition-all',
-                                            assignment.currentEndScores && assignment.currentEndScores[i - 1] !== undefined
+                                            assignment.currentEndScores && assignment.currentEndScores[i] !== undefined
                                                 ? 'bg-white border-2 border-gray-200 text-navy'
                                                 : 'bg-gray-100 border-dashed border-2 border-gray-300 text-gray-400',
-                                            currentScoringAssignment?.uuid === assignment.uuid && selectedArrowIndex === (i - 1)
+                                            currentScoringAssignment?.uuid === assignment.uuid && selectedArrowIndex === i
                                                 ? 'ring-2 ring-primary border-primary bg-primary/5'
                                                 : ''
                                         ]">
-                                        {{ (assignment.currentEndScores && assignment.currentEndScores[i - 1] !==
+                                        {{ (assignment.currentEndScores && assignment.currentEndScores[i] !==
                                             undefined)
-                                            ?
-                                            (assignment.currentEndScores[i - 1] === 10 ? 'X' :
-                                                (assignment.currentEndScores[i -
-                                                    1] === 0 ? 'M' :
-                                                    assignment.currentEndScores[i - 1])) : '' }}
+                                            ? assignment.currentEndScores[i] : '' }}
                                     </div>
                                     <div class="w-px bg-gray-300 mx-1"></div>
                                     <div
@@ -149,8 +146,7 @@
                             <Icon icon="ph:backspace" class="text-lg" />
                             Hapus
                         </button>
-                        <button @click="saveEndAndNext"
-                            :disabled="!isAssignmentEndComplete(currentScoringAssignment) || saving"
+                        <button @click="saveEndAndNext" :disabled="saving || !currentScoringAssignment"
                             class="flex items-center justify-center gap-2 h-12 rounded-lg bg-navy text-white font-bold hover:bg-navy/90 transition-colors shadow-lg disabled:opacity-50 disabled:cursor-not-allowed">
                             <span v-if="saving" class="inline-flex items-center gap-2">
                                 <span
@@ -197,14 +193,6 @@ const saving = ref(false)
 const currentScoringAssignment = ref(null)
 const selectedArrowIndex = ref(0) // Track which arrow box is being edited
 
-// Initialize currentScoringAssignment
-watch(() => props.targetAssignments, (newVal) => {
-    if (newVal?.length > 0 && !currentScoringAssignment.value) {
-        currentScoringAssignment.value = newVal[0]
-        initEndScores(newVal[0])
-    }
-}, { immediate: true })
-
 const initEndScores = (assignment) => {
     if (!assignment.currentEndScores) {
         const arrowsPerEnd = props.sessionData?.arrows_per_end || 6
@@ -214,6 +202,32 @@ const initEndScores = (assignment) => {
     const emptyIdx = assignment.currentEndScores.findIndex(v => v === undefined)
     selectedArrowIndex.value = emptyIdx === -1 ? 0 : emptyIdx
 }
+
+// Initialize currentScoringAssignment
+watch(() => props.targetAssignments, (newVal) => {
+    if (newVal?.length > 0) {
+        // Sort assignments to find the visual "first" (Target 1A, etc)
+        const sorted = [...newVal].sort((a, b) => {
+            const numA = parseInt((a.target_name || '').match(/\d+/)?.[0] || 0)
+            const numB = parseInt((b.target_name || '').match(/\d+/)?.[0] || 0)
+            if (numA !== numB) return numA - numB
+            return (a.target_name || '').localeCompare(b.target_name || '')
+        })
+
+        // Find if current assignment is still in the new list
+        const exists = newVal.find(a => a.uuid === currentScoringAssignment.value?.uuid)
+        if (!exists) {
+            // If not available or first run, select the first one from sorted list
+            currentScoringAssignment.value = sorted[0]
+            if (sorted[0]) initEndScores(sorted[0])
+        } else {
+            // If it exists, update the reference to keep scores in sync with the prop
+            currentScoringAssignment.value = exists
+        }
+    } else {
+        currentScoringAssignment.value = null
+    }
+}, { immediate: true, deep: true })
 
 const groupedAssignments = computed(() => {
     const groups = {}
@@ -239,13 +253,20 @@ const selectArcherForScoring = (assignment) => {
     initEndScores(assignment)
 }
 
-const selectArrowBox = (index) => {
+const selectArrowBox = (assignment, index) => {
+    if (currentScoringAssignment.value?.uuid !== assignment.uuid) {
+        currentScoringAssignment.value = assignment
+        // If we don't have scores yet, initialize them
+        if (!assignment.currentEndScores) {
+            const arrowsPerEnd = props.sessionData?.arrows_per_end || 6
+            assignment.currentEndScores = Array(arrowsPerEnd).fill(undefined)
+        }
+    }
     selectedArrowIndex.value = index
 }
 
 const addScore = (score) => {
     if (!currentScoringAssignment.value) return
-    const numericScore = score === 'X' ? 10 : (score === 'M' ? 0 : score)
     const arrowsPerEnd = props.sessionData?.arrows_per_end || 6
 
     if (!currentScoringAssignment.value.currentEndScores) {
@@ -254,8 +275,9 @@ const addScore = (score) => {
 
     const scores = currentScoringAssignment.value.currentEndScores
 
-    // Insert at selected index
-    scores[selectedArrowIndex.value] = numericScore
+    // Insert at selected index using splice for reactivity
+    // We store the literal score ('X', 10, etc.) to distinguish for display
+    scores.splice(selectedArrowIndex.value, 1, score)
 
     // Move to next index
     if (selectedArrowIndex.value < arrowsPerEnd - 1) {
@@ -267,8 +289,8 @@ const deleteLastScore = () => {
     const scores = currentScoringAssignment.value?.currentEndScores
     if (!scores) return
 
-    // Clear current selected box
-    scores[selectedArrowIndex.value] = undefined
+    // Clear current selected box using splice for reactivity
+    scores.splice(selectedArrowIndex.value, 1, undefined)
 
     // Move back if not at 0
     if (selectedArrowIndex.value > 0) {
@@ -278,7 +300,12 @@ const deleteLastScore = () => {
 
 const calculateEndSum = (scores) => {
     if (!scores || !scores.length) return 0
-    return scores.reduce((sum, score) => sum + (score || 0), 0)
+    return scores.reduce((sum, score) => {
+        if (score === undefined || score === null) return sum
+        if (score === 'X') return sum + 10
+        if (score === 'M') return sum + 0
+        return sum + (parseInt(score) || 0)
+    }, 0)
 }
 
 const isAssignmentEndComplete = (assignment) => {
@@ -291,11 +318,24 @@ const isAssignmentEndComplete = (assignment) => {
 
 const goToEnd = (endNumber) => {
     if (!currentScoringAssignment.value) return
+    const prevEnd = currentScoringAssignment.value.currentEnd || 1
+
+    // Ensure allEndScores exists
+    if (!currentScoringAssignment.value.allEndScores) {
+        currentScoringAssignment.value.allEndScores = {}
+    }
+
+    // Preserve unsaved scores in local memory before switching ends
+    if (currentScoringAssignment.value.currentEndScores) {
+        currentScoringAssignment.value.allEndScores[prevEnd] = [...currentScoringAssignment.value.currentEndScores]
+    }
+
     currentScoringAssignment.value.currentEnd = endNumber
-    const saved = currentScoringAssignment.value.allEndScores?.[endNumber]
+
+    const saved = currentScoringAssignment.value.allEndScores[endNumber]
     const arrowsPerEnd = props.sessionData?.arrows_per_end || 6
 
-    if (saved) {
+    if (saved && saved.length > 0) {
         currentScoringAssignment.value.currentEndScores = [...saved]
     } else {
         currentScoringAssignment.value.currentEndScores = Array(arrowsPerEnd).fill(undefined)
@@ -321,46 +361,71 @@ const goNextEnd = () => {
 }
 
 const saveEndAndNext = async () => {
-    if (!currentScoringAssignment.value || !currentScoringAssignment.value.currentEndScores?.length) return
+    if (!currentScoringAssignment.value) return
 
     saving.value = true
     try {
-        const endNumber = currentScoringAssignment.value.currentEnd
-        const scores = currentScoringAssignment.value.currentEndScores
-        const filledScores = (scores || []).filter((score) => score !== undefined && score !== null)
+        const assignment = currentScoringAssignment.value
+        const endsToSave = []
+        const currentEnd = assignment.currentEnd || 1
 
-        const arrows = filledScores.map(score => {
-            if (score === 10) return 'X'
-            if (score === 0) return 'M'
-            return String(score)
-        })
-
-        await post(`/qualification/assignments/${currentScoringAssignment.value.uuid}/scores`, {
-            end_number: endNumber,
-            arrows: arrows
-        })
-
-        if (!currentScoringAssignment.value.allEndScores) {
-            currentScoringAssignment.value.allEndScores = {}
+        // 1. Ensure current view is captured in our local memory cache
+        if (assignment.currentEndScores) {
+            if (!assignment.allEndScores) assignment.allEndScores = {}
+            assignment.allEndScores[currentEnd] = [...assignment.currentEndScores]
         }
-        currentScoringAssignment.value.allEndScores[endNumber] = [...scores]
 
-        if (endNumber < props.sessionData.total_ends) {
-            currentScoringAssignment.value.currentEnd = endNumber + 1
-            const arrowsPerEnd = props.sessionData?.arrows_per_end || 6
-            currentScoringAssignment.value.currentEndScores = Array(arrowsPerEnd).fill(undefined)
-            selectedArrowIndex.value = 0
-        } else {
-            const currentIndex = props.targetAssignments.findIndex(a => a.uuid === currentScoringAssignment.value.uuid)
-            if (currentIndex < props.targetAssignments.length - 1) {
-                currentScoringAssignment.value = props.targetAssignments[currentIndex + 1]
-                initEndScores(currentScoringAssignment.value)
+        // 2. Collect all ends that have at least one valid score
+        if (assignment.allEndScores) {
+            Object.keys(assignment.allEndScores).forEach(endStr => {
+                const endNum = parseInt(endStr)
+                const scores = assignment.allEndScores[endStr]
+
+                // Only save ends that have any value
+                if (scores && scores.some(s => s !== undefined && s !== null)) {
+                    endsToSave.push({
+                        end_number: endNum,
+                        arrows: scores.map(s => {
+                            if (s === undefined || s === null) return "M"
+                            return String(s === 10 ? 'X' : s)
+                        })
+                    })
+                }
+            })
+        }
+
+        if (endsToSave.length === 0) {
+            toast.info('Belum ada nilai yang diinput')
+            saving.value = false
+            return
+        }
+
+        await post(`/qualification/assignments/${assignment.uuid}/scores`, {
+            ends: endsToSave
+        })
+
+        // Success - UI Feedback & Navigation
+        toast.success('Nilai berhasil disimpan')
+
+        // Auto-advance logic
+        if (isAssignmentEndComplete(assignment)) {
+            if (currentEnd < (props.sessionData?.total_ends || 0)) {
+                // Move to next end for the same archer
+                goToEnd(currentEnd + 1)
             } else {
-                toast.success('Semua pemanah selesai!')
+                // Archer finished all ends, move to next archer in list
+                const currentIndex = props.targetAssignments.findIndex(a => a.uuid === assignment.uuid)
+                if (currentIndex < props.targetAssignments.length - 1) {
+                    const nextArcher = props.targetAssignments[currentIndex + 1]
+                    currentScoringAssignment.value = nextArcher
+                    initEndScores(nextArcher)
+                    toast.info(`Berpindah ke: ${nextArcher.archer_name}`)
+                } else {
+                    toast.success('Semua pemanah dalam kategori ini selesai!')
+                }
             }
         }
 
-        toast.success('Nilai berhasil disimpan')
         emit('updated')
     } catch (error) {
         console.error('Failed to save score:', error)

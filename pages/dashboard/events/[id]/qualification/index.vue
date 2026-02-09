@@ -229,14 +229,18 @@
                 <tr class="bg-gray-50/50 border-b border-gray-100">
                   <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400  tracking-widest w-24">
                     Posisi</th>
-                  <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400  tracking-widest min-w-[350px]">
+                  <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400 tracking-widest min-w-[350px]">
                     Nama Pemanah</th>
-                  <th class="px-6 py-4 text-right text-[10px] font-black text-gray-400  tracking-widest w-40">
-                    Nilai</th>
+                  <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400 tracking-widest">
+                    Skor Per Rambahan</th>
+                  <th class="px-6 py-4 text-right text-[10px] font-black text-gray-400  tracking-widest w-32">
+                    Total</th>
+                  <th class="px-6 py-4 text-right text-[10px] font-black text-gray-400  tracking-widest w-32">
+                    Aksi</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(archer, index) in paginatedEntries" :key="archer.id || archer.uuid || index"
+                <tr v-for="(archer, index) in paginatedEntries" :key="archer.participant_uuid || index"
                   class="border-b border-gray-50 hover:bg-gray-50/50 transition-all">
                   <td class="px-6 py-4">
                     <span
@@ -245,15 +249,36 @@
                   </td>
                   <td class="px-6 py-4">
                     <div class="flex items-center gap-3">
-                      <img
-                        :src="useImageOrDefault(archer.avatar_url || archer.photo_url, archer.name || archer.archer_name)"
+                      <img :src="useImageOrDefault(archer.avatar_url, archer.archer_name)"
                         class="size-9 rounded-lg object-cover border border-gray-100" />
-                      <p class="text-[11px] sm:text-base font-bold text-navy">{{ archer.name || archer.archer_name }}
-                      </p>
+                      <div>
+                        <p class="text-[11px] sm:text-base font-bold text-navy">{{ archer.archer_name }}</p>
+                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-tighter">{{ archer.club_name ||
+                          'Independen' }}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4">
+                    <div class="flex flex-wrap gap-1 max-w-[250px]">
+                      <template v-if="archer.end_scores">
+                        <span v-for="(s, sIdx) in archer.end_scores.split(', ')" :key="sIdx"
+                          class="px-2 py-0.5 bg-gray-50 text-[10px] font-black text-navy rounded border border-gray-100 shadow-sm">
+                          {{ s }}
+                        </span>
+                      </template>
+                      <span v-else class="text-[10px] text-gray-400 font-bold italic">Belum ada skor</span>
                     </div>
                   </td>
                   <td class="px-6 py-4 text-right">
-                    <p class="text-2xl font-black text-navy">{{ archer.score || archer.total_score || 0 }}</p>
+                    <p class="text-xl font-black text-navy">{{ archer.total_score || 0 }}</p>
+                  </td>
+                  <td class="px-6 py-4 text-right">
+                    <NuxtLink
+                      :to="`/dashboard/events/${eventId}/result-user?participant_uuid=${archer.participant_uuid}`"
+                      class="inline-flex items-center justify-center gap-2 px-3 py-1.5 bg-primary/10 text-navy text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-primary transition-all">
+                      <Icon icon="ph:eye-bold" class="text-sm" />
+                      Detail
+                    </NuxtLink>
                   </td>
                 </tr>
               </tbody>

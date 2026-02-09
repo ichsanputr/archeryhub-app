@@ -7,7 +7,9 @@
                 <Icon icon="ph:arrow-left-bold" class="text-xl" />
             </NuxtLink>
             <div>
-                <h1 class="text-xl font-black text-navy leading-none">Hasil Pertandingan Saya</h1>
+                <h1 class="text-xl font-black text-navy leading-none">
+                    {{ route.query.participant_uuid ? 'Detail Hasil Pertandingan' : 'Hasil Pertandingan Saya' }}
+                </h1>
                 <p class="text-gray-400 text-xs mt-1">{{ eventName }}</p>
             </div>
         </div>
@@ -105,17 +107,29 @@
                         <div class="p-6 overflow-y-auto max-h-[400px]">
                             <h4 class="text-[11px] font-black text-navy uppercase tracking-widest mb-4">Rincian Per-End
                             </h4>
-                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                                <div v-for="(score, index) in qualResult.end_scores" :key="index"
-                                    class="p-4 rounded-2xl bg-gray-50 border border-gray-100 flex flex-col items-center group hover:border-primary/30 transition-all">
-                                    <span
-                                        class="text-[9px] font-black text-gray-400 uppercase tracking-tighter mb-1">End
-                                        {{ index + 1
-                                        }}</span>
-                                    <span
-                                        class="text-lg font-black text-navy group-hover:text-primary transition-colors">{{
-                                        score
-                                        }}</span>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div v-for="(end, index) in qualResult.end_scores" :key="index"
+                                    class="p-4 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-between group hover:border-primary/30 transition-all">
+                                    <div class="flex flex-col">
+                                        <span
+                                            class="text-[9px] font-black text-gray-400 uppercase tracking-tighter mb-1">Rambahan
+                                            {{ end.end_number || index + 1 }}</span>
+                                        <!-- Arrow scores -->
+                                        <div v-if="end.arrows" class="flex gap-1.5">
+                                            <span v-for="(arrow, aIdx) in end.arrows" :key="aIdx"
+                                                class="size-6 rounded-md bg-white border border-gray-200 flex items-center justify-center text-[10px] font-black text-navy shadow-sm">
+                                                {{ arrow.is_x ? 'X' : arrow.score }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col items-end">
+                                        <span
+                                            class="text-xs font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Total</span>
+                                        <span
+                                            class="text-xl font-black text-navy group-hover:text-primary transition-colors">
+                                            {{ typeof end === 'object' ? end.total_score_end : end }}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -173,7 +187,7 @@
                                     <div class="text-2xl font-black text-navy mt-1"
                                         :class="{ 'opacity-30': match.status !== 'completed' }">
                                         {{ match.entry_a_uuid === myEntryUuid ? (match.total_score_a || 0) :
-                                        (match.total_score_b || 0)
+                                            (match.total_score_b || 0)
                                         }}
                                     </div>
                                 </div>
@@ -185,14 +199,14 @@
                                         class="text-[10px] font-bold text-gray-500 leading-tight truncate text-center max-w-full">
                                         {{ match.entry_a_uuid === myEntryUuid ? (match.entry_b_name || 'TBD') :
                                             (match.entry_a_name ||
-                                        'TBD') }}
+                                                'TBD') }}
                                     </div>
                                     <div class="text-2xl font-black text-gray-400 mt-1"
                                         :class="{ 'opacity-30': match.status !== 'completed' }">
                                         {{ match.entry_a_uuid === myEntryUuid ? (match.total_score_b || 0) :
                                             (match.total_score_a || 0)
-                                        ||
-                                        0 }}
+                                            ||
+                                            0 }}
                                     </div>
                                 </div>
                             </div>
@@ -231,67 +245,101 @@ const fetchInitialData = async () => {
         const eventRes = await get(`/events/${eventId}`)
         eventName.value = eventRes?.event?.name || eventRes?.name || 'Event'
 
-        // 2. Fetch My Profile
-        const profileRes = await get('/archer/me')
-        userProfile.value = profileRes?.data
-        const myEmail = userProfile.value?.email
+        const participantUuid = route.query.participant_uuid
+        let searchEmail = ''
 
-        // 3. Find me in participants for this event to get category_id
-        const participantsRes = await get(`/events/${eventId}/participants`, {
-            params: {
-                limit: 1000,
-                group_by: 'archer',
-                search: myEmail
+        if (participantUuid) {
+            // 2. Fetch Specific Participant Profile
+            const pRes = await get(`/events/${eventId}/participants/${participantUuid}`)
+            userProfile.value = {
+                full_name: pRes?.full_name,
+                avatar_url: pRes?.avatar_url,
+                club_name: pRes?.club_name,
+                city: pRes?.city,
+                bow_type: pRes?.division_name,
+                uuid: pRes?.archer_id
             }
-        })
+            searchEmail = pRes?.email
+            categoryId.value = pRes?.category_id
+            categoryName.value = `${pRes?.division_name} - ${pRes?.category_name}`
 
-        const me = participantsRes?.participants?.find(p => p.email === myEmail)
-        if (me && me.categories?.length > 0) {
-            // Assuming show first active category for now
-            const cat = me.categories[0]
-            categoryId.value = cat.category_id
-            categoryName.value = `${cat.division_name} - ${cat.category_name}`
+            // Fetch deep scores if assignment exists
+            if (pRes?.qualification_assignment_uuid) {
+                const qScores = await get(`/qualification/assignments/${pRes.qualification_assignment_uuid}/scores`)
+                if (qScores?.scores) {
+                    qualResult.value = {
+                        total_score: qScores.scores.reduce((sum, s) => sum + (s.total_score_end || 0), 0),
+                        total_10x: qScores.scores.reduce((sum, s) => sum + (s.ten_count_end || 0), 0),
+                        total_x: qScores.scores.reduce((sum, s) => sum + (s.x_count_end || 0), 0),
+                        end_scores: qScores.scores,
+                        rank: '-'
+                    }
+                }
+            }
+        } else {
+            // 2. Fetch My Profile
+            const profileRes = await get('/archer/me')
+            userProfile.value = profileRes?.data
+            searchEmail = userProfile.value?.email
 
-            // We need my entry UUID for elimination matches
-            // Elimination entries use a different UUID system, let's find it.
+            // 3. Find me in participants for this event to get category_id
+            const participantsRes = await get(`/events/${eventId}/participants`, {
+                params: {
+                    limit: 1000,
+                    group_by: 'archer',
+                    search: searchEmail
+                }
+            })
+
+            const me = participantsRes?.participants?.find(p => p.email === searchEmail)
+            if (me && me.categories?.length > 0) {
+                // Assuming show first active category for now
+                const cat = me.categories[0]
+                categoryId.value = cat.category_id
+                categoryName.value = `${cat.division_name} - ${cat.category_name}`
+            }
         }
 
-        // 4. Fetch Qualification Results
+        // 4. Fetch Qualification Results (for ranking)
         if (categoryId.value) {
             const gRes = await get(`/events/${eventId}/results/qualification`, {
                 params: { category_id: categoryId.value }
             })
 
-            const myQual = gRes?.results?.find(r => r.archer_uuid === userProfile.value?.uuid)
-            if (myQual) {
-                qualResult.value = myQual
-            }
+            const myQual = gRes?.results?.find(r =>
+                (participantUuid && r.participant_id === participantUuid) ||
+                (r.archer_uuid === userProfile.value?.uuid)
+            )
 
-            // 5. Fetch Elimination Bracket and Matches
+            if (myQual) {
+                // If we already have deep scores, just update the rank
+                if (qualResult.value) {
+                    qualResult.value.rank = myQual.rank
+                } else {
+                    qualResult.value = myQual
+                }
+            }
+        }
+
+        // 5. Fetch Elimination Bracket and Matches
+        if (categoryId.value) {
             const elimRes = await get(`/events/${eventId}/results/elimination`, {
                 params: { category_id: categoryId.value }
             })
 
             if (elimRes?.bracket?.matches) {
-                // Flatten all matches from all rounds
                 const allMatches = Object.values(elimRes.bracket.matches).flat()
-
-                // We need to find the elimination entry UUID for the user
-                // We'll look for matches that have the archer name
                 const myName = userProfile.value?.full_name
                 const myMatch = allMatches.find(m => m.entry_a_name === myName || m.entry_b_name === myName)
 
                 if (myMatch) {
                     myEntryUuid.value = myMatch.entry_a_name === myName ? myMatch.entry_a_uuid : myMatch.entry_b_uuid
-
-                    // Filter matches where current user is participating
                     elimMatches.value = allMatches.filter(m =>
                         m.entry_a_uuid === myEntryUuid.value || m.entry_b_uuid === myEntryUuid.value
                     ).sort((a, b) => a.round_no - b.round_no)
                 }
             }
         }
-
     } catch (error) {
         console.error('Failed to fetch result-user data:', error)
     } finally {

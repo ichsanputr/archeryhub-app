@@ -3,7 +3,8 @@
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
                 <h2 class="text-xl font-black text-navy leading-tight">Pengaturan Target</h2>
-                <p class="text-sm text-gray-500 mt-1">Kelola penempatan pemanah pada target kualifikasi (Drag & Drop)
+                <p class="text-sm text-gray-500 mt-1">Kelola penempatan pemanah pada target kualifikasi (Geser &
+                    Letakkan)
                 </p>
             </div>
             <div class="flex items-center gap-3">
