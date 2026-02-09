@@ -3,61 +3,15 @@
         <div class="bracket-scroll-container no-scrollbar">
             <div v-if="Object.keys(rounds).length > 0" class="flex items-center justify-center min-w-max gap-4 p-12">
 
-                <!-- LEFT SIDE ROUNDS (Rounds 1 to Total-2) -->
+                <!-- LEFT SIDE ROUNDS -->
                 <template v-for="rNo in leftSideRoundNumbers" :key="'left-' + rNo">
-                    <div class="bracket-round">
-                        <div class="round-header group">
-                            <span class="text-[10px] uppercase font-black tracking-[0.3em] text-navy/30">{{
-                                getRoundName(parseInt(rNo)) }}</span>
-                            <button type="button" @click="$emit('navigate-to-round', rNo)"
-                                class="mt-2 px-4 py-1.5 rounded-xl bg-white border border-[#d1dcf0] text-[9px] font-black tracking-widest text-navy uppercase hover:bg-navy hover:text-primary transition-all shadow-sm">
-                                Manage
-                            </button>
-                        </div>
-                        <div class="slots-container flex flex-col justify-center"
-                            :style="{ height: getSideTotalHeight + 'px' }">
-                            <div v-for="match in getMatchesForSide(rNo, 'left')" :key="match.id" class="match-slot"
-                                :style="{ height: getSlotHeightForSide(rNo) + 'px' }">
-                                <!-- Match Card Left -->
-                                <div @click="$emit('select-match', match)" class="match-node-card group/card shadow-sm"
-                                    :class="{ 'selected': selectedMatch?.id === match.id, 'completed': match.winner_entry_id }">
-                                    <div class="match-card-header">
-                                        <div class="flex items-center gap-1.5 opacity-60">
-                                            <Icon icon="ph:trophy-bold" class="text-[10px]" />
-                                            <span class="text-[8px] font-black tracking-widest uppercase">Match</span>
-                                        </div>
-                                        <span class="text-[10px] font-black text-navy/10">#{{ match.match_no }}</span>
-                                    </div>
-                                    <div class="archer-list">
-                                        <div v-for="side in ['A', 'B']" :key="side" class="archer-item"
-                                            :class="{ 'is-winner': isWinner(match, side), 'is-loser': isLoser(match, side) }">
-                                            <div class="avatar-wrapper relative">
-                                                <img :src="getAvatarUrl(side === 'A' ? match.entry_a_name : match.entry_b_name)"
-                                                    class="avatar-img" />
-                                                <div v-if="isWinner(match, side)" class="winner-indicator">
-                                                    <Icon icon="ph:crown-fill" />
-                                                </div>
-                                                <div v-if="parseInt(rNo) === 1 && (side === 'A' ? match.entry_a_seed : match.entry_b_seed)"
-                                                    class="avatar-seed-badge">
-                                                    {{ (side === 'A' ? match.entry_a_seed : match.entry_b_seed) }}
-                                                </div>
-                                            </div>
-                                            <div class="archer-info">
-                                                <span class="archer-name">
-                                                    {{ (side === 'A' ? match.entry_a_name : match.entry_b_name) ||
-                                                        (match.is_bye ? 'BYE' : 'TBD') }}
-                                                </span>
-                                            </div>
-                                            <div class="score-display">
-                                                {{ getScore(match, side) }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Connector (Left to Hub) -->
+                    <BracketRound :round-no="rNo" :round-name="getRoundName(parseInt(rNo))"
+                        :matches="getMatchesForSide(rNo, 'left')" :total-height="getSideTotalHeight"
+                        :slot-height="getSlotHeightForSide(rNo)" :bracket-format="bracket?.format"
+                        :selected-match-id="selectedMatch?.id" @navigate="$emit('navigate-to-round', $event)"
+                        @select-match="$emit('select-match', $event)" />
+
+                    <!-- Connector (Left to Next) -->
                     <div class="connector-space" :style="{ height: getSideTotalHeight + 'px' }">
                         <svg class="bracket-svg" :viewBox="`0 0 80 ${getSideTotalHeight}`" preserveAspectRatio="none"
                             style="width: 100%; height: 100%;">
@@ -69,175 +23,15 @@
                     </div>
                 </template>
 
-                <!-- CENTER HUB (FINAL ARENA) -->
-                <div class="bracket-round arena-column min-w-[550px]">
-                    <!-- Consolidated Header for Semi and Final -->
-                    <div class="round-header !flex-row !gap-4 !items-end !mb-12">
-                        <div class="flex flex-col items-center">
-                            <span
-                                class="text-[10px] uppercase font-black tracking-[0.3em] text-navy/30">Semifinal</span>
-                            <button type="button" @click="$emit('navigate-to-round', getTotalRounds - 1)"
-                                class="mt-2 px-4 py-1.5 rounded-xl bg-white border border-[#d1dcf0] text-[9px] font-black tracking-widest text-navy uppercase hover:bg-navy hover:text-primary transition-all shadow-sm">
-                                Manage
-                            </button>
-                        </div>
-                        <div class="h-8 w-px bg-[#d1dcf0] mb-1"></div>
-                        <div class="flex flex-col items-center">
-                            <span class="text-[10px] uppercase font-black tracking-[0.3em] text-navy/30">Finals</span>
-                            <button type="button" @click="$emit('navigate-to-round', getTotalRounds)"
-                                class="mt-2 px-4 py-1.5 rounded-xl bg-white border border-[#d1dcf0] text-[9px] font-black tracking-widest text-navy uppercase hover:bg-navy hover:text-primary transition-all shadow-sm">
-                                Manage
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="final-arena flex flex-col items-center justify-between py-8"
-                        :style="{ height: getSideTotalHeight + 'px' }">
-                        <!-- CHAMPIONSHIP / FINAL -->
-                        <div class="gold-match-container relative w-full flex flex-col items-center">
-                            <div class="arena-title mb-4">
-                                <div class="flex flex-col items-center">
-                                    <div
-                                        class="flex items-center gap-3 px-6 py-2 rounded-2xl bg-white border-2 border-primary shadow-sm relative overflow-hidden group/title">
-                                        <Icon icon="ph:crown-simple-fill" class="text-primary text-lg" />
-                                        <span class="text-xs font-black text-navy tracking-[0.3em] uppercase">Grand
-                                            Final</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div v-if="goldMatch" class="relative group">
-                                <div @click="$emit('select-match', goldMatch)"
-                                    class="match-node-card is-final group/card !border-primary shadow-sm"
-                                    :class="{ 'selected': selectedMatch?.id === goldMatch.id, 'completed': goldMatch.winner_entry_id }">
-                                    <div class="match-card-header !bg-primary/5">
-                                        <div class="flex items-center gap-1.5 text-navy font-black">
-                                            <Icon icon="ph:medal-fill" class="text-[10px] text-primary" />
-                                            <span class="text-[8px] font-black tracking-widest uppercase">Perebutan
-                                                Juara 1 & 2</span>
-                                        </div>
-                                        <span class="text-[10px] font-black text-navy/10">#{{ goldMatch.match_no
-                                            }}</span>
-                                    </div>
-                                    <div class="archer-list">
-                                        <div v-for="side in ['A', 'B']" :key="side" class="archer-item"
-                                            :class="{ 'is-winner': isWinner(goldMatch, side), 'is-loser': isLoser(goldMatch, side) }">
-                                            <div class="avatar-wrapper relative">
-                                                <img :src="getAvatarUrl(side === 'A' ? goldMatch.entry_a_name : goldMatch.entry_b_name)"
-                                                    class="avatar-img" />
-                                                <div v-if="isWinner(goldMatch, side)" class="winner-indicator">
-                                                    <Icon icon="ph:crown-fill" />
-                                                </div>
-                                            </div>
-                                            <div class="archer-info">
-                                                <span class="archer-name">{{ (side === 'A' ? goldMatch.entry_a_name :
-                                                    goldMatch.entry_b_name) || 'TBD' }}</span>
-                                            </div>
-                                            <div class="score-display">{{ getScore(goldMatch, side) }}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- SEMIFINALS (THE CONNECTION HUB) -->
-                        <div class="semifinals-container flex flex-col items-center gap-4 w-full relative">
-                            <div class="flex justify-center gap-8 w-full relative z-10">
-                                <div v-for="match in semifinalMatches" :key="match.id" class="relative group">
-                                    <div @click="$emit('select-match', match)"
-                                        class="match-node-card group/card shadow-sm"
-                                        :class="{ 'selected': selectedMatch?.id === match.id, 'completed': match.winner_entry_id }">
-                                        <div class="match-card-header">
-                                            <div class="flex items-center gap-1.5 opacity-60">
-                                                <Icon icon="ph:trophy-bold" class="text-[10px]" />
-                                                <span class="text-[8px] font-black tracking-widest uppercase">Match {{
-                                                    match.match_no
-                                                    }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="archer-list">
-                                            <div v-for="side in ['A', 'B']" :key="side" class="archer-item"
-                                                :class="{ 'is-winner': isWinner(match, side), 'is-loser': isLoser(match, side) }">
-                                                <div class="avatar-wrapper relative">
-                                                    <img :src="getAvatarUrl(side === 'A' ? match.entry_a_name : match.entry_b_name)"
-                                                        class="avatar-img" />
-                                                    <div v-if="isWinner(match, side)" class="winner-indicator">
-                                                        <Icon icon="ph:crown-fill" />
-                                                    </div>
-                                                </div>
-                                                <div class="archer-info">
-                                                    <span class="archer-name">{{ (side === 'A' ? match.entry_a_name :
-                                                        match.entry_b_name) || 'TBD' }}</span>
-                                                </div>
-                                                <div class="score-display">{{ getScore(match, side) }}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Hub Vertical Connectors (SVG Overlay) -->
-                        <div class="absolute inset-x-0 inset-y-0 pointer-events-none z-0">
-                            <svg class="w-full h-full" :viewBox="`0 0 500 ${getSideTotalHeight}`" fill="none">
-                                <!-- Paths to Grand Final -->
-                                <path v-for="i in [0, 1]" :key="'to-final-' + i"
-                                    :d="`M ${250 + (i === 0 ? -120 : 120)} ${getSideTotalHeight / 2} V ${getSideTotalHeight / 2 - 100} H 250 V ${getSideTotalHeight / 2 - 180}`"
-                                    class="stroke-navy/10 stroke-[2px]" />
-                                <!-- Paths to Bronze Match -->
-                                <path v-for="i in [0, 1]" :key="'to-bronze-' + i"
-                                    :d="`M ${250 + (i === 0 ? -120 : 120)} ${getSideTotalHeight / 2} V ${getSideTotalHeight / 2 + 100} H 250 V ${getSideTotalHeight / 2 + 180}`"
-                                    class="stroke-orange-500/10 stroke-[2px] stroke-dasharray-[4,4]" />
-                            </svg>
-                        </div>
-
-                        <!-- 3rd PLACE MATCH -->
-                        <div class="bronze-match-container relative w-full flex flex-col items-center">
-                            <div class="flex items-center gap-4 w-full mb-4 relative z-10">
-                                <div class="h-px flex-1 bg-[#d1dcf0]"></div>
-                                <div
-                                    class="flex items-center gap-2 px-6 py-2 rounded-xl bg-white border border-[#d1dcf0] shadow-sm">
-                                    <Icon icon="ph:shield-bold" class="text-orange-500 text-sm" />
-                                    <span class="text-[9px] font-black text-navy/40 tracking-[0.2em] uppercase">Bronze
-                                        Match</span>
-                                </div>
-                                <div class="h-px flex-1 bg-[#d1dcf0]"></div>
-                            </div>
-                            <div v-if="bronzeMatch" class="relative group">
-                                <div @click="$emit('select-match', bronzeMatch)"
-                                    class="match-node-card group/card !bg-white shadow-sm !border-dashed !border-orange-500/30 scale-95"
-                                    :class="{ 'selected': selectedMatch?.id === bronzeMatch.id, 'completed': bronzeMatch.winner_entry_id }">
-                                    <div class="match-card-header !bg-orange-50/50">
-                                        <div class="flex items-center gap-1.5 text-orange-700 font-bold">
-                                            <Icon icon="ph:medal-bold" class="text-[10px]" />
-                                            <span class="text-[8px] font-black tracking-widest uppercase">Third
-                                                Place</span>
-                                        </div>
-                                    </div>
-                                    <div class="archer-list">
-                                        <div v-for="side in ['A', 'B']" :key="side" class="archer-item"
-                                            :class="{ 'is-winner': isWinner(bronzeMatch, side), 'is-loser': isLoser(bronzeMatch, side) }">
-                                            <div class="avatar-wrapper relative">
-                                                <img :src="getAvatarUrl(side === 'A' ? bronzeMatch.entry_a_name : bronzeMatch.entry_b_name)"
-                                                    class="avatar-img" />
-                                                <div v-if="isWinner(bronzeMatch, side)" class="winner-indicator">
-                                                    <Icon icon="ph:crown-fill" />
-                                                </div>
-                                            </div>
-                                            <div class="archer-info">
-                                                <span class="archer-name">{{ (side === 'A' ? bronzeMatch.entry_a_name :
-                                                    bronzeMatch.entry_b_name) || 'TBD' }}</span>
-                                            </div>
-                                            <div class="score-display">{{ getScore(bronzeMatch, side) }}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- CENTER HUB (CHAMPIONSHIP TOWER) -->
+                <ChampionshipTower :total-rounds="getTotalRounds" :semifinal-matches="semifinalMatches"
+                    :gold-match="goldMatch" :bronze-match="bronzeMatch" :total-height="getSideTotalHeight"
+                    :bracket-format="bracket?.format" :selected-match-id="selectedMatch?.id"
+                    @navigate="$emit('navigate-to-round', $event)" @select-match="$emit('select-match', $event)" />
 
                 <!-- RIGHT SIDE ROUNDS -->
                 <template v-for="rNo in rightSideRoundNumbers" :key="'right-' + rNo">
+                    <!-- Connector (Right to Previous) -->
                     <div class="connector-space" :style="{ height: getSideTotalHeight + 'px' }">
                         <svg class="bracket-svg" :viewBox="`0 0 80 ${getSideTotalHeight}`" preserveAspectRatio="none"
                             style="width: 100%; height: 100%;">
@@ -247,53 +41,12 @@
                                 :d="calculateConnectorPath(1, rNo, 'right', true)" />
                         </svg>
                     </div>
-                    <div class="bracket-round">
-                        <div class="round-header group flex flex-col items-end">
-                            <span class="text-[10px] uppercase font-black tracking-[0.3em] text-navy/30">{{
-                                getRoundName(parseInt(rNo)) }}</span>
-                            <button type="button" @click="$emit('navigate-to-round', rNo)"
-                                class="mt-2 px-4 py-1.5 rounded-xl bg-white border border-[#d1dcf0] text-[9px] font-black tracking-widest text-navy uppercase hover:bg-navy hover:text-primary transition-all shadow-sm">
-                                Manage
-                            </button>
-                        </div>
-                        <div class="slots-container flex flex-col justify-center"
-                            :style="{ height: getSideTotalHeight + 'px' }">
-                            <div v-for="match in getMatchesForSide(rNo, 'right')" :key="match.id" class="match-slot"
-                                :style="{ height: getSlotHeightForSide(rNo) + 'px' }">
-                                <div @click="$emit('select-match', match)" class="match-node-card group/card shadow-sm"
-                                    :class="{ 'selected': selectedMatch?.id === match.id, 'completed': match.winner_entry_id }">
-                                    <div class="match-card-header">
-                                        <div class="flex items-center gap-1.5 opacity-60">
-                                            <Icon icon="ph:trophy-bold" class="text-[10px]" />
-                                            <span class="text-[8px] font-black tracking-widest uppercase">Match</span>
-                                        </div>
-                                        <span class="text-[10px] font-black text-navy/10">#{{ match.match_no }}</span>
-                                    </div>
-                                    <div class="archer-list">
-                                        <div v-for="side in ['A', 'B']" :key="side" class="archer-item"
-                                            :class="{ 'is-winner': isWinner(match, side), 'is-loser': isLoser(match, side) }">
-                                            <div class="avatar-wrapper relative">
-                                                <img :src="getAvatarUrl(side === 'A' ? match.entry_a_name : match.entry_b_name)"
-                                                    class="avatar-img" />
-                                                <div v-if="isWinner(match, side)" class="winner-indicator">
-                                                    <Icon icon="ph:crown-fill" />
-                                                </div>
-                                                <div v-if="parseInt(rNo) === 1 && (side === 'A' ? match.entry_a_seed : match.entry_b_seed)"
-                                                    class="avatar-seed-badge">
-                                                    {{ (side === 'A' ? match.entry_a_seed : match.entry_b_seed) }}
-                                                </div>
-                                            </div>
-                                            <div class="archer-info">
-                                                <span class="archer-name">{{ (side === 'A' ? match.entry_a_name :
-                                                    match.entry_b_name) || 'TBD' }}</span>
-                                            </div>
-                                            <div class="score-display">{{ getScore(match, side) }}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+                    <BracketRound :round-no="rNo" :round-name="getRoundName(parseInt(rNo))"
+                        :matches="getMatchesForSide(rNo, 'right')" :total-height="getSideTotalHeight"
+                        :slot-height="getSlotHeightForSide(rNo)" :bracket-format="bracket?.format"
+                        :selected-match-id="selectedMatch?.id" @navigate="$emit('navigate-to-round', $event)"
+                        @select-match="$emit('select-match', $event)" />
                 </template>
             </div>
         </div>
@@ -316,6 +69,8 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { computed } from 'vue'
+import BracketRound from './BracketRound.vue'
+import ChampionshipTower from './ChampionshipTower.vue'
 
 const props = defineProps({
     bracket: { type: Object, required: true },
@@ -324,28 +79,6 @@ const props = defineProps({
 })
 
 defineEmits(['generate-bracket', 'navigate-to-round', 'select-match'])
-
-const getAvatarUrl = (name) => {
-    if (!name || name === 'TBD' || name === 'BYE') return `https://ui-avatars.com/api/?name=??&background=f1f5f9&color=94a3b8&font-size=0.45`
-    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=ffaa00&color=202434&font-size=0.45&bold=true`
-}
-
-const getScore = (match, side) => {
-    if (props.bracket?.format === 'recurve_set') {
-        return side === 'A' ? match.total_points_a || 0 : match.total_points_b || 0
-    }
-    return side === 'A' ? match.total_score_a || 0 : match.total_score_b || 0
-}
-
-const isWinner = (match, side) => {
-    if (!match.winner_entry_id) return false
-    return match.winner_entry_id === (side === 'A' ? match.entry_a_id : match.entry_b_id)
-}
-
-const isLoser = (match, side) => {
-    if (!match.winner_entry_id) return false
-    return match.winner_entry_id !== (side === 'A' ? match.entry_a_id : match.entry_b_id)
-}
 
 // Layout Calculation Utilities
 const BASE_MATCH_HEIGHT = 160
@@ -406,7 +139,6 @@ const calculateConnectorPath = (i, roundNo, side = 'left', isSingle = false) => 
     const nextSlotHeight = getSlotHeightForSide(r + 1)
     const totalH = getSideTotalHeight.value
 
-    // Vertical centering logic for sides
     const matchesInSide = getMatchesForSide(r, 'left').length
     const roundBlockHeight = matchesInSide * slotHeight
     const vOffset = (totalH - roundBlockHeight) / 2
@@ -416,7 +148,6 @@ const calculateConnectorPath = (i, roundNo, side = 'left', isSingle = false) => 
     const targetY = vOffset + (i - 1) * nextSlotHeight + nextSlotHeight / 2
 
     if (isSingle) {
-        // Arrival targeted at the vertical center of the Semifinal match cards row in the hub tower
         const hubArrivalY = totalH / 2
         if (side === 'left') {
             return `M 0 ${y1} H 40 V ${hubArrivalY} H 80`
@@ -443,107 +174,6 @@ const calculateConnectorPath = (i, roundNo, side = 'left', isSingle = false) => 
 
 .bracket-scroll-container {
     @apply overflow-x-auto relative z-10;
-}
-
-.bracket-round {
-    @apply flex flex-col items-center min-w-[340px];
-}
-
-.round-header {
-    @apply mb-12 h-20 flex flex-col items-center justify-end;
-}
-
-.slots-container {
-    @apply relative;
-}
-
-.match-slot {
-    @apply flex items-center justify-center w-full;
-}
-
-.match-node-card {
-    @apply relative w-[280px] h-[130px] bg-white rounded-2xl border border-[#d1dcf0] transition-all duration-300 cursor-pointer overflow-hidden flex flex-col;
-}
-
-.match-node-card.selected {
-    @apply ring-4 ring-primary/20 border-primary shadow-lg shadow-primary/10 z-20;
-}
-
-.match-node-card.completed {
-    @apply border-green-500/20;
-}
-
-.match-card-header {
-    @apply flex justify-between items-center px-4 py-2 bg-slate-50 border-b border-[#d1dcf0];
-}
-
-.archer-list {
-    @apply flex-1 flex flex-col;
-}
-
-.archer-item {
-    @apply flex items-center gap-3 px-4 flex-1 transition-all relative;
-}
-
-.avatar-wrapper {
-    @apply size-8 rounded-lg overflow-visible shrink-0 bg-slate-100 border border-slate-200 p-0.5;
-}
-
-.avatar-img {
-    @apply w-full h-full rounded-md object-cover;
-}
-
-.avatar-seed-badge {
-    @apply absolute -left-2 -bottom-1 min-w-[14px] h-3.5 px-1 bg-navy text-primary text-[8px] font-black rounded-full flex items-center justify-center border border-white shadow-sm transition-all z-20;
-}
-
-.winner-indicator {
-    @apply absolute -top-1.5 -right-1.5 size-4 bg-primary text-navy rounded-full flex items-center justify-center text-[8px] shadow-sm border border-white z-20;
-}
-
-.archer-info {
-    @apply flex items-center gap-2 flex-1 min-w-0;
-}
-
-.archer-name {
-    @apply text-[11px] font-black text-black truncate tracking-tight;
-}
-
-.score-display {
-    @apply text-base font-black text-black/40 tabular-nums min-w-[44px] h-full flex items-center justify-end border-l border-[#d1dcf0] bg-slate-50/50 px-3;
-}
-
-.is-winner .score-display {
-    @apply text-black text-lg font-black;
-    animation: celebrate 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-@keyframes celebrate {
-    0% {
-        transform: scale(0.8);
-        opacity: 0;
-    }
-
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-.is-winner .archer-name {
-    @apply text-black font-black;
-}
-
-.is-loser {
-    @apply opacity-30 grayscale-[0.5];
-}
-
-.final-arena {
-    @apply flex flex-col items-center px-8 min-w-[500px];
-}
-
-.is-final {
-    @apply w-[320px] h-[150px] bg-white border-2;
 }
 
 .connector-space {
