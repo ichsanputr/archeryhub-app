@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm relative">
         <div class="p-6 md:p-8">
             <div class="flex items-center justify-between mb-8 pb-4 border-b border-gray-50">
                 <div>
@@ -9,9 +9,9 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pb-32">
                 <div v-for="match in roundMatches" :key="match.id"
-                    class="bg-gray-50/50 rounded-3xl border border-gray-100 p-6 hover:bg-white hover:shadow-navy/5 transition-all group">
+                    class="bg-gray-50/50 rounded-3xl border border-gray-100 p-6 hover:bg-white hover:shadow-navy/5 transition-all group relative hover:z-20 focus-within:z-50">
                     <div class="flex items-center justify-between mb-6">
                         <div class="flex items-center gap-3">
                             <div
@@ -61,11 +61,11 @@
                         </div>
                     </div>
 
-                    <div class="relative">
+                    <div>
                         <label
                             class="text-[9px] font-black text-gray-400 tracking-widest uppercase mb-2 block ml-1">Alokasi
                             Target</label>
-                        <div class="relative group/select">
+                        <div class="group/select">
                             <BaseSelect :model-value="match.target_id" :items="getFilteredOptions(match.id)"
                                 item-title="displayName" item-value="id" placeholder="-- Pilih Target --"
                                 @update:modelValue="val => { match.target_id = val; $emit('update-target', match) }" />
