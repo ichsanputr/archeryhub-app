@@ -33,25 +33,57 @@
                                     class="text-lg sm:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2 truncate">
                                     {{ pageTitle }}
                                 </h1>
-                                <div
-                                    class="flex flex-wrap items-center gap-1.5 sm:gap-y-1 text-[10px] sm:text-sm text-slate-300 font-medium overflow-hidden">
-                                    <template v-if="categoryInfo">
-                                        <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                                <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
+                                    <div
+                                        class="flex flex-wrap items-center gap-1.5 sm:gap-y-1 text-[10px] sm:text-sm text-slate-300 font-medium overflow-hidden">
+                                        <template v-if="categoryInfo">
+                                            <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                                                <span
+                                                    class="px-2 py-0.5 rounded bg-primary text-navy text-[9px] sm:text-[10px] font-black uppercase tracking-wider backdrop-blur-md">
+                                                    {{ categoryInfo.division_name }}
+                                                </span>
+                                                <span class="opacity-40 hidden sm:inline">•</span>
+                                                <span class="truncate">{{ categoryInfo.category_name }}</span>
+                                                <span class="opacity-40 hidden sm:inline">•</span>
+                                                <span class="truncate">{{ bracket.bracket_size }} Peserta</span>
+                                            </div>
+                                        </template>
+                                        <div v-else class="flex items-center gap-2">
                                             <span
-                                                class="px-2 py-0.5 rounded bg-primary/20 text-primary text-[9px] sm:text-xs font-black uppercase tracking-wider backdrop-blur-md border border-primary/20">{{
-                                                    categoryInfo.division_name }}</span>
-                                            <span class="opacity-40 hidden sm:inline">•</span>
-                                            <span class="truncate">{{ categoryInfo.category_name }}</span>
-                                            <span class="opacity-40 hidden sm:inline">•</span>
-                                            <span class="truncate">{{ categoryInfo.event_type_name }}</span>
-                                            <span class="opacity-40 hidden sm:inline">•</span>
-                                            <span class="truncate">{{ categoryInfo.gender_division_name }}</span>
+                                                class="px-2 py-0.5 rounded bg-white/5 text-white/40 text-[10px] sm:text-xs font-mono border border-white/5">{{
+                                                    bracket.bracket_size }} Peserta</span>
                                         </div>
-                                    </template>
-                                    <div v-else class="flex items-center gap-2">
-                                        <span
-                                            class="px-2 py-0.5 rounded bg-white/5 text-white/40 text-[10px] sm:text-xs font-mono border border-white/5">{{
-                                                bracket.bracket_size }} Peserta</span>
+                                    </div>
+
+                                    <!-- Quick Stats in Header -->
+                                    <div class="flex items-center gap-2 sm:gap-3">
+                                        <span class="opacity-20 hidden sm:inline text-white">|</span>
+                                        <div
+                                            class="flex items-center gap-1.5 bg-white/5 px-2 py-0.5 rounded-lg border border-white/10">
+                                            <Icon icon="ph:chart-bar-fill" class="text-primary text-xs" />
+                                            <span
+                                                class="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-white/60">
+                                                {{ finishedMatchesCount }}/{{ matches.length }} Match Selesai
+                                            </span>
+                                        </div>
+                                        <div v-if="currentRoundNo"
+                                            class="flex items-center gap-1.5 bg-blue-500/20 px-2 py-0.5 rounded-lg border border-blue-500/20">
+                                            <Icon icon="ph:users-four-fill" class="text-blue-300 text-xs" />
+                                            <span
+                                                class="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-blue-200">
+                                                {{ roundMatches.length }} Match di Round ini
+                                            </span>
+                                        </div>
+                                        <div
+                                            class="flex items-center gap-1.5 bg-white/5 px-2 py-0.5 rounded-lg border border-white/10">
+                                            <Icon icon="ph:gear-six-fill" class="text-white/40 text-xs" />
+                                            <span
+                                                class="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-white/60">
+                                                {{ bracket.format === 'recurve_set' ? 'SET' : 'ACC' }} • {{
+                                                bracket.arrows_per_end }}A/{{
+                                                bracket.ends_per_match }}E
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -256,6 +288,10 @@ const currentRoundNo = computed(() => route.query.round)
 const roundMatches = computed(() => {
     if (!currentRoundNo.value) return []
     return rounds.value[currentRoundNo.value] || []
+})
+
+const finishedMatchesCount = computed(() => {
+    return matches.value.filter(m => m.status === 'finished' || m.winner_entry_id).length
 })
 
 const pageTitle = computed(() => {

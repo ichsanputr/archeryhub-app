@@ -2,90 +2,76 @@
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         <!-- Matches Navigation / Selector -->
         <div class="lg:col-span-4 xl:col-span-3">
-            <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-5 sticky top-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xs font-black tracking-widest text-gray-400 flex items-center gap-2">
-                        <Icon icon="ph:list-bullets" class="text-sm" />
-                        MATCH LIST
+            <div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm p-4 sm:p-6 sticky top-6">
+                <div class="flex items-center justify-between mb-6 pb-2 border-b border-gray-50">
+                    <h3 class="text-[10px] font-black tracking-[0.2em] text-navy/40 flex items-center gap-2 uppercase">
+                        <Icon icon="ph:list-bullets-bold" class="text-sm" />
+                        Daftar Match
                     </h3>
-                    <span class="text-[10px] font-bold text-gray-400">{{ roundMatches.length }} match</span>
+                    <span class="px-2 py-0.5 rounded-lg bg-slate-100 text-[10px] font-black text-slate-400">{{
+                        roundMatches.length }}</span>
                 </div>
-                <div class="flex flex-col gap-2 max-h-[70vh] overflow-y-auto pr-1 no-scrollbar">
+                <!-- REMOVED overflow-hidden and adjusted padding for better visibility -->
+                <div class="flex flex-col gap-3 max-h-[75vh] overflow-y-auto pr-1 custom-scrollbar">
                     <button v-for="match in roundMatches" :key="match.id" @click="$emit('select-match', match)"
-                        class="group p-3 rounded-2xl border-2 text-left transition-all relative" :class="[
+                        class="group p-3 sm:p-4 rounded-2xl border-2 text-left transition-all relative" :class="[
                             selectedScoringMatch?.id === match.id
-                                ? 'border-primary bg-primary/5 shadow-lg shadow-primary/10'
-                                : 'border-transparent bg-slate-50 hover:bg-white hover:border-slate-200 hover:shadow-md',
-                            (match.status === 'finished' || match.winner_entry_id) ? 'opacity-60' : ''
+                                ? 'border-primary bg-primary/5 shadow-sm shadow-primary/10'
+                                : 'border-transparent bg-slate-50/50 hover:bg-white hover:border-slate-200 hover:shadow-sm',
+                            (match.status === 'finished' || match.winner_entry_id) ? 'opacity-80' : ''
                         ]">
+                        <!-- Selection Indicator -->
+                        <div v-if="selectedScoringMatch?.id === match.id"
+                            class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
 
                         <!-- Match Header -->
                         <div class="flex items-center justify-between mb-3">
                             <div class="flex items-center gap-2">
-                                <span class="size-6 rounded-lg flex items-center justify-center text-[10px] font-black"
-                                    :class="selectedScoringMatch?.id === match.id ? 'bg-primary text-navy' : 'bg-slate-200 text-slate-500'">
-                                    {{ match.match_no }}
+                                <span
+                                    class="px-2 py-0.5 rounded-lg flex items-center justify-center text-[10px] font-black"
+                                    :class="selectedScoringMatch?.id === match.id ? 'bg-navy text-primary' : 'bg-slate-200 text-slate-500'">
+                                    M{{ match.match_no }}
                                 </span>
-                                <span v-if="match.target_name" class="text-[9px] font-medium text-slate-400">
+                                <span v-if="match.target_name"
+                                    class="text-[10px] font-bold text-navy/40 tracking-tight">
                                     {{ getFullTargetName(match) }}
                                 </span>
                             </div>
-                            <!-- Status Indicator -->
-                            <div class="size-2 rounded-full" :class="{
-                                'bg-green-500': match.status === 'finished' || match.winner_entry_id,
-                                'bg-blue-500 animate-pulse': match.status === 'in_progress',
-                                'bg-slate-300': match.status === 'pending' && !match.winner_entry_id
-                            }"></div>
+                            <!-- Status Label -->
+                            <div v-if="match.status === 'finished' || match.winner_entry_id"
+                                class="flex items-center gap-1 text-[8px] font-black text-green-500 uppercase tracking-widest">
+                                DONE
+                            </div>
                         </div>
 
-                        <!-- Participants -->
+                        <!-- Participants Scoreboard - REVAMPED FOR NO TRUNCATION -->
                         <div class="space-y-1.5">
-                            <!-- Entry A -->
-                            <div class="flex items-center justify-between gap-2 py-1 px-2 rounded-xl transition-colors"
-                                :class="match.winner_entry_id === match.entry_a_id ? 'bg-green-50' : ''">
-                                <div class="flex items-center gap-2 min-w-0 flex-1">
-                                    <img :src="getAvatarUrl(match.entry_a_name)"
-                                        class="size-6 rounded-lg object-cover" />
-                                    <span class="text-xs font-semibold text-navy truncate">
-                                        {{ match.entry_a_name || 'TBD' }}
+                            <template v-for="entry in [
+                                { id: match.entry_a_id, name: match.entry_a_name, score: 'A' },
+                                { id: match.entry_b_id, name: match.entry_b_name, score: 'B' }
+                            ]" :key="entry.score">
+                                <div class="flex items-center justify-between gap-3 p-2 rounded-xl border border-transparent transition-all"
+                                    :class="match.winner_entry_id === entry.id ? 'bg-green-50/80 border-green-100' : (selectedScoringMatch?.id === match.id ? 'bg-white/50' : '')">
+                                    <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                                        <div class="relative shrink-0">
+                                            <img :src="getAvatarUrl(entry.name)"
+                                                class="size-6 rounded-lg object-cover ring-2 ring-white shadow-sm" />
+                                            <Icon v-if="match.winner_entry_id === entry.id" icon="ph:crown-fill"
+                                                class="absolute -top-1.5 -left-1.5 text-yellow-500 text-[10px] drop-shadow-sm" />
+                                        </div>
+                                        <!-- Removed absolute sizing, allowing flex growth -->
+                                        <span
+                                            class="text-[11px] font-black text-navy leading-tight tracking-tight break-words py-0.5">
+                                            {{ entry.name || 'TBD' }}
+                                        </span>
+                                    </div>
+                                    <span
+                                        class="text-xs sm:text-sm font-black tabular-nums tracking-tighter shrink-0 ml-1"
+                                        :class="match.winner_entry_id === entry.id ? 'text-green-600' : 'text-navy'">
+                                        {{ getMatchScore(match, entry.score) }}
                                     </span>
                                 </div>
-                                <div class="flex items-center gap-1">
-                                    <Icon v-if="match.winner_entry_id === match.entry_a_id" icon="ph:crown-fill"
-                                        class="text-xs text-yellow-500" />
-                                    <span class="text-sm font-black tabular-nums min-w-[24px] text-right"
-                                        :class="match.winner_entry_id === match.entry_a_id ? 'text-green-600' : 'text-slate-600'">
-                                        {{ getMatchScore(match, 'A') }}
-                                    </span>
-                                </div>
-                            </div>
-
-                            <!-- VS Divider -->
-                            <div class="flex items-center gap-2 px-2">
-                                <div class="flex-1 h-px bg-slate-100"></div>
-                                <span class="text-[8px] font-black text-slate-300">VS</span>
-                                <div class="flex-1 h-px bg-slate-100"></div>
-                            </div>
-
-                            <!-- Entry B -->
-                            <div class="flex items-center justify-between gap-2 py-1 px-2 rounded-xl transition-colors"
-                                :class="match.winner_entry_id === match.entry_b_id ? 'bg-green-50' : ''">
-                                <div class="flex items-center gap-2 min-w-0 flex-1">
-                                    <img :src="getAvatarUrl(match.entry_b_name)"
-                                        class="size-6 rounded-lg object-cover" />
-                                    <span class="text-xs font-semibold text-navy truncate">
-                                        {{ match.entry_b_name || 'TBD' }}
-                                    </span>
-                                </div>
-                                <div class="flex items-center gap-1">
-                                    <Icon v-if="match.winner_entry_id === match.entry_b_id" icon="ph:crown-fill"
-                                        class="text-xs text-yellow-500" />
-                                    <span class="text-sm font-black tabular-nums min-w-[24px] text-right"
-                                        :class="match.winner_entry_id === match.entry_b_id ? 'text-green-600' : 'text-slate-600'">
-                                        {{ getMatchScore(match, 'B') }}
-                                    </span>
-                                </div>
-                            </div>
+                            </template>
                         </div>
                     </button>
                 </div>
@@ -97,98 +83,121 @@
             <div v-if="selectedScoringMatch" class="space-y-6">
                 <!-- Match Summary Header -->
                 <div
-                    class="bg-navy rounded-[40px] p-8 sm:p-12 flex flex-col items-center justify-center gap-8 text-white shadow-md overflow-hidden relative border border-white/5">
-                    <div class="absolute inset-0 opacity-5 pointer-events-none">
-                        <Icon icon="ph:target" class="text-[400px] absolute -right-20 -bottom-20 rotate-12" />
+                    class="bg-navy rounded-[3rem] p-8 sm:p-12 flex flex-col items-center justify-center gap-8 text-white shadow-sm overflow-hidden relative border border-white/5">
+                    <!-- Premium Background Layers -->
+                    <div class="absolute inset-0 opacity-[0.03] pointer-events-none">
+                        <Icon icon="ph:target" class="text-[500px] absolute -right-32 -bottom-32 rotate-12" />
+                    </div>
+                    <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent">
+                    </div>
+                    <div class="absolute bottom-0 left-0 w-1/2 h-full bg-gradient-to-r from-blue-500/5 to-transparent">
                     </div>
 
                     <div
-                        class="relative z-10 flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16 w-full">
-                        <!-- Side A -->
-                        <div class="flex flex-col items-center gap-4 text-center">
+                        class="relative z-10 flex flex-col md:flex-row items-center justify-center gap-10 md:gap-20 w-full">
+                        <!-- Side A Card -->
+                        <div class="flex flex-col items-center gap-5 text-center group">
                             <div class="relative">
-                                <img :src="getAvatarUrl(selectedScoringMatch.entry_a_name)"
-                                    class="size-20 sm:size-28 rounded-[2rem] border-4 border-white/10 shadow-2xl" />
                                 <div
-                                    class="absolute -bottom-2 -left-2 size-8 bg-navy border-2 border-primary rounded-xl flex items-center justify-center text-[10px] font-black text-primary">
+                                    class="absolute -inset-4 bg-primary/20 rounded-[3rem] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity">
+                                </div>
+                                <img :src="getAvatarUrl(selectedScoringMatch.entry_a_name)"
+                                    class="size-20 sm:size-24 rounded-[2.5rem] border-4 border-white/10 shadow-sm relative z-10" />
+                                <div
+                                    class="absolute -bottom-1 -left-1 z-20 size-8 bg-navy border-2 border-primary rounded-xl flex items-center justify-center text-[10px] font-black text-primary shadow-sm">
                                     {{ selectedScoringMatch.entry_a_seed || '-' }}
                                 </div>
                             </div>
-                            <div class="space-y-1">
-                                <span class="text-[10px] font-black tracking-[0.3em] text-primary/60 uppercase">Archer
+                            <div class="space-y-1.5">
+                                <span
+                                    class="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[8px] font-black tracking-[0.2em] uppercase border border-primary/20">Archer
                                     A</span>
-                                <h4 class="font-black text-xl sm:text-2xl leading-tight max-w-[200px] truncate">
+                                <h4
+                                    class="font-black text-lg sm:text-xl leading-tight max-w-[200px] truncate tracking-tight">
                                     {{ selectedScoringMatch.entry_a_name || 'TBD' }}
                                 </h4>
                             </div>
                         </div>
 
                         <!-- Central Scoreboard -->
-                        <div class="flex flex-col items-center gap-4">
-                            <div class="px-6 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
-                                <span class="text-[10px] font-black tracking-[0.4em] text-white/40 uppercase">{{
+                        <div class="flex flex-col items-center gap-5">
+                            <div
+                                class="px-6 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl shadow-inner">
+                                <span class="text-[9px] font-black tracking-[0.5em] text-white/40 uppercase">{{
                                     getFullTargetName(selectedScoringMatch) }}</span>
                             </div>
 
                             <div class="flex items-center gap-6 sm:gap-10">
-                                <div class="flex flex-col items-center">
+                                <div class="flex flex-col items-center transform transition-transform duration-500"
+                                    :class="{ 'scale-110': activeSide === 'A' }">
                                     <span
-                                        class="text-5xl sm:text-7xl font-black text-primary drop-shadow-[0_0_30px_rgba(255,193,7,0.3)]">
+                                        class="text-5xl sm:text-6xl font-black text-primary drop-shadow-[0_0_20px_rgba(255,193,7,0.3)] tracking-tighter">
                                         {{ getMatchScore(selectedScoringMatch, 'A') }}
                                     </span>
                                 </div>
 
-                                <div class="flex flex-col items-center">
-                                    <div class="w-px h-16 bg-white/10 relative">
-                                        <div class="absolute inset-0 bg-white/20 blur-sm"></div>
+                                <div class="flex flex-col items-center py-2">
+                                    <div
+                                        class="w-px h-16 bg-gradient-to-b from-transparent via-white/20 to-transparent relative">
                                         <div
-                                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-navy px-2 py-1 border border-white/10 rounded-lg text-[8px] font-black tracking-widest text-white/40">
+                                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-navy px-2 py-1 border border-white/10 rounded-lg text-[8px] font-black tracking-[0.3em] text-white/30 backdrop-blur-md">
                                             VS</div>
                                     </div>
                                 </div>
 
-                                <div class="flex flex-col items-center">
+                                <div class="flex flex-col items-center transform transition-transform duration-500"
+                                    :class="{ 'scale-110': activeSide === 'B' }">
                                     <span
-                                        class="text-5xl sm:text-7xl font-black text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.1)]">
+                                        class="text-5xl sm:text-6xl font-black text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.1)] tracking-tighter">
                                         {{ getMatchScore(selectedScoringMatch, 'B') }}
                                     </span>
                                 </div>
                             </div>
 
-                            <!-- End Match Button or Finished Badge -->
-                            <div v-if="selectedScoringMatch.winner_entry_id || selectedScoringMatch.status === 'finished'"
-                                class="px-4 py-1.5 rounded-xl bg-green-500/20 border border-green-500/30">
-                                <span class="text-[9px] font-black tracking-[0.2em] text-green-400 uppercase italic">
-                                    MATCH FINISHED
-                                </span>
-                            </div>
-                            <button v-else-if="canEndMatch" @click="$emit('end-match')" :disabled="isEndingMatch"
-                                class="px-6 py-2 rounded-xl bg-primary text-navy font-black text-sm tracking-wide hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-lg shadow-primary/30">
-                                <Icon v-if="isEndingMatch" icon="ph:circle-notch-bold" class="animate-spin" />
-                                <Icon v-else icon="ph:flag-checkered-fill" />
-                                <span>{{ isEndingMatch ? 'Mengakhiri...' : 'Akhiri Match' }}</span>
-                            </button>
-                            <div v-else class="px-4 py-1.5 rounded-xl bg-white/10 border border-white/20">
-                                <span class="text-[9px] font-black tracking-[0.2em] text-white/40 uppercase">
-                                    INPUT SKOR DULU
-                                </span>
+                            <!-- Match Status Actions -->
+                            <div class="">
+                                <div v-if="selectedScoringMatch.winner_entry_id || selectedScoringMatch.status === 'finished'"
+                                    class="px-5 py-1.5 rounded-xl bg-green-500/10 border border-green-500/20 backdrop-blur-sm flex items-center gap-2">
+                                    <Icon icon="ph:seal-check-fill" class="text-green-500 text-[10px]" />
+                                    <span
+                                        class="text-[9px] font-black tracking-[0.3em] text-green-400 uppercase">DONE</span>
+                                </div>
+                                <button v-else-if="canEndMatch" @click="$emit('end-match')" :disabled="isEndingMatch"
+                                    class="group px-6 py-2 rounded-xl bg-primary text-navy font-black text-[10px] tracking-widest uppercase hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-sm shadow-primary/20 hover:-translate-y-0.5">
+                                    <Icon v-if="isEndingMatch" icon="ph:circle-notch-bold"
+                                        class="animate-spin text-xs" />
+                                    <Icon v-else icon="ph:flag-checkered-fill"
+                                        class="group-hover:rotate-12 transition-transform text-xs" />
+                                    <span>{{ isEndingMatch ? 'Ending...' : 'Finish Match' }}</span>
+                                </button>
+                                <div v-else
+                                    class="px-5 py-1.5 rounded-xl bg-white/5 border border-white/10 flex items-center gap-2">
+                                    <div class="size-1 rounded-full bg-white/20 animate-pulse"></div>
+                                    <span
+                                        class="text-[9px] font-black tracking-[0.3em] text-white/30 uppercase">LIVE</span>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Side B -->
-                        <div class="flex flex-col items-center gap-4 text-center">
+                        <!-- Side B Card -->
+                        <div class="flex flex-col items-center gap-5 text-center group">
                             <div class="relative">
-                                <img :src="getAvatarUrl(selectedScoringMatch.entry_b_name)"
-                                    class="size-20 sm:size-28 rounded-[2rem] border-4 border-white/10 shadow-2xl" />
                                 <div
-                                    class="absolute -bottom-2 -right-2 size-8 bg-navy border-2 border-white/40 rounded-xl flex items-center justify-center text-[10px] font-black text-white/60">
+                                    class="absolute -inset-4 bg-white/10 rounded-[3rem] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity">
+                                </div>
+                                <img :src="getAvatarUrl(selectedScoringMatch.entry_b_name)"
+                                    class="size-20 sm:size-24 rounded-[2.5rem] border-4 border-white/10 shadow-sm relative z-10" />
+                                <div
+                                    class="absolute -bottom-1 -right-1 z-20 size-8 bg-navy border-2 border-white/20 rounded-xl flex items-center justify-center text-[10px] font-black text-white/40 shadow-sm">
                                     {{ selectedScoringMatch.entry_b_seed || '-' }}
                                 </div>
                             </div>
-                            <div class="space-y-1">
-                                <span class="text-[10px] font-black tracking-[0.3em] text-white/40 uppercase">Archer
+                            <div class="space-y-1.5">
+                                <span
+                                    class="px-2 py-0.5 rounded-full bg-white/5 text-white/40 text-[8px] font-black tracking-[0.2em] uppercase border border-white/10">Archer
                                     B</span>
-                                <h4 class="font-black text-xl sm:text-2xl leading-tight max-w-[200px] truncate">
+                                <h4
+                                    class="font-black text-lg sm:text-xl leading-tight max-w-[200px] truncate tracking-tight">
                                     {{ selectedScoringMatch.entry_b_name || 'TBD' }}
                                 </h4>
                             </div>
@@ -196,116 +205,145 @@
                     </div>
                 </div>
 
-                <!-- Input Grid -->
-                <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8">
-                    <div class="flex items-center justify-between mb-8 pb-4 border-b border-gray-50">
-                        <div class="flex items-center gap-6">
+                <!-- Main Input Dashboard -->
+                <div class="bg-white rounded-[3rem] border border-gray-100 shadow-sm p-8 sm:p-10">
+                    <!-- End Navigator -->
+                    <div class="flex items-center justify-between mb-10 pb-6 border-b border-gray-100">
+                        <div class="flex flex-wrap items-center gap-3 sm:gap-4">
                             <div v-for="i in (bracket?.ends_per_match || 5)" :key="i"
                                 @click="$emit('update:currentEnd', i)"
-                                class="flex flex-col items-center gap-1 cursor-pointer group">
-                                <span class="text-[10px] font-black tracking-widest transition-colors"
-                                    :class="currentEnd === i ? 'text-navy' : 'text-gray-400 group-hover:text-gray-600'">End
+                                class="flex flex-col items-center gap-2 cursor-pointer group">
+                                <span class="text-[10px] font-black tracking-[0.2em] transition-colors uppercase"
+                                    :class="currentEnd === i ? 'text-navy' : 'text-gray-300 group-hover:text-gray-500'">End
                                     {{ i }}</span>
-                                <div class="size-10 rounded-xl flex items-center justify-center text-sm font-black transition-all"
-                                    :class="currentEnd === i ? 'bg-navy text-primary shadow-sm scale-110' : 'bg-slate-50 text-gray-400 group-hover:bg-gray-100'">
+                                <div class="size-10 sm:size-12 rounded-xl flex items-center justify-center text-xs sm:text-sm font-black transition-all relative"
+                                    :class="currentEnd === i ? 'bg-navy text-primary shadow-sm' : 'bg-slate-50 text-gray-400 group-hover:bg-gray-100 group-hover:text-navy'">
                                     {{ i }}
+                                    <div v-if="currentEnd === i"
+                                        class="absolute -bottom-1 w-4 h-0.5 bg-primary rounded-full">
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="hidden sm:block text-right">
+                            <h5 class="text-[9px] font-black text-gray-400 tracking-widest uppercase mb-1">Mode</h5>
+                            <span class="px-2 py-0.5 rounded-lg bg-navy/5 text-navy text-[10px] font-black uppercase">
+                                {{ bracket.format === 'recurve_set' ? 'SET' : 'ACCUMULATED' }}
+                            </span>
+                        </div>
                     </div>
 
-                    <!-- Score input and keyboard -->
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+                    <!-- Scoring Interaction Area -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-16">
                         <template v-for="side in ['A', 'B']" :key="side">
-                            <div class="space-y-6">
-                                <div class="p-1 rounded-[2.5rem] bg-gradient-to-br transition-all duration-300"
-                                    :class="activeSide === side ? 'from-primary/20 to-primary/5 shadow-xl shadow-primary/5' : 'from-transparent to-transparent'">
-                                    <div class="p-6 rounded-[2.2rem] border-2 transition-all duration-300 relative overflow-hidden group hover:border-primary/30"
-                                        :class="activeSide === side ? 'bg-white border-primary shadow-sm' : 'bg-slate-50 border-gray-100 opacity-80 hover:opacity-100'"
+                            <div class="space-y-8">
+                                <!-- Scoring Card -->
+                                <div class="p-0.5 rounded-[2.5rem] bg-gradient-to-br transition-all duration-500"
+                                    :class="activeSide === side ? 'from-primary/20 to-primary/5 shadow-sm' : 'from-transparent to-transparent opacity-80'">
+                                    <div class="p-6 sm:p-8 rounded-[2.4rem] border-2 transition-all duration-500 relative overflow-hidden group hover:border-primary/20"
+                                        :class="activeSide === side ? 'bg-white border-primary shadow-sm' : 'bg-slate-50/50 border-gray-100'"
                                         @click="$emit('update:activeSide', side)">
 
-                                        <!-- Archer Header -->
-                                        <div class="flex justify-between items-center mb-6">
+                                        <!-- Decorative Background -->
+                                        <div v-if="activeSide === side"
+                                            class="absolute -right-10 -bottom-10 size-32 border-[166px] border-primary/5 rounded-full pointer-events-none">
+                                        </div>
+
+                                        <!-- Result Summary Line -->
+                                        <div class="flex justify-between items-start mb-6">
                                             <div class="flex items-center gap-4">
-                                                <div class="size-10 rounded-2xl flex items-center justify-center text-sm font-black shadow-inner"
+                                                <div class="size-10 rounded-xl flex items-center justify-center text-sm font-black shadow-inner"
                                                     :class="activeSide === side ? 'bg-navy text-primary' : 'bg-gray-200 text-gray-400'">
                                                     {{ side }}
                                                 </div>
-                                                <div>
+                                                <div class="min-w-0">
                                                     <span
-                                                        class="text-[10px] font-black tracking-widest text-gray-400 block mb-0.5">ARCHER
+                                                        class="text-[9px] font-black tracking-widest text-gray-400 block mb-0.5 uppercase">Archer
                                                         {{ side }}</span>
-                                                    <span
-                                                        class="text-sm md:text-base font-bold text-navy line-clamp-1 block">
+                                                    <h4 class="text-sm sm:text-base font-black text-navy truncate">
                                                         {{ side === 'A' ? selectedScoringMatch.entry_a_name :
                                                             (selectedScoringMatch.entry_b_name || 'TBD') }}
-                                                    </span>
+                                                    </h4>
                                                 </div>
                                             </div>
-                                            <div class="text-right flex flex-col items-end">
-                                                <div class="flex items-center gap-1.5 mb-0.5">
-                                                    <span
-                                                        class="text-[9px] font-black px-1.5 py-0.5 rounded bg-navy/5 text-navy/40 border border-navy/5">
-                                                        X: {{ calculateEndStats(selectedScoringMatch.id, currentEnd,
+                                            <div class="text-right">
+                                                <div class="flex items-center gap-1 mb-1 justify-end">
+                                                    <div
+                                                        class="px-1.5 py-0.5 rounded bg-gray-100 text-navy font-black text-[8px] uppercase">
+                                                        X:{{ calculateEndStats(selectedScoringMatch.id, currentEnd,
                                                             side).x }}
-                                                    </span>
-                                                    <span
-                                                        class="text-[9px] font-black px-1.5 py-0.5 rounded bg-navy/5 text-navy/40 border border-navy/5">
-                                                        10: {{ calculateEndStats(selectedScoringMatch.id, currentEnd,
+                                                    </div>
+                                                    <div
+                                                        class="px-1.5 py-0.5 rounded bg-gray-100 text-navy font-black text-[8px] uppercase">
+                                                        10:{{ calculateEndStats(selectedScoringMatch.id, currentEnd,
                                                             side).ten }}
-                                                    </span>
-                                                    <span
-                                                        class="text-[10px] font-black tracking-widest text-gray-400 ml-2">TOTAL</span>
+                                                    </div>
                                                 </div>
-                                                <div class="text-lg md:text-2xl font-black text-navy tabular-nums">
-                                                    {{ calculateEndTotal(selectedScoringMatch.id, currentEnd, side) }}
+                                                <div class="flex items-center gap-2">
+                                                    <span
+                                                        class="text-[8px] font-black text-gray-400 uppercase">SUM</span>
+                                                    <span class="text-xl font-black text-navy tabular-nums">{{
+                                                        calculateEndTotal(selectedScoringMatch.id, currentEnd, side)
+                                                        }}</span>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <!-- Arrow Slots -->
-                                        <div class="flex items-center justify-center gap-2 md:gap-3">
+                                        <!-- ARROW SLOTS -->
+                                        <div class="flex items-center justify-center gap-3 sm:gap-4">
                                             <div v-for="i in (bracket?.arrows_per_end || 3)" :key="i"
-                                                class="size-12 rounded-xl border-2 border-dotted flex items-center justify-center text-lg md:text-xl font-bold transition-all duration-300 cursor-pointer shrink-0"
+                                                class="size-14 sm:size-16 rounded-xl border-4 text-lg sm:text-xl font-black transition-all duration-300 cursor-pointer shrink-0 flex items-center justify-center relative group/box"
                                                 :class="[
                                                     activeSide === side && (selectedArrowIndex === i - 1)
-                                                        ? 'ring-4 ring-primary/20 scale-105 z-10 border-primary bg-white border-solid'
-                                                        : 'bg-white border-slate-200'
+                                                        ? 'border-primary bg-white shadow-sm scale-110 z-20 border-solid'
+                                                        : (getArrowScore(selectedScoringMatch.id, currentEnd, side, i) ? 'bg-slate-50 border-gray-100 border-solid' : 'bg-white border-dashed border-gray-100')
                                                 ]" @click.stop="$emit('select-arrow-box', side, i - 1)">
-                                                {{ getArrowScore(selectedScoringMatch.id, currentEnd, side, i) }}
-                                                <div v-if="activeSide === side && (selectedArrowIndex === i - 1)"
-                                                    class="size-1.5 bg-primary rounded-full animate-ping absolute -top-1 -right-1">
+
+                                                <Icon v-if="activeSide === side && (selectedArrowIndex === i - 1)"
+                                                    icon="ph:caret-down-fill"
+                                                    class="absolute -top-5 text-primary animate-bounce text-sm" />
+
+                                                <span class="text-navy">
+                                                    {{ getArrowScore(selectedScoringMatch.id, currentEnd, side, i) }}
+                                                </span>
+
+                                                <div v-if="!getArrowScore(selectedScoringMatch.id, currentEnd, side, i) && !(activeSide === side && selectedArrowIndex === i - 1)"
+                                                    class="size-1.5 rounded-full bg-slate-100">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- Keyboard -->
+                                <!-- PREMIUM NUMERICAL KEYPAD -->
                                 <div v-if="activeSide === side"
-                                    class="pt-2 animate-in slide-in-from-top-4 duration-300 fade-in">
-                                    <div class="grid grid-cols-4 gap-2 md:gap-3">
+                                    class="pt-2 animate-in slide-in-from-top-4 duration-500 fade-in">
+                                    <div class="grid grid-cols-4 gap-2 sm:gap-3">
                                         <button v-for="num in [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 'X', 'M']" :key="num"
                                             @click="$emit('add-score', num)"
-                                            class="aspect-square rounded-2xl text-lg md:text-xl font-black shadow-sm transition-all flex items-center justify-center border-b-[3px] active:border-b-0 active:translate-y-[3px]"
-                                            :class="getScoreButtonClass(num)">
+                                            class="aspect-square rounded-2xl text-base sm:text-lg font-black shadow-sm transition-all flex items-center justify-center border-b-4 active:border-b-0 active:translate-y-[4px] hover:-translate-y-0.5"
+                                            :class="getScoreKeypadClass(num)">
                                             {{ num }}
                                         </button>
 
+                                        <!-- Footer Actions in Keypad -->
                                         <div class="col-span-4 grid grid-cols-3 gap-3 pt-4">
                                             <button @click="$emit('delete-last-arrow')"
-                                                class="col-span-1 h-12 rounded-2xl bg-white border-2 border-slate-100 text-slate-400 font-bold flex items-center justify-center gap-2 hover:bg-slate-50 hover:text-red-500 hover:border-red-100 transition-all">
-                                                <Icon icon="ph:backspace-bold" class="text-xl" />
-                                                <span class="hidden md:inline text-[10px] tracking-widest">HAPUS</span>
+                                                class="col-span-1 h-12 sm:h-14 rounded-2xl bg-white border-2 border-slate-100 text-slate-400 font-bold flex items-center justify-center gap-2 hover:bg-red-50 hover:text-red-500 hover:border-red-100 transition-all shadow-sm group">
+                                                <Icon icon="ph:backspace-bold"
+                                                    class="text-xl group-active:scale-90 transition-transform" />
+                                                <span
+                                                    class="hidden md:inline text-[9px] tracking-widest font-black uppercase">DEL</span>
                                             </button>
                                             <button @click="$emit('save-and-next')" :disabled="isSaving"
-                                                class="col-span-2 h-12 rounded-2xl bg-navy text-primary font-black flex items-center justify-center gap-2 shadow-lg shadow-navy/20 hover:-translate-y-1 active:translate-y-0 transition-all disabled:opacity-50 disabled:hover:translate-y-0">
+                                                class="col-span-2 h-12 sm:h-14 rounded-2xl bg-navy text-primary font-black flex items-center justify-center gap-2 shadow-sm shadow-navy/20 hover:-translate-y-0.5 active:translate-y-0 transition-all disabled:opacity-50 group">
                                                 <Icon v-if="isSaving" icon="ph:circle-notch-bold"
                                                     class="animate-spin text-xl" />
                                                 <template v-else>
-                                                    <span class="text-xs tracking-widest uppercase">Simpan &
-                                                        Lanjut</span>
-                                                    <Icon icon="ph:arrow-right-bold" class="text-lg" />
+                                                    <span class="text-[10px] tracking-widest uppercase truncate">Simpan
+                                                        Skor</span>
+                                                    <Icon icon="ph:paper-plane-right-fill"
+                                                        class="text-lg group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                                                 </template>
                                             </button>
                                         </div>
@@ -316,15 +354,21 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Empty State -->
             <div v-else
-                class="bg-gray-50 rounded-[40px] border-4 border-dashed border-gray-200 p-20 text-center flex flex-col items-center justify-center">
-                <div class="size-24 rounded-full bg-white shadow-sm flex items-center justify-center mb-6">
-                    <Icon icon="ph:hand-pointing-bold" class="text-4xl text-gray-300" />
+                class="bg-white rounded-[3rem] border-4 border-dashed border-slate-100 p-20 text-center flex flex-col items-center justify-center shadow-inner">
+                <div
+                    class="size-24 rounded-[2.5rem] bg-slate-50 shadow-sm flex items-center justify-center mb-6 relative group">
+                    <div
+                        class="absolute inset-0 bg-primary/20 rounded-[2.5rem] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity">
+                    </div>
+                    <Icon icon="ph:hand-pointing-bold" class="text-4xl text-gray-300 relative z-10" />
                 </div>
-                <h3 class="text-2xl font-black text-navy tracking-tight">Pilih Match Untuk Input Skor</h3>
-                <p class="text-gray-400 mt-2 max-w-xs">Pilih salah satu pertandingan dari daftar di samping untuk
-                    memulai
-                    penginputan skor</p>
+                <h3 class="text-xl font-black text-navy tracking-tight">Mulai Penilaian</h3>
+                <p class="text-gray-400 mt-2 max-w-sm text-center text-sm font-medium">
+                    Pilih salah satu pertandingan dari daftar sebelah kiri untuk memulai penginputan skor real-time
+                </p>
             </div>
         </div>
     </div>
@@ -358,8 +402,8 @@ defineEmits([
 ])
 
 const getAvatarUrl = (name) => {
-    if (!name) return `https://ui-avatars.com/api/?name=TBD&background=f1f5f9&color=94a3b8&font-size=0.45`
-    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random&color=fff&font-size=0.45`
+    if (!name || name === 'TBD' || name === 'BYE') return `https://ui-avatars.com/api/?name=??&background=f1f5f9&color=94a3b8&font-size=0.45`
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=ffaa00&color=202434&font-size=0.45&bold=true`
 }
 
 const getMatchScore = (match, side) => {
@@ -401,9 +445,6 @@ const calculateSetPoints = (matchId, side) => {
         const endB = m.B[i]
         if (!endA || !endB) continue
 
-        // Only count if both have finished the end or if we want real-time even if partial?
-        // Usually for real-time we want to see current points even if end is not finished.
-        // But set system requires full end comparison.
         const finishedA = endA.arrows && endA.arrows.filter(a => a !== null && a !== '').length === arrowsPerEnd
         const finishedB = endB.arrows && endB.arrows.filter(a => a !== null && a !== '').length === arrowsPerEnd
 
@@ -459,21 +500,34 @@ const getArrowScore = (matchId, endNo, side, arrowIdx) => {
     return val === null || val === undefined ? '' : val
 }
 
-
-const getScoreButtonClass = (score) => {
+const getScoreKeypadClass = (score) => {
     const s = String(score).toUpperCase()
-    if (['X', '10', '9'].includes(s)) return 'bg-[#FFE500] border-[#e6ce00] text-navy hover:bg-yellow-300'
-    if (['8', '7'].includes(s)) return 'bg-[#EF4444] border-red-700 text-white hover:bg-red-400'
-    if (['6', '5'].includes(s)) return 'bg-[#3B82F6] border-blue-700 text-white hover:bg-blue-400'
-    if (['4', '3'].includes(s)) return 'bg-[#111827] border-black text-white hover:bg-slate-900'
-    if (['2', '1'].includes(s)) return 'bg-white text-navy border-gray-200 hover:bg-gray-50'
-    if (s === 'M') return 'bg-slate-200 text-slate-500 border-slate-300 hover:bg-slate-300'
+    if (['X', '10', '9'].includes(s)) return 'bg-gradient-to-br from-[#FFE500] to-[#FFCC00] border-[#b89512] text-navy'
+    if (['8', '7'].includes(s)) return 'bg-gradient-to-br from-[#EF4444] to-[#DC2626] border-[#991B1B] text-white'
+    if (['6', '5'].includes(s)) return 'bg-gradient-to-br from-[#3B82F6] to-[#2563EB] border-[#1E40AF] text-white'
+    if (['4', '3'].includes(s)) return 'bg-gradient-to-br from-[#1E293B] to-[#0F172A] border-[#020617] text-white'
+    if (['2', '1'].includes(s)) return 'bg-gradient-to-br from-white to-slate-50 border-slate-200 text-navy'
+    if (s === 'M') return 'bg-gradient-to-br from-slate-100 to-slate-200 border-slate-300 text-slate-500'
     return 'bg-white text-navy border-gray-200'
 }
 </script>
 
 <style scoped>
-.no-scrollbar::-webkit-scrollbar {
-    display: none;
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+
+.custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #e2e8f0 transparent;
 }
 </style>

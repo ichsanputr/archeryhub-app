@@ -202,9 +202,7 @@
                                     {{ currentCategoryName }}
                                 </h3>
                                 <p class="text-sm text-gray-300 mt-1">
-                                    {{ currentElimBracket.bracket_type === 'individual' ? 'Individual' :
-                                        currentElimBracket.bracket_type === 'team3' ? 'Team (3 Orang)' : 'Mixed Team (2
-                                    Orang) ' }}
+                                    {{ bracketTypeLabel }}
                                     • {{ currentElimBracket.bracket_size }} Peserta
                                 </p>
                             </div>
@@ -334,6 +332,14 @@ const currentQualResults = computed(() => {
 
 const currentElimBracket = computed(() => {
     return eliminationData.value[selectedCategory.value] || null
+})
+
+const bracketTypeLabel = computed(() => {
+    if (!currentElimBracket.value) return ''
+    const type = currentElimBracket.value.bracket_type
+    if (type === 'individual') return 'Individual'
+    if (type === 'team3') return 'Team (3 Orang)'
+    return 'Mixed Team (2 Orang)'
 })
 
 const sortedElimRounds = computed(() => {
