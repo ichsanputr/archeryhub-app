@@ -55,7 +55,7 @@
         </div>
       </div>
 
-      <div v-if="loadingBrackets" class="flex gap-4 overflow-x-auto pb-2">
+      <div v-if="loadingBrackets" class="flex gap-4 overflow-x-hidden pb-2">
         <div v-for="i in 4" :key="i" class="flex-shrink-0 w-72 p-5 rounded-xl border border-gray-100 animate-pulse">
           <div class="flex items-start gap-3">
             <div class="size-12 bg-gray-100 rounded-xl"></div>
@@ -83,8 +83,9 @@
           <div class="flex items-start justify-between mb-4">
             <div class="flex items-center gap-3 flex-1">
               <div
-                class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                <Icon icon="ph:brackets-curly" class="text-xl" />
+                class="w-12 h-12 rounded-lg flex items-center justify-center transition-colors overflow-hidden border"
+                :class="getCategoryColorClass(bracket.category_name)">
+                <img :src="`/${getCategoryIcon(bracket.category_name)}`" class="w-8 h-8 object-contain" />
               </div>
               <div class="min-w-0 flex-1">
                 <p class="font-bold text-navy group-hover:text-primary transition-colors line-clamp-2">
@@ -138,16 +139,36 @@
     </div>
 
     <!-- Suggested Categories Section -->
-    <div v-if="categoriesWithoutBracket.length > 0" class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+    <div v-if="loadingCategories || categoriesWithoutBracket.length > 0"
+      class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
       <div class="flex items-center justify-between mb-6">
-        <div>
-          <h2 class="text-lg font-bold text-navy">Kategori Tanpa Bracket</h2>
-          <p class="text-sm text-gray-500 mt-1">Saran kategori yang belum memiliki bracket eliminasi</p>
+        <div class="flex flex-col sm:flex-row sm:items-center w-full justify-between gap-4">
+          <div>
+            <h2 class="text-lg font-bold text-navy">Kategori Tanpa Bracket</h2>
+            <p class="text-sm text-gray-500 mt-1">Saran kategori yang belum memiliki bracket eliminasi</p>
+          </div>
+          <div class="relative w-full sm:w-72">
+            <Icon icon="ph:magnifying-glass" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input v-model="searchQuery" type="text" placeholder="Cari kategori..."
+              class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-primary focus:bg-white transition-all font-bold text-navy placeholder:font-normal" />
+          </div>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div v-for="cat in categoriesWithoutBracket" :key="cat.id"
+      <div v-if="loadingCategories" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div v-for="i in 3" :key="i" class="p-4 rounded-xl border border-gray-100 animate-pulse">
+          <div class="flex items-center gap-3">
+            <div class="size-10 bg-gray-100 rounded-lg"></div>
+            <div class="flex-1">
+              <div class="h-4 bg-gray-100 rounded w-3/4 mb-2"></div>
+              <div class="h-3 bg-gray-50 rounded w-1/2"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div v-for="cat in filteredCategoriesWithoutBracket" :key="cat.id"
           class="p-4 bg-gray-50 hover:bg-white rounded-xl border border-gray-200 hover:border-primary hover:shadow-md transition-all cursor-pointer group"
           @click="openCreateForCategory(cat)">
           <div class="flex items-center gap-3">
@@ -253,7 +274,6 @@ import BaseSelect from '~/components/common/BaseSelect.vue'
 import BaseInput from '~/components/common/BaseInput.vue'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
-import { getCategoryIcon } from '~/utils/logoArcheryCategory'
 
 definePageMeta({
   layout: 'dashboard'
@@ -262,6 +282,8 @@ definePageMeta({
 useHead({
   title: 'Manajemen Eliminasi - Dashboard'
 })
+
+import { getCategoryIcon, getCategoryColorClass } from '~/utils/logoArcheryCategory'
 
 const route = useRoute()
 const eventId = route.params.id
@@ -272,6 +294,7 @@ const eventName = ref('Event')
 const brackets = ref([])
 const categories = ref([])
 const loadingBrackets = ref(false)
+const loadingCategories = ref(false)
 const creatingBracket = ref(false)
 const showCreateDialog = ref(false)
 
@@ -286,6 +309,8 @@ const newBracket = ref({
   endsPerMatch: 5,
   arrowsPerEnd: 3
 })
+
+const searchQuery = ref('')
 
 const fetchEventName = async () => {
   try {
@@ -310,6 +335,7 @@ const fetchBrackets = async () => {
 }
 
 const fetchCategories = async () => {
+  loadingCategories.value = true
   try {
     // Fetch all categories (increased limit from default 10)
     const response = await get(`/events/${eventId}/categories`, { params: { limit: 1000 } })
@@ -318,6 +344,8 @@ const fetchCategories = async () => {
   } catch (error) {
     console.error('Failed to fetch categories:', error)
     categories.value = []
+  } finally {
+    loadingCategories.value = false
   }
 }
 
@@ -456,6 +484,15 @@ const bracketSizeOptions = [
 const categoriesWithoutBracket = computed(() => {
   const bracketCatIds = brackets.value.map(b => b.category_id)
   return categories.value.filter(c => !bracketCatIds.includes(c.id))
+})
+
+const filteredCategoriesWithoutBracket = computed(() => {
+  if (!searchQuery.value) return categoriesWithoutBracket.value
+  const q = searchQuery.value.toLowerCase()
+  return categoriesWithoutBracket.value.filter(cat => {
+    const name = getCategoryName(cat).toLowerCase()
+    return name.includes(q)
+  })
 })
 
 

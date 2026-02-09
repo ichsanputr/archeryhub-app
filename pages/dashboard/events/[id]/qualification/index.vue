@@ -164,7 +164,7 @@
         </div>
 
         <!-- Category Selection -->
-        <div v-if="loadingCategories" class="flex gap-4 overflow-x-auto pb-2">
+        <div v-if="loadingCategories" class="flex gap-4 overflow-hidden pb-2">
           <div v-for="i in 4" :key="i" class="flex-shrink-0 w-72 p-5 rounded-xl border border-gray-100 animate-pulse">
             <div class="flex items-start gap-3">
               <div class="size-12 bg-gray-100 rounded-xl"></div>
@@ -231,10 +231,10 @@
                     Posisi</th>
                   <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400 tracking-widest min-w-[350px]">
                     Nama Pemanah</th>
-                  <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400 tracking-widest">
+                  <th class="px-6 py-4 text-left text-[10px] font-black text-gray-400 tracking-widest min-w-[400px]">
                     Skor Per Rambahan</th>
                   <th class="px-6 py-4 text-right text-[10px] font-black text-gray-400  tracking-widest w-32">
-                    Total</th>
+                    Total Score</th>
                   <th class="px-6 py-4 text-right text-[10px] font-black text-gray-400  tracking-widest w-32">
                     Aksi</th>
                 </tr>
@@ -259,14 +259,27 @@
                     </div>
                   </td>
                   <td class="px-6 py-4">
-                    <div class="flex flex-wrap gap-1 max-w-[250px]">
+                    <div class="flex flex-wrap gap-2 max-w-[500px]">
                       <template v-if="archer.end_scores">
-                        <span v-for="(s, sIdx) in archer.end_scores.split(', ')" :key="sIdx"
-                          class="px-2 py-0.5 bg-gray-50 text-[10px] font-black text-navy rounded border border-gray-100 shadow-sm">
-                          {{ s }}
-                        </span>
+                        <div v-for="(s, sIdx) in archer.end_scores.split(', ')" :key="sIdx"
+                          class="flex flex-col items-center bg-gray-50 border border-gray-100 rounded-lg overflow-hidden shadow-sm group/score hover:border-primary/50 transition-all">
+                          <div class="bg-navy/5 px-2 py-0.5 w-full text-center border-b border-gray-100">
+                            <span class="text-[8px] font-black text-gray-400 uppercase tracking-tighter">E{{ sIdx + 1
+                            }}</span>
+                          </div>
+                          <div class="px-3 py-1 min-w-[45px] flex items-center justify-center">
+                            <span
+                              class="text-[12px] font-black text-navy group-hover/score:text-primary transition-colors">{{
+                                s }}</span>
+                          </div>
+                        </div>
                       </template>
-                      <span v-else class="text-[10px] text-gray-400 font-bold italic">Belum ada skor</span>
+                      <div v-else
+                        class="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-xl border-2 border-dashed border-gray-100">
+                        <Icon icon="ph:mask-sad-bold" class="text-gray-300 text-lg" />
+                        <span
+                          class="text-[11px] text-gray-400 font-black italic uppercase tracking-widest">Kosong</span>
+                      </div>
                     </div>
                   </td>
                   <td class="px-6 py-4 text-right">

@@ -63,7 +63,7 @@
             </div>
 
             <!-- Performance Dashboard Grid -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="flex flex-col gap-8">
                 <!-- Qualification Round Card -->
                 <div class="bg-white rounded-3xl border border-gray-100 shadow-sm flex flex-col overflow-hidden">
                     <div class="p-6 border-b border-gray-50 bg-gray-50/50 flex items-center justify-between">
@@ -104,31 +104,39 @@
                         </div>
 
                         <!-- End Details -->
-                        <div class="p-6 overflow-y-auto max-h-[400px]">
-                            <h4 class="text-[11px] font-black text-navy uppercase tracking-widest mb-4">Rincian Per-End
-                            </h4>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="p-8">
+                            <div class="flex items-center gap-2 mb-6">
+                                <Icon icon="ph:list-numbers-bold" class="text-primary text-xl" />
+                                <h4 class="text-sm font-black text-navy uppercase tracking-widest">Rincian Skor Per End
+                                </h4>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                                 <div v-for="(end, index) in qualResult.end_scores" :key="index"
-                                    class="p-4 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-between group hover:border-primary/30 transition-all">
-                                    <div class="flex flex-col">
-                                        <span
-                                            class="text-[9px] font-black text-gray-400 uppercase tracking-tighter mb-1">Rambahan
-                                            {{ end.end_number || index + 1 }}</span>
-                                        <!-- Arrow scores -->
-                                        <div v-if="end.arrows" class="flex gap-1.5">
-                                            <span v-for="(arrow, aIdx) in end.arrows" :key="aIdx"
-                                                class="size-6 rounded-md bg-white border border-gray-200 flex items-center justify-center text-[10px] font-black text-navy shadow-sm">
-                                                {{ arrow.is_x ? 'X' : arrow.score }}
+                                    class="flex flex-col border border-gray-100 rounded-3xl overflow-hidden shadow-sm hover:shadow-md hover:border-primary/50 transition-all bg-white group">
+                                    <div
+                                        class="bg-navy/5 px-5 py-3 border-b border-gray-100 flex justify-between items-center group-hover:bg-primary/10 transition-colors">
+                                        <div class="flex flex-col">
+                                            <span
+                                                class="text-[9px] font-black text-gray-400 uppercase tracking-widest leading-none">Rambahan</span>
+                                            <span class="text-base font-black text-navy mt-0.5">{{ end.end_number ||
+                                                index + 1 }}</span>
+                                        </div>
+                                        <div class="flex flex-col items-end">
+                                            <span
+                                                class="text-[9px] font-black text-gray-400 uppercase tracking-widest leading-none">Total</span>
+                                            <span
+                                                class="text-xl font-black text-navy group-hover:text-primary transition-colors mt-0.5">
+                                                {{ end.total_score_end }}
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="flex flex-col items-end">
-                                        <span
-                                            class="text-xs font-black text-gray-400 uppercase tracking-widest leading-none mb-1">Total</span>
-                                        <span
-                                            class="text-xl font-black text-navy group-hover:text-primary transition-colors">
-                                            {{ typeof end === 'object' ? end.total_score_end : end }}
-                                        </span>
+                                    <div class="p-5 flex flex-wrap justify-center gap-2">
+                                        <div v-for="(arrow, aIdx) in end.arrows" :key="aIdx"
+                                            class="size-10 rounded-2xl flex items-center justify-center text-sm font-black shadow-sm border transition-all hover:scale-110"
+                                            :class="getScoreColorClass(arrow.score, arrow.is_x)">
+                                            {{ arrow.is_x ? 'X' : (arrow.score === 0 ? 'M' : arrow.score) }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -344,6 +352,20 @@ const fetchInitialData = async () => {
         console.error('Failed to fetch result-user data:', error)
     } finally {
         isLoading.value = false
+    }
+}
+
+const getScoreColorClass = (score, isX) => {
+    if (isX || score === 10 || score === 9) {
+        return 'bg-yellow-400 border-yellow-500 text-white'
+    } else if (score === 8 || score === 7) {
+        return 'bg-red-500 border-red-600 text-white'
+    } else if (score === 6 || score === 5) {
+        return 'bg-blue-500 border-blue-600 text-white'
+    } else if (score === 4 || score === 3) {
+        return 'bg-black border-gray-800 text-white'
+    } else {
+        return 'bg-white border-gray-200 text-navy'
     }
 }
 
