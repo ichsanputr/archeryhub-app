@@ -71,7 +71,7 @@
                                         </span>
                                         <span class="text-xs font-semibold text-gray-500">/ {{ sessionData?.total_ends
                                             || 0
-                                            }}</span>
+                                        }}</span>
                                     </div>
                                     <span class="text-[10px] font-bold text-gray-400 tracking-wider uppercase">
                                         {{ sessionData?.arrows_per_end || 0 }} Anak Panah
@@ -386,8 +386,8 @@ const saveEndAndNext = async () => {
                     endsToSave.push({
                         end_number: endNum,
                         arrows: scores.map(s => {
-                            if (s === undefined || s === null) return "M"
-                            return String(s === 10 ? 'X' : s)
+                            if (s === undefined || s === null || s === 'M') return "M"
+                            return String(s)
                         })
                     })
                 }

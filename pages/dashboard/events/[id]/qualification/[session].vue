@@ -321,7 +321,10 @@ const fetchTargetAssignments = async (categoryId) => {
         archerScore.ends.forEach(endScore => {
           const arrows = Array.from({ length: sessionData.value?.arrows_per_end || 6 }, () => undefined)
             ; (endScore.arrows || []).forEach(arrow => {
-              const value = arrow.is_x ? 10 : arrow.score
+              let value = arrow.score
+              if (arrow.is_x) value = 'X'
+              else if (arrow.score === 0) value = 'M'
+
               arrows[arrow.arrow_number - 1] = value
             })
           allEndScores[endScore.end_number] = arrows
