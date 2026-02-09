@@ -514,7 +514,7 @@ const getScoreKeypadClass = (score) => {
 
 <style scoped>
 .custom-scrollbar::-webkit-scrollbar {
-    width: 4px;
+    width: none;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -527,7 +527,6 @@ const getScoreKeypadClass = (score) => {
 }
 
 .custom-scrollbar {
-    scrollbar-width: thin;
-    scrollbar-color: #e2e8f0 transparent;
+    scrollbar-width: none;
 }
 </style>
