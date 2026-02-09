@@ -71,26 +71,30 @@
                                         </span>
                                         <span class="text-xs font-semibold text-gray-500">/ {{ sessionData?.total_ends
                                             || 0
-                                            }}</span>
+                                        }}</span>
                                     </div>
-                                    <span class="text-[10px] font-bold text-gray-400 tracking-wider">
-                                        {{ sessionData?.arrows_per_end || 0 }} Arrows
+                                    <span class="text-[10px] font-bold text-gray-400 tracking-wider uppercase">
+                                        {{ sessionData?.arrows_per_end || 0 }} Anak Panah
                                     </span>
                                 </div>
                                 <div class="flex gap-2 sm:gap-3">
-                                    <div v-for="(score, i) in sessionData?.arrows_per_end || 0" :key="i" :class="[
-                                        'flex-1 aspect-square rounded-lg shadow-sm flex items-center justify-center text-lg sm:text-xl font-bold',
-                                        assignment.currentEndScores && assignment.currentEndScores[i - 1] !== undefined
-                                            ? 'bg-white border-2 border-gray-200 text-navy'
-                                            : 'bg-gray-100 border-dashed border-2 border-gray-300 text-gray-400'
-                                    ]">
+                                    <div v-for="(score, i) in sessionData?.arrows_per_end || 0" :key="i"
+                                        @click.stop="selectArrowBox(i - 1)" :class="[
+                                            'flex-1 aspect-square rounded-lg shadow-sm flex items-center justify-center text-lg sm:text-xl font-bold cursor-pointer transition-all',
+                                            assignment.currentEndScores && assignment.currentEndScores[i - 1] !== undefined
+                                                ? 'bg-white border-2 border-gray-200 text-navy'
+                                                : 'bg-gray-100 border-dashed border-2 border-gray-300 text-gray-400',
+                                            currentScoringAssignment?.uuid === assignment.uuid && selectedArrowIndex === (i - 1)
+                                                ? 'ring-2 ring-primary border-primary bg-primary/5'
+                                                : ''
+                                        ]">
                                         {{ (assignment.currentEndScores && assignment.currentEndScores[i - 1] !==
                                             undefined)
                                             ?
                                             (assignment.currentEndScores[i - 1] === 10 ? 'X' :
                                                 (assignment.currentEndScores[i -
                                                     1] === 0 ? 'M' :
-                                        assignment.currentEndScores[i - 1])) : '' }}
+                                                    assignment.currentEndScores[i - 1])) : '' }}
                                     </div>
                                     <div class="w-px bg-gray-300 mx-1"></div>
                                     <div
@@ -107,7 +111,8 @@
                 <div v-if="!targetAssignments || targetAssignments.length === 0"
                     class="bg-white rounded-xl border border-gray-100 p-12 text-center">
                     <Icon icon="ph:users" class="text-5xl text-gray-300 mx-auto mb-4" />
-                    <p class="text-gray-500">No archers assigned to targets yet</p>
+                    <p class="text-gray-500 font-bold uppercase text-xs tracking-widest">Belum ada pemanah yang
+                        ditugaskan</p>
                 </div>
             </div>
 
@@ -190,13 +195,25 @@ const toast = useToast()
 
 const saving = ref(false)
 const currentScoringAssignment = ref(null)
+const selectedArrowIndex = ref(0) // Track which arrow box is being edited
 
 // Initialize currentScoringAssignment
 watch(() => props.targetAssignments, (newVal) => {
     if (newVal?.length > 0 && !currentScoringAssignment.value) {
         currentScoringAssignment.value = newVal[0]
+        initEndScores(newVal[0])
     }
 }, { immediate: true })
+
+const initEndScores = (assignment) => {
+    if (!assignment.currentEndScores) {
+        const arrowsPerEnd = props.sessionData?.arrows_per_end || 6
+        assignment.currentEndScores = Array(arrowsPerEnd).fill(undefined)
+    }
+    // Set selected index to first empty box or 0
+    const emptyIdx = assignment.currentEndScores.findIndex(v => v === undefined)
+    selectedArrowIndex.value = emptyIdx === -1 ? 0 : emptyIdx
+}
 
 const groupedAssignments = computed(() => {
     const groups = {}
@@ -219,6 +236,11 @@ const groupedAssignments = computed(() => {
 
 const selectArcherForScoring = (assignment) => {
     currentScoringAssignment.value = assignment
+    initEndScores(assignment)
+}
+
+const selectArrowBox = (index) => {
+    selectedArrowIndex.value = index
 }
 
 const addScore = (score) => {
@@ -227,27 +249,30 @@ const addScore = (score) => {
     const arrowsPerEnd = props.sessionData?.arrows_per_end || 6
 
     if (!currentScoringAssignment.value.currentEndScores) {
-        currentScoringAssignment.value.currentEndScores = []
+        currentScoringAssignment.value.currentEndScores = Array(arrowsPerEnd).fill(undefined)
     }
 
     const scores = currentScoringAssignment.value.currentEndScores
-    const emptyIndex = scores.findIndex((v) => v === undefined)
 
-    if (emptyIndex !== -1) {
-        scores[emptyIndex] = numericScore
-    } else if (scores.length < arrowsPerEnd) {
-        scores.push(numericScore)
+    // Insert at selected index
+    scores[selectedArrowIndex.value] = numericScore
+
+    // Move to next index
+    if (selectedArrowIndex.value < arrowsPerEnd - 1) {
+        selectedArrowIndex.value++
     }
 }
 
 const deleteLastScore = () => {
-    if (!currentScoringAssignment.value?.currentEndScores) return
-    const scores = currentScoringAssignment.value.currentEndScores
-    for (let i = scores.length - 1; i >= 0; i -= 1) {
-        if (scores[i] !== undefined) {
-            scores[i] = undefined
-            break
-        }
+    const scores = currentScoringAssignment.value?.currentEndScores
+    if (!scores) return
+
+    // Clear current selected box
+    scores[selectedArrowIndex.value] = undefined
+
+    // Move back if not at 0
+    if (selectedArrowIndex.value > 0) {
+        selectedArrowIndex.value--
     }
 }
 
@@ -268,7 +293,16 @@ const goToEnd = (endNumber) => {
     if (!currentScoringAssignment.value) return
     currentScoringAssignment.value.currentEnd = endNumber
     const saved = currentScoringAssignment.value.allEndScores?.[endNumber]
-    currentScoringAssignment.value.currentEndScores = saved ? [...saved] : []
+    const arrowsPerEnd = props.sessionData?.arrows_per_end || 6
+
+    if (saved) {
+        currentScoringAssignment.value.currentEndScores = [...saved]
+    } else {
+        currentScoringAssignment.value.currentEndScores = Array(arrowsPerEnd).fill(undefined)
+    }
+
+    // Reset selection to start of end
+    selectedArrowIndex.value = 0
 }
 
 const goPrevEnd = () => {
@@ -313,11 +347,14 @@ const saveEndAndNext = async () => {
 
         if (endNumber < props.sessionData.total_ends) {
             currentScoringAssignment.value.currentEnd = endNumber + 1
-            currentScoringAssignment.value.currentEndScores = []
+            const arrowsPerEnd = props.sessionData?.arrows_per_end || 6
+            currentScoringAssignment.value.currentEndScores = Array(arrowsPerEnd).fill(undefined)
+            selectedArrowIndex.value = 0
         } else {
             const currentIndex = props.targetAssignments.findIndex(a => a.uuid === currentScoringAssignment.value.uuid)
             if (currentIndex < props.targetAssignments.length - 1) {
                 currentScoringAssignment.value = props.targetAssignments[currentIndex + 1]
+                initEndScores(currentScoringAssignment.value)
             } else {
                 toast.success('Semua pemanah selesai!')
             }

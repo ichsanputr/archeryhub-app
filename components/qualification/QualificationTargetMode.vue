@@ -11,7 +11,7 @@
                     class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-navy hover:bg-primary/90 font-bold text-sm transition-all shadow-md shadow-primary/20 disabled:opacity-50 group">
                     <Icon v-if="isSyncing" icon="ph:spinner-bold" class="text-xl animate-spin" />
                     <Icon v-else icon="fa7-solid:random" class="text-xl group-hover:rotate-12 transition-transform" />
-                    Auto-Assign
+                    Penempatan Otomatis
                 </button>
             </div>
         </div>
@@ -86,9 +86,9 @@
                                 target.assignedCount === target.availableLetters.length ? 'bg-green-100 text-green-700' :
                                     target.assignedCount === 0 ? 'bg-gray-100 text-gray-400' : 'bg-blue-100 text-blue-700'
                             ]">
-                                {{ target.assignedCount === target.availableLetters.length ? 'Full' :
-                                    target.assignedCount === 0 ? 'Empty' : `${target.availableLetters.length -
-                                        target.assignedCount} Slots Open` }}
+                                {{ target.assignedCount === target.availableLetters.length ? 'PENUH' :
+                                    target.assignedCount === 0 ? 'KOSONG' : `${target.availableLetters.length -
+                                        target.assignedCount} Slot Tersedia` }}
                             </span>
                         </div>
 

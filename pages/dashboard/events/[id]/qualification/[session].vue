@@ -40,12 +40,12 @@
                 <span class="opacity-20 hidden sm:inline">•</span>
                 <div class="flex items-center gap-1.5">
                   <Icon icon="ph:arrow-clockwise-bold" class="text-xs sm:text-sm text-primary" />
-                  <span>{{ sessionData?.total_ends || 0 }} Ends</span>
+                  <span>{{ sessionData?.total_ends || 0 }} Rambahan</span>
                 </div>
                 <span class="opacity-20 hidden sm:inline">•</span>
                 <div class="flex items-center gap-1.5">
                   <Icon icon="ph:crosshair-bold" class="text-xs sm:text-sm text-primary" />
-                  <span>{{ sessionData?.arrows_per_end || 0 }} Arr/End</span>
+                  <span>{{ sessionData?.arrows_per_end || 0 }} Panah/Ramb</span>
                 </div>
               </div>
             </div>
