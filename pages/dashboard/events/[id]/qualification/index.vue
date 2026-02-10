@@ -240,7 +240,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(archer, index) in paginatedEntries" :key="archer.participant_uuid || index"
+                <tr v-for="(archer, index) in paginatedEntries" :key="archer.rowKey"
                   class="border-b border-gray-50 hover:bg-gray-50/50 transition-all">
                   <td class="px-6 py-4">
                     <span
@@ -252,34 +252,54 @@
                       <img :src="useImageOrDefault(archer.avatar_url, archer.archer_name)"
                         class="size-9 rounded-lg object-cover border border-gray-100" />
                       <div>
-                        <p class="text-[11px] sm:text-base font-bold text-navy">{{ archer.archer_name }}</p>
-                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-tighter">{{ archer.club_name ||
-                          'Independen' }}</p>
+                        <p class="text-[11px] sm:text-base font-bold text-navy leading-tight">{{ archer.archer_name }}
+                        </p>
+                        <div class="flex items-center gap-2 mt-1">
+                          <p class="text-[10px] text-gray-400 font-bold uppercase tracking-tighter">{{ archer.club_name
+                            ||
+                            'Independen' }}</p>
+                        </div>
                       </div>
                     </div>
                   </td>
                   <td class="px-6 py-4">
-                    <div class="flex flex-wrap gap-2 max-w-[500px]">
-                      <template v-if="archer.end_scores">
-                        <div v-for="(s, sIdx) in archer.end_scores.split(', ')" :key="sIdx"
-                          class="flex flex-col items-center bg-gray-50 border border-gray-100 rounded-lg overflow-hidden shadow-sm group/score hover:border-primary/50 transition-all">
-                          <div class="bg-navy/5 px-2 py-0.5 w-full text-center border-b border-gray-100">
-                            <span class="text-[8px] font-black text-gray-400 uppercase tracking-tighter">E{{ sIdx + 1
-                            }}</span>
+                    <div v-if="archer.processedSessions?.length > 0" class="flex flex-col gap-3">
+                      <div v-for="session in archer.processedSessions" :key="session.session_code"
+                        class="flex items-center gap-3">
+                        <!-- Session Label -->
+                        <div class="w-6 shrink-0">
+                          <span
+                            class="text-[9px] px-1.5 py-0.5 rounded-md bg-navy text-white font-black uppercase tracking-widest whitespace-nowrap">
+                            S{{ session.sessionNumber }}
+                          </span>
+                        </div>
+
+                        <!-- End Scores Chips -->
+                        <div class="flex items-center gap-2">
+                          <div v-for="(s, sIdx) in session.displayScores" :key="sIdx"
+                            class="flex flex-col items-center bg-gray-50 border border-gray-100 rounded-lg overflow-hidden shadow-sm group/score hover:border-primary/50 transition-all">
+                            <div class="bg-navy/5 px-2 py-0.5 w-full text-center border-b border-gray-100">
+                              <span class="text-[8px] font-black text-gray-400 uppercase tracking-tighter">E{{ sIdx + 1
+                              }}</span>
+                            </div>
+                            <div class="px-3 py-1 min-w-[45px] flex items-center justify-center">
+                              <span
+                                class="text-[12px] font-black text-navy group-hover/score:text-primary transition-colors">{{
+                                  s }}</span>
+                            </div>
                           </div>
-                          <div class="px-3 py-1 min-w-[45px] flex items-center justify-center">
-                            <span
-                              class="text-[12px] font-black text-navy group-hover/score:text-primary transition-colors">{{
-                                s }}</span>
+
+                          <!-- More Ends Chip -->
+                          <div v-if="session.remainingEnds > 0"
+                            class="p-2 bg-gray-50 text-gray-400 my-auto rounded-lg flex items-center justify-center border border-gray-100 self-end shadow-inner">
+                            <span class="text-[10px] font-black tracking-widest">+{{ session.remainingEnds }}</span>
                           </div>
                         </div>
-                      </template>
-                      <div v-else
-                        class="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-xl border-2 border-dashed border-gray-100">
-                        <Icon icon="ph:mask-sad-bold" class="text-gray-300 text-lg" />
-                        <span
-                          class="text-[11px] text-gray-400 font-black italic uppercase tracking-widest">Kosong</span>
                       </div>
+                    </div>
+                    <div v-else
+                      class="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-xl border-2 border-dashed border-gray-100 max-w-[150px]">
+                      <span class="text-[11px] text-gray-400 font-black italic uppercase tracking-widest">Kosong</span>
                     </div>
                   </td>
                   <td class="px-6 py-4 text-right">
@@ -520,7 +540,30 @@ const totalPages = computed(() => Math.ceil(reportEntries.value.length / pageSiz
 const paginatedEntries = computed(() => {
   const start = (currentPage.value - 1) * pageSize.value
   const end = start + pageSize.value
-  return reportEntries.value.slice(start, end)
+
+  // Sort sessions by created_at to determine session number
+  const sortedSessions = [...qualificationSessions.value].sort((a, b) =>
+    new Date(a.created_at) - new Date(b.created_at)
+  )
+
+  return reportEntries.value.slice(start, end).map(entry => {
+    const sessions = (entry.sessions || []).map(s => {
+      const allScores = s.end_scores ? s.end_scores.split(', ') : []
+      const sessionIdx = sortedSessions.findIndex(session => session.session_code === s.session_code)
+      return {
+        ...s,
+        sessionNumber: sessionIdx !== -1 ? sessionIdx + 1 : null,
+        displayScores: allScores.slice(0, 6),
+        remainingEnds: Math.max(0, allScores.length - 6)
+      }
+    })
+
+    return {
+      ...entry,
+      rowKey: entry.participant_uuid,
+      processedSessions: sessions
+    }
+  })
 })
 
 watch(reportEntries, () => {

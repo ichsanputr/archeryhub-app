@@ -79,7 +79,7 @@
                             <div class="relative overflow-hidden group/end"
                                 :class="{ 'bg-white': currentScoringAssignment?.uuid === assignment.uuid }">
 
-                                <div class="flex flex-wrap gap-2.5 sm:gap-3 py-2">
+                                <div class="flex flex-wrap gap-2.5 sm:gap-3 py-2 pl-3">
                                     <div v-for="(score, i) in sessionData?.arrows_per_end || 0" :key="i"
                                         @click.stop="selectArrowBox(assignment, i)" :class="[
                                             'size-14 sm:size-16 rounded-xl shadow-sm flex items-center justify-center text-lg sm:text-xl font-black cursor-pointer transition-all duration-300 relative border-4',
@@ -134,13 +134,6 @@
             <!-- Scoring Keypad -->
             <div class="lg:col-span-5 xl:col-span-4">
                 <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 p-6 sm:p-8 sticky top-6">
-                    <div class="flex justify-between items-center mb-8 pb-4 border-b border-gray-100">
-                        <h3 class="font-black text-sm text-navy flex items-center gap-2">
-                            <Icon icon="si:keypad-line" class="text-lg text-primary" />
-                            Input Score
-                        </h3>
-                    </div>
-
                     <!-- Score Buttons Grid -->
                     <div class="grid grid-cols-3 gap-3 mb-6">
                         <button v-for="val in ['X', 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 'M']" :key="val"

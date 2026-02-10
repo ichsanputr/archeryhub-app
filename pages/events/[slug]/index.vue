@@ -147,7 +147,7 @@
                                         </div>
 
                                         <!-- Categories List -->
-                                        <div class="space-y-3">
+                                        <div class="space-y-3 max-h-[220px] overflow-y-auto no-scrollbar pr-1">
                                             <div v-for="cat in division.categories" :key="cat"
                                                 class="flex items-start gap-3 p-3 rounded-2xl bg-gray-50 border border-transparent bg-white border-gray-100 shadow-sm transition-all duration-300">
                                                 <Icon icon="ph:check-circle-fill"
@@ -228,7 +228,7 @@
                                             <div class="flex items-center gap-2 mb-1">
                                                 <span class="font-bold text-navy">{{
                                                     displayValue(method.bank_name)
-                                                    }}</span>
+                                                }}</span>
                                                 <span
                                                     class="text-[10px] font-bold text-gray-400  tracking-wider px-2 py-0.5 bg-gray-200 rounded">
                                                     {{ method.type === 'bank' ? 'Bank' : method.type === 'qris'
@@ -246,7 +246,7 @@
                                                     <span class="font-medium">Atas Nama:</span>
                                                     <span class="font-semibold">{{
                                                         displayValue(method.account_name)
-                                                        }}</span>
+                                                    }}</span>
                                                 </p>
                                                 <p v-if="method.instructions" class="text-xs text-gray-500 mt-2 italic">
                                                     {{ method.instructions }}
@@ -280,7 +280,7 @@
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{
                                         displayValue(tournament.prizes?.first)
-                                        }}</div>
+                                    }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ firstPrizeCaption }}</div>
                                 </div>
                                 <div
@@ -299,7 +299,7 @@
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{
                                         displayValue(tournament.prizes?.third)
-                                        }}</div>
+                                    }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ thirdPrizeCaption }}</div>
                                 </div>
                             </div>

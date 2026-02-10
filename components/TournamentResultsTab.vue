@@ -17,7 +17,7 @@
                     </div>
                 </div>
 
-                <div v-else class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+                <div v-if="categories.length > 0" class="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
                     <button v-for="category in categories" :key="category.uuid" @click="selectCategory(category.uuid)"
                         :class="[
                             'flex-shrink-0 w-72 p-5 rounded-xl border-2 transition-all text-left group hover:shadow-md relative',
@@ -29,8 +29,10 @@
                             :class="selectedCategory === category.uuid ? 'bg-primary' : 'bg-transparent'"></div>
                         <div class="flex items-start gap-3 pl-2">
                             <div
-                                class="size-12 bg-gradient-to-br from-navy/90 to-navy rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm">
-                                <Icon icon="ph:target" class="text-xl text-primary" />
+                                class="size-12 bg-navy rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm overflow-hidden p-2 group-hover:bg-primary transition-colors">
+                                <img :src="'/' + getCategoryIcon(`${category.division_name} ${category.event_type_name} ${category.gender_division_name}`)"
+                                    :alt="category.division_name"
+                                    class="w-full h-full object-contain invert group-hover:invert-0 transition-all" />
                             </div>
                             <div class="flex-1 min-w-0">
                                 <p
@@ -46,136 +48,8 @@
                 </div>
             </div>
 
-            <!-- Phase Selector -->
-            <div v-if="selectedCategory" class="flex gap-3">
-                <button @click="activePhase = 'qualification'"
-                    class="flex-1 px-6 py-4 rounded-xl font-bold transition-all text-sm"
-                    :class="activePhase === 'qualification' ? 'bg-primary text-navy shadow-lg' : 'bg-white text-gray-600 border border-gray-200 hover:border-primary'">
-                    <Icon icon="ph:target" class="inline-block mr-2 text-lg" />
-                    Kualifikasi
-                </button>
-                <button @click="activePhase = 'elimination'"
-                    class="flex-1 px-6 py-4 rounded-xl font-bold transition-all text-sm"
-                    :class="activePhase === 'elimination' ? 'bg-primary text-navy shadow-lg' : 'bg-white text-gray-600 border border-gray-200 hover:border-primary'">
-                    <Icon icon="ph:trophy" class="inline-block mr-2 text-lg" />
-                    Eliminasi
-                </button>
-            </div>
-
-            <!-- Qualification Results -->
-            <div v-if="activePhase === 'qualification' && selectedCategory"
-                class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div v-if="qualificationLoading" class="p-12 text-center">
-                    <div
-                        class="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent mx-auto">
-                    </div>
-                </div>
-
-                <div v-else-if="!currentQualResults || currentQualResults.length === 0" class="p-12 text-center">
-                    <div class="flex flex-col items-center">
-                        <Icon icon="ph:clipboard-text" class="text-6xl text-gray-300 mb-4" />
-                        <p class="text-gray-500 font-medium">Hasil kualifikasi belum tersedia</p>
-                    </div>
-                </div>
-
-                <template v-else>
-                    <!-- Category Header -->
-                    <div class="bg-gradient-to-r from-navy to-navy-light p-6">
-                        <h3 class="text-xl font-black text-white flex items-center gap-2">
-                            <Icon icon="ph:medal" class="text-primary" />
-                            {{ currentCategoryName }}
-                        </h3>
-                        <p class="text-sm text-gray-300 mt-1">{{ currentQualResults.length }} peserta</p>
-                    </div>
-
-                    <!-- Detailed Scores Table -->
-                    <div class="overflow-x-auto">
-                        <table class="w-full">
-                            <thead class="bg-gray-50 border-b-2 border-gray-200">
-                                <tr>
-                                    <th rowspan="2"
-                                        class="px-4 py-3 text-left text-xs font-black text-gray-500 uppercase tracking-wider sticky left-0 bg-gray-50 z-10 border-r border-gray-200">
-                                        Rank
-                                    </th>
-                                    <th rowspan="2"
-                                        class="px-4 py-3 text-left text-xs font-black text-gray-500 uppercase tracking-wider min-w-[200px]">
-                                        Atlet
-                                    </th>
-                                    <th rowspan="2"
-                                        class="px-4 py-3 text-center text-xs font-black text-gray-500 uppercase tracking-wider">
-                                        Klub
-                                    </th>
-                                    <th :colspan="totalEnds"
-                                        class="px-4 py-2 text-center text-xs font-black text-gray-500 uppercase tracking-wider border-b border-gray-300">
-                                        Skor Per End
-                                    </th>
-                                    <th rowspan="2"
-                                        class="px-4 py-3 text-center text-xs font-black text-navy uppercase tracking-wider bg-navy/5 border-l-2 border-navy/20">
-                                        Total
-                                    </th>
-                                    <th rowspan="2"
-                                        class="px-4 py-3 text-center text-xs font-black text-gray-500 uppercase tracking-wider">
-                                        10+X
-                                    </th>
-                                    <th rowspan="2"
-                                        class="px-4 py-3 text-center text-xs font-black text-gray-500 uppercase tracking-wider">
-                                        X
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <th v-for="i in totalEnds" :key="i"
-                                        class="px-2 py-2 text-center text-xs font-bold text-gray-400 border-x border-gray-200">
-                                        {{ i }}
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100">
-                                <tr v-for="result in currentQualResults" :key="result.archer_uuid"
-                                    class="hover:bg-gray-50 transition-colors"
-                                    :class="{ 'bg-yellow-50/50': result.rank === 1, 'bg-gray-100/50': result.rank === 2, 'bg-orange-50/50': result.rank === 3 }">
-                                    <td class="px-4 py-4 whitespace-nowrap sticky left-0 bg-white z-10 border-r border-gray-100"
-                                        :class="{ 'bg-yellow-50/50': result.rank === 1, 'bg-gray-100/50': result.rank === 2, 'bg-orange-50/50': result.rank === 3 }">
-                                        <div class="flex items-center gap-2">
-                                            <span v-if="result.rank <= 3" class="text-2xl">
-                                                {{ result.rank === 1 ? '🥇' : result.rank === 2 ? '🥈' : '🥉' }}
-                                            </span>
-                                            <span class="text-sm font-black text-navy">{{ result.rank }}</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-4 py-4">
-                                        <div class="flex items-center gap-3">
-                                            <img :src="`https://api.dicebear.com/7.x/avataaars/svg?seed=${result.archer_name}`"
-                                                class="size-8 rounded-full border-2 border-gray-200" />
-                                            <span class="text-sm font-bold text-navy">{{ result.archer_name }}</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-4 py-4 text-center text-sm text-gray-600">
-                                        {{ result.club_name || '-' }}
-                                    </td>
-                                    <td v-for="i in totalEnds" :key="i"
-                                        class="px-2 py-4 text-center text-sm font-bold border-x border-gray-100"
-                                        :class="getEndScoreClass(result.end_scores[i - 1])">
-                                        {{ result.end_scores && result.end_scores[i - 1] !== undefined ?
-                                            result.end_scores[i - 1] : '-' }}
-                                    </td>
-                                    <td class="px-4 py-4 text-center bg-navy/5 border-l-2 border-navy/20">
-                                        <span class="text-xl font-black text-navy">{{ result.total_score }}</span>
-                                    </td>
-                                    <td class="px-4 py-4 text-center text-sm font-bold text-gray-600">
-                                        {{ result.total_10x }}
-                                    </td>
-                                    <td class="px-4 py-4 text-center text-sm font-bold text-gray-600">
-                                        {{ result.total_x }}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </template>
-            </div>
-
             <!-- Elimination Results (Bracket Style) -->
-            <div v-if="activePhase === 'elimination' && selectedCategory">
+            <div v-if="selectedCategory" class="space-y-6">
                 <div v-if="eliminationLoading"
                     class="bg-white rounded-2xl p-12 text-center border border-gray-100 shadow-sm">
                     <div
@@ -183,15 +57,7 @@
                     </div>
                 </div>
 
-                <div v-else-if="!currentElimBracket"
-                    class="bg-white rounded-2xl p-12 text-center border border-gray-100 shadow-sm">
-                    <div class="flex flex-col items-center">
-                        <Icon icon="ph:trophy" class="text-6xl text-gray-300 mb-4" />
-                        <p class="text-gray-500 font-medium">Bracket eliminasi belum tersedia</p>
-                    </div>
-                </div>
-
-                <div v-else
+                <div v-else-if="currentElimBracket"
                     class="bracket-visualization rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm">
                     <!-- Bracket Header -->
                     <div class="bg-gradient-to-r from-navy to-navy-light p-6 border-b border-gray-200">
@@ -199,12 +65,8 @@
                             <div>
                                 <h3 class="text-xl font-black text-white flex items-center gap-2">
                                     <Icon icon="ph:trophy" class="text-primary" />
-                                    {{ currentCategoryName }}
+                                    Elimination Bracket - {{ currentCategoryName }}
                                 </h3>
-                                <p class="text-sm text-gray-300 mt-1">
-                                    {{ bracketTypeLabel }}
-                                    • {{ currentElimBracket.bracket_size }} Peserta
-                                </p>
                             </div>
                             <span class="px-3 py-1.5 rounded-lg bg-primary/20 text-primary text-xs font-bold">
                                 {{ currentElimBracket.format === 'recurve_set' ? 'Set System' : 'Total Score' }}
@@ -251,7 +113,7 @@
                                                     <div class="archer-info">
                                                         <span class="seed-badge">{{ match.entry_a_seed || '-' }}</span>
                                                         <span class="archer-name">{{ match.entry_a_name || 'TBD'
-                                                        }}</span>
+                                                            }}</span>
                                                     </div>
                                                     <span class="score-display">{{ getMatchScore(match, 'A',
                                                         currentElimBracket.format) }}</span>
@@ -268,7 +130,7 @@
                                                     <div class="archer-info">
                                                         <span class="seed-badge">{{ match.entry_b_seed || '-' }}</span>
                                                         <span class="archer-name">{{ match.entry_b_name || 'TBD'
-                                                        }}</span>
+                                                            }}</span>
                                                     </div>
                                                     <span class="score-display">{{ getMatchScore(match, 'B',
                                                         currentElimBracket.format) }}</span>
@@ -294,7 +156,129 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Qualification Results Below -->
+                <div v-if="selectedCategory"
+                    class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div v-if="qualificationLoading" class="p-12 text-center">
+                        <div
+                            class="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent mx-auto">
+                        </div>
+                    </div>
+
+                    <div v-else-if="!currentQualResults || currentQualResults.length === 0" class="p-12 text-center">
+                        <div class="flex flex-col items-center">
+                            <Icon icon="ph:clipboard-text" class="text-6xl text-gray-300 mb-4" />
+                            <p class="text-gray-500 font-medium">Hasil kualifikasi belum tersedia</p>
+                        </div>
+                    </div>
+
+                    <template v-else>
+                        <!-- Category Header -->
+                        <div class="bg-gradient-to-r from-navy to-navy-light p-6">
+                            <h3 class="text-xl font-black text-white flex items-center gap-2">
+                                <Icon icon="ph:target" class="text-primary" />
+                                Kualifikasi Rangking - {{ currentCategoryName }}
+                            </h3>
+                        </div>
+
+                        <!-- Detailed Scores Table -->
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead class="bg-gray-50 border-b-2 border-gray-200">
+                                    <tr>
+                                        <th rowspan="2"
+                                            class="px-4 py-3 text-left text-xs font-black text-gray-500 uppercase tracking-wider sticky left-0 bg-gray-50 z-10 border-r border-gray-200">
+                                            Rank
+                                        </th>
+                                        <th rowspan="2"
+                                            class="px-4 py-3 text-left text-xs font-black text-gray-500 uppercase tracking-wider min-w-[200px]">
+                                            Atlet
+                                        </th>
+                                        <th rowspan="2"
+                                            class="px-4 py-3 text-center text-xs font-black text-gray-500 uppercase tracking-wider">
+                                            Klub
+                                        </th>
+                                        <th :colspan="totalEnds"
+                                            class="px-4 py-2 text-center text-xs font-black text-gray-500 uppercase tracking-wider border-b border-gray-300">
+                                            Skor Per End
+                                        </th>
+                                        <th rowspan="2"
+                                            class="px-4 py-3 text-center text-xs font-black text-navy uppercase tracking-wider bg-navy/5 border-l-2 border-navy/20">
+                                            Total
+                                        </th>
+                                        <th rowspan="2"
+                                            class="px-4 py-3 text-center text-xs font-black text-gray-500 uppercase tracking-wider">
+                                            10+X
+                                        </th>
+                                        <th rowspan="2"
+                                            class="px-4 py-3 text-center text-xs font-black text-gray-500 uppercase tracking-wider">
+                                            X
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th v-for="i in totalEnds" :key="i"
+                                            class="px-2 py-2 text-center text-xs font-bold text-gray-400 border-x border-gray-200">
+                                            {{ i }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    <template v-for="result in currentQualResultsWithSessions"
+                                        :key="result.participant_id">
+                                        <tr v-for="(session, sIdx) in result.processedSessions"
+                                            :key="session.session_code" class="hover:bg-gray-50 transition-colors">
+                                            <td v-if="sIdx === 0" :rowspan="result.processedSessions.length"
+                                                class="px-4 py-4 whitespace-nowrap sticky text-center left-0 bg-white z-10 border-r border-gray-100">
+                                                <div class="flex items-center justify-center gap-2">
+                                                    <div v-if="result.rank <= 3" class="text-2xl">
+                                                        {{ result.rank === 1 ? '🥇' : result.rank === 2 ? '🥈' : '🥉' }}
+                                                    </div>
+                                                    <div v-else class="text-sm font-black text-navy text-center">{{
+                                                        result.rank }}</div>
+                                                </div>
+                                            </td>
+                                            <td v-if="sIdx === 0" :rowspan="result.processedSessions.length"
+                                                class="px-4 py-4">
+                                                <div class="flex items-center gap-3">
+                                                    <img :src="`https://api.dicebear.com/7.x/avataaars/svg?seed=${result.archer_name}`"
+                                                        class="size-8 rounded-full border-2 border-gray-200" />
+                                                    <span class="text-sm font-bold text-navy">{{ result.archer_name
+                                                        }}</span>
+                                                </div>
+                                            </td>
+                                            <td v-if="sIdx === 0" :rowspan="result.processedSessions.length"
+                                                class="px-4 py-4 text-center text-sm text-gray-600">
+                                                {{ result.club_name || '-' }}
+                                            </td>
+                                            <td v-for="i in totalEnds" :key="i"
+                                                class="px-2 py-4 text-center text-sm font-bold border-x border-gray-100"
+                                                :class="getEndScoreClass(session.scores[i - 1])">
+                                                {{ session.scores && session.scores[i - 1] !== undefined ?
+                                                    session.scores[i - 1] : '-' }}
+                                            </td>
+                                            <td v-if="sIdx === 0" :rowspan="result.processedSessions.length"
+                                                class="px-4 py-4 text-center bg-navy/5 border-l-2 border-navy/20">
+                                                <span class="text-xl font-black text-navy">{{ result.total_score
+                                                    }}</span>
+                                            </td>
+                                            <td v-if="sIdx === 0" :rowspan="result.processedSessions.length"
+                                                class="px-4 py-4 text-center text-sm font-bold text-gray-600">
+                                                {{ result.total_10x }}
+                                            </td>
+                                            <td v-if="sIdx === 0" :rowspan="result.processedSessions.length"
+                                                class="px-4 py-4 text-center text-sm font-bold text-gray-600">
+                                                {{ result.total_x }}
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </template>
+                </div>
             </div>
+
         </template>
     </div>
 </template>
@@ -302,6 +286,7 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { useApi } from '~/composables/useApi'
+import { getCategoryIcon } from '~/utils/logoArcheryCategory'
 
 const props = defineProps({
     eventId: {
@@ -311,7 +296,6 @@ const props = defineProps({
 })
 
 const { get } = useApi()
-const activePhase = ref('qualification')
 const isLoading = ref(true)
 const qualificationLoading = ref(false)
 const eliminationLoading = ref(false)
@@ -327,7 +311,31 @@ const currentCategoryName = computed(() => {
 })
 
 const currentQualResults = computed(() => {
+    if (!selectedCategory.value) return []
     return qualificationData.value[selectedCategory.value] || []
+})
+
+const currentQualResultsWithSessions = computed(() => {
+    return currentQualResults.value.map(entry => {
+        let sessions = (entry.sessions || []).map(s => {
+            const allScores = s.end_scores ? s.end_scores.split(',') : []
+            // Parse to int
+            const numericScores = allScores.map(score => parseInt(score) || 0)
+            return {
+                ...s,
+                scores: numericScores
+            }
+        })
+
+        if (sessions.length === 0) {
+            sessions = [{ session_code: 'S1', scores: [] }]
+        }
+
+        return {
+            ...entry,
+            processedSessions: sessions
+        }
+    })
 })
 
 const currentElimBracket = computed(() => {
@@ -355,7 +363,7 @@ const sortedElimRounds = computed(() => {
 
 const fetchCategories = async () => {
     try {
-        const response = await get(`/events/${props.eventId}/categories`)
+        const response = await get(`/events/${props.eventId}/categories`, { params: { limit: 1000 } })
         const cats = response?.events || []
 
         const mappedCats = cats.map(cat => ({
@@ -366,6 +374,9 @@ const fetchCategories = async () => {
                 cat.gender_division_name,
                 cat.event_type_name !== 'Individual' ? `(${cat.event_type_name})` : ''
             ].filter(Boolean).join(' '),
+            division_name: cat.division_name,
+            event_type_name: cat.event_type_name,
+            gender_division_name: cat.gender_division_name,
             participant_count: cat.participant_count || 0
         }))
 
