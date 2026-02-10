@@ -166,7 +166,6 @@
                     <div class="relative p-8 text-center">
                         <!-- Title -->
                         <div class="mb-6">
-                            <Icon icon="ph:flag-checkered-fill" class="text-5xl text-primary mb-3" />
                             <h2 class="text-2xl font-black text-white tracking-tight">Akhiri Pertandingan?</h2>
                             <p class="text-white/60 text-sm mt-1">Konfirmasi untuk mengakhiri dan menentukan pemenang
                             </p>
@@ -390,6 +389,9 @@ const fetchBracket = async (silent = false) => {
         if (bracket.value?.category_id) {
             fetchCategoryDetails(bracket.value.category_id)
         }
+
+        // Fetch all scores for the bracket list
+        fetchAllScores()
     } catch (error) {
         console.error('Failed to fetch bracket:', error)
         toast.error('Gagal memuat bracket')
@@ -454,6 +456,37 @@ const selectMatchForScoring = (match) => {
     currentEnd.value = 1
     selectedArrowIndex.value = 0
     fetchMatchScores(match.id)
+}
+
+const fetchAllScores = async () => {
+    try {
+        const response = await get(`/events/${eventId}/elimination/brackets/${bracketId}/scores`)
+        const ends = response?.ends || []
+
+        ends.forEach(end => {
+            const matchId = end.match_id
+            const side = end.side
+            const endNo = end.end_no
+
+            if (!matchEnds.value[matchId]) {
+                const initEnds = {}
+                for (let i = 1; i <= (bracket.value?.ends_per_match || 5); i++) {
+                    initEnds[i] = { total: 0, arrows: [] }
+                }
+                matchEnds.value[matchId] = {
+                    A: JSON.parse(JSON.stringify(initEnds)),
+                    B: JSON.parse(JSON.stringify(initEnds))
+                }
+            }
+
+            if (matchEnds.value[matchId][side] && matchEnds.value[matchId][side][endNo]) {
+                matchEnds.value[matchId][side][endNo].total = end.end_total
+                matchEnds.value[matchId][side][endNo].arrows = end.arrows
+            }
+        })
+    } catch (e) {
+        console.error('Failed to fetch bracket scores:', e)
+    }
 }
 
 const fetchMatchScores = async (matchId) => {

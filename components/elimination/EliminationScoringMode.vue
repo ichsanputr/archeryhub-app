@@ -13,83 +13,75 @@
                 </div>
                 <!-- REMOVED overflow-hidden and adjusted padding for better visibility -->
                 <div class="flex flex-col gap-4 max-h-[75vh] overflow-y-auto pr-2 custom-scrollbar p-1">
-                    <button v-for="match in roundMatches" :key="match.id" @click="$emit('select-match', match)"
-                        class="group p-4 rounded-3xl border-2 text-left transition-all relative overflow-hidden" :class="[
+                    <div v-for="match in roundMatches" :key="match.id" @click="$emit('select-match', match)"
+                        class="group p-4 rounded-[2rem] border-2 text-left transition-all relative cursor-pointer"
+                        :class="[
                             selectedScoringMatch?.id === match.id
-                                ? 'border-primary bg-primary/5 shadow-md shadow-primary/5 ring-4 ring-primary/10'
-                                : 'border-gray-100 bg-white hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5',
-                            (match.status === 'finished' || match.winner_entry_id) ? 'bg-slate-50/50' : ''
+                                ? 'border-primary bg-primary/5 shadow-xl shadow-primary/10 ring-4 ring-primary/5'
+                                : 'border-gray-50 bg-white hover:border-gray-200 hover:shadow-lg hover:shadow-primary/5',
+                            (match.status === 'finished' || match.winner_entry_id) ? 'bg-slate-50/50 grayscale-[0.2]' : ''
                         ]">
 
                         <!-- Match Meta Header -->
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex items-center gap-2">
-                                <div
-                                    class="px-2.5 py-1 rounded-xl bg-navy text-primary text-[10px] font-black shadow-sm">
+                        <div class="flex items-center justify-between mb-5">
+                            <div class="flex items-center gap-2.5">
+                                <div class="px-3 py-1 rounded-xl bg-navy text-primary text-[10px] font-black shadow-sm">
                                     MATCH {{ match.match_no }}
                                 </div>
                                 <div v-if="match.target_name"
-                                    class="px-2 py-0.5 rounded-lg bg-slate-100 border border-slate-200 text-[9px] font-black text-slate-500 flex items-center gap-1.5 uppercase tracking-wider">
+                                    class="px-2 py-0.5 rounded-lg bg-slate-100 border border-slate-200 text-[10px] font-extrabold text-navy/40 flex items-center gap-1.5 uppercase tracking-wider">
                                     <Icon icon="ph:target-bold" class="text-xs text-primary" />
                                     {{ getFullTargetName(match) }}
                                 </div>
                             </div>
 
-                            <!-- Status Status Indicator -->
-                            <div class="flex items-center gap-1.5">
-                                <div v-if="match.status === 'finished' || match.winner_entry_id"
-                                    class="px-2 py-0.5 rounded-lg bg-green-500/10 text-green-600 text-[8px] font-black uppercase tracking-[0.2em] border border-green-500/20">
-                                    DONE
-                                </div>
-                                <div v-else-if="match.target_name"
-                                    class="px-2 py-0.5 rounded-lg bg-blue-500/10 text-blue-600 text-[8px] font-black uppercase tracking-[0.2em] border border-blue-500/20 animate-pulse">
-                                    LIVE
-                                </div>
-                                <div v-else
-                                    class="px-2 py-0.5 rounded-lg bg-gray-100 text-gray-400 text-[8px] font-black uppercase tracking-[0.2em] border border-gray-200">
-                                    PENDING
-                                </div>
+                            <div v-if="match.status === 'finished' || match.winner_entry_id"
+                                class="flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-green-500/10 text-green-600 border border-green-500/20">
+                                <Icon icon="ph:check-circle-fill" class="text-[10px]" />
+                                <span class="text-[8px] font-black uppercase tracking-widest">DONE</span>
                             </div>
                         </div>
 
-                        <!-- Info Grid (Participants) -->
-                        <div class="flex flex-col gap-1.5">
+                        <!-- Participants - PROMINENT DISPLAY -->
+                        <div class="space-y-3">
                             <div v-for="side in ['A', 'B']" :key="side"
-                                class="flex items-center justify-between px-3 py-2 rounded-xl transition-all" :class="[
+                                class="flex items-center justify-between py-3 pr-2 rounded-2xl transition-all border border-gray-50"
+                                :class="[
                                     isWinner(match, side === 'A' ? match.entry_a_id : match.entry_b_id)
-                                        ? 'bg-green-500/5'
-                                        : 'bg-slate-50/50',
-                                    selectedScoringMatch?.id === match.id ? 'group-hover:bg-white/40' : ''
+                                        ? 'bg-green-500/5 border-green-500/10'
+                                        : 'bg-white border-transparent',
+                                    selectedScoringMatch?.id === match.id && !isWinner(match, side === 'A' ? match.entry_a_id : match.entry_b_id) ? 'shadow-sm' : ''
                                 ]">
-                                <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                                <div class="flex items-center gap-3.5 min-w-0 pr-2">
                                     <div class="relative shrink-0">
-                                        <img :src="useImageOrDefault(undefined, side === 'A' ? match.entry_a_name : match.entry_b_name)"
-                                            class="size-5 rounded-md object-cover ring-1 ring-white shadow-sm" />
-                                        <Icon v-if="isWinner(match, side === 'A' ? match.entry_a_id : match.entry_b_id)"
-                                            icon="ph:crown-fill"
-                                            class="absolute -top-1 -left-1 text-yellow-500 text-[8px]" />
+                                        <div v-if="isWinner(match, side === 'A' ? match.entry_a_id : match.entry_b_id)"
+                                            class="absolute -top-2 -left-2 size-5 bg-primary text-navy rounded-full flex items-center justify-center border-2 border-white shadow-sm z-10 transition-transform hover:scale-110">
+                                            <Icon icon="ph:crown-fill" class="text-[10px]" />
+                                        </div>
                                     </div>
-                                    <div class="flex items-center gap-1.5 min-w-0">
-                                        <span class="text-[9px] font-black text-navy/20 shrink-0">#{{ side === 'A' ?
-                                            match.entry_a_seed || '-' : match.entry_b_seed || '-' }}</span>
-                                        <span class="text-[10px] font-bold text-navy truncate tracking-tight">
+                                    <div class="flex flex-col min-w-0">
+                                        <div class="flex items-center gap-1.5 mb-0.5">
+                                            <span class="text-[10px] font-black text-navy/20">SEED {{ side === 'A' ?
+                                                match.entry_a_seed || '-' : match.entry_b_seed || '-' }}</span>
+                                        </div>
+                                        <h4 class="text-sm font-black text-navy truncate tracking-tight leading-tight">
                                             {{ (side === 'A' ? match.entry_a_name : match.entry_b_name) || 'TBD' }}
-                                        </span>
+                                        </h4>
                                     </div>
                                 </div>
-                                <div class="text-[11px] font-black tabular-nums transition-colors ml-2"
-                                    :class="isWinner(match, side === 'A' ? match.entry_a_id : match.entry_b_id) ? 'text-green-600' : 'text-navy/30'">
+                                <div class="text-xl font-black tabular-nums transition-all"
+                                    :class="isWinner(match, side === 'A' ? match.entry_a_id : match.entry_b_id) ? 'text-green-600 scale-110' : 'text-navy/20'">
                                     {{ getMatchScore(match, side) }}
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Progress Bar (Optional) -->
+                        <!-- Progress indicator for live matches -->
                         <div v-if="match.status !== 'finished' && !match.winner_entry_id && match.target_name"
-                            class="mt-4 h-1 w-full bg- slate-100 rounded-full overflow-hidden">
-                            <div class="h-full bg-primary transition-all duration-1000" style="width: 40%"></div>
+                            class="mt-4 h-1 w-full bg-slate-100 rounded-full overflow-hidden">
+                            <div class="h-full bg-primary animate-pulse" style="width: 35%"></div>
                         </div>
-                    </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -265,14 +257,10 @@
                                         </div>
 
                                         <!-- Result Summary Line -->
-                                        <div class="flex justify-between items-start mb-6">
-                                            <div class="flex items-center gap-4">
-                                                <div class="size-10 rounded-xl flex items-center justify-center text-sm font-black shadow-inner"
-                                                    :class="activeSide === side ? 'bg-navy text-primary' : 'bg-gray-200 text-gray-400'">
-                                                    {{ side }}
-                                                </div>
+                                        <div class="flex justify-between items-center mb-6">
+                                            <div class="flex items-center h-full gap-4">
                                                 <div class="min-w-0">
-                                                    <h4 class="text-sm sm:text-base font-black text-navy truncate">
+                                                    <h4 class="text-base sm:text-lg font-black text-navy truncate">
                                                         {{ side === 'A' ? selectedScoringMatch.entry_a_name :
                                                             (selectedScoringMatch.entry_b_name || 'TBD') }}
                                                     </h4>
@@ -296,7 +284,7 @@
                                                         class="text-[8px] font-black text-gray-400 uppercase">SUM</span>
                                                     <span class="text-xl font-black text-navy tabular-nums">{{
                                                         calculateEndTotal(selectedScoringMatch.id, currentEnd, side)
-                                                        }}</span>
+                                                    }}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -388,6 +376,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import { useImageOrDefault } from '~/composables/useImageHelper'
 
 const props = defineProps({
     bracket: { type: Object, required: true },
@@ -419,23 +408,18 @@ const getMatchScore = (match, side) => {
     const isRecurve = props.bracket?.format === 'recurve_set'
     const sideKey = side === 'A' ? 'A' : 'B'
 
-    if (match.winner_entry_id) {
-        const isWinner = match.winner_entry_id === (side === 'A' ? match.entry_a_id : match.entry_b_id)
-        if (isRecurve) {
-            const m = props.matchEnds[match.id]
-            if (m) return calculateSetPoints(match.id, sideKey)
-            return isWinner ? '6' : '0'
-        }
-        return isWinner ? 'W' : 'L'
-    }
-
+    // If we have detailed ends data, use it for live updates
     const m = props.matchEnds[match.id]
-    if (!m) return 0
-
-    if (isRecurve) {
-        return calculateSetPoints(match.id, sideKey)
+    if (m) {
+        if (isRecurve) return calculateSetPoints(match.id, sideKey)
+        return Object.values(m[sideKey] || {}).reduce((s, e) => s + (e.total || 0), 0) || 0
     }
-    return Object.values(m[sideKey] || {}).reduce((s, e) => s + (e.total || 0), 0) || 0
+
+    // Fallback to pre-calculated summary scores from match object
+    if (isRecurve) {
+        return (side === 'A' ? match.total_points_a : match.total_points_b) || 0
+    }
+    return (side === 'A' ? match.total_score_a : match.total_score_b) || 0
 }
 
 const calculateSetPoints = (matchId, side) => {
@@ -449,9 +433,9 @@ const calculateSetPoints = (matchId, side) => {
     const arrowsPerEnd = props.bracket?.arrows_per_end || 3
 
     for (let i = 1; i <= totalEnds; i++) {
-        const endA = m.A[i]
-        const endB = m.B[i]
-        if (!endA || !endB) continue
+        const endA = m.A?.[i]
+        const endB = m.B?.[i]
+        if (!endA || !endB || endA.total === undefined || endB.total === undefined) continue
 
         const finishedA = endA.arrows && endA.arrows.filter(a => a !== null && a !== '').length === arrowsPerEnd
         const finishedB = endB.arrows && endB.arrows.filter(a => a !== null && a !== '').length === arrowsPerEnd
