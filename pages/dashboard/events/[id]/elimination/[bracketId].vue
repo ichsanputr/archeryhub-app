@@ -178,18 +178,18 @@
                                 <div class="flex-1 text-center">
                                     <img :src="getAvatarUrl(selectedScoringMatch.entry_a_name)"
                                         class="size-16 rounded-2xl border-2 mx-auto mb-2"
-                                        :class="getMatchScore(selectedScoringMatch, 'A') > getMatchScore(selectedScoringMatch, 'B') ? 'border-primary shadow-lg shadow-primary/30' : 'border-white/20'" />
+                                        :class="(getMatchScore(selectedScoringMatch, 'A') > getMatchScore(selectedScoringMatch, 'B') || manualWinnerId === selectedScoringMatch.entry_a_id) ? 'border-primary shadow-lg shadow-primary/30' : 'border-white/20'" />
                                     <div class="font-bold text-white text-sm truncate max-w-[120px] mx-auto">
                                         {{ selectedScoringMatch.entry_a_name || 'TBD' }}
                                     </div>
                                     <div class="text-3xl font-black mt-2"
-                                        :class="getMatchScore(selectedScoringMatch, 'A') > getMatchScore(selectedScoringMatch, 'B') ? 'text-primary' : 'text-white/60'">
+                                        :class="(getMatchScore(selectedScoringMatch, 'A') > getMatchScore(selectedScoringMatch, 'B') || manualWinnerId === selectedScoringMatch.entry_a_id) ? 'text-primary' : 'text-white/60'">
                                         {{ getMatchScore(selectedScoringMatch, 'A') }}
                                     </div>
-                                    <div v-if="getMatchScore(selectedScoringMatch, 'A') > getMatchScore(selectedScoringMatch, 'B')"
+                                    <div v-if="getMatchScore(selectedScoringMatch, 'A') > getMatchScore(selectedScoringMatch, 'B') || manualWinnerId === selectedScoringMatch.entry_a_id"
                                         class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/20 text-primary text-[10px] font-black tracking-wider mt-2">
                                         <Icon icon="ph:crown-simple-fill" class="text-xs" />
-                                        MENANG
+                                        PEMENANG
                                     </div>
                                 </div>
 
@@ -205,27 +205,20 @@
                                 <div class="flex-1 text-center">
                                     <img :src="getAvatarUrl(selectedScoringMatch.entry_b_name)"
                                         class="size-16 rounded-2xl border-2 mx-auto mb-2"
-                                        :class="getMatchScore(selectedScoringMatch, 'B') > getMatchScore(selectedScoringMatch, 'A') ? 'border-primary shadow-lg shadow-primary/30' : 'border-white/20'" />
+                                        :class="(getMatchScore(selectedScoringMatch, 'B') > getMatchScore(selectedScoringMatch, 'A') || manualWinnerId === selectedScoringMatch.entry_b_id) ? 'border-primary shadow-lg shadow-primary/30' : 'border-white/20'" />
                                     <div class="font-bold text-white text-sm truncate max-w-[120px] mx-auto">
                                         {{ selectedScoringMatch.entry_b_name || 'TBD' }}
                                     </div>
                                     <div class="text-3xl font-black mt-2"
-                                        :class="getMatchScore(selectedScoringMatch, 'B') > getMatchScore(selectedScoringMatch, 'A') ? 'text-primary' : 'text-white/60'">
+                                        :class="(getMatchScore(selectedScoringMatch, 'B') > getMatchScore(selectedScoringMatch, 'A') || manualWinnerId === selectedScoringMatch.entry_b_id) ? 'text-primary' : 'text-white/60'">
                                         {{ getMatchScore(selectedScoringMatch, 'B') }}
                                     </div>
-                                    <div v-if="getMatchScore(selectedScoringMatch, 'B') > getMatchScore(selectedScoringMatch, 'A')"
+                                    <div v-if="getMatchScore(selectedScoringMatch, 'B') > getMatchScore(selectedScoringMatch, 'A') || manualWinnerId === selectedScoringMatch.entry_b_id"
                                         class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/20 text-primary text-[10px] font-black tracking-wider mt-2">
                                         <Icon icon="ph:crown-simple-fill" class="text-xs" />
-                                        MENANG
+                                        PEMENANG
                                     </div>
                                 </div>
-                            </div>
-
-                            <!-- Tie Warning -->
-                            <div v-if="getMatchScore(selectedScoringMatch, 'A') === getMatchScore(selectedScoringMatch, 'B')"
-                                class="mt-4 p-3 rounded-xl bg-orange-500/20 border border-orange-500/30 text-orange-300 text-sm">
-                                <Icon icon="ph:warning-fill" class="inline mr-1" />
-                                Skor seri! Tidak dapat mengakhiri pertandingan dengan skor yang sama.
                             </div>
                         </div>
 
@@ -236,7 +229,7 @@
                                 Batal
                             </button>
                             <button @click="confirmEndMatch"
-                                :disabled="isEndingMatch || (selectedScoringMatch && getMatchScore(selectedScoringMatch, 'A') === getMatchScore(selectedScoringMatch, 'B'))"
+                                :disabled="isEndingMatch || (selectedScoringMatch && getMatchScore(selectedScoringMatch, 'A') === getMatchScore(selectedScoringMatch, 'B') && !manualWinnerId)"
                                 class="flex-1 px-6 py-3 rounded-xl bg-primary text-navy font-black tracking-wide hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
                                 <Icon v-if="isEndingMatch" icon="ph:circle-notch-bold" class="animate-spin" />
                                 <Icon v-else icon="ph:check-bold" />
@@ -282,6 +275,7 @@ const availableTargets = ref([])
 const selectedArrowIndex = ref(0)
 const selectedScoringMatch = ref(null)
 const matchEnds = ref({}) // { matchId: { A: { 1: {total: 0, arrows: []} }, B: { ... } } }
+const manualWinnerId = ref(null)
 
 const currentRoundNo = computed(() => route.query.round)
 const roundMatches = computed(() => {
@@ -497,8 +491,11 @@ const fetchMatchScores = async (matchId) => {
         if (!matchEnds.value[matchId]) {
             const initEnds = {}
             for (let i = 1; i <= (bracket.value?.ends_per_match || 5); i++) {
-                initEnds[i] = { total: 0, arrows: [] }
+                initEnds[i] = { total: 0, arrows: [], end_no: i }
             }
+            // Add shoot-off slot
+            initEnds[99] = { total: 0, arrows: [], end_no: 99 }
+
             matchEnds.value[matchId] = {
                 A: JSON.parse(JSON.stringify(initEnds)),
                 B: JSON.parse(JSON.stringify(initEnds))
@@ -510,10 +507,11 @@ const fetchMatchScores = async (matchId) => {
             const endNo = end.end_no
             if (matchEnds.value[matchId][side] && matchEnds.value[matchId][side][endNo]) {
                 matchEnds.value[matchId][side][endNo].total = end.end_total
+                matchEnds.value[matchId][side][endNo].end_no = endNo
 
                 // Pad arrows to size
                 const arrows = [...(end.arrows || [])]
-                const targetSize = bracket.value?.arrows_per_end || 3
+                const targetSize = endNo === 99 ? 1 : (bracket.value?.arrows_per_end || 3)
                 while (arrows.length < targetSize) arrows.push(null)
                 matchEnds.value[matchId][side][endNo].arrows = arrows
             }
@@ -531,25 +529,26 @@ const getAvatarUrl = (name) => {
 const getMatchScore = (match, side) => {
     const isRecurve = bracket.value?.format === 'recurve_set'
     const sideKey = side === 'A' ? 'A' : 'B'
-    const otherSideKey = side === 'A' ? 'B' : 'A'
-
-    if (match.winner_entry_id) {
-        const isWinner = match.winner_entry_id === (side === 'A' ? match.entry_a_id : match.entry_b_id)
-        if (isRecurve) {
-            const m = matchEnds.value[match.id]
-            if (m) return calculateSetPoints(match.id, sideKey)
-            return isWinner ? '6' : '0'
-        }
-        return isWinner ? 'W' : 'L'
-    }
 
     const m = matchEnds.value[match.id]
-    if (!m) return '-'
-
-    if (isRecurve) {
-        return calculateSetPoints(match.id, sideKey)
+    let score = 0
+    if (m) {
+        if (isRecurve) score = calculateSetPoints(match.id, sideKey)
+        else score = Object.values(m[sideKey] || {}).reduce((s, e) => {
+            if (e.end_no === 99) return s
+            return s + (e.total || 0)
+        }, 0) || 0
+    } else {
+        if (isRecurve) score = (side === 'A' ? match.total_points_a : match.total_points_b) || 0
+        else score = (side === 'A' ? match.total_score_a : match.total_score_b) || 0
     }
-    return Object.values(m[sideKey] || {}).reduce((s, e) => s + (e.total || 0), 0) || '0'
+
+    if (m?.[sideKey]?.[99]?.total) {
+        const soVal = m[sideKey][99].arrows?.[0] || '?'
+        return `${score} (${soVal})`
+    }
+
+    return score
 }
 
 const calculateSetPoints = (matchId, side) => {
@@ -565,9 +564,10 @@ const calculateSetPoints = (matchId, side) => {
     for (let i = 1; i <= totalEnds; i++) {
         const endA = m.A[i]
         const endB = m.B[i]
+        if (!endA || !endB) continue
 
         // Only count if both have finished the end
-        if (endA.arrows.length === arrowsPerEnd && endB.arrows.length === arrowsPerEnd) {
+        if (endA.arrows && endB.arrows && endA.arrows.length === arrowsPerEnd && endB.arrows.length === arrowsPerEnd) {
             if (endA.total > endB.total) {
                 setPointsA += 2
             } else if (endA.total < endB.total) {
@@ -730,6 +730,7 @@ const saveAndNext = async () => {
 
 const endMatch = () => {
     if (!selectedScoringMatch.value || !canEndMatch.value) return
+    manualWinnerId.value = null // Reset selection
     showEndMatchDialog.value = true
 }
 
@@ -741,7 +742,9 @@ const confirmEndMatch = async () => {
         const matchId = selectedScoringMatch.value.id
 
         // Call API endpoint that will auto-calculate winner from saved scores
-        await post(`/events/${eventId}/elimination/brackets/${bracketId}/matches/${matchId}/end`)
+        await post(`/events/${eventId}/elimination/brackets/${bracketId}/matches/${matchId}/end`, {
+            winner_entry_id: manualWinnerId.value
+        })
 
         toast.success('Pertandingan berhasil diakhiri!')
 

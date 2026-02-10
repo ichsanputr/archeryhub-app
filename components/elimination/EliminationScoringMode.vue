@@ -231,6 +231,19 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Shoot-off End (End 99) -->
+                            <div v-if="isTied" @click="$emit('update:currentEnd', 99)"
+                                class="flex flex-col items-center gap-2 cursor-pointer group ml-2 border-l border-slate-100 pl-4">
+                                <span class="text-[10px] font-black tracking-[0.2em] transition-colors uppercase"
+                                    :class="currentEnd === 99 ? 'text-orange-500' : 'text-orange-300 group-hover:text-orange-400'">Shoot-off</span>
+                                <div class="size-10 sm:size-12 rounded-xl flex items-center justify-center text-xs sm:text-sm font-black transition-all relative"
+                                    :class="currentEnd === 99 ? 'bg-orange-500 text-white shadow-sm ring-4 ring-orange-500/10' : 'bg-orange-50 text-orange-300 group-hover:bg-orange-100/50 group-hover:text-orange-400'">
+                                    S
+                                    <div v-if="currentEnd === 99"
+                                        class="absolute -bottom-1 w-4 h-0.5 bg-white rounded-full">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="hidden sm:block text-right">
                             <h5 class="text-[9px] font-black text-gray-400 tracking-widest uppercase mb-1">Mode</h5>
@@ -284,14 +297,15 @@
                                                         class="text-[8px] font-black text-gray-400 uppercase">SUM</span>
                                                     <span class="text-xl font-black text-navy tabular-nums">{{
                                                         calculateEndTotal(selectedScoringMatch.id, currentEnd, side)
-                                                    }}</span>
+                                                        }}</span>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <!-- ARROW SLOTS -->
                                         <div class="flex items-center justify-center gap-3 sm:gap-4">
-                                            <div v-for="i in (bracket?.arrows_per_end || 3)" :key="i"
+                                            <div v-for="i in (currentEnd === 99 ? 1 : (bracket?.arrows_per_end || 3))"
+                                                :key="i"
                                                 class="size-14 sm:size-16 rounded-xl border-4 text-lg sm:text-xl font-black transition-all duration-300 cursor-pointer shrink-0 flex items-center justify-center relative group/box"
                                                 :class="[
                                                     activeSide === side && (selectedArrowIndex === i - 1)
@@ -410,17 +424,68 @@ const getMatchScore = (match, side) => {
 
     // If we have detailed ends data, use it for live updates
     const m = props.matchEnds[match.id]
+    let score = 0
     if (m) {
-        if (isRecurve) return calculateSetPoints(match.id, sideKey)
-        return Object.values(m[sideKey] || {}).reduce((s, e) => s + (e.total || 0), 0) || 0
+        if (isRecurve) score = calculateSetPoints(match.id, sideKey)
+        else score = Object.values(m[sideKey] || {}).reduce((s, e) => {
+            if (e.end_no === 99) return s // Don't include shoot-off in total score
+            return s + (e.total || 0)
+        }, 0) || 0
+    } else {
+        // Fallback to pre-calculated summary scores from match object
+        if (isRecurve) score = (side === 'A' ? match.total_points_a : match.total_points_b) || 0
+        else score = (side === 'A' ? match.total_score_a : match.total_score_b) || 0
     }
 
-    // Fallback to pre-calculated summary scores from match object
-    if (isRecurve) {
-        return (side === 'A' ? match.total_points_a : match.total_points_b) || 0
+    // Append Shoot-off score if exists
+    if (m?.[sideKey]?.[99]?.total) {
+        const soVal = m[sideKey][99].arrows?.[0] || '?'
+        return `${score} (${soVal})`
     }
-    return (side === 'A' ? match.total_score_a : match.total_score_b) || 0
+
+    return score
 }
+
+const isTied = computed(() => {
+    if (!props.selectedScoringMatch) return false
+    const match = props.selectedScoringMatch
+    const scoreA = getMatchScore(match, 'A')
+    const scoreB = getMatchScore(match, 'B')
+
+    // Simple numeric comparison for tie detection (ignoring shoot-off suffix)
+    const valA = parseInt(String(scoreA).split(' ')[0])
+    const valB = parseInt(String(scoreB).split(' ')[0])
+
+    // Check if match is "complete" (all ends filled)
+    const m = props.matchEnds[match.id]
+    if (!m) return false
+
+    const totalEnds = props.bracket?.ends_per_match || 5
+    const arrowsPerEnd = props.bracket?.arrows_per_end || 3
+
+    // For regular ends
+    for (let i = 1; i <= totalEnds; i++) {
+        const hasA = m.A?.[i]?.arrows?.filter(a => a !== null && a !== '').length === arrowsPerEnd
+        const hasB = m.B?.[i]?.arrows?.filter(a => a !== null && a !== '').length === arrowsPerEnd
+        if (!hasA || !hasB) return false
+    }
+
+    // If regular score is tied, check shoot-off
+    if (valA === valB) {
+        // If no shoot-off arrows yet -> it IS tied
+        if (!m.A?.[99]?.arrows?.[0] || !m.B?.[99]?.arrows?.[0]) return true
+
+        // If shoot-off arrows exist, check if THEY are tied
+        const soA = m.A[99].arrows[0]
+        const soB = m.B[99].arrows[0]
+
+        // Convert X/M to values for comparison
+        const getVal = (v) => v === 'X' ? 10 : (v === 'M' ? 0 : parseInt(v) || 0)
+        return getVal(soA) === getVal(soB)
+    }
+
+    return false
+})
 
 const calculateSetPoints = (matchId, side) => {
     const m = props.matchEnds[matchId]
