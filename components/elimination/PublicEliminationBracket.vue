@@ -153,7 +153,10 @@ const calculateConnectorPath = (i, roundNo, side = 'left', isSingle = false) => 
 
 <style scoped>
 .bracket-visualization {
-    @apply bg-slate-50/50 relative border border-gray-100;
+    @apply bg-slate-50/50 relative border-t border-gray-100;
+    background-image:
+        radial-gradient(#e2e8f0 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
 }
 
 .bracket-scroll-container {

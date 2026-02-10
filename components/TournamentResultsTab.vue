@@ -57,7 +57,15 @@
                     </div>
                 </div>
 
-                <div v-else-if="currentElimBracket" class="space-y-6">
+                <div v-else-if="currentElimBracket"
+                    class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <!-- Bracket Header -->
+                    <div class="bg-gradient-to-r from-navy to-navy-light p-4 md:p-6">
+                        <h3 class="!text-base !md:text-lg font-black text-white flex items-center gap-2">
+                            <Icon icon="ph:trophy" class="text-primary" />
+                            Eliminasi Bracket - {{ currentCategoryName }}
+                        </h3>
+                    </div>
                     <PublicEliminationBracket :bracket="currentElimBracket" :rounds="sortedElimRounds" />
                 </div>
 
@@ -79,8 +87,8 @@
 
                     <template v-else>
                         <!-- Category Header -->
-                        <div class="bg-gradient-to-r from-navy to-navy-light p-6">
-                            <h3 class="text-xl font-black text-white flex items-center gap-2">
+                        <div class="bg-gradient-to-r from-navy to-navy-light p-4 md:p-6">
+                            <h3 class="!text-base !md:text-lg font-black text-white flex items-center gap-2">
                                 <Icon icon="ph:target" class="text-primary" />
                                 Kualifikasi Rangking - {{ currentCategoryName }}
                             </h3>
@@ -152,8 +160,11 @@
                                                 </div>
                                             </td>
                                             <td v-if="sIdx === 0" :rowspan="result.processedSessions.length"
-                                                class="px-4 py-4 text-center text-sm text-gray-600">
-                                                {{ result.club_name || '-' }}
+                                                class="px-4 py-4 text-center">
+                                                <div
+                                                    class="text-[10px] md:text-sm text-gray-600 line-clamp-2 leading-tight">
+                                                    {{ result.club_name || '-' }}
+                                                </div>
                                             </td>
                                             <td v-for="i in totalEnds" :key="i"
                                                 class="px-2 py-4 text-center text-sm font-bold border-x border-gray-100"
@@ -163,8 +174,8 @@
                                             </td>
                                             <td v-if="sIdx === 0" :rowspan="result.processedSessions.length"
                                                 class="px-4 py-4 text-center bg-navy/5 border-l-2 border-navy/20">
-                                                <span class="text-xl font-black text-navy">{{ result.total_score
-                                                }}</span>
+                                                <span class="text-base sm:text-xl font-black text-navy">{{
+                                                    result.total_score }}</span>
                                             </td>
                                             <td v-if="sIdx === 0" :rowspan="result.processedSessions.length"
                                                 class="px-4 py-4 text-center text-sm font-bold text-gray-600">
