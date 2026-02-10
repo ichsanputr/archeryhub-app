@@ -360,6 +360,11 @@ const canEndMatch = computed(() => {
 // Scoring States
 const activeSide = ref('A')
 const currentEnd = ref(1)
+// Monitor end changes to reset arrow focus
+watch(currentEnd, () => {
+    selectedArrowIndex.value = 0
+    activeSide.value = 'A'
+})
 const isEndingMatch = ref(false)
 const showEndMatchDialog = ref(false)
 
@@ -465,8 +470,11 @@ const fetchAllScores = async () => {
             if (!matchEnds.value[matchId]) {
                 const initEnds = {}
                 for (let i = 1; i <= (bracket.value?.ends_per_match || 5); i++) {
-                    initEnds[i] = { total: 0, arrows: [] }
+                    initEnds[i] = { total: 0, arrows: Array(bracket.value?.arrows_per_end || 3).fill(null), end_no: i }
                 }
+                // Add shoot-off slot
+                initEnds[99] = { total: 0, arrows: [null], end_no: 99 }
+
                 matchEnds.value[matchId] = {
                     A: JSON.parse(JSON.stringify(initEnds)),
                     B: JSON.parse(JSON.stringify(initEnds))
@@ -475,7 +483,13 @@ const fetchAllScores = async () => {
 
             if (matchEnds.value[matchId][side] && matchEnds.value[matchId][side][endNo]) {
                 matchEnds.value[matchId][side][endNo].total = end.end_total
-                matchEnds.value[matchId][side][endNo].arrows = end.arrows
+
+                // Pad or truncate arrows to size
+                const arrows = [...(end.arrows || [])]
+                const targetSize = endNo === 99 ? 1 : (bracket.value?.arrows_per_end || 3)
+                while (arrows.length < targetSize) arrows.push(null)
+                if (arrows.length > targetSize) arrows.length = targetSize
+                matchEnds.value[matchId][side][endNo].arrows = arrows
             }
         })
     } catch (e) {
@@ -491,10 +505,10 @@ const fetchMatchScores = async (matchId) => {
         if (!matchEnds.value[matchId]) {
             const initEnds = {}
             for (let i = 1; i <= (bracket.value?.ends_per_match || 5); i++) {
-                initEnds[i] = { total: 0, arrows: [], end_no: i }
+                initEnds[i] = { total: 0, arrows: Array(bracket.value?.arrows_per_end || 3).fill(null), end_no: i }
             }
             // Add shoot-off slot
-            initEnds[99] = { total: 0, arrows: [], end_no: 99 }
+            initEnds[99] = { total: 0, arrows: [null], end_no: 99 }
 
             matchEnds.value[matchId] = {
                 A: JSON.parse(JSON.stringify(initEnds)),
@@ -509,10 +523,11 @@ const fetchMatchScores = async (matchId) => {
                 matchEnds.value[matchId][side][endNo].total = end.end_total
                 matchEnds.value[matchId][side][endNo].end_no = endNo
 
-                // Pad arrows to size
+                // Pad or truncate arrows to size
                 const arrows = [...(end.arrows || [])]
                 const targetSize = endNo === 99 ? 1 : (bracket.value?.arrows_per_end || 3)
                 while (arrows.length < targetSize) arrows.push(null)
+                if (arrows.length > targetSize) arrows.length = targetSize
                 matchEnds.value[matchId][side][endNo].arrows = arrows
             }
         })
@@ -543,9 +558,17 @@ const getMatchScore = (match, side) => {
         else score = (side === 'A' ? match.total_score_a : match.total_score_b) || 0
     }
 
-    if (m?.[sideKey]?.[99]?.total) {
-        const soVal = m[sideKey][99].arrows?.[0] || '?'
-        return `${score} (${soVal})`
+    // Shoot-off logic: Winner gets +1 point to total score
+    const soA = m?.A?.[99]?.arrows?.[0]
+    const soB = m?.B?.[99]?.arrows?.[0]
+
+    if (soA && soB) {
+        const getV = (v) => v === 'X' ? 11 : (v === 'M' ? 0 : parseInt(v) || 0)
+        const vA = getV(soA)
+        const vB = getV(soB)
+
+        if (side === 'A' && vA > vB) score += 1
+        else if (side === 'B' && vB > vA) score += 1
     }
 
     return score
@@ -628,17 +651,20 @@ const addArrowScore = (score) => {
     const matchId = selectedScoringMatch.value.id
     const side = activeSide.value
     const endNo = currentEnd.value
-    const totalArrows = bracket.value?.arrows_per_end || 3
+    // Use 1 arrow for shoot-off, otherwise use bracket default
+    const totalArrows = endNo === 99 ? 1 : (bracket.value?.arrows_per_end || 3)
 
+    // Ensure match object exists
     if (!matchEnds.value[matchId]) {
-        const initEnds = {}
-        for (let i = 1; i <= (bracket.value?.ends_per_match || 5); i++) {
-            initEnds[i] = { total: 0, arrows: Array(totalArrows).fill(null) }
-        }
-        matchEnds.value[matchId] = {
-            A: JSON.parse(JSON.stringify(initEnds)),
-            B: JSON.parse(JSON.stringify(initEnds))
-        }
+        matchEnds.value[matchId] = { A: {}, B: {} }
+    }
+
+    // Ensure side exist
+    if (!matchEnds.value[matchId][side]) matchEnds.value[matchId][side] = {}
+
+    // Ensure specific end exists (important for shoot-off End 99)
+    if (!matchEnds.value[matchId][side][endNo]) {
+        matchEnds.value[matchId][side][endNo] = { total: 0, arrows: Array(totalArrows).fill(null), end_no: endNo }
     }
 
     const end = matchEnds.value[matchId][side][endNo]
@@ -647,6 +673,7 @@ const addArrowScore = (score) => {
     if (!end.arrows || end.arrows.length !== totalArrows) {
         const newArrows = end.arrows ? [...end.arrows] : []
         while (newArrows.length < totalArrows) newArrows.push(null)
+        if (newArrows.length > totalArrows) newArrows.length = totalArrows // Truncate if too long
         end.arrows = newArrows
     }
 
@@ -671,21 +698,26 @@ const addArrowScore = (score) => {
 const deleteLastArrow = () => {
     if (!selectedScoringMatch.value) return
     const matchId = selectedScoringMatch.value.id
-    const end = matchEnds.value[matchId][activeSide.value][currentEnd.value]
+    const endNo = currentEnd.value
+    const side = activeSide.value
+
+    const end = matchEnds.value[matchId]?.[side]?.[endNo]
+    if (!end || !end.arrows) return
 
     // Clear current selected box
     end.arrows.splice(selectedArrowIndex.value, 1, null)
 
     // Recalculate
-    end.total = calculateEndTotal(matchId, currentEnd.value, activeSide.value)
+    end.total = calculateEndTotal(matchId, endNo, side)
 
     // Move back if not at 0
     if (selectedArrowIndex.value > 0) {
         selectedArrowIndex.value--
-    } else if (activeSide.value === 'B') {
+    } else if (side === 'B') {
         // If at beginning of Side B, move to end of Side A
         activeSide.value = 'A'
-        selectedArrowIndex.value = (bracket.value?.arrows_per_end || 3) - 1
+        const arrowsPerEnd = endNo === 99 ? 1 : (bracket.value?.arrows_per_end || 3)
+        selectedArrowIndex.value = arrowsPerEnd - 1
     }
 }
 

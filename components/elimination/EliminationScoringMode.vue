@@ -13,6 +13,7 @@
                 </div>
                 <!-- REMOVED overflow-hidden and adjusted padding for better visibility -->
                 <div class="flex flex-col gap-4 max-h-[75vh] overflow-y-auto pr-2 custom-scrollbar p-1">
+                    <!-- Match card elimination -->
                     <div v-for="match in roundMatches" :key="match.id" @click="$emit('select-match', match)"
                         class="group p-4 rounded-[2rem] border-2 text-left transition-all relative cursor-pointer"
                         :class="[
@@ -28,34 +29,28 @@
                                 <div class="px-3 py-1 rounded-xl bg-navy text-primary text-[10px] font-black shadow-sm">
                                     MATCH {{ match.match_no }}
                                 </div>
-                                <div v-if="match.target_name"
-                                    class="px-2 py-0.5 rounded-lg bg-slate-100 border border-slate-200 text-[10px] font-extrabold text-navy/40 flex items-center gap-1.5 uppercase tracking-wider">
-                                    <Icon icon="ph:target-bold" class="text-xs text-primary" />
-                                    {{ getFullTargetName(match) }}
-                                </div>
                             </div>
 
                             <div v-if="match.status === 'finished' || match.winner_entry_id"
-                                class="flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-green-500/10 text-green-600 border border-green-500/20">
-                                <Icon icon="ph:check-circle-fill" class="text-[10px]" />
-                                <span class="text-[8px] font-black uppercase tracking-widest">DONE</span>
+                                class="flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-green-600">
+                                <Icon icon="ph:check-circle-fill" class="text-[24px]" />
                             </div>
                         </div>
 
                         <!-- Participants - PROMINENT DISPLAY -->
                         <div class="space-y-3">
                             <div v-for="side in ['A', 'B']" :key="side"
-                                class="flex items-center justify-between py-3 pr-2 rounded-2xl transition-all border border-gray-50"
+                                class="flex items-center justify-between py-3 px-3 shadow-sm rounded-2xl transition-all border border-gray-50"
                                 :class="[
                                     isWinner(match, side === 'A' ? match.entry_a_id : match.entry_b_id)
                                         ? 'bg-green-500/5 border-green-500/10'
                                         : 'bg-white border-transparent',
                                     selectedScoringMatch?.id === match.id && !isWinner(match, side === 'A' ? match.entry_a_id : match.entry_b_id) ? 'shadow-sm' : ''
                                 ]">
-                                <div class="flex items-center gap-3.5 min-w-0 pr-2">
+                                <div class="flex items-center min-w-0 pr-2">
                                     <div class="relative shrink-0">
                                         <div v-if="isWinner(match, side === 'A' ? match.entry_a_id : match.entry_b_id)"
-                                            class="absolute -top-2 -left-2 size-5 bg-primary text-navy rounded-full flex items-center justify-center border-2 border-white shadow-sm z-10 transition-transform hover:scale-110">
+                                            class="absolute -top-8 -left-4 size-5 bg-primary text-navy rounded-full flex items-center justify-center border-2 border-white shadow-sm z-10 transition-transform hover:scale-110">
                                             <Icon icon="ph:crown-fill" class="text-[10px]" />
                                         </div>
                                     </div>
@@ -70,7 +65,7 @@
                                     </div>
                                 </div>
                                 <div class="text-xl font-black tabular-nums transition-all"
-                                    :class="isWinner(match, side === 'A' ? match.entry_a_id : match.entry_b_id) ? 'text-green-600 scale-110' : 'text-navy/20'">
+                                    :class="isWinner(match, side === 'A' ? match.entry_a_id : match.entry_b_id) ? 'text-green-600 scale-110' : 'text-navy/80'">
                                     {{ getMatchScore(match, side) }}
                                 </div>
                             </div>
@@ -232,7 +227,7 @@
                                 </div>
                             </div>
                             <!-- Shoot-off End (End 99) -->
-                            <div v-if="isTied" @click="$emit('update:currentEnd', 99)"
+                            <div v-if="showShootOff" @click="$emit('update:currentEnd', 99)"
                                 class="flex flex-col items-center gap-2 cursor-pointer group ml-2 border-l border-slate-100 pl-4">
                                 <span class="text-[10px] font-black tracking-[0.2em] transition-colors uppercase"
                                     :class="currentEnd === 99 ? 'text-orange-500' : 'text-orange-300 group-hover:text-orange-400'">Shoot-off</span>
@@ -297,7 +292,7 @@
                                                         class="text-[8px] font-black text-gray-400 uppercase">SUM</span>
                                                     <span class="text-xl font-black text-navy tabular-nums">{{
                                                         calculateEndTotal(selectedScoringMatch.id, currentEnd, side)
-                                                        }}</span>
+                                                    }}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -437,54 +432,69 @@ const getMatchScore = (match, side) => {
         else score = (side === 'A' ? match.total_score_a : match.total_score_b) || 0
     }
 
-    // Append Shoot-off score if exists
-    if (m?.[sideKey]?.[99]?.total) {
-        const soVal = m[sideKey][99].arrows?.[0] || '?'
-        return `${score} (${soVal})`
+    // Shoot-off logic: Winner gets +1 point to total score
+    const soA = m?.A?.[99]?.arrows?.[0]
+    const soB = m?.B?.[99]?.arrows?.[0]
+
+    if (soA && soB) {
+        const getV = (v) => v === 'X' ? 11 : (v === 'M' ? 0 : parseInt(v) || 0)
+        const vA = getV(soA)
+        const vB = getV(soB)
+
+        if (side === 'A' && vA > vB) score += 1
+        else if (side === 'B' && vB > vA) score += 1
     }
 
     return score
 }
 
-const isTied = computed(() => {
+const showShootOff = computed(() => {
     if (!props.selectedScoringMatch) return false
     const match = props.selectedScoringMatch
-    const scoreA = getMatchScore(match, 'A')
-    const scoreB = getMatchScore(match, 'B')
-
-    // Simple numeric comparison for tie detection (ignoring shoot-off suffix)
-    const valA = parseInt(String(scoreA).split(' ')[0])
-    const valB = parseInt(String(scoreB).split(' ')[0])
-
-    // Check if match is "complete" (all ends filled)
     const m = props.matchEnds[match.id]
     if (!m) return false
 
+    // 1. Show if already has shoot-off data
+    const hasSoA = m.A?.[99]?.arrows?.some(a => a !== null && a !== '')
+    const hasSoB = m.B?.[99]?.arrows?.some(a => a !== null && a !== '')
+    if (hasSoA || hasSoB) return true
+
+    // 2. Show if currently tied (base score)
+    const isRecurve = props.bracket?.format === 'recurve_set'
+    let baseA = 0, baseB = 0
+    if (isRecurve) {
+        baseA = calculateSetPoints(match.id, 'A')
+        baseB = calculateSetPoints(match.id, 'B')
+    } else {
+        baseA = Object.values(m.A || {}).reduce((s, e) => e.end_no !== 99 ? s + (e.total || 0) : s, 0)
+        baseB = Object.values(m.B || {}).reduce((s, e) => e.end_no !== 99 ? s + (e.total || 0) : s, 0)
+    }
+
+    // Check if match is finished (all regular ends)
     const totalEnds = props.bracket?.ends_per_match || 5
     const arrowsPerEnd = props.bracket?.arrows_per_end || 3
-
-    // For regular ends
     for (let i = 1; i <= totalEnds; i++) {
-        const hasA = m.A?.[i]?.arrows?.filter(a => a !== null && a !== '').length === arrowsPerEnd
-        const hasB = m.B?.[i]?.arrows?.filter(a => a !== null && a !== '').length === arrowsPerEnd
-        if (!hasA || !hasB) return false
+        if (m.A?.[i]?.arrows?.filter(a => a !== null && a !== '').length !== arrowsPerEnd) return false
+        if (m.B?.[i]?.arrows?.filter(a => a !== null && a !== '').length !== arrowsPerEnd) return false
     }
 
-    // If regular score is tied, check shoot-off
-    if (valA === valB) {
-        // If no shoot-off arrows yet -> it IS tied
-        if (!m.A?.[99]?.arrows?.[0] || !m.B?.[99]?.arrows?.[0]) return true
+    return baseA === baseB
+})
 
-        // If shoot-off arrows exist, check if THEY are tied
-        const soA = m.A[99].arrows[0]
-        const soB = m.B[99].arrows[0]
+const isTied = computed(() => {
+    if (!showShootOff.value) return false
+    const match = props.selectedScoringMatch
+    const m = props.matchEnds[match.id]
 
-        // Convert X/M to values for comparison
-        const getVal = (v) => v === 'X' ? 10 : (v === 'M' ? 0 : parseInt(v) || 0)
-        return getVal(soA) === getVal(soB)
-    }
+    // If no shoot-off arrows yet -> it IS tied
+    const soA = m.A?.[99]?.arrows?.[0]
+    const soB = m.B?.[99]?.arrows?.[0]
+    if (!soA || !soB) return true
 
-    return false
+    // If shoot-off arrows exist, check if THEY are tied
+    // Convert X/M to values for comparison
+    const getVal = (v) => v === 'X' ? 10 : (v === 'M' ? 0 : parseInt(v) || 0)
+    return getVal(soA) === getVal(soB)
 })
 
 const calculateSetPoints = (matchId, side) => {
