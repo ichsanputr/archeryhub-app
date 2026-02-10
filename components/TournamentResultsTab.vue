@@ -57,104 +57,8 @@
                     </div>
                 </div>
 
-                <div v-else-if="currentElimBracket"
-                    class="bracket-visualization rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm">
-                    <!-- Bracket Header -->
-                    <div class="bg-gradient-to-r from-navy to-navy-light p-6 border-b border-gray-200">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <h3 class="text-xl font-black text-white flex items-center gap-2">
-                                    <Icon icon="ph:trophy" class="text-primary" />
-                                    Elimination Bracket - {{ currentCategoryName }}
-                                </h3>
-                            </div>
-                            <span class="px-3 py-1.5 rounded-lg bg-primary/20 text-primary text-xs font-bold">
-                                {{ currentElimBracket.format === 'recurve_set' ? 'Set System' : 'Total Score' }}
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- Bracket Scroll Container -->
-                    <div class="bracket-scroll-container no-scrollbar p-8">
-                        <div v-if="sortedElimRounds.length > 0" class="flex gap-0 min-w-max">
-                            <!-- Each Round -->
-                            <template v-for="(roundMatches, roundNo) in sortedElimRounds" :key="roundNo">
-                                <div class="bracket-round">
-                                    <div class="round-label" :class="{ 'final-label': isLastRound(parseInt(roundNo)) }">
-                                        <Icon v-if="isLastRound(parseInt(roundNo))" icon="ph:crown-simple-fill"
-                                            class="text-primary mr-2" />
-                                        {{ getRoundName(parseInt(roundNo), currentElimBracket.bracket_size) }}
-                                    </div>
-                                    <div class="slots-container"
-                                        :style="{ height: getTotalHeight(currentElimBracket.bracket_size) + 'px' }">
-                                        <div v-for="match in roundMatches" :key="match.uuid" class="match-slot"
-                                            :style="{ height: getSlotHeight(parseInt(roundNo), currentElimBracket.bracket_size) + 'px' }">
-                                            <!-- Match Card -->
-                                            <div class="match-node-card" :class="{
-                                                'is-final': isLastRound(parseInt(roundNo)),
-                                                'completed': match.status === 'finished'
-                                            }">
-                                                <div class="match-card-header">
-                                                    <div v-if="match.status === 'finished'"
-                                                        class="status-badge finished">Selesai</div>
-                                                    <div v-else-if="match.is_bye" class="status-badge bye">BYE</div>
-                                                    <div v-else class="status-badge waiting">Menunggu</div>
-                                                    <span class="match-meta">M{{ match.match_no }}</span>
-                                                </div>
-                                                <!-- Side A -->
-                                                <div class="archer-item" :class="{
-                                                    'is-winner': match.winner_entry_uuid === match.entry_a_uuid,
-                                                    'is-loser': match.winner_entry_uuid && match.winner_entry_uuid !== match.entry_a_uuid
-                                                }">
-                                                    <div class="avatar-wrapper">
-                                                        <img :src="`https://api.dicebear.com/7.x/avataaars/svg?seed=${match.entry_a_name}`"
-                                                            alt="avatar" class="avatar-img" />
-                                                    </div>
-                                                    <div class="archer-info">
-                                                        <span class="seed-badge">{{ match.entry_a_seed || '-' }}</span>
-                                                        <span class="archer-name">{{ match.entry_a_name || 'TBD'
-                                                            }}</span>
-                                                    </div>
-                                                    <span class="score-display">{{ getMatchScore(match, 'A',
-                                                        currentElimBracket.format) }}</span>
-                                                </div>
-                                                <!-- Side B -->
-                                                <div class="archer-item" :class="{
-                                                    'is-winner': match.winner_entry_uuid === match.entry_b_uuid,
-                                                    'is-loser': match.winner_entry_uuid && match.winner_entry_uuid !== match.entry_b_uuid
-                                                }">
-                                                    <div class="avatar-wrapper">
-                                                        <img :src="`https://api.dicebear.com/7.x/avataaars/svg?seed=${match.entry_b_name}`"
-                                                            alt="avatar" class="avatar-img" />
-                                                    </div>
-                                                    <div class="archer-info">
-                                                        <span class="seed-badge">{{ match.entry_b_seed || '-' }}</span>
-                                                        <span class="archer-name">{{ match.entry_b_name || 'TBD'
-                                                            }}</span>
-                                                    </div>
-                                                    <span class="score-display">{{ getMatchScore(match, 'B',
-                                                        currentElimBracket.format) }}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Connector lines between rounds -->
-                                <div v-if="!isLastRound(parseInt(roundNo))" class="connector-space"
-                                    :style="{ height: getTotalHeight(currentElimBracket.bracket_size) + 'px' }">
-                                    <svg class="bracket-svg"
-                                        :viewBox="`0 0 60 ${getTotalHeight(currentElimBracket.bracket_size)}`"
-                                        preserveAspectRatio="none">
-                                        <path
-                                            v-for="i in getMatchesInRound(parseInt(roundNo), currentElimBracket.bracket_size) / 2"
-                                            :key="i" class="connector-line"
-                                            :d="calculateConnectorPath(i, parseInt(roundNo), currentElimBracket.bracket_size)" />
-                                    </svg>
-                                </div>
-                            </template>
-                        </div>
-                    </div>
+                <div v-else-if="currentElimBracket" class="space-y-6">
+                    <PublicEliminationBracket :bracket="currentElimBracket" :rounds="sortedElimRounds" />
                 </div>
 
                 <!-- Qualification Results Below -->
@@ -244,7 +148,7 @@
                                                     <img :src="`https://api.dicebear.com/7.x/avataaars/svg?seed=${result.archer_name}`"
                                                         class="size-8 rounded-full border-2 border-gray-200" />
                                                     <span class="text-sm font-bold text-navy">{{ result.archer_name
-                                                        }}</span>
+                                                    }}</span>
                                                 </div>
                                             </td>
                                             <td v-if="sIdx === 0" :rowspan="result.processedSessions.length"
@@ -260,7 +164,7 @@
                                             <td v-if="sIdx === 0" :rowspan="result.processedSessions.length"
                                                 class="px-4 py-4 text-center bg-navy/5 border-l-2 border-navy/20">
                                                 <span class="text-xl font-black text-navy">{{ result.total_score
-                                                    }}</span>
+                                                }}</span>
                                             </td>
                                             <td v-if="sIdx === 0" :rowspan="result.processedSessions.length"
                                                 class="px-4 py-4 text-center text-sm font-bold text-gray-600">
@@ -287,6 +191,7 @@
 import { Icon } from '@iconify/vue'
 import { useApi } from '~/composables/useApi'
 import { getCategoryIcon } from '~/utils/logoArcheryCategory'
+import PublicEliminationBracket from './elimination/PublicEliminationBracket.vue'
 
 const props = defineProps({
     eventId: {
@@ -340,14 +245,6 @@ const currentQualResultsWithSessions = computed(() => {
 
 const currentElimBracket = computed(() => {
     return eliminationData.value[selectedCategory.value] || null
-})
-
-const bracketTypeLabel = computed(() => {
-    if (!currentElimBracket.value) return ''
-    const type = currentElimBracket.value.bracket_type
-    if (type === 'individual') return 'Individual'
-    if (type === 'team3') return 'Team (3 Orang)'
-    return 'Mixed Team (2 Orang)'
 })
 
 const sortedElimRounds = computed(() => {
@@ -438,56 +335,16 @@ const getEndScoreClass = (score) => {
 }
 
 const getMatchScore = (match, side, format) => {
-    if (match.status !== 'finished') return '-'
+    if (match.is_bye) return '-'
+    if (match.status === 'pending' && !match.total_score_a && !match.total_score_b && !match.set_points_a && !match.set_points_b) return '-'
 
     if (format === 'recurve_set') {
-        return side === 'A' ? match.set_points_a || 0 : match.set_points_b || 0
+        const pts = side === 'A' ? match.set_points_a : match.set_points_b
+        return pts ?? 0
     } else {
-        return side === 'A' ? match.total_score_a || 0 : match.total_score_b || 0
+        const score = side === 'A' ? match.total_score_a : match.total_score_b
+        return score ?? 0
     }
-}
-
-// Bracket visualization helpers
-const BASE_MATCH_HEIGHT = 120
-
-const getTotalHeight = (bracketSize) => {
-    return bracketSize / 2 * BASE_MATCH_HEIGHT
-}
-
-const getSlotHeight = (roundNo, bracketSize) => {
-    const firstRoundMatches = bracketSize / 2
-    const matchesInRound = firstRoundMatches / Math.pow(2, roundNo - 1)
-    return getTotalHeight(bracketSize) / matchesInRound
-}
-
-const getMatchesInRound = (roundNo, bracketSize) => {
-    const firstRoundMatches = bracketSize / 2
-    return firstRoundMatches / Math.pow(2, roundNo - 1)
-}
-
-const isLastRound = (roundNo) => {
-    if (!currentElimBracket.value) return false
-    const totalRounds = Math.log2(currentElimBracket.value.bracket_size)
-    return roundNo === totalRounds
-}
-
-const calculateConnectorPath = (i, roundNo, bracketSize) => {
-    const slotHeight = getSlotHeight(roundNo, bracketSize)
-    const nextSlotHeight = getSlotHeight(roundNo + 1, bracketSize)
-    const y1 = (i - 1) * nextSlotHeight + slotHeight / 2
-    const y2 = (i - 1) * nextSlotHeight + slotHeight / 2 + slotHeight
-    const targetY = (i - 1) * nextSlotHeight + nextSlotHeight / 2
-    return `M 0 ${y1} H 30 V ${targetY} H 60 M 0 ${y2} H 30 V ${targetY} H 60`
-}
-
-const getRoundName = (roundNo, bracketSize) => {
-    const totalRounds = Math.log2(bracketSize)
-    const roundFromEnd = totalRounds - roundNo + 1
-
-    if (roundFromEnd === 1) return 'Final'
-    if (roundFromEnd === 2) return 'Semifinal'
-    if (roundFromEnd === 3) return 'Quarterfinal'
-    return `Round of ${Math.pow(2, roundFromEnd)}`
 }
 
 onMounted(async () => {
@@ -501,135 +358,6 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.bracket-visualization {
-    @apply bg-slate-50/50 relative border border-gray-100;
-    background-image:
-        linear-gradient(#e2e8f0 1px, transparent 1px),
-        linear-gradient(90deg, #e2e8f0 1px, transparent 1px);
-    background-size: 40px 40px;
-    background-position: center center;
-}
-
-.bracket-scroll-container {
-    @apply overflow-x-auto relative z-10;
-}
-
-.bracket-round {
-    @apply flex flex-col items-center min-w-[280px];
-}
-
-.round-label {
-    @apply text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] py-2 px-6 bg-white rounded-full shadow-sm border border-gray-100 shrink-0 flex items-center justify-center mb-8;
-    height: 32px;
-}
-
-.final-label {
-    @apply bg-navy text-primary border-none shadow-lg shadow-navy/20;
-}
-
-.slots-container {
-    @apply flex flex-col w-full;
-}
-
-.match-slot {
-    @apply flex items-center justify-center w-full;
-}
-
-.match-node-card {
-    @apply relative w-[280px] bg-white rounded-2xl border border-gray-100 shadow-sm transition-all duration-300 overflow-hidden;
-    height: 110px;
-}
-
-.match-node-card.completed {
-    @apply border-l-4 border-l-green-500;
-}
-
-.match-node-card.is-final {
-    @apply w-[300px] border-2 border-primary/30 shadow-lg shadow-primary/5;
-    height: 120px;
-}
-
-.match-card-header {
-    @apply flex justify-between items-center px-4 py-1.5 bg-slate-50 border-b border-gray-50;
-}
-
-.status-badge {
-    @apply text-[8px] font-black uppercase tracking-wider bg-gray-100 text-gray-500 px-2 py-0.5 rounded-md;
-}
-
-.status-badge.finished {
-    @apply bg-green-100 text-green-700;
-}
-
-.status-badge.bye {
-    @apply bg-gray-100 text-gray-400;
-}
-
-.status-badge.waiting {
-    @apply bg-amber-100 text-amber-700;
-}
-
-.match-meta {
-    @apply text-[9px] font-bold text-gray-400;
-}
-
-.archer-item {
-    @apply flex items-center gap-2.5 px-3 py-2 transition-colors relative;
-}
-
-.avatar-wrapper {
-    @apply flex-shrink-0;
-}
-
-.avatar-img {
-    @apply w-8 h-8 rounded-full border-2 border-gray-200 object-cover;
-}
-
-.archer-info {
-    @apply flex items-center gap-2 flex-1 min-w-0;
-}
-
-.archer-item.is-winner {
-    @apply bg-primary/5;
-}
-
-.archer-item.is-winner .avatar-img {
-    @apply border-primary border-2;
-}
-
-.archer-item.is-loser {
-    @apply opacity-60 grayscale-[0.4];
-}
-
-.seed-badge {
-    @apply w-6 h-6 rounded-md bg-navy text-white text-[9px] font-black flex items-center justify-center shadow-sm flex-shrink-0;
-}
-
-.archer-name {
-    @apply text-[12px] font-bold text-navy truncate leading-tight;
-}
-
-.score-display {
-    @apply text-lg font-black text-navy tabular-nums min-w-[28px] text-right;
-}
-
-.is-winner .score-display {
-    @apply text-primary text-2xl;
-}
-
-.connector-space {
-    @apply w-[60px] relative shrink-0;
-    margin-top: 40px;
-}
-
-.bracket-svg {
-    @apply w-full h-full;
-}
-
-.connector-line {
-    @apply fill-none stroke-gray-300 stroke-[2.5px] transition-all duration-300;
-}
-
 .no-scrollbar::-webkit-scrollbar {
     display: none;
 }
