@@ -552,6 +552,7 @@ const clubStatsData = ref(null)
 const clubRecentMembers = ref([])
 const clubUpcomingTournaments = ref([])
 const orgUpcomingEventsData = ref([])
+const orgCompletedEventsData = ref([])
 
 
 // Chart state
@@ -596,8 +597,9 @@ const fetchOrgCompletedEvents = async () => {
     // Filter completed events (status = 'completed' or end_date < now)
     const completed = (Array.isArray(list) ? list : [])
       .filter((e) => {
-        const status = e.status?.toLowerCase()
+        const status = (e.status || '').toLowerCase()
         const endDate = e.end_date || e.end_at || e.date
+        // Show if explicitly completed OR if the event has passed
         return status === 'completed' || (endDate && new Date(endDate) < new Date(now))
       })
       .sort((a, b) => {

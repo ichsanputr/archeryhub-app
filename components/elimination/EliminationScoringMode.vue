@@ -12,66 +12,82 @@
                         roundMatches.length }}</span>
                 </div>
                 <!-- REMOVED overflow-hidden and adjusted padding for better visibility -->
-                <div class="flex flex-col gap-3 max-h-[75vh] overflow-y-auto pr-1 custom-scrollbar">
+                <div class="flex flex-col gap-4 max-h-[75vh] overflow-y-auto pr-2 custom-scrollbar p-1">
                     <button v-for="match in roundMatches" :key="match.id" @click="$emit('select-match', match)"
-                        class="group p-3 sm:p-4 rounded-2xl border-2 text-left transition-all relative" :class="[
+                        class="group p-4 rounded-3xl border-2 text-left transition-all relative overflow-hidden" :class="[
                             selectedScoringMatch?.id === match.id
-                                ? 'border-primary bg-primary/5 shadow-sm shadow-primary/10'
-                                : 'border-transparent bg-slate-50/50 hover:bg-white hover:border-slate-200 hover:shadow-sm',
-                            (match.status === 'finished' || match.winner_entry_id) ? 'opacity-80' : ''
+                                ? 'border-primary bg-primary/5 shadow-md shadow-primary/5 ring-4 ring-primary/10'
+                                : 'border-gray-100 bg-white hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5',
+                            (match.status === 'finished' || match.winner_entry_id) ? 'bg-slate-50/50' : ''
                         ]">
-                        <!-- Selection Indicator -->
-                        <div v-if="selectedScoringMatch?.id === match.id"
-                            class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
 
-                        <!-- Match Header -->
-                        <div class="flex items-center justify-between mb-3">
+                        <!-- Match Meta Header -->
+                        <div class="flex items-center justify-between mb-4">
                             <div class="flex items-center gap-2">
-                                <span
-                                    class="px-2 py-0.5 rounded-lg flex items-center justify-center text-[10px] font-black"
-                                    :class="selectedScoringMatch?.id === match.id ? 'bg-navy text-primary' : 'bg-slate-200 text-slate-500'">
-                                    M{{ match.match_no }}
-                                </span>
-                                <span v-if="match.target_name"
-                                    class="text-[10px] font-bold text-navy/40 tracking-tight">
+                                <div
+                                    class="px-2.5 py-1 rounded-xl bg-navy text-primary text-[10px] font-black shadow-sm">
+                                    MATCH {{ match.match_no }}
+                                </div>
+                                <div v-if="match.target_name"
+                                    class="px-2 py-0.5 rounded-lg bg-slate-100 border border-slate-200 text-[9px] font-black text-slate-500 flex items-center gap-1.5 uppercase tracking-wider">
+                                    <Icon icon="ph:target-bold" class="text-xs text-primary" />
                                     {{ getFullTargetName(match) }}
-                                </span>
+                                </div>
                             </div>
-                            <!-- Status Label -->
-                            <div v-if="match.status === 'finished' || match.winner_entry_id"
-                                class="flex items-center gap-1 text-[8px] font-black text-green-500 uppercase tracking-widest">
-                                DONE
+
+                            <!-- Status Status Indicator -->
+                            <div class="flex items-center gap-1.5">
+                                <div v-if="match.status === 'finished' || match.winner_entry_id"
+                                    class="px-2 py-0.5 rounded-lg bg-green-500/10 text-green-600 text-[8px] font-black uppercase tracking-[0.2em] border border-green-500/20">
+                                    DONE
+                                </div>
+                                <div v-else-if="match.target_name"
+                                    class="px-2 py-0.5 rounded-lg bg-blue-500/10 text-blue-600 text-[8px] font-black uppercase tracking-[0.2em] border border-blue-500/20 animate-pulse">
+                                    LIVE
+                                </div>
+                                <div v-else
+                                    class="px-2 py-0.5 rounded-lg bg-gray-100 text-gray-400 text-[8px] font-black uppercase tracking-[0.2em] border border-gray-200">
+                                    PENDING
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Participants Scoreboard - REVAMPED FOR NO TRUNCATION -->
-                        <div class="space-y-1.5">
-                            <template v-for="entry in [
-                                { id: match.entry_a_id, name: match.entry_a_name, score: 'A' },
-                                { id: match.entry_b_id, name: match.entry_b_name, score: 'B' }
-                            ]" :key="entry.score">
-                                <div class="flex items-center justify-between gap-3 p-2 rounded-xl border border-transparent transition-all"
-                                    :class="match.winner_entry_id === entry.id ? 'bg-green-50/80 border-green-100' : (selectedScoringMatch?.id === match.id ? 'bg-white/50' : '')">
-                                    <div class="flex items-center gap-2.5 min-w-0 flex-1">
-                                        <div class="relative shrink-0">
-                                            <img :src="getAvatarUrl(entry.name)"
-                                                class="size-6 rounded-lg object-cover ring-2 ring-white shadow-sm" />
-                                            <Icon v-if="match.winner_entry_id === entry.id" icon="ph:crown-fill"
-                                                class="absolute -top-1.5 -left-1.5 text-yellow-500 text-[10px] drop-shadow-sm" />
-                                        </div>
-                                        <!-- Removed absolute sizing, allowing flex growth -->
-                                        <span
-                                            class="text-[11px] font-black text-navy leading-tight tracking-tight break-words py-0.5">
-                                            {{ entry.name || 'TBD' }}
+                        <!-- Info Grid (Participants) -->
+                        <div class="flex flex-col gap-1.5">
+                            <div v-for="side in ['A', 'B']" :key="side"
+                                class="flex items-center justify-between px-3 py-2 rounded-xl transition-all" :class="[
+                                    isWinner(match, side === 'A' ? match.entry_a_id : match.entry_b_id)
+                                        ? 'bg-green-500/5'
+                                        : 'bg-slate-50/50',
+                                    selectedScoringMatch?.id === match.id ? 'group-hover:bg-white/40' : ''
+                                ]">
+                                <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                                    <div class="relative shrink-0">
+                                        <img :src="useImageOrDefault(undefined, side === 'A' ? match.entry_a_name : match.entry_b_name)"
+                                            class="size-5 rounded-md object-cover ring-1 ring-white shadow-sm" />
+                                        <Icon v-if="isWinner(match, side === 'A' ? match.entry_a_id : match.entry_b_id)"
+                                            icon="ph:crown-fill"
+                                            class="absolute -top-1 -left-1 text-yellow-500 text-[8px]" />
+                                    </div>
+                                    <div class="flex items-center gap-1.5 min-w-0">
+                                        <span class="text-[9px] font-black text-navy/20 shrink-0">#{{ side === 'A' ?
+                                            match.entry_a_seed || '-' : match.entry_b_seed || '-' }}</span>
+                                        <span class="text-[10px] font-bold text-navy truncate tracking-tight">
+                                            {{ (side === 'A' ? match.entry_a_name : match.entry_b_name) || 'TBD' }}
                                         </span>
                                     </div>
-                                    <span
-                                        class="text-xs sm:text-sm font-black tabular-nums tracking-tighter shrink-0 ml-1"
-                                        :class="match.winner_entry_id === entry.id ? 'text-green-600' : 'text-navy'">
-                                        {{ getMatchScore(match, entry.score) }}
-                                    </span>
                                 </div>
-                            </template>
+                                <div class="text-[11px] font-black tabular-nums transition-colors ml-2"
+                                    :class="isWinner(match, side === 'A' ? match.entry_a_id : match.entry_b_id) ? 'text-green-600' : 'text-navy/30'">
+                                    {{ getMatchScore(match, side) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Progress Bar (Optional) -->
+                        <div v-if="match.status !== 'finished' && !match.winner_entry_id && match.target_name"
+                            class="mt-4 h-1 w-full bg- slate-100 rounded-full overflow-hidden">
+                            <div class="h-full bg-primary transition-all duration-1000" style="width: 40%"></div>
                         </div>
                     </button>
                 </div>
@@ -95,27 +111,26 @@
 
                     <div
                         class="relative z-10 flex flex-col md:flex-row items-center justify-center gap-10 md:gap-20 w-full">
-                        <!-- Side A Card -->
                         <div class="flex flex-col items-center gap-5 text-center group">
                             <div class="relative">
                                 <div
                                     class="absolute -inset-4 bg-primary/20 rounded-[3rem] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity">
                                 </div>
-                                <img :src="getAvatarUrl(selectedScoringMatch.entry_a_name)"
+                                <img :src="useImageOrDefault(selectedScoringMatch.entry_a_avatar || selectedScoringMatch.entry_a_photo, selectedScoringMatch.entry_a_name)"
                                     class="size-20 sm:size-24 rounded-[2.5rem] border-4 border-white/10 shadow-sm relative z-10" />
                                 <div
                                     class="absolute -bottom-1 -left-1 z-20 size-8 bg-navy border-2 border-primary rounded-xl flex items-center justify-center text-[10px] font-black text-primary shadow-sm">
                                     {{ selectedScoringMatch.entry_a_seed || '-' }}
                                 </div>
                             </div>
-                            <div class="space-y-1.5">
-                                <span
-                                    class="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[8px] font-black tracking-[0.2em] uppercase border border-primary/20">Archer
-                                    A</span>
+                            <div class="space-y-1">
                                 <h4
-                                    class="font-black text-lg sm:text-xl leading-tight max-w-[200px] truncate tracking-tight">
+                                    class="font-black text-lg sm:text-2xl leading-tight max-w-[240px] truncate tracking-tight text-white">
                                     {{ selectedScoringMatch.entry_a_name || 'TBD' }}
                                 </h4>
+                                <p class="text-[10px] font-black text-primary uppercase tracking-[0.2em] opacity-60">
+                                    Archer A
+                                </p>
                             </div>
                         </div>
 
@@ -185,21 +200,21 @@
                                 <div
                                     class="absolute -inset-4 bg-white/10 rounded-[3rem] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity">
                                 </div>
-                                <img :src="getAvatarUrl(selectedScoringMatch.entry_b_name)"
+                                <img :src="useImageOrDefault(selectedScoringMatch.entry_b_avatar || selectedScoringMatch.entry_b_photo, selectedScoringMatch.entry_b_name)"
                                     class="size-20 sm:size-24 rounded-[2.5rem] border-4 border-white/10 shadow-sm relative z-10" />
                                 <div
                                     class="absolute -bottom-1 -right-1 z-20 size-8 bg-navy border-2 border-white/20 rounded-xl flex items-center justify-center text-[10px] font-black text-white/40 shadow-sm">
                                     {{ selectedScoringMatch.entry_b_seed || '-' }}
                                 </div>
                             </div>
-                            <div class="space-y-1.5">
-                                <span
-                                    class="px-2 py-0.5 rounded-full bg-white/5 text-white/40 text-[8px] font-black tracking-[0.2em] uppercase border border-white/10">Archer
-                                    B</span>
+                            <div class="space-y-1">
                                 <h4
-                                    class="font-black text-lg sm:text-xl leading-tight max-w-[200px] truncate tracking-tight">
+                                    class="font-black text-lg sm:text-2xl leading-tight max-w-[240px] truncate tracking-tight text-white">
                                     {{ selectedScoringMatch.entry_b_name || 'TBD' }}
                                 </h4>
+                                <p class="text-[10px] font-black text-white uppercase tracking-[0.2em] opacity-40">
+                                    Archer B
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -257,9 +272,6 @@
                                                     {{ side }}
                                                 </div>
                                                 <div class="min-w-0">
-                                                    <span
-                                                        class="text-[9px] font-black tracking-widest text-gray-400 block mb-0.5 uppercase">Archer
-                                                        {{ side }}</span>
                                                     <h4 class="text-sm sm:text-base font-black text-navy truncate">
                                                         {{ side === 'A' ? selectedScoringMatch.entry_a_name :
                                                             (selectedScoringMatch.entry_b_name || 'TBD') }}
@@ -401,10 +413,6 @@ defineEmits([
     'update:activeSide'
 ])
 
-const getAvatarUrl = (name) => {
-    if (!name || name === 'TBD' || name === 'BYE') return `https://ui-avatars.com/api/?name=??&background=f1f5f9&color=94a3b8&font-size=0.45`
-    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=ffaa00&color=202434&font-size=0.45&bold=true`
-}
 
 const getMatchScore = (match, side) => {
     if (!match) return 0
@@ -509,6 +517,11 @@ const getScoreKeypadClass = (score) => {
     if (['2', '1'].includes(s)) return 'bg-gradient-to-br from-white to-slate-50 border-slate-200 text-navy'
     if (s === 'M') return 'bg-gradient-to-br from-slate-100 to-slate-200 border-slate-300 text-slate-500'
     return 'bg-white text-navy border-gray-200'
+}
+
+const isWinner = (match, entryId) => {
+    if (!match || !match.winner_entry_id || !entryId) return false
+    return match.winner_entry_id === entryId
 }
 </script>
 

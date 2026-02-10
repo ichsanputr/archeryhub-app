@@ -80,8 +80,8 @@
                                             <span
                                                 class="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-white/60">
                                                 {{ bracket.format === 'recurve_set' ? 'SET' : 'ACC' }} • {{
-                                                bracket.arrows_per_end }}A/{{
-                                                bracket.ends_per_match }}E
+                                                    bracket.arrows_per_end }}A/{{
+                                                    bracket.ends_per_match }}E
                                             </span>
                                         </div>
                                     </div>
@@ -865,7 +865,7 @@ const calculateConnectorPath = (i, roundNo, side = 'left', isSingle = false) => 
     }
 }
 
-const getRoundName = (roundNo) => {
+function getRoundName(roundNo) {
     const size = bracket.value?.bracket_size || 8
     const totalRounds = Math.log2(size)
     const roundFromEnd = totalRounds - roundNo + 1
