@@ -51,17 +51,18 @@
                                 @dragstart="(e) => handleDragStart(e, archer)" @dragend="handleDragEnd"
                                 class="bg-white p-3 rounded-xl border border-gray-100 shadow-sm cursor-grab active:cursor-grabbing hover:border-primary/50 hover:shadow-md transition-all flex items-center gap-3 group mx-1">
                                 <div
-                                    class="size-9 rounded-full border border-gray-100 overflow-hidden shrink-0 bg-gray-50">
-                                    <img :src="useImageOrDefault(archer.avatar_url, archer.name)"
+                                    class="size-9 rounded-full border border-gray-100 overflow-hidden shrink-0 bg-gray-50 pointer-events-none">
+                                    <img :src="useImageOrDefault(archer.avatar_url, archer.name)" draggable="false"
                                         class="w-full h-full object-cover">
                                 </div>
-                                <div class="flex-1 min-w-0">
+                                <div class="flex-1 min-w-0 pointer-events-none">
                                     <p class="text-[11px] font-black text-navy truncate">{{ archer.name }}</p>
                                     <p class="text-[9px] text-gray-400 font-bold truncate uppercase tracking-tighter">
                                         {{ archer.club || 'Independen' }}
                                     </p>
                                 </div>
-                                <Icon icon="ph:dots-six-vertical-bold" class="text-gray-300 group-hover:text-primary" />
+                                <Icon icon="ph:dots-six-vertical-bold"
+                                    class="text-gray-300 group-hover:text-primary pointer-events-none" />
                             </div>
                         </div>
                     </div>
@@ -106,11 +107,12 @@
                                         {{ pos }}
                                     </span>
                                     <div
-                                        class="size-8 rounded-full border border-gray-200 overflow-hidden shrink-0 bg-white">
+                                        class="size-8 rounded-full border border-gray-200 overflow-hidden shrink-0 bg-white pointer-events-none">
                                         <img :src="useImageOrDefault(target.slots[pos].avatar_url, target.slots[pos].name)"
-                                            class="w-full h-full object-cover" :alt="target.slots[pos].name" />
+                                            draggable="false" class="w-full h-full object-cover"
+                                            :alt="target.slots[pos].name" />
                                     </div>
-                                    <div class="flex-1 min-w-0">
+                                    <div class="flex-1 min-w-0 pointer-events-none">
                                         <p class="text-[11px] font-black text-navy truncate leading-tight">{{
                                             target.slots[pos].name }}</p>
                                         <p
@@ -130,7 +132,7 @@
                                     <div @click.stop="toggleDropdown(target.name, pos)"
                                         class="flex items-center gap-3 p-2.5 rounded-xl border border-dashed border-gray-200 bg-white hover:bg-gray-50/50 hover:border-primary/50 transition-all cursor-pointer group/slot"
                                         :class="{ 'border-primary bg-primary/5 ring-4 ring-primary/10 shadow-inner': isDragging }"
-                                        @dragover.prevent>
+                                        @dragover.prevent="(e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'move' }">
                                         <span
                                             class="flex items-center justify-center size-7 rounded-lg bg-gray-50 border border-gray-100 text-xs font-bold text-gray-400 shrink-0">
                                             {{ pos }}
@@ -300,11 +302,13 @@ const targetGrid = computed(() => {
 })
 
 const handleDragStart = (event, archer, targetRecord = null, pos = null) => {
+    openDropdown.value = null // Close any open dropdowns when starting a drag
     // Set dataTransfer data — required for browsers to enable drag & drop
     event.dataTransfer.setData('text/plain', archer.uuid || '')
     event.dataTransfer.effectAllowed = 'move'
     draggedArcher.value = { archer, sourceTarget: targetRecord, sourcePos: pos }
     isDragging.value = true
+    console.log('Drag started:', archer.name, 'from:', targetRecord?.name || 'Unassigned')
 }
 
 const handleDragEnd = () => {
@@ -313,7 +317,11 @@ const handleDragEnd = () => {
 }
 
 const handleDropOnTarget = async (targetRecord, pos) => {
-    if (!draggedArcher.value) return
+    console.log('Drop event on:', targetRecord.name, pos)
+    if (!draggedArcher.value) {
+        console.warn('Drop failed: No dragged archer found in state')
+        return
+    }
 
     const { archer: movingArcher, sourceTarget, sourcePos } = draggedArcher.value
 

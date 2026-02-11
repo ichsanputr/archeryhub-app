@@ -274,35 +274,50 @@ const fetchTargets = async () => {
   }
 }
 
-const loadExistingAssignments = async (categoryId) => {
+const loadExistingAssignments = async (categoryId, preLoadedAssignments = null) => {
   if (!sessionData.value) return
   try {
-    const response = await get(`/qualification/sessions/${sessionData.value.uuid}/assignments`)
-    const assignments = response?.assignments || response.data?.assignments || []
-    const categoryArchers = archersByCategory.value[categoryId] || []
+    let assignments = preLoadedAssignments
+    if (!assignments) {
+      const response = await get(`/qualification/sessions/${sessionData.value.uuid}/assignments`, {
+        params: { category_id: categoryId }
+      })
+      assignments = response?.assignments || response.data?.assignments || []
+    }
 
-    categoryArchers.forEach(archer => {
-      // Find assignment matching this specific registration
-      const existing = assignments.find(a => a.participant_id === archer.uuid)
-      if (existing) {
-        archer.assignedTarget = existing.target_id
-        archer.assignmentId = existing.uuid || existing.id
-      } else {
-        archer.assignedTarget = ''
-        archer.assignmentId = null
+    // Replace the array reference to trigger reactivity
+    if (archersByCategory.value[categoryId]) {
+      const updatedArchers = archersByCategory.value[categoryId].map(archer => {
+        const existing = assignments.find(a => a.participant_id === archer.uuid)
+        return {
+          ...archer,
+          assignedTarget: existing ? existing.target_id : '',
+          assignmentId: existing ? (existing.uuid || existing.id) : null
+        }
+      })
+      archersByCategory.value = {
+        ...archersByCategory.value,
+        [categoryId]: updatedArchers
       }
-    })
+    }
   } catch (error) {
     console.error('Failed to load existing assignments:', error)
   }
 }
 
-const fetchTargetAssignments = async (categoryId) => {
+const fetchTargetAssignments = async (categoryId, preLoadedAssignments = null) => {
   if (!sessionData.value) return
   try {
-    // 1. Fetch assignments
-    const assignmentsRes = await get(`/qualification/sessions/${sessionData.value.uuid}/assignments`)
-    let assignments = assignmentsRes?.assignments || assignmentsRes.data?.assignments || []
+    // 1. Fetch assignments (if not provided)
+    let assignments = preLoadedAssignments
+    if (!assignments) {
+      const assignmentsRes = await get(`/qualification/sessions/${sessionData.value.uuid}/assignments`, {
+        params: { category_id: categoryId }
+      })
+      assignments = assignmentsRes?.assignments || assignmentsRes.data?.assignments || []
+    }
+
+    // Filter by participationIds to be safe (though backend now filters)
     const participationIds = new Set((archersByCategory.value[categoryId] || []).map(a => a.uuid))
     assignments = assignments.filter(a => participationIds.has(a.participant_id))
 
@@ -356,16 +371,38 @@ const fetchTargetAssignments = async (categoryId) => {
 const selectCategory = async (categoryId) => {
   selectedCategory.value = categoryId
   isLoadingAssignments.value = true
-  await fetchArchersForCategory(categoryId)
-  await loadExistingAssignments(categoryId)
-  await fetchTargetAssignments(categoryId)
-  isLoadingAssignments.value = false
+  try {
+    await fetchArchersForCategory(categoryId)
+
+    // Fetch assignments once for both uses
+    const response = await get(`/qualification/sessions/${sessionData.value.uuid}/assignments`, {
+      params: { category_id: categoryId }
+    })
+    const assignments = response?.assignments || []
+
+    await loadExistingAssignments(categoryId, assignments)
+    await fetchTargetAssignments(categoryId, assignments)
+  } catch (error) {
+    console.error("Error selecting category:", error)
+  } finally {
+    isLoadingAssignments.value = false
+  }
 }
 
 const handleAssignmentsSaved = async () => {
   if (selectedCategory.value) {
-    await loadExistingAssignments(selectedCategory.value)
-    await fetchTargetAssignments(selectedCategory.value)
+    // Fetch assignments once and update both views
+    try {
+      const response = await get(`/qualification/sessions/${sessionData.value.uuid}/assignments`, {
+        params: { category_id: selectedCategory.value }
+      })
+      const assignments = response?.assignments || []
+
+      await loadExistingAssignments(selectedCategory.value, assignments)
+      await fetchTargetAssignments(selectedCategory.value, assignments)
+    } catch (error) {
+      console.error("Error reloading assignments:", error)
+    }
   }
 }
 
