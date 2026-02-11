@@ -8,9 +8,16 @@
                 </p>
             </div>
             <div class="flex items-center gap-3">
-                <button @click="autoAssignTargets" :disabled="isSyncing || unassignedArchersCount === 0"
+                <button @click="resetAssignments"
+                    :disabled="isReseting || isAssigning || props.archers.length === unassignedArchersCount"
+                    class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-red-500 border border-red-100 hover:bg-red-50 font-bold text-sm transition-all shadow-sm disabled:opacity-50 group">
+                    <Icon v-if="isReseting" icon="ph:spinner-bold" class="text-xl animate-spin" />
+                    <Icon v-else icon="ph:trash-bold" class="text-xl group-hover:scale-110 transition-transform" />
+                    Atur Ulang
+                </button>
+                <button @click="autoAssignTargets" :disabled="isAssigning || isReseting || unassignedArchersCount === 0"
                     class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-navy hover:bg-primary/90 font-bold text-sm transition-all shadow-md shadow-primary/20 disabled:opacity-50 group">
-                    <Icon v-if="isSyncing" icon="ph:spinner-bold" class="text-xl animate-spin" />
+                    <Icon v-if="isAssigning" icon="ph:spinner-bold" class="text-xl animate-spin" />
                     <Icon v-else icon="fa7-solid:random" class="text-xl group-hover:rotate-12 transition-transform" />
                     Penempatan Otomatis
                 </button>
@@ -188,6 +195,9 @@
             </div>
         </div>
     </div>
+    <AppDialog v-model:show="showResetDialog" type="danger" title="Atur Ulang Penempatan"
+        message="Apakah Anda yakin ingin menghapus semua penempatan target untuk kategori ini? Tindakan ini tidak dapat dibatalkan."
+        confirmText="Ya, Atur Ulang" cancelText="Batal" icon="ph:trash-bold" @confirm="confirmReset" />
 </template>
 
 <script setup>
@@ -196,6 +206,7 @@ import { ref, computed } from 'vue'
 import { useImageOrDefault } from '~/composables/useImageHelper'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
+import AppDialog from '~/components/common/AppDialog.vue'
 
 const props = defineProps({
     eventId: { type: String, required: true },
@@ -211,8 +222,11 @@ const { post, delete: del } = useApi()
 const toast = useToast()
 
 const isSyncing = ref(false)
+const isAssigning = ref(false)
+const isReseting = ref(false)
 const filterText = ref('')
 const openDropdown = ref(null)
+const showResetDialog = ref(false)
 
 // Drag and Drop States
 const draggedArcher = ref(null) // { archer, sourceTarget, sourcePos }
@@ -332,12 +346,15 @@ const handleDropOnTarget = async (targetRecord, pos) => {
 
     try {
         isSyncing.value = true
-        // If there's an archer already in the target slot, we should ideally handle a swap
-        // but for now, the upsert in backend will replace it if it's the same archer,
-        // or fail if it's someone else (due to uq_qta_session_target).
-        // To be safe, let's just use assignArcherToTarget which calls the API.
+        const existingArcher = targetRecord.slots[pos]
 
-        await assignArcherToTarget(targetRecord, pos, movingArcher.uuid)
+        if (existingArcher && sourceTarget) {
+            // It's a swap between two assigned archers
+            await swapAssignments(movingArcher.uuid, existingArcher.uuid)
+        } else {
+            // Simple move or assign from unassigned
+            await assignArcherToTarget(targetRecord, pos, movingArcher.uuid)
+        }
     } finally {
         isSyncing.value = false
         handleDragEnd()
@@ -404,6 +421,23 @@ const assignArcherToTarget = async (baseTarget, position, archerUuid) => {
     }
 }
 
+const swapAssignments = async (participantAUuid, participantBUuid) => {
+    try {
+        isSyncing.value = true
+        await post(`/qualification/sessions/${props.sessionData.uuid}/swap-assignments`, {
+            participant_a: participantAUuid,
+            participant_b: participantBUuid
+        })
+        toast.success('Pemanah berhasil ditukar')
+        emit('updated')
+    } catch (error) {
+        console.error('Failed to swap archers:', error)
+        toast.error('Gagal menukar pemanah')
+    } finally {
+        isSyncing.value = false
+    }
+}
+
 const unassignArcherFromTarget = async (assignmentId) => {
     if (!assignmentId) return
     try {
@@ -421,7 +455,7 @@ const unassignArcherFromTarget = async (assignmentId) => {
 
 const autoAssignTargets = async () => {
     try {
-        isSyncing.value = true
+        isAssigning.value = true
         await post(`/qualification/sessions/${props.sessionData.uuid}/auto-assign`, {
             category_id: props.selectedCategory,
             archers_per_target: props.sessionData.archers_per_target || 4
@@ -433,7 +467,28 @@ const autoAssignTargets = async () => {
         console.error('Auto-assign failed:', error)
         toast.error('Gagal melakukan penempatan otomatis')
     } finally {
-        isSyncing.value = false
+        isAssigning.value = false
+    }
+}
+
+const resetAssignments = () => {
+    showResetDialog.value = true
+}
+
+const confirmReset = async () => {
+    try {
+        isReseting.value = true
+        await post(`/qualification/sessions/${props.sessionData.uuid}/reset-assignments`, {
+            category_id: props.selectedCategory
+        })
+
+        toast.success('Berhasil mengatur ulang penempatan')
+        emit('updated')
+    } catch (error) {
+        console.error('Reset assignments failed:', error)
+        toast.error('Gagal mengatur ulang penempatan')
+    } finally {
+        isReseting.value = false
     }
 }
 </script>

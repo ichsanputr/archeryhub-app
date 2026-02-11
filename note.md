@@ -1,19 +1,11 @@
-Please for auto assign endpoint i think you wrong about the flow assignment.
+please adjust auto assign is like this.
 
-it should all on club parcipant should on this range
+for example taken sorted from first club alphabet and first letter name archer.
 
-for example i have 3 clubs with each contain 3 archer
+BANTUL ARCHERY JAYA have 8 archer, so all will be place 1A, 2a,3a,4a,5a,6a,11a,12a oke that finish for one club.
 
-you need to sorted all particpant byy their letter name and by grouing group first like this
+JOGJA ARCHERY SCHOOL have 5 archers, so all will be place on 13a, 14a, 15a, 20a, 1b
 
-for example the target name only for number 3,4, and 8 and each contain until C
+MERAPI ARCHERY TEAM have 7 archers, so all will be place on 2b, 3b, 4b, 5b, 6b, 11b, 12b
 
-Andi = club 1 = 3A
-Budi = club 1 = 4A
-Cahya = club 1 = 8A
-Arabi = club 2 = 3B
-Azam = club 2 = 4B
-Mazmur = club 2 = 8B
-Daka = club 3 = 3C
-Falah = club 3 = 4C
-Zamrud = club 3 = 8C
+so the next archer will be place on the next available number. so in last all number first should full all
