@@ -63,7 +63,12 @@
                                     : 'text-gray-600 hover:bg-gray-50 hover:text-black'
                             ]">
                             <div class="flex items-center gap-3 overflow-hidden">
-                                <div v-if="item.icon"
+                                <div v-if="item.image"
+                                    class="flex-shrink-0 w-8 h-8 rounded-md overflow-hidden bg-white border border-gray-100 p-0.5">
+                                    <img :src="item.image" class="w-full h-full object-contain"
+                                        :alt="getItemTitle(item)" />
+                                </div>
+                                <div v-else-if="item.icon"
                                     class="flex-shrink-0 opacity-60 group-hover:opacity-100 transition-opacity">
                                     <Icon :icon="item.icon" class="text-base" />
                                 </div>

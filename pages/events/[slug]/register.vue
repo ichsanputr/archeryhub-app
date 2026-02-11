@@ -189,7 +189,7 @@
                                                 'Atlet Baru' }}</h3>
                                             <p class="text-sm text-gray-500 mb-2">{{ archerProfile?.email ||
                                                 userDisplay.email
-                                                }}</p>
+                                            }}</p>
                                             <div class="flex flex-wrap gap-2">
                                                 <span v-if="archerProfile?.id"
                                                     class="text-[10px] text-navy font-bold bg-gray-100 px-2.5 py-1 rounded-full border border-gray-200  tracking-wider">
@@ -388,8 +388,13 @@
                                             <div v-for="method in paymentMethods" :key="method.uuid"
                                                 class="flex items-start gap-3 p-4 bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-100">
                                                 <div
-                                                    class="h-8 w-8 rounded-lg bg-navy/10 flex items-center justify-center shrink-0 text-navy">
-                                                    <span class="material-symbols-outlined text-base">payments</span>
+                                                    class="h-8 w-8 rounded-lg bg-navy/10 flex items-center justify-center shrink-0 text-navy overflow-hidden p-1">
+                                                    <img v-if="getPaymentMethodImage(method.payment_method)"
+                                                        :src="getPaymentMethodImage(method.payment_method)"
+                                                        class="w-full h-full object-contain"
+                                                        :alt="method.payment_method" />
+                                                    <span v-else
+                                                        class="material-symbols-outlined text-base">payments</span>
                                                 </div>
                                                 <div class="flex-1 min-w-0">
                                                     <p class="font-bold text-navy text-sm mb-1 line-clamp-1">{{
@@ -671,6 +676,24 @@ const getInitials = (name) => {
 const getSelectedCategoryName = () => {
     const cat = categories.value.find(c => c.id === form.value.category_id)
     return cat ? cat.name : '-'
+}
+
+const indonesianPaymentMethods = [
+    { title: 'BCA (Bank Central Asia)', value: 'BCA', image: '/payment-method/bca.png', type: 'bank' },
+    { title: 'Mandiri', value: 'Mandiri', image: '/payment-method/mandiri.png', type: 'bank' },
+    { title: 'BNI (Bank Negara Indonesia)', value: 'BNI', image: '/payment-method/bni.png', type: 'bank' },
+    { title: 'BRI (Bank Rakyat Indonesia)', value: 'BRI', image: '/payment-method/bri.png', type: 'bank' },
+    { title: 'BSI (Bank Syariah Indonesia)', value: 'BSI', image: '/payment-method/bsi.png', type: 'bank' },
+    { title: 'Bank Danamon', value: 'Danamon', image: '/payment-method/danamon.png', type: 'bank' },
+    { title: 'GoPay', value: 'GoPay', image: '/payment-method/gopay.png', type: 'ewallet' },
+    { title: 'OVO', value: 'OVO', image: '/payment-method/ovo.png', type: 'ewallet' },
+    { title: 'DANA', value: 'DANA', image: '/payment-method/dana.png', type: 'ewallet' },
+]
+
+const getPaymentMethodImage = (bankName) => {
+    if (!bankName) return null
+    const method = indonesianPaymentMethods.find(m => m.value.toLowerCase() === bankName.toLowerCase() || bankName.toLowerCase().includes(m.value.toLowerCase()))
+    return method ? method.image : null
 }
 
 // 5. HOOKS & WATCHERS

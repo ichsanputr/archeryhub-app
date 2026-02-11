@@ -318,8 +318,11 @@
                                 <div v-for="(method, index) in form.payment_methods" :key="index"
                                     class="flex flex-col sm:flex-row gap-4 items-start bg-gray-50 p-4 sm:p-6 rounded-2xl border border-gray-100 hover:border-primary/20 transition-all shadow-sm group">
                                     <div
-                                        class="shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-white rounded-xl shadow-sm flex items-center justify-center border border-gray-100 group-hover:scale-110 transition-transform">
-                                        <Icon :icon="getPaymentMethodIcon(method.bank_name)"
+                                        class="shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-white rounded-xl shadow-sm flex items-center justify-center border border-gray-100 group-hover:scale-110 transition-transform overflow-hidden p-2">
+                                        <img v-if="getPaymentMethodImage(method.bank_name)"
+                                            :src="getPaymentMethodImage(method.bank_name)"
+                                            class="w-full h-full object-contain" :alt="method.bank_name" />
+                                        <Icon v-else :icon="getPaymentMethodIcon(method.bank_name)"
                                             class="text-2xl sm:text-3xl text-navy" />
                                     </div>
                                     <div class="flex-grow space-y-4">
@@ -914,24 +917,25 @@ useHead({
 })
 
 const indonesianPaymentMethods = [
-    { title: 'QRIS', value: 'QRIS', icon: 'ph:qr-code-bold', type: 'qris' },
-    { title: 'BCA (Bank Central Asia)', value: 'BCA', icon: 'ph:bank-bold', type: 'bank' },
-    { title: 'Mandiri', value: 'Mandiri', icon: 'ph:bank-bold', type: 'bank' },
-    { title: 'BNI (Bank Negara Indonesia)', value: 'BNI', icon: 'ph:bank-bold', type: 'bank' },
-    { title: 'BRI (Bank Rakyat Indonesia)', value: 'BRI', icon: 'ph:bank-bold', type: 'bank' },
-    { title: 'BSI (Bank Syariah Indonesia)', value: 'BSI', icon: 'ph:bank-bold', type: 'bank' },
-    { title: 'CIMB Niaga', value: 'CIMB Niaga', icon: 'ph:bank-bold', type: 'bank' },
-    { title: 'Permata Bank', value: 'Permata Bank', icon: 'ph:bank-bold', type: 'bank' },
-    { title: 'GoPay', value: 'GoPay', icon: 'simple-icons:gopay', type: 'ewallet' },
-    { title: 'OVO', value: 'OVO', icon: 'simple-icons:ovo', type: 'ewallet' },
-    { title: 'DANA', value: 'DANA', icon: 'simple-icons:dana', type: 'ewallet' },
-    { title: 'ShopeePay', value: 'ShopeePay', icon: 'simple-icons:shopeepay', type: 'ewallet' },
-    { title: 'LinkAja', value: 'LinkAja', icon: 'ph:wallet-bold', type: 'ewallet' },
+    { title: 'BCA (Bank Central Asia)', value: 'BCA', image: '/payment-method/bca.png', type: 'bank' },
+    { title: 'Mandiri', value: 'Mandiri', image: '/payment-method/mandiri.png', type: 'bank' },
+    { title: 'BNI (Bank Negara Indonesia)', value: 'BNI', image: '/payment-method/bni.png', type: 'bank' },
+    { title: 'BRI (Bank Rakyat Indonesia)', value: 'BRI', image: '/payment-method/bri.png', type: 'bank' },
+    { title: 'BSI (Bank Syariah Indonesia)', value: 'BSI', image: '/payment-method/bsi.png', type: 'bank' },
+    { title: 'Bank Danamon', value: 'Danamon', image: '/payment-method/danamon.png', type: 'bank' },
+    { title: 'GoPay', value: 'GoPay', image: '/payment-method/gopay.png', type: 'ewallet' },
+    { title: 'OVO', value: 'OVO', image: '/payment-method/ovo.png', type: 'ewallet' },
+    { title: 'DANA', value: 'DANA', image: '/payment-method/dana.png', type: 'ewallet' },
 ]
 
 const getPaymentMethodIcon = (bankName) => {
     const method = indonesianPaymentMethods.find(m => m.value === bankName)
     return method ? method.icon : 'ph:credit-card-bold'
+}
+
+const getPaymentMethodImage = (bankName) => {
+    const method = indonesianPaymentMethods.find(m => m.value === bankName)
+    return method ? method.image : null
 }
 
 const updatePaymentType = (index, bankName) => {
@@ -942,6 +946,7 @@ const updatePaymentType = (index, bankName) => {
 }
 
 const route = useRoute()
+const router = useRouter()
 const eventId = route.params.id
 
 const { get, put, post } = useApi()
@@ -949,7 +954,6 @@ const saving = ref(false)
 const eventCategories = ref([])
 
 // Tab state
-const activeTab = ref('informasi')
 const tabs = [
     { id: 'informasi', name: 'Informasi', icon: 'ph:info' },
     { id: 'pendaftaran', name: 'Pendaftaran', icon: 'ph:ticket' },
@@ -959,6 +963,21 @@ const tabs = [
     { id: 'hasil', name: 'Hasil', icon: 'iconoir:leaderboard' },
     { id: 'faq', name: 'FAQ', icon: 'ph:question' }
 ]
+
+const activeTab = ref(route.query.tab || 'informasi')
+
+// Sync tab with URL query
+watch(activeTab, (newTab) => {
+    if (newTab !== route.query.tab) {
+        router.replace({ query: { ...route.query, tab: newTab } })
+    }
+})
+
+watch(() => route.query.tab, (newTab) => {
+    if (newTab && newTab !== activeTab.value && tabs.some(t => t.id === newTab)) {
+        activeTab.value = newTab
+    }
+})
 
 // Media Library State
 const showMediaLibrary = ref(false)

@@ -229,8 +229,11 @@
                                     <div v-for="(method, idx) in tournament.payment_methods" :key="idx"
                                         class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-center gap-4">
                                         <div
-                                            class="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center shrink-0">
-                                            <Icon :icon="getPaymentIcon(method)" class="text-2xl text-navy" />
+                                            class="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center shrink-0 overflow-hidden p-1.5">
+                                            <img v-if="getPaymentMethodImage(method.bank_name)"
+                                                :src="getPaymentMethodImage(method.bank_name)"
+                                                class="w-full h-full object-contain" :alt="method.bank_name" />
+                                            <Icon v-else :icon="getPaymentIcon(method)" class="text-2xl text-navy" />
                                         </div>
                                         <div class="min-w-0">
                                             <p
@@ -269,7 +272,7 @@
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{
                                         displayValue(tournament.prizes?.first)
-                                        }}</div>
+                                    }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ firstPrizeCaption }}</div>
                                 </div>
                                 <div
@@ -288,7 +291,7 @@
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{
                                         displayValue(tournament.prizes?.third)
-                                        }}</div>
+                                    }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ thirdPrizeCaption }}</div>
                                 </div>
                             </div>
@@ -885,6 +888,24 @@ const getPaymentIcon = (method) => {
     if (name.includes('shopee')) return 'simple-icons:shopeepay'
 
     return method.type === 'bank' ? 'ph:bank-bold' : 'ph:wallet-bold'
+}
+
+const indonesianPaymentMethods = [
+    { title: 'BCA (Bank Central Asia)', value: 'BCA', image: '/payment-method/bca.png', type: 'bank' },
+    { title: 'Mandiri', value: 'Mandiri', image: '/payment-method/mandiri.png', type: 'bank' },
+    { title: 'BNI (Bank Negara Indonesia)', value: 'BNI', image: '/payment-method/bni.png', type: 'bank' },
+    { title: 'BRI (Bank Rakyat Indonesia)', value: 'BRI', image: '/payment-method/bri.png', type: 'bank' },
+    { title: 'BSI (Bank Syariah Indonesia)', value: 'BSI', image: '/payment-method/bsi.png', type: 'bank' },
+    { title: 'Bank Danamon', value: 'Danamon', image: '/payment-method/danamon.png', type: 'bank' },
+    { title: 'GoPay', value: 'GoPay', image: '/payment-method/gopay.png', type: 'ewallet' },
+    { title: 'OVO', value: 'OVO', image: '/payment-method/ovo.png', type: 'ewallet' },
+    { title: 'DANA', value: 'DANA', image: '/payment-method/dana.png', type: 'ewallet' },
+]
+
+const getPaymentMethodImage = (bankName) => {
+    if (!bankName) return null
+    const method = indonesianPaymentMethods.find(m => m.value.toLowerCase() === bankName.toLowerCase() || bankName.toLowerCase().includes(m.value.toLowerCase()))
+    return method ? method.image : null
 }
 
 const divisions = [
