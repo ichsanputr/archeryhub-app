@@ -165,99 +165,87 @@
 
                         <!-- Registration Fees Section -->
                         <section v-if="tournament.page_settings?.sections?.fees !== false"
-                            class="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100">
-                            <h2 class="text-lg sm:text-xl font-bold text-navy mb-6 flex items-center gap-2">
-                                <Icon icon="ph:currency-circle-dollar-bold" class="text-navy" />
+                            class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 relative overflow-hidden">
+                            <h2 class="text-xl sm:text-2xl font-black text-navy mb-8 flex items-center gap-3">
+                                <Icon icon="ph:currency-circle-dollar-bold" class="text-primary text-2xl" />
                                 Biaya Pendaftaran
                             </h2>
+
                             <div v-if="tournament.fees && tournament.fees.length > 0"
-                                class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
                                 <div v-for="(fee, idx) in tournament.fees" :key="idx"
-                                    class="bg-gray-50 rounded-xl p-6 border border-gray-100 hover:border-navy/30 transition-colors shadow-sm">
-                                    <div class="flex items-center gap-3 mb-4">
+                                    class="bg-gray-50/50 rounded-2xl p-6 border border-gray-100 hover:border-primary/30 transition-all shadow-sm group">
+                                    <div class="flex items-center gap-4 mb-4">
                                         <div
-                                            class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm">
+                                            class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
                                             <Icon
                                                 :icon="fee.name?.toLowerCase().includes('tim') ? 'ph:users-three-bold' : 'ph:user-bold'"
                                                 class="text-2xl text-navy" />
                                         </div>
-                                        <span class="font-bold text-navy">{{ displayValue(fee.name) }}</span>
+                                        <div>
+                                            <span class="font-black text-navy text-lg block leading-tight">{{
+                                                displayValue(fee.name) }}</span>
+                                            <span
+                                                class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Registration
+                                                Fee</span>
+                                        </div>
                                     </div>
-                                    <div class="text-3xl font-black text-navy mb-1">IDR {{
+                                    <div class="text-3xl font-black text-navy mb-2 tracking-tight">IDR {{
                                         (fee.amount || 0).toLocaleString('id-ID') }}</div>
-                                    <p v-if="fee.description" class="text-xs text-gray-500 font-medium">{{
-                                        fee.description }}</p>
+                                    <p v-if="fee.description"
+                                        class="text-xs text-gray-500 font-medium leading-relaxed italic">{{
+                                            fee.description }}</p>
                                 </div>
                             </div>
                             <!-- Fallback if no fees list -->
-                            <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div class="bg-gray-50 rounded-xl p-6 border border-gray-100">
-                                    <div class="flex items-center gap-3 mb-4">
+                            <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                                <div class="bg-gray-50/50 rounded-2xl p-6 border border-gray-100">
+                                    <div class="flex items-center gap-4 mb-4">
                                         <div
-                                            class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm">
+                                            class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm">
                                             <Icon icon="ph:user-bold" class="text-2xl text-navy" />
                                         </div>
-                                        <span class="font-bold text-navy">Semua Kategori</span>
+                                        <div>
+                                            <span class="font-black text-navy text-lg block leading-tight">Semua
+                                                Kategori</span>
+                                            <span
+                                                class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Flat
+                                                Rate Fee</span>
+                                        </div>
                                     </div>
-                                    <div class="text-xl sm:text-3xl font-black text-navy mb-1">IDR {{
+                                    <div class="text-3xl font-black text-navy mb-2 tracking-tight">IDR {{
                                         (tournament.entry_fee ||
                                             0).toLocaleString('id-ID') }}</div>
-                                    <p class="text-xs text-gray-500 font-medium">Per peserta per divisi</p>
+                                    <p class="text-xs text-gray-500 font-medium">Per peserta per kategori</p>
+                                </div>
+                            </div>
+
+                            <!-- Integrated Payment Methods inside Fee Section -->
+                            <div v-if="tournament.payment_methods && tournament.payment_methods.length > 0"
+                                class="pt-8 border-t border-gray-100">
+                                <h3 class="text-sm font-black text-gray-400 tracking-[0.2em] mb-6">Metode
+                                    Pembayaran Tersedia</h3>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                    <div v-for="(method, idx) in tournament.payment_methods" :key="idx"
+                                        class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-center gap-4">
+                                        <div
+                                            class="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center shrink-0">
+                                            <Icon :icon="getPaymentIcon(method)" class="text-2xl text-navy" />
+                                        </div>
+                                        <div class="min-w-0">
+                                            <p
+                                                class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-0.5">
+                                                {{ method.bank_name }}</p>
+                                            <p class="text-sm font-black text-navy truncate">{{ method.account_number }}
+                                            </p>
+                                            <p class="text-[10px] font-bold text-gray-500 truncate mt-0.5 italic">a.n {{
+                                                method.account_name }}</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </section>
 
-                        <!-- Payment Methods Section -->
-                        <section
-                            v-if="tournament.page_settings?.sections?.payment_methods !== false && tournament.payment_methods && tournament.payment_methods.length > 0"
-                            class="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100">
-                            <h2 class="text-lg sm:text-xl font-bold text-navy mb-6 flex items-center gap-2">
-                                <Icon icon="ph:credit-card-bold" class="text-navy" />
-                                Metode Pembayaran
-                            </h2>
-                            <div class="space-y-4">
-                                <div v-for="(method, idx) in tournament.payment_methods" :key="idx"
-                                    class="bg-gray-50 rounded-xl p-5 border border-gray-100 hover:border-navy/30 transition-colors">
-                                    <div class="flex items-start gap-4">
-                                        <div
-                                            class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm shrink-0">
-                                            <Icon
-                                                :icon="method.type === 'bank' ? 'ph:bank-bold' : method.type === 'qris' ? 'ph:qr-code-bold' : 'ph:wallet-bold'"
-                                                class="text-2xl text-navy" />
-                                        </div>
-                                        <div class="flex-1 min-w-0">
-                                            <div class="flex items-center gap-2 mb-1">
-                                                <span class="font-bold text-navy">{{
-                                                    displayValue(method.bank_name)
-                                                    }}</span>
-                                                <span
-                                                    class="text-[10px] font-bold text-gray-400  tracking-wider px-2 py-0.5 bg-gray-200 rounded">
-                                                    {{ method.type === 'bank' ? 'Bank' : method.type === 'qris'
-                                                        ? 'QRIS'
-                                                        : 'E-Wallet' }}
-                                                </span>
-                                            </div>
-                                            <div class="space-y-1">
-                                                <p class="text-sm text-gray-600">
-                                                    <span class="font-medium">Nomor:</span>
-                                                    <span class="font-bold text-navy">{{
-                                                        displayValue(method.account_number) }}</span>
-                                                </p>
-                                                <p class="text-sm text-gray-600">
-                                                    <span class="font-medium">Atas Nama:</span>
-                                                    <span class="font-semibold">{{
-                                                        displayValue(method.account_name)
-                                                        }}</span>
-                                                </p>
-                                                <p v-if="method.instructions" class="text-xs text-gray-500 mt-2 italic">
-                                                    {{ method.instructions }}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
 
                         <section v-if="tournament.page_settings?.sections?.prizes !== false"
                             class="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100 relative overflow-hidden">
@@ -281,7 +269,7 @@
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{
                                         displayValue(tournament.prizes?.first)
-                                        }}</div>
+                                    }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ firstPrizeCaption }}</div>
                                 </div>
                                 <div
@@ -300,7 +288,7 @@
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{
                                         displayValue(tournament.prizes?.third)
-                                        }}</div>
+                                    }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ thirdPrizeCaption }}</div>
                                 </div>
                             </div>
@@ -683,7 +671,7 @@ const transformEventData = (data) => ({
     image: data.banner_url || data.image || '/hero-event-detail.jpeg',
     thumbnail: data.logo_url || data.thumbnail || null,
     fees: data.fees || [],
-    payment_methods: data.payment_methods || [],
+    payment_methods: data.page_settings ? (JSON.parse(data.page_settings).payment_methods || []) : [],
     description: data.description || '',
     total_prize: data.total_prize || 0,
     technical_guidebook_url: data.technical_guidebook_url || null,
@@ -783,6 +771,21 @@ const processDivisions = (events) => {
 const displayValue = (value) => {
     if (value === null || value === undefined || value === '') return '-'
     return value
+}
+
+const getPaymentIcon = (method) => {
+    const name = (method.bank_name || '').toLowerCase()
+    if (method.type === 'qris' || name.includes('qris')) return 'ph:qr-code-bold'
+    if (name.includes('bca')) return 'simple-icons:bankofamerica' // Generic enough or use a bank icon 
+    if (name.includes('mandiri')) return 'ph:bank-bold'
+    if (name.includes('bni')) return 'ph:bank-bold'
+    if (name.includes('bri')) return 'ph:bank-bold'
+    if (name.includes('gopay')) return 'simple-icons:gopay'
+    if (name.includes('dana')) return 'simple-icons:dana'
+    if (name.includes('ovo')) return 'simple-icons:ovo'
+    if (name.includes('shopee')) return 'simple-icons:shopeepay'
+
+    return method.type === 'bank' ? 'ph:bank-bold' : 'ph:wallet-bold'
 }
 
 const divisions = [

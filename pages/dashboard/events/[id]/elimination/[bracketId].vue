@@ -222,6 +222,42 @@
                             </div>
                         </div>
 
+                        <!-- Manual Winner Selection (for Shoot-off Tie) -->
+                        <div v-if="isShootOffTie"
+                            class="mb-6 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-2xl text-left">
+                            <div class="flex items-center gap-2 mb-3">
+                                <Icon icon="ph:info-bold" class="text-yellow-500" />
+                                <span class="text-xs font-black text-yellow-500 uppercase tracking-widest">Tie Break
+                                    Manual</span>
+                            </div>
+                            <p class="text-[10px] text-white/40 mb-4 leading-relaxed">
+                                Skor shoot-off sama. Silahkan pilih pemenang secara manual berdasarkan kriteria (misal:
+                                panah terdekat ke pusat).
+                            </p>
+
+                            <div class="space-y-2">
+                                <button v-if="selectedScoringMatch.entry_a_id"
+                                    @click="manualWinnerId = selectedScoringMatch.entry_a_id"
+                                    class="w-full flex items-center justify-between p-3 rounded-xl border transition-all"
+                                    :class="manualWinnerId === selectedScoringMatch.entry_a_id ? 'bg-primary/20 border-primary text-primary' : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'">
+                                    <span class="text-sm font-bold text-white">{{ selectedScoringMatch.entry_a_name
+                                        }}</span>
+                                    <Icon v-if="manualWinnerId === selectedScoringMatch.entry_a_id"
+                                        icon="ph:check-circle-fill" class="text-primary" />
+                                </button>
+
+                                <button v-if="selectedScoringMatch.entry_b_id"
+                                    @click="manualWinnerId = selectedScoringMatch.entry_b_id"
+                                    class="w-full flex items-center justify-between p-3 rounded-xl border transition-all"
+                                    :class="manualWinnerId === selectedScoringMatch.entry_b_id ? 'bg-primary/20 border-primary text-primary' : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'">
+                                    <span class="text-sm font-bold text-white">{{ selectedScoringMatch.entry_b_name
+                                        }}</span>
+                                    <Icon v-if="manualWinnerId === selectedScoringMatch.entry_b_id"
+                                        icon="ph:check-circle-fill" class="text-primary" />
+                                </button>
+                            </div>
+                        </div>
+
                         <!-- Actions -->
                         <div class="flex gap-3">
                             <button @click="showEndMatchDialog = false"
@@ -338,6 +374,37 @@ const statusBadgeClasses = computed(() => {
     if (s === 'finished') return 'bg-green-500 text-white shadow-green-200'
     if (s === 'generated') return 'bg-navy text-primary shadow-navy/20'
     return 'bg-gray-100 text-gray-400 border border-gray-200'
+})
+
+// Check if there is a shoot-off tie
+const isShootOffTie = computed(() => {
+    if (!selectedScoringMatch.value) return false
+    const matchId = selectedScoringMatch.value.id
+    const m = matchEnds.value[matchId]
+    if (!m) return false
+
+    const soA = m.A?.[99]?.arrows?.[0]
+    const soB = m.B?.[99]?.arrows?.[0]
+
+    if (soA === null || soB === null || soA === undefined || soB === undefined || soA === '' || soB === '') return false
+
+    const getV = (v) => v === 'X' ? 11 : (v === 'M' ? 0 : parseInt(v) || 0)
+    const vA = getV(soA)
+    const vB = getV(soB)
+
+    // Base scores tied checks
+    const isRecurve = bracket.value?.format === 'recurve_set'
+    let baseA, baseB
+    if (isRecurve) {
+        baseA = calculateSetPoints(matchId, 'A')
+        baseB = calculateSetPoints(matchId, 'B')
+    } else {
+        baseA = Object.values(m.A).reduce((s, e) => e.end_no === 99 ? s : s + (e.total || 0), 0)
+        baseB = Object.values(m.B).reduce((s, e) => e.end_no === 99 ? s : s + (e.total || 0), 0)
+    }
+
+    if (baseA !== baseB) return false
+    return vA === vB
 })
 
 // Check if match can be ended - requires at least one completed end
@@ -569,6 +636,11 @@ const getMatchScore = (match, side) => {
 
         if (side === 'A' && vA > vB) score += 1
         else if (side === 'B' && vB > vA) score += 1
+    }
+
+    // Manual winner increment
+    if (manualWinnerId.value && manualWinnerId.value === (side === 'A' ? match.entry_a_id : match.entry_b_id)) {
+        score += 1
     }
 
     return score

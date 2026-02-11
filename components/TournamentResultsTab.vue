@@ -87,11 +87,27 @@
 
                     <template v-else>
                         <!-- Category Header -->
-                        <div class="bg-gradient-to-r from-navy to-navy-light p-4 md:p-6">
-                            <h3 class="!text-base !md:text-lg font-black text-white flex items-center gap-2">
-                                <Icon icon="ph:target" class="text-primary" />
+                        <div
+                            class="bg-gradient-to-r from-navy to-navy-light p-4 md:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <h3 class="!text-sm !md:text-base font-black text-white flex items-center gap-2">
+                                <Icon icon="ph:target" class="text-primary text-xl" />
                                 Kualifikasi Rangking - {{ currentCategoryName }}
                             </h3>
+
+                            <!-- Session Selector -->
+                            <div class="flex items-center gap-3">
+                                <span
+                                    class="text-[10px] font-black text-white/60 uppercase tracking-widest hidden sm:block">Filter
+                                    Sesi:</span>
+                                <select v-model="selectedSession"
+                                    class="bg-white/10 border border-white/20 text-white text-xs font-bold px-4 py-2 rounded-xl outline-none focus:border-primary transition-all">
+                                    <option value="total" class="text-navy">Hasil Akhir (Semua Sesi)</option>
+                                    <option v-for="sCode in availableSessions" :key="sCode" :value="sCode"
+                                        class="text-navy">
+                                        Sesi {{ sCode.replace('S', '') }}
+                                    </option>
+                                </select>
+                            </div>
                         </div>
 
                         <!-- Detailed Scores Table -->
@@ -99,48 +115,46 @@
                             <table class="w-full">
                                 <thead class="bg-gray-50 border-b-2 border-gray-200">
                                     <tr>
-                                        <th rowspan="2"
+                                        <th :rowspan="selectedSession === 'total' ? 1 : 2"
                                             class="px-4 py-3 text-left text-xs font-black text-gray-500 uppercase tracking-wider sticky left-0 bg-gray-50 z-10 border-r border-gray-200">
                                             Rank
                                         </th>
-                                        <th rowspan="2"
+                                        <th :rowspan="selectedSession === 'total' ? 1 : 2"
                                             class="px-4 py-3 text-left text-xs font-black text-gray-500 uppercase tracking-wider min-w-[200px]">
                                             Atlet
                                         </th>
-                                        <th rowspan="2"
+                                        <th :rowspan="selectedSession === 'total' ? 1 : 2"
                                             class="px-4 py-3 text-center text-xs font-black text-gray-500 uppercase tracking-wider">
                                             Klub
                                         </th>
-                                        <th :colspan="totalEnds"
+                                        <th v-if="selectedSession !== 'total'" :colspan="displayTotalEnds"
                                             class="px-4 py-2 text-center text-xs font-black text-gray-500 uppercase tracking-wider border-b border-gray-300">
                                             Skor Per End
                                         </th>
-                                        <th rowspan="2"
+                                        <th :rowspan="selectedSession === 'total' ? 1 : 2"
                                             class="px-4 py-3 text-center text-xs font-black text-navy uppercase tracking-wider bg-navy/5 border-l-2 border-navy/20">
                                             Total
                                         </th>
-                                        <th rowspan="2"
+                                        <th :rowspan="selectedSession === 'total' ? 1 : 2"
                                             class="px-4 py-3 text-center text-xs font-black text-gray-500 uppercase tracking-wider">
                                             10+X
                                         </th>
-                                        <th rowspan="2"
+                                        <th :rowspan="selectedSession === 'total' ? 1 : 2"
                                             class="px-4 py-3 text-center text-xs font-black text-gray-500 uppercase tracking-wider">
                                             X
                                         </th>
                                     </tr>
-                                    <tr>
-                                        <th v-for="i in totalEnds" :key="i"
+                                    <tr v-if="selectedSession !== 'total'">
+                                        <th v-for="i in displayTotalEnds" :key="i"
                                             class="px-2 py-2 text-center text-xs font-bold text-gray-400 border-x border-gray-200">
                                             {{ i }}
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-100">
-                                    <template v-for="result in currentQualResultsWithSessions"
-                                        :key="result.participant_id">
-                                        <tr v-for="(session, sIdx) in result.processedSessions"
-                                            :key="session.session_code" class="hover:bg-gray-50 transition-colors">
-                                            <td v-if="sIdx === 0" :rowspan="result.processedSessions.length"
+                                    <template v-for="result in filteredQualResults" :key="result.participant_id">
+                                        <tr class="hover:bg-gray-50 transition-colors">
+                                            <td
                                                 class="px-4 py-4 whitespace-nowrap sticky text-center left-0 bg-white z-10 border-r border-gray-100">
                                                 <div class="flex items-center justify-center gap-2">
                                                     <div v-if="result.rank <= 3" class="text-2xl">
@@ -150,40 +164,36 @@
                                                         result.rank }}</div>
                                                 </div>
                                             </td>
-                                            <td v-if="sIdx === 0" :rowspan="result.processedSessions.length"
-                                                class="px-4 py-4">
+                                            <td class="px-4 py-4">
                                                 <div class="flex items-center gap-3">
                                                     <img :src="`https://api.dicebear.com/7.x/avataaars/svg?seed=${result.archer_name}`"
                                                         class="size-8 rounded-full border-2 border-gray-200" />
-                                                    <span class="text-sm font-bold text-navy">{{ result.archer_name
-                                                    }}</span>
+                                                    <span class="text-sm font-bold text-navy whitespace-nowrap">{{
+                                                        result.archer_name }}</span>
                                                 </div>
                                             </td>
-                                            <td v-if="sIdx === 0" :rowspan="result.processedSessions.length"
-                                                class="px-4 py-4 text-center">
+                                            <td class="px-4 py-4 text-center">
                                                 <div
                                                     class="text-[10px] md:text-sm text-gray-600 line-clamp-2 leading-tight">
                                                     {{ result.club_name || '-' }}
                                                 </div>
                                             </td>
-                                            <td v-for="i in totalEnds" :key="i"
+                                            <td v-if="selectedSession !== 'total'" v-for="i in displayTotalEnds"
+                                                :key="i"
                                                 class="px-2 py-4 text-center text-sm font-bold border-x border-gray-100"
-                                                :class="getEndScoreClass(session.scores[i - 1])">
-                                                {{ session.scores && session.scores[i - 1] !== undefined ?
-                                                    session.scores[i - 1] : '-' }}
+                                                :class="getEndScoreClass(result.displayScores[i - 1])">
+                                                {{ result.displayScores && result.displayScores[i - 1] !== undefined ?
+                                                    result.displayScores[i - 1] : '-' }}
                                             </td>
-                                            <td v-if="sIdx === 0" :rowspan="result.processedSessions.length"
-                                                class="px-4 py-4 text-center bg-navy/5 border-l-2 border-navy/20">
-                                                <span class="text-base sm:text-xl font-black text-navy">{{
-                                                    result.total_score }}</span>
+                                            <td class="px-4 py-4 text-center bg-navy/5 border-l-2 border-navy/20">
+                                                <span class="text-base sm:text-lg font-black text-navy">{{
+                                                    result.displayTotal }}</span>
                                             </td>
-                                            <td v-if="sIdx === 0" :rowspan="result.processedSessions.length"
-                                                class="px-4 py-4 text-center text-sm font-bold text-gray-600">
-                                                {{ result.total_10x }}
+                                            <td class="px-4 py-4 text-center text-sm font-bold text-gray-600">
+                                                {{ result.display10X }}
                                             </td>
-                                            <td v-if="sIdx === 0" :rowspan="result.processedSessions.length"
-                                                class="px-4 py-4 text-center text-sm font-bold text-gray-600">
-                                                {{ result.total_x }}
+                                            <td class="px-4 py-4 text-center text-sm font-bold text-gray-600">
+                                                {{ result.displayX }}
                                             </td>
                                         </tr>
                                     </template>
@@ -231,27 +241,71 @@ const currentQualResults = computed(() => {
     return qualificationData.value[selectedCategory.value] || []
 })
 
-const currentQualResultsWithSessions = computed(() => {
-    return currentQualResults.value.map(entry => {
-        let sessions = (entry.sessions || []).map(s => {
-            const allScores = s.end_scores ? s.end_scores.split(',') : []
-            // Parse to int
-            const numericScores = allScores.map(score => parseInt(score) || 0)
-            return {
-                ...s,
-                scores: numericScores
-            }
-        })
+const selectedSession = ref('total')
 
-        if (sessions.length === 0) {
-            sessions = [{ session_code: 'S1', scores: [] }]
+watch(selectedCategory, () => {
+    selectedSession.value = 'total'
+})
+
+const availableSessions = computed(() => {
+    const sessionCodes = new Set()
+    currentQualResults.value.forEach(entry => {
+        (entry.sessions || []).forEach(s => {
+            if (s.session_code) sessionCodes.add(s.session_code)
+        })
+    })
+    return Array.from(sessionCodes).sort()
+})
+
+const filteredQualResults = computed(() => {
+    if (!selectedCategory.value) return []
+    const results = currentQualResults.value.map(entry => {
+        let displayScores = []
+        let displayTotal = entry.total_score
+        let display10X = entry.total_10x
+        let displayX = entry.total_x
+
+        if (selectedSession.value === 'total') {
+            const sortedSessions = (entry.sessions || []).sort((a, b) => a.session_code.localeCompare(b.session_code))
+            sortedSessions.forEach(s => {
+                const scores = s.end_scores ? s.end_scores.split(',').map(v => parseInt(v) || 0) : []
+                displayScores = [...displayScores, ...scores]
+            })
+        } else {
+            const session = (entry.sessions || []).find(s => s.session_code === selectedSession.value)
+            displayScores = session?.end_scores ? session.end_scores.split(',').map(v => parseInt(v) || 0) : []
+            displayTotal = session?.total_score || 0
+            display10X = session?.total_10x || 0
+            displayX = session?.total_x || 0
         }
 
         return {
             ...entry,
-            processedSessions: sessions
+            displayScores,
+            displayTotal,
+            display10X,
+            displayX
         }
     })
+
+    // If session is NOT 'total', we might want to re-rank for that specific session
+    // But usually public view shows official rank (Final Result rank).
+    // Let's keep official rank but maybe user expects session-specific rank?
+    // User request didn't specify re-ranking, so I'll stay with official rank for now.
+    return results
+})
+
+const displayTotalEnds = computed(() => {
+    if (selectedSession.value === 'total') return totalEnds.value
+
+    // Find the total ends setting for this specific session from the results data
+    for (const res of currentQualResults.value) {
+        const session = (res.sessions || []).find(s => s.session_code === selectedSession.value)
+        if (session && session.total_ends) return session.total_ends
+    }
+
+    // Fallback if no data yet
+    return Math.floor(totalEnds.value / (availableSessions.value.length || 1))
 })
 
 const currentElimBracket = computed(() => {
