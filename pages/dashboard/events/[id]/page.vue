@@ -21,25 +21,28 @@
         </div>
 
         <!-- Tabs Navigation -->
-        <div class="flex items-center gap-1 border-b border-gray-200 overflow-x-auto no-scrollbar">
+        <div
+            class="flex items-center gap-0.5 sm:gap-1 border-b border-gray-200 overflow-x-auto no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
             <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
-                class="px-6 py-4 text-sm font-bold transition-all border-b-2 flex items-center gap-2 whitespace-nowrap"
+                class="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-bold transition-all border-b-2 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap"
                 :class="activeTab === tab.id ? 'text-navy border-navy bg-gray-50' : 'text-gray-500 border-transparent hover:text-navy hover:bg-gray-50'">
-                <Icon :icon="tab.icon" class="text-xl" />
-                {{ tab.name }}
+                <Icon :icon="tab.icon" class="text-lg sm:text-xl" />
+                <span class="hidden sm:inline">{{ tab.name }}</span>
+                <span class="sm:hidden">{{ tab.name.length > 5 ? tab.name.slice(0, 5) + '.' : tab.name }}</span>
             </button>
         </div>
 
         <div v-if="activeTab === 'faq'" class="space-y-6">
             <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="p-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
-                    <h2 class="text-lg font-bold text-navy flex items-center gap-2">
-                        <Icon icon="ph:question" class="text-primary text-xl" />
+                <div
+                    class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+                    <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
+                        <Icon icon="ph:question" class="text-primary text-lg sm:text-xl" />
                         Pertanyaan Sering Diajukan (FAQ)
                     </h2>
-                    <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-3 sm:gap-4">
                         <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold text-gray-400">Tampilkan Seksi FAQ</span>
+                            <span class="text-[10px] sm:text-xs font-bold text-gray-400">Tampilkan</span>
                             <button @click="form.page_settings.sections.faq = !form.page_settings.sections.faq"
                                 class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none"
                                 :class="form.page_settings.sections.faq ? 'bg-primary' : 'bg-gray-200'">
@@ -49,11 +52,11 @@
                             </button>
                         </div>
                         <BaseButton variant="outline" size="xs" @click="addFAQField">
-                            <Icon icon="ph:plus-bold" class="mr-1" /> Tambah FAQ
+                            <Icon icon="ph:plus-bold" class="mr-1" /> Tambah
                         </BaseButton>
                     </div>
                 </div>
-                <div class="p-6 space-y-4">
+                <div class="p-4 sm:p-6 space-y-4">
                     <div v-if="form.faq?.length === 0"
                         class="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-200">
                         <p class="text-sm text-gray-500">Belum ada FAQ yang ditambahkan.</p>
@@ -90,13 +93,14 @@
             <!-- Informasi Tab -->
             <div v-if="activeTab === 'informasi'" class="space-y-6">
                 <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="p-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
-                        <h2 class="text-lg font-bold text-navy flex items-center gap-2">
-                            <Icon icon="ph:info" class="text-primary text-xl" />
+                    <div
+                        class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+                        <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
+                            <Icon icon="ph:info" class="text-primary text-lg sm:text-xl" />
                             Informasi Dasar
                         </h2>
                         <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold text-gray-400">Tampilkan di Halaman Publik</span>
+                            <span class="text-[10px] sm:text-xs font-bold text-gray-400">Tampilkan</span>
                             <button @click="form.page_settings.sections.about = !form.page_settings.sections.about"
                                 class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none"
                                 :class="form.page_settings.sections.about ? 'bg-primary' : 'bg-gray-200'">
@@ -106,7 +110,7 @@
                             </button>
                         </div>
                     </div>
-                    <div class="p-6 space-y-5">
+                    <div class="p-4 sm:p-6 space-y-5">
                         <div class="space-y-2">
                             <label class="text-sm font-bold text-gray-700">Nama Event</label>
                             <input v-model="form.name" type="text"
@@ -142,12 +146,13 @@
                 </section>
 
                 <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="p-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
-                        <h2 class="text-lg font-bold text-navy">
+                    <div
+                        class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+                        <h2 class="text-base sm:text-lg font-bold text-navy">
                             Divisi Kompetisi
                         </h2>
                         <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold text-gray-400">Tampilkan di Halaman Publik</span>
+                            <span class="text-[10px] sm:text-xs font-bold text-gray-400">Tampilkan</span>
                             <button
                                 @click="form.page_settings.sections.divisions = !form.page_settings.sections.divisions"
                                 class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none"
@@ -158,7 +163,7 @@
                             </button>
                         </div>
                     </div>
-                    <div class="p-6">
+                    <div class="p-4 sm:p-6">
                         <div v-if="eventCategories.length === 0" class="text-center py-12">
                             <Icon icon="ph:info" class="text-4xl text-gray-200 mx-auto mb-3" />
                             <p class="text-sm text-gray-500 mb-4">Belum ada kategori lomba yang dibuat. Tambahkan
@@ -209,13 +214,14 @@
             <!-- Pendaftaran Tab -->
             <div v-if="activeTab === 'pendaftaran'" class="space-y-6">
                 <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="p-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
-                        <h2 class="text-lg font-bold text-navy flex items-center gap-2">
-                            <Icon icon="ph:ticket" class="text-primary text-xl" />
+                    <div
+                        class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+                        <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
+                            <Icon icon="ph:ticket" class="text-primary text-lg sm:text-xl" />
                             Biaya Pendaftaran
                         </h2>
                         <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold text-gray-400">Tampilkan di Halaman Publik</span>
+                            <span class="text-[10px] sm:text-xs font-bold text-gray-400">Tampilkan</span>
                             <button @click="form.page_settings.sections.fees = !form.page_settings.sections.fees"
                                 class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none"
                                 :class="form.page_settings.sections.fees ? 'bg-primary' : 'bg-gray-200'">
@@ -225,7 +231,7 @@
                             </button>
                         </div>
                     </div>
-                    <div class="p-6 space-y-5">
+                    <div class="p-4 sm:p-6 space-y-5">
                         <div class="space-y-4">
                             <div class="flex items-center justify-between">
                                 <label class="text-sm font-bold text-gray-700">List Biaya Pendaftaran</label>
@@ -240,7 +246,7 @@
                             </div>
                             <div v-else class="space-y-3">
                                 <div v-for="(fee, index) in form.fees" :key="index"
-                                    class="flex gap-3 items-start bg-gray-50 p-4 rounded-xl border border-gray-100">
+                                    class="flex flex-col sm:flex-row gap-3 items-start bg-gray-50 p-3 sm:p-4 rounded-xl border border-gray-100">
                                     <div class="flex-grow grid grid-cols-1 md:grid-cols-2 gap-3">
                                         <input v-model="fee.name" type="text" placeholder="Nama Biaya"
                                             class="w-full px-4 py-2 rounded-lg border border-gray-200 text-sm" />
@@ -277,13 +283,14 @@
 
                 <!-- Metode Pembayaran Section -->
                 <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="p-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
-                        <h2 class="text-lg font-bold text-navy flex items-center gap-2">
-                            <Icon icon="ph:credit-card" class="text-primary text-xl" />
+                    <div
+                        class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+                        <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
+                            <Icon icon="ph:credit-card" class="text-primary text-lg sm:text-xl" />
                             Metode Pembayaran
                         </h2>
                         <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold text-gray-400">Tampilkan di Halaman Publik</span>
+                            <span class="text-[10px] sm:text-xs font-bold text-gray-400">Tampilkan</span>
                             <button
                                 @click="form.page_settings.sections.payment_methods = !form.page_settings.sections.payment_methods"
                                 class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none"
@@ -294,7 +301,7 @@
                             </button>
                         </div>
                     </div>
-                    <div class="p-6 space-y-5">
+                    <div class="p-4 sm:p-6 space-y-5">
                         <div class="space-y-4">
                             <div class="flex items-center justify-between">
                                 <label class="text-sm font-bold text-gray-700">Daftar Metode Pembayaran</label>
@@ -309,11 +316,11 @@
                             </div>
                             <div v-else class="space-y-3">
                                 <div v-for="(method, index) in form.payment_methods" :key="index"
-                                    class="flex gap-4 items-start bg-gray-50 p-6 rounded-2xl border border-gray-100 hover:border-primary/20 transition-all shadow-sm group">
+                                    class="flex flex-col sm:flex-row gap-4 items-start bg-gray-50 p-4 sm:p-6 rounded-2xl border border-gray-100 hover:border-primary/20 transition-all shadow-sm group">
                                     <div
-                                        class="shrink-0 w-14 h-14 bg-white rounded-xl shadow-sm flex items-center justify-center border border-gray-100 group-hover:scale-110 transition-transform">
+                                        class="shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-white rounded-xl shadow-sm flex items-center justify-center border border-gray-100 group-hover:scale-110 transition-transform">
                                         <Icon :icon="getPaymentMethodIcon(method.bank_name)"
-                                            class="text-3xl text-navy" />
+                                            class="text-2xl sm:text-3xl text-navy" />
                                     </div>
                                     <div class="flex-grow space-y-4">
                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -351,7 +358,7 @@
                                                 <span
                                                     class="px-3 py-1 bg-navy text-primary rounded-full text-[10px] font-black w-fit ml-auto uppercase shadow-sm">
                                                     {{ method.type === 'bank' ? 'Bank Transfer' : method.type === 'qris'
-                                                    ? 'QRIS' : 'E-Wallet' }}
+                                                        ? 'QRIS' : 'E-Wallet' }}
                                                 </span>
                                             </div>
                                         </div>
@@ -365,7 +372,7 @@
                                         </div>
                                     </div>
                                     <button @click="removePaymentMethodField(index)"
-                                        class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all self-center mt-4">
+                                        class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all self-center sm:mt-4">
                                         <Icon icon="ph:trash-bold" class="text-xl" />
                                     </button>
                                 </div>
@@ -375,13 +382,14 @@
                 </section>
 
                 <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="p-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
-                        <h2 class="text-lg font-bold text-navy flex items-center gap-2">
-                            <Icon icon="ph:emoji-events" class="text-primary text-xl" />
+                    <div
+                        class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+                        <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
+                            <Icon icon="ph:emoji-events" class="text-primary text-lg sm:text-xl" />
                             Hadiah & Guidebook
                         </h2>
                         <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold text-gray-400">Tampilkan Seksi Hadiah</span>
+                            <span class="text-[10px] sm:text-xs font-bold text-gray-400">Tampilkan</span>
                             <button @click="form.page_settings.sections.prizes = !form.page_settings.sections.prizes"
                                 class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none"
                                 :class="form.page_settings.sections.prizes ? 'bg-primary' : 'bg-gray-200'">
@@ -391,7 +399,7 @@
                             </button>
                         </div>
                     </div>
-                    <div class="p-6 space-y-5">
+                    <div class="p-4 sm:p-6 space-y-5">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="space-y-2">
                                 <label class="text-sm font-bold text-gray-700">Total Hadiah (IDR)</label>
@@ -448,13 +456,14 @@
             <!-- Lokasi Tab -->
             <section v-if="activeTab === 'lokasi'"
                 class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="p-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
-                    <h2 class="text-lg font-bold text-navy flex items-center gap-2">
-                        <Icon icon="ph:map-pin" class="text-primary text-xl" />
+                <div
+                    class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+                    <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
+                        <Icon icon="ph:map-pin" class="text-primary text-lg sm:text-xl" />
                         Lokasi & Peta
                     </h2>
                     <div class="flex items-center gap-2">
-                        <span class="text-xs font-bold text-gray-400">Tampilkan di Halaman Publik</span>
+                        <span class="text-[10px] sm:text-xs font-bold text-gray-400">Tampilkan</span>
                         <button @click="form.page_settings.sections.location = !form.page_settings.sections.location"
                             class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none"
                             :class="form.page_settings.sections.location ? 'bg-primary' : 'bg-gray-200'">
@@ -463,7 +472,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="p-6 space-y-5">
+                <div class="p-4 sm:p-6 space-y-5">
                     <div class="space-y-2">
                         <label class="text-sm font-bold text-gray-700 flex items-center gap-1">
                             Nama Venue
@@ -516,13 +525,13 @@
             <!-- Media Tab -->
             <div v-if="activeTab === 'media'" class="space-y-6">
                 <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="p-5 border-b border-gray-100 bg-gray-50/50">
-                        <h2 class="text-lg font-bold text-navy flex items-center gap-2">
-                            <Icon icon="ph:image" class="text-primary text-xl" />
+                    <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50">
+                        <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
+                            <Icon icon="ph:image" class="text-primary text-lg sm:text-xl" />
                             Banner & Logo
                         </h2>
                     </div>
-                    <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
                         <div class="space-y-3">
                             <label class="text-sm font-bold text-gray-700">Banner (Header)</label>
                             <div v-if="form.banner_url" class="relative rounded-xl overflow-hidden aspect-video group">
@@ -563,13 +572,13 @@
                 </section>
 
                 <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="p-5 border-b border-gray-100 bg-gray-50/50">
-                        <h2 class="text-lg font-bold text-navy flex items-center gap-2">
-                            <Icon icon="ph:images" class="text-primary text-xl" />
+                    <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50">
+                        <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
+                            <Icon icon="ph:images" class="text-primary text-lg sm:text-xl" />
                             Galeri Event
                         </h2>
                     </div>
-                    <div class="p-6 grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-4">
+                    <div class="p-4 sm:p-6 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
                         <div v-for="(image, index) in form.event_images" :key="index"
                             class="relative aspect-square rounded-lg overflow-hidden border border-gray-100 group">
                             <img :src="image.url" class="w-full h-full object-cover" />
@@ -589,14 +598,15 @@
             <!-- Jadwal Tab -->
             <section v-if="activeTab === 'jadwal'"
                 class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="p-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
-                    <h2 class="text-lg font-bold text-navy flex items-center gap-2">
-                        <Icon icon="ph:calendar-bold" class="text-primary text-xl" />
+                <div
+                    class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+                    <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
+                        <Icon icon="ph:calendar-bold" class="text-primary text-lg sm:text-xl" />
                         Jadwal Lomba
                     </h2>
-                    <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-3 sm:gap-4">
                         <div class="flex items-center gap-2">
-                            <span class="text-xs font-bold text-gray-400">Tampilkan Seksi Jadwal</span>
+                            <span class="text-[10px] sm:text-xs font-bold text-gray-400">Tampilkan</span>
                             <button
                                 @click="form.page_settings.sections.schedule = !form.page_settings.sections.schedule"
                                 class="relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none"
@@ -607,18 +617,18 @@
                             </button>
                         </div>
                         <BaseButton variant="outline" size="xs" @click="addScheduleField">
-                            <Icon icon="ph:plus-bold" class="mr-1" /> Tambah Sesi
+                            <Icon icon="ph:plus-bold" class="mr-1" /> Tambah
                         </BaseButton>
                     </div>
                 </div>
-                <div class="p-6 space-y-4">
+                <div class="p-4 sm:p-6 space-y-4">
                     <div v-if="form.schedules.length === 0"
                         class="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-200">
                         <p class="text-sm text-gray-400">Belum ada jadwal yang ditambahkan.</p>
                     </div>
                     <div v-else class="space-y-4">
                         <div v-for="(session, index) in form.schedules" :key="index"
-                            class="bg-gray-50 p-4 rounded-xl border border-gray-100 relative group">
+                            class="bg-gray-50 p-3 sm:p-4 rounded-xl border border-gray-100 relative group">
                             <button @click="removeScheduleField(index)"
                                 class="absolute top-3 right-3 text-gray-400 hover:text-red-500">
                                 <Icon icon="ph:trash" />
@@ -665,17 +675,74 @@
 
         <!-- Hasil Tab -->
         <div v-if="activeTab === 'hasil'" class="space-y-6">
+            <!-- Results Source Selector -->
             <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="p-6 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
-                    <div>
-                        <h2 class="text-lg font-black text-navy flex items-center gap-3">
-                            <div class="p-2 bg-primary/10 rounded-lg">
-                                <Icon icon="iconoir:leaderboard" class="text-primary text-xl" />
+                <div class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50">
+                    <h2 class="text-base sm:text-lg font-black text-navy flex items-center gap-2 sm:gap-3">
+                        <div class="p-1.5 sm:p-2 bg-primary/10 rounded-lg">
+                            <Icon icon="iconoir:leaderboard" class="text-lg sm:text-xl" />
+                        </div>
+                        Sumber Hasil Lomba
+                    </h2>
+                    <p class="text-xs text-gray-400 mt-1.5 font-medium">Pilih bagaimana hasil lomba ditampilkan di
+                        halaman publik event.</p>
+                </div>
+                <div class="p-4 sm:p-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <button @click="form.page_settings.results_type = 'system'" type="button"
+                            class="relative p-4 sm:p-5 rounded-2xl border-2 text-left transition-all group"
+                            :class="form.page_settings.results_type === 'system' ? 'border-primary bg-primary/5 shadow-sm' : 'border-gray-200 hover:border-gray-300 bg-white'">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-colors"
+                                    :class="form.page_settings.results_type === 'system' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-400'">
+                                    <Icon icon="ph:chart-bar-bold" class="text-xl" />
+                                </div>
+                                <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors"
+                                    :class="form.page_settings.results_type === 'system' ? 'border-primary' : 'border-gray-300'">
+                                    <div v-if="form.page_settings.results_type === 'system'"
+                                        class="w-2.5 h-2.5 rounded-full bg-primary"></div>
+                                </div>
                             </div>
-                            Dokumen Hasil Lomba
+                            <h4 class="font-bold text-sm text-navy">Dari Sistem</h4>
+                            <p class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">Hasil kualifikasi & eliminasi
+                                dari scoring system.</p>
+                        </button>
+                        <button @click="form.page_settings.results_type = 'manual'" type="button"
+                            class="relative p-4 sm:p-5 rounded-2xl border-2 text-left transition-all group"
+                            :class="form.page_settings.results_type === 'manual' ? 'border-primary bg-primary/5 shadow-sm' : 'border-gray-200 hover:border-gray-300 bg-white'">
+                            <div class="flex items-center gap-3 mb-2">
+                                <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-colors"
+                                    :class="form.page_settings.results_type === 'manual' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-400'">
+                                    <Icon icon="ph:file-arrow-up-bold" class="text-xl" />
+                                </div>
+                                <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors"
+                                    :class="form.page_settings.results_type === 'manual' ? 'border-primary' : 'border-gray-300'">
+                                    <div v-if="form.page_settings.results_type === 'manual'"
+                                        class="w-2.5 h-2.5 rounded-full bg-primary"></div>
+                                </div>
+                            </div>
+                            <h4 class="font-bold text-sm text-navy">Upload Manual</h4>
+                            <p class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">Upload file PDF/gambar hasil
+                                lomba secara manual.</p>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Manual Upload Section (Only when manual or both) -->
+            <section v-if="form.page_settings.results_type === 'manual'"
+                class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div
+                    class="p-4 sm:p-6 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+                    <div>
+                        <h2 class="text-base sm:text-lg font-black text-navy flex items-center gap-2 sm:gap-3">
+                            <div class="p-1.5 sm:p-2 bg-primary/10 rounded-lg">
+                                <Icon icon="ph:file-arrow-up-bold" class="text-lg sm:text-xl" />
+                            </div>
+                            Upload Dokumen Hasil
                         </h2>
-                        <p class="text-sm text-gray-500 mt-1 font-medium">Upload dan kelola dokumen hasil lomba publik
-                        </p>
+                        <p class="text-xs sm:text-sm text-gray-500 mt-1 font-medium">Upload file PDF, gambar, atau
+                            dokumen hasil lomba.</p>
                     </div>
                     <BaseButton variant="primary" size="sm" icon="ph:plus-bold"
                         @click="$refs.resultsFileInput?.click()">
@@ -683,7 +750,7 @@
                     </BaseButton>
                 </div>
 
-                <div class="p-8">
+                <div class="p-4 sm:p-8">
                     <!-- Upload Area (Compact when files exist) -->
                     <div v-if="!form.results || form.results.length === 0"
                         class="border-2 border-dashed border-gray-200 rounded-3xl p-12 text-center hover:border-primary hover:bg-primary/5 transition-all cursor-pointer group"
@@ -712,15 +779,15 @@
 
                     <!-- Uploaded Files List (Revamped) -->
                     <div v-if="form.results && form.results.length > 0" class="space-y-6">
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 gap-4">
                             <div v-for="(file, index) in form.results" :key="index"
-                                class="group relative bg-white rounded-2xl border border-gray-100 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 transition-all p-5">
+                                class="group relative bg-white rounded-2xl border border-gray-100 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 transition-all p-4 sm:p-5">
 
-                                <div class="flex gap-5">
+                                <div class="flex gap-3 sm:gap-5">
                                     <!-- File Icon / Preview -->
                                     <div
                                         class="w-16 h-20 rounded-xl bg-gray-50 border border-gray-100 flex flex-col items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                                        <Icon :icon="getFileIcon(file.url)" class="text-3xl text-primary" />
+                                        <Icon :icon="getFileIcon(file.url)" class="text-3xl" />
                                         <span class="text-[9px] font-black text-gray-400  mt-1">{{
                                             getFileExt(file.url) }}</span>
                                     </div>
@@ -791,6 +858,26 @@
 
                     <input ref="resultsFileInput" type="file" class="hidden" accept=".pdf,.jpg,.jpeg,.png" multiple
                         @change="handleResultsUpload" />
+                </div>
+            </section>
+
+            <!-- System Results Info (Only when system) -->
+            <section v-if="form.page_settings.results_type === 'system'"
+                class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="p-4 sm:p-6">
+                    <div class="flex items-start gap-4">
+                        <div class="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center shrink-0">
+                            <Icon icon="ph:info-bold" class="text-2xl text-blue-500" />
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-navy text-sm">Hasil Dari Sistem Scoring</h4>
+                            <p class="text-xs text-gray-500 mt-1 leading-relaxed">
+                                Hasil kualifikasi dan bagan eliminasi akan ditampilkan secara otomatis dari data scoring
+                                yang telah diinput melalui menu <strong>Scoring</strong>. Pastikan skor sudah diinput
+                                dengan benar.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </section>
         </div>
@@ -869,8 +956,8 @@ const tabs = [
     { id: 'lokasi', name: 'Lokasi', icon: 'ph:map-pin' },
     { id: 'media', name: 'Media', icon: 'ph:image' },
     { id: 'jadwal', name: 'Jadwal', icon: 'ph:calendar-bold' },
-    { id: 'faq', name: 'FAQ', icon: 'ph:question' },
-    { id: 'hasil', name: 'Hasil', icon: 'iconoir:leaderboard' }
+    { id: 'hasil', name: 'Hasil', icon: 'iconoir:leaderboard' },
+    { id: 'faq', name: 'FAQ', icon: 'ph:question' }
 ]
 
 // Media Library State
@@ -982,7 +1069,8 @@ const form = ref({
             schedule: true,
             location: true,
             faq: true
-        }
+        },
+        results_type: 'system'
     },
     faq: [],
     results: []
@@ -1283,7 +1371,13 @@ const fetchEventData = async () => {
                     schedule: true,
                     location: true,
                     faq: true
-                }
+                },
+                results_type: 'system'
+            }
+
+            // Ensure results_type is set
+            if (!pageSettings.results_type) {
+                pageSettings.results_type = 'system'
             }
 
             // Parse FAQ

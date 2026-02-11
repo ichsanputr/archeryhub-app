@@ -7,7 +7,8 @@
                 style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);">
             </div>
             <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary">
+            </div>
 
             <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div class="flex items-center gap-4">
@@ -20,10 +21,18 @@
                         <p class="text-slate-300 text-sm font-medium">Simple list for developer task management.</p>
                     </div>
                 </div>
-                <BaseButton @click="openCreateModal" variant="primary" icon="ph:plus-bold"
-                    class="px-6 shadow-xl shadow-primary/20">
-                    Tambah Task
-                </BaseButton>
+                <div class="flex items-center gap-3">
+                    <!-- Stats -->
+                    <div v-if="tasks.length > 0"
+                        class="hidden sm:flex items-center gap-2 bg-white/10 px-4 py-2 rounded-xl border border-white/10">
+                        <span class="text-[10px] font-black tracking-widest text-white/60 uppercase">{{
+                            completedCount }}/{{ tasks.length }} Done</span>
+                    </div>
+                    <BaseButton @click="openCreateModal" variant="primary" icon="ph:plus-bold"
+                        class="px-6 shadow-xl shadow-primary/20">
+                        Tambah Task
+                    </BaseButton>
+                </div>
             </div>
         </div>
 
@@ -40,29 +49,47 @@
                 </div>
                 <h3 class="text-xl font-black text-navy mb-2">Belum ada task</h3>
                 <p class="text-gray-400 text-sm mb-8">Mulailah dengan menambahkan tugas pengembangan pertama Anda.</p>
-                <BaseButton @click="openCreateModal" variant="navy" outline class="px-8">Buat Task Sekarang</BaseButton>
+                <BaseButton @click="openCreateModal" variant="navy" outline class="px-8">Buat Task Sekarang
+                </BaseButton>
             </div>
 
             <div v-else class="divide-y divide-gray-50">
                 <div v-for="task in tasks" :key="task.uuid"
-                    class="p-6 hover:bg-gray-50/50 transition-all flex items-start gap-6 group cursor-pointer"
-                    @click="editTask(task)">
-                    <div
-                        class="size-10 rounded-xl bg-navy/5 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
-                        <Icon icon="ph:check-circle"
-                            class="text-navy/20 group-hover:text-primary transition-colors text-xl" />
-                    </div>
+                    class="p-5 sm:p-6 hover:bg-gray-50/50 transition-all flex items-start gap-4 sm:gap-6 group"
+                    :class="task.status === 'completed' ? 'bg-gray-50/30' : ''">
 
-                    <div class="flex-1 min-w-0">
-                        <h4
-                            class="font-bold text-navy text-base mb-1 leading-tight group-hover:text-primary transition-colors">
+                    <!-- Toggle Solved Button (Left Icon) -->
+                    <button @click.stop="toggleTask(task)"
+                        class="size-10 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 border-2"
+                        :class="task.status === 'completed'
+                            ? 'bg-emerald-500 border-emerald-500 text-white shadow-md shadow-emerald-200 scale-100'
+                            : 'bg-white border-gray-200 text-gray-300 hover:border-emerald-400 hover:text-emerald-400 hover:shadow-md'">
+                        <Icon :icon="task.status === 'completed' ? 'ph:check-bold' : 'ph:circle'"
+                            class="text-lg transition-transform duration-300"
+                            :class="task.status === 'completed' ? 'scale-110' : ''" />
+                    </button>
+
+                    <!-- Content (clickable to edit) -->
+                    <div class="flex-1 min-w-0 cursor-pointer" @click="editTask(task)">
+                        <h4 class="font-bold text-base mb-1 leading-tight transition-all duration-300" :class="task.status === 'completed'
+                            ? 'text-gray-400 line-through decoration-gray-300 decoration-2'
+                            : 'text-navy group-hover:text-primary'">
                             {{ task.title }}</h4>
                         <p v-if="task.description"
-                            class="text-gray-500 text-sm font-medium leading-relaxed line-clamp-2">{{ task.description
-                            }}</p>
+                            class="text-sm font-medium leading-relaxed line-clamp-2 transition-all duration-300"
+                            :class="task.status === 'completed' ? 'text-gray-300 line-through decoration-gray-200' : 'text-gray-500'">
+                            {{ task.description }}
+                        </p>
                     </div>
 
-                    <div class="flex items-center gap-4 shrink-0">
+                    <!-- Right Actions -->
+                    <div class="flex items-center gap-3 sm:gap-4 shrink-0">
+                        <!-- Status Badge -->
+                        <span v-if="task.status === 'completed'"
+                            class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-600 text-[10px] font-black tracking-wider uppercase">
+                            <Icon icon="ph:check-circle-fill" class="text-sm" />
+                            Done
+                        </span>
                         <div class="flex -space-x-2">
                             <div class="size-8 rounded-full border-2 border-white bg-gray-50 overflow-hidden shadow-sm">
                                 <img src="https://api.dicebear.com/7.x/initials/svg?seed=IF"
@@ -140,9 +167,9 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
-const { get, post, put, delete: del } = useApi()
+const { get, post, put, patch, delete: del } = useApi()
 const toast = useToast()
 
 definePageMeta({
@@ -165,6 +192,8 @@ const form = ref({
     description: ''
 })
 
+const completedCount = computed(() => tasks.value.filter(t => t.status === 'completed').length)
+
 const fetchTasks = async () => {
     loading.value = true
     try {
@@ -174,6 +203,22 @@ const fetchTasks = async () => {
         console.error('Failed to fetch tasks:', error)
     } finally {
         loading.value = false
+    }
+}
+
+const toggleTask = async (task) => {
+    try {
+        const response = await patch(`/tasks/${task.uuid}/toggle`)
+        // Optimistically update the local task
+        if (response?.task) {
+            task.status = response.task.status
+        } else {
+            // Fallback: toggle locally
+            task.status = task.status === 'completed' ? 'pending' : 'completed'
+        }
+    } catch (error) {
+        console.error('Failed to toggle task:', error)
+        toast.error('Gagal mengubah status task')
     }
 }
 

@@ -269,7 +269,7 @@
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{
                                         displayValue(tournament.prizes?.first)
-                                    }}</div>
+                                        }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ firstPrizeCaption }}</div>
                                 </div>
                                 <div
@@ -288,7 +288,7 @@
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{
                                         displayValue(tournament.prizes?.third)
-                                    }}</div>
+                                        }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ thirdPrizeCaption }}</div>
                                 </div>
                             </div>
@@ -298,10 +298,88 @@
                     <TournamentScheduleTab v-else-if="activeTab === 'Jadwal Lomba'" :event-id="slug"
                         :schedules="schedulesData" />
                     <TournamentAthletesTab v-else-if="activeTab === 'Peserta'" :participants="participantsData" />
-                    <TournamentResultsTab v-else-if="activeTab === 'Hasil'" :event-id="slug" />
+                    <TournamentResultsTab v-else-if="activeTab === 'Hasil'" :event-id="slug"
+                        :results-type="tournament.page_settings?.results_type || 'system'"
+                        :manual-results="tournament.results || []" />
                     <TournamentVenueTab v-else-if="activeTab === 'Lokasi'" :venue="tournament.venue"
                         :address="tournament.address" :gmaps-link="tournament.gmaps_link"
                         :accessibility="tournament.location_accessibility" />
+
+                    <!-- Galeri Tab -->
+                    <div v-else-if="activeTab === 'Galeri'" class="space-y-8">
+                        <section
+                            class="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-gray-100 overflow-hidden relative">
+                            <div class="absolute -right-16 -top-16 w-48 h-48 bg-primary/5 rounded-full blur-3xl"></div>
+                            <div class="flex items-center gap-3 mb-8 relative z-10">
+                                <div class="w-12 h-12 rounded-2xl bg-navy/5 flex items-center justify-center">
+                                    <Icon icon="ph:images-bold" class="text-2xl text-navy" />
+                                </div>
+                                <div>
+                                    <h2 class="font-black text-navy text-2xl">Galeri Event</h2>
+                                    <p class="text-sm text-gray-400 font-medium">Foto dan dokumentasi event</p>
+                                </div>
+                            </div>
+
+                            <!-- Poster & Banner -->
+                            <div v-if="tournament.thumbnail || tournament.image"
+                                class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 relative z-10">
+                                <div v-if="tournament.image && tournament.image !== '/hero-event-detail.jpeg'"
+                                    class="group relative rounded-2xl overflow-hidden aspect-video cursor-pointer shadow-sm border border-gray-100 hover:shadow-lg transition-all"
+                                    @click="openLightbox(tournament.image)">
+                                    <img :src="tournament.image" :alt="tournament.name + ' - Banner'"
+                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                    <div
+                                        class="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                                        <span class="text-white text-xs font-black tracking-wider uppercase">Banner
+                                            Event</span>
+                                    </div>
+                                </div>
+                                <div v-if="tournament.thumbnail"
+                                    class="group relative rounded-2xl overflow-hidden aspect-video cursor-pointer shadow-sm border border-gray-100 hover:shadow-lg transition-all"
+                                    @click="openLightbox(tournament.thumbnail)">
+                                    <img :src="tournament.thumbnail" :alt="tournament.name + ' - Poster'"
+                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                    <div
+                                        class="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                                        <span class="text-white text-xs font-black tracking-wider uppercase">Poster
+                                            Event</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Gallery Grid -->
+                            <div v-if="galleryImages.length > 0" class="relative z-10">
+                                <h3 v-if="tournament.thumbnail || (tournament.image && tournament.image !== '/hero-event-detail.jpeg')"
+                                    class="text-sm font-black text-gray-400 tracking-widest uppercase mb-4 pt-6 border-t border-gray-100">
+                                    Dokumentasi</h3>
+                                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+                                    <div v-for="(img, idx) in galleryImages" :key="idx"
+                                        class="group relative aspect-square rounded-2xl overflow-hidden cursor-pointer shadow-sm border border-gray-100 hover:shadow-lg transition-all"
+                                        @click="openLightbox(img.url)">
+                                        <img :src="img.url" :alt="img.caption || 'Foto event'"
+                                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                        <div
+                                            class="absolute inset-0 bg-navy/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                            <div
+                                                class="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center">
+                                                <Icon icon="ph:magnifying-glass-plus-bold" class="text-navy text-lg" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Empty State -->
+                            <div v-if="galleryImages.length === 0 && !tournament.thumbnail && (tournament.image === '/hero-event-detail.jpeg' || !tournament.image)"
+                                class="text-center py-16 relative z-10">
+                                <div
+                                    class="w-20 h-20 rounded-full bg-gray-50 flex items-center justify-center mx-auto mb-4">
+                                    <Icon icon="ph:camera-slash" class="text-4xl text-gray-200" />
+                                </div>
+                                <p class="text-gray-400 font-bold">Belum ada foto untuk event ini</p>
+                            </div>
+                        </section>
+                    </div>
 
                     <!-- FAQ Tab -->
                     <div v-else-if="activeTab === 'FAQ'" class="space-y-8">
@@ -550,6 +628,25 @@
         </main>
 
     </div>
+
+    <!-- Lightbox Modal -->
+    <ClientOnly>
+        <Teleport to="body">
+            <Transition enter-active-class="transition duration-200" enter-from-class="opacity-0"
+                enter-to-class="opacity-100" leave-active-class="transition duration-150" leave-from-class="opacity-100"
+                leave-to-class="opacity-0">
+                <div v-if="lightboxUrl"
+                    class="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4"
+                    @click.self="lightboxUrl = null">
+                    <button @click="lightboxUrl = null"
+                        class="absolute top-4 right-4 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-50">
+                        <Icon icon="ph:x-bold" class="text-2xl" />
+                    </button>
+                    <img :src="lightboxUrl" class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl" />
+                </div>
+            </Transition>
+        </Teleport>
+    </ClientOnly>
 </template>
 
 /* eslint-disable vue/multi-word-component-names */
@@ -621,6 +718,8 @@ const tabs = computed(() => {
     if (tournament.value.page_settings?.sections?.location !== false) {
         list.push('Lokasi')
     }
+    // Always show Galeri tab
+    list.push('Galeri')
     if (tournament.value.page_settings?.sections?.faq !== false && tournament.value.faq?.length > 0) {
         list.push('FAQ')
     }
@@ -800,17 +899,19 @@ const divisions = [
 const { data: eventData, error: eventError } = await useAsyncData(
     `event-${slug}`,
     async () => {
-        const [eventRes, categoriesRes, schedulesRes, participantsRes] = await Promise.all([
+        const [eventRes, categoriesRes, schedulesRes, participantsRes, imagesRes] = await Promise.all([
             $fetch(`${config.public.apiBaseUrl}/events/${slug}`),
             $fetch(`${config.public.apiBaseUrl}/events/${slug}/categories`).catch(() => null),
             $fetch(`${config.public.apiBaseUrl}/events/${slug}/schedule`).catch(() => null),
-            $fetch(`${config.public.apiBaseUrl}/events/${slug}/participants?limit=2000`).catch(() => null)
+            $fetch(`${config.public.apiBaseUrl}/events/${slug}/participants?limit=2000`).catch(() => null),
+            $fetch(`${config.public.apiBaseUrl}/events/${slug}/images`).catch(() => null)
         ])
         return {
             event: eventRes,
             categories: categoriesRes,
             schedules: schedulesRes,
-            participants: participantsRes
+            participants: participantsRes,
+            images: imagesRes
         }
     }
 )
@@ -826,6 +927,13 @@ if (eventData.value?.categories?.events) {
 const schedulesData = computed(() => eventData.value?.schedules?.schedules || eventData.value?.schedules?.data?.schedules || [])
 const participantsData = computed(() => eventData.value?.participants?.participants || [])
 const categoriesList = computed(() => eventData.value?.categories?.events || [])
+const galleryImages = computed(() => eventData.value?.images?.images || eventData.value?.images?.data?.images || [])
+
+// Lightbox state
+const lightboxUrl = ref(null)
+const openLightbox = (url) => {
+    lightboxUrl.value = url
+}
 
 // Throw 404 if event not found
 if (eventError.value || !eventData.value?.event || !tournament.value.name) {

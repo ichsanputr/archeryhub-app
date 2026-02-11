@@ -33,57 +33,55 @@
                                     class="text-lg sm:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2 truncate">
                                     {{ pageTitle }}
                                 </h1>
-                                <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
-                                    <div
-                                        class="flex flex-wrap items-center gap-1.5 sm:gap-y-1 text-[10px] sm:text-sm text-slate-300 font-medium overflow-hidden">
-                                        <template v-if="categoryInfo">
-                                            <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                                                <span
-                                                    class="px-2 py-0.5 rounded bg-primary text-navy text-[9px] sm:text-[10px] font-black uppercase tracking-wider backdrop-blur-md">
-                                                    {{ categoryInfo.division_name }}
-                                                </span>
-                                                <span class="opacity-40 hidden sm:inline">•</span>
-                                                <span class="truncate">{{ categoryInfo.category_name }}</span>
-                                                <span class="opacity-40 hidden sm:inline">•</span>
-                                                <span class="truncate">{{ bracket.bracket_size }} Peserta</span>
-                                            </div>
-                                        </template>
-                                        <div v-else class="flex items-center gap-2">
-                                            <span
-                                                class="px-2 py-0.5 rounded bg-white/5 text-white/40 text-[10px] sm:text-xs font-mono border border-white/5">{{
-                                                    bracket.bracket_size }} Peserta</span>
-                                        </div>
+                                <!-- Category Info -->
+                                <div
+                                    class="flex items-center gap-1.5 text-[10px] sm:text-sm text-slate-300 font-medium">
+                                    <template v-if="categoryInfo">
+                                        <span
+                                            class="px-2 py-0.5 rounded bg-primary text-navy text-[9px] sm:text-[10px] font-black uppercase tracking-wider backdrop-blur-md shrink-0">
+                                            {{ categoryInfo.division_name }}
+                                        </span>
+                                        <span class="opacity-40 hidden sm:inline">•</span>
+                                        <span class="truncate hidden sm:inline">{{ categoryInfo.category_name }}</span>
+                                        <span class="opacity-40 hidden sm:inline">•</span>
+                                        <span class="truncate hidden sm:inline">{{ bracket.bracket_size }}
+                                            Peserta</span>
+                                    </template>
+                                    <div v-else class="flex items-center gap-2">
+                                        <span
+                                            class="px-2 py-0.5 rounded bg-white/5 text-white/40 text-[10px] sm:text-xs font-mono border border-white/5">{{
+                                                bracket.bracket_size }} Peserta</span>
                                     </div>
+                                </div>
 
-                                    <!-- Quick Stats in Header -->
-                                    <div class="flex items-center gap-2 sm:gap-3">
-                                        <span class="opacity-20 hidden sm:inline text-white">|</span>
-                                        <div
-                                            class="flex items-center gap-1.5 bg-white/5 px-2 py-0.5 rounded-lg border border-white/10">
-                                            <Icon icon="ph:chart-bar-fill" class="text-primary text-xs" />
-                                            <span
-                                                class="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-white/60">
-                                                {{ finishedMatchesCount }}/{{ matches.length }} Match Selesai
-                                            </span>
-                                        </div>
-                                        <div v-if="currentRoundNo"
-                                            class="flex items-center gap-1.5 bg-blue-500/20 px-2 py-0.5 rounded-lg border border-blue-500/20">
-                                            <Icon icon="ph:users-four-fill" class="text-blue-300 text-xs" />
-                                            <span
-                                                class="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-blue-200">
-                                                {{ roundMatches.length }} Match di Round ini
-                                            </span>
-                                        </div>
-                                        <div
-                                            class="flex items-center gap-1.5 bg-white/5 px-2 py-0.5 rounded-lg border border-white/10">
-                                            <Icon icon="ph:gear-six-fill" class="text-white/40 text-xs" />
-                                            <span
-                                                class="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-white/60">
-                                                {{ bracket.format === 'recurve_set' ? 'SET' : 'ACC' }} • {{
-                                                    bracket.arrows_per_end }}A/{{
-                                                    bracket.ends_per_match }}E
-                                            </span>
-                                        </div>
+                                <!-- Quick Stats - Scrollable row on mobile -->
+                                <div
+                                    class="flex items-center gap-2 overflow-x-auto no-scrollbar sm:gap-3 w-full sm:w-auto mt-1 sm:mt-0">
+                                    <div
+                                        class="flex items-center gap-1 sm:gap-1.5 bg-white/5 px-2 py-0.5 rounded-lg border border-white/10 shrink-0">
+                                        <Icon icon="ph:chart-bar-fill" class="text-primary text-[10px] sm:text-xs" />
+                                        <span
+                                            class="text-[8px] sm:text-[10px] font-black uppercase tracking-wide sm:tracking-widest text-white/60 whitespace-nowrap">
+                                            {{ finishedMatchesCount }}/{{ matches.length }} Selesai
+                                        </span>
+                                    </div>
+                                    <div v-if="currentRoundNo"
+                                        class="flex items-center gap-1 sm:gap-1.5 bg-blue-500/20 px-2 py-0.5 rounded-lg border border-blue-500/20 shrink-0">
+                                        <Icon icon="ph:users-four-fill" class="text-blue-300 text-[10px] sm:text-xs" />
+                                        <span
+                                            class="text-[8px] sm:text-[10px] font-black uppercase tracking-wide sm:tracking-widest text-blue-200 whitespace-nowrap">
+                                            {{ roundMatches.length }} Match
+                                        </span>
+                                    </div>
+                                    <div
+                                        class="flex items-center gap-1 sm:gap-1.5 bg-white/5 px-2 py-0.5 rounded-lg border border-white/10 shrink-0">
+                                        <Icon icon="ph:gear-six-fill" class="text-white/40 text-[10px] sm:text-xs" />
+                                        <span
+                                            class="text-[8px] sm:text-[10px] font-black uppercase tracking-wide sm:tracking-widest text-white/60 whitespace-nowrap">
+                                            {{ bracket.format === 'recurve_set' ? 'SET' : 'ACC' }} • {{
+                                                bracket.arrows_per_end }}A/{{
+                                                bracket.ends_per_match }}E
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -123,7 +121,8 @@
                     :selected-scoring-match="selectedScoringMatch" v-model:active-side="activeSide"
                     v-model:current-end="currentEnd" :match-ends="matchEnds" :is-saving="isSaving"
                     :is-ending-match="isEndingMatch" :selected-arrow-index="selectedArrowIndex"
-                    :can-end-match="canEndMatch" @select-match="selectMatchForScoring" @add-score="addArrowScore"
+                    :can-end-match="canEndMatch" :manual-winner-id="manualWinnerId"
+                    @select-match="selectMatchForScoring" @add-score="addArrowScore"
                     @delete-last-arrow="deleteLastArrow" @save-and-next="saveAndNext" @end-match="endMatch"
                     @select-arrow-box="selectArrowBox" />
             </div>
@@ -146,137 +145,149 @@
     </div>
 
     <!-- End Match Confirmation Dialog -->
-    <Teleport to="body">
-        <Transition name="modal">
-            <div v-if="showEndMatchDialog"
-                class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-                <div
-                    class="relative w-full max-w-lg bg-gradient-to-br from-navy via-navy to-navy/95 rounded-[2rem] shadow-2xl overflow-hidden border border-white/10">
-                    <!-- Decorative Elements -->
-                    <div class="absolute inset-0 opacity-10 pointer-events-none">
-                        <Icon icon="ph:target"
-                            class="text-[300px] absolute -right-16 -bottom-16 rotate-12 text-white/20" />
-                        <Icon icon="ph:trophy"
-                            class="text-[150px] absolute -left-10 -top-10 -rotate-12 text-primary/30" />
-                    </div>
+    <ClientOnly>
+        <Teleport to="body">
+            <Transition name="modal">
+                <div v-if="showEndMatchDialog"
+                    class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
                     <div
-                        class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary">
-                    </div>
-
-                    <div class="relative p-8 text-center">
-                        <!-- Title -->
-                        <div class="mb-6">
-                            <h2 class="text-2xl font-black text-white tracking-tight">Akhiri Pertandingan?</h2>
-                            <p class="text-white/60 text-sm mt-1">Konfirmasi untuk mengakhiri dan menentukan pemenang
-                            </p>
+                        class="relative w-full max-w-lg bg-gradient-to-br from-navy via-navy to-navy/95 rounded-[2rem] shadow-2xl overflow-hidden border border-white/10 max-h-[90vh] overflow-y-auto">
+                        <!-- Decorative Elements -->
+                        <div class="absolute inset-0 opacity-10 pointer-events-none">
+                            <Icon icon="ph:target"
+                                class="text-[200px] sm:text-[300px] absolute -right-16 -bottom-16 rotate-12 text-white/20" />
+                        </div>
+                        <div
+                            class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary">
                         </div>
 
-                        <!-- Battle Display -->
-                        <div v-if="selectedScoringMatch" class="bg-white/5 rounded-2xl p-6 border border-white/10 mb-6">
-                            <div class="flex items-center justify-center gap-4">
-                                <!-- Side A -->
-                                <div class="flex-1 text-center">
-                                    <img :src="getAvatarUrl(selectedScoringMatch.entry_a_name)"
-                                        class="size-16 rounded-2xl border-2 mx-auto mb-2"
-                                        :class="(getMatchScore(selectedScoringMatch, 'A') > getMatchScore(selectedScoringMatch, 'B') || manualWinnerId === selectedScoringMatch.entry_a_id) ? 'border-primary shadow-lg shadow-primary/30' : 'border-white/20'" />
-                                    <div class="font-bold text-white text-sm truncate max-w-[120px] mx-auto">
-                                        {{ selectedScoringMatch.entry_a_name || 'TBD' }}
-                                    </div>
-                                    <div class="text-3xl font-black mt-2"
-                                        :class="(getMatchScore(selectedScoringMatch, 'A') > getMatchScore(selectedScoringMatch, 'B') || manualWinnerId === selectedScoringMatch.entry_a_id) ? 'text-primary' : 'text-white/60'">
-                                        {{ getMatchScore(selectedScoringMatch, 'A') }}
-                                    </div>
-                                    <div v-if="getMatchScore(selectedScoringMatch, 'A') > getMatchScore(selectedScoringMatch, 'B') || manualWinnerId === selectedScoringMatch.entry_a_id"
-                                        class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/20 text-primary text-[10px] font-black tracking-wider mt-2">
-                                        <Icon icon="ph:crown-simple-fill" class="text-xs" />
-                                        PEMENANG
-                                    </div>
-                                </div>
+                        <div class="relative p-6 sm:p-8 text-center">
+                            <!-- Title -->
+                            <div class="mb-4 sm:mb-6">
+                                <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight">Akhiri
+                                    Pertandingan?
+                                </h2>
+                                <p class="text-white/60 text-[10px] sm:text-sm mt-1">Konfirmasi untuk menentukan
+                                    pemenang
+                                </p>
+                            </div>
 
-                                <!-- VS -->
-                                <div class="flex flex-col items-center gap-2">
+                            <!-- Battle Display -->
+                            <div v-if="selectedScoringMatch"
+                                class="bg-white/5 rounded-2xl p-4 sm:p-6 border border-white/10 mb-4 sm:mb-6">
+                                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+                                    <!-- Side A -->
                                     <div
-                                        class="size-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">
-                                        <span class="text-xs font-black text-white/60 tracking-widest">VS</span>
+                                        class="flex-1 w-full sm:w-auto text-center flex flex-row sm:flex-col items-center sm:justify-center gap-4">
+                                        <img :src="getAvatarUrl(selectedScoringMatch.entry_a_name)"
+                                            class="size-12 sm:size-16 rounded-xl sm:rounded-2xl border-2 shrink-0"
+                                            :class="(getMatchScore(selectedScoringMatch, 'A') > getMatchScore(selectedScoringMatch, 'B') || manualWinnerId === selectedScoringMatch.entry_a_id) ? 'border-primary shadow-lg shadow-primary/30' : 'border-white/20'" />
+                                        <div class="flex-1 sm:flex-none text-left sm:text-center min-w-0">
+                                            <div class="font-bold text-white text-xs sm:text-sm truncate mb-0.5">
+                                                {{ selectedScoringMatch.entry_a_name || 'TBD' }}
+                                            </div>
+                                            <div class="text-2xl sm:text-3xl font-black tabular-nums"
+                                                :class="(getMatchScore(selectedScoringMatch, 'A') > getMatchScore(selectedScoringMatch, 'B') || manualWinnerId === selectedScoringMatch.entry_a_id) ? 'text-primary' : 'text-white/60'">
+                                                {{ getMatchScore(selectedScoringMatch, 'A') }}
+                                            </div>
+                                        </div>
+                                        <div v-if="getMatchScore(selectedScoringMatch, 'A') > getMatchScore(selectedScoringMatch, 'B') || manualWinnerId === selectedScoringMatch.entry_a_id"
+                                            class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/20 text-primary text-[8px] sm:text-[10px] font-black tracking-wider shrink-0 sm:mt-2">
+                                            <Icon icon="ph:crown-simple-fill" class="text-[10px]" />
+                                            <span class="hidden sm:inline">PEMENANG</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- VS -->
+                                    <div class="hidden sm:flex flex-col items-center gap-2">
+                                        <div
+                                            class="size-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">
+                                            <span class="text-[10px] font-black text-white/40 tracking-widest">VS</span>
+                                        </div>
+                                    </div>
+                                    <div class="sm:hidden w-full h-px bg-white/5"></div>
+
+                                    <!-- Side B -->
+                                    <div
+                                        class="flex-1 w-full sm:w-auto text-center flex flex-row-reverse sm:flex-col items-center sm:justify-center gap-4">
+                                        <img :src="getAvatarUrl(selectedScoringMatch.entry_b_name)"
+                                            class="size-12 sm:size-16 rounded-xl sm:rounded-2xl border-2 shrink-0"
+                                            :class="(getMatchScore(selectedScoringMatch, 'B') > getMatchScore(selectedScoringMatch, 'A') || manualWinnerId === selectedScoringMatch.entry_b_id) ? 'border-primary shadow-lg shadow-primary/30' : 'border-white/20'" />
+                                        <div class="flex-1 sm:flex-none text-right sm:text-center min-w-0">
+                                            <div class="font-bold text-white text-xs sm:text-sm truncate mb-0.5">
+                                                {{ selectedScoringMatch.entry_b_name || 'TBD' }}
+                                            </div>
+                                            <div class="text-2xl sm:text-3xl font-black tabular-nums"
+                                                :class="(getMatchScore(selectedScoringMatch, 'B') > getMatchScore(selectedScoringMatch, 'A') || manualWinnerId === selectedScoringMatch.entry_b_id) ? 'text-primary' : 'text-white/60'">
+                                                {{ getMatchScore(selectedScoringMatch, 'B') }}
+                                            </div>
+                                        </div>
+                                        <div v-if="getMatchScore(selectedScoringMatch, 'B') > getMatchScore(selectedScoringMatch, 'A') || manualWinnerId === selectedScoringMatch.entry_b_id"
+                                            class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/20 text-primary text-[8px] sm:text-[10px] font-black tracking-wider shrink-0 sm:mt-2">
+                                            <Icon icon="ph:crown-simple-fill" class="text-[10px]" />
+                                            <span class="hidden sm:inline">PEMENANG</span>
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- Side B -->
-                                <div class="flex-1 text-center">
-                                    <img :src="getAvatarUrl(selectedScoringMatch.entry_b_name)"
-                                        class="size-16 rounded-2xl border-2 mx-auto mb-2"
-                                        :class="(getMatchScore(selectedScoringMatch, 'B') > getMatchScore(selectedScoringMatch, 'A') || manualWinnerId === selectedScoringMatch.entry_b_id) ? 'border-primary shadow-lg shadow-primary/30' : 'border-white/20'" />
-                                    <div class="font-bold text-white text-sm truncate max-w-[120px] mx-auto">
-                                        {{ selectedScoringMatch.entry_b_name || 'TBD' }}
-                                    </div>
-                                    <div class="text-3xl font-black mt-2"
-                                        :class="(getMatchScore(selectedScoringMatch, 'B') > getMatchScore(selectedScoringMatch, 'A') || manualWinnerId === selectedScoringMatch.entry_b_id) ? 'text-primary' : 'text-white/60'">
-                                        {{ getMatchScore(selectedScoringMatch, 'B') }}
-                                    </div>
-                                    <div v-if="getMatchScore(selectedScoringMatch, 'B') > getMatchScore(selectedScoringMatch, 'A') || manualWinnerId === selectedScoringMatch.entry_b_id"
-                                        class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/20 text-primary text-[10px] font-black tracking-wider mt-2">
-                                        <Icon icon="ph:crown-simple-fill" class="text-xs" />
-                                        PEMENANG
-                                    </div>
+                            <!-- Manual Winner Selection (for Shoot-off Tie) -->
+                            <div v-if="isShootOffTie"
+                                class="mb-6 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-2xl text-left">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <Icon icon="ph:info-bold" class="text-yellow-500" />
+                                    <span class="text-xs font-black text-yellow-500 uppercase tracking-widest">Tie Break
+                                        Manual</span>
+                                </div>
+                                <p class="text-[10px] text-white/40 mb-4 leading-relaxed">
+                                    Skor shoot-off sama. Silahkan pilih pemenang secara manual berdasarkan kriteria
+                                    (misal:
+                                    panah terdekat ke pusat).
+                                </p>
+
+                                <div class="space-y-2">
+                                    <button v-if="selectedScoringMatch.entry_a_id"
+                                        @click="manualWinnerId = selectedScoringMatch.entry_a_id"
+                                        class="w-full flex items-center justify-between p-3 rounded-xl border transition-all"
+                                        :class="manualWinnerId === selectedScoringMatch.entry_a_id ? 'bg-primary/20 border-primary text-primary' : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'">
+                                        <span class="text-sm font-bold text-white">{{ selectedScoringMatch.entry_a_name
+                                        }}</span>
+                                        <Icon v-if="manualWinnerId === selectedScoringMatch.entry_a_id"
+                                            icon="ph:check-circle-fill" class="text-primary" />
+                                    </button>
+
+                                    <button v-if="selectedScoringMatch.entry_b_id"
+                                        @click="manualWinnerId = selectedScoringMatch.entry_b_id"
+                                        class="w-full flex items-center justify-between p-3 rounded-xl border transition-all"
+                                        :class="manualWinnerId === selectedScoringMatch.entry_b_id ? 'bg-primary/20 border-primary text-primary' : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'">
+                                        <span class="text-sm font-bold text-white">{{ selectedScoringMatch.entry_b_name
+                                        }}</span>
+                                        <Icon v-if="manualWinnerId === selectedScoringMatch.entry_b_id"
+                                            icon="ph:check-circle-fill" class="text-primary" />
+                                    </button>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Manual Winner Selection (for Shoot-off Tie) -->
-                        <div v-if="isShootOffTie"
-                            class="mb-6 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-2xl text-left">
-                            <div class="flex items-center gap-2 mb-3">
-                                <Icon icon="ph:info-bold" class="text-yellow-500" />
-                                <span class="text-xs font-black text-yellow-500 uppercase tracking-widest">Tie Break
-                                    Manual</span>
-                            </div>
-                            <p class="text-[10px] text-white/40 mb-4 leading-relaxed">
-                                Skor shoot-off sama. Silahkan pilih pemenang secara manual berdasarkan kriteria (misal:
-                                panah terdekat ke pusat).
-                            </p>
-
-                            <div class="space-y-2">
-                                <button v-if="selectedScoringMatch.entry_a_id"
-                                    @click="manualWinnerId = selectedScoringMatch.entry_a_id"
-                                    class="w-full flex items-center justify-between p-3 rounded-xl border transition-all"
-                                    :class="manualWinnerId === selectedScoringMatch.entry_a_id ? 'bg-primary/20 border-primary text-primary' : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'">
-                                    <span class="text-sm font-bold text-white">{{ selectedScoringMatch.entry_a_name
-                                        }}</span>
-                                    <Icon v-if="manualWinnerId === selectedScoringMatch.entry_a_id"
-                                        icon="ph:check-circle-fill" class="text-primary" />
+                            <!-- Actions -->
+                            <div class="flex gap-3">
+                                <button @click="showEndMatchDialog = false"
+                                    class="flex-1 px-6 py-3 rounded-xl bg-white/10 border border-white/20 text-white font-bold hover:bg-white/20 transition-all">
+                                    Batal
                                 </button>
-
-                                <button v-if="selectedScoringMatch.entry_b_id"
-                                    @click="manualWinnerId = selectedScoringMatch.entry_b_id"
-                                    class="w-full flex items-center justify-between p-3 rounded-xl border transition-all"
-                                    :class="manualWinnerId === selectedScoringMatch.entry_b_id ? 'bg-primary/20 border-primary text-primary' : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'">
-                                    <span class="text-sm font-bold text-white">{{ selectedScoringMatch.entry_b_name
-                                        }}</span>
-                                    <Icon v-if="manualWinnerId === selectedScoringMatch.entry_b_id"
-                                        icon="ph:check-circle-fill" class="text-primary" />
+                                <button @click="confirmEndMatch"
+                                    :disabled="isEndingMatch || (selectedScoringMatch && getMatchScore(selectedScoringMatch, 'A') === getMatchScore(selectedScoringMatch, 'B') && !manualWinnerId)"
+                                    class="flex-1 px-6 py-3 rounded-xl bg-primary text-navy font-black tracking-wide hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                                    <Icon v-if="isEndingMatch" icon="ph:circle-notch-bold" class="animate-spin" />
+                                    <Icon v-else icon="ph:check-bold" />
+                                    <span>{{ isEndingMatch ? 'Memproses...' : 'Konfirmasi' }}</span>
                                 </button>
                             </div>
-                        </div>
-
-                        <!-- Actions -->
-                        <div class="flex gap-3">
-                            <button @click="showEndMatchDialog = false"
-                                class="flex-1 px-6 py-3 rounded-xl bg-white/10 border border-white/20 text-white font-bold hover:bg-white/20 transition-all">
-                                Batal
-                            </button>
-                            <button @click="confirmEndMatch"
-                                :disabled="isEndingMatch || (selectedScoringMatch && getMatchScore(selectedScoringMatch, 'A') === getMatchScore(selectedScoringMatch, 'B') && !manualWinnerId)"
-                                class="flex-1 px-6 py-3 rounded-xl bg-primary text-navy font-black tracking-wide hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-                                <Icon v-if="isEndingMatch" icon="ph:circle-notch-bold" class="animate-spin" />
-                                <Icon v-else icon="ph:check-bold" />
-                                <span>{{ isEndingMatch ? 'Memproses...' : 'Konfirmasi' }}</span>
-                            </button>
                         </div>
                     </div>
                 </div>
-            </div>
-        </Transition>
-    </Teleport>
+            </Transition>
+        </Teleport>
+    </ClientOnly>
 </template>
 
 <script setup>
@@ -634,13 +645,20 @@ const getMatchScore = (match, side) => {
         const vA = getV(soA)
         const vB = getV(soB)
 
-        if (side === 'A' && vA > vB) score += 1
-        else if (side === 'B' && vB > vA) score += 1
-    }
-
-    // Manual winner increment
-    if (manualWinnerId.value && manualWinnerId.value === (side === 'A' ? match.entry_a_id : match.entry_b_id)) {
-        score += 1
+        if (vA > vB) {
+            if (side === 'A') score += 1
+        } else if (vB > vA) {
+            if (side === 'B') score += 1
+        } else {
+            // Tie in shootout - check manual selection
+            const currentSideId = side === 'A' ? match.entry_a_id : match.entry_b_id
+            if (manualWinnerId.value && manualWinnerId.value === currentSideId) {
+                score += 1
+            } else if (match.winner_entry_id === currentSideId && match.status === 'finished') {
+                // Persistent winner check
+                score += 1
+            }
+        }
     }
 
     return score

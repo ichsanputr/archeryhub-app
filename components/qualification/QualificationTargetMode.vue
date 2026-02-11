@@ -20,7 +20,7 @@
         <!-- Kanban Board Layout -->
         <div class="flex flex-col lg:flex-row gap-6">
             <!-- Unassigned Column -->
-            <div class="lg:w-80 shrink-0 flex flex-col gap-4">
+            <div class="lg:w-80 shrink-0 lg:self-start lg:sticky lg:top-4">
                 <div class="bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200 p-4 min-h-[500px] flex flex-col gap-4"
                     @dragover.prevent @drop="handleDropOnUnassigned">
                     <div class="flex items-center justify-between px-2">
@@ -48,7 +48,7 @@
                             </div>
 
                             <div v-for="archer in group.archers" :key="archer.uuid" draggable="true"
-                                @dragstart="handleDragStart(archer)" @dragend="handleDragEnd"
+                                @dragstart="(e) => handleDragStart(e, archer)" @dragend="handleDragEnd"
                                 class="bg-white p-3 rounded-xl border border-gray-100 shadow-sm cursor-grab active:cursor-grabbing hover:border-primary/50 hover:shadow-md transition-all flex items-center gap-3 group mx-1">
                                 <div
                                     class="size-9 rounded-full border border-gray-100 overflow-hidden shrink-0 bg-gray-50">
@@ -97,7 +97,7 @@
                             <div v-for="pos in target.availableLetters" :key="pos" class="group" @dragover.prevent
                                 @drop="handleDropOnTarget(target, pos)">
                                 <div v-if="target.slots[pos]" draggable="true"
-                                    @dragstart="handleDragStart(target.slots[pos], target, pos)"
+                                    @dragstart="(e) => handleDragStart(e, target.slots[pos], target, pos)"
                                     @dragend="handleDragEnd"
                                     class="flex items-center gap-3 p-2.5 rounded-xl bg-gray-50 border border-transparent hover:border-primary/30 transition-all cursor-grab active:cursor-grabbing shadow-sm group/slot-filled"
                                     :class="{ 'opacity-50': draggedArcher?.archer.uuid === target.slots[pos].uuid }">
@@ -125,10 +125,12 @@
                                 </div>
 
                                 <!-- Custom Archer Dropdown -->
-                                <div v-else class="relative archer-dropdown-container">
+                                <div v-else class="relative archer-dropdown-container" @dragover.prevent
+                                    @drop.stop="handleDropOnTarget(target, pos)">
                                     <div @click.stop="toggleDropdown(target.name, pos)"
                                         class="flex items-center gap-3 p-2.5 rounded-xl border border-dashed border-gray-200 bg-white hover:bg-gray-50/50 hover:border-primary/50 transition-all cursor-pointer group/slot"
-                                        :class="{ 'border-primary bg-primary/5 ring-4 ring-primary/10 shadow-inner': isDragging }">
+                                        :class="{ 'border-primary bg-primary/5 ring-4 ring-primary/10 shadow-inner': isDragging }"
+                                        @dragover.prevent>
                                         <span
                                             class="flex items-center justify-center size-7 rounded-lg bg-gray-50 border border-gray-100 text-xs font-bold text-gray-400 shrink-0">
                                             {{ pos }}
@@ -297,7 +299,10 @@ const targetGrid = computed(() => {
     })
 })
 
-const handleDragStart = (archer, targetRecord = null, pos = null) => {
+const handleDragStart = (event, archer, targetRecord = null, pos = null) => {
+    // Set dataTransfer data — required for browsers to enable drag & drop
+    event.dataTransfer.setData('text/plain', archer.uuid || '')
+    event.dataTransfer.effectAllowed = 'move'
     draggedArcher.value = { archer, sourceTarget: targetRecord, sourcePos: pos }
     isDragging.value = true
 }
