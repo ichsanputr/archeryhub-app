@@ -118,11 +118,22 @@ export const useAuth = () => {
   const isLoggedIn = computed(() => !!user.value)
   const config = useRuntimeConfig()
 
-  const login = async (userType = 'archer', fullName = ''): Promise<void> => {
+  const login = async (userType = 'archer', metadata: Record<string, string> = {}): Promise<void> => {
     const baseUrl = config.public.apiBaseUrl as string
     const callbackUrl = typeof window !== 'undefined' ? `${window.location.origin}/auth/callback` : ''
+
+    // Build query params including metadata
+    const params = new URLSearchParams()
+    params.append('app_url', callbackUrl)
+    params.append('user_type', userType)
+
+    // Add all metadata fields as separate query params
+    Object.entries(metadata).forEach(([key, value]) => {
+      if (value) params.append(key, value)
+    })
+
     const { auth_url, state } = await $fetch<{ auth_url?: string; state?: string }>(
-      `${baseUrl}/auth/google?app_url=${callbackUrl}&user_type=${userType}&full_name=${encodeURIComponent(fullName)}`
+      `${baseUrl}/auth/google?${params.toString()}`
     )
     if (state && import.meta.client) {
       sessionStorage.setItem('oauth_state', state)

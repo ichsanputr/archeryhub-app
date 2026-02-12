@@ -58,26 +58,43 @@
                     class="p-5 sm:p-6 hover:bg-gray-50/50 transition-all flex items-start gap-4 sm:gap-6 group"
                     :class="task.status === 'completed' ? 'bg-gray-50/30' : ''">
 
-                    <!-- Toggle Solved Button (Left Icon) -->
-                    <button @click.stop="toggleTask(task)"
-                        class="size-10 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 border-2"
-                        :class="task.status === 'completed'
-                            ? 'bg-emerald-500 border-emerald-500 text-white shadow-md shadow-emerald-200 scale-100'
-                            : 'bg-white border-gray-200 text-gray-300 hover:border-emerald-400 hover:text-emerald-400 hover:shadow-md'">
-                        <Icon :icon="task.status === 'completed' ? 'ph:check-bold' : 'ph:circle'"
-                            class="text-lg transition-transform duration-300"
-                            :class="task.status === 'completed' ? 'scale-110' : ''" />
-                    </button>
+                    <!-- Task Status Actions (Left) -->
+                    <div class="flex flex-col gap-2 shrink-0">
+                        <button @click.stop="setStatus(task, 'completed')"
+                            class="size-10 rounded-xl flex items-center justify-center transition-all duration-300 border-2"
+                            :class="task.status === 'completed'
+                                ? 'bg-emerald-500 border-emerald-500 text-white shadow-md shadow-emerald-200'
+                                : 'bg-white border-gray-200 text-gray-300 hover:border-emerald-400 hover:text-emerald-400'">
+                            <Icon :icon="task.status === 'completed' ? 'ph:check-bold' : 'ph:circle'"
+                                class="text-lg transition-transform duration-300"
+                                :class="task.status === 'completed' ? 'scale-110' : ''" />
+                        </button>
+                        <button @click.stop="setStatus(task, 'failed')"
+                            class="size-10 rounded-xl flex items-center justify-center transition-all duration-300 border-2"
+                            :class="task.status === 'failed'
+                                ? 'bg-red-500 border-red-500 text-white shadow-md shadow-red-200'
+                                : 'bg-white border-gray-200 text-gray-300 hover:border-red-400 hover:text-red-400'">
+                            <Icon :icon="task.status === 'failed' ? 'ph:x-bold' : 'ph:x-circle'"
+                                class="text-lg transition-transform duration-300"
+                                :class="task.status === 'failed' ? 'scale-110' : ''" />
+                        </button>
+                    </div>
 
                     <!-- Content (clickable to edit) -->
                     <div class="flex-1 min-w-0 cursor-pointer" @click="editTask(task)">
-                        <h4 class="font-bold text-base mb-1 leading-tight transition-all duration-300" :class="task.status === 'completed'
-                            ? 'text-gray-400 line-through decoration-gray-300 decoration-2'
-                            : 'text-navy group-hover:text-primary'">
+                        <h4 class="font-bold text-base mb-1 leading-tight transition-all duration-300" :class="[
+                            task.status === 'completed' ? 'text-gray-400 line-through decoration-gray-300 decoration-2' : '',
+                            task.status === 'failed' ? 'text-red-300 line-through decoration-red-200 decoration-2' : '',
+                            task.status !== 'completed' && task.status !== 'failed' ? 'text-navy group-hover:text-primary' : ''
+                        ]">
                             {{ task.title }}</h4>
                         <p v-if="task.description"
                             class="text-sm font-medium leading-relaxed line-clamp-2 transition-all duration-300"
-                            :class="task.status === 'completed' ? 'text-gray-300 line-through decoration-gray-200' : 'text-gray-500'">
+                            :class="[
+                                task.status === 'completed' ? 'text-gray-300 line-through decoration-gray-200' : '',
+                                task.status === 'failed' ? 'text-red-200 line-through decoration-red-100' : '',
+                                task.status !== 'completed' && task.status !== 'failed' ? 'text-gray-500' : ''
+                            ]">
                             {{ task.description }}
                         </p>
                     </div>
@@ -90,6 +107,12 @@
                             <Icon icon="ph:check-circle-fill" class="text-sm" />
                             Done
                         </span>
+                        <span v-else-if="task.status === 'failed'"
+                            class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-red-50 text-red-600 text-[10px] font-black tracking-wider uppercase">
+                            <Icon icon="ph:x-circle-fill" class="text-sm" />
+                            Failed
+                        </span>
+                        
                         <div class="flex -space-x-2">
                             <div class="size-8 rounded-full border-2 border-white bg-gray-50 overflow-hidden shadow-sm">
                                 <img src="https://api.dicebear.com/7.x/initials/svg?seed=IF"
@@ -206,20 +229,24 @@ const fetchTasks = async () => {
     }
 }
 
-const toggleTask = async (task) => {
+const setStatus = async (task, status) => {
+    // If clicking the current status, revert to pending
+    const newStatus = task.status === status ? 'pending' : status
     try {
-        const response = await patch(`/tasks/${task.uuid}/toggle`)
-        // Optimistically update the local task
+        const response = await patch(`/tasks/${task.uuid}/status`, { status: newStatus })
         if (response?.task) {
             task.status = response.task.status
         } else {
-            // Fallback: toggle locally
-            task.status = task.status === 'completed' ? 'pending' : 'completed'
+            task.status = newStatus
         }
     } catch (error) {
-        console.error('Failed to toggle task:', error)
-        toast.error('Gagal mengubah status task')
+        console.error('Failed to update task status:', error)
+        toast.error('Gagal memperbarui status task')
     }
+}
+
+const toggleTask = async (task) => {
+    await setStatus(task, 'completed')
 }
 
 const openCreateModal = () => {

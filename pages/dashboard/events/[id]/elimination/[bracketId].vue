@@ -35,7 +35,7 @@
                                 </h1>
                                 <!-- Category Info -->
                                 <div
-                                    class="flex items-center gap-1.5 text-[10px] sm:text-sm text-slate-300 font-medium">
+                                    class="flex items-center gap-1.5 text-[10px] mb-2 sm:text-sm text-slate-300 font-medium">
                                     <template v-if="categoryInfo">
                                         <span
                                             class="px-2 py-0.5 rounded bg-primary text-navy text-[9px] sm:text-[10px] font-black uppercase tracking-wider backdrop-blur-md shrink-0">

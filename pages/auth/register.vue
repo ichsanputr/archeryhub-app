@@ -79,7 +79,7 @@
                         <!-- User Type Specific Field (MANDATORY FOR GOOGLE REG) -->
                         <div class="space-y-4">
                             <!-- Archer: Nama Lengkap -->
-                            <div v-if="form.userType === 'archer'">
+                            <div v-if="form.userType === 'archer'" class="space-y-4">
                                 <h4 class="text-xs font-black text-navy  tracking-widest flex items-center gap-2 mb-4">
                                     <Icon icon="ph:user-bold" class="text-primary text-lg" />
                                     Data Pemanah
@@ -88,12 +88,43 @@
                                     required
                                     :error="errors.fullName || (isNameTaken ? 'Nama atlet sudah terdaftar' : '')"
                                     @blur="validate('fullName', form.fullName, [rules.required()])" />
-                                <p class="mt-2 text-xs text-gray-400">Data lainnya bisa dilengkapi di halaman profil
-                                    setelah masuk.</p>
+
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="space-y-1">
+                                        <label class="text-sm font-bold text-navy">Jenis Kelamin</label>
+                                        <select v-model="form.gender"
+                                            class="w-full h-11 px-4 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
+                                            <option value="male">Laki-laki</option>
+                                            <option value="female">Perempuan</option>
+                                        </select>
+                                    </div>
+                                    <BaseInput v-model="form.dateOfBirth" label="Tanggal Lahir" type="date" required />
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-4">
+                                    <BaseInput v-model="form.city" label="Kota/Kabupaten" placeholder="Contoh: Sleman"
+                                        required />
+                                    <div class="space-y-1">
+                                        <label class="text-sm font-bold text-navy">Tipe Busur Utama</label>
+                                        <select v-model="form.bowType"
+                                            class="w-full h-11 px-4 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
+                                            <option value="recurve">Recurve</option>
+                                            <option value="compound">Compound</option>
+                                            <option value="barebow">Barebow</option>
+                                            <option value="traditional">Traditional</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <BaseInput v-model="form.school" label="Sekolah / Instansi"
+                                    placeholder="Masukkan nama sekolah atau instansi" />
+
+                                <p class="mt-2 text-xs text-gray-400 font-body italic">* Data ini penting untuk penentuan kategori
+                                    lomba.</p>
                             </div>
 
                             <!-- Organization: Nama Organisasi -->
-                            <div v-if="form.userType === 'organization'">
+                            <div v-if="form.userType === 'organization'" class="space-y-4">
                                 <h4 class="text-xs font-black text-navy  tracking-widest flex items-center gap-2 mb-4">
                                     <Icon icon="ph:buildings-bold" class="text-primary text-lg" />
                                     Data Organisasi
@@ -102,8 +133,23 @@
                                     placeholder="Nama resmi organisasi" required
                                     :error="errors.organizationName || (isNameTaken ? 'Nama organisasi sudah terdaftar' : '')"
                                     @blur="validate('organizationName', form.organizationName, [rules.required()])" />
-                                <p class="mt-2 text-xs text-gray-400">Informasi PIC dan detail lainnya bisa dilengkapi
-                                    di halaman profil.</p>
+
+                                <div class="grid grid-cols-2 gap-4">
+                                    <BaseInput v-model="form.acronym" label="Singkatan (Acronym)"
+                                        placeholder="Contoh: PERPANI" />
+                                    <BaseInput v-model="form.whatsappNo" label="Nomor WhatsApp"
+                                        placeholder="081234567XXX" required />
+                                </div>
+
+                                <BaseInput v-model="form.city" label="Kota Pusat" placeholder="Masukkan Kota"
+                                    required />
+
+                                <div class="space-y-1">
+                                    <label class="text-sm font-bold text-navy">Alamat Lengkap</label>
+                                    <textarea v-model="form.address"
+                                        class="w-full p-4 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all min-h-[80px]"
+                                        placeholder="Alamat kantor atau sekretariat"></textarea>
+                                </div>
                             </div>
 
                             <!-- Club: Nama Klub -->
@@ -221,7 +267,17 @@ const form = ref({
     organizationName: '',   // For organization
     clubName: '',           // For club
     storeName: '',          // For seller
-    terms: false
+    terms: false,
+
+    // New Fields
+    gender: 'male',
+    dateOfBirth: '',
+    city: '',
+    school: '',
+    bowType: 'recurve',
+    acronym: '',
+    whatsappNo: '',
+    address: ''
 })
 
 const { register, login } = useAuth()
@@ -320,9 +376,35 @@ const handleGoogleRegister = async () => {
     isGoogleLoading.value = true
 
     try {
-        // Pass user type and captured name to Google OAuth
-        // The login function will handle redirecting to Google's OAuth page
-        await login(form.value.userType, getName())
+        // Prepare metadata from form
+        const metadata = {
+            full_name: getName(),
+        }
+
+        // Add Archer fields if applicable
+        if (form.value.userType === 'archer') {
+            Object.assign(metadata, {
+                gender: form.value.gender,
+                date_of_birth: form.value.dateOfBirth,
+                city: form.value.city,
+                school: form.value.school,
+                bow_type: form.value.bowType
+            })
+        }
+
+        // Add Organization fields if applicable
+        if (form.value.userType === 'organization') {
+            Object.assign(metadata, {
+                organization_name: form.value.organizationName,
+                acronym: form.value.acronym,
+                city: form.value.city,
+                address: form.value.address,
+                whatsapp_no: form.value.whatsappNo
+            })
+        }
+
+        // Pass user type and metadata to Google OAuth
+        await login(form.value.userType, metadata)
     } catch (err) {
         console.error('Google registration failed:', err)
         let errorMessage = 'Gagal menyambung ke Google. Silakan coba lagi.'

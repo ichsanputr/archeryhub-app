@@ -138,7 +138,7 @@
                 <!-- Stats Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
                     <div
-                        class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-md hover:shadow-md transition-all border border-gray-100 group">
+                        class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-sm transition-all border border-gray-100 group">
                         <div class="flex justify-between items-start">
                             <div>
                                 <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Total
@@ -160,14 +160,16 @@
                     </div>
 
                     <div
-                        class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-md hover:shadow-md transition-all border border-gray-100 group">
+                        class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-sm transition-all border border-gray-100 group">
                         <div class="flex justify-between items-start">
                             <div>
                                 <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Target
                                     Aktif</p>
                                 <p class="text-navy-dark text-3xl font-extrabold tracking-tight">
-                                    {{ Math.ceil((event?.participant_count || 0) / 4) }}<span
-                                        class="text-lg text-gray-400 font-medium ml-1">/ {{ maxTargets }}</span></p>
+                                    {{ event?.active_target_count || 0 }}<span
+                                        class="text-lg text-gray-400 font-medium ml-1">/
+                                        {{ event?.target_count || 0
+                                        }}</span></p>
                             </div>
                             <div
                                 class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
@@ -183,7 +185,7 @@
                     </div>
 
                     <div
-                        class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-md hover:shadow-md transition-all border border-gray-100 group">
+                        class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-sm transition-all border border-gray-100 group">
                         <div class="flex justify-between items-start">
                             <div>
                                 <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">
@@ -202,7 +204,7 @@
                     </div>
 
                     <div
-                        class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-md hover:shadow-md transition-all border border-gray-100 group">
+                        class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-sm transition-all border border-gray-100 group">
                         <div class="flex justify-between items-start">
                             <div>
                                 <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Sisa
@@ -334,52 +336,68 @@
                     <div class="bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-sm">
                         <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
                             <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">Papan Peringkat</h3>
-                            <button
-                                class="text-xs text-text-secondary hover:text-navy-dark font-semibold transition-colors">Lihat
-                                Semua</button>
+                            <NuxtLink :to="`/dashboard/events/${route.params.id}/results`"
+                                class="text-xs text-text-secondary hover:text-navy-dark font-semibold transition-colors">
+                                Lihat Semua</NuxtLink>
                         </div>
-                        <div class="flex-1 overflow-y-auto">
-                            <table class="w-full text-left text-sm">
-                                <thead class="bg-gray-50 text-gray-500 font-semibold border-b border-gray-100">
-                                    <tr>
-                                        <th class="px-6 py-3 font-medium text-xs  tracking-wider whitespace-nowrap">
-                                            #</th>
-                                        <th class="px-6 py-3 font-medium text-xs  tracking-wider">Pos</th>
-                                        <th class="px-6 py-3 font-medium text-xs  tracking-wider">Pemanah</th>
-                                        <th
-                                            class="px-6 py-3 text-right font-medium text-xs  tracking-wider whitespace-nowrap">
-                                            Skor</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-100">
-                                    <tr v-for="(participant, idx) in topParticipants" :key="participant.id"
-                                        class="hover:bg-gray-50 transition-colors group">
-                                        <td class="px-6 py-3.5 text-xs font-mono text-gray-500 whitespace-nowrap">
-                                            {{ participant.athlete_code || participant.id?.slice(0, 8) || '-' }}
-                                        </td>
-                                        <td class="px-6 py-3.5">
-                                            <div v-if="idx === 0"
-                                                class="bg-primary text-navy-dark font-extrabold w-6 h-6 rounded flex items-center justify-center text-xs shadow-sm">
-                                                {{ idx + 1 }}</div>
-                                            <span v-else class="text-lg font-black text-gray-400">{{ idx + 1 }}</span>
-                                        </td>
-                                        <td class="px-6 py-3.5">
+                        <div class="flex-1 overflow-y-auto max-h-[440px] p-4">
+                            <div class="space-y-3">
+                                <div v-for="(participant, idx) in topParticipants" :key="participant.id"
+                                    @click="navigateTo(`/dashboard/events/${route.params.id}/result-user?participant_uuid=${participant.id}`)"
+                                    class="group relative bg-white border border-gray-50 rounded-2xl p-4 hover:border-primary/50 hover:shadow-md transition-all cursor-pointer flex items-center gap-4">
+
+                                    <!-- Avatar with Rank Badge -->
+                                    <div class="relative shrink-0 mr-2">
+                                        <div
+                                            class="size-12 rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 shadow-sm relative z-0">
+                                            <img :src="useImageOrDefault(participant.avatar_url, participant.full_name)"
+                                                class="w-full h-full object-cover" />
+                                        </div>
+                                        <div class="absolute -top-1 -right-1 size-6 rounded-lg flex items-center justify-center font-black text-[10px] shadow-md z-10 border-2 border-white"
+                                            :class="getRankClass(idx)">
+                                            {{ idx + 1 }}
+                                        </div>
+                                    </div>
+
+                                    <!-- Info -->
+                                    <div class="flex-1 min-w-0">
+                                        <div
+                                            class="text-navy font-black truncate group-hover:text-primary transition-colors leading-tight">
+                                            {{ participant.full_name }}
+                                        </div>
+                                        <div class="flex items-center gap-2 mt-1">
                                             <div
-                                                class="text-navy-dark font-bold group-hover:text-primary-hover transition-colors">
-                                                {{ participant.full_name || participant.name || 'Unknown' }}</div>
-                                            <div class="text-gray-400 text-xs">{{ participant.division_name || 'N/A' }}
+                                                class="flex items-center gap-1.5 px-2 py-0.5 bg-navy/5 rounded-md shrink-0">
+                                                <img :src="'/' + getCategoryIcon(`${participant.division_name} ${participant.event_type_name} ${participant.gender_division_name}`)"
+                                                    class="size-3 object-contain opacity-60" />
+                                                <span
+                                                    class="text-[9px] font-black uppercase text-gray-500 tracking-wider truncate max-w-[80px]">
+                                                    {{ participant.division_name }}
+                                                </span>
                                             </div>
-                                        </td>
-                                        <td class="px-6 py-3.5 text-right font-mono text-navy-dark font-bold text-base">
-                                            {{ participant.total_score || 0 }}</td>
-                                    </tr>
-                                    <tr v-if="topParticipants.length === 0">
-                                        <td colspan="4" class="px-6 py-12 text-center text-gray-400 italic font-medium">
-                                            Belum ada skor
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                            <span class="text-[10px] font-bold text-gray-300 truncate">
+                                                {{ participant.club_name }}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Score -->
+                                    <div class="text-right shrink-0">
+                                        <div
+                                            class="text-xl font-black text-navy group-hover:scale-110 transition-transform tabular-nums">
+                                            {{ participant.total_score || 0 }}
+                                        </div>
+                                        <div class="text-[9px] font-black text-gray-400 uppercase tracking-tighter">
+                                            Total
+                                            Skor</div>
+                                    </div>
+                                </div>
+
+                                <div v-if="topParticipants.length === 0"
+                                    class="py-12 text-center text-gray-400 italic font-medium bg-gray-50/50 rounded-2xl">
+                                    Belum ada skor tersedia
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -389,81 +407,88 @@
         </div>
 
         <!-- Share Dialog -->
-        <div v-if="showShareDialog"
-            class="fixed inset-0 z-40 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-            <div
-                class="bg-white rounded-2xl shadow-md border border-gray-100 w-full max-w-md mx-4 p-6 space-y-5 relative">
-                <button class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 transition-colors"
-                    @click="closeShareDialog">
-                    <Icon icon="ph:x-bold" class="text-lg" />
-                </button>
+        <!-- Share Dialog (Teleported) -->
+        <ClientOnly>
+            <Teleport to="body">
+                <div v-if="showShareDialog" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                    <!-- Backdrop -->
+                    <div class="share-dialog-backdrop absolute inset-0 bg-navy-dark/80 backdrop-blur-sm"
+                        @click="closeShareDialog"></div>
 
-                <div class="flex items-start gap-3">
+                    <!-- Dialog Card -->
                     <div
-                        class="bg-primary/10 text-primary rounded-xl w-10 h-10 flex items-center justify-center shrink-0">
-                        <Icon icon="ph:share-network-bold" class="text-xl" />
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-bold text-navy">Bagikan Halaman Event</h3>
-                        <p class="text-sm text-gray-500 mt-1">
-                            Sebarkan link halaman publik event ini ke sosial media atau salin link untuk dibagikan
-                            ke peserta.
-                        </p>
-                    </div>
-                </div>
+                        class="share-dialog-card bg-white rounded-3xl w-full max-w-md shadow-2xl relative overflow-hidden border border-gray-100">
+                        <!-- Decorative Border Top -->
+                        <div class="bg-primary h-1.5 w-full"></div>
 
-                <div class="space-y-2">
-                    <p class="text-[11px] font-bold text-gray-400  tracking-[0.18em]">Link Publik
-                        Event</p>
-                    <div class="flex items-center gap-2">
-                        <div
-                            class="flex-1 bg-gray-50 border border-gray-100 rounded-xl px-3 py-2 text-xs text-gray-600 font-mono truncate">
-                            {{ publicEventUrl }}
+                        <div class="p-8">
+                            <!-- Close Button -->
+                            <button class="absolute right-6 top-6 text-gray-400 hover:text-navy transition-colors"
+                                @click="closeShareDialog">
+                                <Icon icon="ph:x-bold" class="text-xl" />
+                            </button>
+
+                            <!-- Header -->
+                            <div class="flex items-start gap-4 mb-8">
+                                <div class="p-3 bg-primary/10 text-primary rounded-2xl shrink-0">
+                                    <Icon icon="ph:share-network-bold" class="text-3xl" />
+                                </div>
+                                <div>
+                                    <h3 class="text-navy-dark text-xl font-black tracking-tight mb-2">Bagikan Event</h3>
+                                    <p class="text-text-secondary text-sm font-medium leading-relaxed">
+                                        Sebarkan link halaman publik event ini ke sosial media atau salin link untuk
+                                        peserta.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Link Copy Segment -->
+                            <div class="space-y-3 mb-8">
+                                <label class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Link
+                                    Publik Event</label>
+                                <div class="flex items-center gap-2">
+                                    <div
+                                        class="flex-1 bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-xs text-gray-600 font-mono truncate">
+                                        {{ publicEventUrl }}
+                                    </div>
+                                    <button @click="copyPublicUrl"
+                                        class="px-4 py-3 bg-navy-dark text-white rounded-xl font-bold text-xs hover:bg-navy-light transition-all flex items-center gap-2 shrink-0">
+                                        <Icon :icon="copySuccess ? 'ph:check-bold' : 'ph:copy-bold'" />
+                                        {{ copySuccess ? 'Tersalin' : 'Salin' }}
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Social Sharing -->
+                            <div class="space-y-4">
+                                <label class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Bagikan
+                                    Ke
+                                    Sosial Media</label>
+                                <div class="grid grid-cols-4 gap-3">
+                                    <button v-for="social in [
+                                        { id: 'whatsapp', icon: 'ph:whatsapp-logo-fill', color: 'text-green-500', bg: 'bg-green-50', hover: 'hover:bg-green-500' },
+                                        { id: 'telegram', icon: 'ph:telegram-logo-fill', color: 'text-sky-500', bg: 'bg-sky-50', hover: 'hover:bg-sky-500' },
+                                        { id: 'twitter', icon: 'ph:twitter-logo-fill', color: 'text-black', bg: 'bg-gray-100', hover: 'hover:bg-black' },
+                                        { id: 'facebook', icon: 'ph:facebook-logo-fill', color: 'text-blue-600', bg: 'bg-blue-50', hover: 'hover:bg-blue-600' }
+                                    ]" :key="social.id" @click="shareTo(social.id)"
+                                        class="flex flex-col items-center gap-2 group">
+                                        <div :class="[social.bg, social.color, social.hover]"
+                                            class="size-12 rounded-2xl flex items-center justify-center group-hover:text-white transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
+                                            <Icon :icon="social.icon" class="text-2xl" />
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Background Ornament -->
+                            <div
+                                class="absolute top-0 right-0 -mr-12 -mt-12 size-32 bg-gray-50 rounded-full -z-10 blur-2xl">
+                            </div>
                         </div>
-                        <BaseButton variant="white" size="sm" icon="ph:copy-bold" class="whitespace-nowrap"
-                            @click="copyPublicUrl">
-                            Salin
-                        </BaseButton>
-                    </div>
-                    <p v-if="copySuccess" class="text-[11px] text-green-600 font-semibold mt-1">
-                        Link berhasil disalin ke clipboard
-                    </p>
-                </div>
-
-                <div class="pt-3 border-t border-gray-100 space-y-3">
-                    <p class="text-[11px] font-bold text-gray-400  tracking-[0.18em]">Bagikan ke
-                        Sosial Media</p>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                        <button type="button" @click="shareTo('whatsapp')"
-                            class="flex flex-col items-center justify-center gap-2 px-3 py-3 rounded-xl border border-gray-100 hover:border-green-500 hover:bg-green-50 transition-all">
-                            <Icon icon="ph:whatsapp-logo" class="text-2xl text-green-500" />
-                            <span class="text-[11px] font-semibold text-gray-600">WhatsApp</span>
-                        </button>
-                        <button type="button" @click="shareTo('telegram')"
-                            class="flex flex-col items-center justify-center gap-2 px-3 py-3 rounded-xl border border-gray-100 hover:border-sky-500 hover:bg-sky-50 transition-all">
-                            <Icon icon="ph:telegram-logo" class="text-2xl text-sky-500" />
-                            <span class="text-[11px] font-semibold text-gray-600">Telegram</span>
-                        </button>
-                        <button type="button" @click="shareTo('twitter')"
-                            class="flex flex-col items-center justify-center gap-2 px-3 py-3 rounded-xl border border-gray-100 hover:border-black hover:bg-gray-50 transition-all">
-                            <Icon icon="ph:twitter-logo" class="text-2xl text-black" />
-                            <span class="text-[11px] font-semibold text-gray-600">X (Twitter)</span>
-                        </button>
-                        <button type="button" @click="shareTo('facebook')"
-                            class="flex flex-col items-center justify-center gap-2 px-3 py-3 rounded-xl border border-gray-100 hover:border-blue-600 hover:bg-blue-50 transition-all">
-                            <Icon icon="ph:facebook-logo" class="text-2xl text-blue-600" />
-                            <span class="text-[11px] font-semibold text-gray-600">Facebook</span>
-                        </button>
                     </div>
                 </div>
-
-                <div class="flex justify-end gap-3 pt-3 border-t border-gray-100">
-                    <BaseButton variant="ghost" size="sm" @click="closeShareDialog">
-                        Tutup
-                    </BaseButton>
-                </div>
-            </div>
-        </div>
+            </Teleport>
+        </ClientOnly>
     </div>
 </template>
 
@@ -475,6 +500,7 @@ import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useEventContext } from '~/composables/useEventContext'
+import { useImageOrDefault } from '~/composables/useImageHelper'
 
 definePageMeta({
     layout: 'dashboard'
@@ -483,6 +509,8 @@ definePageMeta({
 useHead({
     title: 'Panel Kontrol Event - ArcheryHub Dashboard'
 })
+
+import { gsap } from 'gsap'
 
 const route = useRoute()
 const { get, post } = useApi()
@@ -502,6 +530,8 @@ const isPublishing = ref(false)
 const activeTab = ref('overview')
 const showShareDialog = ref(false)
 const copySuccess = ref(false)
+const now = ref(new Date())
+let timer = null
 
 const filteredParticipants = computed(() => {
     if (!searchQuery.value) return participants.value
@@ -560,11 +590,16 @@ const completionPercentage = computed(() => {
 const timeLeft = computed(() => {
     if (!event.value?.end_date) return 'N/A'
     const end = new Date(event.value.end_date)
-    const now = new Date()
-    const diff = end - now
-    if (diff < 0) return '00:00'
-    const hours = Math.floor(diff / (1000 * 60 * 60))
+    const diff = end - now.value
+    if (diff < 0) return 'Selesai'
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
+
+    if (days > 0) {
+        return `${days}d ${hours}h ${minutes}m`
+    }
     return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`
 })
 
@@ -627,10 +662,29 @@ const publicEventUrl = computed(() => {
 const openShareDialog = () => {
     copySuccess.value = false
     showShareDialog.value = true
+    nextTick(() => {
+        const dialog = document.querySelector('.share-dialog-card')
+        const backdrop = document.querySelector('.share-dialog-backdrop')
+        if (dialog && backdrop) {
+            gsap.fromTo(backdrop, { opacity: 0 }, { opacity: 1, duration: 0.3 })
+            gsap.fromTo(dialog, { opacity: 0, scale: 0.9, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: 'back.out(1.7)' })
+        }
+    })
 }
 
 const closeShareDialog = () => {
-    showShareDialog.value = false
+    const dialog = document.querySelector('.share-dialog-card')
+    const backdrop = document.querySelector('.share-dialog-backdrop')
+    if (dialog && backdrop) {
+        gsap.to(dialog, {
+            opacity: 0, scale: 0.9, y: 20, duration: 0.2, ease: 'power2.in', onComplete: () => {
+                showShareDialog.value = false
+            }
+        })
+        gsap.to(backdrop, { opacity: 0, duration: 0.2 })
+    } else {
+        showShareDialog.value = false
+    }
 }
 
 const copyPublicUrl = async () => {
@@ -721,6 +775,13 @@ const publishEvent = async () => {
 
 onMounted(() => {
     fetchEventDetails()
+    timer = setInterval(() => {
+        now.value = new Date()
+    }, 60000)
+})
+
+onBeforeUnmount(() => {
+    if (timer) clearInterval(timer)
 })
 
 watch(event, (newEvent) => {
@@ -751,6 +812,13 @@ const getStatusLabel = (status) => {
         'draft': 'Draft'
     }
     return labels[status] || status
+}
+
+const getRankClass = (idx) => {
+    if (idx === 0) return 'bg-yellow-400 text-white'
+    if (idx === 1) return 'bg-slate-300 text-slate-700'
+    if (idx === 2) return 'bg-orange-400 text-white'
+    return 'bg-gray-50 text-gray-400 border border-gray-100'
 }
 </script>
 

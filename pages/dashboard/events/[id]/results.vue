@@ -12,7 +12,7 @@
                 <h2 class="text-xl font-bold text-navy font-display">Live Dashboard</h2>
             </div>
             <div class="flex gap-3 w-full md:w-auto">
-                <BaseSelect v-model="selectedDivision" :items="divisions" placeholder="Pilih Divisi" />
+                <BaseSelect v-model="selectedDivision" :items="divisions" placeholder="Pilih Kategori" />
                 <BaseSelect v-model="selectedRound" :items="rounds" placeholder="Pilih Babak" />
             </div>
         </div>
@@ -136,32 +136,47 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-50">
-                        <tr v-for="(stand, index) in standings" :key="stand.name"
+                        <tr v-for="(stand, index) in standings" :key="stand.participant_id"
                             class="hover:bg-gray-50/50 transition-colors group"
                             :class="index === 0 ? 'bg-primary/5' : ''">
-                            <td class="px-6 py-4 font-black text-navy tabular-nums">{{ index + 1 }}</td>
-                            <td class="px-6 py-4 text-text-sub/50 font-bold tabular-nums">{{ stand.target }}</td>
+                            <td class="px-6 py-4 font-black text-navy tabular-nums">{{ stand.rank || index + 1 }}</td>
+                            <td class="px-6 py-4 text-text-sub/50 font-bold tabular-nums">-</td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center gap-3">
-                                    <div class="font-bold text-navy group-hover:text-primary transition-colors">{{
-                                        stand.name }}</div>
-                                    <span
+                                    <div @click="navigateTo(`/dashboard/events/${eventId}/result-user?participant_uuid=${stand.participant_id}`)"
+                                        class="font-bold text-navy group-hover:text-primary transition-colors cursor-pointer">
+                                        {{ stand.archer_name }}
+                                    </div>
+                                    <span v-if="stand.club_name"
                                         class="px-1.5 py-0.5 rounded text-[8px] bg-navy/5 text-navy font-black border border-navy/10">{{
-                                            stand.prov }}</span>
+                                            stand.club_name }}</span>
                                 </div>
                             </td>
-                            <td class="px-6 py-4 text-center font-bold text-text-sub tabular-nums">{{ stand.s1 }}</td>
-                            <td class="px-6 py-4 text-center font-bold text-text-sub tabular-nums">{{ stand.s2 }}</td>
-                            <td class="px-6 py-4 text-center text-text-sub/50 font-medium tabular-nums">{{ stand.tens
-                                }}/{{ stand.xs }}</td>
-                            <td class="px-6 py-4 text-right font-black text-navy text-base tabular-nums">{{ stand.s1 +
-                                stand.s2 }}</td>
+                            <td class="px-6 py-4 text-center font-bold text-text-sub tabular-nums">
+                                {{ stand.sessions?.[0]?.total_score || 0 }}
+                            </td>
+                            <td class="px-6 py-4 text-center font-bold text-text-sub tabular-nums">
+                                {{ stand.sessions?.[1]?.total_score || 0 }}
+                            </td>
+                            <td class="px-6 py-4 text-center text-text-sub/50 font-medium tabular-nums">{{ stand.total_10x
+                                }}/{{ stand.total_x }}</td>
+                            <td class="px-6 py-4 text-right font-black text-navy text-base tabular-nums">{{ stand.total_score }}</td>
+                        </tr>
+                        <tr v-if="standings.length === 0 && !isLoading">
+                            <td colspan="7" class="px-6 py-12 text-center text-gray-400 italic font-medium">
+                                Belum ada data kualifikasi untuk kategori ini
+                            </td>
+                        </tr>
+                        <tr v-if="isLoading">
+                            <td colspan="7" class="px-6 py-12 text-center text-gray-400 animate-pulse">
+                                Memuat data...
+                            </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             <div class="p-4 border-t border-gray-50 text-center bg-gray-50/30">
-                <button class="text-navy font-bold text-xs hover:underline  tracking-widest">Unduh Hasil
+                <button class="text-navy font-bold text-xs hover:underline  tracking-widest" @click="downloadResults">Unduh Hasil
                     Lengkap (PDF)</button>
             </div>
         </div>
@@ -170,6 +185,8 @@
 
 <script setup>
 import BaseSelect from '~/components/common/BaseSelect.vue'
+import { Icon } from '@iconify/vue'
+import { useImageOrDefault } from '~/composables/useImageHelper'
 
 definePageMeta({
     layout: 'dashboard'
@@ -179,19 +196,60 @@ useHead({
     title: 'Hasil Pertandingan - Dashboard'
 })
 
-const selectedDivision = ref('Recurve Men')
-const selectedRound = ref('Babak Eliminasi')
+const { get } = useApi()
+const route = useRoute()
+const eventId = route.params.id
 
-const divisions = ['Recurve Putra', 'Recurve Putri', 'Compound Putra', 'Compound Putri', 'Barebow']
+const selectedDivision = ref('')
+const selectedRound = ref('Babak Kualifikasi')
+
+const categories = ref([])
+const divisions = computed(() => categories.value.map(c => ({
+    label: `${c.division_name} - ${c.name}`,
+    value: c.uuid
+})))
+
 const rounds = ['Babak Kualifikasi', 'Babak Eliminasi', 'Final Perunggu', 'Final Emas']
+const standings = ref([])
+const isLoading = ref(false)
 
-const standings = [
-    { name: 'Arif Dwi Pangestu', target: '12A', prov: 'DKI', s1: 338, s2: 342, tens: 42, xs: 16 },
-    { name: 'Riau Ega Agatha', target: '14B', prov: 'JATIM', s1: 335, s2: 340, tens: 38, xs: 12 },
-    { name: 'Alviyanto Bagas', target: '11A', prov: 'JATENG', s1: 332, s2: 338, tens: 35, xs: 10 },
-    { name: 'Hendra Purnama', target: '13B', prov: 'DIY', s1: 330, s2: 336, tens: 32, xs: 9 },
-    { name: 'Ahmad Khoirul', target: '10A', prov: 'JABAR', s1: 328, s2: 335, tens: 30, xs: 8 }
-]
+const fetchCategories = async () => {
+    try {
+        const res = await get(`/events/${eventId}/categories`)
+        categories.value = res?.categories || []
+        if (categories.value.length > 0) {
+            selectedDivision.value = categories.value[0].uuid
+        }
+    } catch (error) {
+        console.error('Failed to fetch categories:', error)
+    }
+}
+
+const fetchResults = async () => {
+    if (!selectedDivision.value) return
+    isLoading.value = true
+    try {
+        const res = await get(`/events/${eventId}/results/qualification`, {
+            params: { category_id: selectedDivision.value }
+        })
+        standings.value = res?.results || []
+    } catch (error) {
+        console.error('Failed to fetch results:', error)
+        standings.value = []
+    } finally {
+        isLoading.value = false
+    }
+}
+
+watch(selectedDivision, fetchResults)
+
+onMounted(() => {
+    fetchCategories()
+})
+
+const downloadResults = () => {
+    window.open(`/api/v1/events/${eventId}/results/qualification/export?category_id=${selectedDivision.value}`, '_blank')
+}
 </script>
 
 <style scoped>

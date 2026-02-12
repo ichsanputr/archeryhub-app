@@ -89,10 +89,13 @@
                     <template v-else>
                         <!-- Stats -->
                         <div class="grid grid-cols-3 divide-x divide-gray-100 border-b border-gray-50">
-                            <div class="p-4 text-center">
-                                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Rank</p>
-                                <p class="text-xl font-black text-navy">{{ qualResult.rank }}</p>
-                            </div>
+                            <NuxtLink :to="`/dashboard/events/${eventId}/results?category_id=${categoryId}`"
+                                class="p-4 text-center hover:bg-gray-50 transition-colors group">
+                                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 group-hover:text-primary transition-colors">
+                                    Rank</p>
+                                <p class="text-xl font-black text-navy group-hover:text-primary transition-colors">
+                                    {{ qualResult.rank }}</p>
+                            </NuxtLink>
                             <div class="p-4 text-center">
                                 <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">10s</p>
                                 <p class="text-xl font-black text-navy">{{ qualResult.total_10x }}</p>

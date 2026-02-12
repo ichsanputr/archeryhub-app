@@ -83,8 +83,7 @@
           <div class="flex items-start justify-between mb-4">
             <div class="flex items-center gap-3 flex-1">
               <div
-                class="w-12 h-12 rounded-lg flex items-center justify-center transition-colors overflow-hidden border"
-                :class="getCategoryColorClass(bracket.category_name)">
+                class="w-12 h-12 rounded-lg flex items-center justify-center transition-colors overflow-hidden border bg-primary/50">
                 <img :src="`/${getCategoryIcon(bracket.category_name)}`" class="w-8 h-8 object-contain" />
               </div>
               <div class="min-w-0 flex-1">

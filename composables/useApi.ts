@@ -40,7 +40,20 @@ export const useApi = () => {
 
   const apiCall = async <T = unknown>(url: string, options: FetchOptions & { body?: unknown } = {}): Promise<T> => {
     const fetchOptions = createFetchOptions(options)
-    return await $fetch<T>(url, fetchOptions)
+
+    try {
+      return await $fetch<T>(url, fetchOptions)
+    } catch (error: any) {
+      // If 401 Unauthorized, it means session is expired or invalid
+      if (error.response?.status === 401 && !url.includes('/auth/login')) {
+        console.error('Session expired or unauthorized, logging out...')
+        if (import.meta.client) {
+          // Redirect to logout endpoint to clear cookies, then to login
+          window.location.href = '/auth/login?expired=true'
+        }
+      }
+      throw error
+    }
   }
 
   const get = async <T = unknown>(url: string, options: FetchOptions = {}): Promise<T> => {
