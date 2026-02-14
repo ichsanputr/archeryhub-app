@@ -2,46 +2,49 @@
     <ClientOnly>
         <Teleport to="body">
             <div v-if="show" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
-                <!-- Backdrop -->
-                <div ref="backdrop" @click="handleClose" class="absolute inset-0 bg-navy-dark/80 backdrop-blur-sm">
-                </div>
+                <!-- Backdrop (same as AppDialog / overview Share) -->
+                <div ref="backdrop" @click="handleClose" class="absolute inset-0 bg-navy-dark/80 backdrop-blur-sm"
+                    aria-hidden="true" />
 
-                <!-- Dialog Card -->
+                <!-- Dialog Card (same pattern as other dialogs: margin from p-4, rounded-2xl, max-h) -->
                 <div ref="dialog"
                     class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col relative overflow-hidden border border-gray-100">
                     <!-- Decorative Border Top -->
-                    <div class="bg-primary h-1.5 w-full shrink-0"></div>
+                    <div class="bg-primary h-1.5 w-full shrink-0" />
 
-                    <!-- Header -->
-                    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-white">
-                        <h2 class="text-xl font-black text-navy-dark tracking-tight flex items-center gap-2">
-                            <Icon icon="ph:images-square-bold" class="text-primary" />
-                            Media Library
+                    <!-- Header: compact on mobile -->
+                    <div class="flex items-center justify-between gap-3 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-100 bg-white shrink-0">
+                        <h2 class="text-base sm:text-xl font-black text-navy-dark tracking-tight flex items-center gap-2 min-w-0">
+                            <Icon icon="ph:images-square-bold" class="text-primary shrink-0 text-lg sm:text-xl" />
+                            <span class="truncate">Media Library</span>
                         </h2>
                         <button type="button" @click="handleClose"
-                            class="text-gray-400 hover:text-navy-dark p-1 rounded-lg hover:bg-gray-100 transition-colors">
+                            class="shrink-0 p-2 -m-2 text-gray-400 hover:text-navy-dark rounded-xl hover:bg-gray-100 transition-colors touch-manipulation"
+                            aria-label="Tutup">
                             <Icon icon="ph:x-bold" class="text-xl" />
                         </button>
                     </div>
 
-                    <!-- Tabs -->
-                    <div class="flex border-b border-gray-100 px-6 bg-white shrink-0">
-                        <button @click="activeTab = 'browse'"
-                            class="px-4 py-3 flex items-center text-sm font-bold border-b-2 transition-colors"
-                            :class="activeTab === 'browse' ? 'border-primary text-navy-dark' : 'border-transparent text-text-secondary hover:text-navy-dark'">
-                            <Icon icon="ph:folder-open" class="mr-2" />
-                            <span>Pilih dari Library</span>
-                        </button>
-                        <button @click="activeTab = 'upload'"
-                            class="px-4 py-3 flex items-center text-sm font-bold border-b-2 transition-colors"
-                            :class="activeTab === 'upload' ? 'border-primary text-navy-dark' : 'border-transparent text-text-secondary hover:text-navy-dark'">
-                            <Icon icon="ph:upload-simple" class="mr-2" />
-                            <span>Upload Baru</span>
-                        </button>
+                    <!-- Tabs: scrollable on mobile -->
+                    <div class="flex border-b border-gray-100 bg-white shrink-0 overflow-x-auto no-scrollbar">
+                        <div class="flex min-w-0 px-3 sm:px-6">
+                            <button @click="activeTab = 'browse'"
+                                class="px-4 py-3 flex items-center text-sm font-bold border-b-2 transition-colors whitespace-nowrap touch-manipulation min-h-[48px]"
+                                :class="activeTab === 'browse' ? 'border-primary text-navy-dark' : 'border-transparent text-text-secondary hover:text-navy-dark'">
+                                <Icon icon="ph:folder-open" class="mr-2 shrink-0" />
+                                <span>Pilih dari Library</span>
+                            </button>
+                            <button @click="activeTab = 'upload'"
+                                class="px-4 py-3 flex items-center text-sm font-bold border-b-2 transition-colors whitespace-nowrap touch-manipulation min-h-[48px]"
+                                :class="activeTab === 'upload' ? 'border-primary text-navy-dark' : 'border-transparent text-text-secondary hover:text-navy-dark'">
+                                <Icon icon="ph:upload-simple" class="mr-2 shrink-0" />
+                                <span>Upload Baru</span>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Content -->
-                    <div class="flex-1 overflow-y-auto p-6 bg-white min-h-[300px]">
+                    <div class="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 bg-white min-h-[240px] sm:min-h-[300px]">
                         <!-- Browse Tab -->
                         <div v-if="activeTab === 'browse'">
                             <!-- Loading State -->
@@ -64,12 +67,12 @@
                                 </button>
                             </div>
 
-                            <!-- Media Grid -->
-                            <div v-else class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                            <!-- Media Grid: 2 cols mobile, touch-friendly -->
+                            <div v-else class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
                                 <div v-for="file in mediaFiles" :key="file.id" @click="selectMedia(file)" role="button"
                                     tabindex="0" @keydown.enter="selectMedia(file)"
                                     @keydown.space.prevent="selectMedia(file)"
-                                    class="group relative aspect-square rounded-xl overflow-hidden border-2 transition-all hover:shadow-lg cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                                    class="group relative aspect-square rounded-xl overflow-hidden border-2 transition-all hover:shadow-lg active:scale-[0.98] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary touch-manipulation min-h-0"
                                     :class="selectedMedia?.id === file.id ? 'border-primary ring-2 ring-primary/30' : 'border-gray-200 hover:border-primary/50'">
                                     <img v-if="file.mime_type?.startsWith('image/')" :src="file.url"
                                         :alt="file.filename" class="w-full h-full object-cover" />
@@ -90,16 +93,16 @@
                                         </div>
                                     </div>
 
-                                    <!-- Hover Overlay -->
+                                    <!-- Hover/Touch Overlay -->
                                     <div
-                                        class="absolute inset-0 bg-gradient-to-t from-navy/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                                        class="absolute inset-0 bg-gradient-to-t from-navy/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 sm:group-hover:opacity-100 group-active:opacity-100 transition-opacity">
                                         <div
-                                            class="absolute bottom-0 left-0 right-0 p-3 flex items-center justify-between">
-                                            <p class="text-white text-[10px] font-medium truncate flex-1 mr-2">{{
+                                            class="absolute bottom-0 left-0 right-0 p-2 sm:p-3 flex items-center justify-between gap-2">
+                                            <p class="text-white text-[10px] font-medium truncate flex-1 min-w-0">{{
                                                 file.filename }}</p>
                                             <button @click.stop="deleteMedia(file)"
-                                                class="w-7 h-7 rounded-lg bg-red-500 hover:bg-red-600 text-white flex items-center justify-center transition-colors">
-                                                <Icon icon="ph:trash" />
+                                                class="w-8 h-8 sm:w-7 sm:h-7 rounded-lg bg-red-500 hover:bg-red-600 text-white flex items-center justify-center transition-colors touch-manipulation shrink-0">
+                                                <Icon icon="ph:trash" class="text-sm" />
                                             </button>
                                         </div>
                                     </div>
@@ -108,7 +111,7 @@
                         </div>
 
                         <!-- Upload Tab -->
-                        <div v-if="activeTab === 'upload'" class="max-w-md mx-auto">
+                        <div v-if="activeTab === 'upload'" class="w-full max-w-md mx-auto">
                             <!-- Caption Input (Required) -->
                             <div class="mb-4">
                                 <label class="text-navy text-sm font-bold mb-1.5 block">
@@ -116,24 +119,24 @@
                                 </label>
                                 <input v-model="uploadCaption" type="text"
                                     placeholder="Contoh: Banner Turnamen Jakarta 2026"
-                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" />
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent touch-manipulation" />
                                 <p class="text-xs text-gray-400 mt-1">Caption akan digunakan sebagai nama file</p>
                             </div>
 
                             <!-- Upload Zone -->
                             <div @dragover.prevent="isDragging = true" @dragleave.prevent="isDragging = false"
                                 @drop.prevent="handleFileDrop" :class="[
-                                    'border-2 border-dashed rounded-xl p-8 text-center transition-all',
+                                    'border-2 border-dashed rounded-xl p-6 sm:p-8 text-center transition-all touch-manipulation min-h-[140px] flex flex-col items-center justify-center',
                                     !uploadCaption ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer',
                                     isDragging ? 'border-primary bg-primary/5' : 'border-gray-300 hover:border-primary hover:bg-gray-50'
-                                ]" @click="uploadCaption && $refs.fileInput.click()">
-                                <input ref="fileInput" type="file" accept="image/jpeg,image/png,image/gif,image/webp"
+                                ]" @click="uploadCaption && $refs.fileInput?.click()">
+                                <input ref="fileInput" type="file" :accept="acceptTypes"
                                     class="hidden" @change="handleFileSelect" :disabled="!uploadCaption" />
 
-                                <div v-if="!isUploading && !uploadedPreview">
-                                    <Icon icon="ph:cloud-arrow-up" class="text-5xl text-gray-400 mx-auto mb-4" />
-                                    <p class="text-gray-600 font-medium">{{ uploadZoneText }}</p>
-                                    <p class="text-xs text-gray-400 mt-2">JPG, PNG, GIF, WebP (max 10MB)</p>
+                                <div v-if="!isUploading && !uploadedPreview" class="pointer-events-none">
+                                    <Icon icon="ph:cloud-arrow-up" class="text-4xl sm:text-5xl text-gray-400 mx-auto mb-3 sm:mb-4" />
+                                    <p class="text-gray-600 font-medium text-sm sm:text-base">{{ uploadZoneText }}</p>
+                                    <p class="text-xs text-gray-400 mt-2">Gambar, PDF, DOC, XLS (maks. 10MB)</p>
                                 </div>
 
                                 <!-- Uploading State -->
@@ -169,33 +172,31 @@
                                 </div>
                             </div>
 
-                            <!-- Error Message -->
-                            <p v-if="uploadError" class="text-red-500 text-sm flex items-center gap-2 mt-3">
-                                <Icon icon="ph:warning-circle" />
-                                {{ uploadError }}
+                            <!-- Error Message: show API "file too large" and other errors -->
+                            <p v-if="uploadError" class="text-red-500 text-sm flex items-center gap-2 mt-3 flex-wrap">
+                                <Icon icon="ph:warning-circle" class="shrink-0" />
+                                <span>{{ uploadError }}</span>
                             </p>
-
-
                         </div>
                     </div>
 
-                    <!-- Footer -->
+                    <!-- Footer: stack on mobile, touch-friendly -->
                     <div
-                        class="flex items-center justify-between px-6 py-4 border-t border-gray-100 bg-gray-50 shrink-0">
-                        <p v-if="selectedMedia" class="text-sm font-medium text-text-secondary">
+                        class="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3 px-4 sm:px-6 py-4 border-t border-gray-100 bg-gray-50 shrink-0">
+                        <p v-if="selectedMedia" class="text-sm font-medium text-text-secondary truncate order-2 sm:order-1">
                             <span class="text-navy-dark">{{ selectedMedia.filename }}</span>
                         </p>
-                        <p v-else class="text-sm font-medium text-gray-400">Pilih gambar atau upload baru</p>
+                        <p v-else class="text-sm font-medium text-gray-400 order-2 sm:order-1">Pilih file atau upload baru</p>
 
-                        <div class="flex gap-3">
+                        <div class="flex gap-3 order-1 sm:order-2 w-full sm:w-auto">
                             <button type="button" @click="handleClose"
-                                class="px-5 py-2.5 border border-gray-200 rounded-xl text-sm font-bold text-text-secondary hover:bg-white hover:border-gray-300 transition-all">
+                                class="flex-1 sm:flex-none px-5 py-3 sm:py-2.5 border border-gray-200 rounded-xl text-sm font-bold text-text-secondary hover:bg-white hover:border-gray-300 transition-all touch-manipulation min-h-[44px]">
                                 Batal
                             </button>
                             <button type="button" @click="handleConfirmSelection"
                                 :disabled="!selectedMedia && !uploadedUrl"
-                                class="px-7 py-2.5 bg-navy-dark hover:bg-navy-light text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-navy-dark/10 disabled:opacity-50 disabled:cursor-not-allowed">
-                                Pilih Gambar
+                                class="flex-1 sm:flex-none px-7 py-3 sm:py-2.5 bg-navy-dark hover:bg-navy-light text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-navy-dark/10 disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation min-h-[44px]">
+                                Pilih
                             </button>
                         </div>
                     </div>
@@ -219,6 +220,27 @@ const props = defineProps({
 const emit = defineEmits(['close', 'select'])
 
 const { get, upload, delete: del } = useApi()
+
+// Max 10MB, same as API
+const MAX_FILE_SIZE_MB = 10
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
+
+// Common dashboard file types: images, PDF, Word, Excel (must match API)
+const ACCEPT_MIME_TYPES = [
+    'image/jpeg', 'image/png', 'image/gif', 'image/webp',
+    'application/pdf',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+]
+// MIME types + extensions for better mobile file picker
+const acceptTypes = [
+    ...ACCEPT_MIME_TYPES,
+    '.jpg', '.jpeg', '.png', '.gif', '.webp', '.pdf', '.doc', '.docx', '.xls', '.xlsx'
+].join(',')
+
+const ALLOWED_TYPES = [...ACCEPT_MIME_TYPES]
 
 const backdrop = ref(null)
 const dialog = ref(null)
@@ -299,15 +321,13 @@ const uploadFile = async (file) => {
         return
     }
 
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'application/pdf']
-    if (!allowedTypes.includes(file.type)) {
-        uploadError.value = 'Format file tidak didukung. Gunakan: JPEG, PNG, GIF, WebP, atau PDF.'
+    if (!ALLOWED_TYPES.includes(file.type)) {
+        uploadError.value = 'Format file tidak didukung. Gunakan: JPEG, PNG, GIF, WebP, PDF, DOC, DOCX, XLS, XLSX.'
         return
     }
 
-    const maxSize = 10 * 1024 * 1024
-    if (file.size > maxSize) {
-        uploadError.value = 'Ukuran file terlalu besar (max 10MB)'
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+        uploadError.value = `Ukuran file terlalu besar. Maksimal ${MAX_FILE_SIZE_MB}MB.`
         return
     }
 
@@ -330,7 +350,11 @@ const uploadFile = async (file) => {
         await loadMediaLibrary()
     } catch (error) {
         console.error('Upload failed:', error)
-        uploadError.value = error.message || 'Gagal mengupload file'
+        // Show API error (e.g. "File too large. Maximum size is 10MB.")
+        const data = error?.data || error?.response?.data
+        uploadError.value = (data?.error && typeof data.error === 'string')
+            ? data.error
+            : (error?.message || 'Gagal mengupload file')
     } finally {
         isUploading.value = false
     }

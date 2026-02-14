@@ -1,168 +1,311 @@
 <template>
-    <div class="flex flex-col gap-6 pb-12">
-        <!-- Header -->
-        <div class="flex items-center gap-4 mb-8">
-            <NuxtLink :to="backUrl"
-                class="flex items-center justify-center w-11 h-11 rounded-2xl bg-white border border-gray-200 text-gray-500 hover:text-navy hover:border-primary/30 hover:bg-primary/5 transition-all">
-                <Icon icon="ph:arrow-left-bold" class="text-lg" />
-            </NuxtLink>
-            <div class="min-w-0 flex-1">
-                <h1 class="text-xl sm:text-2xl font-bold text-navy truncate">
-                    {{ route.query.participant_uuid ? 'Detail Hasil Pertandingan' : 'Hasil Pertandingan Saya' }}
-                </h1>
-                <p class="text-sm text-gray-500 mt-0.5 truncate">{{ eventName }}</p>
+    <div class="flex flex-col gap-6 pb-12 px-2 sm:px-0">
+        <!-- Dashboard Standard Header -->
+        <div
+            class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm mb-2">
+            <div class="absolute inset-0 opacity-20"
+                style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);" />
+            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl" />
+            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl" />
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary" />
+
+            <div class="relative p-5 sm:p-8">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+                    <div class="flex items-center sm:items-start gap-3 sm:gap-4 flex-1 min-w-0">
+                        <button @click="handleBack"
+                            class="p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-white/10 text-white shrink-0 backdrop-blur-sm border border-white/20">
+                            <Icon icon="ph:arrow-left-bold" class="text-lg sm:text-xl" />
+                        </button>
+                        <div class="min-w-0">
+                            <h1
+                                class="text-lg sm:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2 truncate">
+                                {{ route.query.participant_uuid ? 'Detail Hasil Peserta' : 'Hasil Pertandingan' }}
+                            </h1>
+                            <div
+                                class="flex flex-wrap items-center gap-2 text-[10px] sm:text-sm text-slate-300 font-medium">
+                                <span v-if="categoryName"
+                                    class="px-2 py-0.5 rounded bg-primary/20 text-primary text-[9px] sm:text-xs font-black uppercase tracking-wider backdrop-blur-md border border-primary/20">
+                                    {{ categoryName.split('-')[0].trim() }}
+                                </span>
+                                <span class="opacity-40 hidden sm:inline">•</span>
+                                <span class="truncate">{{ eventName }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Loading -->
-        <div v-if="isLoading" class="space-y-6">
-            <div class="h-40 bg-gray-100 rounded-2xl animate-pulse" />
-            <div class="h-64 bg-gray-100 rounded-2xl animate-pulse" />
-            <div class="h-48 bg-gray-100 rounded-2xl animate-pulse" />
+        <div v-if="isLoading" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div v-for="i in 4" :key="i"
+                class="h-24 sm:h-32 bg-white rounded-2xl animate-pulse border border-slate-100" />
+            <div class="h-64 bg-white rounded-2xl animate-pulse border border-slate-100 col-span-full" />
         </div>
 
         <template v-else>
-            <!-- Profile -->
-            <section class="mb-8">
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                    <div class="p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6">
-                        <div class="shrink-0 w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gray-100 overflow-hidden ring-2 ring-gray-100">
-                            <img :src="useImageOrDefault(userProfile?.avatar_url, userProfile?.full_name)"
-                                class="w-full h-full object-cover" alt="" />
+            <!-- Profile Overview -->
+            <div
+                class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-4 sm:gap-8 w-full sm:w-auto">
+                    <img :src="useImageOrDefault(userProfile?.avatar_url, userProfile?.full_name)"
+                        class="size-16 sm:size-24 rounded-2xl object-cover border-2 border-white shadow-md shrink-0" />
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span
+                                class="px-2 py-0.5 bg-navy text-primary rounded text-[8px] font-black uppercase">Archer</span>
+                            <span class="text-[9px] font-bold text-slate-400 uppercase truncate">{{ categoryName
+                            }}</span>
                         </div>
-                        <div class="flex-1 text-center sm:text-left min-w-0">
-                            <h2 class="text-lg sm:text-xl font-bold text-navy truncate">
-                                {{ userProfile?.full_name || '—' }}
-                            </h2>
-                            <p v-if="categoryName"
-                                class="inline-block mt-2 px-3 py-1 rounded-lg bg-primary/10 text-primary text-xs font-semibold uppercase tracking-wide">
-                                {{ categoryName }}
-                            </p>
-                            <div class="flex flex-wrap justify-center sm:justify-start gap-x-4 gap-y-1 mt-4 text-sm text-gray-500">
-                                <span v-if="userProfile?.club_name" class="flex items-center gap-1.5">
-                                    <Icon icon="ph:buildings" class="text-gray-400" />
-                                    {{ userProfile.club_name }}
-                                </span>
-                                <span v-if="userProfile?.city" class="flex items-center gap-1.5">
-                                    <Icon icon="ph:map-pin" class="text-gray-400" />
-                                    {{ userProfile.city }}
-                                </span>
-                                <span v-if="userProfile?.bow_type" class="flex items-center gap-1.5">
-                                    <Icon icon="ph:crosshair" class="text-gray-400" />
-                                    {{ userProfile.bow_type }}
-                                </span>
-                            </div>
+                        <h2 class="text-lg sm:text-2xl font-black text-navy truncate block">{{ userProfile?.full_name ||
+                            'Archer' }}</h2>
+                        <div class="flex flex-wrap gap-3 mt-2">
+                            <span v-if="userProfile?.club_name"
+                                class="flex items-center gap-1 text-[10px] text-slate-500 font-medium">
+                                <Icon icon="ph:shield-bold" class="text-primary" /> {{ userProfile.club_name }}
+                            </span>
+                            <span v-if="userProfile?.city"
+                                class="flex items-center gap-1 text-[10px] text-slate-500 font-medium">
+                                <Icon icon="ph:map-pin-bold" class="text-primary" /> {{ userProfile.city }}
+                            </span>
                         </div>
                     </div>
                 </div>
-            </section>
+            </div>
 
-            <!-- Qualification -->
-            <section class="mb-8">
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                    <div class="px-6 py-4 border-b border-gray-50 flex flex-wrap items-center justify-between gap-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-navy flex items-center justify-center text-primary font-bold text-sm">
-                                Q
-                            </div>
-                            <h3 class="text-base font-bold text-navy">Babak Kualifikasi</h3>
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+                <div class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-100 shadow-sm relative overflow-hidden">
+                    <Icon icon="ph:crown-fill" class="absolute -right-2 -bottom-2 text-6xl text-navy/5 opacity-10" />
+                    <span class="text-[9px] font-black tracking-widest text-slate-400 uppercase block mb-1">Rank</span>
+                    <div class="flex items-baseline gap-1">
+                        <span class="text-2xl sm:text-4xl font-black text-navy">{{ qualRank || '-' }}</span>
+                        <span class="text-[10px] font-bold text-slate-400">/ {{ totalParticipants }}</span>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-100 shadow-sm">
+                    <span class="text-[9px] font-black tracking-widest text-slate-400 uppercase block mb-1">Total
+                        Score</span>
+                    <div class="flex items-baseline gap-1">
+                        <span class="text-2xl sm:text-4xl font-black text-navy">{{ qualTotalScore || 0 }}</span>
+                        <span class="text-[9px] font-bold text-slate-400 uppercase">Pts</span>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-100 shadow-sm overflow-hidden">
+                    <span class="text-[9px] font-black tracking-widest text-slate-400 uppercase block mb-1">Accuracy
+                        (10/X)</span>
+                    <div class="flex items-center gap-2 sm:gap-4">
+                        <div class="flex flex-col">
+                            <span class="text-xl sm:text-3xl font-black text-navy">{{ totalTens || 0 }}</span>
+                            <span class="text-[8px] font-bold text-slate-400 uppercase">10s</span>
                         </div>
-                        <div v-if="qualResult" class="flex items-baseline gap-2">
-                            <span class="text-2xl font-bold text-navy">{{ qualResult.total_score }}</span>
-                            <span class="text-xs text-gray-400 font-medium uppercase tracking-wider">Total</span>
+                        <div class="w-px h-6 bg-slate-100" />
+                        <div class="flex flex-col">
+                            <span class="text-xl sm:text-3xl font-black text-navy">{{ totalXs || 0 }}</span>
+                            <span class="text-[8px] font-bold text-slate-400 uppercase">Xs</span>
                         </div>
                     </div>
+                </div>
 
-                    <div v-if="!qualResult" class="p-12 text-center text-gray-400">
-                        <Icon icon="ph:target" class="text-4xl mx-auto mb-3 opacity-30" />
-                        <p class="text-sm font-medium">Skor kualifikasi belum tersedia</p>
+                <div class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-100 shadow-sm">
+                    <span class="text-[9px] font-black tracking-widest text-slate-400 uppercase block mb-1">Avg
+                        Arrow</span>
+                    <div class="flex items-baseline gap-1">
+                        <span class="text-2xl sm:text-4xl font-black text-navy">{{ averageArrowScore }}</span>
+                        <span class="text-[9px] font-bold text-slate-400 uppercase">/ Arr</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Qualification Scoresheet -->
+            <div class="bg-white rounded-[32px] border border-slate-100 shadow-sm overflow-hidden relative group">
+                <div
+                    class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none" />
+
+                <div
+                    class="px-6 sm:px-8 py-5 sm:py-6 border-b border-slate-50 flex items-center justify-between relative z-10">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="size-10 sm:size-12 rounded-xl bg-navy flex items-center justify-center shadow-lg shadow-navy/10">
+                            <Icon icon="ph:list-numbers-bold" class="text-primary text-xl" />
+                        </div>
+                        <div>
+                            <h3 class="text-base sm:text-lg font-black text-navy uppercase tracking-wider">Skor
+                                Kualifikasi</h3>
+                            <p class="text-[10px] sm:text-xs text-slate-400 font-medium">Performa detail setiap rambahan
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-6 sm:p-8 relative z-10">
+                    <div v-if="!qualSessions.length" class="py-16 text-center text-slate-300">
+                        <Icon icon="ph:target-light" class="text-6xl mx-auto mb-4 opacity-20" />
+                        <p class="text-xs font-bold uppercase tracking-widest">Belum ada skor tercatat</p>
                     </div>
 
-                    <template v-else>
-                        <div class="p-6 border-t border-gray-50">
-                            <h4 class="text-sm font-semibold text-navy uppercase tracking-wider mb-4 flex items-center gap-2">
-                                <Icon icon="ph:list-numbers-bold" class="text-primary" />
-                                Rincian per end
-                            </h4>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-                                <div v-for="(end, index) in qualResult.end_scores" :key="index"
-                                    class="rounded-xl border border-gray-100 bg-gray-50/50 overflow-hidden">
-                                    <div class="px-4 py-3 flex justify-between items-center border-b border-gray-100">
-                                        <span class="text-xs font-semibold text-gray-500">End {{ end.end_number ?? index + 1 }}</span>
-                                        <span class="text-lg font-bold text-navy">{{ end.total_score_end }}</span>
-                                    </div>
-                                    <div class="p-4 flex flex-wrap justify-center gap-2">
-                                        <span v-for="(arrow, aIdx) in end.arrows" :key="aIdx"
-                                            class="inline-flex items-center justify-center min-w-[2.25rem] h-9 rounded-lg text-sm font-bold"
-                                            :class="getScoreColorClass(arrow.score, arrow.is_x)">
-                                            {{ arrow.is_x ? 'X' : (arrow.score === 0 ? 'M' : arrow.score) }}
+                    <div v-else class="space-y-10">
+                        <div v-for="(session, sIdx) in qualSessions" :key="sIdx" class="relative">
+                            <div class="flex items-center justify-between gap-4 mb-6">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="px-4 py-2 rounded-xl bg-slate-50 border border-slate-100 flex items-center gap-2">
+                                        <Icon icon="ph:calendar-blank-bold" class="text-navy text-xs" />
+                                        <span
+                                            class="text-[10px] sm:text-xs font-black text-navy uppercase tracking-widest">
+                                            {{ session.session_name || `Sesi ${sIdx + 1}` }}
                                         </span>
                                     </div>
+
+                                    <NuxtLink v-if="categoryId"
+                                        :to="`/dashboard/events/${eventId}/qualification/${categoryId}`"
+                                        class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary/50 transition-colors text-[10px] font-black uppercase tracking-widest border border-primary/20">
+                                        <Icon icon="ph:eye-bold" class="text-xs" />
+                                        Lihat Kualifikasi
+                                    </NuxtLink>
+                                </div>
+
+                                <div class="flex items-center gap-3">
+                                    <div class="h-px w-8 sm:w-16 bg-slate-100 hidden sm:block" />
+                                    <div class="flex items-baseline gap-2">
+                                        <span class="text-xl sm:text-3xl font-black text-navy tabular-nums">{{
+                                            session.total_score || 0 }}</span>
+                                        <span
+                                            class="text-[10px] font-black text-slate-400 uppercase tracking-widest">PTS</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </template>
-                </div>
-            </section>
 
-            <!-- Elimination -->
-            <section>
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                    <div class="px-6 py-4 border-b border-gray-50 flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-navy font-bold text-sm">
-                            E
-                        </div>
-                        <h3 class="text-base font-bold text-navy">Babak Eliminasi</h3>
-                    </div>
-
-                    <div v-if="elimMatches.length === 0" class="p-12 text-center text-gray-400">
-                        <Icon icon="mdi:bracket" class="text-4xl mx-auto mb-3 opacity-30" />
-                        <p class="text-sm font-medium">Skor eliminasi belum tersedia</p>
-                    </div>
-
-                    <div v-else class="divide-y divide-gray-50">
-                        <div v-for="match in elimMatches" :key="match.uuid"
-                            class="p-5 sm:p-6 transition-colors"
-                            :class="match.winner_entry_uuid === myEntryUuid ? 'bg-primary/5' : 'bg-white'">
-                            <div class="flex items-center justify-between gap-4 mb-4">
-                                <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                                    Babak {{ match.round_no }} · Match {{ match.match_no }}
-                                </span>
-                                <span v-if="match.status === 'completed'"
-                                    class="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase shrink-0"
-                                    :class="match.winner_entry_uuid === myEntryUuid
-                                        ? 'bg-primary text-navy'
-                                        : 'bg-gray-100 text-gray-500'">
-                                    {{ match.winner_entry_uuid === myEntryUuid ? 'Menang' : 'Kalah' }}
-                                </span>
-                                <span v-else
-                                    class="px-2.5 py-1 rounded-lg bg-blue-100 text-blue-600 text-[10px] font-bold uppercase shrink-0">
-                                    Mendatang
-                                </span>
-                            </div>
-                            <div class="flex items-center justify-between gap-6">
-                                <div class="flex-1 min-w-0 text-center">
-                                    <p class="text-xs font-medium text-navy truncate">Saya</p>
-                                    <p class="text-2xl font-bold text-navy mt-1"
-                                        :class="{ 'opacity-50': match.status !== 'completed' }">
-                                        {{ match.entry_a_uuid === myEntryUuid ? (match.total_score_a ?? 0) : (match.total_score_b ?? 0) }}
-                                    </p>
-                                </div>
-                                <span class="text-sm font-bold text-gray-300 shrink-0">VS</span>
-                                <div class="flex-1 min-w-0 text-center">
-                                    <p class="text-xs font-medium text-gray-500 truncate">
-                                        {{ match.entry_a_uuid === myEntryUuid ? (match.entry_b_name || 'TBD') : (match.entry_a_name || 'TBD') }}
-                                    </p>
-                                    <p class="text-2xl font-bold text-gray-400 mt-1"
-                                        :class="{ 'opacity-50': match.status !== 'completed' }">
-                                        {{ match.entry_a_uuid === myEntryUuid ? (match.total_score_b ?? 0) : (match.total_score_a ?? 0) }}
-                                    </p>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
+                                <div v-for="(score, endIdx) in session.end_scores_list" :key="endIdx"
+                                    class="p-4 rounded-2xl border border-slate-50 bg-slate-50/30 relative overflow-hidden">
+                                    <div class="absolute top-0 right-0 p-2 opacity-20">
+                                        <Icon icon="ph:target-bold" class="text-2xl text-red-500" />
+                                    </div>
+                                    <span
+                                        class="text-[9px] font-black text-slate-300 uppercase tracking-widest block mb-2">End
+                                        {{ endIdx + 1 }}</span>
+                                    <div class="text-2xl font-black text-navy tabular-nums">
+                                        {{ score }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </section>
+            </div>
+
+            <!-- Elimination Battles - Premium Battle Cards -->
+            <div class="bg-white rounded-[32px] border border-slate-100 shadow-sm overflow-hidden group">
+                <div
+                    class="px-6 sm:px-8 py-5 sm:py-6 border-b border-slate-50 flex items-center justify-between bg-slate-50/30">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="size-10 sm:size-12 rounded-xl bg-navy flex items-center justify-center shadow-lg shadow-navy/10">
+                            <Icon icon="ph:sword-bold" class="text-primary text-xl" />
+                        </div>
+                        <div>
+                            <h3 class="text-base sm:text-lg font-black text-navy uppercase tracking-wider">
+                                Eliminasi</h3>
+                            <p class="text-[10px] sm:text-xs text-slate-400 font-medium whitespace-nowrap">Perjalanan
+                                menuju podium</p>
+                        </div>
+                    </div>
+                    <NuxtLink v-if="bracketId" :to="`/dashboard/events/${eventId}/elimination/${bracketId}`"
+                        class="px-4 py-2 rounded-xl bg-navy text-primary text-[10px] font-black uppercase tracking-widest">
+                        Lihat Bracket
+                    </NuxtLink>
+                </div>
+
+                <div v-if="elimMatches.length === 0" class="py-20 text-center text-slate-300">
+                    <Icon icon="ph:sword-light" class="text-6xl mx-auto mb-4 opacity-20" />
+                    <p class="text-xs font-bold uppercase tracking-widest">Belum memasuki babak eliminasi</p>
+                </div>
+
+                <div v-else class="p-6 sm:p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div v-for="match in elimMatches" :key="match.uuid"
+                        class="relative p-0.5 rounded-[32px] overflow-hidden shadow-sm"
+                        :class="match.winner_entry_uuid === myEntryUuid ? 'bg-gradient-to-br from-primary via-primary/50 to-primary/5' : 'bg-slate-100'">
+
+                        <div class="bg-white rounded-[31px] p-6 h-full relative overflow-hidden">
+                            <!-- Background Decor -->
+                            <div class="absolute top-0 left-0 w-full h-1 bg-slate-50" />
+
+                            <div class="flex justify-between items-center mb-6">
+                                <span
+                                    class="px-3 py-1 rounded-lg bg-navy text-primary text-[9px] font-black uppercase tracking-widest">
+                                    Round {{ match.round_no }}
+                                </span>
+                                <div v-if="match.status === 'completed'"
+                                    class="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest"
+                                    :class="match.winner_entry_uuid === myEntryUuid ? 'text-green-600' : 'text-slate-400'">
+                                    <Icon
+                                        :icon="match.winner_entry_uuid === myEntryUuid ? 'ph:trophy-fill' : 'ph:check-bold'"
+                                        class="text-sm" />
+                                    {{ match.winner_entry_uuid === myEntryUuid ? 'Victory' : 'Defeat' }}
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-4 sm:gap-6">
+                                <!-- My Side -->
+                                <div class="flex-1 min-w-0 flex flex-col items-center">
+                                    <div class="relative mb-3">
+                                        <img :src="getAvatarUrl(match.entry_a_name)"
+                                            class="size-14 sm:size-16 rounded-2xl object-cover border-2"
+                                            :class="match.entry_a_uuid === myEntryUuid ? 'border-primary ring-4 ring-primary/10' : 'border-slate-100'" />
+                                        <div v-if="match.winner_entry_uuid === match.entry_a_uuid"
+                                            class="absolute -top-1.5 -right-1.5 size-5 rounded-full bg-primary text-navy flex items-center justify-center shadow-lg border-2 border-white">
+                                            <Icon icon="ph:crown-fill" class="text-[10px]" />
+                                        </div>
+                                    </div>
+                                    <span
+                                        class="text-[9px] font-black text-slate-300 uppercase tracking-widest mb-1 truncate w-full text-center">
+                                        {{ match.entry_a_uuid === myEntryUuid ? 'Me' : 'Archer' }}
+                                    </span>
+                                    <span
+                                        class="text-[10px] sm:text-xs font-black text-navy truncate w-full text-center">{{
+                                            match.entry_a_name || 'TBD' }}</span>
+                                    <span class="text-2xl sm:text-3xl font-black text-navy mt-3 tabular-nums">{{
+                                        match.total_score_a ?? 0 }}</span>
+                                </div>
+
+                                <!-- VS Circle -->
+                                <div class="shrink-0 flex flex-col items-center gap-1">
+                                    <div class="w-px h-6 bg-slate-100" />
+                                    <div
+                                        class="size-8 rounded-full bg-navy text-primary flex items-center justify-center text-[9px] font-black shadow-lg">
+                                        VS</div>
+                                    <div class="w-px h-6 bg-slate-100" />
+                                </div>
+
+                                <!-- Opponent Side -->
+                                <div class="flex-1 min-w-0 flex flex-col items-center">
+                                    <div class="relative mb-3">
+                                        <img :src="getAvatarUrl(match.entry_b_name)"
+                                            class="size-14 sm:size-16 rounded-2xl object-cover border-2"
+                                            :class="match.entry_b_uuid === myEntryUuid ? 'border-primary ring-4 ring-primary/10' : 'border-slate-100'" />
+                                        <div v-if="match.winner_entry_uuid === match.entry_b_uuid"
+                                            class="absolute -top-1.5 -right-1.5 size-5 rounded-full bg-primary text-navy flex items-center justify-center shadow-lg border-2 border-white">
+                                            <Icon icon="ph:crown-fill" class="text-[10px]" />
+                                        </div>
+                                    </div>
+                                    <span
+                                        class="text-[9px] font-black text-slate-300 uppercase tracking-widest mb-1 truncate w-full text-center">
+                                        {{ match.entry_b_uuid === myEntryUuid ? 'Me' : 'Archer' }}
+                                    </span>
+                                    <span
+                                        class="text-[10px] sm:text-xs font-black text-navy truncate w-full text-center">{{
+                                            match.entry_b_name || 'TBD' }}</span>
+                                    <span class="text-2xl sm:text-3xl font-black text-navy mt-3 tabular-nums">{{
+                                        match.total_score_b ?? 0 }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </template>
     </div>
 </template>
@@ -171,9 +314,8 @@
 import { Icon } from '@iconify/vue'
 const { get } = useApi()
 const route = useRoute()
+const router = useRouter()
 const eventId = route.params.id
-
-const backUrl = computed(() => `/dashboard/events/${eventId}/overview`)
 
 definePageMeta({
     layout: 'dashboard'
@@ -185,8 +327,48 @@ const userProfile = ref(null)
 const myEntryUuid = ref(null)
 const categoryId = ref(null)
 const categoryName = ref('')
-const qualResult = ref(null)
+const qualSessions = ref([])
+const qualTotalScore = ref(null)
+const qualRank = ref(null)
+const totalParticipants = ref(0)
+const totalTens = ref(0)
+const totalXs = ref(0)
 const elimMatches = ref([])
+const bracketId = ref(null)
+
+const averageArrowScore = computed(() => {
+    if (!qualSessions.value.length || !qualTotalScore.value) return '0.0'
+    let totalArrows = 0
+    qualSessions.value.forEach(s => {
+        totalArrows += s.end_scores_list.length * 6
+    })
+    if (totalArrows === 0) return '0.0'
+    return (qualTotalScore.value / totalArrows).toFixed(1)
+})
+
+const elimStatusLabel = computed(() => {
+    if (!elimMatches.value.length) return 'Ready'
+    const lastMatch = [...elimMatches.value].reverse()[0]
+    if (lastMatch.status !== 'completed') return 'Active'
+    if (lastMatch.winner_entry_uuid === myEntryUuid.value) return 'Winner'
+    return 'Done'
+})
+
+const elimProgressColor = computed(() => {
+    const label = elimStatusLabel.value
+    if (label === 'Winner') return 'bg-primary'
+    if (label === 'Active') return 'bg-blue-500'
+    return 'bg-slate-300'
+})
+
+const handleBack = () => {
+    router.back()
+}
+
+const getAvatarUrl = (name) => {
+    if (!name) return `https://ui-avatars.com/api/?name=TBD&background=f1f5f9&color=94a3b8&font-size=0.45`
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random&color=fff&font-size=0.45`
+}
 
 const fetchInitialData = async () => {
     isLoading.value = true
@@ -210,19 +392,6 @@ const fetchInitialData = async () => {
             searchEmail = pRes?.email
             categoryId.value = pRes?.category_id
             categoryName.value = `${pRes?.division_name} - ${pRes?.category_name}`
-
-            if (pRes?.qualification_assignment_uuid) {
-                const qScores = await get(`/qualification/assignments/${pRes.qualification_assignment_uuid}/scores`)
-                if (qScores?.scores) {
-                    qualResult.value = {
-                        total_score: qScores.scores.reduce((sum, s) => sum + (s.total_score_end || 0), 0),
-                        total_10x: qScores.scores.reduce((sum, s) => sum + (s.ten_count_end || 0), 0),
-                        total_x: qScores.scores.reduce((sum, s) => sum + (s.x_count_end || 0), 0),
-                        end_scores: qScores.scores,
-                        rank: '-'
-                    }
-                }
-            }
         } else {
             const profileRes = await get('/archer/me')
             userProfile.value = profileRes?.data
@@ -243,13 +412,26 @@ const fetchInitialData = async () => {
             const gRes = await get(`/events/${eventId}/results/qualification`, {
                 params: { category_id: categoryId.value }
             })
+            totalParticipants.value = gRes?.results?.length || 0
             const myQual = gRes?.results?.find(r =>
                 (participantUuid && r.participant_id === participantUuid) ||
                 (r.archer_uuid === userProfile.value?.uuid)
             )
             if (myQual) {
-                if (qualResult.value) qualResult.value.rank = myQual.rank
-                else qualResult.value = myQual
+                qualRank.value = myQual.rank
+                qualTotalScore.value = myQual.total_score ?? 0
+                totalTens.value = myQual.total_ten || 0
+                totalXs.value = myQual.total_x || 0
+                const sessions = myQual.sessions || []
+                qualSessions.value = sessions.map(s => ({
+                    session_name: s.session_name,
+                    session_code: s.session_code,
+                    total_score: s.total_score,
+                    end_scores: s.end_scores,
+                    end_scores_list: (s.end_scores && typeof s.end_scores === 'string')
+                        ? s.end_scores.split(',').map(x => x.trim()).filter(Boolean)
+                        : []
+                }))
             }
         }
 
@@ -257,15 +439,23 @@ const fetchInitialData = async () => {
             const elimRes = await get(`/events/${eventId}/results/elimination`, {
                 params: { category_id: categoryId.value }
             })
-            if (elimRes?.bracket?.matches) {
-                const allMatches = Object.values(elimRes.bracket.matches).flat()
-                const myName = userProfile.value?.full_name
-                const myMatch = allMatches.find(m => m.entry_a_name === myName || m.entry_b_name === myName)
-                if (myMatch) {
-                    myEntryUuid.value = myMatch.entry_a_name === myName ? myMatch.entry_a_uuid : myMatch.entry_b_uuid
-                    elimMatches.value = allMatches
-                        .filter(m => m.entry_a_uuid === myEntryUuid.value || m.entry_b_uuid === myEntryUuid.value)
-                        .sort((a, b) => a.round_no - b.round_no)
+            if (elimRes?.bracket) {
+                bracketId.value = elimRes.bracket.bracket_id || elimRes.bracket.id
+                if (elimRes.bracket.matches) {
+                    const raw = Object.values(elimRes.bracket.matches).flat()
+                    const allMatches = raw.map(m => ({
+                        ...m,
+                        entry_a_uuid: m.entry_a_uuid ?? m.entry_a_id,
+                        entry_b_uuid: m.entry_b_uuid ?? m.entry_b_id
+                    }))
+                    const myName = userProfile.value?.full_name
+                    const myMatch = allMatches.find(m => m.entry_a_name === myName || m.entry_b_name === myName)
+                    if (myMatch) {
+                        myEntryUuid.value = myMatch.entry_a_name === myName ? (myMatch.entry_a_uuid ?? myMatch.entry_a_id) : (myMatch.entry_b_uuid ?? myMatch.entry_b_id)
+                        elimMatches.value = allMatches
+                            .filter(m => m.entry_a_uuid === myEntryUuid.value || m.entry_b_uuid === myEntryUuid.value)
+                            .sort((a, b) => a.round_no - b.round_no)
+                    }
                 }
             }
         }
@@ -281,8 +471,43 @@ const getScoreColorClass = (score, isX) => {
     if (score === 8 || score === 7) return 'bg-red-500 text-white border-red-600'
     if (score === 6 || score === 5) return 'bg-blue-500 text-white border-blue-600'
     if (score === 4 || score === 3) return 'bg-gray-800 text-white border-gray-900'
-    return 'bg-white text-navy border-gray-200'
+    return 'bg-gray-100 text-navy border-gray-200'
+}
+
+const getScoreIconColor = (score) => {
+    // End scores are usually sums, but let's color based on average arrow quality
+    // Max per end is 60. 
+    const val = parseInt(score)
+    if (val >= 54) return 'text-primary' // Gold
+    if (val >= 48) return 'text-red-500' // Red
+    if (val >= 42) return 'text-blue-500' // Blue
+    if (val >= 36) return 'text-slate-800' // Black
+    return 'text-slate-300' // White/Gray
 }
 
 onMounted(() => fetchInitialData())
 </script>
+
+<style scoped>
+.tabular-nums {
+    font-variant-numeric: tabular-nums;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #cbd5e1;
+}
+</style>
