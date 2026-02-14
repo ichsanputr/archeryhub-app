@@ -193,9 +193,9 @@
     <Transition enter-active-class="transition duration-300 ease-out" enter-from-class="opacity-0 scale-95"
       enter-to-class="opacity-100 scale-100" leave-active-class="transition duration-200 ease-in"
       leave-from-class="opacity-100 scale-100" leave-to-class="opacity-0 scale-95">
-      <div v-if="showCreateDialog" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+      <div v-if="showCreateDialog" class="fixed inset-0 bg-black/50 flex items-center justify-center z-[100] p-4"
         @click.self="showCreateDialog = false">
-        <div class="bg-white rounded-2xl shadow-md max-w-md w-full">
+        <div class="relative z-[101] bg-white rounded-2xl shadow-xl max-w-md w-full overflow-visible">
           <!-- Modal Header -->
           <div class="p-6 border-b border-gray-100">
             <div class="flex items-center justify-between">
@@ -207,8 +207,8 @@
             <p class="text-sm text-gray-500 mt-2">Konfigurasikan bracket eliminasi untuk kategori</p>
           </div>
 
-          <!-- Modal Body -->
-          <div class="p-6 space-y-4 max-h-[60vh] overflow-y-auto">
+          <!-- Modal Body: overflow-visible so BaseSelect dropdowns show above -->
+          <div class="p-6 space-y-4 overflow-visible">
             <!-- Category Selection -->
             <div>
               <BaseSelect v-model="newBracket.categoryId" :items="categoryOptions" label="Kategori"
@@ -387,7 +387,9 @@ const updateBracket = async () => {
     await fetchBrackets()
   } catch (error) {
     console.error('Failed to update bracket:', error)
-    toast.error(error?.response?.data?.error || 'Gagal update bracket')
+    const data = error?.data || error?.response?.data
+    const msg = data?.error || 'Gagal update bracket'
+    toast.error(msg)
   } finally {
     creatingBracket.value = false
   }
@@ -432,7 +434,12 @@ const createBracket = async () => {
     }
   } catch (error) {
     console.error('Failed to create bracket:', error)
-    toast.error(error?.response?.data?.error || 'Gagal membuat bracket')
+    const data = error?.data || error?.response?.data
+    let msg = data?.error || 'Gagal membuat bracket'
+    if (data?.participant_count != null && data?.required != null) {
+      msg = `${data.error} (tersedia ${data.participant_count}, diperlukan ${data.required})`
+    }
+    toast.error(msg)
   } finally {
     creatingBracket.value = false
   }

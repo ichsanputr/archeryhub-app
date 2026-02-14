@@ -507,7 +507,12 @@ const generateBracket = async () => {
         await fetchBracket()
     } catch (error) {
         console.error('Failed to generate bracket:', error)
-        toast.error('Gagal generate bracket')
+        const data = error?.data || error?.response?.data
+        let msg = data?.error || 'Gagal generate bracket'
+        if (data?.participant_count != null && data?.required != null) {
+            msg = `${data.error} (tersedia ${data.participant_count}, diperlukan ${data.required})`
+        }
+        toast.error(msg)
     }
 }
 
