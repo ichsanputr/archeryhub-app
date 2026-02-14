@@ -579,7 +579,11 @@ const submit = async () => {
                 id: newArcherForm.id || undefined
             })
 
-            const archerId = archerResponse.uuid || archerResponse.id
+            const archerId = archerResponse.uuid || archerResponse.archer_id || archerResponse.id
+            if (!archerId) {
+                toast.error('Gagal mendapatkan ID pemanah setelah dibuat')
+                return
+            }
 
             // Register the new archer
             const payload = {

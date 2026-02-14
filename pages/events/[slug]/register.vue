@@ -821,9 +821,15 @@ const handleSubmit = async () => {
             })
         }
 
+        const athleteId = archerProfile.value?.uuid || archerProfile.value?.archer_id || archerProfile.value?.id
+        if (!athleteId) {
+            error.value = 'Profil pemanah tidak lengkap. Silakan lengkapi profil atau login ulang.'
+            return
+        }
+
         // Create participant registration
         const payload = {
-            athlete_id: archerProfile.value?.uuid || archerProfile.value?.id,
+            athlete_id: athleteId,
             event_category_id: form.value.category_id,
             payment_amount: form.value.payment_amount || 0,
             payment_proof_urls: form.value.payment_proofs

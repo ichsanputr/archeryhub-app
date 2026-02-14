@@ -92,9 +92,9 @@
         <div class="space-y-6">
             <!-- Informasi Tab -->
             <div v-if="activeTab === 'informasi'" class="space-y-6">
-                <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <section class="relative z-20 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-visible">
                     <div
-                        class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+                        class="p-4 sm:p-5 border-b border-gray-100 bg-gray-50/50 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between rounded-t-2xl overflow-hidden">
                         <h2 class="text-base sm:text-lg font-bold text-navy flex items-center gap-2">
                             <Icon icon="ph:info" class="text-primary text-lg sm:text-xl" />
                             Informasi Dasar

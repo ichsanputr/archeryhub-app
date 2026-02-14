@@ -26,6 +26,14 @@
                     <div class="relative h-48 overflow-hidden">
                         <img :src="live.image || '/logo.png'" :alt="live.name"
                             class="w-full h-full object-cover transition-transform duration-500" />
+                        <span v-if="live.isOngoing"
+                            class="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-red-500 text-white text-[10px] font-black uppercase tracking-wider shadow-md">
+                            Berlangsung
+                        </span>
+                        <span v-else
+                            class="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-gray-600/90 text-white text-[10px] font-black uppercase tracking-wider shadow-md">
+                            Selesai
+                        </span>
                     </div>
                     <div class="p-5 flex-1 flex flex-col">
                         <h3
@@ -64,18 +72,35 @@ const apiBaseUrl = config.public.apiBaseUrl
 const { data: rawEventsData, pending: loading } = await useAsyncData(
     'live-events',
     () => $fetch(`${apiBaseUrl}/events`, {
-        query: { status: 'ongoing', limit: '8' }
+        query: { limit: '12' }
     })
 )
 
 const events = computed(() => {
-    return (rawEventsData.value?.events || []).map(event => ({
-        name: event.name || event.title,
-        location: event.location || event.venue || '',
-        image: useImageOrDefault(event.banner_url || event.logo_url),
-        slug: event.slug,
-        uuid: event.uuid
-    }))
+    const now = new Date()
+    const list = (rawEventsData.value?.events || []).map(event => {
+        const start = event.start_date ? new Date(event.start_date) : null
+        const end = event.end_date ? new Date(event.end_date) : null
+        const isOngoing = start && start <= now && (!end || end >= now)
+        return {
+            name: event.name || event.title,
+            location: event.location || event.venue || '',
+            image: useImageOrDefault(event.banner_url || event.logo_url),
+            slug: event.slug,
+            uuid: event.uuid,
+            start_date: event.start_date,
+            end_date: event.end_date,
+            isOngoing
+        }
+    })
+    return list.sort((a, b) => {
+        const endA = a.end_date ? new Date(a.end_date).getTime() : 0
+        const endB = b.end_date ? new Date(b.end_date).getTime() : 0
+        const ongoingA = a.isOngoing ? 1 : 0
+        const ongoingB = b.isOngoing ? 1 : 0
+        if (ongoingB !== ongoingA) return ongoingB - ongoingA
+        return endB - endA
+    })
 })
 </script>
 

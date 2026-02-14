@@ -62,7 +62,11 @@
                         </div>
                     </div>
 
-                    <!-- Hover Button (Desktop Only) -->
+                    <!-- Arrow: always visible on mobile, hover on desktop -->
+                    <div
+                        class="flex lg:hidden items-center justify-center w-10 h-10 rounded-xl bg-primary text-navy shrink-0">
+                        <Icon icon="ph:arrow-right-bold" class="text-lg" />
+                    </div>
                     <div
                         class="hidden lg:flex items-center gap-2 bg-primary text-navy text-xs font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-300">
                         <span>Lihat</span>
