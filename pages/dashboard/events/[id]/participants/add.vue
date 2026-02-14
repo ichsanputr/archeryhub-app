@@ -202,14 +202,14 @@
                                 <BaseInput v-model="newArcherForm.email" label="Email" type="email"
                                     placeholder="email@example.com (opsional)" />
                                 <BaseInput v-model="newArcherForm.phone" label="No. Telepon" type="tel"
-                                    placeholder="08xxxxxxxxxx" />
+                                    placeholder="08xxxxxxxxxx (opsional)" />
                                 <BaseInput v-model="newArcherForm.password" label="Password Akun" type="password"
                                     placeholder="Buat password minimal 6 karakter"
                                     :required="!!newArcherForm.phone && !newArcherForm.email" />
                                 <BaseInput v-model="newArcherForm.date_of_birth" label="Tanggal Lahir" type="date" />
                                 <BaseSelect v-model="newArcherForm.gender" label="Jenis Kelamin"
-                                    :items="genderOptions" />
-                                <BaseSelect v-model="newArcherForm.bow_type" label="Jenis Busur" :items="bowOptions" />
+                                    :items="genderOptions" required />
+                                <BaseSelect v-model="newArcherForm.bow_type" label="Jenis Busur" :items="bowOptions" required />
                                 <BaseInput v-model="newArcherForm.city" label="Kota" placeholder="Jakarta" />
                                 <BaseInput v-model="newArcherForm.school" label="Sekolah"
                                     placeholder="Nama sekolah (opsional)" />
@@ -510,8 +510,12 @@ const validateNewArcherForm = () => {
     // Password validation rules:
     // - If phone is filled → password required
     // - If email is filled (no phone) → password optional
-    if (newArcherForm.phone && newArcherForm.phone.trim() && !newArcherForm.password) {
+    if (newArcherForm.phone && newArcherForm.phone.trim() && !(newArcherForm.password && newArcherForm.password.trim())) {
         toast.error('Password wajib diisi jika menggunakan No. Telepon')
+        return false
+    }
+    if (newArcherForm.password && newArcherForm.password.trim() && newArcherForm.password.length < 6) {
+        toast.error('Password minimal 6 karakter')
         return false
     }
 
@@ -567,6 +571,7 @@ const submit = async () => {
                 full_name: newArcherForm.full_name,
                 username: newArcherForm.username || undefined,
                 email: newArcherForm.email || undefined,
+                password: newArcherForm.password || undefined,
                 phone: newArcherForm.phone || undefined,
                 date_of_birth: newArcherForm.date_of_birth || undefined,
                 gender: newArcherForm.gender || undefined,
