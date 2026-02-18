@@ -99,6 +99,10 @@ const isLoser = (side) => {
     @apply relative w-[280px] h-[130px] bg-white rounded-2xl border border-[#d1dcf0] transition-all duration-300 cursor-pointer overflow-hidden flex flex-col;
 }
 
+.match-node-card:hover {
+    @apply border-primary shadow-lg scale-[1.02] -translate-y-1;
+}
+
 .match-node-card.selected {
     @apply ring-4 ring-primary/20 border-primary shadow-lg shadow-primary/10 z-20;
 }

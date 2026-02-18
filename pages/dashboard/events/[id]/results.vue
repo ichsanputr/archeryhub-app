@@ -158,9 +158,11 @@
                             <td class="px-6 py-4 text-center font-bold text-text-sub tabular-nums">
                                 {{ stand.sessions?.[1]?.total_score || 0 }}
                             </td>
-                            <td class="px-6 py-4 text-center text-text-sub/50 font-medium tabular-nums">{{ stand.total_10x
+                            <td class="px-6 py-4 text-center text-text-sub/50 font-medium tabular-nums">{{
+                                stand.total_10x
                                 }}/{{ stand.total_x }}</td>
-                            <td class="px-6 py-4 text-right font-black text-navy text-base tabular-nums">{{ stand.total_score }}</td>
+                            <td class="px-6 py-4 text-right font-black text-navy text-base tabular-nums">{{
+                                stand.total_score }}</td>
                         </tr>
                         <tr v-if="standings.length === 0 && !isLoading">
                             <td colspan="7" class="px-6 py-12 text-center text-gray-400 italic font-medium">
@@ -176,7 +178,8 @@
                 </table>
             </div>
             <div class="p-4 border-t border-gray-50 text-center bg-gray-50/30">
-                <button class="text-navy font-bold text-xs hover:underline  tracking-widest" @click="downloadResults">Unduh Hasil
+                <button class="text-navy font-bold text-xs hover:underline  tracking-widest"
+                    @click="downloadResults">Unduh Hasil
                     Lengkap (PDF)</button>
             </div>
         </div>
@@ -241,10 +244,36 @@ const fetchResults = async () => {
     }
 }
 
+// Keep a separate function for background polling without triggering isLoading
+const pollResults = async () => {
+    if (!selectedDivision.value || isLoading.value) return
+    try {
+        const res = await get(`/events/${eventId}/results/qualification`, {
+            params: { category_id: selectedDivision.value }
+        })
+        // Only update if we have results to avoid flickering/empty states
+        if (res?.results) {
+            standings.value = res.results
+        }
+    } catch (error) {
+        console.error('Failed to poll results:', error)
+    }
+}
+
+let pollInterval = null
+
 watch(selectedDivision, fetchResults)
 
 onMounted(() => {
     fetchCategories()
+    // Start polling every 10 seconds
+    pollInterval = setInterval(pollResults, 10000)
+})
+
+onUnmounted(() => {
+    if (pollInterval) {
+        clearInterval(pollInterval)
+    }
 })
 
 const downloadResults = () => {

@@ -250,7 +250,7 @@
                     <div v-if="isLoggedIn" class="p-6 bg-gray-50/50 border-b border-gray-100">
                         <div class="flex items-center gap-4">
                             <div
-                                class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-amber-400 border-2 border-white shadow-lg overflow-hidden flex items-center justify-center">
+                                class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-amber-400 border-2 border-white shadow-sm overflow-hidden flex items-center justify-center">
                                 <img v-if="user?.avatar_url" :src="user.avatar_url"
                                     class="w-full h-full object-cover" />
                                 <span v-else class="text-navy font-black text-xl">{{ user?.full_name?.charAt(0) || 'U'

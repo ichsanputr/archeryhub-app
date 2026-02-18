@@ -86,21 +86,8 @@
         </div>
 
         <!-- Pagination -->
-        <div v-if="totalPages > 1" class="flex items-center justify-center gap-2 pt-8">
-            <button @click="currentPage--" :disabled="currentPage === 1"
-                class="p-2 rounded-lg border border-gray-100 text-gray-400 hover:text-navy transition-colors disabled:opacity-30 disabled:cursor-not-allowed">
-                <Icon icon="ph:caret-left" />
-            </button>
-            <button v-for="i in totalPages" :key="i" @click="currentPage = i"
-                class="w-10 h-10 rounded-lg border font-bold text-sm"
-                :class="currentPage === i ? 'bg-navy text-primary border-navy' : 'border-gray-100 text-gray-400 hover:text-navy'">
-                {{ i }}
-            </button>
-            <button @click="currentPage++" :disabled="currentPage === totalPages"
-                class="p-2 rounded-lg border border-gray-100 text-gray-400 hover:text-navy transition-colors disabled:opacity-30 disabled:cursor-not-allowed">
-                <Icon icon="ph:caret-right" />
-            </button>
-        </div>
+        <FrontpagePagination v-if="totalPages > 1" v-model:current-page="currentPage" :total-pages="totalPages"
+            :total-items="filteredAthletes.length" :items-per-page="limit" />
     </div>
 </template>
 

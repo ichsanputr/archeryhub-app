@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Archery Hub - Single Match Detail</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#D9FF00",
+                        "primary-hover": "#c2e600",
+                        "navy-dark": "#0f172a",
+                        "navy-light": "#1e293b", 
+                        "background-light": "#f8fafc",
+                        "surface-white": "#ffffff",
+                        "text-main": "#111827",
+                        "text-secondary": "#64748b",
+                        "border-color": "#e2e8f0",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        @layer base {
+            body { font-family: 'Inter', sans-serif; }
+        }
+        .target-ring {
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hit-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 4px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body class="bg-background-light text-text-main flex min-h-screen">
+<aside class="w-20 bg-navy-dark flex flex-col items-center py-8 gap-8 text-white/50 shrink-0">
+<div class="text-primary">
+<span class="material-symbols-outlined text-3xl">adjust</span>
+</div>
+<nav class="flex flex-col gap-6">
+<button class="hover:text-primary transition-colors"><span class="material-symbols-outlined">dashboard</span></button>
+<button class="text-primary"><span class="material-symbols-outlined">account_tree</span></button>
+<button class="hover:text-primary transition-colors"><span class="material-symbols-outlined">groups</span></button>
+<button class="hover:text-primary transition-colors"><span class="material-symbols-outlined">settings</span></button>
+</nav>
+<div class="mt-auto">
+<button class="hover:text-primary transition-colors"><span class="material-symbols-outlined">logout</span></button>
+</div>
+</aside>
+<div class="flex-1 flex flex-col overflow-hidden">
+<header class="h-16 bg-white border-b border-border-color flex items-center justify-between px-8 shrink-0">
+<div class="flex items-center gap-4">
+<span class="text-text-secondary font-medium">Recurve Men - Semi-finals</span>
+<span class="px-2 py-0.5 bg-red-100 text-red-600 text-[10px] font-bold rounded uppercase tracking-wider flex items-center gap-1">
+<span class="w-1.5 h-1.5 bg-red-600 rounded-full"></span> Live
+                </span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-text-secondary">schedule</span>
+<span class="text-sm font-semibold">14:45 GMT</span>
+</div>
+<button class="bg-navy-dark text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-navy-light transition-colors">
+<span class="material-symbols-outlined text-sm">tv</span> Broadcast Mode
+                </button>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto p-8">
+<div class="max-w-6xl mx-auto space-y-8">
+<div class="grid grid-cols-11 items-center gap-4">
+<div class="col-span-4 bg-white p-6 rounded-2xl shadow-sm border-l-8 border-primary relative overflow-hidden">
+<div class="flex items-center gap-6">
+<div class="w-24 h-24 rounded-xl bg-gray-100 overflow-hidden relative border border-border-color">
+<img alt="Mete Gazoz" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBiL1vipvZJs_iWLyBPyPpjmXpYVCuUlapYL7eeFkcrIwC2GNQ3HKxOPFcdUMALzAoPrgVtncKKqQVXuihTfV1TYQJyPXNEbBJhqil6V2FqMH8UTuGSARzGRj-aZbrNsUIJ4LB7oThpRLhZDGO71OzjLuXWEu0lCCnJ0zaNfalcX5mSgq2jLCsX5OUeGZ0J9DxqbXItpuzGSQh0pMo1HlGfKwVPKOGJIoDjM31yEdVkWZo40c2FgdAjlX7_sgm4Qtf5LBu1o7IzOpJ"/>
+<div class="absolute top-1 left-1 bg-navy-dark text-primary text-[10px] font-bold px-1.5 rounded">1</div>
+</div>
+<div>
+<h2 class="text-2xl font-black text-navy-dark uppercase tracking-tight">M. GAZZOZ</h2>
+<p class="text-text-secondary font-medium">TURKEY • Club Istanbul</p>
+<div class="mt-2 flex gap-1">
+<span class="w-6 h-6 rounded-full bg-navy-dark flex items-center justify-center text-primary text-xs font-bold">4</span>
+<span class="text-xs self-center font-bold text-navy-dark ml-2 uppercase tracking-widest">Set Pts</span>
+</div>
+</div>
+</div>
+</div>
+<div class="col-span-3 flex flex-col items-center justify-center">
+<div class="text-xs font-black text-text-secondary uppercase tracking-[0.4em] mb-2">Elimination Round</div>
+<div class="text-4xl font-black text-border-color italic">VS</div>
+<div class="mt-4 px-4 py-1 bg-navy-dark text-primary rounded-full text-xs font-bold tracking-widest">SET 4</div>
+</div>
+<div class="col-span-4 bg-white p-6 rounded-2xl shadow-sm border-r-8 border-border-color text-right flex flex-row-reverse items-center gap-6">
+<div class="w-24 h-24 rounded-xl bg-gray-100 overflow-hidden relative border border-border-color">
+<img alt="B. Addis" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1nB2X0ItaJA6_QQ0ZWklDrisZXDRmJwiU5YyrQ4fYTcWqPKzPIrF__2v_wqpgxMoHg4Tn4Nm4OGrcKx44uEz2cQjaoFlxfzobNm9BO6zilW9Jm4gYy55gorAbvOT-UPSwqp9CB7uAFcsMplvAxprmivBAWMzRt9B3UzQgj6cFAy1Lt62N2pOd7CJ9S54PhuLMCPp_CRyJKHa4JxYsWKITV82s1Of50smWJ6vXMcO1f7nWVWFACfMHK9gaGlAFLsu9frsOzhUA-835"/>
+<div class="absolute top-1 right-1 bg-navy-dark text-white text-[10px] font-bold px-1.5 rounded">8</div>
+</div>
+<div>
+<h2 class="text-2xl font-black text-navy-dark uppercase tracking-tight">B. ADDIS</h2>
+<p class="text-text-secondary font-medium">FRANCE • Nîmes Archery</p>
+<div class="mt-2 flex flex-row-reverse gap-1">
+<span class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-navy-dark text-xs font-bold">2</span>
+<span class="text-xs self-center font-bold text-text-secondary mr-2 uppercase tracking-widest">Set Pts</span>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-2xl shadow-sm border border-border-color overflow-hidden">
+<table class="w-full text-center">
+<thead>
+<tr class="bg-navy-dark text-white uppercase text-[10px] tracking-widest font-bold">
+<th class="py-4 w-16">End</th>
+<th class="w-32 text-left px-6">Archer</th>
+<th class="w-16">A1</th>
+<th class="w-16">A2</th>
+<th class="w-16">A3</th>
+<th class="w-24">Set Total</th>
+<th class="w-24 bg-white/10">Set Pts</th>
+<th class="w-24 border-l border-white/10">Running</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-color">
+<tr class="group">
+<td class="font-bold text-navy-light bg-background-light border-r border-border-color" rowspan="2">1</td>
+<td class="px-6 py-4 text-left font-bold text-sm bg-primary/5">GAZZOZ</td>
+<td class="font-semibold">9</td>
+<td class="font-semibold">10</td>
+<td class="font-semibold text-primary-hover font-black">X</td>
+<td class="font-bold text-navy-dark">29</td>
+<td class="font-black text-navy-dark">2</td>
+<td class="border-l border-border-color font-black text-lg bg-background-light" rowspan="2">2 - 0</td>
+</tr>
+<tr class="text-text-secondary">
+<td class="px-6 py-4 text-left font-medium text-sm">ADDIS</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+<td class="font-semibold">27</td>
+<td class="font-bold">0</td>
+</tr>
+<tr class="group">
+<td class="font-bold text-navy-light bg-background-light border-r border-border-color" rowspan="2">2</td>
+<td class="px-6 py-4 text-left font-bold text-sm bg-primary/5">GAZZOZ</td>
+<td class="font-semibold">10</td>
+<td class="font-semibold">9</td>
+<td class="font-semibold">9</td>
+<td class="font-bold text-navy-dark">28</td>
+<td class="font-black text-navy-dark">1</td>
+<td class="border-l border-border-color font-black text-lg bg-background-light" rowspan="2">3 - 1</td>
+</tr>
+<tr class="text-text-secondary">
+<td class="px-6 py-4 text-left font-medium text-sm">ADDIS</td>
+<td>9</td>
+<td class="text-primary-hover font-black">X</td>
+<td>9</td>
+<td class="font-semibold">28</td>
+<td class="font-bold">1</td>
+</tr>
+<tr class="group">
+<td class="font-bold text-navy-light bg-background-light border-r border-border-color" rowspan="2">3</td>
+<td class="px-6 py-4 text-left font-bold text-sm bg-primary">GAZZOZ</td>
+<td class="font-semibold">10</td>
+<td class="font-semibold text-primary-hover font-black">X</td>
+<td class="font-semibold">10</td>
+<td class="font-bold text-navy-dark">30</td>
+<td class="font-black text-navy-dark">2</td>
+<td class="border-l border-border-color font-black text-lg bg-background-light" rowspan="2">5 - 1</td>
+</tr>
+<tr class="text-text-secondary">
+<td class="px-6 py-4 text-left font-medium text-sm">ADDIS</td>
+<td>9</td>
+<td>10</td>
+<td>9</td>
+<td class="font-semibold">28</td>
+<td class="font-bold">0</td>
+</tr>
+<tr class="group bg-primary/5 ring-1 ring-inset ring-primary">
+<td class="font-bold text-primary bg-navy-dark border-r border-navy-dark" rowspan="2">4</td>
+<td class="px-6 py-4 text-left font-bold text-sm border-l-4 border-primary">GAZZOZ</td>
+<td class="font-bold">10</td>
+<td class="bg-primary/20 animate-pulse">-</td>
+<td>-</td>
+<td class="font-bold">10</td>
+<td class="font-bold">-</td>
+<td class="border-l border-border-color font-black text-lg bg-background-light" rowspan="2">LIVE</td>
+</tr>
+<tr class="text-text-secondary">
+<td class="px-6 py-4 text-left font-medium text-sm border-l-4 border-transparent">ADDIS</td>
+<td>9</td>
+<td>-</td>
+<td>-</td>
+<td class="font-semibold">9</td>
+<td class="font-bold">-</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="grid grid-cols-2 gap-8">
+<div class="bg-white p-8 rounded-2xl shadow-sm border border-border-color">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-black text-navy-dark uppercase tracking-wider text-sm">Gazzoz - Heat Map</h3>
+<span class="text-[10px] font-bold text-text-secondary uppercase">Average: 9.6</span>
+</div>
+<div class="aspect-square relative flex items-center justify-center">
+<div class="target-ring w-full h-full border border-gray-200 bg-white">
+<div class="target-ring w-[90%] h-[90%] border border-gray-200 bg-white">
+<div class="target-ring w-[80%] h-[80%] border border-gray-300 bg-black">
+<div class="target-ring w-[75%] h-[75%] border border-gray-600 bg-black">
+<div class="target-ring w-[60%] h-[60%] border border-blue-400 bg-blue-500">
+<div class="target-ring w-[50%] h-[50%] border border-blue-400 bg-blue-500">
+<div class="target-ring w-[40%] h-[40%] border border-red-400 bg-red-600">
+<div class="target-ring w-[30%] h-[30%] border border-red-400 bg-red-600">
+<div class="target-ring w-[20%] h-[20%] border border-yellow-300 bg-[#D9FF00]">
+<div class="target-ring w-[10%] h-[10%] border border-yellow-600 bg-[#D9FF00]">
+<div class="w-1 h-1 bg-black rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="hit-dot bg-white border-2 border-navy-dark" style="top: 48%; left: 52%;"></div>
+<div class="hit-dot bg-white border-2 border-navy-dark" style="top: 50%; left: 49%;"></div>
+<div class="hit-dot bg-white border-2 border-navy-dark" style="top: 51%; left: 51%;"></div>
+<div class="hit-dot bg-white border-2 border-navy-dark" style="top: 47%; left: 48%;"></div>
+<div class="hit-dot bg-white border-2 border-navy-dark" style="top: 52%; left: 53%;"></div>
+<div class="hit-dot bg-primary border-2 border-navy-dark w-3 h-3 z-10" style="top: 49%; left: 50.5%;"></div>
+</div>
+</div>
+<div class="bg-white p-8 rounded-2xl shadow-sm border border-border-color">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-black text-navy-dark uppercase tracking-wider text-sm">Addis - Heat Map</h3>
+<span class="text-[10px] font-bold text-text-secondary uppercase">Average: 9.1</span>
+</div>
+<div class="aspect-square relative flex items-center justify-center">
+<div class="target-ring w-full h-full border border-gray-200 bg-white">
+<div class="target-ring w-[90%] h-[90%] border border-gray-200 bg-white">
+<div class="target-ring w-[80%] h-[80%] border border-gray-300 bg-black">
+<div class="target-ring w-[75%] h-[75%] border border-gray-600 bg-black">
+<div class="target-ring w-[60%] h-[60%] border border-blue-400 bg-blue-500">
+<div class="target-ring w-[50%] h-[50%] border border-blue-400 bg-blue-500">
+<div class="target-ring w-[40%] h-[40%] border border-red-400 bg-red-600">
+<div class="target-ring w-[30%] h-[30%] border border-red-400 bg-red-600">
+<div class="target-ring w-[20%] h-[20%] border border-yellow-300 bg-[#D9FF00]">
+<div class="target-ring w-[10%] h-[10%] border border-yellow-600 bg-[#D9FF00]">
+<div class="w-1 h-1 bg-black rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="hit-dot bg-white border-2 border-navy-dark" style="top: 45%; left: 42%;"></div>
+<div class="hit-dot bg-white border-2 border-navy-dark" style="top: 55%; left: 58%;"></div>
+<div class="hit-dot bg-white border-2 border-navy-dark" style="top: 42%; left: 53%;"></div>
+<div class="hit-dot bg-white border-2 border-navy-dark" style="top: 48%; left: 50%;"></div>
+<div class="hit-dot bg-white border-2 border-navy-dark" style="top: 50%; left: 45%;"></div>
+<div class="hit-dot bg-primary border-2 border-navy-dark w-3 h-3 z-10" style="top: 51%; left: 56%;"></div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<div class="fixed inset-0 pointer-events-none -z-10 opacity-[0.03]" style="background-image: radial-gradient(#000 1px, transparent 1px); background-size: 40px 40px;"></div>
+
+</body></html>

@@ -5,13 +5,13 @@
     <div v-if="showInfo" class="flex items-center gap-3">
       <div
         class="hidden sm:flex items-center justify-center h-10 w-10 rounded-xl bg-primary/10 text-primary shrink-0 border border-primary/20">
-        <Icon icon="ph:list-numbers-bold" class="text-xl" />
+        <Icon icon="ph:list-numbers-bold" class="text-xl text-black/60" />
       </div>
       <div class="flex flex-col">
         <span class="text-[11px] font-black uppercase tracking-widest text-gray-400">Statistik Data</span>
         <p class="text-xs sm:text-sm text-gray-500 font-bold leading-tight">
           Menampilkan <span class="text-navy underline decoration-primary decoration-2 underline-offset-2">{{ startItem
-            }}</span>
+          }}</span>
           - <span class="text-navy underline decoration-primary decoration-2 underline-offset-2">{{ endItem }}</span>
           dari <span class="text-navy font-black tabular-nums">{{ totalItems }}</span> Entri
         </p>

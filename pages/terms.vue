@@ -8,8 +8,8 @@
         <div class="absolute left-0 bottom-0 -ml-20 -mb-20 w-96 h-96 bg-blue-500 rounded-full blur-3xl opacity-20">
         </div>
       </div>
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="max-w-3xl">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div>
           <div class="flex items-center gap-2 text-primary text-sm font-bold  tracking-wider mb-3">
             <Icon icon="ph:gavel" class="text-lg" />
             Legal
@@ -17,7 +17,7 @@
           <h1 class="text-3xl md:text-5xl font-black text-white leading-tight mb-4">
             Syarat dan Ketentuan
           </h1>
-          <p class="text-slate-300 text-lg leading-relaxed max-w-2xl">
+          <p class="text-slate-300 text-lg leading-relaxed">
             Harap baca Syarat dan Ketentuan ini dengan teliti sebelum menggunakan platform kami.
           </p>
           <p class="text-slate-400 text-sm mt-6">

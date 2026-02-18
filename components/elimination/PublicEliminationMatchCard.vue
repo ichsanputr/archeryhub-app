@@ -1,6 +1,7 @@
 <template>
-    <div class="match-node-card group/card shadow-sm"
-        :class="{ 'selected': isSelected, 'completed': match.winner_entry_id, 'is-final': isFinal }">
+    <div class="match-node-card group/card shadow-sm cursor-pointer hover:border-primary/50 hover:shadow-md transition-all active:scale-[0.98]"
+        :class="{ 'selected': isSelected, 'completed': match.winner_entry_id, 'is-final': isFinal }"
+        @click="handleCardClick">
         <div class="match-card-header" :class="{ '!bg-primary/5': isFinal, '!bg-orange-50/50': isBronze }">
             <div class="flex items-center gap-1.5" :class="headerTextStyle">
                 <Icon :icon="headerIcon" class="text-[10px]" />
@@ -45,6 +46,14 @@ const props = defineProps({
     isBronze: { type: Boolean, default: false },
     showSeed: { type: Boolean, default: false }
 })
+
+const router = useRouter()
+
+const handleCardClick = () => {
+    if (props.match?.id) {
+        router.push(`/match/${props.match.id}`)
+    }
+}
 
 const headerLabel = computed(() => {
     if (props.isFinal) return 'Perebutan Juara 1 & 2'
@@ -95,6 +104,10 @@ const isLoser = (side) => {
 <style scoped>
 .match-node-card {
     @apply relative w-[280px] h-[130px] bg-white rounded-2xl border border-[#d1dcf0] transition-all duration-300 overflow-hidden flex flex-col;
+}
+
+.match-node-card:hover {
+    @apply border-primary shadow-lg scale-[1.02] -translate-y-1 z-10;
 }
 
 .match-node-card.selected {

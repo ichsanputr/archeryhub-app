@@ -172,7 +172,7 @@
                             </h2>
 
                             <div v-if="tournament.fees && tournament.fees.length > 0"
-                                class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                                class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                                 <div v-for="(fee, idx) in tournament.fees" :key="idx"
                                     class="bg-gray-50/50 rounded-2xl p-6 border border-gray-100 hover:border-primary/30 transition-all shadow-sm group">
                                     <div class="flex items-center gap-4 mb-4">
@@ -272,7 +272,7 @@
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{
                                         displayValue(tournament.prizes?.first)
-                                    }}</div>
+                                        }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ firstPrizeCaption }}</div>
                                 </div>
                                 <div
@@ -291,7 +291,7 @@
                                     </div>
                                     <div class="text-2xl font-black text-navy">{{
                                         displayValue(tournament.prizes?.third)
-                                    }}</div>
+                                        }}</div>
                                     <div class="text-xs text-gray-400 mt-2">{{ thirdPrizeCaption }}</div>
                                 </div>
                             </div>

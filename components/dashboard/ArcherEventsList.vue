@@ -19,8 +19,8 @@
           <div class="flex items-center sm:items-start gap-4 flex-1">
             <!-- Icon Badge -->
             <div
-              class="h-12 w-12 sm:h-14 sm:w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md flex-shrink-0">
-              <Icon icon="ph:calendar-blank" class="text-primary text-xl sm:text-2xl" />
+              class="size-12 sm:size-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md flex-shrink-0">
+              <Icon icon="ph:calendar-blank-bold" class="text-primary text-xl sm:text-2xl" />
             </div>
 
             <!-- Title Section -->
@@ -29,7 +29,7 @@
                 Event Saya
               </h1>
               <p class="text-slate-300 text-xs sm:text-sm max-w-2xl line-clamp-1 sm:line-clamp-none">
-                Event yang Anda ikuti
+                Pantau progres dan hasil kompetisi yang Anda ikuti
               </p>
             </div>
           </div>
@@ -38,149 +38,140 @@
     </div>
 
     <!-- Search & Filter Card -->
-    <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
+    <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
       <div class="flex-grow w-full">
-        <BaseInput v-model="searchQuery" icon="ph:magnifying-glass" placeholder="Cari nama event, lokasi, atau kode..."
-          label="Pencarian" />
+        <BaseInput v-model="searchQuery" icon="ph:magnifying-glass-bold"
+          placeholder="Cari nama event, lokasi, atau kode..." label="Pencarian" />
       </div>
-      <BaseButton variant="white" icon="ph:funnel" @click="resetFilters" class="h-11">
+      <BaseButton variant="white" icon="ph:funnel-bold" @click="resetFilters"
+        class="h-11 font-black uppercase tracking-widest text-xs">
         Reset
       </BaseButton>
     </div>
 
-    <!-- Events List / Table -->
-    <div class="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden flex flex-col">
-      <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse min-w-[800px]">
-          <thead>
-            <tr class="bg-gray-50/50 border-b border-gray-100">
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">Informasi
-                Event
-              </th>
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">Jadwal & Lokasi
-              </th>
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">Status
-                Pendaftaran
-              </th>
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">Status
-                Pembayaran
-              </th>
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">Registrasi QR
-              </th>
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest text-right">Aksi
-              </th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-50">
-            <!-- Loading State -->
-            <tr v-if="isLoading">
-              <td :colspan="6" class="px-6 py-24 text-center">
-                <div class="flex flex-col items-center justify-center gap-4">
-                  <div class="h-12 w-12 border-4 border-primary border-t-transparent animate-spin rounded-full"></div>
-                  <div class="flex flex-col gap-1">
-                    <p class="text-navy font-bold">Memuat Event...</p>
-                    <p class="text-xs text-gray-400 font-medium">Menyiapkan data event Anda</p>
-                  </div>
-                </div>
-              </td>
-            </tr>
+    <!-- Events List / Grid -->
+    <div v-if="isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div v-for="i in 6" :key="i" class="bg-white rounded-3xl border border-slate-100 p-6 space-y-4 animate-pulse">
+        <div class="flex items-center gap-4">
+          <div class="size-16 rounded-2xl bg-slate-50"></div>
+          <div class="flex-1 space-y-2">
+            <div class="h-4 w-3/4 bg-slate-50 rounded"></div>
+            <div class="h-3 w-1/2 bg-slate-50 rounded"></div>
+          </div>
+        </div>
+        <div class="space-y-3">
+          <div class="h-4 w-full bg-slate-50 rounded"></div>
+          <div class="h-4 w-full bg-slate-50 rounded"></div>
+        </div>
+      </div>
+    </div>
 
-            <!-- Empty State -->
-            <tr v-else-if="filteredEvents.length === 0">
-              <td :colspan="6" class="px-6 py-24 text-center">
-                <div class="flex flex-col items-center gap-4 max-w-xs mx-auto">
-                  <div class="h-16 w-16 bg-gray-50 rounded-2xl flex items-center justify-center text-gray-300">
-                    <Icon icon="ph:calendar-x" class="text-4xl" />
-                  </div>
-                  <div class="space-y-1">
-                    <p class="text-lg font-bold text-navy">Belum Ada Event</p>
-                    <p class="text-sm text-gray-500 font-medium leading-relaxed">
-                      {{ emptyStateMessage }}
-                    </p>
-                  </div>
-                  <BaseButton v-if="searchQuery" variant="outline" size="sm" @click="resetFilters">
-                    Hapus Filter
-                  </BaseButton>
-                  <BaseButton v-else to="/events" variant="primary" size="sm" icon="ph:magnifying-glass">
-                    Cari Event
-                  </BaseButton>
-                </div>
-              </td>
-            </tr>
+    <div v-else-if="filteredEvents.length === 0" class="bg-white border border-slate-100 rounded-3xl p-12 text-center">
+      <div class="max-w-xs mx-auto space-y-6">
+        <div class="size-20 bg-slate-50 rounded-3xl flex items-center justify-center text-slate-300 mx-auto">
+          <Icon icon="ph:calendar-x-bold" class="text-4xl" />
+        </div>
+        <div class="space-y-2">
+          <p class="text-lg font-black text-navy">Belum Ada Event</p>
+          <p class="text-sm text-slate-500 font-medium leading-relaxed">
+            {{ emptyStateMessage }}
+          </p>
+        </div>
+        <BaseButton v-if="searchQuery" variant="outline" size="sm" @click="resetFilters" class="w-full">
+          Hapus Filter
+        </BaseButton>
+        <BaseButton v-else to="/events" variant="primary" size="sm" icon="ph:magnifying-glass-bold" class="w-full">
+          Cari Event
+        </BaseButton>
+      </div>
+    </div>
 
-            <!-- Data Rows -->
-            <tr v-else v-for="event in filteredEvents" :key="event.id"
-              class="group hover:bg-gray-50/50 transition-all duration-200">
-              <td class="px-6 py-5">
-                <div class="flex items-center gap-4">
-                  <div
-                    class="h-12 w-12 rounded-xl bg-navy/5 overflow-hidden flex items-center justify-center shrink-0 group-hover:bg-primary/10 transition-colors">
-                    <img v-if="event.logo_url" :src="event.logo_url" class="w-full h-full object-cover" />
-                    <Icon v-else icon="ph:trophy-bold"
-                      class="text-navy/20 text-2xl group-hover:text-primary transition-colors" />
-                  </div>
-                  <div class="min-w-0">
-                    <div
-                      class="text-[15px] font-bold text-navy truncate group-hover:text-primary-dark transition-colors">
-                      {{ event.name }}</div>
-                    <div class="flex items-center gap-2 mt-0.5">
-                      <span class="text-[11px] font-bold text-gray-400 tracking-wide ">{{ event.code?.toUpperCase()
-                      }}</span>
-                      <span class="text-gray-300">•</span>
-                      <span class="text-[11px] font-bold text-primary-dark  tracking-wide">{{
-                        event.location_type || 'Event' }}</span>
-                    </div>
-                  </div>
-                </div>
-              </td>
-              <td class="px-6 py-5">
-                <div class="flex flex-col gap-1.5">
-                  <div class="flex items-center gap-2 text-navy text-sm font-semibold">
-                    <Icon icon="ph:calendar-blank" class="text-gray-400" />
-                    {{ formatDate(event.start_date) }}
-                  </div>
-                  <div class="flex items-center gap-2 text-gray-500 text-xs font-medium">
-                    <Icon icon="ph:map-pin" class="text-gray-400" />
-                    <span class="truncate max-w-[150px]">{{ event.venue }}</span>
-                  </div>
-                </div>
-              </td>
-              <td class="px-6 py-5">
-                <span :class="getStatusClass(event.participant_status)"
-                  class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold border">
-                  <span :class="getStatusDotClass(event.participant_status)" class="h-1.5 w-1.5 rounded-full"></span>
-                  {{ getStatusLabel(event.participant_status) }}
-                </span>
-              </td>
-              <td class="px-6 py-5">
-                <span :class="getPaymentStatusClass(event.payment_status)"
-                  class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold border">
-                  <span :class="getPaymentStatusDotClass(event.payment_status)" class="h-1.5 w-1.5 rounded-full"></span>
-                  {{ getPaymentStatusLabel(event.payment_status) }}
-                </span>
-              </td>
-              <td class="px-6 py-5">
-                <BaseButton v-if="event.participant_status === 'Terdaftar' && event.qr_raw" @click="showQRDialog(event)"
-                  variant="primary" size="sm" icon="ph:qr-code" class="h-9 font-bold">
-                  Lihat QR
-                </BaseButton>
-                <span v-else class="text-xs text-gray-400 font-medium">-</span>
-              </td>
-              <td class="px-6 py-5 text-right">
-                <div class="flex items-center justify-end gap-2">
-                  <BaseButton :to="`/events/${event.slug || event.id}`" variant="primary" size="sm"
-                    class="h-9 font-bold">
-                    Lihat
-                  </BaseButton>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+    <div v-else class="space-y-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div v-for="event in filteredEvents" :key="event.id"
+          class="group bg-white rounded-3xl border border-slate-100 p-6 flex flex-col shadow-sm hover:shadow-xl hover:border-primary/20 transition-all duration-300 relative overflow-hidden">
+
+          <!-- Decorative Background -->
+          <div
+            class="absolute -right-4 -bottom-4 size-24 bg-slate-50/50 rounded-full blur-2xl group-hover:bg-primary/5 transition-colors">
+          </div>
+
+          <!-- Card Header -->
+          <div class="flex items-start gap-4 mb-6">
+            <div
+              class="size-16 sm:size-20 rounded-2xl bg-slate-50 overflow-hidden flex items-center justify-center shrink-0 border border-slate-100 group-hover:border-primary/20 transition-colors">
+              <img v-if="event.logo_url" :src="event.logo_url" class="size-full object-cover" />
+              <Icon v-else icon="ph:trophy-bold"
+                class="text-3xl text-slate-300 group-hover:text-primary transition-colors" />
+            </div>
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center gap-2 mb-1.5">
+                <span
+                  class="px-2 py-0.5 bg-navy text-primary rounded text-[8px] font-black uppercase tracking-widest">{{
+                    event.code?.toUpperCase() }}</span>
+                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{{ event.location_type ||
+                  'Event' }}</span>
+              </div>
+              <h3
+                class="text-lg font-black text-navy leading-tight group-hover:text-primary transition-colors line-clamp-2">
+                {{ event.name }}
+              </h3>
+            </div>
+          </div>
+
+          <!-- Card Body -->
+          <div class="space-y-4 mb-8">
+            <div class="flex items-start gap-3">
+              <div class="size-8 rounded-xl bg-slate-50 flex items-center justify-center text-primary shrink-0">
+                <Icon icon="ph:calendar-blank-bold" />
+              </div>
+              <div>
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Jadwal</p>
+                <p class="text-sm font-bold text-navy">{{ formatDate(event.start_date) }}</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3">
+              <div class="size-8 rounded-xl bg-slate-50 flex items-center justify-center text-primary shrink-0">
+                <Icon icon="ph:map-pin-bold" />
+              </div>
+              <div class="min-w-0">
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Lokasi</p>
+                <p class="text-sm font-bold text-navy truncate">{{ event.venue }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Status Badges -->
+          <div class="flex flex-wrap gap-2 mb-8">
+            <div :class="getStatusClass(event.participant_status)"
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest border shrink-0">
+              <span :class="getStatusDotClass(event.participant_status)" class="size-1.5 rounded-full"></span>
+              {{ getStatusLabel(event.participant_status) }}
+            </div>
+            <div :class="getPaymentStatusClass(event.payment_status)"
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest border shrink-0">
+              <span :class="getPaymentStatusDotClass(event.payment_status)" class="size-1.5 rounded-full"></span>
+              {{ getPaymentStatusLabel(event.payment_status) }}
+            </div>
+          </div>
+
+          <!-- Card Footer -->
+          <div class="mt-auto pt-6 border-t border-slate-50 flex items-center gap-3">
+            <BaseButton :to="`/dashboard/events/${event.slug || event.id}/overview`" variant="primary" size="md"
+              class="flex-1 font-black uppercase tracking-widest text-xs h-11">
+              Dashboard
+            </BaseButton>
+            <BaseButton v-if="event.participant_status === 'Terdaftar' && event.qr_raw" @click="showQRDialog(event)"
+              variant="white" size="md" icon="ph:qr-code-bold"
+              class="size-11 flex items-center justify-center p-0 border-slate-200">
+            </BaseButton>
+          </div>
+        </div>
       </div>
 
-      <!-- Pagination Card Footer -->
-      <div v-if="events.length > 0" class="px-6 py-6 bg-gray-50 border-t border-gray-100">
+      <!-- Pagination -->
+      <div v-if="totalItems > limit" class="pt-6">
         <BasePagination v-model:items-per-page="limit" :current-page="currentPage" :total-items="totalItems"
           :no-margin="true" @change-page="handlePageChange" />
       </div>
@@ -196,22 +187,29 @@
           <div class="relative h-full w-full flex items-center justify-center p-4" @click.stop>
             <!-- Close Button -->
             <button @click="showQR = false"
-              class="absolute top-4 right-4 h-10 w-10 rounded-xl bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-all">
-              <Icon icon="ph:x" class="text-navy text-xl" />
+              class="absolute top-4 right-4 h-11 w-11 rounded-2xl bg-slate-50 hover:bg-slate-100 text-navy flex items-center justify-center transition-all">
+              <Icon icon="ph:x-bold" class="text-xl" />
             </button>
 
             <!-- QR Code Content -->
-            <div class="flex flex-col items-center space-y-6 max-w-md w-full">
+            <div class="flex flex-col items-center space-y-8 max-w-md w-full">
               <!-- Archer Name -->
-              <div class="text-center space-y-2">
-                <h3 class="text-2xl sm:text-3xl font-black text-navy">{{ user?.name || 'Archer' }}</h3>
-                <p class="text-sm sm:text-base text-gray-600 font-semibold">{{ selectedEvent?.name }}</p>
+              <div class="text-center space-y-3">
+                <h3 class="text-3xl sm:text-4xl font-black text-navy tracking-tight">{{ user?.name || 'Archer' }}</h3>
+                <p class="text-sm sm:text-base text-slate-500 font-bold uppercase tracking-widest">{{
+                  selectedEvent?.name }}</p>
               </div>
 
               <!-- QR Code -->
-              <div class="bg-white p-4 sm:p-6 rounded-2xl border-2 border-gray-200 shadow-lg">
+              <div class="bg-white p-6 sm:p-8 rounded-[40px] border-2 border-slate-100 shadow-2xl">
                 <qrcode-vue :value="selectedEvent?.qr_raw || 'N/A'" :size="isMobile ? 280 : 350" level="H"
                   render-as="svg" />
+              </div>
+
+              <!-- Info -->
+              <div class="text-center">
+                <p class="text-xs text-slate-400 font-bold uppercase tracking-widest">Tunjukkan QR ini saat registrasi
+                  ulang</p>
               </div>
             </div>
           </div>
@@ -301,34 +299,6 @@ const resetFilters = () => {
 const showQRDialog = (event) => {
   selectedEvent.value = event
   showQR.value = true
-}
-
-const downloadQR = () => {
-  // Get the SVG element from the QR code
-  const svg = document.querySelector('.bg-gray-50 svg')
-  if (!svg) return
-
-  // Create a canvas to convert SVG to image
-  const canvas = document.createElement('canvas')
-  const ctx = canvas.getContext('2d')
-  const svgData = new XMLSerializer().serializeToString(svg)
-  const img = new Image()
-
-  img.onload = () => {
-    canvas.width = 300
-    canvas.height = 300
-    ctx.fillStyle = 'white'
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
-    ctx.drawImage(img, 0, 0)
-
-    // Download the image
-    const link = document.createElement('a')
-    link.download = `qr-${selectedEvent.value?.name || 'code'}.png`
-    link.href = canvas.toDataURL()
-    link.click()
-  }
-
-  img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)))
 }
 
 const filteredEvents = computed(() => events.value)

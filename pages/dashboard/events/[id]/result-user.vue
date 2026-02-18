@@ -55,7 +55,7 @@
                             <span
                                 class="px-2 py-0.5 bg-navy text-primary rounded text-[8px] font-black uppercase">Archer</span>
                             <span class="text-[9px] font-bold text-slate-400 uppercase truncate">{{ categoryName
-                            }}</span>
+                                }}</span>
                         </div>
                         <h2 class="text-lg sm:text-2xl font-black text-navy truncate block">{{ userProfile?.full_name ||
                             'Archer' }}</h2>
@@ -408,57 +408,7 @@ const fetchInitialData = async () => {
             }
         }
 
-        if (categoryId.value) {
-            const gRes = await get(`/events/${eventId}/results/qualification`, {
-                params: { category_id: categoryId.value }
-            })
-            totalParticipants.value = gRes?.results?.length || 0
-            const myQual = gRes?.results?.find(r =>
-                (participantUuid && r.participant_id === participantUuid) ||
-                (r.archer_uuid === userProfile.value?.uuid)
-            )
-            if (myQual) {
-                qualRank.value = myQual.rank
-                qualTotalScore.value = myQual.total_score ?? 0
-                totalTens.value = myQual.total_ten || 0
-                totalXs.value = myQual.total_x || 0
-                const sessions = myQual.sessions || []
-                qualSessions.value = sessions.map(s => ({
-                    session_name: s.session_name,
-                    session_code: s.session_code,
-                    total_score: s.total_score,
-                    end_scores: s.end_scores,
-                    end_scores_list: (s.end_scores && typeof s.end_scores === 'string')
-                        ? s.end_scores.split(',').map(x => x.trim()).filter(Boolean)
-                        : []
-                }))
-            }
-        }
-
-        if (categoryId.value) {
-            const elimRes = await get(`/events/${eventId}/results/elimination`, {
-                params: { category_id: categoryId.value }
-            })
-            if (elimRes?.bracket) {
-                bracketId.value = elimRes.bracket.bracket_id || elimRes.bracket.id
-                if (elimRes.bracket.matches) {
-                    const raw = Object.values(elimRes.bracket.matches).flat()
-                    const allMatches = raw.map(m => ({
-                        ...m,
-                        entry_a_uuid: m.entry_a_uuid ?? m.entry_a_id,
-                        entry_b_uuid: m.entry_b_uuid ?? m.entry_b_id
-                    }))
-                    const myName = userProfile.value?.full_name
-                    const myMatch = allMatches.find(m => m.entry_a_name === myName || m.entry_b_name === myName)
-                    if (myMatch) {
-                        myEntryUuid.value = myMatch.entry_a_name === myName ? (myMatch.entry_a_uuid ?? myMatch.entry_a_id) : (myMatch.entry_b_uuid ?? myMatch.entry_b_id)
-                        elimMatches.value = allMatches
-                            .filter(m => m.entry_a_uuid === myEntryUuid.value || m.entry_b_uuid === myEntryUuid.value)
-                            .sort((a, b) => a.round_no - b.round_no)
-                    }
-                }
-            }
-        }
+        await updateResultsData()
     } catch (e) {
         console.error('Failed to fetch result-user data:', e)
     } finally {
@@ -466,26 +416,77 @@ const fetchInitialData = async () => {
     }
 }
 
-const getScoreColorClass = (score, isX) => {
-    if (isX || score === 10 || score === 9) return 'bg-primary text-navy border-primary'
-    if (score === 8 || score === 7) return 'bg-red-500 text-white border-red-600'
-    if (score === 6 || score === 5) return 'bg-blue-500 text-white border-blue-600'
-    if (score === 4 || score === 3) return 'bg-gray-800 text-white border-gray-900'
-    return 'bg-gray-100 text-navy border-gray-200'
+const updateResultsData = async () => {
+    if (!categoryId.value) return
+    const participantUuid = route.query.participant_uuid
+
+    try {
+        // Fetch Qualification Results
+        const gRes = await get(`/events/${eventId}/results/qualification`, {
+            params: { category_id: categoryId.value }
+        })
+        totalParticipants.value = gRes?.results?.length || 0
+        const myQual = gRes?.results?.find(r =>
+            (participantUuid && r.participant_id === participantUuid) ||
+            (r.archer_uuid === userProfile.value?.uuid)
+        )
+        if (myQual) {
+            qualRank.value = myQual.rank
+            qualTotalScore.value = myQual.total_score ?? 0
+            totalTens.value = myQual.total_ten || 0
+            totalXs.value = myQual.total_x || 0
+            const sessions = myQual.sessions || []
+            qualSessions.value = sessions.map(s => ({
+                session_name: s.session_name,
+                session_code: s.session_code,
+                total_score: s.total_score,
+                end_scores: s.end_scores,
+                end_scores_list: (s.end_scores && typeof s.end_scores === 'string')
+                    ? s.end_scores.split(',').map(x => x.trim()).filter(Boolean)
+                    : []
+            }))
+        }
+
+        // Fetch Elimination Results
+        const elimRes = await get(`/events/${eventId}/results/elimination`, {
+            params: { category_id: categoryId.value }
+        })
+        if (elimRes?.bracket) {
+            bracketId.value = elimRes.bracket.bracket_id || elimRes.bracket.id
+            if (elimRes.bracket.matches) {
+                const raw = Object.values(elimRes.bracket.matches).flat()
+                const allMatches = raw.map(m => ({
+                    ...m,
+                    entry_a_uuid: m.entry_a_uuid ?? m.entry_a_id,
+                    entry_b_uuid: m.entry_b_uuid ?? m.entry_b_id
+                }))
+                const myName = userProfile.value?.full_name
+                const myMatch = allMatches.find(m => m.entry_a_name === myName || m.entry_b_name === myName)
+                if (myMatch) {
+                    myEntryUuid.value = myMatch.entry_a_name === myName ? (myMatch.entry_a_uuid ?? myMatch.entry_a_id) : (myMatch.entry_b_uuid ?? myMatch.entry_b_id)
+                    elimMatches.value = allMatches
+                        .filter(m => m.entry_a_uuid === myEntryUuid.value || m.entry_b_uuid === myEntryUuid.value)
+                        .sort((a, b) => a.round_no - b.round_no)
+                }
+            }
+        }
+    } catch (e) {
+        console.error('Failed to update results data:', e)
+    }
 }
 
-const getScoreIconColor = (score) => {
-    // End scores are usually sums, but let's color based on average arrow quality
-    // Max per end is 60. 
-    const val = parseInt(score)
-    if (val >= 54) return 'text-primary' // Gold
-    if (val >= 48) return 'text-red-500' // Red
-    if (val >= 42) return 'text-blue-500' // Blue
-    if (val >= 36) return 'text-slate-800' // Black
-    return 'text-slate-300' // White/Gray
-}
+let pollInterval = null
 
-onMounted(() => fetchInitialData())
+onMounted(async () => {
+    await fetchInitialData()
+    pollInterval = setInterval(updateResultsData, 10000)
+})
+
+onUnmounted(() => {
+    if (pollInterval) {
+        clearInterval(pollInterval)
+    }
+})
 </script>
 
 <style scoped>
