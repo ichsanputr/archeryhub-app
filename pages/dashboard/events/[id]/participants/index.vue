@@ -42,7 +42,7 @@
                             <span class="hidden sm:inline">Export CSV</span>
                             <span class="sm:hidden">Export</span>
                         </BaseButton>
-                        <BaseButton :to="`/dashboard/events/${route.params.id}/participants/add`" variant="primary"
+                        <BaseButton :to="`/dashboard/events/${eventId}/participants/add`" variant="primary"
                             icon="ph:plus-bold"
                             class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all">
                             <span class="hidden sm:inline">Tambah Peserta</span>
@@ -178,7 +178,7 @@
                                 <td class="px-6 py-4 text-right align-top w-20">
                                     <div class="flex items-center justify-end">
                                         <NuxtLink
-                                            :to="`/dashboard/events/${route.params.id}/participants/${participant.archer_id}`"
+                                            :to="`/dashboard/events/${eventId}/participants/${participant.archer_id}`"
                                             class="size-10 flex items-center justify-center rounded-xl bg-white border border-gray-100 text-gray-400 hover:text-navy hover:border-navy/20 hover:shadow-sm transition-all"
                                             title="Lihat Detail Profil">
                                             <Icon icon="ph:arrow-square-out-bold" class="text-xl" />
@@ -225,6 +225,7 @@ useHead({
 })
 
 const route = useRoute()
+const eventId = computed(() => route.params.id)
 const { get } = useApi()
 const { setEvent, clearEvent } = useEventContext()
 
@@ -259,8 +260,10 @@ const handleSearch = () => {
 }
 
 const fetchEventDetails = async () => {
+    const id = eventId.value
+    if (!id) return
     try {
-        const eventRes = await get(`/events/${route.params.id}`)
+        const eventRes = await get(`/events/${id}`)
         if (eventRes) {
             setEvent(eventRes)
         }
@@ -270,10 +273,12 @@ const fetchEventDetails = async () => {
 }
 
 const fetchParticipants = async () => {
+    const id = eventId.value
+    if (!id) return
     isLoading.value = true
     try {
         const offset = (page.value - 1) * limit.value
-        const response = await get(`/events/${route.params.id}/participants?limit=${limit.value}&offset=${offset}&group_by=archer&search=${searchQuery.value}`)
+        const response = await get(`/events/${id}/participants?limit=${limit.value}&offset=${offset}&group_by=archer&search=${searchQuery.value}`)
         participants.value = response?.participants || []
         total.value = response?.total || 0
         verifiedCount.value = response?.verified_count || 0
@@ -327,14 +332,47 @@ const getCategoryName = (participant) => {
 }
 
 
-onMounted(() => {
+const loadPageData = () => {
+    if (!eventId.value) return
     fetchEventDetails()
     fetchParticipants()
+}
+
+// Re-fetch whenever we're on this page (including when returning via browser back / touchpad back)
+watch(
+    () => [route.params.id, route.params.participantId],
+    ([id, participantId]) => {
+        if (import.meta.client && id && participantId === undefined) loadPageData()
+    },
+    { immediate: true }
+)
+
+// Re-fetch when page is restored from bfcache (browser back can restore cached page without re-mounting)
+const onPageShow = (event) => {
+    if (event.persisted) loadPageData()
+}
+
+// Fallback: re-fetch when tab/window becomes visible (handles some SSR/back edge cases)
+const onVisibilityChange = () => {
+    if (document.visibilityState === 'visible' && eventId.value && route.params.participantId === undefined) {
+        loadPageData()
+    }
+}
+
+onMounted(() => {
+    if (import.meta.client) {
+        window.addEventListener('pageshow', onPageShow)
+        document.addEventListener('visibilitychange', onVisibilityChange)
+    }
 })
 
 onBeforeUnmount(() => {
     if (searchTimeout.value) {
         clearTimeout(searchTimeout.value)
+    }
+    if (import.meta.client) {
+        window.removeEventListener('pageshow', onPageShow)
+        document.removeEventListener('visibilitychange', onVisibilityChange)
     }
 })
 </script>

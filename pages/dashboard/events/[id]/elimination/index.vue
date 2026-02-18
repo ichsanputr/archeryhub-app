@@ -307,7 +307,7 @@ useHead({
 import { getCategoryIcon, getCategoryColorClass } from '~/utils/logoArcheryCategory'
 
 const route = useRoute()
-const eventId = route.params.id
+const eventId = computed(() => route.params.id)
 const { get, post, put } = useApi()
 const toast = useToast()
 
@@ -342,8 +342,10 @@ const newBracket = ref({
 const searchQuery = ref('')
 
 const fetchEventName = async () => {
+  const id = eventId.value
+  if (!id) return
   try {
-    const response = await get(`/events/${eventId}`)
+    const response = await get(`/events/${id}`)
     eventName.value = response?.event?.name || response?.name || 'Event'
   } catch (error) {
     console.error('Failed to fetch event:', error)
@@ -351,9 +353,11 @@ const fetchEventName = async () => {
 }
 
 const fetchBrackets = async () => {
+  const id = eventId.value
+  if (!id) return
   loadingBrackets.value = true
   try {
-    const response = await get(`/events/${eventId}/elimination/brackets`)
+    const response = await get(`/events/${id}/elimination/brackets`)
     brackets.value = response?.brackets || []
   } catch (error) {
     console.error('Failed to fetch brackets:', error)
@@ -364,10 +368,12 @@ const fetchBrackets = async () => {
 }
 
 const fetchCategories = async () => {
+  const id = eventId.value
+  if (!id) return
   loadingCategories.value = true
   try {
     // Fetch all categories (increased limit from default 10)
-    const response = await get(`/events/${eventId}/categories`, { params: { limit: 1000 } })
+    const response = await get(`/events/${id}/categories`, { params: { limit: 1000 } })
     const fetchedCategories = response?.events || response.data?.events || response?.categories || response.data?.categories || []
     categories.value = fetchedCategories
   } catch (error) {
@@ -429,7 +435,7 @@ const updateBracket = async () => {
     const endDt = toDatetimeISO(newBracket.value.endDate, newBracket.value.endTime)
     if (startDt) payload.start_time = startDt
     if (endDt) payload.end_time = endDt
-    const response = await put(`/events/${eventId}/elimination/brackets/${editBracketId.value}`, payload)
+    const response = await put(`/events/${eventId.value}/elimination/brackets/${editBracketId.value}`, payload)
 
     toast.success('Bracket berhasil diupdate')
     showCreateDialog.value = false
@@ -486,7 +492,7 @@ const createBracket = async () => {
     const endDt = toDatetimeISO(newBracket.value.endDate, newBracket.value.endTime)
     if (startDt) payload.start_time = startDt
     if (endDt) payload.end_time = endDt
-    const response = await post(`/events/${eventId}/elimination/brackets`, payload)
+    const response = await post(`/events/${eventId.value}/elimination/brackets`, payload)
 
     if (response?.bracket?.id || response?.id) {
       toast.success('Bracket berhasil dibuat')
@@ -624,7 +630,43 @@ const formatDate = (dateString) => {
   return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
 }
 
-onMounted(async () => {
-  await Promise.all([fetchEventName(), fetchBrackets(), fetchCategories()])
+const loadPageData = () => {
+  if (!eventId.value) return
+  Promise.all([fetchEventName(), fetchBrackets(), fetchCategories()])
+}
+
+// Re-fetch whenever we're on this page (including when returning via browser back / touchpad back)
+watch(
+  () => [route.params.id, route.params.bracketId],
+  ([id, bracketId]) => {
+    if (import.meta.client && id && bracketId === undefined) loadPageData()
+  },
+  { immediate: true }
+)
+
+// Re-fetch when page is restored from bfcache (browser back can restore cached page without re-mounting)
+const onPageShow = (event) => {
+  if (event.persisted) loadPageData()
+}
+
+// Fallback: re-fetch when tab/window becomes visible (handles some SSR/back edge cases)
+const onVisibilityChange = () => {
+  if (document.visibilityState === 'visible' && eventId.value && route.params.bracketId === undefined) {
+    loadPageData()
+  }
+}
+
+onMounted(() => {
+  if (import.meta.client) {
+    window.addEventListener('pageshow', onPageShow)
+    document.addEventListener('visibilitychange', onVisibilityChange)
+  }
+})
+
+onBeforeUnmount(() => {
+  if (import.meta.client) {
+    window.removeEventListener('pageshow', onPageShow)
+    document.removeEventListener('visibilitychange', onVisibilityChange)
+  }
 })
 </script>

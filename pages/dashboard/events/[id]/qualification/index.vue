@@ -536,7 +536,7 @@ const router = useRouter()
 const { get, post, patch, delete: del } = useApi()
 const toast = useToast()
 import { getCategoryIcon } from '~/utils/logoArcheryCategory'
-const eventId = route.params.id
+const eventId = computed(() => route.params.id)
 
 definePageMeta({
   layout: 'dashboard'
@@ -609,7 +609,7 @@ const submitButtonLabel = computed(() => editingSessionId.value ? (creatingSessi
 
 const breadcrumbItems = computed(() => [
   { label: 'Events', to: '/dashboard/events' },
-  { label: eventName.value, to: `/dashboard/events/${eventId}` }
+  { label: eventName.value, to: `/dashboard/events/${eventId.value}` }
 ])
 
 useHead({
@@ -656,13 +656,15 @@ const editSession = (session) => {
 
 const goToSession = (session) => {
   // Use session_code as slug directly since it's already unique
-  router.push(`/dashboard/events/${eventId}/qualification/${session.session_code}`)
+  router.push(`/dashboard/events/${eventId.value}/qualification/${session.session_code}`)
 }
 
 const fetchQualificationSessions = async () => {
+  const id = eventId.value
+  if (!id) return
   loadingSessions.value = true
   try {
-    const response = await get(`/events/${eventId}/qualification/sessions`)
+    const response = await get(`/events/${id}/qualification/sessions`)
     const sessions = response?.sessions || []
     qualificationSessions.value = sessions
   } catch (error) {
@@ -692,10 +694,10 @@ const saveSession = async () => {
     }
 
     if (editingSessionId.value) {
-      await patch(`/events/${eventId}/qualification/sessions/${editingSessionId.value}`, payload)
+      await patch(`/events/${eventId.value}/qualification/sessions/${editingSessionId.value}`, payload)
       toast.success('Sesi kualifikasi berhasil diperbarui')
     } else {
-      await post(`/events/${eventId}/qualification/sessions`, payload)
+      await post(`/events/${eventId.value}/qualification/sessions`, payload)
       toast.success('Sesi kualifikasi berhasil dibuat')
     }
 
@@ -714,7 +716,7 @@ const confirmDeleteSession = async (session) => {
   if (!confirmed) return
 
   try {
-    await del(`/events/${eventId}/qualification/sessions/${session.uuid}`)
+    await del(`/events/${eventId.value}/qualification/sessions/${session.uuid}`)
     toast.success('Sesi berhasil dihapus')
     await fetchQualificationSessions()
   } catch (error) {
@@ -743,8 +745,10 @@ const formatTime = (timeStr) => {
 }
 
 const fetchEventName = async () => {
+  const id = eventId.value
+  if (!id) return
   try {
-    const response = await get(`/events/${eventId}`)
+    const response = await get(`/events/${id}`)
     eventName.value = response?.event?.name || response?.name || 'Event'
   } catch (error) {
     console.error('Failed to fetch event:', error)
@@ -752,10 +756,12 @@ const fetchEventName = async () => {
 }
 
 const fetchCategories = async () => {
+  const id = eventId.value
+  if (!id) return
   loadingCategories.value = true
   try {
     // Fetch all categories (increased limit from default 10)
-    const response = await get(`/events/${eventId}/categories`, { params: { limit: 1000 } })
+    const response = await get(`/events/${id}/categories`, { params: { limit: 1000 } })
     const fetchedCategories = response?.events || response.data?.events || response?.categories || response.data?.categories || []
     // Filter only individual categories for qualification leaderboard
     const individualCategories = fetchedCategories.filter(cat =>
@@ -805,10 +811,12 @@ const selectCategory = async (categoryId) => {
 
 const fetchQualificationReport = async (categoryId) => {
   if (!categoryId) return
+  const id = eventId.value
+  if (!id) return
 
   loadingReport.value = true
   try {
-    const response = await get(`/events/${eventId}/qualification/leaderboard`, {
+    const response = await get(`/events/${id}/qualification/leaderboard`, {
       params: { category_id: categoryId }
     })
 
@@ -835,8 +843,43 @@ const fetchQualificationReport = async (categoryId) => {
 
 // No local getAvatarUrl helper needed as we use useImageOrDefault from composables
 
-// Lifecycle
-onMounted(async () => {
-  await Promise.all([fetchEventName(), fetchQualificationSessions(), fetchCategories()])
+const loadPageData = () => {
+  if (!eventId.value) return
+  Promise.all([fetchEventName(), fetchQualificationSessions(), fetchCategories()])
+}
+
+// Re-fetch whenever we're on this page (including when returning via browser back / touchpad back)
+watch(
+  () => [route.params.id, route.params.session],
+  ([id, session]) => {
+    if (import.meta.client && id && session === undefined) loadPageData()
+  },
+  { immediate: true }
+)
+
+// Re-fetch when page is restored from bfcache (browser back can restore cached page without re-mounting)
+const onPageShow = (event) => {
+  if (event.persisted) loadPageData()
+}
+
+// Fallback: re-fetch when tab/window becomes visible (handles some SSR/back edge cases)
+const onVisibilityChange = () => {
+  if (document.visibilityState === 'visible' && eventId.value && route.params.session === undefined) {
+    loadPageData()
+  }
+}
+
+onMounted(() => {
+  if (import.meta.client) {
+    window.addEventListener('pageshow', onPageShow)
+    document.addEventListener('visibilitychange', onVisibilityChange)
+  }
+})
+
+onBeforeUnmount(() => {
+  if (import.meta.client) {
+    window.removeEventListener('pageshow', onPageShow)
+    document.removeEventListener('visibilitychange', onVisibilityChange)
+  }
 })
 </script>
