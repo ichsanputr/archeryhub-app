@@ -138,6 +138,20 @@
                   <span class="text-xs font-black text-navy">{{ session.arrows_per_end }} Panah</span>
                 </div>
               </div>
+
+              <!-- Categories Badge Display -->
+              <div v-if="session.category_ids && session.category_ids.length > 0" class="flex flex-wrap gap-1.5 pt-2">
+                <span v-for="catId in session.category_ids" :key="catId"
+                  class="px-2 py-1 bg-primary/10 text-navy text-[9px] font-black uppercase tracking-tight rounded-md border border-primary/20">
+                  {{categories.find(c => c.id === catId)?.category_name || 'Kategori'}}
+                </span>
+              </div>
+              <div v-else class="pt-2">
+                <span
+                  class="px-2 py-1 bg-gray-100 text-gray-400 text-[9px] font-black uppercase tracking-tight rounded-md border border-gray-200">
+                  Semua Kategori (Global)
+                </span>
+              </div>
             </div>
 
             <div class="flex items-center justify-between pt-4 border-t border-gray-100">
@@ -473,6 +487,28 @@
                   </div>
                 </div>
               </div>
+
+              <!-- Category Selection -->
+              <div>
+                <label class="block text-[10px] font-black text-gray-400 tracking-widest mb-3 px-1 uppercase">Kategori
+                  Event (Pilih kategori untuk sesi ini)</label>
+                <div
+                  class="bg-gray-50 rounded-2xl p-4 border border-gray-100 max-h-48 overflow-y-auto space-y-2 custom-scrollbar">
+                  <div v-for="category in categories" :key="category.id"
+                    class="flex items-center gap-3 p-3 bg-white rounded-xl border border-transparent hover:border-primary/20 transition-all cursor-pointer shadow-sm"
+                    @click="toggleSessionCategory(category.id)">
+                    <div class="size-5 rounded border-2 flex items-center justify-center transition-all"
+                      :class="selectedSessionCategoryIds.includes(category.id) ? 'bg-primary border-primary' : 'bg-white border-gray-200'">
+                      <Icon v-if="selectedSessionCategoryIds.includes(category.id)" icon="ph:check-bold"
+                        class="text-navy text-xs" />
+                    </div>
+                    <span class="text-xs font-bold text-navy">{{ getCategoryName(category) }}</span>
+                  </div>
+                  <div v-if="categories.length === 0" class="text-center py-4 text-xs text-gray-400 font-medium italic">
+                    Memuat kategori...
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -534,6 +570,7 @@ const newSessionStart = ref('08:00')
 const newSessionEnd = ref('12:00')
 const newSessionEnds = ref(12)
 const newSessionArrows = ref(6)
+const selectedSessionCategoryIds = ref([])
 
 // Pagination Computed
 const totalPages = computed(() => Math.ceil(reportEntries.value.length / pageSize.value))
@@ -592,6 +629,7 @@ const openCreateModal = () => {
   newSessionEnd.value = '12:00'
   newSessionEnds.value = 12
   newSessionArrows.value = 6
+  selectedSessionCategoryIds.value = []
   showSessionDialog.value = true
 }
 
@@ -612,6 +650,7 @@ const editSession = (session) => {
 
   newSessionEnds.value = session.total_ends
   newSessionArrows.value = session.arrows_per_end
+  selectedSessionCategoryIds.value = session.category_ids || []
   showSessionDialog.value = true
 }
 
@@ -648,7 +687,8 @@ const saveSession = async () => {
       start_time: newSessionStart.value,
       end_time: newSessionEnd.value,
       total_ends: newSessionEnds.value || 12,
-      arrows_per_end: newSessionArrows.value || 6
+      arrows_per_end: newSessionArrows.value || 6,
+      category_ids: selectedSessionCategoryIds.value
     }
 
     if (editingSessionId.value) {
@@ -747,6 +787,15 @@ const getCategoryName = (category) => {
     category.gender_division_name
   ].filter(Boolean)
   return parts.join(' ')
+}
+
+const toggleSessionCategory = (categoryId) => {
+  const index = selectedSessionCategoryIds.value.indexOf(categoryId)
+  if (index === -1) {
+    selectedSessionCategoryIds.value.push(categoryId)
+  } else {
+    selectedSessionCategoryIds.value.splice(index, 1)
+  }
 }
 
 const selectCategory = async (categoryId) => {

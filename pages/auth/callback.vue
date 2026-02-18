@@ -32,6 +32,10 @@ import { useAuth } from '~/composables/useAuth'
 const route = useRoute()
 const { handleCallback } = useAuth()
 
+useHead({
+  title: 'Menyambungkan Akun... - Archeryhub.id'
+})
+
 const loading = ref(true)
 const error = ref(null)
 

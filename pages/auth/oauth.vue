@@ -30,6 +30,10 @@ import { Icon } from '@iconify/vue'
 const router = useRouter()
 const { setToken } = useAuth()
 
+useHead({
+  title: 'Login Berhasil - Archeryhub.id'
+})
+
 onMounted(() => {
   const token = new URLSearchParams(window.location.search).get('token')
   if (token) {

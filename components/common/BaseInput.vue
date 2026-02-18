@@ -13,24 +13,26 @@
 
             <!-- Currency Input -->
             <template v-if="kind === 'currency'">
-                <input v-bind="$attrs" :value="displayValue" @input="handleCurrencyInput" @keydown="handleCurrencyKeydown" @blur="handleCurrencyBlur"
-                    type="text" :placeholder="placeholder" :disabled="disabled" class="w-full h-11 px-4 rounded-xl border border-gray-200 bg-gray-50/50 text-navy text-sm font-medium transition-all
+                <input v-bind="$attrs" :value="displayValue" @input="handleCurrencyInput"
+                    @keydown="handleCurrencyKeydown" @blur="handleCurrencyBlur" type="text" :placeholder="placeholder"
+                    :disabled="disabled" class="w-full h-11 px-4 rounded-xl border border-gray-200 bg-gray-50/50 text-navy text-sm font-medium transition-all
                    placeholder:text-gray-400 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none
                    disabled:opacity-50 disabled:cursor-not-allowed pr-16" :class="[
                     icon ? 'pl-11' : 'pl-4',
-                    error ? 'border-red-500 focus:border-red-500 focus:ring-red-100' : ''
+                    displayError ? 'border-red-500 focus:border-red-500 focus:ring-red-100' : ''
                 ]" />
                 <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 text-sm font-bold">IDR</span>
             </template>
 
             <!-- Regular Input -->
             <template v-else>
-                <input v-bind="$attrs" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)"
-                    :type="inputType" :placeholder="placeholder" :disabled="disabled" class="w-full h-11 px-4 rounded-xl border border-gray-200 bg-gray-50/50 text-navy text-sm font-medium transition-all
+                <input v-bind="$attrs" :value="modelValue" @input="handleInput" :type="inputType"
+                    :placeholder="placeholder" :disabled="disabled" :inputmode="numberOnly ? 'numeric' : undefined"
+                    class="w-full h-11 px-4 rounded-xl border border-gray-200 bg-gray-50/50 text-navy text-sm font-medium transition-all
                    placeholder:text-gray-400 focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none
                    disabled:opacity-50 disabled:cursor-not-allowed" :class="[
                     icon ? 'pl-11' : 'pl-4',
-                    error ? 'border-red-500 focus:border-red-500 focus:ring-red-100' : ''
+                    displayError ? 'border-red-500 focus:border-red-500 focus:ring-red-100' : ''
                 ]" />
                 <button v-if="type === 'password'" type="button" @click="isPasswordVisible = !isPasswordVisible"
                     class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-navy transition-colors">
@@ -39,8 +41,8 @@
             </template>
         </div>
 
-        <p v-if="error" class="text-red-500 text-[11px] font-bold ml-1 animate-in fade-in slide-in-from-top-1">
-            {{ error }}
+        <p v-if="displayError" class="text-red-500 text-[11px] font-bold ml-1 animate-in fade-in slide-in-from-top-1">
+            {{ displayError }}
         </p>
         <p v-else-if="hint" class="text-gray-400 text-[11px] ml-1">
             {{ hint }}
@@ -55,7 +57,7 @@ export default {
 </script>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { Icon } from '@iconify/vue'
 
 const props = defineProps({
@@ -75,12 +77,45 @@ const props = defineProps({
         type: String,
         default: '',
         validator: (value) => ['', 'currency'].includes(value)
+    },
+    numberOnly: Boolean,
+    rules: {
+        type: Array,
+        default: () => []
     }
 })
 
 const emit = defineEmits(['update:modelValue'])
 
 const isPasswordVisible = ref(false)
+const internalError = ref('')
+
+// Show parent error if provided, otherwise show internal validation error
+const displayError = computed(() => props.error || internalError.value)
+
+const validateInternal = (value) => {
+    internalError.value = ''
+    if (!props.rules || props.rules.length === 0) return true
+
+    for (const r of props.rules) {
+        // Support { rule: fn, message: string }
+        if (typeof r === 'object' && r.rule) {
+            if (!r.rule(value)) {
+                internalError.value = r.message
+                return false
+            }
+        }
+        // Support simple validation functions (like in useFormValidation)
+        else if (typeof r === 'function') {
+            const result = r(value)
+            if (result !== true) {
+                internalError.value = result
+                return false
+            }
+        }
+    }
+    return true
+}
 
 const inputType = computed(() => {
     if (props.type === 'password') {
@@ -131,31 +166,77 @@ const handleCurrencyKeydown = (event) => {
 
 const handleCurrencyInput = (event) => {
     let rawValue = event.target.value.replace(/[^\d]/g, '')
-    
+
     // Remove ALL leading zeros
     rawValue = rawValue.replace(/^0+/, '')
-    
+
     // If empty after removing zeros, set to empty
     if (rawValue === '') {
         currencyDisplayValue.value = ''
         emit('update:modelValue', null)
+        validateInternal(null) // Validate on currency input
         return
     }
-    
+
     // Format the number for display immediately
     const numValue = parseInt(rawValue, 10)
     if (!isNaN(numValue) && numValue > 0) {
         const formatted = new Intl.NumberFormat('id-ID').format(numValue)
         currencyDisplayValue.value = formatted
         emit('update:modelValue', numValue)
+        validateInternal(numValue) // Validate on currency input
     } else {
         currencyDisplayValue.value = ''
         emit('update:modelValue', null)
+        validateInternal(null) // Validate on currency input
     }
 }
 
 const handleCurrencyBlur = () => {
     // Clear the display ref on blur, will use computed value
     currencyDisplayValue.value = ''
+    // Re-validate on blur to ensure final state is checked
+    validateInternal(props.modelValue)
 }
+
+const handleInput = (event) => {
+    let value = event.target.value
+    let changed = true
+
+    if (props.numberOnly) {
+        const filtered = value.replace(/\D/g, '')
+        if (filtered !== value) {
+            event.target.value = filtered
+        } else {
+            // If the filtered value is the same as the input value,
+            // but the input was triggered by a non-numeric key,
+            // we don't want to emit or validate.
+        }
+
+        // If the user typed a letter in an empty field, the filtered value is ""
+        // but the modelValue was already "" (or null).
+        // We should only emit/validate if the string of numbers actually changed.
+        if (filtered === String(props.modelValue || '')) {
+            changed = false
+        }
+        value = filtered
+    }
+
+    if (changed) {
+        emit('update:modelValue', value)
+        validateInternal(value)
+    }
+}
+
+// Re-validate if modelValue changes externally
+watch(() => props.modelValue, (newVal) => {
+    validateInternal(newVal)
+})
+
+// Optional: Validate on mount if value exists
+onMounted(() => {
+    if (props.modelValue) {
+        validateInternal(props.modelValue)
+    }
+})
 </script>

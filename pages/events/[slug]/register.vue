@@ -292,12 +292,36 @@
                                 </h2>
                             </div>
                             <div class="p-6 space-y-5">
-                                <div class="space-y-3">
-                                    <BaseSelect v-model="form.category_id" :items="categories" label="Kategori Event"
-                                        item-title="name" item-value="id" required
-                                        placeholder="Pilih Kategori yang Sesuai" icon="ph:list-bullets-bold" />
-                                    <p class="text-xs text-gray-500">Pilih kategori sesuai dengan divisi, usia, dan
-                                        jenis busur Anda</p>
+                                <div class="space-y-4">
+                                    <div class="grid grid-cols-1 gap-3">
+                                        <div v-for="category in categories" :key="category.id"
+                                            class="p-4 rounded-2xl border-2 transition-all cursor-pointer flex items-center justify-between group"
+                                            :class="form.category_ids.includes(category.id)
+                                                ? 'border-primary bg-primary/5 shadow-sm'
+                                                : 'border-gray-100 bg-gray-50/50 hover:border-gray-200'"
+                                            @click="toggleCategory(category.id)">
+
+                                            <div class="flex items-center gap-4">
+                                                <div class="size-6 rounded-lg border-2 flex items-center justify-center transition-all"
+                                                    :class="form.category_ids.includes(category.id)
+                                                        ? 'bg-primary border-primary'
+                                                        : 'bg-white border-gray-300 group-hover:border-navy'">
+                                                    <Icon v-if="form.category_ids.includes(category.id)"
+                                                        icon="ph:check-bold" class="text-navy text-xs" />
+                                                </div>
+                                                <span class="text-sm font-bold text-navy">{{ category.name }}</span>
+                                            </div>
+
+                                            <div v-if="form.category_ids.includes(category.id)"
+                                                class="px-2 py-1 bg-primary text-navy text-[10px] font-black uppercase tracking-widest rounded-md">
+                                                Terpilih
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="text-[11px] text-gray-500 font-medium px-1 flex items-center gap-2">
+                                        <Icon icon="ph:info-bold" class="text-navy" />
+                                        Anda dapat memilih lebih dari satu kategori jika jadwal memungkinkan
+                                    </p>
                                 </div>
                                 <div v-if="categories.length === 0 && !pending"
                                     class="p-4 bg-amber-50 border border-amber-100 rounded-xl">
@@ -411,10 +435,22 @@
                                         </div>
                                     </div>
 
-                                    <div class="flex items-center justify-between pt-6 border-t border-gray-100">
-                                        <span class="text-sm font-black text-navy">Biaya Pendaftaran</span>
-                                        <span class="text-2xl font-black text-navy">{{ event.registration_fee ? `Rp
-                                            ${event.registration_fee.toLocaleString('id-ID')}` : 'Gratis' }}</span>
+                                    <div class="space-y-2 pt-6 border-t border-gray-100">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-sm text-gray-500">Kategori Terpilih</span>
+                                            <span class="text-sm font-bold text-navy">{{ form.category_ids.length }}
+                                                Kategori</span>
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-sm text-gray-500">Biaya per Kategori</span>
+                                            <span class="text-sm font-bold text-navy">Rp {{ (event.registration_fee ||
+                                                0).toLocaleString('id-ID') }}</span>
+                                        </div>
+                                        <div class="flex items-center justify-between pt-2">
+                                            <span class="text-sm font-black text-navy">Total Biaya Pendaftaran</span>
+                                            <span class="text-2xl font-black text-navy">Rp {{
+                                                totalFee.toLocaleString('id-ID') }}</span>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -587,7 +623,7 @@ const proofInput = ref(null)
 const paymentPreviews = ref([])
 
 const form = ref({
-    category_id: '',
+    category_ids: [],
     payment_amount: 0,
     payment_proofs: []
 })
@@ -645,9 +681,8 @@ const userDisplay = computed(() => ({
     email: archerProfile.value?.email || user.value?.email || '',
     avatar: archerProfile.value?.avatar_url || user.value?.avatar_url || ''
 }))
-
 const isFormValid = computed(() => {
-    const categorySelected = !!form.value.category_id
+    const categoriesSelected = form.value.category_ids.length > 0
     const archerProfileExists = !!archerProfile.value
 
     // Validasi form data atlet
@@ -658,8 +693,16 @@ const isFormValid = computed(() => {
 
     const paymentProofProvided = event.value.registration_fee > 0 ? form.value.payment_proofs.length > 0 : true
 
-    return categorySelected && archerProfileExists && profileComplete && paymentProofProvided
+    return categoriesSelected && archerProfileExists && profileComplete && paymentProofProvided
 })
+
+const totalFee = computed(() => {
+    return (event.value.registration_fee || 0) * form.value.category_ids.length
+})
+
+watch(() => totalFee.value, (newTotal) => {
+    form.value.payment_amount = newTotal
+}, { immediate: true })
 
 const loginUrl = computed(() => `/auth/login?redirect=${encodeURIComponent(route.fullPath)}`)
 
@@ -673,9 +716,11 @@ const getInitials = (name) => {
     return (words[0][0] + words[words.length - 1][0]).toUpperCase()
 }
 
-const getSelectedCategoryName = () => {
-    const cat = categories.value.find(c => c.id === form.value.category_id)
-    return cat ? cat.name : '-'
+const getSelectedCategoryNames = () => {
+    return categories.value
+        .filter(c => form.value.category_ids.includes(c.id))
+        .map(c => c.name)
+        .join(', ')
 }
 
 const indonesianPaymentMethods = [
@@ -732,8 +777,8 @@ watch(() => archerProfile.value, (profile) => {
 }, { immediate: true })
 
 watch(() => event.value.registration_fee, (fee) => {
-    if (fee && form.value.payment_amount === 0) {
-        form.value.payment_amount = fee
+    if (fee) {
+        form.value.payment_amount = totalFee.value
     }
 }, { immediate: true })
 
@@ -802,6 +847,15 @@ const removeProof = (index) => {
     form.value.payment_proofs = form.value.payment_proofs.filter(url => url !== removedUrl)
 }
 
+const toggleCategory = (categoryId) => {
+    const index = form.value.category_ids.indexOf(categoryId)
+    if (index === -1) {
+        form.value.category_ids.push(categoryId)
+    } else {
+        form.value.category_ids.splice(index, 1)
+    }
+}
+
 const handleSubmit = async () => {
     if (!isFormValid.value) return
 
@@ -810,8 +864,9 @@ const handleSubmit = async () => {
 
     try {
         // Update archer profile if exists
-        if (archerProfile.value?.uuid) {
-            await put(`/archers/${archerProfile.value.uuid}`, {
+        if (archerProfile.value?.uuid || archerProfile.value?.id) {
+            const profileId = archerProfile.value.uuid || archerProfile.value.id
+            await put(`/archers/${profileId}`, {
                 full_name: profileForm.value.full_name,
                 gender: profileForm.value.gender,
                 date_of_birth: profileForm.value.date_of_birth,
@@ -830,7 +885,7 @@ const handleSubmit = async () => {
         // Create participant registration
         const payload = {
             athlete_id: athleteId,
-            event_category_id: form.value.category_id,
+            event_category_ids: form.value.category_ids,
             payment_amount: form.value.payment_amount || 0,
             payment_proof_urls: form.value.payment_proofs
         }

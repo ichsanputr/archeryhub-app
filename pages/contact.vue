@@ -1,16 +1,21 @@
 <template>
   <div>
-    <div class="bg-navy pt-12 pb-16 relative overflow-hidden">
-      <div class="absolute inset-0 z-0 opacity-10">
-        <div class="absolute right-0 top-0 -mr-20 -mt-20 w-96 h-96 bg-primary rounded-full blur-3xl opacity-20">
-        </div>
-        <div class="absolute left-0 bottom-0 -ml-20 -mb-20 w-96 h-96 bg-blue-500 rounded-full blur-3xl opacity-20">
+    <section class="bg-navy relative overflow-hidden py-16 md:py-24">
+      <div class="absolute inset-0 z-0">
+        <img src="/hero-homepage.jpeg" class="w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90">
         </div>
       </div>
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="max-w-3xl">
+        <div class="max-w-3xl font-display">
+          <div
+            class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold tracking-widest mb-6">
+            <Icon icon="ph:headset-bold" class="text-lg" />
+            <span class="text-xs uppercase">Get in Touch</span>
+          </div>
           <h1 class="text-white text-3xl md:text-5xl font-black leading-tight tracking-tight mb-4">
-            Hubungi Kami
+            Hubungi <span class="text-primary">Kami</span>
           </h1>
           <p class="text-slate-300 text-lg leading-relaxed max-w-2xl">
             Ada pertanyaan tentang platform? Baik Anda pemilik klub, atlet, atau penyelenggara event, kami
@@ -18,7 +23,7 @@
           </p>
         </div>
       </div>
-    </div>
+    </section>
 
     <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 -mt-8 relative z-30">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
@@ -160,8 +165,13 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import { useApi } from '~/composables/useApi'
 definePageMeta({
   layout: 'landing'
+})
+
+useHead({
+  title: 'Hubungi Kami - Archeryhub.id'
 })
 
 const loading = ref(false)
@@ -172,17 +182,35 @@ const form = reactive({
   message: ''
 })
 
+const { post } = useApi()
+
 const handleSubmit = async () => {
+  if (!form.name || !form.email || !form.subject || !form.message) {
+    alert('Silakan lengkapi semua field.')
+    return
+  }
+
   loading.value = true
-  // Simulate API call
-  await new Promise(resolve => setTimeout(resolve, 1500))
-  loading.value = false
-  alert('Terima kasih! Pesan Anda telah dikirim.')
-  // Reset form
-  form.name = ''
-  form.email = ''
-  form.subject = ''
-  form.message = ''
+  try {
+    await post('/contact', {
+      name: form.name,
+      email: form.email,
+      subject: form.subject,
+      message: form.message
+    })
+
+    alert('Terima kasih! Pesan Anda telah dikirim.')
+    // Reset form
+    form.name = ''
+    form.email = ''
+    form.subject = ''
+    form.message = ''
+  } catch (error) {
+    console.error('Failed to send message:', error)
+    alert('Gagal mengirim pesan. Silakan coba lagi nanti.')
+  } finally {
+    loading.value = false
+  }
 }
 </script>
 

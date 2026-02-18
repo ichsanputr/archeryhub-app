@@ -87,7 +87,7 @@
                                 <BaseInput v-model="form.fullName" label="Nama Lengkap" placeholder="Masukkan Nama Anda"
                                     required
                                     :error="errors.fullName || (isNameTaken ? 'Nama atlet sudah terdaftar' : '')"
-                                    @blur="validate('fullName', form.fullName, [rules.required()])" />
+                                    @update:model-value="validate('fullName', form.fullName, [rules.required(), rules.minLength(3)])" />
 
                                 <div class="grid grid-cols-2 gap-4">
                                     <div class="space-y-1">
@@ -98,12 +98,15 @@
                                             <option value="female">Perempuan</option>
                                         </select>
                                     </div>
-                                    <BaseInput v-model="form.dateOfBirth" label="Tanggal Lahir" type="date" required />
+                                    <BaseInput v-model="form.dateOfBirth" label="Tanggal Lahir" type="date" required
+                                        :error="errors.dateOfBirth"
+                                        @update:model-value="validate('dateOfBirth', form.dateOfBirth, [rules.required()])" />
                                 </div>
 
                                 <div class="grid grid-cols-2 gap-4">
-                                    <BaseInput v-model="form.city" label="Kota/Kabupaten" placeholder="Contoh: Sleman"
-                                        required />
+                                    <BaseSelect v-model="form.city" :items="cities" label="Kota"
+                                        placeholder="Pilih Kota" required :error="errors.city" searchable
+                                        @update:model-value="validate('city', form.city, [rules.required()])" />
                                     <div class="space-y-1">
                                         <label class="text-sm font-bold text-navy">Tipe Busur Utama</label>
                                         <select v-model="form.bowType"
@@ -119,7 +122,8 @@
                                 <BaseInput v-model="form.school" label="Sekolah / Instansi"
                                     placeholder="Masukkan nama sekolah atau instansi" />
 
-                                <p class="mt-2 text-xs text-gray-400 font-body italic">* Data ini penting untuk penentuan kategori
+                                <p class="mt-2 text-xs text-gray-400 font-body italic">* Data ini penting untuk
+                                    penentuan kategori
                                     lomba.</p>
                             </div>
 
@@ -132,23 +136,30 @@
                                 <BaseInput v-model="form.organizationName" label="Nama Organisasi"
                                     placeholder="Nama resmi organisasi" required
                                     :error="errors.organizationName || (isNameTaken ? 'Nama organisasi sudah terdaftar' : '')"
-                                    @blur="validate('organizationName', form.organizationName, [rules.required()])" />
+                                    @update:model-value="validate('organizationName', form.organizationName, [rules.required(), rules.minLength(3)])" />
 
                                 <div class="grid grid-cols-2 gap-4">
                                     <BaseInput v-model="form.acronym" label="Singkatan (Acronym)"
-                                        placeholder="Contoh: PERPANI" />
+                                        placeholder="Contoh: PERPANI" :error="errors.acronym"
+                                        @update:model-value="validate('acronym', form.acronym, [rules.minLength(2)])" />
                                     <BaseInput v-model="form.whatsappNo" label="Nomor WhatsApp"
-                                        placeholder="081234567XXX" required />
+                                        placeholder="081234567XXX" required number-only :error="errors.whatsappNo"
+                                        @update:model-value="validate('whatsappNo', form.whatsappNo, [rules.required(), rules.minLength(10)])" />
                                 </div>
 
-                                <BaseInput v-model="form.city" label="Kota Pusat" placeholder="Masukkan Kota"
-                                    required />
+                                <BaseSelect v-model="form.city" label="Kota" placeholder="Pilih Kota" required
+                                    :items="cities" :error="errors.city" searchable
+                                    @update:model-value="validate('city', form.city, [rules.required()])" />
 
                                 <div class="space-y-1">
                                     <label class="text-sm font-bold text-navy">Alamat Lengkap</label>
                                     <textarea v-model="form.address"
                                         class="w-full p-4 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all min-h-[80px]"
-                                        placeholder="Alamat kantor atau sekretariat"></textarea>
+                                        :class="{ 'border-red-500': errors.address }"
+                                        placeholder="Alamat kantor atau sekretariat"
+                                        @input="validate('address', form.address, [rules.required()])"></textarea>
+                                    <p v-if="errors.address" class="text-red-500 text-[11px] font-bold ml-1">{{
+                                        errors.address }}</p>
                                 </div>
                             </div>
 
@@ -161,7 +172,7 @@
                                 <BaseInput v-model="form.clubName" label="Nama Klub" placeholder="Nama resmi klub"
                                     required
                                     :error="errors.clubName || (isNameTaken ? 'Nama klub sudah terdaftar' : '')"
-                                    @blur="validate('clubName', form.clubName, [rules.required()])" />
+                                    @update:model-value="validate('clubName', form.clubName, [rules.required(), rules.minLength(3)])" />
                                 <p class="mt-2 text-xs text-gray-400">Data pelatih dan lokasi bisa dilengkapi di halaman
                                     profil.</p>
                             </div>
@@ -175,14 +186,15 @@
                                 <BaseInput v-model="form.storeName" label="Nama Toko" placeholder="Nama toko Anda"
                                     required
                                     :error="errors.storeName || (isNameTaken ? 'Nama toko sudah terdaftar' : '')"
-                                    @blur="validate('storeName', form.storeName, [rules.required()])" />
+                                    @update:model-value="validate('storeName', form.storeName, [rules.required(), rules.minLength(3)])" />
                                 <p class="mt-2 text-xs text-gray-400">Alamat dan detail toko bisa dilengkapi di halaman
                                     profil.</p>
                             </div>
                         </div>
 
                         <div class="flex flex-col gap-2 pt-6 border-t border-gray-100">
-                            <BaseCheckbox v-model="form.terms" required :error="errors.terms">
+                            <BaseCheckbox v-model="form.terms" required :error="errors.terms"
+                                @update:model-value="validate('terms', form.terms, [rules.required('Anda harus menyetujui syarat & ketentuan')])">
                                 Saya setuju dengan
                                 <NuxtLink class="font-bold underline text-navy hover:text-primary-hover" to="/terms">
                                     Syarat & Ketentuan</NuxtLink> dan
@@ -231,6 +243,11 @@ import { useToast } from '~/composables/useToast'
 const route = useRoute()
 const isLoading = ref(false)
 const toast = useToast()
+const cities = ref([])
+
+useHead({
+    title: 'Buat Akun Baru - Archeryhub.id'
+})
 
 const userTypes = [
     { value: 'archer', label: 'Pemanah', icon: 'temaki:archery' },
@@ -332,8 +349,14 @@ watch(() => form.value.userType, () => {
     }
 })
 
-onMounted(() => {
+onMounted(async () => {
     startSlideshow()
+    try {
+        const response = await get('/cities')
+        cities.value = response.data.map(c => ({ title: c.name, value: c.name }))
+    } catch (err) {
+        console.error('Failed to fetch cities:', err)
+    }
 })
 
 onUnmounted(() => {

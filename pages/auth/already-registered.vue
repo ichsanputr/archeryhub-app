@@ -59,6 +59,10 @@ import { useRoute } from 'vue-router'
 
 definePageMeta({ layout: 'default' })
 
+useHead({
+  title: 'Email Sudah Terdaftar - Archeryhub.id'
+})
+
 const route = useRoute()
 
 const email = computed(() => {

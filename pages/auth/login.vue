@@ -77,14 +77,15 @@
                 <form @submit.prevent="handleEmailAuth" class="space-y-6">
                     <BaseInput v-model="form.email" label="Alamat Email" placeholder="name@company.com" type="email"
                         icon="mail" required :error="errors.email"
-                        @blur="validate('email', form.email, [rules.required(), rules.email()])" />
+                        @update:model-value="validate('email', form.email, [rules.required(), rules.email()])" />
 
                     <div class="space-y-2">
                         <div class="flex items-center justify-between px-1">
                             <label class="text-xs font-bold text-navy  tracking-wider">Kata Sandi</label>
                         </div>
                         <BaseInput v-model="form.password" placeholder="••••••••" type="password" icon="lock" required
-                            :error="errors.password" @blur="validate('password', form.password, [rules.required()])" />
+                            :error="errors.password"
+                            @update:model-value="validate('password', form.password, [rules.required()])" />
                     </div>
 
                     <div class="flex items-center">
@@ -136,6 +137,10 @@ import { useToast } from '~/composables/useToast'
 const route = useRoute()
 const { login, loginWithEmail, isLoggedIn } = useAuth()
 const toast = useToast()
+
+useHead({
+    title: 'Masuk - Archeryhub.id'
+})
 const config = useRuntimeConfig()
 
 const getMediaUrl = (filename) => {
