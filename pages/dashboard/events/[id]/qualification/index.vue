@@ -406,7 +406,7 @@
           </div>
 
           <!-- Modal Body -->
-          <div class="p-8 space-y-6">
+          <div class="p-8 space-y-6 max-h-[70vh] overflow-y-auto custom-scrollbar">
             <div class="space-y-4">
               <div>
                 <label class="block text-[10px] font-black text-gray-400  tracking-widest mb-2 px-1">Judul
@@ -542,10 +542,6 @@ definePageMeta({
   layout: 'dashboard'
 })
 
-useHead({
-  title: 'Manajemen Kualifikasi - ArcheryHub Dashboard'
-})
-
 // State Management
 const eventName = ref('Loading...')
 const qualificationSessions = ref([])
@@ -617,7 +613,11 @@ const breadcrumbItems = computed(() => [
 ])
 
 useHead({
-  title: `Qualification Sessions - ${eventName.value}`
+  title: computed(() =>
+    eventName.value === 'Loading...'
+      ? 'Manajemen Kualifikasi - ArcheryHub Dashboard'
+      : `Kualifikasi - ${eventName.value} - ArcheryHub Dashboard`
+  )
 })
 
 // Methods

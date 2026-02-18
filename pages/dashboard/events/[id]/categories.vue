@@ -156,19 +156,19 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <BaseSelect v-model="form.division_uuid" :items="bowOptions" label="Jenis Busur"
-                                placeholder="Pilih Jenis Busur" required />
+                                placeholder="Pilih Jenis Busur" required teleport />
                         </div>
                         <div>
                             <BaseSelect v-model="form.category_uuid" :items="ageOptions" label="Kelompok Umur"
-                                placeholder="Pilih Kelompok Umur" required />
+                                placeholder="Pilih Kelompok Umur" required teleport />
                         </div>
                         <div>
                             <BaseSelect v-model="form.event_type_uuid" :items="eventTypeOptions" label="Jenis Team"
-                                placeholder="Pilih Jenis Team" required />
+                                placeholder="Pilih Jenis Team" required teleport />
                         </div>
                         <div v-if="!isMixedTeam">
                             <BaseSelect v-model="form.gender_division_uuid" :items="genderOptions" label="Divisi Gender"
-                                placeholder="Pilih Divisi Gender" required />
+                                placeholder="Pilih Divisi Gender" required teleport />
                         </div>
                         <div v-else>
                             <div class="space-y-2">

@@ -1,5 +1,5 @@
 <template>
-    <div class="match-node-card group/card shadow-sm cursor-pointer hover:border-primary/50 hover:shadow-md transition-all active:scale-[0.98]"
+    <div class="match-node-card group/card shadow-sm cursor-pointer transition-all active:scale-[0.98]"
         :class="{ 'selected': isSelected, 'completed': match.winner_entry_id, 'is-final': isFinal }"
         @click="handleCardClick">
         <div class="match-card-header" :class="{ '!bg-primary/5': isFinal, '!bg-orange-50/50': isBronze }">
@@ -7,7 +7,7 @@
                 <Icon :icon="headerIcon" class="text-[10px]" />
                 <span class="text-[8px] font-black tracking-widest uppercase">{{ headerLabel }}</span>
             </div>
-            <span class="text-[10px] font-black text-navy/10">#{{ match.match_no }}</span>
+            <span class="match-no-label">M{{ match.match_no }}</span>
         </div>
         <div class="archer-list">
             <div v-for="side in ['A', 'B']" :key="side" class="archer-item"
@@ -103,11 +103,23 @@ const isLoser = (side) => {
 
 <style scoped>
 .match-node-card {
-    @apply relative w-[280px] h-[130px] bg-white rounded-2xl border border-[#d1dcf0] transition-all duration-300 overflow-hidden flex flex-col;
+    position: relative;
+    width: 280px;
+    min-height: 130px;
+    background: white;
+    border-radius: 1rem;
+    border: 2px solid #d1dcf0;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05);
 }
 
 .match-node-card:hover {
-    @apply border-primary shadow-lg scale-[1.02] -translate-y-1 z-10;
+    border-color: #D9FF00;
+    box-shadow: 0 0 0 2px rgba(217, 255, 0, 0.35);
+    z-index: 10;
 }
 
 .match-node-card.selected {
@@ -120,6 +132,10 @@ const isLoser = (side) => {
 
 .match-card-header {
     @apply flex justify-between items-center px-4 py-2 bg-slate-50 border-b border-[#d1dcf0];
+}
+
+.match-no-label {
+    @apply text-[10px] font-black text-navy underline underline-offset-1;
 }
 
 .archer-list {

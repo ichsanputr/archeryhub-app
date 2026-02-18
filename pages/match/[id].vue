@@ -1,216 +1,145 @@
 <template>
     <div class="min-h-screen bg-[#f8fafc] text-[#111827] font-sans selection:bg-[#D9FF00] selection:text-[#0f172a]">
-        <!-- Public Navigation Bar -->
-        <header class="bg-white border-b border-[#e2e8f0]">
-            <nav class="max-w-6xl mx-auto px-4 md:px-8 h-20 flex items-center justify-between">
-                <NuxtLink to="/" class="flex items-center gap-2">
-                    <div class="w-10 h-10 bg-[#0f172a] rounded-xl flex items-center justify-center text-[#D9FF00]">
-                        <Icon icon="ph:target-bold" class="text-2xl" />
+        <!-- Main Content (no custom header; uses layout like other pages) -->
+        <main class="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-8 py-4 md:py-8 relative z-10">
+                <div v-if="isLoading"
+                    class="flex-1 min-h-[calc(100vh-6rem)] flex flex-col items-center justify-center">
+                    <div class="flex items-center gap-2 mb-5">
+                        <span class="size-3 rounded-full bg-[#D9FF00] animate-bounce" style="animation-delay: 0ms"></span>
+                        <span class="size-3 rounded-full bg-[#D9FF00] animate-bounce" style="animation-delay: 150ms"></span>
+                        <span class="size-3 rounded-full bg-[#D9FF00] animate-bounce" style="animation-delay: 300ms"></span>
                     </div>
-                    <span class="font-black text-xl tracking-tighter uppercase hidden sm:block">Archery<span
-                            class="text-[#D9FF00]">Hub</span></span>
-                </NuxtLink>
-
-                <div class="flex items-center gap-4">
-                    <div class="flex flex-col items-end">
-                        <span
-                            class="text-[10px] font-black uppercase tracking-[0.2em] text-[#0f172a]/40 leading-none">Match
-                            Arena</span>
-                        <span class="text-xs font-bold text-[#0f172a] truncate max-w-[150px] md:max-w-xs">
-                            {{ matchData?.category_name || 'Match Detail' }}
-                        </span>
-                    </div>
-                    <div class="w-px h-8 bg-slate-200 hidden sm:block"></div>
-                    <button @click="handleBack"
-                        class="p-2 bg-[#0f172a]/5 hover:bg-[#0f172a]/10 rounded-full transition-all">
-                        <Icon icon="ph:caret-left-bold" class="text-xl text-[#0f172a]" />
-                    </button>
-                </div>
-            </nav>
-
-            <!-- Inline Status Bar (No longer sticky) -->
-            <div class="bg-gray-50/50 border-t border-[#e2e8f0] px-4 md:px-8 py-4">
-                <div class="max-w-6xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div class="flex flex-wrap items-center gap-3 md:gap-6">
-                        <div class="flex items-center gap-2">
-                            <span class="text-[#64748b] font-black text-[10px] uppercase tracking-[0.2em]">Babak</span>
-                            <span class="bg-[#0f172a] text-white text-[10px] font-black px-2 py-0.5 rounded">
-                                {{ matchData?.round_no || '-' }}
-                            </span>
-                        </div>
-                        <div class="w-px h-4 bg-slate-200 hidden sm:block"></div>
-                        <div class="flex items-center gap-2">
-                            <span class="text-[#64748b] font-black text-[10px] uppercase tracking-[0.2em]">Format</span>
-                            <span class="text-[#0f172a] text-[10px] font-black uppercase tracking-wider">
-                                {{ formatLabel }}
-                            </span>
-                        </div>
-                        <div class="w-px h-4 bg-slate-200 hidden sm:block"></div>
-                        <div class="flex items-center gap-2">
-                            <span v-if="matchData?.status !== 'finished'"
-                                class="px-3 py-1 bg-red-50 text-red-600 text-[10px] font-black rounded-lg border border-red-100 uppercase tracking-widest flex items-center gap-2">
-                                <span class="w-1.5 h-1.5 bg-red-600 rounded-full animate-pulse"></span> Pertandingan
-                                Berlangsung
-                            </span>
-                            <span v-else
-                                class="px-3 py-1 bg-teal-50 text-teal-600 text-[10px] font-black rounded-lg border border-teal-100 uppercase tracking-widest flex items-center gap-2">
-                                <Icon icon="ph:check-circle-fill" /> Pertandingan Selesai
-                            </span>
-                        </div>
-                    </div>
-                    <div
-                        class="flex items-center gap-3 text-[#64748b] bg-white px-4 py-1.5 rounded-xl border border-[#e2e8f0] self-start md:self-auto shadow-sm">
-                        <Icon icon="ph:calendar-clock-bold" class="text-navy" />
-                        <span class="text-[10px] font-black uppercase tracking-widest text-navy">{{ formatMatchTime()
-                        }}</span>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- Main Content Area -->
-        <div>
-
-            <main class="flex-1 overflow-y-auto p-4 md:p-8 relative z-10">
-                <div v-if="isLoading" class="flex flex-col items-center justify-center py-32 space-y-6">
-                    <div class="relative">
-                        <div class="size-16 rounded-full border-4 border-slate-200"></div>
-                        <div
-                            class="size-16 rounded-full border-4 border-[#D9FF00] border-t-transparent animate-spin absolute inset-0">
-                        </div>
-                    </div>
-                    <p class="text-slate-400 font-bold animate-pulse tracking-widest uppercase text-xs">Menyiapkan
-                        Arena...</p>
+                    <p class="text-slate-400 font-bold tracking-widest uppercase text-xs">Memuat data...</p>
                 </div>
 
                 <template v-else-if="matchData">
-                    <div class="max-w-6xl mx-auto space-y-8">
+                    <div class="max-w-7xl mx-auto space-y-4 sm:space-y-6 md:space-y-8">
                         <!-- Versus Head-to-Head Section -->
-                        <div class="grid grid-cols-1 md:grid-cols-11 items-center gap-4 md:gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-11 items-center gap-3 sm:gap-4 md:gap-6">
                             <!-- Archer A Card -->
                             <div
-                                class="md:col-span-4 bg-white p-4 md:p-6 rounded-2xl shadow-sm border-l-8 border-[#D9FF00] relative overflow-hidden group">
-                                <div class="flex items-center gap-4 md:gap-6">
+                                class="md:col-span-4 bg-white p-3 sm:p-4 md:p-6 rounded-xl sm:rounded-2xl shadow-sm border-l-4 sm:border-l-8 border-[#D9FF00] relative overflow-hidden group">
+                                <div class="flex items-center gap-3 sm:gap-4 md:gap-6">
                                     <div
-                                        class="w-20 md:w-24 h-20 md:h-24 rounded-xl bg-gray-100 overflow-hidden relative border border-[#e2e8f0] shrink-0">
+                                        class="w-14 h-14 sm:w-16 sm:h-16 md:w-24 md:h-24 rounded-lg sm:rounded-xl bg-gray-100 overflow-hidden relative border border-[#e2e8f0] shrink-0">
                                         <img :src="getAvatarUrl(participantA?.name)"
                                             class="size-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                         <div
-                                            class="absolute top-1 left-1 bg-[#0f172a] text-[#D9FF00] text-[10px] font-bold px-1.5 rounded">
+                                            class="absolute top-0.5 left-0.5 bg-[#0f172a] text-[#D9FF00] text-[8px] sm:text-[10px] font-bold px-1 sm:px-1.5 rounded">
                                             {{ participantA?.seed || '1' }}
                                         </div>
                                     </div>
-                                    <div class="min-w-0">
+                                    <div class="min-w-0 flex-1">
                                         <h2
-                                            class="text-lg md:text-2xl font-black text-[#0f172a] uppercase tracking-tight truncate">
+                                            class="text-sm sm:text-base md:text-2xl font-black text-[#0f172a] uppercase tracking-tight truncate">
                                             {{ participantA?.name || 'TBD' }}</h2>
-                                        <p class="text-[#64748b] font-medium text-xs md:text-sm truncate uppercase">{{
+                                        <p class="text-[#64748b] font-medium text-[10px] sm:text-xs md:text-sm truncate uppercase">{{
                                             participantA?.club || 'ARCHER A' }}</p>
-                                        <div class="mt-2 flex gap-1 items-center">
+                                        <div class="mt-1 sm:mt-2 flex gap-1 items-center">
                                             <span
-                                                class="w-6 h-6 rounded-full bg-[#0f172a] flex items-center justify-center text-[#D9FF00] text-xs font-bold leading-none">
+                                                class="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-[#0f172a] flex items-center justify-center text-[#D9FF00] text-[10px] sm:text-xs font-bold leading-none">
                                                 {{ getFinalScore('A') }}
                                             </span>
                                             <span
-                                                class="text-[10px] font-bold text-[#0f172a] ml-1 uppercase tracking-widest">{{
+                                                class="text-[9px] sm:text-[10px] font-bold text-[#0f172a] ml-1 uppercase tracking-widest">{{
                                                     matchData.format === 'recurve_set' ? 'Set Pts' : 'Score' }}</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div v-if="isWinner('A')"
-                                    class="absolute top-2 right-2 text-[#D9FF00] bg-[#0f172a] rounded-full p-1 shadow-lg">
-                                    <Icon icon="ph:crown-fill" class="text-lg" />
+                                    class="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 text-[#D9FF00] bg-[#0f172a] rounded-full p-0.5 sm:p-1 shadow-lg">
+                                    <Icon icon="ph:crown-fill" class="text-sm sm:text-lg" />
                                 </div>
                             </div>
 
                             <!-- VS Divider -->
-                            <div class="md:col-span-3 flex flex-col items-center justify-center py-4">
-                                <div class="text-[10px] font-black text-[#64748b] uppercase tracking-[0.4em] mb-2">
+                            <div class="md:col-span-3 flex flex-col items-center justify-center py-2 sm:py-4 order-first md:order-none">
+                                <div class="text-[8px] sm:text-[10px] font-black text-[#64748b] uppercase tracking-wider sm:tracking-[0.4em] mb-1 sm:mb-2">
                                     Elimination Round</div>
-                                <div class="text-3xl md:text-4xl font-black text-[#e2e8f0]">VS</div>
+                                <div class="text-2xl sm:text-3xl md:text-4xl font-black text-[#e2e8f0]">VS</div>
                                 <div
-                                    class="mt-4 px-4 py-1 bg-[#0f172a] text-[#D9FF00] rounded-full text-[10px] font-black tracking-widest">
+                                    class="mt-2 sm:mt-4 px-2 sm:px-4 py-0.5 sm:py-1 bg-[#0f172a] text-[#D9FF00] rounded-full text-[8px] sm:text-[10px] font-black tracking-widest">
                                     {{ matchData.status === 'finished' ? 'COMPLETED' : 'ACTIVE MATCH' }}
                                 </div>
                             </div>
 
                             <!-- Archer B Card -->
                             <div
-                                class="md:col-span-4 bg-white p-4 md:p-6 rounded-2xl shadow-sm border-r-8 border-[#e2e8f0] flex flex-row-reverse items-center justify-between gap-4 md:gap-6 group text-right">
+                                class="md:col-span-4 bg-white p-3 sm:p-4 md:p-6 rounded-xl sm:rounded-2xl shadow-sm border-r-4 sm:border-r-8 border-[#e2e8f0] flex flex-row-reverse items-center justify-between gap-3 sm:gap-4 md:gap-6 group text-right">
                                 <div
-                                    class="w-20 md:w-24 h-20 md:h-24 rounded-xl bg-gray-100 overflow-hidden relative border border-[#e2e8f0] shrink-0">
+                                    class="w-14 h-14 sm:w-16 sm:h-16 md:w-24 md:h-24 rounded-lg sm:rounded-xl bg-gray-100 overflow-hidden relative border border-[#e2e8f0] shrink-0">
                                     <img :src="getAvatarUrl(participantB?.name)"
                                         class="size-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                     <div
-                                        class="absolute top-1 right-1 bg-[#0f172a] text-white text-[10px] font-bold px-1.5 rounded">
+                                        class="absolute top-0.5 right-0.5 bg-[#0f172a] text-white text-[8px] sm:text-[10px] font-bold px-1 sm:px-1.5 rounded">
                                         {{ participantB?.seed || '2' }}
                                     </div>
                                 </div>
-                                <div class="min-w-0">
+                                <div class="min-w-0 flex-1">
                                     <h2
-                                        class="text-lg md:text-2xl font-black text-[#0f172a] uppercase tracking-tight truncate text-right">
+                                        class="text-sm sm:text-base md:text-2xl font-black text-[#0f172a] uppercase tracking-tight truncate text-right">
                                         {{ participantB?.name || 'TBD' }}</h2>
                                     <p
-                                        class="text-[#64748b] font-medium text-xs md:text-sm truncate uppercase text-right">
+                                        class="text-[#64748b] font-medium text-[10px] sm:text-xs md:text-sm truncate uppercase text-right">
                                         {{ participantB?.club || 'ARCHER B' }}</p>
-                                    <div class="mt-2 flex flex-row-reverse gap-1 items-center">
+                                    <div class="mt-1 sm:mt-2 flex flex-row-reverse gap-1 items-center">
                                         <span
-                                            class="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-[#0f172a] text-xs font-bold leading-none">
+                                            class="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-gray-200 flex items-center justify-center text-[#0f172a] text-[10px] sm:text-xs font-bold leading-none">
                                             {{ getFinalScore('B') }}
                                         </span>
                                         <span
-                                            class="text-[10px] font-bold text-[#64748b] mr-1 uppercase tracking-widest text-right">{{
+                                            class="text-[9px] sm:text-[10px] font-bold text-[#64748b] mr-1 uppercase tracking-widest text-right">{{
                                                 matchData.format === 'recurve_set' ? 'Set Pts' : 'Score' }}</span>
                                     </div>
                                 </div>
                                 <div v-if="isWinner('B')"
-                                    class="absolute top-2 left-2 text-[#D9FF00] bg-[#0f172a] rounded-full p-1 shadow-lg">
-                                    <Icon icon="ph:crown-fill" class="text-lg" />
+                                    class="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 text-[#D9FF00] bg-[#0f172a] rounded-full p-0.5 sm:p-1 shadow-lg">
+                                    <Icon icon="ph:crown-fill" class="text-sm sm:text-lg" />
                                 </div>
                             </div>
                         </div>
 
                         <!-- Score Breakdown Table -->
-                        <div class="bg-white rounded-2xl shadow-sm border border-[#e2e8f0] overflow-hidden">
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-center min-w-[800px]">
+                        <div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-[#e2e8f0] overflow-hidden">
+                            <div class="overflow-x-auto -mx-2 sm:mx-0">
+                                <table class="w-full text-center min-w-[640px] sm:min-w-[800px] text-xs sm:text-sm">
                                     <thead>
                                         <tr
-                                            class="bg-[#0f172a] text-white uppercase text-[10px] tracking-widest font-black">
-                                            <th class="py-4 w-16">End</th>
-                                            <th class="w-48 text-left px-6">Archer</th>
-                                            <th v-for="i in maxArrows" :key="i" class="w-16">A{{ i }}</th>
-                                            <th class="w-24">{{ scoreHeaderLabel }}</th>
-                                            <th class="w-24 bg-white/10">{{ pointsHeaderLabel }}</th>
-                                            <th class="w-32 border-l border-white/10">Running Score</th>
+                                            class="bg-[#0f172a] text-white uppercase text-[9px] sm:text-[10px] tracking-widest font-black">
+                                            <th class="py-2 sm:py-4 w-10 sm:w-16">End</th>
+                                            <th class="w-32 sm:w-48 text-left px-2 sm:px-6">Archer</th>
+                                            <th v-for="i in maxArrows" :key="i" class="w-8 sm:w-16">A{{ i }}</th>
+                                            <th class="w-12 sm:w-24">{{ scoreHeaderLabel }}</th>
+                                            <th class="w-12 sm:w-24 bg-white/10">{{ pointsHeaderLabel }}</th>
+                                            <th class="w-20 sm:w-32 border-l border-white/10">Running</th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-[#e2e8f0]">
                                         <template v-for="endNo in sortedEnds" :key="endNo">
                                             <!-- Row for Archer A -->
                                             <tr class="group">
-                                                <td class="font-bold text-[#1e293b] bg-[#f8fafc] border-r border-[#e2e8f0]"
+                                                <td class="font-bold text-[#1e293b] bg-[#f8fafc] border-r border-[#e2e8f0] text-[10px] sm:text-xs py-2 sm:py-4"
                                                     rowspan="2">
                                                     {{ endNo === 99 ? 'SO' : endNo }}
                                                 </td>
                                                 <td
-                                                    class="px-6 py-4 text-left font-black text-xs md:text-sm bg-[#D9FF00]/5 uppercase border-l-4 border-[#D9FF00]">
+                                                    class="px-2 sm:px-6 py-2 sm:py-4 text-left font-black text-[10px] sm:text-xs md:text-sm bg-[#D9FF00]/5 uppercase border-l-4 border-[#D9FF00]">
                                                     {{ participantA?.name || 'ARCHER A' }}
                                                 </td>
 
                                                 <!-- Archer A Arrows -->
                                                 <td v-for="i in maxArrows" :key="'a-' + i" class="font-bold">
-                                                    <div class="inline-flex size-9 rounded-lg items-center justify-center border transition-all"
+                                                    <div class="inline-flex size-6 sm:size-8 md:size-9 rounded-md sm:rounded-lg items-center justify-center border transition-all text-[10px] sm:text-xs"
                                                         :class="getScoreBadgeClass(getEndsBySide(endNo, 'A')[i - 1])">
                                                         {{ getEndsBySide(endNo, 'A')[i - 1] || '-' }}
                                                     </div>
                                                 </td>
 
-                                                <td class="font-black text-[#0f172a] text-lg">{{ getEndTotal(endNo, 'A')
+                                                <td class="font-black text-[#0f172a] text-sm sm:text-base md:text-lg">{{ getEndTotal(endNo, 'A')
                                                 }}</td>
-                                                <td class="font-black text-[#0f172a] bg-slate-50">{{ getSidePoints('A',
+                                                <td class="font-black text-[#0f172a] bg-slate-50 text-xs sm:text-sm">{{ getSidePoints('A',
                                                     endNo) }}</td>
-                                                <td class="border-l border-[#e2e8f0] font-black text-xl bg-[#f8fafc]/50"
+                                                <td class="border-l border-[#e2e8f0] font-black text-sm sm:text-base md:text-xl bg-[#f8fafc]/50"
                                                     rowspan="2">
                                                     {{ getRunningScoreDisplay(endNo) }}
                                                 </td>
@@ -218,18 +147,18 @@
                                             <!-- Row for Archer B -->
                                             <tr class="text-[#64748b]">
                                                 <td
-                                                    class="px-6 py-4 text-left font-bold text-xs md:text-sm border-l-4 border-transparent uppercase">
+                                                    class="px-2 sm:px-6 py-2 sm:py-4 text-left font-bold text-[10px] sm:text-xs md:text-sm border-l-4 border-transparent uppercase">
                                                     {{ participantB?.name || 'ARCHER B' }}
                                                 </td>
                                                 <!-- Archer B Arrows -->
                                                 <td v-for="i in maxArrows" :key="'b-' + i" class="font-medium">
-                                                    <div class="inline-flex size-9 rounded-lg items-center justify-center border border-transparent"
+                                                    <div class="inline-flex size-6 sm:size-8 md:size-9 rounded-md sm:rounded-lg items-center justify-center border border-transparent text-[10px] sm:text-xs"
                                                         :class="getScoreBadgeClass(getEndsBySide(endNo, 'B')[i - 1], true)">
                                                         {{ getEndsBySide(endNo, 'B')[i - 1] || '-' }}
                                                     </div>
                                                 </td>
-                                                <td class="font-bold text-[#0f172a]">{{ getEndTotal(endNo, 'B') }}</td>
-                                                <td class="font-bold text-[#111827]">{{ getSidePoints('B', endNo) }}
+                                                <td class="font-bold text-[#0f172a] text-sm sm:text-base">{{ getEndTotal(endNo, 'B') }}</td>
+                                                <td class="font-bold text-[#111827] text-xs sm:text-sm">{{ getSidePoints('B', endNo) }}
                                                 </td>
                                             </tr>
                                         </template>
@@ -238,104 +167,6 @@
                             </div>
                         </div>
 
-                        <!-- Visualization Section / Target Backgrounds -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pb-12">
-                            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-[#e2e8f0]">
-                                <div class="flex items-center justify-between mb-6">
-                                    <h3 class="font-black text-[#0f172a] uppercase tracking-wider text-xs md:text-sm">{{
-                                        participantA?.name ||
-                                        'Archer A' }} - Visual Sheet</h3>
-                                    <span class="text-[10px] font-bold text-[#64748b] uppercase">Avg: {{
-                                        getAverageScore('A') }}</span>
-                                </div>
-                                <div
-                                    class="aspect-square relative flex items-center justify-center max-w-[320px] mx-auto">
-                                    <!-- Target Rings Simulated via Divs -->
-                                    <div class="target-ring w-full h-full border border-gray-100 bg-white">
-                                        <div class="target-ring w-[90%] h-[90%] border border-gray-200 bg-white">
-                                            <div
-                                                class="target-ring w-[80%] h-[80%] border border-gray-300 bg-[#111827]">
-                                                <div
-                                                    class="target-ring w-[75%] h-[75%] border border-gray-600 bg-[#111827]">
-                                                    <div
-                                                        class="target-ring w-[60%] h-[60%] border-blue-400 bg-blue-500">
-                                                        <div
-                                                            class="target-ring w-[50%] h-[50%] border-blue-400 bg-blue-500">
-                                                            <div
-                                                                class="target-ring w-[40%] h-[40%] border-red-400 bg-red-600">
-                                                                <div
-                                                                    class="target-ring w-[30%] h-[30%] border-red-400 bg-red-600">
-                                                                    <div
-                                                                        class="target-ring w-[20%] h-[20%] border-yellow-300 bg-[#D9FF00]">
-                                                                        <div
-                                                                            class="target-ring w-[10%] h-[10%] border-yellow-600 bg-[#D9FF00]">
-                                                                            <div class="w-1 h-1 bg-black rounded-full">
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Simulated Hit Dots for Archer A -->
-                                    <div v-for="(hit, idx) in simulatedHits.A" :key="idx"
-                                        class="hit-dot bg-white border-2 border-[#0f172a] shadow-sm z-10"
-                                        :style="{ top: hit.y + '%', left: hit.x + '%' }"></div>
-                                </div>
-                            </div>
-
-                            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-[#e2e8f0]">
-                                <div class="flex items-center justify-between mb-6">
-                                    <h3 class="font-black text-[#0f172a] uppercase tracking-wider text-xs md:text-sm">{{
-                                        participantB?.name ||
-                                        'Archer B' }} - Visual Sheet</h3>
-                                    <span class="text-[10px] font-bold text-[#64748b] uppercase">Avg: {{
-                                        getAverageScore('B') }}</span>
-                                </div>
-                                <div
-                                    class="aspect-square relative flex items-center justify-center max-w-[320px] mx-auto">
-                                    <!-- Target Rings Simulated via Divs -->
-                                    <div class="target-ring w-full h-full border border-gray-100 bg-white shadow-inner">
-                                        <div class="target-ring w-[90%] h-[90%] border border-gray-200 bg-white">
-                                            <div
-                                                class="target-ring w-[80%] h-[80%] border border-gray-300 bg-[#111827]">
-                                                <div
-                                                    class="target-ring w-[75%] h-[75%] border border-gray-600 bg-[#111827]">
-                                                    <div
-                                                        class="target-ring w-[60%] h-[60%] border-blue-400 bg-blue-500">
-                                                        <div
-                                                            class="target-ring w-[50%] h-[50%] border-blue-400 bg-blue-500">
-                                                            <div
-                                                                class="target-ring w-[40%] h-[40%] border-red-400 bg-red-600">
-                                                                <div
-                                                                    class="target-ring w-[30%] h-[30%] border-red-400 bg-red-600">
-                                                                    <div
-                                                                        class="target-ring w-[20%] h-[20%] border-yellow-300 bg-[#D9FF00]">
-                                                                        <div
-                                                                            class="target-ring w-[10%] h-[10%] border-yellow-600 bg-[#D9FF00]">
-                                                                            <div class="w-1 h-1 bg-black rounded-full">
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Simulated Hit Dots for Archer B -->
-                                    <div v-for="(hit, idx) in simulatedHits.B" :key="idx"
-                                        class="hit-dot bg-white border-2 border-[#0f172a] shadow-sm z-10"
-                                        :style="{ top: hit.y + '%', left: hit.x + '%' }"></div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </template>
 
@@ -354,7 +185,6 @@
                     </button>
                 </div>
             </main>
-        </div>
 
         <!-- Dot Background Texture -->
         <div class="fixed inset-0 pointer-events-none z-0 opacity-[0.03]"

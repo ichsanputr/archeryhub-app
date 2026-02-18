@@ -244,6 +244,28 @@
               <BaseInput v-model.number="newBracket.arrowsPerEnd" type="number" label="Anak Panah per End" min="1"
                 max="6" required />
             </div>
+
+            <!-- Start & End Date/Time -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1.5">Mulai Eliminasi</label>
+                <div class="grid grid-cols-2 gap-2">
+                  <input v-model="newBracket.startDate" type="date"
+                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 text-navy text-sm font-medium focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                  <input v-model="newBracket.startTime" type="time"
+                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 text-navy text-sm font-medium focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1.5">Selesai Eliminasi</label>
+                <div class="grid grid-cols-2 gap-2">
+                  <input v-model="newBracket.endDate" type="date"
+                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 text-navy text-sm font-medium focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                  <input v-model="newBracket.endTime" type="time"
+                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 text-navy text-sm font-medium focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                </div>
+              </div>
+            </div>
           </div>
 
           <!-- Modal Footer -->
@@ -300,13 +322,21 @@ const showCreateDialog = ref(false)
 const editBracketId = ref(null)
 const isEditing = computed(() => !!editBracketId.value)
 
+const defaultStartDate = () => new Date().toISOString().split('T')[0]
+const defaultStartTime = '08:00'
+const defaultEndTime = '17:00'
+
 const newBracket = ref({
   categoryId: '',
   bracketType: 'individual',
   format: 'recurve_set',
   bracketSize: 8,
   endsPerMatch: 5,
-  arrowsPerEnd: 3
+  arrowsPerEnd: 3,
+  startDate: defaultStartDate(),
+  startTime: defaultStartTime,
+  endDate: defaultStartDate(),
+  endTime: defaultEndTime
 })
 
 const searchQuery = ref('')
@@ -348,15 +378,30 @@ const fetchCategories = async () => {
   }
 }
 
+function parseBracketDatetime(isoOrNull, defaultTime = defaultStartTime) {
+  if (!isoOrNull) return { date: defaultStartDate(), time: defaultTime }
+  const d = new Date(isoOrNull)
+  if (isNaN(d.getTime())) return { date: defaultStartDate(), time: defaultTime }
+  const date = d.toISOString().slice(0, 10)
+  const time = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
+  return { date, time }
+}
+
 const openEditBracket = (bracket) => {
   editBracketId.value = bracket.id || bracket.uuid
+  const start = parseBracketDatetime(bracket.start_time, defaultStartTime)
+  const end = parseBracketDatetime(bracket.end_time, defaultEndTime)
   newBracket.value = {
     categoryId: bracket.category_id,
     bracketType: bracket.bracket_type,
     format: bracket.format,
     bracketSize: bracket.bracket_size,
     endsPerMatch: bracket.ends_per_match,
-    arrowsPerEnd: bracket.arrows_per_end
+    arrowsPerEnd: bracket.arrows_per_end,
+    startDate: start.date,
+    startTime: start.time,
+    endDate: end.date,
+    endTime: end.time
   }
   showCreateDialog.value = true
 }
@@ -372,14 +417,19 @@ const handleCreateOrUpdate = async () => {
 const updateBracket = async () => {
   creatingBracket.value = true
   try {
-    const response = await put(`/events/${eventId}/elimination/brackets/${editBracketId.value}`, {
+    const payload = {
       category_id: newBracket.value.categoryId,
       bracket_type: newBracket.value.bracketType,
       format: newBracket.value.format,
       bracket_size: newBracket.value.bracketSize,
       ends_per_match: newBracket.value.endsPerMatch,
       arrows_per_end: newBracket.value.arrowsPerEnd
-    })
+    }
+    const startDt = toDatetimeISO(newBracket.value.startDate, newBracket.value.startTime)
+    const endDt = toDatetimeISO(newBracket.value.endDate, newBracket.value.endTime)
+    if (startDt) payload.start_time = startDt
+    if (endDt) payload.end_time = endDt
+    const response = await put(`/events/${eventId}/elimination/brackets/${editBracketId.value}`, payload)
 
     toast.success('Bracket berhasil diupdate')
     showCreateDialog.value = false
@@ -403,8 +453,17 @@ const resetForm = () => {
     format: 'recurve_set',
     bracketSize: 8,
     endsPerMatch: 5,
-    arrowsPerEnd: 3
+    arrowsPerEnd: 3,
+    startDate: defaultStartDate(),
+    startTime: defaultStartTime,
+    endDate: defaultStartDate(),
+    endTime: defaultEndTime
   }
+}
+
+function toDatetimeISO(dateStr, timeStr) {
+  if (!dateStr || !timeStr) return null
+  return `${dateStr}T${timeStr}:00`
 }
 
 const createBracket = async () => {
@@ -415,14 +474,19 @@ const createBracket = async () => {
 
   creatingBracket.value = true
   try {
-    const response = await post(`/events/${eventId}/elimination/brackets`, {
+    const payload = {
       category_id: newBracket.value.categoryId,
       bracket_type: newBracket.value.bracketType,
       format: newBracket.value.format,
       bracket_size: newBracket.value.bracketSize,
       ends_per_match: newBracket.value.endsPerMatch,
       arrows_per_end: newBracket.value.arrowsPerEnd
-    })
+    }
+    const startDt = toDatetimeISO(newBracket.value.startDate, newBracket.value.startTime)
+    const endDt = toDatetimeISO(newBracket.value.endDate, newBracket.value.endTime)
+    if (startDt) payload.start_time = startDt
+    if (endDt) payload.end_time = endDt
+    const response = await post(`/events/${eventId}/elimination/brackets`, payload)
 
     if (response?.bracket?.id || response?.id) {
       toast.success('Bracket berhasil dibuat')

@@ -210,7 +210,8 @@
                                 <BaseSelect v-model="newArcherForm.gender" label="Jenis Kelamin"
                                     :items="genderOptions" required />
                                 <BaseSelect v-model="newArcherForm.bow_type" label="Jenis Busur" :items="bowOptions" required />
-                                <BaseInput v-model="newArcherForm.city" label="Kota" placeholder="Jakarta" />
+                                <BaseSelect v-model="newArcherForm.city" label="Kota" placeholder="Pilih Kota"
+                                    :items="cityOptions" />
                                 <BaseInput v-model="newArcherForm.school" label="Sekolah"
                                     placeholder="Nama sekolah (opsional)" />
                             </div>
@@ -227,23 +228,44 @@
 
             <!-- Step 2 & 3: Sidebar Columns -->
             <div class="lg:col-span-1 space-y-6">
-                <!-- Step 2: Select Category -->
+                <!-- Step 2: Select Category (same style as events/[slug]/register.vue) -->
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
                     <h3 class="text-lg font-black text-navy mb-4 pb-4 border-b-2 border-gray-200">Kategori Lomba</h3>
                     <div class="space-y-4">
-                        <BaseSelect v-model="form.category_id" label="Kategori" :items="categoryOptions" required />
-                        <div v-if="selectedCategory" class="bg-gray-50/50 border border-gray-100 rounded-xl p-4">
-                            <p class="text-sm font-bold text-navy mb-1">
-                                {{ [
-                                    selectedCategory.division_name || selectedCategory.division,
-                                    selectedCategory.category_name || selectedCategory.category ||
-                                    selectedCategory.age_category
-                                    || selectedCategory.class_category,
-                                    selectedCategory.event_type_name || selectedCategory.event_type,
-                                    selectedCategory.gender_division_name || selectedCategory.gender
-                                ].filter(Boolean).join(' - ') }}
-                            </p>
-                            <p class="text-xs text-gray-500">Kategori yang dipilih untuk peserta ini</p>
+                        <div class="grid grid-cols-1 gap-3">
+                            <div v-for="category in categories" :key="category.id || category.uuid"
+                                class="p-4 rounded-2xl border-2 transition-all cursor-pointer flex items-center justify-between group"
+                                :class="form.category_ids.includes(category.id || category.uuid)
+                                    ? 'border-primary bg-primary/5 shadow-sm'
+                                    : 'border-gray-100 bg-gray-50/50 hover:border-gray-200'"
+                                @click="toggleCategory(category.id || category.uuid)">
+                                <div class="flex items-center gap-4">
+                                    <div class="size-6 rounded-lg border-2 flex items-center justify-center transition-all"
+                                        :class="form.category_ids.includes(category.id || category.uuid)
+                                            ? 'bg-primary border-primary'
+                                            : 'bg-white border-gray-300 group-hover:border-navy'">
+                                        <Icon v-if="form.category_ids.includes(category.id || category.uuid)"
+                                            icon="ph:check-bold" class="text-navy text-xs" />
+                                    </div>
+                                    <span class="text-sm font-bold text-navy">{{ getCategoryName(category) }}</span>
+                                </div>
+                                <div v-if="form.category_ids.includes(category.id || category.uuid)"
+                                    class="px-2 py-1 bg-primary text-navy text-[10px] font-black uppercase tracking-widest rounded-md">
+                                    Terpilih
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-gray-500 font-medium px-1 flex items-center gap-2">
+                            <Icon icon="ph:info-bold" class="text-navy" />
+                            Anda dapat memilih lebih dari satu kategori jika jadwal memungkinkan
+                        </p>
+                        <div v-if="categories.length === 0" class="p-4 bg-amber-50 border border-amber-100 rounded-xl">
+                            <div class="flex items-center gap-2">
+                                <Icon icon="ph:info-bold" class="text-amber-500 text-xl shrink-0" />
+                                <p class="text-sm text-amber-700 font-medium">
+                                    Kategori untuk event ini belum tersedia. Tambahkan kategori di halaman event terlebih dahulu.
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -300,6 +322,7 @@ const event = ref(null)
 const archers = ref([])
 const categories = ref([])
 const clubs = ref([])
+const cityOptions = ref([])
 const archerMode = ref('existing')
 
 const breadcrumbItems = computed(() => [
@@ -314,8 +337,8 @@ const isSubmitting = ref(false)
 const showMediaLibrary = ref(false)
 
 const form = reactive({
-    category_id: '',
-    payment_status: 'pending',
+    category_ids: [],
+    payment_status: 'lunas',
     payment_amount: 0,
     notes: ''
 })
@@ -363,23 +386,21 @@ const filteredArchers = computed(() => {
     return archers.value || []
 })
 
-const categoryOptions = computed(() => {
-    return [
-        { title: 'Pilih Kategori', value: '' },
-        ...categories.value.map(cat => ({
-            title: [
-                cat.division_name || cat.division,
-                cat.category_name || cat.category || cat.age_category || cat.class_category,
-                cat.event_type_name || cat.event_type,
-                cat.gender_division_name || cat.gender
-            ].filter(Boolean).join(' - '),
-            value: cat.id || cat.uuid
-        }))
-    ]
-})
+const getCategoryName = (cat) => {
+    if (!cat) return ''
+    return `${cat.division_name || cat.division || ''} - ${cat.category_name || cat.category || cat.age_category || cat.class_category || ''} ${cat.event_type_name ? '- ' + cat.event_type_name : ''} ${cat.gender_division_name ? '- ' + cat.gender_division_name : ''}`.trim().replace(/\s+/g, ' ') || 'Kategori'
+}
 
-const selectedCategory = computed(() => {
-    return categories.value.find(c => (c.id || c.uuid) === form.category_id)
+const toggleCategory = (categoryId) => {
+    if (!Array.isArray(form.category_ids)) form.category_ids = []
+    const index = form.category_ids.indexOf(categoryId)
+    if (index === -1) form.category_ids.push(categoryId)
+    else form.category_ids.splice(index, 1)
+}
+
+const selectedCategories = computed(() => {
+    if (!Array.isArray(form.category_ids) || form.category_ids.length === 0) return []
+    return categories.value.filter(c => form.category_ids.includes(c.id || c.uuid))
 })
 
 const clubOptions = computed(() => {
@@ -441,6 +462,16 @@ const fetchClubs = async () => {
         clubs.value = response?.data || []
     } catch (error) {
         console.error('Failed to fetch clubs:', error)
+    }
+}
+
+const fetchCities = async () => {
+    try {
+        const response = await get('/cities')
+        const data = response?.data || []
+        cityOptions.value = data.map(c => ({ title: c.name, value: c.name }))
+    } catch (error) {
+        console.error('Failed to fetch cities:', error)
     }
 }
 
@@ -535,8 +566,8 @@ const validateNewArcherForm = () => {
 }
 
 const submit = async () => {
-    if (!form.category_id) {
-        toast.error('Pilih kategori event terlebih dahulu')
+    if (!Array.isArray(form.category_ids) || form.category_ids.length === 0) {
+        toast.error('Pilih minimal satu kategori event')
         return
     }
 
@@ -552,19 +583,31 @@ const submit = async () => {
     isSubmitting.value = true
 
     try {
+        // validate payment amount
+        if (isNaN(Number(form.payment_amount)) || Number(form.payment_amount) < 0) {
+            toast.error('Jumlah Pembayaran harus berupa angka >= 0')
+            isSubmitting.value = false
+            return
+        }
+
         if (archerMode.value === 'existing') {
             // Register multiple existing archers
-            const registrationPromises = selectedArchers.value.map(async (archer) => {
-                const payload = {
-                    athlete_id: archer.uuid || archer.id,
-                    event_category_id: form.category_id,
-                    payment_amount: form.payment_amount || 0
+            const registrationPromises = []
+            const categoriesToRegister = form.category_ids
+            for (const archer of selectedArchers.value) {
+                for (const catId of categoriesToRegister) {
+                    const payload = {
+                        athlete_id: archer.uuid || archer.id,
+                        event_category_id: catId,
+                        payment_amount: form.payment_amount || 0,
+                        payment_status: form.payment_status || 'lunas'
+                    }
+                    registrationPromises.push(post(`/events/${route.params.id}/participants`, payload))
                 }
-                return post(`/events/${route.params.id}/participants`, payload)
-            })
+            }
 
             await Promise.all(registrationPromises)
-            toast.success(`${selectedArchers.value.length} peserta berhasil ditambahkan`)
+            toast.success(`${selectedArchers.value.length} peserta berhasil ditambahkan`) 
         } else {
             // Create new archer and register
             const archerResponse = await post('/archers', {
@@ -590,14 +633,19 @@ const submit = async () => {
                 return
             }
 
-            // Register the new archer
-            const payload = {
-                athlete_id: archerId,
-                event_category_id: form.category_id,
-                payment_amount: form.payment_amount || 0
-            }
+            // Register the new archer for each selected category
+            const categoriesToRegister = form.category_ids
+            const registrationPromises = categoriesToRegister.map(catId => {
+                const payload = {
+                    athlete_id: archerId,
+                    event_category_id: catId,
+                    payment_amount: form.payment_amount || 0,
+                    payment_status: form.payment_status || 'lunas'
+                }
+                return post(`/events/${route.params.id}/participants`, payload)
+            })
 
-            await post(`/events/${route.params.id}/participants`, payload)
+            await Promise.all(registrationPromises)
             toast.success('Peserta berhasil ditambahkan')
         }
 
@@ -642,6 +690,7 @@ onMounted(() => {
     fetchEventDetails()
     fetchCategories()
     fetchClubs()
+    fetchCities()
 })
 
 onBeforeUnmount(() => {

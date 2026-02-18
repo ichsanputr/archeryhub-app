@@ -102,7 +102,7 @@
                                     <p class="text-sm text-gray-400 font-medium mt-1">Kategori lomba yang
                                         tersedia dalam event ini</p>
                                 </div>
-                                <div class="hidden md:flex gap-2">
+                                <div v-if="divisionsData.length > 1" class="hidden md:flex gap-2">
                                     <button @click="scroll('left')"
                                         class="w-11 h-11 rounded-full border border-gray-200 flex items-center justify-center text-navy hover:border-navy hover:bg-navy hover:text-white transition-all shadow-sm">
                                         <Icon icon="ph:caret-left-bold" />
@@ -115,8 +115,8 @@
                             </div>
 
                             <div class="relative z-10">
-                                <!-- Mobile Arrows -->
-                                <div
+                                <!-- Mobile Arrows: only when more than one card -->
+                                <div v-if="divisionsData.length > 1"
                                     class="flex md:hidden absolute top-1/2 -translate-y-1/2 left-0 right-0 justify-between pointer-events-none z-20 px-2">
                                     <button @click="scroll('left')"
                                         class="w-10 h-10 rounded-full bg-white/90 border border-gray-200 flex items-center justify-center text-navy shadow-lg pointer-events-auto">
@@ -484,7 +484,7 @@
                                     <div class="flex justify-between items-start gap-4">
                                         <span
                                             class="text-[10px] font-black text-navy leading-tight line-clamp-2  tracking-tight">
-                                            {{ cat.division_name }} - {{ cat.category_name }}
+                                            {{ formatCategoryLabel(cat) }}
                                         </span>
                                         <div class="text-right shrink-0">
                                             <div class="text-[10px] font-black text-navy">
@@ -843,6 +843,13 @@ const fetchTournament = async () => {
     }
 }
 
+// Category label without jenis busur (division), no dash: e.g. "Senior Individual Women"
+const formatCategoryLabel = (e) => {
+    return [e.category_name, e.event_type_name, e.gender_division_name]
+        .filter(Boolean)
+        .join(' ')
+}
+
 const processDivisions = (events) => {
     const grouped = {}
     events.forEach(e => {
@@ -852,15 +859,8 @@ const processDivisions = (events) => {
                 categories: new Set()
             }
         }
-        // Barebow – Senior – Team – Men
-        const fullName = [
-            e.division_name,
-            e.category_name,
-            e.event_type_name,
-            e.gender_division_name
-        ].filter(Boolean).join(' – ')
-
-        grouped[e.division_name].categories.add(fullName)
+        const label = formatCategoryLabel(e)
+        if (label) grouped[e.division_name].categories.add(label)
     })
 
     return Object.values(grouped).map(d => ({

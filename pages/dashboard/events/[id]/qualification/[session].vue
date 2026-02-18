@@ -231,7 +231,12 @@ const fetchCategories = async () => {
     // Sort by participant_count descending
     individualCategories.sort((a, b) => (b.participant_count || 0) - (a.participant_count || 0))
 
-    categories.value = individualCategories
+    // Filter to only categories linked to this session (from qualification_session_categories)
+    const sessionCategoryIds = sessionData.value?.category_ids || []
+    const filtered = sessionCategoryIds.length
+      ? individualCategories.filter(c => sessionCategoryIds.includes(c.id || c.uuid))
+      : individualCategories
+    categories.value = filtered
   } catch (error) {
     console.error('Failed to fetch categories:', error)
   } finally {
@@ -408,8 +413,9 @@ const handleAssignmentsSaved = async () => {
 
 onMounted(async () => {
   isLoading.value = true
+  // Load session first so fetchCategories can filter by session's category_ids
+  await fetchSessionData()
   await Promise.all([
-    fetchSessionData(),
     fetchAllParticipants(),
     fetchCategories(),
     fetchTargets()
