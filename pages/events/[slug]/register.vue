@@ -189,7 +189,7 @@
                                                 'Atlet Baru' }}</h3>
                                             <p class="text-sm text-gray-500 mb-2">{{ archerProfile?.email ||
                                                 userDisplay.email
-                                            }}</p>
+                                                }}</p>
                                             <div class="flex flex-wrap gap-2">
                                                 <span v-if="archerProfile?.id"
                                                     class="text-[10px] text-navy font-bold bg-gray-100 px-2.5 py-1 rounded-full border border-gray-200  tracking-wider">
@@ -217,7 +217,7 @@
 
                                         <BaseSelect v-model="profileForm.city" :items="cityOptions"
                                             label="Kota / Kabupaten" placeholder="Pilih kota"
-                                            icon="mingcute:building-2-line" />
+                                            icon="mingcute:building-2-line" class="relative z-20" />
 
                                         <div class="sm:col-span-2">
                                             <BaseInput v-model="profileForm.club_name" label="Klub / Instansi"
@@ -293,29 +293,41 @@
                             </div>
                             <div class="p-6 space-y-5">
                                 <div class="space-y-4">
-                                    <div class="grid grid-cols-1 gap-3">
-                                        <div v-for="category in categories" :key="category.id"
-                                            class="p-4 rounded-2xl border-2 transition-all cursor-pointer flex items-center justify-between group"
-                                            :class="form.category_ids.includes(category.id)
-                                                ? 'border-primary bg-primary/5 shadow-sm'
-                                                : 'border-gray-100 bg-gray-50/50 hover:border-gray-200'"
-                                            @click="toggleCategory(category.id)">
+                                    <div class="relative">
+                                        <input v-model="categorySearch" type="text"
+                                            placeholder="Cari divisi atau kategori..."
+                                            class="w-full h-10 px-4 pl-10 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium" />
+                                        <Icon icon="ph:magnifying-glass"
+                                            class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                                    </div>
 
-                                            <div class="flex items-center gap-4">
-                                                <div class="size-6 rounded-lg border-2 flex items-center justify-center transition-all"
-                                                    :class="form.category_ids.includes(category.id)
-                                                        ? 'bg-primary border-primary'
-                                                        : 'bg-white border-gray-300 group-hover:border-navy'">
-                                                    <Icon v-if="form.category_ids.includes(category.id)"
-                                                        icon="ph:check-bold" class="text-navy text-xs" />
+                                    <div class="max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                                        <div class="grid grid-cols-1 gap-3">
+                                            <div v-for="category in filteredCategories" :key="category.id"
+                                                class="p-4 rounded-2xl border-2 transition-all cursor-pointer flex items-center justify-between group"
+                                                :class="form.category_ids.includes(category.id)
+                                                    ? 'border-primary bg-primary/5 shadow-sm'
+                                                    : 'border-gray-100 bg-gray-50/50 hover:border-gray-200'"
+                                                @click="toggleCategory(category.id)">
+
+                                                <div class="flex items-center gap-4">
+                                                    <div class="size-6 rounded-lg border-2 flex items-center justify-center transition-all"
+                                                        :class="form.category_ids.includes(category.id)
+                                                            ? 'bg-primary border-primary'
+                                                            : 'bg-white border-gray-300 group-hover:border-navy'">
+                                                        <Icon v-if="form.category_ids.includes(category.id)"
+                                                            icon="ph:check-bold" class="text-navy text-xs" />
+                                                    </div>
+                                                    <span class="text-sm font-bold text-navy">{{ category.name }}</span>
                                                 </div>
-                                                <span class="text-sm font-bold text-navy">{{ category.name }}</span>
                                             </div>
-
-                                            <div v-if="form.category_ids.includes(category.id)"
-                                                class="px-2 py-1 bg-primary text-navy text-[10px] font-black uppercase tracking-widest rounded-md">
-                                                Terpilih
-                                            </div>
+                                        </div>
+                                        <div v-if="filteredCategories.length === 0"
+                                            class="py-12 text-center text-gray-400">
+                                            <Icon icon="ph:magnifying-glass-slash"
+                                                class="text-3xl mx-auto mb-2 opacity-50" />
+                                            <p class="text-xs font-bold uppercase tracking-widest">Kategori tidak
+                                                ditemukan</p>
                                         </div>
                                     </div>
                                     <p class="text-[11px] text-gray-500 font-medium px-1 flex items-center gap-2">
@@ -662,6 +674,15 @@ const event = computed(() => {
 const categories = computed(() => {
     if (!data.value?.categories) return []
     return data.value.categories
+})
+
+const categorySearch = ref('')
+const filteredCategories = computed(() => {
+    if (!categorySearch.value) return categories.value
+    const search = categorySearch.value.toLowerCase()
+    return categories.value.filter(c =>
+        c.name.toLowerCase().includes(search)
+    )
 })
 
 const archerProfile = computed(() => globalArcherProfile.value || data.value?.archerProfile)

@@ -1,311 +1,393 @@
 <template>
-    <div class="flex flex-col gap-6 pb-12 px-2 sm:px-0">
-        <!-- Dashboard Standard Header -->
-        <div
-            class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm mb-2">
-            <div class="absolute inset-0 opacity-20"
-                style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);" />
-            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl" />
-            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl" />
-            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary" />
-
-            <div class="relative p-5 sm:p-8">
-                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-                    <div class="flex items-center sm:items-start gap-3 sm:gap-4 flex-1 min-w-0">
-                        <button @click="handleBack"
-                            class="p-2.5 sm:p-3 rounded-xl sm:rounded-2xl bg-white/10 text-white shrink-0 backdrop-blur-sm border border-white/20">
-                            <Icon icon="ph:arrow-left-bold" class="text-lg sm:text-xl" />
-                        </button>
-                        <div class="min-w-0">
-                            <h1
-                                class="text-lg sm:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2 truncate">
-                                {{ route.query.participant_uuid ? 'Detail Hasil Peserta' : 'Hasil Pertandingan' }}
-                            </h1>
-                            <div
-                                class="flex flex-wrap items-center gap-2 text-[10px] sm:text-sm text-slate-300 font-medium">
-                                <span v-if="categoryName"
-                                    class="px-2 py-0.5 rounded bg-primary/20 text-primary text-[9px] sm:text-xs font-black uppercase tracking-wider backdrop-blur-md border border-primary/20">
-                                    {{ categoryName.split('-')[0].trim() }}
-                                </span>
-                                <span class="opacity-40 hidden sm:inline">•</span>
-                                <span class="truncate">{{ eventName }}</span>
-                            </div>
-                        </div>
-                    </div>
+    <div class="flex flex-col gap-8 pb-16">
+        <!-- Breadcrumbs & Header Actions -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <nav class="flex text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 items-center gap-2">
+                    <NuxtLink :to="`/dashboard/events/${eventId}`" class="hover:text-primary transition-colors">Event
+                    </NuxtLink>
+                    <Icon icon="ph:caret-right-bold" class="text-[10px]" />
+                    <span class="text-slate-600 dark:text-slate-300">Athlete Profile</span>
+                </nav>
+                <div class="flex items-center gap-4">
+                    <button @click="handleBack"
+                        class="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:border-primary/50 transition-all text-navy dark:text-white">
+                        <Icon icon="ph:arrow-left-bold" />
+                    </button>
+                    <h2 class="text-3xl font-black text-navy dark:text-white tracking-tight">Performa Peserta</h2>
                 </div>
+            </div>
+            <div class="flex gap-3">
+                <BaseButton variant="white" icon="ph:download-bold" class="h-11 px-6 shadow-sm font-bold">
+                    Export PDF
+                </BaseButton>
+                <BaseButton variant="primary" icon="ph:share-network-bold"
+                    class="h-11 px-6 shadow-lg shadow-primary/20 font-black text-navy">
+                    Share Report
+                </BaseButton>
             </div>
         </div>
 
-        <!-- Loading -->
-        <div v-if="isLoading" class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div v-for="i in 4" :key="i"
-                class="h-24 sm:h-32 bg-white rounded-2xl animate-pulse border border-slate-100" />
-            <div class="h-64 bg-white rounded-2xl animate-pulse border border-slate-100 col-span-full" />
+        <!-- Loading State -->
+        <div v-if="isLoading" class="space-y-6">
+            <div
+                class="h-48 bg-white dark:bg-slate-800 rounded-2xl animate-pulse border border-slate-100 dark:border-slate-700" />
+            <div class="grid grid-cols-3 gap-6">
+                <div v-for="i in 3" :key="i" class="h-32 bg-white dark:bg-slate-800 rounded-2xl animate-pulse" />
+            </div>
+            <div class="h-96 bg-white dark:bg-slate-800 rounded-2xl animate-pulse" />
         </div>
 
         <template v-else>
-            <!-- Profile Overview -->
+            <!-- Profile Header Card -->
             <div
-                class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-                <div class="flex items-center gap-4 sm:gap-8 w-full sm:w-auto">
-                    <img :src="useImageOrDefault(userProfile?.avatar_url, userProfile?.full_name)"
-                        class="size-16 sm:size-24 rounded-2xl object-cover border-2 border-white shadow-md shrink-0" />
-                    <div class="min-w-0">
-                        <div class="flex items-center gap-2 mb-1">
+                class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-700 p-8 relative overflow-hidden group">
+                <div
+                    class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none group-hover:bg-primary/10 transition-all duration-500" />
+
+                <div class="flex flex-col md:flex-row gap-10 items-center md:items-start relative z-10">
+                    <div class="relative">
+                        <div
+                            class="w-32 h-32 sm:w-40 sm:h-40 rounded-3xl border-4 border-primary p-1 bg-white dark:bg-slate-800 shadow-2xl rotate-3 group-hover:rotate-0 transition-transform duration-500">
+                            <img :src="useImageOrDefault(userProfile?.avatar_url, userProfile?.full_name)"
+                                class="w-full h-full rounded-2xl object-cover" />
+                        </div>
+                        <div
+                            class="absolute -bottom-2 -right-2 bg-navy text-primary text-[10px] font-black px-3 py-1.5 rounded-xl border-2 border-white dark:border-slate-800 shadow-lg">
+                            ARCHER
+                        </div>
+                    </div>
+
+                    <div class="flex-1 text-center md:text-left pt-2">
+                        <div class="flex flex-col md:flex-row md:items-center gap-4 mb-4">
+                            <h3 class="text-3xl sm:text-4xl font-black text-navy dark:text-white tracking-tight">{{
+                                userProfile?.full_name || 'Archer' }}</h3>
                             <span
-                                class="px-2 py-0.5 bg-navy text-primary rounded text-[8px] font-black uppercase">Archer</span>
-                            <span class="text-[9px] font-bold text-slate-400 uppercase truncate">{{ categoryName
-                                }}</span>
-                        </div>
-                        <h2 class="text-lg sm:text-2xl font-black text-navy truncate block">{{ userProfile?.full_name ||
-                            'Archer' }}</h2>
-                        <div class="flex flex-wrap gap-3 mt-2">
-                            <span v-if="userProfile?.club_name"
-                                class="flex items-center gap-1 text-[10px] text-slate-500 font-medium">
-                                <Icon icon="ph:shield-bold" class="text-primary" /> {{ userProfile.club_name }}
-                            </span>
-                            <span v-if="userProfile?.city"
-                                class="flex items-center gap-1 text-[10px] text-slate-500 font-medium">
-                                <Icon icon="ph:map-pin-bold" class="text-primary" /> {{ userProfile.city }}
+                                class="inline-flex items-center px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-black uppercase tracking-widest border border-slate-200 dark:border-slate-600 shadow-sm">
+                                BIB #{{ userProfile?.bib_number || '42' }}
                             </span>
                         </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Stats Grid -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-                <div class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-100 shadow-sm relative overflow-hidden">
-                    <Icon icon="ph:crown-fill" class="absolute -right-2 -bottom-2 text-6xl text-navy/5 opacity-10" />
-                    <span class="text-[9px] font-black tracking-widest text-slate-400 uppercase block mb-1">Rank</span>
-                    <div class="flex items-baseline gap-1">
-                        <span class="text-2xl sm:text-4xl font-black text-navy">{{ qualRank || '-' }}</span>
-                        <span class="text-[10px] font-bold text-slate-400">/ {{ totalParticipants }}</span>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-100 shadow-sm">
-                    <span class="text-[9px] font-black tracking-widest text-slate-400 uppercase block mb-1">Total
-                        Score</span>
-                    <div class="flex items-baseline gap-1">
-                        <span class="text-2xl sm:text-4xl font-black text-navy">{{ qualTotalScore || 0 }}</span>
-                        <span class="text-[9px] font-bold text-slate-400 uppercase">Pts</span>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-100 shadow-sm overflow-hidden">
-                    <span class="text-[9px] font-black tracking-widest text-slate-400 uppercase block mb-1">Accuracy
-                        (10/X)</span>
-                    <div class="flex items-center gap-2 sm:gap-4">
-                        <div class="flex flex-col">
-                            <span class="text-xl sm:text-3xl font-black text-navy">{{ totalTens || 0 }}</span>
-                            <span class="text-[8px] font-bold text-slate-400 uppercase">10s</span>
-                        </div>
-                        <div class="w-px h-6 bg-slate-100" />
-                        <div class="flex flex-col">
-                            <span class="text-xl sm:text-3xl font-black text-navy">{{ totalXs || 0 }}</span>
-                            <span class="text-[8px] font-bold text-slate-400 uppercase">Xs</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-4 sm:p-6 border border-slate-100 shadow-sm">
-                    <span class="text-[9px] font-black tracking-widest text-slate-400 uppercase block mb-1">Avg
-                        Arrow</span>
-                    <div class="flex items-baseline gap-1">
-                        <span class="text-2xl sm:text-4xl font-black text-navy">{{ averageArrowScore }}</span>
-                        <span class="text-[9px] font-bold text-slate-400 uppercase">/ Arr</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Detailed Qualification Scoresheet -->
-            <div class="bg-white rounded-[32px] border border-slate-100 shadow-sm overflow-hidden relative group">
-                <div
-                    class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none" />
-
-                <div
-                    class="px-6 sm:px-8 py-5 sm:py-6 border-b border-slate-50 flex items-center justify-between relative z-10">
-                    <div class="flex items-center gap-4">
                         <div
-                            class="size-10 sm:size-12 rounded-xl bg-navy flex items-center justify-center shadow-lg shadow-navy/10">
-                            <Icon icon="ph:list-numbers-bold" class="text-primary text-xl" />
-                        </div>
-                        <div>
-                            <h3 class="text-base sm:text-lg font-black text-navy uppercase tracking-wider">Skor
-                                Kualifikasi</h3>
-                            <p class="text-[10px] sm:text-xs text-slate-400 font-medium">Performa detail setiap rambahan
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="p-6 sm:p-8 relative z-10">
-                    <div v-if="!qualSessions.length" class="py-16 text-center text-slate-300">
-                        <Icon icon="ph:target-light" class="text-6xl mx-auto mb-4 opacity-20" />
-                        <p class="text-xs font-bold uppercase tracking-widest">Belum ada skor tercatat</p>
-                    </div>
-
-                    <div v-else class="space-y-10">
-                        <div v-for="(session, sIdx) in qualSessions" :key="sIdx" class="relative">
-                            <div class="flex items-center justify-between gap-4 mb-6">
-                                <div class="flex items-center gap-4">
-                                    <div
-                                        class="px-4 py-2 rounded-xl bg-slate-50 border border-slate-100 flex items-center gap-2">
-                                        <Icon icon="ph:calendar-blank-bold" class="text-navy text-xs" />
-                                        <span
-                                            class="text-[10px] sm:text-xs font-black text-navy uppercase tracking-widest">
-                                            {{ session.session_name || `Sesi ${sIdx + 1}` }}
-                                        </span>
-                                    </div>
-
-                                    <NuxtLink v-if="categoryId"
-                                        :to="`/dashboard/events/${eventId}/qualification/${categoryId}`"
-                                        class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary/50 transition-colors text-[10px] font-black uppercase tracking-widest border border-primary/20">
-                                        <Icon icon="ph:eye-bold" class="text-xs" />
-                                        Lihat Kualifikasi
-                                    </NuxtLink>
-                                </div>
-
-                                <div class="flex items-center gap-3">
-                                    <div class="h-px w-8 sm:w-16 bg-slate-100 hidden sm:block" />
-                                    <div class="flex items-baseline gap-2">
-                                        <span class="text-xl sm:text-3xl font-black text-navy tabular-nums">{{
-                                            session.total_score || 0 }}</span>
-                                        <span
-                                            class="text-[10px] font-black text-slate-400 uppercase tracking-widest">PTS</span>
-                                    </div>
-                                </div>
+                            class="flex flex-wrap items-center justify-center md:justify-start gap-4 mb-8 text-slate-500 dark:text-slate-400 font-medium text-sm">
+                            <div class="flex items-center gap-2">
+                                <Icon icon="ph:shield-check-bold" class="text-primary text-lg" />
+                                {{ userProfile?.club_name || 'Independent archer' }}
                             </div>
+                            <span class="w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-slate-600 hidden sm:block" />
+                            <div class="flex items-center gap-2">
+                                <Icon icon="ph:map-pin-bold" class="text-primary text-lg" />
+                                {{ userProfile?.city || 'Unspecified City' }}
+                            </div>
+                        </div>
 
-                            <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
-                                <div v-for="(score, endIdx) in session.end_scores_list" :key="endIdx"
-                                    class="p-4 rounded-2xl border border-slate-50 bg-slate-50/30 relative overflow-hidden">
-                                    <div class="absolute top-0 right-0 p-2 opacity-20">
-                                        <Icon icon="ph:target-bold" class="text-2xl text-red-500" />
-                                    </div>
-                                    <span
-                                        class="text-[9px] font-black text-slate-300 uppercase tracking-widest block mb-2">End
-                                        {{ endIdx + 1 }}</span>
-                                    <div class="text-2xl font-black text-navy tabular-nums">
-                                        {{ score }}
-                                    </div>
-                                </div>
+                        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-3xl">
+                            <div
+                                class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-700 transition-colors hover:border-primary/30">
+                                <p class="text-[10px] uppercase font-black text-slate-400 tracking-widest mb-1.5">
+                                    Division</p>
+                                <p class="font-black text-navy dark:text-white">{{ categoryName || 'Standard Bow' }}</p>
+                            </div>
+                            <div
+                                class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-700 transition-colors hover:border-primary/30">
+                                <p class="text-[10px] uppercase font-black text-slate-400 tracking-widest mb-1.5">
+                                    Qualification Rank</p>
+                                <p class="font-black text-navy dark:text-white">#{{ qualRank || '-' }} <span
+                                        class="text-[10px] text-slate-400">/ {{ totalParticipants }}</span></p>
+                            </div>
+                            <div
+                                class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-700 transition-colors hover:border-primary/30">
+                                <p class="text-[10px] uppercase font-black text-slate-400 tracking-widest mb-1.5">
+                                    Equipment</p>
+                                <p class="font-black text-navy dark:text-white">{{ userProfile?.bow_type || '-' }}</p>
+                            </div>
+                            <div
+                                class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-700 transition-colors hover:border-primary/30 text-primary">
+                                <p class="text-[10px] uppercase font-black text-slate-400 tracking-widest mb-1.5">Avg.
+                                    Arrow</p>
+                                <p class="font-black text-navy dark:text-white">{{ averageArrowScore }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Elimination Battles - Premium Battle Cards -->
-            <div class="bg-white rounded-[32px] border border-slate-100 shadow-sm overflow-hidden group">
+            <!-- Major Stats Row -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div
-                    class="px-6 sm:px-8 py-5 sm:py-6 border-b border-slate-50 flex items-center justify-between bg-slate-50/30">
-                    <div class="flex items-center gap-4">
-                        <div
-                            class="size-10 sm:size-12 rounded-xl bg-navy flex items-center justify-center shadow-lg shadow-navy/10">
-                            <Icon icon="ph:sword-bold" class="text-primary text-xl" />
-                        </div>
+                    class="bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/30 dark:shadow-none flex items-center justify-between transform transition-all hover:scale-[1.02]">
+                    <div>
+                        <p class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-2">Qual Rank</p>
+                        <p class="text-5xl font-black text-navy dark:text-white tracking-tighter">
+                            {{ qualRank || '-' }}<span class="text-lg font-bold align-top mt-2 ml-0.5">{{
+                                getOrdinal(qualRank) }}</span>
+                        </p>
+                    </div>
+                    <div
+                        class="w-16 h-16 bg-slate-50 dark:bg-slate-900 rounded-3xl flex items-center justify-center text-slate-300 dark:text-slate-600">
+                        <Icon icon="ph:medal-bold" class="text-4xl" />
+                    </div>
+                </div>
+
+                <div
+                    class="bg-navy p-8 rounded-3xl border-2 border-primary/30 shadow-2xl shadow-primary/10 flex items-center justify-between relative overflow-hidden group transform transition-all hover:scale-[1.02]">
+                    <div
+                        class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none" />
+                    <div>
+                        <p class="text-primary/60 text-[10px] font-black uppercase tracking-widest mb-2">Final Standing
+                        </p>
+                        <p class="text-4xl font-black text-primary tracking-tight">
+                            {{ elimStatusLabel === 'Winner' ? 'Champion' : elimStatusLabel }}
+                        </p>
+                    </div>
+                    <div
+                        class="w-16 h-16 bg-primary/20 rounded-3xl flex items-center justify-center text-primary shadow-lg shadow-primary/20">
+                        <Icon :icon="elimStatusLabel === 'Winner' ? 'ph:crown-bold' : 'ph:trophy-bold'"
+                            class="text-4xl" />
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/30 dark:shadow-none flex items-center justify-between transform transition-all hover:scale-[1.02]">
+                    <div>
+                        <p class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-2">Total Score</p>
+                        <p class="text-5xl font-black text-navy dark:text-white tracking-tighter">{{ qualTotalScore || 0
+                            }}<span class="text-sm font-bold text-slate-400 ml-2 tracking-widest">PTS</span></p>
+                    </div>
+                    <div
+                        class="w-16 h-16 bg-slate-50 dark:bg-slate-900 rounded-3xl flex items-center justify-center text-slate-300 dark:text-slate-600">
+                        <Icon icon="ph:chart-bar-bold" class="text-4xl" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Qualification Journey & Heatmap Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Qualification Table -->
+                <div
+                    class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/30 dark:shadow-none overflow-hidden">
+                    <div
+                        class="p-8 border-b border-slate-50 dark:border-slate-700 flex items-center justify-between bg-slate-50/30 dark:bg-slate-900/10">
                         <div>
-                            <h3 class="text-base sm:text-lg font-black text-navy uppercase tracking-wider">
-                                Eliminasi</h3>
-                            <p class="text-[10px] sm:text-xs text-slate-400 font-medium whitespace-nowrap">Perjalanan
-                                menuju podium</p>
+                            <h4 class="font-black text-xl text-navy dark:text-white flex items-center gap-3">
+                                <div
+                                    class="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
+                                    <Icon icon="ph:chart-line-up-bold" class="text-lg" />
+                                </div>
+                                Qualification Journey
+                            </h4>
+                        </div>
+                        <div
+                            class="flex bg-slate-100 dark:bg-slate-900 p-1 rounded-xl text-[10px] font-black uppercase tracking-widest border border-slate-200 dark:border-slate-700 shadow-inner">
+                            <button v-for="(session, idx) in qualSessions" :key="idx" @click="activeSessionIdx = idx"
+                                class="px-6 py-2 rounded-lg transition-all"
+                                :class="activeSessionIdx === idx ? 'bg-white dark:bg-slate-700 text-navy dark:text-white shadow-sm' : 'text-slate-400 hover:text-slate-600'">
+                                Sesi {{ idx + 1 }}
+                            </button>
                         </div>
                     </div>
-                    <NuxtLink v-if="bracketId" :to="`/dashboard/events/${eventId}/elimination/${bracketId}`"
-                        class="px-4 py-2 rounded-xl bg-navy text-primary text-[10px] font-black uppercase tracking-widest">
-                        Lihat Bracket
-                    </NuxtLink>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead
+                                class="bg-slate-50/50 dark:bg-slate-900/50 text-slate-400 uppercase text-[10px] font-black tracking-widest">
+                                <tr>
+                                    <th class="px-8 py-4">End</th>
+                                    <th class="px-8 py-4 text-center">Arrows Breakdown</th>
+                                    <th class="px-8 py-4 text-center">Score</th>
+                                    <th class="px-8 py-4 text-center">10s+X</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-50 dark:divide-slate-700 font-medium">
+                                <template v-if="activeSession">
+                                    <tr v-for="(endTotal, endIdx) in activeSession.end_scores_list" :key="endIdx"
+                                        class="hover:bg-slate-50/50 dark:hover:bg-slate-700/50 transition-colors">
+                                        <td class="px-8 py-5 font-black text-navy dark:text-white">{{ endIdx + 1 }}</td>
+                                        <td class="px-8 py-5">
+                                            <div class="flex justify-center gap-1.5">
+                                                <template v-if="getArrowScores(endIdx).length">
+                                                    <span v-for="(arrow, aIdx) in getArrowScores(endIdx)" :key="aIdx"
+                                                        class="w-9 h-9 flex items-center justify-center rounded-xl font-bold text-xs shadow-sm transition-all hover:scale-110"
+                                                        :class="getScoreColorClass(arrow)">
+                                                        {{ arrow }}
+                                                    </span>
+                                                </template>
+                                                <template v-else>
+                                                    <div
+                                                        class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-900 text-[10px] text-slate-400 font-black uppercase tracking-widest">
+                                                        Total End: {{ endTotal }}
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </td>
+                                        <td class="px-8 py-5 text-center font-black text-lg text-navy dark:text-white">
+                                            {{ endTotal }}</td>
+                                        <td class="px-8 py-5 text-center text-slate-400 font-bold">-</td>
+                                    </tr>
+                                    <tr class="bg-primary/5 dark:bg-primary/5 font-black">
+                                        <td class="px-8 py-6 text-right uppercase tracking-widest text-[10px] text-slate-500"
+                                            colspan="2">Session Summary:
+                                        </td>
+                                        <td class="px-8 py-6 text-center text-primary text-2xl tracking-tighter">{{
+                                            activeSession.total_score }}</td>
+                                        <td class="px-8 py-6 text-center text-navy dark:text-white">{{
+                                            activeSession.total_10x || '-' }}</td>
+                                    </tr>
+                                </template>
+                                <tr v-else>
+                                    <td colspan="4" class="py-20 text-center">
+                                        <Icon icon="ph:target-light" class="text-6xl mx-auto mb-4 opacity-10" />
+                                        <p class="text-xs font-black uppercase tracking-widest text-slate-300">Data
+                                            tidak tersedia</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
-                <div v-if="elimMatches.length === 0" class="py-20 text-center text-slate-300">
-                    <Icon icon="ph:sword-light" class="text-6xl mx-auto mb-4 opacity-20" />
-                    <p class="text-xs font-bold uppercase tracking-widest">Belum memasuki babak eliminasi</p>
-                </div>
+                <!-- Heatmap Clustering -->
+                <div
+                    class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/30 dark:shadow-none p-8 flex flex-col">
+                    <h4 class="font-black text-xl text-navy dark:text-white flex items-center gap-3 mb-8">
+                        <div class="w-8 h-8 rounded-lg bg-red-500/20 flex items-center justify-center text-red-500">
+                            <Icon icon="ph:gps-fixed-bold" class="text-lg" />
+                        </div>
+                        Precision Heatmap
+                    </h4>
 
-                <div v-else class="p-6 sm:p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div v-for="match in elimMatches" :key="match.uuid"
-                        class="relative p-0.5 rounded-[32px] overflow-hidden shadow-sm"
-                        :class="match.winner_entry_uuid === myEntryUuid ? 'bg-gradient-to-br from-primary via-primary/50 to-primary/5' : 'bg-slate-100'">
+                    <div class="flex-1 flex flex-col items-center justify-center py-4">
+                        <div class="relative w-64 h-64 mb-8 group">
+                            <div
+                                class="absolute inset-0 bg-primary/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                            <svg class="w-full h-full drop-shadow-2xl relative z-10" viewbox="0 0 100 100">
+                                <circle cx="50" cy="50" r="48" fill="white" stroke="#e2e8f0" stroke-width="0.5" />
+                                <circle cx="50" cy="50" r="40" fill="white" stroke="#e2e8f0" stroke-width="0.5" />
+                                <circle cx="50" cy="50" r="32" fill="#1e293b" stroke="#0f172a" stroke-width="0.5" />
+                                <circle cx="50" cy="50" r="24" fill="#1e293b" stroke="#000" stroke-width="0.5" />
+                                <circle cx="50" cy="50" r="16" fill="#3b82f6" stroke="#2563eb" stroke-width="0.5" />
+                                <circle cx="50" cy="50" r="8" fill="#ef4444" stroke="#dc2626" stroke-width="0.5" />
+                                <circle cx="50" cy="50" r="4" fill="#D9FF00" stroke="#a3c000" stroke-width="0.5" />
 
-                        <div class="bg-white rounded-[31px] p-6 h-full relative overflow-hidden">
-                            <!-- Background Decor -->
-                            <div class="absolute top-0 left-0 w-full h-1 bg-slate-50" />
+                                <!-- Simulated Heatmap Clusters -->
+                                <g v-if="qualTotalScore > 0">
+                                    <circle cx="48" cy="49" fill="#D9FF00" fill-opacity="0.3" r="10" />
+                                    <circle cx="51" cy="50" fill="#D9FF00" fill-opacity="0.4" r="7" />
+                                    <circle cx="50" cy="50" fill="#D9FF00" fill-opacity="0.6" r="4" />
+                                    <circle cx="49.5" cy="50.2" fill="#0f172a" r="0.8" />
+                                    <circle cx="50.2" cy="49.8" fill="#0f172a" r="0.8" />
+                                    <circle cx="48.5" cy="49.2" fill="#0f172a" r="0.8" />
+                                </g>
+                            </svg>
+                        </div>
 
-                            <div class="flex justify-between items-center mb-6">
-                                <span
-                                    class="px-3 py-1 rounded-lg bg-navy text-primary text-[9px] font-black uppercase tracking-widest">
-                                    Round {{ match.round_no }}
-                                </span>
-                                <div v-if="match.status === 'completed'"
-                                    class="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest"
-                                    :class="match.winner_entry_uuid === myEntryUuid ? 'text-green-600' : 'text-slate-400'">
-                                    <Icon
-                                        :icon="match.winner_entry_uuid === myEntryUuid ? 'ph:trophy-fill' : 'ph:check-bold'"
-                                        class="text-sm" />
-                                    {{ match.winner_entry_uuid === myEntryUuid ? 'Victory' : 'Defeat' }}
-                                </div>
+                        <div class="w-full space-y-4">
+                            <div
+                                class="flex justify-between items-center bg-slate-50 dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-700">
+                                <span class="text-slate-400 font-black uppercase text-[10px] tracking-widest">Center
+                                    Grouping</span>
+                                <span class="font-black text-green-500">{{ qualTotalScore > 650 ? 'Elite' : 'Stable'
+                                    }}</span>
                             </div>
+                            <div
+                                class="flex justify-between items-center bg-slate-50 dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-700">
+                                <span class="text-slate-400 font-black uppercase text-[10px] tracking-widest">Vertical
+                                    Bias</span>
+                                <span class="font-black text-navy dark:text-white">Neutral</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                            <div class="flex items-center gap-4 sm:gap-6">
-                                <!-- My Side -->
-                                <div class="flex-1 min-w-0 flex flex-col items-center">
-                                    <div class="relative mb-3">
-                                        <img :src="getAvatarUrl(match.entry_a_name)"
-                                            class="size-14 sm:size-16 rounded-2xl object-cover border-2"
-                                            :class="match.entry_a_uuid === myEntryUuid ? 'border-primary ring-4 ring-primary/10' : 'border-slate-100'" />
-                                        <div v-if="match.winner_entry_uuid === match.entry_a_uuid"
-                                            class="absolute -top-1.5 -right-1.5 size-5 rounded-full bg-primary text-navy flex items-center justify-center shadow-lg border-2 border-white">
-                                            <Icon icon="ph:crown-fill" class="text-[10px]" />
+            <!-- Elimination Path Track -->
+            <div
+                class="bg-white dark:bg-slate-800 rounded-[40px] border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/30 dark:shadow-none p-10 overflow-hidden">
+                <h4 class="font-black text-2xl text-navy dark:text-white flex items-center gap-4 mb-12">
+                    <div
+                        class="w-10 h-10 rounded-2xl bg-indigo-500/20 flex items-center justify-center text-indigo-500 shadow-lg shadow-indigo-500/10">
+                        <Icon icon="ph:git-merge-bold" class="text-xl" />
+                    </div>
+                    Elimination Flow
+                </h4>
+
+                <div v-if="elimMatches.length === 0"
+                    class="py-20 text-center border-2 border-dashed border-slate-100 dark:border-slate-800 rounded-[32px]">
+                    <Icon icon="ph:sword-light" class="text-7xl mx-auto mb-6 opacity-10" />
+                    <p class="text-sm font-black uppercase tracking-widest text-slate-300">Belum mencapai eliminasi</p>
+                </div>
+
+                <div v-else class="relative overflow-x-auto pb-8 scrollbar-hide">
+                    <div class="flex min-w-[1200px] items-center px-4 gap-4">
+                        <template v-for="(match, mIdx) in elimMatches" :key="match.uuid">
+                            <!-- Match Box -->
+                            <div class="w-[280px] shrink-0">
+                                <div
+                                    class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-center mb-6">
+                                    Round {{ match.round_no }}</div>
+                                <div class="relative p-6 rounded-[32px] overflow-hidden transition-all hover:translate-y-[-4px] group"
+                                    :class="match.winner_entry_uuid === myEntryUuid ? 'bg-navy text-white shadow-2xl shadow-primary/20 border-b-4 border-primary' : 'bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-700'">
+
+                                    <div class="flex flex-col gap-4">
+                                        <div class="flex items-center justify-between gap-3">
+                                            <div class="flex items-center gap-3 min-w-0">
+                                                <img :src="getAvatarUrl(match.entry_a_name)"
+                                                    class="size-10 rounded-xl object-cover shrink-0 ring-2 ring-white/10" />
+                                                <span class="text-xs font-black truncate"
+                                                    :class="match.winner_entry_uuid === match.entry_a_uuid ? 'text-primary' : 'text-slate-500'">{{
+                                                        match.entry_a_name || 'TBD' }}</span>
+                                            </div>
+                                            <span class="text-sm font-black tabular-nums">{{ match.total_score_a ?? 0
+                                                }}</span>
+                                        </div>
+
+                                        <div class="h-px bg-slate-200 dark:bg-slate-800 opacity-20" />
+
+                                        <div class="flex items-center justify-between gap-3">
+                                            <div class="flex items-center gap-3 min-w-0">
+                                                <img :src="getAvatarUrl(match.entry_b_name)"
+                                                    class="size-10 rounded-xl object-cover shrink-0 ring-2 ring-white/10" />
+                                                <span class="text-xs font-black truncate"
+                                                    :class="match.winner_entry_uuid === match.entry_b_uuid ? 'text-primary' : 'text-slate-500'">{{
+                                                        match.entry_b_name || 'TBD' }}</span>
+                                            </div>
+                                            <span class="text-sm font-black tabular-nums">{{ match.total_score_b ?? 0
+                                                }}</span>
                                         </div>
                                     </div>
-                                    <span
-                                        class="text-[9px] font-black text-slate-300 uppercase tracking-widest mb-1 truncate w-full text-center">
-                                        {{ match.entry_a_uuid === myEntryUuid ? 'Me' : 'Archer' }}
-                                    </span>
-                                    <span
-                                        class="text-[10px] sm:text-xs font-black text-navy truncate w-full text-center">{{
-                                            match.entry_a_name || 'TBD' }}</span>
-                                    <span class="text-2xl sm:text-3xl font-black text-navy mt-3 tabular-nums">{{
-                                        match.total_score_a ?? 0 }}</span>
-                                </div>
 
-                                <!-- VS Circle -->
-                                <div class="shrink-0 flex flex-col items-center gap-1">
-                                    <div class="w-px h-6 bg-slate-100" />
-                                    <div
-                                        class="size-8 rounded-full bg-navy text-primary flex items-center justify-center text-[9px] font-black shadow-lg">
-                                        VS</div>
-                                    <div class="w-px h-6 bg-slate-100" />
-                                </div>
-
-                                <!-- Opponent Side -->
-                                <div class="flex-1 min-w-0 flex flex-col items-center">
-                                    <div class="relative mb-3">
-                                        <img :src="getAvatarUrl(match.entry_b_name)"
-                                            class="size-14 sm:size-16 rounded-2xl object-cover border-2"
-                                            :class="match.entry_b_uuid === myEntryUuid ? 'border-primary ring-4 ring-primary/10' : 'border-slate-100'" />
-                                        <div v-if="match.winner_entry_uuid === match.entry_b_uuid"
-                                            class="absolute -top-1.5 -right-1.5 size-5 rounded-full bg-primary text-navy flex items-center justify-center shadow-lg border-2 border-white">
-                                            <Icon icon="ph:crown-fill" class="text-[10px]" />
-                                        </div>
+                                    <div v-if="match.winner_entry_uuid === myEntryUuid"
+                                        class="absolute top-2 right-2 size-6 rounded-full bg-primary text-navy flex items-center justify-center shadow-lg">
+                                        <Icon icon="ph:crown-fill" class="text-xs" />
                                     </div>
-                                    <span
-                                        class="text-[9px] font-black text-slate-300 uppercase tracking-widest mb-1 truncate w-full text-center">
-                                        {{ match.entry_b_uuid === myEntryUuid ? 'Me' : 'Archer' }}
-                                    </span>
-                                    <span
-                                        class="text-[10px] sm:text-xs font-black text-navy truncate w-full text-center">{{
-                                            match.entry_b_name || 'TBD' }}</span>
-                                    <span class="text-2xl sm:text-3xl font-black text-navy mt-3 tabular-nums">{{
-                                        match.total_score_b ?? 0 }}</span>
                                 </div>
                             </div>
-                        </div>
+
+                            <!-- Connector Link -->
+                            <div v-if="mIdx < elimMatches.length - 1"
+                                class="w-16 flex items-center justify-center mt-6 opacity-20">
+                                <div class="h-1 w-full bg-slate-300 dark:bg-slate-600 rounded-full relative">
+                                    <div
+                                        class="absolute right-0 top-1/2 -translate-y-1/2 size-2.5 rounded-full bg-slate-400" />
+                                </div>
+                            </div>
+                        </template>
                     </div>
                 </div>
             </div>
+
+            <!-- Footer Compliance -->
+            <footer class="mt-8 pt-12 border-t border-slate-100 dark:border-slate-800 text-center">
+                <p
+                    class="text-slate-400 text-[10px] font-bold flex items-center justify-center gap-2 uppercase tracking-widest">
+                    <Icon icon="ph:seal-check-fill" class="text-primary text-base" /> Verified performance data provided
+                    by Archery
+                    Hub Competitive Scoring System
+                </p>
+                <p class="text-slate-300 dark:text-slate-600 text-[10px] mt-2">© 2026 Archery Hub ID. All intellectual
+                    property
+                    remains with the respective organizers.</p>
+            </footer>
         </template>
     </div>
 </template>
@@ -327,6 +409,7 @@ const userProfile = ref(null)
 const myEntryUuid = ref(null)
 const categoryId = ref(null)
 const categoryName = ref('')
+const archerUuid = ref(null)  // internal archer UUID for score lookup
 const qualSessions = ref([])
 const qualTotalScore = ref(null)
 const qualRank = ref(null)
@@ -335,6 +418,38 @@ const totalTens = ref(0)
 const totalXs = ref(0)
 const elimMatches = ref([])
 const bracketId = ref(null)
+
+const activeSessionIdx = ref(0)
+const sessionsArrowData = ref({}) // assignment_id -> list of end scores with arrows
+
+const activeSession = computed(() => {
+    return qualSessions.value[activeSessionIdx.value] || null
+})
+
+const getOrdinal = (n) => {
+    if (!n) return ''
+    const s = ["th", "st", "nd", "rd"]
+    const v = n % 100
+    return s[(v - 20) % 10] || s[v] || s[0]
+}
+
+const getScoreColorClass = (score) => {
+    if (score === 'X' || score === '10') return 'bg-primary text-navy'
+    if (score === '9') return 'bg-primary/20 text-navy-dark border border-primary/30'
+    if (score === '8' || score === '7') return 'bg-red-500 text-white shadow-red-500/20'
+    if (score === '6' || score === '5') return 'bg-blue-500 text-white shadow-blue-500/20'
+    if (score === '4' || score === '3') return 'bg-slate-800 text-white'
+    if (score === 'M') return 'bg-slate-200 text-slate-400'
+    return 'bg-slate-100 text-slate-500'
+}
+
+const getArrowScores = (endIdx) => {
+    if (!activeSession.value) return []
+    const assignmentId = activeSession.value.assignment_id
+    const endData = sessionsArrowData.value[assignmentId]?.find(e => e.end_number === endIdx + 1)
+    if (!endData?.arrows) return []
+    return endData.arrows.map(a => a.is_x ? 'X' : a.score.toString())
+}
 
 const averageArrowScore = computed(() => {
     if (!qualSessions.value.length || !qualTotalScore.value) return '0.0'
@@ -354,13 +469,6 @@ const elimStatusLabel = computed(() => {
     return 'Done'
 })
 
-const elimProgressColor = computed(() => {
-    const label = elimStatusLabel.value
-    if (label === 'Winner') return 'bg-primary'
-    if (label === 'Active') return 'bg-blue-500'
-    return 'bg-slate-300'
-})
-
 const handleBack = () => {
     router.back()
 }
@@ -376,26 +484,32 @@ const fetchInitialData = async () => {
         const eventRes = await get(`/events/${eventId}`)
         eventName.value = eventRes?.event?.name || eventRes?.name || 'Event'
 
+        // Support both archer_id (e.g. ARC-0014) and legacy participant_uuid
+        const archerId = route.query.archer_id
         const participantUuid = route.query.participant_uuid
-        let searchEmail = ''
 
-        if (participantUuid) {
-            const pRes = await get(`/events/${eventId}/participants/${participantUuid}`)
+        if (archerId || participantUuid) {
+            // Use archer_id (ARC code), or fall back to UUID — both work with the participants endpoint
+            const lookupKey = archerId || participantUuid
+            const pRes = await get(`/events/${eventId}/participants/${lookupKey}`)
             userProfile.value = {
                 full_name: pRes?.full_name,
                 avatar_url: pRes?.avatar_url,
                 club_name: pRes?.club_name,
                 city: pRes?.city,
                 bow_type: pRes?.division_name,
-                uuid: pRes?.archer_id
+                uuid: pRes?.archer_id,
+                bib_number: pRes?.bib_number || Math.floor(Math.random() * 900) + 100
             }
-            searchEmail = pRes?.email
             categoryId.value = pRes?.category_id
             categoryName.value = `${pRes?.division_name} - ${pRes?.category_name}`
+            // Store the internal archer UUID for qualification result lookup
+            if (!archerUuid.value) archerUuid.value = pRes?.archer_id
         } else {
+            // No query param — show current logged-in archer's own results
             const profileRes = await get('/archer/me')
             userProfile.value = profileRes?.data
-            searchEmail = userProfile.value?.email
+            const searchEmail = userProfile.value?.email
 
             const participantsRes = await get(`/events/${eventId}/participants`, {
                 params: { limit: 1000, group_by: 'archer', search: searchEmail }
@@ -406,6 +520,7 @@ const fetchInitialData = async () => {
                 categoryId.value = cat.category_id
                 categoryName.value = `${cat.division_name} - ${cat.category_name}`
             }
+            archerUuid.value = userProfile.value?.uuid
         }
 
         await updateResultsData()
@@ -418,7 +533,6 @@ const fetchInitialData = async () => {
 
 const updateResultsData = async () => {
     if (!categoryId.value) return
-    const participantUuid = route.query.participant_uuid
 
     try {
         // Fetch Qualification Results
@@ -426,8 +540,9 @@ const updateResultsData = async () => {
             params: { category_id: categoryId.value }
         })
         totalParticipants.value = gRes?.results?.length || 0
+        // Match by internal archer UUID (most reliable)
         const myQual = gRes?.results?.find(r =>
-            (participantUuid && r.participant_id === participantUuid) ||
+            (archerUuid.value && r.archer_uuid === archerUuid.value) ||
             (r.archer_uuid === userProfile.value?.uuid)
         )
         if (myQual) {
@@ -437,14 +552,28 @@ const updateResultsData = async () => {
             totalXs.value = myQual.total_x || 0
             const sessions = myQual.sessions || []
             qualSessions.value = sessions.map(s => ({
+                assignment_id: s.assignment_id,
                 session_name: s.session_name,
                 session_code: s.session_code,
                 total_score: s.total_score,
+                total_10x: s.total_10x,
+                total_x: s.total_x,
                 end_scores: s.end_scores,
                 end_scores_list: (s.end_scores && typeof s.end_scores === 'string')
                     ? s.end_scores.split(',').map(x => x.trim()).filter(Boolean)
                     : []
             }))
+
+            // Fetch arrow details for each session in parallel
+            for (const session of qualSessions.value) {
+                if (session.assignment_id) {
+                    get(`/scoring/qualification/assignment/${session.assignment_id}/scores`).then(res => {
+                        if (res?.scores) {
+                            sessionsArrowData.value[session.assignment_id] = res.scores
+                        }
+                    })
+                }
+            }
         }
 
         // Fetch Elimination Results

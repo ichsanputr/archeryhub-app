@@ -55,7 +55,7 @@
                                     <img :src="event.organizer_logo" :alt="event.organizer"
                                         class="w-4 h-4 sm:w-5 sm:h-5 rounded-full object-cover border border-gray-100 flex-shrink-0 bg-gray-50">
                                     <span
-                                        class="text-[10px] sm:text-xs text-text-sub truncate font-medium max-w-[120px]">{{
+                                        class="text-[10px] sm:text-xs text-text-sub truncate font-medium max-w-[160px]">{{
                                             event.organizer }}</span>
                                 </div>
                             </div>

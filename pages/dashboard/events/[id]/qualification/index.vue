@@ -294,7 +294,7 @@
                             class="flex flex-col items-center bg-gray-50 border border-gray-100 rounded-lg overflow-hidden shadow-sm group/score hover:border-primary/50 transition-all">
                             <div class="bg-navy/5 px-2 py-0.5 w-full text-center border-b border-gray-100">
                               <span class="text-[8px] font-black text-gray-400 uppercase tracking-tighter">E{{ sIdx + 1
-                              }}</span>
+                                }}</span>
                             </div>
                             <div class="px-3 py-1 min-w-[45px] flex items-center justify-center">
                               <span
@@ -321,7 +321,7 @@
                   </td>
                   <td class="px-6 py-4 text-right">
                     <NuxtLink
-                      :to="`/dashboard/events/${eventId}/result-user?participant_uuid=${archer.participant_uuid}`"
+                      :to="`/dashboard/events/${eventId}/result-user?archer_id=${archer.athlete_code || archer.participant_uuid}`"
                       class="inline-flex items-center justify-center gap-2 px-3 py-1.5 bg-primary/10 text-navy text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-primary transition-all">
                       <Icon icon="ph:eye-bold" class="text-sm" />
                       Detail

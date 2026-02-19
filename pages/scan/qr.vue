@@ -1,120 +1,232 @@
 <template>
-    <div class="min-h-screen bg-gradient-to-br from-navy via-navy to-navy/90 flex flex-col">
-        <!-- Header -->
-        <div class="safe-area-top bg-navy/50 backdrop-blur-sm border-b border-white/10 sticky top-0 z-50">
+    <div
+        class="min-h-screen bg-gradient-to-b from-[#0a0f1e] via-[#111827] to-[#0a0f1e] flex flex-col text-white select-none">
+
+        <!-- ── Header ── -->
+        <div class="safe-area-top bg-black/30 backdrop-blur-xl border-b border-white/10 sticky top-0 z-50">
             <div class="px-4 py-4 flex items-center justify-between">
-                <button @click="goBack" 
-                    class="p-2 rounded-lg hover:bg-white/10 transition-colors">
-                    <Icon icon="ph:arrow-left" class="text-white text-xl" />
+                <button @click="goBack"
+                    class="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 transition-all active:scale-95">
+                    <Icon icon="ph:arrow-left-bold" class="text-white text-xl" />
                 </button>
-                <h1 class="text-white font-black text-lg tracking-tight">Scan QR Code</h1>
-                <div class="w-10"></div>
+                <div class="text-center">
+                    <h1 class="text-white font-black text-base tracking-tight">Scan QR Code</h1>
+                    <p class="text-white/50 text-xs font-medium">Daftar Ulang Peserta</p>
+                </div>
+                <!-- Camera toggle -->
+                <button @click="toggleCamera"
+                    class="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 transition-all active:scale-95"
+                    :title="isCameraActive ? 'Matikan Kamera' : 'Nyalakan Kamera'">
+                    <Icon :icon="isCameraActive ? 'ph:camera-slash-bold' : 'ph:camera-bold'"
+                        class="text-white text-xl" />
+                </button>
             </div>
         </div>
 
-        <!-- Scanner Area -->
-        <div class="flex-1 flex flex-col items-center justify-center p-4 relative">
-            <!-- Success State -->
-            <Transition enter-active-class="transition duration-300 ease-out"
-                enter-from-class="opacity-0 scale-95" enter-to-class="opacity-100 scale-100"
-                leave-active-class="transition duration-200 ease-in"
-                leave-from-class="opacity-100 scale-100" leave-to-class="opacity-0 scale-95">
-                <div v-if="scanSuccess" 
-                    class="absolute inset-0 bg-green-600/95 backdrop-blur-sm flex flex-col items-center justify-center p-8 z-50">
-                    <div class="bg-white rounded-full p-8 mb-6 animate-bounce">
-                        <Icon icon="ph:check-circle-fill" class="text-6xl text-green-600" />
-                    </div>
-                    <h2 class="text-3xl font-black text-white mb-3 text-center">Registrasi Berhasil!</h2>
-                    <p class="text-green-100 text-center text-lg font-medium mb-2">{{ participantData?.full_name }}</p>
-                    <p class="text-green-200 text-center text-sm mb-8">{{ participantData?.club_name || 'Individu' }}</p>
-                    
-                    <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-6 mb-8 w-full max-w-sm">
-                        <div class="flex items-center justify-between text-white mb-3">
-                            <span class="text-sm font-medium opacity-80">Kategori</span>
-                            <span class="text-sm font-bold">{{ getCategoryDisplay(participantData) }}</span>
+        <!-- ── Main Content ── -->
+        <div class="flex-1 flex flex-col items-center justify-start p-4 pt-6 gap-6">
+
+            <!-- Scanner Card -->
+            <div class="w-full max-w-sm">
+                <!-- Camera viewport -->
+                <div class="relative rounded-3xl overflow-hidden shadow-2xl"
+                    style="box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 32px 64px rgba(0,0,0,0.6);">
+
+                    <!-- Video -->
+                    <div class="relative bg-black aspect-square">
+                        <video ref="videoElement" class="w-full h-full object-cover" autoplay playsinline muted>
+                        </video>
+
+                        <!-- No-camera placeholder -->
+                        <div v-if="!isCameraActive"
+                            class="absolute inset-0 flex flex-col items-center justify-center bg-gray-900/95 gap-3">
+                            <div class="h-16 w-16 rounded-2xl bg-white/10 flex items-center justify-center">
+                                <Icon icon="ph:camera-slash" class="text-4xl text-white/40" />
+                            </div>
+                            <p class="text-white/50 text-sm font-medium">Kamera tidak aktif</p>
+                            <button @click="startCamera"
+                                class="px-4 py-2 bg-primary text-navy text-sm font-black rounded-xl hover:brightness-110 transition-all">
+                                Nyalakan Kamera
+                            </button>
                         </div>
-                        <div class="flex items-center justify-between text-white">
-                            <span class="text-sm font-medium opacity-80">Waktu Registrasi</span>
-                            <span class="text-sm font-bold">{{ formatTime(new Date()) }}</span>
+
+                        <!-- Processing overlay -->
+                        <div v-if="isProcessing"
+                            class="absolute inset-0 bg-black/70 backdrop-blur-sm flex flex-col items-center justify-center gap-3 z-10">
+                            <div
+                                class="h-12 w-12 border-4 border-primary border-t-transparent rounded-full animate-spin">
+                            </div>
+                            <p class="text-white font-bold text-sm">Memverifikasi...</p>
                         </div>
+
+                        <!-- Scan frame overlay (only when camera active & not processing) -->
+                        <template v-if="isCameraActive && !isProcessing">
+                            <!-- Dark vignette -->
+                            <div class="absolute inset-0 pointer-events-none"
+                                style="background: radial-gradient(circle at center, transparent 38%, rgba(0,0,0,0.55) 70%);">
+                            </div>
+
+                            <!-- Corner brackets -->
+                            <div class="abs-bracket top-[22%] left-[22%] border-t-4 border-l-4 rounded-tl-2xl"></div>
+                            <div class="abs-bracket top-[22%] right-[22%] border-t-4 border-r-4 rounded-tr-2xl"></div>
+                            <div class="abs-bracket bottom-[22%] left-[22%] border-b-4 border-l-4 rounded-bl-2xl"></div>
+                            <div class="abs-bracket bottom-[22%] right-[22%] border-b-4 border-r-4 rounded-br-2xl">
+                            </div>
+
+                            <!-- Animated scanning beam -->
+                            <div class="scan-beam" :class="{ paused: !isCameraActive }"></div>
+                        </template>
                     </div>
 
-                    <BaseButton variant="white" size="lg" @click="resetScanner" 
-                        class="min-w-[200px] font-black shadow-xl">
-                        Scan Berikutnya
-                    </BaseButton>
-                </div>
-            </Transition>
-
-            <!-- Error State -->
-            <Transition enter-active-class="transition duration-300 ease-out"
-                enter-from-class="opacity-0 scale-95" enter-to-class="opacity-100 scale-100"
-                leave-active-class="transition duration-200 ease-in"
-                leave-from-class="opacity-100 scale-100" leave-to-class="opacity-0 scale-95">
-                <div v-if="scanError" 
-                    class="absolute inset-0 bg-red-600/95 backdrop-blur-sm flex flex-col items-center justify-center p-8 z-50">
-                    <div class="bg-white rounded-full p-8 mb-6">
-                        <Icon icon="ph:x-circle-fill" class="text-6xl text-red-600" />
-                    </div>
-                    <h2 class="text-3xl font-black text-white mb-3 text-center">Registrasi Gagal</h2>
-                    <p class="text-red-100 text-center mb-8 max-w-sm">{{ errorMessage }}</p>
-                    
-                    <BaseButton variant="white" size="lg" @click="resetScanner" 
-                        class="min-w-[200px] font-black shadow-xl">
-                        Coba Lagi
-                    </BaseButton>
-                </div>
-            </Transition>
-
-            <!-- Camera View -->
-            <div v-if="!scanSuccess && !scanError" class="w-full max-w-md mx-auto">
-                <!-- Scanner Frame -->
-                <div class="relative bg-black rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20">
-                    <!-- Video Element -->
-                    <video ref="videoElement" 
-                        class="w-full aspect-square object-cover"
-                        autoplay 
-                        playsinline 
-                        muted>
-                    </video>
-                    
-                    <!-- Scanning Overlay -->
-                    <div class="absolute inset-0 pointer-events-none">
-                        <!-- Corner Borders -->
-                        <div class="absolute top-8 left-8 w-16 h-16 border-t-4 border-l-4 border-primary rounded-tl-2xl"></div>
-                        <div class="absolute top-8 right-8 w-16 h-16 border-t-4 border-r-4 border-primary rounded-tr-2xl"></div>
-                        <div class="absolute bottom-8 left-8 w-16 h-16 border-b-4 border-l-4 border-primary rounded-bl-2xl"></div>
-                        <div class="absolute bottom-8 right-8 w-16 h-16 border-b-4 border-r-4 border-primary rounded-br-2xl"></div>
-                        
-                        <!-- Scanning Line -->
-                        <div class="absolute inset-x-8 top-1/2 h-1 bg-gradient-to-r from-transparent via-primary to-transparent animate-pulse"></div>
-                    </div>
-
-                    <!-- Processing Indicator -->
-                    <div v-if="isProcessing" 
-                        class="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
-                        <div class="text-center">
-                            <div class="inline-block h-12 w-12 border-4 border-primary border-t-transparent animate-spin rounded-full mb-3"></div>
-                            <p class="text-white font-bold text-sm">Memproses...</p>
-                        </div>
+                    <!-- Status bar below video -->
+                    <div class="bg-black/80 backdrop-blur-sm px-4 py-3 flex items-center justify-center gap-2">
+                        <div :class="isCameraActive ? 'bg-green-400 animate-pulse' : 'bg-gray-600'"
+                            class="h-2 w-2 rounded-full"></div>
+                        <span class="text-xs font-bold text-white/70">
+                            {{ isCameraActive ? 'Kamera aktif — arahkan ke QR Code' : 'Kamera tidak aktif' }}
+                        </span>
                     </div>
                 </div>
 
-                <!-- Instructions -->
-                <div class="mt-8 text-center px-4">
-                    <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-4">
-                        <Icon icon="ph:qr-code" class="text-primary text-xl" />
-                        <span class="text-white text-sm font-bold">Arahkan kamera ke QR Code</span>
+                <!-- Hint -->
+                <p class="text-white/40 text-xs text-center mt-4 leading-relaxed">
+                    Pastikan QR Code terlihat jelas dalam bingkai.<br>
+                    Scan otomatis setiap 300ms.
+                </p>
+            </div>
+
+            <!-- Divider -->
+            <div class="flex items-center gap-3 w-full max-w-sm">
+                <div class="flex-1 h-px bg-white/10"></div>
+                <span class="text-white/30 text-xs font-bold uppercase tracking-widest">atau</span>
+                <div class="flex-1 h-px bg-white/10"></div>
+            </div>
+
+            <!-- Manual Input -->
+            <div class="w-full max-w-sm">
+                <div class="bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-sm">
+                    <p class="text-white/60 text-xs font-bold uppercase tracking-widest mb-3">Input Manual</p>
+                    <div class="flex gap-2">
+                        <input v-model="manualInput" type="text" placeholder="Paste kode QR di sini..."
+                            class="flex-1 bg-white/10 border border-white/20 rounded-xl px-3 py-2.5 text-sm text-white placeholder-white/30 font-medium focus:outline-none focus:border-primary/60 focus:bg-white/15 transition-all"
+                            @keyup.enter="submitManual" />
+                        <button @click="submitManual" :disabled="!manualInput.trim() || isProcessing"
+                            class="px-4 py-2.5 bg-primary text-navy font-black rounded-xl text-sm hover:brightness-110 active:scale-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+                            <Icon icon="ph:paper-plane-tilt-bold" class="text-base" />
+                        </button>
                     </div>
-                    <p class="text-white/70 text-xs font-medium max-w-xs mx-auto leading-relaxed">
-                        Pastikan QR Code terlihat jelas dalam frame untuk proses registrasi ulang
-                    </p>
                 </div>
             </div>
+
         </div>
 
-        <!-- Canvas for QR Detection (Hidden) -->
+        <!-- Hidden canvas -->
         <canvas ref="canvasElement" class="hidden"></canvas>
+
+        <!-- ════════════════════════════════════
+             SUCCESS DIALOG  — z-index: 9999
+             ════════════════════════════════════ -->
+        <Transition enter-active-class="transition duration-300 ease-out" enter-from-class="opacity-0"
+            enter-to-class="opacity-100" leave-active-class="transition duration-200 ease-in"
+            leave-from-class="opacity-100" leave-to-class="opacity-0">
+            <div v-if="scanSuccess" class="fixed inset-0 flex items-center justify-center p-6"
+                style="z-index: 9999; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px);">
+
+                <Transition enter-active-class="transition duration-300 ease-out delay-100"
+                    enter-from-class="opacity-0 scale-90 translate-y-4"
+                    enter-to-class="opacity-100 scale-100 translate-y-0">
+                    <div v-if="scanSuccess"
+                        class="w-full max-w-sm bg-gradient-to-b from-[#0d2b1e] to-[#07170f] border border-green-500/30 rounded-3xl p-8 shadow-2xl text-center"
+                        style="box-shadow: 0 0 60px rgba(34,197,94,0.2);">
+
+                        <!-- Icon -->
+                        <div
+                            class="h-24 w-24 rounded-full bg-green-500/20 border-2 border-green-400/40 flex items-center justify-center mx-auto mb-5 animate-bounce-once">
+                            <Icon icon="ph:check-circle-fill" class="text-6xl text-green-400" />
+                        </div>
+
+                        <h2 class="text-2xl font-black text-white mb-1">Registrasi Berhasil!</h2>
+                        <p class="text-green-300 text-sm font-medium mb-6">{{ formatTime(new Date()) }}</p>
+
+                        <!-- Participant info card -->
+                        <div class="bg-white/5 border border-white/10 rounded-2xl p-4 mb-6 text-left space-y-2">
+                            <div class="flex items-center gap-3 pb-2 border-b border-white/10">
+                                <div
+                                    class="h-10 w-10 rounded-full bg-green-500/20 border border-green-400/30 flex items-center justify-center shrink-0">
+                                    <Icon icon="ph:user-bold" class="text-green-400 text-lg" />
+                                </div>
+                                <div>
+                                    <p class="font-black text-white text-sm leading-tight">{{ participantData?.full_name
+                                        }}</p>
+                                    <p class="text-white/40 text-xs">{{ participantData?.club_name || 'Individual' }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between pt-1">
+                                <span class="text-white/50 text-xs font-medium">Kategori</span>
+                                <span class="text-white text-xs font-bold">{{ getCategoryDisplay(participantData)
+                                    }}</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-white/50 text-xs font-medium">Event</span>
+                                <span class="text-white text-xs font-bold truncate max-w-[160px]">{{
+                                    participantData?.event_name
+                                    }}</span>
+                            </div>
+                        </div>
+
+                        <button @click="resetScanner"
+                            class="w-full py-3.5 bg-green-500 hover:bg-green-400 text-white font-black rounded-2xl text-sm transition-all active:scale-95 shadow-lg shadow-green-500/30">
+                            <Icon icon="ph:qr-code-bold" class="mr-2" />
+                            Scan Berikutnya
+                        </button>
+                    </div>
+                </Transition>
+            </div>
+        </Transition>
+
+        <!-- ════════════════════════════════════
+             ERROR DIALOG  — z-index: 9999
+             ════════════════════════════════════ -->
+        <Transition enter-active-class="transition duration-300 ease-out" enter-from-class="opacity-0"
+            enter-to-class="opacity-100" leave-active-class="transition duration-200 ease-in"
+            leave-from-class="opacity-100" leave-to-class="opacity-0">
+            <div v-if="scanError" class="fixed inset-0 flex items-center justify-center p-6"
+                style="z-index: 9999; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px);">
+
+                <Transition enter-active-class="transition duration-300 ease-out delay-100"
+                    enter-from-class="opacity-0 scale-90 translate-y-4"
+                    enter-to-class="opacity-100 scale-100 translate-y-0">
+                    <div v-if="scanError"
+                        class="w-full max-w-sm bg-gradient-to-b from-[#2b0d0d] to-[#170707] border border-red-500/30 rounded-3xl p-8 shadow-2xl text-center"
+                        style="box-shadow: 0 0 60px rgba(239,68,68,0.2);">
+
+                        <!-- Icon -->
+                        <div
+                            class="h-24 w-24 rounded-full bg-red-500/20 border-2 border-red-400/40 flex items-center justify-center mx-auto mb-5">
+                            <Icon icon="ph:x-circle-fill" class="text-6xl text-red-400" />
+                        </div>
+
+                        <h2 class="text-2xl font-black text-white mb-2">Registrasi Gagal</h2>
+                        <p class="text-red-300/80 text-sm leading-relaxed mb-6 max-w-[260px] mx-auto">{{ errorMessage }}
+                        </p>
+
+                        <div class="flex gap-3">
+                            <button @click="resetScanner"
+                                class="flex-1 py-3.5 bg-white/10 hover:bg-white/20 text-white font-black rounded-2xl text-sm transition-all active:scale-95 border border-white/10">
+                                Coba Lagi
+                            </button>
+                            <button @click="goBack"
+                                class="flex-1 py-3.5 bg-red-500/20 hover:bg-red-500/30 text-red-300 font-black rounded-2xl text-sm transition-all active:scale-95 border border-red-500/20">
+                                Kembali
+                            </button>
+                        </div>
+                    </div>
+                </Transition>
+            </div>
+        </Transition>
+
     </div>
 </template>
 
@@ -126,13 +238,8 @@ import { useApi } from '~/composables/useApi'
 import jsQR from 'jsqr'
 import { definePageMeta, useHead } from '#imports'
 
-definePageMeta({
-    layout: false
-})
-
-useHead({
-    title: 'Scan QR Code - ArcheryHub'
-})
+definePageMeta({ layout: false })
+useHead({ title: 'Scan QR Code — ArcheryHub' })
 
 const router = useRouter()
 const { post } = useApi()
@@ -141,112 +248,78 @@ const videoElement = ref(null)
 const canvasElement = ref(null)
 const stream = ref(null)
 const scanningInterval = ref(null)
+const isCameraActive = ref(false)
 
 const isProcessing = ref(false)
 const scanSuccess = ref(false)
 const scanError = ref(false)
 const errorMessage = ref('')
 const participantData = ref(null)
+const manualInput = ref('')
 
-const goBack = () => {
-    router.back()
-}
+const goBack = () => router.back()
 
+// ── Camera ──────────────────────────────────────────────
 const startCamera = async () => {
     try {
         const constraints = {
             video: {
-                facingMode: 'environment', // Use back camera
+                facingMode: { ideal: 'environment' },
                 width: { ideal: 1280 },
                 height: { ideal: 1280 }
             }
         }
-        
         stream.value = await navigator.mediaDevices.getUserMedia(constraints)
         videoElement.value.srcObject = stream.value
-        
-        // Start scanning after video is ready
-        videoElement.value.addEventListener('loadedmetadata', () => {
+        isCameraActive.value = true
+
+        // Wait for metadata then start scanning
+        videoElement.value.onloadedmetadata = () => {
+            videoElement.value.play().catch(() => { })
             startScanning()
-        })
-    } catch (error) {
-        console.error('Camera error:', error)
+        }
+    } catch (err) {
+        console.error('Camera error:', err)
         errorMessage.value = 'Tidak dapat mengakses kamera. Pastikan izin kamera telah diberikan.'
         scanError.value = true
     }
 }
 
+const stopCamera = () => {
+    stopScanning()
+    if (stream.value) {
+        stream.value.getTracks().forEach(t => t.stop())
+        stream.value = null
+    }
+    isCameraActive.value = false
+}
+
+const toggleCamera = () => {
+    isCameraActive.value ? stopCamera() : startCamera()
+}
+
+// ── Scanning ─────────────────────────────────────────────
 const startScanning = () => {
+    stopScanning() // prevent duplicate intervals
     scanningInterval.value = setInterval(() => {
         if (isProcessing.value || scanSuccess.value || scanError.value) return
-        
+
         const video = videoElement.value
         const canvas = canvasElement.value
-        
-        if (!video || !canvas || video.readyState !== video.HAVE_ENOUGH_DATA) return
-        
-        const ctx = canvas.getContext('2d')
+        if (!video || !canvas || video.readyState < video.HAVE_ENOUGH_DATA) return
+
         canvas.width = video.videoWidth
         canvas.height = video.videoHeight
-        
+        const ctx = canvas.getContext('2d')
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-        
+
         const code = jsQR(imageData.data, imageData.width, imageData.height, {
             inversionAttempts: 'dontInvert'
         })
-        
-        if (code) {
-            handleQRDetected(code.data)
-        }
-    }, 300) // Scan every 300ms
-}
 
-const handleQRDetected = async (qrData) => {
-    if (isProcessing.value) return
-    
-    isProcessing.value = true
-    
-    try {
-        // Call API to register participant
-        const response = await post('/events/participants/reregister', {
-            qr_raw: qrData
-        })
-        
-        if (response && response.success) {
-            participantData.value = response.participant
-            scanSuccess.value = true
-            stopScanning()
-            
-            // Haptic feedback if available
-            if (navigator.vibrate) {
-                navigator.vibrate([100, 50, 100])
-            }
-        } else {
-            throw new Error(response?.message || 'Registrasi gagal')
-        }
-    } catch (error) {
-        console.error('Registration error:', error)
-        errorMessage.value = error.response?.data?.error || error.message || 'QR Code tidak valid atau peserta tidak ditemukan'
-        scanError.value = true
-        stopScanning()
-        
-        // Error vibration
-        if (navigator.vibrate) {
-            navigator.vibrate(200)
-        }
-    } finally {
-        isProcessing.value = false
-    }
-}
-
-const resetScanner = () => {
-    scanSuccess.value = false
-    scanError.value = false
-    errorMessage.value = ''
-    participantData.value = null
-    isProcessing.value = false
-    startScanning()
+        if (code?.data) handleQRDetected(code.data)
+    }, 300)
 }
 
 const stopScanning = () => {
@@ -256,37 +329,70 @@ const stopScanning = () => {
     }
 }
 
-const stopCamera = () => {
+// ── QR Detected ──────────────────────────────────────────
+const handleQRDetected = async (qrData) => {
+    if (isProcessing.value) return
+    isProcessing.value = true
     stopScanning()
-    if (stream.value) {
-        stream.value.getTracks().forEach(track => track.stop())
-        stream.value = null
+
+    try {
+        const response = await post('/events/participants/reregister', { qr_raw: qrData })
+
+        if (response?.success) {
+            participantData.value = response.participant
+            scanSuccess.value = true
+            if (navigator.vibrate) navigator.vibrate([100, 50, 100])
+        } else {
+            throw new Error(response?.message || 'Registrasi gagal')
+        }
+    } catch (err) {
+        console.error('Scan error:', err)
+        errorMessage.value = err.response?.data?.error
+            || err.data?.error
+            || err.message
+            || 'QR Code tidak valid atau peserta tidak ditemukan.'
+        scanError.value = true
+        if (navigator.vibrate) navigator.vibrate(300)
+    } finally {
+        isProcessing.value = false
     }
 }
 
-const getCategoryDisplay = (participant) => {
-    if (!participant) return '-'
+// ── Manual Input ─────────────────────────────────────────
+const submitManual = () => {
+    const val = manualInput.value.trim()
+    if (!val || isProcessing.value) return
+    manualInput.value = ''
+    handleQRDetected(val)
+}
+
+// ── Reset ─────────────────────────────────────────────────
+const resetScanner = () => {
+    scanSuccess.value = false
+    scanError.value = false
+    errorMessage.value = ''
+    participantData.value = null
+    isProcessing.value = false
+    if (isCameraActive.value) startScanning()
+}
+
+// ── Helpers ───────────────────────────────────────────────
+const getCategoryDisplay = (p) => {
+    if (!p) return '-'
     const parts = []
-    if (participant.division_name) parts.push(participant.division_name)
-    if (participant.category_name) parts.push(participant.category_name)
+    if (p.division_name) parts.push(p.division_name)
+    if (p.category_name) parts.push(p.category_name)
     return parts.join(' - ') || '-'
 }
 
-const formatTime = (date) => {
-    return new Intl.DateTimeFormat('id-ID', {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
+const formatTime = (date) =>
+    new Intl.DateTimeFormat('id-ID', {
+        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
     }).format(date)
-}
 
-onMounted(() => {
-    startCamera()
-})
-
-onBeforeUnmount(() => {
-    stopCamera()
-})
+// ── Lifecycle ─────────────────────────────────────────────
+onMounted(() => startCamera())
+onBeforeUnmount(() => stopCamera())
 </script>
 
 <style scoped>
@@ -294,12 +400,78 @@ onBeforeUnmount(() => {
     padding-top: env(safe-area-inset-top);
 }
 
-@keyframes scan-line {
-    0%, 100% {
-        transform: translateY(-100%);
+/* Scanning beam animation */
+.scan-beam {
+    position: absolute;
+    left: 22%;
+    right: 22%;
+    height: 3px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, transparent, #f5c518cc, transparent);
+    box-shadow: 0 0 12px 3px rgba(245, 197, 24, 0.5);
+    animation: scan-beam 2s ease-in-out infinite;
+    top: 22%;
+}
+
+.scan-beam.paused {
+    animation-play-state: paused;
+}
+
+@keyframes scan-beam {
+    0% {
+        top: 22%;
+        opacity: 0;
     }
+
+    5% {
+        opacity: 1;
+    }
+
     50% {
-        transform: translateY(100%);
+        top: 75%;
     }
+
+    95% {
+        opacity: 1;
+    }
+
+    100% {
+        top: 22%;
+        opacity: 0;
+    }
+}
+
+/* Corner brackets */
+.abs-bracket {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border-color: #f5c518;
+    pointer-events: none;
+}
+
+/* Single bounce for success icon */
+@keyframes bounce-once {
+    0% {
+        transform: scale(0.6);
+        opacity: 0;
+    }
+
+    60% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+
+    80% {
+        transform: scale(0.95);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.animate-bounce-once {
+    animation: bounce-once 0.5s ease-out forwards;
 }
 </style>

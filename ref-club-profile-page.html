@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Editorial Club Showcase - Eagles Archery</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#D9FF00",
+                        "midnight-blue": "#0f172a",
+                        "off-white": "#fcfbf9",
+                        "border-muted": "#e2e8f0",
+                        "text-muted": "#64748b",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "serif": ["Georgia", "serif"]
+                    }
+                },
+            },
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap"
+        rel="stylesheet" />
+    <style type="text/tailwindcss">
+        @layer base {
+            body { 
+                font-family: 'Inter', sans-serif; 
+                @apply bg-off-white text-midnight-blue;
+            }
+        }
+        .editorial-container {
+            @apply max-w-5xl mx-auto px-8;
+        }
+        .section-divider {
+            @apply border-t border-midnight-blue/10 my-16;
+        }
+        .stats-bar {
+            @apply flex flex-wrap gap-8 py-6 border-y border-midnight-blue/10 mb-12;
+        }
+        .news-item:not(:last-child) {
+            @apply border-b border-midnight-blue/5 pb-8 mb-8;
+        }
+        .stat-label {
+            @apply text-[10px] uppercase tracking-widest text-text-muted font-bold block mb-1;
+        }
+        .stat-value {
+            @apply text-xl font-black text-midnight-blue;
+        }
+    </style>
+</head>
+
+<body class="selection:bg-primary selection:text-midnight-blue">
+    <header class="editorial-container pt-24 pb-12">
+        <div class="mb-12">
+            <span
+                class="inline-block bg-primary text-midnight-blue text-[10px] font-black px-2 py-1 mb-6 tracking-widest uppercase">Official
+                Profile</span>
+            <h1 class="text-7xl md:text-8xl font-black tracking-tight leading-none mb-8">
+                EAGLES<br />ARCHERY CLUB.
+            </h1>
+            <p class="text-2xl md:text-3xl font-light text-midnight-blue/80 max-w-3xl leading-snug">
+                Fostering precision, mental discipline, and competitive excellence since 1998. The regional home for
+                Olympic-standard training.
+            </p>
+        </div>
+        <div class="stats-bar">
+            <div>
+                <span class="stat-label">Total Members</span>
+                <span class="stat-value">350+</span>
+            </div>
+            <div>
+                <span class="stat-label">Certified Coaches</span>
+                <span class="stat-value">12 Units</span>
+            </div>
+            <div>
+                <span class="stat-label">Founding Year</span>
+                <span class="stat-value">1998</span>
+            </div>
+            <div>
+                <span class="stat-label">National Titles</span>
+                <span class="stat-value">24 Wins</span>
+            </div>
+        </div>
+    </header>
+    <main class="editorial-container">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+            <section>
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="material-symbols-outlined text-primary bg-midnight-blue p-1 rounded">psychology</span>
+                    <h2 class="text-xl font-black uppercase tracking-tight">Training Philosophy</h2>
+                </div>
+                <div class="space-y-4 text-midnight-blue/70 leading-relaxed font-medium">
+                    <p>Our methodology focuses on the 'Zero Point' technique—achieving complete mental stillness before
+                        release. We prioritize physiological alignment and bio-mechanical efficiency over raw power.</p>
+                    <p>Every session is data-driven, utilizing high-frequency video analysis to refine the archer's draw
+                        cycle and anchor points.</p>
+                </div>
+            </section>
+            <section>
+                <div class="flex items-center gap-3 mb-6">
+                    <span
+                        class="material-symbols-outlined text-primary bg-midnight-blue p-1 rounded">architecture</span>
+                    <h2 class="text-xl font-black uppercase tracking-tight">Range Specifications</h2>
+                </div>
+                <ul class="space-y-4">
+                    <li class="flex justify-between border-b border-midnight-blue/10 pb-2">
+                        <span class="text-text-muted text-sm uppercase font-bold tracking-wider">Olympic Range</span>
+                        <span class="font-bold">90 Meters / 40 Lanes</span>
+                    </li>
+                    <li class="flex justify-between border-b border-midnight-blue/10 pb-2">
+                        <span class="text-text-muted text-sm uppercase font-bold tracking-wider">Indoor Hub</span>
+                        <span class="font-bold">18m &amp; 25m Climate Control</span>
+                    </li>
+                    <li class="flex justify-between border-b border-midnight-blue/10 pb-2">
+                        <span class="text-text-muted text-sm uppercase font-bold tracking-wider">Equipment</span>
+                        <span class="font-bold">Full Maintenance Shop</span>
+                    </li>
+                </ul>
+            </section>
+        </div>
+        <div class="section-divider"></div>
+        <section class="mb-24">
+            <div class="flex justify-between items-end mb-10">
+                <div>
+                    <h2 class="text-3xl font-black tracking-tighter">ELITE RANKINGS</h2>
+                    <p class="text-text-muted font-medium mt-1 uppercase text-[10px] tracking-widest">Active Tournament
+                        Leaderboard</p>
+                </div>
+                <a class="text-sm font-bold border-b-2 border-primary pb-1" href="#">Full Roster</a>
+            </div>
+            <div class="grid grid-cols-1 gap-1">
+                <div class="flex items-center justify-between p-4 bg-midnight-blue text-white rounded-t-lg">
+                    <div class="flex items-center gap-6">
+                        <span class="w-8 text-[10px] font-bold text-white/50">RANK</span>
+                        <span class="font-bold">ATHLETE</span>
+                    </div>
+                    <div class="flex gap-12 text-[10px] font-bold text-white/50">
+                        <span class="w-24">CATEGORY</span>
+                        <span class="w-16 text-right">AVG SCORE</span>
+                    </div>
+                </div>
+                <div
+                    class="flex items-center justify-between p-4 border border-midnight-blue/10 hover:bg-white transition-colors">
+                    <div class="flex items-center gap-6">
+                        <span class="w-8 font-black text-midnight-blue/30 italic">01</span>
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-midnight-blue font-black text-xs uppercase">
+                                SJ</div>
+                            <span class="font-bold">Sarah Jenkins</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-12 text-sm font-medium">
+                        <span class="w-24 text-text-muted">Recurve Women</span>
+                        <span class="w-16 text-right font-black">284.5</span>
+                    </div>
+                </div>
+                <div
+                    class="flex items-center justify-between p-4 border border-midnight-blue/10 border-t-0 hover:bg-white transition-colors">
+                    <div class="flex items-center gap-6">
+                        <span class="w-8 font-black text-midnight-blue/30 italic">02</span>
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-8 h-8 rounded-full bg-midnight-blue text-white flex items-center justify-center font-black text-xs uppercase">
+                                DC</div>
+                            <span class="font-bold">David Chen</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-12 text-sm font-medium">
+                        <span class="w-24 text-text-muted">Compound Men</span>
+                        <span class="w-16 text-right font-black">281.2</span>
+                    </div>
+                </div>
+                <div
+                    class="flex items-center justify-between p-4 border border-midnight-blue/10 border-t-0 hover:bg-white transition-colors">
+                    <div class="flex items-center gap-6">
+                        <span class="w-8 font-black text-midnight-blue/30 italic">03</span>
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-8 h-8 rounded-full bg-midnight-blue text-white flex items-center justify-center font-black text-xs uppercase">
+                                ER</div>
+                            <span class="font-bold">Elena Rossi</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-12 text-sm font-medium">
+                        <span class="w-24 text-text-muted">Barebow Women</span>
+                        <span class="w-16 text-right font-black">278.9</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="section-divider"></div>
+        <section class="mb-24">
+            <h2 class="text-3xl font-black tracking-tighter mb-12">DISPATCHES &amp; RESULTS</h2>
+            <div class="max-w-3xl">
+                <div class="news-item">
+                    <span class="text-[10px] font-black tracking-widest text-text-muted uppercase mb-2 block italic">Oct
+                        24, 2024</span>
+                    <h3
+                        class="text-2xl font-black leading-tight mb-3 hover:text-primary transition-colors cursor-pointer">
+                        State Championship: Eagles Secure Triple Gold.</h3>
+                    <p class="text-midnight-blue/70 font-medium">Our recurve team dominated the divisional finals,
+                        breaking a three-year point record in the process.</p>
+                </div>
+                <div class="news-item">
+                    <span class="text-[10px] font-black tracking-widest text-text-muted uppercase mb-2 block italic">Oct
+                        18, 2024</span>
+                    <h3
+                        class="text-2xl font-black leading-tight mb-3 hover:text-primary transition-colors cursor-pointer">
+                        Winter Training Schedule Finalized.</h3>
+                    <p class="text-midnight-blue/70 font-medium">Indoor sessions will now begin at 06:00 AM daily to
+                        accommodate the rising number of junior enrollments.</p>
+                </div>
+                <div class="news-item">
+                    <span class="text-[10px] font-black tracking-widest text-text-muted uppercase mb-2 block italic">Oct
+                        12, 2024</span>
+                    <h3
+                        class="text-2xl font-black leading-tight mb-3 hover:text-primary transition-colors cursor-pointer">
+                        Coach Miller Receives Master Certification.</h3>
+                    <p class="text-midnight-blue/70 font-medium">Our head coach has been awarded the National Master
+                        Level IV endorsement for youth development.</p>
+                </div>
+                <button
+                    class="mt-4 px-6 py-3 border-2 border-midnight-blue font-black text-xs uppercase tracking-widest hover:bg-midnight-blue hover:text-white transition-all">Archive</button>
+            </div>
+        </section>
+    </main>
+    <footer class="bg-midnight-blue text-white py-24">
+        <div class="editorial-container">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-4xl font-black tracking-tighter mb-6">INQUIRE<br />MEMBERSHIP.</h2>
+                    <p class="text-white/60 font-medium mb-8 max-w-sm">
+                        Joining the Eagles requires a commitment to excellence. Reach out to schedule your preliminary
+                        assessment.
+                    </p>
+                    <div class="flex flex-wrap gap-6">
+                        <a class="text-sm font-bold border-b border-primary text-primary pb-1"
+                            href="mailto:office@eaglesarchery.hub">office@eaglesarchery.hub</a>
+                        <a class="text-sm font-bold border-b border-white/20 pb-1 hover:border-white" href="#">Training
+                            Portal</a>
+                        <a class="text-sm font-bold border-b border-white/20 pb-1 hover:border-white" href="#">Legal
+                            Information</a>
+                    </div>
+                </div>
+                <div class="bg-white/5 p-8 rounded-2xl border border-white/10">
+                    <label class="block text-[10px] font-black uppercase tracking-widest text-white/50 mb-4">Direct
+                        Contact</label>
+                    <form class="space-y-4">
+                        <input
+                            class="w-full bg-white/10 border-white/20 text-white placeholder:text-white/30 focus:border-primary focus:ring-0 rounded-lg py-4 px-6 transition-all"
+                            placeholder="Your professional email" type="email" />
+                        <button
+                            class="w-full bg-primary text-midnight-blue font-black py-4 rounded-lg hover:bg-white transition-all">REQUEST
+                            ASSESSMENT</button>
+                    </form>
+                </div>
+            </div>
+            <div
+                class="mt-24 pt-8 border-t border-white/10 flex justify-between items-center text-[10px] font-bold text-white/30 tracking-widest uppercase">
+                <span>© 2024 EAGLES ARCHERY HUB</span>
+                <span>SYSTEM VERSION 2.4.0</span>
+            </div>
+        </div>
+    </footer>
+    <div class="fixed inset-0 pointer-events-none -z-10 opacity-[0.03]"
+        style="background-image: radial-gradient(circle, #0f172a 1px, transparent 1px); background-size: 40px 40px;">
+    </div>
+
+</body>
+
+</html>

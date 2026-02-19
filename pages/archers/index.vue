@@ -128,7 +128,7 @@
                                 </div>
                                 <span class="text-xs font-black text-navy truncate capitalize">{{ archer.bow_type ||
                                     'Recurve'
-                                }}</span>
+                                    }}</span>
                             </div>
                         </div>
                         <div class="bg-gray-50/50 rounded-2xl p-3 border border-gray-50 transition-all">
@@ -285,6 +285,16 @@ const activeArchers = computed(() => {
 
 // Since we moved filtering to serverside, filteredArchers is just archers
 const filteredArchers = computed(() => archers.value)
+
+useHead({
+    title: 'Komunitas Pemanah Indonesia — Archeryhub.id',
+    link: [
+        { rel: 'canonical', href: useRequestURL().href }
+    ],
+    meta: [
+        { name: 'description', content: 'Temukan dan jelajahi profil pemanah berbakat dari seluruh penjuru Indonesia. Lihat prestasi, klub, dan dedikasi mereka di Archeryhub.id.' }
+    ]
+})
 </script>
 
 <style scoped>

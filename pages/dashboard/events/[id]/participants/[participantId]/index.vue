@@ -36,8 +36,15 @@
 
                     <!-- Action Buttons -->
                     <div class="flex gap-3 flex-shrink-0">
+                        <BaseButton variant="white" icon="ph:chart-line-up-bold"
+                            class="h-10 md:h-11 px-4 md:px-6 shadow-xl shadow-white/5"
+                            :to="`/dashboard/events/${eventId}/result-user?archer_id=${participant?.athlete_code || participant?.id}`"
+                            target="_blank">
+                            <span class="hidden sm:inline">Lihat Hasil</span>
+                            <span class="sm:hidden">Hasil</span>
+                        </BaseButton>
                         <BaseButton variant="primary" icon="ph:floppy-disk"
-                            class="h-10 md:h-11 px-4 md:px-6 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all"
+                            class="h-10 md:h-11 px-4 md:px-6 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all font-black text-navy"
                             @click="handleSubmit" :loading="isSubmitting">
                             <span class="hidden sm:inline">Simpan Perubahan</span>
                             <span class="sm:hidden">Simpan</span>
@@ -97,6 +104,14 @@
                                             {{ form.status || 'Menunggu Acc' }}
                                         </span>
                                         <span class="text-gray-300">•</span>
+                                        <!-- Registration Source Badge -->
+                                        <span :class="getSourceClass(participant.registration_source)"
+                                            class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold border">
+                                            <Icon :icon="getSourceIcon(participant.registration_source)"
+                                                class="text-sm" />
+                                            {{ getSourceLabel(participant.registration_source) }}
+                                        </span>
+                                        <span class="text-gray-300">•</span>
                                         <p class="text-xs font-bold text-gray-500 flex items-center gap-1.5">
                                             <Icon icon="ph:calendar-check" />
                                             {{ formatDate(participant?.registration_date) }}
@@ -105,12 +120,58 @@
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-1 gap-6 mt-6">
-                                <div>
-                                    <BaseSelect v-model="form.category_id" label="Divisi & Kategori" required
-                                        placeholder="Pilih Kategori" icon="ph:trophy" :items="categories"
-                                        item-title="label" item-value="id" />
+                            <div class="space-y-4">
+                                <label
+                                    class="block text-sm font-black text-navy uppercase tracking-widest flex items-center gap-2">
+                                    <Icon icon="ph:trophy-bold" class="text-primary" />
+                                    Divisi & Kategori Lomba
+                                </label>
+
+                                <div class="relative">
+                                    <input v-model="categorySearch" type="text"
+                                        placeholder="Cari divisi atau kategori..."
+                                        class="w-full h-10 px-4 pl-10 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all font-medium" />
+                                    <Icon icon="ph:magnifying-glass"
+                                        class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
                                 </div>
+
+                                <div class="max-h-[320px] overflow-y-auto pr-2 custom-scrollbar">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                        <div v-for="category in filteredCategories" :key="category.id"
+                                            class="p-4 rounded-xl border-2 transition-all cursor-pointer flex items-center justify-between group"
+                                            :class="form.category_ids.includes(category.id)
+                                                ? 'border-primary bg-primary/5 shadow-md shadow-primary/5'
+                                                : 'border-gray-100 bg-gray-50/50 hover:border-gray-200'"
+                                            @click="toggleCategory(category.id)">
+                                            <div class="flex items-center gap-4">
+                                                <div class="size-6 rounded-lg border-2 flex items-center justify-center transition-all"
+                                                    :class="form.category_ids.includes(category.id)
+                                                        ? 'bg-primary border-primary'
+                                                        : 'bg-white border-gray-300 group-hover:border-navy'">
+                                                    <Icon v-if="form.category_ids.includes(category.id)"
+                                                        icon="ph:check-bold" class="text-navy text-xs" />
+                                                </div>
+                                                <div class="flex flex-col">
+                                                    <span class="text-sm font-black text-navy leading-tight">{{
+                                                        category.label }}</span>
+                                                    <span
+                                                        class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mt-1">{{
+                                                            category.description }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div v-if="filteredCategories.length === 0" class="py-12 text-center text-gray-400">
+                                        <Icon icon="ph:magnifying-glass-slash"
+                                            class="text-3xl mx-auto mb-2 opacity-50" />
+                                        <p class="text-xs font-bold uppercase tracking-widest">Kategori tidak ditemukan
+                                        </p>
+                                    </div>
+                                </div>
+                                <p class="text-[11px] text-gray-500 font-medium px-1 flex items-center gap-2">
+                                    <Icon icon="ph:info-bold" class="text-navy" />
+                                    Pemanah dapat mengikuti lebih dari satu kategori (Multiple Selection)
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -128,15 +189,22 @@
                                     item-value="value" />
 
                                 <BaseInput v-model="form.payment_amount" label="Jumlah Pembayaran" placeholder="0"
-                                    icon="ph:money" kind="currency" />
+                                    icon="ph:money" kind="currency" required />
                             </div>
 
                             <!-- Payment Proof Images -->
                             <div class="pt-4 border-t border-gray-100">
-                                <label class="block text-sm font-bold text-gray-700 mb-4 flex items-center gap-2">
-                                    <Icon icon="ph:image" />
-                                    Bukti Pembayaran
-                                </label>
+                                <div class="flex items-center justify-between mb-4">
+                                    <label class="block text-sm font-bold text-gray-700 flex items-center gap-2">
+                                        <Icon icon="ph:image" />
+                                        Bukti Pembayaran <span class="text-red-500">*</span>
+                                    </label>
+                                    <button type="button" @click="showMediaLibrary = true"
+                                        class="text-[10px] font-black uppercase tracking-widest text-navy bg-primary px-3 py-1.5 rounded-lg hover:shadow-md transition-all flex items-center gap-1.5">
+                                        <Icon icon="ph:plus-circle-bold" class="text-xs" />
+                                        Tambah Bukti
+                                    </button>
+                                </div>
 
                                 <div v-if="form.payment_proof_urls?.length"
                                     class="grid grid-cols-2 sm:grid-cols-3 gap-4">
@@ -148,11 +216,18 @@
                                                 alt="Bukti Pembayaran" />
                                             <div
                                                 class="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all flex items-center justify-center">
-                                                <a :href="url.startsWith('http') ? url : `http://localhost:8001${url}`"
-                                                    target="_blank"
-                                                    class="opacity-0 group-hover:opacity-100 p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/40 transition-all">
-                                                    <Icon icon="ph:magnifying-glass-plus" class="text-xl" />
-                                                </a>
+                                                <div
+                                                    class="flex gap-2 opacity-0 group-hover:opacity-100 transition-all">
+                                                    <a :href="url.startsWith('http') ? url : `http://localhost:8001${url}`"
+                                                        target="_blank"
+                                                        class="p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/40 transition-all">
+                                                        <Icon icon="ph:magnifying-glass-plus" class="text-xl" />
+                                                    </a>
+                                                    <button type="button" @click="removeProof(index)"
+                                                        class="p-2 bg-red-500/20 backdrop-blur-md rounded-full text-white hover:bg-red-500/40 transition-all">
+                                                        <Icon icon="ph:trash" class="text-xl" />
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </template>
@@ -170,6 +245,51 @@
 
                 <!-- Sidebar -->
                 <div class="space-y-6">
+
+                    <!-- Registration QR & Quick Info -->
+                    <div
+                        class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 overflow-hidden relative group">
+                        <!-- Top Accent -->
+                        <div class="absolute top-0 left-0 w-full h-1 bg-primary"></div>
+
+                        <div class="flex flex-col items-center text-center">
+                            <h3 class="text-sm font-black text-navy uppercase tracking-widest mb-4">QR Daftar Ulang</h3>
+
+                            <div class="relative p-3 bg-white border-2 border-primary rounded-2xl shadow-lg mb-4">
+                                <!-- Use local qrcode.vue when qr_raw exists -->
+                                <QrcodeVue v-if="participant?.qr_raw" :value="participant.qr_raw" :size="128"
+                                    :level="'M'" background="#ffffff" foreground="#1a2e4d" render-as="svg" />
+                                <div v-else
+                                    class="w-32 h-32 flex flex-col items-center justify-center bg-gray-50 rounded-lg text-gray-400">
+                                    <Icon icon="ph:qr-code" class="text-4xl mb-1" />
+                                    <span class="text-[10px] font-bold">Belum Lunas</span>
+                                </div>
+
+                                <!-- Corner Accents -->
+                                <div class="absolute -top-1 -left-1 size-3 border-t-2 border-l-2 border-primary"></div>
+                                <div class="absolute -top-1 -right-1 size-3 border-t-2 border-r-2 border-primary"></div>
+                                <div class="absolute -bottom-1 -left-1 size-3 border-b-2 border-l-2 border-primary">
+                                </div>
+                                <div class="absolute -bottom-1 -right-1 size-3 border-b-2 border-r-2 border-primary">
+                                </div>
+                            </div>
+
+                            <p v-if="participant?.qr_raw"
+                                class="text-[10px] font-bold text-gray-500 max-w-[180px] leading-relaxed mb-3">
+                                Tunjukkan QR ini kepada panitia saat melakukan daftar ulang di lokasi.
+                            </p>
+                            <p v-else class="text-[10px] font-bold text-amber-600 max-w-[180px] leading-relaxed mb-3">
+                                QR akan muncul setelah status pembayaran diubah ke <strong>Lunas</strong>.
+                            </p>
+
+                            <!-- Raw QR value copy -->
+                            <button v-if="participant?.qr_raw" @click="copyQrRaw"
+                                class="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-lg text-[10px] font-bold text-gray-500 transition-colors">
+                                <Icon icon="ph:copy" class="text-sm" />
+                                Salin Kode QR
+                            </button>
+                        </div>
+                    </div>
 
                     <!-- Kick Participant -->
                     <div class="bg-red-50 rounded-2xl border border-red-100 shadow-sm p-6">
@@ -233,12 +353,15 @@
                 </BaseButton>
             </div>
         </template>
+
+        <MediaLibrary :show="showMediaLibrary" @close="showMediaLibrary = false" @select="handleMediaSelect" />
     </div>
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue'
 import Breadcrumbs from '~/components/common/Breadcrumbs.vue'
+import QrcodeVue from 'qrcode.vue'
 import { ref, reactive, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useApi } from '~/composables/useApi'
@@ -273,24 +396,45 @@ const showKickDialog = ref(false)
 const participant = ref(null)
 const event = ref(null)
 const categories = ref([])
+const showMediaLibrary = ref(false)
+const categorySearch = ref('')
+
+const filteredCategories = computed(() => {
+    let list = [...categories.value]
+
+    // Sort: registered ones first
+    list.sort((a, b) => {
+        const aIsReg = form.category_ids.includes(a.id)
+        const bIsReg = form.category_ids.includes(b.id)
+        if (aIsReg && !bIsReg) return -1
+        if (!aIsReg && bIsReg) return 1
+        return 0
+    })
+
+    if (!categorySearch.value) return list
+    const search = categorySearch.value.toLowerCase()
+    return list.filter(c =>
+        c.label.toLowerCase().includes(search) ||
+        c.description.toLowerCase().includes(search)
+    )
+})
 
 const form = reactive({
-    category_id: '',
-    status: 'Menunggu Acc',
-    payment_status: 'belum_lunas',
+    category_ids: [],
+    payment_status: 'menunggu acc',
     payment_amount: 0,
     payment_proof_urls: []
 })
 
+const toggleCategory = (id) => {
+    const index = form.category_ids.indexOf(id)
+    if (index === -1) form.category_ids.push(id)
+    else form.category_ids.splice(index, 1)
+}
+
 const paymentStatusOptions = [
     { label: 'Lunas', value: 'lunas' },
-    { label: 'Menunggu Acc', value: 'menunggu_acc' }
-]
-
-const statusOptions = [
-    { label: 'Menunggu Acc', value: 'Menunggu Acc' },
-    { label: 'Terdaftar', value: 'Terdaftar' },
-    { label: 'Ditolak', value: 'Ditolak' }
+    { label: 'Menunggu Acc', value: 'menunggu acc' }
 ]
 
 const targetNumberText = computed(() => {
@@ -307,32 +451,40 @@ const fetchParticipant = async () => {
         if (found) {
             participant.value = found
             // Populate form
-            form.category_id = found.category_id
-            form.status = found.status || 'Menunggu Acc'
-            form.payment_status = found.payment_status || 'belum_lunas'
+            form.category_ids = [...new Set(found.categories?.map(c => c.category_id) || (found.category_id ? [found.category_id] : []))]
+            form.payment_status = found.payment_status || 'menunggu acc'
             form.payment_amount = found.payment_amount || 0
-            form.payment_proof_urls = found.payment_proof_urls ? found.payment_proof_urls.split(',') : []
+            form.payment_proof_urls = found.payment_proof_urls ? (Array.isArray(found.payment_proof_urls) ? found.payment_proof_urls : found.payment_proof_urls.split(',')) : []
         }
 
         // Fetch event details and categories
         const [eventRes, categoriesRes] = await Promise.all([
             get(`/events/${eventId}`),
-            get(`/events/${eventId}/categories`)
+            get(`/events/${eventId}/categories?limit=500`)
         ])
         event.value = eventRes
-        if (categoriesRes && categoriesRes.events) {
-            categories.value = categoriesRes.events.map(cat => ({
-                id: cat.id,
-                label: formatCategoryName(cat),
-                description: `${cat.event_type_name || ''} ${cat.gender_division_name ? '(' + cat.gender_division_name + ')' : ''}`.trim()
-            }))
-        }
+        categories.value = categoriesRes.events.map(cat => ({
+            id: cat.id,
+            label: formatCategoryName(cat),
+            description: `${cat.event_type_name || ''} ${cat.gender_division_name ? '(' + cat.gender_division_name + ')' : ''}`.trim()
+        }))
     } catch (error) {
         console.error('Failed to fetch participant:', error)
         toast.error('Gagal memuat data peserta')
     } finally {
         isLoading.value = false
     }
+}
+
+const handleMediaSelect = (media) => {
+    if (media?.url) {
+        form.payment_proof_urls.push(media.url)
+        toast.success('Bukti pembayaran berhasil ditambahkan')
+    }
+}
+
+const removeProof = (index) => {
+    form.payment_proof_urls.splice(index, 1)
 }
 
 const formatCategoryName = (category) => {
@@ -365,23 +517,67 @@ const getCategoryName = (p) => {
 
 const getStatusClass = (status) => {
     switch (status) {
-        case 'Terdaftar':
+        case 'lunas':
             return 'bg-green-50 text-green-600 border-green-200'
-        case 'Ditolak':
-            return 'bg-red-50 text-red-600 border-red-200'
-        case 'Menunggu Acc':
+        case 'menunggu acc':
         default:
             return 'bg-amber-50 text-amber-600 border-amber-200'
     }
 }
 
+const getSourceLabel = (source) => {
+    switch (source) {
+        case 'invited': return 'Diundang'
+        case 'admin_created': return 'Dibuat Admin'
+        case 'self_register':
+        default: return 'Daftar Sendiri'
+    }
+}
+
+const getSourceClass = (source) => {
+    switch (source) {
+        case 'invited': return 'bg-purple-50 text-purple-600 border-purple-200'
+        case 'admin_created': return 'bg-blue-50 text-blue-600 border-blue-200'
+        case 'self_register':
+        default: return 'bg-gray-50 text-gray-500 border-gray-200'
+    }
+}
+
+const getSourceIcon = (source) => {
+    switch (source) {
+        case 'invited': return 'ph:envelope-open'
+        case 'admin_created': return 'ph:shield-star'
+        case 'self_register':
+        default: return 'ph:user-circle'
+    }
+}
+
+const copyQrRaw = async () => {
+    if (!participant.value?.qr_raw) return
+    try {
+        await navigator.clipboard.writeText(participant.value.qr_raw)
+        toast.success('Kode QR berhasil disalin!')
+    } catch {
+        toast.error('Gagal menyalin kode QR.')
+    }
+}
+
 const handleSubmit = async () => {
+    // Validation
+    if (form.payment_status === 'lunas' && !form.payment_proof_urls?.length) {
+        if (!confirm('Status diatur ke Lunas tetapi belum ada bukti pembayaran. Lanjutkan?')) {
+            return
+        }
+    }
+
     isSubmitting.value = true
     try {
         const payload = {
-            category_id: form.category_id,
+            category_ids: form.category_ids,
             payment_status: form.payment_status,
-            payment_amount: parseFloat(form.payment_amount) || 0
+            payment_amount: parseFloat(form.payment_amount) || 0,
+            payment_proof_urls: form.payment_proof_urls,
+            athlete_id: participant.value?.archer_id // Or participant.value?.athlete_code
         }
         await put(`/events/${eventId}/participants/${participantId}`, payload)
         toast.success('Data peserta berhasil diperbarui')

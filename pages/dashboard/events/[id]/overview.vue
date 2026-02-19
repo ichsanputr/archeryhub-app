@@ -191,7 +191,7 @@
                                 <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">
                                     Penyelesaian</p>
                                 <p class="text-navy-dark text-3xl font-extrabold tracking-tight">{{ completionPercentage
-                                    }}%</p>
+                                }}%</p>
                             </div>
                             <div
                                 class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
@@ -252,7 +252,7 @@
                                             <span class="font-bold text-navy-dark truncate pr-2">{{ cat.division }} - {{
                                                 cat.name }}</span>
                                             <span class="text-navy font-black font-mono shrink-0 ml-auto">{{ cat.count
-                                            }}</span>
+                                                }}</span>
                                         </div>
                                         <div class="w-full bg-gray-200 rounded-full h-1.5">
                                             <div class="bg-navy h-1.5 rounded-full transition-all duration-500"
@@ -343,7 +343,7 @@
                         <div class="flex-1 overflow-y-auto max-h-[440px] p-4">
                             <div class="space-y-3">
                                 <div v-for="(participant, idx) in topParticipants" :key="participant.id"
-                                    @click="navigateTo(`/dashboard/events/${route.params.id}/result-user?participant_uuid=${participant.id}`)"
+                                    @click="navigateTo(`/dashboard/events/${route.params.id}/result-user?archer_id=${participant.athlete_code || participant.id}`)"
                                     class="group relative bg-white border border-gray-50 rounded-2xl p-4 hover:border-primary/50 hover:shadow-md transition-all cursor-pointer flex items-center gap-4">
 
                                     <!-- Avatar with Rank Badge -->

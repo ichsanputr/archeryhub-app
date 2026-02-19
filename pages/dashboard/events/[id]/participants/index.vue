@@ -127,7 +127,7 @@
                                 class="group hover:bg-gray-50/50 transition-colors">
                                 <td class="px-6 py-4 align-top text-center w-16">
                                     <span class="text-sm font-bold text-gray-400">{{ (page - 1) * limit + index + 1
-                                        }}</span>
+                                    }}</span>
                                 </td>
                                 <td class="px-6 py-4 align-top min-w-[250px]">
                                     <div class="flex items-center gap-3">
@@ -154,34 +154,34 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 align-top">
-                                    <div class="flex flex-wrap gap-2">
-                                        <div v-for="cat in participant.categories" :key="cat.participant_id"
-                                            class="flex flex-col gap-1 p-2.5 rounded-xl bg-white border border-gray-100 shadow-sm hover:border-primary/40 hover:shadow-md transition-all duration-200 group/chip min-w-[180px]">
-                                            <div class="flex items-center justify-between gap-3">
+                                    <div class="flex flex-wrap gap-2 items-center">
+                                        <div v-for="cat in participant.categories.slice(0, 2)" :key="cat.participant_id"
+                                            class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-100 shadow-sm hover:border-primary/40 transition-all duration-200 group/chip">
+                                            <div class="flex flex-col">
                                                 <span class="text-[11px] font-black text-navy leading-none">
                                                     {{ cat.division_name }} - {{ cat.category_name }}
                                                 </span>
-                                                <span :class="getStatusClass(cat.status)"
-                                                    class="px-1.5 py-0.5 rounded-md text-[8px] font-black uppercase tracking-tighter border whitespace-nowrap">
-                                                    {{ cat.status }}
-                                                </span>
-                                            </div>
-                                            <div class="flex items-center justify-between mt-1">
-                                                <div class="text-[9px] text-gray-400 font-bold italic truncate">
+                                                <span
+                                                    class="text-[9px] text-gray-400 font-bold uppercase tracking-wider mt-0.5">
                                                     {{ cat.event_type_name }} {{ cat.gender_division_name ? '• ' +
                                                         cat.gender_division_name : '' }}
-                                                </div>
+                                                </span>
                                             </div>
+                                        </div>
+                                        <div v-if="participant.categories.length > 2"
+                                            class="px-2.5 py-1.5 rounded-lg bg-navy/5 text-navy text-[10px] font-black border border-navy/10 flex items-center gap-1.5 hover:bg-navy/10 transition-colors cursor-help"
+                                            :title="participant.categories.slice(2).map(c => c.division_name + ' - ' + c.category_name).join('\n')">
+                                            +{{ participant.categories.length - 2 }} Lagi
                                         </div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 text-right align-top w-20">
                                     <div class="flex items-center justify-end">
                                         <NuxtLink
-                                            :to="`/dashboard/events/${eventId}/participants/${participant.archer_id}`"
+                                            :to="`/dashboard/events/${eventId}/participants/${participant.athlete_code || participant.archer_id}`"
                                             class="size-10 flex items-center justify-center rounded-xl bg-white border border-gray-100 text-gray-400 hover:text-navy hover:border-navy/20 hover:shadow-sm transition-all"
                                             title="Lihat Detail Profil">
-                                            <Icon icon="ph:arrow-square-out-bold" class="text-xl" />
+                                            <Icon icon="ph:eye-bold" class="text-xl" />
                                         </NuxtLink>
                                     </div>
                                 </td>
@@ -305,9 +305,9 @@ const filteredParticipants = computed(() => {
 
 const getStatusClass = (status) => {
     switch (status) {
-        case 'Terdaftar':
+        case 'lunas':
             return 'bg-green-50 text-green-600 border-green-100'
-        case 'Menunggu Acc':
+        case 'menunggu acc':
             return 'bg-blue-50 text-blue-600 border-blue-100'
         default:
             return 'bg-gray-50 text-gray-600 border-gray-100'

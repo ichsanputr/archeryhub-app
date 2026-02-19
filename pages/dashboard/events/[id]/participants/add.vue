@@ -123,7 +123,7 @@
                             <div v-if="selectedArchers.length > 0" class="space-y-3">
                                 <div class="flex items-center justify-between">
                                     <p class="text-sm font-bold text-navy">Pemanah Terpilih ({{ selectedArchers.length
-                                        }})</p>
+                                    }})</p>
                                     <button @click="selectedArchers = []"
                                         class="text-xs text-red-500 font-bold hover:underline">
                                         Hapus Semua
@@ -207,15 +207,17 @@
                                     placeholder="Buat password minimal 6 karakter"
                                     :required="!!newArcherForm.phone && !newArcherForm.email" />
                                 <BaseInput v-model="newArcherForm.date_of_birth" label="Tanggal Lahir" type="date" />
-                                <BaseSelect v-model="newArcherForm.gender" label="Jenis Kelamin"
-                                    :items="genderOptions" required />
-                                <BaseSelect v-model="newArcherForm.bow_type" label="Jenis Busur" :items="bowOptions" required />
+                                <BaseSelect v-model="newArcherForm.gender" label="Jenis Kelamin" :items="genderOptions"
+                                    required />
+                                <BaseSelect v-model="newArcherForm.bow_type" label="Jenis Busur" :items="bowOptions"
+                                    required />
                                 <BaseSelect v-model="newArcherForm.city" label="Kota" placeholder="Pilih Kota"
-                                    :items="cityOptions" />
+                                    :items="cityOptions" searchable />
                                 <BaseInput v-model="newArcherForm.school" label="Sekolah"
                                     placeholder="Nama sekolah (opsional)" />
+                                <BaseSelect v-model="newArcherForm.club_id" label="Klub" :items="clubOptions" required
+                                    searchable />
                             </div>
-                            <BaseSelect v-model="newArcherForm.club_id" label="Klub" :items="clubOptions" required />
                             <BaseTextarea v-model="newArcherForm.address" label="Alamat" placeholder="Alamat lengkap"
                                 :rows="2" />
                             <p class="text-xs text-gray-400">
@@ -247,7 +249,9 @@
                                         <Icon v-if="form.category_ids.includes(category.id || category.uuid)"
                                             icon="ph:check-bold" class="text-navy text-xs" />
                                     </div>
-                                    <span class="text-sm font-bold text-navy">{{ getCategoryName(category) }}</span>
+                                    <span class="text-sm font-bold text-navy">{{ category.name ||
+                                        getCategoryName(category)
+                                        }}</span>
                                 </div>
                                 <div v-if="form.category_ids.includes(category.id || category.uuid)"
                                     class="px-2 py-1 bg-primary text-navy text-[10px] font-black uppercase tracking-widest rounded-md">
@@ -263,7 +267,8 @@
                             <div class="flex items-center gap-2">
                                 <Icon icon="ph:info-bold" class="text-amber-500 text-xl shrink-0" />
                                 <p class="text-sm text-amber-700 font-medium">
-                                    Kategori untuk event ini belum tersedia. Tambahkan kategori di halaman event terlebih dahulu.
+                                    Kategori untuk event ini belum tersedia. Tambahkan kategori di halaman event
+                                    terlebih dahulu.
                                 </p>
                             </div>
                         </div>
@@ -279,6 +284,8 @@
                             :items="paymentStatusOptions" />
                         <BaseInput v-model="form.payment_amount" label="Jumlah Pembayaran" placeholder="0"
                             kind="currency" />
+                        <BaseSelect v-model="form.registration_source" label="Sumber Pendaftaran" :items="sourceOptions"
+                            class="md:col-span-2" />
                     </div>
                     <BaseTextarea v-model="form.notes" label="Catatan" placeholder="Catatan tambahan (opsional)"
                         :rows="3" class="mt-4" />
@@ -340,6 +347,7 @@ const form = reactive({
     category_ids: [],
     payment_status: 'lunas',
     payment_amount: 0,
+    registration_source: 'admin_created',
     notes: ''
 })
 
@@ -378,6 +386,11 @@ const bowOptions = [
 const paymentStatusOptions = [
     { title: 'Menunggu ACC', value: 'menunggu_acc' },
     { title: 'Lunas', value: 'lunas' }
+]
+
+const sourceOptions = [
+    { title: 'Dibuat Admin', value: 'admin_created' },
+    { title: 'Diundang', value: 'invited' },
 ]
 
 const isSearchingArchers = ref(false)
@@ -591,23 +604,20 @@ const submit = async () => {
         }
 
         if (archerMode.value === 'existing') {
-            // Register multiple existing archers
-            const registrationPromises = []
-            const categoriesToRegister = form.category_ids
-            for (const archer of selectedArchers.value) {
-                for (const catId of categoriesToRegister) {
-                    const payload = {
-                        athlete_id: archer.uuid || archer.id,
-                        event_category_id: catId,
-                        payment_amount: form.payment_amount || 0,
-                        payment_status: form.payment_status || 'lunas'
-                    }
-                    registrationPromises.push(post(`/events/${route.params.id}/participants`, payload))
+            // Register multiple existing archers - each archer can have multiple categories
+            const registrationPromises = selectedArchers.value.map(archer => {
+                const payload = {
+                    athlete_id: archer.uuid || archer.id,
+                    event_category_ids: form.category_ids,
+                    payment_amount: form.payment_amount || 0,
+                    payment_status: form.payment_status || 'lunas',
+                    registration_source: form.registration_source || 'admin_created'
                 }
-            }
+                return post(`/events/${route.params.id}/participants`, payload)
+            })
 
             await Promise.all(registrationPromises)
-            toast.success(`${selectedArchers.value.length} peserta berhasil ditambahkan`) 
+            toast.success(`${selectedArchers.value.length} peserta berhasil ditambahkan`)
         } else {
             // Create new archer and register
             const archerResponse = await post('/archers', {
@@ -633,19 +643,15 @@ const submit = async () => {
                 return
             }
 
-            // Register the new archer for each selected category
-            const categoriesToRegister = form.category_ids
-            const registrationPromises = categoriesToRegister.map(catId => {
-                const payload = {
-                    athlete_id: archerId,
-                    event_category_id: catId,
-                    payment_amount: form.payment_amount || 0,
-                    payment_status: form.payment_status || 'lunas'
-                }
-                return post(`/events/${route.params.id}/participants`, payload)
-            })
-
-            await Promise.all(registrationPromises)
+            // Register the new archer with all selected categories
+            const payload = {
+                athlete_id: archerId,
+                event_category_ids: form.category_ids,
+                payment_amount: form.payment_amount || 0,
+                payment_status: form.payment_status || 'lunas',
+                registration_source: form.registration_source || 'admin_created'
+            }
+            await post(`/events/${route.params.id}/participants`, payload)
             toast.success('Peserta berhasil ditambahkan')
         }
 
