@@ -67,6 +67,7 @@ const props = defineProps({
 })
 
 const activeDay = ref(1)
+const isLoading = ref(false)
 const schedules = computed(() => props.schedules)
 
 const groupedByDay = computed(() => {

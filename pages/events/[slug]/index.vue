@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen bg-background-light font-body text-navy">
+    <div class="min-h-screen bg-background-light font-body text-navy overflow-x-hidden">
         <!-- Hero Header -->
         <div class="bg-navy relative overflow-hidden h-[400px] flex items-center">
             <div class="absolute inset-0 z-0">
@@ -41,8 +41,7 @@
         <div class="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center gap-1 overflow-x-auto no-scrollbar -mb-px">
-                    <button v-for="tab in tabs" :key="tab"
-                        @click="navigateTo({ query: { ...route.query, tab } }, { replace: true })"
+                    <button v-for="tab in tabs" :key="tab" @click="setTabWithLoader(tab)"
                         class="px-4 md:px-6 py-3 md:py-4 font-semibold text-sm md:text-base transition-colors whitespace-nowrap border-b-2"
                         :class="activeTab === tab ? 'text-navy border-primary bg-primary/5' : 'text-gray-500 border-transparent hover:text-navy hover:bg-gray-50'">
                         {{ tab }}
@@ -56,8 +55,9 @@
             <div
                 :class="activeTab === 'Hasil' ? 'grid grid-cols-1' : 'grid grid-cols-1 lg:grid-cols-3 gap-8 xl:gap-12'">
                 <!-- Left Column -->
-                <div :class="activeTab === 'Hasil' ? 'space-y-10' : 'lg:col-span-2 space-y-10'">
-                    <div v-if="activeTab === 'Ringkasan'" class="space-y-8">
+                <div :class="activeTab === 'Hasil' ? 'space-y-10' : 'lg:col-span-2 space-y-10'" :key="activeTab">
+                    <TournamentTabsSkeleton v-if="isTabLoading" :tab="activeTab" />
+                    <div v-else-if="activeTab === 'Ringkasan'" class="space-y-8">
                         <!-- About Section -->
                         <section v-if="tournament.page_settings?.sections?.about !== false"
                             class="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100">
@@ -303,7 +303,8 @@
                     <TournamentAthletesTab v-else-if="activeTab === 'Peserta'" :participants="participantsData" />
                     <TournamentResultsTab v-else-if="activeTab === 'Hasil'" :event-id="slug"
                         :results-type="tournament.page_settings?.results_type || 'system'"
-                        :manual-results="tournament.results || []" />
+                        :results="tournament.results || []" :categories="categoriesList"
+                        :participants="participantsData" />
                     <TournamentVenueTab v-else-if="activeTab === 'Lokasi'" :venue="tournament.venue"
                         :address="tournament.address" :gmaps-link="tournament.gmaps_link"
                         :accessibility="tournament.location_accessibility" />
@@ -630,35 +631,34 @@
             </div>
         </main>
 
+        <!-- Lightbox Modal -->
+        <ClientOnly>
+            <Teleport to="body">
+                <Transition enter-active-class="transition duration-200" enter-from-class="opacity-0"
+                    enter-to-class="opacity-100" leave-active-class="transition duration-150"
+                    leave-from-class="opacity-100" leave-to-class="opacity-0">
+                    <div v-if="lightboxUrl"
+                        class="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4"
+                        @click.self="lightboxUrl = null">
+                        <button @click="lightboxUrl = null"
+                            class="absolute top-4 right-4 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-50">
+                            <Icon icon="ph:x-bold" class="text-2xl" />
+                        </button>
+                        <img :src="lightboxUrl" class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl" />
+                    </div>
+                </Transition>
+            </Teleport>
+        </ClientOnly>
     </div>
-
-    <!-- Lightbox Modal -->
-    <ClientOnly>
-        <Teleport to="body">
-            <Transition enter-active-class="transition duration-200" enter-from-class="opacity-0"
-                enter-to-class="opacity-100" leave-active-class="transition duration-150" leave-from-class="opacity-100"
-                leave-to-class="opacity-0">
-                <div v-if="lightboxUrl"
-                    class="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4"
-                    @click.self="lightboxUrl = null">
-                    <button @click="lightboxUrl = null"
-                        class="absolute top-4 right-4 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-50">
-                        <Icon icon="ph:x-bold" class="text-2xl" />
-                    </button>
-                    <img :src="lightboxUrl" class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl" />
-                </div>
-            </Transition>
-        </Teleport>
-    </ClientOnly>
 </template>
 
-/* eslint-disable vue/multi-word-component-names */
 <script setup>
+/* eslint-disable vue/multi-word-component-names */
 import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
-import { definePageMeta, useSeoMeta } from '#imports'
+import { definePageMeta, useSeoMeta, useHead, useRequestURL, createError, useRuntimeConfig, useAsyncData, navigateTo } from '#imports'
 import { useDateFormat } from '@vueuse/core'
 import { getCategoryIcon } from '~/utils/logoArcheryCategory'
 
@@ -683,11 +683,6 @@ const isArcher = computed(() => user.value?.type === 'archer' || user.value?.rol
 // Generate login URL with redirect
 const loginUrl = computed(() => `/auth/login?redirect=${encodeURIComponent(`/events/${slug}`)}`)
 const registerUrl = computed(() => `/events/${slug}/register`)
-
-// Prize Captions Computed
-const firstPrizeCaption = computed(() => tournament.value.prizes?.first_caption || '+ Medali Emas & Sertifikat')
-const secondPrizeCaption = computed(() => tournament.value.prizes?.second_caption || '+ Medali Perak & Sertifikat')
-const thirdPrizeCaption = computed(() => tournament.value.prizes?.third_caption || '+ Medali Perunggu & Sertifikat')
 
 const isLoading = ref(false)
 
@@ -729,6 +724,26 @@ const tabs = computed(() => {
     return list
 })
 const activeTab = ref('Ringkasan')
+const isTabLoading = ref(false)
+
+// Artificial delay for smooth skeleton demonstration and to prevent layout thrashing
+const setTabWithLoader = async (newTab) => {
+    if (activeTab.value === newTab) return
+
+    // User requested "no need loader spinner for tab hasil" - skip skeleton for Hasil
+    if (newTab === 'Hasil') {
+        activeTab.value = newTab
+        isTabLoading.value = false
+        return
+    }
+
+    isTabLoading.value = true
+    activeTab.value = newTab
+    // Small delay for other tabs to let components mount smoothly
+    setTimeout(() => {
+        isTabLoading.value = false
+    }, 300)
+}
 
 // Helper function to decode tab name from URL
 const decodeTabName = (tab) => {
@@ -736,63 +751,67 @@ const decodeTabName = (tab) => {
     return decodeURIComponent(String(tab).replace(/\+/g, ' '))
 }
 
-// Re-sync tab when tournament data loads (in case tabs change)
-watch(() => tabs.value, () => {
-    if (!tournament.value) return
-    const currentTab = route.query.tab
-    if (currentTab) {
-        const decodedTab = decodeTabName(currentTab)
-        if (decodedTab && tabs.value.includes(decodedTab)) {
-            activeTab.value = decodedTab
+const transformEventData = (data) => {
+    if (!data) return fallbackTournament
+
+    let pg = {}
+    try {
+        if (typeof data.page_settings === 'string') {
+            pg = JSON.parse(data.page_settings)
+        } else if (data.page_settings && typeof data.page_settings === 'object') {
+            pg = data.page_settings
         }
+    } catch (e) {
+        console.warn('Failed to parse page_settings', e)
     }
-})
 
-const transformEventData = (data) => ({
-    name: data.name || data.title || '',
-    date: (() => {
-        if (!data.start_date) return data.date || ''
-        const start = useDateFormat(data.start_date, 'DD MMM YYYY', { locales: 'id-ID' }).value
-        const end = data.end_date ? useDateFormat(data.end_date, 'DD MMM YYYY', { locales: 'id-ID' }).value : null
+    const sections = pg.sections || {
+        about: true,
+        divisions: true,
+        fees: true,
+        prizes: true,
+        schedule: true,
+        location: true,
+        faq: true,
+        payment_methods: true
+    }
 
-        if (!end || start === end) return start
-
-        return `${start} - ${end}`
-    })(),
-    location: data.venue || data.location || '',
-    venue: data.venue || data.location || '',
-    gmaps_link: data.gmaps_link || '',
-    address: data.address || '',
-    status: data.status || 'upcoming',
-    category: data.category || '',
-    organizer: data.organizer_name || data.organizer || 'Penyelenggara',
-    organizer_slug: data.organizer_username || data.organizer_slug || null,
-    organizer_logo: data.organizer_avatar_url || data.organizer_logo || null,
-    organizer_phone: data.organizer_phone || data.phone || null,
-    whatsapp_number: data.whatsapp_number || data.organizer_phone || data.phone || null,
-    image: data.banner_url || data.image || '/hero-event-detail.jpeg',
-    thumbnail: data.logo_url || data.thumbnail || null,
-    fees: data.fees || [],
-    payment_methods: data.page_settings ? (JSON.parse(data.page_settings).payment_methods || []) : [],
-    description: data.description || '',
-    total_prize: data.total_prize || 0,
-    technical_guidebook_url: data.technical_guidebook_url || null,
-    max_participants: data.max_participants ?? null,
-    page_settings: data.page_settings ? JSON.parse(data.page_settings) : {
-        sections: {
-            schedule: true,
-            location: true,
-            faq: true
-        }
-    },
-    faq: data.faq ? (typeof data.faq === 'string' ? JSON.parse(data.faq) : data.faq) : [],
-    prizes: data.page_settings ? (JSON.parse(data.page_settings).prizes || { first: '-', second: '-', third: '-' }) : { first: '-', second: '-', third: '-' },
-    fees: data.page_settings ? (JSON.parse(data.page_settings).fees || []) : [],
-    results: data.page_settings ? (JSON.parse(data.page_settings).results || []) : [],
-    registration_deadline: data.registration_deadline || null,
-    participant_count: data.participant_count || 0,
-    location_accessibility: data.page_settings ? (JSON.parse(data.page_settings).location_accessibility || []) : []
-})
+    return {
+        name: data.name || data.title || '',
+        date: (() => {
+            if (!data.start_date) return data.date || ''
+            const start = useDateFormat(data.start_date, 'DD MMM YYYY', { locales: 'id-ID' }).value
+            const end = data.end_date ? useDateFormat(data.end_date, 'DD MMM YYYY', { locales: 'id-ID' }).value : null
+            if (!end || start === end) return start
+            return `${start} - ${end}`
+        })(),
+        location: data.venue || data.location || '',
+        venue: data.venue || data.location || '',
+        gmaps_link: data.gmaps_link || '',
+        address: data.address || '',
+        status: data.status || 'upcoming',
+        category: data.category || '',
+        organizer: data.organizer_name || data.organizer || 'Penyelenggara',
+        organizer_slug: data.organizer_username || data.organizer_slug || null,
+        organizer_logo: data.organizer_avatar_url || data.organizer_logo || null,
+        whatsapp_number: data.whatsapp_number || data.organizer_phone || data.phone || data.whatsapp_number || null,
+        image: data.banner_url || data.image || '/hero-event-detail.jpeg',
+        thumbnail: data.logo_url || data.thumbnail || null,
+        description: data.description || '',
+        total_prize: data.total_prize || 0,
+        technical_guidebook_url: data.technical_guidebook_url || null,
+        max_participants: data.max_participants ?? null,
+        registration_deadline: data.registration_deadline || null,
+        participant_count: data.participant_count || 0,
+        page_settings: { ...pg, sections },
+        faq: data.faq ? (typeof data.faq === 'string' ? JSON.parse(data.faq) : data.faq) : [],
+        prizes: pg.prizes || { first: '-', second: '-', third: '-' },
+        fees: pg.fees || [],
+        results: pg.results || [],
+        payment_methods: pg.payment_methods || [],
+        location_accessibility: pg.location_accessibility || []
+    }
+}
 
 // Google Maps embed URL
 const gmapsEmbedUrl = computed(() => {
@@ -810,8 +829,6 @@ const gmapsEmbedUrl = computed(() => {
             return `https://www.google.com/maps?q=${encodeURIComponent(query)}&output=embed`
         }
 
-        // For maps.app.goo.gl or goo.gl links, or direct google.com/maps/place/
-        // Use venue and location if available for better reliability
         const searchQuery = tournament.value.venue || tournament.value.location || link
         return `https://www.google.com/maps?q=${encodeURIComponent(searchQuery)}&output=embed`
     } catch (e) {
@@ -822,28 +839,6 @@ const gmapsEmbedUrl = computed(() => {
 
 const divisionsData = ref([])
 
-const fetchTournament = async () => {
-    isLoading.value = true
-    try {
-        const response = await $fetch(`${config.public.apiBaseUrl}/events/${slug}`)
-        if (response) {
-            tournament.value = transformEventData(response.data || response)
-        }
-
-        // Fetch categories/divisions
-        const categoriesRes = await $fetch(`${config.public.apiBaseUrl}/events/${slug}/categories`)
-        if (categoriesRes && categoriesRes.events) {
-            divisionsData.value = processDivisions(categoriesRes.events)
-        }
-    } catch (error) {
-        console.error('Failed to fetch event:', error)
-        // Keep fallback data
-    } finally {
-        isLoading.value = false
-    }
-}
-
-// Category label without jenis busur (division), no dash: e.g. "Senior Individual Women"
 const formatCategoryLabel = (e) => {
     return [e.category_name, e.event_type_name, e.gender_division_name]
         .filter(Boolean)
@@ -875,21 +870,6 @@ const displayValue = (value) => {
     return value
 }
 
-const getPaymentIcon = (method) => {
-    const name = (method.bank_name || '').toLowerCase()
-    if (method.type === 'qris' || name.includes('qris')) return 'ph:qr-code-bold'
-    if (name.includes('bca')) return 'simple-icons:bankofamerica' // Generic enough or use a bank icon 
-    if (name.includes('mandiri')) return 'ph:bank-bold'
-    if (name.includes('bni')) return 'ph:bank-bold'
-    if (name.includes('bri')) return 'ph:bank-bold'
-    if (name.includes('gopay')) return 'simple-icons:gopay'
-    if (name.includes('dana')) return 'simple-icons:dana'
-    if (name.includes('ovo')) return 'simple-icons:ovo'
-    if (name.includes('shopee')) return 'simple-icons:shopeepay'
-
-    return method.type === 'bank' ? 'ph:bank-bold' : 'ph:wallet-bold'
-}
-
 const indonesianPaymentMethods = [
     { title: 'BCA (Bank Central Asia)', value: 'BCA', image: '/payment-method/bca.png', type: 'bank' },
     { title: 'Mandiri', value: 'Mandiri', image: '/payment-method/mandiri.png', type: 'bank' },
@@ -908,13 +888,23 @@ const getPaymentMethodImage = (bankName) => {
     return method ? method.image : null
 }
 
-const divisions = [
-    { name: 'Recurve Division', icon: 'adjust', distance: '70m', categories: ["Men's Individual", "Women's Individual", "Mixed Team"] },
-    { name: 'Compound Division', icon: 'gps_fixed', distance: '50m', categories: ["Men's Individual", "Women's Individual", "Mixed Team"] },
-    { name: 'Barebow Division', icon: 'radar', distance: '50m', categories: ["Men's Individual", "Women's Individual", "Mixed Team"] },
-    { name: 'Nasional Division', icon: 'flag', distance: '40m', categories: ["U-12", "U-15", "Umum"] },
-    { name: 'Traditional', icon: 'history_edu', distance: '30m', categories: ["Umum Putra", "Umum Putri"] },
-]
+const getPaymentIcon = (method) => {
+    const name = (method.bank_name || '').toLowerCase()
+    if (method.type === 'qris' || name.includes('qris')) return 'ph:qr-code-bold'
+    if (name.includes('bca')) return 'ph:bank-bold'
+    if (name.includes('mandiri')) return 'ph:bank-bold'
+    if (name.includes('bni')) return 'ph:bank-bold'
+    if (name.includes('bri')) return 'ph:bank-bold'
+    if (name.includes('gopay')) return 'ph:wallet-bold'
+    if (name.includes('dana')) return 'ph:wallet-bold'
+    if (name.includes('ovo')) return 'ph:wallet-bold'
+    return method.type === 'bank' ? 'ph:bank-bold' : 'ph:wallet-bold'
+}
+
+// Prize Captions Computed
+const firstPrizeCaption = computed(() => tournament.value.prizes?.first_caption || '+ Medali Emas & Sertifikat')
+const secondPrizeCaption = computed(() => tournament.value.prizes?.second_caption || '+ Medali Perak & Sertifikat')
+const thirdPrizeCaption = computed(() => tournament.value.prizes?.third_caption || '+ Medali Perunggu & Sertifikat')
 
 // SSR: Fetch event data with useAsyncData
 const { data: eventData, error: eventError } = await useAsyncData(
@@ -965,36 +955,13 @@ if (eventError.value || !eventData.value?.event || !tournament.value.name) {
     })
 }
 
-// Sync tab with query params
-watch(() => route.query.tab, (newTab) => {
-    if (!tournament.value) return
-    if (newTab) {
-        const decodedTab = decodeTabName(newTab)
-        if (decodedTab && tabs.value.includes(decodedTab)) {
-            activeTab.value = decodedTab
-        } else {
-            activeTab.value = tabs.value[0] || 'Ringkasan'
-        }
-    } else {
-        activeTab.value = 'Ringkasan'
-    }
-}, { immediate: true })
-
-// Sync initial tab from query params after tournament is loaded
+// Initial tab sync only on first load
 onMounted(() => {
-    nextTick(() => {
-        const currentTab = route.query.tab
-        if (currentTab) {
-            const decodedTab = decodeTabName(currentTab)
-            if (decodedTab && tabs.value.includes(decodedTab)) {
-                activeTab.value = decodedTab
-            } else {
-                activeTab.value = tabs.value[0] || 'Ringkasan'
-            }
-        } else {
-            activeTab.value = 'Ringkasan'
-        }
-    })
+    if (!tournament.value) return
+    const initialTab = route.query.tab ? decodeTabName(route.query.tab) : 'Ringkasan'
+    if (initialTab && tabs.value.includes(initialTab)) {
+        activeTab.value = initialTab
+    }
 })
 
 definePageMeta({
@@ -1086,7 +1053,6 @@ const shareTo = (platform) => {
     }
 }
 </script>
-
 
 <style scoped>
 .no-scrollbar::-webkit-scrollbar {
