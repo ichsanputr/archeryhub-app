@@ -89,7 +89,7 @@
                     <div>
                         <p class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Total Event</p>
                         <div class="flex items-baseline gap-2">
-                            <h3 class="text-3xl sm:text-4xl font-black text-[#0e1e3a]">{{ eventHistory.length }}</h3>
+                            <h3 class="text-3xl sm:text-4xl font-black text-[#0e1e3a]">{{ groupedEventHistory.length }}</h3>
                             <span class="text-slate-400 text-sm font-medium">partisipasi</span>
                         </div>
                     </div>
@@ -298,16 +298,22 @@
                         <Icon icon="ph:clock-counter-clockwise-bold" class="text-[#c3f53c]" />
                         Riwayat Event
                     </h3>
-                    <span class="text-sm text-slate-400 font-medium">{{ eventHistory.length }} event</span>
+                    <span class="text-sm text-slate-400 font-medium">{{ groupedEventHistory.length }} event</span>
                 </div>
 
-                <template v-if="eventHistory.length > 0">
+                <template v-if="groupedEventHistory.length > 0">
                     <div class="md:hidden divide-y divide-gray-100">
-                        <div v-for="event in eventHistory" :key="event.id" class="p-4 space-y-2">
+                        <div v-for="event in groupedEventHistory" :key="event.id" class="p-4 space-y-2">
                             <p class="font-bold text-[#0e1e3a] leading-tight break-words">{{ event.name }}</p>
                             <div class="text-xs text-slate-500 flex flex-wrap items-center gap-2">
                                 <span v-if="event.date">{{ formatDate(event.date, 'MMM YYYY') }}</span>
                                 <span v-if="event.city">{{ event.city }}</span>
+                            </div>
+                            <div v-if="event.categories.length" class="flex flex-wrap gap-1.5 pt-1">
+                                <span v-for="category in event.categories" :key="`${event.id}-${category}`"
+                                    class="px-2 py-1 rounded-lg bg-[#0e1e3a]/5 text-[#0e1e3a] text-[11px] font-semibold leading-tight">
+                                    {{ category }}
+                                </span>
                             </div>
                             <span
                                 class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#c3f53c]/20 text-[#0e1e3a] text-xs font-bold">
@@ -324,11 +330,12 @@
                                     <th class="px-6 py-4 font-bold">Turnamen</th>
                                     <th class="px-6 py-4 font-bold">Tanggal</th>
                                     <th class="px-6 py-4 font-bold">Kota</th>
+                                    <th class="px-6 py-4 font-bold">Kategori</th>
                                     <th class="px-6 py-4 font-bold">Status</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-100">
-                                <tr v-for="event in eventHistory" :key="event.id"
+                                <tr v-for="event in groupedEventHistory" :key="event.id"
                                     class="group hover:bg-gray-50 transition-colors">
                                     <td class="px-6 py-4">
                                         <div class="flex items-center gap-3">
@@ -341,6 +348,14 @@
                                     </td>
                                     <td class="px-6 py-4 text-slate-600">{{ formatDate(event.date, 'MMM YYYY') }}</td>
                                     <td class="px-6 py-4 text-slate-600">{{ event.city }}</td>
+                                    <td class="px-6 py-4">
+                                        <div v-if="event.categories.length" class="flex flex-wrap gap-1.5">
+                                            <span v-for="category in event.categories" :key="`${event.id}-${category}`"
+                                                class="px-2 py-1 rounded-lg bg-[#0e1e3a]/5 text-[#0e1e3a] text-[11px] font-semibold">
+                                                {{ category }}
+                                            </span>
+                                        </div>
+                                    </td>
                                     <td class="px-6 py-4">
                                         <span
                                             class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#c3f53c]/20 text-[#0e1e3a] text-xs font-bold">
@@ -448,6 +463,49 @@ const { data: archerResponse } = await useAsyncData(
 
 const archer = computed(() => archerResponse.value?.archer || {})
 const eventHistory = computed(() => archerResponse.value?.events || [])
+
+const formatEventCategoryLabel = (event) => {
+    const parts = [
+        event?.division_name,
+        event?.category_name,
+        event?.gender_division_name
+    ].filter(Boolean)
+
+    if (event?.event_type_name && event.event_type_name !== 'Individual') {
+        parts.push(`(${event.event_type_name})`)
+    }
+
+    return parts.join(' ')
+}
+
+const groupedEventHistory = computed(() => {
+    const grouped = new Map()
+
+    eventHistory.value.forEach((event) => {
+        if (!event?.id) return
+
+        if (!grouped.has(event.id)) {
+            grouped.set(event.id, {
+                id: event.id,
+                slug: event.slug || event.id,
+                name: event.name,
+                city: event.city,
+                date: event.date,
+                categories: []
+            })
+        }
+
+        const categoryLabel = formatEventCategoryLabel(event)
+        if (categoryLabel) {
+            const existing = grouped.get(event.id)
+            if (!existing.categories.includes(categoryLabel)) {
+                existing.categories.push(categoryLabel)
+            }
+        }
+    })
+
+    return Array.from(grouped.values())
+})
 
 useSeoMeta({
     title: () => archer.value?.full_name

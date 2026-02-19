@@ -63,7 +63,8 @@
                                 Filter
                             </h3>
                             <button @click="resetFilters"
-                                class="text-sm font-bold text-gray-400 hover:text-primary transition-colors">Reset</button>
+                                class="text-sm font-bold text-gray-400 hover:text-primary transition-colors">Atur
+                                Ulang</button>
                         </div>
                         <div class="divide-y divide-gray-100">
                             <!-- Status Filter -->
@@ -80,24 +81,43 @@
                                             class="h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary shadow-sm"
                                             type="checkbox" />
                                         <span
-                                            class="font-bold text-gray-600 group-hover/item:text-navy transition-colors">Upcoming</span>
+                                            class="font-bold text-gray-600 group-hover/item:text-navy transition-colors">Akan
+                                            Datang</span>
                                     </label>
                                     <label class="flex items-center gap-3 cursor-pointer group/item">
                                         <input
                                             class="h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary shadow-sm"
                                             type="checkbox" />
                                         <span
-                                            class="font-bold text-gray-600 group-hover/item:text-navy transition-colors">Live
-                                            Now</span>
+                                            class="font-bold text-gray-600 group-hover/item:text-navy transition-colors">Sedang
+                                            Berlangsung</span>
                                     </label>
                                     <label class="flex items-center gap-3 cursor-pointer group/item">
                                         <input
                                             class="h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary shadow-sm"
                                             type="checkbox" />
                                         <span
-                                            class="font-bold text-gray-600 group-hover/item:text-navy transition-colors">Past
-                                            Events</span>
+                                            class="font-bold text-gray-600 group-hover/item:text-navy transition-colors">Selesai</span>
                                     </label>
+                                </div>
+                            </details>
+
+                            <!-- City Filter -->
+                            <details class="group" open>
+                                <summary
+                                    class="flex justify-between items-center font-bold cursor-pointer list-none p-6 text-sm text-navy hover:bg-gray-50 transition-colors">
+                                    <span>Kota</span>
+                                    <Icon icon="ph:caret-down-bold"
+                                        class="transition group-open:rotate-180 text-gray-400" />
+                                </summary>
+                                <div class="px-6 pb-6">
+                                    <select v-model="selectedCity"
+                                        class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-semibold text-navy focus:ring-4 focus:ring-primary/20 transition-all">
+                                        <option value="">Semua Kota</option>
+                                        <option v-for="city in cityOptions" :key="city" :value="city">
+                                            {{ city }}
+                                        </option>
+                                    </select>
                                 </div>
                             </details>
                         </div>
@@ -162,7 +182,7 @@
                                 <div class="absolute top-4 left-4">
                                     <span
                                         class="px-3 py-1.5 bg-white/90 backdrop-blur-sm text-navy text-[10px] font-black rounded-lg  tracking-wider shadow-sm">
-                                        {{ tournament.category || 'Open' }}
+                                        {{ tournament.category || 'Umum' }}
                                     </span>
                                 </div>
                             </div>
@@ -243,11 +263,12 @@ import { Icon } from '@iconify/vue'
 const config = useRuntimeConfig()
 const searchQuery = ref('')
 const sortBy = ref('newest')
+const selectedCity = ref('')
 
 // Transform API response to match expected format
 const transformEventData = (event) => {
     const formatDate = (dateStr) => {
-        if (!dateStr) return 'TBA'
+        if (!dateStr) return 'Tanggal belum ditentukan'
         const date = new Date(dateStr)
         return date.toLocaleDateString('id-ID', {
             month: 'short',
@@ -257,7 +278,7 @@ const transformEventData = (event) => {
     }
 
     const formatDateRange = (startDate, endDate) => {
-        if (!startDate) return 'TBA'
+        if (!startDate) return 'Tanggal belum ditentukan'
         if (!endDate) return formatDate(startDate)
 
         const start = new Date(startDate)
@@ -278,8 +299,10 @@ const transformEventData = (event) => {
         id: event.uuid || event.id,
         slug: event.slug || event.uuid || event.id,
         name: event.name || 'Event Tanpa Nama',
+        startDate: event.start_date || null,
         date: formatDateRange(event.start_date, event.end_date),
-        location: event.venue || event.location || 'Lokasi TBA',
+        location: event.venue || event.location || event.city || 'Lokasi belum ditentukan',
+        city: event.city || '',
         status: event.status || 'upcoming',
         category: event.location_type || event.category || null,
         organizer: event.organizer_name || event.organizer || 'Penyelenggara',
@@ -307,15 +330,22 @@ const tournaments = computed(() => {
     return eventsData.map(transformEventData)
 })
 
+const cityOptions = computed(() =>
+    Array.from(new Set(tournaments.value.map(t => t.city).filter(Boolean))).sort((a, b) => a.localeCompare(b, 'id-ID'))
+)
+
 const filteredTournaments = computed(() => {
     let result = tournaments.value
     if (searchQuery.value) {
         result = result.filter(t => t.name.toLowerCase().includes(searchQuery.value.toLowerCase()))
     }
+    if (selectedCity.value) {
+        result = result.filter(t => t.city === selectedCity.value)
+    }
     if (sortBy.value === 'newest') {
-        result = [...result].sort((a, b) => new Date(b.date.split(' - ')[0]) - new Date(a.date.split(' - ')[0]))
+        result = [...result].sort((a, b) => new Date(b.startDate || 0) - new Date(a.startDate || 0))
     } else if (sortBy.value === 'oldest') {
-        result = [...result].sort((a, b) => new Date(a.date.split(' - ')[0]) - new Date(b.date.split(' - ')[0]))
+        result = [...result].sort((a, b) => new Date(a.startDate || 0) - new Date(b.startDate || 0))
     } else if (sortBy.value === 'name') {
         result = [...result].sort((a, b) => a.name.localeCompare(b.name))
     }
@@ -324,6 +354,7 @@ const filteredTournaments = computed(() => {
 
 const resetFilters = () => {
     searchQuery.value = ''
+    selectedCity.value = ''
     sortBy.value = 'newest'
 }
 

@@ -225,7 +225,7 @@
         </Transition>
 
         <!-- Empty Global State -->
-        <div v-else
+        <div v-if="!(selectedCategory && targetAssignments.length > 0)"
             class="bg-white rounded-[3rem] border-4 border-dashed border-slate-100 p-24 text-center flex flex-col items-center justify-center shadow-inner">
             <div class="size-24 rounded-[3rem] bg-slate-50 flex items-center justify-center mb-6 relative group">
                 <div
