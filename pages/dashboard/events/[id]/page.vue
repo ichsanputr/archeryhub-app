@@ -424,14 +424,14 @@
                             </div>
                         </div>
                         <div class="pt-4 border-t border-gray-100">
-                            <label class="text-sm font-bold text-gray-700 mb-3 block">Detail Hadiah</label>
+                            <label class="text-sm font-bold text-gray-700 mb-3 block">Detail Hadiah (Ditampilkan di halaman publik)</label>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div class="space-y-2">
                                     <label class="text-xs font-bold text-gray-600">Juara 1</label>
                                     <input v-model="form.prizes.first" type="text" placeholder="Rp 15.000.000"
                                         class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm" />
                                     <input v-model="form.prizes.first_caption" type="text"
-                                        placeholder="+ Piala + Medali Emas"
+                                        placeholder="Contoh: Medali emas dan sertifikat"
                                         class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-xs" />
                                 </div>
                                 <div class="space-y-2">
@@ -439,7 +439,7 @@
                                     <input v-model="form.prizes.second" type="text" placeholder="Rp 10.000.000"
                                         class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm" />
                                     <input v-model="form.prizes.second_caption" type="text"
-                                        placeholder="+ Piala + Medali Perak"
+                                        placeholder="Contoh: Medali perak dan sertifikat"
                                         class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-xs" />
                                 </div>
                                 <div class="space-y-2">
@@ -447,7 +447,7 @@
                                     <input v-model="form.prizes.third" type="text" placeholder="Rp 7.500.000"
                                         class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm" />
                                     <input v-model="form.prizes.third_caption" type="text"
-                                        placeholder="+ Piala + Medali Perunggu"
+                                        placeholder="Contoh: Medali perunggu dan sertifikat"
                                         class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-xs" />
                                 </div>
                             </div>
@@ -1380,23 +1380,37 @@ const fetchEventData = async () => {
                 eventCategories.value = []
             }
 
-            // Parse page_settings
-            const pageSettings = data.page_settings ? JSON.parse(data.page_settings) : {
-                sections: {
-                    about: true,
-                    divisions: true,
-                    fees: true,
-                    prizes: true,
-                    schedule: true,
-                    location: true,
-                    faq: true
-                },
-                results_type: 'system'
+            // Parse page settings safely (string/object) and normalize missing keys
+            let parsedPageSettings = {}
+            try {
+                if (typeof data.page_settings === 'string') {
+                    parsedPageSettings = data.page_settings ? JSON.parse(data.page_settings) : {}
+                } else if (data.page_settings && typeof data.page_settings === 'object') {
+                    parsedPageSettings = data.page_settings
+                }
+            } catch (error) {
+                console.error('Failed to parse page_settings:', error)
+                parsedPageSettings = {}
             }
 
-            // Ensure results_type is set
-            if (!pageSettings.results_type) {
-                pageSettings.results_type = 'system'
+            const sectionDefaults = {
+                about: true,
+                divisions: true,
+                fees: true,
+                payment_methods: true,
+                prizes: true,
+                schedule: true,
+                location: true,
+                faq: true
+            }
+
+            const pageSettings = {
+                ...parsedPageSettings,
+                sections: {
+                    ...sectionDefaults,
+                    ...(parsedPageSettings.sections || {})
+                },
+                results_type: parsedPageSettings.results_type || 'system'
             }
 
             // Parse FAQ
@@ -1408,6 +1422,29 @@ const fetchEventData = async () => {
                     console.error('Failed to parse FAQ:', e)
                 }
             }
+
+            const normalizedFees = Array.isArray(pageSettings.fees)
+                ? pageSettings.fees
+                : (Array.isArray(data.fees) ? data.fees : [])
+
+            const normalizedPaymentMethods = Array.isArray(pageSettings.payment_methods)
+                ? pageSettings.payment_methods
+                : (Array.isArray(data.payment_methods) ? data.payment_methods : [])
+
+            const normalizedPrizes = (pageSettings.prizes && typeof pageSettings.prizes === 'object')
+                ? pageSettings.prizes
+                : (data.prizes && typeof data.prizes === 'object' ? data.prizes : {
+                    first: '',
+                    second: '',
+                    third: '',
+                    first_caption: '',
+                    second_caption: '',
+                    third_caption: ''
+                })
+
+            const normalizedResults = Array.isArray(pageSettings.results)
+                ? pageSettings.results
+                : (Array.isArray(data.results) ? data.results : [])
 
             // Fetch schedules
             let schedules = []
@@ -1435,8 +1472,8 @@ const fetchEventData = async () => {
                     display_order: img.display_order || 0,
                     is_primary: img.is_primary || false
                 })) : [],
-                fees: pageSettings.fees || [],
-                payment_methods: pageSettings.payment_methods || [],
+                fees: normalizedFees,
+                payment_methods: normalizedPaymentMethods,
                 schedules: schedules.map(s => ({
                     id: s.id || s.uuid,
                     title: s.title || '',
@@ -1454,10 +1491,10 @@ const fetchEventData = async () => {
                 total_prize: data.total_prize || 0,
                 technical_guidebook_url: data.technical_guidebook_url || '',
                 location_accessibility: pageSettings.location_accessibility || [],
-                prizes: pageSettings.prizes || { first: '', second: '', third: '', first_caption: '', second_caption: '', third_caption: '' },
+                prizes: normalizedPrizes,
                 page_settings: pageSettings,
                 faq: faq,
-                results: pageSettings.results || []
+                results: normalizedResults
             }
         }
     } catch (error) {

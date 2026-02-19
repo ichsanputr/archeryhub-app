@@ -36,7 +36,7 @@
             <div class="relative z-10">
                 <NuxtLink to="/auth/register?type=organization"
                     class="w-full inline-flex items-center justify-center gap-2 bg-navy hover:bg-navy-light text-white text-sm font-bold px-6 py-3 rounded-xl transition-all">
-                    Bikin Akun Klub
+                    Bikin Akun Organisasi
                     <span class="material-symbols-outlined text-lg">arrow_forward</span>
                 </NuxtLink>
             </div>

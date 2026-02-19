@@ -9,7 +9,7 @@
         <!-- ══════════════════════════════════════
              HEADER — Editorial masthead
              ══════════════════════════════════════ -->
-        <div class="max-w-5xl mx-auto px-6 md:px-8 pt-8 pb-12 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-10 sm:pb-12 relative">
 
             <!-- Back nav -->
             <NuxtLink to="/clubs"
@@ -19,10 +19,10 @@
             </NuxtLink>
 
             <!-- Logo + Club name row -->
-            <div class="flex flex-col md:flex-row md:items-end gap-6 mb-8">
+            <div class="flex flex-col md:flex-row md:items-end gap-5 md:gap-6 mb-6 sm:mb-8">
                 <!-- Logo -->
-                <div
-                    class="w-20 h-20 md:w-24 md:h-24 rounded-2xl border-2 border-navy/10 overflow-hidden bg-white shadow-lg flex-shrink-0">
+                        <div
+                            class="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl border-2 border-navy/10 overflow-hidden bg-white shadow-lg flex-shrink-0">
                     <img :src="useImageOrDefault(club.logoUrl, club.name)" :alt="club.name"
                         class="w-full h-full object-cover" />
                 </div>
@@ -32,39 +32,39 @@
                         class="inline-block bg-primary text-navy text-[10px] font-black px-2 py-1 mb-4 tracking-widest uppercase">
                         Profil Resmi
                     </span>
-                    <h1 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-none mb-4 uppercase">
+                    <h1 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black tracking-tight leading-none mb-3 sm:mb-4 uppercase break-words">
                         {{ club.name || 'Klub Panahan' }}
                     </h1>
-                    <p class="text-xl md:text-2xl font-light text-[#0f172a]/70 max-w-3xl leading-snug">
+                    <p class="text-base sm:text-lg md:text-2xl font-light text-[#0f172a]/70 max-w-3xl leading-snug">
                         {{ club.description || defaultDesc }}
                     </p>
                 </div>
             </div>
 
             <!-- Stats bar -->
-            <div class="flex flex-wrap gap-8 py-6 border-y border-navy/10 mb-0">
+            <div class="flex flex-wrap gap-5 sm:gap-8 py-5 sm:py-6 border-y border-navy/10 mb-0">
                 <div>
                     <span class="text-[10px] uppercase tracking-widest text-[#64748b] font-black block mb-1">Total
                         Anggota</span>
-                    <span class="text-xl font-black">{{ club.memberCount || '—' }}{{ club.memberCount ? '+' : ''
+                    <span class="text-lg sm:text-xl font-black">{{ club.memberCount || '—' }}{{ club.memberCount ? '+' : ''
                         }}</span>
                 </div>
                 <div v-if="club.established">
                     <span
                         class="text-[10px] uppercase tracking-widest text-[#64748b] font-black block mb-1">Berdiri</span>
-                    <span class="text-xl font-black">{{ club.established }}</span>
+                    <span class="text-lg sm:text-xl font-black">{{ club.established }}</span>
                 </div>
                 <div v-if="club.city || club.province">
                     <span
                         class="text-[10px] uppercase tracking-widest text-[#64748b] font-black block mb-1">Lokasi</span>
-                    <span class="text-xl font-black">{{ club.formattedLocation }}</span>
+                    <span class="text-lg sm:text-xl font-black">{{ club.formattedLocation }}</span>
                 </div>
                 <div v-if="club.headCoach">
                     <span class="text-[10px] uppercase tracking-widest text-[#64748b] font-black block mb-1">Pelatih
                         Kepala</span>
-                    <span class="text-xl font-black">{{ club.headCoach }}</span>
+                    <span class="text-lg sm:text-xl font-black">{{ club.headCoach }}</span>
                 </div>
-                <div class="ml-auto self-center flex gap-3">
+                <div class="w-full sm:w-auto sm:ml-auto self-center flex gap-3">
                     <!-- Membership action -->
                     <BaseButton v-if="!membership && isArcher" variant="primary" size="sm" icon="ph:plus-bold"
                         :loading="isJoining" @click="joinClub" class="shadow-lg shadow-primary/30 whitespace-nowrap">
@@ -81,7 +81,7 @@
                         Menunggu Persetujuan
                     </div>
                     <button @click="shareClub"
-                        class="p-2.5 border border-navy/20 hover:border-primary hover:bg-primary transition-all flex items-center justify-center group">
+                        class="p-2.5 border border-navy/20 hover:border-primary hover:bg-primary transition-all flex items-center justify-center group sm:ml-0 ml-auto">
                         <Icon icon="ph:share-network-bold" class="text-lg text-navy group-hover:text-navy" />
                     </button>
                 </div>
@@ -91,10 +91,10 @@
         <!-- ══════════════════════════════════════
              MAIN BODY
              ══════════════════════════════════════ -->
-        <main class="max-w-5xl mx-auto px-6 md:px-8 pb-24">
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 sm:pb-24">
 
             <!-- ── About + Facilities grid ── -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-16 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 py-10 sm:py-16">
                 <!-- About / philosophy -->
                 <section>
                     <div class="flex items-center gap-3 mb-6">
@@ -145,8 +145,8 @@
             <div class="border-t border-[#0f172a]/10 my-0"></div>
 
             <!-- ── Elite Rankings (Members) ── -->
-            <section class="py-16">
-                <div class="flex justify-between items-end mb-10">
+            <section class="py-10 sm:py-16">
+                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3 mb-8 sm:mb-10">
                     <div>
                         <h2 class="text-3xl font-black tracking-tighter uppercase">Anggota Unggulan</h2>
                         <p class="text-[#64748b] font-medium mt-1 uppercase text-[10px] tracking-widest">
@@ -218,7 +218,7 @@
             <div class="border-t border-[#0f172a]/10"></div>
 
             <!-- ── Dispatches & Achievements ── -->
-            <section class="py-16">
+            <section class="py-10 sm:py-16">
                 <h2 class="text-3xl font-black tracking-tighter uppercase mb-12">Prestasi & Berita</h2>
                 <div class="max-w-3xl space-y-0">
                     <template v-if="club.recentEvents?.length">

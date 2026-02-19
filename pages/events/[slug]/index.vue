@@ -8,7 +8,7 @@
                 <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90">
                 </div>
             </div>
-            <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mt-4 md:mt-6">
+            <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mt-16">
                 <!-- Breadcrumb -->
                 <div class="mb-8">
                     <Breadcrumbs :items="[{ label: 'Event', path: '/events' }]" :current="tournament.name || 'Event'"
@@ -165,82 +165,84 @@
 
                         <!-- Registration Fees Section -->
                         <section v-if="tournament.page_settings?.sections?.fees !== false"
-                            class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100 relative overflow-hidden">
-                            <h2 class="text-xl sm:text-2xl font-black text-navy mb-8 flex items-center gap-3">
-                                <Icon icon="ph:currency-circle-dollar-bold" class="text-primary text-2xl" />
-                                Biaya Pendaftaran
-                            </h2>
+                            class="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-gray-100">
+                            <div class="mb-8 md:mb-10">
+                                <span class="text-primary font-black text-3xl leading-none block mb-2">-</span>
+                                <h2 class="text-2xl md:text-3xl font-black text-navy">Biaya Pendaftaran</h2>
+                                <p class="text-gray-500 mt-1 text-sm">Pilih kategori yang sesuai dengan divisi dan level
+                                    peserta.</p>
+                            </div>
 
                             <div v-if="tournament.fees && tournament.fees.length > 0"
-                                class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                                <div v-for="(fee, idx) in tournament.fees" :key="idx"
-                                    class="bg-gray-50/50 rounded-2xl p-6 border border-gray-100 hover:border-primary/30 transition-all shadow-sm group">
-                                    <div class="flex items-center gap-4 mb-4">
-                                        <div
-                                            class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-                                            <Icon
-                                                :icon="fee.name?.toLowerCase().includes('tim') ? 'ph:users-three-bold' : 'ph:user-bold'"
-                                                class="text-2xl text-navy" />
-                                        </div>
-                                        <div>
-                                            <span class="font-black text-navy text-lg block leading-tight">{{
-                                                displayValue(fee.name) }}</span>
-                                            <span
-                                                class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Registration
-                                                Fee</span>
-                                        </div>
+                                class="overflow-x-auto no-scrollbar scroll-smooth pb-4 -mx-1 px-1">
+                                <div class="flex gap-6 min-w-max">
+                                    <div v-for="(fee, idx) in tournament.fees" :key="idx"
+                                        class="bg-white border border-gray-200 p-7 rounded-[2rem] hover:border-primary hover:shadow-lg transition-all relative w-[340px] md:w-[360px]">
+                                    <div class="text-[10px] font-black tracking-widest text-gray-400 mb-2 uppercase">
+                                        {{ fee.name?.toLowerCase().includes('tim') ? 'Divisi Tim' : 'Divisi Individu'
+                                        }}
                                     </div>
-                                    <div class="text-3xl font-black text-navy mb-2 tracking-tight">IDR {{
-                                        (fee.amount || 0).toLocaleString('id-ID') }}</div>
-                                    <p v-if="fee.description"
-                                        class="text-xs text-gray-500 font-medium leading-relaxed italic">{{
-                                            fee.description }}</p>
+                                    <h3 class="text-xl font-black text-navy mb-5">{{ fee.name }}</h3>
+                                    <div class="text-4xl font-black text-navy mb-6 tracking-tight">
+                                        Rp {{ (fee.amount || 0).toLocaleString('id-ID') }}
+                                        <span class="text-sm text-gray-400 font-semibold">/ peserta</span>
+                                    </div>
+                                    <ul v-if="fee.description" class="space-y-2.5 text-sm text-gray-600 mb-6">
+                                        <li class="flex items-start gap-2">
+                                            <Icon icon="ph:check-circle-fill" class="text-primary mt-0.5" />
+                                            <span>{{ fee.description }}</span>
+                                        </li>
+                                    </ul>
+                                    </div>
                                 </div>
                             </div>
+
                             <!-- Fallback if no fees list -->
-                            <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-                                <div class="bg-gray-50/50 rounded-2xl p-6 border border-gray-100">
-                                    <div class="flex items-center gap-4 mb-4">
-                                        <div
-                                            class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm">
-                                            <Icon icon="ph:user-bold" class="text-2xl text-navy" />
-                                        </div>
-                                        <div>
-                                            <span class="font-black text-navy text-lg block leading-tight">Semua
-                                                Kategori</span>
-                                            <span
-                                                class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Flat
-                                                Rate Fee</span>
-                                        </div>
+                            <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+                                <div class="bg-white border border-gray-200 p-6 rounded-2xl">
+                                    <div class="text-[10px] font-black tracking-widest text-gray-400 mb-2 uppercase">
+                                        Biaya Tetap
                                     </div>
-                                    <div class="text-3xl font-black text-navy mb-2 tracking-tight">IDR {{
-                                        (tournament.entry_fee ||
-                                            0).toLocaleString('id-ID') }}</div>
-                                    <p class="text-xs text-gray-500 font-medium">Per peserta per kategori</p>
+                                    <h3 class="text-xl font-black text-navy mb-5">Semua Kategori</h3>
+                                    <div class="text-4xl font-black text-navy mb-6 tracking-tight">
+                                        Rp {{ (tournament.entry_fee || 0).toLocaleString('id-ID') }}
+                                        <span class="text-sm text-gray-400 font-semibold">/ peserta</span>
+                                    </div>
+                                    <ul class="space-y-2.5 text-sm text-gray-600 mb-6">
+                                        <li class="flex items-start gap-2">
+                                            <Icon icon="ph:check-circle-fill" class="text-primary mt-0.5" />
+                                            <span>Berlaku untuk seluruh kategori event</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <Icon icon="ph:check-circle-fill" class="text-primary mt-0.5" />
+                                            <span>Pembayaran per peserta per kategori</span>
+                                        </li>
+                                    </ul>
+                                    <div class="w-full py-3 border-2 border-navy text-center text-xs font-black uppercase tracking-widest text-navy rounded-xl">
+                                        Biaya Tetap Aktif
+                                    </div>
                                 </div>
                             </div>
 
                             <!-- Integrated Payment Methods inside Fee Section -->
                             <div v-if="tournament.payment_methods && tournament.payment_methods.length > 0"
-                                class="pt-8 border-t border-gray-100">
-                                <h3 class="text-sm font-black text-gray-400 tracking-[0.2em] mb-6">Metode
-                                    Pembayaran Tersedia</h3>
+                                class="pt-8 mt-8 border-t border-gray-200">
+                                <h3 class="text-xs font-black text-gray-400 tracking-[0.2em] mb-5 uppercase">Metode Pembayaran
+                                </h3>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                     <div v-for="(method, idx) in tournament.payment_methods" :key="idx"
-                                        class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-center gap-4">
+                                        class="p-4 rounded-2xl bg-white border border-gray-200 flex items-center gap-4">
                                         <div
-                                            class="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center shrink-0 overflow-hidden p-1.5">
+                                            class="w-12 h-12 rounded-xl bg-slate-50 shadow-sm flex items-center justify-center shrink-0 overflow-hidden p-1.5">
                                             <img v-if="getPaymentMethodImage(method.bank_name)"
                                                 :src="getPaymentMethodImage(method.bank_name)"
                                                 class="w-full h-full object-contain" :alt="method.bank_name" />
                                             <Icon v-else :icon="getPaymentIcon(method)" class="text-2xl text-navy" />
                                         </div>
                                         <div class="min-w-0">
-                                            <p
-                                                class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-0.5">
+                                            <p class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-0.5">
                                                 {{ method.bank_name }}</p>
-                                            <p class="text-sm font-black text-navy truncate">{{ method.account_number }}
-                                            </p>
+                                            <p class="text-sm font-black text-navy truncate">{{ method.account_number }}</p>
                                             <p class="text-[10px] font-bold text-gray-500 truncate mt-0.5 italic">a.n {{
                                                 method.account_name }}</p>
                                         </div>
@@ -251,48 +253,71 @@
 
 
                         <section v-if="tournament.page_settings?.sections?.prizes !== false"
-                            class="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100 relative overflow-hidden">
+                            class="min-h-screen flex flex-col lg:flex-row overflow-hidden rounded-3xl border border-gray-100 shadow-sm">
                             <div
-                                class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2">
+                                class="lg:w-1/2 bg-primary relative flex flex-col justify-center items-center px-8 md:px-12 py-16 target-texture">
+                                <div class="relative z-10 text-center">
+                                    <span class="text-navy/40 font-black tracking-[0.3em] text-xs uppercase mb-4 block">Total Hadiah</span>
+                                    <h2 class="text-navy text-6xl md:text-[5.5rem] font-black leading-none mb-4">Rp {{
+                                        (tournament.total_prize || 0).toLocaleString('id-ID') }}</h2>
+                                    <div class="h-2 w-40 bg-navy mx-auto mb-6"></div>
+                                    <p class="text-navy font-bold text-base uppercase tracking-widest">Perebutkan Podium Terbaik
+                                    </p>
+                                </div>
                             </div>
-                            <h2
-                                class="text-lg sm:text-xl font-bold text-navy mb-1 flex items-center gap-2 relative z-10">
-                                <Icon icon="ph:trophy-bold" class="text-navy" />
-                                Total Hadiah
-                            </h2>
-                            <p v-if="tournament.total_prize" class="text-gray-500 text-sm mb-6 relative z-10">
-                                Total Hadiah IDR {{ tournament.total_prize.toLocaleString('id-ID') }}
-                            </p>
-                            <div v-else class="mb-6"></div>
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 relative z-10">
-                                <div
-                                    class="bg-gradient-to-br from-[#FFD700]/10 to-transparent border border-[#FFD700]/30 rounded-xl p-6 text-center">
-                                    <div class="text-4xl mb-2">🥇</div>
-                                    <div class="text-sm font-bold text-gray-500  tracking-wider mb-1">Juara 1
-                                    </div>
-                                    <div class="text-2xl font-black text-navy">{{
-                                        displayValue(tournament.prizes?.first)
-                                        }}</div>
-                                    <div class="text-xs text-gray-400 mt-2">{{ firstPrizeCaption }}</div>
+                            <div class="lg:w-1/2 bg-navy relative flex flex-col justify-center px-8 md:px-12 py-16 overflow-hidden">
+                                <div class="absolute inset-0 opacity-20 pointer-events-none"
+                                    style="background-image: radial-gradient(circle, rgba(255,255,255,0.25) 1px, transparent 1px); background-size: 30px 30px;">
                                 </div>
-                                <div
-                                    class="bg-gradient-to-br from-[#C0C0C0]/10 to-transparent border border-[#C0C0C0]/30 rounded-xl p-6 text-center">
-                                    <div class="text-4xl mb-2">🥈</div>
-                                    <div class="text-sm font-bold text-gray-500  tracking-wider mb-1">Juara 2
+                                <div class="relative z-10 w-full">
+                                    <h3 class="text-white text-3xl mb-10 flex items-center gap-3">
+                                        <Icon icon="ph:trophy-bold" class="text-primary text-3xl" />
+                                        Rincian Hadiah
+                                    </h3>
+                                    <div class="space-y-10">
+                                        <div>
+                                            <div class="flex justify-between items-end mb-3">
+                                                <div>
+                                                    <span class="text-primary font-black text-xs tracking-widest uppercase">Juara Utama</span>
+                                                    <h4 class="text-white text-2xl font-black">Juara 1</h4>
+                                                </div>
+                                                <div class="text-white text-2xl font-black">{{ displayValue(tournament.prizes?.first) }}
+                                                </div>
+                                            </div>
+                                            <div class="w-full h-2 bg-white/10 overflow-hidden">
+                                                <div class="h-full bg-primary w-full"></div>
+                                            </div>
+                                            <p v-if="tournament.prizes?.first_caption" class="text-white/60 text-xs mt-2">{{ tournament.prizes.first_caption }}</p>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-end mb-3">
+                                                <div>
+                                                    <span class="text-white/40 font-black text-xs tracking-widest uppercase">Peringkat Kedua</span>
+                                                    <h4 class="text-white text-2xl font-black">Juara 2</h4>
+                                                </div>
+                                                <div class="text-white text-2xl font-black">{{ displayValue(tournament.prizes?.second)
+                                                }}</div>
+                                            </div>
+                                            <div class="w-full h-2 bg-white/10 overflow-hidden">
+                                                <div class="h-full bg-white/60 w-1/2"></div>
+                                            </div>
+                                            <p v-if="tournament.prizes?.second_caption" class="text-white/60 text-xs mt-2">{{ tournament.prizes.second_caption }}</p>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between items-end mb-3">
+                                                <div>
+                                                    <span class="text-white/40 font-black text-xs tracking-widest uppercase">Peringkat Ketiga</span>
+                                                    <h4 class="text-white text-2xl font-black">Juara 3</h4>
+                                                </div>
+                                                <div class="text-white text-2xl font-black">{{ displayValue(tournament.prizes?.third) }}
+                                                </div>
+                                            </div>
+                                            <div class="w-full h-2 bg-white/10 overflow-hidden">
+                                                <div class="h-full bg-white/30 w-1/4"></div>
+                                            </div>
+                                            <p v-if="tournament.prizes?.third_caption" class="text-white/60 text-xs mt-2">{{ tournament.prizes.third_caption }}</p>
+                                        </div>
                                     </div>
-                                    <div class="text-2xl font-black text-navy">{{
-                                        displayValue(tournament.prizes?.second) }}</div>
-                                    <div class="text-xs text-gray-400 mt-2">{{ secondPrizeCaption }}</div>
-                                </div>
-                                <div
-                                    class="bg-gradient-to-br from-[#CD7F32]/10 to-transparent border border-[#CD7F32]/30 rounded-xl p-6 text-center">
-                                    <div class="text-4xl mb-2">🥉</div>
-                                    <div class="text-sm font-bold text-gray-500  tracking-wider mb-1">Juara 3
-                                    </div>
-                                    <div class="text-2xl font-black text-navy">{{
-                                        displayValue(tournament.prizes?.third)
-                                        }}</div>
-                                    <div class="text-xs text-gray-400 mt-2">{{ thirdPrizeCaption }}</div>
                                 </div>
                             </div>
                         </section>
@@ -302,7 +327,7 @@
                         :schedules="schedulesData" />
                     <TournamentAthletesTab v-else-if="activeTab === 'Peserta'" :participants="participantsData" />
                     <TournamentResultsTab v-else-if="activeTab === 'Hasil'" :event-id="slug"
-                        :results-type="tournament.page_settings?.results_type || 'system'"
+                        :results-type="tournament.page_settings?.results_type"
                         :results="tournament.results || []" :categories="categoriesList"
                         :participants="participantsData" />
                     <TournamentVenueTab v-else-if="activeTab === 'Lokasi'" :venue="tournament.venue"
@@ -901,11 +926,6 @@ const getPaymentIcon = (method) => {
     return method.type === 'bank' ? 'ph:bank-bold' : 'ph:wallet-bold'
 }
 
-// Prize Captions Computed
-const firstPrizeCaption = computed(() => tournament.value.prizes?.first_caption || '+ Medali Emas & Sertifikat')
-const secondPrizeCaption = computed(() => tournament.value.prizes?.second_caption || '+ Medali Perak & Sertifikat')
-const thirdPrizeCaption = computed(() => tournament.value.prizes?.third_caption || '+ Medali Perunggu & Sertifikat')
-
 // SSR: Fetch event data with useAsyncData
 const { data: eventData, error: eventError } = await useAsyncData(
     `event-${slug}`,
@@ -1074,5 +1094,11 @@ const shareTo = (platform) => {
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: #cbd5e1;
+}
+
+.target-texture {
+    background-image: radial-gradient(circle, transparent 20%, rgba(0, 0, 0, 0.03) 21%, rgba(0, 0, 0, 0.03) 39%, transparent 40%, transparent 59%, rgba(0, 0, 0, 0.03) 60%, rgba(0, 0, 0, 0.03) 79%, transparent 80%);
+    background-size: 300px 300px;
+    background-position: center;
 }
 </style>

@@ -10,12 +10,12 @@
                     class="w-full h-full object-cover object-center opacity-30 mix-blend-overlay" />
             </div>
 
-            <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <div class="flex flex-col md:flex-row items-center md:items-end gap-8">
+            <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-10 sm:pt-28 sm:pb-12">
+                <div class="flex flex-col md:flex-row items-center md:items-end gap-6 md:gap-8">
                     <!-- Avatar Circle -->
                     <div class="flex-shrink-0 relative group">
                         <div
-                            class="w-40 h-40 md:w-52 md:h-52 rounded-full border-4 border-[#c3f53c] shadow-[0_0_30px_rgba(195,245,60,0.3)] overflow-hidden bg-gray-800">
+                            class="w-32 h-32 sm:w-40 sm:h-40 md:w-52 md:h-52 rounded-full border-4 border-[#c3f53c] shadow-[0_0_30px_rgba(195,245,60,0.3)] overflow-hidden bg-gray-800">
                             <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
                                 :alt="archer.full_name"
                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
@@ -28,7 +28,7 @@
                     </div>
 
                     <!-- Info -->
-                    <div class="flex-1 text-center md:text-left text-white mb-2">
+                    <div class="flex-1 text-center md:text-left text-white mb-1 md:mb-2">
                         <!-- Country badge -->
                         <div
                             class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-4">
@@ -36,11 +36,11 @@
                             <span class="text-sm font-bold tracking-wide">INA — Indonesia</span>
                         </div>
 
-                        <h1 class="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight mb-2">
-                            {{ archer.full_name || 'Profil Atlet' }}
+                        <h1 class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-black tracking-tight mb-2 break-words">
+                            {{ archer.full_name }}
                         </h1>
 
-                        <div class="flex flex-col md:flex-row items-center gap-4 text-slate-300 text-base mb-6">
+                        <div class="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-slate-300 text-sm sm:text-base mb-5">
                             <div v-if="bowTypeLabel" class="flex items-center gap-2">
                                 <Icon icon="ph:bow-bold" class="text-[#c3f53c]" />
                                 <span>{{ bowTypeLabel }}</span>
@@ -55,14 +55,9 @@
                             </div>
                         </div>
 
-                        <div class="flex flex-wrap justify-center md:justify-start gap-3">
-                            <button
-                                class="h-10 px-6 bg-[#c3f53c] hover:bg-[#a3d92a] text-[#0e1e3a] font-bold rounded-lg transition-colors flex items-center gap-2">
-                                <Icon icon="ph:plus-bold" class="text-lg" />
-                                Ikuti Atlet
-                            </button>
+                        <div class="flex flex-wrap justify-center md:justify-start gap-3 w-full md:w-auto">
                             <button @click="openShareDialog"
-                                class="h-10 px-6 bg-white/10 hover:bg-white/20 text-white font-bold rounded-lg backdrop-blur-sm border border-white/10 transition-colors flex items-center gap-2">
+                                class="h-10 px-6 w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white font-bold rounded-lg backdrop-blur-sm border border-white/10 transition-colors flex items-center justify-center gap-2">
                                 <Icon icon="ph:share-network-bold" class="text-lg" />
                                 Bagikan Profil
                             </button>
@@ -84,17 +79,17 @@
 
         <!-- ── Main Content ── -->
         <main
-            class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 md:py-12 space-y-8 -mt-6 relative z-30">
+            class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 md:py-12 space-y-6 md:space-y-8 -mt-6 relative z-30">
 
             <!-- Top Stats Row -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                 <!-- Events Participated -->
                 <div
-                    class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between group hover:border-[#c3f53c]/50 transition-colors">
+                    class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100 flex items-start justify-between gap-3 group hover:border-[#c3f53c]/50 transition-colors">
                     <div>
                         <p class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Total Event</p>
                         <div class="flex items-baseline gap-2">
-                            <h3 class="text-4xl font-black text-[#0e1e3a]">{{ eventHistory.length || '—' }}</h3>
+                            <h3 class="text-3xl sm:text-4xl font-black text-[#0e1e3a]">{{ eventHistory.length }}</h3>
                             <span class="text-slate-400 text-sm font-medium">partisipasi</span>
                         </div>
                     </div>
@@ -106,11 +101,13 @@
 
                 <!-- Avg Arrow Score -->
                 <div
-                    class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between group hover:border-[#c3f53c]/50 transition-colors">
+                    class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100 flex items-start justify-between gap-3 group hover:border-[#c3f53c]/50 transition-colors">
                     <div>
                         <p class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Pengalaman</p>
                         <div class="flex items-baseline gap-2">
-                            <h3 class="text-4xl font-black text-[#0e1e3a]">{{ archer.experience_years || '—' }}</h3>
+                            <h3 class="text-3xl sm:text-4xl font-black text-[#0e1e3a]">
+                                {{ hasExperience ? archer.experience_years : '' }}
+                            </h3>
                             <span class="text-slate-400 text-sm font-medium">tahun</span>
                         </div>
                     </div>
@@ -121,12 +118,12 @@
                 </div>
 
                 <!-- Personal Info -->
-                <div
-                    class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between group hover:border-[#c3f53c]/50 transition-colors">
+                <div v-if="archer.city"
+                    class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100 flex items-start justify-between gap-3 group hover:border-[#c3f53c]/50 transition-colors sm:col-span-2 lg:col-span-1">
                     <div>
                         <p class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Kota / Lokasi</p>
                         <div class="flex items-baseline gap-2">
-                            <h3 class="text-2xl font-black text-[#0e1e3a] leading-tight">{{ archer.city || 'Indonesia'
+                            <h3 class="text-xl sm:text-2xl font-black text-[#0e1e3a] leading-tight break-words">{{ archer.city
                                 }}</h3>
                         </div>
                     </div>
@@ -142,7 +139,7 @@
                 <!-- Bio & Performance -->
                 <div class="lg:col-span-2 space-y-6">
                     <!-- Biography -->
-                    <div v-if="archer.bio" class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div v-if="archer.bio" class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100">
                         <h3 class="text-lg font-bold text-[#0e1e3a] flex items-center gap-2 mb-4">
                             <Icon icon="ph:user-bold" class="text-[#c3f53c]" />
                             Biografi
@@ -151,7 +148,7 @@
                     </div>
 
                     <!-- Performance Bar Chart -->
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100">
                         <div class="flex items-center justify-between mb-6">
                             <h3 class="text-lg font-bold text-[#0e1e3a] flex items-center gap-2">
                                 <Icon icon="ph:chart-bar-bold" class="text-[#c3f53c]" />
@@ -203,44 +200,44 @@
                 <!-- Sidebar -->
                 <div class="space-y-6">
                     <!-- Personal Data -->
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100">
                         <h3 class="text-lg font-bold text-[#0e1e3a] flex items-center gap-2 mb-5">
                             <Icon icon="ph:identification-card-bold" class="text-[#c3f53c]" />
                             Data Atlet
                         </h3>
                         <div class="space-y-3 text-sm">
                             <div v-if="archer.id"
-                                class="flex items-center justify-between py-2 border-b border-gray-50">
+                                class="flex flex-col items-start gap-1 py-2 border-b border-gray-50 sm:flex-row sm:items-center sm:justify-between">
                                 <span class="text-slate-500 font-medium">Kode Atlet</span>
-                                <span class="font-black text-[#0e1e3a] font-mono">{{ archer.id }}</span>
+                                <span class="font-black text-[#0e1e3a] font-mono text-left break-all sm:text-right">{{ archer.id }}</span>
                             </div>
                             <div v-if="genderLabel"
-                                class="flex items-center justify-between py-2 border-b border-gray-50">
+                                class="flex flex-col items-start gap-1 py-2 border-b border-gray-50 sm:flex-row sm:items-center sm:justify-between">
                                 <span class="text-slate-500 font-medium">Jenis Kelamin</span>
-                                <span class="font-bold text-[#0e1e3a]">{{ genderLabel }}</span>
+                                <span class="font-bold text-[#0e1e3a] text-left sm:text-right">{{ genderLabel }}</span>
                             </div>
                             <div v-if="archer.date_of_birth"
-                                class="flex items-center justify-between py-2 border-b border-gray-50">
+                                class="flex flex-col items-start gap-1 py-2 border-b border-gray-50 sm:flex-row sm:items-center sm:justify-between">
                                 <span class="text-slate-500 font-medium">Tgl. Lahir</span>
-                                <span class="font-bold text-[#0e1e3a]">{{ formatDate(archer.date_of_birth) }}</span>
+                                <span class="font-bold text-[#0e1e3a] text-left sm:text-right">{{ formatDate(archer.date_of_birth) }}</span>
                             </div>
                             <div v-if="bowTypeLabel"
-                                class="flex items-center justify-between py-2 border-b border-gray-50">
+                                class="flex flex-col items-start gap-1 py-2 border-b border-gray-50 sm:flex-row sm:items-center sm:justify-between">
                                 <span class="text-slate-500 font-medium">Jenis Busur</span>
                                 <span
                                     class="font-bold text-[#0e1e3a] px-2 py-0.5 bg-[#c3f53c]/20 rounded text-xs uppercase">{{
                                         bowTypeLabel }}</span>
                             </div>
-                            <div v-if="archer.city" class="flex items-center justify-between py-2">
+                            <div v-if="archer.city" class="flex flex-col items-start gap-1 py-2 sm:flex-row sm:items-center sm:justify-between">
                                 <span class="text-slate-500 font-medium">Kota</span>
-                                <span class="font-bold text-[#0e1e3a]">{{ archer.city }}</span>
+                                <span class="font-bold text-[#0e1e3a] text-left break-all sm:text-right">{{ archer.city }}</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Equipment (if available) -->
                     <div v-if="archer.equipment?.length"
-                        class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                        class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100">
                         <h3 class="text-lg font-bold text-[#0e1e3a] flex items-center gap-2 mb-5">
                             <Icon icon="ph:wrench-bold" class="text-[#c3f53c]" />
                             Perlengkapan
@@ -261,7 +258,7 @@
                     </div>
 
                     <!-- Club affiliation -->
-                    <div v-if="archer.club_name" class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div v-if="archer.club_name" class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100">
                         <h3 class="text-lg font-bold text-[#0e1e3a] flex items-center gap-2 mb-5">
                             <Icon icon="ph:buildings-bold" class="text-[#c3f53c]" />
                             Afiliasi Klub
@@ -296,7 +293,7 @@
 
             <!-- ── Recent Results Table ── -->
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+                <div class="p-4 sm:p-6 border-b border-gray-100 flex justify-between items-center">
                     <h3 class="text-lg font-bold text-[#0e1e3a] flex items-center gap-2">
                         <Icon icon="ph:clock-counter-clockwise-bold" class="text-[#c3f53c]" />
                         Riwayat Event
@@ -305,7 +302,21 @@
                 </div>
 
                 <template v-if="eventHistory.length > 0">
-                    <div class="overflow-x-auto">
+                    <div class="md:hidden divide-y divide-gray-100">
+                        <div v-for="event in eventHistory" :key="event.id" class="p-4 space-y-2">
+                            <p class="font-bold text-[#0e1e3a] leading-tight break-words">{{ event.name }}</p>
+                            <div class="text-xs text-slate-500 flex flex-wrap items-center gap-2">
+                                <span v-if="event.date">{{ formatDate(event.date, 'MMM YYYY') }}</span>
+                                <span v-if="event.city">{{ event.city }}</span>
+                            </div>
+                            <span
+                                class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#c3f53c]/20 text-[#0e1e3a] text-xs font-bold">
+                                <Icon icon="ph:check-circle-bold" class="text-sm" />
+                                Berpartisipasi
+                            </span>
+                        </div>
+                    </div>
+                    <div class="hidden md:block overflow-x-auto">
                         <table class="w-full text-left text-sm">
                             <thead>
                                 <tr
@@ -329,7 +340,7 @@
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 text-slate-600">{{ formatDate(event.date, 'MMM YYYY') }}</td>
-                                    <td class="px-6 py-4 text-slate-600">{{ event.city || '—' }}</td>
+                                    <td class="px-6 py-4 text-slate-600">{{ event.city }}</td>
                                     <td class="px-6 py-4">
                                         <span
                                             class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#c3f53c]/20 text-[#0e1e3a] text-xs font-bold">
@@ -372,7 +383,7 @@
                         <div>
                             <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-0.5">Profil Atlet</p>
                             <p class="font-black text-[#0e1e3a] text-base">{{ archer.full_name }}</p>
-                            <p class="text-xs text-slate-500">{{ bowTypeLabel }} • {{ archer.city || 'Indonesia' }}</p>
+                            <p v-if="shareMetaLine" class="text-xs text-slate-500">{{ shareMetaLine }}</p>
                         </div>
                     </div>
 
@@ -443,7 +454,7 @@ useSeoMeta({
         ? `${archer.value.full_name} — Profil Atlet Panahan | Archeryhub.id`
         : 'Profil Atlet Panahan — Archeryhub.id',
     description: () => archer.value?.full_name
-        ? `Lihat profil ${archer.value.full_name}, atlet panahan ${archer.value.bow_type || ''} dari ${archer.value.city || 'Indonesia'}. Statistik, riwayat event, dan prestasi lengkap di Archeryhub.id.`
+        ? `Lihat profil ${archer.value.full_name}${archer.value.bow_type ? `, atlet panahan ${archer.value.bow_type}` : ''}${archer.value.city ? ` dari ${archer.value.city}` : ''}. Statistik, riwayat event, dan prestasi lengkap di Archeryhub.id.`
         : 'Profil atlet panahan Indonesia di Archeryhub.id',
 })
 
@@ -457,8 +468,16 @@ const genderLabel = computed(() =>
     archer.value?.gender === 'male' ? 'Laki-laki'
         : archer.value?.gender === 'female' ? 'Perempuan' : '')
 
+const hasExperience = computed(() =>
+    archer.value?.experience_years !== null &&
+    archer.value?.experience_years !== undefined &&
+    archer.value?.experience_years !== '')
+
+const shareMetaLine = computed(() =>
+    [bowTypeLabel.value, archer.value?.city].filter(Boolean).join(' • '))
+
 const formatDate = (date, format = 'DD MMMM YYYY') => {
-    if (!date) return '-'
+    if (!date) return ''
     return useDateFormat(date, format, { locales: 'id-ID' }).value
 }
 

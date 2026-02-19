@@ -34,9 +34,18 @@
                   placeholder="contoh: National Indoor Championship 2024" required :error="errors.name"
                   @blur="validate('name', form.name, [rules.required()])" />
               </div>
+              <div class="md:col-span-2">
+                <BaseInput v-model="form.slug" label="Slug Event" placeholder="contoh: national-indoor-championship-2024"
+                  required :error="errors.slug"
+                  @input="onSlugInput"
+                  @blur="validate('slug', form.slug, [rules.required(), rules.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Slug hanya boleh huruf kecil, angka, dan tanda minus (-)')])" />
+                <p class="text-xs text-gray-500 mt-1.5">
+                  Slug otomatis dibuat dari Nama Event, tapi Anda bisa mengubahnya.
+                </p>
+              </div>
               <BaseInput v-model="form.venue" label="Lokasi Venue" placeholder="Masukkan nama venue atau alamat"
                 icon="la:place-of-worship" />
-              <BaseSelect v-model="form.type" label="Disiplin" :items="disciplineItems" required :error="errors.type"
+              <BaseSelect v-model="form.type" label="Tipe Lokasi" :items="disciplineItems" required :error="errors.type"
                 @blur="validate('type', form.type, [rules.required()])" />
               <BaseSelect v-model="form.city" label="Kota" :items="cityItems" required :error="errors.city"
                 @blur="validate('city', form.city, [rules.required()])" />
@@ -223,6 +232,7 @@ const { errors, validate, validateForm, rules, clearErrors } = useFormValidation
 
 const form = reactive({
   name: '',
+  slug: '',
   venue: '',
   gmapsLink: '',
   startDate: '',
@@ -239,8 +249,41 @@ const form = reactive({
   paymentMethods: []
 })
 
+const isSlugManuallyEdited = ref(false)
+
+const slugify = (value) => {
+  return (value || '')
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+}
+
+watch(() => form.name, (newName) => {
+  if (!isSlugManuallyEdited.value) {
+    form.slug = slugify(newName)
+  }
+})
+
+const onSlugInput = () => {
+  form.slug = slugify(form.slug)
+  isSlugManuallyEdited.value = true
+}
+
 const disciplines = ref([])
-const disciplineItems = computed(() => disciplines.value.map(d => ({ title: d.name, value: d.name })))
+const disciplineItems = computed(() => {
+  const excluded = new Set(['3d', 'field'])
+  return disciplines.value
+    .filter((d) => {
+      const name = (d?.name || '').toString().trim().toLowerCase()
+      const code = (d?.code || '').toString().trim().toLowerCase()
+      return !excluded.has(name) && !excluded.has(code)
+    })
+    .map((d) => ({ title: d.name, value: d.name }))
+})
 
 const indonesianCities = [
   'Jakarta', 'Bandung', 'Surabaya', 'Medan', 'Semarang', 'Makassar', 'Palembang',
@@ -350,6 +393,7 @@ const toggleValue = (arr, val) => {
 const validateStep = () => {
   const isBasicValid = validateForm(form, {
     name: [rules.required()],
+    slug: [rules.required(), rules.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Slug hanya boleh huruf kecil, angka, dan tanda minus (-)')],
     startDate: [rules.required()],
     endDate: [rules.required()],
     type: [rules.required()],
@@ -392,6 +436,7 @@ const handleSubmit = async () => {
     const payload = {
       code: form.name.substring(0, 3).toUpperCase() + Math.random().toString(36).substring(2, 5).toUpperCase(),
       name: form.name,
+      slug: form.slug,
       venue: form.venue,
       city: form.city,
       gmaps_link: form.gmapsLink,

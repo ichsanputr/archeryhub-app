@@ -1,7 +1,7 @@
 <template>
   <div :key="route.path" class="min-h-screen flex flex-col bg-background-light font-body text-navy overflow-x-hidden">
-    <LayoutLandingHeader :transparent="isTransparent" />
-    <main class="flex-grow" :class="{ 'pt-16': !isTransparent }">
+    <LayoutLandingHeader :transparent="true" />
+    <main class="flex-grow">
       <slot />
     </main>
     <LayoutAppFooter />
@@ -11,13 +11,6 @@
 
 <script setup>
 const route = useRoute()
-
-const isTransparent = computed(() => {
-  // Homepage is always transparent header on top
-  if (route.path === '/') return true
-  // Other pages can opt-in via route meta
-  return route.meta.transparent === true
-})
 
 defineOptions({
   name: 'LandingLayout'

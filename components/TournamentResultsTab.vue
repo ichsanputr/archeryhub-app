@@ -1,8 +1,24 @@
 <template>
     <div class="space-y-6">
         <!-- Loading State -->
-        <div v-if="isLoading" class="flex items-center justify-center py-20">
-            <div class="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
+        <div v-if="isLoading" class="space-y-4 animate-pulse">
+            <div class="bg-white rounded-2xl border border-gray-100 p-6">
+                <div class="h-5 w-48 bg-gray-200 rounded mb-4"></div>
+                <div class="flex gap-4 overflow-hidden">
+                    <div class="w-72 h-28 bg-gray-100 rounded-xl shrink-0"></div>
+                    <div class="w-72 h-28 bg-gray-100 rounded-xl shrink-0"></div>
+                    <div class="w-72 h-28 bg-gray-100 rounded-xl shrink-0"></div>
+                </div>
+            </div>
+            <div class="bg-white rounded-2xl border border-gray-100 p-6">
+                <div class="h-5 w-56 bg-gray-200 rounded mb-4"></div>
+                <div class="space-y-3">
+                    <div class="h-10 bg-gray-100 rounded-lg"></div>
+                    <div class="h-10 bg-gray-100 rounded-lg"></div>
+                    <div class="h-10 bg-gray-100 rounded-lg"></div>
+                    <div class="h-10 bg-gray-100 rounded-lg"></div>
+                </div>
+            </div>
         </div>
 
         <template v-else>
@@ -141,9 +157,13 @@
                 <!-- Elimination Results (Bracket Style) -->
                 <div v-if="selectedCategory" class="space-y-6">
                     <div v-if="eliminationLoading"
-                        class="bg-white rounded-2xl p-12 text-center border border-gray-100 shadow-sm">
-                        <div
-                            class="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent mx-auto">
+                        class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm animate-pulse space-y-4">
+                        <div class="h-6 w-60 bg-gray-200 rounded"></div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="h-24 bg-gray-100 rounded-xl"></div>
+                            <div class="h-24 bg-gray-100 rounded-xl"></div>
+                            <div class="h-24 bg-gray-100 rounded-xl"></div>
+                            <div class="h-24 bg-gray-100 rounded-xl"></div>
                         </div>
                     </div>
 
@@ -162,9 +182,14 @@
                     <!-- Qualification Results Below -->
                     <div v-if="selectedCategory"
                         class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                        <div v-if="qualificationLoading" class="p-12 text-center">
-                            <div
-                                class="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent mx-auto">
+                        <div v-if="qualificationLoading" class="p-6 animate-pulse space-y-4">
+                            <div class="h-6 w-64 bg-gray-200 rounded"></div>
+                            <div class="space-y-3">
+                                <div class="h-12 bg-gray-100 rounded-lg"></div>
+                                <div class="h-12 bg-gray-100 rounded-lg"></div>
+                                <div class="h-12 bg-gray-100 rounded-lg"></div>
+                                <div class="h-12 bg-gray-100 rounded-lg"></div>
+                                <div class="h-12 bg-gray-100 rounded-lg"></div>
                             </div>
                         </div>
 

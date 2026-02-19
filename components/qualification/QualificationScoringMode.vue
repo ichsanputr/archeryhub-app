@@ -1,9 +1,10 @@
 <template>
     <div class="space-y-8">
         <!-- Scoring Interface -->
-        <div v-if="selectedCategory && targetAssignments.length > 0" class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div v-if="selectedCategory && targetAssignments.length > 0" class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
             <!-- Archers List -->
-            <div class="lg:col-span-7 xl:col-span-8 flex flex-col gap-6">
+            <div class="lg:col-span-7 xl:col-span-8 flex flex-col gap-4 sm:gap-6"
+                :class="showMobileInputBoard && currentScoringAssignment ? 'pb-[260px] lg:pb-0' : ''">
                 <div v-for="group in groupedAssignments" :key="group.number" class="space-y-4">
                     <!-- Target Divider -->
                     <div class="flex items-center gap-4 pt-4 pb-1">
@@ -19,14 +20,14 @@
 
                     <div v-for="assignment in group.assignments" :key="assignment.uuid"
                         @click="selectArcherForScoring(assignment)" :class="[
-                            'bg-white rounded-[2rem] shadow-sm border-2 overflow-hidden transition-all cursor-pointer relative',
+                            'bg-white rounded-2xl sm:rounded-[2rem] shadow-sm border-2 overflow-hidden transition-all cursor-pointer relative',
                             currentScoringAssignment?.uuid === assignment.uuid
                                 ? 'border-primary ring-4 ring-primary/5'
                                 : 'border-gray-50 hover:border-gray-200'
                         ]">
 
-                        <div class="p-5 sm:p-6 pl-8 sm:pl-10 relative rounded-xl">
-                            <div class="flex justify-between items-center mb-4">
+                        <div class="p-4 sm:p-6 pl-5 sm:pl-10 relative rounded-xl">
+                            <div class="flex justify-between items-center mb-3 sm:mb-4">
                                 <div class="flex items-center gap-4 flex-1 min-w-0">
                                     <div class="relative group">
                                         <img :src="useImageOrDefault(assignment.archer_avatar_url || assignment.avatar_url, assignment.archer_name)"
@@ -75,14 +76,23 @@
                                 </div>
                             </div>
 
+                            <div class="flex items-center justify-between mb-3 text-[10px] sm:text-xs font-bold">
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-50 text-slate-500 uppercase tracking-wider">
+                                    End {{ assignment.currentEnd || 1 }} / {{ sessionData?.total_ends || 0 }}
+                                </span>
+                                <span class="px-2.5 py-1 rounded-lg bg-primary/10 text-navy uppercase tracking-wider">
+                                    Total {{ calculateEndSum(assignment.currentEndScores) }}
+                                </span>
+                            </div>
+
                             <!-- Current End Display area -->
                             <div class="relative overflow-hidden group/end"
                                 :class="{ 'bg-white': currentScoringAssignment?.uuid === assignment.uuid }">
 
-                                <div class="flex flex-wrap gap-2.5 sm:gap-3 py-2 pl-3">
+                                <div class="flex flex-wrap gap-2 sm:gap-3 py-2 pl-1 sm:pl-3">
                                     <div v-for="(score, i) in sessionData?.arrows_per_end || 0" :key="i"
                                         @click.stop="selectArrowBox(assignment, i)" :class="[
-                                            'size-14 sm:size-16 rounded-xl shadow-sm flex items-center justify-center text-lg sm:text-xl font-black cursor-pointer transition-all duration-300 relative border-4',
+                                            'size-12 sm:size-16 rounded-xl shadow-sm flex items-center justify-center text-base sm:text-xl font-black cursor-pointer transition-all duration-300 relative border-4',
                                             currentScoringAssignment?.uuid === assignment.uuid && selectedArrowIndex === i
                                                 ? 'border-primary bg-white shadow-sm scale-110 z-10 border-solid'
                                                 : (assignment.currentEndScores && assignment.currentEndScores[i] !== undefined
@@ -106,10 +116,10 @@
                                     </div>
 
                                     <!-- End Summary -->
-                                    <div class="flex-1 flex flex-col items-end justify-center min-w-[60px]">
+                                    <div class="flex-1 flex flex-col items-end justify-center min-w-[56px]">
                                         <div
-                                            class="size-14 sm:size-16 bg-navy text-primary rounded-xl flex flex-col items-center justify-center shadow-sm shadow-navy/10 transform hover:scale-105 transition-transform">
-                                            <span class="text-lg sm:text-xl font-black leading-none">{{
+                                            class="size-12 sm:size-16 bg-navy text-primary rounded-xl flex flex-col items-center justify-center shadow-sm shadow-navy/10 transform hover:scale-105 transition-transform">
+                                            <span class="text-base sm:text-xl font-black leading-none">{{
                                                 calculateEndSum(assignment.currentEndScores) }}</span>
                                         </div>
                                     </div>
@@ -132,7 +142,7 @@
             </div>
 
             <!-- Scoring Keypad -->
-            <div class="lg:col-span-5 xl:col-span-4">
+            <div class="hidden lg:block lg:col-span-5 xl:col-span-4">
                 <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 p-6 sm:p-8 sticky top-6">
                     <!-- Score Buttons Grid -->
                     <div class="grid grid-cols-3 gap-3 mb-6">
@@ -168,6 +178,51 @@
                 </div>
             </div>
         </div>
+
+        <!-- Mobile Sticky Scoring Board -->
+        <Transition enter-active-class="transition duration-200 ease-out" enter-from-class="translate-y-full opacity-0"
+            enter-to-class="translate-y-0 opacity-100" leave-active-class="transition duration-150 ease-in"
+            leave-from-class="translate-y-0 opacity-100" leave-to-class="translate-y-full opacity-0">
+            <div v-if="showMobileInputBoard && currentScoringAssignment"
+                class="lg:hidden fixed inset-x-0 bottom-0 z-[70] bg-white border-t border-gray-200 shadow-[0_-10px_30px_rgba(0,0,0,0.08)] rounded-t-3xl p-4 pb-[calc(1rem+env(safe-area-inset-bottom))]">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="min-w-0">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">Input Nilai</p>
+                        <p class="text-sm font-black text-navy truncate">
+                            {{ currentScoringAssignment?.archer_name || 'Pilih pemanah' }}
+                        </p>
+                    </div>
+                    <button @click="closeMobileInputBoard"
+                        class="size-9 rounded-xl border border-gray-200 flex items-center justify-center text-gray-500">
+                        <Icon icon="ph:x-bold" />
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-6 gap-2 mb-3">
+                    <button v-for="val in ['X', 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 'M']" :key="val" @click="addScore(val)"
+                        :disabled="!currentScoringAssignment"
+                        class="h-11 rounded-xl border-b-4 text-sm font-black transition-all active:border-b-0 active:translate-y-[4px] disabled:opacity-30 disabled:cursor-not-allowed shadow-sm"
+                        :class="[getScoreKeypadClass(val)]">
+                        {{ val }}
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <button @click="deleteLastScore"
+                        :disabled="!currentScoringAssignment || !currentScoringAssignment.currentEndScores?.some(v => v !== undefined)"
+                        class="flex items-center justify-center gap-2 h-11 rounded-xl border border-slate-200 bg-white text-navy font-bold disabled:opacity-30">
+                        <Icon icon="ph:backspace-bold" class="text-base" />
+                        <span class="text-[10px] tracking-widest uppercase">Hapus</span>
+                    </button>
+                    <button @click="saveEndAndNext" :disabled="saving || !currentScoringAssignment"
+                        class="flex items-center justify-center gap-2 h-11 rounded-xl bg-navy text-primary font-black disabled:opacity-30">
+                        <span v-if="saving"
+                            class="size-4 border-2 border-primary/20 border-t-primary rounded-full animate-spin"></span>
+                        <span v-else class="text-[10px] tracking-widest uppercase">Simpan</span>
+                    </button>
+                </div>
+            </div>
+        </Transition>
 
         <!-- Empty Global State -->
         <div v-else
@@ -207,6 +262,7 @@ const toast = useToast()
 const saving = ref(false)
 const currentScoringAssignment = ref(null)
 const selectedArrowIndex = ref(0) // Track which arrow box is being edited
+const showMobileInputBoard = ref(false)
 
 const initEndScores = (assignment) => {
     if (!assignment.currentEndScores) {
@@ -260,6 +316,7 @@ const groupedAssignments = computed(() => {
 const selectArcherForScoring = (assignment) => {
     currentScoringAssignment.value = assignment
     initEndScores(assignment)
+    showMobileInputBoard.value = true
 }
 
 const selectArrowBox = (assignment, index) => {
@@ -271,6 +328,11 @@ const selectArrowBox = (assignment, index) => {
         }
     }
     selectedArrowIndex.value = index
+    showMobileInputBoard.value = true
+}
+
+const closeMobileInputBoard = () => {
+    showMobileInputBoard.value = false
 }
 
 const addScore = (score) => {

@@ -182,16 +182,46 @@
             <!-- Dialog Body -->
             <form @submit.prevent="submitForm" class="p-6 space-y-5">
               <div>
-                <label class="block text-sm font-bold text-gray-700 mb-2">Nama Target *</label>
-                <input v-model="form.target_name" type="number" required
+                <label class="block text-sm font-bold text-gray-700 mb-2">
+                  {{ showEditDialog ? 'Nomor Dasar Target *' : 'Jumlah Target *' }}
+                </label>
+                <input v-if="showEditDialog" v-model.number="form.target_name" type="number" min="1" required
                   class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
                   placeholder="Contoh: 6" />
-                <p class="text-xs text-gray-500 mt-1.5">Nomor urut bantalan target.</p>
+                <input v-else v-model.number="form.target_total" type="number" min="1" required
+                  class="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                  placeholder="Contoh: 4" />
+                <p v-if="showEditDialog" class="text-xs text-gray-500 mt-1.5">Nomor urut bantalan target.</p>
+                <p v-else class="text-xs text-gray-500 mt-1.5">
+                  Sistem akan membuat sejumlah <strong>{{ totalCreatedTargets }}</strong> target
+                  (Jumlah Target x Nomor Target).
+                </p>
               </div>
 
               <div>
                 <BaseSelect v-model="form.target_count" label="Nomor Target" :items="targetCountOptions" required />
                 <p class="text-xs text-gray-500 mt-1.5">Sistem akan membuat bantalan A, B, C, D sesuai pilihan Anda.</p>
+
+                <div v-if="!showEditDialog" class="mt-3 rounded-xl border border-gray-200 bg-gray-50 p-3">
+                  <div class="flex items-center justify-between gap-2 mb-2">
+                    <p class="text-[11px] font-bold text-navy uppercase tracking-wider">Preview Target</p>
+                    <span class="text-[11px] font-bold text-gray-500">
+                      {{ totalCreatedTargets }} target
+                    </span>
+                  </div>
+
+                  <div class="flex flex-wrap gap-1.5 max-h-28 overflow-y-auto pr-1">
+                    <span v-for="target in previewTargets" :key="target"
+                      class="px-2 py-1 rounded-md bg-white border border-gray-200 text-[10px] font-black text-navy tracking-wide">
+                      {{ target }}
+                    </span>
+                  </div>
+
+                  <p class="text-[10px] text-gray-500 mt-2">
+                    Dari <strong>{{ previewTargets[0] || '-' }}</strong> sampai
+                    <strong>{{ previewTargets[previewTargets.length - 1] || '-' }}</strong>
+                  </p>
+                </div>
               </div>
 
               <!-- Dialog Footer -->
@@ -279,6 +309,7 @@ const targetToEdit = ref(null)
 
 const form = ref({
   target_name: '',
+  target_total: 1,
   target_count: 1
 })
 
@@ -288,6 +319,37 @@ const targetCountOptions = [
   { title: '3 Target', value: 3 },
   { title: '4 Target', value: 4 }
 ]
+
+const targetLetterRange = computed(() => {
+  const letters = ['A', 'B', 'C', 'D']
+  const count = Number(form.value.target_count) || 1
+  return letters.slice(0, count).join(', ')
+})
+
+const targetLetterMax = computed(() => {
+  const letters = ['A', 'B', 'C', 'D']
+  const count = Number(form.value.target_count) || 1
+  return letters[Math.max(0, count - 1)]
+})
+
+const totalCreatedTargets = computed(() => {
+  const total = Number(form.value.target_total) || 1
+  const count = Number(form.value.target_count) || 1
+  return total * count
+})
+
+const previewTargets = computed(() => {
+  const total = Math.max(1, Number(form.value.target_total) || 1)
+  const count = Math.max(1, Number(form.value.target_count) || 1)
+  const letters = ['A', 'B', 'C', 'D'].slice(0, count)
+  const result = []
+  for (let base = 1; base <= total; base++) {
+    for (const letter of letters) {
+      result.push(`${base}${letter}`)
+    }
+  }
+  return result
+})
 
 const currentTargetId = ref(null)
 
@@ -395,11 +457,21 @@ const submitForm = async () => {
       const count = parseInt(form.value.target_count)
       const letters = ['A', 'B', 'C', 'D']
       const targetNumbers = letters.slice(0, count)
+      const totalTargets = parseInt(form.value.target_total)
+      if (!totalTargets || totalTargets < 1) {
+        toast.error('Jumlah Target harus lebih dari 0')
+        submitting.value = false
+        return
+      }
 
-      await post(`/events/${eventId}/targets`, {
-        target_name: form.value.target_name.toString(),
-        target_numbers: targetNumbers
-      })
+      // Create targets sequentially:
+      // jumlah target = 4, nomor target = 4 => 1A..1D, 2A..2D, 3A..3D, 4A..4D
+      for (let base = 1; base <= totalTargets; base++) {
+        await post(`/events/${eventId}/targets`, {
+          target_name: String(base),
+          target_numbers: targetNumbers
+        })
+      }
       toast.success('Target berhasil dibuat')
     }
     closeDialog()
@@ -418,6 +490,7 @@ const editTarget = (target) => {
 
   // Set form values individually for better reactivity tracking
   form.value.target_name = Number(target.target_number) || target.target_number
+  form.value.target_total = 1
   form.value.target_count = target.letters ? target.letters.split(',').filter(l => l.trim()).length : 1
 
   showEditDialog.value = true
@@ -452,6 +525,7 @@ const closeDialog = () => {
   currentTargetId.value = null
   form.value = {
     target_name: '',
+    target_total: 1,
     target_count: 1
   }
 }
