@@ -1,46 +1,5 @@
 <template>
-    <div class="bg-[#f3f4f6] text-slate-900 font-[Manrope,sans-serif] antialiased min-h-screen flex flex-col">
-
-        <!-- ── Header ── -->
-        <header class="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between h-16">
-                    <NuxtLink to="/" class="flex items-center gap-3">
-                        <div class="w-8 h-8 bg-[#0e1e3a] rounded-lg flex items-center justify-center">
-                            <Icon icon="ph:target-fill" class="text-[#c3f53c] text-xl" />
-                        </div>
-                        <span class="text-[#0e1e3a] text-xl font-bold tracking-tight">Archery Hub</span>
-                    </NuxtLink>
-
-                    <nav class="hidden md:flex items-center gap-8">
-                        <NuxtLink to="/"
-                            class="text-slate-600 hover:text-[#0e1e3a] font-medium text-sm transition-colors">Beranda
-                        </NuxtLink>
-                        <NuxtLink to="/events"
-                            class="text-slate-600 hover:text-[#0e1e3a] font-medium text-sm transition-colors">Turnamen
-                        </NuxtLink>
-                        <NuxtLink to="/archers"
-                            class="text-[#0e1e3a] font-bold text-sm relative after:content-[''] after:absolute after:w-full after:h-0.5 after:bg-[#0e1e3a] after:-bottom-5 after:left-0">
-                            Atlet</NuxtLink>
-                        <NuxtLink to="/clubs"
-                            class="text-slate-600 hover:text-[#0e1e3a] font-medium text-sm transition-colors">Klub
-                        </NuxtLink>
-                    </nav>
-
-                    <div class="flex items-center gap-3">
-                        <button @click="openShareDialog"
-                            class="hidden md:flex items-center gap-2 text-slate-600 font-medium text-sm hover:text-[#0e1e3a] transition-colors">
-                            <Icon icon="ph:share-network-bold" />
-                            Bagikan
-                        </button>
-                        <NuxtLink to="/archers"
-                            class="bg-[#0e1e3a] hover:bg-[#1a365d] text-white px-5 py-2 rounded-lg text-sm font-bold transition-all shadow-md hover:shadow-lg">
-                            Cari Atlet
-                        </NuxtLink>
-                    </div>
-                </div>
-            </div>
-        </header>
+    <div class="bg-background-light min-h-screen flex flex-col">
 
         <!-- ── Hero Banner ── -->
         <div class="bg-[#0e1e3a] relative overflow-hidden">
@@ -168,7 +127,7 @@
                         <p class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Kota / Lokasi</p>
                         <div class="flex items-baseline gap-2">
                             <h3 class="text-2xl font-black text-[#0e1e3a] leading-tight">{{ archer.city || 'Indonesia'
-                            }}</h3>
+                                }}</h3>
                         </div>
                     </div>
                     <div
@@ -390,27 +349,7 @@
             </div>
         </main>
 
-        <!-- ── Footer ── -->
-        <footer class="bg-[#0e1e3a] text-white py-12 mt-auto">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 bg-[#c3f53c] rounded-lg flex items-center justify-center">
-                            <Icon icon="ph:target-fill" class="text-[#0e1e3a] text-xl" />
-                        </div>
-                        <span class="text-xl font-bold tracking-tight">Archery Hub</span>
-                    </div>
-                    <div class="flex gap-8 text-sm text-slate-300">
-                        <NuxtLink to="/events" class="hover:text-white transition-colors">Event</NuxtLink>
-                        <NuxtLink to="/archers" class="hover:text-white transition-colors">Atlet</NuxtLink>
-                        <NuxtLink to="/clubs" class="hover:text-white transition-colors">Klub</NuxtLink>
-                    </div>
-                    <div class="text-sm text-slate-400">
-                        © {{ new Date().getFullYear() }} Archery Hub Indonesia.
-                    </div>
-                </div>
-            </div>
-        </footer>
+
 
         <!-- ── Share Dialog ── -->
         <Transition name="modal">
@@ -443,7 +382,7 @@
                             <div :class="`w-12 h-12 rounded-xl ${plat.bg} flex items-center justify-center shadow-sm group-hover:scale-110 transition-all`"
                                 v-html="plat.iconHtml"></div>
                             <span class="text-[9px] font-black text-slate-400 uppercase tracking-wider">{{ plat.name
-                            }}</span>
+                                }}</span>
                         </button>
                     </div>
 
@@ -467,13 +406,10 @@ import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useDateFormat } from '@vueuse/core'
 
-definePageMeta({ layout: false })
+definePageMeta({ layout: 'landing' })
 
 useHead({
     link: [
-        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
-        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap' },
         { rel: 'canonical', href: useRequestURL().href }
     ]
 })

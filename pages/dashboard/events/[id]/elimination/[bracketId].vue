@@ -114,7 +114,8 @@
             <div v-if="currentRoundNo" class="space-y-6">
                 <!-- TARGET TAB -->
                 <EliminationTargetMode v-if="activeTab === 'target'" :round-matches="roundMatches"
-                    :target-options="targetOptions" @update-target="updateTarget" />
+                    :target-options="targetOptions" :is-auto-assigning="isAutoAssigning" @update-target="updateTarget"
+                    @auto-assign="autoAssignTargets" />
 
                 <!-- SCORING TAB -->
                 <EliminationScoringMode v-if="activeTab === 'scoring'" :bracket="bracket" :round-matches="roundMatches"
@@ -312,6 +313,7 @@ const toast = useToast()
 
 const isLoading = ref(true)
 const isSaving = ref(false)
+const isAutoAssigning = ref(false)
 const bracket = ref(null)
 const categoryInfo = ref(null)
 const entries = ref([])
@@ -521,7 +523,13 @@ const navigateToRound = (roundNo) => {
 }
 
 const selectMatch = (match) => {
-    selectedMatch.value = selectedMatch.value?.id === match.id ? null : match
+    if (match && match.id) {
+        navigateTo(`/match/${match.id}`, {
+            open: {
+                target: '_blank'
+            }
+        })
+    }
 }
 
 const handleBack = () => {
@@ -905,6 +913,20 @@ const updateTarget = async (match) => {
         toast.success('Lokasi target diupdate')
     } catch (e) {
         toast.error('Gagal mengupdate target')
+    }
+}
+
+const autoAssignTargets = async () => {
+    isAutoAssigning.value = true
+    try {
+        const roundNo = currentRoundNo.value || 1
+        const response = await post(`/events/${eventId}/elimination/brackets/${bracketId}/targets/auto-assign?round=${roundNo}`)
+        toast.success(response?.message || 'Auto assign berhasil')
+        await fetchBracket()
+    } catch (e) {
+        toast.error(e?.data?.error || 'Gagal melakukan auto assign')
+    } finally {
+        isAutoAssigning.value = false
     }
 }
 

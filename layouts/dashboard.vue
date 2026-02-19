@@ -1,15 +1,11 @@
 <template>
-    <div
+    <div :key="route.fullPath"
         class="flex h-screen w-full bg-background-light font-sans text-navy-dark overflow-hidden transition-colors duration-300">
         <!-- Mobile overlay: behind sidebar (z-[90]) so drawer (z-[100]) stays on top; tap to close -->
         <Transition name="overlay-fade">
-            <button
-                v-if="isMobileMenuOpen"
-                type="button"
+            <button v-if="isMobileMenuOpen" type="button"
                 class="fixed inset-0 z-[90] lg:hidden bg-black/40 backdrop-blur-[2px] transition-opacity duration-200 focus:outline-none focus:ring-0"
-                aria-label="Tutup menu"
-                @click="isMobileMenuOpen = false"
-            />
+                aria-label="Tutup menu" @click="isMobileMenuOpen = false" />
         </Transition>
 
         <!-- Sidebar (drawer on mobile, above overlay) -->
@@ -104,6 +100,7 @@ watch(isMobileMenuOpen, (open) => {
 .overlay-fade-leave-active {
     transition: opacity 0.2s ease;
 }
+
 .overlay-fade-enter-from,
 .overlay-fade-leave-to {
     opacity: 0;

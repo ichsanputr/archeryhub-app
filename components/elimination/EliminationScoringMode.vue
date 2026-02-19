@@ -160,12 +160,14 @@
                                         class="text-[9px] font-black tracking-[0.3em] text-green-400 uppercase">DONE</span>
                                 </div>
                                 <button v-else-if="canEndMatch" @click="$emit('end-match')" :disabled="isEndingMatch"
-                                    class="group px-6 py-2 rounded-xl bg-primary text-navy font-black text-[10px] tracking-widest uppercase hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-sm shadow-primary/20 hover:-translate-y-0.5">
-                                    <Icon v-if="isEndingMatch" icon="ph:circle-notch-bold"
-                                        class="animate-spin text-xs" />
-                                    <Icon v-else icon="ph:flag-checkered-fill"
-                                        class="group-hover:rotate-12 transition-transform text-xs" />
-                                    <span>{{ isEndingMatch ? 'Ending...' : 'Finish Match' }}</span>
+                                    class="group px-6 py-2 rounded-xl w-[100px] bg-primary text-navy font-black text-[10px] tracking-widest uppercase hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-sm shadow-primary/20 hover:-translate-y-0.5">
+                                    <div class="flex-none">
+                                        <Icon v-if="isEndingMatch" icon="ph:circle-notch-bold"
+                                            class="animate-spin text-xs" />
+                                        <Icon v-else icon="ph:flag-checkered-fill"
+                                            class="group-hover:rotate-12 transition-transform text-xs" />
+                                    </div>
+                                    <span>{{ isEndingMatch ? 'Ending...' : 'Finish' }}</span>
                                 </button>
                                 <div v-else
                                     class="px-5 py-1.5 rounded-xl bg-white/5 border border-white/10 flex items-center gap-2">
@@ -582,7 +584,7 @@ const calculateSetPoints = (matchId, side) => {
 
 const getFullTargetName = (match) => {
     if (!match) return 'Belum Ada Target'
-    if (match.target_name) return match.target_name.startsWith('Target') ? match.target_name : `Target ${match.target_name}`
+    if (match.target_name) return match.target_name.startsWith('Target') ? match.target_name : `${match.target_name}`
     return 'Target Terpilih'
 }
 

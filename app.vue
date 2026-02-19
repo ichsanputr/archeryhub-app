@@ -1,5 +1,5 @@
 <template>
-  <NuxtLayout>
+  <NuxtLayout :key="pageKey">
     <NuxtPage :page-key="pageKey" />
   </NuxtLayout>
 </template>

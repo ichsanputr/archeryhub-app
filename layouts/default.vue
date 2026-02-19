@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :key="route.fullPath">
     <slot />
     <BaseToast />
   </div>
@@ -7,6 +7,8 @@
 
 <script setup>
 import { useTheme } from '~/composables/useTheme'
+
+const route = useRoute()
 
 defineOptions({
   name: 'DefaultLayout'

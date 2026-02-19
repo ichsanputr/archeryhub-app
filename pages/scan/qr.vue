@@ -95,29 +95,6 @@
                 </p>
             </div>
 
-            <!-- Divider -->
-            <div class="flex items-center gap-3 w-full max-w-sm">
-                <div class="flex-1 h-px bg-white/10"></div>
-                <span class="text-white/30 text-xs font-bold uppercase tracking-widest">atau</span>
-                <div class="flex-1 h-px bg-white/10"></div>
-            </div>
-
-            <!-- Manual Input -->
-            <div class="w-full max-w-sm">
-                <div class="bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-sm">
-                    <p class="text-white/60 text-xs font-bold uppercase tracking-widest mb-3">Input Manual</p>
-                    <div class="flex gap-2">
-                        <input v-model="manualInput" type="text" placeholder="Paste kode QR di sini..."
-                            class="flex-1 bg-white/10 border border-white/20 rounded-xl px-3 py-2.5 text-sm text-white placeholder-white/30 font-medium focus:outline-none focus:border-primary/60 focus:bg-white/15 transition-all"
-                            @keyup.enter="submitManual" />
-                        <button @click="submitManual" :disabled="!manualInput.trim() || isProcessing"
-                            class="px-4 py-2.5 bg-primary text-navy font-black rounded-xl text-sm hover:brightness-110 active:scale-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed">
-                            <Icon icon="ph:paper-plane-tilt-bold" class="text-base" />
-                        </button>
-                    </div>
-                </div>
-            </div>
-
         </div>
 
         <!-- Hidden canvas -->
@@ -255,7 +232,6 @@ const scanSuccess = ref(false)
 const scanError = ref(false)
 const errorMessage = ref('')
 const participantData = ref(null)
-const manualInput = ref('')
 
 const goBack = () => router.back()
 
@@ -358,13 +334,6 @@ const handleQRDetected = async (qrData) => {
     }
 }
 
-// ── Manual Input ─────────────────────────────────────────
-const submitManual = () => {
-    const val = manualInput.value.trim()
-    if (!val || isProcessing.value) return
-    manualInput.value = ''
-    handleQRDetected(val)
-}
 
 // ── Reset ─────────────────────────────────────────────────
 const resetScanner = () => {

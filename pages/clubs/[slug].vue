@@ -1,6 +1,5 @@
 <template>
-    <div
-        class="min-h-screen bg-[#fcfbf9] text-[#0f172a] font-['Inter',sans-serif] selection:bg-primary selection:text-navy">
+    <div class="bg-background-light min-h-screen flex flex-col">
 
         <!-- ── Fixed dot-grid background ── -->
         <div class="fixed inset-0 -z-10 pointer-events-none opacity-[0.035]"
@@ -10,7 +9,7 @@
         <!-- ══════════════════════════════════════
              HEADER — Editorial masthead
              ══════════════════════════════════════ -->
-        <header class="max-w-5xl mx-auto px-6 md:px-8 pt-16 md:pt-24 pb-12 relative">
+        <div class="max-w-5xl mx-auto px-6 md:px-8 pt-8 pb-12 relative">
 
             <!-- Back nav -->
             <NuxtLink to="/clubs"
@@ -48,7 +47,7 @@
                     <span class="text-[10px] uppercase tracking-widest text-[#64748b] font-black block mb-1">Total
                         Anggota</span>
                     <span class="text-xl font-black">{{ club.memberCount || '—' }}{{ club.memberCount ? '+' : ''
-                    }}</span>
+                        }}</span>
                 </div>
                 <div v-if="club.established">
                     <span
@@ -87,7 +86,7 @@
                     </button>
                 </div>
             </div>
-        </header>
+        </div>
 
         <!-- ══════════════════════════════════════
              MAIN BODY
@@ -126,7 +125,7 @@
                         <li v-for="schedule in club.schedules" :key="schedule.day"
                             class="flex justify-between border-b border-[#0f172a]/10 pb-2">
                             <span class="text-[#64748b] text-sm uppercase font-bold tracking-wider">{{ schedule.day
-                            }}</span>
+                                }}</span>
                             <span class="font-bold text-primary bg-navy px-2 py-0.5 text-xs">{{ schedule.time }}</span>
                         </li>
                     </ul>
@@ -288,73 +287,7 @@
             </template>
         </main>
 
-        <!-- ══════════════════════════════════════
-             FOOTER — Dark editorial
-             ══════════════════════════════════════ -->
-        <footer class="bg-navy text-white">
-            <div class="max-w-5xl mx-auto px-6 md:px-8 py-20 md:py-24">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
 
-                    <!-- Contact left -->
-                    <div>
-                        <h2 class="text-4xl font-black tracking-tighter mb-6 uppercase leading-tight">
-                            Hubungi<br />Klub Ini.
-                        </h2>
-                        <p class="text-white/60 font-medium mb-8 max-w-sm leading-relaxed">
-                            Tertarik bergabung atau berkolaborasi? Hubungi kami melalui informasi kontak berikut.
-                        </p>
-                        <div class="flex flex-col gap-4">
-                            <a v-if="club.email" :href="`mailto:${club.email}`"
-                                class="text-sm font-bold border-b border-primary text-primary pb-1 w-fit hover:text-white hover:border-white transition-colors">
-                                {{ club.email }}
-                            </a>
-                            <a v-if="club.phone" :href="`tel:${club.phone}`"
-                                class="text-sm font-bold border-b border-white/20 pb-1 w-fit hover:border-white transition-colors">
-                                {{ club.phone }}
-                            </a>
-                            <p v-if="club.address" class="text-sm text-white/50 font-medium max-w-xs">
-                                {{ club.address }}
-                            </p>
-                            <!-- Social links -->
-                            <div v-if="club.socialMedia?.length" class="flex gap-4 mt-2">
-                                <a v-for="social in club.socialMedia" :key="social.platform"
-                                    :href="getSocialUrl(social)" target="_blank"
-                                    class="text-white/40 hover:text-primary transition-colors">
-                                    <Icon :icon="getSocialIcon(social.platform)" class="text-2xl" />
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Map / Location card -->
-                    <div class="bg-white/5 border border-white/10 overflow-hidden">
-                        <div class="h-48 bg-white/5 flex items-center justify-center relative overflow-hidden">
-                            <iframe v-if="club.city || club.address" width="100%" height="100%" style="border:0"
-                                loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"
-                                :src="`https://www.google.com/maps?q=${encodeURIComponent((club.address || '') + ' ' + (club.city || '') + ' ' + (club.province || ''))}&output=embed`">
-                            </iframe>
-                            <div v-else class="flex flex-col items-center text-white/20 gap-2">
-                                <Icon icon="ph:map-pin-light" class="text-4xl" />
-                                <span class="text-[10px] font-bold uppercase tracking-widest">Lokasi belum diatur</span>
-                            </div>
-                        </div>
-                        <div class="p-6">
-                            <p class="text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Lokasi
-                                Latihan</p>
-                            <p class="font-bold text-white">{{ club.address || club.city || 'Belum tersedia' }}</p>
-                            <p class="text-white/50 text-sm mt-1">{{ club.formattedLocation }}</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Bottom bar -->
-                <div
-                    class="mt-20 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] font-bold text-white/30 tracking-widest uppercase">
-                    <span>© {{ new Date().getFullYear() }} {{ club.name }} — Archeryhub.id</span>
-                    <NuxtLink to="/clubs" class="hover:text-primary transition-colors">Lihat Semua Klub</NuxtLink>
-                </div>
-            </div>
-        </footer>
     </div>
 </template>
 
@@ -365,7 +298,7 @@ import { useAuth } from '~/composables/useAuth'
 import { useToast } from '~/composables/useToast'
 import { useImageOrDefault } from '~/composables/useImageHelper'
 
-definePageMeta({ layout: false })
+definePageMeta({ layout: 'landing' })
 
 const route = useRoute()
 const router = useRouter()
@@ -505,7 +438,3 @@ onMounted(async () => {
     }
 })
 </script>
-
-<style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-</style>

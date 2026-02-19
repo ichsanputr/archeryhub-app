@@ -189,98 +189,126 @@
       </div>
     </div>
 
-    <!-- Create Bracket Modal -->
     <Transition enter-active-class="transition duration-300 ease-out" enter-from-class="opacity-0 scale-95"
       enter-to-class="opacity-100 scale-100" leave-active-class="transition duration-200 ease-in"
       leave-from-class="opacity-100 scale-100" leave-to-class="opacity-0 scale-95">
-      <div v-if="showCreateDialog" class="fixed inset-0 bg-black/50 flex items-center justify-center z-[100] p-4"
+      <div v-if="showCreateDialog"
+        class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[100] p-4"
         @click.self="showCreateDialog = false">
-        <div class="relative z-[101] bg-white rounded-2xl shadow-xl max-w-md w-full overflow-visible">
-          <!-- Modal Header -->
-          <div class="p-6 border-b border-gray-100">
-            <div class="flex items-center justify-between">
-              <h2 class="text-xl font-black text-navy">{{ isEditing ? 'Edit Bracket' : 'Buat Bracket Baru' }}</h2>
-              <button @click="showCreateDialog = false; resetForm()" class="text-gray-400 hover:text-gray-600">
-                <Icon icon="ph:x" class="text-2xl" />
-              </button>
-            </div>
-            <p class="text-sm text-gray-500 mt-2">Konfigurasikan bracket eliminasi untuk kategori</p>
-          </div>
-
-          <!-- Modal Body: overflow-visible so BaseSelect dropdowns show above -->
-          <div class="p-6 space-y-4 overflow-visible">
-            <!-- Category Selection -->
-            <div>
-              <BaseSelect v-model="newBracket.categoryId" :items="categoryOptions" label="Kategori"
-                placeholder="Pilih Kategori" required :disabled="isEditing" />
-            </div>
-
-            <!-- Bracket Type -->
-            <div>
-              <BaseSelect v-model="newBracket.bracketType" :items="availableBracketTypes" label="Tipe Bracket"
-                placeholder="Pilih Tipe Bracket" required />
-            </div>
-
-            <!-- Format -->
-            <div>
-              <BaseSelect v-model="newBracket.format" :items="formatOptions" label="Format" placeholder="Pilih Format"
-                required />
-            </div>
-
-            <!-- Bracket Size -->
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <BaseSelect v-model="newBracket.bracketSize" :items="bracketSizeOptions" label="Ukuran Bracket"
-                  placeholder="Pilih Ukuran" required />
+        <div
+          class="relative z-[101] bg-white rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden flex flex-col max-h-[90vh] border border-white/20">
+          <!-- Modal Header (Inspired by Qualification Dialog) -->
+          <div class="bg-navy p-6 shrink-0 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+              <div
+                class="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center shadow-md shadow-primary/20">
+                <Icon icon="ph:brackets-curly-bold" class="text-2xl text-navy" />
               </div>
               <div>
-                <BaseInput v-model.number="newBracket.endsPerMatch" type="number" label="Ends per Match" min="1"
-                  max="15" required />
+                <h3 class="text-xl font-black text-white leading-tight">{{ modalTitle }}</h3>
+                <p class="text-gray-400 text-xs mt-0.5">Konfigurasikan detail bracket eliminasi</p>
               </div>
             </div>
-
-            <!-- Arrows per End -->
-            <div>
-              <BaseInput v-model.number="newBracket.arrowsPerEnd" type="number" label="Anak Panah per End" min="1"
-                max="6" required />
-            </div>
-
-            <!-- Start & End Date/Time -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm font-bold text-gray-700 mb-1.5">Mulai Eliminasi</label>
-                <div class="grid grid-cols-2 gap-2">
-                  <input v-model="newBracket.startDate" type="date"
-                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 text-navy text-sm font-medium focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" />
-                  <input v-model="newBracket.startTime" type="time"
-                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 text-navy text-sm font-medium focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" />
-                </div>
-              </div>
-              <div>
-                <label class="block text-sm font-bold text-gray-700 mb-1.5">Selesai Eliminasi</label>
-                <div class="grid grid-cols-2 gap-2">
-                  <input v-model="newBracket.endDate" type="date"
-                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 text-navy text-sm font-medium focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" />
-                  <input v-model="newBracket.endTime" type="time"
-                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 text-navy text-sm font-medium focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Modal Footer -->
-          <div class="p-6 border-t border-gray-100 flex gap-3">
             <button @click="showCreateDialog = false; resetForm()"
-              class="flex-1 px-4 py-3 rounded-xl border border-gray-200 text-navy font-bold hover:bg-gray-50 transition-colors">
+              class="size-10 flex items-center justify-center rounded-xl bg-white/10 text-white hover:bg-white/20 transition-all group">
+              <Icon icon="ph:x-bold" class="text-xl group-hover:rotate-90 transition-transform" />
+            </button>
+          </div>
+
+          <!-- Modal Body -->
+          <div class="p-8 space-y-8 overflow-y-auto custom-scrollbar flex-grow bg-white">
+            <!-- Category & Type Section -->
+            <div class="space-y-5">
+              <div>
+                <label class="block text-[10px] font-black text-gray-400 tracking-widest mb-2 px-1 uppercase">Kategori
+                  Pertandingan</label>
+                <BaseSelect v-model="newBracket.categoryId" :items="categoryOptions" placeholder="Pilih Kategori"
+                  required :disabled="isEditing" teleport />
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                  <label class="block text-[10px] font-black text-gray-400 tracking-widest mb-2 px-1 uppercase">Tipe
+                    Bracket</label>
+                  <BaseSelect v-model="newBracket.bracketType" :items="availableBracketTypes"
+                    placeholder="Pilih Tipe Bracket" required teleport />
+                </div>
+                <div>
+                  <label class="block text-[10px] font-black text-gray-400 tracking-widest mb-2 px-1 uppercase">Format
+                    Skor</label>
+                  <BaseSelect v-model="newBracket.format" :items="formatOptions" placeholder="Pilih Format" required
+                    teleport />
+                </div>
+              </div>
+            </div>
+
+            <!-- Configuration Section -->
+            <div class="p-6 bg-gray-50/80 rounded-3xl border border-gray-100 space-y-6">
+              <div class="flex items-center gap-2 mb-1">
+                <div class="h-4 w-1 bg-primary rounded-full"></div>
+                <p class="text-[10px] font-black text-navy uppercase tracking-widest">Konfigurasi Match</p>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                  <label class="block text-[10px] font-black text-gray-400 tracking-widest mb-2 px-1 uppercase">Ukuran
+                    Bracket</label>
+                  <BaseSelect v-model="newBracket.bracketSize" :items="bracketSizeOptions" placeholder="Pilih Ukuran"
+                    required teleport />
+                </div>
+                <div>
+                  <label class="block text-[10px] font-black text-gray-400 tracking-widest mb-2 px-1 uppercase">Ends per
+                    Match</label>
+                  <BaseInput v-model.number="newBracket.endsPerMatch" type="number" min="1" max="15" required />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-[10px] font-black text-gray-400 tracking-widest mb-2 px-1 uppercase">Anak Panah
+                  per End</label>
+                <BaseInput v-model.number="newBracket.arrowsPerEnd" type="number" min="1" max="6" required />
+              </div>
+            </div>
+
+            <!-- Timing Section -->
+            <div class="p-6 bg-gray-50/80 rounded-3xl border border-gray-100 space-y-6">
+              <div class="flex items-center gap-2 mb-1">
+                <div class="h-4 w-1 bg-primary rounded-full"></div>
+                <p class="text-[10px] font-black text-navy uppercase tracking-widest">Waktu Pelaksanaan</p>
+              </div>
+
+              <div class="space-y-6">
+                <!-- Start Time -->
+                <div>
+                  <label class="block text-sm font-bold text-navy mb-3 ml-1">Mulai Eliminasi</label>
+                  <div class="grid grid-cols-2 gap-4">
+                    <BaseInput v-model="newBracket.startDate" type="date" icon="ph:calendar-bold" />
+                    <BaseInput v-model="newBracket.startTime" type="time" icon="ph:clock-bold" />
+                  </div>
+                </div>
+
+                <!-- End Time -->
+                <div>
+                  <label class="block text-sm font-bold text-navy mb-3 ml-1">Selesai Eliminasi</label>
+                  <div class="grid grid-cols-2 gap-4">
+                    <BaseInput v-model="newBracket.endDate" type="date" icon="ph:calendar-bold" />
+                    <BaseInput v-model="newBracket.endTime" type="time" icon="ph:clock-afternoon-bold" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal Footer (Matching Qualification Styles) -->
+          <div class="p-8 bg-gray-50 border-t border-gray-100 flex gap-4 shrink-0">
+            <button @click="showCreateDialog = false; resetForm()"
+              class="flex-1 px-6 py-4 bg-white border-2 border-gray-200 text-gray-500 rounded-2xl font-black hover:bg-gray-100 hover:border-gray-300 transition-all tracking-widest text-[10px] uppercase">
               Batal
             </button>
             <button @click="handleCreateOrUpdate" :disabled="!newBracket.categoryId || creatingBracket"
-              class="flex-1 px-4 py-3 rounded-xl bg-primary text-navy font-bold hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-              <span v-if="!creatingBracket">{{ isEditing ? 'Update' : 'Buat' }}</span>
-              <span v-else class="flex items-center gap-2">
-                <span class="size-4 border-2 border-navy/30 border-t-navy rounded-full animate-spin"></span>
-                {{ isEditing ? 'Mengupdate...' : 'Membuat...' }}
-              </span>
+              class="flex-[2] px-6 py-4 bg-primary text-navy rounded-2xl font-black hover:shadow-md hover:shadow-primary/20 transform hover:-translate-y-0.5 active:translate-y-0 shadow-md shadow-primary/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3 tracking-widest text-[10px] uppercase">
+              <Icon v-if="creatingBracket" icon="ph:circle-notch" class="text-lg animate-spin" />
+              <span>{{ submitButtonLabel }}</span>
             </button>
           </div>
         </div>
@@ -321,6 +349,11 @@ const showCreateDialog = ref(false)
 
 const editBracketId = ref(null)
 const isEditing = computed(() => !!editBracketId.value)
+const modalTitle = computed(() => isEditing.value ? 'Edit Bracket' : 'Buat Bracket Baru')
+const submitButtonLabel = computed(() => {
+  if (creatingBracket.value) return isEditing.value ? 'Mengupdate...' : 'Membuat...'
+  return isEditing.value ? 'Simpan Update' : 'Buat Bracket'
+})
 
 const defaultStartDate = () => new Date().toISOString().split('T')[0]
 const defaultStartTime = '08:00'

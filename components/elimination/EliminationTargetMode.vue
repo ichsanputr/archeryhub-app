@@ -7,6 +7,12 @@
                     <p class="text-sm text-gray-500 mt-1">Alokasikan target (bantalan) untuk setiap pertandingan di
                         babak ini</p>
                 </div>
+                <button @click="$emit('auto-assign')" :disabled="isAutoAssigning"
+                    class="h-10 px-6 rounded-xl bg-primary text-navy font-black text-[10px] tracking-widest uppercase shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all flex items-center gap-2 disabled:opacity-50">
+                    <Icon v-if="isAutoAssigning" icon="ph:circle-notch-bold" class="animate-spin text-sm" />
+                    <Icon v-else icon="ph:magic-wand-bold" class="text-sm" />
+                    <span>Auto Assign</span>
+                </button>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pb-32">
@@ -90,10 +96,11 @@ import { Icon } from '@iconify/vue'
 
 const props = defineProps({
     roundMatches: { type: Array, required: true },
-    targetOptions: { type: Array, required: true }
+    targetOptions: { type: Array, required: true },
+    isAutoAssigning: { type: Boolean, default: false }
 })
 
-defineEmits(['update-target'])
+defineEmits(['update-target', 'auto-assign'])
 
 const getFilteredOptions = (currentMatchId) => {
     // Get all assigned target IDs except for the current match
