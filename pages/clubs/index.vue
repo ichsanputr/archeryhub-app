@@ -207,30 +207,6 @@
             <BasePagination v-if="totalItems > itemsPerPage" :current-page="currentPage" :total-items="totalItems"
                 :items-per-page="itemsPerPage" @change-page="handlePageChange" />
         </section>
-
-        <!-- CTA Section - Using gradient instead of navy for contrast with footer -->
-        <section class="py-20 bg-gradient-to-br from-primary via-amber-400 to-yellow-400 relative overflow-hidden">
-            <div class="absolute inset-0 opacity-10">
-                <div class="absolute top-0 right-0 w-96 h-96 bg-navy rounded-full blur-3xl"></div>
-                <div class="absolute bottom-0 left-0 w-96 h-96 bg-navy rounded-full blur-3xl"></div>
-            </div>
-            <div class="container mx-auto px-4 max-w-7xl relative z-10">
-                <div class="flex flex-col md:flex-row items-center justify-between gap-10">
-                    <div class="text-center md:text-left">
-                        <h2 class="text-3xl md:text-4xl font-black text-navy mb-3">Punya Klub Panahan?</h2>
-                        <p class="text-navy/70 text-lg max-w-md">Daftarkan klub Anda di Archeryhub.id dan jangkau lebih
-                            banyak pemanah berbakat.</p>
-                    </div>
-                    <NuxtLink to="/auth/register?type=club">
-                        <button
-                            class="px-6 py-3 bg-navy hover:bg-navy-light text-white font-black rounded-xl transition-all shadow-sm shadow-navy/30 flex items-center gap-3">
-                            <Icon icon="ph:plus-bold" />
-                            Daftarkan Klub
-                        </button>
-                    </NuxtLink>
-                </div>
-            </div>
-        </section>
     </div>
 </template>
 

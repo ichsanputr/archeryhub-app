@@ -54,6 +54,10 @@
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 Marketplace
               </NuxtLink>
+              <NuxtLink to="/subscription"
+                class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
+                Subscription
+              </NuxtLink>
             </div>
           </div>
 
