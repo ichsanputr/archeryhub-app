@@ -20,10 +20,10 @@
           <img v-else src="/logo.png" alt="ArcheryHub" class="w-full h-full object-contain" />
         </div>
         <span v-if="user?.role === 'organization' || user?.role === 'club'"
-          class="text-sm font-black text-navy truncate max-w-[120px]">
+          class="text-sm font-black text-header-text truncate max-w-[120px]">
           {{ getFirstWord(user?.full_name || user?.name || 'Dashboard') }}
         </span>
-        <span v-else class="text-sm font-black text-navy">
+        <span v-else class="text-sm font-black text-header-text">
           ArcheryHub
         </span>
       </div>
@@ -52,7 +52,7 @@
           <span class="text-sm font-bold">Kembali ke Dashboard</span>
         </NuxtLink>
         <div class="h-6 w-px bg-gray-200"></div>
-        <h1 class="text-lg font-black text-navy truncate">
+        <h1 class="text-lg font-black text-header-text truncate">
           {{ eventTitle || 'Event Management' }}
         </h1>
       </div>
@@ -65,7 +65,7 @@
             <img :src="useImageOrDefault(user.logo_url || user.avatar_url, user?.full_name || 'Club')"
               :alt="user?.full_name || 'Club'" class="w-full h-full object-cover" />
           </div>
-          <h2 class="text-lg font-black text-navy truncate max-w-sm tracking-tight">
+          <h2 class="text-lg font-black text-header-text truncate max-w-sm tracking-tight">
             {{ user?.full_name || user?.name || 'Klub Panahan' }}
           </h2>
         </div>
@@ -80,7 +80,7 @@
             <img :src="useImageOrDefault(user.logo_url || user.avatar_url, user?.name || 'Organization')"
               :alt="user?.name || 'Organization'" class="w-full h-full object-cover" />
           </div>
-          <h2 class="text-lg font-black text-navy truncate max-w-sm tracking-tight">
+          <h2 class="text-lg font-black text-header-text truncate max-w-sm tracking-tight">
             {{ user?.full_name || 'Organisasi' }}
           </h2>
         </div>
@@ -89,7 +89,7 @@
       <!-- Dashboard Title (only for non-clubs/orgs in general dashboard mode) -->
       <div v-else-if="isDashboard && user?.role !== 'club' && user?.role !== 'organization' && !isEventManageMode"
         class="hidden md:flex items-center gap-3 mr-4">
-        <h1 class="text-lg font-black text-navy whitespace-nowrap">
+        <h1 class="text-lg font-black text-header-text whitespace-nowrap">
           {{ dashboardTitle }}
         </h1>
       </div>
@@ -216,10 +216,10 @@ onUnmounted(() => {
 const navClasses = computed(() => {
   if (props.transparent) {
     return isScrolled.value
-      ? 'bg-white dark:bg-background-dark/95 border-b border-gray-200 dark:border-surface-highlight shadow-sm'
+      ? 'bg-header-bg dark:bg-background-dark/95 border-b border-gray-200 dark:border-surface-highlight shadow-sm'
       : 'bg-transparent border-b border-white/10'
   }
-  return 'bg-white dark:bg-background-dark/95 border-b border-gray-200 dark:border-surface-highlight shadow-sm'
+  return 'bg-header-bg dark:bg-background-dark/95 border-b border-gray-200 dark:border-surface-highlight shadow-sm'
 })
 
 const isDashboard = computed(() => {

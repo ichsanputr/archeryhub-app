@@ -162,6 +162,12 @@
                             <BaseSelect v-model="form.category_uuid" :items="ageOptions" label="Kelompok Umur"
                                 placeholder="Pilih Kelompok Umur" required teleport />
                         </div>
+                        <div v-if="isCustomAgeGroup" class="md:col-span-2">
+                            <label class="text-sm font-bold text-gray-700 block mb-2">Nama Kustom Kelompok Umur</label>
+                            <input v-model="form.category_name_custom" type="text"
+                                class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                                placeholder="Contoh: Barebow 50m, U-9, etc." required />
+                        </div>
                         <div>
                             <BaseSelect v-model="form.event_type_uuid" :items="eventTypeOptions" label="Jenis Team"
                                 placeholder="Pilih Jenis Team" required teleport />
@@ -324,11 +330,17 @@ const genderOptions = computed(() => {
 const form = ref({
     division_uuid: '',
     category_uuid: '',
+    category_name_custom: '',
     event_type_uuid: '',
     gender_division_uuid: '',
     max_participants: null,
     team_size: 3,
     status: 'active'
+})
+
+const isCustomAgeGroup = computed(() => {
+    const selected = ageGroups.value.find(ag => ag.id === form.value.category_uuid)
+    return selected?.code === 'kustom' || selected?.name?.toLowerCase().includes('kustom')
 })
 
 const isMixedTeam = computed(() => {
@@ -435,6 +447,7 @@ const openCreateDialog = () => {
     form.value = {
         division_uuid: '',
         category_uuid: '',
+        category_name_custom: '',
         event_type_uuid: '',
         gender_division_uuid: '',
         max_participants: null,
@@ -449,6 +462,7 @@ const openEditDialog = (category) => {
     form.value = {
         division_uuid: category.division_id,
         category_uuid: category.category_id,
+        category_name_custom: category.category_name_custom || '',
         event_type_uuid: category.event_type_id || '',
         gender_division_uuid: category.gender_division_id || '',
         max_participants: category.max_participants,
@@ -492,6 +506,11 @@ const saveCategory = async () => {
         return
     }
 
+    if (isCustomAgeGroup.value && !form.value.category_name_custom) {
+        toast.error('Harap isi nama kustom kelompok umur')
+        return
+    }
+
     if (isTeamEvent.value && (!form.value.team_size || form.value.team_size <= 1)) {
         toast.error('Jumlah anggota per tim harus lebih dari 1 bagi kategori beregu/mixed')
         return
@@ -502,6 +521,7 @@ const saveCategory = async () => {
         const payload = {
             division_uuid: form.value.division_uuid,
             category_uuid: form.value.category_uuid,
+            category_name_custom: isCustomAgeGroup.value ? form.value.category_name_custom : null,
             event_type_uuid: form.value.event_type_uuid,
             gender_division_uuid: isMixed ? (genderDivisions.value.find(g => g.code === 'mixed')?.id || form.value.gender_division_uuid) : form.value.gender_division_uuid,
             max_participants: form.value.max_participants || null,

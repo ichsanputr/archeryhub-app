@@ -16,48 +16,63 @@
                     class="flex lg:flex-col gap-4 max-h-[75vh] overflow-x-auto lg:overflow-y-auto pr-2 custom-scrollbar p-1 pb-4 lg:pb-1">
                     <!-- Match card elimination -->
                     <div v-for="match in roundMatches" :key="match.id" @click="$emit('select-match', match)"
-                        class="shrink-0 w-[240px] lg:w-full group p-3 sm:p-4 rounded-[1.8rem] sm:rounded-[2rem] border-2 text-left transition-all relative cursor-pointer"
+                        class="shrink-0 w-[260px] lg:w-full group p-4 rounded-[2rem] border-2 text-left transition-all relative cursor-pointer"
                         :class="[
                             selectedScoringMatch?.id === match.id
-                                ? 'border-primary bg-primary/5 shadow-xl shadow-primary/10 ring-4 ring-primary/5'
+                                ? 'border-primary bg-primary/5 shadow-xl shadow-primary/10 ring-4 ring-primary/5 scale-[1.02] z-10'
                                 : 'border-gray-50 bg-white hover:border-gray-200 hover:shadow-lg hover:shadow-primary/5',
-                            (match.status === 'finished' || match.winner_entry_id) ? 'bg-slate-50/50 grayscale-[0.2]' : ''
+                            (match.status === 'finished' || match.winner_entry_id) ? 'opacity-80' : ''
                         ]">
 
                         <!-- Match Meta Header -->
-                        <div class="flex items-center justify-between mb-3 sm:mb-5">
-                            <div class="flex items-center gap-2.5">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-2">
                                 <div
-                                    class="px-2.5 py-1 rounded-xl bg-navy text-primary text-[9px] font-black shadow-sm">
-                                    M{{ match.match_no }}
+                                    class="px-2 py-0.5 rounded-lg bg-navy text-primary text-[9px] font-black shadow-sm uppercase tracking-wider">
+                                    Match {{ match.match_no }}
+                                </div>
+                                <div v-if="match.target_name"
+                                    class="px-2 py-0.5 rounded-lg bg-slate-100/80 text-slate-500 text-[9px] font-black uppercase tracking-wider">
+                                    {{ match.target_name }}
                                 </div>
                             </div>
 
                             <div v-if="match.status === 'finished' || match.winner_entry_id"
-                                class="flex items-center gap-1.5 px-1 py-0.5 rounded-lg text-green-600">
-                                <Icon icon="ph:check-circle-fill" class="text-[20px] sm:text-[24px]" />
+                                class="flex items-center text-green-500">
+                                <Icon icon="ph:check-circle-fill" class="text-lg" />
                             </div>
                         </div>
 
-                        <!-- Participants - PROMINENT DISPLAY -->
-                        <div class="space-y-2 sm:space-y-3">
+                        <!-- Participants -->
+                        <div class="space-y-2">
                             <div v-for="side in ['A', 'B']" :key="side"
-                                class="flex items-center justify-between py-2.5 px-3 shadow-sm rounded-2xl transition-all border border-gray-50"
+                                class="flex items-center justify-between py-2 px-2.5 rounded-xl border-2 transition-all"
                                 :class="[
                                     isWinner(match, side === 'A' ? match.entry_a_id : match.entry_b_id)
-                                        ? 'bg-green-500/5 border-green-500/10'
-                                        : 'bg-white border-transparent',
-                                    selectedScoringMatch?.id === match.id && !isWinner(match, side === 'A' ? match.entry_a_id : match.entry_b_id) ? 'shadow-sm' : ''
+                                        ? 'bg-green-500/5 border-green-500/20'
+                                        : 'bg-white border-slate-50',
+                                    selectedScoringMatch?.id === match.id && !isWinner(match, side === 'A' ? match.entry_a_id : match.entry_b_id) ? 'border-gray-100' : ''
                                 ]">
-                                <div class="flex items-center min-w-0 pr-2">
+                                <div class="flex items-center gap-3 min-w-0">
+                                    <!-- Avatar for individual matches -->
+                                    <div v-if="bracket.bracket_type !== 'team' && bracket.bracket_type !== 'mixed_team'"
+                                        class="shrink-0 relative">
+                                        <img :src="useImageOrDefault(side === 'A' ? (match.entry_a_avatar || match.entry_a_photo) : (match.entry_b_avatar || match.entry_b_photo), side === 'A' ? match.entry_a_name : match.entry_b_name)"
+                                            class="size-8 rounded-lg object-cover border-2 shadow-sm"
+                                            :class="isWinner(match, side === 'A' ? match.entry_a_id : match.entry_b_id) ? 'border-green-500/30' : 'border-slate-100'" />
+                                        <div v-if="isWinner(match, side === 'A' ? match.entry_a_id : match.entry_b_id)"
+                                            class="absolute -top-1 -right-1 size-4 bg-green-500 rounded-full flex items-center justify-center text-white scale-75">
+                                            <Icon icon="ph:crown-fill" class="text-[10px]" />
+                                        </div>
+                                    </div>
                                     <div class="flex flex-col min-w-0">
-                                        <h4 class="text-xs font-black text-navy truncate tracking-tight leading-tight">
+                                        <h4 class="text-xs font-black text-navy truncate tracking-tight">
                                             {{ (side === 'A' ? match.entry_a_name : match.entry_b_name) || 'TBD' }}
                                         </h4>
                                     </div>
                                 </div>
-                                <div class="text-base font-black tabular-nums transition-all"
-                                    :class="isWinner(match, side === 'A' ? match.entry_a_id : match.entry_b_id) ? 'text-green-600 scale-110' : 'text-navy/80'">
+                                <div class="text-sm font-black tabular-nums transition-all"
+                                    :class="isWinner(match, side === 'A' ? match.entry_a_id : match.entry_b_id) ? 'text-green-600 scale-105' : 'text-navy/80'">
                                     {{ getMatchScore(match, side) }}
                                 </div>
                             </div>
@@ -337,8 +352,10 @@
                                                 :class="[
                                                     activeSide === side && (selectedArrowIndex === i - 1)
                                                         ? 'border-primary bg-white shadow-sm scale-110 z-20 border-solid'
-                                                        : (getArrowScore(selectedScoringMatch.id, currentEnd, side, i) ? 'bg-slate-50 border-gray-100 border-solid' : 'bg-white border-dashed border-gray-100')
-                                                ]" @click.stop="$emit('select-arrow-box', side, i - 1)">
+                                                        : (getArrowScore(selectedScoringMatch.id, currentEnd, side, i) ? 'bg-slate-50 border-gray-100 border-solid' : 'bg-white border-dashed border-gray-100'),
+                                                    isMatchFinished ? 'cursor-default opacity-80' : 'cursor-pointer'
+                                                ]"
+                                                @click.stop="!isMatchFinished && $emit('select-arrow-box', side, i - 1)">
 
                                                 <Icon v-if="activeSide === side && (selectedArrowIndex === i - 1)"
                                                     icon="ph:caret-down-fill"
@@ -363,30 +380,33 @@
                                         <!-- Layout: 6 keys x 2 rows (X, 10, 9, 8, 7, 6 / 5, 4, 3, 2, 1, M) -->
                                         <div class="grid grid-cols-6 lg:grid-cols-4 gap-2 sm:gap-3 mb-4 lg:mb-0">
                                             <button v-for="num in [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 'X', 'M']" :key="num"
-                                                @click="$emit('add-score', num)"
+                                                @click="!isMatchFinished && $emit('add-score', num)"
+                                                :disabled="isMatchFinished"
                                                 class="aspect-[4/3] lg:aspect-square rounded-xl sm:rounded-2xl text-xs sm:text-lg font-black shadow-sm transition-all flex items-center justify-center border-b-2 sm:border-b-4 active:border-b-0 active:translate-y-[2px] sm:active:translate-y-[4px] hover:-translate-y-0.5"
-                                                :class="getScoreKeypadClass(num)">
+                                                :class="[getScoreKeypadClass(num), isMatchFinished ? 'opacity-40 grayscale pointer-events-none' : '']">
                                                 {{ num }}
                                             </button>
 
                                             <!-- Mobile Actions inline or below -->
                                             <div
                                                 class="col-span-6 lg:col-span-4 grid grid-cols-3 gap-2 sm:gap-3 pt-2 lg:pt-4">
-                                                <button @click="$emit('delete-last-arrow')"
-                                                    class="col-span-1 h-10 sm:h-14 rounded-xl sm:rounded-2xl bg-white border-2 border-slate-100 text-slate-400 font-bold flex items-center justify-center gap-2 hover:bg-red-50 hover:text-red-500 hover:border-red-100 transition-all shadow-sm group">
+                                                <button @click="!isMatchFinished && $emit('delete-last-arrow')"
+                                                    :disabled="isMatchFinished"
+                                                    class="col-span-1 h-10 sm:h-14 rounded-xl sm:rounded-2xl bg-white border-2 border-slate-100 text-slate-400 font-bold flex items-center justify-center gap-2 hover:bg-red-50 hover:text-red-500 hover:border-red-100 transition-all shadow-sm group disabled:opacity-30 disabled:pointer-events-none">
                                                     <Icon icon="ph:backspace-bold"
                                                         class="text-lg sm:text-xl group-active:scale-90 transition-transform" />
                                                     <span
                                                         class="hidden sm:inline text-[9px] tracking-widest font-black uppercase">DEL</span>
                                                 </button>
-                                                <button @click="$emit('save-and-next')" :disabled="isSaving"
-                                                    class="col-span-2 h-10 sm:h-14 rounded-xl sm:rounded-2xl bg-navy text-primary font-black flex items-center justify-center gap-2 shadow-sm shadow-navy/20 hover:-translate-y-0.5 active:translate-y-0 transition-all disabled:opacity-50 group">
+                                                <button @click="!isMatchFinished && $emit('save-and-next')"
+                                                    :disabled="isSaving || isMatchFinished"
+                                                    class="col-span-2 h-10 sm:h-14 rounded-xl sm:rounded-2xl bg-navy text-primary font-black flex items-center justify-center gap-2 shadow-sm shadow-navy/20 hover:-translate-y-0.5 active:translate-y-0 transition-all disabled:opacity-30 disabled:grayscale group disabled:pointer-events-none">
                                                     <Icon v-if="isSaving" icon="ph:circle-notch-bold"
                                                         class="animate-spin text-lg sm:text-xl" />
                                                     <template v-else>
                                                         <span
-                                                            class="text-[9px] sm:text-[10px] tracking-widest uppercase truncate">Simpan
-                                                            Skor</span>
+                                                            class="text-[9px] sm:text-[10px] tracking-widest uppercase truncate">{{
+                                                            isMatchFinished ? 'READ ONLY' : 'Simpan Skor' }}</span>
                                                         <Icon icon="ph:paper-plane-right-fill"
                                                             class="text-base sm:text-lg group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                                                     </template>
@@ -435,7 +455,8 @@ const props = defineProps({
     isEndingMatch: { type: Boolean, default: false },
     selectedArrowIndex: { type: Number, default: 0 },
     canEndMatch: { type: Boolean, default: false },
-    manualWinnerId: { type: String, default: null }
+    manualWinnerId: { type: String, default: null },
+    isMatchFinished: { type: Boolean, default: false }
 })
 
 defineEmits([

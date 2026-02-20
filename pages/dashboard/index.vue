@@ -4,10 +4,15 @@
     <template v-if="userRole === 'club'">
       <!-- Club Header -->
       <div
-        class="relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-        <div class="absolute inset-0 opacity-10"
-          style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.05) 10px, rgba(255,255,255,0.05) 20px);">
+        class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
+        <!-- Theme Motif Pattern -->
+        <div class="absolute inset-0"
+          style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
         </div>
+        <!-- Decorative Background Elements (Glows) -->
+        <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+        <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
+        
         <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div class="flex items-center gap-4">
             <div
@@ -140,10 +145,15 @@
     <template v-else-if="userRole === 'seller'">
       <!-- Seller Header -->
       <div
-        class="relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-        <div class="absolute inset-0 opacity-10"
-          style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.05) 10px, rgba(255,255,255,0.05) 20px);">
+        class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
+        <!-- Theme Motif Pattern -->
+        <div class="absolute inset-0"
+          style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
         </div>
+        <!-- Decorative Background Elements (Glows) -->
+        <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+        <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
+        
         <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div class="flex items-center gap-4">
             <div
@@ -308,10 +318,15 @@
     <template v-else>
       <!-- Header Section -->
       <div
-        class="relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-        <div class="absolute inset-0 opacity-10"
-          style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.05) 10px, rgba(255,255,255,0.05) 20px);">
+        class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
+        <!-- Theme Motif Pattern -->
+        <div class="absolute inset-0"
+          style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
         </div>
+        <!-- Decorative Background Elements (Glows) -->
+        <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+        <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
+        
         <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div class="flex items-center gap-4">
             <div

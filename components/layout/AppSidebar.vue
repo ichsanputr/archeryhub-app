@@ -280,6 +280,6 @@ const handleLogout = () => {
 }
 
 .bg-navy {
-  background-color: #0f172a;
+  background-color: var(--sidebar-bg, #0f172a);
 }
 </style>

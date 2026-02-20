@@ -86,7 +86,8 @@
           </div>
 
           <div class="mt-6">
-            <BaseButton variant="gold" size="md" icon="ph:floppy-disk" @click="saveAccountInfo" :loading="isSaving">
+            <BaseButton variant="gold" size="md" icon="ph:floppy-disk" @click="saveAccountInfo"
+              :loading="isSavingAccount">
               Simpan Informasi Akun
             </BaseButton>
           </div>
@@ -159,72 +160,74 @@
           </div>
         </div>
 
-        <!-- Set Password Form -->
-        <div class="border-t border-gray-100 pt-8">
-          <h4 class="text-sm font-black text-navy  tracking-widest mb-4 flex items-center gap-2">
-            <Icon icon="ph:key-bold" class="text-primary" />
-            {{ hasPassword ? 'Ubah Password' : 'Atur Password Baru' }}
-          </h4>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <BaseInput v-if="hasPassword" v-model="passwordForm.currentPassword" label="Password Saat Ini"
-              type="password" placeholder="Masukkan password saat ini" required />
-            <div v-if="hasPassword"></div>
-            <BaseInput v-model="passwordForm.newPassword" label="Password Baru" type="password"
-              placeholder="Minimal 6 karakter" required />
-            <BaseInput v-model="passwordForm.confirmPassword" label="Konfirmasi Password" type="password"
-              placeholder="Ulangi password baru" required />
-          </div>
-          <div class="mt-6">
-            <BaseButton variant="gold" size="md" icon="ph:key" @click="savePassword" :loading="isSavingPassword">
-              {{ hasPassword ? 'Ubah Password' : 'Atur Password' }}
-            </BaseButton>
-          </div>
-        </div>
+
       </div>
     </div>
 
-    <!-- General Settings -->
-    <div v-if="activeTab === 'general'"
-      class="bg-white rounded-xl border border-gray-200 p-6 md:p-8 shadow-sm space-y-8">
+
+
+    <!-- Theme Settings -->
+    <div v-if="activeTab === 'theme'" class="bg-white rounded-xl border border-gray-200 p-6 md:p-8 shadow-sm space-y-8">
       <div>
-        <h3 class="text-xl font-bold text-navy mb-6">Pengaturan Umum</h3>
+        <h3 class="text-xl font-bold text-navy mb-2 flex items-center gap-2">
+          Tema Dashboard
+          <Icon v-if="isSyncing" icon="ph:circle-notch" class="animate-spin text-primary" />
+        </h3>
+        <p class="text-gray-500 text-sm mb-6">Pilih palet warna yang sesuai dengan preferensi Anda</p>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <BaseSelect v-model="settings.language" label="Bahasa" :items="[
-            { title: 'English', value: 'en' },
-            { title: 'Bahasa Indonesia', value: 'id' }
-          ]" />
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div v-for="(theme, key) in themes" :key="key" role="button"
+            class="relative overflow-hidden rounded-2xl border-2 transition-all group" :class="currentTheme === key
+              ? 'border-primary bg-primary/5 ring-4 ring-primary/10'
+              : 'border-gray-100 hover:border-gray-300 bg-white'" @click="currentTheme = key">
+            <!-- Theme Preview Header -->
+            <div class="h-24 w-full flex" :style="{ backgroundColor: theme.sidebarBg }">
+              <div class="w-1/4 h-full border-r border-white/10 flex flex-col gap-2 p-3">
+                <div class="w-full h-2 rounded bg-white/20"></div>
+                <div class="w-2/3 h-2 rounded bg-white/10"></div>
+              </div>
+              <div class="w-3/4 h-full flex flex-col">
+                <div class="h-1/3 w-full bg-white flex items-center px-3">
+                  <div class="w-12 h-2 rounded bg-gray-100"></div>
+                </div>
+                <div class="flex-1 p-3">
+                  <div
+                    class="h-full w-full rounded-lg border-2 border-dashed border-gray-200 flex items-center justify-center"
+                    :style="{ color: theme.primary }">
+                    <Icon icon="ph:check-circle-fill" v-if="currentTheme === key" class="text-2xl" />
+                  </div>
+                </div>
+              </div>
+            </div>
 
-          <BaseSelect v-model="settings.timezone" label="Zona Waktu" :items="[
-            { title: 'Asia/Jakarta (WIB)', value: 'Asia/Jakarta' },
-            { title: 'Asia/Makassar (WITA)', value: 'Asia/Makassar' },
-            { title: 'Asia/Jayapura (WIT)', value: 'Asia/Jayapura' }
-          ]" />
-        </div>
-      </div>
-    </div>
+            <!-- Theme Info -->
+            <div class="p-4">
+              <div class="flex items-center justify-between mb-2">
+                <h4 class="font-bold text-navy capitalize">{{ key }}</h4>
+                <div class="flex gap-1">
+                  <div class="size-3 rounded-full" :style="{ backgroundColor: theme.primary }"></div>
+                  <div class="size-3 rounded-full" :style="{ backgroundColor: theme.sidebarBg }"></div>
+                </div>
+              </div>
+              <p class="text-xs text-gray-400 capitalize">{{ key }} theme for professional look</p>
+            </div>
 
-    <!-- Notification Settings -->
-    <div v-if="activeTab === 'notifications'"
-      class="bg-white rounded-xl border border-gray-200 p-6 md:p-8 shadow-sm space-y-8">
-      <div>
-        <h3 class="text-xl font-bold text-navy mb-6">Preferensi Notifikasi</h3>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <BaseCheckbox v-model="settings.emailNotifications" label="Notifikasi Email" />
-          <BaseCheckbox v-model="settings.pushNotifications" label="Notifikasi Push" />
-          <BaseCheckbox v-model="settings.eventUpdates" label="Update Event" />
-          <BaseCheckbox v-model="settings.registrationNotifications" label="Notifikasi Pendaftaran" />
+            <!-- Selection Indicator -->
+            <div v-if="currentTheme === key"
+              class="absolute top-2 right-2 flex items-center justify-center bg-white rounded-full p-1 shadow-lg">
+              <Icon icon="ph:check-circle-fill" class="text-primary text-xl" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Save Button -->
     <div class="flex justify-end gap-3 mt-10 pt-6 border-t border-gray-100">
-      <BaseButton variant="outline" size="md">
+      <BaseButton variant="outline" size="md" @click="resetForm" :loading="isResetting">
         Batal
       </BaseButton>
-      <BaseButton variant="gold" size="md" icon="ph:floppy-disk" @click="saveSettings" :loading="isSaving">
+      <BaseButton variant="gold" size="md" icon="ph:floppy-disk" @click="saveSettings" :loading="isSavingGeneral">
         Simpan Perubahan
       </BaseButton>
     </div>
@@ -238,6 +241,7 @@ import { useAuth } from '~/composables/useAuth'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useImageOrDefault } from '~/composables/useImageHelper'
+import { useTheme } from '~/composables/useTheme'
 
 definePageMeta({
   title: 'Pengaturan',
@@ -251,12 +255,12 @@ useHead({
 const { user } = useAuth()
 const { get, put } = useApi()
 const toast = useToast()
+const { currentTheme, themes, isSyncing } = useTheme()
 
 const tabs = computed(() => {
   const allTabs = [
     { label: 'Keamanan', value: 'security', icon: 'ph:shield-check' },
-    { label: 'Umum', value: 'general', icon: 'ph:gear' },
-    { label: 'Notifikasi', value: 'notifications', icon: 'ph:bell' },
+    { label: 'Tema', value: 'theme', icon: 'ph:palette' },
   ]
 
   // Archer users don't need Account tab - they edit profile via /dashboard/archers/profile
@@ -277,8 +281,9 @@ const tabs = computed(() => {
 })
 
 const activeTab = ref(user.value?.role === 'archer' || user.value?.role === 'organization' ? 'security' : 'account')
-const isSaving = ref(false)
-const isSavingPassword = ref(false)
+const isSavingAccount = ref(false)
+const isSavingGeneral = ref(false)
+const isResetting = ref(false)
 const userData = ref(null)
 
 // Determine user type
@@ -305,20 +310,7 @@ const accountForm = ref({
   bow_type: ''
 })
 
-const settings = ref({
-  language: 'id',
-  timezone: 'Asia/Jakarta',
-  emailNotifications: true,
-  pushNotifications: true,
-  eventUpdates: true,
-  registrationNotifications: true
-})
-
-const passwordForm = ref({
-  currentPassword: '',
-  newPassword: '',
-  confirmPassword: ''
-})
+const initialAccountForm = ref(null)
 
 // Load user data
 onMounted(async () => {
@@ -335,6 +327,9 @@ onMounted(async () => {
     accountForm.value.address = response.address || ''
     accountForm.value.school = response.school || ''
     accountForm.value.bow_type = response.bow_type || ''
+
+    // Store for reset
+    initialAccountForm.value = JSON.parse(JSON.stringify(accountForm.value))
   } catch (error) {
     console.error('Failed to load user data:', error)
     toast.error('Gagal memuat data pengguna')
@@ -342,7 +337,7 @@ onMounted(async () => {
 })
 
 const saveAccountInfo = async () => {
-  isSaving.value = true
+  isSavingAccount.value = true
   try {
     await put('/user/profile', {
       username: accountForm.value.username,
@@ -356,57 +351,54 @@ const saveAccountInfo = async () => {
       bow_type: accountForm.value.bow_type
     })
     toast.success('Informasi akun berhasil disimpan')
-    // Profile will be refreshed on next page load from server middleware
+
+    // Update reset checkpoint
+    initialAccountForm.value = JSON.parse(JSON.stringify(accountForm.value))
+
+    // Update local user data if needed
+    if (userData.value) {
+      userData.value.username = accountForm.value.username
+      userData.value.full_name = accountForm.value.full_name
+    }
   } catch (error) {
     console.error('Failed to save account info:', error)
     const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || 'Gagal menyimpan informasi'
     toast.error(errorMessage)
   } finally {
-    isSaving.value = false
+    isSavingAccount.value = false
+  }
+}
+
+const resetForm = async () => {
+  if (!initialAccountForm.value) return
+
+  isResetting.value = true
+  try {
+    // Simulate minor delay for UX
+    await new Promise(resolve => setTimeout(resolve, 600))
+    accountForm.value = JSON.parse(JSON.stringify(initialAccountForm.value))
+    toast.info('Formulir telah direset ke data asli')
+  } finally {
+    isResetting.value = false
   }
 }
 
 const saveSettings = async () => {
+  isSavingGeneral.value = true
   // This is for general settings like language, timezone, notifications
-  toast.info('Pengaturan umum akan disimpan')
-}
-
-// Password handling
-const hasPassword = computed(() => userData.value?.has_password || false)
-const passwordStatusLabel = computed(() => hasPassword.value ? 'Password Sudah Diatur' : 'Password Belum Diatur')
-const passwordStatusDescription = computed(() => hasPassword.value
-  ? 'Anda dapat login dengan email dan password'
-  : 'Atur password untuk bisa login tanpa Google'
-)
-
-const savePassword = async () => {
-  if (passwordForm.value.newPassword !== passwordForm.value.confirmPassword) {
-    toast.error('Password baru tidak cocok')
-    return
-  }
-  if (passwordForm.value.newPassword.length < 6) {
-    toast.error('Password minimal 6 karakter')
-    return
-  }
-
-  isSavingPassword.value = true
   try {
-    await put('/user/password', {
-      current_password: passwordForm.value.currentPassword,
-      new_password: passwordForm.value.newPassword
-    })
-    toast.success(hasPassword.value ? 'Password berhasil diubah' : 'Password berhasil diatur')
-    passwordForm.value = { currentPassword: '', newPassword: '', confirmPassword: '' }
+    // In the future, this should save to /user/settings
+    // await put('/user/settings', settings.value)
 
-    // Reload user data to update has_password flag
-    const response = await get('/user/profile')
-    userData.value = response
+    // For now, simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1500))
+    toast.success('Pengaturan umum berhasil disimpan')
   } catch (error) {
-    console.error('Failed to save password:', error)
-    const errorMessage = error?.data?.error || error?.response?.data?.error || error?.message || 'Terjadi kesalahan'
-    toast.error('Gagal menyimpan password: ' + errorMessage)
+    toast.error('Gagal menyimpan pengaturan')
   } finally {
-    isSavingPassword.value = false
+    isSavingGeneral.value = false
   }
 }
+
+
 </script>

@@ -2,16 +2,15 @@
   <div class="space-y-6">
     <!-- Header -->
     <div
-      class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-      <!-- Background Pattern -->
-      <div class="absolute inset-0 opacity-20"
-        style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);">
+      class="relative overflow-hidden rounded-2xl border border-primary/20 bg-navy text-white shadow-sm">
+      <!-- Theme Motif Pattern -->
+      <div class="absolute inset-0"
+        style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
       </div>
 
-      <!-- Decorative Background Elements -->
+      <!-- Decorative Background Elements (Glows) -->
       <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
       <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
 
       <!-- Header Content -->
       <div class="relative p-5 sm:p-8">

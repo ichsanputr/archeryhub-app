@@ -12,15 +12,15 @@ module.exports = {
         extend: {
             colors: {
                 primary: {
-                    DEFAULT: '#D9FF00', // Neon Lime
-                    hover: '#c2e600',
+                    DEFAULT: 'rgb(var(--primary-rgb, 217 255 0) / <alpha-value>)',
+                    hover: 'var(--primary-hover, #c2e600)',
                 },
                 navy: {
-                    dark: '#0f172a',
+                    dark: 'rgb(var(--sidebar-bg-rgb, 15 23 42) / <alpha-value>)',
                     light: '#1e293b',
-                    DEFAULT: '#0f172a',
+                    DEFAULT: 'rgb(var(--sidebar-bg-rgb, 15 23 42) / <alpha-value>)',
                 },
-                "navy-dark": "#0f172a",
+                "navy-dark": "rgb(var(--sidebar-bg-rgb, 15 23 42) / <alpha-value>)",
                 "navy-light": "#1e293b",
                 "text-main": "#111827",
                 "text-secondary": "#6b7280",
@@ -30,14 +30,18 @@ module.exports = {
                     lime: '#D9FF00',
                 },
                 surface: {
-                    white: '#ffffff',
+                    white: 'rgb(var(--header-bg-rgb, 255 255 255) / <alpha-value>)',
                     light: '#f9fafb',
-                    dark: '#0f172a',
-                    highlight: '#1e293b', // Added highlight color
+                    dark: 'rgb(var(--sidebar-bg-rgb, 15 23 42) / <alpha-value>)',
+                    highlight: '#1e293b',
                 },
                 background: {
                     light: '#f9fafb',
-                    dark: '#0f172a',
+                    dark: 'rgb(var(--sidebar-bg-rgb, 15 23 42) / <alpha-value>)',
+                },
+                header: {
+                    bg: 'rgb(var(--header-bg-rgb, 255 255 255) / <alpha-value>)',
+                    text: 'var(--header-text, #0f172a)',
                 }
             },
             fontFamily: {

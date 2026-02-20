@@ -47,11 +47,6 @@
                                         <span class="truncate hidden sm:inline">{{ bracket.bracket_size }}
                                             Peserta</span>
                                     </template>
-                                    <div v-else class="flex items-center gap-2">
-                                        <span
-                                            class="px-2 py-0.5 rounded bg-white/5 text-white/40 text-[10px] sm:text-xs font-mono border border-white/5">{{
-                                                bracket.bracket_size }} Peserta</span>
-                                    </div>
                                 </div>
 
                                 <!-- Quick Stats - Scrollable row on mobile -->
@@ -125,7 +120,7 @@
                     :can-end-match="canEndMatch" :manual-winner-id="manualWinnerId"
                     @select-match="selectMatchForScoring" @add-score="addArrowScore"
                     @delete-last-arrow="deleteLastArrow" @save-and-next="saveAndNext" @end-match="endMatch"
-                    @select-arrow-box="selectArrowBox" />
+                    @select-arrow-box="selectArrowBox" :is-match-finished="isMatchFinished" />
             </div>
 
             <!-- BRACKET VIEW MODE -->
@@ -325,6 +320,9 @@ const selectedArrowIndex = ref(0)
 const selectedScoringMatch = ref(null)
 const matchEnds = ref({}) // { matchId: { A: { 1: {total: 0, arrows: []} }, B: { ... } } }
 const manualWinnerId = ref(null)
+const isMatchFinished = computed(() => {
+    return selectedScoringMatch.value?.status === 'finished' || !!selectedScoringMatch.value?.winner_entry_id
+})
 
 const currentRoundNo = computed(() => route.query.round)
 const roundMatches = computed(() => {
@@ -751,6 +749,10 @@ const calculateEndStats = (matchId, endNo, side) => {
 
 const addArrowScore = (score) => {
     if (!selectedScoringMatch.value) return
+    if (isMatchFinished.value) {
+        toast.info('Pertandingan sudah selesai, skor tidak dapat diubah')
+        return
+    }
     const matchId = selectedScoringMatch.value.id
     const side = activeSide.value
     const endNo = currentEnd.value
@@ -800,6 +802,7 @@ const addArrowScore = (score) => {
 
 const deleteLastArrow = () => {
     if (!selectedScoringMatch.value) return
+    if (isMatchFinished.value) return
     const matchId = selectedScoringMatch.value.id
     const endNo = currentEnd.value
     const side = activeSide.value
@@ -830,7 +833,7 @@ const selectArrowBox = (side, index) => {
 }
 
 const saveAndNext = async () => {
-    if (!selectedScoringMatch.value) return
+    if (!selectedScoringMatch.value || isMatchFinished.value) return
     isSaving.value = true
     try {
         const matchId = selectedScoringMatch.value.id
@@ -864,7 +867,7 @@ const saveAndNext = async () => {
 }
 
 const endMatch = () => {
-    if (!selectedScoringMatch.value || !canEndMatch.value) return
+    if (!selectedScoringMatch.value || !canEndMatch.value || isMatchFinished.value) return
     manualWinnerId.value = null // Reset selection
     showEndMatchDialog.value = true
 }
