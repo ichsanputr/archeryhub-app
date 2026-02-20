@@ -168,7 +168,7 @@
                             class="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-gray-100">
                             <div class="mb-8 md:mb-10">
                                 <span class="text-primary font-black text-3xl leading-none block mb-2">-</span>
-                                <h2 class="text-2xl md:text-3xl font-black text-navy">Biaya Pendaftaran</h2>
+                                <h2 class="text-lg sm:text-xl font-black text-navy">Biaya Pendaftaran</h2>
                                 <p class="text-gray-500 mt-1 text-sm">Pilih kategori yang sesuai dengan divisi dan level
                                     peserta.</p>
                             </div>
@@ -182,8 +182,8 @@
                                         {{ fee.name?.toLowerCase().includes('tim') ? 'Divisi Tim' : 'Divisi Individu'
                                         }}
                                     </div>
-                                    <h3 class="text-xl font-black text-navy mb-5">{{ fee.name }}</h3>
-                                    <div class="text-4xl font-black text-navy mb-6 tracking-tight">
+                                    <h3 class="text-lg font-black text-navy mb-5">{{ fee.name }}</h3>
+                                    <div class="text-2xl sm:text-3xl font-black text-navy mb-6 tracking-tight">
                                         Rp {{ (fee.amount || 0).toLocaleString('id-ID') }}
                                         <span class="text-sm text-gray-400 font-semibold">/ peserta</span>
                                     </div>
@@ -203,8 +203,8 @@
                                     <div class="text-[10px] font-black tracking-widest text-gray-400 mb-2 uppercase">
                                         Biaya Tetap
                                     </div>
-                                    <h3 class="text-xl font-black text-navy mb-5">Semua Kategori</h3>
-                                    <div class="text-4xl font-black text-navy mb-6 tracking-tight">
+                                    <h3 class="text-lg font-black text-navy mb-5">Semua Kategori</h3>
+                                    <div class="text-2xl sm:text-3xl font-black text-navy mb-6 tracking-tight">
                                         Rp {{ (tournament.entry_fee || 0).toLocaleString('id-ID') }}
                                         <span class="text-sm text-gray-400 font-semibold">/ peserta</span>
                                     </div>
@@ -258,7 +258,7 @@
                                 class="lg:w-1/2 bg-primary relative flex flex-col justify-center items-center px-8 md:px-12 py-16 target-texture">
                                 <div class="relative z-10 text-center">
                                     <span class="text-navy/40 font-black tracking-[0.3em] text-xs uppercase mb-4 block">Total Hadiah</span>
-                                    <h2 class="text-navy text-6xl md:text-[5.5rem] font-black leading-none mb-4">Rp {{
+                                    <h2 class="text-navy text-4xl md:text-5xl font-black leading-none mb-4">Rp {{
                                         (tournament.total_prize || 0).toLocaleString('id-ID') }}</h2>
                                     <div class="h-2 w-40 bg-navy mx-auto mb-6"></div>
                                     <p class="text-navy font-bold text-base uppercase tracking-widest">Perebutkan Podium Terbaik
@@ -270,7 +270,7 @@
                                     style="background-image: radial-gradient(circle, rgba(255,255,255,0.25) 1px, transparent 1px); background-size: 30px 30px;">
                                 </div>
                                 <div class="relative z-10 w-full">
-                                    <h3 class="text-white text-3xl mb-10 flex items-center gap-3">
+                                    <h3 class="text-white text-xl sm:text-2xl mb-10 flex items-center gap-3">
                                         <Icon icon="ph:trophy-bold" class="text-primary text-3xl" />
                                         Rincian Hadiah
                                     </h3>
@@ -279,9 +279,9 @@
                                             <div class="flex justify-between items-end mb-3">
                                                 <div>
                                                     <span class="text-primary font-black text-xs tracking-widest uppercase">Juara Utama</span>
-                                                    <h4 class="text-white text-2xl font-black">Juara 1</h4>
+                                                    <h4 class="text-white text-lg sm:text-xl font-black">Juara 1</h4>
                                                 </div>
-                                                <div class="text-white text-2xl font-black">{{ displayValue(tournament.prizes?.first) }}
+                                                <div class="text-white text-lg sm:text-xl font-black">{{ displayValue(tournament.prizes?.first) }}
                                                 </div>
                                             </div>
                                             <div class="w-full h-2 bg-white/10 overflow-hidden">
@@ -293,9 +293,9 @@
                                             <div class="flex justify-between items-end mb-3">
                                                 <div>
                                                     <span class="text-white/40 font-black text-xs tracking-widest uppercase">Peringkat Kedua</span>
-                                                    <h4 class="text-white text-2xl font-black">Juara 2</h4>
+                                                    <h4 class="text-white text-lg sm:text-xl font-black">Juara 2</h4>
                                                 </div>
-                                                <div class="text-white text-2xl font-black">{{ displayValue(tournament.prizes?.second)
+                                                <div class="text-white text-lg sm:text-xl font-black">{{ displayValue(tournament.prizes?.second)
                                                 }}</div>
                                             </div>
                                             <div class="w-full h-2 bg-white/10 overflow-hidden">
@@ -307,9 +307,9 @@
                                             <div class="flex justify-between items-end mb-3">
                                                 <div>
                                                     <span class="text-white/40 font-black text-xs tracking-widest uppercase">Peringkat Ketiga</span>
-                                                    <h4 class="text-white text-2xl font-black">Juara 3</h4>
+                                                    <h4 class="text-white text-lg sm:text-xl font-black">Juara 3</h4>
                                                 </div>
-                                                <div class="text-white text-2xl font-black">{{ displayValue(tournament.prizes?.third) }}
+                                                <div class="text-white text-lg sm:text-xl font-black">{{ displayValue(tournament.prizes?.third) }}
                                                 </div>
                                             </div>
                                             <div class="w-full h-2 bg-white/10 overflow-hidden">
