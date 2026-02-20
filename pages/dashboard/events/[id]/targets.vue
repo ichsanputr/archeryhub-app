@@ -70,11 +70,17 @@
             </Transition>
 
             <!-- Loading State (Initial) -->
-            <tr v-if="loading && targets.length === 0">
-              <td colspan="3" class="px-6 py-12">
-                <div class="flex flex-col items-center justify-center gap-3">
-                  <div class="animate-spin rounded-full h-10 w-10 border-4 border-primary border-t-transparent"></div>
-                  <span class="text-sm text-gray-500 font-medium">Memuat target...</span>
+            <tr v-if="loading && targets.length === 0" v-for="i in 5" :key="i" class="animate-pulse">
+              <td class="px-6 py-5">
+                <div class="size-11 rounded-lg bg-gray-100"></div>
+              </td>
+              <td class="px-6 py-5">
+                <div class="h-5 bg-gray-100 rounded-md w-12"></div>
+              </td>
+              <td class="px-6 py-5">
+                <div class="flex justify-end gap-2">
+                  <div class="size-8 bg-gray-50 rounded-lg"></div>
+                  <div class="size-8 bg-gray-50 rounded-lg"></div>
                 </div>
               </td>
             </tr>

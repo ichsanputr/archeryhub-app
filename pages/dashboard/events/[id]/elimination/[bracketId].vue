@@ -1,8 +1,75 @@
 <template>
     <div class="flex flex-col gap-6 pb-12">
-        <!-- Loading State -->
-        <div v-if="isLoading" class="flex items-center justify-center py-20">
-            <div class="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
+        <!-- Loading Skeleton -->
+        <div v-if="isLoading" class="animate-pulse space-y-6">
+            <!-- Header Skeleton -->
+            <div
+                class="relative overflow-hidden rounded-3xl border border-gray-100 bg-white h-48 p-8 flex flex-col justify-between shadow-sm">
+                <div class="flex items-center gap-6">
+                    <div class="h-16 w-16 bg-gray-100 rounded-2xl"></div>
+                    <div class="space-y-3 flex-1">
+                        <div class="h-8 bg-gray-100 rounded-lg w-1/3"></div>
+                        <div class="h-4 bg-gray-50 rounded-md w-1/4"></div>
+                        <div class="flex gap-2">
+                            <div class="h-4 w-20 bg-gray-50 rounded-full"></div>
+                            <div class="h-4 w-20 bg-gray-50 rounded-full"></div>
+                        </div>
+                    </div>
+                    <div class="hidden sm:flex gap-3">
+                        <div class="h-12 w-36 bg-gray-100 rounded-xl"></div>
+                        <div class="h-12 w-12 bg-gray-100 rounded-xl"></div>
+                    </div>
+                </div>
+                <div class="flex gap-4 border-t border-gray-50 pt-4">
+                    <div v-for="i in 2" :key="i" class="h-10 w-32 bg-gray-100 rounded-xl"></div>
+                </div>
+            </div>
+
+            <!-- Content Skeleton -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Sidebar Match List -->
+                <div class="lg:col-span-4 space-y-4">
+                    <div v-for="i in 5" :key="i"
+                        class="bg-white rounded-3xl p-5 border border-gray-100 flex gap-4 shadow-sm">
+                        <div class="size-10 bg-gray-100 rounded-xl shrink-0"></div>
+                        <div class="flex-1 space-y-2 min-w-0">
+                            <div class="h-4 bg-gray-100 rounded w-3/4"></div>
+                            <div class="h-3 bg-gray-50 rounded w-1/2"></div>
+                        </div>
+                        <div class="size-6 bg-gray-50 rounded-full shrink-0"></div>
+                    </div>
+                </div>
+
+                <!-- Main Area (Target/Scoring) -->
+                <div class="lg:col-span-8">
+                    <div class="bg-white rounded-3xl p-8 border border-gray-100 min-h-[500px] shadow-sm">
+                        <div
+                            class="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-10 pb-6 border-b border-gray-50">
+                            <div>
+                                <div class="h-7 bg-gray-100 rounded-lg w-48 mb-2"></div>
+                                <div class="h-4 bg-gray-50 rounded-md w-64"></div>
+                            </div>
+                            <div class="h-11 bg-gray-100 rounded-xl w-40 shrink-0"></div>
+                        </div>
+
+                        <!-- Responsive Grid for Match Cards -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div v-for="i in 4" :key="i"
+                                class="p-6 bg-gray-50/50 rounded-3xl border border-gray-100 space-y-6">
+                                <div class="flex justify-between items-center">
+                                    <div class="size-8 bg-gray-100 rounded-lg"></div>
+                                    <div class="h-4 bg-gray-100 rounded w-20"></div>
+                                </div>
+                                <div class="space-y-3">
+                                    <div class="h-14 bg-white rounded-2xl border border-gray-50"></div>
+                                    <div class="h-14 bg-white rounded-2xl border border-gray-50"></div>
+                                </div>
+                                <div class="h-10 bg-gray-100 rounded-xl w-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <template v-else-if="bracket">
@@ -120,7 +187,8 @@
                     :can-end-match="canEndMatch" :manual-winner-id="manualWinnerId"
                     @select-match="selectMatchForScoring" @add-score="addArrowScore"
                     @delete-last-arrow="deleteLastArrow" @save-and-next="saveAndNext" @end-match="endMatch"
-                    @select-arrow-box="selectArrowBox" :is-match-finished="isMatchFinished" />
+                    @select-arrow-box="selectArrowBox" @reset-match="resetMatch" :is-match-finished="isMatchFinished"
+                    :is-resetting="isResetting" />
             </div>
 
             <!-- BRACKET VIEW MODE -->
@@ -247,7 +315,7 @@
                                         class="w-full flex items-center justify-between p-3 rounded-xl border transition-all"
                                         :class="manualWinnerId === selectedScoringMatch.entry_a_id ? 'bg-primary/20 border-primary text-primary' : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'">
                                         <span class="text-sm font-bold text-white">{{ selectedScoringMatch.entry_a_name
-                                        }}</span>
+                                            }}</span>
                                         <Icon v-if="manualWinnerId === selectedScoringMatch.entry_a_id"
                                             icon="ph:check-circle-fill" class="text-primary" />
                                     </button>
@@ -257,7 +325,7 @@
                                         class="w-full flex items-center justify-between p-3 rounded-xl border transition-all"
                                         :class="manualWinnerId === selectedScoringMatch.entry_b_id ? 'bg-primary/20 border-primary text-primary' : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'">
                                         <span class="text-sm font-bold text-white">{{ selectedScoringMatch.entry_b_name
-                                        }}</span>
+                                            }}</span>
                                         <Icon v-if="manualWinnerId === selectedScoringMatch.entry_b_id"
                                             icon="ph:check-circle-fill" class="text-primary" />
                                     </button>
@@ -320,6 +388,7 @@ const selectedArrowIndex = ref(0)
 const selectedScoringMatch = ref(null)
 const matchEnds = ref({}) // { matchId: { A: { 1: {total: 0, arrows: []} }, B: { ... } } }
 const manualWinnerId = ref(null)
+const isResetting = ref(false)
 const isMatchFinished = computed(() => {
     return selectedScoringMatch.value?.status === 'finished' || !!selectedScoringMatch.value?.winner_entry_id
 })
@@ -863,6 +932,33 @@ const saveAndNext = async () => {
         toast.error('Gagal menyimpan skor')
     } finally {
         isSaving.value = false
+    }
+}
+
+const resetMatch = async () => {
+    if (!selectedScoringMatch.value) return
+    const confirmed = confirm('Apakah Anda yakin ingin me-reset status pertandingan ini menjadi LIVE? Ini akan memungkinkan pengeditan skor kembali dan menghapus status pemenang dari babak berikutnya.')
+    if (!confirmed) return
+
+    isResetting.value = true
+    try {
+        const matchId = selectedScoringMatch.value.id
+        await post(`/events/${eventId}/elimination/brackets/${bracketId}/matches/${matchId}/reset`)
+        toast.success('Status pertandingan berhasil di-reset menjadi LIVE')
+
+        // Refresh data
+        await fetchBracket()
+
+        // Re-select the match to update UI state
+        const updatedMatch = matches.value.find(m => m.id === matchId)
+        if (updatedMatch) {
+            selectedScoringMatch.value = updatedMatch
+        }
+    } catch (error) {
+        console.error('Failed to reset match:', error)
+        toast.error('Gagal me-reset status pertandingan')
+    } finally {
+        isResetting.value = false
     }
 }
 

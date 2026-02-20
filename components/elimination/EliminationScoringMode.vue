@@ -169,10 +169,20 @@
                             <!-- Match Status Actions -->
                             <div class="">
                                 <div v-if="selectedScoringMatch.winner_entry_id || selectedScoringMatch.status === 'finished'"
-                                    class="px-5 py-1.5 rounded-xl bg-green-500/10 border border-green-500/20 backdrop-blur-sm flex items-center gap-2">
-                                    <Icon icon="ph:seal-check-fill" class="text-green-500 text-[10px]" />
-                                    <span
-                                        class="text-[9px] font-black tracking-[0.3em] text-green-400 uppercase">DONE</span>
+                                    class="flex items-center gap-2">
+                                    <div
+                                        class="px-5 py-1.5 rounded-xl bg-green-500/10 border border-green-500/20 backdrop-blur-sm flex items-center gap-2">
+                                        <Icon icon="ph:seal-check-fill" class="text-green-500 text-[10px]" />
+                                        <span
+                                            class="text-[9px] font-black tracking-[0.3em] text-green-400 uppercase">DONE</span>
+                                    </div>
+                                    <button @click="$emit('reset-match')" :disabled="isResetting"
+                                        class="group px-3 py-1.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500/20 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-2"
+                                        title="Reset Match to LIVE">
+                                        <Icon :icon="isResetting ? 'ph:circle-notch-bold' : 'ph:lock-open-bold'"
+                                            :class="{ 'animate-spin': isResetting }" class="text-xs" />
+                                        <span class="text-[8px] font-black uppercase tracking-wider">RESET</span>
+                                    </button>
                                 </div>
                                 <button v-else-if="canEndMatch" @click="$emit('end-match')" :disabled="isEndingMatch"
                                     class="group px-6 py-2 rounded-xl w-[100px] bg-primary text-navy font-black text-[10px] tracking-widest uppercase hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-sm shadow-primary/20 hover:-translate-y-0.5">
@@ -406,7 +416,7 @@
                                                     <template v-else>
                                                         <span
                                                             class="text-[9px] sm:text-[10px] tracking-widest uppercase truncate">{{
-                                                            isMatchFinished ? 'READ ONLY' : 'Simpan Skor' }}</span>
+                                                                isMatchFinished ? 'READ ONLY' : 'Simpan Skor' }}</span>
                                                         <Icon icon="ph:paper-plane-right-fill"
                                                             class="text-base sm:text-lg group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                                                     </template>
@@ -456,7 +466,8 @@ const props = defineProps({
     selectedArrowIndex: { type: Number, default: 0 },
     canEndMatch: { type: Boolean, default: false },
     manualWinnerId: { type: String, default: null },
-    isMatchFinished: { type: Boolean, default: false }
+    isMatchFinished: { type: Boolean, default: false },
+    isResetting: { type: Boolean, default: false }
 })
 
 defineEmits([
@@ -467,7 +478,8 @@ defineEmits([
     'end-match',
     'select-arrow-box',
     'update:currentEnd',
-    'update:activeSide'
+    'update:activeSide',
+    'reset-match'
 ])
 
 
