@@ -131,7 +131,7 @@
                                 </div>
                                 <span class="text-xs font-black text-navy truncate capitalize">{{ archer.bow_type ||
                                     'Recurve'
-                                    }}</span>
+                                }}</span>
                             </div>
                         </div>
                         <div
@@ -156,9 +156,9 @@
                     class="bg-white rounded-xl border-2 border-gray-100 hover:border-primary transition-all p-6">
                     <NuxtLink :to="`/archers/${archer.slug}`" class="flex items-center gap-6 group">
                         <div
-                            class="w-20 h-20 rounded-xl bg-gradient-to-br from-primary to-amber-400 overflow-hidden flex-shrink-0">
+                            class="w-20 h-20 rounded-xl bg-navy overflow-hidden flex-shrink-0 relative group-hover:shadow-lg transition-all duration-500">
                             <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
-                                class="w-full h-full object-cover" />
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                         </div>
                         <div class="flex-1 min-w-0">
                             <h3 class="font-black text-navy text-xl transition-colors">

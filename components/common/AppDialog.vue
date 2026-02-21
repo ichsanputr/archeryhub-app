@@ -25,7 +25,7 @@
                                 <h3 class="text-navy-dark text-xl font-black tracking-tight mb-2">{{ title }}
                                 </h3>
                                 <p class="text-text-secondary text-sm font-medium leading-relaxed">{{ message
-                                    }}</p>
+                                }}</p>
                             </div>
                         </div>
 
@@ -36,8 +36,8 @@
                                 {{ cancelText || 'Batal' }}
                             </button>
                             <button @click="handleConfirm"
-                                :class="type === 'danger' ? 'bg-red-500 hover:bg-red-600 shadow-red-500/20' : 'bg-navy-dark hover:bg-navy-light shadow-navy-dark/10'"
-                                class="flex-1 px-6 py-3 rounded-xl text-white font-bold text-sm transition-all shadow-lg">
+                                :class="type === 'danger' ? 'bg-red-500 hover:bg-red-600 shadow-red-500/20 text-white' : 'bg-primary text-primary-text hover:bg-primary-hover shadow-primary/10'"
+                                class="flex-1 px-6 py-3 rounded-xl font-bold text-sm transition-all shadow-lg">
                                 {{ confirmText || 'Ya, Lanjutkan' }}
                             </button>
                         </div>

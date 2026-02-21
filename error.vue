@@ -4,7 +4,7 @@
       <!-- Error Illustration -->
       <div class="relative mb-8">
         <div
-          class="w-32 h-32 mx-auto bg-gradient-to-br from-primary to-amber-400 rounded-full flex items-center justify-center shadow-xl shadow-primary/20">
+          class="w-32 h-32 mx-auto bg-primary rounded-full flex items-center justify-center shadow-xl shadow-primary/20">
           <div class="w-24 h-24 bg-navy rounded-full flex items-center justify-center">
             <Icon icon="ph:target" class="text-5xl text-primary" />
           </div>

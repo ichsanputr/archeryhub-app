@@ -12,6 +12,7 @@ export interface ThemeColors {
   accent: string
   motif: string
   motifOpacity: string
+  primaryText: string
 }
 
 export const themes: Record<string, ThemeColors> = {
@@ -24,7 +25,8 @@ export const themes: Record<string, ThemeColors> = {
     headerText: '#0f172a',
     accent: '#D9FF00',
     motif: 'repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px)',
-    motifOpacity: '0.2'
+    motifOpacity: '0.2',
+    primaryText: '#0f172a'
   },
   midnight: {
     primary: '#6366f1', // Indigo
@@ -35,7 +37,8 @@ export const themes: Record<string, ThemeColors> = {
     headerText: '#1e1b4b',
     accent: '#818cf8',
     motif: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0)',
-    motifOpacity: '0.4'
+    motifOpacity: '0.4',
+    primaryText: '#ffffff'
   },
   emerald: {
     primary: '#10b981', // Emerald
@@ -46,7 +49,8 @@ export const themes: Record<string, ThemeColors> = {
     headerText: '#064e3b',
     accent: '#34d399',
     motif: 'linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.1) 75%, transparent 75%, transparent)',
-    motifOpacity: '0.15'
+    motifOpacity: '0.15',
+    primaryText: '#ffffff'
   },
 
   sunset: {
@@ -58,7 +62,8 @@ export const themes: Record<string, ThemeColors> = {
     headerText: '#431407',
     accent: '#fb923c',
     motif: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 70%)',
-    motifOpacity: '0.5'
+    motifOpacity: '0.5',
+    primaryText: '#ffffff'
   },
   obsidian: {
     primary: '#d1d5db',
@@ -69,7 +74,8 @@ export const themes: Record<string, ThemeColors> = {
     headerText: '#ffffff',
     accent: '#4b5563',
     motif: 'repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 20px)',
-    motifOpacity: '0.4'
+    motifOpacity: '0.4',
+    primaryText: '#0f172a'
   }
 }
 
@@ -109,6 +115,7 @@ export const useTheme = () => {
     root.style.setProperty('--accent-rgb', hexToRgb(colors.accent))
     root.style.setProperty('--motif-pattern', colors.motif)
     root.style.setProperty('--motif-opacity', colors.motifOpacity)
+    root.style.setProperty('--primary-text', colors.primaryText)
   }
 
   const fetchThemeFromServer = async () => {
@@ -177,7 +184,7 @@ export const useTheme = () => {
     if (import.meta.server) return
     const root = document.documentElement
     const props = [
-      '--primary-color', '--primary-rgb', '--primary-hover',
+      '--primary-color', '--primary-rgb', '--primary-hover', '--primary-text',
       '--sidebar-bg', '--sidebar-bg-rgb', '--sidebar-text',
       '--header-bg', '--header-bg-rgb', '--header-text',
       '--accent-color', '--accent-rgb',

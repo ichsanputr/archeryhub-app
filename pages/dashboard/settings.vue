@@ -132,14 +132,21 @@
                   <Icon icon="flat-color-icons:google" class="text-xl" />
                 </div>
                 <div>
-                  <p class="font-bold text-navy">Google</p>
-                  <p class="text-xs text-gray-400">{{ userData?.email }}</p>
+                  <p class="font-bold text-navy">Google Login</p>
+                  <p class="text-xs text-gray-400">Hubungkan untuk login lebih cepat</p>
                 </div>
               </div>
-              <span v-if="userData?.google_id"
-                class="px-3 py-1 bg-green-100 text-green-600 text-xs font-bold rounded-full">Terhubung</span>
-              <span v-else class="px-3 py-1 bg-gray-200 text-gray-500 text-xs font-bold rounded-full">Tidak
-                Terhubung</span>
+              <div class="flex items-center gap-2">
+                <span v-if="userData?.google_id"
+                  class="px-3 py-1 bg-green-100 text-green-600 text-xs font-bold rounded-full">Terhubung</span>
+                <template v-else>
+                  <span class="px-3 py-1 bg-gray-200 text-gray-500 text-xs font-bold rounded-full mr-2">Tidak
+                    Terhubung</span>
+                  <BaseButton variant="outline" size="sm" @click="linkGoogle">
+                    Hubungkan
+                  </BaseButton>
+                </template>
+              </div>
             </div>
             <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-200">
               <div class="flex items-center gap-3">
@@ -148,7 +155,7 @@
                 </div>
                 <div>
                   <p class="font-bold text-navy">Email & Password</p>
-                  <p class="text-xs text-gray-400">Login dengan email dan password</p>
+                  <p class="text-xs text-gray-400">Login manual dengan password</p>
                 </div>
               </div>
               <span
@@ -160,7 +167,29 @@
           </div>
         </div>
 
+        <!-- Change Password Form -->
+        <div class="pt-8 border-t border-gray-100">
+          <h4 class="text-sm font-black text-navy tracking-widest mb-6 flex items-center gap-2">
+            <Icon icon="ph:lock-key-bold" class="text-primary" />
+            {{ hasPassword ? 'Ganti Password' : 'Setel Password Akun' }}
+          </h4>
 
+          <div class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+              <BaseInput v-model="securityForm.new_password" label="Password Baru" type="password"
+                placeholder="••••••••" required />
+              <BaseInput v-model="securityForm.confirm_password" label="Konfirmasi Password Baru" type="password"
+                placeholder="••••••••" required />
+            </div>
+
+            <div class="pt-4 border-t border-gray-50">
+              <BaseButton variant="primary" size="md" icon="ph:lock-key" @click="changePassword"
+                :loading="isChangingPassword" :disabled="!securityForm.new_password">
+                {{ hasPassword ? 'Perbarui Password' : 'Setel Password' }}
+              </BaseButton>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -252,10 +281,11 @@ useHead({
   title: 'Pengaturan Akun - ArcheryHub Dashboard'
 })
 
-const { user } = useAuth()
+const { login, user } = useAuth()
 const { get, put } = useApi()
 const toast = useToast()
 const { currentTheme, themes, isSyncing } = useTheme()
+const route = useRoute()
 
 const tabs = computed(() => {
   const allTabs = [
@@ -263,17 +293,9 @@ const tabs = computed(() => {
     { label: 'Tema', value: 'theme', icon: 'ph:palette' },
   ]
 
-  // Archer users don't need Account tab - they edit profile via /dashboard/archers/profile
-  if (user.value?.role === 'archer') {
-    return allTabs
-  }
+  if (user.value?.role === 'archer') return allTabs
+  if (user.value?.role === 'organization') return allTabs
 
-  // Add Account tab for non-archer users
-  if (user.value?.role === 'organization') {
-    return allTabs
-  }
-
-  // For other users, include Account tab
   return [
     { label: 'Akun', value: 'account', icon: 'ph:user-circle' },
     ...allTabs
@@ -283,8 +305,27 @@ const tabs = computed(() => {
 const activeTab = ref(user.value?.role === 'archer' || user.value?.role === 'organization' ? 'security' : 'account')
 const isSavingAccount = ref(false)
 const isSavingGeneral = ref(false)
+const isChangingPassword = ref(false)
 const isResetting = ref(false)
 const userData = ref(null)
+
+const securityForm = ref({
+  current_password: '',
+  new_password: '',
+  confirm_password: ''
+})
+
+const hasPassword = computed(() => !!userData.value?.has_password)
+
+const passwordStatusLabel = computed(() => {
+  return hasPassword.value ? 'Password Telah Diatur' : 'Password Belum Diatur'
+})
+
+const passwordStatusDescription = computed(() => {
+  return hasPassword.value
+    ? 'Anda dapat login menggunakan kombinasi email dan password.'
+    : 'Anda saat ini login menggunakan Google. Setel password untuk mengaktifkan login manual.'
+})
 
 // Determine user type
 const userType = computed(() => userData.value?.user_type || user.value?.role || user.value?.type || 'archer')
@@ -312,8 +353,16 @@ const accountForm = ref({
 
 const initialAccountForm = ref(null)
 
-// Load user data
+const linkGoogle = () => {
+  login(user.value?.role || 'archer', { is_linking: 'true' })
+}
+
 onMounted(async () => {
+  // Check for error in query params (e.g. from Google linking)
+  if (route.query.error === 'email_mismatch') {
+    toast.error('Gagal menghubungkan: Email Google tidak cocok dengan email akun saat ini.')
+  }
+
   try {
     const response = await get('/user/profile')
     userData.value = response
@@ -397,6 +446,45 @@ const saveSettings = async () => {
     toast.error('Gagal menyimpan pengaturan')
   } finally {
     isSavingGeneral.value = false
+  }
+}
+
+const changePassword = async () => {
+  if (securityForm.value.new_password !== securityForm.value.confirm_password) {
+    toast.error('Konfirmasi password tidak cocok')
+    return
+  }
+
+  if (securityForm.value.new_password.length < 6) {
+    toast.error('Password minimal 6 karakter')
+    return
+  }
+
+  isChangingPassword.value = true
+  try {
+    await put('/user/password', {
+      new_password: securityForm.value.new_password
+    })
+
+    toast.success('Password berhasil diperbarui')
+
+    // Reset form
+    securityForm.value = {
+      current_password: '',
+      new_password: '',
+      confirm_password: ''
+    }
+
+    // Update has_password status locally
+    if (userData.value) {
+      userData.value.has_password = true
+    }
+  } catch (error) {
+    console.error('Failed to change password:', error)
+    const errorMessage = error?.data?.error || error?.response?.data?.error || 'Gagal memperbarui password'
+    toast.error(errorMessage)
+  } finally {
+    isChangingPassword.value = false
   }
 }
 

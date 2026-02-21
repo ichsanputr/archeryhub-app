@@ -39,10 +39,10 @@
       <!-- Club Stats Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         <div v-for="stat in clubStats" :key="stat.label"
-          class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all group">
+          class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm hover:shadow-sm transition-all group">
           <div class="flex justify-between items-start mb-4">
             <div
-              class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+              class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-primary-text transition-colors">
               <Icon :icon="stat.icon" class="text-2xl" />
             </div>
             <span class="text-[10px] font-black text-green-500 bg-green-50 px-2 py-1 rounded-full">+12%</span>
@@ -179,7 +179,7 @@
       <!-- Seller Stats Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         <div v-for="stat in renderedSellerStats" :key="stat.label"
-          class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-all group overflow-hidden relative">
+          class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm hover:shadow-sm transition-all group overflow-hidden relative">
           <div
             class="absolute -right-4 -top-4 w-24 h-24 bg-gray-50 rounded-full group-hover:bg-primary/5 transition-colors duration-500">
           </div>
@@ -351,14 +351,14 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         <!-- Total Archers -->
         <div
-          class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-md hover:shadow-md transition-all border border-gray-100 group">
+          class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-sm transition-all border border-gray-100 group">
           <div class="flex justify-between items-start">
             <div>
               <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Total Atlet</p>
               <p class="text-navy-dark text-3xl font-extrabold tracking-tight">124</p>
             </div>
             <div
-              class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+              class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-primary-text transition-colors">
               <Icon icon="ph:users" class="text-xl" />
             </div>
           </div>
@@ -372,7 +372,7 @@
 
         <!-- Active Targets -->
         <div
-          class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-md hover:shadow-md transition-all border border-gray-100 group">
+          class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-sm transition-all border border-gray-100 group">
           <div class="flex justify-between items-start">
             <div>
               <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Target Aktif</p>
@@ -380,7 +380,7 @@
                   class="text-lg text-gray-400 font-medium ml-1">/ 35</span></p>
             </div>
             <div
-              class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+              class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-primary-text transition-colors">
               <Icon icon="ph:target" class="text-xl" />
             </div>
           </div>
@@ -394,14 +394,14 @@
 
         <!-- Completion -->
         <div
-          class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-md hover:shadow-md transition-all border border-gray-100 group">
+          class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-sm transition-all border border-gray-100 group">
           <div class="flex justify-between items-start">
             <div>
               <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Penyelesaian</p>
               <p class="text-navy-dark text-3xl font-extrabold tracking-tight">85%</p>
             </div>
             <div
-              class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+              class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-primary-text transition-colors">
               <Icon icon="ph:check-square-offset" class="text-xl" />
             </div>
           </div>
@@ -412,14 +412,14 @@
 
         <!-- Time Left -->
         <div
-          class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-md hover:shadow-md transition-all border border-gray-100 group">
+          class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-sm transition-all border border-gray-100 group">
           <div class="flex justify-between items-start">
             <div>
               <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Time Left</p>
               <p class="text-navy-dark text-3xl font-extrabold tracking-tight tabular-nums">45:20</p>
             </div>
             <div
-              class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+              class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-primary-text transition-colors">
               <Icon icon="ph:timer" class="text-xl" />
             </div>
           </div>
@@ -432,7 +432,7 @@
       <!-- Main Content Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Event Recap (Organization overview – replaces Target Status) -->
-        <div class="lg:col-span-2 bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-md">
+        <div class="lg:col-span-2 bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-sm">
           <div class="p-4 px-6 border-b border-gray-100 flex items-center justify-between bg-white">
             <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">
               <Icon icon="ph:chart-line-up-bold" class="text-primary" />
@@ -482,7 +482,7 @@
         </div>
 
         <!-- Leaderboard -->
-        <div class="bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-md">
+        <div class="bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-sm">
           <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
             <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">Leaderboard</h3>
             <BaseButton variant="ghost" size="sm">
@@ -503,7 +503,7 @@
                   class="hover:bg-gray-50 transition-colors group">
                   <td class="px-6 py-3.5">
                     <div
-                      :class="index === 0 ? 'bg-primary text-navy-dark font-extrabold shadow-sm' : 'text-gray-400 font-bold'"
+                      :class="index === 0 ? 'bg-primary text-primary-text font-extrabold shadow-sm' : 'text-gray-400 font-bold'"
                       class="w-6 h-6 rounded flex items-center justify-center text-xs">
                       {{ index + 1 }}
                     </div>

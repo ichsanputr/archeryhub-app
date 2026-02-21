@@ -14,6 +14,7 @@ module.exports = {
                 primary: {
                     DEFAULT: 'rgb(var(--primary-rgb, 217 255 0) / <alpha-value>)',
                     hover: 'var(--primary-hover, #c2e600)',
+                    text: 'var(--primary-text, #0f172a)',
                 },
                 navy: {
                     dark: 'rgb(var(--sidebar-bg-rgb, 15 23 42) / <alpha-value>)',

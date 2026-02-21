@@ -130,9 +130,8 @@
                             class="w-24 h-24 rounded-2xl bg-white border-4 border-white shadow-md overflow-hidden group-hover:scale-105 transition-transform duration-500">
                             <img v-if="club.logo_url" :src="getImageUrl(club.logo_url)" :alt="club.name"
                                 class="w-full h-full object-cover" />
-                            <div v-else
-                                class="w-full h-full bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center">
-                                <span class="text-2xl font-black text-navy">{{ club.name.charAt(0) }}</span>
+                            <div v-else class="w-full h-full bg-primary flex items-center justify-center">
+                                <span class="text-2xl font-black text-primary-text">{{ club.name.charAt(0) }}</span>
                             </div>
                         </div>
                     </div>

@@ -230,18 +230,21 @@
         </main>
 
         <!-- CTA Section -->
-        <section
-            class="py-12 md:py-16 bg-gradient-to-br from-primary via-amber-400 to-yellow-400 relative overflow-hidden">
+        <section class="py-12 md:py-16 bg-navy relative overflow-hidden">
+            <!-- Theme Motif Pattern -->
+            <div class="absolute inset-0 opacity-10"
+                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.1);">
+            </div>
             <div class="absolute inset-0 opacity-10">
-                <div class="absolute top-0 right-0 w-96 h-96 bg-navy rounded-full blur-3xl"></div>
-                <div class="absolute bottom-0 left-0 w-96 h-96 bg-navy rounded-full blur-3xl"></div>
+                <div class="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
+                <div class="absolute bottom-0 left-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
             </div>
             <div class="container mx-auto px-4 max-w-7xl relative z-10">
                 <div class="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-10">
                     <div class="text-center md:text-left">
-                        <h2 class="text-2xl md:text-3xl font-black text-navy mb-3 tracking-tight">Punya Event Panahan?
+                        <h2 class="text-2xl md:text-3xl font-black text-white mb-3 tracking-tight">Punya Event Panahan?
                         </h2>
-                        <p class="text-navy/70 text-sm sm:text-base font-bold max-w-xl leading-relaxed">Daftarkan event
+                        <p class="text-white/70 text-sm sm:text-base font-bold max-w-xl leading-relaxed">Daftarkan event
                             Anda di Archeryhub.id dan kelola pendaftaran serta scoring dengan lebih profesional.</p>
                     </div>
                     <NuxtLink to="/auth/register?type=organizer">
