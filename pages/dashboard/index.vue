@@ -3,8 +3,7 @@
     <!-- Club Dashboard View -->
     <template v-if="userRole === 'club'">
       <!-- Club Header -->
-      <div
-        class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
+      <div class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
         <!-- Theme Motif Pattern -->
         <div class="absolute inset-0"
           style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
@@ -12,7 +11,7 @@
         <!-- Decorative Background Elements (Glows) -->
         <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
         <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-        
+
         <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div class="flex items-center gap-4">
             <div
@@ -144,8 +143,7 @@
     <!-- Seller Dashboard View -->
     <template v-else-if="userRole === 'seller'">
       <!-- Seller Header -->
-      <div
-        class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
+      <div class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
         <!-- Theme Motif Pattern -->
         <div class="absolute inset-0"
           style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
@@ -153,7 +151,7 @@
         <!-- Decorative Background Elements (Glows) -->
         <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
         <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-        
+
         <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div class="flex items-center gap-4">
             <div
@@ -317,8 +315,7 @@
     <!-- Original Dashboard View (for Org/Admin/Other) -->
     <template v-else>
       <!-- Header Section -->
-      <div
-        class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
+      <div class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
         <!-- Theme Motif Pattern -->
         <div class="absolute inset-0"
           style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
@@ -326,7 +323,7 @@
         <!-- Decorative Background Elements (Glows) -->
         <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
         <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-        
+
         <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div class="flex items-center gap-4">
             <div
@@ -586,7 +583,7 @@ const chartOptions = {
 
 // Redirect archer users to dashboard/events
 onMounted(async () => {
-  if (userRole.value === 'archer' || userRole.value === 'organization') {
+  if (userRole.value === 'archer') {
     router.replace('/dashboard/events')
   }
 

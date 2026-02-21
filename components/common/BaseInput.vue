@@ -58,7 +58,6 @@ export default {
 
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
-import { Icon } from '@iconify/vue'
 
 const props = defineProps({
     modelValue: [String, Number],

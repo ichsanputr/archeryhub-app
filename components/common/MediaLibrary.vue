@@ -13,8 +13,10 @@
                     <div class="bg-primary h-1.5 w-full shrink-0" />
 
                     <!-- Header: compact on mobile -->
-                    <div class="flex items-center justify-between gap-3 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-100 bg-white shrink-0">
-                        <h2 class="text-base sm:text-xl font-black text-navy-dark tracking-tight flex items-center gap-2 min-w-0">
+                    <div
+                        class="flex items-center justify-between gap-3 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-100 bg-white shrink-0">
+                        <h2
+                            class="text-base sm:text-xl font-black text-navy-dark tracking-tight flex items-center gap-2 min-w-0">
                             <Icon icon="ph:images-square-bold" class="text-primary shrink-0 text-lg sm:text-xl" />
                             <span class="truncate">Media Library</span>
                         </h2>
@@ -44,7 +46,8 @@
                     </div>
 
                     <!-- Content -->
-                    <div class="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 bg-white min-h-[240px] sm:min-h-[300px]">
+                    <div
+                        class="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 bg-white min-h-[240px] sm:min-h-[300px]">
                         <!-- Browse Tab -->
                         <div v-if="activeTab === 'browse'">
                             <!-- Loading State -->
@@ -130,11 +133,12 @@
                                     !uploadCaption ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer',
                                     isDragging ? 'border-primary bg-primary/5' : 'border-gray-300 hover:border-primary hover:bg-gray-50'
                                 ]" @click="uploadCaption && $refs.fileInput?.click()">
-                                <input ref="fileInput" type="file" :accept="acceptTypes"
-                                    class="hidden" @change="handleFileSelect" :disabled="!uploadCaption" />
+                                <input ref="fileInput" type="file" :accept="acceptTypes" class="hidden"
+                                    @change="handleFileSelect" :disabled="!uploadCaption" />
 
                                 <div v-if="!isUploading && !uploadedPreview" class="pointer-events-none">
-                                    <Icon icon="ph:cloud-arrow-up" class="text-4xl sm:text-5xl text-gray-400 mx-auto mb-3 sm:mb-4" />
+                                    <Icon icon="ph:cloud-arrow-up"
+                                        class="text-4xl sm:text-5xl text-gray-400 mx-auto mb-3 sm:mb-4" />
                                     <p class="text-gray-600 font-medium text-sm sm:text-base">{{ uploadZoneText }}</p>
                                     <p class="text-xs text-gray-400 mt-2">Gambar, PDF, DOC, XLS (maks. 10MB)</p>
                                 </div>
@@ -183,10 +187,12 @@
                     <!-- Footer: stack on mobile, touch-friendly -->
                     <div
                         class="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3 px-4 sm:px-6 py-4 border-t border-gray-100 bg-gray-50 shrink-0">
-                        <p v-if="selectedMedia" class="text-sm font-medium text-text-secondary truncate order-2 sm:order-1">
+                        <p v-if="selectedMedia"
+                            class="text-sm font-medium text-text-secondary truncate order-2 sm:order-1">
                             <span class="text-navy-dark">{{ selectedMedia.filename }}</span>
                         </p>
-                        <p v-else class="text-sm font-medium text-gray-400 order-2 sm:order-1">Pilih file atau upload baru</p>
+                        <p v-else class="text-sm font-medium text-gray-400 order-2 sm:order-1">Pilih file atau upload
+                            baru</p>
 
                         <div class="flex gap-3 order-1 sm:order-2 w-full sm:w-auto">
                             <button type="button" @click="handleClose"
@@ -208,8 +214,6 @@
 
 <script setup>
 import { gsap } from 'gsap'
-import { Icon } from '@iconify/vue'
-
 const props = defineProps({
     show: {
         type: Boolean,

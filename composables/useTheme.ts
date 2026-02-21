@@ -183,11 +183,25 @@ export const useTheme = () => {
     })
   }
 
+  const removeTheme = () => {
+    if (import.meta.server) return
+    const root = document.documentElement
+    const props = [
+      '--primary-color', '--primary-rgb', '--primary-hover',
+      '--sidebar-bg', '--sidebar-bg-rgb', '--sidebar-text',
+      '--header-bg', '--header-bg-rgb', '--header-text',
+      '--accent-color', '--accent-rgb',
+      '--motif-pattern', '--motif-opacity'
+    ]
+    props.forEach(p => root.style.removeProperty(p))
+  }
+
   return {
     currentTheme,
     themeColors,
     applyTheme,
     initializeTheme,
+    removeTheme,
     fetchThemeFromServer,
     saveThemeToServer,
     isSyncing,

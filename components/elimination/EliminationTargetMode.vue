@@ -67,7 +67,7 @@
                                 <div class="min-w-0">
                                     <span class="text-xs font-bold text-navy truncate block">{{ match.entry_b_name ||
                                         'TBD'
-                                    }}</span>
+                                        }}</span>
                                 </div>
                             </div>
                             <span class="text-[9px] font-black text-gray-300 tracking-tighter shrink-0 ml-2">SIDE
@@ -92,8 +92,6 @@
 </template>
 
 <script setup>
-import { Icon } from '@iconify/vue'
-
 const props = defineProps({
     roundMatches: { type: Array, required: true },
     targetOptions: { type: Array, required: true },

@@ -315,7 +315,7 @@
                                         class="w-full flex items-center justify-between p-3 rounded-xl border transition-all"
                                         :class="manualWinnerId === selectedScoringMatch.entry_a_id ? 'bg-primary/20 border-primary text-primary' : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'">
                                         <span class="text-sm font-bold text-white">{{ selectedScoringMatch.entry_a_name
-                                            }}</span>
+                                        }}</span>
                                         <Icon v-if="manualWinnerId === selectedScoringMatch.entry_a_id"
                                             icon="ph:check-circle-fill" class="text-primary" />
                                     </button>
@@ -325,7 +325,7 @@
                                         class="w-full flex items-center justify-between p-3 rounded-xl border transition-all"
                                         :class="manualWinnerId === selectedScoringMatch.entry_b_id ? 'bg-primary/20 border-primary text-primary' : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'">
                                         <span class="text-sm font-bold text-white">{{ selectedScoringMatch.entry_b_name
-                                            }}</span>
+                                        }}</span>
                                         <Icon v-if="manualWinnerId === selectedScoringMatch.entry_b_id"
                                             icon="ph:check-circle-fill" class="text-primary" />
                                     </button>
@@ -355,7 +355,6 @@
 </template>
 
 <script setup>
-import { Icon } from '@iconify/vue'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 

@@ -159,7 +159,7 @@
                                         <p class="font-bold text-navy truncate">{{ user?.full_name || 'User' }}</p>
                                         <p class="text-xs text-gray-400 truncate">{{ user?.email }}</p>
                                     </div>
-                                    <NuxtLink to="/dashboard"
+                                    <NuxtLink :to="dashboardUrl"
                                         class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-navy transition-colors">
                                         <Icon icon="ph:layout" class="text-lg" />
                                         Dashboard
@@ -319,7 +319,7 @@
                 <!-- Drawer Footer -->
                 <div class="p-6 border-t border-gray-50 bg-white">
                     <div v-if="isLoggedIn" class="space-y-3">
-                        <NuxtLink to="/dashboard" @click="mobileMenuOpen = false"
+                        <NuxtLink :to="dashboardUrl" @click="mobileMenuOpen = false"
                             class="flex items-center justify-center gap-2 w-full py-3.5 bg-navy text-white rounded-2xl text-sm font-black  tracking-wider shadow-lg shadow-navy/20 transition-all">
                             <Icon icon="ph:layout-bold" />
                             Dashboard
@@ -347,8 +347,6 @@
 </template>
 
 <script setup>
-import { Icon } from '@iconify/vue'
-
 const props = defineProps({
     transparent: {
         type: Boolean,
@@ -447,6 +445,11 @@ const isActive = (path) => {
     }
     return route.path.startsWith(path)
 }
+
+const dashboardUrl = computed(() => {
+    if (user.value?.role === 'organization' || user.value?.role === 'archer') return '/dashboard/events'
+    return '/dashboard'
+})
 
 const latestEvents = ref([])
 const featuredEvent = ref(null)

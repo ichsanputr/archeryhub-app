@@ -52,7 +52,6 @@
 </template>
 
 <script setup>
-import { Icon } from '@iconify/vue'
 import { useAuth } from '~/composables/useAuth'
 
 const route = useRoute()

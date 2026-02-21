@@ -179,7 +179,6 @@
 
 
 <script setup>
-import { Icon } from '@iconify/vue'
 import { useEditor, EditorContent } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
 import { TableKit } from '@tiptap/extension-table'

@@ -451,7 +451,6 @@
 </template>
 
 <script setup>
-import { Icon } from '@iconify/vue'
 import { useImageOrDefault } from '~/composables/useImageHelper'
 
 const props = defineProps({

@@ -83,7 +83,6 @@
 </template>
 
 <script setup>
-import { Icon } from '@iconify/vue'
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'

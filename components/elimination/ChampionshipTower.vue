@@ -85,7 +85,6 @@
 </template>
 
 <script setup>
-import { Icon } from '@iconify/vue'
 import EliminationMatchCard from './EliminationMatchCard.vue'
 
 const props = defineProps({

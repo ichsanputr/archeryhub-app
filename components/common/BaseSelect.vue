@@ -1,5 +1,6 @@
 <template>
-    <div ref="rootRef" class="flex flex-col gap-1.5 w-full relative" :class="{ 'z-[100]': isOpen }" v-click-outside="closeDropdown">
+    <div ref="rootRef" class="flex flex-col gap-1.5 w-full relative" :class="{ 'z-[100]': isOpen }"
+        v-click-outside="closeDropdown">
         <label v-if="label" class="text-navy text-sm font-bold ml-1 flex items-center gap-1">
             {{ label }}
             <span v-if="required" class="text-red-500">*</span>
@@ -31,8 +32,10 @@
                 </div>
 
                 <div class="flex items-center gap-2 ml-2 opacity-60 group-hover:opacity-100 transition-opacity">
-                    <Icon v-if="(multiple ? (Array.isArray(modelValue) && modelValue.length > 0) : modelValue) && clearable" icon="ph:x-circle"
-                        class="text-gray-400 hover:text-red-500 transition-colors" @click.stop="clearSelection" />
+                    <Icon
+                        v-if="(multiple ? (Array.isArray(modelValue) && modelValue.length > 0) : modelValue) && clearable"
+                        icon="ph:x-circle" class="text-gray-400 hover:text-red-500 transition-colors"
+                        @click.stop="clearSelection" />
                     <Icon icon="ph:caret-down" class="text-gray-400 transition-transform duration-300"
                         :class="isOpen ? 'rotate-180 text-black' : ''" />
                 </div>
@@ -60,7 +63,8 @@
                                     : 'text-gray-600 hover:bg-gray-50 hover:text-black'
                             ]">
                             <div class="flex items-center gap-3 overflow-hidden">
-                                <div v-if="multiple" class="flex-shrink-0 w-5 h-5 rounded-sm border border-gray-200 flex items-center justify-center">
+                                <div v-if="multiple"
+                                    class="flex-shrink-0 w-5 h-5 rounded-sm border border-gray-200 flex items-center justify-center">
                                     <Icon v-if="isSelected(item)" icon="ph:check" class="text-xs text-black" />
                                 </div>
                                 <div v-if="item.image"
@@ -73,8 +77,7 @@
                                     <Icon :icon="item.icon" class="text-base" />
                                 </div>
                                 <div class="truncate">
-                                    <div :class="isSelected(item) ? 'text-black' : 'text-navy'"
-                                        class="font-bold">
+                                    <div :class="isSelected(item) ? 'text-black' : 'text-navy'" class="font-bold">
                                         {{ getItemTitle(item) }}
                                     </div>
                                     <div v-if="item.description"
@@ -96,7 +99,8 @@
             <!-- Teleported dropdown (for use inside modals) - own Transition with single child -->
             <Teleport to="body">
                 <Transition enter-active-class="transition duration-200 ease-out"
-                    enter-from-class="translate-y-2 opacity-0 scale-95" enter-to-class="translate-y-0 opacity-100 scale-100"
+                    enter-from-class="translate-y-2 opacity-0 scale-95"
+                    enter-to-class="translate-y-0 opacity-100 scale-100"
                     leave-active-class="transition duration-150 ease-in"
                     leave-from-class="translate-y-0 opacity-100 scale-100"
                     leave-to-class="translate-y-2 opacity-0 scale-95">
@@ -117,12 +121,14 @@
                                         : 'text-gray-600 hover:bg-gray-50 hover:text-black'
                                 ]">
                                 <div class="flex items-center gap-3 overflow-hidden">
-                                    <div v-if="multiple" class="flex-shrink-0 w-5 h-5 rounded-sm border border-gray-200 flex items-center justify-center">
+                                    <div v-if="multiple"
+                                        class="flex-shrink-0 w-5 h-5 rounded-sm border border-gray-200 flex items-center justify-center">
                                         <Icon v-if="isSelected(item)" icon="ph:check" class="text-xs text-black" />
                                     </div>
                                     <div v-if="item.image"
                                         class="flex-shrink-0 w-8 h-8 rounded-md overflow-hidden bg-white border border-gray-100 p-0.5">
-                                        <img :src="item.image" class="w-full h-full object-contain" :alt="getItemTitle(item)" />
+                                        <img :src="item.image" class="w-full h-full object-contain"
+                                            :alt="getItemTitle(item)" />
                                     </div>
                                     <div v-else-if="item.icon"
                                         class="flex-shrink-0 opacity-60 group-hover:opacity-100 transition-opacity">
@@ -158,7 +164,6 @@
 
 <script setup>
 import { ref, computed, watch, nextTick } from 'vue'
-import { Icon } from '@iconify/vue'
 
 const props = defineProps({
     modelValue: [String, Number, Boolean, Object, Array],

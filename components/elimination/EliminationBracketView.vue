@@ -67,7 +67,6 @@
 </template>
 
 <script setup>
-import { Icon } from '@iconify/vue'
 import { computed } from 'vue'
 import BracketRound from './BracketRound.vue'
 import ChampionshipTower from './ChampionshipTower.vue'

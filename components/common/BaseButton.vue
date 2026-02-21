@@ -10,7 +10,7 @@
             <slot />
             <Icon v-if="iconRight && isIconify(iconRight)" :icon="iconRight" :class="iconSizeClass" />
             <span v-else-if="iconRight" class="material-symbols-outlined shrink-0" :class="iconSizeClass">{{ iconRight
-            }}</span>
+                }}</span>
         </template>
         <span v-if="!loading && loadingText" class="ml-2">{{ loadingText }}</span>
     </NuxtLink>
@@ -26,14 +26,13 @@
             <slot />
             <Icon v-if="iconRight && isIconify(iconRight)" :icon="iconRight" :class="iconSizeClass" />
             <span v-else-if="iconRight" class="material-symbols-outlined shrink-0" :class="iconSizeClass">{{ iconRight
-            }}</span>
+                }}</span>
         </template>
         <span v-if="!loading && loadingText" class="ml-2">{{ loadingText }}</span>
     </button>
 </template>
 
 <script setup>
-import { Icon } from '@iconify/vue'
 import { computed } from 'vue'
 
 const props = defineProps({

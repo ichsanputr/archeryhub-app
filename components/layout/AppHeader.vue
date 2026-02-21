@@ -142,7 +142,6 @@
 </template>
 
 <script setup>
-import { Icon } from '@iconify/vue'
 import NotificationList from './NotificationList.vue'
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
