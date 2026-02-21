@@ -1,7 +1,7 @@
 <template>
   <div>
     <AppThemeLoader v-if="isDashboard" :loading="isThemeLoading" />
-    <NuxtLayout :key="pageKey">
+    <NuxtLayout>
       <NuxtPage :page-key="pageKey" />
     </NuxtLayout>
   </div>

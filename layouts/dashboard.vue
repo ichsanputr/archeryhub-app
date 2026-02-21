@@ -1,5 +1,5 @@
 <template>
-    <div :key="route.fullPath"
+    <div
         class="flex h-screen w-full bg-background-light font-sans text-navy-dark overflow-hidden transition-colors duration-300">
         <!-- Mobile overlay: behind sidebar (z-[90]) so drawer (z-[100]) stays on top; tap to close -->
         <Transition name="overlay-fade">

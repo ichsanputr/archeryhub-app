@@ -1,5 +1,5 @@
 <template>
-  <div :key="route.fullPath">
+  <div>
     <slot />
     <BaseToast />
   </div>
