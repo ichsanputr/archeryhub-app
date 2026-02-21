@@ -7,86 +7,98 @@
         </div>
 
         <!-- ══════════════════════════════════════
-             HEADER — Editorial masthead
+             HERO HEADER — Full Width
              ══════════════════════════════════════ -->
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-10 sm:pb-12 relative">
-
-            <!-- Back nav -->
-            <NuxtLink to="/clubs"
-                class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-[#64748b] hover:text-navy transition-colors mb-10">
-                <Icon icon="ph:arrow-left-bold" />
-                Semua Klub
-            </NuxtLink>
-
-            <!-- Logo + Club name row -->
-            <div class="flex flex-col md:flex-row md:items-end gap-5 md:gap-6 mb-6 sm:mb-8">
-                <!-- Logo -->
-                        <div
-                            class="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-2xl border-2 border-navy/10 overflow-hidden bg-white shadow-lg flex-shrink-0">
-                    <img :src="useImageOrDefault(club.logoUrl, club.name)" :alt="club.name"
-                        class="w-full h-full object-cover" />
-                </div>
-                <div class="flex-1">
-                    <!-- Official tag -->
-                    <span
-                        class="inline-block bg-primary text-navy text-[10px] font-black px-2 py-1 mb-4 tracking-widest uppercase">
-                        Profil Resmi
-                    </span>
-                    <h1 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black tracking-tight leading-none mb-3 sm:mb-4 uppercase break-words">
-                        {{ club.name || 'Klub Panahan' }}
-                    </h1>
-                    <p class="text-base sm:text-lg md:text-2xl font-light text-[#0f172a]/70 max-w-3xl leading-snug">
-                        {{ club.description || defaultDesc }}
-                    </p>
-                </div>
+        <section class="relative w-full bg-navy overflow-hidden">
+            <!-- Background Elements -->
+            <div class="absolute inset-0 z-0">
+                <img v-if="club.bannerUrl" :src="club.bannerUrl" class="w-full h-full object-cover opacity-30" />
+                <div v-else class="w-full h-full bg-gradient-to-br from-navy to-navy-light opacity-80"></div>
+                <!-- Dynamic Overlay -->
+                <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/40 to-transparent"></div>
             </div>
 
-            <!-- Stats bar -->
-            <div class="flex flex-wrap gap-5 sm:gap-8 py-5 sm:py-6 border-y border-navy/10 mb-0">
-                <div>
-                    <span class="text-[10px] uppercase tracking-widest text-[#64748b] font-black block mb-1">Total
-                        Anggota</span>
-                    <span class="text-lg sm:text-xl font-black">{{ club.memberCount || '—' }}{{ club.memberCount ? '+' : ''
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-10 sm:pb-12 relative z-10 text-white">
+                <!-- Back nav -->
+                <NuxtLink to="/clubs"
+                    class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white/50 hover:text-primary transition-colors mb-10">
+                    <Icon icon="ph:arrow-left-bold" />
+                    Semua Klub
+                </NuxtLink>
+
+                <!-- Logo + Club name row -->
+                <div class="flex flex-col md:flex-row md:items-end gap-5 md:gap-6 mb-8 sm:mb-10">
+                    <!-- Logo -->
+                    <div
+                        class="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 rounded-3xl border-4 border-white/10 overflow-hidden bg-white shadow-2xl flex-shrink-0 animate-fade-in">
+                        <img :src="useImageOrDefault(club.logoUrl, club.name)" :alt="club.name"
+                            class="w-full h-full object-cover" />
+                    </div>
+                    <div class="flex-1">
+                        <!-- Official tag -->
+                        <span
+                            class="inline-block bg-primary text-navy text-[10px] font-black px-2 py-1 mb-4 tracking-widest uppercase">
+                            Profil Resmi
+                        </span>
+                        <h1
+                            class="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black tracking-tight leading-none mb-4 sm:mb-5 uppercase break-words drop-shadow-md">
+                            {{ club.name || 'Klub Panahan' }}
+                        </h1>
+                        <p class="text-base sm:text-lg md:text-xl font-light text-white/80 max-w-3xl leading-snug">
+                            {{ club.description || defaultDesc }}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Stats bar -->
+                <div class="flex flex-wrap gap-5 sm:gap-10 py-6 sm:py-8 border-y border-white/10 mb-0">
+                    <div>
+                        <span class="text-[10px] uppercase tracking-widest text-white/40 font-black block mb-1">Total
+                            Anggota</span>
+                        <span class="text-xl sm:text-2xl font-black text-primary">{{ club.memberCount || '—' }}{{
+                            club.memberCount ? '+' : ''
                         }}</span>
-                </div>
-                <div v-if="club.established">
-                    <span
-                        class="text-[10px] uppercase tracking-widest text-[#64748b] font-black block mb-1">Berdiri</span>
-                    <span class="text-lg sm:text-xl font-black">{{ club.established }}</span>
-                </div>
-                <div v-if="club.city || club.province">
-                    <span
-                        class="text-[10px] uppercase tracking-widest text-[#64748b] font-black block mb-1">Lokasi</span>
-                    <span class="text-lg sm:text-xl font-black">{{ club.formattedLocation }}</span>
-                </div>
-                <div v-if="club.headCoach">
-                    <span class="text-[10px] uppercase tracking-widest text-[#64748b] font-black block mb-1">Pelatih
-                        Kepala</span>
-                    <span class="text-lg sm:text-xl font-black">{{ club.headCoach }}</span>
-                </div>
-                <div class="w-full sm:w-auto sm:ml-auto self-center flex gap-3">
-                    <!-- Membership action -->
-                    <BaseButton v-if="!membership && isArcher" variant="primary" size="sm" icon="ph:plus-bold"
-                        :loading="isJoining" @click="joinClub" class="shadow-lg shadow-primary/30 whitespace-nowrap">
-                        Gabung Klub
-                    </BaseButton>
-                    <div v-else-if="membership && membership.status === 'active' && membership.club_id === club.id"
-                        class="px-4 py-2 bg-[#0f172a] text-primary font-black text-xs flex items-center gap-2">
-                        <Icon icon="ph:check-bold" />
-                        Anggota Aktif
                     </div>
-                    <div v-else-if="membership && membership.status === 'pending' && membership.club_id === club.id"
-                        class="px-4 py-2 border-2 border-[#0f172a]/20 text-[#64748b] font-black text-xs flex items-center gap-2">
-                        <Icon icon="ph:clock-bold" />
-                        Menunggu Persetujuan
+                    <div v-if="club.established">
+                        <span
+                            class="text-[10px] uppercase tracking-widest text-white/40 font-black block mb-1">Berdiri</span>
+                        <span class="text-xl sm:text-2xl font-black">{{ club.established }}</span>
                     </div>
-                    <button @click="shareClub"
-                        class="p-2.5 border border-navy/20 hover:border-primary hover:bg-primary transition-all flex items-center justify-center group sm:ml-0 ml-auto">
-                        <Icon icon="ph:share-network-bold" class="text-lg text-navy group-hover:text-navy" />
-                    </button>
+                    <div v-if="club.city || club.province">
+                        <span
+                            class="text-[10px] uppercase tracking-widest text-white/40 font-black block mb-1">Lokasi</span>
+                        <span class="text-xl sm:text-2xl font-black">{{ club.formattedLocation }}</span>
+                    </div>
+                    <div v-if="club.headCoach">
+                        <span class="text-[10px] uppercase tracking-widest text-white/40 font-black block mb-1">Pelatih
+                            Kepala</span>
+                        <span class="text-xl sm:text-2xl font-black">{{ club.headCoach }}</span>
+                    </div>
+                    <div class="w-full sm:w-auto sm:ml-auto self-center flex gap-3">
+                        <!-- Membership action -->
+                        <BaseButton v-if="!membership" variant="primary" size="md" icon="ph:plus-bold"
+                            :loading="isJoining" @click="joinClub"
+                            class="shadow-xl shadow-primary/20 whitespace-nowrap">
+                            Gabung Klub
+                        </BaseButton>
+                        <div v-else-if="membership && membership.status === 'active' && membership.club_id === club.id"
+                            class="px-5 py-2.5 bg-primary text-navy font-black text-xs flex items-center gap-2 rounded-xl shadow-lg shadow-primary/10">
+                            <Icon icon="ph:check-circle-fill" class="text-base" />
+                            Anggota Aktif
+                        </div>
+                        <div v-else-if="membership && membership.status === 'pending' && membership.club_id === club.id"
+                            class="px-5 py-2.5 bg-white/5 border border-white/10 text-white/60 font-black text-xs flex items-center gap-2 rounded-xl backdrop-blur-md">
+                            <Icon icon="ph:clock-bold" class="text-base" />
+                            Menunggu Persetujuan
+                        </div>
+                        <button @click="shareClub"
+                            class="size-11 sm:size-12 rounded-xl border border-white/10 hover:border-primary hover:bg-primary transition-all flex items-center justify-center group sm:ml-0 ml-auto backdrop-blur-md">
+                            <Icon icon="ph:share-network-bold" class="text-xl text-white group-hover:text-navy" />
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- ══════════════════════════════════════
              MAIN BODY
@@ -288,13 +300,27 @@
         </main>
 
 
+
+        <!-- Dialogs -->
+        <AppDialog v-model:show="showJoinConfirmDialog" title="Gabung Klub"
+            :message="`Apakah Anda yakin ingin bergabung dengan ${club.name}? Permintaan Anda akan dikirim ke pengurus klub untuk disetujui.`"
+            confirm-text="Ya, Gabung Sekarang" icon="ph:user-plus-bold" @confirm="confirmJoin" />
+
+        <AppDialog v-model:show="showLoginRequiredDialog" title="Login Diperlukan"
+            message="Anda harus masuk ke akun Archer Anda untuk dapat bergabung dengan klub ini."
+            confirm-text="Login Sekarang" icon="ph:lock-key-bold" @confirm="router.push('/auth/login')" />
+
+        <AppDialog v-model:show="showArcherRequiredDialog" title="Tipe Akun Tidak Sesuai"
+            message="Maaf, saat ini hanya akun dengan tipe 'Archer' yang dapat bergabung dengan klub. Silakan gunakan akun Archer Anda."
+            confirm-text="Mengerti" icon="ph:warning-circle-bold" @confirm="showArcherRequiredDialog = false" />
     </div>
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useAuth } from '~/composables/useAuth'
+import AppDialog from '~/components/common/AppDialog.vue'
 import { useToast } from '~/composables/useToast'
 import { useImageOrDefault } from '~/composables/useImageHelper'
 
@@ -306,6 +332,9 @@ const config = useRuntimeConfig()
 const { isLoggedIn, user } = useAuth()
 const toast = useToast()
 const isJoining = ref(false)
+const showJoinConfirmDialog = ref(false)
+const showLoginRequiredDialog = ref(false)
+const showArcherRequiredDialog = ref(false)
 const membership = ref(null)
 const memberPage = ref(1)
 const memberLimit = 12
@@ -374,7 +403,8 @@ const club = computed(() => {
         recentEvents: data.recent_events || [],
         topMembers: data.top_members || [],
         sections: (data.sections || []).filter(s => s.title?.toLowerCase() !== 'apa kata anggota'),
-        socialMedia: parseSocialMedia(data.social_media)
+        socialMedia: parseSocialMedia(data.social_media),
+        registrationConfig: data.registration_config
     }
 })
 
@@ -411,7 +441,31 @@ const shareClub = async () => {
 }
 
 const joinClub = async () => {
-    if (!isLoggedIn.value) { router.push('/auth/login'); return }
+    if (!isLoggedIn.value) {
+        showLoginRequiredDialog.value = true
+        return
+    }
+
+    if (!isArcher.value) {
+        showArcherRequiredDialog.value = true
+        return
+    }
+
+    // Check if custom registration form exists
+    if (club.value.registrationConfig) {
+        try {
+            const config = JSON.parse(club.value.registrationConfig)
+            if (config.fields && config.fields.length > 0) {
+                router.push(`/clubs/${club.value.slug}/registration`)
+                return
+            }
+        } catch { }
+    }
+
+    showJoinConfirmDialog.value = true
+}
+
+const confirmJoin = async () => {
     isJoining.value = true
     try {
         await $fetch(`${config.public.apiBaseUrl}/clubs/join/${club.value.id}`, {
@@ -421,14 +475,14 @@ const joinClub = async () => {
         toast.success('Permintaan bergabung telah dikirim!')
         membership.value = { status: 'pending', club_id: club.value.id, club_name: club.value.name }
     } catch (err) {
-        toast.error('Gagal mengirim permintaan. ' + (err.message || ''))
+        toast.error(err.data?.error || 'Gagal mengirim permintaan.')
     } finally {
         isJoining.value = false
     }
 }
 
 onMounted(async () => {
-    if (isArcher.value) {
+    if (isLoggedIn.value) {
         try {
             const memberResp = await $fetch(`${config.public.apiBaseUrl}/clubs/my/membership`, {
                 headers: { 'Authorization': `Bearer ${useCookie('auth_token').value}` }

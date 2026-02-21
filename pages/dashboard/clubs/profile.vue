@@ -296,6 +296,72 @@
           </div>
         </div>
 
+        <!-- Tab: Pendaftaran -->
+        <div v-if="activeTab === 'registration'" class="space-y-8">
+          <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-[11px] font-black text-navy tracking-[0.2em] flex items-center gap-2">
+                  <Icon icon="ph:list-bullets-bold" class="text-primary text-xl" /> Kustomisasi Formulir
+                </h3>
+                <p class="text-xs text-gray-400 font-medium mt-1">Tambahkan field tambahan yang wajib diisi oleh calon
+                  pendaftar.</p>
+              </div>
+              <button
+                class="flex items-center gap-2 px-4 py-2.5 bg-navy text-white rounded-xl text-xs font-black hover:bg-navy-dark transition shadow-md"
+                @click="addRegistrationField">
+                <Icon icon="ph:plus-bold" /> Tambah Field
+              </button>
+            </div>
+
+            <div class="space-y-4">
+              <transition-group name="list">
+                <div v-for="(field, idx) in form.registrationConfig.fields" :key="idx"
+                  class="bg-gray-50 p-6 rounded-3xl border border-gray-100 space-y-4 relative group">
+                  <button @click="removeRegistrationField(idx)"
+                    class="absolute top-4 right-4 p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all opacity-0 group-hover:opacity-100">
+                    <Icon icon="ph:trash-bold" class="text-lg" />
+                  </button>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <BaseInput v-model="field.label" label="Label Field" placeholder="Misal: Nomor KTA, Pengalaman, dll"
+                      @input="field.name = field.label.toLowerCase().replace(/\s+/g, '_')" />
+                    <BaseSelect v-model="field.type" :items="fieldTypeOptions" label="Tipe Input" />
+                  </div>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <BaseInput v-model="field.placeholder" label="Placeholder"
+                      placeholder="Teks bantuan di dalam box" />
+                    <div class="flex items-end pb-3">
+                      <BaseCheckbox v-model="field.required" label="Wajib Diisi" />
+                    </div>
+                  </div>
+
+                  <!-- Options for Select type -->
+                  <div v-if="field.type === 'select'" class="space-y-2 pt-2">
+                    <label class="text-[10px] font-black text-navy uppercase tracking-widest">Opsi Pilihan (Pisahkan
+                      dengan koma)</label>
+                    <BaseTextarea v-model="field.optionsRaw" placeholder="Pilihan A, Pilihan B, Pilihan C" rows="2"
+                      @input="updateFieldOptions(field)" />
+                  </div>
+                </div>
+              </transition-group>
+
+              <div v-if="!form.registrationConfig.fields.length"
+                class="text-center py-20 bg-gray-50/50 rounded-3xl border border-dashed border-gray-200">
+                <div
+                  class="size-20 bg-white rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-sm transform rotate-6 group">
+                  <Icon icon="ph:form-bold"
+                    class="text-4xl text-gray-200 group-hover:text-primary/40 transition-colors" />
+                </div>
+                <h4 class="text-navy font-black text-lg mb-2">Belum ada field kustom</h4>
+                <p class="text-sm text-gray-400 font-medium max-w-xs mx-auto">Klik tombol <strong>Tambah Field</strong>
+                  untuk menambah pertanyaan khusus pada formulir pendaftaran.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <!-- Side card -->
@@ -394,7 +460,8 @@ const activeTab = ref('general')
 const tabs = [
   { id: 'general', label: 'Info Umum', icon: 'ph:identification-badge-bold' },
   { id: 'contact', label: 'Kontak & Sosmed', icon: 'ph:phone-bold' },
-  { id: 'facilities', label: 'Fasilitas & Jadwal', icon: 'ph:check-circle-bold' }
+  { id: 'facilities', label: 'Fasilitas & Jadwal', icon: 'ph:check-circle-bold' },
+  { id: 'registration', label: 'Pendaftaran', icon: 'ph:user-plus-bold' }
 ]
 
 const pageSettings = reactive({
@@ -433,7 +500,10 @@ const form = reactive({
   address: '',
   facilities: [],
   schedules: [],
-  socialMedia: []
+  socialMedia: [],
+  registrationConfig: {
+    fields: []
+  }
 })
 
 
@@ -568,6 +638,18 @@ const loadProfile = async () => {
       form.schedules = parseOrRaw(data.schedules)
       form.socialMedia = parseOrRaw(data.social_media)
 
+      // Handle registration config
+      if (data.registration_config) {
+        try {
+          const parsed = typeof data.registration_config === 'string' ? JSON.parse(data.registration_config) : data.registration_config
+          if (parsed && parsed.fields) {
+            form.registrationConfig = parsed
+          }
+        } catch (e) {
+          console.error('Failed to parse registration_config', e)
+        }
+      }
+
       // Set city search for autocomplete
       citySearch.value = data.city || ''
 
@@ -612,7 +694,8 @@ const saveProfile = async () => {
       facilities: form.facilities,
       schedules: form.schedules,
       social_media: form.socialMedia,
-      page_settings: JSON.stringify(pageSettings)
+      page_settings: JSON.stringify(pageSettings),
+      registration_config: JSON.stringify(form.registrationConfig)
     })
     toast.success('Profil klub berhasil disimpan!')
   } catch (error) {
@@ -645,6 +728,39 @@ const addSchedule = () => {
 
 const removeSchedule = (index) => {
   form.schedules.splice(index, 1)
+}
+
+const fieldTypeOptions = [
+  { value: 'text', title: 'Teks Pendek' },
+  { value: 'textarea', title: 'Teks Panjang' },
+  { value: 'number', title: 'Angka' },
+  { value: 'email', title: 'Email' },
+  { value: 'tel', title: 'Nomor Telepon' },
+  { value: 'select', title: 'Pilihan (Dropdown)' },
+  { value: 'checkbox', title: 'Centang (Checkbox)' }
+]
+
+const addRegistrationField = () => {
+  form.registrationConfig.fields.push({
+    label: '',
+    name: '',
+    type: 'text',
+    required: false,
+    placeholder: '',
+    options: [],
+    optionsRaw: ''
+  })
+}
+
+const removeRegistrationField = (index) => {
+  form.registrationConfig.fields.splice(index, 1)
+}
+
+const updateFieldOptions = (field) => {
+  field.options = field.optionsRaw.split(',').map(o => ({
+    title: o.trim(),
+    value: o.trim()
+  })).filter(o => o.value !== '')
 }
 
 

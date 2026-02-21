@@ -639,7 +639,7 @@ const fetchOrgCompletedEvents = async () => {
 const fetchClubDashboardData = async () => {
   isLoadingClubData.value = true
   try {
-    const res = await api.get('/clubs/me/dashboard')
+    const res = await api.get('/clubs/dashboard/stats')
     if (res.data) {
       clubStatsData.value = res.data.stats
       clubRecentMembers.value = res.data.recentMembers || []
