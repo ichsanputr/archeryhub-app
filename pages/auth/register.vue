@@ -112,6 +112,7 @@
                                         <select v-model="form.bowType"
                                             class="w-full h-11 px-4 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
                                             <option value="recurve">Recurve</option>
+                                            <option value="recurve">Standard</option>
                                             <option value="compound">Compound</option>
                                             <option value="barebow">Barebow</option>
                                             <option value="traditional">Traditional</option>

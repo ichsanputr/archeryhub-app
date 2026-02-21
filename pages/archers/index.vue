@@ -81,12 +81,12 @@
             <div v-else-if="viewMode === 'grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <NuxtLink v-for="archer in filteredArchers" :key="archer.id || archer.uuid"
                     :to="`/archers/${archer.username || archer.slug}`"
-                    class="group bg-white rounded-3xl border border-gray-100 p-6 transition-all duration-500">
+                    class="group bg-white rounded-3xl border border-gray-100 p-6 transition-all duration-500 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5">
                     <div class="flex items-center gap-5">
                         <!-- Avatar -->
                         <div class="relative flex-shrink-0">
                             <div
-                                class="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-amber-400 p-0.5 overflow-hidden shadow-sm transition-transform duration-500">
+                                class="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-amber-400 p-0.5 overflow-hidden shadow-sm transition-transform duration-500 group-hover:scale-105">
                                 <div class="w-full h-full rounded-[14px] overflow-hidden bg-white">
                                     <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
                                         class="w-full h-full object-cover transition-transform duration-500" />
@@ -119,24 +119,29 @@
 
                     <!-- Archer Details Grid -->
                     <div class="grid grid-cols-2 gap-3 mt-8">
-                        <div class="bg-gray-50/50 rounded-2xl p-3 border border-gray-50 transition-all">
+                        <div
+                            class="bg-gray-50/50 rounded-2xl p-3 border border-gray-50 transition-all group-hover:bg-primary/5 group-hover:border-primary/10">
                             <span
                                 class="block text-[10px] text-gray-400 font-black  tracking-widest mb-1.5">Divisi</span>
                             <div class="flex items-center gap-2">
-                                <div class="w-6 h-6 rounded-md bg-navy/5 flex items-center justify-center">
-                                    <Icon icon="ph:target-bold" class="text-navy text-xs" />
+                                <div
+                                    class="w-7 h-7 rounded-lg bg-white shadow-sm flex items-center justify-center p-1 border border-gray-100 group-hover:border-primary/20">
+                                    <img :src="getBowIcon(archer.bow_type)" :alt="archer.bow_type"
+                                        class="w-full h-full object-contain" />
                                 </div>
                                 <span class="text-xs font-black text-navy truncate capitalize">{{ archer.bow_type ||
                                     'Recurve'
                                     }}</span>
                             </div>
                         </div>
-                        <div class="bg-gray-50/50 rounded-2xl p-3 border border-gray-50 transition-all">
+                        <div
+                            class="bg-gray-50/50 rounded-2xl p-3 border border-gray-50 transition-all group-hover:bg-amber-50 group-hover:border-amber-100">
                             <span
                                 class="block text-[10px] text-gray-400 font-black  tracking-widest mb-1.5">Kompetisi</span>
                             <div class="flex items-center gap-2">
-                                <div class="w-6 h-6 rounded-md bg-amber-50 flex items-center justify-center">
-                                    <Icon icon="ph:medal-bold" class="text-amber-500 text-xs" />
+                                <div
+                                    class="w-7 h-7 rounded-lg bg-white shadow-sm flex items-center justify-center border border-gray-100 group-hover:border-amber-200">
+                                    <Icon icon="ph:medal-bold" class="text-amber-500 text-sm" />
                                 </div>
                                 <span class="text-xs font-black text-navy">{{ archer.total_events || 0 }} Event</span>
                             </div>
@@ -211,6 +216,12 @@ const searchQuery = ref('')
 const activeBowType = ref('all')
 const viewMode = ref('grid')
 const pageSize = ref(12)
+
+const getBowIcon = (type) => {
+    if (!type) return '/bow/recurve.svg'
+    const lowType = type.toLowerCase()
+    return `/bow/${lowType}.svg`
+}
 
 const bowTypes = [
     { label: 'Semua', value: 'all' },

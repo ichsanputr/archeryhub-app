@@ -172,8 +172,8 @@
 
                     <!-- Grid -->
                     <div v-else class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                        <NuxtLink v-for="tournament in filteredTournaments" :key="tournament.slug || tournament.id"
-                            :to="`/events/${tournament.slug || tournament.id}`"
+                        <NuxtLink v-for="tournament in filteredTournaments.slice(0, displayedLimit)"
+                            :key="tournament.slug || tournament.id" :to="`/events/${tournament.slug || tournament.id}`"
                             class="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] hover:border-primary/50 transition-all duration-500 flex flex-col h-full">
                             <div class="relative h-52 overflow-hidden bg-gray-100">
                                 <img :alt="tournament.name"
@@ -218,8 +218,10 @@
                     </div>
 
                     <!-- Pagination -->
-                    <div v-if="!isLoading && filteredTournaments.length > 0" class="mt-16 flex justify-center">
-                        <BaseButton variant="outline" size="lg" icon="ph:caret-down-bold" class="rounded-xl px-10">
+                    <div v-if="!isLoading && displayedLimit < filteredTournaments.length"
+                        class="mt-16 flex justify-center">
+                        <BaseButton variant="outline" size="lg" icon="ph:caret-down-bold" class="rounded-xl px-10"
+                            @click="displayedLimit += 6">
                             Lihat Lebih Banyak
                         </BaseButton>
                     </div>
@@ -264,6 +266,7 @@ const config = useRuntimeConfig()
 const searchQuery = ref('')
 const sortBy = ref('newest')
 const selectedCity = ref('')
+const displayedLimit = ref(6)
 
 // Transform API response to match expected format
 const transformEventData = (event) => {
