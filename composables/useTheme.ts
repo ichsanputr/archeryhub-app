@@ -48,17 +48,7 @@ export const themes: Record<string, ThemeColors> = {
     motif: 'linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.1) 75%, transparent 75%, transparent)',
     motifOpacity: '0.15'
   },
-  crimson: {
-    primary: '#ef4444', // Red
-    primaryHover: '#dc2626',
-    sidebarBg: '#450a0a',
-    sidebarText: '#fecaca',
-    headerBg: '#ffffff',
-    headerText: '#450a0a',
-    accent: '#f87171',
-    motif: 'repeating-linear-gradient(0deg, transparent, transparent 20px, rgba(255,255,255,0.05) 20px, rgba(255,255,255,0.05) 40px)',
-    motifOpacity: '0.3'
-  },
+
   sunset: {
     primary: '#f97316', // Orange
     primaryHover: '#ea580c',

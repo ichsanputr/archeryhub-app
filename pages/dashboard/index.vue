@@ -531,6 +531,7 @@
 import { Icon } from '@iconify/vue'
 import { computed, onMounted, ref } from 'vue'
 import { useAuth } from '~/composables/useAuth'
+import { useTheme } from '~/composables/useTheme'
 import { useRouter } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
@@ -552,6 +553,7 @@ const router = useRouter()
 const api = useApi()
 const toast = useToast()
 const { user } = useAuth()
+const { themeColors } = useTheme()
 const userRole = computed(() => user.value?.role || user.value?.type || 'archer')
 
 // Seller-specific reactive state
@@ -598,6 +600,13 @@ onMounted(async () => {
   // Org/Admin overview: load completed events for "Rekap Event" section
   if (userRole.value !== 'club' && userRole.value !== 'seller') {
     fetchOrgCompletedEvents()
+  }
+})
+
+// Update chart color when theme changes
+watch(themeColors, () => {
+  if (userRole.value === 'seller' && sellerRecentOrders.value.length) {
+    prepareChartData(sellerRecentOrders.value)
   }
 })
 
@@ -690,7 +699,7 @@ const prepareChartData = (orders) => {
     labels: last7Days.map(d => new Date(d).toLocaleDateString('id-ID', { weekday: 'short' })),
     datasets: [{
       label: 'Penjualan (Rp)',
-      backgroundColor: '#EAB308', // primary color
+      backgroundColor: themeColors.value.primary,
       borderRadius: 8,
       data: dailyTotals
     }]
