@@ -39,14 +39,16 @@
                 <div class="text-center md:text-left max-w-xl">
                     <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/20 rounded-full mb-4">
                         <Icon icon="ph:sparkle-fill" class="text-primary text-sm" />
-                        <span class="text-[10px] font-black text-primary uppercase tracking-widest">Promo Klub
-                            Baru</span>
+                        <span class="text-[10px] font-black text-primary uppercase tracking-widest">
+                            {{ roleContent.promoBadge }}
+                        </span>
                     </div>
-                    <h2 class="text-3xl font-black text-white mb-3">Mulai Klub Anda Gratis 4 Bulan!</h2>
+                    <h2 class="text-3xl font-black text-white mb-3">
+                        {{ roleContent.promoTitle }}
+                    </h2>
                     <p class="text-slate-300 text-sm font-medium leading-relaxed">
-                        Daftarkan klub Anda sekarang dan dapatkan paket <span
-                            class="text-primary font-bold">Standard</span> secara gratis selama 4 bulan pertama. Tanpa
-                        biaya pendaftaran, tanpa komitment.
+                        {{ roleContent.promoDesc }}
+                        Tanpa biaya pendaftaran, tanpa komitment.
                     </p>
                 </div>
                 <div class="shrink-0 flex flex-col items-center">
@@ -55,7 +57,7 @@
                         <Icon icon="ph:gift-bold" class="text-primary text-4xl" />
                     </div>
                     <div class="text-center">
-                        <p class="text-white font-black text-lg">Hemat Rp 139.600</p>
+                        <p class="text-white font-black text-lg">Hemat Rp {{ roleContent.savings }}</p>
                         <p class="text-white/50 text-[10px] font-bold uppercase tracking-widest">Total Nilai</p>
                     </div>
                 </div>
@@ -149,37 +151,40 @@
         </section>
 
         <div class="space-y-8">
-            <!-- Pilihan Paket Section (Indonesian Only) -->
+            <!-- Pilihan Paket Section -->
             <div class="space-y-5">
-                <h2 class="text-lg font-extrabold text-navy">Pilihan Paket</h2>
+                <h2 class="text-lg font-extrabold text-navy">Pilihan Paket {{ roleContent.packageTitle }}</h2>
                 <div
                     class="flex flex-col lg:flex-row overflow-hidden rounded-[32px] border border-gray-100 shadow-sm bg-white min-h-[500px]">
                     <!-- Banner Highlight (Paket Elite) -->
                     <div
-                        class="lg:w-4/12 bg-primary relative flex flex-col justify-center items-center px-8 py-16 target-texture text-center overflow-hidden">
+                        class="lg:w-4/12 bg-navy relative flex flex-col justify-center items-center px-8 py-16 text-center overflow-hidden text-white">
                         <div class="relative z-10">
-                            <span
-                                class="text-navy/40 font-black tracking-[0.3em] text-[10px] uppercase mb-4 block">Direkomendasikan
-                                untuk {{ userType === 'organization' ? 'EO' : 'Klub' }}</span>
-                            <h3 class="text-navy text-3xl font-black leading-tight mb-4">Paket Elite</h3>
-                            <div class="h-1.5 w-24 bg-navy mx-auto mb-8 rounded-full"></div>
-                            <p class="text-navy/70 text-sm font-bold max-w-[220px] mx-auto leading-relaxed">
-                                Dapatkan fitur eksklusif dan limit lebih besar untuk komunitas Anda.
+                            <span class="text-primary/60 font-black tracking-[0.3em] text-[10px] uppercase mb-4 block">
+                                Direkomendasikan untuk {{ roleContent.recommendationBadge }}
+                            </span>
+                            <h3 class="text-white text-3xl font-black leading-tight mb-4 tracking-tight">Paket Elite
+                            </h3>
+                            <div class="h-1.5 w-24 bg-primary mx-auto mb-8 rounded-full"></div>
+                            <p class="text-slate-400 text-sm font-medium max-w-[220px] mx-auto leading-relaxed">
+                                {{ roleContent.eliteDescription }}
                             </p>
 
                             <div class="mt-12 space-y-4">
-                                <div class="flex items-center gap-3 justify-center text-navy/60">
+                                <div class="flex items-center gap-3 justify-center text-primary/80">
                                     <Icon icon="ph:crown-fill" class="text-xl" />
-                                    <span class="text-xs font-black uppercase tracking-widest">Fitur Premium</span>
+                                    <span class="text-xs font-black uppercase tracking-widest text-white/80">Fitur
+                                        Premium</span>
                                 </div>
-                                <div class="flex items-center gap-3 justify-center text-navy/60">
-                                    <Icon icon="ph:shield-check-fill" class="text-xl" />
-                                    <span class="text-xs font-black uppercase tracking-widest">Dukungan Prioritas</span>
+                                <div class="flex items-center gap-3 justify-center text-primary/80">
+                                    <Icon icon="ph:shield-star-fill" class="text-xl" />
+                                    <span class="text-xs font-black uppercase tracking-widest text-white/80">Support
+                                        Prioritas</span>
                                 </div>
                             </div>
                         </div>
-                        <Icon icon="ph:trophy-fill"
-                            class="absolute -bottom-10 -right-10 text-[240px] text-navy/5 rotate-12" />
+                        <Icon icon="ph:trend-up-bold"
+                            class="absolute -bottom-10 -right-10 text-[240px] text-white/5 rotate-12" />
                     </div>
 
                     <!-- Plan Selection Grid -->
@@ -197,7 +202,8 @@
                                 <div class="mb-6">
                                     <div
                                         class="size-10 bg-slate-50 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary transition-colors">
-                                        <Icon :icon="plan.id === 2 ? 'ph:crown-bold' : 'ph:sparkle-bold'"
+                                        <Icon
+                                            :icon="plan.name.toLowerCase().includes('elite') ? 'ph:crown-bold' : 'ph:sparkle-bold'"
                                             class="text-xl text-navy" />
                                     </div>
                                     <h4 class="text-[11px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2">{{
@@ -206,8 +212,7 @@
                                         <span class="text-3xl font-black text-navy">{{ plan.priceLabel }}</span>
                                         <span
                                             class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">/
-                                            {{ plan.billing
-                                            }}</span>
+                                            {{ plan.billing }}</span>
                                     </div>
                                 </div>
 
@@ -229,6 +234,66 @@
                                     class="w-full py-4 text-[10px] font-black bg-navy text-white rounded-2xl hover:bg-primary hover:text-navy transition-all uppercase tracking-widest shadow-sm active:scale-95">
                                     {{ plan.isUpgrade ? 'Upgrade Sekarang' : 'Pilih Paket' }}
                                 </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EO Pricing Calculator (Only for Organizations) -->
+            <div v-if="userType === 'organization'"
+                class="bg-navy rounded-[2.5rem] overflow-hidden shadow-xl border border-white/10 p-8 md:p-12 relative">
+                <div class="absolute top-0 right-0 p-12 opacity-5">
+                    <Icon icon="ph:calculator-bold" class="text-[200px] text-white" />
+                </div>
+                <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <div
+                            class="inline-flex items-center gap-2 px-3 py-1 bg-primary/20 text-primary rounded-full mb-6">
+                            <span class="text-[10px] font-black uppercase tracking-widest">Simulasi Biaya Event</span>
+                        </div>
+                        <h3 class="text-4xl font-black text-white mb-6 tracking-tight">Efisien & Transparan</h3>
+                        <p class="text-slate-400 text-base font-medium leading-relaxed max-w-lg mb-8">
+                            Bayar hanya berdasarkan jumlah atlet yang benar-benar bertanding. Gunakan slider ini untuk
+                            memperkirakan biaya investasi Anda.
+                        </p>
+                        <div
+                            class="flex items-center gap-4 py-4 px-6 bg-white/5 border border-white/10 rounded-2xl w-fit">
+                            <Icon icon="ph:tag-fill" class="text-primary text-xl" />
+                            <span class="text-white font-black text-xl">Rp 2.000 <span
+                                    class="text-xs text-slate-500 font-bold uppercase tracking-widest ml-1">/
+                                    Atlet</span></span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-3xl shadow-2xl relative overflow-hidden group">
+                        <div
+                            class="absolute top-0 right-0 size-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-primary/10 transition-colors">
+                        </div>
+
+                        <label class="block text-[10px] font-black text-gray-400 uppercase mb-8 tracking-[0.2em]">JUMLAH
+                            ESTIMASI ATLET</label>
+
+                        <div class="relative mb-12">
+                            <input v-model="estimatedArchers"
+                                class="w-full h-3 bg-slate-100 rounded-full appearance-none cursor-pointer accent-navy hover:accent-primary transition-all slider-thumb"
+                                max="2000" min="50" step="10" type="range" />
+                            <div
+                                class="mt-6 flex justify-between items-center text-[11px] font-black text-gray-400 uppercase tracking-widest">
+                                <span>50</span>
+                                <div class="px-5 py-2 bg-navy text-white rounded-xl shadow-lg transform -translate-y-2">
+                                    {{ estimatedArchers }} ATLET
+                                </div>
+                                <span>2000</span>
+                            </div>
+                        </div>
+
+                        <div class="pt-8 border-t border-gray-100">
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+                                <span class="text-xs font-black text-gray-400 uppercase tracking-widest">TOTAL ESTIMASI
+                                    BIAYA</span>
+                                <span class="text-4xl font-black text-navy tracking-tighter">{{
+                                    formatCurrency(estimatedTotal) }}</span>
                             </div>
                         </div>
                     </div>
@@ -411,42 +476,56 @@ const handleSelectPlan = (plan) => {
 
 const clubPlansDetails = [
     {
-        id: 1,
-        features: ['Maks. 50 Anggota Klub', '1 GB Penyimpanan Media', 'Sertifikat Digital Standar', 'Laporan Bulanan Dasar'],
-    },
-    {
-        id: 2,
-        features: ['Anggota Tak Terbatas', 'Penyimpanan Media Tak Terbatas', 'Sertifikat Kustom Premium', 'Dukungan Prioritas 24/7', 'Analitik Performa Real-time'],
-    },
-    {
         id: 3,
-        features: ['Maks. 50 Anggota Klub', '1 GB Penyimpanan Media', 'Sertifikat Digital Standar', 'Laporan Bulanan Dasar'],
+        features: ['Akses Konten Eksklusif', 'Badge Pendukung Profil', 'Update Berita Prioritas', 'E-Certificate Pendukung'],
     },
     {
         id: 4,
-        features: ['Anggota Tak Terbatas', 'Penyimpanan Media Tak Terbatas', 'Sertifikat Kustom Premium', 'Dukungan Prioritas 24/7', 'Analitik Performa Real-time'],
+        features: ['Semua fitur Basic Support', 'Diskon Khusus Event Klub', 'Grup Komunitas Prioritas', 'Konsultasi Coach Bulanan', 'Akses Awal Fitur Baru'],
     }
 ]
 
 const orgPlansDetails = [
     {
         id: 5,
-        features: ['Bayar per atlet (Pay-as-you-go)', 'Sistem Bagan Eliminasi', 'Live Scoring Dasar', 'E-Sertifikat Otomatis'],
+        features: ['Landing page kustom', 'Sistem bagan eliminasi', 'Scoring langsung (Real-time)', 'E-Sertifikat otomatis', 'Integrasi payment gateway'],
     },
     {
         id: 6,
-        features: ['Semua fitur Standar', 'Pendaftaran Kustom Penuh', 'Integrasi Gerbang Pembayaran', 'Dukungan Prioritas 24/7', 'Laporan Analitik Event'],
+        features: ['Semua fitur Standard', 'Pendaftaran Kustom Penuh', 'Integrasi Gerbang Pembayaran', 'Dukungan Prioritas 24/7', 'Laporan Analitik Event'],
     }
 ]
 
-const comparisonData = [
-    { feature: 'Maksimum Anggota', basic: '50 Orang', elite: 'Tak Terbatas', icon: 'ph:users-three-bold' },
-    { feature: 'Penyimpanan Media', basic: '1 GB', elite: 'Tak Terbatas', icon: 'ph:hard-drives-bold' },
-    { feature: 'Sertifikat Kustom', basic: false, elite: true, icon: 'ph:certificate-bold' },
-    { feature: 'Analitik Lanjutan', basic: false, elite: true, icon: 'ph:chart-bar-bold' },
-    { feature: 'Dukungan Prioritas', basic: 'Email', elite: 'Prioritas 24/7', icon: 'ph:headset-bold' },
-    { feature: 'Iklan/Promo Event', basic: false, elite: true, icon: 'ph:megaphone-bold' },
-]
+const comparisonData = computed(() => {
+    if (userType.value === 'organization') {
+        return [
+            { feature: 'Manajemen Event', basic: 'Batas 1 Event', elite: 'Tak Terbatas', icon: 'ph:calendar-bold' },
+            { feature: 'Bagan Eliminasi', basic: 'Standard', elite: 'Lanjutan & Kustom', icon: 'ph:git-branch-bold' },
+            { feature: 'Live Scoring', basic: 'Dasar', elite: 'Real-time Premium', icon: 'ph:timer-bold' },
+            { feature: 'Custom Domain', basic: false, elite: true, icon: 'ph:globe-bold' },
+            { feature: 'Dukungan Prioritas', basic: 'Email', elite: 'Grup WhatsApp 24/7', icon: 'ph:headset-bold' },
+            { feature: 'Potongan Biaya', basic: '2.000 / Atlet', elite: 'Harga Kontrak', icon: 'ph:tag-bold' },
+        ]
+    }
+    return [
+        { feature: 'Maksimum Anggota', basic: '50 Orang', elite: 'Tak Terbatas', icon: 'ph:users-three-bold' },
+        { feature: 'Penyimpanan Media', basic: '1 GB', elite: 'Tak Terbatas', icon: 'ph:hard-drives-bold' },
+        { feature: 'Sertifikat Kustom', basic: false, elite: true, icon: 'ph:certificate-bold' },
+        { feature: 'Analitik Lanjutan', basic: false, elite: true, icon: 'ph:chart-bar-bold' },
+        { feature: 'Dukungan Prioritas', basic: 'Email', elite: 'Prioritas 24/7', icon: 'ph:headset-bold' },
+        { feature: 'Iklan/Promo Event', basic: false, elite: true, icon: 'ph:megaphone-bold' },
+    ]
+})
+
+const estimatedArchers = ref(150)
+const formatCurrency = (value) => {
+    return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        maximumFractionDigits: 0
+    }).format(value)
+}
+const estimatedTotal = computed(() => estimatedArchers.value * 2000)
 
 const isSubscribed = computed(() => !!subscriptionRes.value?.current?.plan_id)
 
@@ -539,6 +618,23 @@ const totalDays = computed(() => {
     if (cur?.status === 'trial') return 120
     if (cur?.billing_type === 'yearly') return 360
     return 30
+})
+
+const roleContent = computed(() => {
+    const isOrg = userType.value === 'organization'
+    return {
+        packageTitle: isOrg ? 'Event Optimizer' : 'Klub',
+        promoBadge: isOrg ? 'Penyelenggara Baru' : 'Klub Baru',
+        promoTitle: isOrg ? 'Mulai Turnamen Anda Gratis 4 Bulan!' : 'Mulai Klub Anda Gratis 4 Bulan!',
+        promoDesc: isOrg
+            ? 'Daftarkan organisasi Anda sekarang dan dapatkan paket Standard secara gratis selama 4 bulan pertama.'
+            : 'Daftarkan klub Anda sekarang dan dapatkan paket Standard secara gratis selama 4 bulan pertama.',
+        savings: isOrg ? '799.000' : '139.600',
+        recommendationBadge: isOrg ? 'EO Profesional' : 'Klub Utama',
+        eliteDescription: isOrg
+            ? 'Solusi lengkap untuk turnamen skala besar dengan fitur kustom pendaftaran.'
+            : 'Dapatkan fitur eksklusif dan limit lebih besar untuk komunitas Anda.'
+    }
 })
 
 const usageMessage = computed(() => {
