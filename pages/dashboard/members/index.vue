@@ -1,49 +1,41 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="flex flex-col gap-8">
-    <!-- Enhanced Header -->
-    <div
-      class="relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm mb-2">
-      <!-- Background Pattern -->
-      <div class="absolute inset-0 opacity-10"
-        style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.05) 10px, rgba(255,255,255,0.05) 20px);">
+    <!-- Header Section -->
+    <div class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
+      <!-- Theme Motif Pattern -->
+      <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
       </div>
+      <!-- Decorative Background Elements (Glows) -->
+      <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+      <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
 
-      <div class="relative p-5 sm:p-8">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div class="flex items-center sm:items-start gap-4 flex-1">
-            <!-- Icon Badge -->
-            <div
-              class="h-12 w-12 sm:h-14 sm:w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md flex-shrink-0">
-              <Icon icon="ph:users-three-bold" class="text-primary text-xl sm:text-2xl" />
-            </div>
-
-            <!-- Title Section -->
-            <div class="min-w-0">
-              <h1 class="text-xl sm:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2 truncate">
-                Roster Anggota
-              </h1>
-              <p class="text-slate-300 text-xs sm:text-sm max-w-2xl line-clamp-1 sm:line-clamp-none">
-                Kelola pemanah dan atlet yang terdaftar di klub Anda
-              </p>
-            </div>
+      <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div class="flex items-center gap-4">
+          <div
+            class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0">
+            <Icon icon="ph:users-three-bold" class="text-primary text-2xl sm:text-3xl" />
           </div>
-
-          <!-- Action Buttons -->
-          <div class="flex flex-col sm:flex-row gap-3">
-            <button
-              class="h-10 sm:h-11 px-6 bg-white/10 text-white rounded-xl border border-white/20 font-black text-[10px] sm:text-xs tracking-widest uppercase hover:bg-white/20 transition-all flex items-center justify-center gap-2 backdrop-blur-md"
-              @click="openInviteModal">
-              <Icon icon="ph:user-plus-bold" class="text-base" />
-              <span>Invite</span>
-            </button>
-            <NuxtLink to="/dashboard/members/create" class="w-full sm:w-auto">
-              <BaseButton variant="primary" icon="ph:plus-bold"
-                class="w-full h-10 sm:h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-[10px] sm:text-xs">
-                Tambah Anggota
-              </BaseButton>
-            </NuxtLink>
+          <div>
+            <h1 class="text-xl sm:text-3xl font-black tracking-tight">Roster Anggota</h1>
+            <p class="text-slate-300 text-xs sm:text-sm font-medium mt-1">Kelola pemanah dan atlet yang terdaftar di
+              klub Anda</p>
           </div>
+        </div>
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-3">
+          <button
+            class="h-10 sm:h-11 px-6 bg-white/10 text-white rounded-xl border border-white/20 font-black text-[10px] sm:text-xs tracking-widest uppercase hover:bg-white/20 transition-all flex items-center justify-center gap-2 backdrop-blur-md"
+            @click="openInviteModal">
+            <Icon icon="ph:user-plus-bold" class="text-base" />
+            <span>Invite</span>
+          </button>
+          <NuxtLink to="/dashboard/members/create" class="w-full sm:w-auto">
+            <BaseButton variant="primary" icon="ph:plus-bold"
+              class="w-full h-10 sm:h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-[10px] sm:text-xs">
+              Tambah Anggota
+            </BaseButton>
+          </NuxtLink>
         </div>
       </div>
     </div>

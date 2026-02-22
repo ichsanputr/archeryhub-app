@@ -41,7 +41,7 @@
                             Profil Resmi
                         </span>
                         <h1
-                            class="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black tracking-tight leading-none mb-4 sm:mb-5 uppercase break-words drop-shadow-md">
+                            class="text-2xl sm:text-4xl font-black tracking-tight leading-none mb-4 sm:mb-5 uppercase break-words drop-shadow-md">
                             {{ club.name || 'Klub Panahan' }}
                         </h1>
                         <p class="text-base sm:text-lg md:text-xl font-light text-white/80 max-w-3xl leading-snug">
@@ -91,7 +91,7 @@
                             <Icon icon="ph:clock-bold" class="text-base" />
                             Menunggu Persetujuan
                         </div>
-                        <button @click="shareClub"
+                        <button @click="openShareDialog"
                             class="size-11 sm:size-12 rounded-xl border border-white/10 hover:border-primary hover:bg-primary transition-all flex items-center justify-center group sm:ml-0 ml-auto backdrop-blur-md">
                             <Icon icon="ph:share-network-bold" class="text-xl text-white group-hover:text-navy" />
                         </button>
@@ -160,7 +160,7 @@
             <section class="py-10 sm:py-16">
                 <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3 mb-8 sm:mb-10">
                     <div>
-                        <h2 class="text-3xl font-black tracking-tighter uppercase">Anggota Unggulan</h2>
+                        <h2 class="text-3xl font-black tracking-tighter uppercase">Anggota</h2>
                         <p class="text-[#64748b] font-medium mt-1 uppercase text-[10px] tracking-widest">
                             Daftar Atlet Aktif
                         </p>
@@ -229,26 +229,34 @@
             <!-- ── Section divider ── -->
             <div class="border-t border-[#0f172a]/10"></div>
 
-            <!-- ── Dispatches & Achievements ── -->
+            <!-- ── Section divider ── -->
+            <div class="border-t border-[#0f172a]/10"></div>
+
+            <!-- ── Achievements Section ── -->
             <section class="py-10 sm:py-16">
-                <h2 class="text-3xl font-black tracking-tighter uppercase mb-12">Prestasi & Berita</h2>
-                <div class="max-w-3xl space-y-0">
-                    <template v-if="club.recentEvents?.length">
-                        <div v-for="(event, idx) in club.recentEvents" :key="event.id || idx" class="py-8"
-                            :class="idx < club.recentEvents.length - 1 ? 'border-b border-[#0f172a]/5' : ''">
+                <div class="flex items-center gap-3 mb-8">
+                    <span class="bg-navy p-1.5 rounded text-primary flex items-center">
+                        <Icon icon="ph:trophy-bold" class="text-sm" />
+                    </span>
+                    <h2 class="text-2xl font-black uppercase tracking-tight">Prestasi Utama</h2>
+                </div>
+                <div class="space-y-0">
+                    <template v-if="club.achievements?.length">
+                        <div v-for="(event, idx) in club.achievements" :key="event.id || idx" class="py-8"
+                            :class="idx < club.achievements.length - 1 ? 'border-b border-[#0f172a]/5' : ''">
                             <span
                                 class="text-[10px] font-black tracking-widest text-[#64748b] uppercase mb-2 block italic">
-                                {{ event.date }}
+                                {{ event.published_at ? new Date(event.published_at).toLocaleDateString('id-ID', {
+                                    day:
+                                        '2-digit', month: 'short', year: 'numeric'
+                                }) : '' }}
                             </span>
-                            <h3
-                                class="text-2xl font-black leading-tight mb-3 hover:text-primary transition-colors cursor-pointer">
-                                {{ event.name }}
+                            <h3 class="text-2xl font-black leading-tight mb-3 hover:text-primary transition-colors cursor-pointer"
+                                @click="router.push(`/news/${event.slug}`)">
+                                {{ event.title }}
                             </h3>
-                            <div class="inline-flex items-center gap-2">
-                                <span
-                                    class="px-3 py-1 bg-primary text-navy text-[10px] font-black uppercase tracking-wider">
-                                    {{ event.result }}
-                                </span>
+                            <div v-if="event.excerpt" class="text-sm text-[#64748b] mb-4 line-clamp-2">
+                                {{ event.excerpt }}
                             </div>
                         </div>
                     </template>
@@ -256,6 +264,44 @@
                         <Icon icon="ph:trophy-light" class="text-5xl mx-auto mb-3 opacity-20" />
                         <p class="text-[10px] font-black uppercase tracking-widest text-[#64748b]">Belum ada catatan
                             prestasi</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="border-t border-[#0f172a]/10"></div>
+
+            <!-- ── News Section ── -->
+            <section class="py-10 sm:py-16">
+                <div class="flex items-center gap-3 mb-8">
+                    <span class="bg-navy p-1.5 rounded text-primary flex items-center">
+                        <Icon icon="ph:newspaper-bold" class="text-sm" />
+                    </span>
+                    <h2 class="text-2xl font-black uppercase tracking-tight">Berita Terbaru</h2>
+                </div>
+                <div class="space-y-0">
+                    <template v-if="club.news?.length">
+                        <div v-for="(item, idx) in club.news" :key="item.id || idx" class="py-8"
+                            :class="idx < club.news.length - 1 ? 'border-b border-[#0f172a]/5' : ''">
+                            <span
+                                class="text-[10px] font-black tracking-widest text-[#64748b] uppercase mb-2 block italic">
+                                {{ item.published_at ? new Date(item.published_at).toLocaleDateString('id-ID', {
+                                    day:
+                                        '2-digit', month: 'short', year: 'numeric'
+                                }) : '' }}
+                            </span>
+                            <h3 class="text-2xl font-black leading-tight mb-3 hover:text-primary transition-colors cursor-pointer"
+                                @click="router.push(`/news/${item.slug}`)">
+                                {{ item.title }}
+                            </h3>
+                            <div v-if="item.excerpt" class="text-sm text-[#64748b] mb-4 line-clamp-2">
+                                {{ item.excerpt }}
+                            </div>
+                        </div>
+                    </template>
+                    <div v-else class="py-16 text-center">
+                        <Icon icon="ph:newspaper-light" class="text-5xl mx-auto mb-3 opacity-20" />
+                        <p class="text-[10px] font-black uppercase tracking-widest text-[#64748b]">Belum ada berita
+                            terbaru</p>
                     </div>
                 </div>
             </section>
@@ -313,8 +359,67 @@
         <AppDialog v-model:show="showArcherRequiredDialog" title="Tipe Akun Tidak Sesuai"
             message="Maaf, saat ini hanya akun dengan tipe 'Archer' yang dapat bergabung dengan klub. Silakan gunakan akun Archer Anda."
             confirm-text="Mengerti" icon="ph:warning-circle-bold" @confirm="showArcherRequiredDialog = false" />
+
+        <!-- Share Dialog -->
+        <Transition name="modal">
+            <div v-if="showShareDialog" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                <div @click="closeShareDialog" class="absolute inset-0 bg-[#0f172a]/80 backdrop-blur-sm"></div>
+                <div class="relative w-full max-w-md bg-white rounded-2xl p-8 shadow-2xl border border-gray-100 z-10">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-xl font-black text-[#0f172a]">Bagikan Klub</h3>
+                        <button @click="closeShareDialog"
+                            class="w-9 h-9 bg-gray-100 rounded-full flex items-center justify-center text-[#0f172a] hover:bg-gray-200 transition-colors">
+                            <Icon icon="ph:x-bold" />
+                        </button>
+                    </div>
+
+                    <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl mb-6">
+                        <div
+                            class="w-14 h-14 rounded-3xl overflow-hidden border-2 border-primary flex-shrink-0 bg-white">
+                            <img :src="useImageOrDefault(club.logoUrl, club.name)" class="w-full h-full object-cover" />
+                        </div>
+                        <div>
+                            <p class="text-xs text-[#64748b] font-bold uppercase tracking-wider mb-0.5">Klub Panahan</p>
+                            <p class="font-black text-[#0f172a] text-base">{{ club.name }}</p>
+                            <p class="text-xs text-[#64748b]">{{ club.formattedLocation }}</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-4 gap-3 mb-6">
+                        <button v-for="plat in platforms" :key="plat.id" @click="shareTo(plat.id)"
+                            class="flex flex-col items-center gap-2 group">
+                            <div :class="`w-12 h-12 rounded-xl ${plat.bg} flex items-center justify-center shadow-sm group-hover:scale-110 transition-all`"
+                                v-html="plat.iconHtml"></div>
+                            <span class="text-[9px] font-black text-[#64748b] uppercase tracking-wider">{{ plat.name
+                            }}</span>
+                        </button>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <input type="text" readonly :value="shareUrl"
+                            class="flex-1 px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs font-bold text-[#64748b] outline-none" />
+                        <button @click="copyLink"
+                            class="px-4 py-3 bg-[#0f172a] text-white rounded-xl text-xs font-black hover:bg-[#1a365d] transition-colors whitespace-nowrap">
+                            {{ copied ? '✓ Tersalin' : 'Salin' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </Transition>
     </div>
 </template>
+
+<style scoped>
+.modal-enter-active,
+.modal-leave-active {
+    transition: opacity 0.3s ease;
+}
+
+.modal-enter-from,
+.modal-leave-to {
+    opacity: 0;
+}
+</style>
 
 <script setup>
 import { Icon } from '@iconify/vue'
@@ -401,6 +506,8 @@ const club = computed(() => {
         registrationNumber: data.registration_number || '',
         schedules: parseSchedules(data.schedules || data.training_schedule),
         recentEvents: data.recent_events || [],
+        achievements: data.achievements || [],
+        news: data.news || [],
         topMembers: data.top_members || [],
         sections: (data.sections || []).filter(s => s.title?.toLowerCase() !== 'apa kata anggota'),
         socialMedia: parseSocialMedia(data.social_media),
@@ -432,12 +539,37 @@ const getSocialUrl = (social) => {
     return base[social.platform] || social.username
 }
 
-const shareClub = async () => {
-    if (navigator.share) {
-        try { await navigator.share({ title: club.value.name, url: window.location.href }) } catch { }
-    } else {
-        try { await navigator.clipboard.writeText(window.location.href); toast.success('Link disalin!') } catch { }
-    }
+const showShareDialog = ref(false)
+const copied = ref(false)
+const shareUrl = computed(() => typeof window !== 'undefined' ? window.location.href : '')
+
+const openShareDialog = () => showShareDialog.value = true
+const closeShareDialog = () => { showShareDialog.value = false; copied.value = false }
+
+const platforms = [
+    { id: 'whatsapp', name: 'WhatsApp', bg: 'bg-green-50 text-green-600 hover:bg-green-600 hover:text-white', iconHtml: '<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.038 3.069l-.669 2.445 2.511-.659c.722.451 1.591.696 2.891.696 3.128 0 5.768-2.586 5.768-5.766 0-3.18-2.585-5.766-5.762-5.766zm3.369 8.303c-.144.405-.842.755-1.168.807-.326.052-.728.093-2.185-.484-1.85-.733-3.038-2.613-3.13-2.733-.093-.12-.76-.997-.76-1.996 0-1 .475-1.5.692-1.742.176-.192.42-.312.693-.312s.273.012.396.024c.123 0 .285-.048.438.312.153.36.525 1.261.57 1.356.045.093.076.204.015.324-.312.612-.342.66-.45.804-.108.144-.225.216-.108.408.117.192.52.852 1.118 1.38.77.684 1.411.897 1.613.997.202.102.321.084.441-.054.12-.138.514-.594.651-.798.136-.204.272-.171.459-.102.187.069 1.187.561 1.391.663z"/></svg>' },
+    { id: 'facebook', name: 'Facebook', bg: 'bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white', iconHtml: '<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>' },
+    { id: 'twitter', name: 'X', bg: 'bg-slate-50 text-slate-800 hover:bg-slate-800 hover:text-white', iconHtml: '<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>' },
+    { id: 'copy', name: 'Salin', bg: 'bg-gray-100 text-slate-600 hover:bg-[#0f172a] hover:text-white', iconHtml: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10"/></svg>' }
+]
+
+const copyLink = async () => {
+    try {
+        await navigator.clipboard.writeText(shareUrl.value)
+        copied.value = true
+        setTimeout(() => copied.value = false, 2000)
+    } catch { }
+}
+
+const shareTo = (platform) => {
+    if (platform === 'copy') return copyLink()
+    const text = encodeURIComponent(`Lihat profil klub panahan ${club.value.name} di Archeryhub.id`)
+    const url = encodeURIComponent(shareUrl.value)
+    let link = ''
+    if (platform === 'whatsapp') link = `https://wa.me/?text=${text}%20${url}`
+    else if (platform === 'facebook') link = `https://www.facebook.com/sharer/sharer.php?u=${url}`
+    else if (platform === 'twitter') link = `https://twitter.com/intent/tweet?text=${text}&url=${url}`
+    if (link) { window.open(link, '_blank', 'noopener,noreferrer'); closeShareDialog() }
 }
 
 const joinClub = async () => {

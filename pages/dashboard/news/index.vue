@@ -1,21 +1,34 @@
 <template>
     <div class="flex flex-col gap-8">
         <!-- Header Section -->
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div>
-                <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
-                    <NuxtLink to="/dashboard" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
-                    <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <span class="text-navy">Berita</span>
-                </div>
-                <h1 class="text-3xl font-extrabold text-navy tracking-tight">Manajemen Berita</h1>
-                <p class="text-gray-500 font-medium mt-1">Kelola berita dan pengumuman organisasi Anda.</p>
+        <div class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
+            <!-- Theme Motif Pattern -->
+            <div class="absolute inset-0"
+                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
             </div>
-            <NuxtLink to="/dashboard/news/create">
-                <BaseButton variant="primary" icon="ph:plus-bold" class="shadow-md shadow-primary/20">
-                    Buat Berita Baru
-                </BaseButton>
-            </NuxtLink>
+            <!-- Decorative Background Elements (Glows) -->
+            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
+
+            <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div class="flex items-center gap-4">
+                    <div
+                        class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0">
+                        <Icon icon="ph:newspaper-bold" class="text-primary text-2xl sm:text-3xl" />
+                    </div>
+                    <div>
+                        <h1 class="text-xl sm:text-3xl font-black tracking-tight">Manajemen Berita</h1>
+                        <p class="text-slate-300 text-xs sm:text-sm font-medium mt-1">Kelola berita dan pengumuman
+                            organisasi Anda.</p>
+                    </div>
+                </div>
+                <NuxtLink to="/dashboard/news/create">
+                    <BaseButton variant="primary" icon="ph:plus-bold"
+                        class="h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-xs">
+                        Buat Berita Baru
+                    </BaseButton>
+                </NuxtLink>
+            </div>
         </div>
 
         <!-- Quick Stats -->
@@ -62,7 +75,7 @@
                 <div>
                     <p class="text-xs text-gray-400 font-bold  tracking-wider">Total View</p>
                     <p class="text-lg font-bold text-navy">{{news.reduce((acc, n) => acc + n.views, 0).toLocaleString()
-                    }}</p>
+                        }}</p>
                 </div>
             </div>
         </div>

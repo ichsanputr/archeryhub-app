@@ -1,33 +1,50 @@
 <template>
     <div class="space-y-8">
-        <!-- Header -->
-        <div class="flex flex-wrap items-center justify-between gap-4">
-            <div>
-                <h1 class="text-2xl md:text-3xl font-black text-navy tracking-tight">Laporan & Statistik</h1>
-                <p class="text-text-secondary mt-1 font-medium text-sm">Analisis menyeluruh untuk pertumbuhan dan
-                    performa</p>
+        <!-- Header Section -->
+        <div class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
+            <!-- Theme Motif Pattern -->
+            <div class="absolute inset-0"
+                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
             </div>
-            <div class="flex flex-wrap items-center gap-3">
-                <div class="relative group">
-                    <button
-                        class="bg-white border border-gray-200 px-4 py-2 rounded-xl text-sm font-bold text-navy flex items-center gap-3 hover:border-primary transition-all shadow-sm">
-                        <Icon icon="ph:calendar-blank-bold" class="text-primary-dark" />
-                        <span>{{ dateRangeLabel }}</span>
-                        <Icon icon="ph:caret-down-bold"
-                            class="text-gray-400 group-hover:rotate-180 transition-transform" />
-                    </button>
-                    <!-- Simple Dropdown Placeholder -->
+            <!-- Decorative Background Elements (Glows) -->
+            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
+
+            <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div class="flex items-center gap-4">
                     <div
-                        class="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-100 rounded-xl shadow-md overflow-hidden z-20 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-all">
-                        <div v-for="range in rangeOptions" :key="range" @click="dateRange = range"
-                            class="px-4 py-2.5 text-xs font-bold text-navy hover:bg-primary transition-colors cursor-pointer">
-                            {{ range }}
-                        </div>
+                        class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0">
+                        <Icon icon="ph:chart-bar-bold" class="text-primary text-2xl sm:text-3xl" />
+                    </div>
+                    <div>
+                        <h1 class="text-xl sm:text-3xl font-black tracking-tight">Laporan & Statistik</h1>
+                        <p class="text-slate-300 text-xs sm:text-sm font-medium mt-1">Analisis menyeluruh untuk
+                            pertumbuhan dan performa</p>
                     </div>
                 </div>
-                <BaseButton variant="outline" icon="ph:download-simple">
-                    Ekspor
-                </BaseButton>
+                <div class="flex flex-wrap items-center gap-3">
+                    <div class="relative group">
+                        <button
+                            class="bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest text-white flex items-center gap-3 hover:bg-white/20 transition-all shadow-md">
+                            <Icon icon="ph:calendar-blank-bold" class="text-primary text-lg" />
+                            <span>{{ dateRangeLabel }}</span>
+                            <Icon icon="ph:caret-down-bold"
+                                class="text-white/40 group-hover:rotate-180 transition-transform" />
+                        </button>
+                        <!-- Simple Dropdown Placeholder -->
+                        <div
+                            class="absolute right-0 top-full mt-2 w-48 bg-white border border-gray-100 rounded-xl shadow-xl overflow-hidden z-20 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-all translate-y-2 group-hover:translate-y-0">
+                            <div v-for="range in rangeOptions" :key="range" @click="dateRange = range"
+                                class="px-4 py-3 text-xs font-bold text-navy hover:bg-primary transition-colors cursor-pointer">
+                                {{ range }}
+                            </div>
+                        </div>
+                    </div>
+                    <BaseButton variant="primary" icon="ph:download-simple"
+                        class="h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-xs">
+                        Ekspor
+                    </BaseButton>
+                </div>
             </div>
         </div>
 
@@ -144,7 +161,7 @@
                                 {{ stat.label }}</p>
                             <p class="text-navy text-2xl md:text-3xl font-black tracking-tight tabular-nums">{{
                                 stat.value
-                            }}</p>
+                                }}</p>
                         </div>
                         <div
                             class="bg-gray-50 p-2 rounded-lg text-primary-dark group-hover:bg-primary group-hover:text-navy transition-colors shrink-0">
@@ -205,7 +222,7 @@
                                                     {{ athlete.name }}</div>
                                                 <div class="text-[10px] text-gray-400 font-bold ">{{
                                                     athlete.club
-                                                }}</div>
+                                                    }}</div>
                                             </div>
                                         </div>
                                     </td>
@@ -285,7 +302,7 @@
                             <p class="text-xs text-text-secondary mt-1 leading-relaxed">{{ activity.description }}</p>
                         </div>
                         <span class="text-[10px] text-text-secondary font-black  shrink-0">{{ activity.time
-                            }}</span>
+                        }}</span>
                     </div>
                 </div>
             </div>

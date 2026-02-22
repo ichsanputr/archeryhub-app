@@ -50,106 +50,72 @@
 
             <!-- Club Packages -->
             <div v-show="activeTab === 'club'" class="space-y-12">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
-                    <!-- Rookie -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch max-w-5xl mx-auto">
+                    <!-- Basic Support -->
                     <div class="bg-white border border-gray-100 rounded-3xl p-8 flex flex-col shadow-sm transition-all duration-500 hover:-translate-y-2 group"
                         v-motion-fade-visible-once>
                         <div class="mb-10">
                             <div
                                 class="size-12 bg-gray-50 rounded-2xl flex items-center justify-center mb-6 text-gray-400 group-hover:bg-navy group-hover:text-white transition-colors duration-500">
-                                <Icon icon="ph:plant-bold" class="text-2xl" />
+                                <Icon icon="ph:shield-check-bold" class="text-2xl" />
                             </div>
-                            <h3 class="text-2xl font-black text-navy mb-2">Rookie</h3>
-                            <p class="text-gray-500 text-sm font-medium">Langkah pertama menuju profesionalisme digital
-                                klub Anda.</p>
+                            <h3 class="text-2xl font-black text-navy mb-2">Basic Support</h3>
+                            <p class="text-gray-500 text-sm font-medium">Langkah awal mendukung ekosistem panahan
+                                digital.</p>
                         </div>
                         <div class="mb-10">
                             <div class="flex items-baseline gap-1">
-                                <span class="text-5xl font-black text-navy tracking-tighter">Rp 0</span>
-                                <span class="text-gray-400 font-bold tracking-wider">/BLN</span>
+                                <span class="text-xl font-bold text-navy opacity-40">Rp</span>
+                                <span class="text-5xl font-black text-navy tracking-tighter">34.900</span>
+                                <span class="text-gray-400 font-bold tracking-wider uppercase text-xs">/BLN</span>
                             </div>
-                            <p
-                                class="text-[10px] text-primary font-black uppercase tracking-widest mt-3 bg-primary/10 px-3 py-1 rounded-full inline-block">
-                                Free Permanent</p>
                         </div>
                         <ul class="space-y-4 mb-12 flex-1">
-                            <li v-for="feat in rookieFeatures" :key="feat.text"
-                                class="flex items-start gap-3 text-sm font-medium">
-                                <Icon :icon="feat.included ? 'ph:check-circle-fill' : 'ph:minus-circle-bold'"
-                                    :class="['mt-0.5 text-lg shrink-0', feat.included ? 'text-green-500' : 'text-gray-200']" />
-                                <span :class="feat.included ? 'text-navy' : 'text-gray-300'">{{ feat.text }}</span>
+                            <li v-for="feat in basicFeatures" :key="feat"
+                                class="flex items-start gap-3 text-sm font-medium text-navy">
+                                <Icon icon="ph:check-circle-fill" class="mt-0.5 text-lg shrink-0 text-green-500" />
+                                <span>{{ feat }}</span>
                             </li>
                         </ul>
                         <button
                             class="w-full py-4 px-6 rounded-2xl border-2 border-navy text-navy font-black hover:bg-navy hover:text-white transition-all duration-300">
-                            Mulai Sekarang
+                            Pilih Paket
                         </button>
                     </div>
 
-                    <!-- Pro Club -->
-                    <div class="bg-navy rounded-3xl p-8 flex flex-col shadow-sm relative overflow-hidden ring-4 ring-primary/20 scale-105 z-10"
+                    <!-- Elite Member -->
+                    <div class="bg-navy rounded-3xl p-8 flex flex-col shadow-sm relative overflow-hidden ring-4 ring-primary/20 transition-all duration-500 hover:-translate-y-2"
                         v-motion-fade-visible-once>
                         <div
                             class="absolute top-0 right-0 bg-primary text-navy px-6 py-2 text-[11px] font-black uppercase tracking-[0.2em] rounded-bl-2xl shadow-lg">
-                            BEST CHOICE
+                            REKOMENDASI
                         </div>
                         <div class="mb-10 pt-4">
                             <div
                                 class="size-14 bg-primary rounded-2xl flex items-center justify-center mb-6 text-navy shadow-lg shadow-primary/20">
                                 <Icon icon="ph:crown-simple-fill" class="text-3xl" />
                             </div>
-                            <h3 class="text-3xl font-black text-white mb-2">Pro Club</h3>
-                            <p class="text-slate-400 text-sm font-medium">Toolset lengkap untuk klub yang sedang
-                                bertumbuh pesat.</p>
+                            <h3 class="text-3xl font-black text-white mb-2">Elite Member</h3>
+                            <p class="text-slate-400 text-sm font-medium">Akses penuh dan keuntungan eksklusif untuk
+                                pendukung utama.</p>
                         </div>
                         <div class="mb-10">
                             <div class="flex items-baseline gap-1">
-                                <span class="text-5xl font-black text-white tracking-tighter">Rp 799rb</span>
-                                <span class="text-slate-400 font-bold tracking-wider">/BLN</span>
+                                <span class="text-xl font-bold text-white opacity-40">Rp</span>
+                                <span class="text-5xl font-black text-white tracking-tighter">75.000</span>
+                                <span class="text-slate-400 font-bold tracking-wider uppercase text-xs">/BLN</span>
                             </div>
-                            <p class="text-xs text-white/50 mt-4 italic">*Ditagih tahunan untuk penghematan maksimal</p>
                         </div>
                         <ul class="space-y-5 mb-14 flex-1">
-                            <li v-for="feat in proFeatures" :key="feat"
+                            <li v-for="feat in eliteFeatures" :key="feat"
                                 class="flex items-start gap-4 text-sm font-medium text-white">
                                 <Icon icon="ph:check-circle-fill" class="text-primary text-xl shrink-0" />
                                 <span>{{ feat }}</span>
                             </li>
                         </ul>
                         <button
-                            class="w-full py-4 px-6 rounded-2xl bg-primary text-navy font-black hover:scale-[1.03] active:scale-95 transition-all  shadow-primary/20">
-                            Aktifkan Pro
-                        </button>
-                    </div>
-
-                    <!-- Elite Club -->
-                    <div class="bg-white border border-gray-100 rounded-3xl p-8 flex flex-col shadow-sm hover: transition-all duration-500 hover:-translate-y-2 group"
-                        v-motion-fade-visible-once>
-                        <div class="mb-10">
-                            <div
-                                class="size-12 bg-gray-50 rounded-2xl flex items-center justify-center mb-6 text-gray-400 group-hover:bg-navy group-hover:text-white transition-colors duration-500">
-                                <Icon icon="ph:rocket-launch-bold" class="text-2xl" />
-                            </div>
-                            <h3 class="text-2xl font-black text-navy mb-2">Elite</h3>
-                            <p class="text-gray-500 text-sm font-medium">Solusi premium untuk pusat pelatihan performa
-                                tinggi.</p>
-                        </div>
-                        <div class="mb-10">
-                            <div class="flex items-baseline gap-1">
-                                <span class="text-5xl font-black text-navy tracking-tighter">Rp 2,1jt</span>
-                                <span class="text-gray-400 font-bold tracking-wider">/BLN</span>
-                            </div>
-                        </div>
-                        <ul class="space-y-4 mb-12 flex-1">
-                            <li v-for="feat in eliteFeatures" :key="feat"
-                                class="flex items-start gap-3 text-sm font-medium">
-                                <Icon icon="ph:check-circle-fill" class="text-green-500 mt-0.5 text-lg shrink-0" />
-                                <span class="text-navy">{{ feat }}</span>
-                            </li>
-                        </ul>
-                        <button
-                            class="w-full py-4 px-6 rounded-2xl border-2 border-navy text-navy font-black hover:bg-navy hover:text-white transition-all duration-300">
-                            Hubungi Penjualan
+                            class="w-full py-4 px-6 rounded-2xl bg-primary text-navy font-black hover:scale-[1.03] active:scale-95 transition-all shadow-primary/20">
+                            Aktifkan Elite
                         </button>
                     </div>
                 </div>
@@ -220,7 +186,7 @@
                                         class="mt-4 flex justify-between text-[11px] font-black text-gray-400 uppercase tracking-widest">
                                         <span>50</span>
                                         <span class="text-navy bg-primary/10 px-3 py-1 rounded-lg">{{ estimatedArchers
-                                        }} Atlet</span>
+                                            }} Atlet</span>
                                         <span>2000</span>
                                     </div>
                                 </div>
@@ -310,30 +276,19 @@ const toggleFaq = (index) => {
     activeFaq.value = activeFaq.value === index ? null : index
 }
 
-const rookieFeatures = [
-    { text: 'Maksimal 15 anggota', included: true },
-    { text: 'Dashboard statistik dasar', included: true },
-    { text: 'Kartu skor digital', included: true },
-    { text: 'Branding kustom club', included: false },
-    { text: 'Cloud storage (Media)', included: false },
-]
-
-const proFeatures = [
-    'Anggota tanpa batas',
-    'Analitik performa lanjutan',
-    'Branding klub & logo kustom',
-    'Ekspor CSV dan PDF otomatis',
-    'Manajemen inventaris peralatan',
-    'Pemberitahuan push otomatis'
+const basicFeatures = [
+    'Akses Konten Eksklusif',
+    'Badge Pendukung Profil',
+    'Update Berita Prioritas',
+    'E-Certificate Pendukung'
 ]
 
 const eliteFeatures = [
-    'Semua fitur Pro Club',
-    'Dukungan prioritas 24/7',
-    'Akses API penuh (Whitelabel)',
-    'Portal scoring kustom sekolah',
-    'Modul pelatihan video terintegrasi',
-    'Dedicated Account Manager'
+    'Semua fitur Basic Support',
+    'Diskon Khusus Event Klub',
+    'Grup Komunitas Prioritas',
+    'Konsultasi Coach Bulanan',
+    'Akses Awal Fitur Baru'
 ]
 
 const eoFeatures = [

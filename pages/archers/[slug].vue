@@ -1,378 +1,315 @@
 <template>
-    <div class="bg-background-light min-h-screen flex flex-col">
-
-        <!-- ── Hero Banner ── -->
-        <div class="bg-[#0e1e3a] relative overflow-hidden">
-            <div class="absolute inset-0 z-0">
-                <div class="absolute inset-0 bg-gradient-to-r from-[#0e1e3a] via-[#0e1e3a]/95 to-[#0e1e3a]/40 z-10">
+    <div class="bg-white min-h-screen flex flex-col">
+        <!-- ── Hero Section ── -->
+        <div class="bg-navy relative overflow-hidden pt-32 pb-16 sm:pt-40 sm:pb-24">
+            <!-- Decorative Elements -->
+            <div class="absolute inset-0 z-0 opacity-20">
+                <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/20 to-transparent"></div>
+                <div class="absolute bottom-0 left-0 w-1/2 h-full bg-gradient-to-r from-primary/10 to-transparent">
                 </div>
-                <img :src="useImageOrDefault(archer.photo_url || archer.banner_url, archer.full_name)"
-                    class="w-full h-full object-cover object-center opacity-30 mix-blend-overlay" />
             </div>
 
-            <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-10 sm:pt-28 sm:pb-12">
-                <div class="flex flex-col md:flex-row items-center md:items-end gap-6 md:gap-8">
-                    <!-- Avatar Circle -->
-                    <div class="flex-shrink-0 relative group">
+            <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row items-center md:items-end gap-8 md:gap-12">
+                    <!-- Photo -->
+                    <div class="relative group">
                         <div
-                            class="w-32 h-32 sm:w-40 sm:h-40 md:w-52 md:h-52 rounded-full border-4 border-[#c3f53c] shadow-[0_0_30px_rgba(195,245,60,0.3)] overflow-hidden bg-gray-800">
+                            class="w-32 h-32 sm:w-40 sm:h-40 rounded-3xl overflow-hidden border-4 border-primary/30 shadow-2xl bg-navy-dark relative z-10">
                             <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
                                 :alt="archer.full_name"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                         </div>
-                        <!-- Bow type badge -->
-                        <div class="absolute bottom-2 right-2 md:bottom-4 md:right-4 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg"
-                            :title="bowTypeLabel">
-                            <Icon icon="ph:bow-bold" class="text-[#0e1e3a] text-lg" />
+                        <!-- Background Ornament -->
+                        <div
+                            class="absolute -inset-4 bg-primary/20 blur-2xl rounded-full -z-0 opacity-50 group-hover:opacity-100 transition-opacity">
                         </div>
                     </div>
 
                     <!-- Info -->
-                    <div class="flex-1 text-center md:text-left text-white mb-1 md:mb-2">
-                        <!-- Country badge -->
+                    <div class="flex-1 text-center md:text-left text-white">
                         <div
-                            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-4">
+                            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/10 mb-6 group hover:border-primary/50 transition-colors">
                             <span class="text-sm">🇮🇩</span>
-                            <span class="text-sm font-bold tracking-wide">INA — Indonesia</span>
+                            <span class="text-[10px] font-black tracking-[0.2em] uppercase text-white/80">Indonesia • {{
+                                archer.city || 'Atlet Nasional' }}</span>
                         </div>
 
-                        <h1 class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-black tracking-tight mb-2 break-words">
+                        <h1
+                            class="text-2xl sm:text-4xl font-black tracking-tight leading-none mb-6 uppercase break-words drop-shadow-lg">
                             {{ archer.full_name }}
                         </h1>
 
-                        <div class="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-slate-300 text-sm sm:text-base mb-5">
-                            <div v-if="bowTypeLabel" class="flex items-center gap-2">
-                                <Icon icon="ph:bow-bold" class="text-[#c3f53c]" />
-                                <span>{{ bowTypeLabel }}</span>
+                        <div
+                            class="flex flex-wrap justify-center md:justify-start items-center gap-x-8 gap-y-4 mb-10 text-white/90">
+                            <div class="flex items-center gap-6">
+                                <template v-for="(type, idx) in bowTypes" :key="type.id">
+                                    <div class="flex items-center gap-2.5 group/bow">
+                                        <img :src="`/${type.icon}`"
+                                            class="w-5 h-5 brightness-0 invert opacity-70 group-hover/bow:opacity-100 transition-opacity" />
+                                        <span class="font-black uppercase tracking-[0.15em] text-[10px]">{{ type.label
+                                            }}</span>
+                                        <span v-if="idx < bowTypes.length - 1"
+                                            class="text-white/20 ml-2 font-light">•</span>
+                                    </div>
+                                </template>
                             </div>
-                            <span v-if="bowTypeLabel && archer.club_name"
-                                class="hidden md:inline text-slate-600">•</span>
-                            <div v-if="archer.club_name" class="flex items-center gap-2">
-                                <Icon icon="ph:buildings-bold" class="text-[#c3f53c]" />
-                                <NuxtLink v-if="archer.club_slug" :to="`/clubs/${archer.club_slug}`"
-                                    class="hover:text-[#c3f53c] transition-colors">{{ archer.club_name }}</NuxtLink>
-                                <span v-else>{{ archer.club_name }}</span>
+                            <div v-if="archer.club_name"
+                                class="flex items-center gap-2.5 group cursor-pointer md:border-l md:border-white/10 md:pl-8"
+                                @click="archer.club_slug && router.push(`/clubs/${archer.club_slug}`)">
+                                <Icon icon="ph:buildings-bold" class="text-primary text-xl" />
+                                <span
+                                    class="font-bold text-white/80 group-hover:text-primary transition-colors tracking-tight">{{
+                                    archer.club_name
+                                    }}</span>
                             </div>
                         </div>
 
-                        <div class="flex flex-wrap justify-center md:justify-start gap-3 w-full md:w-auto">
+                        <div class="flex flex-wrap justify-center md:justify-start gap-4">
                             <button @click="openShareDialog"
-                                class="h-10 px-6 w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white font-bold rounded-lg backdrop-blur-sm border border-white/10 transition-colors flex items-center justify-center gap-2">
-                                <Icon icon="ph:share-network-bold" class="text-lg" />
-                                Bagikan Profil
+                                class="h-12 px-8 rounded-xl bg-white/5 border border-white/10 hover:border-primary hover:bg-primary hover:text-navy transition-all flex items-center justify-center gap-3 group backdrop-blur-md">
+                                <Icon icon="ph:share-network-bold"
+                                    class="text-xl group-hover:scale-110 transition-transform" />
+                                <span class="font-black uppercase tracking-wider text-xs">Bagikan Profil</span>
                             </button>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
 
-                    <!-- Status card -->
-                    <div v-if="archer.bio"
-                        class="hidden lg:block bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-5 w-72">
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="text-slate-400 text-xs font-bold uppercase tracking-wider">Biografi</span>
-                            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                        </div>
-                        <p class="text-white text-sm leading-relaxed line-clamp-4">{{ archer.bio }}</p>
+        <!-- ── Stats Header ── -->
+        <div class="bg-navy-dark border-y border-white/5 py-8 relative z-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                    <div class="text-center md:text-left border-r border-white/10 pr-4 last:border-0">
+                        <p class="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] mb-2">Total Event</p>
+                        <p class="text-3xl font-black text-primary">{{ groupedEventHistory.length }}</p>
+                    </div>
+                    <div class="text-center md:text-left border-r border-white/10 pr-4 last:border-0">
+                        <p class="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] mb-2">Pengalaman</p>
+                        <p class="text-3xl font-black text-primary">{{ hasExperience ? archer.experience_years : '—' }}
+                            <span class="text-xs font-bold text-white/40 uppercase">Thn</span>
+                        </p>
+                    </div>
+                    <div class="text-center md:text-left border-r border-white/10 pr-4 last:border-0">
+                        <p class="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] mb-2">Gender</p>
+                        <p class="text-3xl font-black text-primary">{{ genderLabel || '—' }}</p>
+                    </div>
+                    <div class="text-center md:text-left last:border-0">
+                        <p class="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] mb-2">Klub</p>
+                        <p class="text-xl font-black text-primary truncate" :title="archer.club_name">{{
+                            archer.club_name || 'Mandiri' }}</p>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- ── Main Content ── -->
-        <main
-            class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6 md:py-12 space-y-6 md:space-y-8 -mt-6 relative z-30">
-
-            <!-- Top Stats Row -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                <!-- Events Participated -->
-                <div
-                    class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100 flex items-start justify-between gap-3 group hover:border-[#c3f53c]/50 transition-colors">
-                    <div>
-                        <p class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Total Event</p>
-                        <div class="flex items-baseline gap-2">
-                            <h3 class="text-3xl sm:text-4xl font-black text-[#0e1e3a]">{{ groupedEventHistory.length }}</h3>
-                            <span class="text-slate-400 text-sm font-medium">partisipasi</span>
-                        </div>
+        <main class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-16 sm:py-24 space-y-24">
+            <!-- ── About & Info ── -->
+            <section class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+                <!-- Bio -->
+                <div class="lg:col-span-12 space-y-8">
+                    <div class="flex items-center gap-3 mb-8">
+                        <span class="bg-navy p-1.5 rounded text-primary flex items-center">
+                            <Icon icon="ph:user-bold" class="text-sm" />
+                        </span>
+                        <h2 class="text-2xl font-black uppercase tracking-tight">Biografi & Perjalanan</h2>
                     </div>
-                    <div
-                        class="w-12 h-12 bg-[#0e1e3a]/5 rounded-full flex items-center justify-center text-[#0e1e3a] group-hover:bg-[#0e1e3a] group-hover:text-[#c3f53c] transition-colors">
-                        <Icon icon="ph:calendar-check-bold" class="text-2xl" />
+                    <div class="prose prose-slate max-w-none">
+                        <p class="text-lg text-[#64748b] leading-relaxed font-medium">
+                            {{ archer.bio || `${archer.full_name} adalah atlet panahan berdedikasi yang berkompetisi di
+                            kategori ${bowTypeLabel}. Aktif berpartisipasi dalam berbagai kejuaraan nasional untuk
+                            mengasah kemampuan dan meraih prestasi terbaik.` }}
+                        </p>
+                    </div>
+
+                    <!-- Additional Details Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-8">
+                        <div v-if="archer.date_of_birth"
+                            class="p-6 bg-gray-50 rounded-2xl border border-gray-100 group hover:border-primary/50 transition-colors">
+                            <p class="text-[10px] font-black text-[#64748b] uppercase tracking-widest mb-4">Tanggal
+                                Lahir</p>
+                            <p class="text-xl font-black text-navy">{{ formatDate(archer.date_of_birth) }}</p>
+                        </div>
+                        <div v-if="archer.id"
+                            class="p-6 bg-gray-50 rounded-2xl border border-gray-100 group hover:border-primary/50 transition-colors">
+                            <p class="text-[10px] font-black text-[#64748b] uppercase tracking-widest mb-4">ID Atlet</p>
+                            <p class="text-xl font-black text-navy font-mono">{{ archer.id }}</p>
+                        </div>
+                        <div v-if="archer.city"
+                            class="p-6 bg-gray-50 rounded-2xl border border-gray-100 group hover:border-primary/50 transition-colors">
+                            <p class="text-[10px] font-black text-[#64748b] uppercase tracking-widest mb-4">Kota Asal
+                            </p>
+                            <p class="text-xl font-black text-navy">{{ archer.city }}</p>
+                        </div>
                     </div>
                 </div>
+            </section>
 
-                <!-- Avg Arrow Score -->
-                <div
-                    class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100 flex items-start justify-between gap-3 group hover:border-[#c3f53c]/50 transition-colors">
-                    <div>
-                        <p class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Pengalaman</p>
-                        <div class="flex items-baseline gap-2">
-                            <h3 class="text-3xl sm:text-4xl font-black text-[#0e1e3a]">
-                                {{ hasExperience ? archer.experience_years : '' }}
-                            </h3>
-                            <span class="text-slate-400 text-sm font-medium">tahun</span>
-                        </div>
-                    </div>
-                    <div
-                        class="w-12 h-12 bg-[#0e1e3a]/5 rounded-full flex items-center justify-center text-[#0e1e3a] group-hover:bg-[#0e1e3a] group-hover:text-[#c3f53c] transition-colors">
-                        <Icon icon="ph:medal-bold" class="text-2xl" />
-                    </div>
-                </div>
+            <div class="border-t border-[#0f172a]/10"></div>
 
-                <!-- Personal Info -->
-                <div v-if="archer.city"
-                    class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100 flex items-start justify-between gap-3 group hover:border-[#c3f53c]/50 transition-colors sm:col-span-2 lg:col-span-1">
-                    <div>
-                        <p class="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Kota / Lokasi</p>
-                        <div class="flex items-baseline gap-2">
-                            <h3 class="text-xl sm:text-2xl font-black text-[#0e1e3a] leading-tight break-words">{{ archer.city
-                                }}</h3>
-                        </div>
+            <!-- ── Performance Section ── -->
+            <section class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <div class="space-y-8">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="bg-navy p-1.5 rounded text-primary flex items-center">
+                            <Icon icon="ph:chart-line-up-bold" class="text-sm" />
+                        </span>
+                        <h2 class="text-2xl font-black uppercase tracking-tight">Tren Performa</h2>
                     </div>
-                    <div
-                        class="w-12 h-12 bg-[#0e1e3a]/5 rounded-full flex items-center justify-center text-[#0e1e3a] group-hover:bg-[#0e1e3a] group-hover:text-[#c3f53c] transition-colors">
-                        <Icon icon="ph:map-pin-bold" class="text-2xl" />
-                    </div>
-                </div>
-            </div>
+                    <p class="text-[#64748b] font-medium leading-relaxed">
+                        Analisis data skor dari 6 event terakhir untuk memantau konsistensi dan perkembangan akurasi
+                        bidikan.
+                    </p>
 
-            <!-- Biography + Sidebar Grid -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Bio & Performance -->
-                <div class="lg:col-span-2 space-y-6">
-                    <!-- Biography -->
-                    <div v-if="archer.bio" class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <h3 class="text-lg font-bold text-[#0e1e3a] flex items-center gap-2 mb-4">
-                            <Icon icon="ph:user-bold" class="text-[#c3f53c]" />
-                            Biografi
-                        </h3>
-                        <p class="text-slate-600 leading-relaxed">{{ archer.bio }}</p>
-                    </div>
-
-                    <!-- Performance Bar Chart -->
-                    <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-lg font-bold text-[#0e1e3a] flex items-center gap-2">
-                                <Icon icon="ph:chart-bar-bold" class="text-[#c3f53c]" />
-                                Tren Performa
-                            </h3>
-                            <span class="text-xs text-slate-400 font-bold uppercase tracking-wider">Skor
-                                Kualifikasi</span>
-                        </div>
-
+                    <div class="bg-gray-50 p-8 rounded-3xl overflow-hidden border border-gray-100 relative group">
                         <template v-if="perfBars.length > 0">
-                            <div class="relative h-52 w-full flex items-end justify-between gap-2 pt-8 pb-6 px-2">
-                                <!-- Grid lines -->
-                                <div
-                                    class="absolute inset-0 flex flex-col justify-between pointer-events-none pb-6 text-[10px] text-slate-300 font-mono">
-                                    <div
-                                        class="border-b border-dashed border-slate-100 w-full h-0 flex items-center gap-1">
-                                        <span class="-mt-3">{{ perfMax }}</span>
-                                    </div>
-                                    <div
-                                        class="border-b border-dashed border-slate-100 w-full h-0 flex items-center gap-1">
-                                        <span class="-mt-3">{{ Math.round((perfMax + perfMin) / 2) }}</span>
-                                    </div>
-                                    <div class="border-b border-slate-100 w-full h-0"></div>
-                                </div>
-
+                            <div class="relative h-64 w-full flex items-end justify-between gap-3 pt-12">
                                 <div v-for="(bar, i) in perfBars" :key="i"
-                                    class="relative flex flex-col items-center justify-end h-full w-full group">
-                                    <div class="w-full rounded-t-sm relative transition-all duration-300"
-                                        :class="i === perfBars.length - 1 ? 'bg-[#0e1e3a]' : 'bg-[#0e1e3a]/20 group-hover:bg-[#0e1e3a]/40'"
+                                    class="relative flex flex-col items-center justify-end h-full w-full group/bar">
+                                    <div class="w-full rounded-t-xl relative transition-all duration-500 delay-[i*100ms]"
+                                        :class="i === perfBars.length - 1 ? 'bg-navy' : 'bg-navy/10 group-hover/bar:bg-navy/30'"
                                         :style="{ height: bar.pct + '%' }">
-                                        <div class="absolute -top-8 left-1/2 -translate-x-1/2 text-[10px] py-1 px-2 rounded whitespace-nowrap"
-                                            :class="i === perfBars.length - 1 ? 'bg-[#c3f53c] text-[#0e1e3a] font-bold opacity-100' : 'bg-[#0e1e3a] text-white opacity-0 group-hover:opacity-100 transition-opacity'">
-                                            {{ bar.score }}
+                                        <div
+                                            class="absolute -top-10 left-1/2 -translate-x-1/2 bg-navy border border-white/20 text-white text-[10px] font-black py-1.5 px-3 rounded-lg opacity-0 group-hover/bar:opacity-100 transition-all scale-75 group-hover/bar:scale-100 whitespace-nowrap shadow-xl">
+                                            Skor: {{ bar.score }}
                                         </div>
                                     </div>
                                     <span
-                                        class="text-[9px] text-slate-400 font-bold mt-2 text-center truncate w-full px-1">{{
+                                        class="text-[9px] text-[#64748b] font-black mt-4 uppercase tracking-widest text-center truncate w-full">{{
                                             bar.label }}</span>
                                 </div>
                             </div>
                         </template>
-                        <div v-else class="h-52 flex flex-col items-center justify-center text-slate-300">
-                            <Icon icon="ph:chart-bar-light" class="text-5xl mb-3" />
-                            <p class="text-sm font-bold uppercase tracking-widest">Belum ada data skor</p>
+                        <div v-else class="h-64 flex flex-col items-center justify-center text-gray-300">
+                            <Icon icon="ph:chart-bar-light" class="text-6xl mb-4 opacity-50" />
+                            <p class="text-xs font-black uppercase tracking-[0.3em]">Data skor belum tersedia</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Sidebar -->
-                <div class="space-y-6">
-                    <!-- Personal Data -->
-                    <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <h3 class="text-lg font-bold text-[#0e1e3a] flex items-center gap-2 mb-5">
-                            <Icon icon="ph:identification-card-bold" class="text-[#c3f53c]" />
-                            Data Atlet
-                        </h3>
-                        <div class="space-y-3 text-sm">
-                            <div v-if="archer.id"
-                                class="flex flex-col items-start gap-1 py-2 border-b border-gray-50 sm:flex-row sm:items-center sm:justify-between">
-                                <span class="text-slate-500 font-medium">Kode Atlet</span>
-                                <span class="font-black text-[#0e1e3a] font-mono text-left break-all sm:text-right">{{ archer.id }}</span>
-                            </div>
-                            <div v-if="genderLabel"
-                                class="flex flex-col items-start gap-1 py-2 border-b border-gray-50 sm:flex-row sm:items-center sm:justify-between">
-                                <span class="text-slate-500 font-medium">Jenis Kelamin</span>
-                                <span class="font-bold text-[#0e1e3a] text-left sm:text-right">{{ genderLabel }}</span>
-                            </div>
-                            <div v-if="archer.date_of_birth"
-                                class="flex flex-col items-start gap-1 py-2 border-b border-gray-50 sm:flex-row sm:items-center sm:justify-between">
-                                <span class="text-slate-500 font-medium">Tgl. Lahir</span>
-                                <span class="font-bold text-[#0e1e3a] text-left sm:text-right">{{ formatDate(archer.date_of_birth) }}</span>
-                            </div>
-                            <div v-if="bowTypeLabel"
-                                class="flex flex-col items-start gap-1 py-2 border-b border-gray-50 sm:flex-row sm:items-center sm:justify-between">
-                                <span class="text-slate-500 font-medium">Jenis Busur</span>
-                                <span
-                                    class="font-bold text-[#0e1e3a] px-2 py-0.5 bg-[#c3f53c]/20 rounded text-xs uppercase">{{
-                                        bowTypeLabel }}</span>
-                            </div>
-                            <div v-if="archer.city" class="flex flex-col items-start gap-1 py-2 sm:flex-row sm:items-center sm:justify-between">
-                                <span class="text-slate-500 font-medium">Kota</span>
-                                <span class="font-bold text-[#0e1e3a] text-left break-all sm:text-right">{{ archer.city }}</span>
-                            </div>
-                        </div>
+                <!-- Riwayat Summary -->
+                <div class="space-y-8">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="bg-navy p-1.5 rounded text-primary flex items-center">
+                            <Icon icon="ph:scroll-bold" class="text-sm" />
+                        </span>
+                        <h2 class="text-2xl font-black uppercase tracking-tight">Perjalanan Karier</h2>
                     </div>
-
-                    <!-- Equipment (if available) -->
-                    <div v-if="archer.equipment?.length"
-                        class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <h3 class="text-lg font-bold text-[#0e1e3a] flex items-center gap-2 mb-5">
-                            <Icon icon="ph:wrench-bold" class="text-[#c3f53c]" />
-                            Perlengkapan
-                        </h3>
-                        <div class="space-y-3">
-                            <div v-for="item in archer.equipment" :key="item.type"
-                                class="flex items-center gap-3 p-3 rounded-xl bg-gray-50">
+                    <div class="space-y-6">
+                        <template v-if="groupedEventHistory.length">
+                            <div v-for="(event, idx) in groupedEventHistory.slice(0, 3)" :key="event.id"
+                                class="flex gap-6 relative">
+                                <div v-if="idx < 2" class="absolute left-6 top-10 bottom-0 w-px bg-gray-100"></div>
                                 <div
-                                    class="w-9 h-9 bg-white rounded-lg flex items-center justify-center text-[#0e1e3a] shadow-sm">
-                                    <Icon icon="ph:package-bold" class="text-lg" />
+                                    class="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center shrink-0 border border-gray-100 z-10 group-hover:border-primary transition-colors">
+                                    <Icon icon="ph:medal-bold" class="text-navy text-xl" />
                                 </div>
-                                <div>
-                                    <p class="text-[10px] text-slate-500 font-bold uppercase">{{ item.type }}</p>
-                                    <p class="font-bold text-[#0e1e3a] text-sm">{{ item.name }}</p>
+                                <div class="pb-8">
+                                    <p class="text-[10px] font-black text-[#64748b] uppercase tracking-widest mb-1">{{
+                                        formatDate(event.date, 'MMMM YYYY') }}</p>
+                                    <h4 class="text-lg font-black text-navy mb-2">{{ event.name }}</h4>
+                                    <div class="flex flex-wrap gap-2">
+                                        <span v-for="cat in event.categories" :key="cat"
+                                            class="text-[10px] font-bold bg-[#0f172a]/5 px-2 py-0.5 rounded uppercase text-[#64748b] tracking-wider">{{
+                                                cat }}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Club affiliation -->
-                    <div v-if="archer.club_name" class="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <h3 class="text-lg font-bold text-[#0e1e3a] flex items-center gap-2 mb-5">
-                            <Icon icon="ph:buildings-bold" class="text-[#c3f53c]" />
-                            Afiliasi Klub
-                        </h3>
-                        <NuxtLink v-if="archer.club_slug" :to="`/clubs/${archer.club_slug}`"
-                            class="flex items-center gap-3 p-3 rounded-xl bg-gray-50 hover:bg-[#0e1e3a] group transition-colors">
-                            <div
-                                class="w-10 h-10 bg-[#0e1e3a] group-hover:bg-[#c3f53c] rounded-lg flex items-center justify-center flex-shrink-0 transition-colors">
-                                <Icon icon="ph:buildings-bold"
-                                    class="text-[#c3f53c] group-hover:text-[#0e1e3a] transition-colors" />
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-[10px] text-slate-500 group-hover:text-slate-400 font-bold uppercase">
-                                    Anggota Aktif</p>
-                                <p
-                                    class="font-bold text-[#0e1e3a] group-hover:text-white truncate text-sm transition-colors">
-                                    {{ archer.club_name }}</p>
-                            </div>
-                            <Icon icon="ph:caret-right-bold"
-                                class="text-slate-300 group-hover:text-white transition-colors flex-shrink-0" />
-                        </NuxtLink>
-                        <div v-else class="flex items-center gap-3 p-3 rounded-xl bg-gray-50">
-                            <div
-                                class="w-10 h-10 bg-[#0e1e3a]/5 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <Icon icon="ph:buildings-bold" class="text-[#0e1e3a]" />
-                            </div>
-                            <p class="font-bold text-[#0e1e3a] text-sm">{{ archer.club_name }}</p>
+                        </template>
+                        <div v-else
+                            class="py-12 text-center bg-gray-50 rounded-3xl border border-dashed border-gray-200">
+                            <p class="text-xs font-black text-[#64748b] uppercase tracking-widest">Belum ada riwayat
+                                resmi</p>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <!-- ── Recent Results Table ── -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div class="p-4 sm:p-6 border-b border-gray-100 flex justify-between items-center">
-                    <h3 class="text-lg font-bold text-[#0e1e3a] flex items-center gap-2">
-                        <Icon icon="ph:clock-counter-clockwise-bold" class="text-[#c3f53c]" />
-                        Riwayat Event
-                    </h3>
-                    <span class="text-sm text-slate-400 font-medium">{{ groupedEventHistory.length }} event</span>
-                </div>
+            <div class="border-t border-[#0f172a]/10"></div>
 
-                <template v-if="groupedEventHistory.length > 0">
-                    <div class="md:hidden divide-y divide-gray-100">
-                        <div v-for="event in groupedEventHistory" :key="event.id" class="p-4 space-y-2">
-                            <p class="font-bold text-[#0e1e3a] leading-tight break-words">{{ event.name }}</p>
-                            <div class="text-xs text-slate-500 flex flex-wrap items-center gap-2">
-                                <span v-if="event.date">{{ formatDate(event.date, 'MMM YYYY') }}</span>
-                                <span v-if="event.city">{{ event.city }}</span>
-                            </div>
-                            <div v-if="event.categories.length" class="flex flex-wrap gap-1.5 pt-1">
-                                <span v-for="category in event.categories" :key="`${event.id}-${category}`"
-                                    class="px-2 py-1 rounded-lg bg-[#0e1e3a]/5 text-[#0e1e3a] text-[11px] font-semibold leading-tight">
-                                    {{ category }}
-                                </span>
-                            </div>
-                            <span
-                                class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#c3f53c]/20 text-[#0e1e3a] text-xs font-bold">
-                                <Icon icon="ph:check-circle-bold" class="text-sm" />
-                                Berpartisipasi
+            <!-- ── Full History Table ── -->
+            <section class="space-y-12">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+                    <div>
+                        <div class="flex items-center gap-3 mb-3">
+                            <span class="bg-navy p-1.5 rounded text-primary flex items-center">
+                                <Icon icon="ph:table-bold" class="text-sm" />
                             </span>
+                            <h2 class="text-2xl font-black uppercase tracking-tight">Arsip Pertandingan</h2>
+                        </div>
+                        <p class="text-[#64748b] font-medium uppercase text-[10px] tracking-widest">Catatan Lengkap
+                            Partisipasi
+                            Event</p>
+                    </div>
+                    <div class="bg-gray-50 px-6 py-3 rounded-2xl border border-gray-100">
+                        <span class="text-navy font-black text-2xl">{{ groupedEventHistory.length }}</span>
+                        <span class="text-[#64748b] font-black text-[10px] uppercase tracking-widest ml-2">Total
+                            Event</span>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto -mx-4 sm:mx-0">
+                    <div class="inline-block min-w-full align-middle">
+                        <div class="overflow-hidden border border-gray-100 rounded-3xl shadow-sm">
+                            <table class="min-w-full divide-y divide-gray-100 bg-white">
+                                <thead class="bg-gray-50/50">
+                                    <tr>
+                                        <th
+                                            class="px-8 py-5 text-left text-[10px] font-black text-[#64748b] uppercase tracking-[0.2em]">
+                                            Nama Event</th>
+                                        <th
+                                            class="px-8 py-5 text-left text-[10px] font-black text-[#64748b] uppercase tracking-[0.2em]">
+                                            Lokasi / Tanggal</th>
+                                        <th
+                                            class="px-8 py-5 text-left text-[10px] font-black text-[#64748b] uppercase tracking-[0.2em]">
+                                            Kategori</th>
+                                        <th
+                                            class="px-8 py-5 text-right text-[10px] font-black text-[#64748b] uppercase tracking-[0.2em]">
+                                            Hasil</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    <tr v-for="event in groupedEventHistory" :key="event.id"
+                                        class="group hover:bg-gray-50/50 transition-colors">
+                                        <td class="px-8 py-6 cursor-pointer"
+                                            @click="router.push(`/events/${event.slug}`)">
+                                            <p
+                                                class="text-sm font-black text-navy group-hover:text-primary transition-colors">
+                                                {{
+                                                    event.name }}</p>
+                                        </td>
+                                        <td class="px-8 py-6">
+                                            <p class="text-xs font-bold text-navy/70 mb-1 uppercase tracking-wider">{{
+                                                event.city ||
+                                                '—' }}</p>
+                                            <p class="text-[10px] font-black text-[#64748b] uppercase tracking-widest">
+                                                {{
+                                                    formatDate(event.date, 'DD MMM YYYY') }}</p>
+                                        </td>
+                                        <td class="px-8 py-6">
+                                            <div class="flex flex-wrap gap-1.5">
+                                                <span v-for="cat in event.categories" :key="cat"
+                                                    class="px-2 py-1 bg-navy/5 text-navy text-[9px] font-black uppercase tracking-wider rounded-lg">
+                                                    {{ cat }}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="px-8 py-6 text-right">
+                                            <div
+                                                class="inline-flex items-center gap-2 px-3 py-1 bg-green-50 text-green-600 rounded-full text-[10px] font-black uppercase tracking-widest">
+                                                <Icon icon="ph:check-circle-bold" />
+                                                Finish
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <div class="hidden md:block overflow-x-auto">
-                        <table class="w-full text-left text-sm">
-                            <thead>
-                                <tr
-                                    class="bg-gray-50 border-b border-gray-100 text-xs uppercase text-slate-500 tracking-wider">
-                                    <th class="px-6 py-4 font-bold">Turnamen</th>
-                                    <th class="px-6 py-4 font-bold">Tanggal</th>
-                                    <th class="px-6 py-4 font-bold">Kota</th>
-                                    <th class="px-6 py-4 font-bold">Kategori</th>
-                                    <th class="px-6 py-4 font-bold">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100">
-                                <tr v-for="event in groupedEventHistory" :key="event.id"
-                                    class="group hover:bg-gray-50 transition-colors">
-                                    <td class="px-6 py-4">
-                                        <div class="flex items-center gap-3">
-                                            <div
-                                                class="w-9 h-9 rounded-lg bg-[#0e1e3a]/5 flex items-center justify-center flex-shrink-0">
-                                                <Icon icon="ph:trophy-bold" class="text-[#0e1e3a] text-base" />
-                                            </div>
-                                            <span class="font-bold text-[#0e1e3a]">{{ event.name }}</span>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 text-slate-600">{{ formatDate(event.date, 'MMM YYYY') }}</td>
-                                    <td class="px-6 py-4 text-slate-600">{{ event.city }}</td>
-                                    <td class="px-6 py-4">
-                                        <div v-if="event.categories.length" class="flex flex-wrap gap-1.5">
-                                            <span v-for="category in event.categories" :key="`${event.id}-${category}`"
-                                                class="px-2 py-1 rounded-lg bg-[#0e1e3a]/5 text-[#0e1e3a] text-[11px] font-semibold">
-                                                {{ category }}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <span
-                                            class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#c3f53c]/20 text-[#0e1e3a] text-xs font-bold">
-                                            <Icon icon="ph:check-circle-bold" class="text-sm" />
-                                            Berpartisipasi
-                                        </span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </template>
-                <div v-else class="py-16 text-center text-slate-300">
-                    <Icon icon="ph:calendar-blank-light" class="text-5xl mx-auto mb-3" />
-                    <p class="text-sm font-bold uppercase tracking-widest">Riwayat event belum tersedia</p>
                 </div>
-            </div>
+            </section>
         </main>
 
 
@@ -408,7 +345,7 @@
                             <div :class="`w-12 h-12 rounded-xl ${plat.bg} flex items-center justify-center shadow-sm group-hover:scale-110 transition-all`"
                                 v-html="plat.iconHtml"></div>
                             <span class="text-[9px] font-black text-slate-400 uppercase tracking-wider">{{ plat.name
-                                }}</span>
+                            }}</span>
                         </button>
                     </div>
 
@@ -429,20 +366,22 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { ref, computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useDateFormat } from '@vueuse/core'
+import { getBowIcon } from '~/utils/bowIcons'
 
 definePageMeta({ layout: 'landing' })
+
+const router = useRouter()
+const route = useRoute()
+const config = useRuntimeConfig()
+const apiBaseUrl = config.public.apiBaseUrl
 
 useHead({
     link: [
         { rel: 'canonical', href: useRequestURL().href }
     ]
 })
-
-const route = useRoute()
-const config = useRuntimeConfig()
-const apiBaseUrl = config.public.apiBaseUrl
 
 // ── Data Fetching ──
 const { data: archerResponse } = await useAsyncData(
@@ -517,10 +456,25 @@ useSeoMeta({
 })
 
 // ── Computed Labels ──
-const bowTypeLabel = computed(() => {
-    const labels = { recurve: 'Recurve', compound: 'Compound', barebow: 'Barebow', traditional: 'Traditional' }
-    return labels[archer.value?.bow_type] || archer.value?.bow_type || ''
+const bowTypes = computed(() => {
+    if (!archer.value?.bow_type) return []
+    const raw = archer.value.bow_type.split(',').map(s => s.trim().toLowerCase())
+    const labels = {
+        recurve: 'Recurve',
+        compound: 'Compound',
+        barebow: 'Barebow',
+        traditional: 'Traditional',
+        standard: 'Standard',
+        nasional: 'Nasional'
+    }
+    return raw.map(type => ({
+        id: type,
+        label: labels[type] || type.charAt(0).toUpperCase() + type.slice(1),
+        icon: getBowIcon(type)
+    }))
 })
+
+const bowTypeLabel = computed(() => bowTypes.value.map(t => t.label).join(', '))
 
 const genderLabel = computed(() =>
     archer.value?.gender === 'male' ? 'Laki-laki'
