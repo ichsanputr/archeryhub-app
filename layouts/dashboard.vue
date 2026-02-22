@@ -53,6 +53,7 @@
 
 <script setup>
 import { useAuth } from '~/composables/useAuth'
+import { useSubscription } from '~/composables/useSubscription'
 
 const route = useRoute()
 const { user, logout } = useAuth()
@@ -82,6 +83,14 @@ watch(isMobileMenuOpen, (open) => {
     if (import.meta.client) {
         document.body.style.overflow = open ? 'hidden' : ''
         document.documentElement.style.overflow = open ? 'hidden' : ''
+    }
+})
+
+// Global Subscription Check
+const { fetchSubscription } = useSubscription()
+onMounted(async () => {
+    if (user.value) {
+        await fetchSubscription()
     }
 })
 </script>

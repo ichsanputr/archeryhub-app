@@ -24,7 +24,7 @@
                 </div>
                 <div class="flex items-center gap-3">
                     <div v-if="subscriptionRes?.current?.status === 'trial'"
-                        class="px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl flex items-center gap-2 animate-pulse">
+                        class="px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl flex items-center gap-2">
                         <Icon icon="ph:clock-countdown-fill" class="text-primary text-lg" />
                         <span class="text-xs font-black text-white uppercase tracking-widest">Trial 4 Bulan Aktif</span>
                     </div>
@@ -91,10 +91,7 @@
                             }}</span>
                     </div>
                 </div>
-                <button
-                    class="w-full py-2.5 text-sm font-bold border border-navy text-navy rounded-lg hover:bg-slate-50 transition-colors">
-                    Batalkan Subscription
-                </button>
+
             </div>
 
             <div class="xl:col-span-2 bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
@@ -144,7 +141,7 @@
                         </div>
                         <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
                             <div class="h-full bg-green-500 rounded-full transition-all duration-1000"
-                                :style="{ width: Math.min((remainingDays / 30) * 100, 100) + '%' }"></div>
+                                :style="{ width: Math.min((remainingDays / totalDays) * 100, 100) + '%' }"></div>
                         </div>
                     </div>
                 </div>
@@ -327,18 +324,34 @@
                                     class="hover:bg-slate-50 transition-colors group">
                                     <td class="px-8 py-4 text-xs font-bold text-gray-500">{{ invoice.date }}</td>
                                     <td class="px-8 py-4 text-sm font-black text-navy">{{ invoice.description }}</td>
-                                    <td class="px-8 py-4 text-sm font-black text-primary">{{ invoice.amount }}</td>
+                                    <td class="px-8 py-4 text-sm font-black text-navy">{{ invoice.amount }}</td>
                                     <td class="px-8 py-4">
                                         <span
-                                            class="bg-green-100 text-green-700 px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-wider">
-                                            Lunas
+                                            class="px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-wider"
+                                            :class="{
+                                                'bg-green-100 text-green-700': invoice.status === 'paid',
+                                                'bg-orange-100 text-orange-700': invoice.status === 'pending',
+                                                'bg-red-100 text-red-700': ['expired', 'failed'].includes(invoice.status)
+                                            }">
+                                            {{
+                                                invoice.status === 'paid' ? 'Lunas' :
+                                                    invoice.status === 'pending' ? 'Pending' :
+                                                        invoice.status === 'expired' ? 'Kedaluwarsa' : 'Gagal'
+                                            }}
                                         </span>
                                     </td>
                                     <td class="px-8 py-4 text-right">
-                                        <button
-                                            class="p-2 bg-white border border-gray-100 rounded-xl text-gray-400 hover:text-navy hover:border-primary hover:shadow-lg transition-all">
-                                            <Icon icon="ph:file-pdf-bold" class="text-lg" />
-                                        </button>
+                                        <div class="flex items-center justify-end gap-2">
+                                            <a v-if="invoice.status === 'pending' && invoice.checkout_url"
+                                                :href="invoice.checkout_url"
+                                                class="px-4 py-2 bg-primary text-navy text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-primary-dark transition-all shadow-sm">
+                                                Bayar Sekarang
+                                            </a>
+                                            <button v-else-if="invoice.status === 'paid'"
+                                                class="p-2 bg-white border border-gray-100 rounded-xl text-gray-400 hover:text-navy hover:border-primary hover:shadow-lg transition-all">
+                                                <Icon icon="ph:file-pdf-bold" class="text-lg" />
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -359,21 +372,29 @@
 import { Icon } from '@iconify/vue'
 import { computed, ref } from 'vue'
 import { useAuth } from '~/composables/useAuth'
+import { useSubscription } from '~/composables/useSubscription'
 
 definePageMeta({
     layout: 'dashboard'
 })
 
 const { user } = useAuth()
+const { subscriptionData, fetchSubscription, isLoading } = useSubscription()
 const config = useRuntimeConfig()
 const router = useRouter()
 const userType = computed(() => user.value?.user_type || user.value?.role || 'club')
 
-// Fetch subscription data from backend
-const { data: subscriptionRes, refresh: refreshSubscription } = await useFetch(`${config.public.apiBaseUrl}/user/subscription`, {
-    key: 'user-subscription',
-    credentials: 'include'
+// Initial fetch on mount to ensure user sees API hit in Network tab
+onBeforeMount(async () => {
+    await fetchSubscription()
 })
+
+onMounted(() => {
+    // Force a fresh hit if they navigate back to this page
+    fetchSubscription(true)
+})
+
+const subscriptionRes = computed(() => subscriptionData.value)
 
 // Payment related state
 const handleSelectPlan = (plan) => {
@@ -481,16 +502,14 @@ const availablePlans = computed(() => {
             priceRaw: plan.price,
             billing: plan.type === 'yearly' ? 'thn' : (plan.name.includes('EO') && plan.price < 5000 ? 'atlet' : 'bln'),
             features: detail ? detail.features : JSON.parse(plan.features || '[]'),
-            isCurrent: plan.id === currentPlanId,
-            isUpgrade: plan.id > (currentPlanId || 0)
+            isCurrent: plan.id === currentPlanId || (userType.value === 'club' && !currentPlanId && localizedName === 'Standar'),
+            isUpgrade: plan.id > (currentPlanId || 0) && !(userType.value === 'club' && !currentPlanId && localizedName === 'Standar')
         }
     })
 })
 
 const currentPlan = computed(() => {
-    const cur = subscriptionRes.value?.current
-    if (!cur || !cur.plan_id) return availablePlans.value[0] || null
-    return availablePlans.value.find(p => p.id === cur.plan_id)
+    return availablePlans.value.find(p => p.isCurrent) || availablePlans.value[0] || null
 })
 
 const invoices = computed(() => subscriptionRes.value?.invoices || [])
@@ -510,8 +529,16 @@ const usageMembers = computed(() => ({
 const remainingDays = computed(() => {
     const nextBilling = subscriptionRes.value?.current?.next_billing_date
     if (!nextBilling) return 0
+    // Fix: MySQL DATE_FORMAT %b might be local. Let's assume standard format for now.
     const diff = new Date(nextBilling) - new Date()
     return Math.max(Math.ceil(diff / (1000 * 60 * 60 * 24)), 0)
+})
+
+const totalDays = computed(() => {
+    const cur = subscriptionRes.value?.current
+    if (cur?.status === 'trial') return 120
+    if (cur?.billing_type === 'yearly') return 360
+    return 30
 })
 
 const usageMessage = computed(() => {

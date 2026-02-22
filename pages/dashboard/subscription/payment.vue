@@ -50,8 +50,14 @@ const groupedChannels = computed(() => {
 })
 
 const selectedChannel = ref(null)
+const selectedMonths = ref(1)
 const isProcessing = ref(false)
 const errorMessage = ref('')
+
+const totalAmount = computed(() => {
+    const price = parseInt(planPrice.value?.toString() || '0') || 0
+    return price * selectedMonths.value
+})
 
 const handlePayment = async () => {
     if (!selectedChannel.value) {
@@ -69,6 +75,7 @@ const handlePayment = async () => {
                 type: 'subscription',
                 plan_id: parseInt(planId.value as string),
                 method: selectedChannel.value,
+                months: selectedMonths.value,
                 event_id: (route.query.event_id as string) || ""
             },
             credentials: 'include'
@@ -135,8 +142,8 @@ useHead({
                         <div class="pt-3 border-t border-white/10 flex justify-between items-center">
                             <span class="text-slate-400 text-[10px] font-black uppercase tracking-widest">Total
                                 Bayar</span>
-                            <span class="text-primary font-black text-xl">Rp {{ (parseInt(planPrice?.toString() || '0')
-                                || 0).toLocaleString('id-ID') }}</span>
+                            <span class="text-primary font-black text-xl">Rp {{ totalAmount.toLocaleString('id-ID')
+                                }}</span>
                         </div>
                     </div>
                 </div>
@@ -144,6 +151,45 @@ useHead({
         </div>
 
         <div class="relative z-20">
+            <!-- Duration Selection -->
+            <div class="bg-white p-8 rounded-[32px] border border-gray-100 shadow-sm mb-8">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="size-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                        <Icon icon="ph:calendar-bold" class="text-navy text-xl" />
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-black text-navy leading-none">Pilih Durasi Berlangganan</h3>
+                        <p class="text-[11px] font-bold text-gray-400 uppercase tracking-widest mt-2">Berapa lama Anda
+                            ingin berlangganan?</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap gap-3">
+                    <button v-for="m in [1, 3, 6, 12]" :key="m" @click="selectedMonths = m"
+                        class="px-6 py-3 rounded-2xl border-2 font-black text-xs uppercase tracking-widest transition-all"
+                        :class="selectedMonths === m ? 'border-primary bg-primary/5 text-navy ring-4 ring-primary/5' : 'border-gray-100 text-gray-400 hover:border-gray-200 hover:text-navy'">
+                        {{ m === 12 ? '1 Tahun' : `${m} Bulan` }}
+                        <span v-if="m >= 6"
+                            class="ml-2 px-2 py-0.5 bg-green-500 text-white text-[9px] rounded-full">Hemat</span>
+                    </button>
+
+                    <div class="flex items-center gap-3 ml-4">
+                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Kustom:</span>
+                        <div class="flex items-center bg-slate-50 rounded-xl border border-gray-100 p-1">
+                            <button @click="selectedMonths > 1 && selectedMonths--"
+                                class="size-8 flex items-center justify-center text-navy hover:bg-white rounded-lg transition-colors">
+                                <Icon icon="ph:minus-bold" />
+                            </button>
+                            <input type="number" v-model="selectedMonths" min="1" max="12"
+                                class="w-12 bg-transparent text-center font-black text-sm text-navy focus:outline-none" />
+                            <button @click="selectedMonths < 12 && selectedMonths++"
+                                class="size-8 flex items-center justify-center text-navy hover:bg-white rounded-lg transition-colors">
+                                <Icon icon="ph:plus-bold" />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <!-- Payment Methods -->
@@ -197,9 +243,13 @@ useHead({
                                 <span class="text-navy font-bold text-sm">{{ planName }}</span>
                             </div>
                             <div class="flex justify-between items-center py-2 border-b border-dashed border-gray-100">
+                                <span class="text-gray-500 text-sm font-medium">Durasi</span>
+                                <span class="text-navy font-bold text-sm">{{ selectedMonths }} Bulan</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 border-b border-dashed border-gray-100">
                                 <span class="text-gray-500 text-sm font-medium">Subtotal</span>
                                 <span class="text-navy font-bold text-sm">Rp {{ (parseInt(planPrice?.toString() || '0')
-                                    || 0).toLocaleString('id-ID') }}</span>
+                                    * selectedMonths).toLocaleString('id-ID') }}</span>
                             </div>
                             <div v-if="selectedChannel" class="flex justify-between items-center py-2">
                                 <span class="text-gray-500 text-sm font-medium">Metode</span>

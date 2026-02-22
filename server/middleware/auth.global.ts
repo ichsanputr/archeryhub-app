@@ -63,6 +63,7 @@ export default defineEventHandler(async (event: H3Event) => {
                 else if (payload.role === 'organization') endpoint = '/organization/me'
                 else if (payload.role === 'club') endpoint = '/club/me'
                 else if (payload.role === 'seller') endpoint = '/seller/me'
+                else if (payload.role === 'root') endpoint = '' // No details endpoint for root yet
 
                 if (endpoint && apiBaseUrl) {
                     const response = await $fetch<any>(`${apiBaseUrl}${endpoint}`, {
@@ -90,7 +91,8 @@ export default defineEventHandler(async (event: H3Event) => {
     // ——— 2. Auth pages: if logged in → redirect to dashboard ———
     if (path.startsWith('/auth')) {
         if (user) {
-            return sendRedirect(event, '/dashboard', 302)
+            const target = user.role === 'root' ? '/dashboard/root' : '/dashboard'
+            return sendRedirect(event, target, 302)
         }
         return
     }
