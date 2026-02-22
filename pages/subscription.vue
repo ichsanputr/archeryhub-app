@@ -1,7 +1,7 @@
 <template>
     <div class="min-h-screen bg-background-light text-navy">
         <!-- Hero Section -->
-        <section class="bg-navy relative overflow-hidden h-[400px] md:h-[480px] flex items-center">
+        <section class="bg-navy relative overflow-hidden py-16 md:py-24 flex items-center">
             <div class="absolute inset-0 z-0">
                 <img src="/hero-event-detail.jpeg" alt="Subscription Hero"
                     class="w-full h-full object-cover object-center opacity-40" />
@@ -10,18 +10,19 @@
                 </div>
             </div>
             <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-                <div class="max-w-3xl" v-motion-fade-visible-once>
+                <div class="max-w-3xl">
                     <div
-                        class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-xs sm:text-sm font-bold tracking-widest mb-6 border border-white/10">
-                        <Icon icon="ph:credit-card-bold" class="text-base sm:text-lg" />
-                        PAKET BERLANGGANAN
+                        class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold tracking-widest mb-6">
+                        <Icon icon="ph:credit-card-bold" class="text-lg" />
+                        <span>PAKET BERLANGGANAN</span>
                     </div>
-                    <h1 class="text-4xl md:text-6xl font-black text-white tracking-tight leading-tight mb-6">
+                    <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
                         Skalakan Manajemen Panahan Anda
                     </h1>
-                    <p class="text-white/80 text-base md:text-xl leading-relaxed max-w-2xl font-medium">
-                        Opsi fleksibel untuk klub akar rumput sampai penyelenggara turnamen skala internasional. Pilih
-                        yang sesuai dengan ambisi Anda.
+                    <p class="text-white/90 text-base sm:text-lg leading-relaxed max-w-2xl">
+                        Opsi fleksibel untuk klub akar rumput sampai penyelenggara turnamen skala internasional.
+                        <span class="text-primary font-bold">Dapatkan 3 bulan gratis</span> paket Standard untuk
+                        pendaftaran organisasi/klub baru.
                     </p>
                 </div>
             </div>
@@ -52,8 +53,8 @@
             <div v-show="activeTab === 'club'" class="space-y-12">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch max-w-5xl mx-auto">
                     <!-- Basic Support -->
-                    <div class="bg-white border border-gray-100 rounded-3xl p-8 flex flex-col shadow-sm transition-all duration-500 hover:-translate-y-2 group"
-                        v-motion-fade-visible-once>
+                    <div
+                        class="bg-white border border-gray-100 rounded-3xl p-8 flex flex-col shadow-sm transition-all duration-500 hover:-translate-y-2 group">
                         <div class="mb-10">
                             <div
                                 class="size-12 bg-gray-50 rounded-2xl flex items-center justify-center mb-6 text-gray-400 group-hover:bg-navy group-hover:text-white transition-colors duration-500">
@@ -66,7 +67,7 @@
                         <div class="mb-10">
                             <div class="flex items-baseline gap-1">
                                 <span class="text-xl font-bold text-navy opacity-40">Rp</span>
-                                <span class="text-5xl font-black text-navy tracking-tighter">34.900</span>
+                                <span class="text-5xl font-black text-navy tracking-tighter">34.999</span>
                                 <span class="text-gray-400 font-bold tracking-wider uppercase text-xs">/BLN</span>
                             </div>
                         </div>
@@ -84,8 +85,8 @@
                     </div>
 
                     <!-- Elite Member -->
-                    <div class="bg-navy rounded-3xl p-8 flex flex-col shadow-sm relative overflow-hidden ring-4 ring-primary/20 transition-all duration-500 hover:-translate-y-2"
-                        v-motion-fade-visible-once>
+                    <div
+                        class="bg-navy rounded-3xl p-8 flex flex-col shadow-sm relative overflow-hidden ring-4 ring-primary/20 transition-all duration-500 hover:-translate-y-2">
                         <div
                             class="absolute top-0 right-0 bg-primary text-navy px-6 py-2 text-[11px] font-black uppercase tracking-[0.2em] rounded-bl-2xl shadow-lg">
                             REKOMENDASI
@@ -102,7 +103,7 @@
                         <div class="mb-10">
                             <div class="flex items-baseline gap-1">
                                 <span class="text-xl font-bold text-white opacity-40">Rp</span>
-                                <span class="text-5xl font-black text-white tracking-tighter">75.000</span>
+                                <span class="text-5xl font-black text-white tracking-tighter">79.999</span>
                                 <span class="text-slate-400 font-bold tracking-wider uppercase text-xs">/BLN</span>
                             </div>
                         </div>
@@ -121,92 +122,75 @@
                 </div>
             </div>
 
-            <!-- EO Package -->
-            <div v-show="activeTab === 'eo'" class="space-y-12" v-motion-fade-visible-once>
-                <div class="bg-white border border-gray-100 rounded-[2.5rem] overflow-hidden shadow-sm">
-                    <div class="flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-gray-100">
-                        <div class="flex-1 p-8 md:p-16">
+            <!-- EO Packages -->
+            <div v-show="activeTab === 'eo'" class="space-y-12">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch max-w-5xl mx-auto">
+                    <!-- Standard EO -->
+                    <div
+                        class="bg-white border border-gray-100 rounded-3xl p-8 flex flex-col shadow-sm transition-all duration-500 hover:-translate-y-2 group">
+                        <div class="mb-10">
                             <div
-                                class="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-navy rounded-full mb-8 border border-primary/20">
-                                <Icon icon="ph:lightning-fill" class="text-sm" />
-                                <span class="text-[10px] font-black uppercase tracking-widest">PAY-AS-YOU-GO
-                                    MODEL</span>
+                                class="size-12 bg-gray-50 rounded-2xl flex items-center justify-center mb-6 text-gray-400 group-hover:bg-navy group-hover:text-white transition-colors duration-500">
+                                <Icon icon="ph:lightning-bold" class="text-2xl" />
                             </div>
-                            <h3 class="text-4xl md:text-5xl font-black text-navy mb-6 tracking-tight">Efisien &
-                                Transparan</h3>
-                            <p class="text-gray-500 mb-12 text-lg md:text-xl max-w-2xl leading-relaxed font-medium">
-                                Buat turnamen sekali pakai tanpa biaya bulanan. Bayar hanya berdasarkan jumlah atlet
-                                yang benar-benar bertanding.
-                            </p>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                                <div class="bg-navy rounded-3xl p-8 text-white ">
-                                    <p class="text-primary text-[10px] font-black uppercase tracking-widest mb-4">HARGA
-                                        FLAT</p>
-                                    <div class="text-5xl font-black flex items-baseline gap-2 mb-4 tracking-tighter">
-                                        <span class="text-xl font-bold opacity-50">Rp</span>
-                                        2<span class="text-2xl">.000</span>
-                                    </div>
-                                    <p class="text-sm text-slate-400 font-medium font-mono uppercase tracking-wider">PER
-                                        ATLET TERDAFTAR</p>
-                                </div>
-                                <div class="space-y-6">
-                                    <h4 class="text-xs font-black text-navy uppercase tracking-[0.2em] mb-4">Fitur EO
-                                        Termasuk:</h4>
-                                    <div v-for="feat in eoFeatures" :key="feat"
-                                        class="flex items-center gap-4 text-sm font-bold text-navy">
-                                        <div
-                                            class="size-6 bg-green-50 rounded-full flex items-center justify-center text-green-500 shrink-0">
-                                            <Icon icon="ph:check-bold" />
-                                        </div>
-                                        {{ feat }}
-                                    </div>
-                                </div>
+                            <h3 class="text-2xl font-black text-navy mb-2">Standar EO</h3>
+                            <p class="text-gray-500 text-sm font-medium">Solusi digital lengkap untuk turnamen skala
+                                kecil & menengah.</p>
+                        </div>
+                        <div class="mb-10">
+                            <div class="flex items-baseline gap-1">
+                                <span class="text-xl font-bold text-navy opacity-40">Rp</span>
+                                <span class="text-5xl font-black text-navy tracking-tighter">34.999</span>
+                                <span class="text-gray-400 font-bold tracking-wider uppercase text-xs">/BLN</span>
                             </div>
                         </div>
+                        <ul class="space-y-4 mb-12 flex-1">
+                            <li v-for="feat in eoBasicFeatures" :key="feat"
+                                class="flex items-start gap-3 text-sm font-medium text-navy">
+                                <Icon icon="ph:check-circle-fill" class="mt-0.5 text-lg shrink-0 text-green-500" />
+                                <span>{{ feat }}</span>
+                            </li>
+                        </ul>
+                        <button
+                            class="w-full py-4 px-6 rounded-2xl border-2 border-navy text-navy font-black hover:bg-navy hover:text-white transition-all duration-300">
+                            Pilih Paket
+                        </button>
+                    </div>
 
-                        <!-- EO Calculator -->
-                        <div class="lg:w-[440px] bg-slate-50 p-8 md:p-16 flex flex-col justify-center">
-                            <div class="bg-white p-8 rounded-[2rem]  border border-gray-100 mb-10 relative">
-                                <div
-                                    class="absolute -top-3 left-8 bg-navy text-white text-[9px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-lg">
-                                    Simulasi Biaya
-                                </div>
-                                <label
-                                    class="block text-[10px] font-black text-gray-400 uppercase mb-8 tracking-[0.2em] mt-2">
-                                    JUMLAH ESTIMASI ATLET
-                                </label>
-
-                                <div class="relative mb-12">
-                                    <input v-model="estimatedArchers"
-                                        class="w-full h-3 bg-slate-100 rounded-full appearance-none cursor-pointer accent-primary hover:accent-primary-hover transition-all"
-                                        max="2000" min="50" step="10" type="range" />
-                                    <!-- Dynamic bubble (simplified) -->
-                                    <div
-                                        class="mt-4 flex justify-between text-[11px] font-black text-gray-400 uppercase tracking-widest">
-                                        <span>50</span>
-                                        <span class="text-navy bg-primary/10 px-3 py-1 rounded-lg">{{ estimatedArchers
-                                            }} Atlet</span>
-                                        <span>2000</span>
-                                    </div>
-                                </div>
-
-                                <div class="space-y-4 pt-4 border-t border-gray-50">
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-xs font-medium text-gray-500">Total Investasi</span>
-                                        <span class="text-3xl font-black text-navy tracking-tighter">{{
-                                            formatCurrency(estimatedTotal) }}</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <NuxtLink to="/dashboard/events/create"
-                                class="w-full py-5 px-8 rounded-2xl bg-navy text-white font-black hover:bg-navy-light transition-all flex items-center justify-center gap-4 shadow-sm shadow-navy/20 group">
-                                BUAT EVENT SEKARANG
-                                <Icon icon="ph:arrow-right-bold"
-                                    class="text-lg group-hover:translate-x-2 transition-transform" />
-                            </NuxtLink>
+                    <!-- Elite EO -->
+                    <div
+                        class="bg-navy rounded-3xl p-8 flex flex-col shadow-sm relative overflow-hidden ring-4 ring-primary/20 transition-all duration-500 hover:-translate-y-2">
+                        <div
+                            class="absolute top-0 right-0 bg-primary text-navy px-6 py-2 text-[11px] font-black uppercase tracking-[0.2em] rounded-bl-2xl shadow-lg">
+                            PROFESIONAL
                         </div>
+                        <div class="mb-10 pt-4">
+                            <div
+                                class="size-14 bg-primary rounded-2xl flex items-center justify-center mb-6 text-navy shadow-lg shadow-primary/20">
+                                <Icon icon="ph:crown-simple-fill" class="text-3xl" />
+                            </div>
+                            <h3 class="text-3xl font-black text-white mb-2">Elite EO</h3>
+                            <p class="text-slate-400 text-sm font-medium">Fitur kustom dan prioritas untuk penyelenggara
+                                turnamen profesional.</p>
+                        </div>
+                        <div class="mb-10">
+                            <div class="flex items-baseline gap-1">
+                                <span class="text-xl font-bold text-white opacity-40">Rp</span>
+                                <span class="text-5xl font-black text-white tracking-tighter">79.999</span>
+                                <span class="text-slate-400 font-bold tracking-wider uppercase text-xs">/BLN</span>
+                            </div>
+                        </div>
+                        <ul class="space-y-5 mb-14 flex-1">
+                            <li v-for="feat in eoEliteFeatures" :key="feat"
+                                class="flex items-start gap-4 text-sm font-medium text-white">
+                                <Icon icon="ph:check-circle-fill" class="text-primary text-xl shrink-0" />
+                                <span>{{ feat }}</span>
+                            </li>
+                        </ul>
+                        <button
+                            class="w-full py-4 px-6 rounded-2xl bg-primary text-navy font-black hover:scale-[1.03] active:scale-95 transition-all shadow-primary/20">
+                            Aktifkan Elite EO
+                        </button>
                     </div>
                 </div>
             </div>
@@ -256,20 +240,6 @@ definePageMeta({
 })
 
 const activeTab = ref('club')
-const estimatedArchers = ref(150)
-const eoPricePerArcher = 2000
-
-const estimatedTotal = computed(() => {
-    return estimatedArchers.value * eoPricePerArcher
-})
-
-const formatCurrency = (value) => {
-    return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        maximumFractionDigits: 0
-    }).format(value)
-}
 
 const activeFaq = ref(0)
 const toggleFaq = (index) => {
@@ -284,19 +254,27 @@ const basicFeatures = [
 ]
 
 const eliteFeatures = [
-    'Semua fitur Basic Support',
+    'Semua fitur Standar',
     'Diskon Khusus Event Klub',
     'Grup Komunitas Prioritas',
     'Konsultasi Coach Bulanan',
     'Akses Awal Fitur Baru'
 ]
 
-const eoFeatures = [
+const eoBasicFeatures = [
     'Landing page pendaftaran kustom',
-    'Sistem manajemen bagan eliminasi',
+    'Sistem bagan eliminasi otomatis',
     'Scoring langsung (Real-time)',
-    'E-Certificate otomatis',
-    'Integrasi Payment Gateway otomatis'
+    'E-Certificate otomatis untuk atlet',
+    'Integrasi Payment Gateway'
+]
+
+const eoEliteFeatures = [
+    'Semua fitur Standar EO',
+    'Dashboard Analitik Turnamen',
+    'Custom Domain untuk Event',
+    'Dukungan On-site (Remote)',
+    'Publikasi Priority di Feed News'
 ]
 
 const faqs = [
@@ -310,11 +288,11 @@ const faqs = [
     },
     {
         question: 'Bagaimana cara kerja skema bayar Paket EO?',
-        answer: 'Sederhana: Anda tidak membayar biaya bulanan. Setiap event memiliki biaya setup minimal, lalu kami menagih biaya per atlet yang benar-benar melakukan pendaftaran. Biaya dipotong langsung dari sistem pembayaran gateway atau dititipkan via tagihan.'
+        answer: 'Kini Paket EO menggunakan sistem langganan bulanan yang flat. Tidak ada lagi biaya per atlet, sehingga Anda bisa mengelola budget turnamen dengan lebih pasti dan efisien.'
     },
     {
         question: 'Berapa lama waktu implementasi untuk paket Elite?',
-        answer: 'Untuk paket Elite, kami biasanya menyiapkan semua whitelabeling dan integrasi API dalam waktu 3-5 hari kerja. Anda juga akan mendapatkan sesi training khusus untuk seluruh pelatih dan staf admin klub.'
+        answer: 'Untuk paket Elite, kami biasanya menyiapkan semua whitelabeling dan integrasi API dalam waktu 3-5 hari kerja. Anda juga akan mendapatkan sesi training khusus untuk seluruh staf admin organisasi.'
     }
 ]
 

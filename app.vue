@@ -1,6 +1,5 @@
 <template>
   <div>
-    <AppThemeLoader v-if="isDashboard" :loading="isThemeLoading" />
     <NuxtLayout>
       <NuxtPage :page-key="pageKey" />
     </NuxtLayout>
