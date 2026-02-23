@@ -1,11 +1,9 @@
 <template>
   <div class="space-y-6">
     <!-- Header -->
-    <div
-      class="relative overflow-hidden rounded-2xl border border-primary/20 bg-navy text-white shadow-sm">
+    <div class="relative overflow-hidden rounded-2xl border border-primary/20 bg-navy text-white shadow-sm">
       <!-- Theme Motif Pattern -->
-      <div class="absolute inset-0"
-        style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
+      <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
       </div>
 
       <!-- Decorative Background Elements (Glow) -->
@@ -50,17 +48,43 @@
 
     <!-- Events List / Grid -->
     <div v-if="isLoading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div v-for="i in 6" :key="i" class="bg-white rounded-3xl border border-slate-100 p-6 space-y-4 animate-pulse">
-        <div class="flex items-center gap-4">
-          <div class="size-16 rounded-2xl bg-slate-50"></div>
-          <div class="flex-1 space-y-2">
-            <div class="h-4 w-3/4 bg-slate-50 rounded"></div>
-            <div class="h-3 w-1/2 bg-slate-50 rounded"></div>
+      <div v-for="i in 6" :key="i"
+        class="bg-white rounded-3xl border border-slate-100 p-6 space-y-8 animate-pulse shadow-sm">
+        <!-- Card Header Skeleton -->
+        <div class="flex items-start gap-4">
+          <div class="size-16 sm:size-20 rounded-2xl bg-slate-100 italic shrink-0"></div>
+          <div class="flex-1 space-y-3">
+            <div class="flex gap-2">
+              <div class="h-4 w-12 bg-slate-100 rounded-lg"></div>
+              <div class="h-4 w-16 bg-slate-100 rounded-lg"></div>
+            </div>
+            <div class="h-5 w-full bg-slate-100 rounded-xl"></div>
+            <div class="h-5 w-2/3 bg-slate-100 rounded-xl"></div>
           </div>
         </div>
-        <div class="space-y-3">
-          <div class="h-4 w-full bg-slate-50 rounded"></div>
-          <div class="h-4 w-full bg-slate-50 rounded"></div>
+
+        <!-- Card Body Skeleton -->
+        <div class="space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="size-8 rounded-xl bg-slate-100"></div>
+            <div class="h-4 w-1/2 bg-slate-100 rounded-lg"></div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="size-8 rounded-xl bg-slate-100"></div>
+            <div class="h-4 w-2/3 bg-slate-100 rounded-lg"></div>
+          </div>
+        </div>
+
+        <!-- Status Badges Skeleton -->
+        <div class="flex gap-2">
+          <div class="h-8 w-24 bg-slate-100 rounded-xl"></div>
+          <div class="h-8 w-24 bg-slate-100 rounded-xl"></div>
+        </div>
+
+        <!-- Footer Skeleton -->
+        <div class="pt-6 border-t border-slate-50 flex gap-3">
+          <div class="h-11 flex-1 bg-slate-100 rounded-xl"></div>
+          <div class="size-11 bg-slate-100 rounded-xl"></div>
         </div>
       </div>
     </div>

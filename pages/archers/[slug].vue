@@ -47,7 +47,7 @@
                                         <img :src="`/${type.icon}`"
                                             class="w-5 h-5 brightness-0 invert opacity-70 group-hover/bow:opacity-100 transition-opacity" />
                                         <span class="font-black uppercase tracking-[0.15em] text-[10px]">{{ type.label
-                                            }}</span>
+                                        }}</span>
                                         <span v-if="idx < bowTypes.length - 1"
                                             class="text-white/20 ml-2 font-light">•</span>
                                     </div>
@@ -59,7 +59,7 @@
                                 <Icon icon="ph:buildings-bold" class="text-primary text-xl" />
                                 <span
                                     class="font-bold text-white/80 group-hover:text-primary transition-colors tracking-tight">{{
-                                    archer.club_name
+                                        archer.club_name
                                     }}</span>
                             </div>
                         </div>
@@ -124,24 +124,85 @@
                         </p>
                     </div>
 
+                    <!-- Achievements Section -->
+                    <div v-if="archer.achievements" class="pt-8">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span class="bg-navy p-1.5 rounded text-primary flex items-center">
+                                <Icon icon="ph:medal-bold" class="text-sm" />
+                            </span>
+                            <h2 class="text-xl font-black uppercase tracking-tight">Prestasi & Penghargaan</h2>
+                        </div>
+                        <div
+                            class="bg-gray-50 p-6 rounded-2xl border border-gray-100 italic text-[#64748b] whitespace-pre-line font-medium leading-relaxed">
+                            {{ archer.achievements }}
+                        </div>
+                    </div>
+
+                    <!-- Equipment Section -->
+                    <div v-if="archer.equipment" class="pt-8">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span class="bg-navy p-1.5 rounded text-primary flex items-center">
+                                <Icon icon="ph:bow-arrow-bold" class="text-sm" />
+                            </span>
+                            <h2 class="text-xl font-black uppercase tracking-tight">Peralatan Panahan</h2>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-6 bg-gray-50 rounded-2xl border border-gray-100 flex items-center gap-4">
+                                <Icon icon="ph:gear-bold" class="text-2xl text-primary" />
+                                <span class="text-[#64748b] font-medium">{{ archer.equipment }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Social Media Links -->
+                    <div v-if="archer.social_instagram || archer.social_tiktok || archer.social_whatsapp" class="pt-8">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span class="bg-navy p-1.5 rounded text-primary flex items-center">
+                                <Icon icon="ph:share-network-bold" class="text-sm" />
+                            </span>
+                            <h2 class="text-xl font-black uppercase tracking-tight">Sosial & Kontak</h2>
+                        </div>
+                        <div class="flex flex-wrap gap-4">
+                            <a v-if="archer.social_whatsapp"
+                                :href="`https://wa.me/${archer.social_whatsapp.replace(/[^0-9]/g, '')}`" target="_blank"
+                                class="flex items-center gap-3 px-6 py-3 bg-green-50 text-green-700 rounded-xl border border-green-100 hover:bg-green-100 transition-all font-bold">
+                                <Icon icon="ph:whatsapp-logo-bold" class="text-xl" />
+                                WhatsApp
+                            </a>
+                            <a v-if="archer.social_instagram"
+                                :href="`https://instagram.com/${archer.social_instagram.replace('@', '')}`"
+                                target="_blank"
+                                class="flex items-center gap-3 px-6 py-3 bg-pink-50 text-pink-700 rounded-xl border border-pink-100 hover:bg-pink-100 transition-all font-bold">
+                                <Icon icon="ph:instagram-logo-bold" class="text-xl" />
+                                Instagram
+                            </a>
+                            <a v-if="archer.social_tiktok"
+                                :href="`https://tiktok.com/@${archer.social_tiktok.replace('@', '')}`" target="_blank"
+                                class="flex items-center gap-3 px-6 py-3 bg-black text-white rounded-xl hover:opacity-80 transition-all font-bold">
+                                <Icon icon="ph:tiktok-logo-bold" class="text-xl" />
+                                TikTok
+                            </a>
+                        </div>
+                    </div>
+
                     <!-- Additional Details Grid -->
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-8">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-8 border-t border-gray-100 mt-8">
                         <div v-if="archer.date_of_birth"
                             class="p-6 bg-gray-50 rounded-2xl border border-gray-100 group hover:border-primary/50 transition-colors">
-                            <p class="text-[10px] font-black text-[#64748b] uppercase tracking-widest mb-4">Tanggal
+                            <p class="text-[10px] font-black text-[#64748b] uppercase tracking-widest mb-2">Tanggal
                                 Lahir</p>
-                            <p class="text-xl font-black text-navy">{{ formatDate(archer.date_of_birth) }}</p>
+                            <p class="text-lg font-black text-navy">{{ formatDate(archer.date_of_birth) }}</p>
                         </div>
                         <div v-if="archer.id"
                             class="p-6 bg-gray-50 rounded-2xl border border-gray-100 group hover:border-primary/50 transition-colors">
-                            <p class="text-[10px] font-black text-[#64748b] uppercase tracking-widest mb-4">ID Atlet</p>
-                            <p class="text-xl font-black text-navy font-mono">{{ archer.id }}</p>
+                            <p class="text-[10px] font-black text-[#64748b] uppercase tracking-widest mb-2">ID Atlet</p>
+                            <p class="text-lg font-black text-navy font-mono">{{ archer.id }}</p>
                         </div>
                         <div v-if="archer.city"
                             class="p-6 bg-gray-50 rounded-2xl border border-gray-100 group hover:border-primary/50 transition-colors">
-                            <p class="text-[10px] font-black text-[#64748b] uppercase tracking-widest mb-4">Kota Asal
+                            <p class="text-[10px] font-black text-[#64748b] uppercase tracking-widest mb-2">Kota Asal
                             </p>
-                            <p class="text-xl font-black text-navy">{{ archer.city }}</p>
+                            <p class="text-lg font-black text-navy">{{ archer.city }}</p>
                         </div>
                     </div>
                 </div>
@@ -345,7 +406,7 @@
                             <div :class="`w-12 h-12 rounded-xl ${plat.bg} flex items-center justify-center shadow-sm group-hover:scale-110 transition-all`"
                                 v-html="plat.iconHtml"></div>
                             <span class="text-[9px] font-black text-slate-400 uppercase tracking-wider">{{ plat.name
-                            }}</span>
+                                }}</span>
                         </button>
                     </div>
 

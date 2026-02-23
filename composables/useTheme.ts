@@ -36,8 +36,9 @@ export const themes: Record<string, ThemeColors> = {
     headerBg: '#ffffff',
     headerText: '#1e1b4b',
     accent: '#818cf8',
-    motif: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0)',
-    motifOpacity: '0.4',
+    // Solid Geometric Diamond Grid
+    motif: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l30 30-30 30L0 30z' fill='white' fill-opacity='0.08'/%3E%3C/svg%3E")`,
+    motifOpacity: '0.6',
     primaryText: '#ffffff'
   },
   emerald: {
@@ -48,8 +49,9 @@ export const themes: Record<string, ThemeColors> = {
     headerBg: '#ffffff',
     headerText: '#064e3b',
     accent: '#34d399',
-    motif: 'linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.1) 75%, transparent 75%, transparent)',
-    motifOpacity: '0.15',
+    // Solid Interlocking Rings (Target style)
+    motif: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='18' stroke='white' stroke-opacity='0.1' fill='none' stroke-width='2'/%3E%3Ccircle cx='20' cy='20' r='10' stroke='white' stroke-opacity='0.05' fill='none' stroke-width='1.5'/%3E%3C/svg%3E")`,
+    motifOpacity: '0.7',
     primaryText: '#ffffff'
   },
 
@@ -61,8 +63,9 @@ export const themes: Record<string, ThemeColors> = {
     headerBg: '#ffffff',
     headerText: '#431407',
     accent: '#fb923c',
-    motif: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 70%)',
-    motifOpacity: '0.5',
+    // Solid Wave pattern
+    motif: `url("data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21.184 20c.357-.13.72-.264 1.088-.402l1.768-.661C33.64 15.347 39.647 13 50 13s16.36 2.347 25.96 5.937l1.768.661c.369.138.731.272 1.088.402H100V0H0v20h21.184z' fill='white' fill-opacity='0.07' fill-rule='evenodd'/%3E%3C/svg%3E")`,
+    motifOpacity: '0.8',
     primaryText: '#ffffff'
   },
   obsidian: {
@@ -73,8 +76,9 @@ export const themes: Record<string, ThemeColors> = {
     headerBg: '#111827',
     headerText: '#ffffff',
     accent: '#4b5563',
-    motif: 'repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 20px)',
-    motifOpacity: '0.4',
+    // Solid Honeycomb pattern
+    motif: `url("data:image/svg+xml,%3Csvg width='56' height='100' viewBox='0 0 56 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100' fill='none' stroke='white' stroke-opacity='0.05' stroke-width='2'/%3E%3C/svg%3E")`,
+    motifOpacity: '0.9',
     primaryText: '#0f172a'
   }
 }

@@ -57,7 +57,7 @@
             <!-- Club Stats Overview -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div v-for="stat in clubOverviewStats" :key="stat.label"
-                    class="bg-white rounded-xl p-5 flex flex-col justify-between min-h-[120px] shadow-sm hover:shadow-md transition-all border border-gray-100 group">
+                    class="bg-white rounded-xl p-5 flex flex-col justify-between min-h-[120px] shadow-sm hover:border-primary/50 transition-all border border-gray-100 group">
                     <div class="flex justify-between items-start gap-2">
                         <div class="min-w-0">
                             <p class="text-gray-400 text-[10px] font-black  tracking-wider mb-1 truncate">{{
@@ -65,7 +65,7 @@
                             <p class="text-navy text-2xl font-black tracking-tight tabular-nums">{{ stat.value }}</p>
                         </div>
                         <div
-                            class="bg-primary/10 p-2 rounded-lg text-primary group-hover:bg-primary group-hover:text-navy transition-colors shrink-0">
+                            class="bg-slate-50 p-2 rounded-lg text-navy group-hover:bg-primary group-hover:text-navy transition-colors shrink-0">
                             <Icon :icon="stat.icon" class="text-2xl" />
                         </div>
                     </div>
@@ -158,7 +158,7 @@
             <!-- Stats Overview -->
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 <div v-for="stat in overviewStats" :key="stat.label"
-                    class="bg-white rounded-xl p-4 md:p-5 flex flex-col justify-between min-h-[120px] shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-all border border-gray-100 group">
+                    class="bg-white rounded-xl p-4 md:p-5 flex flex-col justify-between min-h-[120px] shadow-sm hover:border-primary/50 transition-all border border-gray-100 group">
                     <div class="flex justify-between items-start gap-2">
                         <div class="min-w-0">
                             <p
@@ -169,7 +169,7 @@
                                 }}</p>
                         </div>
                         <div
-                            class="bg-gray-50 p-2 rounded-lg text-primary-dark group-hover:bg-primary group-hover:text-navy transition-colors shrink-0">
+                            class="bg-slate-50 p-2 rounded-lg text-navy group-hover:bg-primary group-hover:text-navy transition-colors shrink-0">
                             <Icon :icon="stat.icon" class="text-xl md:text-2xl" />
                         </div>
                     </div>

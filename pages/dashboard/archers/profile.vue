@@ -16,7 +16,6 @@
       </div>
     </div>
 
-    <!-- Tab Navigation -->
     <div
       class="flex items-center gap-1 bg-white p-1 rounded-2xl border border-gray-100 shadow-sm overflow-x-auto no-scrollbar">
       <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id" :class="[
@@ -86,39 +85,45 @@
           </div>
         </div>
 
-        <!-- Tab: Profil (Bio, Prestasi, Statistik, Riwayat Event) -->
+        <!-- Tab: Profil (Bio, Prestasi, Riwayat Event) -->
         <div v-if="activeTab === 'profile'" class="space-y-6">
-          <div v-if="profileSections.length === 0"
-            class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm text-center py-12">
-            <Icon icon="ph:identification-card" class="text-4xl text-gray-300 mx-auto mb-3" />
-            <p class="text-sm text-gray-500 font-medium">Belum ada komponen profil. Tambahkan dari tab
-              <strong>Pengaturan</strong>.
-            </p>
-          </div>
-          <div v-for="section in profileSections" :key="section.type"
-            class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
-            <h3 class="text-sm font-black text-navy  tracking-widest flex items-center gap-2">
-              <Icon :icon="section.icon" class="text-primary text-xl" />
-              {{ section.label }}
+          <!-- Bio Section -->
+          <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
+            <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
+              <Icon icon="ph:identification-card-bold" class="text-primary text-xl" />
+              TENTANG SAYA
             </h3>
-
-            <div v-if="section.type === 'bio'" class="space-y-4">
+            <div class="space-y-4">
               <BaseTextarea v-model="profile.bio" label="Deskripsi Diri"
                 placeholder="Ceritakan sejarah panahan Anda, filosofi, atau informasi menarik lainnya..." :rows="5" />
               <p class="text-[10px] text-gray-400 font-medium italic">
                 * Bio akan ditampilkan di halaman profil publik Anda untuk dilihat oleh klub dan penyelenggara event.
               </p>
             </div>
+          </div>
 
-            <div v-if="section.type === 'achievements'" class="space-y-4">
+          <!-- Achievements Section -->
+          <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
+            <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
+              <Icon icon="ph:medal-bold" class="text-primary text-xl" />
+              PRESTASI & PENGHARGAAN
+            </h3>
+            <div class="space-y-4">
               <BaseTextarea v-model="profile.achievements" label="Daftar Prestasi"
                 placeholder="Contoh: Juara 1 Kejurnas 2023, Pemanah Terbaik Piala Walikota..." :rows="6" />
               <p class="text-[10px] text-gray-400 font-medium italic">
                 * Masukkan prestasi Anda (satu per baris atau gunakan format teks bebas).
               </p>
             </div>
+          </div>
 
-            <div v-if="section.type === 'event_history'" class="space-y-4">
+          <!-- Event History Section -->
+          <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
+            <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
+              <Icon icon="ph:calendar-check-bold" class="text-primary text-xl" />
+              RIWAYAT EVENT
+            </h3>
+            <div class="space-y-4">
               <p class="text-sm text-gray-600">
                 Riwayat event akan otomatis ditampilkan dari data event yang Anda ikuti.
               </p>
@@ -133,146 +138,74 @@
 
         <!-- Tab: Kontak & Sosial -->
         <div v-if="activeTab === 'contact'" class="space-y-6">
-          <div v-if="contactSections.length === 0"
-            class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm text-center py-12">
-            <Icon icon="ph:phone" class="text-4xl text-gray-300 mx-auto mb-3" />
-            <p class="text-sm text-gray-500 font-medium">Belum ada komponen kontak/sosial. Tambahkan dari tab
-              <strong>Pengaturan</strong>.
-            </p>
-          </div>
-          <div v-for="section in contactSections" :key="section.type"
-            class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
-            <h3 class="text-sm font-black text-navy  tracking-widest flex items-center gap-2">
-              <Icon :icon="section.icon" class="text-primary text-xl" />
-              {{ section.label }}
+          <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
+            <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
+              <Icon icon="ph:phone-bold" class="text-primary text-xl" />
+              KONTAK
             </h3>
-
-            <div v-if="section.type === 'contact'" class="space-y-4">
+            <div class="space-y-4">
               <p class="text-sm text-gray-600">
-                Informasi kontak akan diambil dari data profil Anda. Pastikan data sudah lengkap di halaman Settings.
+                Informasi kontak Anda yang dapat dihubungi oleh penyelenggara event.
               </p>
-              <div class="p-4 bg-gray-50 rounded-xl space-y-2">
-                <div v-if="user?.email" class="flex items-center gap-2">
+              <div class="p-4 bg-gray-50 rounded-xl space-y-3">
+                <div v-if="accountForm.email" class="flex items-center gap-3">
                   <Icon icon="ph:envelope" class="text-primary" />
-                  <span class="text-sm text-gray-700">{{ user.email }}</span>
+                  <span class="text-sm text-gray-700 font-medium">{{ accountForm.email }}</span>
                 </div>
-                <div v-if="user?.phone" class="flex items-center gap-2">
+                <div v-if="accountForm.phone" class="flex items-center gap-3">
                   <Icon icon="ph:phone" class="text-primary" />
-                  <span class="text-sm text-gray-700">{{ user.phone }}</span>
+                  <span class="text-sm text-gray-700 font-medium">{{ accountForm.phone }}</span>
                 </div>
-                <NuxtLink to="/dashboard/settings"
-                  class="inline-flex items-center gap-2 text-sm text-primary font-bold hover:underline">
-                  <Icon icon="ph:pencil-simple" />
-                  Edit Kontak di Settings
-                </NuxtLink>
-              </div>
-            </div>
-
-            <div v-if="section.type === 'social'" class="space-y-4">
-              <p class="text-sm text-gray-600 mb-4">Tambahkan tautan media sosial Anda</p>
-              <div class="space-y-3">
-                <div class="flex items-center gap-3">
-                  <Icon icon="ph:instagram-logo" class="text-primary text-xl" />
-                  <input v-model="profile.socialLinks.instagram" type="text"
-                    placeholder="https://instagram.com/username"
-                    class="flex-1 px-4 py-2 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" />
-                </div>
-                <div class="flex items-center gap-3">
-                  <Icon icon="ph:facebook-logo" class="text-primary text-xl" />
-                  <input v-model="profile.socialLinks.facebook" type="text" placeholder="https://facebook.com/username"
-                    class="flex-1 px-4 py-2 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" />
-                </div>
-                <div class="flex items-center gap-3">
-                  <Icon icon="ph:youtube-logo" class="text-primary text-xl" />
-                  <input v-model="profile.socialLinks.youtube" type="text" placeholder="https://youtube.com/@username"
-                    class="flex-1 px-4 py-2 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" />
+                <div v-if="accountForm.address" class="flex items-start gap-3 border-t border-gray-200/50 pt-3 mt-1">
+                  <Icon icon="ph:map-pin" class="text-primary mt-0.5" />
+                  <span class="text-sm text-gray-700 leading-relaxed font-medium">{{ accountForm.address }}</span>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Tab: Peralatan & Galeri -->
-        <div v-if="activeTab === 'equipment'" class="space-y-6">
           <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
-            <h3 class="text-sm font-black text-navy  tracking-widest flex items-center gap-2">
-              <Icon icon="ph:bow-arrow-bold" class="text-primary text-xl" />
-              Peralatan Panahan
+            <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
+              <Icon icon="ph:share-network-bold" class="text-primary text-xl" />
+              MEDIA SOSIAL
             </h3>
-            <BaseTextarea v-model="profile.equipment" label="Peralatan Panahan"
-              placeholder="Contoh: Recurve Bow - Hoyt, Arrows - Easton, Stabilizer - Beiter..." :rows="4" />
-            <p class="text-[10px] text-gray-400 font-medium italic">
-              * Daftar peralatan panahan yang Anda gunakan.
-            </p>
-          </div>
-          <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
-            <h3 class="text-sm font-black text-navy  tracking-widest flex items-center gap-2">
-              <Icon icon="ph:images-bold" class="text-primary text-xl" />
-              Galeri
-            </h3>
-            <p class="text-sm text-gray-600">
-              Fitur galeri foto akan segera hadir. Anda dapat menambahkan foto-foto dari event dan latihan.
-            </p>
-            <div class="p-8 border-2 border-dashed border-gray-200 rounded-xl text-center">
-              <Icon icon="ph:images" class="text-4xl text-gray-400 mx-auto mb-2" />
-              <p class="text-sm text-gray-500">Fitur galeri akan segera tersedia</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Tab: Settings (Page Configuration) -->
-        <div v-if="activeTab === 'settings'" class="space-y-6">
-          <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm">
-            <h3 class="text-lg font-black text-navy mb-6 flex items-center gap-2">
-              <Icon icon="ph:gear" class="text-black text-xl" />
-              Pengaturan Halaman Profil
-            </h3>
-            <p class="text-sm text-gray-500 mb-6">
-              Pilih komponen yang ingin ditampilkan di profil publik Anda. Seret untuk mengubah urutan.
-            </p>
-
-            <div class="space-y-4 mb-8">
-              <div v-for="(section, index) in activeSections" :key="section.type"
-                class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-200 hover:border-primary/30 transition-all cursor-move">
-                <div class="flex items-center gap-3 flex-1">
-                  <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                    <Icon :icon="section.icon" class="text-black text-xl" />
-                  </div>
-                  <div class="flex-1">
-                    <h4 class="font-bold text-navy">{{ section.label }}</h4>
-                    <p class="text-xs text-gray-500">{{ section.description }}</p>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <label class="relative inline-flex items-center cursor-pointer">
-                      <input type="checkbox" v-model="section.isVisible" class="sr-only peer"
-                        @change="updateSectionVisibility(section.type, section.isVisible)" />
-                      <div
-                        class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
-                      </div>
-                    </label>
+            <div class="space-y-4">
+              <p class="text-sm text-gray-600">Tautkan akun media sosial Anda untuk dilihat oleh publik.</p>
+              <div class="grid grid-cols-1 gap-4 mt-2">
+                <div class="space-y-2">
+                  <label class="text-xs font-black text-navy uppercase tracking-widest pl-1">WhatsApp</label>
+                  <div class="flex items-center gap-3">
+                    <div
+                      class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center shrink-0 border border-green-100">
+                      <Icon icon="ph:whatsapp-logo" class="text-green-600 text-xl" />
+                    </div>
+                    <input v-model="profile.social_whatsapp" type="text" placeholder="Contoh: 081234567890"
+                      class="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-medium" />
                   </div>
                 </div>
-                <button @click="removeSection(section.type)"
-                  class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
-                  <Icon icon="ph:trash" class="text-lg" />
-                </button>
-              </div>
-            </div>
 
-            <div v-if="availableSections.length > 0">
-              <h4 class="text-sm font-black text-navy mb-4  tracking-wider">Tambahkan Komponen</h4>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <button v-for="section in availableSections" :key="section.type" @click="addSection(section.type)"
-                  class="flex items-center gap-3 p-4 bg-white border-2 border-dashed border-gray-200 rounded-xl hover:border-primary hover:bg-primary/5 transition-all text-left">
-                  <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                    <Icon :icon="section.icon" class="text-black text-xl" />
+                <div class="space-y-2">
+                  <label class="text-xs font-black text-navy uppercase tracking-widest pl-1">Instagram</label>
+                  <div class="flex items-center gap-3">
+                    <div
+                      class="w-10 h-10 rounded-xl bg-pink-50 flex items-center justify-center shrink-0 border border-pink-100">
+                      <Icon icon="ph:instagram-logo" class="text-pink-600 text-xl" />
+                    </div>
+                    <input v-model="profile.social_instagram" type="text" placeholder="@username_instagram"
+                      class="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-medium" />
                   </div>
-                  <div class="flex-1">
-                    <h5 class="font-bold text-navy text-sm">{{ section.label }}</h5>
-                    <p class="text-xs text-gray-500">{{ section.description }}</p>
+                </div>
+
+                <div class="space-y-2">
+                  <label class="text-xs font-black text-navy uppercase tracking-widest pl-1">TikTok</label>
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-black flex items-center justify-center shrink-0">
+                      <Icon icon="ph:tiktok-logo" class="text-white text-xl" />
+                    </div>
+                    <input v-model="profile.social_tiktok" type="text" placeholder="@username_tiktok"
+                      class="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-medium" />
                   </div>
-                  <Icon icon="ph:plus-circle" class="text-black text-xl" />
-                </button>
+                </div>
               </div>
             </div>
           </div>
@@ -359,12 +292,9 @@ const isSavingAccount = ref(false)
 const profile = ref({
   bio: '',
   achievements: '',
-  equipment: '',
-  socialLinks: {
-    instagram: '',
-    facebook: '',
-    youtube: ''
-  }
+  social_instagram: '',
+  social_tiktok: '',
+  social_whatsapp: ''
 })
 
 const accountForm = ref({
@@ -443,67 +373,12 @@ const activeTab = ref('information')
 const tabs = [
   { id: 'information', label: 'Informasi', icon: 'ph:user-circle-bold' },
   { id: 'profile', label: 'Profil', icon: 'ph:identification-card-bold' },
-  { id: 'contact', label: 'Kontak & Sosial', icon: 'ph:phone-bold' },
-  { id: 'equipment', label: 'Peralatan & Galeri', icon: 'ph:bow-arrow-bold' },
-  { id: 'settings', label: 'Pengaturan', icon: 'ph:gear-bold' }
+  { id: 'contact', label: 'Kontak & Sosial', icon: 'ph:phone-bold' }
 ]
 
-const activeSections = ref([])
-
-const availableSections = computed(() => {
-  const activeTypes = activeSections.value.map((s) => s.type)
-  return allSections.filter((s) => !activeTypes.includes(s.type))
-})
-
-const profileSections = computed(() => {
-  const types = ['bio', 'achievements', 'event_history']
-  return activeSections.value.filter((s) => types.includes(s.type))
-})
-
-const contactSections = computed(() => {
-  const types = ['contact', 'social']
-  return activeSections.value.filter((s) => types.includes(s.type))
-})
-
-// Initialize sections
-const initializeSections = () => {
-  // Default sections: bio, achievements (removed stats)
-  const defaultSections = ['bio', 'achievements']
-  activeSections.value = allSections
-    .filter((s) => defaultSections.includes(s.type))
-    .map((s) => ({
-      ...s,
-      isVisible: s.defaultVisible
-    }))
-}
-
-// Add section
-const addSection = (sectionType) => {
-  const section = allSections.find((s) => s.type === sectionType)
-  if (section) {
-    activeSections.value.push({
-      ...section,
-      isVisible: true
-    })
-  }
-}
-
-// Remove section
-const removeSection = (sectionType) => {
-  activeSections.value = activeSections.value.filter((s) => s.type !== sectionType)
-}
-
-// Update section visibility
-const updateSectionVisibility = (sectionType, isVisible) => {
-  const section = activeSections.value.find((s) => s.type === sectionType)
-  if (section) {
-    section.isVisible = isVisible
-  }
-}
 
 // Initialize from user data
 onMounted(async () => {
-  initializeSections()
 
   // Load cities
   try {
@@ -521,17 +396,9 @@ onMounted(async () => {
     const data = archerProfile.value
     profile.value.bio = data.bio || ''
     profile.value.achievements = data.achievements || ''
-    profile.value.equipment = data.equipment || ''
-
-    if (data.social_links) {
-      if (typeof data.social_links === 'string') {
-        try {
-          profile.value.socialLinks = JSON.parse(data.social_links)
-        } catch (e) { }
-      } else {
-        profile.value.socialLinks = { ...profile.value.socialLinks, ...data.social_links }
-      }
-    }
+    profile.value.social_instagram = data.social_instagram || ''
+    profile.value.social_tiktok = data.social_tiktok || ''
+    profile.value.social_whatsapp = data.social_whatsapp || ''
 
     // Fetch user stats (this is separate from basic profile)
     try {
@@ -565,19 +432,6 @@ const loadProfile = async () => {
       address: response.address || ''
     }
 
-    if (response.page_settings) {
-      try {
-        const settings = typeof response.page_settings === 'string'
-          ? JSON.parse(response.page_settings)
-          : response.page_settings
-
-        if (settings.sections) {
-          activeSections.value = settings.sections
-        }
-      } catch (e) {
-        console.error('Failed to parse page_settings:', e)
-      }
-    }
   } catch (error) {
     console.error('Failed to load profile:', error)
   }
@@ -603,11 +457,9 @@ const saveProfile = async () => {
     await put('/user/profile', {
       bio: profile.value.bio,
       achievements: profile.value.achievements,
-      equipment: profile.value.equipment,
-      social_links: profile.value.socialLinks,
-      page_settings: JSON.stringify({
-        sections: activeSections.value
-      })
+      social_instagram: profile.value.social_instagram,
+      social_tiktok: profile.value.social_tiktok,
+      social_whatsapp: profile.value.social_whatsapp
     })
     toast.success('Profil berhasil disimpan')
   } catch (error) {

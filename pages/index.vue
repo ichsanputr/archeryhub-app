@@ -16,6 +16,13 @@
             </div>
         </section>
 
+        <!-- Subscription Promotion -->
+        <section class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 mb-12 sm:mb-20">
+            <SubscriptionPromo promo-badge="Promo Terbatas" promo-title="Mulai Turnamen Anda Gratis 3 Bulan!"
+                promo-desc="Daftarkan klub atau organisasi Anda sekarang dan nikmati akses penuh paket Standard tanpa biaya selama tiga bulan pertama."
+                savings="104.997" />
+        </section>
+
         <!-- Live Events Section -->
         <HomeLiveEvents />
 
@@ -38,6 +45,7 @@ import HomeLiveEvents from '~/components/Home/HomeLiveEvents.vue'
 import HomeFeaturedClubs from '~/components/Home/HomeFeaturedClubs.vue'
 import HomeLatestNews from '~/components/Home/HomeLatestNews.vue'
 import HomeFeatures from '~/components/Home/HomeFeatures.vue'
+import SubscriptionPromo from '~/components/dashboard/subscription/SubscriptionPromo.vue'
 
 definePageMeta({
     layout: 'landing'

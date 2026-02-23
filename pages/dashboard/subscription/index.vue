@@ -3,8 +3,6 @@
         <!-- Header Section -->
         <SubscriptionHeader :status="subscriptionRes?.current?.status" />
 
-        <!-- Promo Banner -->
-        <SubscriptionPromo v-if="!isSubscribed" v-bind="roleContent" />
 
         <!-- Status & Stats Section -->
         <SubscriptionStatus :plan-name="currentPlan?.name"

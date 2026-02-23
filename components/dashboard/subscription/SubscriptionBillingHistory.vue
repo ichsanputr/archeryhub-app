@@ -44,10 +44,12 @@
                                         class="px-4 py-2 bg-primary text-navy text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-primary-dark transition-all shadow-sm">
                                         Bayar Sekarang
                                     </a>
-                                    <button v-else-if="invoice.status === 'paid'"
+                                    <a v-else-if="invoice.status === 'paid'"
+                                        :href="`${apiBaseUrl}/api/v1/payment/invoice/${invoice.reference}`"
+                                        target="_blank"
                                         class="p-2 bg-white border border-gray-100 rounded-xl text-gray-400 hover:text-navy hover:border-primary hover:shadow-lg transition-all">
                                         <Icon icon="ph:file-pdf-bold" class="text-lg" />
-                                    </button>
+                                    </a>
                                 </div>
                             </td>
                         </tr>
@@ -64,6 +66,9 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+
+const config = useRuntimeConfig()
+const apiBaseUrl = config.public.apiBaseUrl
 
 defineProps({
     invoices: Array
