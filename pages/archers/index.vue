@@ -81,7 +81,7 @@
             <div v-else-if="viewMode === 'grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <NuxtLink v-for="archer in filteredArchers" :key="archer.id || archer.uuid"
                     :to="`/archers/${archer.username || archer.slug}`"
-                    class="group bg-white rounded-3xl border border-gray-100 p-6 transition-all duration-500 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5">
+                    class="group bg-white rounded-3xl border border-gray-100 p-6 transition-all duration-500 hover:border-primary/50 hover:shadow-sm hover:shadow-primary/5">
                     <div class="flex items-center gap-5">
                         <!-- Avatar -->
                         <div class="relative flex-shrink-0">
@@ -131,7 +131,7 @@
                                 </div>
                                 <span class="text-xs font-black text-navy truncate capitalize">{{ archer.bow_type ||
                                     'Recurve'
-                                }}</span>
+                                    }}</span>
                             </div>
                         </div>
                         <div

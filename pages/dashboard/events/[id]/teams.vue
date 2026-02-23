@@ -43,7 +43,7 @@
                             Sync Otomatis
                         </BaseButton>
                         <BaseButton variant="primary" icon="ph:plus-bold"
-                            class="h-10 sm:h-11 px-5 w-full sm:w-auto shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all text-xs sm:text-sm"
+                            class="h-10 sm:h-11 px-5 w-full sm:w-auto shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all text-xs sm:text-sm"
                             @click="openAddTeamModal">
                             Tambah Tim Manual
                         </BaseButton>

@@ -112,7 +112,7 @@
     <div v-else class="space-y-8">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div v-for="event in filteredEvents" :key="event.id"
-          class="group bg-white rounded-3xl border border-slate-100 p-6 flex flex-col shadow-sm hover:shadow-xl hover:border-primary/20 transition-all duration-300 relative overflow-hidden">
+          class="group bg-white rounded-3xl border border-slate-100 p-6 flex flex-col shadow-sm hover:shadow-sm hover:border-primary/20 transition-all duration-300 relative overflow-hidden">
 
           <!-- Decorative Background -->
           <div
@@ -172,22 +172,21 @@
               <span :class="getStatusDotClass(event.participant_status)" class="size-1.5 rounded-full"></span>
               {{ getStatusLabel(event.participant_status) }}
             </div>
-            <div :class="getPaymentStatusClass(event.payment_status)"
-              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest border shrink-0">
-              <span :class="getPaymentStatusDotClass(event.payment_status)" class="size-1.5 rounded-full"></span>
-              {{ getPaymentStatusLabel(event.payment_status) }}
-            </div>
+            <template
+              v-if="getPaymentStatusLabel(event.payment_status) !== '-' && getPaymentStatusLabel(event.payment_status) !== getStatusLabel(event.participant_status)">
+              <div :class="getPaymentStatusClass(event.payment_status)"
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest border shrink-0">
+                <span :class="getPaymentStatusDotClass(event.payment_status)" class="size-1.5 rounded-full"></span>
+                {{ getPaymentStatusLabel(event.payment_status) }}
+              </div>
+            </template>
           </div>
 
           <!-- Card Footer -->
           <div class="mt-auto pt-6 border-t border-slate-50 flex items-center gap-3">
-            <BaseButton :to="`/dashboard/events/${event.slug || event.id}/overview`" variant="primary" size="md"
+            <BaseButton :to="`/dashboard/events/${event.slug || event.id}/my-qualification`" variant="primary" size="md"
               class="flex-1 font-black uppercase tracking-widest text-xs h-11">
-              Dashboard
-            </BaseButton>
-            <BaseButton v-if="event.participant_status === 'Terdaftar' && event.qr_raw" @click="showQRDialog(event)"
-              variant="white" size="md" icon="ph:qr-code-bold"
-              class="size-11 flex items-center justify-center p-0 border-slate-200">
+              Buka Event
             </BaseButton>
           </div>
         </div>
@@ -342,76 +341,84 @@ const formatDate = (dateStr) => {
 
 const getPaymentStatusClass = (status) => {
   if (!status) return 'bg-gray-50 text-gray-500 border-gray-100'
+  const s = status.toLowerCase()
+  if (s === 'menunggu' || s === 'menunggu_acc' || s === 'pending' || s === 'menunggu acc') {
+    return 'bg-amber-50 text-amber-700 border-amber-100'
+  }
   const classes = {
-    'menunggu_acc': 'bg-blue-50 text-blue-700 border-blue-100',
     'belum_lunas': 'bg-yellow-50 text-yellow-700 border-yellow-100',
     'lunas': 'bg-green-50 text-green-700 border-green-100',
-    'pending': 'bg-amber-50 text-amber-700 border-amber-100',
     'paid': 'bg-green-50 text-green-700 border-green-100',
     'failed': 'bg-red-50 text-red-700 border-red-100'
   }
-  return classes[status] || 'bg-gray-50 text-gray-500 border-gray-100'
+  return classes[s] || 'bg-gray-50 text-gray-500 border-gray-100'
 }
 
 const getPaymentStatusDotClass = (status) => {
   if (!status) return 'bg-gray-300'
+  const s = status.toLowerCase()
+  if (s === 'menunggu' || s === 'menunggu_acc' || s === 'pending' || s === 'menunggu acc') {
+    return 'bg-amber-500'
+  }
   const classes = {
-    'menunggu_acc': 'bg-blue-500',
     'belum_lunas': 'bg-yellow-500',
     'lunas': 'bg-green-500',
-    'pending': 'bg-amber-500',
     'paid': 'bg-green-500',
     'failed': 'bg-red-500'
   }
-  return classes[status] || 'bg-gray-300'
+  return classes[s] || 'bg-gray-300'
 }
 
 const getPaymentStatusLabel = (status) => {
   if (!status) return '-'
+  const s = status.toLowerCase()
+  if (s === 'menunggu' || s === 'menunggu_acc' || s === 'pending' || s === 'menunggu acc') return 'Menunggu ACC'
   const labels = {
-    'menunggu_acc': 'Menunggu ACC',
     'belum_lunas': 'Belum Lunas',
     'lunas': 'Lunas',
-    'pending': 'Pending',
     'paid': 'Terbayar',
     'failed': 'Gagal'
   }
-  return labels[status] || status
+  return labels[s] || status
 }
 
 const getStatusClass = (status) => {
   if (!status) return 'bg-gray-50 text-gray-500 border-gray-100'
+  const s = status.toLowerCase()
+  if (s === 'menunggu' || s === 'menunggu acc' || s === 'pending' || s === 'menunggu_acc') {
+    return 'bg-amber-50 text-amber-700 border-amber-100'
+  }
   const classes = {
-    'Menunggu Acc': 'bg-amber-50 text-amber-700 border-amber-100',
-    'Terdaftar': 'bg-green-50 text-green-700 border-green-100',
-    'pending': 'bg-amber-50 text-amber-700 border-amber-100',
+    'terdaftar': 'bg-green-50 text-green-700 border-green-100',
     'approved': 'bg-green-50 text-green-700 border-green-100',
     'rejected': 'bg-red-50 text-red-700 border-red-100'
   }
-  return classes[status] || 'bg-gray-50 text-gray-500 border-gray-100'
+  return classes[s] || 'bg-gray-50 text-gray-500 border-gray-100'
 }
 
 const getStatusDotClass = (status) => {
   if (!status) return 'bg-gray-300'
+  const s = status.toLowerCase()
+  if (s === 'menunggu' || s === 'menunggu acc' || s === 'pending' || s === 'menunggu_acc') {
+    return 'bg-amber-500'
+  }
   const classes = {
-    'Menunggu Acc': 'bg-amber-500',
-    'Terdaftar': 'bg-green-500',
-    'pending': 'bg-amber-500',
+    'terdaftar': 'bg-green-500',
     'approved': 'bg-green-500',
     'rejected': 'bg-red-500'
   }
-  return classes[status] || 'bg-gray-300'
+  return classes[s] || 'bg-gray-300'
 }
 
 const getStatusLabel = (status) => {
   if (!status) return 'Belum Daftar'
+  const s = status.toLowerCase()
+  if (s === 'menunggu' || s === 'menunggu acc' || s === 'pending') return 'Menunggu ACC'
   const labels = {
-    'Menunggu Acc': 'Menunggu ACC',
-    'Terdaftar': 'Terdaftar',
-    'pending': 'Menunggu ACC',
+    'terdaftar': 'Terdaftar',
     'approved': 'Diterima',
     'rejected': 'Ditolak'
   }
-  return labels[status] || status
+  return labels[s] || status
 }
 </script>

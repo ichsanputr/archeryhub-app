@@ -55,7 +55,7 @@
                             Batal
                         </BaseButton>
                         <BaseButton variant="primary" icon="ph:floppy-disk"
-                            class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all"
+                            class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all"
                             @click="handleSubmit" :loading="isSubmitting">
                             Simpan Perubahan
                         </BaseButton>

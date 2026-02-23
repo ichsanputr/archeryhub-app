@@ -93,7 +93,7 @@
                     <div v-if="filteredArticles.length > 0" class="grid grid-cols-1 gap-6">
                         <NuxtLink v-for="article in filteredArticles" :key="article.id"
                             :to="`/news/${article.slug || article.id}`"
-                            class="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300">
+                            class="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:border-primary/50 hover:shadow-sm hover:shadow-primary/5 transition-all duration-300">
 
                             <div class="flex flex-col sm:flex-row h-full">
                                 <!-- Thumbnail -->

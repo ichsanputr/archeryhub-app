@@ -424,7 +424,8 @@
                             </div>
                         </div>
                         <div class="pt-4 border-t border-gray-100">
-                            <label class="text-sm font-bold text-gray-700 mb-3 block">Detail Hadiah (Ditampilkan di halaman publik)</label>
+                            <label class="text-sm font-bold text-gray-700 mb-3 block">Detail Hadiah (Ditampilkan di
+                                halaman publik)</label>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div class="space-y-2">
                                     <label class="text-xs font-bold text-gray-600">Juara 1</label>
@@ -762,7 +763,7 @@
                         :class="isDragging ? 'border-primary bg-primary/5' : ''">
                         <div class="flex flex-col items-center gap-4">
                             <div
-                                class="w-20 h-20 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-white group-hover:shadow-xl group-hover:shadow-primary/20 transition-all">
+                                class="w-20 h-20 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-white group-hover:shadow-sm group-hover:shadow-primary/20 transition-all">
                                 <Icon icon="ph:cloud-arrow-up"
                                     class="text-4xl text-gray-300 group-hover:text-primary" />
                             </div>
@@ -784,7 +785,7 @@
                     <div v-if="form.results && form.results.length > 0" class="space-y-6">
                         <div class="grid grid-cols-1 gap-4">
                             <div v-for="(file, index) in form.results" :key="index"
-                                class="group relative bg-white rounded-2xl border border-gray-100 hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5 transition-all p-4 sm:p-5">
+                                class="group relative bg-white rounded-2xl border border-gray-100 hover:border-primary/50 hover:shadow-sm hover:shadow-primary/5 transition-all p-4 sm:p-5">
 
                                 <div class="flex gap-3 sm:gap-5">
                                     <!-- File Icon / Preview -->

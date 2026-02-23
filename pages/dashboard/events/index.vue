@@ -1,11 +1,11 @@
 <template>
-  <DashboardOrganizationEventsList v-if="!isArcher" />
-  <DashboardArcherEventsList v-else />
+  <DashboardOrganizationEventsList />
 </template>
 
 <script setup>
 import { useAuth } from '~/composables/useAuth'
 import { useEventContext } from '~/composables/useEventContext'
+import { useRouter } from 'vue-router'
 
 definePageMeta({
   layout: 'dashboard'
@@ -17,11 +17,14 @@ useHead({
 
 const { user } = useAuth()
 const { clearEvent } = useEventContext()
-
-// Role-based permissions
-const isArcher = computed(() => user.value?.role === 'archer')
+const router = useRouter()
 
 onMounted(() => {
   clearEvent() // Reset header when back to general list
+
+  // If user is an archer, redirect to their dedicated events page
+  if (user.value?.role === 'archer') {
+    router.replace('/dashboard/archers/events')
+  }
 })
 </script>

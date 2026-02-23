@@ -44,7 +44,7 @@
                             <span class="sm:hidden">Hasil</span>
                         </BaseButton>
                         <BaseButton variant="primary" icon="ph:floppy-disk"
-                            class="h-10 md:h-11 px-4 md:px-6 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all font-black text-navy"
+                            class="h-10 md:h-11 px-4 md:px-6 shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all font-black text-navy"
                             @click="handleSubmit" :loading="isSubmitting">
                             <span class="hidden sm:inline">Simpan Perubahan</span>
                             <span class="sm:hidden">Simpan</span>
@@ -101,7 +101,7 @@
                                         <span class="text-gray-300">•</span>
                                         <span :class="getStatusClass(form.status)"
                                             class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold border">
-                                            {{ form.status || 'Menunggu Acc' }}
+                                            {{ getDisplayStatus(form.status) }}
                                         </span>
                                         <span class="text-gray-300">•</span>
                                         <!-- Registration Source Badge -->
@@ -322,7 +322,7 @@
                             <p class="text-gray-500 text-sm leading-relaxed">
                                 Apakah Anda yakin ingin mengeluarkan <span class="font-bold text-navy">{{
                                     participant?.full_name
-                                }}</span> dari event ini?
+                                    }}</span> dari event ini?
                             </p>
                             <p class="text-red-600 text-xs mt-2 font-semibold">
                                 Tindakan ini akan menghapus semua data target dan skor yang terkait dan tidak dapat
@@ -434,7 +434,7 @@ const toggleCategory = (id) => {
 
 const paymentStatusOptions = [
     { label: 'Lunas', value: 'lunas' },
-    { label: 'Menunggu Acc', value: 'menunggu acc' }
+    { label: 'Menunggu ACC', value: 'menunggu acc' }
 ]
 
 const targetNumberText = computed(() => {
@@ -515,10 +515,17 @@ const getCategoryName = (p) => {
     return cat ? cat.label : 'Pilih Kategori'
 }
 
+const getDisplayStatus = (status) => {
+    const s = (status || '').toLowerCase()
+    if (s === 'menunggu' || s === 'menunggu acc' || !s) return 'Menunggu ACC'
+    return s
+}
+
 const getStatusClass = (status) => {
     switch (status) {
         case 'lunas':
             return 'bg-green-50 text-green-600 border-green-200'
+        case 'menunggu':
         case 'menunggu acc':
         default:
             return 'bg-amber-50 text-amber-600 border-amber-200'

@@ -52,7 +52,7 @@
             </div>
 
             <BaseButton @click="showCreateDialog = true" variant="primary" icon="ph:plus-bold"
-              class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all">
+              class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all">
               <span class="hidden sm:inline">Tambah Target Baru</span>
               <span class="sm:hidden">Tambah</span>
             </BaseButton>

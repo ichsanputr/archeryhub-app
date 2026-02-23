@@ -74,7 +74,7 @@
 
             <!-- CTA Button -->
             <NuxtLink to="/dashboard/events"
-              class="block w-full py-3 px-4 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-semibold text-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+              class="block w-full py-3 px-4 rounded-xl bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-semibold text-center shadow-lg hover:shadow-sm transform hover:-translate-y-0.5 transition-all duration-200">
               Go Pro for Free
               <Icon :ssr="true" icon="ph:arrow-right-bold" class="inline-block w-4 h-4 ml-1" />
             </NuxtLink>
@@ -84,7 +84,7 @@
         <!-- LeetCode Card -->
         <div class="relative group">
           <div
-            class="bg-white rounded-2xl border border-gray-200 shadow-md p-6 h-full transition-all duration-300 hover:shadow-xl hover:border-gray-300">
+            class="bg-white rounded-2xl border border-gray-200 shadow-md p-6 h-full transition-all duration-300 hover:shadow-sm hover:border-gray-300">
             <!-- Platform Header -->
             <div class="text-center mb-6">
               <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gray-100 mb-4">
@@ -117,7 +117,7 @@
         <!-- Codewars Card -->
         <div class="relative group">
           <div
-            class="bg-white rounded-2xl border border-gray-200 shadow-md p-6 h-full transition-all duration-300 hover:shadow-xl hover:border-gray-300">
+            class="bg-white rounded-2xl border border-gray-200 shadow-md p-6 h-full transition-all duration-300 hover:shadow-sm hover:border-gray-300">
             <!-- Platform Header -->
             <div class="text-center mb-6">
               <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gray-100 mb-4">

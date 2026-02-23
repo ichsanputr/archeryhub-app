@@ -323,7 +323,7 @@
                                                     </div>
                                                     <div class="text-white text-lg sm:text-xl font-black">{{
                                                         displayValue(tournament.prizes?.second)
-                                                        }}</div>
+                                                    }}</div>
                                                 </div>
                                                 <div class="w-full h-2 bg-white/10 overflow-hidden">
                                                     <div class="h-full bg-white/60 w-1/2"></div>
@@ -591,14 +591,18 @@
                                     </NuxtLink>
                                 </template>
                                 <template v-else>
-                                    <NuxtLink :to="registerUrl"
+                                    <div v-if="isAlreadyRegistered"
+                                        class="w-full py-4 bg-gray-100 text-gray-400 font-bold rounded-xl text-center cursor-not-allowed border border-gray-200">
+                                        Anda Sudah Terdaftar
+                                    </div>
+                                    <NuxtLink v-else :to="registerUrl"
                                         class="w-full block py-4 bg-primary hover:bg-primary-hover text-navy font-bold rounded-xl transition-colors shadow-md text-center">
                                         Yuk Daftar Sekarang
                                     </NuxtLink>
                                     <p class="text-center text-xs text-gray-400 mt-3">Sudah terdaftar?
-                                        <NuxtLink class="text-navy font-bold hover:underline" :to="`/dashboard/events`">
-                                            Cek
-                                            status
+                                        <NuxtLink class="text-navy font-bold hover:underline"
+                                            :to="isArcher ? '/dashboard/archers/events' : '/dashboard/events'">
+                                            Cek status
                                         </NuxtLink>
                                     </p>
                                 </template>
@@ -1119,6 +1123,22 @@ const countdown = computed(() => {
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
 
     return { days, hours, minutes, isClosed: false }
+})
+
+// Check if current user is already registered
+const isAlreadyRegistered = computed(() => {
+    if (!isLoggedIn.value || !user.value || !participantsData.value) return false
+
+    // Support multiple check strategies: archer_id, user_id, or email
+    const userId = user.value.id
+    const userEmail = user.value.email
+
+    return participantsData.value.some(p =>
+        (p.archer_id && String(p.archer_id) === String(userId)) ||
+        (p.user_id && String(p.user_id) === String(userId)) ||
+        (p.email && p.email === userEmail) ||
+        (p.athlete_code && p.athlete_code === user.value.athlete_code)
+    )
 })
 </script>
 

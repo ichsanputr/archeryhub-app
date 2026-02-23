@@ -44,7 +44,7 @@
                         </BaseButton>
                         <BaseButton :to="`/dashboard/events/${eventId}/participants/add`" variant="primary"
                             icon="ph:plus-bold"
-                            class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all">
+                            class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all">
                             <span class="hidden sm:inline">Tambah Peserta</span>
                             <span class="sm:hidden">Tambah</span>
                         </BaseButton>
@@ -56,12 +56,18 @@
         <!-- Search and Filter Bar -->
         <div
             class="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm flex flex-col sm:flex-row gap-4 justify-between items-center">
-            <div class="relative w-full sm:max-w-md">
-                <Icon icon="ph:magnifying-glass"
-                    class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
-                <input v-model="searchQuery" type="text" placeholder="Cari nama peserta atau email..."
-                    class="w-full pl-11 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium"
-                    @input="handleSearch" />
+            <div class="flex flex-col sm:flex-row gap-4 w-full sm:max-w-2xl">
+                <div class="relative flex-1">
+                    <Icon icon="ph:magnifying-glass"
+                        class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
+                    <input v-model="searchQuery" type="text" placeholder="Cari nama peserta atau email..."
+                        class="w-full pl-11 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium"
+                        @input="handleSearch" />
+                </div>
+                <div class="w-full sm:w-48">
+                    <BaseSelect v-model="statusFilter" :items="statusOptions"
+                        @update:model-value="handleFilterStatus" />
+                </div>
             </div>
 
             <div class="flex items-center gap-2">
@@ -81,7 +87,7 @@
                             <th class="px-6 py-4">No</th>
                             <th class="px-6 py-4">Nama Peserta / Email</th>
                             <th class="px-6 py-4">Klub / Kota</th>
-                            <th class="px-6 py-4">Kategori Lomba yang Diikuti</th>
+                            <th class="px-6 py-4 min-w-[160px]">Status Pembayaran</th>
                             <th class="px-6 py-4 text-right">Aksi</th>
                         </tr>
                     </thead>
@@ -104,18 +110,11 @@
                                 <td class="px-6 py-4">
                                     <div class="h-4 w-24 bg-gray-100 animate-pulse rounded"></div>
                                 </td>
-                                <td class="px-6 py-4">
-                                    <div class="h-4 w-48 bg-gray-100 animate-pulse rounded"></div>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="h-6 w-20 bg-gray-100 animate-pulse rounded-full"></div>
-                                </td>
-                                <td class="px-6 py-4">
-                                    <div class="h-8 w-24 bg-gray-100 animate-pulse rounded"></div>
+                                <td class="px-6 py-4 min-w-[160px]">
+                                    <div class="h-6 w-28 bg-gray-100 animate-pulse rounded-lg"></div>
                                 </td>
                                 <td class="px-6 py-4 text-right">
                                     <div class="flex justify-end gap-2">
-                                        <div class="size-8 bg-gray-50 animate-pulse rounded-lg"></div>
                                         <div class="size-8 bg-gray-50 animate-pulse rounded-lg"></div>
                                     </div>
                                 </td>
@@ -153,27 +152,12 @@
                                                 participant.city }}</span>
                                     </div>
                                 </td>
-                                <td class="px-6 py-4 align-top">
-                                    <div class="flex flex-wrap gap-2 items-center">
-                                        <div v-for="cat in participant.categories.slice(0, 2)" :key="cat.participant_id"
-                                            class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-100 shadow-sm hover:border-primary/40 transition-all duration-200 group/chip">
-                                            <div class="flex flex-col">
-                                                <span class="text-[11px] font-black text-navy leading-none">
-                                                    {{ cat.division_name }} - {{ cat.category_name }}
-                                                </span>
-                                                <span
-                                                    class="text-[9px] text-gray-400 font-bold uppercase tracking-wider mt-0.5">
-                                                    {{ cat.event_type_name }} {{ cat.gender_division_name ? '• ' +
-                                                        cat.gender_division_name : '' }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div v-if="participant.categories.length > 2"
-                                            class="px-2.5 py-1.5 rounded-lg bg-navy/5 text-navy text-[10px] font-black border border-navy/10 flex items-center gap-1.5 hover:bg-navy/10 transition-colors cursor-help"
-                                            :title="participant.categories.slice(2).map(c => c.division_name + ' - ' + c.category_name).join('\n')">
-                                            +{{ participant.categories.length - 2 }} Lagi
-                                        </div>
-                                    </div>
+
+                                <td class="px-6 py-4 align-top min-w-[160px]">
+                                    <span :class="getStatusClass(participant.payment_status || participant.status)"
+                                        class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold border capitalize">
+                                        {{ getDisplayStatus(participant.payment_status || participant.status) }}
+                                    </span>
                                 </td>
                                 <td class="px-6 py-4 text-right align-top w-20">
                                     <div class="flex items-center justify-end">
@@ -247,7 +231,19 @@ const activeDiv = ref('Semua')
 const filterDivs = ['Semua', 'Recurve', 'Compound', 'Barebow']
 const isLoading = ref(true)
 
+const statusFilter = ref('Semua')
+const statusOptions = [
+    { title: 'Semua Status', value: 'Semua' },
+    { title: 'Lunas', value: 'lunas' },
+    { title: 'Menunggu ACC', value: 'menunggu acc' }
+]
+
 const searchTimeout = ref(null)
+
+const handleFilterStatus = () => {
+    page.value = 1
+    fetchParticipants()
+}
 
 const handleSearch = () => {
     if (searchTimeout.value) {
@@ -278,7 +274,11 @@ const fetchParticipants = async () => {
     isLoading.value = true
     try {
         const offset = (page.value - 1) * limit.value
-        const response = await get(`/events/${id}/participants?limit=${limit.value}&offset=${offset}&group_by=archer&search=${searchQuery.value}`)
+        let url = `/events/${id}/participants?limit=${limit.value}&offset=${offset}&group_by=archer&search=${searchQuery.value}`
+        if (statusFilter.value !== 'Semua') {
+            url += `&payment_status=${statusFilter.value}`
+        }
+        const response = await get(url)
         participants.value = response?.participants || []
         total.value = response?.total || 0
         verifiedCount.value = response?.verified_count || 0
@@ -303,14 +303,20 @@ const filteredParticipants = computed(() => {
     return participants.value
 })
 
+const getDisplayStatus = (status) => {
+    const s = (status || '').toLowerCase()
+    if (s === 'menunggu' || s === 'menunggu acc' || !s) return 'Menunggu ACC'
+    return s
+}
+
 const getStatusClass = (status) => {
-    switch (status) {
+    switch (status?.toLowerCase()) {
         case 'lunas':
-            return 'bg-green-50 text-green-600 border-green-100'
+            return 'bg-green-50 text-green-600 border-green-200'
+        case 'menunggu':
         case 'menunggu acc':
-            return 'bg-blue-50 text-blue-600 border-blue-100'
         default:
-            return 'bg-gray-50 text-gray-600 border-gray-100'
+            return 'bg-amber-50 text-amber-600 border-amber-200'
     }
 }
 

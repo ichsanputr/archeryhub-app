@@ -46,7 +46,7 @@
 
       <!-- Event Manage Mode (For Orgs/Admins) -->
       <div v-if="isEventManageMode && user?.role !== 'club'" class="hidden md:flex items-center gap-4 flex-1">
-        <NuxtLink to="/dashboard/events"
+        <NuxtLink :to="user?.role === 'archer' ? '/dashboard/archers/events' : '/dashboard/events'"
           class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-600 hover:text-navy shrink-0">
           <Icon icon="ph:arrow-left" class="text-xl" />
           <span class="text-sm font-bold">Kembali ke Dashboard</span>

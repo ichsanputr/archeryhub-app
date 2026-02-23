@@ -191,7 +191,7 @@
                                 <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">
                                     Penyelesaian</p>
                                 <p class="text-navy-dark text-3xl font-extrabold tracking-tight">{{ completionPercentage
-                                }}%</p>
+                                    }}%</p>
                             </div>
                             <div
                                 class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
@@ -252,7 +252,7 @@
                                             <span class="font-bold text-navy-dark truncate pr-2">{{ cat.division }} - {{
                                                 cat.name }}</span>
                                             <span class="text-navy font-black font-mono shrink-0 ml-auto">{{ cat.count
-                                                }}</span>
+                                            }}</span>
                                         </div>
                                         <div class="w-full bg-gray-200 rounded-full h-1.5">
                                             <div class="bg-navy h-1.5 rounded-full transition-all duration-500"
@@ -516,9 +516,12 @@ const route = useRoute()
 const { get, post } = useApi()
 const { setEvent, clearEvent } = useEventContext()
 
+const { user } = useAuth()
+const userRole = computed(() => user.value?.role || 'archer')
+
 const breadcrumbItems = computed(() => [
     { label: 'Dashboard', path: '/dashboard' },
-    { label: 'Events', path: '/dashboard/events' }
+    { label: 'Events', path: userRole.value === 'archer' ? '/dashboard/archers/events' : '/dashboard/events' }
 ])
 
 const event = ref(null)

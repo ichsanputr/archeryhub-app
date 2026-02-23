@@ -62,7 +62,7 @@
 
                         <div class="p-6 md:p-8 pt-0">
                             <button @click="handlePayment" :disabled="!selectedChannel || loading"
-                                class="w-full py-4 bg-primary hover:bg-primary-hover text-navy font-bold text-lg rounded-xl transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed">
+                                class="w-full py-4 bg-primary hover:bg-primary-hover text-navy font-bold text-lg rounded-xl transition-all shadow-lg hover:shadow-sm flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed">
                                 <span v-if="loading" class="animate-spin material-symbols-outlined">sync</span>
                                 <span v-else class="material-symbols-outlined">lock</span>
                                 Bayar Sekarang
@@ -103,7 +103,7 @@
                             <div class="pt-4 border-t border-gray-100 flex justify-between items-center">
                                 <span class="text-base font-bold text-navy">Total Bayar</span>
                                 <span class="text-xl font-black text-primary">IDR {{ totalAmount.toLocaleString()
-                                    }}</span>
+                                }}</span>
                             </div>
                         </div>
                     </div>

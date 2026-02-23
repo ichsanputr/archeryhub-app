@@ -161,9 +161,10 @@ const eventLinks = computed(() => {
 
   if (isArcher) {
     return [
-      { label: 'Ringkasan', icon: 'ph:squares-four', path: `/dashboard/events/${eventId.value}/overview` },
-      { label: 'Hasil Saya', icon: 'ph:chart-line-up-bold', path: `/dashboard/events/${eventId.value}/result-user` },
-      { label: 'Scan QR', icon: 'ph:qr-code', path: '/scan/qr' },
+      { label: 'Registrasi', icon: 'ph:clipboard-text', path: `/dashboard/events/${eventId.value}/my-registration` },
+      { label: 'Hasil Kualifikasi', icon: 'ph:chart-line-up-bold', path: `/dashboard/events/${eventId.value}/my-qualification` },
+      { label: 'Hasil Eliminasi', icon: 'ph:git-merge-bold', path: `/dashboard/events/${eventId.value}/my-elimination` },
+      { label: 'Sertifikat', icon: 'ph:certificate', path: `/dashboard/events/${eventId.value}/certificate` },
     ]
   }
 
@@ -222,7 +223,7 @@ const navLinks = computed(() => {
   // Different navigation for archers vs organizers
   if (role === 'archer') {
     return [
-      { label: 'Event Saya', icon: 'ph:trophy', path: '/dashboard/events' },
+      { label: 'Event Saya', icon: 'ph:trophy', path: '/dashboard/archers/events' },
       { label: 'Klub', icon: 'ph:buildings', path: '/dashboard/archers/club' },
       { label: 'Keranjang', icon: 'ph:shopping-cart', path: '/dashboard/cart' },
       { label: 'Profil Pemanah', icon: 'ph:user-circle', path: '/dashboard/archers/profile' },

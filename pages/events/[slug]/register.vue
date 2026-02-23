@@ -64,7 +64,7 @@
                 </div>
 
                 <div class="flex flex-col gap-3">
-                    <BaseButton to="/dashboard/events" variant="navy" size="lg" block>
+                    <BaseButton to="/dashboard/archers/events" variant="navy" size="lg" block>
                         Lihat Status Pendaftaran
                     </BaseButton>
                     <BaseButton :to="`/events/${slug}`" variant="outline" size="lg" block>
@@ -107,8 +107,35 @@
                 </div>
             </div>
 
+            <!-- Already Registered State -->
+            <main v-if="isAlreadyRegistered"
+                class="max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 sm:py-20 -mt-6 relative z-30">
+                <div class="bg-white rounded-[2.5rem] p-8 md:p-16 border-2 border-gray-100 shadow-sm text-center">
+                    <div class="relative inline-block mb-8">
+                        <div class="absolute inset-0 bg-navy/5 blur-3xl rounded-full scale-150"></div>
+                        <div class="relative h-24 w-24 bg-navy rounded-3xl flex items-center justify-center shadow-2xl">
+                            <Icon icon="ph:identification-card" class="text-5xl text-primary" />
+                        </div>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-black text-navy mb-4 tracking-tight">Anda Sudah Terdaftar</h2>
+                    <p class="text-gray-500 text-lg mb-10 max-w-lg mx-auto leading-relaxed">
+                        Anda telah melakukan pendaftaran untuk event <strong>{{ event.name }}</strong>. Silakan cek
+                        status pendaftaran Anda di dashboard.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <BaseButton :to="isArcher ? '/dashboard/archers/events' : '/dashboard/events'" variant="navy"
+                            size="lg" class="px-10 h-14 shadow-lg shadow-navy/20">
+                            Ke Dashboard Event
+                        </BaseButton>
+                        <BaseButton :to="`/events/${slug}`" variant="outline" size="lg" class="px-10 h-14 !rounded-2xl">
+                            Kembali ke Detail Event
+                        </BaseButton>
+                    </div>
+                </div>
+            </main>
+
             <!-- Main Content -->
-            <main class="max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-10 -mt-6 relative z-30">
+            <main v-else class="max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-10 -mt-6 relative z-30">
                 <div class="grid grid-cols-1 gap-6 sm:gap-8">
                     <!-- Single Column Content -->
                     <div class="space-y-6">
@@ -189,7 +216,7 @@
                                                 'Atlet Baru' }}</h3>
                                             <p class="text-sm text-gray-500 mb-2">{{ archerProfile?.email ||
                                                 userDisplay.email
-                                                }}</p>
+                                            }}</p>
                                             <div class="flex flex-wrap gap-2">
                                                 <span v-if="archerProfile?.id"
                                                     class="text-[10px] text-navy font-bold bg-gray-100 px-2.5 py-1 rounded-full border border-gray-200  tracking-wider">
@@ -535,7 +562,7 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
         console.log('[SSR] Event fetched:', eventId, eventResponse.name)
 
         // Fetch all other data concurrently
-        const [categoriesResponse, bowTypesRes, citiesRes, profileResponse, paymentMethodsResponseData] = await Promise.all([
+        const [categoriesResponse, bowTypesRes, citiesRes, profileResponse, paymentMethodsResponseData, participantsResponse] = await Promise.all([
             $fetch(`${apiBaseUrl}/events/${slug}/categories`).catch(() => ({ events: [] })),
             $fetch(`${apiBaseUrl}/bow-types`).catch(() => ({ bow_types: [] })),
             $fetch(`${apiBaseUrl}/cities`).catch(() => ({ data: [] })),
@@ -543,7 +570,8 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
             (async () => {
                 if (!token || !eventId) return []
                 return $fetch(`${apiBaseUrl}/events/${eventId}/payment-methods`, fetchOptions).catch(() => [])
-            })()
+            })(),
+            $fetch(`${apiBaseUrl}/events/${slug}/participants?limit=2000`).catch(() => ({ participants: [] }))
         ])
 
         const formatDate = (dateString) => {
@@ -606,7 +634,8 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
             archerProfile: archerProfileData,
             paymentMethods: paymentMethodsData,
             bowTypes: bowTypesOptions,
-            cities: citiesOptions
+            cities: citiesOptions,
+            participants: participantsResponse?.participants || []
         }
 
         console.log('[SSR] Returning data:', {
@@ -719,6 +748,20 @@ const isFormValid = computed(() => {
 
 const totalFee = computed(() => {
     return (event.value.registration_fee || 0) * form.value.category_ids.length
+})
+
+const isAlreadyRegistered = computed(() => {
+    if (!isLoggedIn.value || !user.value || !data.value?.participants) return false
+
+    const userId = user.value.id
+    const userEmail = user.value.email
+
+    return data.value.participants.some(p =>
+        (p.archer_id && String(p.archer_id) === String(userId)) ||
+        (p.user_id && String(p.user_id) === String(userId)) ||
+        (p.email && p.email === userEmail) ||
+        (p.athlete_code && p.athlete_code === user.value.athlete_code)
+    )
 })
 
 watch(() => totalFee.value, (newTotal) => {

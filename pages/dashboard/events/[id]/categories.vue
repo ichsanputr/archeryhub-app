@@ -38,7 +38,7 @@
                     <!-- Action Buttons -->
                     <div class="flex gap-3 flex-shrink-0">
                         <BaseButton variant="primary" icon="ph:plus-bold"
-                            class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all"
+                            class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all"
                             @click="openCreateDialog">
                             Tambah Kategori
                         </BaseButton>

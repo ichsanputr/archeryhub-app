@@ -586,7 +586,7 @@ const chartOptions = {
 // Redirect archer users to dashboard/events
 onMounted(async () => {
   if (userRole.value === 'archer') {
-    router.replace('/dashboard/events')
+    router.replace('/dashboard/archers/events')
   }
 
   if (userRole.value === 'seller') {

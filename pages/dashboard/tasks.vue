@@ -89,8 +89,7 @@
                         ]">
                             {{ task.title }}</h4>
                         <p v-if="task.description"
-                            class="text-sm font-medium leading-relaxed line-clamp-2 transition-all duration-300"
-                            :class="[
+                            class="text-sm font-medium leading-relaxed line-clamp-2 transition-all duration-300" :class="[
                                 task.status === 'completed' ? 'text-gray-300 line-through decoration-gray-200' : '',
                                 task.status === 'failed' ? 'text-red-200 line-through decoration-red-100' : '',
                                 task.status !== 'completed' && task.status !== 'failed' ? 'text-gray-500' : ''
@@ -112,7 +111,7 @@
                             <Icon icon="ph:x-circle-fill" class="text-sm" />
                             Failed
                         </span>
-                        
+
                         <div class="flex -space-x-2">
                             <div class="size-8 rounded-full border-2 border-white bg-gray-50 overflow-hidden shadow-sm">
                                 <img src="https://api.dicebear.com/7.x/initials/svg?seed=IF"
@@ -174,7 +173,7 @@
                                         Batal
                                     </button>
                                     <button type="submit" :disabled="submitting"
-                                        class="flex-[2] h-14 bg-primary text-navy rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg shadow-primary/20 hover:shadow-xl hover:bg-primary-hover transition-all disabled:opacity-50">
+                                        class="flex-[2] h-14 bg-primary text-navy rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg shadow-primary/20 hover:shadow-sm hover:bg-primary-hover transition-all disabled:opacity-50">
                                         {{ submitting ? 'Menyimpan...' : (isEditing ? 'Perbarui Task' : 'Simpan Task')
                                         }}
                                     </button>

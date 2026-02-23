@@ -338,7 +338,8 @@ definePageMeta({
               </div>
 
               <div class="flex flex-col gap-3 w-full">
-                <BaseButton to="/dashboard/events" variant="gold" block icon="ph:trophy">
+                <BaseButton :to="user?.role === 'archer' ? '/dashboard/archers/events' : '/dashboard/events'"
+                  variant="gold" block icon="ph:trophy">
                   Cari Turnamen
                 </BaseButton>
 
