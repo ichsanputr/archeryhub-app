@@ -56,7 +56,7 @@
     </div>
 
     <!-- Events List / Table -->
-    <div class="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden flex flex-col">
+    <div class="bg-white border border-gray-100 rounded-2xl shadow-sm flex flex-col">
       <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse min-w-[800px]">
           <thead>
@@ -170,20 +170,8 @@
                   <BaseButton @click="handleManageEvent(event)" variant="primary" size="sm" class="h-9 font-bold">
                     Kelola
                   </BaseButton>
-                  <div class="relative" v-click-outside="() => closeDropdown(event.id)">
-                    <button @click="toggleDropdown(event.id)"
-                      class="h-9 w-9 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 hover:text-navy transition-all">
-                      <Icon icon="ph:dots-three-vertical-bold" class="text-xl" />
-                    </button>
-                    <div v-if="openDropdownId === event.id"
-                      class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-[9999] animate-in fade-in slide-in-from-top-2 duration-200">
-                      <button @click="confirmDeleteEvent(event)"
-                        class="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors">
-                        <Icon icon="ph:trash" class="text-lg" />
-                        Hapus Event
-                      </button>
-                    </div>
-                  </div>
+                  <BaseButton variant="white" size="sm" icon="ph:trash" @click="confirmDeleteEvent(event)"
+                    class="h-9 w-9 p-0 text-red-500 hover:text-red-50 border-slate-200" />
                 </div>
               </td>
             </tr>
@@ -199,35 +187,16 @@
     </div>
 
     <!-- Delete Confirmation Dialog -->
-    <Teleport to="body">
-      <div v-if="showDeleteDialog" class="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-navy/60 backdrop-blur-sm" @click="cancelDelete"></div>
-        <div class="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 animate-in zoom-in-95 duration-200">
-          <div class="flex flex-col items-center text-center gap-4">
-            <div class="h-16 w-16 rounded-2xl bg-red-50 flex items-center justify-center">
-              <Icon icon="ph:warning-circle" class="text-4xl text-red-500" />
-            </div>
-            <div>
-              <h3 class="text-xl font-bold text-navy">Hapus Event?</h3>
-              <p class="text-gray-500 mt-2 text-sm leading-relaxed">
-                Apakah Anda yakin ingin menghapus event <span class="font-bold text-navy">{{ eventToDelete?.name
-                }}</span>?
-                Tindakan ini tidak dapat dibatalkan.
-              </p>
-            </div>
-            <div class="flex gap-3 w-full mt-2">
-              <BaseButton variant="outline" class="flex-1" @click="cancelDelete">
-                Batal
-              </BaseButton>
-              <BaseButton variant="danger" class="flex-1 bg-red-600 hover:bg-red-700 text-white" @click="deleteEvent">
-                <Icon icon="ph:trash" class="mr-2" />
-                Hapus Event
-              </BaseButton>
-            </div>
-          </div>
-        </div>
-      </div>
-    </Teleport>
+    <AppDialog 
+      v-model:show="showDeleteDialog"
+      title="Hapus Event"
+      :message="`Apakah Anda yakin ingin menghapus event '${eventToDelete?.name}'? Tindakan ini tidak dapat dibatalkan.`"
+      confirm-text="Ya, Hapus"
+      type="danger"
+      icon="ph:trash"
+      @confirm="deleteEvent"
+      @cancel="cancelDelete"
+    />
   </div>
 </template>
 
@@ -237,6 +206,7 @@ import { useEventContext } from '~/composables/useEventContext'
 import { useToast } from '~/composables/useToast'
 import { useRouter } from 'vue-router'
 import BasePagination from '~/components/common/BasePagination.vue'
+import AppDialog from '~/components/common/AppDialog.vue'
 
 const { get, del } = useApi()
 const router = useRouter()
@@ -246,7 +216,6 @@ const toast = useToast()
 const searchQuery = ref('')
 const events = ref([])
 const isLoading = ref(true)
-const openDropdownId = ref(null)
 const showDeleteDialog = ref(false)
 const eventToDelete = ref(null)
 
@@ -335,19 +304,8 @@ const getStatusLabel = (status) => {
   return labels[status] || status
 }
 
-const toggleDropdown = (eventId) => {
-  openDropdownId.value = openDropdownId.value === eventId ? null : eventId
-}
-
-const closeDropdown = (eventId) => {
-  if (openDropdownId.value === eventId) {
-    openDropdownId.value = null
-  }
-}
-
 const confirmDeleteEvent = (event) => {
   eventToDelete.value = event
-  openDropdownId.value = null
   showDeleteDialog.value = true
 }
 
@@ -375,18 +333,4 @@ const handleManageEvent = (event) => {
   router.push(`/dashboard/events/${event.slug || event.id}/overview`)
 }
 
-// v-click-outside directive
-const vClickOutside = {
-  mounted(el, binding) {
-    el._clickOutsideHandler = (event) => {
-      if (!el.contains(event.target)) {
-        binding.value()
-      }
-    }
-    document.addEventListener('click', el._clickOutsideHandler)
-  },
-  unmounted(el) {
-    document.removeEventListener('click', el._clickOutsideHandler)
-  }
-}
 </script>

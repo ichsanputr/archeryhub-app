@@ -36,7 +36,21 @@
           </div>
 
           <!-- Action Buttons -->
-          <div class="flex gap-3 flex-shrink-0">
+          <div class="flex items-center gap-3 flex-shrink-0">
+            <!-- View Toggle -->
+            <div class="hidden sm:flex bg-white/10 backdrop-blur-md p-1 rounded-xl border border-white/20 mr-2">
+              <button @click="viewMode = 'grid'" class="px-3 py-1.5 rounded-lg transition-all flex items-center gap-2"
+                :class="viewMode === 'grid' ? 'bg-primary text-navy shadow-md' : 'text-slate-300 hover:text-white'">
+                <Icon icon="ph:grid-four-bold" />
+                <span class="text-[10px] font-black uppercase tracking-wider">Grid</span>
+              </button>
+              <button @click="viewMode = 'table'" class="px-3 py-1.5 rounded-lg transition-all flex items-center gap-2"
+                :class="viewMode === 'table' ? 'bg-primary text-navy shadow-md' : 'text-slate-300 hover:text-white'">
+                <Icon icon="ph:table-bold" />
+                <span class="text-[10px] font-black uppercase tracking-wider">Tabel</span>
+              </button>
+            </div>
+
             <BaseButton @click="showCreateDialog = true" variant="primary" icon="ph:plus-bold"
               class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all">
               <span class="hidden sm:inline">Tambah Target Baru</span>
@@ -47,8 +61,111 @@
       </div>
     </div>
 
-    <!-- Targets Table -->
-    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+    <!-- Grid View -->
+    <div v-if="viewMode === 'grid'" class="space-y-6">
+      <!-- Loading State Grid -->
+      <div v-if="loading && targets.length === 0"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div v-for="i in 8" :key="i"
+          class="animate-pulse bg-white rounded-3xl border border-gray-100 p-6 h-64 shadow-sm">
+          <div class="flex flex-col h-full gap-4">
+            <div class="h-6 w-12 bg-gray-100 rounded-md"></div>
+            <div class="flex-1 grid grid-cols-2 gap-4">
+              <div v-for="j in 4" :key="j" class="bg-gray-50 rounded-full aspect-square"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div v-else-if="targets.length === 0"
+        class="bg-white rounded-3xl border border-gray-100 p-20 text-center shadow-sm">
+        <div class="flex flex-col items-center gap-6 max-w-sm mx-auto">
+          <div class="size-20 bg-gray-50 rounded-3xl flex items-center justify-center text-gray-300">
+            <Icon icon="ph:target-bold" class="text-5xl" />
+          </div>
+          <div class="space-y-2">
+            <h3 class="text-xl font-black text-navy">Belum Ada Target</h3>
+            <p class="text-sm text-gray-500 font-medium leading-relaxed">
+              Konfigurasi pembagian target dan nomor bantalan untuk memulai event.
+            </p>
+          </div>
+          <BaseButton @click="showCreateDialog = true" variant="primary" icon="ph:plus-bold" class="w-full">
+            Tambah Target Baru
+          </BaseButton>
+        </div>
+      </div>
+
+      <!-- Grid Data -->
+      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div v-for="target in targets" :key="target.target_number"
+          class="group relative bg-white rounded-3xl border border-gray-100 shadow-sm hover:border-primary/30 transition-all duration-300 overflow-hidden flex flex-col">
+
+          <!-- Board Header -->
+          <div class="px-6 py-4 bg-gray-50/50 border-b border-gray-100 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] font-black text-gray-400 tracking-[0.2em] uppercase">Bantalan</span>
+              <span
+                class="size-8 rounded-lg bg-navy text-primary flex items-center justify-center font-black text-sm font-mono shadow-sm">
+                {{ target.target_number }}
+              </span>
+            </div>
+
+            <!-- Actions Hover Menu -->
+            <div class="flex gap-1">
+              <button @click="editTarget(target)"
+                class="size-8 flex items-center justify-center rounded-lg bg-white border border-gray-100 text-blue-600 hover:bg-blue-50 transition-colors shadow-sm">
+                <Icon icon="ph:pencil-simple-bold" />
+              </button>
+              <button @click="confirmDelete(target)"
+                class="size-8 flex items-center justify-center rounded-lg bg-white border border-gray-100 text-red-500 hover:bg-red-50 transition-colors shadow-sm">
+                <Icon icon="ph:trash-bold" />
+              </button>
+            </div>
+          </div>
+
+          <!-- Target Board Visualization -->
+          <div class="flex-1 p-6 flex flex-col items-center justify-center relative min-h-[220px]">
+            <!-- Target Board Texture Overlay (Bantalan look) -->
+            <div class="absolute inset-0 opacity-[0.03] pointer-events-none target-board-texture"></div>
+
+            <!-- Targets Layout -->
+            <div :class="[
+              'grid gap-4 w-full transition-all duration-500 justify-items-center',
+              target.letters.split(',').length === 1 ? 'grid-cols-1 max-w-[100px]' :
+                target.letters.split(',').length === 2 ? 'grid-cols-2 max-w-[200px]' :
+                  target.letters.split(',').length === 3 ? 'grid-cols-3 max-w-[260px]' :
+                    'grid-cols-2 max-w-[180px]'
+            ]">
+              <div v-for="letter in target.letters.split(',').map(l => l.trim())" :key="letter"
+                class="flex flex-col items-center gap-2 group/target w-full">
+                <!-- Target Face Image -->
+                <div class="relative w-full aspect-square">
+                  <img src="/target.svg" class="w-full h-full" alt="Archery Target" />
+                  <!-- Target Letter Overlay -->
+                  <div
+                    class="absolute -top-1 -right-1 size-6 bg-navy text-white text-[10px] font-black flex items-center justify-center rounded-lg border-2 border-white shadow-sm font-mono">
+                    {{ letter }}
+                  </div>
+                </div>
+                <span class="text-[11px] font-black text-navy/40 tracking-widest uppercase">{{ target.target_number }}{{
+                  letter }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Footer Info -->
+          <div class="px-6 py-3 bg-gray-50/30 text-center">
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+              {{ target.letters.split(',').length }} Target Faces
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table View -->
+    <div v-if="viewMode === 'table'" class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
       <div class="overflow-x-auto">
         <table class="w-full text-left">
           <thead class="bg-gray-50/50 border-b border-gray-100">
@@ -69,43 +186,8 @@
               </div>
             </Transition>
 
-            <!-- Loading State (Initial) -->
-            <tr v-if="loading && targets.length === 0" v-for="i in 5" :key="i" class="animate-pulse">
-              <td class="px-6 py-5">
-                <div class="size-11 rounded-lg bg-gray-100"></div>
-              </td>
-              <td class="px-6 py-5">
-                <div class="h-5 bg-gray-100 rounded-md w-12"></div>
-              </td>
-              <td class="px-6 py-5">
-                <div class="flex justify-end gap-2">
-                  <div class="size-8 bg-gray-50 rounded-lg"></div>
-                  <div class="size-8 bg-gray-50 rounded-lg"></div>
-                </div>
-              </td>
-            </tr>
-
-            <!-- Empty State -->
-            <tr v-else-if="targets.length === 0">
-              <td colspan="3" class="px-6 py-12">
-                <div class="flex flex-col items-center justify-center gap-4">
-                  <div class="size-16 bg-gray-100 rounded-full flex items-center justify-center">
-                    <Icon icon="ph:target" class="text-4xl text-gray-400" />
-                  </div>
-                  <div class="text-center">
-                    <p class="text-gray-700 font-semibold mb-1">Belum ada target yang dikonfigurasi</p>
-                    <p class="text-sm text-gray-500">Klik "Tambah Target Baru" untuk membuat target pertama Anda</p>
-                  </div>
-                  <BaseButton @click="showCreateDialog = true" variant="primary" icon="ph:plus-bold" class="mt-2">
-                    Tambah Target Baru
-                  </BaseButton>
-                </div>
-              </td>
-            </tr>
-
             <!-- Data Rows -->
-            <tr v-else v-for="target in targets" :key="target.target_number"
-              class="hover:bg-gray-50 transition-colors group">
+            <tr v-for="target in targets" :key="target.target_number" class="hover:bg-gray-50 transition-colors group">
               <td class="px-6 py-4">
                 <div class="flex items-center gap-3">
                   <div
@@ -134,28 +216,28 @@
         </table>
       </div>
 
+    </div>
 
-      <!-- Pagination Footer -->
-      <div v-if="targets.length > 0 || page > 1"
-        class="px-6 py-5 bg-gray-50 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <span class="text-sm text-gray-500 font-medium">
-          Menampilkan {{ (page - 1) * limit + 1 }} - {{ Math.min(page * limit, total) }} dari {{ total }} target
-        </span>
-        <div class="flex items-center gap-3">
-          <button @click="prevPage" :disabled="page === 1"
-            class="h-10 w-10 flex items-center justify-center border border-gray-200 rounded-xl hover:bg-white hover:border-navy hover:text-navy disabled:opacity-50 disabled:cursor-not-allowed transition-all text-gray-600 bg-white shadow-sm">
-            <Icon icon="ph:caret-left-bold" />
-          </button>
-          <div class="bg-white border border-gray-200 rounded-xl px-4 h-10 flex items-center shadow-sm">
-            <span class="text-xs font-bold text-navy">
-              Halaman {{ page }} <span class="text-gray-400 mx-1">dari</span> {{ totalPages }}
-            </span>
-          </div>
-          <button @click="nextPage" :disabled="page >= totalPages"
-            class="h-10 w-10 flex items-center justify-center border border-gray-200 rounded-xl hover:bg-white hover:border-navy hover:text-navy disabled:opacity-50 disabled:cursor-not-allowed transition-all text-gray-600 bg-white shadow-sm">
-            <Icon icon="ph:caret-right-bold" />
-          </button>
+    <!-- Pagination Footer -->
+    <div v-if="targets.length > 0 || total > limit"
+      class="px-6 py-5 bg-white border border-gray-100 rounded-2xl shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+      <span class="text-sm text-gray-500 font-medium font-mono text-center sm:text-left">
+        Showing {{ (page - 1) * limit + 1 }}-{{ Math.min(page * limit, total) }} of {{ total }} targets
+      </span>
+      <div class="flex items-center justify-center gap-3">
+        <button @click="prevPage" :disabled="page === 1"
+          class="h-10 w-10 flex items-center justify-center border border-gray-200 rounded-xl hover:bg-white hover:border-navy hover:text-navy disabled:opacity-50 disabled:cursor-not-allowed transition-all text-gray-600 bg-white shadow-sm">
+          <Icon icon="ph:caret-left-bold" />
+        </button>
+        <div class="bg-white border border-gray-200 rounded-xl px-4 h-10 flex items-center shadow-sm">
+          <span class="text-xs font-black text-navy uppercase tracking-wider">
+            Page {{ page }} <span class="text-gray-300 mx-2">/</span> {{ totalPages }}
+          </span>
         </div>
+        <button @click="nextPage" :disabled="page >= totalPages"
+          class="h-10 w-10 flex items-center justify-center border border-gray-200 rounded-xl hover:bg-white hover:border-navy hover:text-navy disabled:opacity-50 disabled:cursor-not-allowed transition-all text-gray-600 bg-white shadow-sm">
+          <Icon icon="ph:caret-right-bold" />
+        </button>
       </div>
     </div>
 
@@ -216,16 +298,17 @@
                     </span>
                   </div>
 
-                  <div class="flex flex-wrap gap-1.5 max-h-28 overflow-y-auto pr-1">
-                    <span v-for="target in previewTargets" :key="target"
-                      class="px-2 py-1 rounded-md bg-white border border-gray-200 text-[10px] font-black text-navy tracking-wide">
-                      {{ target }}
-                    </span>
+                  <div class="flex flex-wrap gap-2 max-h-32 overflow-y-auto pr-1">
+                    <div v-for="target in previewTargets" :key="target"
+                      class="flex flex-col items-center gap-1 p-2 bg-white rounded-xl border border-gray-100 shadow-sm min-w-[50px]">
+                      <img src="/target.svg" class="size-6 opacity-80" />
+                      <span class="text-[9px] font-black text-navy">{{ target }}</span>
+                    </div>
                   </div>
 
-                  <p class="text-[10px] text-gray-500 mt-2">
-                    Dari <strong>{{ previewTargets[0] || '-' }}</strong> sampai
-                    <strong>{{ previewTargets[previewTargets.length - 1] || '-' }}</strong>
+                  <p class="text-[10px] text-gray-400 mt-2 font-medium">
+                    Sampel: <strong class="text-navy">{{ previewTargets[0] || '-' }}</strong> s/d
+                    <strong class="text-navy">{{ previewTargets[previewTargets.length - 1] || '-' }}</strong>
                   </p>
                 </div>
               </div>
@@ -289,6 +372,7 @@
 </template>
 
 <script setup>
+const viewMode = ref('grid')
 const route = useRoute()
 const { get, post, put, delete: deleteApi } = useApi()
 const toast = useToast()
@@ -418,7 +502,7 @@ const prevPage = () => {
 const fetchEventInfo = async () => {
   try {
     const response = await get(`/events/${eventId}`)
-    eventName.value = response?.event?.event_name || 'Event'
+    eventName.value = response?.name || 'Event'
   } catch (error) {
     console.error('Failed to fetch event:', error)
   }
@@ -433,12 +517,18 @@ const submitForm = async () => {
       const letters = ['A', 'B', 'C', 'D']
       const newBase = form.value.target_name.toString()
 
-      // 1. Update existing targets
+      // 1. Prepare batch updates for existing targets
       const updateCount = Math.min(oldIds.length, newCount)
+      const updates = []
       for (let i = 0; i < updateCount; i++) {
-        await put(`/events/${eventId}/targets/${oldIds[i]}`, {
+        updates.push({
+          uuid: oldIds[i],
           target_name: `${newBase}${letters[i]}`
         })
+      }
+
+      if (updates.length > 0) {
+        await put(`/events/${eventId}/targets/batch`, { updates })
       }
 
       // 2. Add new targets if count increased
@@ -450,15 +540,28 @@ const submitForm = async () => {
         })
       }
 
-      // 3. Delete extra targets if count decreased
+      // 3. Delete extra targets if count decreased (Check assignments first)
       if (newCount < oldIds.length) {
         const extraIds = oldIds.slice(newCount)
+        let deleteErrors = 0
         for (const id of extraIds) {
-          await deleteApi(`/events/${eventId}/targets/${id}`)
+          try {
+            await deleteApi(`/events/${eventId}/targets/${id}`)
+          } catch (error) {
+            if (error?.data?.error?.includes('existing archer assignments')) {
+              deleteErrors++
+            } else {
+              throw error
+            }
+          }
+        }
+
+        if (deleteErrors > 0) {
+          toast.warning(`${deleteErrors} target face(s) could not be removed because they have active archer assignments. Please unassign them first if you wish to remove these positions.`)
         }
       }
 
-      toast.success('Target berhasil diperbarui')
+      toast.success('Pembaruan target berhasil diproses')
     } else {
       const count = parseInt(form.value.target_count)
       const letters = ['A', 'B', 'C', 'D']
@@ -541,3 +644,12 @@ onMounted(() => {
   fetchEventInfo()
 })
 </script>
+<style scoped>
+.target-board-texture {
+  background-image:
+    radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+    linear-gradient(45deg, transparent 48%, rgba(0, 0, 0, 0.05) 50%, transparent 52%),
+    linear-gradient(-45deg, transparent 48%, rgba(0, 0, 0, 0.05) 50%, transparent 52%);
+  background-size: 20px 20px, 40px 40px, 40px 40px;
+}
+</style>

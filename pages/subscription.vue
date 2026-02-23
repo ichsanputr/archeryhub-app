@@ -195,6 +195,13 @@
                 </div>
             </div>
 
+            <!-- Subscription Promotion -->
+            <section class="max-w-4xl mx-auto px-4 mb-24">
+                <SubscriptionPromo promo-badge="Promo Terbatas" promo-title="Mulai Turnamen Anda Gratis 3 Bulan!"
+                    promo-desc="Daftarkan klub atau organisasi Anda sekarang dan nikmati akses penuh paket Standard tanpa biaya selama tiga bulan pertama."
+                    savings="104.997" />
+            </section>
+
             <!-- FAQ Section -->
             <div class="mt-24 md:mt-40 max-w-4xl mx-auto px-4">
                 <div class="text-center mb-16">
@@ -234,6 +241,7 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { ref, computed } from 'vue'
+import SubscriptionPromo from '~/components/dashboard/subscription/SubscriptionPromo.vue'
 
 definePageMeta({
     layout: 'landing'

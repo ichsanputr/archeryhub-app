@@ -18,7 +18,7 @@
                         Edit
                     </BaseButton>
                 </NuxtLink>
-                <BaseButton variant="white" icon="ph:trash" @click="deleteArticle" class="text-red-500 hover:bg-red-50">
+                <BaseButton variant="white" icon="ph:trash" @click="confirmDelete" class="text-red-500 hover:bg-red-50">
                     Hapus
                 </BaseButton>
             </div>
@@ -31,7 +31,7 @@
                 <article class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                     <!-- Featured Image -->
                     <div class="relative h-80 bg-gradient-to-br from-navy to-blue-800">
-                        <img v-if="article.image" :src="article.image" class="w-full h-full object-cover" />
+                        <img v-if="article.image_url" :src="article.image_url" class="w-full h-full object-cover" />
                         <div v-else class="w-full h-full flex items-center justify-center">
                             <Icon icon="ph:newspaper" class="text-7xl text-white/20" />
                         </div>
@@ -57,19 +57,19 @@
                             <div class="flex items-center gap-2">
                                 <div
                                     class="h-8 w-8 rounded-full bg-navy text-white flex items-center justify-center text-sm font-bold">
-                                    {{ article.author.charAt(0) }}
+                                    {{ (article.author_name || 'A').charAt(0) }}
                                 </div>
-                                <span class="font-medium text-gray-600">{{ article.author }}</span>
+                                <span class="font-medium text-gray-600">{{ article.author_name || 'Admin' }}</span>
                             </div>
                             <div class="h-4 w-px bg-gray-200"></div>
                             <div class="flex items-center gap-1.5">
                                 <Icon icon="ph:calendar" />
-                                <span>{{ article.date }}</span>
+                                <span>{{ formatDate(article.published_at || article.created_at) }}</span>
                             </div>
                             <div class="h-4 w-px bg-gray-200"></div>
                             <div class="flex items-center gap-1.5">
                                 <Icon icon="ph:clock" />
-                                <span>{{ article.readTime }} menit baca</span>
+                                <span>{{ article.readTime || 5 }} menit baca</span>
                             </div>
                         </div>
 
@@ -105,11 +105,11 @@
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
                             <span class="text-sm text-gray-500">Dibuat</span>
-                            <span class="text-sm font-medium text-gray-700">{{ article.createdAt }}</span>
+                            <span class="text-sm font-medium text-gray-700">{{ formatDate(article.created_at, true) }}</span>
                         </div>
                         <div class="flex items-center justify-between">
                             <span class="text-sm text-gray-500">Terakhir diubah</span>
-                            <span class="text-sm font-medium text-gray-700">{{ article.updatedAt }}</span>
+                            <span class="text-sm font-medium text-gray-700">{{ formatDate(article.updated_at, true) }}</span>
                         </div>
                     </div>
                 </div>
@@ -121,19 +121,19 @@
                         Statistik
                     </h3>
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="text-center p-4 bg-blue-50 rounded-xl">
-                            <div class="flex items-center justify-center gap-1.5 text-blue-600 mb-1">
+                        <div class="text-center p-4 bg-navy/5 border border-navy/10 rounded-xl group transition-all hover:bg-navy/10">
+                            <div class="flex items-center justify-center gap-1.5 text-navy mb-1 opacity-60">
                                 <Icon icon="ph:eye" class="text-lg" />
                             </div>
-                            <p class="text-2xl font-bold text-navy">{{ article.views.toLocaleString() }}</p>
-                            <p class="text-xs text-gray-400 font-medium">Views</p>
+                            <p class="text-2xl font-black text-navy">{{ article.views?.toLocaleString() || 0 }}</p>
+                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Views</p>
                         </div>
-                        <div class="text-center p-4 bg-green-50 rounded-xl">
-                            <div class="flex items-center justify-center gap-1.5 text-green-600 mb-1">
+                        <div class="text-center p-4 bg-primary/5 border border-primary/20 rounded-xl group transition-all hover:bg-primary/10">
+                            <div class="flex items-center justify-center gap-1.5 text-primary mb-1">
                                 <Icon icon="ph:share-network" class="text-lg" />
                             </div>
-                            <p class="text-2xl font-bold text-navy">{{ article.shares }}</p>
-                            <p class="text-xs text-gray-400 font-medium">Shares</p>
+                            <p class="text-2xl font-black text-navy">0</p>
+                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Shares</p>
                         </div>
                     </div>
                 </div>
@@ -152,24 +152,110 @@
                         <BaseButton v-else variant="outline" block icon="ph:archive" @click="unpublishArticle">
                             Tarik ke Draft
                         </BaseButton>
-                        <BaseButton variant="white" block icon="ph:copy" @click="duplicateArticle">
-                            Duplikat
-                        </BaseButton>
-                        <BaseButton variant="white" block icon="ph:share-network" @click="shareArticle">
+                        <BaseButton variant="white" block icon="ph:share-network" @click="openShareDialog">
                             Bagikan
                         </BaseButton>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Share Dialog -->
+        <ClientOnly>
+            <Teleport to="body">
+                <div v-if="showShareDialog" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                    <!-- Backdrop -->
+                    <div class="share-dialog-backdrop absolute inset-0 bg-navy-dark/80 backdrop-blur-sm"
+                        @click="closeShareDialog"></div>
+
+                    <!-- Dialog Card -->
+                    <div
+                        class="share-dialog-card bg-white rounded-3xl w-full max-w-md shadow-2xl relative overflow-hidden border border-gray-100">
+                        <!-- Decorative Border Top -->
+                        <div class="bg-primary h-1.5 w-full"></div>
+
+                        <div class="p-8">
+                            <!-- Close Button -->
+                            <button class="absolute right-6 top-6 text-gray-400 hover:text-navy transition-colors"
+                                @click="closeShareDialog">
+                                <Icon icon="ph:x-bold" class="text-xl" />
+                            </button>
+
+                            <!-- Header -->
+                            <div class="flex items-start gap-4 mb-8">
+                                <div class="p-3 bg-primary/10 text-primary rounded-2xl shrink-0">
+                                    <Icon icon="ph:share-network-bold" class="text-3xl" />
+                                </div>
+                                <div>
+                                    <h3 class="text-navy-dark text-xl font-black tracking-tight mb-2">Bagikan Berita</h3>
+                                    <p class="text-text-secondary text-sm font-medium leading-relaxed">
+                                        Sebarkan link berita ini ke sosial media atau salin link untuk dibagikan.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Link Copy Segment -->
+                            <div class="space-y-3 mb-8">
+                                <label class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Link Berita</label>
+                                <div class="flex items-center gap-2">
+                                    <div
+                                        class="flex-1 bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-xs text-gray-600 font-mono truncate">
+                                        {{ publicNewsUrl }}
+                                    </div>
+                                    <button @click="copyPublicUrl"
+                                        class="px-4 py-3 bg-navy text-primary rounded-xl font-bold text-xs hover:bg-navy-light transition-all flex items-center gap-2 shrink-0">
+                                        <Icon :icon="copySuccess ? 'ph:check-bold' : 'ph:copy-bold'" />
+                                        {{ copySuccess ? 'Tersalin' : 'Salin' }}
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Social Sharing -->
+                            <div class="space-y-4">
+                                <label class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Bagikan Ke Sosial Media</label>
+                                <div class="grid grid-cols-4 gap-3">
+                                    <button v-for="social in [
+                                        { id: 'whatsapp', icon: 'ph:whatsapp-logo-fill', color: 'text-green-500', bg: 'bg-green-50', hover: 'hover:bg-green-500' },
+                                        { id: 'telegram', icon: 'ph:telegram-logo-fill', color: 'text-sky-500', bg: 'bg-sky-50', hover: 'hover:bg-sky-500' },
+                                        { id: 'twitter', icon: 'ph:twitter-logo-fill', color: 'text-black', bg: 'bg-gray-100', hover: 'hover:bg-black' },
+                                        { id: 'facebook', icon: 'ph:facebook-logo-fill', color: 'text-blue-600', bg: 'bg-blue-50', hover: 'hover:bg-blue-600' }
+                                    ]" :key="social.id" @click="shareTo(social.id)"
+                                        class="flex flex-col items-center gap-2 group">
+                                        <div :class="[social.bg, social.color, social.hover]"
+                                            class="size-12 rounded-2xl flex items-center justify-center group-hover:text-white transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
+                                            <Icon :icon="social.icon" class="text-2xl" />
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </Teleport>
+        </ClientOnly>
+
+        <!-- Delete Confirmation -->
+        <AppDialog 
+            v-model:show="showDeleteConfirm"
+            title="Hapus Berita"
+            :message="`Apakah Anda yakin ingin menghapus berita '${article.title}'? Tindakan ini tidak dapat dibatalkan.`"
+            confirm-text="Ya, Hapus"
+            type="danger"
+            icon="ph:trash"
+            @confirm="deleteArticle"
+        />
     </div>
 </template>
 
+
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref } from 'vue'
+import { ref, computed, onMounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useToast } from '~/composables/useToast'
+import { useApi } from '~/composables/useApi'
+import AppDialog from '~/components/common/AppDialog.vue'
+import { gsap } from 'gsap'
 
 definePageMeta({
     title: 'Detail Berita',
@@ -183,68 +269,174 @@ useHead({
 const route = useRoute()
 const router = useRouter()
 const toast = useToast()
+const { get, delete: del, put } = useApi()
 
-// Dummy article data
+// States
+const isLoading = ref(true)
+const showShareDialog = ref(false)
+const showDeleteConfirm = ref(false)
+const copySuccess = ref(false)
+
+// Article data
 const article = ref({
-    slug: route.params.slug,
-    title: 'Kejuaraan Nasional Panahan 2024 Resmi Dibuka',
-    excerpt: 'Kejuaraan nasional panahan tahun 2024 resmi dibuka dengan diikuti oleh lebih dari 500 atlet dari seluruh Indonesia.',
-    content: `
-    <p>Kejuaraan Nasional Panahan 2024 telah resmi dibuka pada hari Senin, 20 Januari 2024 di Gelora Bung Karno, Jakarta. Acara ini dihadiri oleh Menteri Pemuda dan Olahraga serta berbagai pejabat dari Perpani.</p>
-    
-    <h2>Partisipasi yang Luar Biasa</h2>
-    <p>Tahun ini, kejuaraan diikuti oleh lebih dari 500 atlet dari 34 provinsi di Indonesia. Ini merupakan jumlah peserta terbanyak dalam sejarah Kejuaraan Nasional Panahan.</p>
-    
-    <p>"Kami sangat bangga melihat antusiasme yang luar biasa dari para pemanah di seluruh Indonesia. Ini menunjukkan bahwa olahraga panahan semakin berkembang di tanah air," ujar Ketua Umum Perpani.</p>
-    
-    <h2>Kategori Pertandingan</h2>
-    <p>Pertandingan akan berlangsung dalam berbagai kategori, termasuk:</p>
-    <ul>
-      <li>Recurve - Senior Putra dan Putri</li>
-      <li>Compound - Senior Putra dan Putri</li>
-      <li>Barebow - Senior dan Junior</li>
-      <li>Kategori Beregu</li>
-    </ul>
-    
-    <p>Kejuaraan akan berlangsung selama 5 hari, dari tanggal 20-25 Januari 2024.</p>
-  `,
-    category: 'Event',
-    status: 'published',
-    date: '20 Jan 2024',
-    author: 'Admin',
-    readTime: 5,
-    views: 1234,
-    shares: 45,
-    tags: ['Kejuaraan Nasional', 'Panahan', '2024', 'Jakarta'],
-    image: 'https://images.unsplash.com/photo-1565992441121-4367c2967103?w=1200',
-    createdAt: '20 Jan 2024, 10:30',
-    updatedAt: '21 Jan 2024, 14:15'
+    uuid: '',
+    title: '',
+    excerpt: '',
+    content: '',
+    category: '',
+    status: '',
+    image_url: '',
+    author_name: '',
+    published_at: null,
+    created_at: null,
+    updated_at: null,
+    views: 0,
+    tags: []
 })
 
-const publishArticle = () => {
-    article.value.status = 'published'
-    toast.success('Berita berhasil dipublikasikan!')
-}
-
-const unpublishArticle = () => {
-    article.value.status = 'draft'
-    toast.info('Berita ditarik ke draft')
-}
-
-const duplicateArticle = () => {
-    toast.info('Fitur duplikat akan segera tersedia')
-}
-
-const shareArticle = () => {
-    toast.info('Fitur bagikan akan segera tersedia')
-}
-
-const deleteArticle = () => {
-    if (confirm('Apakah Anda yakin ingin menghapus berita ini?')) {
-        toast.success('Berita berhasil dihapus')
+const fetchArticle = async () => {
+    isLoading.value = true
+    try {
+        const response = await get(`/news/${route.params.slug}`)
+        if (response?.data) {
+            article.value = response.data
+        }
+    } catch (error) {
+        toast.error('Gagal memuat berita')
         router.push('/dashboard/news')
+    } finally {
+        isLoading.value = false
     }
 }
+
+const formatDate = (dateString, withTime = false) => {
+    if (!dateString) return '-'
+    const date = new Date(dateString)
+    const options = {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+    }
+    if (withTime) {
+        options.hour = '2-digit'
+        options.minute = '2-digit'
+    }
+    return new Intl.DateTimeFormat('id-ID', options).format(date)
+}
+
+const publishArticle = async () => {
+    try {
+        await put(`/news/${article.value.uuid}`, {
+            ...article.value,
+            status: 'published'
+        })
+        article.value.status = 'published'
+        toast.success('Berita berhasil dipublikasikan!')
+        fetchArticle()
+    } catch (error) {
+        toast.error('Gagal mempublikasikan berita')
+    }
+}
+
+const unpublishArticle = async () => {
+    try {
+        await put(`/news/${article.value.uuid}`, {
+            ...article.value,
+            status: 'draft'
+        })
+        article.value.status = 'draft'
+        toast.info('Berita ditarik ke draft')
+        fetchArticle()
+    } catch (error) {
+        toast.error('Gagal menarik berita')
+    }
+}
+
+// Share Logic
+const publicNewsUrl = computed(() => {
+    if (typeof window === 'undefined') return ''
+    return `${window.location.origin}/news/${route.params.slug}`
+})
+
+const openShareDialog = () => {
+    copySuccess.value = false
+    showShareDialog.value = true
+    nextTick(() => {
+        const dialog = document.querySelector('.share-dialog-card')
+        const backdrop = document.querySelector('.share-dialog-backdrop')
+        if (dialog && backdrop) {
+            gsap.fromTo(backdrop, { opacity: 0 }, { opacity: 1, duration: 0.3 })
+            gsap.fromTo(dialog, { opacity: 0, scale: 0.9, y: 20 }, { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: 'back.out(1.7)' })
+        }
+    })
+}
+
+const closeShareDialog = () => {
+    const dialog = document.querySelector('.share-dialog-card')
+    const backdrop = document.querySelector('.share-dialog-backdrop')
+    if (dialog && backdrop) {
+        gsap.to(dialog, {
+            opacity: 0, scale: 0.9, y: 20, duration: 0.2, ease: 'power2.in', onComplete: () => {
+                showShareDialog.value = false
+            }
+        })
+        gsap.to(backdrop, { opacity: 0, duration: 0.2 })
+    } else {
+        showShareDialog.value = false
+    }
+}
+
+const copyPublicUrl = async () => {
+    try {
+        await navigator.clipboard.writeText(publicNewsUrl.value)
+        copySuccess.value = true
+        toast.success('Link berita tersalin!')
+        setTimeout(() => {
+            copySuccess.value = false
+        }, 2000)
+    } catch (e) {
+        toast.error('Gagal menyalin link')
+    }
+}
+
+const shareTo = (platform) => {
+    const url = encodeURIComponent(publicNewsUrl.value)
+    const text = encodeURIComponent(article.value.title || 'Berita ArcheryHub')
+
+    let shareUrl = ''
+    if (platform === 'whatsapp') {
+        shareUrl = `https://wa.me/?text=${text}%20-%20${url}`
+    } else if (platform === 'telegram') {
+        shareUrl = `https://t.me/share/url?url=${url}&text=${text}`
+    } else if (platform === 'twitter') {
+        shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${text}`
+    } else if (platform === 'facebook') {
+        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`
+    }
+
+    if (shareUrl) {
+        window.open(shareUrl, '_blank', 'noopener,noreferrer')
+    }
+}
+
+// Delete Logic
+const confirmDelete = () => {
+    showDeleteConfirm.value = true
+}
+
+const deleteArticle = async () => {
+    try {
+        await del(`/news/${article.value.uuid}`)
+        toast.success('Berita berhasil dihapus')
+        router.push('/dashboard/news')
+    } catch (error) {
+        toast.error('Gagal menghapus berita')
+    }
+}
+
+onMounted(() => {
+    fetchArticle()
+})
 </script>
 
 <style scoped>

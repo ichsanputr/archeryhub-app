@@ -148,16 +148,17 @@ const statusOptions = [
 const loadNews = async () => {
     try {
         const response = await get(`/news/${route.params.slug}`)
-        if (response) {
+        if (response?.data) {
+            const data = response.data
             form.value = {
-                title: response.title || '',
-                category: response.category || 'pengumuman',
-                status: response.status || 'draft',
-                excerpt: response.excerpt || '',
-                content: response.content || '',
-                imageURL: response.image_url || '',
-                metaTitle: response.meta_title || '',
-                metaDescription: response.meta_description || ''
+                title: data.title || '',
+                category: data.category || 'pengumuman',
+                status: data.status || 'draft',
+                excerpt: data.excerpt || '',
+                content: data.content || '',
+                imageURL: data.image_url || '',
+                metaTitle: data.meta_title || '',
+                metaDescription: data.meta_description || ''
             }
         }
     } catch (error) {

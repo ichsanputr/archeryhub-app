@@ -105,7 +105,7 @@
 
                 <!-- Featured Image -->
                 <div class="relative h-48 bg-gradient-to-br from-navy to-blue-800 overflow-hidden">
-                    <img v-if="item.image" :src="item.image"
+                    <img v-if="item.image_url" :src="item.image_url"
                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     <div v-else class="w-full h-full flex items-center justify-center">
                         <Icon icon="ph:newspaper" class="text-6xl text-white/20" />
@@ -138,16 +138,16 @@
                         <div class="flex items-center gap-3">
                             <div class="flex items-center gap-1">
                                 <Icon icon="ph:calendar" />
-                                <span>{{ item.date }}</span>
+                                <span>{{ formatDate(item.published_at || item.created_at) }}</span>
                             </div>
                             <div class="flex items-center gap-1">
                                 <Icon icon="ph:eye" />
-                                <span>{{ item.views.toLocaleString() }}</span>
+                                <span>{{ item.views?.toLocaleString() || 0 }}</span>
                             </div>
                         </div>
                         <div class="flex items-center gap-1">
                             <Icon icon="ph:user" />
-                            <span>{{ item.author }}</span>
+                            <span>{{ item.author_name || 'Admin' }}</span>
                         </div>
                     </div>
                 </div>
@@ -255,6 +255,16 @@ const deleteNews = async (item) => {
     } catch (error) {
         toast.error('Gagal menghapus berita')
     }
+}
+
+const formatDate = (dateString) => {
+    if (!dateString) return '-'
+    const date = new Date(dateString)
+    return new Intl.DateTimeFormat('id-ID', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+    }).format(date)
 }
 </script>
 
