@@ -86,8 +86,14 @@
                         <div
                             class="px-5 py-3 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center rounded-t-2xl">
                             <div class="flex items-center gap-3">
-                                <div class="bg-navy text-primary font-black text-xs px-2 py-1 rounded-lg shadow-sm">
-                                    {{ target.name.split(' ').pop() }}
+                                <div
+                                    class="bg-navy text-primary font-black text-xs px-2 py-1 rounded-lg shadow-sm flex items-center gap-2">
+                                    <span>{{ target.name.split(' ').pop() }}</span>
+                                    <span v-if="getBoardCode(target.name)"
+                                        class="text-white text-[10px] font-mono border-l border-white/10 pl-2 opacity-80"
+                                        title="Kode Scorekeeper">
+                                        #{{ getBoardCode(target.name) }}
+                                    </span>
                                 </div>
                             </div>
                             <span :class="[
@@ -136,7 +142,26 @@
                                 <!-- Custom Archer Dropdown -->
                                 <div v-else class="relative archer-dropdown-container" @dragover.prevent
                                     @drop.stop="handleDropOnTarget(target, pos)">
-                                    <div @click.stop="toggleDropdown(target.name, pos)"
+                                    <div v-if="target.otherSlots[pos]"
+                                        class="flex items-center gap-3 p-2.5 rounded-xl border border-gray-100 bg-gray-100/50 opacity-60">
+                                        <span
+                                            class="flex items-center justify-center size-7 rounded-lg bg-gray-200 border border-gray-200 text-xs font-black text-gray-400 shrink-0">
+                                            {{ pos }}
+                                        </span>
+                                        <div class="flex-1 min-w-0">
+                                            <p class="text-[11px] font-black text-gray-500 truncate leading-tight">
+                                                {{ target.otherSlots[pos].archer_name }}
+                                            </p>
+                                            <p class="text-[9px] text-gray-400 font-bold uppercase tracking-tighter">
+                                                Lain Kategori
+                                            </p>
+                                        </div>
+                                        <div class="size-6 flex items-center justify-center">
+                                            <Icon icon="ph:lock-key-bold" class="text-gray-300" />
+                                        </div>
+                                    </div>
+
+                                    <div v-else @click.stop="toggleDropdown(target.name, pos)"
                                         class="flex items-center gap-3 p-2.5 rounded-xl border border-dashed border-gray-200 bg-white hover:bg-gray-50/50 hover:border-primary/50 transition-all cursor-pointer group/slot"
                                         :class="{ 'border-primary bg-primary/5 ring-4 ring-primary/10 shadow-inner': isDragging }"
                                         @dragover.prevent="(e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'move' }">
@@ -213,7 +238,9 @@ const props = defineProps({
     sessionData: { type: Object, required: true },
     selectedCategory: { type: String, required: true },
     availableTargets: { type: Array, default: () => [] },
-    archers: { type: Array, default: () => [] }
+    archers: { type: Array, default: () => [] },
+    boardCodes: { type: Array, default: () => [] },
+    allAssignments: { type: Array, default: () => [] }
 })
 
 const emit = defineEmits(['updated'])
@@ -284,16 +311,21 @@ const targetGrid = computed(() => {
             grouped[baseName] = {
                 name: baseName,
                 targetIds: [],
+                targetUuids: {}, // New: map letter to UUID
                 availableLetters: [],
                 slots: {},
+                otherSlots: {},
                 assignedCount: 0
             }
         }
         grouped[baseName].targetIds.push(t.id)
+        grouped[baseName].targetUuids[letter] = t.id // Store the UUID for this position
+
         if (!grouped[baseName].availableLetters.includes(letter)) {
             grouped[baseName].availableLetters.push(letter)
             grouped[baseName].availableLetters.sort()
             grouped[baseName].slots[letter] = null
+            grouped[baseName].otherSlots[letter] = null
         }
 
         const targetArchers = archers.filter(a => a.assignedTarget === t.id)
@@ -306,6 +338,15 @@ const targetGrid = computed(() => {
                 grouped[baseName].assignedCount++
             }
         })
+
+        // Check if taken by other categories
+        if (grouped[baseName].slots[letter] === null) {
+            const otherAssignment = props.allAssignments.find(a => a.target_id === t.id)
+            if (otherAssignment) {
+                grouped[baseName].otherSlots[letter] = otherAssignment
+                grouped[baseName].assignedCount++
+            }
+        }
     })
 
     return Object.values(grouped).sort((a, b) => {
@@ -314,6 +355,13 @@ const targetGrid = computed(() => {
         return numA - numB
     })
 })
+
+const getBoardCode = (boardName) => {
+    const num = parseInt(boardName.match(/\d+/)?.[0])
+    if (!num) return null
+    const found = props.boardCodes.find(bc => bc.board_number === num)
+    return found ? found.code : null
+}
 
 const handleDragStart = (event, archer, targetRecord = null, pos = null) => {
     openDropdown.value = null // Close any open dropdowns when starting a drag

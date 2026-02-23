@@ -131,7 +131,8 @@
       <!-- Mode: Target Assignment -->
       <div v-if="activeTab === 'target' && selectedCategory">
         <QualificationTargetMode :eventId="eventId" :sessionData="sessionData" :selectedCategory="selectedCategory"
-          :availableTargets="availableTargets" :archers="currentCategoryArchers" @updated="handleAssignmentsSaved" />
+          :availableTargets="availableTargets" :archers="currentCategoryArchers" :boardCodes="boardCodes"
+          :allAssignments="allSessionAssignments" @updated="handleAssignmentsSaved" />
       </div>
 
       <!-- Mode: Input Scoring -->
@@ -184,6 +185,8 @@ const availableTargets = ref([])
 const allParticipants = ref([])
 const archersByCategory = ref({})
 const targetAssignments = ref([])
+const boardCodes = ref([])
+const allSessionAssignments = ref([])
 const isLoadingAssignments = ref(false)
 const loadingCategories = ref(false)
 
@@ -279,15 +282,31 @@ const fetchTargets = async () => {
   }
 }
 
+const fetchBoardCodes = async () => {
+  if (!sessionData.value || !selectedCategory.value) return
+  try {
+    const response = await get(`/qualification/sessions/${sessionData.value.uuid}/board-codes`, {
+      params: { category_id: selectedCategory.value }
+    })
+    boardCodes.value = response?.board_codes || []
+  } catch (error) {
+    console.error('Failed to fetch board codes:', error)
+  }
+}
+
 const loadExistingAssignments = async (categoryId, preLoadedAssignments = null) => {
   if (!sessionData.value) return
   try {
     let assignments = preLoadedAssignments
     if (!assignments) {
-      const response = await get(`/qualification/sessions/${sessionData.value.uuid}/assignments`, {
-        params: { category_id: categoryId }
-      })
+      const response = await get(`/qualification/sessions/${sessionData.value.uuid}/assignments`)
       assignments = response?.assignments || response.data?.assignments || []
+      // Store all session assignments for the target mode
+      allSessionAssignments.value = assignments
+      // Filter for the current category to use for the archer list mapping
+      assignments = assignments.filter(a =>
+        allParticipants.value.find(p => p.id === a.participant_id)?.category_id === categoryId
+      )
     }
 
     // Replace the array reference to trigger reactivity
@@ -387,6 +406,7 @@ const selectCategory = async (categoryId) => {
 
     await loadExistingAssignments(categoryId, assignments)
     await fetchTargetAssignments(categoryId, assignments)
+    await fetchBoardCodes()
   } catch (error) {
     console.error("Error selecting category:", error)
   } finally {
@@ -405,6 +425,7 @@ const handleAssignmentsSaved = async () => {
 
       await loadExistingAssignments(selectedCategory.value, assignments)
       await fetchTargetAssignments(selectedCategory.value, assignments)
+      await fetchBoardCodes()
     } catch (error) {
       console.error("Error reloading assignments:", error)
     }

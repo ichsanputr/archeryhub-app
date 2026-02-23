@@ -138,20 +138,6 @@
                   <span class="text-xs font-black text-navy">{{ session.arrows_per_end }} Panah</span>
                 </div>
               </div>
-
-              <!-- Categories Badge Display -->
-              <div v-if="session.category_ids && session.category_ids.length > 0" class="flex flex-wrap gap-1.5 pt-2">
-                <span v-for="catId in session.category_ids" :key="catId"
-                  class="px-2 py-1 bg-primary/10 text-navy text-[9px] font-black uppercase tracking-tight rounded-md border border-primary/20">
-                  {{categories.find(c => c.id === catId)?.category_name || 'Kategori'}}
-                </span>
-              </div>
-              <div v-else class="pt-2">
-                <span
-                  class="px-2 py-1 bg-gray-100 text-gray-400 text-[9px] font-black uppercase tracking-tight rounded-md border border-gray-200">
-                  Semua Kategori (Global)
-                </span>
-              </div>
             </div>
 
             <div class="flex items-center justify-between pt-4 border-t border-gray-100">
@@ -294,7 +280,7 @@
                             class="flex flex-col items-center bg-gray-50 border border-gray-100 rounded-lg overflow-hidden shadow-sm group/score hover:border-primary/50 transition-all">
                             <div class="bg-navy/5 px-2 py-0.5 w-full text-center border-b border-gray-100">
                               <span class="text-[8px] font-black text-gray-400 uppercase tracking-tighter">E{{ sIdx + 1
-                                }}</span>
+                              }}</span>
                             </div>
                             <div class="px-3 py-1 min-w-[45px] flex items-center justify-center">
                               <span

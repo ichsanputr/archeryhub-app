@@ -211,7 +211,8 @@ const userRoleLabel = computed(() => {
     'organization': 'Organisasi',
     'club': 'Klub',
     'admin': 'Admin',
-    'seller': 'Penjual'
+    'seller': 'Penjual',
+    'scorekeeper': 'Scorekeeper'
   }
   return labels[role] || 'Pengguna'
 })
@@ -252,6 +253,7 @@ const navLinks = computed(() => {
     ...(role === 'club' ? [{ label: 'Profil Klub', icon: 'ph:buildings', path: '/dashboard/clubs/profile' }] : []),
     ...(role !== 'club' && role !== 'organization' ? [{ label: 'Tim', icon: 'ph:users-four', path: '/dashboard/teams' }] : []),
     ...(role === 'organization' ? [{ label: 'Profil Organisasi', icon: 'ph:building-office', path: '/dashboard/organizations/profile' }] : []),
+    ...(role === 'organization' ? [{ label: 'Scorekeeper', icon: 'ph:user-focus', path: '/dashboard/organizations/scorekeepers' }] : []),
     ...(!isEventManagePage.value ? [{ label: 'Berita', icon: 'ph:newspaper', path: '/dashboard/news' }] : []),
     ...((role === 'club' || role === 'organization') ? [{ label: 'Subscription', icon: 'ph:credit-card', path: '/dashboard/subscription' }] : []),
     ...(!isEventManagePage.value ? [{ label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/settings' }] : []),
