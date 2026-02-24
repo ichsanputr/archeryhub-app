@@ -1,7 +1,7 @@
 <template>
     <div class="min-h-screen bg-gray-50">
         <!-- Hero Section -->
-        <section class="bg-navy relative overflow-hidden py-16 md:py-24">
+        <section class="bg-navy relative overflow-hidden pt-32 pb-16 md:pt-40 md:pb-24">
             <div class="absolute inset-0 z-0">
                 <img src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=1600&auto=format&fit=crop&q=80"
                     alt="Shop Background" class="w-full h-full object-cover" />

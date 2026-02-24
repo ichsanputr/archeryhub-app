@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen flex flex-col bg-background-light font-body text-navy overflow-x-hidden">
-    <LayoutLandingHeader :transparent="true" />
+    <LayoutLandingHeader :transparent="route.meta.headerTransparent !== false" />
     <main class="flex-grow">
       <slot />
     </main>

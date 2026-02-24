@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="bg-navy relative overflow-hidden py-16 md:py-24">
+    <section class="bg-navy relative overflow-hidden pt-32 pb-16 md:pt-40 md:pb-24">
       <div class="absolute inset-0 z-0">
         <img src="/hero-homepage.jpeg" class="w-full h-full object-cover" />
         <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>

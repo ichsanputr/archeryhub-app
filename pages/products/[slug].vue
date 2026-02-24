@@ -1,7 +1,7 @@
 <template>
-    <div class="min-h-screen bg-gray-50">
+    <div class="min-h-screen bg-gray-50 pt-16">
         <!-- Breadcrumb -->
-        <div class="bg-white border-b border-gray-200 sticky top-0 z-30">
+        <div class="bg-white border-b border-gray-200 sticky top-16 z-30">
             <div class="container mx-auto px-4 max-w-7xl py-3 md:py-4">
                 <Breadcrumbs :items="[
                     { label: 'Marketplace', path: '/products' },
@@ -185,7 +185,8 @@ import { useToast } from '~/composables/useToast'
 import { useAuth } from '~/composables/useAuth'
 
 definePageMeta({
-    layout: 'landing'
+    layout: 'landing',
+    headerTransparent: false
 })
 
 const route = useRoute()

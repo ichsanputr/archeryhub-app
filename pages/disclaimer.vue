@@ -1,12 +1,11 @@
 <template>
     <div class="min-h-screen flex flex-col">
         <!-- Hero Section -->
-        <div class="bg-navy pt-12 pb-16 relative overflow-hidden">
-            <div class="absolute inset-0 z-0 opacity-10">
-                <div class="absolute right-0 top-0 -mr-20 -mt-20 w-96 h-96 bg-primary rounded-full blur-3xl opacity-20">
-                </div>
-                <div
-                    class="absolute left-0 bottom-0 -ml-20 -mb-20 w-96 h-96 bg-blue-500 rounded-full blur-3xl opacity-20">
+        <div class="bg-navy pt-32 pb-20 relative overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <img src="/hero-homepage.jpeg" class="w-full h-full object-cover" />
+                <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90">
                 </div>
             </div>
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

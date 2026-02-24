@@ -1,5 +1,5 @@
 <template>
-    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 md:py-12 pt-20 md:pt-24">
         <!-- Breadcrumb -->
         <div class="mb-8">
             <Breadcrumbs :items="[{ label: 'Berita', path: '/news' }]" :current="article.title" />
@@ -200,7 +200,8 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 definePageMeta({
-    layout: 'landing'
+    layout: 'landing',
+    headerTransparent: false
 })
 
 const config = useRuntimeConfig()

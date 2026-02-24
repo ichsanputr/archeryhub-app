@@ -1,7 +1,7 @@
 <template>
     <div class="min-h-screen bg-gray-50">
         <!-- Hero Section -->
-        <section class="bg-navy relative overflow-hidden py-16 md:py-24">
+        <section class="bg-navy relative overflow-hidden pt-32 pb-16 md:pt-40 md:pb-24">
             <div class="absolute inset-0 z-0">
                 <img src="/hero-homepage.jpeg" class="w-full h-full object-cover" />
                 <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
@@ -35,7 +35,7 @@
                     <button @click="toggleFaq(index)"
                         class="w-full px-6 py-5 flex items-center justify-between text-left group">
                         <span class="font-bold text-navy group-hover:text-primary transition-colors">{{ faq.question
-                        }}</span>
+                            }}</span>
                         <Icon icon="ph:caret-down-bold"
                             :class="['text-gray-400 transition-transform duration-300', activeFaq === index ? 'rotate-180' : '']" />
                     </button>

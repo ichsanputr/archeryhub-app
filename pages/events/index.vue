@@ -1,7 +1,7 @@
 <template>
     <div class="min-h-screen bg-background-light font-body text-navy">
         <!-- Hero Section: List Events -->
-        <div class="bg-navy relative overflow-hidden py-16 md:py-24">
+        <div class="bg-navy relative overflow-hidden pt-32 pb-16 md:pt-40 md:pb-24">
             <div class="absolute inset-0 z-0">
                 <img src="/hero-event.jpeg" class="w-full h-full object-cover" />
                 <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
@@ -144,18 +144,7 @@
                     </div>
 
                     <!-- Loading State -->
-                    <div v-if="isLoading"
-                        class="text-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
-                        <div class="flex flex-col items-center gap-6">
-                            <div class="relative h-16 w-16">
-                                <div class="absolute inset-0 border-4 border-primary/20 rounded-full"></div>
-                                <div
-                                    class="absolute inset-0 border-4 border-primary border-t-transparent animate-spin rounded-full">
-                                </div>
-                            </div>
-                            <p class="text-gray-500 font-bold tracking-tight">Mencari event seru untuk Anda...</p>
-                        </div>
-                    </div>
+                    <EventsListSkeleton v-if="isLoading" />
 
                     <!-- Empty State -->
                     <div v-else-if="!isLoading && filteredTournaments.length === 0" class="text-center py-20">
