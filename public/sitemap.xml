@@ -71,7 +71,12 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://archeryhub.id/archers/agus.santoso</loc>
+    <loc>https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://archeryhub.id/archers/agus-santoso</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -91,7 +96,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://archeryhub.id/archers/andi.pratama</loc>
+    <loc>https://archeryhub.id/archers/andi-pratama</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -111,7 +116,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://archeryhub.id/archers/ani.wulandari</loc>
+    <loc>https://archeryhub.id/archers/ani-wulandari</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -126,12 +131,12 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://archeryhub.id/archers/bambang.wijaya</loc>
+    <loc>https://archeryhub.id/archers/bambang-wijaya</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://archeryhub.id/archers/budi.hartono</loc>
+    <loc>https://archeryhub.id/archers/budi-hartono</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -161,7 +166,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://archeryhub.id/archers/dewi.lestari</loc>
+    <loc>https://archeryhub.id/archers/dewi-lestari</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -171,7 +176,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://archeryhub.id/archers/dimas.permana</loc>
+    <loc>https://archeryhub.id/archers/dimas-permana</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -186,7 +191,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://archeryhub.id/archers/eko.prasetyo</loc>
+    <loc>https://archeryhub.id/archers/eko-prasetyo</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -201,12 +206,12 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://archeryhub.id/archers/fitri.handayani</loc>
+    <loc>https://archeryhub.id/archers/fitri-handayani</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://archeryhub.id/archers/hendra.gunawan</loc>
+    <loc>https://archeryhub.id/archers/hendra-gunawan</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -216,7 +221,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://archeryhub.id/archers/indah.permatasari</loc>
+    <loc>https://archeryhub.id/archers/indah-permatasari</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -226,7 +231,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://archeryhub.id/archers/joko.susilo</loc>
+    <loc>https://archeryhub.id/archers/joko-susilo</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -251,7 +256,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://archeryhub.id/archers/lina.kusuma</loc>
+    <loc>https://archeryhub.id/archers/lina-kusuma</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -276,7 +281,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://archeryhub.id/archers/maya.anggraini</loc>
+    <loc>https://archeryhub.id/archers/maya-anggraini</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -301,12 +306,12 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://archeryhub.id/archers/mush'ab-yasykur-herdanata-fc75</loc>
+    <loc>https://archeryhub.id/archers/mushab-yasykur-herdanata-fc75</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://archeryhub.id/archers/muthi'ah-nada-suryani-d453</loc>
+    <loc>https://archeryhub.id/archers/muthiah-nada-suryani-d453</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -316,7 +321,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://archeryhub.id/archers/nurul.hidayah</loc>
+    <loc>https://archeryhub.id/archers/nurul-hidayah</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -326,7 +331,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://archeryhub.id/archers/putri.maharani</loc>
+    <loc>https://archeryhub.id/archers/putri-maharani</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -336,7 +341,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://archeryhub.id/archers/r.aj.-kyla-nabila-syahid-205e</loc>
+    <loc>https://archeryhub.id/archers/r-aj-kyla-nabila-syahid-205e</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -346,12 +351,12 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://archeryhub.id/archers/ratna-sari-c918</loc>
+    <loc>https://archeryhub.id/archers/ratna-sari</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://archeryhub.id/archers/ratna.sari</loc>
+    <loc>https://archeryhub.id/archers/ratna-sari-c918</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -366,7 +371,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://archeryhub.id/archers/rudi.setiawan</loc>
+    <loc>https://archeryhub.id/archers/rudi-setiawan</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -376,7 +381,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://archeryhub.id/archers/siti.rahayu</loc>
+    <loc>https://archeryhub.id/archers/siti-rahayu</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -396,7 +401,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://archeryhub.id/archers/wahyu.nugroho</loc>
+    <loc>https://archeryhub.id/archers/wahyu-nugroho</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
