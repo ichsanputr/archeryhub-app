@@ -10,17 +10,22 @@
         </div>
 
         <!-- Jadwal Skeleton -->
-        <div v-else-if="tab === 'Jadwal Lomba'" class="space-y-6">
-            <div class="flex gap-3 overflow-hidden">
-                <div v-for="i in 4" :key="i" class="bg-gray-100 rounded-xl h-10 w-24 shrink-0"></div>
-            </div>
-            <div class="bg-white rounded-2xl p-6 border border-gray-100 space-y-8">
-                <div v-for="i in 3" :key="i" class="flex gap-6">
-                    <div class="w-8 h-8 rounded-full bg-gray-100 shrink-0"></div>
-                    <div class="flex-grow space-y-3">
-                        <div class="h-4 bg-gray-100 rounded w-1/4"></div>
-                        <div class="h-6 bg-gray-100 rounded w-3/4"></div>
-                        <div class="h-10 bg-gray-50 rounded w-1/2"></div>
+        <div v-else-if="tab === 'Jadwal Lomba'" class="space-y-12">
+            <div class="bg-white rounded-3xl p-10 border border-gray-100 space-y-12">
+                <div v-for="d in 2" :key="d" class="space-y-8">
+                    <div class="h-8 bg-gray-100 rounded-xl w-48 mb-10"></div>
+                    <div v-for="i in 2" :key="i" class="flex gap-12">
+                        <div class="w-32 hidden md:block space-y-2">
+                            <div class="h-6 bg-gray-100 rounded ml-auto w-16"></div>
+                            <div class="h-3 bg-gray-50 rounded ml-auto w-12"></div>
+                        </div>
+                        <div class="flex-grow p-8 bg-gray-50/50 rounded-3xl border border-gray-100 space-y-4">
+                            <div class="h-6 bg-gray-100 rounded w-3/4"></div>
+                            <div class="flex gap-4">
+                                <div class="h-10 bg-white rounded-2xl w-32 border border-gray-50"></div>
+                                <div class="h-10 bg-white rounded-2xl w-32 border border-gray-50"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

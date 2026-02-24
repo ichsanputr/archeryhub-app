@@ -64,9 +64,11 @@
                         <div v-else-if="activeTab === 'Ringkasan'" class="space-y-8">
                             <!-- About Section -->
                             <section v-if="tournament.page_settings?.sections?.about !== false"
-                                class="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100">
-                                <h2 class="text-lg sm:text-xl font-bold text-navy mb-6 flex items-center gap-2">
-                                    <Icon icon="ph:info-bold" class="text-navy" />
+                                class="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-gray-100">
+                                <h2 class="font-black text-navy text-2xl mb-6 flex items-center gap-3">
+                                    <div class="w-12 h-12 rounded-2xl bg-navy/5 flex items-center justify-center">
+                                        <Icon icon="ph:info-bold" class="text-xl text-navy" />
+                                    </div>
                                     Tentang Event
                                 </h2>
                                 <div class="tentang-event prose max-w-none text-gray-600 leading-relaxed space-y-4">
@@ -95,17 +97,20 @@
                             <!-- Divisions Section -->
                             <section
                                 v-if="tournament.page_settings?.sections?.divisions !== false && divisionsData.length > 0"
-                                class="bg-white rounded-3xl p-8 md:p-10 shadow-sm border border-gray-100 relative overflow-hidden">
+                                class="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-gray-100 relative overflow-hidden">
 
 
                                 <div class="flex items-center justify-between mb-10 relative z-10">
                                     <div>
-                                        <h2 class="sm:text-xl text-lg font-black text-navy flex items-center gap-3">
-                                            <Icon icon="ph:squares-four-bold" class="text-xl text-navy" />
+                                        <h2 class="font-black text-navy text-2xl mb-2 flex items-center gap-3">
+                                            <div
+                                                class="w-12 h-12 rounded-2xl bg-navy/5 flex items-center justify-center">
+                                                <Icon icon="ph:squares-four-bold" class="text-xl text-navy" />
+                                            </div>
                                             Kategori Lomba
                                         </h2>
-                                        <p class="text-sm text-gray-400 font-medium mt-1">Kategori lomba yang
-                                            tersedia dalam event ini</p>
+                                        <p class="text-sm text-gray-400 font-medium">Kategori lomba yang tersedia dalam
+                                            event ini</p>
                                     </div>
                                     <div v-if="divisionsData.length > 1" class="hidden md:flex gap-2">
                                         <button @click="scroll('left')"
@@ -171,12 +176,19 @@
                             <!-- Registration Fees Section -->
                             <section v-if="tournament.page_settings?.sections?.fees !== false"
                                 class="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-gray-100">
-                                <div class="mb-8 md:mb-10">
-                                    <span class="text-primary font-black text-3xl leading-none block mb-2">-</span>
-                                    <h2 class="text-lg sm:text-xl font-black text-navy">Biaya Pendaftaran</h2>
-                                    <p class="text-gray-500 mt-1 text-sm">Pilih kategori yang sesuai dengan divisi dan
-                                        level
-                                        peserta.</p>
+                                <div
+                                    class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10 relative z-10">
+                                    <div>
+                                        <h2 class="font-black text-navy text-2xl mb-2 flex items-center gap-3">
+                                            <div
+                                                class="w-12 h-12 rounded-2xl bg-navy/5 flex items-center justify-center">
+                                                <Icon icon="ph:wallet-bold" class="text-xl text-navy" />
+                                            </div>
+                                            Biaya Pendaftaran
+                                        </h2>
+                                        <p class="text-sm text-gray-400 font-medium">Pilih kategori yang sesuai dengan
+                                            divisi dan level peserta</p>
+                                    </div>
                                 </div>
 
                                 <div v-if="tournament.fees && tournament.fees.length > 0"
@@ -323,7 +335,7 @@
                                                     </div>
                                                     <div class="text-white text-lg sm:text-xl font-black">{{
                                                         displayValue(tournament.prizes?.second)
-                                                    }}</div>
+                                                        }}</div>
                                                 </div>
                                                 <div class="w-full h-2 bg-white/10 overflow-hidden">
                                                     <div class="h-full bg-white/60 w-1/2"></div>
@@ -449,7 +461,7 @@
                         <!-- FAQ Tab -->
                         <div v-else-if="activeTab === 'FAQ'" class="space-y-8">
                             <section
-                                class="bg-white rounded-3xl p-8 md:p-10 shadow-sm border border-gray-100 overflow-hidden relative">
+                                class="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-gray-100 overflow-hidden relative">
                                 <!-- Decorative element -->
                                 <div class="absolute -right-12 -bottom-12 w-48 h-48 bg-primary/5 rounded-full blur-3xl">
                                 </div>
