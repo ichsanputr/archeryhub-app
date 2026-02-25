@@ -215,46 +215,85 @@
             </template>
         </BaseDialogForm>
 
-        <!-- Delete Confirmation Dialog -->
-        <Teleport to="body">
-            <Transition enter-active-class="transition duration-300 ease-out" enter-from-class="opacity-0"
-                enter-to-class="opacity-100" leave-active-class="transition duration-200 ease-in"
-                leave-from-class="opacity-100" leave-to-class="opacity-0">
-                <div v-if="showDeleteDialog"
-                    class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
-                    @click.self="showDeleteDialog = false">
-                    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden">
-                        <div class="p-6">
-                            <div class="flex items-start gap-4 mb-6">
-                                <div class="size-12 bg-red-100 rounded-full flex items-center justify-center shrink-0">
-                                    <Icon icon="ph:warning-bold" class="text-2xl text-red-600" />
-                                </div>
-                                <div>
-                                    <h3 class="text-xl font-black text-navy mb-2">Hapus Kategori?</h3>
-                                    <p class="text-gray-600 leading-relaxed">
-                                        Apakah Anda yakin ingin menghapus kategori <strong class="text-navy">{{
-                                            categoryToDelete?.division_name }} {{ categoryToDelete?.category_name
-                                            }}</strong>?
-                                        Tindakan ini tidak dapat dibatalkan jika berhasil.
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="flex gap-3">
-                                <button type="button" @click="showDeleteDialog = false"
-                                    class="flex-1 px-4 py-3 border-2 border-gray-100 text-gray-500 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-gray-50 transition-all">
-                                    Batal
-                                </button>
-                                <button @click="confirmDeleteCategory" :disabled="saving"
-                                    class="flex-1 px-4 py-3 bg-red-600 text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-red-700 shadow-lg shadow-red-200 transition-all disabled:opacity-50 flex items-center justify-center gap-2">
-                                    <Icon v-if="saving" icon="ph:circle-notch" class="animate-spin text-lg" />
-                                    <span>{{ saving ? 'Menghapus...' : 'Ya, Hapus' }}</span>
-                                </button>
-                            </div>
+        <!-- Standardized Delete Confirmation Dialog -->
+        <BaseDialogForm v-model="showDeleteDialog" @close="showDeleteDialog = false">
+            <template #header>
+                <div class="flex items-center gap-3">
+                    <div class="size-10 bg-red-50 rounded-xl flex items-center justify-center shadow-inner">
+                        <Icon icon="ph:trash-bold" class="text-xl text-red-600" />
+                    </div>
+                    <h2 class="text-xl font-black text-navy">Hapus Kategori?</h2>
+                </div>
+            </template>
+
+            <div v-if="fetchingDetails" class="py-12 flex flex-col items-center justify-center gap-4 text-center">
+                <Icon icon="ph:circle-notch-bold" class="text-4xl text-primary animate-spin" />
+                <p class="text-sm font-bold text-gray-400 uppercase tracking-widest">Menganalisa keterkaitan data...</p>
+            </div>
+
+            <div v-else-if="categoryDetails" class="space-y-6">
+                <p class="text-slate-500 font-medium leading-relaxed">
+                    Tindakan ini permanen. Mohon periksa detail keterkaitan data di bawah ini sebelum melanjutkan.
+                </p>
+
+                <!-- Category Summary Card -->
+                <div class="p-5 rounded-2xl bg-navy text-white relative overflow-hidden group shadow-sm">
+                    <div class="absolute inset-0 opacity-10 pointer-events-none"
+                        style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, white 10px, white 11px);">
+                    </div>
+                    <div class="relative z-10">
+                        <h4 class="text-[9px] font-black text-primary uppercase tracking-[0.2em] mb-2">ID Kategori</h4>
+                        <div class="text-lg font-black leading-tight mb-1">
+                            {{ categoryDetails.category.division_name }} - {{ categoryDetails.category.category_name }}
+                        </div>
+                        <div class="text-xs font-bold text-slate-300">
+                            {{ categoryDetails.category.event_type_name }}
+                            <span v-if="categoryDetails.category.gender_division_name"> • {{
+                                categoryDetails.category.gender_division_name }}</span>
+                        </div>
+                        <div v-if="categoryDetails.category.category_name_custom"
+                            class="mt-3 inline-flex px-2 py-0.5 bg-white/10 backdrop-blur border border-white/10 rounded text-[10px] font-bold">
+                            {{ categoryDetails.category.category_name_custom }}
                         </div>
                     </div>
                 </div>
-            </Transition>
-        </Teleport>
+
+                <!-- Statistics Grid -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div v-for="stat in [
+                        { label: 'Peserta', count: categoryDetails.participant_count, icon: 'ph:users-bold' },
+                        { label: 'Tim', count: categoryDetails.team_count, icon: 'ph:users-three-bold' },
+                        { label: 'Sesi', count: categoryDetails.session_count, icon: 'ph:hourglass-bold' },
+                        { label: 'Bagan', count: categoryDetails.bracket_count, icon: 'ph:stack-bold' }
+                    ]" :key="stat.label" class="p-4 rounded-2xl border transition-all duration-300 shadow-sm"
+                        :class="stat.count > 0 ? 'bg-red-50 border-red-100' : 'bg-gray-50 border-gray-50 opacity-60'">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="size-9 rounded-lg flex items-center justify-center transition-colors shadow-inner"
+                                :class="stat.count > 0 ? 'bg-red-100 text-red-600' : 'bg-gray-200 text-gray-400'">
+                                <Icon :icon="stat.icon" class="text-lg" />
+                            </div>
+                            <div class="text-xl font-black" :class="stat.count > 0 ? 'text-red-700' : 'text-gray-400'">
+                                {{ stat.count }}
+                            </div>
+                        </div>
+                        <span class="text-[9px] uppercase font-black text-gray-400 tracking-wider">{{ stat.label
+                        }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <template #action>
+                <BaseButton variant="white" @click="showDeleteDialog = false"
+                    class="px-6 font-bold uppercase tracking-wider text-xs">
+                    Batal
+                </BaseButton>
+                <BaseButton variant="danger" @click="confirmDeleteCategory" :disabled="saving" :loading="saving"
+                    icon="ph:trash-bold"
+                    class="px-8 font-black uppercase tracking-wider text-xs shadow-lg shadow-red-200">
+                    Konfirmasi Hapus
+                </BaseButton>
+            </template>
+        </BaseDialogForm>
     </div>
 </template>
 
@@ -290,6 +329,8 @@ const showDialog = ref(false)
 const editingCategory = ref(null)
 const showDeleteDialog = ref(false)
 const categoryToDelete = ref(null)
+const fetchingDetails = ref(false)
+const categoryDetails = ref(null)
 
 // Pagination & Filtering
 const currentPage = ref(1)
@@ -477,9 +518,20 @@ const closeDialog = () => {
     editingCategory.value = null
 }
 
-const deleteCategory = (category) => {
+const deleteCategory = async (category) => {
     categoryToDelete.value = category
     showDeleteDialog.value = true
+    fetchingDetails.value = true
+    try {
+        const res = await get(`/events/${eventId}/categories/${category.id}`)
+        categoryDetails.value = res?.data || res
+    } catch (error) {
+        console.error('Failed to fetch category details:', error)
+        toast.error('Gagal memuat detail kategori untuk penghapusan')
+        showDeleteDialog.value = false
+    } finally {
+        fetchingDetails.value = false
+    }
 }
 
 const confirmDeleteCategory = async () => {
@@ -497,6 +549,10 @@ const confirmDeleteCategory = async () => {
     } finally {
         saving.value = false
     }
+}
+
+const getApiErrorMessage = (error, defaultMsg) => {
+    return error?.response?.data?.error || error?.data?.error || error?.message || defaultMsg
 }
 
 const saveCategory = async () => {

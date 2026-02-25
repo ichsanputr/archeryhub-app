@@ -115,7 +115,7 @@ defineProps({
 }
 
 .winner-crown {
-    @apply absolute -top-1.5 -right-1.5 w-4 h-4 bg-primary text-navy rounded-full flex items-center justify-center text-[8px] shadow-md border-2 border-white;
+    @apply absolute -top-1.5 -right-1.5 w-4 h-4 bg-primary text-primary-text rounded-full flex items-center justify-center text-[8px] shadow-md border-2 border-white;
 }
 
 .archer-info {

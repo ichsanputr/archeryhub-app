@@ -71,11 +71,9 @@
           <Icon icon="ph:calendar-blank" class="text-4xl text-gray-300 mx-auto mb-3" />
           <p class="text-sm font-bold text-gray-600 mb-1">Belum Ada Sesi Kualifikasi</p>
           <p class="text-xs text-gray-400 mb-4">Buat sesi pertama untuk mulai mengelola kualifikasi</p>
-          <button @click="openCreateModal"
-            class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-navy rounded-lg font-bold hover:bg-primary/90 transition-colors text-sm">
-            <Icon icon="ph:plus" class="text-lg" />
+          <BaseButton variant="primary" icon="ph:plus-bold" @click="openCreateModal">
             Buat Sesi Pertama
-          </button>
+          </BaseButton>
         </div>
 
         <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -88,6 +86,10 @@
               <button @click.stop="editSession(session)"
                 class="size-9 bg-white shadow-md rounded-xl flex items-center justify-center text-gray-400 hover:text-navy hover:scale-110 active:scale-95 transition-all">
                 <Icon icon="ph:pencil-simple-bold" class="text-lg" />
+              </button>
+              <button @click.stop="confirmDeleteSession(session)"
+                class="size-9 bg-white shadow-md rounded-xl flex items-center justify-center text-gray-400 hover:text-red-500 hover:scale-110 active:scale-95 transition-all">
+                <Icon icon="ph:trash-bold" class="text-lg" />
               </button>
             </div>
 
@@ -280,7 +282,7 @@
                             class="flex flex-col items-center bg-gray-50 border border-gray-100 rounded-lg overflow-hidden shadow-sm group/score hover:border-primary/50 transition-all">
                             <div class="bg-navy/5 px-2 py-0.5 w-full text-center border-b border-gray-100">
                               <span class="text-[8px] font-black text-gray-400 uppercase tracking-tighter">E{{ sIdx + 1
-                              }}</span>
+                                }}</span>
                             </div>
                             <div class="px-3 py-1 min-w-[45px] flex items-center justify-center">
                               <span
@@ -308,7 +310,7 @@
                   <td class="px-6 py-4 text-right">
                     <NuxtLink
                       :to="`/dashboard/events/${eventId}/result-user?archer_id=${archer.athlete_code || archer.participant_uuid}`"
-                      class="inline-flex items-center justify-center gap-2 px-3 py-1.5 bg-primary/10 text-navy text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-primary transition-all">
+                      class="inline-flex items-center justify-center gap-2 px-3 py-1.5 bg-primary/10 text-primary-text text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-primary transition-all">
                       <Icon icon="ph:eye-bold" class="text-sm" />
                       Detail
                     </NuxtLink>
@@ -504,24 +506,111 @@
               class="flex-1 px-6 py-4 bg-white border-2 border-gray-200 text-gray-500 rounded-2xl font-black hover:bg-gray-100 hover:border-gray-300 transition-all  tracking-widest text-xs">
               Batal
             </button>
-            <button @click="saveSession" :disabled="creatingSession || !newSessionName"
-              class="flex-[2] px-6 py-4 bg-primary text-navy rounded-2xl font-black hover:shadow-md hover:shadow-primary/20 transform hover:-translate-y-0.5 active:translate-y-0 shadow-md shadow-primary/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3  tracking-widest text-xs">
-              <Icon v-if="creatingSession" icon="ph:circle-notch" class="text-lg animate-spin" />
+            <BaseButton :disabled="creatingSession || !newSessionName" :loading="creatingSession" variant="primary"
+              class="flex-[2] py-4 rounded-2xl font-black shadow-lg shadow-primary/10 tracking-widest text-xs uppercase"
+              @click="saveSession">
               {{ submitButtonLabel }}
-            </button>
+            </BaseButton>
           </div>
         </div>
       </div>
     </Transition>
+
+    <!-- Delete Confirmation Dialog -->
+    <BaseDialogForm v-if="showDeleteDialog" v-model="showDeleteDialog" @close="showDeleteDialog = false">
+      <template #header>
+        <div class="flex items-center gap-3">
+          <div class="size-10 bg-red-50 rounded-xl flex items-center justify-center shadow-inner">
+            <Icon icon="ph:trash-bold" class="text-xl text-red-600" />
+          </div>
+          <h2 class="text-xl font-black text-navy">Hapus Sesi Kualifikasi?</h2>
+        </div>
+      </template>
+      <div class="space-y-6 pt-2">
+        <!-- Warning Banner -->
+        <div class="p-6 bg-red-50 border-2 border-red-100 rounded-3xl relative overflow-hidden group">
+          <div class="absolute -right-4 -top-4 opacity-10 group-hover:scale-120 transition-transform duration-700">
+            <Icon icon="ph:warning-circle-bold" class="text-8xl text-red-600" />
+          </div>
+          <div class="relative z-10">
+            <h4 class="text-sm font-black text-red-700 uppercase tracking-widest mb-2">Peringatan Penghapusan</h4>
+            <p class="text-xs font-bold text-red-600/80 leading-relaxed mb-4">
+              Anda akan menghapus sesi kualifikasi ini secara permanen. Tindakan ini bersifat destruktif dan tidak dapat
+              dibatalkan.
+            </p>
+
+            <div class="flex items-center gap-2 px-3 py-1.5 bg-red-100 rounded-xl w-fit">
+              <Icon icon="ph:info-bold" class="text-red-600" />
+              <span class="text-[10px] font-black uppercase tracking-wider text-red-700">Data Akan Dihapus
+                Selamanya</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Session Overview -->
+        <div class="p-5 rounded-2xl bg-navy text-white relative overflow-hidden group shadow-sm">
+          <div class="absolute inset-0 opacity-10 pointer-events-none"
+            style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, white 10px, white 11px);">
+          </div>
+          <div class="relative z-10">
+            <h4 class="text-[9px] font-black text-primary uppercase tracking-[0.2em] mb-2">Informasi Sesi</h4>
+            <div class="text-lg font-black leading-tight mb-1">
+              {{ sessionToDelete?.name }}
+            </div>
+            <div class="text-xs font-bold text-slate-300">
+              Kode: {{ sessionToDelete?.session_code }} • {{ sessionToDelete?.session_date ?
+                formatDate(sessionToDelete.session_date) : 'Tanpa Tanggal' }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Impact Grid -->
+        <div class="grid grid-cols-2 gap-4">
+          <div v-for="stat in [
+            { label: 'Pemanah', count: sessionToDelete?.participant_count || 0, icon: 'ph:users-bold' },
+            { label: 'Tugas Target', count: sessionToDelete?.participant_count || 0, icon: 'ph:target-bold' },
+            { label: 'Total Skor', count: 'SELURUH', icon: 'ph:rows-bold', isWarning: true },
+            { label: 'Kode Scoring', count: 'SEMUA', icon: 'ph:lock-key-bold', isWarning: true }
+          ]" :key="stat.label" class="p-4 rounded-2xl border transition-all duration-300 shadow-sm"
+            :class="stat.count !== 0 ? 'bg-red-50 border-red-100' : 'bg-gray-50 border-gray-50 opacity-60'">
+            <div class="flex items-center justify-between mb-2">
+              <div class="size-9 rounded-lg flex items-center justify-center transition-colors shadow-inner"
+                :class="stat.count !== 0 ? 'bg-red-100 text-red-600' : 'bg-gray-200 text-gray-400'">
+                <Icon :icon="stat.icon" class="text-lg" />
+              </div>
+              <div class="text-base font-black" :class="stat.count !== 0 ? 'text-red-700' : 'text-gray-400'">
+                {{ stat.count }}
+              </div>
+            </div>
+            <span class="text-[9px] uppercase font-black text-gray-400 tracking-wider">{{ stat.label }}</span>
+          </div>
+        </div>
+      </div>
+
+      <template #action>
+        <BaseButton variant="white" @click="showDeleteDialog = false"
+          class="px-6 font-bold uppercase tracking-wider text-xs">
+          Batal
+        </BaseButton>
+        <BaseButton variant="danger" @click="handleDeleteSession" :disabled="savingDelete" :loading="savingDelete"
+          icon="ph:trash-bold" class="px-8 font-black uppercase tracking-wider text-xs shadow-lg shadow-red-200">
+          Hapus Permanen
+        </BaseButton>
+      </template>
+    </BaseDialogForm>
   </div>
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
+import { getCategoryIcon } from '~/utils/logoArcheryCategory'
+import { useApi } from '~/composables/useApi'
+import { useToast } from '~/composables/useToast'
+
 const route = useRoute()
 const router = useRouter()
 const { get, post, patch, delete: del } = useApi()
 const toast = useToast()
-import { getCategoryIcon } from '~/utils/logoArcheryCategory'
 const eventId = computed(() => route.params.id)
 
 definePageMeta({
@@ -544,6 +633,10 @@ const loadingReport = ref(false)
 const creatingSession = ref(false)
 const showSessionDialog = ref(false)
 const editingSessionId = ref(null)
+
+const showDeleteDialog = ref(false)
+const sessionToDelete = ref(null)
+const savingDelete = ref(false)
 
 // New/Edit Session Form
 const newSessionName = ref('')
@@ -697,17 +790,26 @@ const saveSession = async () => {
   }
 }
 
-const confirmDeleteSession = async (session) => {
-  const confirmed = confirm(`Apakah Anda yakin ingin menghapus sesi "${session.name}"? Ini akan menghapus semua tugas target dan skor terkait!`)
-  if (!confirmed) return
+const confirmDeleteSession = (session) => {
+  sessionToDelete.value = session
+  showDeleteDialog.value = true
+}
 
+const handleDeleteSession = async () => {
+  if (!sessionToDelete.value) return
+
+  savingDelete.value = true
   try {
-    await del(`/events/${eventId.value}/qualification/sessions/${session.uuid}`)
-    toast.success('Sesi berhasil dihapus')
-    await fetchQualificationSessions()
+    await del(`/events/${eventId.value}/qualification/sessions/${sessionToDelete.value.uuid}`)
+    toast.success('Sesi kualifikasi dan seluruh data terkait berhasil dihapus')
+    showDeleteDialog.value = false
+    sessionToDelete.value = null
+    await fetchQualificationSessions() // Changed from fetchSessions to fetchQualificationSessions
   } catch (error) {
     console.error('Failed to delete session:', error)
-    toast.error('Gagal menghapus sesi')
+    toast.error(error.response?.data?.error || 'Gagal menghapus sesi kualifikasi')
+  } finally {
+    savingDelete.value = false
   }
 }
 

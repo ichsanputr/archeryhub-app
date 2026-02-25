@@ -45,8 +45,8 @@
             <button v-if="typeof page === 'number'" @click="changePage(page)" :class="[
               'h-10 min-w-[2.5rem] px-3 flex items-center justify-center rounded-xl font-bold text-sm transition-all duration-300 active:scale-95',
               currentPage === page
-                ? 'bg-primary text-primary-text border-2 border-white shadow-lg shadow-primary/20 ring-1 ring-primary/20 scale-110 z-10'
-                : 'bg-white text-gray-500 border border-transparent hover:border-primary/30 hover:text-navy hover:shadow-md'
+                ? 'bg-primary text-primary-text border-2 border-white shadow-sm shadow-primary/20 ring-1 ring-primary/20 scale-110 z-10'
+                : 'bg-white text-gray-500 border border-transparent hover:border-primary/30 hover:text-navy hover:shadow-sm'
             ]">
               {{ page }}
             </button>

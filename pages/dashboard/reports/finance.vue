@@ -166,7 +166,7 @@
                                 {{ stat.label }}</p>
                             <p class="text-navy text-2xl md:text-3xl font-black tracking-tight tabular-nums">{{
                                 stat.value
-                                }}</p>
+                            }}</p>
                         </div>
                         <div
                             class="bg-slate-50 p-2 rounded-lg text-navy group-hover:bg-primary group-hover:text-navy transition-colors shrink-0">
@@ -211,7 +211,7 @@
                                 <tr v-for="(athlete, index) in topAthletes" :key="athlete.id"
                                     class="group hover:bg-gray-50 transition-colors">
                                     <td class="px-4 md:px-6 py-4">
-                                        <div :class="index === 0 ? 'bg-primary text-navy' : 'bg-gray-100 text-gray-600'"
+                                        <div :class="index === 0 ? 'bg-primary text-primary-text' : 'bg-gray-100 text-gray-600'"
                                             class="w-8 h-8 rounded-lg flex items-center justify-center font-black text-sm">
                                             {{ index + 1 }}
                                         </div>
@@ -227,7 +227,7 @@
                                                     {{ athlete.name }}</div>
                                                 <div class="text-[10px] text-gray-400 font-bold ">{{
                                                     athlete.club
-                                                    }}</div>
+                                                }}</div>
                                             </div>
                                         </div>
                                     </td>
@@ -307,7 +307,7 @@
                             <p class="text-xs text-text-secondary mt-1 leading-relaxed">{{ activity.description }}</p>
                         </div>
                         <span class="text-[10px] text-text-secondary font-black  shrink-0">{{ activity.time
-                        }}</span>
+                            }}</span>
                     </div>
                 </div>
             </div>

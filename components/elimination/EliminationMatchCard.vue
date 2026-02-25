@@ -131,11 +131,11 @@ const isLoser = (side) => {
 }
 
 .avatar-seed-badge {
-    @apply absolute -left-2 -bottom-1 min-w-[14px] h-3.5 px-1 bg-navy text-primary text-[8px] font-black rounded-full flex items-center justify-center border border-white shadow-sm transition-all z-20;
+    @apply absolute -left-2 -bottom-1 min-w-[14px] h-3.5 px-1 bg-navy text-primary-text text-[8px] font-black rounded-full flex items-center justify-center border border-white shadow-sm transition-all z-20;
 }
 
 .winner-indicator {
-    @apply absolute -top-1.5 -right-1.5 size-4 bg-primary text-navy rounded-full flex items-center justify-center text-[8px] shadow-sm border border-white z-20;
+    @apply absolute -top-1.5 -right-1.5 size-4 bg-primary text-primary-text rounded-full flex items-center justify-center text-[8px] shadow-sm border border-white z-20;
 }
 
 .archer-info {

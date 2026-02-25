@@ -130,7 +130,7 @@
                         :class="showSolid ? 'text-navy hover:bg-gray-100' : 'text-white hover:bg-white/10'">
                         <Icon icon="ph:shopping-bag-bold" class="text-2xl" />
                         <span v-if="cartCount > 0"
-                            class="absolute top-1 right-1 w-5 h-5 bg-primary text-navy text-[10px] font-black rounded-full flex items-center justify-center border-2 border-white shadow-sm ring-1 ring-primary/20">
+                            class="absolute top-1 right-1 w-5 h-5 bg-primary text-primary-text text-[10px] font-black rounded-full flex items-center justify-center border-2 border-white shadow-sm ring-1 ring-primary/20">
                             {{ cartCount }}
                         </span>
                     </NuxtLink>
@@ -144,7 +144,7 @@
                                 <img v-if="user?.avatar_url" :src="user.avatar_url"
                                     class="w-full h-full object-cover" />
                                 <span v-else class="text-navy font-bold text-sm">{{ user?.full_name?.charAt(0) || 'U'
-                                    }}</span>
+                                }}</span>
                             </div>
                         </button>
 
@@ -187,7 +187,7 @@
                             Masuk
                         </NuxtLink>
                         <NuxtLink to="/auth/register"
-                            class="bg-primary hover:bg-primary-hover text-navy text-sm font-bold px-4 py-2 rounded-lg transition-colors">
+                            class="bg-primary hover:bg-primary-hover text-primary-text text-sm font-bold px-4 py-2 rounded-lg transition-colors">
                             Daftar
                         </NuxtLink>
                     </template>
@@ -254,7 +254,7 @@
                                 <img v-if="user?.avatar_url" :src="user.avatar_url"
                                     class="w-full h-full object-cover" />
                                 <span v-else class="text-navy font-black text-xl">{{ user?.full_name?.charAt(0) || 'U'
-                                    }}</span>
+                                }}</span>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <p class="text-navy font-black truncate">{{ user?.full_name || 'User' }}</p>
@@ -277,7 +277,7 @@
                             { to: '/products', label: 'Marketplace', icon: 'ph:shopping-bag-bold' },
                         ]" :key="link.to" :to="link.to" @click="mobileMenuOpen = false"
                             class="flex items-center gap-4 p-4 rounded-2xl transition-all group"
-                            :class="isActive(link.to) ? 'bg-primary text-navy' : 'text-gray-500 hover:bg-gray-50 hover:text-navy'">
+                            :class="isActive(link.to) ? 'bg-primary text-primary-text' : 'text-gray-500 hover:bg-gray-50 hover:text-navy'">
                             <Icon :icon="link.icon" class="text-xl" />
                             <span class="font-black text-sm  tracking-wide">{{ link.label }}</span>
                         </NuxtLink>
@@ -336,7 +336,7 @@
                             Masuk
                         </NuxtLink>
                         <NuxtLink to="/auth/register" @click="mobileMenuOpen = false"
-                            class="flex items-center justify-center py-3.5 bg-primary text-navy rounded-2xl text-sm font-black  tracking-wider shadow-lg shadow-primary/20 transition-all">
+                            class="flex items-center justify-center py-3.5 bg-primary text-primary-text rounded-2xl text-sm font-black  tracking-wider shadow-lg shadow-primary/20 transition-all">
                             Daftar
                         </NuxtLink>
                     </div>

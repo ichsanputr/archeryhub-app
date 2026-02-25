@@ -351,7 +351,15 @@
         </BaseDialogForm>
 
         <!-- Sync Confirmation Dialog -->
-        <BaseDialogForm v-model="showSyncConfirm" header="Konfirmasi Sinkronisasi Tim">
+        <BaseDialogForm v-model="showSyncConfirm" @close="showSyncConfirm = false">
+            <template #header>
+                <div class="flex items-center gap-3">
+                    <div class="size-10 bg-red-50 rounded-xl flex items-center justify-center shadow-inner">
+                        <Icon icon="ph:arrows-clockwise-bold" class="text-xl text-red-600" />
+                    </div>
+                    <h2 class="text-xl font-black text-navy">Sinkronisasi Tim?</h2>
+                </div>
+            </template>
             <div class="space-y-6">
                 <div class="flex flex-col items-center text-center space-y-4">
                     <div

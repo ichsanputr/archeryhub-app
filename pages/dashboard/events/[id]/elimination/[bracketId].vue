@@ -155,18 +155,17 @@
                                 class="bg-white/10 p-1 sm:p-1.5 rounded-xl sm:rounded-2xl flex gap-1 backdrop-blur-sm border border-white/20">
                                 <button v-for="t in tabs" :key="t.id" @click="activeTab = t.id"
                                     class="flex-1 sm:flex-none px-4 sm:px-6 py-2 sm:py-2.5 text-[10px] sm:text-xs font-black tracking-widest uppercase rounded-lg sm:rounded-xl transition-all flex items-center justify-center gap-2"
-                                    :class="activeTab === t.id ? 'bg-primary text-navy shadow-sm' : 'text-slate-300 hover:text-white hover:bg-white/10'">
+                                    :class="activeTab === t.id ? 'bg-primary text-primary-text shadow-sm' : 'text-slate-300 hover:text-white hover:bg-white/10'">
                                     <Icon :icon="t.icon" class="text-sm sm:text-lg" />
                                     <span>{{ t.label }}</span>
                                 </button>
                             </div>
 
-                            <button v-if="!currentRoundNo && (bracket.status === 'draft' || !bracket.generated_at)"
-                                @click="generateBracket"
-                                class="h-10 sm:h-11 px-6 bg-primary text-navy rounded-xl font-black text-[10px] sm:text-xs tracking-[0.2em] uppercase shadow-lg shadow-primary/30 hover:shadow-primary/40 transition-all flex items-center justify-center gap-2">
-                                <Icon icon="ph:magic-wand-bold" class="text-sm sm:text-lg" />
-                                <span>Generate Bracket</span>
-                            </button>
+                            <BaseButton v-if="!currentRoundNo" @click="generateBracket" variant="primary"
+                                icon="ph:magic-wand-bold"
+                                class="h-10 sm:h-11 shadow-lg shadow-primary/30 tracking-[0.2em] font-black uppercase text-[10px] sm:text-xs">
+                                Generate Bracket
+                            </BaseButton>
                         </div>
                     </div>
                 </div>
@@ -315,7 +314,7 @@
                                         class="w-full flex items-center justify-between p-3 rounded-xl border transition-all"
                                         :class="manualWinnerId === selectedScoringMatch.entry_a_id ? 'bg-primary/20 border-primary text-primary' : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'">
                                         <span class="text-sm font-bold text-white">{{ selectedScoringMatch.entry_a_name
-                                        }}</span>
+                                            }}</span>
                                         <Icon v-if="manualWinnerId === selectedScoringMatch.entry_a_id"
                                             icon="ph:check-circle-fill" class="text-primary" />
                                     </button>
@@ -325,7 +324,7 @@
                                         class="w-full flex items-center justify-between p-3 rounded-xl border transition-all"
                                         :class="manualWinnerId === selectedScoringMatch.entry_b_id ? 'bg-primary/20 border-primary text-primary' : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'">
                                         <span class="text-sm font-bold text-white">{{ selectedScoringMatch.entry_b_name
-                                        }}</span>
+                                            }}</span>
                                         <Icon v-if="manualWinnerId === selectedScoringMatch.entry_b_id"
                                             icon="ph:check-circle-fill" class="text-primary" />
                                     </button>
@@ -338,13 +337,12 @@
                                     class="flex-1 px-6 py-3 rounded-xl bg-white/10 border border-white/20 text-white font-bold hover:bg-white/20 transition-all">
                                     Batal
                                 </button>
-                                <button @click="confirmEndMatch"
+                                <BaseButton @click="confirmEndMatch"
                                     :disabled="isEndingMatch || (selectedScoringMatch && getMatchScore(selectedScoringMatch, 'A') === getMatchScore(selectedScoringMatch, 'B') && !manualWinnerId)"
-                                    class="flex-1 px-6 py-3 rounded-xl bg-primary text-navy font-black tracking-wide hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-                                    <Icon v-if="isEndingMatch" icon="ph:circle-notch-bold" class="animate-spin" />
-                                    <Icon v-else icon="ph:check-bold" />
-                                    <span>{{ isEndingMatch ? 'Memproses...' : 'Konfirmasi' }}</span>
-                                </button>
+                                    variant="primary" :loading="isEndingMatch" icon="ph:check-bold"
+                                    class="flex-1 px-6 py-3 rounded-xl font-black tracking-wide">
+                                    {{ isEndingMatch ? 'Memproses...' : 'Konfirmasi' }}
+                                </BaseButton>
                             </div>
                         </div>
                     </div>

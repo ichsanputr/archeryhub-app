@@ -311,7 +311,15 @@
             </form>
 
             <!-- Kick Participant Confirmation Dialog -->
-            <BaseDialogForm v-model="showKickDialog" header="Kick Participant">
+            <BaseDialogForm v-model="showKickDialog" @close="showKickDialog = false">
+                <template #header>
+                    <div class="flex items-center gap-3">
+                        <div class="size-10 bg-red-50 rounded-xl flex items-center justify-center shadow-inner">
+                            <Icon icon="ph:user-minus-bold" class="text-xl text-red-600" />
+                        </div>
+                        <h2 class="text-xl font-black text-navy">Keluarkan Peserta?</h2>
+                    </div>
+                </template>
                 <div class="space-y-4">
                     <div class="flex flex-col items-center text-center gap-4">
                         <div class="h-16 w-16 rounded-2xl bg-red-50 flex items-center justify-center">

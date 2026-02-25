@@ -93,10 +93,16 @@
                 <p class="text-xs text-gray-500 font-mono mt-1">{{ bracket.id }}</p>
               </div>
             </div>
-            <button @click.stop.prevent="openEditBracket(bracket)"
-              class="p-2 rounded-lg bg-gray-100 text-gray-400 hover:bg-primary/20 hover:text-primary transition-all">
-              <Icon icon="ph:pencil-simple-bold" class="text-lg" />
-            </button>
+            <div class="flex items-center gap-2">
+              <button @click.stop.prevent="openEditBracket(bracket)"
+                class="p-2 rounded-lg bg-gray-100 text-gray-400 hover:bg-primary/20 hover:text-primary transition-all">
+                <Icon icon="ph:pencil-simple-bold" class="text-lg" />
+              </button>
+              <button @click.stop.prevent="confirmDeleteBracket(bracket)"
+                class="p-2 rounded-lg bg-gray-100 text-gray-400 hover:bg-red-50/80 hover:text-red-500 transition-all">
+                <Icon icon="ph:trash-bold" class="text-lg" />
+              </button>
+            </div>
           </div>
 
           <!-- Details -->
@@ -305,15 +311,99 @@
               class="flex-1 px-6 py-4 bg-white border-2 border-gray-200 text-gray-500 rounded-2xl font-black hover:bg-gray-100 hover:border-gray-300 transition-all tracking-widest text-[10px] uppercase">
               Batal
             </button>
-            <button @click="handleCreateOrUpdate" :disabled="!newBracket.categoryId || creatingBracket"
-              class="flex-[2] px-6 py-4 bg-primary text-navy rounded-2xl font-black hover:shadow-md hover:shadow-primary/20 transform hover:-translate-y-0.5 active:translate-y-0 shadow-md shadow-primary/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-3 tracking-widest text-[10px] uppercase">
-              <Icon v-if="creatingBracket" icon="ph:circle-notch" class="text-lg animate-spin" />
+            <BaseButton :disabled="!newBracket.categoryId || creatingBracket" :loading="creatingBracket"
+              variant="primary"
+              class="flex-[2] py-4 rounded-2xl font-black shadow-lg shadow-primary/10 tracking-widest text-[10px] uppercase"
+              @click="handleCreateOrUpdate">
               <span>{{ submitButtonLabel }}</span>
-            </button>
+            </BaseButton>
           </div>
         </div>
       </div>
     </Transition>
+
+    <!-- Delete Confirmation Dialog -->
+    <BaseDialogForm v-if="showDeleteDialog" v-model="showDeleteDialog" @close="showDeleteDialog = false">
+      <template #header>
+        <div class="flex items-center gap-3">
+          <div class="size-10 bg-red-50 rounded-xl flex items-center justify-center shadow-inner">
+            <Icon icon="ph:trash-bold" class="text-xl text-red-600" />
+          </div>
+          <h2 class="text-xl font-black text-navy">Hapus Bracket Eliminasi?</h2>
+        </div>
+      </template>
+      <div class="space-y-6 pt-2">
+        <!-- Warning Banner -->
+        <div class="p-6 bg-red-50 border-2 border-red-100 rounded-3xl relative overflow-hidden group">
+          <div class="absolute -right-4 -top-4 opacity-10 group-hover:scale-120 transition-transform duration-700">
+            <Icon icon="ph:warning-circle-bold" class="text-8xl text-red-600" />
+          </div>
+          <div class="relative z-10">
+            <h4 class="text-sm font-black text-red-700 uppercase tracking-widest mb-2">Peringatan Penghapusan</h4>
+            <p class="text-xs font-bold text-red-600/80 leading-relaxed mb-4">
+              Anda akan menghapus bracket eliminasi ini secara permanen. Seluruh riwayat pertandingan, skor, dan kode
+              scoring akan ikut terhapus.
+            </p>
+
+            <div class="flex items-center gap-2 px-3 py-1.5 bg-red-100 rounded-xl w-fit">
+              <Icon icon="ph:info-bold" class="text-red-600" />
+              <span class="text-[10px] font-black uppercase tracking-wider text-red-700">Tindakan Tidak Dapat
+                Dibatalkan</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bracket Overview -->
+        <div class="p-5 rounded-2xl bg-navy text-white relative overflow-hidden group shadow-sm">
+          <div class="absolute inset-0 opacity-10 pointer-events-none"
+            style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, white 10px, white 11px);">
+          </div>
+          <div class="relative z-10">
+            <h4 class="text-[9px] font-black text-primary uppercase tracking-[0.2em] mb-2">Informasi Bracket</h4>
+            <div class="text-lg font-black leading-tight mb-1">
+              {{ getBracketName(bracketToDelete) }}
+            </div>
+            <div class="text-xs font-bold text-slate-300">
+              Ukuran: {{ bracketToDelete?.bracket_size }} Peserta • Tipe: {{
+                getBracketTypeLabel(bracketToDelete?.bracket_type) }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Impact Grid -->
+        <div class="grid grid-cols-2 gap-4">
+          <div v-for="stat in [
+            { label: 'Pertandingan', count: 'SEMUA', icon: 'ph:layout-bold' },
+            { label: 'Skor Hasil', count: 'SELURUH', icon: 'ph:medal-bold' },
+            { label: 'Kode Papan', count: 'SEMUA', icon: 'ph:lock-key-bold' },
+            { label: 'Entri Peserta', count: 'SEMUA', icon: 'ph:users-bold' }
+          ]" :key="stat.label"
+            class="p-4 rounded-2xl border transition-all duration-300 shadow-sm bg-red-50 border-red-100">
+            <div class="flex items-center justify-between mb-2">
+              <div
+                class="size-9 rounded-lg flex items-center justify-center transition-colors shadow-inner bg-red-100 text-red-600">
+                <Icon :icon="stat.icon" class="text-lg" />
+              </div>
+              <div class="text-[10px] font-black text-red-700 uppercase tracking-widest">
+                {{ stat.count }}
+              </div>
+            </div>
+            <span class="text-[9px] uppercase font-black text-gray-400 tracking-wider text-left">{{ stat.label }}</span>
+          </div>
+        </div>
+      </div>
+
+      <template #action>
+        <BaseButton variant="white" @click="showDeleteDialog = false"
+          class="px-6 font-bold uppercase tracking-wider text-xs">
+          Batal
+        </BaseButton>
+        <BaseButton variant="danger" @click="handleDeleteBracket" :disabled="savingDelete" :loading="savingDelete"
+          icon="ph:trash-bold" class="px-8 font-black uppercase tracking-wider text-xs shadow-lg shadow-red-200">
+          Hapus Bracket
+        </BaseButton>
+      </template>
+    </BaseDialogForm>
   </div>
 </template>
 
@@ -336,7 +426,7 @@ import { getCategoryIcon, getCategoryColorClass } from '~/utils/logoArcheryCateg
 
 const route = useRoute()
 const eventId = computed(() => route.params.id)
-const { get, post, put } = useApi()
+const { get, post, put, delete: del } = useApi()
 const toast = useToast()
 
 const eventName = ref('Event')
@@ -346,6 +436,10 @@ const loadingBrackets = ref(false)
 const loadingCategories = ref(false)
 const creatingBracket = ref(false)
 const showCreateDialog = ref(false)
+
+const showDeleteDialog = ref(false)
+const bracketToDelete = ref(null)
+const savingDelete = ref(false)
 
 const editBracketId = ref(null)
 const isEditing = computed(() => !!editBracketId.value)
@@ -545,6 +639,30 @@ const createBracket = async () => {
     toast.error(msg)
   } finally {
     creatingBracket.value = false
+  }
+}
+
+const confirmDeleteBracket = (bracket) => {
+  bracketToDelete.value = bracket
+  showDeleteDialog.value = true
+}
+
+const handleDeleteBracket = async () => {
+  if (!bracketToDelete.value) return
+
+  savingDelete.value = true
+  try {
+    await del(`/events/${eventId.value}/elimination/brackets/${bracketToDelete.value.uuid || bracketToDelete.value.id}`)
+    toast.success('Bracket eliminasi berhasil dihapus')
+    showDeleteDialog.value = false
+    bracketToDelete.value = null
+    await fetchBrackets()
+    await fetchCategories()
+  } catch (error) {
+    console.error('Failed to delete bracket:', error)
+    toast.error('Gagal menghapus bracket')
+  } finally {
+    savingDelete.value = false
   }
 }
 

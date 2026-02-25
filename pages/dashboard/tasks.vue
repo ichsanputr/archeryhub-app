@@ -172,11 +172,11 @@
                                         class="flex-1 h-14 bg-gray-100 text-gray-500 rounded-2xl font-black text-xs uppercase tracking-wider hover:bg-gray-200 transition-all">
                                         Batal
                                     </button>
-                                    <button type="submit" :disabled="submitting"
-                                        class="flex-[2] h-14 bg-primary text-navy rounded-2xl font-black text-xs uppercase tracking-wider shadow-lg shadow-primary/20 hover:shadow-sm hover:bg-primary-hover transition-all disabled:opacity-50">
-                                        {{ submitting ? 'Menyimpan...' : (isEditing ? 'Perbarui Task' : 'Simpan Task')
-                                        }}
-                                    </button>
+                                    <BaseButton type="submit" :disabled="submitting" :loading="submitting"
+                                        variant="primary"
+                                        class="flex-[2] h-14 rounded-2xl font-black shadow-lg shadow-primary/20 tracking-wider">
+                                        {{ isEditing ? 'Perbarui Task' : 'Simpan Task' }}
+                                    </BaseButton>
                                 </div>
                             </form>
                         </div>

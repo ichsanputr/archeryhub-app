@@ -40,12 +40,12 @@
             <!-- View Toggle -->
             <div class="hidden sm:flex bg-white/10 backdrop-blur-md p-1 rounded-xl border border-white/20 mr-2">
               <button @click="viewMode = 'grid'" class="px-3 py-1.5 rounded-lg transition-all flex items-center gap-2"
-                :class="viewMode === 'grid' ? 'bg-primary text-navy shadow-md' : 'text-slate-300 hover:text-white'">
+                :class="viewMode === 'grid' ? 'bg-primary text-primary-text shadow-md' : 'text-slate-300 hover:text-white'">
                 <Icon icon="ph:grid-four-bold" />
                 <span class="text-[10px] font-black uppercase tracking-wider">Grid</span>
               </button>
               <button @click="viewMode = 'table'" class="px-3 py-1.5 rounded-lg transition-all flex items-center gap-2"
-                :class="viewMode === 'table' ? 'bg-primary text-navy shadow-md' : 'text-slate-300 hover:text-white'">
+                :class="viewMode === 'table' ? 'bg-primary text-primary-text shadow-md' : 'text-slate-300 hover:text-white'">
                 <Icon icon="ph:table-bold" />
                 <span class="text-[10px] font-black uppercase tracking-wider">Tabel</span>
               </button>
@@ -63,16 +63,38 @@
 
     <!-- Grid View -->
     <div v-if="viewMode === 'grid'" class="space-y-6">
-      <!-- Loading State Grid -->
-      <div v-if="loading && targets.length === 0"
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        <div v-for="i in 8" :key="i"
-          class="animate-pulse bg-white rounded-3xl border border-gray-100 p-6 h-64 shadow-sm">
-          <div class="flex flex-col h-full gap-4">
-            <div class="h-6 w-12 bg-gray-100 rounded-md"></div>
-            <div class="flex-1 grid grid-cols-2 gap-4">
-              <div v-for="j in 4" :key="j" class="bg-gray-50 rounded-full aspect-square"></div>
+      <!-- Enhanced Skeleton Loader Grid -->
+      <div v-if="loading && targets.length === 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div v-for="i in 6" :key="i"
+          class="animate-pulse bg-white rounded-3xl border border-gray-100 overflow-hidden shadow-sm flex flex-col h-[340px]">
+
+          <!-- Skeleton Header -->
+          <div class="px-6 py-4 bg-gray-50/50 border-b border-gray-100 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="h-3 w-10 bg-gray-200 rounded"></div>
+              <div class="h-8 w-8 bg-gray-300 rounded-lg"></div>
             </div>
+            <div class="flex gap-1">
+              <div class="size-8 bg-gray-100 rounded-lg border border-gray-50"></div>
+              <div class="size-8 bg-gray-100 rounded-lg border border-gray-50"></div>
+            </div>
+          </div>
+
+          <!-- Skeleton Body (Target Board) -->
+          <div class="flex-1 p-6 flex items-center justify-center bg-white relative">
+            <div class="grid grid-cols-2 gap-4 w-full max-w-[160px] justify-items-center">
+              <div v-for="j in 4" :key="j" class="flex flex-col items-center gap-2 w-full">
+                <!-- Target Circle -->
+                <div class="w-full aspect-square bg-gray-100 rounded-full shadow-inner"></div>
+                <!-- Target Label Below -->
+                <div class="h-2.5 w-8 bg-gray-50 rounded"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Skeleton Footer -->
+          <div class="px-6 py-4 bg-gray-50/30 border-t border-gray-50/50">
+            <div class="h-2.5 w-24 bg-gray-100 rounded mx-auto"></div>
           </div>
         </div>
       </div>
@@ -186,6 +208,24 @@
               </div>
             </Transition>
 
+            <!-- Table Skeleton Loader -->
+            <template v-if="loading && targets.length === 0">
+              <tr v-for="i in 5" :key="i" class="animate-pulse">
+                <td class="px-6 py-4">
+                  <div class="size-11 rounded-lg bg-gray-200 shadow-sm"></div>
+                </td>
+                <td class="px-6 py-4">
+                  <div class="h-4 w-20 bg-gray-100 rounded"></div>
+                </td>
+                <td class="px-6 py-4">
+                  <div class="flex items-center justify-end gap-2">
+                    <div class="size-8 rounded-lg bg-gray-50 border border-gray-100"></div>
+                    <div class="size-8 rounded-lg bg-gray-50 border border-gray-100"></div>
+                  </div>
+                </td>
+              </tr>
+            </template>
+
             <!-- Data Rows -->
             <tr v-for="target in targets" :key="target.target_number" class="hover:bg-gray-50 transition-colors group">
               <td class="px-6 py-4">
@@ -218,27 +258,11 @@
 
     </div>
 
-    <!-- Pagination Footer -->
-    <div v-if="targets.length > 0 || total > limit"
-      class="px-6 py-5 bg-white border border-gray-100 rounded-2xl shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
-      <span class="text-sm text-gray-500 font-medium font-mono text-center sm:text-left">
-        Showing {{ (page - 1) * limit + 1 }}-{{ Math.min(page * limit, total) }} of {{ total }} targets
-      </span>
-      <div class="flex items-center justify-center gap-3">
-        <button @click="prevPage" :disabled="page === 1"
-          class="h-10 w-10 flex items-center justify-center border border-gray-200 rounded-xl hover:bg-white hover:border-navy hover:text-navy disabled:opacity-50 disabled:cursor-not-allowed transition-all text-gray-600 bg-white shadow-sm">
-          <Icon icon="ph:caret-left-bold" />
-        </button>
-        <div class="bg-white border border-gray-200 rounded-xl px-4 h-10 flex items-center shadow-sm">
-          <span class="text-xs font-black text-navy uppercase tracking-wider">
-            Page {{ page }} <span class="text-gray-300 mx-2">/</span> {{ totalPages }}
-          </span>
-        </div>
-        <button @click="nextPage" :disabled="page >= totalPages"
-          class="h-10 w-10 flex items-center justify-center border border-gray-200 rounded-xl hover:bg-white hover:border-navy hover:text-navy disabled:opacity-50 disabled:cursor-not-allowed transition-all text-gray-600 bg-white shadow-sm">
-          <Icon icon="ph:caret-right-bold" />
-        </button>
-      </div>
+    <!-- Standardized Pagination -->
+    <div v-if="targets.length > 0" class="p-6 bg-white border border-gray-100 rounded-2xl shadow-sm">
+      <BasePagination :current-page="page" :total-items="total" :items-per-page="limit"
+        :page-size-options="[9, 18, 27, 45, 90]" @change-page="handlePageChange"
+        @update:items-per-page="handleLimitChange" no-margin />
     </div>
 
     <!-- Create/Edit Dialog -->
@@ -319,10 +343,10 @@
                   class="flex-1 px-4 py-3 border-2 border-gray-200 text-gray-700 rounded-xl font-bold hover:bg-gray-50 transition-all">
                   Batal
                 </button>
-                <button type="submit" :disabled="submitting"
-                  class="flex-1 px-4 py-3 bg-primary text-navy rounded-xl font-bold hover:bg-primary-hover transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-primary/30">
-                  {{ submitting ? 'Menyimpan...' : (showEditDialog ? 'Perbarui Target' : 'Buat Target') }}
-                </button>
+                <BaseButton type="submit" :disabled="submitting" :loading="submitting" variant="primary"
+                  class="flex-1 px-4 py-3 rounded-xl font-bold shadow-lg shadow-primary/30">
+                  {{ showEditDialog ? 'Perbarui Target' : 'Buat Target' }}
+                </BaseButton>
               </div>
             </form>
           </div>
@@ -386,7 +410,7 @@ const submitting = ref(false)
 
 // Pagination state
 const page = ref(1)
-const limit = ref(10)
+const limit = ref(9)
 const total = ref(0) // Total items from API
 
 const totalPages = computed(() => Math.ceil(total.value / limit.value))
@@ -485,18 +509,15 @@ const fetchTargets = async () => {
   }
 }
 
-const nextPage = () => {
-  if (page.value < totalPages.value) {
-    page.value++
-    fetchTargets()
-  }
+const handlePageChange = (p) => {
+  page.value = p
+  fetchTargets()
 }
 
-const prevPage = () => {
-  if (page.value > 1) {
-    page.value--
-    fetchTargets()
-  }
+const handleLimitChange = (l) => {
+  limit.value = l
+  page.value = 1
+  fetchTargets()
 }
 
 const fetchEventInfo = async () => {

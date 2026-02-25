@@ -80,10 +80,10 @@
                         class="flex justify-between items-center gap-4 max-w-md mx-auto bg-gray-50 p-4 rounded-xl border border-gray-100">
                         <div class="flex gap-2">
                             <div
-                                class="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-primary text-navy flex items-center justify-center font-black text-sm md:text-lg shadow-sm">
+                                class="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-primary text-primary-text flex items-center justify-center font-black text-sm md:text-lg shadow-sm">
                                 X</div>
                             <div
-                                class="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-primary text-navy flex items-center justify-center font-black text-sm md:text-lg shadow-sm">
+                                class="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-primary text-primary-text flex items-center justify-center font-black text-sm md:text-lg shadow-sm">
                                 10</div>
                             <div
                                 class="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-white text-navy border border-gray-100 flex items-center justify-center font-bold text-sm md:text-lg">
@@ -160,7 +160,7 @@
                             </td>
                             <td class="px-6 py-4 text-center text-text-sub/50 font-medium tabular-nums">{{
                                 stand.total_10x
-                            }}/{{ stand.total_x }}</td>
+                                }}/{{ stand.total_x }}</td>
                             <td class="px-6 py-4 text-right font-black text-navy text-base tabular-nums">{{
                                 stand.total_score }}</td>
                         </tr>
