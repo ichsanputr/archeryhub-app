@@ -335,7 +335,7 @@
                                                     </div>
                                                     <div class="text-white text-lg sm:text-xl font-black">{{
                                                         displayValue(tournament.prizes?.second)
-                                                        }}</div>
+                                                    }}</div>
                                                 </div>
                                                 <div class="w-full h-2 bg-white/10 overflow-hidden">
                                                     <div class="h-full bg-white/60 w-1/2"></div>
@@ -878,7 +878,14 @@ const transformEventData = (data) => {
         organizer: data.organizer_name || data.organizer || 'Penyelenggara',
         organizer_slug: data.organizer_username || data.organizer_slug || null,
         organizer_logo: data.organizer_avatar_url || data.organizer_logo || null,
-        whatsapp_number: data.whatsapp_number || data.organizer_phone || data.phone || data.whatsapp_number || null,
+        whatsapp_number: (() => {
+            const num = data.whatsapp_number || data.organizer_phone || data.phone || null
+            if (!num) return null
+            // Basic formatting for wa.me: remove non-digits, handle leading 0
+            let cleaned = String(num).replace(/\D/g, '')
+            if (cleaned.startsWith('0')) cleaned = '62' + cleaned.substring(1)
+            return cleaned
+        })(),
         image: data.banner_url || data.image || '/hero-event-detail.jpeg',
         thumbnail: data.logo_url || data.thumbnail || null,
         description: data.description || '',

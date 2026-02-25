@@ -262,7 +262,8 @@ import { ref, computed } from 'vue'
 import { useToast } from '~/composables/useToast'
 
 definePageMeta({
-    layout: 'landing'
+    layout: 'landing',
+    headerTransparent: false
 })
 
 const config = useRuntimeConfig()
