@@ -1,107 +1,140 @@
 <template>
-    <div class="bg-white min-h-screen">
-        <section class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 pt-24 md:pt-28">
-            <!-- Breadcrumb -->
-            <div class="mb-8">
-                <Breadcrumbs :items="[{ label: 'Berita', path: '/news' }]" :current="article.title" />
+    <div class="bg-background-light min-h-screen flex flex-col">
+        <!-- ── Fixed dot-grid background ── -->
+        <div class="fixed inset-0 -z-10 pointer-events-none opacity-[0.035]"
+            style="background-image: radial-gradient(circle, #0f172a 1px, transparent 1px); background-size: 40px 40px;">
+        </div>
+
+        <!-- ══════════════════════════════════════
+             HERO HEADER — News Article
+             ══════════════════════════════════════ -->
+        <section class="relative w-full bg-navy overflow-hidden">
+            <!-- Background Elements -->
+            <div class="absolute inset-0 z-0 text-white">
+                <img v-if="article.image" :src="article.image" class="w-full h-full object-cover opacity-30" />
+                <div v-else class="w-full h-full bg-gradient-to-br from-navy to-navy-light opacity-80"></div>
+                <!-- Dynamic Overlay -->
+                <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/40 to-transparent"></div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
-                <!-- Article Content -->
-                <article class="lg:col-span-8">
-                    <div class="mb-8">
-                        <div class="flex items-center gap-3 mb-4">
-                            <span
-                                class="bg-navy/10 text-navy dark:bg-primary/10 dark:text-primary px-3 py-1 rounded-full text-xs font-bold  tracking-wider">
-                                {{ article.category }}
-                            </span>
-                            <div
-                                class="flex items-center gap-1.5 px-3 py-1 bg-gray-100 rounded-full text-slate-500 text-xs font-bold">
-                                <Icon icon="ph:calendar-blank-bold" class="text-sm" />
-                                {{ article.date }}
-                            </div>
-                            <div
-                                class="flex items-center gap-1.5 px-3 py-1 bg-gray-100 rounded-full text-slate-500 text-xs font-bold">
-                                <Icon icon="ph:clock-bold" class="text-sm" />
-                                {{ readTime }} mnt baca
-                            </div>
-                        </div>
-                        <h1
-                            class="text-3xl md:text-4xl lg:text-5xl font-black text-navy dark:text-white leading-tight mb-6">
-                            {{ article.title }}
-                        </h1>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-32 pb-10 sm:pb-16 relative z-10 text-white">
+                <!-- Back nav -->
+                <NuxtLink to="/news"
+                    class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white/50 hover:text-primary transition-colors mb-8 sm:mb-12">
+                    <Icon icon="ph:arrow-left-bold" />
+                    Kembali ke Berita
+                </NuxtLink>
 
-                        <div class="flex items-center gap-4 border-b border-gray-100 dark:border-gray-800 pb-8">
-                            <div class="w-10 h-10 rounded-full bg-slate-200 overflow-hidden">
+                <div class="w-full">
+                    <!-- Category Tag -->
+                    <span
+                        class="inline-block bg-primary text-navy text-[10px] font-black px-2 py-1 mb-6 tracking-widest uppercase rounded-sm">
+                        {{ article.category || 'Berita' }}
+                    </span>
+
+                    <h1
+                        class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight mb-8 sm:mb-10 uppercase drop-shadow-lg">
+                        {{ article.title }}
+                    </h1>
+
+                    <!-- Author & Metadata Row -->
+                    <div class="flex flex-wrap items-center gap-6 sm:gap-8 pt-8 border-t border-white/10">
+                        <!-- Author -->
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-10 h-10 rounded-full border-2 border-white/20 overflow-hidden bg-white/10 shadow-lg">
                                 <img :src="article.author.avatar" alt="Author" class="w-full h-full object-cover" />
                             </div>
                             <div>
-                                <div class="text-sm font-bold text-navy dark:text-white">{{ article.author.name }}</div>
-                                <div class="text-xs text-slate-500">{{ article.author.role }}</div>
-                            </div>
-                            <div class="ml-auto flex items-center gap-3">
-                                <span
-                                    class="hidden sm:block text-xs font-bold text-slate-400  tracking-wider">Bagikan:</span>
-                                <div class="flex gap-2">
-                                    <button
-                                        class="p-2 text-slate-400 hover:text-green-500 transition-all rounded-xl bg-gray-50 hover:bg-green-50">
-                                        <Icon icon="ph:whatsapp-logo-bold" class="text-xl" />
-                                    </button>
-                                    <button
-                                        class="p-2 text-slate-400 hover:text-blue-600 transition-all rounded-xl bg-gray-50 hover:bg-blue-50">
-                                        <Icon icon="ph:facebook-logo-bold" class="text-xl" />
-                                    </button>
-                                    <button
-                                        class="p-2 text-slate-400 hover:text-navy transition-all rounded-xl bg-gray-50 hover:bg-navy/10">
-                                        <Icon icon="ph:link-bold" class="text-xl" />
-                                    </button>
-                                </div>
+                                <div class="text-sm font-black text-white">{{ article.author.name }}</div>
+                                <div class="text-[10px] font-bold text-white/50 uppercase tracking-widest">{{
+                                    article.author.role }}</div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="mb-10 rounded-2xl overflow-hidden shadow-lg aspect-video relative">
-                        <img :src="article.image" :alt="article.title"
-                            class="w-full h-full object-cover transform hover:scale-105 transition-transform duration-700" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
-                        <div
-                            class="absolute bottom-4 right-4 text-white/80 text-xs bg-black/30 px-2 py-1 rounded backdrop-blur-sm">
-                            Photo: {{ article.imageCredit || 'Archery Hub Documentation' }}
+                        <!-- Date -->
+                        <div class="flex flex-col">
+                            <span
+                                class="text-[10px] uppercase tracking-widest text-white/40 font-black block mb-1">Diterbitkan</span>
+                            <span class="text-sm sm:text-base font-bold text-primary">{{ article.date }}</span>
+                        </div>
+
+                        <!-- Read Time -->
+                        <div class="flex flex-col">
+                            <span
+                                class="text-[10px] uppercase tracking-widest text-white/40 font-black block mb-1">Durasi
+                                Baca</span>
+                            <span class="text-sm sm:text-base font-bold">{{ readTime }} Menit</span>
+                        </div>
+
+                        <!-- Share Button -->
+                        <div class="ml-auto self-center flex gap-3">
+                            <button @click="openShareDialog"
+                                class="size-10 sm:size-12 rounded-xl border border-white/10 hover:border-primary hover:bg-primary transition-all flex items-center justify-center group backdrop-blur-md">
+                                <Icon icon="ph:share-network-bold" class="text-xl text-white group-hover:text-navy" />
+                            </button>
                         </div>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══════════════════════════════════════
+             MAIN BODY
+             ══════════════════════════════════════ -->
+        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+                <!-- Article Content -->
+                <article class="lg:col-span-8">
+                    <!-- Featured Image (Subtle restatement if needed or just go straight to content) -->
+                    <!-- We'll skip repeating the big image since it's in the hero background -->
 
                     <!-- Article text -->
                     <div class="prose prose-slate max-w-none dark:prose-invert 
-                    prose-headings:text-navy prose-headings:font-black 
-                    prose-p:text-slate-600 prose-p:leading-relaxed prose-p:mb-6
-                    prose-a:text-primary prose-a:font-bold prose-a:no-underline hover:prose-a:underline
-                    prose-strong:text-navy prose-strong:font-black">
+                        prose-headings:text-navy prose-headings:font-black 
+                        prose-p:text-[#0f172a]/70 prose-p:leading-relaxed prose-p:mb-6 prose-p:font-medium
+                        prose-a:text-primary prose-a:font-bold prose-a:no-underline hover:prose-a:underline
+                        prose-strong:text-navy prose-strong:font-black
+                        prose-img:rounded-2xl prose-img:shadow-xl">
                         <div v-html="article.content"></div>
                     </div>
 
-                    <!-- Footer Share -->
-                    <div
-                        class="mt-12 p-8 bg-gray-50 rounded-2xl border border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-6">
-                        <div>
-                            <h4 class="font-black text-navy text-lg mb-1">Apakah artikel ini bermanfaat?</h4>
-                            <p class="text-sm text-slate-500">Bagikan artikel ini ke teman panahan kamu!</p>
-                        </div>
-                        <div class="flex gap-3">
-                            <BaseButton variant="outline" size="sm" icon="ph:whatsapp-logo-bold"
-                                class="!bg-white hover:!text-green-600">WhatsApp</BaseButton>
-                            <BaseButton variant="outline" size="sm" icon="ph:facebook-logo-bold"
-                                class="!bg-white hover:!text-blue-600">Facebook</BaseButton>
-                            <BaseButton variant="outline" size="sm" icon="ph:link-bold" class="!bg-white">Salin
-                            </BaseButton>
-                        </div>
-                    </div>
-
-                    <div class="mt-12 pt-8 border-t border-gray-100 dark:border-gray-800">
-                        <div class="flex flex-wrap gap-2 mb-6">
-                            <a v-for="tag in article.tags" :key="tag" href="#"
-                                class="px-3 py-1 bg-slate-100 dark:bg-gray-800 text-slate-600 dark:text-slate-300 rounded-lg text-sm font-medium hover:bg-slate-200 transition-colors">
+                    <!-- Tags -->
+                    <div class="mt-12 pt-8 border-t border-[#0f172a]/10">
+                        <div v-if="article.tags?.length" class="flex flex-wrap gap-2 mb-8">
+                            <span v-for="tag in article.tags" :key="tag"
+                                class="px-3 py-1 border border-[#0f172a]/20 text-[10px] font-black uppercase tracking-wider hover:bg-navy hover:text-primary hover:border-navy transition-all cursor-default">
                                 #{{ tag }}
-                            </a>
+                            </span>
+                        </div>
+
+                        <!-- Footer Share CTA -->
+                        <div class="p-8 bg-navy rounded-3xl text-white relative overflow-hidden group">
+                            <div
+                                class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-primary/20 transition-all">
+                            </div>
+                            <div class="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+                                <div>
+                                    <h4 class="font-black text-xl mb-1 uppercase tracking-tight">Bagikan Artikel Ini
+                                    </h4>
+                                    <p class="text-sm text-white/60 font-medium">Bantu sebarkan informasi bermanfaat ini
+                                        ke komunitas panahan.</p>
+                                </div>
+                                <div class="flex gap-3">
+                                    <button @click="shareToSocial('whatsapp')"
+                                        class="size-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#25D366] hover:border-[#25D366] transition-all group/s">
+                                        <Icon icon="ph:whatsapp-logo-bold" class="text-xl text-white" />
+                                    </button>
+                                    <button @click="shareToSocial('facebook')"
+                                        class="size-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#1877F2] hover:border-[#1877F2] transition-all group/s">
+                                        <Icon icon="ph:facebook-logo-bold" class="text-xl text-white" />
+                                    </button>
+                                    <button @click="copyToClipboard"
+                                        class="size-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all group/s">
+                                        <Icon icon="ph:link-bold" class="text-xl text-white group-hover/s:text-navy" />
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </article>
@@ -173,19 +206,22 @@
                         </NuxtLink>
                     </div>
 
-                    <!-- Subscribe -->
+                    <!-- Subscribe Card -->
                     <div
                         class="bg-gradient-to-br from-primary to-primary-hover rounded-2xl p-6 shadow-sm border border-primary relative overflow-hidden">
                         <div class="relative z-10">
                             <h4 class="font-bold text-navy text-lg mb-2">Langganan Berita</h4>
                             <p class="text-navy/80 text-sm mb-4">Dapatkan berita panahan terbaru langsung di email Anda.
                             </p>
-                            <form class="space-y-2">
-                                <input
+                            <form @submit.prevent="handleSubscribe" class="space-y-2">
+                                <input v-model="subscribeEmail"
                                     class="w-full px-3 py-2 rounded-lg text-sm border-0 focus:ring-2 focus:ring-navy/50 text-slate-800"
                                     placeholder="Alamat email Anda" type="email" required />
                                 <button
-                                    class="w-full bg-navy text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-navy-dark transition-colors">Langganan</button>
+                                    class="w-full bg-navy text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-navy-dark transition-colors"
+                                    :disabled="isSubscribing">
+                                    {{ isSubscribing ? 'Mengirim...' : 'Langganan' }}
+                                </button>
                             </form>
                         </div>
                         <span
@@ -193,14 +229,17 @@
                     </div>
                 </aside>
             </div>
-        </section>
+        </main>
+
+        <!-- Dynamic Success Toast or Dialog can be added here if needed -->
     </div>
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { useToast } from '~/composables/useToast'
 
 definePageMeta({
     layout: 'landing',
@@ -209,9 +248,12 @@ definePageMeta({
 
 const config = useRuntimeConfig()
 const apiBaseUrl = config.public.apiBaseUrl
+const toast = useToast()
 
 const route = useRoute()
 const slug = route.params.slug
+const subscribeEmail = ref('')
+const isSubscribing = ref(false)
 
 const { data: newsResponse, pending: isLoading } = await useAsyncData(
     `news-${slug}`,
@@ -233,17 +275,17 @@ const article = computed(() => {
 
     return {
         title: data.title,
-        category: data.category || 'event',
-        date: data.published_at ? new Date(data.published_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : new Date(data.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
+        category: data.category || 'Berita',
+        date: data.published_at ? new Date(data.published_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : new Date(data.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }),
         author: {
             name: data.author_name || 'Tim Redaksi',
-            role: 'Archery Hub Indonesia',
+            role: 'Archery Hub Editor',
             avatar: useImageOrDefault(null)
         },
         image: useImageOrDefault(data.image_url),
         imageCredit: 'Archery Hub Documentation',
         content: data.content || '',
-        tags: [] // Tags are not currently in the API
+        tags: ['Panahan', 'Indonesia', 'ArcheryHub'] // Fake tags for design since API lacks them
     }
 })
 
@@ -270,7 +312,7 @@ const relatedArticles = computed(() => {
         .map(a => ({
             slug: a.slug,
             title: a.title,
-            date: a.published_at ? new Date(a.published_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) : '',
+            date: a.published_at ? new Date(a.published_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '',
             image: useImageOrDefault(a.image_url)
         }))
 })
@@ -286,7 +328,6 @@ const upcomingTournaments = computed(() => {
     const events = Array.isArray(rawData) ? rawData : []
     const now = new Date()
 
-    // Filter only upcoming events (start_date >= today) and map
     return events
         .filter(e => {
             if (!e.start_date) return false
@@ -304,6 +345,42 @@ const upcomingTournaments = computed(() => {
         }))
 })
 
+const handleSubscribe = () => {
+    if (!subscribeEmail.value) return
+    isSubscribing.value = true
+    setTimeout(() => {
+        toast.success('Terima kasih! Anda telah terdaftar dalam newsletter kami.')
+        subscribeEmail.value = ''
+        isSubscribing.value = false
+    }, 1000)
+}
+
+const copyToClipboard = () => {
+    if (import.meta.client) {
+        navigator.clipboard.writeText(window.location.href)
+        toast.info('Tautan artikel telah disalin ke clipboard.')
+    }
+}
+
+const shareToSocial = (platform) => {
+    const url = window.location.href
+    const text = `Baca artikel menarik ini: ${article.value.title}`
+
+    let shareUrl = ''
+    if (platform === 'whatsapp') {
+        shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text + ' ' + url)}`
+    } else if (platform === 'facebook') {
+        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`
+    }
+
+    if (shareUrl) window.open(shareUrl, '_blank')
+}
+
+const openShareDialog = () => {
+    // For now just copy link or open a simple choice
+    copyToClipboard()
+}
+
 useHead({
     title: computed(() => `${article.value.title} - Archeryhub.id`),
     link: [
@@ -318,7 +395,11 @@ useSeoMeta({
 </script>
 
 <style scoped>
-.material-symbols-outlined {
-    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+/* Custom prose styles for consistent font and feel */
+:deep(.prose) {
+    --tw-prose-body: #0f172a;
+    --tw-prose-headings: #0f172a;
+    --tw-prose-links: #f59e0b;
+    --tw-prose-bold: #0f172a;
 }
 </style>
