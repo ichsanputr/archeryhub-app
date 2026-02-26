@@ -7,15 +7,14 @@
     </div>
 
     <!-- Settings Nav Tabs -->
-    <div class="flex gap-2 border-b border-gray-100 overflow-x-auto no-scrollbar pb-1">
-      <div v-for="tab in tabs" :key="tab.value" role="button"
-        class="inline-flex items-center gap-2 font-bold text-sm px-5 py-4 border-b-2 rounded-none transition-all cursor-pointer"
-        :class="activeTab === tab.value
-          ? 'border-primary text-navy bg-primary/5'
-          : 'border-transparent text-gray-500 hover:text-navy hover:bg-gray-50'" @click="activeTab = tab.value">
+    <div class="flex gap-1 border-b border-gray-100 overflow-x-auto no-scrollbar pb-1">
+      <BaseButton v-for="tab in tabs" :key="tab.value" @click="activeTab = tab.value"
+        :variant="activeTab === tab.value ? 'primary' : 'white'"
+        class="inline-flex items-center gap-2 font-bold text-sm px-6 py-4 rounded-none border-b-2 shadow-none transition-all"
+        :class="activeTab === tab.value ? 'border-primary' : 'border-transparent text-gray-500 hover:text-navy hover:bg-gray-50'">
         <Icon :icon="tab.icon" class="mr-1 text-base" />
         <span>{{ tab.label }}</span>
-      </div>
+      </BaseButton>
     </div>
 
     <!-- Account Info -->

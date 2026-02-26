@@ -7,28 +7,22 @@
         <p class="text-gray-500 mt-1">Perbarui identitas, kontak, dan halaman publik organisasi Anda.</p>
       </div>
       <div class="flex gap-3">
-        <button
-          class="inline-flex items-center gap-2 px-4 py-2.5 bg-navy text-white rounded-xl font-semibold text-sm shadow-md shadow-primary/20 hover:bg-navy-dark transition"
-          :disabled="saving" @click="saveProfile">
-          <LoadingSpinner v-if="saving" size="sm" />
-          <Icon v-else icon="ph:floppy-disk" class="text-lg" />
-          <span>{{ saving ? 'Menyimpan...' : 'Simpan Profil' }}</span>
-        </button>
+        <BaseButton variant="primary" :loading="saving" @click="saveProfile" icon="ph:floppy-disk"
+          class="h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-xs">
+          {{ saving ? 'Menyimpan...' : 'Simpan Profil' }}
+        </BaseButton>
       </div>
     </div>
 
     <!-- Tab Navigation -->
     <div
       class="flex items-center gap-1 bg-white p-1 rounded-2xl border border-gray-100 shadow-sm overflow-x-auto no-scrollbar">
-      <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id" :class="[
-        'px-5 py-2.5 rounded-xl text-sm font-black transition-all whitespace-nowrap flex items-center gap-2',
-        activeTab === tab.id
-          ? 'bg-navy text-white shadow-md shadow-navy/20'
-          : 'text-gray-400 hover:text-navy hover:bg-gray-50'
-      ]">
+      <BaseButton v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
+        :variant="activeTab === tab.id ? 'primary' : 'white'"
+        class="px-5 py-2.5 rounded-xl border-none shadow-none text-sm font-black whitespace-nowrap flex items-center gap-2">
         <Icon :icon="tab.icon" class="text-lg" />
         {{ tab.label }}
-      </button>
+      </BaseButton>
     </div>
 
     <!-- Main Content -->
@@ -62,11 +56,10 @@
 
                 <div v-if="showCityDropdown && filteredCities.length > 0"
                   class="absolute z-50 w-full mt-2 bg-white border border-gray-100 rounded-2xl shadow-md max-h-60 overflow-y-auto p-1 py-2">
-                  <button v-for="city in filteredCities" :key="city" type="button"
-                    class="w-full px-4 py-2.5 text-left text-sm font-bold text-navy hover:bg-gray-50 rounded-xl transition-colors"
-                    @mousedown.prevent="selectCity(city)">
+                  <div v-for="city in filteredCities" :key="city" @mousedown.prevent="selectCity(city)"
+                    class="w-full px-4 py-2.5 text-left text-sm font-bold text-navy hover:bg-gray-50 rounded-xl transition-colors cursor-pointer">
                     {{ city }}
-                  </button>
+                  </div>
                 </div>
                 <div v-if="loadingCities" class="absolute right-3 top-[38px]">
                   <Icon icon="ph:circle-notch-bold" class="animate-spin text-gray-400" />
@@ -94,15 +87,14 @@
                       class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                   </div>
                   <div class="flex gap-2 w-full">
-                    <button type="button" @click="openMediaLibrary('logo')"
-                      class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-navy text-white text-xs font-black rounded-xl hover:bg-navy-dark transition shadow-md">
-                      <Icon icon="ph:cloud-arrow-up-bold" class="text-base" />
+                    <BaseButton @click="openMediaLibrary('logo')" variant="primary" size="sm"
+                      icon="ph:cloud-arrow-up-bold"
+                      class="flex-1 h-10 font-black uppercase tracking-widest text-[10px]">
                       Pilih Logo
-                    </button>
-                    <button v-if="form.logoUrl" type="button" @click="form.logoUrl = ''"
-                      class="px-4 py-2.5 bg-red-50 text-red-600 text-xs font-black rounded-xl hover:bg-red-100 transition">
-                      <Icon icon="ph:trash-bold" />
-                    </button>
+                    </BaseButton>
+                    <BaseButton v-if="form.logoUrl" @click="form.logoUrl = ''" variant="white" size="sm"
+                      icon="ph:trash-bold"
+                      class="h-10 w-10 p-0 text-red-500 bg-red-50 border-red-100 hover:bg-red-100" />
                   </div>
                 </div>
               </div>
@@ -121,15 +113,13 @@
                     </div>
                   </div>
                   <div class="mt-4 flex gap-2">
-                    <button type="button" @click="openMediaLibrary('banner')"
-                      class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-navy text-white text-xs font-black rounded-xl hover:bg-navy-dark transition shadow-md">
-                      <Icon icon="ph:image-bold" class="text-base" />
+                    <BaseButton @click="openMediaLibrary('banner')" variant="primary" size="sm" icon="ph:image-bold"
+                      class="flex-1 h-10 font-black uppercase tracking-widest text-[10px]">
                       Ganti Banner
-                    </button>
-                    <button v-if="form.bannerUrl" type="button" @click="form.bannerUrl = ''"
-                      class="px-4 py-2.5 bg-red-50 text-red-600 text-xs font-black rounded-xl hover:bg-red-100 transition">
-                      <Icon icon="ph:trash-bold" />
-                    </button>
+                    </BaseButton>
+                    <BaseButton v-if="form.bannerUrl" @click="form.bannerUrl = ''" variant="white" size="sm"
+                      icon="ph:trash-bold"
+                      class="h-10 w-10 p-0 text-red-500 bg-red-50 border-red-100 hover:bg-red-100" />
                   </div>
                 </div>
               </div>
@@ -173,18 +163,16 @@
                     <BaseInput v-model="social.username" placeholder="Username atau Link Profil"
                       class="md:col-span-2 !bg-white" />
                   </div>
-                  <button @click="removeSocialMedia(idx)"
-                    class="p-3 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all">
-                    <Icon icon="ph:trash-bold" class="text-xl" />
-                  </button>
+                  <BaseButton @click="removeSocialMedia(idx)" variant="white" size="sm" icon="ph:trash-bold"
+                    class="h-11 w-11 p-0 text-red-400 hover:text-red-500 bg-red-50/50 border-red-100/50 hover:bg-red-50 shadow-none" />
                 </div>
               </transition-group>
 
-              <button v-if="form.socialMedia.length < 5" @click="addSocialMedia"
-                class="w-full py-4 border-2 border-dashed border-gray-200 rounded-2xl text-sm font-black text-gray-400 hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2 group">
-                <Icon icon="ph:plus-circle-bold" class="text-xl group-hover:rotate-90 transition-transform" />
+              <BaseButton v-if="form.socialMedia.length < 5" @click="addSocialMedia" variant="white"
+                class="w-full h-14 border-2 border-dashed border-gray-200 text-gray-400 hover:border-primary hover:text-primary shadow-none font-black text-sm uppercase tracking-widest"
+                icon="ph:plus-circle-bold">
                 Tambah Platform Baru
-              </button>
+              </BaseButton>
               <p v-else class="text-[10px] text-gray-400 text-center font-bold tracking-widest ">Maksimal 5
                 platform media sosial</p>
             </div>

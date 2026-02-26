@@ -8,19 +8,17 @@
                 </p>
             </div>
             <div class="flex items-center gap-3">
-                <button @click="resetAssignments"
+                <BaseButton variant="white" icon="ph:trash-bold"
                     :disabled="isReseting || isAssigning || props.archers.length === unassignedArchersCount"
-                    class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-red-500 border border-red-100 hover:bg-red-50 font-bold text-sm transition-all shadow-sm disabled:opacity-50 group">
-                    <Icon v-if="isReseting" icon="ph:spinner-bold" class="text-xl animate-spin" />
-                    <Icon v-else icon="ph:trash-bold" class="text-xl group-hover:scale-110 transition-transform" />
+                    :loading="isReseting" class="!text-red-500 !border-red-100 hover:!bg-red-50"
+                    @click="resetAssignments">
                     Atur Ulang
-                </button>
-                <button @click="autoAssignTargets" :disabled="isAssigning || isReseting || unassignedArchersCount === 0"
-                    class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-navy hover:bg-primary/90 font-bold text-sm transition-all shadow-md shadow-primary/20 disabled:opacity-50 group">
-                    <Icon v-if="isAssigning" icon="ph:spinner-bold" class="text-xl animate-spin" />
-                    <Icon v-else icon="fa7-solid:random" class="text-xl group-hover:rotate-12 transition-transform" />
+                </BaseButton>
+                <BaseButton variant="primary" icon="fa7-solid:random"
+                    :disabled="isAssigning || isReseting || unassignedArchersCount === 0" :loading="isAssigning"
+                    @click="autoAssignTargets">
                     Penempatan Otomatis
-                </button>
+                </BaseButton>
             </div>
         </div>
 
@@ -133,10 +131,9 @@
                                             {{
                                                 target.slots[pos].club || 'Independen' }}</p>
                                     </div>
-                                    <button @click="unassignArcherFromTarget(target.slots[pos].assignmentId)"
-                                        class="size-6 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-all opacity-0 group-hover/slot-filled:opacity-100 flex items-center justify-center">
-                                        <Icon icon="ph:x-bold" class="text-xs" />
-                                    </button>
+                                    <BaseButton variant="white" size="sm" icon="ph:x-bold"
+                                        class="!size-6 !p-0 !rounded-lg text-gray-400 hover:!text-red-500 hover:!bg-red-50 opacity-0 group-hover/slot-filled:opacity-100"
+                                        @click="unassignArcherFromTarget(target.slots[pos].assignmentId)" />
                                 </div>
 
                                 <!-- Custom Archer Dropdown -->

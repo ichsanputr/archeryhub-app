@@ -241,9 +241,8 @@
                       </span>
                     </td>
                     <td class="px-6 py-4">
-                      <button class="p-2 text-gray-400 hover:text-primary transition-colors">
-                        <Icon icon="ph:eye-bold" class="text-xl" />
-                      </button>
+                      <BaseButton :to="`/dashboard/orders/${order.uuid}`" variant="white" size="sm" icon="ph:eye-bold"
+                        class="h-9 w-9 p-0 text-gray-400 hover:text-primary border-transparent hover:border-primary/20 shadow-none" />
                     </td>
                   </tr>
                   <tr v-if="!sellerRecentOrders.length">

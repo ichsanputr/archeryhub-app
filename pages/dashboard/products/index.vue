@@ -212,14 +212,12 @@
                             <!-- Actions -->
                             <td class="px-6 py-4 text-right">
                                 <div class="flex items-center justify-end gap-2">
-                                    <button @click="editProduct(product)"
-                                        class="p-2 text-gray-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors">
-                                        <Icon icon="ph:pencil-simple" class="text-lg" />
-                                    </button>
-                                    <button @click="deleteProduct(product)"
-                                        class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
-                                        <Icon icon="ph:trash" class="text-lg" />
-                                    </button>
+                                    <BaseButton @click="editProduct(product)" variant="white" size="sm"
+                                        icon="ph:pencil-simple"
+                                        class="h-9 w-9 p-0 text-gray-400 hover:text-primary border-slate-200" />
+                                    <BaseButton @click="deleteProduct(product)" variant="white" size="sm"
+                                        icon="ph:trash"
+                                        class="h-9 w-9 p-0 text-red-500 hover:text-red-600 border-slate-200" />
                                 </div>
                             </td>
                         </tr>
@@ -263,10 +261,8 @@
                         <p class="text-sm text-gray-500 font-medium mt-1">Lengkapi informasi detail produk di bawah
                             ini.</p>
                     </div>
-                    <button @click="showCreateModal = false"
-                        class="p-2 hover:bg-white rounded-xl transition-colors shadow-sm">
-                        <Icon icon="ph:x-bold" class="text-xl text-gray-400" />
-                    </button>
+                    <BaseButton @click="showCreateModal = false" variant="white" size="sm" icon="ph:x-bold"
+                        class="h-10 w-10 p-0 rounded-xl border-none shadow-none text-gray-400 hover:text-navy" />
                 </div>
 
                 <!-- Modal Body -->

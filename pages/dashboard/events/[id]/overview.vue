@@ -191,7 +191,7 @@
                                 <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">
                                     Penyelesaian</p>
                                 <p class="text-navy-dark text-3xl font-extrabold tracking-tight">{{ completionPercentage
-                                    }}%</p>
+                                }}%</p>
                             </div>
                             <div
                                 class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
@@ -252,7 +252,7 @@
                                             <span class="font-bold text-navy-dark truncate pr-2">{{ cat.division }} - {{
                                                 cat.name }}</span>
                                             <span class="text-navy font-black font-mono shrink-0 ml-auto">{{ cat.count
-                                            }}</span>
+                                                }}</span>
                                         </div>
                                         <div class="w-full bg-gray-200 rounded-full h-1.5">
                                             <div class="bg-navy h-1.5 rounded-full transition-all duration-500"
@@ -423,10 +423,8 @@
 
                         <div class="p-8">
                             <!-- Close Button -->
-                            <button class="absolute right-6 top-6 text-gray-400 hover:text-navy transition-colors"
-                                @click="closeShareDialog">
-                                <Icon icon="ph:x-bold" class="text-xl" />
-                            </button>
+                            <BaseButton @click="closeShareDialog" variant="white" size="sm" icon="ph:x-bold"
+                                class="absolute right-6 top-6 h-10 w-10 p-0 border-none shadow-none text-gray-400 hover:text-navy" />
 
                             <!-- Header -->
                             <div class="flex items-start gap-4 mb-8">
@@ -451,11 +449,11 @@
                                         class="flex-1 bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-xs text-gray-600 font-mono truncate">
                                         {{ publicEventUrl }}
                                     </div>
-                                    <button @click="copyPublicUrl"
-                                        class="px-4 py-3 bg-navy-dark text-white rounded-xl font-bold text-xs hover:bg-navy-light transition-all flex items-center gap-2 shrink-0">
-                                        <Icon :icon="copySuccess ? 'ph:check-bold' : 'ph:copy-bold'" />
+                                    <BaseButton @click="copyPublicUrl" variant="primary" size="sm"
+                                        :icon="copySuccess ? 'ph:check-bold' : 'ph:copy-bold'"
+                                        class="px-5 h-10 font-bold uppercase tracking-widest text-[10px] shrink-0 shadow-md">
                                         {{ copySuccess ? 'Tersalin' : 'Salin' }}
-                                    </button>
+                                    </BaseButton>
                                 </div>
                             </div>
 
@@ -465,18 +463,18 @@
                                     Ke
                                     Sosial Media</label>
                                 <div class="grid grid-cols-4 gap-3">
-                                    <button v-for="social in [
+                                    <div v-for="social in [
                                         { id: 'whatsapp', icon: 'ph:whatsapp-logo-fill', color: 'text-green-500', bg: 'bg-green-50', hover: 'hover:bg-green-500' },
                                         { id: 'telegram', icon: 'ph:telegram-logo-fill', color: 'text-sky-500', bg: 'bg-sky-50', hover: 'hover:bg-sky-500' },
                                         { id: 'twitter', icon: 'ph:twitter-logo-fill', color: 'text-black', bg: 'bg-gray-100', hover: 'hover:bg-black' },
                                         { id: 'facebook', icon: 'ph:facebook-logo-fill', color: 'text-blue-600', bg: 'bg-blue-50', hover: 'hover:bg-blue-600' }
                                     ]" :key="social.id" @click="shareTo(social.id)"
-                                        class="flex flex-col items-center gap-2 group">
-                                        <div :class="[social.bg, social.color, social.hover]"
-                                            class="size-12 rounded-2xl flex items-center justify-center group-hover:text-white transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
+                                        class="flex flex-col items-center gap-2 group cursor-pointer">
+                                        <div :class="[social.bg, social.color]"
+                                            class="size-12 rounded-2xl flex items-center justify-center group-hover:bg-primary group-hover:text-navy transition-all duration-300 shadow-sm group-hover:shadow-md group-hover:-translate-y-1">
                                             <Icon :icon="social.icon" class="text-2xl" />
                                         </div>
-                                    </button>
+                                    </div>
                                 </div>
                             </div>
 

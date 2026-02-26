@@ -10,7 +10,7 @@
             <slot />
             <Icon v-if="iconRight && isIconify(iconRight)" :icon="iconRight" :class="iconSizeClass" />
             <span v-else-if="iconRight" class="material-symbols-outlined shrink-0" :class="iconSizeClass">{{ iconRight
-                }}</span>
+            }}</span>
         </template>
         <span v-if="!loading && loadingText" class="ml-2">{{ loadingText }}</span>
     </NuxtLink>
@@ -26,7 +26,7 @@
             <slot />
             <Icon v-if="iconRight && isIconify(iconRight)" :icon="iconRight" :class="iconSizeClass" />
             <span v-else-if="iconRight" class="material-symbols-outlined shrink-0" :class="iconSizeClass">{{ iconRight
-                }}</span>
+            }}</span>
         </template>
         <span v-if="!loading && loadingText" class="ml-2">{{ loadingText }}</span>
     </button>
@@ -94,11 +94,11 @@ const variantClass = computed(() => {
         primary: 'bg-primary text-primary-text shadow-sm hover:bg-primary-hover transition-all',
         secondary: 'bg-surface-highlight text-white hover:opacity-90',
         navy: 'bg-navy-dark text-white shadow-sm hover:opacity-95',
-        outline: 'border border-gray-200 text-navy-dark hover:bg-gray-50',
-        ghost: 'text-text-secondary hover:bg-gray-100',
+        outline: 'border border-primary text-primary hover:bg-primary/5',
+        ghost: 'text-primary hover:bg-primary/5',
         danger: 'bg-red-600 text-white shadow-sm hover:bg-red-700',
         gold: 'bg-primary text-primary-text shadow-sm hover:bg-primary-hover transition-all', // Legacy support
-        white: 'bg-white text-navy-dark border border-slate-200 shadow-sm hover:shadow-md hover:border-slate-300 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300'
+        white: 'bg-white text-navy font-bold border border-slate-200 shadow-sm hover:shadow-md hover:border-slate-300 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300'
     }
     return variants[props.variant] || variants.primary
 })

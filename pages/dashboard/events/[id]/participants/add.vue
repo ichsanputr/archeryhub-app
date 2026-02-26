@@ -30,18 +30,18 @@
                     <h3 class="text-lg font-black text-navy mb-4 pb-4 border-b-2 border-gray-200">Pilih Pemanah</h3>
                     <div class="space-y-4">
                         <div class="flex gap-3">
-                            <button @click="archerMode = 'existing'"
-                                :class="archerMode === 'existing' ? 'bg-navy text-white' : 'bg-gray-50 text-gray-600 hover:bg-gray-100'"
-                                class="flex-1 px-4 py-3 rounded-xl font-bold text-sm transition-colors">
+                            <BaseButton @click="archerMode = 'existing'"
+                                :variant="archerMode === 'existing' ? 'primary' : 'white'"
+                                class="flex-1 h-12 font-bold text-sm">
                                 <span class="hidden sm:inline">Pilih Pemanah Terdaftar</span>
                                 <span class="sm:hidden">Pilih Pemanah</span>
-                            </button>
-                            <button @click="archerMode = 'new'"
-                                :class="archerMode === 'new' ? 'bg-navy text-white' : 'bg-gray-50 text-gray-600 hover:bg-gray-100'"
-                                class="flex-1 px-4 py-3 rounded-xl font-bold text-sm transition-colors">
+                            </BaseButton>
+                            <BaseButton @click="archerMode = 'new'"
+                                :variant="archerMode === 'new' ? 'primary' : 'white'"
+                                class="flex-1 h-12 font-bold text-sm">
                                 <span class="hidden sm:inline">Buat Pemanah Baru</span>
                                 <span class="sm:hidden">Buat Baru</span>
-                            </button>
+                            </BaseButton>
                         </div>
 
                         <!-- Existing Archer Selection -->
@@ -55,10 +55,10 @@
                                 <div v-if="searchArcherQuery && searchArcherQuery.length >= 2"
                                     class="max-h-64 overflow-y-auto border border-gray-100 rounded-xl bg-white shadow-sm">
                                     <template v-if="filteredArchers.length > 0">
-                                        <button v-for="archer in filteredArchers" :key="archer.uuid || archer.id"
+                                        <div v-for="archer in filteredArchers" :key="archer.uuid || archer.id"
                                             @click="toggleArcher(archer)"
                                             :class="isArcherSelected(archer) ? 'bg-blue-50 border-blue-200' : 'hover:bg-gray-50'"
-                                            class="w-full p-4 text-left border-b border-gray-100 last:border-b-0 transition-colors group">
+                                            class="w-full p-4 text-left border-b border-gray-100 last:border-b-0 transition-colors group cursor-pointer">
                                             <div class="flex items-center gap-3">
                                                 <div class="flex-shrink-0">
                                                     <div v-if="isArcherSelected(archer)"
@@ -87,7 +87,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </button>
+                                        </div>
                                     </template>
                                     <!-- Empty Result State -->
                                     <div v-else class="p-8 text-center">
@@ -123,11 +123,11 @@
                             <div v-if="selectedArchers.length > 0" class="space-y-3">
                                 <div class="flex items-center justify-between">
                                     <p class="text-sm font-bold text-navy">Pemanah Terpilih ({{ selectedArchers.length
-                                    }})</p>
-                                    <button @click="selectedArchers = []"
-                                        class="text-xs text-red-500 font-bold hover:underline">
+                                        }})</p>
+                                    <BaseButton @click="selectedArchers = []" variant="white" size="xs"
+                                        class="text-red-500 font-bold border-none shadow-none hover:underline p-0 h-auto">
                                         Hapus Semua
-                                    </button>
+                                    </BaseButton>
                                 </div>
                                 <div class="space-y-2 max-h-48 overflow-y-auto">
                                     <div v-for="(archer, index) in selectedArchers" :key="archer.uuid || archer.id"
@@ -144,10 +144,9 @@
                                                 <p class="text-xs text-gray-500 truncate">{{ archer.email ||
                                                     archer.phone || '-' }}</p>
                                             </div>
-                                            <button @click="removeArcher(index)"
-                                                class="h-6 w-6 rounded-full bg-red-100 text-red-500 flex items-center justify-center hover:bg-red-200 transition-colors opacity-0 group-hover:opacity-100">
-                                                <Icon icon="ph:x" class="text-xs" />
-                                            </button>
+                                            <BaseButton @click="removeArcher(index)" variant="white" size="sm"
+                                                icon="ph:x"
+                                                class="h-6 w-6 p-0 rounded-full bg-red-100 text-red-500 hover:bg-red-200 border-none shadow-none opacity-0 group-hover:opacity-100" />
                                         </div>
                                     </div>
                                 </div>
@@ -176,22 +175,23 @@
                                     class="relative w-16 h-16 rounded-full bg-gray-50 border border-gray-100 overflow-hidden flex-shrink-0 group">
                                     <img :src="useImageOrDefault(newArcherForm.avatar_url, newArcherForm.full_name)"
                                         class="w-full h-full object-cover">
-                                    <button @click="showMediaLibrary = true"
-                                        class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white">
+                                    <div @click="showMediaLibrary = true"
+                                        class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-white cursor-pointer">
                                         <Icon icon="ph:pencil-simple" />
-                                    </button>
+                                    </div>
                                 </div>
                                 <div class="flex-1">
                                     <p class="text-sm font-bold text-navy mb-1">Foto Profil</p>
                                     <div class="flex gap-2">
-                                        <button @click="showMediaLibrary = true"
-                                            class="text-xs text-primary font-bold hover:underline">
+                                        <BaseButton @click="showMediaLibrary = true" variant="white" size="xs"
+                                            class="text-primary font-bold border-none shadow-none hover:underline p-0 h-auto">
                                             {{ newArcherForm.avatar_url ? 'Ganti Foto' : 'Upload Foto' }}
-                                        </button>
-                                        <button v-if="newArcherForm.avatar_url" @click="newArcherForm.avatar_url = ''"
-                                            class="text-xs text-red-500 font-bold hover:underline">
+                                        </BaseButton>
+                                        <BaseButton v-if="newArcherForm.avatar_url"
+                                            @click="newArcherForm.avatar_url = ''" variant="white" size="xs"
+                                            class="text-red-500 font-bold border-none shadow-none hover:underline p-0 h-auto">
                                             Hapus
-                                        </button>
+                                        </BaseButton>
                                     </div>
                                 </div>
                             </div>
@@ -251,7 +251,7 @@
                                     </div>
                                     <span class="text-sm font-bold text-navy">{{ category.name ||
                                         getCategoryName(category)
-                                        }}</span>
+                                    }}</span>
                                 </div>
                                 <div v-if="form.category_ids.includes(category.id || category.uuid)"
                                     class="px-2 py-1 bg-primary text-navy text-[10px] font-black uppercase tracking-widest rounded-md">

@@ -83,14 +83,12 @@
             <!-- Action Icons -->
             <div
               class="absolute top-4 right-4 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-10">
-              <button @click.stop="editSession(session)"
-                class="size-9 bg-white shadow-md rounded-xl flex items-center justify-center text-gray-400 hover:text-navy hover:scale-110 active:scale-95 transition-all">
-                <Icon icon="ph:pencil-simple-bold" class="text-lg" />
-              </button>
-              <button @click.stop="confirmDeleteSession(session)"
-                class="size-9 bg-white shadow-md rounded-xl flex items-center justify-center text-gray-400 hover:text-red-500 hover:scale-110 active:scale-95 transition-all">
-                <Icon icon="ph:trash-bold" class="text-lg" />
-              </button>
+              <BaseButton variant="white" size="sm" icon="ph:pencil-simple-bold"
+                class="!size-9 !p-0 !rounded-xl text-gray-400 hover:!text-navy hover:scale-110 active:scale-95 shadow-md"
+                @click.stop="editSession(session)" />
+              <BaseButton variant="white" size="sm" icon="ph:trash-bold"
+                class="!size-9 !p-0 !rounded-xl text-gray-400 hover:!text-red-500 hover:scale-110 active:scale-95 shadow-md"
+                @click.stop="confirmDeleteSession(session)" />
             </div>
 
             <div class="flex items-start justify-between mb-4">
@@ -500,13 +498,13 @@
             </div>
           </div>
 
-          <!-- Modal Footer -->
           <div class="p-8 bg-gray-50 flex gap-4">
-            <button @click="showSessionDialog = false"
-              class="flex-1 px-6 py-4 bg-white border-2 border-gray-200 text-gray-500 rounded-2xl font-black hover:bg-gray-100 hover:border-gray-300 transition-all  tracking-widest text-xs">
+            <BaseButton variant="white" class="flex-1 !py-4 !rounded-2xl font-black !tracking-widest !text-xs uppercase"
+              @click="showSessionDialog = false">
               Batal
-            </button>
-            <BaseButton :disabled="creatingSession || !newSessionName" :loading="creatingSession" variant="primary"
+            </BaseButton>
+            <BaseButton :disabled="creatingSession || !newSessionName || selectedSessionCategoryIds.length === 0"
+              :loading="creatingSession" variant="primary"
               class="flex-[2] py-4 rounded-2xl font-black shadow-lg shadow-primary/10 tracking-widest text-xs uppercase"
               @click="saveSession">
               {{ submitButtonLabel }}
@@ -643,8 +641,8 @@ const newSessionName = ref('')
 const newSessionDate = ref(new Date().toISOString().split('T')[0])
 const newSessionStart = ref('08:00')
 const newSessionEnd = ref('12:00')
-const newSessionEnds = ref(12)
-const newSessionArrows = ref(6)
+const newSessionEnds = ref(6)
+const newSessionArrows = ref(3)
 const selectedSessionCategoryIds = ref([])
 
 // Pagination Computed
@@ -706,8 +704,8 @@ const openCreateModal = () => {
   newSessionDate.value = new Date().toISOString().split('T')[0]
   newSessionStart.value = '08:00'
   newSessionEnd.value = '12:00'
-  newSessionEnds.value = 12
-  newSessionArrows.value = 6
+  newSessionEnds.value = 6
+  newSessionArrows.value = 3
   selectedSessionCategoryIds.value = []
   showSessionDialog.value = true
 }
@@ -757,6 +755,11 @@ const fetchQualificationSessions = async () => {
 const saveSession = async () => {
   if (!newSessionName.value) {
     toast.warning('Nama sesi harus diisi')
+    return
+  }
+
+  if (selectedSessionCategoryIds.value.length === 0) {
+    toast.warning('Pilih minimal satu kategori untuk sesi ini')
     return
   }
 

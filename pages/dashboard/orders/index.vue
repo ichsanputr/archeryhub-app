@@ -104,20 +104,12 @@
               </td>
               <td class="px-6 py-4">
                 <div class="flex items-center justify-center gap-2">
-                  <button v-if="order.status === 'pending'" @click="updateStatus(order.uuid, 'processing')"
-                    class="p-2 bg-primary/10 text-primary hover:bg-primary hover:text-navy transition-all rounded-lg"
-                    title="Proses Pesanan">
-                    <Icon icon="ph:check-bold" class="text-lg" />
-                  </button>
-                  <button v-if="order.status === 'processing'" @click="updateStatus(order.uuid, 'shipped')"
-                    class="p-2 bg-blue-50 text-blue-500 hover:bg-blue-600 hover:text-white transition-all rounded-lg"
-                    title="Kirim Pesanan">
-                    <Icon icon="ph:truck-bold" class="text-lg" />
-                  </button>
-                  <button
-                    class="p-2 bg-gray-100 text-gray-400 hover:text-navy hover:bg-primary transition-all rounded-lg">
-                    <Icon icon="ph:eye" class="text-lg" />
-                  </button>
+                  <BaseButton v-if="order.status === 'pending'" @click="updateStatus(order.uuid, 'processing')"
+                    variant="primary" size="sm" icon="ph:check-bold" class="h-9 w-9 p-0" title="Proses Pesanan" />
+                  <BaseButton v-if="order.status === 'processing'" @click="updateStatus(order.uuid, 'shipped')"
+                    variant="blue" size="sm" icon="ph:truck-bold" class="h-9 w-9 p-0" title="Kirim Pesanan" />
+                  <BaseButton variant="white" size="sm" icon="ph:eye"
+                    class="h-9 w-9 p-0 text-gray-400 hover:text-navy border-slate-200" />
                 </div>
               </td>
             </tr>

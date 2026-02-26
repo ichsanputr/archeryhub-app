@@ -109,10 +109,10 @@
             <p class="text-sm text-text-sub mb-3">Unduh panduan lengkap yang berisi peraturan, regulasi, dan jadwal
               detail
               turnamen.</p>
-            <button class="text-navy font-bold text-sm hover:underline inline-flex items-center gap-1">
+            <BaseButton variant="white" size="sm" icon="ph:download-simple"
+              class="text-navy font-bold text-sm border-none shadow-none p-0 h-auto hover:underline">
               Unduh PDF
-              <Icon icon="ph:download-simple" class="text-lg" />
-            </button>
+            </BaseButton>
           </div>
         </div>
       </section>

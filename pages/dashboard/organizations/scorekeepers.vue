@@ -48,7 +48,7 @@
         <div
             class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
             <div class="flex-grow w-full">
-                <BaseInput v-model="searchQuery" icon="ph:magnifying-glass" placeholder="Cari nama atau email staff..."
+                <BaseInput v-model="searchQuery" icon="ph:magnifying-glass" placeholder="Cari nama atau kode staff..."
                     label="Pencarian Staff" />
             </div>
             <BaseButton variant="white" icon="ph:funnel" @click="searchQuery = ''" class="h-11">
@@ -112,7 +112,7 @@
                     <h3 class="text-lg font-bold text-navy">Hasil Tidak Ditemukan</h3>
                     <p class="text-sm text-gray-500 max-w-xs mx-auto">
                         Tidak ada staff yang cocok dengan kata kunci "<span class="font-bold text-navy">{{ searchQuery
-                            }}</span>".
+                        }}</span>".
                     </p>
                 </div>
                 <BaseButton @click="searchQuery = ''" variant="white" size="sm" class="font-bold">
@@ -127,6 +127,8 @@
                         <tr class="bg-gray-50/50 border-b border-gray-100">
                             <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">
                                 Profil Staff</th>
+                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">
+                                Kode Login</th>
                             <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">
                                 Status Akun</th>
                             <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Tgl
@@ -151,8 +153,15 @@
                                         <span
                                             class="text-[14px] font-bold text-navy group-hover:text-primary-dark transition-colors">{{
                                                 sk.name }}</span>
-                                        <span class="text-gray-400 text-xs">{{ sk.email }}</span>
                                     </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-5">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-lg font-black font-mono text-primary tracking-tighter">{{ sk.code
+                                        }}</span>
+                                    <BaseButton @click="copyCode(sk.code)" variant="white" size="sm" icon="ph:copy"
+                                        class="h-8 w-8 p-0 text-gray-400 hover:text-navy border-none shadow-none" />
                                 </div>
                             </td>
                             <td class="px-6 py-5">
@@ -185,12 +194,17 @@
         <!-- Modal Form -->
         <BaseDialogForm v-model="modal.show" :header="modal.isEdit ? 'Edit Scorekeeper' : 'Tambah Scorekeeper'">
             <div class="flex flex-col gap-4">
-                <BaseInput v-model="form.name" label="Nama Lengkap" placeholder="e.g. Budi Santoso" required />
-                <BaseInput v-model="form.email" label="Email" type="email" placeholder="scorekeeper@domain.com"
-                    :disabled="modal.isEdit" required />
-                <BaseInput v-model="form.password" label="Password" type="password"
-                    :placeholder="modal.isEdit ? 'Kosongkan jika tidak ingin mengubah' : 'Min. 6 karakter'"
-                    :required="!modal.isEdit" />
+                <BaseInput v-model="form.name" label="Nama Lengkap Staff" placeholder="e.g. Budi Santoso" required />
+
+                <div v-if="!modal.isEdit"
+                    class="bg-primary/5 border border-primary/20 p-4 rounded-xl flex gap-3 items-start">
+                    <Icon icon="ph:info-bold" class="text-primary text-lg flex-shrink-0 mt-0.5" />
+                    <p class="text-[11px] text-navy/70 leading-relaxed font-medium">
+                        Kode akses login mobile apps akan digenerate secara otomatis setelah Anda menyimpan data staff
+                        ini.
+                    </p>
+                </div>
+
                 <div v-if="modal.isEdit" class="mt-2">
                     <label class="block text-xs font-black text-gray-500 uppercase tracking-widest mb-2">Status
                         Akun</label>
@@ -213,7 +227,7 @@
                 <div class="flex items-center justify-end gap-3 w-full">
                     <BaseButton variant="white" @click="modal.show = false">Batal</BaseButton>
                     <BaseButton :loading="modal.loading" @click="handleSubmit" class="bg-primary text-primary-text">
-                        {{ modal.isEdit ? 'Simpan Perubahan' : 'Daftarkan Akun' }}
+                        {{ modal.isEdit ? 'Simpan Perubahan' : 'Generate Akun' }}
                     </BaseButton>
                 </div>
             </template>
@@ -256,7 +270,7 @@ const filteredScorekeepers = computed(() => {
     const q = searchQuery.value.toLowerCase()
     return scorekeepers.value.filter(s =>
         s.name.toLowerCase().includes(q) ||
-        s.email.toLowerCase().includes(q)
+        (s.code && s.code.toLowerCase().includes(q))
     )
 })
 
@@ -269,8 +283,6 @@ const modal = reactive({
 
 const form = reactive({
     name: '',
-    email: '',
-    password: '',
     status: 'active'
 })
 
@@ -278,6 +290,12 @@ const deleteState = reactive({
     show: false,
     target: null
 })
+
+const copyCode = (code) => {
+    if (!code) return
+    navigator.clipboard.writeText(code)
+    toast.success(`Kode ${code} disalin ke clipboard`)
+}
 
 const formatDate = (dateStr) => {
     if (!dateStr) return '-'
@@ -302,8 +320,6 @@ const openAddModal = () => {
     modal.isEdit = false
     modal.currentId = null
     form.name = ''
-    form.email = ''
-    form.password = ''
     form.status = 'active'
     modal.show = true
 }
@@ -312,14 +328,12 @@ const openEditModal = (sk) => {
     modal.isEdit = true
     modal.currentId = sk.uuid
     form.name = sk.name
-    form.email = sk.email
-    form.password = ''
     form.status = sk.status
     modal.show = true
 }
 
 const handleSubmit = async () => {
-    if (!form.name || (!modal.isEdit && !form.email)) {
+    if (!form.name) {
         toast.error('Mohon lengkapi semua field wajib')
         return
     }
@@ -329,17 +343,14 @@ const handleSubmit = async () => {
         if (modal.isEdit) {
             await api.put(`/organizations/scorekeepers/${modal.currentId}`, {
                 name: form.name,
-                status: form.status,
-                password: form.password || undefined
+                status: form.status
             })
             toast.success('Akun scorekeeper berhasil diperbarui')
         } else {
-            await api.post('/organizations/scorekeepers', {
-                name: form.name,
-                email: form.email,
-                password: form.password
+            const res = await api.post('/organizations/scorekeepers', {
+                name: form.name
             })
-            toast.success('Akun scorekeeper berhasil ditambahkan')
+            toast.success(`Akun scorekeeper berhasil dibuat! Kode: ${res.code}`)
         }
         modal.show = false
         fetchScorekeepers()

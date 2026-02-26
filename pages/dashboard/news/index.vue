@@ -75,7 +75,7 @@
                 <div>
                     <p class="text-xs text-gray-400 font-bold  tracking-wider">Total View</p>
                     <p class="text-lg font-bold text-navy">{{news.reduce((acc, n) => acc + n.views, 0).toLocaleString()
-                        }}</p>
+                    }}</p>
                 </div>
             </div>
         </div>
@@ -164,10 +164,8 @@
                             Edit
                         </BaseButton>
                     </NuxtLink>
-                    <button @click="deleteNews(item)"
-                        class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
-                        <Icon icon="ph:trash" class="text-lg" />
-                    </button>
+                    <BaseButton @click="deleteNews(item)" variant="white" size="sm" icon="ph:trash"
+                        class="h-9 w-9 p-0 text-red-500 hover:text-red-600 border-slate-200" />
                 </div>
             </div>
 

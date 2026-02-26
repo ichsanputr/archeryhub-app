@@ -126,7 +126,7 @@
                                 class="group hover:bg-gray-50/50 transition-colors">
                                 <td class="px-6 py-4 align-top text-center w-16">
                                     <span class="text-sm font-bold text-gray-400">{{ (page - 1) * limit + index + 1
-                                    }}</span>
+                                        }}</span>
                                 </td>
                                 <td class="px-6 py-4 align-top min-w-[250px]">
                                     <div class="flex items-center gap-3">
@@ -161,12 +161,11 @@
                                 </td>
                                 <td class="px-6 py-4 text-right align-top w-20">
                                     <div class="flex items-center justify-end">
-                                        <NuxtLink
+                                        <BaseButton
                                             :to="`/dashboard/events/${eventId}/participants/${participant.athlete_code || participant.archer_id}`"
-                                            class="size-10 flex items-center justify-center rounded-xl bg-white border border-gray-100 text-gray-400 hover:text-navy hover:border-navy/20 hover:shadow-sm transition-all"
-                                            title="Lihat Detail Profil">
-                                            <Icon icon="ph:eye-bold" class="text-xl" />
-                                        </NuxtLink>
+                                            variant="white" size="sm" icon="ph:eye-bold"
+                                            class="h-10 w-10 p-0 text-gray-400 hover:text-navy border-gray-100 hover:border-navy/20 shadow-none"
+                                            title="Lihat Detail Profil" />
                                     </div>
                                 </td>
                             </tr>

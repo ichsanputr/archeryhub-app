@@ -24,12 +24,10 @@
         </div>
         <!-- Action Buttons -->
         <div class="flex flex-col sm:flex-row gap-3">
-          <button
-            class="h-10 sm:h-11 px-6 bg-white/10 text-white rounded-xl border border-white/20 font-black text-[10px] sm:text-xs tracking-widest uppercase hover:bg-white/20 transition-all flex items-center justify-center gap-2 backdrop-blur-md"
-            @click="openInviteModal">
-            <Icon icon="ph:user-plus-bold" class="text-base" />
-            <span>Invite</span>
-          </button>
+          <BaseButton @click="openInviteModal" variant="white" icon="ph:user-plus-bold"
+            class="h-10 sm:h-11 px-6 bg-white/10 text-white border-white/20 hover:bg-white/20 backdrop-blur-md font-black text-[10px] sm:text-xs tracking-widest uppercase">
+            Invite
+          </BaseButton>
           <NuxtLink to="/dashboard/members/create" class="w-full sm:w-auto">
             <BaseButton variant="primary" icon="ph:plus-bold"
               class="w-full h-10 sm:h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-[10px] sm:text-xs">
@@ -100,12 +98,10 @@
       <div class="w-full md:w-48">
         <BaseSelect v-model="genderFilter" :items="genderOptions" label="Jenis Kelamin" />
       </div>
-      <button
-        class="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-xl font-semibold text-sm text-navy shadow-sm hover:bg-gray-50 transition"
-        @click="resetFilters">
-        <Icon icon="ph:funnel" class="text-lg" />
+      <BaseButton @click="resetFilters" variant="white" size="md" icon="ph:funnel"
+        class="h-11 px-6 font-semibold text-sm text-navy bg-white border-gray-200 hover:bg-gray-50">
         Reset
-      </button>
+      </BaseButton>
     </div>
 
     <!-- Members List -->
@@ -174,9 +170,8 @@
                     class="p-2 text-gray-400 hover:text-navy hover:bg-gray-100 rounded-lg transition-colors">
                     <Icon icon="ph:eye" class="text-lg" />
                   </NuxtLink>
-                  <button class="p-2 text-gray-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors">
-                    <Icon icon="ph:chart-line-up" class="text-lg" />
-                  </button>
+                  <BaseButton @click="() => { }" variant="white" size="sm" icon="ph:chart-line-up"
+                    class="h-9 w-9 p-0 text-gray-400 hover:text-primary hover:bg-primary/10 border-transparent shadow-none" />
                 </div>
               </td>
             </tr>
@@ -207,9 +202,8 @@
       <div class="bg-white rounded-2xl shadow-md w-full max-w-3xl border border-gray-100 overflow-hidden">
         <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
           <h3 class="text-lg font-extrabold text-navy">Invite Archery ke Klub</h3>
-          <button class="p-2 text-gray-400 hover:text-navy hover:bg-gray-100 rounded-lg" @click="isInviteOpen = false">
-            <Icon icon="ph:x" class="text-lg" />
-          </button>
+          <BaseButton @click="isInviteOpen = false" variant="white" size="sm" icon="ph:x"
+            class="h-10 w-10 p-0 text-gray-400 hover:text-navy hover:bg-gray-100 border-none shadow-none" />
         </div>
         <div class="p-6 space-y-4">
           <p class="text-sm text-gray-500">Daftar akun pemanah yang belum tergabung klub.</p>
@@ -227,12 +221,10 @@
                   <p class="text-xs text-gray-400">{{ archer.email || 'Tidak ada email' }}</p>
                 </div>
               </div>
-              <button
-                class="inline-flex items-center gap-2 px-3 py-2 bg-navy text-white rounded-lg text-xs font-semibold hover:bg-navy-dark transition"
-                @click="inviteToClub(archer)">
-                <Icon icon="ph:user-plus" class="text-sm" />
+              <BaseButton @click="inviteToClub(archer)" variant="primary" size="sm" icon="ph:user-plus"
+                class="px-4 h-9 font-bold text-xs">
                 Undang
-              </button>
+              </BaseButton>
             </div>
             <div v-if="inviteList.length === 0" class="px-4 py-12 text-center text-sm text-gray-500">
               Semua pemanah sudah memiliki klub atau data kosong.
@@ -240,9 +232,10 @@
           </div>
         </div>
         <div class="px-6 py-4 bg-gray-50 border-t border-gray-100 text-right">
-          <button class="px-4 py-2 text-sm font-semibold text-gray-500 hover:text-navy" @click="isInviteOpen = false">
+          <BaseButton @click="isInviteOpen = false" variant="ghost" size="sm"
+            class="font-semibold text-gray-500 hover:text-navy">
             Tutup
-          </button>
+          </BaseButton>
         </div>
       </div>
     </div>

@@ -1,7 +1,8 @@
 <template>
     <div class="space-y-8">
         <!-- Scoring Interface -->
-        <div v-if="selectedCategory && targetAssignments.length > 0" class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
+        <div v-if="selectedCategory && targetAssignments.length > 0"
+            class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
             <!-- Archers List -->
             <div class="lg:col-span-7 xl:col-span-8 flex flex-col gap-4 sm:gap-6"
                 :class="showMobileInputBoard && currentScoringAssignment ? 'pb-[260px] lg:pb-0' : ''">
@@ -57,10 +58,10 @@
                                 <!-- End Navigation (only for active archer) -->
                                 <div v-if="currentScoringAssignment?.uuid === assignment.uuid"
                                     class="flex items-center gap-1.5 ml-4 flex-shrink-0">
-                                    <button @click.stop="goPrevEnd" :disabled="(assignment.currentEnd || 1) <= 1"
-                                        class="size-9 rounded-xl border-2 border-slate-100 bg-white text-navy flex items-center justify-center hover:bg-slate-50 transition-all disabled:opacity-20 active:scale-95 shadow-sm">
-                                        <Icon icon="ph:caret-left-bold" class="text-lg" />
-                                    </button>
+                                    <BaseButton variant="white" size="sm" icon="ph:caret-left-bold"
+                                        :disabled="(assignment.currentEnd || 1) <= 1"
+                                        class="!size-9 !p-0 !rounded-xl border-2 border-slate-100 bg-white text-navy hover:bg-slate-50 shadow-sm"
+                                        @click.stop="goPrevEnd" />
                                     <div class="px-2 text-center min-w-[50px]">
                                         <div class="text-[8px] font-black text-gray-300 uppercase leading-none mb-0.5">
                                             End
@@ -68,16 +69,16 @@
                                         <div class="text-sm font-black text-navy">{{ assignment.currentEnd || 1 }}
                                         </div>
                                     </div>
-                                    <button v-if="(assignment.currentEnd || 1) < (sessionData?.total_ends || 0)"
-                                        @click.stop="goNextEnd"
-                                        class="size-9 rounded-xl bg-navy text-primary flex items-center justify-center hover:bg-navy/95 transition-all active:scale-95 shadow-sm shadow-navy/20">
-                                        <Icon icon="ph:caret-right-bold" class="text-lg" />
-                                    </button>
+                                    <BaseButton v-if="(assignment.currentEnd || 1) < (sessionData?.total_ends || 0)"
+                                        variant="navy" size="sm" icon="ph:caret-right-bold"
+                                        class="!size-9 !p-0 !rounded-xl bg-navy text-primary hover:bg-navy/95 shadow-sm shadow-navy/20"
+                                        @click.stop="goNextEnd" />
                                 </div>
                             </div>
 
                             <div class="flex items-center justify-between mb-3 text-[10px] sm:text-xs font-bold">
-                                <span class="px-2.5 py-1 rounded-lg bg-slate-50 text-slate-500 uppercase tracking-wider">
+                                <span
+                                    class="px-2.5 py-1 rounded-lg bg-slate-50 text-slate-500 uppercase tracking-wider">
                                     End {{ assignment.currentEnd || 1 }} / {{ sessionData?.total_ends || 0 }}
                                 </span>
                                 <span class="px-2.5 py-1 rounded-lg bg-primary/10 text-navy uppercase tracking-wider">
@@ -156,24 +157,18 @@
 
                     <!-- Action Buttons -->
                     <div class="grid grid-cols-2 gap-3 mt-8 pt-6 border-t border-slate-100">
-                        <button @click="deleteLastScore"
+                        <BaseButton variant="white" icon="ph:backspace-bold"
                             :disabled="!currentScoringAssignment || !currentScoringAssignment.currentEndScores?.some(v => v !== undefined)"
-                            class="flex items-center justify-center gap-2 h-14 rounded-xl border-2 border-slate-100 bg-white text-navy font-black hover:bg-red-50 hover:text-red-500 hover:border-red-100 transition-all disabled:opacity-30 group">
-                            <Icon icon="ph:backspace-bold" class="text-lg group-active:scale-90 transition-transform" />
+                            class="!h-14 !rounded-xl border-2 border-slate-100 bg-white text-navy hover:!bg-red-50 hover:!text-red-500 hover:!border-red-100"
+                            @click="deleteLastScore">
                             <span class="text-[10px] tracking-widest uppercase">HAPUS</span>
-                        </button>
-                        <button @click="saveEndAndNext" :disabled="saving || !currentScoringAssignment"
-                            class="flex items-center justify-center gap-2 h-14 rounded-xl bg-navy text-primary font-black hover:bg-navy/95 transition-all shadow-sm shadow-navy/10 disabled:opacity-30 group">
-                            <span v-if="saving" class="inline-flex items-center gap-2">
-                                <span
-                                    class="size-4 border-2 border-primary/20 border-t-primary rounded-full animate-spin"></span>
-                            </span>
-                            <span v-else class="inline-flex items-center gap-2">
-                                <span class="text-[10px] tracking-widest uppercase">SIMPAN</span>
-                                <Icon icon="ph:paper-plane-right-fill"
-                                    class="text-lg group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                            </span>
-                        </button>
+                        </BaseButton>
+                        <BaseButton variant="navy" iconRight="ph:paper-plane-right-fill"
+                            :disabled="saving || !currentScoringAssignment" :loading="saving"
+                            class="!h-14 !rounded-xl bg-navy text-primary hover:bg-navy/95 shadow-sm shadow-navy/10"
+                            @click="saveEndAndNext">
+                            <span class="text-[10px] tracking-widest uppercase">SIMPAN</span>
+                        </BaseButton>
                     </div>
                 </div>
             </div>
@@ -192,10 +187,8 @@
                             {{ currentScoringAssignment?.archer_name || 'Pilih pemanah' }}
                         </p>
                     </div>
-                    <button @click="closeMobileInputBoard"
-                        class="size-9 rounded-xl border border-gray-200 flex items-center justify-center text-gray-500">
-                        <Icon icon="ph:x-bold" />
-                    </button>
+                    <BaseButton variant="white" size="sm" icon="ph:x-bold" class="!size-9 !p-0 !rounded-xl"
+                        @click="closeMobileInputBoard" />
                 </div>
 
                 <div class="grid grid-cols-6 gap-2 mb-3">
@@ -208,18 +201,15 @@
                 </div>
 
                 <div class="grid grid-cols-2 gap-2">
-                    <button @click="deleteLastScore"
+                    <BaseButton variant="white" icon="ph:backspace-bold"
                         :disabled="!currentScoringAssignment || !currentScoringAssignment.currentEndScores?.some(v => v !== undefined)"
-                        class="flex items-center justify-center gap-2 h-11 rounded-xl border border-slate-200 bg-white text-navy font-bold disabled:opacity-30">
-                        <Icon icon="ph:backspace-bold" class="text-base" />
+                        class="!h-11 !rounded-xl border border-slate-200" @click="deleteLastScore">
                         <span class="text-[10px] tracking-widest uppercase">Hapus</span>
-                    </button>
-                    <button @click="saveEndAndNext" :disabled="saving || !currentScoringAssignment"
-                        class="flex items-center justify-center gap-2 h-11 rounded-xl bg-navy text-primary font-black disabled:opacity-30">
-                        <span v-if="saving"
-                            class="size-4 border-2 border-primary/20 border-t-primary rounded-full animate-spin"></span>
-                        <span v-else class="text-[10px] tracking-widest uppercase">Simpan</span>
-                    </button>
+                    </BaseButton>
+                    <BaseButton variant="navy" :disabled="saving || !currentScoringAssignment" :loading="saving"
+                        class="!h-11 !rounded-xl" @click="saveEndAndNext">
+                        <span class="text-[10px] tracking-widest uppercase">Simpan</span>
+                    </BaseButton>
                 </div>
             </div>
         </Transition>

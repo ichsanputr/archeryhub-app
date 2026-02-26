@@ -17,10 +17,9 @@
       <div class="relative p-5 sm:p-8">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div class="flex items-center sm:items-start gap-4 flex-1 min-w-0">
-            <button @click="navigateTo(`/dashboard/events/${eventId}/qualification`)"
-              class="p-2.5 rounded-xl bg-white/10 text-white hover:bg-primary hover:text-navy transition-all group shrink-0 backdrop-blur-sm border border-white/20">
-              <Icon icon="ph:arrow-left-bold" class="text-lg group-hover:-translate-x-1 transition-transform" />
-            </button>
+            <BaseButton variant="white" size="sm" icon="ph:arrow-left-bold"
+              class="!bg-white/10 !text-white hover:!bg-primary hover:!text-primary-text backdrop-blur-sm !border-white/20"
+              @click="navigateTo(`/dashboard/events/${eventId}/qualification`)" />
             <div class="min-w-0">
               <div v-if="isLoading && !sessionData"
                 class="h-8 w-48 sm:h-10 sm:w-64 bg-white/10 rounded-lg animate-pulse mb-2"></div>
@@ -54,15 +53,15 @@
       </div>
     </div>
 
-    <!-- Tabs for Session Management -->
     <div
       class="flex items-center gap-1 border-b border-gray-200 overflow-x-auto no-scrollbar bg-white rounded-t-2xl px-2">
-      <button v-for="t in tabs" :key="t.id" @click="activeTab = t.id"
-        class="px-6 py-4 text-sm font-bold transition-all border-b-2 flex items-center gap-2 whitespace-nowrap"
-        :class="activeTab === t.id ? 'text-navy border-navy bg-gray-50' : 'text-gray-500 border-transparent hover:text-navy hover:bg-gray-50'">
+      <BaseButton v-for="t in tabs" :key="t.id" @click="activeTab = t.id"
+        :variant="activeTab === t.id ? 'primary' : 'white'"
+        class="px-6 py-4 rounded-none border-b-2 shadow-none font-bold text-sm flex items-center gap-2 whitespace-nowrap"
+        :class="activeTab === t.id ? 'border-primary' : 'border-transparent text-gray-500 hover:text-primary hover:bg-gray-50'">
         <Icon :icon="t.icon" class="text-xl" />
         {{ t.label }}
-      </button>
+      </BaseButton>
     </div>
 
     <!-- Category Selection (Shared for both tabs) -->
@@ -87,8 +86,8 @@
       </div>
 
       <div v-else class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
-        <button v-for="category in categories" :key="category.id" @click="selectCategory(category.id)" :class="[
-          'flex-shrink-0 w-72 p-5 rounded-xl border-2 transition-all text-left group hover:shadow-md relative',
+        <div v-for="category in categories" :key="category.id" @click="selectCategory(category.id)" :class="[
+          'flex-shrink-0 w-72 p-5 rounded-xl border-2 transition-all text-left group hover:shadow-md relative cursor-pointer',
           selectedCategory === category.id
             ? 'border-primary bg-primary/5 shadow-sm'
             : 'border-gray-200 bg-white hover:border-gray-300'
@@ -113,7 +112,7 @@
               </div>
             </div>
           </div>
-        </button>
+        </div>
       </div>
     </div>
 
@@ -257,6 +256,24 @@ const fetchAllParticipants = async () => {
 }
 
 const fetchArchersForCategory = async (categoryId) => {
+  // Check if we have participants for this category in cache
+  const existing = allParticipants.value.filter(p => p.category_id === categoryId)
+
+  if (existing.length === 0) {
+    // Fetch specifically for this category to speed up initial load
+    try {
+      const response = await get(`/events/${eventId}/participants`, {
+        params: { category_id: categoryId, limit: 1000 }
+      })
+      const newParticipants = response?.participants || []
+      // Merge into cache
+      const otherParticipants = allParticipants.value.filter(p => p.category_id !== categoryId)
+      allParticipants.value = [...otherParticipants, ...newParticipants]
+    } catch (error) {
+      console.error('Failed to fetch category participants:', error)
+    }
+  }
+
   const participants = allParticipants.value.filter(p => p.category_id === categoryId)
   archersByCategory.value[categoryId] = participants.map(p => ({
     uuid: p.id, // Use registration ID as uuid
@@ -434,17 +451,29 @@ const handleAssignmentsSaved = async () => {
 
 onMounted(async () => {
   isLoading.value = true
-  // Load session first so fetchCategories can filter by session's category_ids
+
+  // 1. Load session first as it's critical for filtering
   await fetchSessionData()
+
+  // 2. Load Categories and Targets in parallel
+  // Start participants fetch in background but don't await everything yet
+  const participantsPromise = fetchAllParticipants()
+
   await Promise.all([
-    fetchAllParticipants(),
     fetchCategories(),
     fetchTargets()
   ])
+
+  // 3. Immediately select first category if categories exist
+  // selectCategory will handle fetching specific participants if the full list is still loading
   if (categories.value.length > 0) {
     await selectCategory(categories.value[0].id)
   }
+
   isLoading.value = false
+
+  // Ensure we finish full list fetch in background
+  await participantsPromise
 })
 </script>
 
