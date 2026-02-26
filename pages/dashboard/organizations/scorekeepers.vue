@@ -84,7 +84,7 @@
                         class="relative w-24 h-24 bg-white rounded-3xl shadow-xl border border-gray-100 flex items-center justify-center text-primary group hover:scale-110 transition-transform duration-500">
                         <Icon icon="ph:user-focus-duotone" class="text-5xl" />
                         <div
-                            class="absolute -bottom-2 -right-2 w-8 h-8 bg-primary text-white rounded-xl flex items-center justify-center shadow-lg border-2 border-white">
+                            class="absolute -bottom-2 -right-2 w-8 h-8 bg-navy text-primary rounded-xl flex items-center justify-center shadow-lg border-2 border-white">
                             <Icon icon="ph:plus-bold" class="text-sm" />
                         </div>
                     </div>
@@ -226,7 +226,7 @@
             <template #action>
                 <div class="flex items-center justify-end gap-3 w-full">
                     <BaseButton variant="white" @click="modal.show = false">Batal</BaseButton>
-                    <BaseButton :loading="modal.loading" @click="handleSubmit" class="bg-primary text-primary-text">
+                    <BaseButton :loading="modal.loading" @click="handleSubmit" class="bg-primary text-btn-text">
                         {{ modal.isEdit ? 'Simpan Perubahan' : 'Generate Akun' }}
                     </BaseButton>
                 </div>

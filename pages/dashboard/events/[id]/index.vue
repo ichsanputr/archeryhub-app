@@ -24,14 +24,14 @@
         <NuxtLink :to="`/dashboard/events/${eventId}/my-qualification`"
           class="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:shadow-md transition-all group overflow-hidden relative">
           <div
-            class="absolute -right-4 -bottom-4 size-32 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors">
+            class="absolute -right-4 -bottom-4 size-32 bg-emerald-500/5 rounded-full blur-2xl group-hover:bg-emerald-500/10 transition-colors">
           </div>
-          <div class="size-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-6">
+          <div class="size-14 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-500 mb-6">
             <Icon icon="ph:chart-line-up-bold" class="text-2xl" />
           </div>
           <h3 class="text-xl font-black text-navy mb-2">Hasil Kualifikasi</h3>
           <p class="text-sm text-gray-400 font-bold">Lihat skor dan peringkat kualifikasi Anda secara real-time.</p>
-          <div class="mt-6 flex items-center gap-2 text-primary text-xs font-black uppercase tracking-widest">
+          <div class="mt-6 flex items-center gap-2 text-emerald-500 text-xs font-black uppercase tracking-widest">
             Buka Hasil
             <Icon icon="ph:arrow-right-bold" />
           </div>
@@ -57,13 +57,13 @@
         <!-- Sertifikat Card -->
         <NuxtLink :to="`/dashboard/events/${eventId}/certificate`"
           class="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:shadow-md transition-all group overflow-hidden relative">
-          <div class="size-14 rounded-2xl bg-gray-100 flex items-center justify-center text-gray-400 mb-6">
+          <div class="size-14 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400 mb-6">
             <Icon icon="ph:certificate-bold" class="text-2xl" />
           </div>
           <h3 class="text-xl font-black text-navy mb-2">Sertifikat</h3>
           <p class="text-sm text-gray-400 font-bold">Sertifikat elektronik akan tersedia di sini setelah turnamen
             selesai.</p>
-          <div class="mt-6 flex items-center gap-2 text-primary text-xs font-black uppercase tracking-widest">
+          <div class="mt-6 flex items-center gap-2 text-slate-500 text-xs font-black uppercase tracking-widest">
             Buka Sertifikat
             <Icon icon="ph:arrow-right-bold" />
           </div>

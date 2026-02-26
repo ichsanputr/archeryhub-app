@@ -2,7 +2,7 @@
     <div class="space-y-6">
         <div class="flex items-center gap-3">
             <div
-                class="size-8 bg-white border border-gray-200 rounded-lg flex items-center justify-center text-primary shadow-sm">
+                class="size-8 bg-navy border border-navy rounded-lg flex items-center justify-center text-primary shadow-sm">
                 <Icon icon="ph:scales-bold" class="text-lg" />
             </div>
             <h2 class="text-lg font-extrabold text-navy">Perbandingan Detail</h2>

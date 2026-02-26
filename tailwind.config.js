@@ -43,6 +43,12 @@ module.exports = {
                 header: {
                     bg: 'rgb(var(--header-bg-rgb, 255 255 255) / <alpha-value>)',
                     text: 'var(--header-text, #0f172a)',
+                },
+                btn: {
+                    // Text color for buttons with LIGHT backgrounds (e.g. primary/lime)
+                    text: 'var(--btn-text, #0f172a)',
+                    // Text color for buttons with DARK backgrounds (e.g. navy)
+                    inverse: 'var(--btn-text-inverse, #D9FF00)',
                 }
             },
             fontFamily: {

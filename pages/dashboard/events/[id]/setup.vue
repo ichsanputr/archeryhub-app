@@ -14,7 +14,7 @@
           <span class="text-sm font-medium hidden sm:block">Details</span>
         </div>
         <div class="w-8 h-[1px] bg-gray-600"></div>
-        <div class="flex items-center gap-2 px-3 py-1.5 rounded-md bg-primary/10 text-primary">
+        <div class="flex items-center gap-2 px-3 py-1.5 rounded-md bg-navy text-primary">
           <span class="material-symbols-outlined text-[20px]">target</span>
           <span class="text-sm font-bold hidden sm:block">Categories</span>
         </div>

@@ -698,7 +698,7 @@
                             :class="form.page_settings.results_type === 'system' ? 'border-primary bg-primary/5 shadow-sm' : 'border-gray-200 hover:border-gray-300 bg-white'">
                             <div class="flex items-center gap-3 mb-2">
                                 <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-colors"
-                                    :class="form.page_settings.results_type === 'system' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-400'">
+                                    :class="form.page_settings.results_type === 'system' ? 'bg-navy text-primary' : 'bg-gray-100 text-gray-400'">
                                     <Icon icon="ph:chart-bar-bold" class="text-xl" />
                                 </div>
                                 <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors"
@@ -716,7 +716,7 @@
                             :class="form.page_settings.results_type === 'manual' ? 'border-primary bg-primary/5 shadow-sm' : 'border-gray-200 hover:border-gray-300 bg-white'">
                             <div class="flex items-center gap-3 mb-2">
                                 <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-colors"
-                                    :class="form.page_settings.results_type === 'manual' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-400'">
+                                    :class="form.page_settings.results_type === 'manual' ? 'bg-navy text-primary' : 'bg-gray-100 text-gray-400'">
                                     <Icon icon="ph:file-arrow-up-bold" class="text-xl" />
                                 </div>
                                 <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors"
@@ -850,7 +850,7 @@
                             <div @click="$refs.resultsFileInput?.click()"
                                 class="border-2 border-dashed border-gray-100 rounded-2xl flex flex-col items-center justify-center p-8 hover:border-primary hover:bg-primary/5 transition-all group cursor-pointer border-brand-border">
                                 <div
-                                    class="p-3 bg-gray-50 rounded-full group-hover:bg-primary group-hover:text-white transition-all text-gray-400">
+                                    class="p-3 bg-gray-50 rounded-full group-hover:bg-navy group-hover:text-primary transition-all text-gray-400">
                                     <Icon icon="ph:plus-bold" class="text-xl" />
                                 </div>
                                 <p

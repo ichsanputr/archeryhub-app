@@ -285,7 +285,7 @@
                         <BaseInput v-model="form.payment_amount" label="Jumlah Pembayaran" placeholder="0"
                             kind="currency" />
                         <BaseSelect v-model="form.registration_source" label="Sumber Pendaftaran" :items="sourceOptions"
-                            class="md:col-span-2" />
+                            class="md:col-span-2" disabled />
                     </div>
                     <BaseTextarea v-model="form.notes" label="Catatan" placeholder="Catatan tambahan (opsional)"
                         :rows="3" class="mt-4" />
@@ -332,6 +332,14 @@ const clubs = ref([])
 const cityOptions = ref([])
 const archerMode = ref('existing')
 
+watch(archerMode, (val) => {
+    if (val === 'existing') {
+        form.registration_source = 'invited'
+    } else {
+        form.registration_source = 'admin_created'
+    }
+})
+
 const breadcrumbItems = computed(() => [
     { label: 'Dashboard', path: '/dashboard' },
     { label: 'Events', path: '/dashboard/events' },
@@ -347,7 +355,7 @@ const form = reactive({
     category_ids: [],
     payment_status: 'lunas',
     payment_amount: 0,
-    registration_source: 'admin_created',
+    registration_source: 'invited',
     notes: ''
 })
 
@@ -604,20 +612,21 @@ const submit = async () => {
         }
 
         if (archerMode.value === 'existing') {
-            // Register multiple existing archers - each archer can have multiple categories
-            const registrationPromises = selectedArchers.value.map(archer => {
-                const payload = {
-                    athlete_id: archer.uuid || archer.id,
-                    event_category_ids: form.category_ids,
-                    payment_amount: form.payment_amount || 0,
-                    payment_status: form.payment_status || 'lunas',
-                    registration_source: form.registration_source || 'admin_created'
-                }
-                return post(`/events/${route.params.id}/participants`, payload)
-            })
-
-            await Promise.all(registrationPromises)
-            toast.success(`${selectedArchers.value.length} peserta berhasil ditambahkan`)
+            // Register multiple existing archers via batch endpoint (single API call)
+            const payload = {
+                athlete_ids: selectedArchers.value.map(a => a.uuid || a.id),
+                event_category_ids: form.category_ids,
+                payment_amount: form.payment_amount || 0,
+                payment_status: form.payment_status || 'lunas',
+                registration_source: form.registration_source || 'admin_created'
+            }
+            const result = await post(`/events/${route.params.id}/participants/batch`, payload)
+            const count = result?.registered ?? selectedArchers.value.length
+            const skipped = result?.skipped ?? 0
+            const msg = skipped > 0
+                ? `${count} peserta berhasil ditambahkan, ${skipped} sudah terdaftar (dilewati)`
+                : `${count} peserta berhasil ditambahkan`
+            toast.success(msg)
         } else {
             // Create new archer and register
             const archerResponse = await post('/archers', {

@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="space-y-8">
     <!-- Club Dashboard View -->
     <template v-if="userRole === 'club'">
@@ -42,7 +42,7 @@
           class="bg-white rounded-xl p-5 border border-gray-100 shadow-sm hover:shadow-sm transition-all group">
           <div class="flex justify-between items-start mb-4">
             <div
-              class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-primary-text transition-colors">
+              class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-btn-text transition-colors">
               <Icon :icon="stat.icon" class="text-2xl" />
             </div>
             <span class="text-[10px] font-black text-green-500 bg-green-50 px-2 py-1 rounded-full">+12%</span>
@@ -357,7 +357,7 @@
               <p class="text-navy-dark text-3xl font-extrabold tracking-tight">124</p>
             </div>
             <div
-              class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-primary-text transition-colors">
+              class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-btn-text transition-colors">
               <Icon icon="ph:users" class="text-xl" />
             </div>
           </div>
@@ -379,7 +379,7 @@
                   class="text-lg text-gray-400 font-medium ml-1">/ 35</span></p>
             </div>
             <div
-              class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-primary-text transition-colors">
+              class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-btn-text transition-colors">
               <Icon icon="ph:target" class="text-xl" />
             </div>
           </div>
@@ -400,7 +400,7 @@
               <p class="text-navy-dark text-3xl font-extrabold tracking-tight">85%</p>
             </div>
             <div
-              class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-primary-text transition-colors">
+              class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-btn-text transition-colors">
               <Icon icon="ph:check-square-offset" class="text-xl" />
             </div>
           </div>
@@ -418,7 +418,7 @@
               <p class="text-navy-dark text-3xl font-extrabold tracking-tight tabular-nums">45:20</p>
             </div>
             <div
-              class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-primary-text transition-colors">
+              class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-btn-text transition-colors">
               <Icon icon="ph:timer" class="text-xl" />
             </div>
           </div>
@@ -430,7 +430,7 @@
 
       <!-- Main Content Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Event Recap (Organization overview – replaces Target Status) -->
+        <!-- Event Recap (Organization overview â€“ replaces Target Status) -->
         <div class="lg:col-span-2 bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-sm">
           <div class="p-4 px-6 border-b border-gray-100 flex items-center justify-between bg-white">
             <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">
@@ -777,3 +777,4 @@ const formatDate = (dateStr) => {
   })
 }
 </script>
+

@@ -8,7 +8,7 @@
                         babak ini</p>
                 </div>
                 <button @click="$emit('auto-assign')" :disabled="isAutoAssigning"
-                    class="h-10 px-6 rounded-xl bg-primary text-navy font-black text-[10px] tracking-widest uppercase shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all flex items-center gap-2 disabled:opacity-50">
+                    class="h-10 px-6 rounded-xl bg-navy text-primary font-black text-[10px] tracking-widest uppercase shadow-lg shadow-navy/20 hover:bg-navy/90 hover:shadow-navy/30 transition-all flex items-center gap-2 disabled:opacity-50">
                     <Icon v-if="isAutoAssigning" icon="ph:circle-notch-bold" class="animate-spin text-sm" />
                     <Icon v-else icon="ph:magic-wand-bold" class="text-sm" />
                     <span>Auto Assign</span>

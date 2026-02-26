@@ -15,8 +15,8 @@
                     Atur Ulang
                 </BaseButton>
                 <BaseButton variant="primary" icon="fa7-solid:random"
-                    :disabled="isAssigning || isReseting || unassignedArchersCount === 0" :loading="isAssigning"
-                    @click="autoAssignTargets">
+                    :disabled="isAssigning || isReseting || props.archers.length === 0" :loading="isAssigning"
+                    @click="showAutoAssignDialog = true">
                     Penempatan Otomatis
                 </BaseButton>
             </div>
@@ -87,10 +87,10 @@
                                 <div
                                     class="bg-navy text-primary font-black text-xs px-2 py-1 rounded-lg shadow-sm flex items-center gap-2">
                                     <span>{{ target.name.split(' ').pop() }}</span>
-                                    <span v-if="getBoardCode(target.name)"
-                                        class="text-white text-[10px] font-mono border-l border-white/10 pl-2 opacity-80"
-                                        title="Kode Scorekeeper">
-                                        #{{ getBoardCode(target.name) }}
+                                    <span v-if="target.assignedCount > 0"
+                                        class="text-white text-[10px] font-mono border-l border-white/10 pl-2"
+                                        title="Kode Board">
+                                        {{ getBoardCode(target.name) ? getBoardCode(target.name) : String(target.name.match(/\d+/)?.[0] || '').padStart(2, '0') }}
                                     </span>
                                 </div>
                             </div>
@@ -188,9 +188,10 @@
                                                 class="px-4 py-3 text-center text-gray-400 text-xs font-bold">
                                                 Semua pemanah terbagi
                                             </div>
-                                            <button v-for="archer in unassignedArcherListFiltered" :key="archer.uuid"
-                                                @click="assignArcherToTarget(target, pos, archer.uuid)"
-                                                class="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-3 transition-colors border-b border-gray-50 last:border-0 group/archer-item">
+                                            <BaseButton v-for="archer in unassignedArcherListFiltered"
+                                                :key="archer.uuid"
+                                                @click="assignArcherToTarget(target, pos, archer.uuid)" variant="white"
+                                                class="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center gap-3 transition-colors border-none border-b border-gray-50 last:border-0 group/archer-item shadow-none justify-start">
                                                 <div
                                                     class="size-8 rounded-full border border-gray-100 overflow-hidden shrink-0 bg-gray-50">
                                                     <img :src="useImageOrDefault(archer.avatar_url, archer.name)"
@@ -206,7 +207,7 @@
                                                         {{
                                                             archer.club || 'Independen' }}</p>
                                                 </div>
-                                            </button>
+                                            </BaseButton>
                                         </div>
                                     </div>
                                 </div>
@@ -220,6 +221,9 @@
     <AppDialog v-model:show="showResetDialog" type="danger" title="Atur Ulang Penempatan"
         message="Apakah Anda yakin ingin menghapus semua penempatan target untuk kategori ini? Tindakan ini tidak dapat dibatalkan."
         confirmText="Ya, Atur Ulang" cancelText="Batal" icon="ph:trash-bold" @confirm="confirmReset" />
+    <AppDialog v-model:show="showAutoAssignDialog" type="warning" title="Penempatan Otomatis"
+        message="Penempatan otomatis akan menghapus semua penempatan yang ada untuk kategori ini, lalu mengacak ulang semua pemanah ke target secara otomatis. Lanjutkan?"
+        confirmText="Ya, Acak & Tempatkan" cancelText="Batal" icon="fa7-solid:random" @confirm="confirmAutoAssign" />
 </template>
 
 <script setup>
@@ -251,6 +255,7 @@ const isReseting = ref(false)
 const filterText = ref('')
 const openDropdown = ref(null)
 const showResetDialog = ref(false)
+const showAutoAssignDialog = ref(false)
 
 // Drag and Drop States
 const draggedArcher = ref(null) // { archer, sourceTarget, sourcePos }
@@ -358,6 +363,13 @@ const getBoardCode = (boardName) => {
     if (!num) return null
     const found = props.boardCodes.find(bc => bc.board_number === num)
     return found ? found.code : null
+}
+
+const getPositionCode = (targetName, pos) => {
+    const boardCode = getBoardCode(targetName)
+    if (boardCode) return `${boardCode}-${pos}`.toUpperCase()
+    const num = targetName.match(/\d+/)?.[0]
+    return num ? `${num}${pos}`.toUpperCase() : pos
 }
 
 const handleDragStart = (event, archer, targetRecord = null, pos = null) => {
@@ -514,6 +526,10 @@ const autoAssignTargets = async () => {
     } finally {
         isAssigning.value = false
     }
+}
+
+const confirmAutoAssign = async () => {
+    await autoAssignTargets()
 }
 
 const resetAssignments = () => {

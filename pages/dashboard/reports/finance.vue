@@ -211,7 +211,7 @@
                                 <tr v-for="(athlete, index) in topAthletes" :key="athlete.id"
                                     class="group hover:bg-gray-50 transition-colors">
                                     <td class="px-4 md:px-6 py-4">
-                                        <div :class="index === 0 ? 'bg-primary text-primary-text' : 'bg-gray-100 text-gray-600'"
+                                        <div :class="index === 0 ? 'bg-primary text-btn-text' : 'bg-gray-100 text-gray-600'"
                                             class="w-8 h-8 rounded-lg flex items-center justify-center font-black text-sm">
                                             {{ index + 1 }}
                                         </div>

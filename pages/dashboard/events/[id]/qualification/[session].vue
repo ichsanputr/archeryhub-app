@@ -2,23 +2,27 @@
   <div class="flex flex-col gap-6 pb-12">
     <!-- Enhanced Header -->
     <div
-      class="relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm mb-2">
-      <!-- Background Pattern -->
-      <div class="absolute inset-0 opacity-20"
-        style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);">
+      class="relative rounded-3xl border border-primary/20 text-white shadow-sm mb-2 z-20">
+      
+      <!-- Background and Effects Layer -->
+      <div class="absolute inset-0 overflow-hidden rounded-[22px] bg-gradient-to-r from-navy via-navy to-navy/90">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-20"
+          style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);">
+        </div>
+
+        <!-- Decorative Background Elements -->
+        <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+        <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
       </div>
 
-      <!-- Decorative Background Elements -->
-      <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-      <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
-
       <!-- Header Content -->
-      <div class="relative p-5 sm:p-8">
+      <div class="relative p-5 sm:p-8 z-10">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div class="flex items-center sm:items-start gap-4 flex-1 min-w-0">
             <BaseButton variant="white" size="sm" icon="ph:arrow-left-bold"
-              class="!bg-white/10 !text-white hover:!bg-primary hover:!text-primary-text backdrop-blur-sm !border-white/20"
+              class="!bg-white/10 !text-white hover:!bg-primary hover:!text-btn-text backdrop-blur-sm !border-white/20"
               @click="navigateTo(`/dashboard/events/${eventId}/qualification`)" />
             <div class="min-w-0">
               <div v-if="isLoading && !sessionData"
@@ -49,19 +53,68 @@
               </div>
             </div>
           </div>
+
+          <!-- Print Scoresheet Button (color / B&W split) -->
+          <div v-if="sessionData" class="flex-shrink-0 relative" v-click-outside="() => showScoresheetMenu = false">
+            <div class="flex items-stretch rounded-lg overflow-hidden border border-white/20 backdrop-blur-sm">
+              <!-- Main button: color version -->
+              <button
+                type="button"
+                :disabled="isDownloadingScoresheet"
+                class="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 text-white hover:bg-primary hover:text-btn-text transition-colors text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                @click="downloadScoresheet('color')">
+                <Icon :icon="isDownloadingScoresheet ? 'ph:spinner' : 'ph:printer-bold'" class="text-base" />
+                {{ isDownloadingScoresheet ? 'Membuka...' : 'Scoresheet' }}
+              </button>
+              <!-- Chevron to toggle dropdown -->
+              <button
+                type="button"
+                :disabled="isDownloadingScoresheet"
+                class="flex items-center px-2 bg-white/10 text-white hover:bg-primary hover:text-btn-text transition-colors border-l border-white/20 disabled:opacity-50"
+                @click="showScoresheetMenu = !showScoresheetMenu">
+                <Icon icon="ph:caret-down-bold" class="text-sm" />
+              </button>
+            </div>
+            <!-- Dropdown menu -->
+            <div
+              v-if="showScoresheetMenu"
+              class="absolute right-0 top-full mt-1 w-52 z-[9999] bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
+              <button
+                type="button"
+                class="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-primary/5 hover:text-primary transition-colors"
+                @click="downloadScoresheet('color'); showScoresheetMenu = false">
+                <Icon icon="ph:paint-bucket-bold" class="text-base text-primary" />
+                <div class="text-left">
+                  <div class="font-semibold">Berwarna</div>
+                  <div class="text-xs text-gray-400">Navy & kuning (layar/preview)</div>
+                </div>
+              </button>
+              <button
+                type="button"
+                class="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors border-t border-gray-100"
+                @click="downloadScoresheet('bw'); showScoresheetMenu = false">
+                <Icon icon="ph:circles-three-bold" class="text-base text-gray-500" />
+                <div class="text-left">
+                  <div class="font-semibold">Hitam Putih</div>
+                  <div class="text-xs text-gray-400">Hemat tinta, untuk cetak fisik</div>
+                </div>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <div
       class="flex items-center gap-1 border-b border-gray-200 overflow-x-auto no-scrollbar bg-white rounded-t-2xl px-2">
-      <BaseButton v-for="t in tabs" :key="t.id" @click="activeTab = t.id"
-        :variant="activeTab === t.id ? 'primary' : 'white'"
-        class="px-6 py-4 rounded-none border-b-2 shadow-none font-bold text-sm flex items-center gap-2 whitespace-nowrap"
-        :class="activeTab === t.id ? 'border-primary' : 'border-transparent text-gray-500 hover:text-primary hover:bg-gray-50'">
+      <button v-for="t in tabs" :key="t.id" type="button" @click="activeTab = t.id"
+        class="px-6 py-4 border-b-2 font-bold text-sm flex items-center gap-2 whitespace-nowrap transition-colors outline-none"
+        :class="activeTab === t.id
+          ? 'border-primary text-navy bg-primary/5'
+          : 'border-transparent text-gray-500 hover:text-navy hover:bg-gray-50'">
         <Icon :icon="t.icon" class="text-xl" />
         {{ t.label }}
-      </BaseButton>
+      </button>
     </div>
 
     <!-- Category Selection (Shared for both tabs) -->
@@ -104,11 +157,11 @@
             </div>
             <div class="flex-1 min-w-0">
               <p
-                class="font-bold text-navy group-hover:text-primary transition-colors leading-tight mb-1.5 line-clamp-2">
-                {{ getCategoryName(category) }}</p>
-              <div class="flex items-center gap-2 text-xs text-gray-500">
-                <Icon icon="ph:users-three" class="text-base" />
-                <span class="font-semibold">{{ category.participant_count || 0 }} pemanah</span>
+                class="font-extrabold text-navy group-hover:text-primary transition-colors leading-tight mb-1.5 line-clamp-2 uppercase">
+                {{ getCategoryName(category) }} ({{ category.participant_count || 0 }})</p>
+              <div class="flex items-center gap-2 text-[10px] text-gray-400 font-bold uppercase tracking-wider">
+                <Icon icon="ph:users-three-bold" class="text-sm text-primary" />
+                <span>Total Participant</span>
               </div>
             </div>
           </div>
@@ -163,6 +216,8 @@ import QualificationScoringMode from '~/components/qualification/QualificationSc
 
 const route = useRoute()
 const { get } = useApi()
+const config = useRuntimeConfig()
+const toast = useToast()
 const eventId = route.params.id
 const sessionCode = route.params.session
 
@@ -188,6 +243,7 @@ const boardCodes = ref([])
 const allSessionAssignments = ref([])
 const isLoadingAssignments = ref(false)
 const loadingCategories = ref(false)
+const isDownloadingScoresheet = ref(false)
 
 const tabs = [
   { id: 'target', label: 'Target', icon: 'ph:target' },
@@ -446,6 +502,42 @@ const handleAssignmentsSaved = async () => {
     } catch (error) {
       console.error("Error reloading assignments:", error)
     }
+  }
+}
+
+const showScoresheetMenu = ref(false)
+
+// Local click-outside directive for the scoresheet dropdown
+const vClickOutside = {
+  mounted(el, binding) {
+    el._clickOutside = (event) => {
+      if (!(el === event.target || el.contains(event.target))) {
+        binding.value(event)
+      }
+    }
+    document.addEventListener('mousedown', el._clickOutside)
+  },
+  unmounted(el) {
+    if (el._clickOutside) document.removeEventListener('mousedown', el._clickOutside)
+  }
+}
+
+const downloadScoresheet = async (theme, color) => {
+  if (!sessionData.value || isDownloadingScoresheet.value) return
+  isDownloadingScoresheet.value = true
+  try {
+    const apiBase = config.public.apiBaseUrl
+    const params = new URLSearchParams({ autoprint: '1' })
+    if (theme === 'bw') params.set('theme', 'bw')
+    const url = `${apiBase}/events/${eventId}/qualification/sessions/${sessionData.value.session_code}/scoresheet?${params}`
+    const win = window.open(url, '_blank')
+    if (!win) {
+      toast.addToast('Popup diblokir. Izinkan popup untuk halaman ini.', 'warning')
+    }
+  } catch {
+    toast.addToast('Gagal membuka scoresheet', 'error')
+  } finally {
+    isDownloadingScoresheet.value = false
   }
 }
 

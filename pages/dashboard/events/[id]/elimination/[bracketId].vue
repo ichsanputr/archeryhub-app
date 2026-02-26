@@ -155,17 +155,50 @@
                                 class="bg-white/10 p-1 sm:p-1.5 rounded-xl sm:rounded-2xl flex gap-1 backdrop-blur-sm border border-white/20">
                                 <button v-for="t in tabs" :key="t.id" @click="activeTab = t.id"
                                     class="flex-1 sm:flex-none px-4 sm:px-6 py-2 sm:py-2.5 text-[10px] sm:text-xs font-black tracking-widest uppercase rounded-lg sm:rounded-xl transition-all flex items-center justify-center gap-2"
-                                    :class="activeTab === t.id ? 'bg-primary text-primary-text shadow-sm' : 'text-slate-300 hover:text-white hover:bg-white/10'">
+                                    :class="activeTab === t.id ? 'bg-primary text-btn-text shadow-sm' : 'text-slate-300 hover:text-white hover:bg-white/10'">
                                     <Icon :icon="t.icon" class="text-sm sm:text-lg" />
                                     <span>{{ t.label }}</span>
                                 </button>
                             </div>
 
-                            <BaseButton v-if="!currentRoundNo" @click="generateBracket" variant="primary"
+                            <BaseButton v-if="!currentRoundNo && Object.keys(rounds).length === 0" @click="generateBracket" variant="primary"
                                 icon="ph:magic-wand-bold"
                                 class="h-10 sm:h-11 shadow-lg shadow-primary/30 tracking-[0.2em] font-black uppercase text-[10px] sm:text-xs">
                                 Generate Bracket
                             </BaseButton>
+
+                            <!-- Scoresheet split button (color / B&W) -->
+                            <div v-if="bracket && !(currentRoundNo && route.query.mode === 'scoring')" class="flex-shrink-0 relative" v-click-outside="() => showScoresheetMenu = false">
+                                <div class="flex">
+                                    <BaseButton @click="openScoresheet('color')"
+                                        :icon="isDownloadingScoresheet ? 'ph:spinner' : 'ph:printer-bold'"
+                                        :disabled="isDownloadingScoresheet"
+                                        class="h-10 sm:h-11 !bg-white/10 !text-white hover:!bg-primary hover:!text-btn-text backdrop-blur-sm !border-white/20 !border-r-0 !rounded-r-none tracking-[0.1em] font-black uppercase text-[10px] sm:text-xs">
+                                        {{ isDownloadingScoresheet ? 'Membuka...' : 'Scoresheet' }}
+                                    </BaseButton>
+                                    <BaseButton @click="showScoresheetMenu = !showScoresheetMenu"
+                                        :disabled="isDownloadingScoresheet"
+                                        icon="ph:caret-down-bold"
+                                        class="h-10 sm:h-11 !bg-white/10 !text-white hover:!bg-primary hover:!text-primary-text backdrop-blur-sm !border-white/20 !rounded-l-none !px-2" />
+                                </div>
+                                <!-- Dropdown -->
+                                <div v-if="showScoresheetMenu"
+                                    class="absolute right-0 top-full mt-1.5 z-[100] bg-white border border-gray-100 rounded-xl shadow-xl overflow-hidden min-w-[170px]">
+                                    <button
+                                        class="w-full flex items-center gap-2.5 px-4 py-2.5 text-[11px] font-bold text-navy hover:bg-primary/10 transition-colors"
+                                        @click="openScoresheet('color'); showScoresheetMenu = false">
+                                        <Icon icon="ph:paint-brush-bold" class="text-base text-primary" />
+                                        Berwarna (Color)
+                                    </button>
+                                    <div class="h-px bg-gray-50"></div>
+                                    <button
+                                        class="w-full flex items-center gap-2.5 px-4 py-2.5 text-[11px] font-bold text-navy hover:bg-gray-50 transition-colors"
+                                        @click="openScoresheet('bw'); showScoresheetMenu = false">
+                                        <Icon icon="ph:circle-half-bold" class="text-base text-gray-500" />
+                                        Hitam Putih (B&amp;W)
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -366,6 +399,7 @@ definePageMeta({
 
 const route = useRoute()
 const router = useRouter()
+const config = useRuntimeConfig()
 const eventId = route.params.id
 const bracketId = route.params.bracketId
 const { get, post, put } = useApi()
@@ -374,6 +408,7 @@ const toast = useToast()
 const isLoading = ref(true)
 const isSaving = ref(false)
 const isAutoAssigning = ref(false)
+const isDownloadingScoresheet = ref(false)
 const bracket = ref(null)
 const categoryInfo = ref(null)
 const entries = ref([])
@@ -579,6 +614,42 @@ const generateBracket = async () => {
             msg = `${data.error} (tersedia ${data.participant_count}, diperlukan ${data.required})`
         }
         toast.error(msg)
+    }
+}
+
+const downloadScoresheet = async () => { openScoresheet('color') }
+
+const showScoresheetMenu = ref(false)
+
+// Local click-outside directive for the scoresheet dropdown
+const vClickOutside = {
+    mounted(el, binding) {
+        el._clickOutside = (event) => {
+            if (!(el === event.target || el.contains(event.target))) binding.value(event)
+        }
+        document.addEventListener('mousedown', el._clickOutside)
+    },
+    unmounted(el) {
+        if (el._clickOutside) document.removeEventListener('mousedown', el._clickOutside)
+    }
+}
+
+const openScoresheet = async (theme = 'color') => {
+    if (isDownloadingScoresheet.value) return
+    isDownloadingScoresheet.value = true
+    try {
+        const apiBase = config.public.apiBaseUrl
+        const params = new URLSearchParams({ autoprint: '1' })
+        if (theme === 'bw') params.set('theme', 'bw')
+        const url = `${apiBase}/events/${eventId}/elimination/brackets/${bracketId}/scoresheet?${params}`
+        const win = window.open(url, '_blank')
+        if (!win) {
+            toast.addToast('Popup diblokir. Izinkan popup untuk halaman ini.', 'warning')
+        }
+    } catch {
+        toast.addToast('Gagal membuka scoresheet', 'error')
+    } finally {
+        isDownloadingScoresheet.value = false
     }
 }
 

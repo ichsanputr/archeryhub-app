@@ -36,7 +36,7 @@
                                 {{ cancelText || 'Batal' }}
                             </button>
                             <button @click="handleConfirm"
-                                :class="type === 'danger' ? 'bg-red-500 hover:bg-red-600 shadow-red-500/20 text-white' : 'bg-primary text-primary-text hover:bg-primary-hover shadow-primary/10'"
+                                :class="type === 'danger' ? 'bg-red-500 hover:bg-red-600 shadow-red-500/20 text-white' : 'bg-primary text-btn-text hover:bg-primary-hover shadow-primary/10'"
                                 class="flex-1 px-6 py-3 rounded-xl font-bold text-sm transition-all shadow-lg">
                                 {{ confirmText || 'Ya, Lanjutkan' }}
                             </button>

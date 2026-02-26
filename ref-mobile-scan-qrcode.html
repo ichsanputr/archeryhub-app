@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Target Barcode Scanner - Archeryhub.id</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#DFFF00", // Lime green from screenshots
+                        "primary-hover": "#C8E600",
+                        "background-light": "#F3F4F6",
+                        "background-dark": "#111827",
+                        "surface-dark": "#1F2937",
+                        "dark-overlay": "rgba(0, 0, 0, 0.6)",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                        body: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                    },
+                },
+            },
+        };
+    </script>
+<style>.camera-view {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuBHb2_9p3YYEjzY2CWuSkxdhbflT9oZl4C1gQqEVhT2D-6RENQEzI0UOqfWsY9cdTbTt9wDaFJTp_OzaeuIwyCJSiFcweG3Y01yFaflTG7-FtLxvE4WgYFtoOM363z4LgCBbVO-3SjmRAZ1a6ttIhbPm9ba4rjcDY9jj-wP0ocJtmLMEeYCR5Yf7gVrgHUShSjgKhDH9145M1sBI_EUTsWlE9nYfTbIqc7zsJqjKnSjRaXVGTb5ZiAB3E00wREeydM9Oj86rRiL2T8);
+    background-size: cover;
+    background-position: center
+    }@keyframes scan {
+    0% {
+        top: 0%;
+        opacity: 0;
+        } 10% {
+        opacity: 1;
+        } 90% {
+        opacity: 1;
+        } 100% {
+        top: 100%;
+        opacity: 0;
+        }
+    }
+.scan-line {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #DFFF00;
+    box-shadow: 0 0 4px #DFFF00;
+    animation: scan 2s infinite linear
+    }</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body text-gray-900 dark:text-gray-100 h-screen w-full overflow-hidden relative bg-black">
+<div class="absolute inset-0 camera-view z-0"></div>
+<div class="absolute inset-0 z-10 flex flex-col pointer-events-none">
+<div class="flex-1 bg-black/60 backdrop-blur-[1px] flex flex-col items-center justify-end pb-8">
+<div class="pointer-events-auto bg-black/40 backdrop-blur-md rounded-full px-4 py-2 flex items-center gap-2 mb-4 border border-white/10">
+<span class="material-icons text-primary text-sm">qr_code_scanner</span>
+<p class="text-white text-xs font-medium">Mode Scan Aktif</p>
+</div>
+<h1 class="text-white text-lg font-semibold text-center max-w-xs leading-relaxed drop-shadow-md">
+                Arahkan kamera ke Barcode<br/>di Bantalan Target
+            </h1>
+</div>
+<div class="h-72 w-full flex">
+<div class="flex-1 bg-black/60 backdrop-blur-[1px]"></div>
+<div class="relative w-72 h-72 border-2 border-primary/50 rounded-2xl bg-transparent shadow-[0_0_0_9999px_rgba(0,0,0,0.6)]">
+<div class="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-primary rounded-tl-lg -mt-[2px] -ml-[2px]"></div>
+<div class="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-primary rounded-tr-lg -mt-[2px] -mr-[2px]"></div>
+<div class="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-primary rounded-bl-lg -mb-[2px] -ml-[2px]"></div>
+<div class="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-primary rounded-br-lg -mb-[2px] -mr-[2px]"></div>
+<div class="relative w-full h-full overflow-hidden rounded-xl">
+<div class="scan-line"></div>
+</div>
+</div>
+<div class="flex-1 bg-black/60 backdrop-blur-[1px]"></div>
+</div>
+<div class="flex-1 bg-black/60 backdrop-blur-[1px] flex flex-col items-center justify-between pt-8 pb-10 pointer-events-auto">
+<p class="text-gray-300 text-sm text-center px-8 mb-6">
+                Pastikan barcode berada dalam bingkai dan memiliki pencahayaan yang cukup.
+            </p>
+<div class="w-full px-6 flex flex-col items-center gap-6">
+<button class="flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-colors border border-white/20">
+<span class="material-icons text-white">flash_on</span>
+</button>
+<div class="flex items-center w-full gap-4">
+<div class="h-[1px] bg-white/20 flex-1"></div>
+<span class="text-xs text-gray-400 font-medium uppercase tracking-wider">Atau</span>
+<div class="h-[1px] bg-white/20 flex-1"></div>
+</div>
+<button class="w-full bg-surface-dark border border-gray-600 hover:bg-gray-700 active:scale-[0.98] transition-all text-white font-medium py-3.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-lg">
+<span class="material-icons text-primary text-xl">keyboard</span>
+<span>Input Kode Bantalan Manual</span>
+</button>
+</div>
+</div>
+</div>
+<div class="absolute top-0 left-0 right-0 z-20 pt-12 pb-4 px-4 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent">
+<button class="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/20 transition-colors">
+<span class="material-icons">arrow_back</span>
+</button>
+<div class="flex items-center gap-2">
+<img alt="Archery Hub Logo" class="h-6 w-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEx5tVW3f3zGY59o007xmL93plK4d1_f0qvMslY07MQuKOcbJBNrwdPxxgWeFssVpWAfJAijBAJ22mV0M5GEOcKeA2av8La-NGjmr-RGwolHm-IC8Xtm-Bw03LPN3CAsqGjgg8YM-ghOD-mqx86atRFiOg--0Sn8krf_ILOGC7N2zVtlCVF9hI0LPSF7qq0J9d0KpSHe9CaRTJVUVkXMJe0y8RLBG6U_yh3BmPnhzzJSC2zzu5IGNpBLKhNIAACdUpVd9_rr_ru_Q"/>
+<span class="text-white font-bold tracking-tight">Archeryhub<span class="text-primary">.id</span></span>
+</div>
+<button class="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/20 transition-colors relative">
+<span class="material-icons">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-black"></span>
+</button>
+</div>
+
+</body></html>

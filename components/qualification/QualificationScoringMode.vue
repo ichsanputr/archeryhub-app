@@ -147,12 +147,12 @@
                 <div class="bg-white rounded-[2.5rem] shadow-sm border border-gray-100 p-6 sm:p-8 sticky top-6">
                     <!-- Score Buttons Grid -->
                     <div class="grid grid-cols-3 gap-3 mb-6">
-                        <button v-for="val in ['X', 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 'M']" :key="val"
-                            @click="addScore(val)" :disabled="!currentScoringAssignment"
-                            class="aspect-square rounded-2xl border-b-[6px] text-lg font-black transition-all active:border-b-0 active:translate-y-[6px] disabled:opacity-30 disabled:cursor-not-allowed hover:-translate-y-0.5 shadow-sm"
+                        <BaseButton v-for="val in ['X', 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 'M']" :key="val"
+                            @click="addScore(val)" :disabled="!currentScoringAssignment" variant="white"
+                            class="aspect-square !rounded-2xl border-b-[6px] text-lg font-black transition-all active:border-b-0 active:translate-y-[6px] disabled:opacity-30 disabled:cursor-not-allowed hover:-translate-y-0.5 shadow-sm !p-0"
                             :class="[getScoreKeypadClass(val)]">
                             {{ val }}
-                        </button>
+                        </BaseButton>
                     </div>
 
                     <!-- Action Buttons -->
@@ -163,9 +163,9 @@
                             @click="deleteLastScore">
                             <span class="text-[10px] tracking-widest uppercase">HAPUS</span>
                         </BaseButton>
-                        <BaseButton variant="navy" iconRight="ph:paper-plane-right-fill"
+                        <BaseButton variant="primary" iconRight="ph:paper-plane-right-fill"
                             :disabled="saving || !currentScoringAssignment" :loading="saving"
-                            class="!h-14 !rounded-xl bg-navy text-primary hover:bg-navy/95 shadow-sm shadow-navy/10"
+                            class="!h-14 !rounded-xl bg-primary text-primary-text hover:bg-primary/90 shadow-sm"
                             @click="saveEndAndNext">
                             <span class="text-[10px] tracking-widest uppercase">SIMPAN</span>
                         </BaseButton>
@@ -192,12 +192,12 @@
                 </div>
 
                 <div class="grid grid-cols-6 gap-2 mb-3">
-                    <button v-for="val in ['X', 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 'M']" :key="val" @click="addScore(val)"
-                        :disabled="!currentScoringAssignment"
-                        class="h-11 rounded-xl border-b-4 text-sm font-black transition-all active:border-b-0 active:translate-y-[4px] disabled:opacity-30 disabled:cursor-not-allowed shadow-sm"
+                    <BaseButton v-for="val in ['X', 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 'M']" :key="val"
+                        @click="addScore(val)" :disabled="!currentScoringAssignment" variant="white"
+                        class="h-11 !rounded-xl border-b-4 text-sm font-black transition-all active:border-b-0 active:translate-y-[4px] disabled:opacity-30 disabled:cursor-not-allowed shadow-sm !p-0"
                         :class="[getScoreKeypadClass(val)]">
                         {{ val }}
-                    </button>
+                    </BaseButton>
                 </div>
 
                 <div class="grid grid-cols-2 gap-2">
@@ -206,7 +206,7 @@
                         class="!h-11 !rounded-xl border border-slate-200" @click="deleteLastScore">
                         <span class="text-[10px] tracking-widest uppercase">Hapus</span>
                     </BaseButton>
-                    <BaseButton variant="navy" :disabled="saving || !currentScoringAssignment" :loading="saving"
+                    <BaseButton variant="primary" :disabled="saving || !currentScoringAssignment" :loading="saving"
                         class="!h-11 !rounded-xl" @click="saveEndAndNext">
                         <span class="text-[10px] tracking-widest uppercase">Simpan</span>
                     </BaseButton>

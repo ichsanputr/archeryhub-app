@@ -41,6 +41,12 @@
   --color-warning: #facc15;
   --color-error: #ef4444;
   --color-info: #3b82f6;
+
+  /* Button Text Colors */
+  /* Use --btn-text on light/primary (lime) button backgrounds */
+  --btn-text: #0f172a;
+  /* Use --btn-text-inverse on dark/navy button backgrounds */
+  --btn-text-inverse: #D9FF00;
 }
 
 /* Dark Theme Variables */

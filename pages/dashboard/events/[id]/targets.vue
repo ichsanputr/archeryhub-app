@@ -40,12 +40,12 @@
             <!-- View Toggle -->
             <div class="hidden sm:flex bg-white/10 backdrop-blur-md p-1 rounded-xl border border-white/20 mr-2">
               <button @click="viewMode = 'grid'" class="px-3 py-1.5 rounded-lg transition-all flex items-center gap-2"
-                :class="viewMode === 'grid' ? 'bg-primary text-primary-text shadow-md' : 'text-slate-300 hover:text-white'">
+                :class="viewMode === 'grid' ? 'bg-primary text-btn-text shadow-md' : 'text-slate-300 hover:text-white'">
                 <Icon icon="ph:grid-four-bold" />
                 <span class="text-[10px] font-black uppercase tracking-wider">Grid</span>
               </button>
               <button @click="viewMode = 'table'" class="px-3 py-1.5 rounded-lg transition-all flex items-center gap-2"
-                :class="viewMode === 'table' ? 'bg-primary text-primary-text shadow-md' : 'text-slate-300 hover:text-white'">
+                :class="viewMode === 'table' ? 'bg-primary text-btn-text shadow-md' : 'text-slate-300 hover:text-white'">
                 <Icon icon="ph:table-bold" />
                 <span class="text-[10px] font-black uppercase tracking-wider">Tabel</span>
               </button>
