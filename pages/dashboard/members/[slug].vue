@@ -18,15 +18,11 @@
         </p>
       </div>
       <div class="flex gap-3">
-        <button
-          class="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-xl font-semibold text-sm text-navy shadow-sm hover:bg-gray-50 transition">
-          <Icon icon="ph:pencil-simple" class="text-lg" />
-          Edit Profil
-        </button>
-        <button
-          class="inline-flex items-center gap-2 px-4 py-2.5 bg-red-50 text-red-600 border border-red-100 rounded-xl font-semibold text-sm hover:bg-red-100 transition">
-          <Icon icon="ph:user-minus" class="text-lg" />
-          Keluar dari Klub
+        <button @click="kickMember" :disabled="isKicking"
+          class="inline-flex items-center gap-2 px-4 py-2.5 bg-red-50 text-red-600 border border-red-100 rounded-xl font-semibold text-sm hover:bg-red-100 transition disabled:opacity-50">
+          <Icon v-if="!isKicking" icon="ph:user-minus" class="text-lg" />
+          <LoadingSpinner v-else size="sm" />
+          {{ isKicking ? 'Memproses...' : 'Keluarkan dari Klub' }}
         </button>
       </div>
     </div>
@@ -56,27 +52,29 @@
 
         <div class="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100">
           <div>
-            <p class="text-[11px] font-black text-gray-400  tracking-widest mb-1">Jenis Busur</p>
-            <p class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold" :class="bowBadgeClass">
+            <p class="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-1">Jenis Busur</p>
+            <p class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold capitalize"
+              :class="bowBadgeClass">
               <Icon icon="ph:bow-and-arrow" class="text-base" />
               <span>{{ member?.bow_type || 'Recurve' }}</span>
             </p>
           </div>
           <div>
-            <p class="text-[11px] font-black text-gray-400  tracking-widest mb-1">Kategori Usia</p>
-            <p class="text-sm font-semibold text-navy">
+            <p class="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-1">Kategori Usia</p>
+            <p class="text-sm font-semibold text-navy capitalize">
               {{ member?.age_group || ageLabel }}
             </p>
           </div>
           <div>
-            <p class="text-[11px] font-black text-gray-400  tracking-widest mb-1">Kota</p>
-            <p class="text-sm font-semibold text-navy">
+            <p class="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-1">Kota</p>
+            <p class="text-sm font-semibold text-navy capitalize">
               {{ member?.city || '—' }}
             </p>
           </div>
           <div>
-            <p class="text-[11px] font-black text-gray-400  tracking-widest mb-1">Status</p>
-            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-black  tracking-widest"
+            <p class="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-1">Status</p>
+            <span
+              class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest"
               :class="statusBadgeClass">
               <span class="h-1.5 w-1.5 rounded-full bg-current"></span>
               {{ member?.status || 'Aktif' }}
@@ -85,22 +83,21 @@
         </div>
       </div>
 
-      <!-- Summary Stats -->
       <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-2">
-          <p class="text-[11px] font-black text-gray-400  tracking-widest">Total Event Diikuti</p>
+          <p class="text-[11px] font-black text-gray-400 uppercase tracking-widest">Total Event Diikuti</p>
           <p class="text-3xl font-black text-navy">{{ member?.total_events || 0 }}</p>
-          <p class="text-xs text-gray-400">Sejak bergabung dengan klub</p>
+          <p class="text-xs text-gray-400 capitalize">Sejak bergabung dengan klub</p>
         </div>
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-2">
-          <p class="text-[11px] font-black text-gray-400  tracking-widest">Best Qualification</p>
+          <p class="text-[11px] font-black text-gray-400 uppercase tracking-widest">Best Qualification</p>
           <p class="text-3xl font-black text-navy">{{ member?.best_qualification || '-' }}</p>
-          <p class="text-xs text-gray-400">Skor tertinggi kualifikasi</p>
+          <p class="text-xs text-gray-400 capitalize">Skor tertinggi kualifikasi</p>
         </div>
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-2">
-          <p class="text-[11px] font-black text-gray-400  tracking-widest">Podium Finish</p>
+          <p class="text-[11px] font-black text-gray-400 uppercase tracking-widest">Podium Finish</p>
           <p class="text-3xl font-black text-navy">{{ member?.podium_count || 0 }}</p>
-          <p class="text-xs text-gray-400">Jumlah medali/podium</p>
+          <p class="text-xs text-gray-400 capitalize">Jumlah medali/podium</p>
         </div>
       </div>
     </div>
@@ -150,13 +147,20 @@
         <textarea v-model="coachNotes" rows="6"
           class="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/60 resize-none"
           placeholder="Tuliskan evaluasi teknik, mental, dan rekomendasi latihan untuk pemanah ini..." />
-        <button
-          class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-navy text-white rounded-xl font-semibold text-sm shadow-sm hover:bg-navy-dark transition">
-          <Icon icon="ph:floppy-disk" class="text-lg" />
-          Simpan Catatan
+        <button @click="saveNotes" :disabled="isSavingNotes"
+          class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-navy text-white rounded-xl font-semibold text-sm shadow-sm hover:bg-navy-dark transition disabled:opacity-50">
+          <Icon v-if="!isSavingNotes" icon="ph:floppy-disk" class="text-lg" />
+          <LoadingSpinner v-else size="sm" />
+          {{ isSavingNotes ? 'Menyimpan...' : 'Simpan Catatan' }}
         </button>
       </div>
     </div>
+
+    <!-- Confirmation Dialog -->
+    <AppDialog :show="showKickDialog" title="Keluarkan Anggota?"
+      :message="`Apakah Anda yakin ingin mengeluarkan ${member?.full_name} dari klub? Tindakan ini akan menghapus akses mereka dari daftar anggota aktif klub Anda.`"
+      confirm-text="Ya, Keluarkan" cancel-text="Batal" type="danger" icon="ph:user-minus-bold" @confirm="executeKick"
+      @cancel="showKickDialog = false" @update:show="showKickDialog = $event" />
   </div>
 </template>
 
@@ -164,11 +168,15 @@
 import { Icon } from '@iconify/vue'
 
 const route = useRoute()
-const { get } = useApi()
+const router = useRouter()
+const { get, delete: del, patch } = useApi()
 const toast = useToast()
 
 const member = ref(null)
 const coachNotes = ref('')
+const isKicking = ref(false)
+const isSavingNotes = ref(false)
+const showKickDialog = ref(false)
 
 definePageMeta({
   title: 'Detail Anggota Klub',
@@ -229,8 +237,48 @@ const fetchMember = async () => {
     const id = route.params.slug
     const resp = await get(`/archers/${id}`)
     member.value = resp || resp?.data || null
+    if (member.value?.coach_notes) {
+      coachNotes.value = member.value.coach_notes
+    }
   } catch (error) {
     toast.error('Gagal memuat detail anggota')
+  }
+}
+
+const saveNotes = async () => {
+  if (!member.value?.uuid) return
+
+  isSavingNotes.value = true
+  try {
+    await patch(`/clubs/members/${member.value.uuid}/notes`, {
+      notes: coachNotes.value
+    })
+    toast.success('Catatan pelatih berhasil disimpan')
+  } catch (error) {
+    console.error('Failed to save notes:', error)
+    toast.error(error.data?.error || 'Gagal menyimpan catatan')
+  } finally {
+    isSavingNotes.value = false
+  }
+}
+
+const kickMember = () => {
+  if (!member.value?.uuid) return
+  showKickDialog.value = true
+}
+
+const executeKick = async () => {
+  isKicking.value = true
+  try {
+    await del(`/clubs/members/${member.value.uuid}`)
+    toast.success(`${member.value.full_name} telah dikeluarkan dari klub`)
+    router.push('/dashboard/members')
+  } catch (error) {
+    console.error('Failed to kick member:', error)
+    toast.error(error.data?.error || 'Gagal mengeluarkan anggota')
+  } finally {
+    isKicking.value = false
+    showKickDialog.value = false
   }
 }
 

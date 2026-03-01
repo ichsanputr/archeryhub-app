@@ -65,9 +65,11 @@
                             <!-- About Section -->
                             <section v-if="tournament.page_settings?.sections?.about !== false"
                                 class="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-gray-100">
-                                <h2 class="font-black text-navy text-2xl mb-6 flex items-center gap-3">
-                                    <div class="w-12 h-12 rounded-2xl bg-navy/5 flex items-center justify-center">
-                                        <Icon icon="ph:info-bold" class="text-xl text-navy" />
+                                <h2
+                                    class="font-black text-navy text-lg md:text-2xl mb-6 flex items-center gap-2 md:gap-3">
+                                    <div
+                                        class="w-8 h-8 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-navy/5 flex items-center justify-center shrink-0">
+                                        <Icon icon="ph:info-bold" class="text-base md:text-xl text-navy" />
                                     </div>
                                     Tentang Event
                                 </h2>
@@ -102,10 +104,12 @@
 
                                 <div class="flex items-center justify-between mb-10 relative z-10">
                                     <div>
-                                        <h2 class="font-black text-navy text-2xl mb-2 flex items-center gap-3">
+                                        <h2
+                                            class="font-black text-navy text-lg md:text-2xl mb-2 flex items-center gap-2 md:gap-3">
                                             <div
-                                                class="w-12 h-12 rounded-2xl bg-navy/5 flex items-center justify-center">
-                                                <Icon icon="ph:squares-four-bold" class="text-xl text-navy" />
+                                                class="w-8 h-8 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-navy/5 flex items-center justify-center shrink-0">
+                                                <Icon icon="ph:squares-four-bold"
+                                                    class="text-base md:text-xl text-navy" />
                                             </div>
                                             Kategori Lomba
                                         </h2>
@@ -144,12 +148,13 @@
                                             <!-- Card Header -->
                                             <div class="flex items-center gap-4 mb-6">
                                                 <div
-                                                    class="w-12 h-12 bg-navy rounded-2xl flex items-center justify-center p-1.5 shadow-sm shadow-navy/20 overflow-hidden">
+                                                    class="w-10 h-10 md:w-12 md:h-12 bg-navy rounded-2xl flex items-center justify-center p-1.5 shadow-sm shadow-navy/20 overflow-hidden shrink-0">
                                                     <img :src="'/' + division.icon" :alt="division.name"
                                                         class="w-full h-full object-contain invert" />
                                                 </div>
                                                 <div>
-                                                    <h3 class="font-black text-navy text-xl">{{ division.name }}
+                                                    <h3 class="font-black text-navy text-lg md:text-xl">{{ division.name
+                                                        }}
                                                     </h3>
                                                     <span
                                                         class="text-[10px] font-black tracking-[0.2em] uppercase">Tournament
@@ -179,10 +184,11 @@
                                 <div
                                     class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10 relative z-10">
                                     <div>
-                                        <h2 class="font-black text-navy text-2xl mb-2 flex items-center gap-3">
+                                        <h2
+                                            class="font-black text-navy text-lg md:text-2xl mb-2 flex items-center gap-2 md:gap-3">
                                             <div
-                                                class="w-12 h-12 rounded-2xl bg-navy/5 flex items-center justify-center">
-                                                <Icon icon="ph:wallet-bold" class="text-xl text-navy" />
+                                                class="w-8 h-8 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-navy/5 flex items-center justify-center shrink-0">
+                                                <Icon icon="ph:wallet-bold" class="text-base md:text-xl text-navy" />
                                             </div>
                                             Biaya Pendaftaran
                                         </h2>
@@ -254,12 +260,12 @@
                                         <div v-for="(method, idx) in tournament.payment_methods" :key="idx"
                                             class="p-4 rounded-2xl bg-white border border-gray-200 flex items-center gap-4">
                                             <div
-                                                class="w-12 h-12 rounded-xl bg-slate-50 shadow-sm flex items-center justify-center shrink-0 overflow-hidden p-1.5">
+                                                class="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-slate-50 shadow-sm flex items-center justify-center shrink-0 overflow-hidden p-1.5">
                                                 <img v-if="getPaymentMethodImage(method.bank_name)"
                                                     :src="getPaymentMethodImage(method.bank_name)"
                                                     class="w-full h-full object-contain" :alt="method.bank_name" />
                                                 <Icon v-else :icon="getPaymentIcon(method)"
-                                                    class="text-2xl text-navy" />
+                                                    class="text-xl md:text-2xl text-navy" />
                                             </div>
                                             <div class="min-w-0">
                                                 <p
@@ -299,8 +305,8 @@
                                         style="background-image: radial-gradient(circle, rgba(255,255,255,0.25) 1px, transparent 1px); background-size: 30px 30px;">
                                     </div>
                                     <div class="relative z-10 w-full">
-                                        <h3 class="text-white text-xl sm:text-2xl mb-10 flex items-center gap-3">
-                                            <Icon icon="ph:trophy-bold" class="text-primary text-3xl" />
+                                        <h3 class="text-white text-lg sm:text-2xl mb-10 flex items-center gap-3">
+                                            <Icon icon="ph:trophy-bold" class="text-primary text-2xl md:text-3xl" />
                                             Rincian Hadiah
                                         </h3>
                                         <div class="space-y-10">
@@ -335,7 +341,7 @@
                                                     </div>
                                                     <div class="text-white text-lg sm:text-xl font-black">{{
                                                         displayValue(tournament.prizes?.second)
-                                                    }}</div>
+                                                        }}</div>
                                                 </div>
                                                 <div class="w-full h-2 bg-white/10 overflow-hidden">
                                                     <div class="h-full bg-white/60 w-1/2"></div>
@@ -387,11 +393,12 @@
                                 <div class="absolute -right-16 -top-16 w-48 h-48 bg-primary/5 rounded-full blur-3xl">
                                 </div>
                                 <div class="flex items-center gap-3 mb-8 relative z-10">
-                                    <div class="w-12 h-12 rounded-2xl bg-navy/5 flex items-center justify-center">
-                                        <Icon icon="ph:images-bold" class="text-2xl text-navy" />
+                                    <div
+                                        class="w-8 h-8 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-navy/5 flex items-center justify-center shrink-0">
+                                        <Icon icon="ph:images-bold" class="text-base md:text-xl text-navy" />
                                     </div>
                                     <div>
-                                        <h2 class="font-black text-navy text-2xl">Galeri Event</h2>
+                                        <h2 class="font-black text-navy text-lg md:text-2xl">Galeri Event</h2>
                                         <p class="text-sm text-gray-400 font-medium">Foto dan dokumentasi event</p>
                                     </div>
                                 </div>
@@ -469,10 +476,11 @@
                                 <div
                                     class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10 relative z-10">
                                     <div>
-                                        <h2 class="font-black text-navy text-2xl mb-2 flex items-center gap-3">
+                                        <h2
+                                            class="font-black text-navy text-lg md:text-2xl mb-2 flex items-center gap-2 md:gap-3">
                                             <div
-                                                class="w-12 h-12 rounded-2xl bg-navy/5 flex items-center justify-center">
-                                                <Icon icon="ph:question-bold" class="text-2xl text-navy" />
+                                                class="w-8 h-8 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-navy/5 flex items-center justify-center shrink-0">
+                                                <Icon icon="ph:question-bold" class="text-base md:text-xl text-navy" />
                                             </div>
                                             Tanya Jawab (FAQ)
                                         </h2>

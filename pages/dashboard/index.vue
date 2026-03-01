@@ -93,24 +93,6 @@
 
         <!-- Quick Actions & New Members -->
         <div class="space-y-6">
-          <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
-            <h3 class="font-black text-navy mb-4 text-xs  tracking-[0.2em] flex items-center gap-2">
-              <Icon icon="ph:lightning-bold" class="text-primary" />
-              Aksi Cepat
-            </h3>
-            <div class="grid grid-cols-2 gap-3">
-              <NuxtLink to="/dashboard/members"
-                class="flex flex-col items-center gap-2 p-4 rounded-xl bg-gray-50 hover:bg-primary/5 hover:border-primary/20 border border-transparent transition-all group">
-                <Icon icon="ph:user-list" class="text-2xl text-primary" />
-                <span class="text-[9px] font-black text-navy  text-center">Data Anggota</span>
-              </NuxtLink>
-              <NuxtLink to="/dashboard/news"
-                class="flex flex-col items-center gap-2 p-4 rounded-xl bg-gray-50 hover:bg-primary/5 hover:border-primary/20 border border-transparent transition-all group">
-                <Icon icon="ph:newspaper-clipping" class="text-2xl text-primary" />
-                <span class="text-[9px] font-black text-navy  text-center">Buat Berita</span>
-              </NuxtLink>
-            </div>
-          </div>
 
           <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
             <h3 class="font-black text-navy mb-4 text-xs  tracking-[0.2em] flex items-center gap-2">
@@ -777,4 +759,3 @@ const formatDate = (dateStr) => {
   })
 }
 </script>
-

@@ -11,17 +11,29 @@
       <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
 
       <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div class="flex items-center gap-4">
+        <div class="space-y-4">
+          <!-- Mobile-styled Breadcrumb -->
           <div
-            class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0">
-            <Icon icon="ph:users-three-bold" class="text-primary text-2xl sm:text-3xl" />
+            class="flex items-center gap-2 text-[10px] sm:text-xs font-black uppercase tracking-widest text-primary/80">
+            <NuxtLink to="/dashboard" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
+            <Icon icon="ph:caret-right-bold" class="text-[8px] opacity-50" />
+            <span class="text-white">Roster Anggota</span>
           </div>
-          <div>
-            <h1 class="text-xl sm:text-3xl font-black tracking-tight">Roster Anggota</h1>
-            <p class="text-slate-300 text-xs sm:text-sm font-medium mt-1">Kelola pemanah dan atlet yang terdaftar di
-              klub Anda</p>
+
+          <div class="flex items-center gap-4">
+            <div
+              class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0">
+              <Icon icon="ph:users-three-bold" class="text-primary text-2xl sm:text-3xl" />
+            </div>
+            <div>
+              <h1 class="text-xl sm:text-3xl font-black tracking-tight">Roster Anggota</h1>
+              <p class="text-slate-300 text-[10px] sm:text-sm font-medium mt-1">Kelola pemanah dan atlet yang terdaftar
+                di
+                klub Anda</p>
+            </div>
           </div>
         </div>
+
         <!-- Action Buttons -->
         <div class="flex flex-col sm:flex-row gap-3">
           <BaseButton @click="openInviteModal" variant="white" icon="ph:user-plus-bold"
@@ -129,7 +141,7 @@
                       class="w-full h-full object-cover" />
                   </div>
                   <div>
-                    <NuxtLink :to="`/dashboard/members/${member.uuid || member.id}`"
+                    <NuxtLink :to="`/dashboard/members/${member.id || member.uuid}`"
                       class="font-bold text-navy group-hover:text-primary transition-colors">
                       {{ member.full_name }}
                     </NuxtLink>
@@ -166,12 +178,10 @@
               </td>
               <td class="px-6 py-4 text-right">
                 <div class="flex items-center justify-end gap-2">
-                  <NuxtLink :to="`/dashboard/members/${member.uuid || member.id}`"
+                  <NuxtLink :to="`/dashboard/members/${member.id || member.uuid}`"
                     class="p-2 text-gray-400 hover:text-navy hover:bg-gray-100 rounded-lg transition-colors">
                     <Icon icon="ph:eye" class="text-lg" />
                   </NuxtLink>
-                  <BaseButton @click="() => { }" variant="white" size="sm" icon="ph:chart-line-up"
-                    class="h-9 w-9 p-0 text-gray-400 hover:text-primary hover:bg-primary/10 border-transparent shadow-none" />
                 </div>
               </td>
             </tr>
@@ -198,43 +208,89 @@
 
     <!-- Invite Modal -->
     <div v-if="isInviteOpen"
-      class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
-      <div class="bg-white rounded-2xl shadow-md w-full max-w-3xl border border-gray-100 overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-          <h3 class="text-lg font-extrabold text-navy">Invite Archery ke Klub</h3>
-          <BaseButton @click="isInviteOpen = false" variant="white" size="sm" icon="ph:x"
-            class="h-10 w-10 p-0 text-gray-400 hover:text-navy hover:bg-gray-100 border-none shadow-none" />
+      class="fixed inset-0 z-[60] flex items-center justify-center bg-navy/60 backdrop-blur-sm p-6 sm:p-4">
+      <div
+        class="bg-white rounded-[2rem] sm:rounded-2xl shadow-xl w-full max-w-2xl border border-gray-100 flex flex-col max-h-[90vh] sm:max-h-[80vh] animate-in zoom-in-95 duration-300">
+        <!-- Modal Header -->
+        <div class="px-6 py-5 border-b border-gray-100 flex items-center justify-between shrink-0">
+          <div class="flex items-center gap-3">
+            <div class="size-10 rounded-xl bg-primary/10 flex items-center justify-center">
+              <Icon icon="ph:user-plus-bold" class="text-primary text-xl" />
+            </div>
+            <div>
+              <h3 class="text-lg font-black text-navy leading-none">Undang Pemanah</h3>
+              <p class="text-xs text-gray-400 font-medium mt-1">Cari dan tambahkan anggota ke klub Anda</p>
+            </div>
+          </div>
+          <button @click="isInviteOpen = false"
+            class="size-10 flex items-center justify-center rounded-xl text-gray-400 hover:text-navy hover:bg-gray-100 transition-colors">
+            <Icon icon="ph:x-bold" class="text-xl" />
+          </button>
         </div>
-        <div class="p-6 space-y-4">
-          <p class="text-sm text-gray-500">Daftar akun pemanah yang belum tergabung klub.</p>
-          <div
-            class="bg-gray-50/60 rounded-xl border border-gray-100 max-h-[380px] overflow-y-auto divide-y divide-gray-100">
-            <div v-for="archer in inviteList" :key="archer.id || archer.uuid"
-              class="flex items-center justify-between px-4 py-3 hover:bg-white transition">
-              <div class="flex items-center gap-3">
-                <div class="h-10 w-10 rounded-xl bg-navy flex items-center justify-center overflow-hidden">
+
+        <!-- Search Bar -->
+        <div class="px-6 py-4 border-b border-gray-50 bg-gray-50/30 shrink-0">
+          <div class="relative">
+            <Icon icon="ph:magnifying-glass" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
+            <input v-model="inviteSearchQuery" type="text" placeholder="Cari pemanah berdasarkan nama..."
+              class="w-full h-11 pl-11 pr-4 rounded-xl border-gray-100 bg-white text-sm font-medium focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
+          </div>
+        </div>
+
+        <!-- Archer List -->
+        <div class="flex-1 overflow-y-auto p-2 sm:p-4 custom-scrollbar">
+          <div v-if="loadingInvite" class="py-20 flex flex-col items-center justify-center gap-4 text-gray-400">
+            <div class="loading-spinner"></div>
+            <p class="text-sm font-medium">Mencari pemanah...</p>
+          </div>
+
+          <div v-else-if="filteredInviteList.length === 0" class="py-20 text-center">
+            <div class="size-20 bg-gray-50 rounded-3xl flex items-center justify-center mx-auto mb-4 text-gray-200">
+              <Icon icon="ph:magnifying-glass-minus" class="text-4xl" />
+            </div>
+            <p class="text-navy font-bold">Pemanah tidak ditemukan</p>
+            <p class="text-xs text-gray-400 mt-1">Coba gunakan kata kunci pencarian lain</p>
+          </div>
+
+          <div v-else class="grid grid-cols-1 gap-2">
+            <div v-for="archer in filteredInviteList" :key="archer.id || archer.uuid"
+              class="group flex items-center justify-between p-3 sm:p-4 rounded-2xl border border-transparent hover:border-primary/20 hover:bg-primary/5 transition-all">
+              <div class="flex items-center gap-4 min-w-0">
+                <div
+                  class="size-12 rounded-xl bg-navy/5 flex items-center justify-center overflow-hidden border-2 border-white shadow-sm ring-1 ring-gray-100 group-hover:ring-primary/20 transition-all shrink-0">
                   <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
-                    class="w-full h-full object-cover" />
+                    class="size-full object-cover" />
                 </div>
-                <div>
-                  <p class="font-semibold text-navy">{{ archer.full_name }}</p>
-                  <p class="text-xs text-gray-400">{{ archer.email || 'Tidak ada email' }}</p>
+                <div class="min-w-0">
+                  <p
+                    class="font-bold text-navy text-sm sm:text-base truncate group-hover:text-primary transition-colors">
+                    {{ archer.full_name }}
+                  </p>
+                  <div class="flex items-center gap-2 mt-0.5">
+                    <span class="text-[10px] sm:text-xs text-gray-400 font-medium truncate">
+                      {{ archer.city || 'Independent' }}
+                    </span>
+
+                  </div>
                 </div>
               </div>
-              <BaseButton @click="inviteToClub(archer)" variant="primary" size="sm" icon="ph:user-plus"
-                class="px-4 h-9 font-bold text-xs">
+              <BaseButton @click="inviteToClub(archer)" variant="primary" size="sm"
+                :loading="invitingId === archer.uuid"
+                class="px-5 h-10 font-black text-[10px] uppercase tracking-widest shadow-lg shadow-primary/10">
                 Undang
               </BaseButton>
             </div>
-            <div v-if="inviteList.length === 0" class="px-4 py-12 text-center text-sm text-gray-500">
-              Semua pemanah sudah memiliki klub atau data kosong.
-            </div>
           </div>
         </div>
-        <div class="px-6 py-4 bg-gray-50 border-t border-gray-100 text-right">
+
+        <!-- Modal Footer -->
+        <div class="px-6 py-5 border-t border-gray-100 flex items-center justify-between bg-gray-50/50 shrink-0">
+          <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">
+            {{ filteredInviteList.length }} Pemanah Tersedia
+          </p>
           <BaseButton @click="isInviteOpen = false" variant="ghost" size="sm"
-            class="font-semibold text-gray-500 hover:text-navy">
-            Tutup
+            class="font-bold text-gray-500 hover:text-navy">
+            Kembali
           </BaseButton>
         </div>
       </div>
@@ -261,9 +317,17 @@ useHead({
   title: 'Anggota Klub - ArcheryHub Dashboard'
 })
 
-const { get, post } = useApi()
+const { get, post, put } = useApi()
 const { user } = useAuth()
 const toast = useToast()
+
+const getSafeArray = (resp) => {
+  if (Array.isArray(resp)) return resp
+  if (!resp) return []
+  return Array.isArray(resp.archers) ? resp.archers :
+    Array.isArray(resp.athletes) ? resp.athletes :
+      Array.isArray(resp.data) ? resp.data : []
+}
 
 const breadcrumbItems = computed(() => [
   { label: 'Dashboard', path: '/dashboard' }
@@ -273,7 +337,10 @@ const members = ref([])
 const inviteList = ref([])
 const isInviteOpen = ref(false)
 const isLoading = ref(true)
+const loadingInvite = ref(false)
+const invitingId = ref(null)
 const searchQuery = ref('')
+const inviteSearchQuery = ref('')
 const bowTypeFilter = ref('all')
 const genderFilter = ref('all')
 
@@ -294,15 +361,31 @@ const genderOptions = [
 const fetchMembers = async () => {
   isLoading.value = true
   try {
-    const resp = await get('/archers')
-    const data = resp.data || []
-    if (user?.value?.user_type === 'club' || user?.value?.type === 'club') {
-      const clubName = user.value?.club_name || user.value?.organization_name || user.value?.full_name || ''
-      members.value = data.filter(a => (a.club || a.club_name || '').toLowerCase() === clubName.toLowerCase())
+    const isClub = user?.value?.user_type === 'club' || user?.value?.type === 'club'
+
+    if (isClub) {
+      // Use the dedicated club members endpoint
+      const clubId = user.value?.uuid || user.value?.id
+      const resp = await get(`/clubs/members/${clubId}`)
+
+      // The endpoint returns { data: [...] } where each item has archer_name and ClubMember fields
+      // But we need it in the format the rest of the page expects (Archer objects)
+      // Actually, let's see what the page uses. It uses full_name, etc.
+      if (resp && resp.data) {
+        members.value = resp.data.map(m => ({
+          ...m,
+          uuid: m.archer_id,
+          photo_url: m.avatar_url, // Map avatar_url to what the frontend expects
+        }))
+      } else {
+        members.value = []
+      }
     } else {
-      members.value = data
+      const resp = await get('/archers')
+      members.value = getSafeArray(resp)
     }
-  } catch {
+  } catch (error) {
+    console.error('Fetch members error:', error)
     toast.error('Gagal memuat anggota klub')
   } finally {
     isLoading.value = false
@@ -343,6 +426,15 @@ const filteredMembers = computed(() => {
   })
 })
 
+const filteredInviteList = computed(() => {
+  if (!inviteSearchQuery.value) return inviteList.value
+  const query = inviteSearchQuery.value.toLowerCase()
+  return inviteList.value.filter(a =>
+    a.full_name?.toLowerCase().includes(query) ||
+    (a.city && a.city.toLowerCase().includes(query))
+  )
+})
+
 const resetFilters = () => {
   searchQuery.value = ''
   bowTypeFilter.value = 'all'
@@ -351,29 +443,45 @@ const resetFilters = () => {
 
 const openInviteModal = async () => {
   isInviteOpen.value = true
+  loadingInvite.value = true
   try {
-    const resp = await get('/archers')
-    const data = resp.data || resp || []
+    const resp = await get('/archers?limit=100')
+    const data = getSafeArray(resp)
     // Archers not yet in any club
-    inviteList.value = data.filter(a => !a.club && !a.club_id)
-  } catch {
-    toast.error('Gagal memuat daftar undangan')
+    inviteList.value = data.filter(a => {
+      const clubId = a.club_id || a.organization_id
+      const clubName = a.club_name || a.club || a.organization_name
+      return !clubId && !clubName
+    })
+  } catch (e) {
+    console.error('Invite error:', e)
+    toast.error('Gagal memuat daftar pemanah')
+  } finally {
+    loadingInvite.value = false
   }
 }
 
 const inviteToClub = async (archer) => {
+  invitingId.value = archer.uuid
   try {
-    const clubName = user.value?.club_name || user.value?.organization_name || user.value?.full_name || ''
-    if (!clubName) {
-      toast.error('Profil klub tidak lengkap')
+    const archerId = archer.uuid || archer.id
+    if (!archerId) {
+      toast.error('ID Pemanah tidak valid')
       return
     }
-    await useApi().put(`/archers/${archer.id || archer.uuid}`, { club: clubName })
-    toast.success('Berhasil mengundang pemanah ke klub')
-    inviteList.value = inviteList.value.filter(i => (i.id || i.uuid) !== (archer.id || archer.uuid))
-    fetchMembers()
-  } catch {
-    toast.error('Gagal mengundang pemanah')
+
+    await post('/clubs/invite', {
+      archer_id: archerId,
+      role: 'member'
+    })
+
+    toast.success(`Undangan berhasil dikirim ke ${archer.full_name}`)
+    inviteList.value = inviteList.value.filter(i => (i.id || i.uuid) !== archerId)
+  } catch (e) {
+    console.error('Invite error:', e)
+    toast.error(e.response?.data?.error || 'Gagal mengirim undangan')
+  } finally {
+    invitingId.value = null
   }
 }
 </script>

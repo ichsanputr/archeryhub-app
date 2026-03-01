@@ -131,7 +131,17 @@ const availablePlans = computed(() => {
             priceLabel: plan.price < 1000 ? 'Gratis' : `Rp ${new Intl.NumberFormat('id-ID').format(plan.price)}`,
             priceRaw: plan.price,
             billing: plan.type === 'yearly' ? 'thn' : 'bln',
-            features: detail ? detail.features : JSON.parse(plan.features || '[]'),
+            features: detail ? detail.features : (function () {
+                if (!plan.features) return []
+                if (Array.isArray(plan.features)) return plan.features
+                try {
+                    const parsed = JSON.parse(plan.features)
+                    return Array.isArray(parsed) ? parsed : [parsed]
+                } catch (e) {
+                    // Fallback to splitting by comma if it's not JSON
+                    return plan.features.split(',').map(f => f.trim())
+                }
+            })(),
             isCurrent: plan.id === currentPlanId || (!currentPlanId && localizedName === 'Standar'),
             isUpgrade: plan.id > (currentPlanId || 0) && !(!currentPlanId && localizedName === 'Standar')
         }

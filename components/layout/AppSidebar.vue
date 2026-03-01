@@ -250,6 +250,8 @@ const navLinks = computed(() => {
     ...(role !== 'club' ? [{ label: 'Event', icon: 'ph:trophy', path: '/dashboard/events' }] : []),
     ...(!isEventManagePage.value ? [{ label: 'Laporan', icon: 'ph:chart-bar', path: '/dashboard/reports' }] : []),
     ...(role === 'club' ? [{ label: 'Anggota', icon: 'ph:identification-badge', path: '/dashboard/members' }] : []),
+    ...(role === 'club' ? [{ label: 'Membership', icon: 'ph:crown-bold', path: '/dashboard/membership' }] : []),
+    ...(role === 'club' ? [{ label: 'Form Pendaftaran', icon: 'ph:clipboard-text-bold', path: '/dashboard/form-pendaftaran' }] : []),
     ...(role === 'club' ? [{ label: 'Profil Klub', icon: 'ph:buildings', path: '/dashboard/clubs/profile' }] : []),
     ...(role !== 'club' && role !== 'organization' ? [{ label: 'Tim', icon: 'ph:users-four', path: '/dashboard/teams' }] : []),
     ...(role === 'organization' ? [{ label: 'Profil Organisasi', icon: 'ph:building-office', path: '/dashboard/organizations/profile' }] : []),

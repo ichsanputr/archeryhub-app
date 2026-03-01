@@ -296,114 +296,13 @@
           </div>
         </div>
 
-        <!-- Tab: Pendaftaran -->
-        <div v-if="activeTab === 'registration'" class="space-y-8">
-          <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
-            <div class="flex items-center justify-between">
-              <div>
-                <h3 class="text-[11px] font-black text-navy tracking-[0.2em] flex items-center gap-2">
-                  <Icon icon="ph:list-bullets-bold" class="text-primary text-xl" /> Kustomisasi Formulir
-                </h3>
-                <p class="text-xs text-gray-400 font-medium mt-1">Tambahkan field tambahan yang wajib diisi oleh calon
-                  pendaftar.</p>
-              </div>
-              <button
-                class="flex items-center gap-2 px-4 py-2.5 bg-navy text-white rounded-xl text-xs font-black hover:bg-navy-dark transition shadow-md"
-                @click="addRegistrationField">
-                <Icon icon="ph:plus-bold" /> Tambah Field
-              </button>
-            </div>
-
-            <div class="space-y-4">
-              <transition-group name="list">
-                <div v-for="(field, idx) in form.registrationConfig.fields" :key="idx"
-                  class="bg-gray-50 p-6 rounded-3xl border border-gray-100 space-y-4 relative group">
-                  <button @click="removeRegistrationField(idx)"
-                    class="absolute top-4 right-4 p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all opacity-0 group-hover:opacity-100">
-                    <Icon icon="ph:trash-bold" class="text-lg" />
-                  </button>
-
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <BaseInput v-model="field.label" label="Label Field" placeholder="Misal: Nomor KTA, Pengalaman, dll"
-                      @input="field.name = field.label.toLowerCase().replace(/\s+/g, '_')" />
-                    <BaseSelect v-model="field.type" :items="fieldTypeOptions" label="Tipe Input" />
-                  </div>
-
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <BaseInput v-model="field.placeholder" label="Placeholder"
-                      placeholder="Teks bantuan di dalam box" />
-                    <div class="flex items-end pb-3">
-                      <BaseCheckbox v-model="field.required" label="Wajib Diisi" />
-                    </div>
-                  </div>
-
-                  <!-- Options for Select type -->
-                  <div v-if="field.type === 'select'" class="space-y-2 pt-2">
-                    <label class="text-[10px] font-black text-navy uppercase tracking-widest">Opsi Pilihan (Pisahkan
-                      dengan koma)</label>
-                    <BaseTextarea v-model="field.optionsRaw" placeholder="Pilihan A, Pilihan B, Pilihan C" rows="2"
-                      @input="updateFieldOptions(field)" />
-                  </div>
-                </div>
-              </transition-group>
-
-              <div v-if="!form.registrationConfig.fields.length"
-                class="text-center py-20 bg-gray-50/50 rounded-3xl border border-dashed border-gray-200">
-                <div
-                  class="size-20 bg-white rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-sm transform rotate-6 group">
-                  <Icon icon="ph:form-bold"
-                    class="text-4xl text-gray-200 group-hover:text-primary/40 transition-colors" />
-                </div>
-                <h4 class="text-navy font-black text-lg mb-2">Belum ada field kustom</h4>
-                <p class="text-sm text-gray-400 font-medium max-w-xs mx-auto">Klik tombol <strong>Tambah Field</strong>
-                  untuk menambah pertanyaan khusus pada formulir pendaftaran.</p>
-              </div>
-            </div>
-          </div>
-        </div>
 
       </div>
 
       <!-- Side card -->
-      <div class="space-y-4">
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 space-y-4">
-          <h3 class="text-[11px] font-black text-navy  tracking-[0.2em]">Pengaturan Tampilan</h3>
-          <p class="text-sm text-gray-500">Pilih section yang ingin ditampilkan di halaman publik.</p>
-          <div class="space-y-3">
-            <BaseCheckbox v-model="pageSettings.sections.identity" label="Identitas Klub" />
-            <BaseCheckbox v-model="pageSettings.sections.contact" label="Kontak" />
-            <BaseCheckbox v-model="pageSettings.sections.social" label="Media Sosial" />
-            <BaseCheckbox v-model="pageSettings.sections.facilities" label="Fasilitas" />
-            <BaseCheckbox v-model="pageSettings.sections.schedules" label="Jadwal Latihan" />
-          </div>
-        </div>
-
-        <!-- Public Profile Link -->
-        <div class="bg-gradient-to-br from-navy to-navy-light rounded-2xl p-5 text-white">
-          <h3 class="font-black mb-2">Profil Publik</h3>
-          <p class="text-sm text-blue-200 mb-4">Lihat bagaimana klub Anda terlihat oleh pengunjung</p>
-          <NuxtLink v-if="form.slug" :to="`/clubs/${form.slug}`" target="_blank"
-            class="block w-full py-3 bg-primary text-navy font-bold rounded-xl text-center hover:bg-primary-hover transition-colors">
-            Lihat Halaman Publik
-          </NuxtLink>
-          <p v-else class="text-xs text-blue-300 italic">Slug URL belum diatur</p>
-        </div>
-      </div>
 
       <!-- Side card -->
       <div class="space-y-4">
-        <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-5">
-          <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
-            <Icon icon="ph:gear-six-bold" class="text-primary text-lg" /> Visibilitas Halaman
-          </h3>
-          <p class="text-xs text-gray-500 font-medium">Atur bagian mana yang dapat dilihat publik.</p>
-          <div class="space-y-4 pt-2">
-            <BaseCheckbox v-model="pageSettings.sections.identity" label="Identitas Klub" />
-            <BaseCheckbox v-model="pageSettings.sections.contact" label="Kontak & Sosmed" />
-            <BaseCheckbox v-model="pageSettings.sections.facilities" label="Fasilitas & Jadwal" />
-            <BaseCheckbox v-model="pageSettings.sections.schedules" label="Jadwal Latihan" />
-          </div>
-        </div>
 
         <!-- Public Profile Link -->
         <div
@@ -460,8 +359,7 @@ const activeTab = ref('general')
 const tabs = [
   { id: 'general', label: 'Info Umum', icon: 'ph:identification-badge-bold' },
   { id: 'contact', label: 'Kontak & Sosmed', icon: 'ph:phone-bold' },
-  { id: 'facilities', label: 'Fasilitas & Jadwal', icon: 'ph:check-circle-bold' },
-  { id: 'registration', label: 'Pendaftaran', icon: 'ph:user-plus-bold' }
+  { id: 'facilities', label: 'Fasilitas & Jadwal', icon: 'ph:check-circle-bold' }
 ]
 
 const pageSettings = reactive({
