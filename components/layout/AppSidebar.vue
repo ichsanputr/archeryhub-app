@@ -293,6 +293,8 @@ const navSections = computed(() => {
 
   if (role === 'organization') {
     return [
+      { label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard' },
+      { label: 'Event Saya', icon: 'ph:trophy', path: '/dashboard/events' },
       { label: 'Laporan', icon: 'ph:chart-bar', path: '/dashboard/reports' },
       { label: 'Profil Organisasi', icon: 'ph:building-office', path: '/dashboard/organizations/profile' },
       { label: 'Scorekeeper', icon: 'ph:user-focus', path: '/dashboard/organizations/scorekeepers' },

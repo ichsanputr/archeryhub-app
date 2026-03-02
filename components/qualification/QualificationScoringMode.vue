@@ -11,7 +11,7 @@
                     <div class="flex items-center gap-4 pt-4 pb-1">
                         <div class="flex-1 h-px bg-gray-100"></div>
                         <div
-                            class="bg-navy text-primary px-5 py-1.5 rounded-xl border border-white/5 flex items-center gap-2 shadow-sm">
+                            class="bg-navy text-btn-inverse px-5 py-1.5 rounded-xl border border-white/5 flex items-center gap-2 shadow-sm">
                             <Icon icon="ph:target-bold" class="text-xs" />
                             <span class="text-[10px] font-black uppercase tracking-widest">Target {{
                                 group.number }}</span>
@@ -41,7 +41,7 @@
                                     <div class="min-w-0">
                                         <div class="flex items-center gap-2.5 mb-0.5">
                                             <span
-                                                class="bg-navy text-primary text-[9px] font-black px-1.5 py-0.5 rounded-md shadow-sm tracking-wider">
+                                                class="bg-navy text-btn-inverse text-[9px] font-black px-1.5 py-0.5 rounded-md shadow-sm tracking-wider">
                                                 {{ assignment.target_name }}
                                             </span>
                                             <h3
@@ -71,7 +71,7 @@
                                     </div>
                                     <BaseButton v-if="(assignment.currentEnd || 1) < (sessionData?.total_ends || 0)"
                                         variant="navy" size="sm" icon="ph:caret-right-bold"
-                                        class="!size-9 !p-0 !rounded-xl bg-navy text-primary hover:bg-navy/95 shadow-sm shadow-navy/20"
+                                        class="!size-9 !p-0 !rounded-xl bg-navy text-btn-inverse hover:bg-navy/95 shadow-sm shadow-navy/20"
                                         @click.stop="goNextEnd" />
                                 </div>
                             </div>
@@ -119,7 +119,7 @@
                                     <!-- End Summary -->
                                     <div class="flex-1 flex flex-col items-end justify-center min-w-[56px]">
                                         <div
-                                            class="size-12 sm:size-16 bg-navy text-primary rounded-xl flex flex-col items-center justify-center shadow-sm shadow-navy/10 transform hover:scale-105 transition-transform">
+                                            class="size-12 sm:size-16 bg-navy text-btn-inverse rounded-xl flex flex-col items-center justify-center shadow-sm shadow-navy/10 transform hover:scale-105 transition-transform">
                                             <span class="text-base sm:text-xl font-black leading-none">{{
                                                 calculateEndSum(assignment.currentEndScores) }}</span>
                                         </div>

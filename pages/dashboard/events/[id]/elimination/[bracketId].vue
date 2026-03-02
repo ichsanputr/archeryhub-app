@@ -161,24 +161,24 @@
                                 </button>
                             </div>
 
-                            <BaseButton v-if="!currentRoundNo && Object.keys(rounds).length === 0" @click="generateBracket" variant="primary"
-                                icon="ph:magic-wand-bold"
+                            <BaseButton v-if="!currentRoundNo && Object.keys(rounds).length === 0"
+                                @click="generateBracket" variant="primary" icon="ph:magic-wand-bold"
                                 class="h-10 sm:h-11 shadow-lg shadow-primary/30 tracking-[0.2em] font-black uppercase text-[10px] sm:text-xs">
                                 Generate Bracket
                             </BaseButton>
 
                             <!-- Scoresheet split button (color / B&W) -->
-                            <div v-if="bracket && !(currentRoundNo && route.query.mode === 'scoring')" class="flex-shrink-0 relative" v-click-outside="() => showScoresheetMenu = false">
+                            <div v-if="bracket && !(currentRoundNo && route.query.mode === 'scoring')"
+                                class="flex-shrink-0 relative" v-click-outside="() => showScoresheetMenu = false">
                                 <div class="flex">
-                                    <BaseButton @click="openScoresheet('color')"
+                                    <BaseButton @click="openScoresheet('bw')"
                                         :icon="isDownloadingScoresheet ? 'ph:spinner' : 'ph:printer-bold'"
                                         :disabled="isDownloadingScoresheet"
                                         class="h-10 sm:h-11 !bg-white/10 !text-white hover:!bg-primary hover:!text-btn-text backdrop-blur-sm !border-white/20 !border-r-0 !rounded-r-none tracking-[0.1em] font-black uppercase text-[10px] sm:text-xs">
-                                        {{ isDownloadingScoresheet ? 'Membuka...' : 'Scoresheet' }}
+                                        {{ isDownloadingScoresheet ? 'Membuka...' : 'Scoresheet B&W' }}
                                     </BaseButton>
                                     <BaseButton @click="showScoresheetMenu = !showScoresheetMenu"
-                                        :disabled="isDownloadingScoresheet"
-                                        icon="ph:caret-down-bold"
+                                        :disabled="isDownloadingScoresheet" icon="ph:caret-down-bold"
                                         class="h-10 sm:h-11 !bg-white/10 !text-white hover:!bg-primary hover:!text-primary-text backdrop-blur-sm !border-white/20 !rounded-l-none !px-2" />
                                 </div>
                                 <!-- Dropdown -->
@@ -347,7 +347,7 @@
                                         class="w-full flex items-center justify-between p-3 rounded-xl border transition-all"
                                         :class="manualWinnerId === selectedScoringMatch.entry_a_id ? 'bg-primary/20 border-primary text-primary' : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'">
                                         <span class="text-sm font-bold text-white">{{ selectedScoringMatch.entry_a_name
-                                            }}</span>
+                                        }}</span>
                                         <Icon v-if="manualWinnerId === selectedScoringMatch.entry_a_id"
                                             icon="ph:check-circle-fill" class="text-primary" />
                                     </button>
@@ -357,7 +357,7 @@
                                         class="w-full flex items-center justify-between p-3 rounded-xl border transition-all"
                                         :class="manualWinnerId === selectedScoringMatch.entry_b_id ? 'bg-primary/20 border-primary text-primary' : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'">
                                         <span class="text-sm font-bold text-white">{{ selectedScoringMatch.entry_b_name
-                                            }}</span>
+                                        }}</span>
                                         <Icon v-if="manualWinnerId === selectedScoringMatch.entry_b_id"
                                             icon="ph:check-circle-fill" class="text-primary" />
                                     </button>

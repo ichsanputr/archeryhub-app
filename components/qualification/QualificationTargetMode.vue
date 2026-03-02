@@ -85,12 +85,13 @@
                             class="px-5 py-3 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center rounded-t-2xl">
                             <div class="flex items-center gap-3">
                                 <div
-                                    class="bg-navy text-primary font-black text-xs px-2 py-1 rounded-lg shadow-sm flex items-center gap-2">
+                                    class="bg-navy text-btn-inverse font-black text-xs px-2 py-1 rounded-lg shadow-sm flex items-center gap-2">
                                     <span>{{ target.name.split(' ').pop() }}</span>
                                     <span v-if="target.assignedCount > 0"
                                         class="text-white text-[10px] font-mono border-l border-white/10 pl-2"
                                         title="Kode Board">
-                                        {{ getBoardCode(target.name) ? getBoardCode(target.name) : String(target.name.match(/\d+/)?.[0] || '').padStart(2, '0') }}
+                                        {{ getBoardCode(target.name) ? getBoardCode(target.name) :
+                                            String(target.name.match(/\d+/)?.[0] || '').padStart(2, '0') }}
                                     </span>
                                 </div>
                             </div>

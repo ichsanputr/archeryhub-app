@@ -120,6 +120,12 @@ export const useTheme = () => {
     root.style.setProperty('--motif-pattern', colors.motif)
     root.style.setProperty('--motif-opacity', colors.motifOpacity)
     root.style.setProperty('--primary-text', colors.primaryText)
+
+    // Set button text colors to match the theme
+    root.style.setProperty('--btn-text', colors.primaryText)
+    // For inverse (on dark backgrounds), use primary color if it's light (like lime), or white if primary is dark
+    // For now, setting it to primary or white is a good safe bet
+    root.style.setProperty('--btn-text-inverse', colors.primary === '#D9FF00' ? '#D9FF00' : '#ffffff')
   }
 
   const fetchThemeFromServer = async () => {

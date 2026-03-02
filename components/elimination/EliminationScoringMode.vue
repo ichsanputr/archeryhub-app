@@ -28,7 +28,7 @@
                         <div class="flex items-center justify-between mb-4">
                             <div class="flex items-center gap-2">
                                 <div
-                                    class="px-2 py-0.5 rounded-lg bg-navy text-primary text-[9px] font-black shadow-sm uppercase tracking-wider">
+                                    class="px-2 py-0.5 rounded-lg bg-navy text-btn-inverse text-[9px] font-black shadow-sm uppercase tracking-wider">
                                     Match {{ match.match_no }}
                                 </div>
                                 <div v-if="match.target_name"
@@ -126,7 +126,7 @@
                             </div>
                             <!-- Mobile Score Display A -->
                             <div
-                                class="md:hidden text-3xl font-black text-primary drop-shadow-[0_0_15px_rgba(255,193,7,0.3)] tabular-nums">
+                                class="md:hidden text-3xl font-black text-btn-inverse drop-shadow-[0_0_15px_rgba(255,193,7,0.3)] tabular-nums">
                                 {{ getMatchScore(selectedScoringMatch, 'A') }}
                             </div>
                         </div>
@@ -143,7 +143,7 @@
                                 <div class="flex flex-col items-center transform transition-transform duration-500"
                                     :class="{ 'scale-110': activeSide === 'A' }">
                                     <span
-                                        class="text-5xl sm:text-6xl font-black text-primary drop-shadow-[0_0_20px_rgba(255,193,7,0.3)] tracking-tighter">
+                                        class="text-5xl sm:text-6xl font-black text-btn-inverse drop-shadow-[0_0_20px_rgba(255,193,7,0.3)] tracking-tighter">
                                         {{ getMatchScore(selectedScoringMatch, 'A') }}
                                     </span>
                                 </div>
@@ -275,7 +275,7 @@
                                     :class="currentEnd === i ? 'text-navy' : 'text-gray-300 group-hover:text-gray-500'">End
                                     {{ i }}</span>
                                 <div class="size-10 sm:size-12 rounded-xl flex items-center justify-center text-xs sm:text-sm font-black transition-all relative"
-                                    :class="currentEnd === i ? 'bg-navy text-primary shadow-sm' : 'bg-slate-50 text-gray-400 group-hover:bg-gray-100 group-hover:text-navy'">
+                                    :class="currentEnd === i ? 'bg-navy text-btn-inverse shadow-sm' : 'bg-slate-50 text-gray-400 group-hover:bg-gray-100 group-hover:text-navy'">
                                     {{ i }}
                                     <div v-if="currentEnd === i"
                                         class="absolute -bottom-1 w-4 h-0.5 bg-primary rounded-full">
@@ -410,7 +410,7 @@
                                                 </button>
                                                 <button @click="!isMatchFinished && $emit('save-and-next')"
                                                     :disabled="isSaving || isMatchFinished"
-                                                    class="col-span-2 h-10 sm:h-14 rounded-xl sm:rounded-2xl bg-navy text-primary font-black flex items-center justify-center gap-2 shadow-sm shadow-navy/20 hover:-translate-y-0.5 active:translate-y-0 transition-all disabled:opacity-30 disabled:grayscale group disabled:pointer-events-none">
+                                                    class="col-span-2 h-10 sm:h-14 rounded-xl sm:rounded-2xl bg-navy text-btn-inverse font-black flex items-center justify-center gap-2 shadow-sm shadow-navy/20 hover:-translate-y-0.5 active:translate-y-0 transition-all disabled:opacity-30 disabled:grayscale group disabled:pointer-events-none">
                                                     <Icon v-if="isSaving" icon="ph:circle-notch-bold"
                                                         class="animate-spin text-lg sm:text-xl" />
                                                     <template v-else>

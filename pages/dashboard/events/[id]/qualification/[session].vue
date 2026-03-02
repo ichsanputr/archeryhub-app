@@ -1,9 +1,8 @@
 <template>
   <div class="flex flex-col gap-6 pb-12">
     <!-- Enhanced Header -->
-    <div
-      class="relative rounded-3xl border border-primary/20 text-white shadow-sm mb-2 z-20">
-      
+    <div class="relative rounded-3xl border border-primary/20 text-white shadow-sm mb-2 z-20">
+
       <!-- Background and Effects Layer -->
       <div class="absolute inset-0 overflow-hidden rounded-[22px] bg-gradient-to-r from-navy via-navy to-navy/90">
         <!-- Background Pattern -->
@@ -58,29 +57,23 @@
           <div v-if="sessionData" class="flex-shrink-0 relative" v-click-outside="() => showScoresheetMenu = false">
             <div class="flex items-stretch rounded-lg overflow-hidden border border-white/20 backdrop-blur-sm">
               <!-- Main button: color version -->
-              <button
-                type="button"
-                :disabled="isDownloadingScoresheet"
+              <button type="button" :disabled="isDownloadingScoresheet"
                 class="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 text-white hover:bg-primary hover:text-btn-text transition-colors text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
-                @click="downloadScoresheet('color')">
+                @click="downloadScoresheet('bw')">
                 <Icon :icon="isDownloadingScoresheet ? 'ph:spinner' : 'ph:printer-bold'" class="text-base" />
-                {{ isDownloadingScoresheet ? 'Membuka...' : 'Scoresheet' }}
+                {{ isDownloadingScoresheet ? 'Membuka...' : 'Scoresheet B&W' }}
               </button>
               <!-- Chevron to toggle dropdown -->
-              <button
-                type="button"
-                :disabled="isDownloadingScoresheet"
+              <button type="button" :disabled="isDownloadingScoresheet"
                 class="flex items-center px-2 bg-white/10 text-white hover:bg-primary hover:text-btn-text transition-colors border-l border-white/20 disabled:opacity-50"
                 @click="showScoresheetMenu = !showScoresheetMenu">
                 <Icon icon="ph:caret-down-bold" class="text-sm" />
               </button>
             </div>
             <!-- Dropdown menu -->
-            <div
-              v-if="showScoresheetMenu"
+            <div v-if="showScoresheetMenu"
               class="absolute right-0 top-full mt-1 w-52 z-[9999] bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
-              <button
-                type="button"
+              <button type="button"
                 class="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-primary/5 hover:text-primary transition-colors"
                 @click="downloadScoresheet('color'); showScoresheetMenu = false">
                 <Icon icon="ph:paint-bucket-bold" class="text-base text-primary" />
@@ -89,8 +82,7 @@
                   <div class="text-xs text-gray-400">Navy & kuning (layar/preview)</div>
                 </div>
               </button>
-              <button
-                type="button"
+              <button type="button"
                 class="w-full flex items-center gap-3 px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors border-t border-gray-100"
                 @click="downloadScoresheet('bw'); showScoresheetMenu = false">
                 <Icon icon="ph:circles-three-bold" class="text-base text-gray-500" />
@@ -157,8 +149,8 @@
             </div>
             <div class="flex-1 min-w-0">
               <p
-                class="font-extrabold text-navy group-hover:text-primary transition-colors leading-tight mb-1.5 line-clamp-2 uppercase">
-                {{ getCategoryName(category) }} ({{ category.participant_count || 0 }})</p>
+                class="font-extrabold text-navy group-hover:text-primary transition-colors leading-tight mb-1.5 line-clamp-2">
+                {{ getCategoryName(category) }}</p>
               <div class="flex items-center gap-2 text-[10px] text-gray-400 font-bold uppercase tracking-wider">
                 <Icon icon="ph:users-three-bold" class="text-sm text-primary" />
                 <span>Total Participant</span>
@@ -556,11 +548,12 @@ onMounted(async () => {
     fetchTargets()
   ])
 
-  // 3. Immediately select first category if categories exist
-  // selectCategory will handle fetching specific participants if the full list is still loading
+  // No auto-select first category as requested
+  /*
   if (categories.value.length > 0) {
     await selectCategory(categories.value[0].id)
   }
+  */
 
   isLoading.value = false
 

@@ -29,7 +29,7 @@
             <!-- Scanner Card -->
             <div class="w-full max-w-sm">
                 <!-- Camera viewport -->
-                <div class="relative rounded-3xl overflow-hidden shadow-2xl"
+                <div class="relative rounded-3xl overflow-hidden shadow-xl"
                     style="box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 32px 64px rgba(0,0,0,0.6);">
 
                     <!-- Video -->
@@ -134,7 +134,7 @@
                                 </div>
                                 <div>
                                     <p class="font-black text-white text-sm leading-tight">{{ participantData?.full_name
-                                        }}</p>
+                                    }}</p>
                                     <p class="text-white/40 text-xs">{{ participantData?.club_name || 'Individual' }}
                                     </p>
                                 </div>
@@ -143,13 +143,13 @@
                             <div class="flex items-center justify-between pt-1">
                                 <span class="text-white/50 text-xs font-medium">Kategori</span>
                                 <span class="text-white text-xs font-bold">{{ getCategoryDisplay(participantData)
-                                    }}</span>
+                                }}</span>
                             </div>
                             <div class="flex items-center justify-between">
                                 <span class="text-white/50 text-xs font-medium">Event</span>
                                 <span class="text-white text-xs font-bold truncate max-w-[160px]">{{
                                     participantData?.event_name
-                                    }}</span>
+                                }}</span>
                             </div>
                         </div>
 
