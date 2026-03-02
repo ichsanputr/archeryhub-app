@@ -29,16 +29,16 @@ export const themes: Record<string, ThemeColors> = {
     primaryText: '#0f172a'
   },
   midnight: {
-    primary: '#6366f1', // Indigo
-    primaryHover: '#4f46e5',
-    sidebarBg: '#1e1b4b',
+    primary: '#818cf8', // Indigo light
+    primaryHover: '#6366f1',
+    sidebarBg: '#11103d',
     sidebarText: '#c7d2fe',
     headerBg: '#ffffff',
     headerText: '#1e1b4b',
     accent: '#818cf8',
     // Solid Geometric Diamond Grid
-    motif: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l30 30-30 30L0 30z' fill='white' fill-opacity='0.08'/%3E%3C/svg%3E")`,
-    motifOpacity: '0.6',
+    motif: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l30 30-30 30L0 30z' fill='white' fill-opacity='0.12'/%3E%3C/svg%3E")`,
+    motifOpacity: '0.8',
     primaryText: '#ffffff'
   },
   emerald: {
@@ -121,11 +121,15 @@ export const useTheme = () => {
     root.style.setProperty('--motif-opacity', colors.motifOpacity)
     root.style.setProperty('--primary-text', colors.primaryText)
 
-    // Set button text colors to match the theme
+    // Set button text colors
     root.style.setProperty('--btn-text', colors.primaryText)
-    // For inverse (on dark backgrounds), use primary color if it's light (like lime), or white if primary is dark
-    // For now, setting it to primary or white is a good safe bet
-    root.style.setProperty('--btn-text-inverse', colors.primary === '#D9FF00' ? '#D9FF00' : '#ffffff')
+
+    // For inverse (buttons with dark backgrounds like navy), 
+    // we want high contrast. If the primary is a light/neon color (like lime #D9FF00), 
+    // we use it as the accent. Else we use white.
+    const primaryHex = colors.primary.toUpperCase()
+    const isNeonColor = ['#D9FF00', '#F9D006', '#F59E0B'].includes(primaryHex)
+    root.style.setProperty('--btn-text-inverse', isNeonColor ? colors.primary : '#ffffff')
   }
 
   const fetchThemeFromServer = async () => {

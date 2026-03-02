@@ -89,7 +89,7 @@ body {
 
 /* Button styles */
 .btn-primary {
-  @apply bg-primary text-navy font-bold rounded-lg px-4 py-2 hover:bg-primary-hover transition-colors;
+  @apply bg-primary text-btn-text font-bold rounded-lg px-4 py-2 hover:bg-primary-hover transition-colors;
 }
 
 .btn-secondary {
@@ -226,7 +226,7 @@ body {
 
 /* Rank colors for leaderboard */
 .rank-gold {
-  @apply bg-primary text-background-dark border border-yellow-200;
+  @apply bg-primary text-btn-text border border-yellow-200;
 }
 
 .rank-silver {

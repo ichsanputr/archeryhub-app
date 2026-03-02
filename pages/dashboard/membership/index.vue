@@ -226,7 +226,7 @@
                         <div class="flex-1">
                             <h3 class="font-black text-gray-900 text-lg leading-tight">{{ pkg.name }}</h3>
                             <p v-if="pkg.description" class="text-sm text-gray-400 mt-1 line-clamp-2">{{ pkg.description
-                            }}</p>
+                                }}</p>
                         </div>
                         <div class="flex items-baseline gap-1.5">
                             <span class="text-3xl font-black text-gray-900">{{ formatCurrency(pkg.price) }}</span>
@@ -348,8 +348,10 @@
                                     <label class="label-xs">Pilih Anggota <span class="text-red-500">*</span></label>
                                     <select v-model="assignForm.archer_id" class="input-std bg-white">
                                         <option value="">— Pilih anggota —</option>
-                                        <option v-for="m in unassignedMembers" :key="m.uuid" :value="m.archer_id">
-                                            {{ m.full_name || m.archer_name }}
+                                        <option v-for="m in eligibleMembers" :key="m.uuid" :value="m.archer_id"
+                                            class="text-sm font-medium">
+                                            {{ m.full_name || m.archer_name || m.name }}
+                                            {{ m.hasPackage ? `(Sudah ada: ${m.packageName})` : '' }}
                                         </option>
                                     </select>
                                 </div>
@@ -482,7 +484,7 @@
                                             </div>
                                             <div class="flex-1 min-w-0">
                                                 <p class="font-bold text-sm text-gray-800">{{ formatCurrency(p.amount)
-                                                    }}</p>
+                                                }}</p>
                                                 <p class="text-xs text-gray-400">{{ p.payment_method }} · {{
                                                     formatDate(p.paid_at) }}</p>
                                                 <p v-if="p.payment_note" class="text-xs text-gray-400 truncate">{{
@@ -559,21 +561,24 @@ const statusFilters = [
     { label: 'Semua', value: '' },
     { label: 'Aktif', value: 'active' },
     { label: 'Expired', value: 'expired' },
-    { label: 'Belum Bayar', value: 'pending' },
 ]
 
 const statCards = computed(() => [
     { label: 'Aktif', value: stats.value.total_active, icon: 'ph:check-circle-bold' },
     { label: 'Expired', value: stats.value.total_expired, icon: 'ph:x-circle-bold' },
-    { label: 'Belum Bayar', value: stats.value.total_pending, icon: 'ph:clock-bold' },
     { label: 'Hampir Habis', value: stats.value.expiring_in_3_days, icon: 'ph:warning-bold' },
-    { label: 'Pendapatan Bulan Ini', value: formatCurrency(stats.value.revenue_month), icon: 'ph:currency-circle-dollar-bold', span: true },
-])
+] || [])
 
 const activePackages = computed(() => packages.value.filter(p => p.is_active))
-const unassignedMembers = computed(() => {
-    const assignedIds = new Set(subscriptions.value.map(s => s.archer_id))
-    return activeMembers.value.filter(m => !assignedIds.has(m.archer_id))
+const eligibleMembers = computed(() => {
+    return activeMembers.value.map(m => {
+        const existing = subscriptions.value.find(s => s.archer_id === m.archer_id)
+        return {
+            ...m,
+            hasPackage: !!existing,
+            packageName: existing?.package_name
+        }
+    }).sort((a, b) => a.full_name?.localeCompare(b.full_name))
 })
 
 const filteredSubs = computed(() => subscriptions.value.filter(s => {

@@ -85,6 +85,13 @@
       <!-- Dynamic Event Navigation (Manajemen Event) -->
       <div v-if="eventId && (canManageEvents || isArcher)" class="flex flex-col gap-1"
         :class="isEventManagePage ? '' : 'mt-4'">
+        <!-- Back to main list link (only when managing an event) -->
+        <NuxtLink v-if="isOnEventSubPage && canManageEvents" to="/dashboard/events"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group text-gray-400 hover:bg-white/5 hover:text-white mb-2">
+          <Icon icon="ph:arrow-left-bold" class="text-xl" />
+          <span v-if="!isSidebarCollapsed" class="text-sm font-bold whitespace-nowrap">Semua Event</span>
+        </NuxtLink>
+
         <div v-if="!isOnEventSubPage && !isEventManagePage" class="h-px bg-white/10 mb-2 mx-3"></div>
         <div v-if="!isSidebarCollapsed" class="px-3 mb-2">
           <p class="text-xs font-bold text-gray-500">Manajemen Event</p>
