@@ -36,26 +36,30 @@
             class="w-20 h-20 rounded-2xl bg-navy flex items-center justify-center overflow-hidden border-4 border-primary/20">
             <img :src="useImageOrDefault(member?.photo_url, member?.full_name)" class="w-full h-full object-cover" />
           </div>
-          <div>
-            <p class="text-xs font-black text-gray-400  tracking-[0.2em] mb-1">Anggota Klub</p>
-            <h2 class="text-xl font-extrabold text-navy leading-tight">
+          <div class="flex-1 min-w-0">
+            <p class="text-[10px] font-black text-gray-400 tracking-[0.2em] mb-1 uppercase">Anggota Klub</p>
+            <h2 class="text-xl font-extrabold text-navy leading-tight truncate">
               {{ member?.full_name || 'Nama Anggota' }}
             </h2>
-            <p class="text-xs text-gray-400 mt-1 flex items-center gap-2">
-              <Icon :icon="genderIcon" :class="genderColor" class="text-base" />
-              <span>{{ ageLabel }}</span>
-              <span class="text-gray-300">•</span>
-              <span>{{ member?.city || '-' }}</span>
-            </p>
+            <div class="mt-2 text-xs font-semibold text-gray-500 space-y-1.5 break-all">
+              <p class="flex items-center gap-2">
+                <Icon icon="ph:envelope-simple-bold" class="text-gray-400 text-sm shrink-0" />
+                {{ member?.email || '-' }}
+              </p>
+              <p class="flex items-center gap-2">
+                <Icon icon="ph:phone-bold" class="text-gray-400 text-sm shrink-0" />
+                {{ member?.phone_number || member?.phone || '-' }}
+              </p>
+            </div>
           </div>
         </div>
 
         <div class="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100">
           <div>
             <p class="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-1">Jenis Busur</p>
-            <p class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold capitalize"
+            <p class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold capitalize"
               :class="bowBadgeClass">
-              <Icon icon="ph:bow-and-arrow" class="text-base" />
+              <img :src="`/${getBowIcon(member?.bow_type)}`" class="w-4 h-4 opacity-70" alt="bow" />
               <span>{{ member?.bow_type || 'Recurve' }}</span>
             </p>
           </div>

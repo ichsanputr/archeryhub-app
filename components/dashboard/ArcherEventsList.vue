@@ -34,6 +34,23 @@
       </div>
     </div>
 
+    <!-- Club Invitation Notification Alert -->
+    <div v-if="invitations.length > 0"
+      class="flex items-center justify-between bg-amber-50 border border-amber-200 p-4 rounded-2xl shadow-sm">
+      <div class="flex items-center gap-3">
+        <Icon icon="ph:bell-ringing-bold" class="text-amber-500 text-xl" />
+        <div>
+          <h3 class="font-bold text-navy text-sm">Pemberitahuan Baru</h3>
+          <p class="text-amber-700 text-xs mt-0.5">Anda memiliki {{ invitations.length }} undangan klub baru yang belum
+            direspon.</p>
+        </div>
+      </div>
+      <BaseButton to="/dashboard/notifications" variant="white" size="sm"
+        class="h-9 px-4 font-black text-[10px] uppercase tracking-wider text-amber-700 border-amber-200">
+        Lihat Detail
+      </BaseButton>
+    </div>
+
     <!-- Search & Filter Card -->
     <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
       <div class="flex-grow w-full">
@@ -248,7 +265,7 @@ import { useToast } from '~/composables/useToast'
 import { useAuth } from '~/composables/useAuth'
 import BasePagination from '~/components/common/BasePagination.vue'
 
-const { get } = useApi()
+const { get, post } = useApi()
 const toast = useToast()
 const { user } = useAuth()
 
@@ -257,6 +274,9 @@ const events = ref([])
 const isLoading = ref(true)
 const showQR = ref(false)
 const selectedEvent = ref(null)
+
+const invitations = ref([])
+const isResponding = ref(null)
 
 // Pagination state
 const currentPage = ref(1)
@@ -305,6 +325,34 @@ const fetchEvents = async () => {
   }
 }
 
+const fetchInvitations = async () => {
+  try {
+    const response = await get('/clubs/my/invitations')
+    invitations.value = response?.data || []
+  } catch (error) {
+    console.error('Failed to fetch invitations:', error)
+  }
+}
+
+const respondInvitation = async (memberId, action) => {
+  isResponding.value = memberId
+  try {
+    await post(`/clubs/invitations/${memberId}/respond`, { action })
+    toast.success(action === 'accept' ? 'Berhasil bergabung dengan klub!' : 'Undangan ditolak')
+    // Refresh data
+    await fetchInvitations()
+    if (action === 'accept') {
+      // If accepted, maybe refresh the whole page or status
+      window.location.reload()
+    }
+  } catch (error) {
+    console.error('Failed to respond to invitation:', error)
+    toast.error('Gagal memproses undangan')
+  } finally {
+    isResponding.value = null
+  }
+}
+
 const handlePageChange = (page) => {
   currentPage.value = page
   fetchEvents()
@@ -312,6 +360,7 @@ const handlePageChange = (page) => {
 
 onMounted(() => {
   fetchEvents()
+  fetchInvitations()
 })
 
 const resetFilters = () => {

@@ -47,10 +47,10 @@
       <!-- Tabs & Search -->
       <div class="p-6 border-b border-gray-50 space-y-4">
         <div class="flex flex-wrap items-center justify-between gap-4">
-          <div class="flex p-1 bg-gray-50 rounded-xl">
+          <div class="flex gap-1 bg-gray-100/80 rounded-2xl p-1.5 overflow-x-auto no-scrollbar shadow-sm">
             <button v-for="tab in tabs" :key="tab.value" @click="activeTab = tab.value"
-              :class="activeTab === tab.value ? 'bg-white text-navy shadow-sm' : 'text-gray-400 hover:text-gray-600'"
-              class="px-4 py-2 rounded-lg text-xs font-black  tracking-wider transition-all">
+              :class="activeTab === tab.value ? 'bg-white shadow text-navy' : 'text-gray-500 hover:text-navy hover:bg-white/50'"
+              class="flex-1 min-w-[100px] px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all">
               {{ tab.label }}
             </button>
           </div>

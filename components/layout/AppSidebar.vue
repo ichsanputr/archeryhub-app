@@ -23,21 +23,63 @@
 
       <!-- Main Navigation (Menu Utama) - Hide when on any event sub-page (including edit) -->
       <template v-if="!isOnEventSubPage">
-        <div v-if="!isSidebarCollapsed" class="px-3 mb-2">
-          <p class="text-[10px] font-black text-gray-500  tracking-[0.2em]">Menu Utama</p>
-        </div>
-        <NuxtLink v-for="item in navLinks" :key="item.path" :to="item.path"
-          class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group" :class="isActive(item.path)
-            ? 'bg-primary text-primary-text shadow-lg shadow-primary/20'
-            : 'text-gray-400 hover:bg-white/5 hover:text-white'">
-          <Icon :icon="item.icon.includes(':') ? item.icon : `ph:${item.icon}`" class="text-xl transition-transform"
-            :class="isActive(item.path) ? 'text-primary-text' : ''" />
-          <span v-if="!isSidebarCollapsed" class="text-sm font-bold whitespace-nowrap">{{ item.label }}</span>
-          <span v-if="item.badge && !isSidebarCollapsed"
-            class="ml-auto bg-primary/20 text-primary text-[10px] font-black px-2 py-0.5 rounded-full  tracking-tighter">
-            {{ item.badge }}
-          </span>
-        </NuxtLink>
+        <template v-for="section in navSections" :key="section.label">
+          <!-- Section with group dropdown -->
+          <template v-if="section.children">
+            <div class="mt-1">
+              <!-- Group header button -->
+              <button @click="toggleGroup(section.label)"
+                class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-gray-400 hover:bg-white/5 hover:text-white transition-all group">
+                <Icon :icon="section.icon" class="text-xl shrink-0" />
+                <span v-if="!isSidebarCollapsed" class="text-sm font-bold flex-1 text-left text-gray-400">
+                  {{ section.label }}
+                </span>
+                <Icon v-if="!isSidebarCollapsed"
+                  :icon="openGroups.includes(section.label) ? 'ph:caret-up-bold' : 'ph:caret-down-bold'"
+                  class="text-[10px] text-gray-500 shrink-0 transition-transform" />
+              </button>
+              <!-- Dropdown children -->
+              <Transition name="slide-down">
+                <div v-if="openGroups.includes(section.label)"
+                  class="overflow-hidden mt-0.5 ml-3 flex flex-col gap-0.5">
+                  <NuxtLink v-for="item in section.children" :key="item.path" :to="item.path"
+                    class="flex items-center gap-3 pl-5 pr-3 py-2 rounded-xl transition-all relative" :class="isActive(item.path)
+                      ? 'bg-primary/15 text-primary'
+                      : 'text-gray-400 hover:bg-white/5 hover:text-white'">
+                    <!-- Active indicator bar -->
+                    <div v-if="isActive(item.path)"
+                      class="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-4 bg-primary rounded-r-full"></div>
+                    <Icon :icon="item.icon" class="text-lg shrink-0" />
+                    <span v-if="!isSidebarCollapsed" class="text-sm font-bold whitespace-nowrap">{{ item.label }}</span>
+                  </NuxtLink>
+                </div>
+              </Transition>
+            </div>
+          </template>
+
+          <!-- Section label (no group) -->
+          <template v-else-if="section.type === 'label'">
+            <div v-if="!isSidebarCollapsed" class="px-3 mt-3 mb-1">
+              <p class="text-xs font-bold text-gray-500">{{ section.label }}</p>
+            </div>
+          </template>
+
+          <!-- Regular nav item -->
+          <template v-else>
+            <NuxtLink :to="section.path" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group"
+              :class="isActive(section.path)
+                ? 'bg-primary text-primary-text shadow-lg shadow-primary/20'
+                : 'text-gray-400 hover:bg-white/5 hover:text-white'">
+              <Icon :icon="section.icon.includes(':') ? section.icon : `ph:${section.icon}`"
+                class="text-xl transition-transform" :class="isActive(section.path) ? 'text-primary-text' : ''" />
+              <span v-if="!isSidebarCollapsed" class="text-sm font-bold whitespace-nowrap">{{ section.label }}</span>
+              <span v-if="section.badge && !isSidebarCollapsed"
+                class="ml-auto bg-primary/20 text-primary text-[10px] font-black px-2 py-0.5 rounded-full tracking-tighter">
+                {{ section.badge }}
+              </span>
+            </NuxtLink>
+          </template>
+        </template>
       </template>
 
       <!-- Dynamic Event Navigation (Manajemen Event) -->
@@ -45,7 +87,7 @@
         :class="isEventManagePage ? '' : 'mt-4'">
         <div v-if="!isOnEventSubPage && !isEventManagePage" class="h-px bg-white/10 mb-2 mx-3"></div>
         <div v-if="!isSidebarCollapsed" class="px-3 mb-2">
-          <p class="text-[10px] font-black text-gray-500  tracking-[0.2em]">Manajemen Event</p>
+          <p class="text-xs font-bold text-gray-500">Manajemen Event</p>
         </div>
         <NuxtLink v-for="item in eventLinks" :key="item.path" :to="item.path"
           class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group" :class="isActive(item.path)
@@ -69,7 +111,7 @@
           </div>
           <div v-if="!isSidebarCollapsed" class="flex flex-col min-w-0">
             <span class="text-white text-sm font-bold truncate">{{ user?.full_name || 'Guest' }}</span>
-            <span class="text-[10px] text-gray-500 font-black  tracking-widest">{{ userRoleLabel }}</span>
+            <span class="text-[10px] text-gray-500 font-bold">{{ userRoleLabel }}</span>
           </div>
         </div>
         <button @click="handleLogout"
@@ -83,7 +125,7 @@
 </template>
 
 <script setup>
-import { computed, watch } from 'vue'
+import { computed, watch, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 import { useImageOrDefault } from '~/composables/useImageHelper'
@@ -94,6 +136,15 @@ const { user, archerProfile, clubProfile, organizationProfile, sellerProfile, lo
 
 const isSidebarOpen = useState('mobile-sidebar-open', () => false)
 const isSidebarCollapsed = useState('sidebar-collapsed', () => false)
+
+// Groups that are expanded (open)
+const openGroups = ref(['Manajemen Klub'])
+
+function toggleGroup(label) {
+  const idx = openGroups.value.indexOf(label)
+  if (idx >= 0) openGroups.value.splice(idx, 1)
+  else openGroups.value.push(label)
+}
 
 const userAvatar = computed(() => {
   const role = user.value?.role || user.value?.type || 'archer'
@@ -114,42 +165,29 @@ const userAvatar = computed(() => {
 
 const displayName = computed(() => {
   const role = user.value?.role || user.value?.type || 'archer'
-
-  if (role === 'club' && clubProfile.value?.name) {
-    return clubProfile.value.name
-  } else if (role === 'organization' && organizationProfile.value?.name) {
-    return organizationProfile.value.name
-  } else if (role === 'seller' && sellerProfile.value?.store_name) {
-    return sellerProfile.value.store_name
-  }
-
+  if (role === 'club' && clubProfile.value?.name) return clubProfile.value.name
+  else if (role === 'organization' && organizationProfile.value?.name) return organizationProfile.value.name
+  else if (role === 'seller' && sellerProfile.value?.store_name) return sellerProfile.value.store_name
   return user.value?.full_name || user.value?.name || 'Guest'
 })
 
-// Close sidebar on route change for mobile
-watch(() => route.path, () => {
-  isSidebarOpen.value = false
-})
+
 
 const eventId = computed(() => route.params.id)
 
-// Check if we're on any event sub-page (with event ID in path) - this includes edit, manage pages, etc.
 const isOnEventSubPage = computed(() => {
   const path = route.path
   if (!path.includes('/dashboard/events/')) return false
-  // Check if path matches /dashboard/events/:id/... pattern (has a sub-path after event ID)
   const eventPathMatch = path.match(/\/dashboard\/events\/([^/]+)\/(.+)/)
-  return !!eventPathMatch // Return true if we're on any event sub-page
+  return !!eventPathMatch
 })
 
 const isEventManagePage = computed(() => {
-  // Check if we're on any event management page (overview, targets, qualification, elimination, etc.)
   const path = route.path
   if (!path.includes('/dashboard/events/')) return false
   const eventPathMatch = path.match(/\/dashboard\/events\/([^/]+)\/(.+)/)
   if (!eventPathMatch) return false
-  const [, eventId, subPath] = eventPathMatch
-  // Exclude certain paths that are not management pages
+  const [, , subPath] = eventPathMatch
   const excludedPaths = ['edit', 'checkout', 'register', 'register-edit', 'results', 'setup', 'timeline', 'venue']
   return !excludedPaths.includes(subPath)
 })
@@ -175,12 +213,10 @@ const eventLinks = computed(() => {
     { label: 'Tim', icon: 'ph:users-four', path: `/dashboard/events/${eventId.value}/teams` },
   ]
 
-  // Add Kategori Lomba only for organization users, right after Tim
   if (isOrganization) {
     links.push({ label: 'Kategori Lomba', icon: 'ph:tag', path: `/dashboard/events/${eventId.value}/categories` })
   }
 
-  // Add the rest of the menu items
   links.push(
     { label: 'Target', icon: 'ph:target', path: `/dashboard/events/${eventId.value}/targets` },
     { label: 'Kualifikasi', icon: 'fluent:table-freeze-column-20-regular', path: `/dashboard/events/${eventId.value}/qualification` },
@@ -191,7 +227,6 @@ const eventLinks = computed(() => {
   return links
 })
 
-// Role-based navigation - filtered based on user role
 const isArcher = computed(() => {
   const role = user.value?.role || user.value?.type || 'archer'
   return role === 'archer'
@@ -199,29 +234,19 @@ const isArcher = computed(() => {
 
 const canManageEvents = computed(() => {
   const role = user.value?.role || user.value?.type || 'archer'
-  // Klub tidak dapat membuat/mengelola event
   return ['admin', 'organization'].includes(role)
 })
 
-// Indonesian role label
 const userRoleLabel = computed(() => {
   const role = user.value?.role || user.value?.type || 'archer'
-  const labels = {
-    'archer': 'Pemanah',
-    'organization': 'Organisasi',
-    'club': 'Klub',
-    'admin': 'Admin',
-    'seller': 'Penjual',
-    'scorekeeper': 'Scorekeeper'
-  }
+  const labels = { 'archer': 'Pemanah', 'organization': 'Organisasi', 'club': 'Klub', 'admin': 'Admin', 'seller': 'Penjual', 'scorekeeper': 'Scorekeeper' }
   return labels[role] || 'Pengguna'
 })
 
-const navLinks = computed(() => {
+// ── Nav sections (supports labels, items, and group dropdowns) ─────────────
+const navSections = computed(() => {
   const role = user.value?.role || user.value?.type || 'archer'
-  const isAdminOrOrg = role === 'admin' || role === 'organization'
 
-  // Different navigation for archers vs organizers
   if (role === 'archer') {
     return [
       { label: 'Event Saya', icon: 'ph:trophy', path: '/dashboard/archers/events' },
@@ -232,7 +257,6 @@ const navLinks = computed(() => {
     ]
   }
 
-  // Seller navigation
   if (role === 'seller') {
     return [
       { label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard' },
@@ -243,39 +267,80 @@ const navLinks = computed(() => {
     ]
   }
 
-  // Full navigation for organizers/admin; hide Event for club
-  // When on event manage page, hide Laporan, Berita, and Pengaturan
-  const base = [
-    ...(role !== 'organization' ? [{ label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard' }] : []),
-    ...(role !== 'club' ? [{ label: 'Event', icon: 'ph:trophy', path: '/dashboard/events' }] : []),
+  if (role === 'club') {
+    return [
+      { label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard' },
+      { type: 'label', label: 'Manajemen Klub' },
+      // Group: Anggota & Membership
+      {
+        label: 'Keanggotaan',
+        icon: 'ph:users-bold',
+        type: 'group',
+        children: [
+          { label: 'Anggota', icon: 'ph:identification-badge-bold', path: '/dashboard/members' },
+          { label: 'Membership', icon: 'ph:crown-bold', path: '/dashboard/membership' },
+          { label: 'Pembayaran', icon: 'ph:money-bold', path: '/dashboard/payments-membership' },
+        ]
+      },
+      { label: 'Form Pendaftaran', icon: 'ph:clipboard-text-bold', path: '/dashboard/form-pendaftaran' },
+      { label: 'Profil Klub', icon: 'ph:buildings', path: '/dashboard/clubs/profile' },
+      { type: 'label', label: 'Lainnya' },
+      { label: 'Subscription', icon: 'ph:credit-card', path: '/dashboard/subscription' },
+      ...(!isEventManagePage.value ? [{ label: 'Berita', icon: 'ph:newspaper', path: '/dashboard/news' }] : []),
+      ...(!isEventManagePage.value ? [{ label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/settings' }] : []),
+    ]
+  }
+
+  if (role === 'organization') {
+    return [
+      { label: 'Laporan', icon: 'ph:chart-bar', path: '/dashboard/reports' },
+      { label: 'Profil Organisasi', icon: 'ph:building-office', path: '/dashboard/organizations/profile' },
+      { label: 'Scorekeeper', icon: 'ph:user-focus', path: '/dashboard/organizations/scorekeepers' },
+      { label: 'Subscription', icon: 'ph:credit-card', path: '/dashboard/subscription' },
+      ...(!isEventManagePage.value ? [{ label: 'Berita', icon: 'ph:newspaper', path: '/dashboard/news' }] : []),
+      ...(!isEventManagePage.value ? [{ label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/settings' }] : []),
+    ]
+  }
+
+  // Admin / default
+  return [
+    { label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard' },
+    { label: 'Event', icon: 'ph:trophy', path: '/dashboard/events' },
     ...(!isEventManagePage.value ? [{ label: 'Laporan', icon: 'ph:chart-bar', path: '/dashboard/reports' }] : []),
-    ...(role === 'club' ? [{ label: 'Anggota', icon: 'ph:identification-badge', path: '/dashboard/members' }] : []),
-    ...(role === 'club' ? [{ label: 'Membership', icon: 'ph:crown-bold', path: '/dashboard/membership' }] : []),
-    ...(role === 'club' ? [{ label: 'Form Pendaftaran', icon: 'ph:clipboard-text-bold', path: '/dashboard/form-pendaftaran' }] : []),
-    ...(role === 'club' ? [{ label: 'Profil Klub', icon: 'ph:buildings', path: '/dashboard/clubs/profile' }] : []),
-    ...(role !== 'club' && role !== 'organization' ? [{ label: 'Tim', icon: 'ph:users-four', path: '/dashboard/teams' }] : []),
-    ...(role === 'organization' ? [{ label: 'Profil Organisasi', icon: 'ph:building-office', path: '/dashboard/organizations/profile' }] : []),
-    ...(role === 'organization' ? [{ label: 'Scorekeeper', icon: 'ph:user-focus', path: '/dashboard/organizations/scorekeepers' }] : []),
+    { label: 'Tim', icon: 'ph:users-four', path: '/dashboard/teams' },
     ...(!isEventManagePage.value ? [{ label: 'Berita', icon: 'ph:newspaper', path: '/dashboard/news' }] : []),
-    ...((role === 'club' || role === 'organization') ? [{ label: 'Subscription', icon: 'ph:credit-card', path: '/dashboard/subscription' }] : []),
     ...(!isEventManagePage.value ? [{ label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/settings' }] : []),
   ]
-
-  return base
 })
 
+// Close sidebar on route change for mobile
+watch(() => route.path, () => {
+  isSidebarOpen.value = false
+})
+
+// Auto-open group if any child is active
+watch(() => route.path, (path) => {
+  navSections.value?.forEach(section => {
+    if (section.children && section.children.some(c => path.startsWith(c.path))) {
+      if (!openGroups.value.includes(section.label)) {
+        openGroups.value.push(section.label)
+      }
+    }
+  })
+}, { immediate: true })
+
+// ── Active detection — exact match for /dashboard, prefix for others ───────
 const isActive = (path) => {
+  if (!path) return false
   if (path === '/dashboard') {
     return route.path === '/dashboard' || route.path === '/dashboard/'
   }
-  return route.path.startsWith(path)
+  // Exact match first, then check if route path starts with path + '/'
+  return route.path === path || route.path.startsWith(path + '/')
 }
 
 const showLogoutDialog = useState('show-logout-dialog', () => false)
-
-const handleLogout = () => {
-  showLogoutDialog.value = true
-}
+const handleLogout = () => { showLogoutDialog.value = true }
 </script>
 
 <style scoped>
@@ -285,5 +350,17 @@ const handleLogout = () => {
 
 .bg-navy {
   background-color: var(--sidebar-bg, #0f172a);
+}
+
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transition: all 0.2s ease;
+  max-height: 300px;
+}
+
+.slide-down-enter-from,
+.slide-down-leave-to {
+  max-height: 0;
+  opacity: 0;
 }
 </style>

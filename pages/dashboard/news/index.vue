@@ -164,7 +164,7 @@
                             Edit
                         </BaseButton>
                     </NuxtLink>
-                    <BaseButton @click="deleteNews(item)" variant="white" size="sm" icon="ph:trash"
+                    <BaseButton @click="confirmDelete(item)" variant="white" size="sm" icon="ph:trash"
                         class="h-9 w-9 p-0 text-red-500 hover:text-red-600 border-slate-200" />
                 </div>
             </div>
@@ -179,14 +179,15 @@
                     <h3 class="text-xl font-bold text-navy mb-2">Belum Ada Berita</h3>
                     <p class="text-gray-500 mb-6 max-w-sm mx-auto">Buat berita pertama Anda untuk berbagi informasi
                         dengan pemanah dan peserta event.</p>
-                    <NuxtLink to="/dashboard/news/create">
-                        <BaseButton variant="primary" icon="ph:plus-bold">
-                            Buat Berita Pertama
-                        </BaseButton>
-                    </NuxtLink>
                 </div>
             </div>
         </div>
+
+        <!-- Delete Confirmation Dialog -->
+        <AppDialog :show="showDeleteDialog" title="Hapus Berita"
+            :message="`Apakah Anda yakin ingin menghapus berita &quot;${newsToDelete?.title}&quot;? Tindakan ini tidak dapat dibatalkan.`"
+            confirm-text="Ya, Hapus" cancel-text="Batal" type="danger" icon="ph:trash-bold" @confirm="executeDelete"
+            @cancel="showDeleteDialog = false" @update:show="showDeleteDialog = $event" />
     </div>
 </template>
 
@@ -211,6 +212,10 @@ const isLoading = ref(true)
 const searchQuery = ref('')
 const statusFilter = ref('all')
 const categoryFilter = ref('all')
+
+const showDeleteDialog = ref(false)
+const newsToDelete = ref(null)
+const isDeleting = ref(false)
 
 const fetchNews = async () => {
     isLoading.value = true
@@ -243,15 +248,25 @@ const resetFilters = () => {
     categoryFilter.value = 'all'
 }
 
-const deleteNews = async (item) => {
-    if (!confirm(`Apakah Anda yakin ingin menghapus berita "${item.title}"?`)) return
+const confirmDelete = (item) => {
+    newsToDelete.value = item
+    showDeleteDialog.value = true
+}
 
+const executeDelete = async () => {
+    if (!newsToDelete.value) return
+
+    isDeleting.value = true
     try {
-        await del(`/news/${item.id}`)
+        await del(`/news/${newsToDelete.value.id}`)
         toast.success('Berita berhasil dihapus')
         fetchNews()
     } catch (error) {
         toast.error('Gagal menghapus berita')
+    } finally {
+        isDeleting.value = false
+        showDeleteDialog.value = false
+        newsToDelete.value = null
     }
 }
 

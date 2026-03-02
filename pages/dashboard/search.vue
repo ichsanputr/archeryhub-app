@@ -9,17 +9,17 @@
     </div>
 
     <!-- Tabs -->
-    <div class="flex gap-2 border-b border-gray-100 overflow-x-auto no-scrollbar pb-1">
-      <BaseButton v-for="tab in tabs" :key="tab.id" variant="ghost" size="sm" :class="[
-        'rounded-none border-b-2 font-bold !px-6 !py-4 transition-all whitespace-nowrap',
-        activeTab === tab.id ? 'border-primary text-navy bg-primary/5' : 'border-transparent text-gray-500 hover:text-navy hover:bg-gray-50'
-      ]" @click="activeTab = tab.id">
+    <div class="flex gap-1 bg-gray-100/80 rounded-2xl p-1.5 overflow-x-auto no-scrollbar shadow-sm">
+      <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
+        :class="activeTab === tab.id ? 'bg-white shadow text-navy' : 'text-gray-500 hover:text-navy hover:bg-white/50'"
+        class="flex items-center justify-center gap-2 flex-1 min-w-[120px] px-6 py-2.5 rounded-xl text-sm font-black transition-all">
         {{ tab.label }}
         <span v-if="getItemCount(tab.id) !== null"
-          class="ml-2 px-2 py-0.5 rounded-full bg-gray-100 text-[10px] text-navy font-black">
+          :class="activeTab === tab.id ? 'bg-primary/10 text-primary' : 'bg-gray-200 text-gray-500'"
+          class="ml-1.5 px-2 py-0.5 rounded-lg text-[10px] font-black transition-colors">
           {{ getItemCount(tab.id) }}
         </span>
-      </BaseButton>
+      </button>
     </div>
 
     <!-- Results Area -->

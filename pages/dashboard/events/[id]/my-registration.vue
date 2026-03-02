@@ -243,22 +243,8 @@ const openImage = (url) => {
 const fetchInitialData = async () => {
     isLoading.value = true
     try {
-        const profileRes = await get('/archer/me')
-        const archer = profileRes?.data
-        const searchEmail = archer?.email
-
-        // Search in participants for this event
-        const participantsRes = await get(`/events/${eventId}/participants`, {
-            params: { limit: 10, group_by: 'archer', search: searchEmail }
-        })
-
-        const me = participantsRes?.participants?.find(p => p.email === searchEmail)
-        if (me) {
-            // Fetch detailed participant info
-            const pId = me.athlete_code || me.id
-            const detailed = await get(`/events/${eventId}/participants/${pId}`)
-            participant.value = detailed
-        }
+        const detailed = await get(`/events/${eventId}/participants/me`)
+        participant.value = detailed
     } catch (e) {
         console.error('Failed to fetch registration data:', e)
     } finally {

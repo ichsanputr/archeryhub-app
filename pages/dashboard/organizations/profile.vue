@@ -15,14 +15,13 @@
     </div>
 
     <!-- Tab Navigation -->
-    <div
-      class="flex items-center gap-1 bg-white p-1 rounded-2xl border border-gray-100 shadow-sm overflow-x-auto no-scrollbar">
-      <BaseButton v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
-        :variant="activeTab === tab.id ? 'primary' : 'white'"
-        class="px-5 py-2.5 rounded-xl border-none shadow-none text-sm font-black whitespace-nowrap flex items-center gap-2">
+    <div class="flex gap-1 bg-gray-100/80 rounded-2xl p-1.5 overflow-x-auto no-scrollbar shadow-sm">
+      <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
+        :class="activeTab === tab.id ? 'bg-white shadow text-navy' : 'text-gray-500 hover:text-navy hover:bg-white/50'"
+        class="flex items-center justify-center gap-2 flex-1 min-w-[140px] px-5 py-2.5 rounded-xl text-sm font-black transition-all">
         <Icon :icon="tab.icon" class="text-lg" />
         {{ tab.label }}
-      </BaseButton>
+      </button>
     </div>
 
     <!-- Main Content -->

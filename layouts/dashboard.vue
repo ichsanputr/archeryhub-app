@@ -86,10 +86,12 @@ watch(isMobileMenuOpen, (open) => {
     }
 })
 
-// Global Subscription Check
+// Global Subscription Check (only for klub & organisasi)
 const { fetchSubscription } = useSubscription()
 onMounted(async () => {
-    if (user.value) {
+    if (!user.value) return
+    const role = user.value.role || user.value.type || user.value.user_type
+    if (role === 'club' || role === 'organization' || role === 'admin') {
         await fetchSubscription()
     }
 })

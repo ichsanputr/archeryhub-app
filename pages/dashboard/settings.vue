@@ -7,14 +7,13 @@
     </div>
 
     <!-- Settings Nav Tabs -->
-    <div class="flex gap-1 border-b border-gray-100 overflow-x-auto no-scrollbar pb-1">
-      <BaseButton v-for="tab in tabs" :key="tab.value" @click="activeTab = tab.value"
-        :variant="activeTab === tab.value ? 'primary' : 'white'"
-        class="inline-flex items-center gap-2 font-bold text-sm px-6 py-4 rounded-none border-b-2 shadow-none transition-all"
-        :class="activeTab === tab.value ? 'border-primary' : 'border-transparent text-gray-500 hover:text-navy hover:bg-gray-50'">
-        <Icon :icon="tab.icon" class="mr-1 text-base" />
+    <div class="flex gap-1 bg-gray-100 rounded-2xl p-1.5 overflow-x-auto no-scrollbar">
+      <button v-for="tab in tabs" :key="tab.value" @click="activeTab = tab.value"
+        :class="activeTab === tab.value ? 'bg-white shadow-sm text-navy' : 'text-gray-500 hover:text-navy hover:bg-white/50'"
+        class="flex items-center justify-center gap-2 flex-1 min-w-[120px] px-4 py-2.5 rounded-xl text-sm font-black transition-all">
+        <Icon :icon="tab.icon" class="text-base" />
         <span>{{ tab.label }}</span>
-      </BaseButton>
+      </button>
     </div>
 
     <!-- Account Info -->
@@ -58,31 +57,40 @@
             <BaseInput v-model="accountForm.phone" label="Nomor Telepon" type="tel" placeholder="+62 812-3456-7890" />
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <BaseInput v-model="accountForm.date_of_birth" label="Tanggal Lahir" type="date" />
-            <BaseSelect v-model="accountForm.gender" label="Jenis Kelamin" :items="[
-              { title: 'Laki-laki', value: 'M' },
-              { title: 'Perempuan', value: 'F' },
-              { title: 'Lainnya', value: 'X' }
-            ]" />
-          </div>
+          <template v-if="userType === 'archer'">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <BaseInput v-model="accountForm.date_of_birth" label="Tanggal Lahir" type="date" />
+              <BaseSelect v-model="accountForm.gender" label="Jenis Kelamin" :items="[
+                { title: 'Laki-laki', value: 'M' },
+                { title: 'Perempuan', value: 'F' },
+                { title: 'Lainnya', value: 'X' }
+              ]" />
+            </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <BaseInput v-model="accountForm.city" label="Kota" placeholder="Kota tempat tinggal" />
-            <BaseInput v-model="accountForm.school" label="Sekolah / Universitas"
-              placeholder="Nama sekolah / universitas" />
-          </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <BaseInput v-model="accountForm.city" label="Kota" placeholder="Kota tempat tinggal" />
+              <BaseInput v-model="accountForm.school" label="Sekolah / Universitas"
+                placeholder="Nama sekolah / universitas" />
+            </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <BaseInput v-model="accountForm.address" label="Alamat" placeholder="Alamat lengkap" />
-            <BaseSelect v-model="accountForm.bow_type" label="Tipe Busur" :items="[
-              { title: 'Recurve', value: 'recurve' },
-              { title: 'Compound', value: 'compound' },
-              { title: 'Barebow', value: 'barebow' },
-              { title: 'Traditional', value: 'traditional' },
-              { title: 'Standard', value: 'standard' }
-            ]" />
-          </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <BaseInput v-model="accountForm.address" label="Alamat" placeholder="Alamat lengkap" />
+              <BaseSelect v-model="accountForm.bow_type" label="Tipe Busur" :items="[
+                { title: 'Recurve', value: 'recurve' },
+                { title: 'Compound', value: 'compound' },
+                { title: 'Barebow', value: 'barebow' },
+                { title: 'Traditional', value: 'traditional' },
+                { title: 'Standard', value: 'standard' }
+              ]" />
+            </div>
+          </template>
+
+          <template v-else>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <BaseInput v-model="accountForm.city" label="Kota" placeholder="Kota" />
+              <BaseInput v-model="accountForm.address" label="Alamat" placeholder="Alamat lengkap" />
+            </div>
+          </template>
 
           <div class="mt-6">
             <BaseButton variant="gold" size="md" icon="ph:floppy-disk" @click="saveAccountInfo"

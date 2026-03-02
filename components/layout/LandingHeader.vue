@@ -144,7 +144,7 @@
                                 <img v-if="user?.avatar_url" :src="user.avatar_url"
                                     class="w-full h-full object-cover" />
                                 <span v-else class="text-navy font-bold text-sm">{{ user?.full_name?.charAt(0) || 'U'
-                                }}</span>
+                                    }}</span>
                             </div>
                         </button>
 
@@ -254,7 +254,7 @@
                                 <img v-if="user?.avatar_url" :src="user.avatar_url"
                                     class="w-full h-full object-cover" />
                                 <span v-else class="text-navy font-black text-xl">{{ user?.full_name?.charAt(0) || 'U'
-                                }}</span>
+                                    }}</span>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <p class="text-navy font-black truncate">{{ user?.full_name || 'User' }}</p>
@@ -320,7 +320,7 @@
                 <div class="p-6 border-t border-gray-50 bg-white">
                     <div v-if="isLoggedIn" class="space-y-3">
                         <NuxtLink :to="dashboardUrl" @click="mobileMenuOpen = false"
-                            class="flex items-center justify-center gap-2 w-full py-3.5 bg-navy text-white rounded-2xl text-sm font-black  tracking-wider shadow-lg shadow-navy/20 transition-all">
+                            class="flex items-center justify-center gap-2 w-full py-3.5 bg-navy text-white rounded-2xl text-sm font-black  tracking-wider shadow-sm shadow-navy/20 transition-all">
                             <Icon icon="ph:layout-bold" />
                             Dashboard
                         </NuxtLink>

@@ -56,7 +56,7 @@
         <!-- ── Empty State ───────────────────────────────────────────── -->
         <div v-else-if="!form"
             class="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-gray-200 bg-gray-50 py-28 gap-6">
-            <div class="size-24 rounded-3xl bg-primary/10 flex items-center justify-center">
+            <div class="size-24 rounded-3xl bg-gray-100 flex items-center justify-center">
                 <Icon icon="ph:clipboard-text-bold" class="text-primary text-5xl" />
             </div>
             <div class="text-center">
@@ -84,8 +84,7 @@
                 </button>
             </div>
 
-            <!-- TAB: Informasi -->
-            <div v-if="activeTab === 'info'" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div v-if="activeTab === 'info'" class="flex flex-col gap-6 w-full">
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex flex-col gap-5">
                     <h2 class="font-black text-gray-800 flex items-center gap-2">
                         <Icon icon="ph:info-bold" class="text-primary" /> Informasi Dasar
@@ -124,55 +123,6 @@
                         </button>
                     </div>
                 </div>
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex flex-col gap-5">
-                    <h2 class="font-black text-gray-800 flex items-center gap-2">
-                        <Icon icon="ph:chart-bar-bold" class="text-primary" /> Ringkasan Form
-                    </h2>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-primary/5 rounded-2xl p-4 text-center">
-                            <p class="text-3xl font-black text-primary">{{ form.sections?.length || 0 }}</p>
-                            <p class="text-xs font-black text-gray-500 mt-1 uppercase tracking-wider">Seksi</p>
-                        </div>
-                        <div class="bg-blue-50 rounded-2xl p-4 text-center">
-                            <p class="text-3xl font-black text-blue-600">{{ totalFields }}</p>
-                            <p class="text-xs font-black text-gray-500 mt-1 uppercase tracking-wider">Field</p>
-                        </div>
-                        <div class="bg-green-50 rounded-2xl p-4 text-center">
-                            <p class="text-3xl font-black text-green-600">{{ requiredFields }}</p>
-                            <p class="text-xs font-black text-gray-500 mt-1 uppercase tracking-wider">Wajib</p>
-                        </div>
-                        <div class="bg-orange-50 rounded-2xl p-4 text-center">
-                            <p class="text-3xl font-black text-orange-500">{{ form.is_published ? 'Aktif' : 'Draft' }}
-                            </p>
-                            <p class="text-xs font-black text-gray-500 mt-1 uppercase tracking-wider">Status</p>
-                        </div>
-                    </div>
-                    <div class="mt-auto">
-                        <p class="text-xs font-black text-gray-500 uppercase tracking-wider mb-3">Kemajuan Pembuatan</p>
-                        <div class="flex flex-col gap-2">
-                            <div class="flex items-center gap-2 text-sm"
-                                :class="form.title ? 'text-green-600' : 'text-gray-400'">
-                                <Icon :icon="form.title ? 'ph:check-circle-bold' : 'ph:circle'" />
-                                <span class="font-medium">Judul form diisi</span>
-                            </div>
-                            <div class="flex items-center gap-2 text-sm"
-                                :class="form.sections?.length ? 'text-green-600' : 'text-gray-400'">
-                                <Icon :icon="form.sections?.length ? 'ph:check-circle-bold' : 'ph:circle'" />
-                                <span class="font-medium">Minimal 1 seksi dibuat</span>
-                            </div>
-                            <div class="flex items-center gap-2 text-sm"
-                                :class="totalFields > 0 ? 'text-green-600' : 'text-gray-400'">
-                                <Icon :icon="totalFields > 0 ? 'ph:check-circle-bold' : 'ph:circle'" />
-                                <span class="font-medium">Minimal 1 field ditambahkan</span>
-                            </div>
-                            <div class="flex items-center gap-2 text-sm"
-                                :class="form.is_published ? 'text-green-600' : 'text-gray-400'">
-                                <Icon :icon="form.is_published ? 'ph:check-circle-bold' : 'ph:circle'" />
-                                <span class="font-medium">Form dipublikasikan</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <!-- TAB: Bangun Form -->
@@ -197,13 +147,13 @@
                     <div class="p-6">
                         <div v-for="cat in fieldCategories" :key="cat.label" class="mb-5 last:mb-0">
                             <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">{{ cat.label
-                                }}</p>
+                            }}</p>
                             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
                                 <button v-for="ft in cat.fields" :key="ft.type" @click="quickAddField(ft)"
                                     :disabled="!activeSectionId"
-                                    class="group flex flex-col items-center gap-2 p-3 rounded-xl border border-gray-100 hover:border-primary hover:bg-primary/5 transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+                                    class="group flex flex-col items-center gap-2 p-3 rounded-xl border border-gray-100 hover:border-primary hover:bg-gray-50 transition-all disabled:opacity-40 disabled:cursor-not-allowed">
                                     <div
-                                        class="size-10 rounded-xl bg-gray-100 group-hover:bg-primary/20 flex items-center justify-center transition-colors">
+                                        class="size-10 rounded-xl bg-gray-50 group-hover:bg-primary/10 flex items-center justify-center transition-colors">
                                         <Icon :icon="ft.icon"
                                             class="text-gray-500 group-hover:text-primary text-xl transition-colors" />
                                     </div>
@@ -226,7 +176,7 @@
                     <!-- Section Header -->
                     <div class="flex items-center gap-3 px-6 py-4 bg-gray-50 border-b border-gray-100"
                         @click="activeSectionId = section.uuid">
-                        <div class="size-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                        <div class="size-9 rounded-xl bg-gray-100 flex items-center justify-center shrink-0">
                             <Icon icon="ph:squares-four-bold" class="text-primary" />
                         </div>
                         <input v-model="section.title"
@@ -234,7 +184,7 @@
                             placeholder="Nama Seksi" @click.stop />
                         <div class="flex items-center gap-1 shrink-0">
                             <button @click.stop="activeSectionId = section.uuid; addSection(false)"
-                                class="text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-primary-text transition-colors">
+                                class="text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-lg bg-gray-100 text-primary hover:bg-primary hover:text-primary-text transition-colors">
                                 + Field
                             </button>
                             <button @click.stop="deleteSection(section, si)"
@@ -255,7 +205,7 @@
                         <div v-for="(field, fi) in section.fields" :key="field.uuid">
                             <!-- Field Row (view) -->
                             <div v-if="editingFieldId !== field.uuid"
-                                class="group flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-100 bg-gray-50 hover:border-primary/30 hover:bg-primary/5 transition-all cursor-pointer"
+                                class="group flex items-center gap-3 px-4 py-3 rounded-xl border border-gray-100 bg-gray-50 hover:border-primary/30 hover:bg-white transition-all cursor-pointer"
                                 @click="startEditField(field, section)">
                                 <div
                                     class="size-8 rounded-lg bg-white border border-gray-200 text-gray-500 flex items-center justify-center shrink-0">
@@ -280,7 +230,7 @@
                                 <div
                                     class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
                                     <button @click.stop="startEditField(field, section)"
-                                        class="p-1.5 rounded-lg text-gray-400 hover:text-primary hover:bg-primary/10 transition-colors">
+                                        class="p-1.5 rounded-lg text-gray-400 hover:text-primary hover:bg-gray-100 transition-colors">
                                         <Icon icon="ph:pencil-bold" class="text-sm" />
                                     </button>
                                     <button @click.stop="deleteField(field, section, fi)"
@@ -291,11 +241,11 @@
                             </div>
 
                             <!-- Field Editor (inline) -->
-                            <div v-else class="rounded-xl border-2 border-primary bg-primary/5 p-4 flex flex-col gap-4">
+                            <div v-else class="rounded-xl border-2 border-primary bg-gray-50 p-4 flex flex-col gap-4">
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center gap-2">
                                         <div
-                                            class="size-7 rounded-lg bg-primary text-primary-text flex items-center justify-center">
+                                            class="size-7 rounded-lg bg-gray-100 text-primary flex items-center justify-center">
                                             <Icon :icon="getFieldIcon(field.field_type)" class="text-sm" />
                                         </div>
                                         <span class="font-black text-sm text-gray-800">Edit: <span
@@ -505,7 +455,7 @@
                             <div>
                                 <h3 class="font-black text-gray-800">Pilih Tipe Field</h3>
                                 <p class="text-xs text-gray-400 mt-0.5">Tambah ke: <strong>{{ activeSection?.title
-                                        }}</strong>
+                                }}</strong>
                                 </p>
                             </div>
                             <button @click="showFieldModal = false"
@@ -520,9 +470,9 @@
                                 </p>
                                 <div class="grid grid-cols-3 sm:grid-cols-4 gap-2">
                                     <button v-for="ft in cat.fields" :key="ft.type" @click="addFieldFromModal(ft)"
-                                        class="flex flex-col items-center gap-2 p-3 rounded-xl border border-gray-100 hover:border-primary hover:bg-primary/5 transition-all group">
+                                        class="flex flex-col items-center gap-2 p-3 rounded-xl border border-gray-100 hover:border-primary hover:bg-gray-50 transition-all group">
                                         <div
-                                            class="size-10 rounded-xl bg-gray-100 group-hover:bg-primary/20 flex items-center justify-center transition-colors">
+                                            class="size-10 rounded-xl bg-gray-50 group-hover:bg-primary/10 flex items-center justify-center transition-colors">
                                             <Icon :icon="ft.icon"
                                                 class="text-gray-500 group-hover:text-primary text-xl transition-colors" />
                                         </div>
@@ -631,8 +581,7 @@ const publicUrl = computed(() => {
     return `${base}/clubs/${clubSlug.value}/daftar`
 })
 
-const totalFields = computed(() => form.value?.sections?.reduce((sum, s) => sum + (s.fields?.length || 0), 0) || 0)
-const requiredFields = computed(() => form.value?.sections?.reduce((sum, s) => sum + (s.fields?.filter(f => f.is_required)?.length || 0), 0) || 0)
+
 const activeSection = computed(() => form.value?.sections?.find(s => s.uuid === activeSectionId.value))
 const displayTitle = computed(() => form.value?.title || 'Form Pendaftaran')
 const publishStatusText = computed(() => {

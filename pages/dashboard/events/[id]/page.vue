@@ -21,14 +21,12 @@
         </div>
 
         <!-- Tabs Navigation -->
-        <div
-            class="flex items-center gap-0.5 sm:gap-1 border-b border-gray-200 overflow-x-auto no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
+        <div class="flex gap-1 bg-gray-100/80 rounded-2xl p-1.5 overflow-x-auto no-scrollbar shadow-sm mt-2">
             <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
-                class="px-3 sm:px-6 py-3 sm:py-4 text-xs sm:text-sm font-bold transition-all border-b-2 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap"
-                :class="activeTab === tab.id ? 'text-navy border-navy bg-gray-50' : 'text-gray-500 border-transparent hover:text-navy hover:bg-gray-50'">
-                <Icon :icon="tab.icon" class="text-lg sm:text-xl" />
-                <span class="hidden sm:inline">{{ tab.name }}</span>
-                <span class="sm:hidden">{{ tab.name.length > 5 ? tab.name.slice(0, 5) + '.' : tab.name }}</span>
+                :class="activeTab === tab.id ? 'bg-white shadow text-navy' : 'text-gray-500 hover:text-navy hover:bg-white/50'"
+                class="flex items-center justify-center gap-2 flex-1 min-w-[120px] px-5 py-2.5 rounded-xl text-sm font-black transition-all">
+                <Icon :icon="tab.icon" class="text-lg sm:text-xl shrink-0" />
+                <span>{{ tab.name }}</span>
             </button>
         </div>
 

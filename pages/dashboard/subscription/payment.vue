@@ -143,7 +143,7 @@ useHead({
                             <span class="text-slate-400 text-[10px] font-black uppercase tracking-widest">Total
                                 Bayar</span>
                             <span class="text-primary font-black text-xl">Rp {{ totalAmount.toLocaleString('id-ID')
-                                }}</span>
+                            }}</span>
                         </div>
                     </div>
                 </div>
@@ -265,7 +265,7 @@ useHead({
                         </div>
 
                         <button @click="handlePayment" :disabled="isProcessing || !selectedChannel"
-                            class="w-full py-5 bg-navy text-white rounded-[20px] font-black text-sm uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-3 disabled:bg-slate-100 disabled:text-slate-400 disabled:border-slate-200 shadow-sm hover:bg-primary hover:text-navy hover:shadow-primary/20 active:scale-95">
+                            class="w-full h-12 mt-2 bg-navy text-white rounded-xl font-black text-sm uppercase tracking-wide transition-all flex items-center justify-center gap-2 disabled:bg-slate-100 disabled:text-slate-400 disabled:border-slate-200 shadow-sm hover:opacity-90 active:scale-95">
                             <Icon v-if="isProcessing" icon="ph:spinner-gap-bold" class="animate-spin text-xl" />
                             <template v-else>
                                 Bayar Sekarang

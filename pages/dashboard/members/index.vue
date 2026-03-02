@@ -125,8 +125,7 @@
               <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">Anggota</th>
               <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">Kategori</th>
               <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">Jenis Busur</th>
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">Event Terakhir
-              </th>
+              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">Status</th>
               <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest text-right">Aksi
               </th>
             </tr>
@@ -157,24 +156,27 @@
                 </div>
               </td>
               <td class="px-6 py-4">
-                <span class="text-sm font-medium text-gray-700">
+                <span class="text-sm font-medium text-gray-700 capitalize">
                   {{ member.category || member.age_group || 'Senior' }}
                 </span>
               </td>
               <td class="px-6 py-4">
                 <span :class="[
-                  'px-3 py-1 rounded-full text-xs font-bold  tracking-wider',
+                  'px-3 py-1.5 rounded-full text-xs font-bold tracking-wider inline-flex items-center gap-2 capitalize',
                   member.bow_type === 'Recurve' ? 'bg-blue-50 text-blue-600' :
                     member.bow_type === 'Compound' ? 'bg-purple-50 text-purple-600' :
                       member.bow_type === 'Barebow' ? 'bg-amber-50 text-amber-600' :
                         'bg-gray-100 text-gray-600'
                 ]">
-                  {{ member.bow_type || 'Recurve' }}
+                  <img :src="`/${getBowIcon(member.bow_type)}`" class="w-4 h-4 opacity-70" alt="bow" />
+                  <span>{{ member.bow_type || 'Recurve' }}</span>
                 </span>
               </td>
               <td class="px-6 py-4">
-                <p class="text-sm font-medium text-gray-700">{{ member.last_event || '—' }}</p>
-                <p class="text-xs text-gray-400">{{ member.last_event_date || '' }}</p>
+                <span :class="getStatusBadgeClass(member.status)"
+                  class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border">
+                  {{ getStatusLabel(member.status) }}
+                </span>
               </td>
               <td class="px-6 py-4 text-right">
                 <div class="flex items-center justify-end gap-2">
@@ -439,6 +441,26 @@ const resetFilters = () => {
   searchQuery.value = ''
   bowTypeFilter.value = 'all'
   genderFilter.value = 'all'
+}
+
+const getStatusBadgeClass = (status) => {
+  const s = status?.toLowerCase() || 'active'
+  if (s === 'active') return 'bg-green-50 text-green-600 border-green-100'
+  if (s === 'invited') return 'bg-blue-50 text-blue-600 border-blue-100'
+  if (s === 'pending') return 'bg-amber-50 text-amber-600 border-amber-100'
+  if (s === 'left') return 'bg-red-50 text-red-600 border-red-100'
+  return 'bg-gray-50 text-gray-600 border-gray-100'
+}
+
+const getStatusLabel = (status) => {
+  const s = status?.toLowerCase() || 'active'
+  const labels = {
+    'active': 'Aktif',
+    'invited': 'Diundang',
+    'pending': 'Menunggu',
+    'left': 'Keluar'
+  }
+  return labels[s] || s
 }
 
 const openInviteModal = async () => {
