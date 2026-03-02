@@ -41,7 +41,7 @@
                         :class="plan.isCurrent ? 'border-primary ring-8 ring-primary/5' : 'border-gray-100 hover:border-primary/20 hover:shadow-lg'">
 
                         <div v-if="plan.isCurrent"
-                            class="absolute -top-3 left-6 bg-navy text-primary text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-sm">
+                            class="absolute -top-3 left-6 bg-navy text-btn-inverse text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-sm">
                             Aktif
                         </div>
 
@@ -75,7 +75,7 @@
                             Paket Aktif
                         </button>
                         <button v-else @click="$emit('select', plan)"
-                            class="w-full py-4 text-[10px] font-black bg-navy text-white rounded-2xl hover:bg-primary hover:text-navy transition-all uppercase tracking-widest shadow-sm active:scale-95">
+                            class="w-full py-4 text-[10px] font-black bg-navy text-white rounded-2xl hover:bg-primary hover:text-btn-text transition-all uppercase tracking-widest shadow-sm active:scale-95">
                             {{ plan.isUpgrade ? 'Upgrade Sekarang' : 'Pilih Paket' }}
                         </button>
                     </div>

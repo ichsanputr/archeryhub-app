@@ -114,7 +114,7 @@
 
       <!-- Helper Summary (Sidebar) -->
       <div class="lg:col-span-4 space-y-6 sticky top-8">
-        <div class="bg-navy rounded-3xl p-6 text-white relative overflow-hidden shadow-lg shadow-navy/20">
+        <div class="bg-navy rounded-3xl p-6 text-white relative overflow-hidden shadow-sm shadow-navy/20">
           <div class="absolute -top-10 -right-10 size-32 rounded-full bg-white/5 blur-2xl"></div>
           <h3 class="text-[10px] font-black text-primary uppercase tracking-widest mb-4">Afiliasi Klub</h3>
           <div class="flex items-center gap-4">
@@ -124,7 +124,6 @@
             </div>
             <div>
               <p class="font-black text-lg leading-tight">{{ clubName }}</p>
-              <p class="text-[10px] text-primary/80 font-bold uppercase tracking-tighter mt-1">Confirmed Affiliation</p>
             </div>
           </div>
         </div>

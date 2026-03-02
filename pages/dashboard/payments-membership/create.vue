@@ -127,7 +127,7 @@
                             <Icon icon="ph:mouse-left-click-bold" class="text-5xl" />
                         </div>
                         <div
-                            class="absolute -bottom-2 -right-2 size-10 rounded-2xl bg-white shadow-xl border border-gray-50 flex items-center justify-center text-primary">
+                            class="absolute -bottom-2 -right-2 size-10 rounded-2xl bg-white shadow-sm border border-gray-50 flex items-center justify-center text-primary">
                             <Icon icon="ph:hand-pointing-bold" />
                         </div>
                     </div>
@@ -141,7 +141,7 @@
 
                 <!-- Form -->
                 <div v-else
-                    class="bg-white rounded-[2rem] border border-gray-100 shadow-xl shadow-navy/5 overflow-hidden">
+                    class="bg-white rounded-[2rem] border border-gray-100 shadow-sm shadow-navy/5 overflow-hidden">
                     <div class="p-10 space-y-8">
                         <!-- Profile Header -->
                         <div
@@ -161,7 +161,7 @@
                                 <p class="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-1">
                                     Pencatatan Untuk</p>
                                 <h2 class="text-2xl font-black text-navy leading-none">{{ selectedUnpaidSub?.archer_name
-                                }}</h2>
+                                    }}</h2>
                                 <p class="text-sm font-bold text-gray-400 mt-2 flex items-center gap-2">
                                     <Icon icon="ph:package-bold" class="text-primary" />
                                     {{ selectedUnpaidSub?.package_name }}
@@ -246,11 +246,11 @@
                                     class="absolute inset-0 bg-navy/60 opacity-0 group-hover:opacity-100 transition-all flex flex-col items-center justify-center gap-3 backdrop-blur-sm">
                                     <div class="flex gap-2">
                                         <button @click="payForm.proof_url = ''"
-                                            class="size-12 rounded-2xl bg-red-500 text-white flex items-center justify-center hover:scale-110 transition-transform shadow-xl">
+                                            class="size-12 rounded-2xl bg-red-500 text-white flex items-center justify-center hover:scale-110 transition-transform shadow-sm">
                                             <Icon icon="ph:trash-bold" class="text-xl" />
                                         </button>
                                         <button @click="showMediaLibrary = true"
-                                            class="size-12 rounded-2xl bg-primary text-white flex items-center justify-center hover:scale-110 transition-transform shadow-xl">
+                                            class="size-12 rounded-2xl bg-primary text-white flex items-center justify-center hover:scale-110 transition-transform shadow-sm">
                                             <Icon icon="ph:pencil-simple-bold" class="text-xl" />
                                         </button>
                                     </div>
@@ -262,7 +262,7 @@
                             <button v-else @click="showMediaLibrary = true"
                                 class="w-full py-16 rounded-[2rem] border-2 border-dashed border-gray-100 bg-gray-50/50 flex flex-col items-center justify-center gap-4 hover:border-primary hover:bg-primary/5 transition-all text-gray-400 hover:text-primary group">
                                 <div
-                                    class="size-16 rounded-3xl bg-white shadow-xl flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-500">
+                                    class="size-16 rounded-3xl bg-white shadow-sm flex items-center justify-center text-3xl group-hover:scale-110 transition-transform duration-500">
                                     <Icon icon="ph:cloud-arrow-up-bold" />
                                 </div>
                                 <div class="text-center">

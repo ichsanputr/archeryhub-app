@@ -41,7 +41,7 @@
                                 <div class="flex items-center justify-end gap-2">
                                     <a v-if="invoice.status === 'pending' && invoice.checkout_url"
                                         :href="invoice.checkout_url"
-                                        class="px-4 py-2 bg-primary text-navy text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-primary-dark transition-all shadow-sm">
+                                        class="px-4 py-2 bg-primary text-btn-text text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-primary-dark transition-all shadow-sm">
                                         Bayar Sekarang
                                     </a>
                                     <a v-else-if="invoice.status === 'paid'"

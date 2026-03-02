@@ -167,16 +167,9 @@
                         </div>
                     </div>
 
-                    <!-- Card actions -->
                     <div class="px-5 py-3 flex gap-2 border-t" :class="statusCardBorder(sub.status)">
-                        <button v-if="sub.status === 'pending'" @click="openPayModal(sub)"
-                            class="flex-1 h-9 rounded-xl bg-primary text-navy font-black text-xs hover:bg-primary/90 transition-colors flex items-center justify-center gap-1.5">
-                            <Icon icon="ph:check-circle-bold" />
-                            Konfirmasi Bayar
-                        </button>
                         <button @click="openHistoryModal(sub)"
-                            class="flex items-center gap-1.5 h-9 px-4 rounded-xl border bg-white text-gray-500 font-black text-xs hover:border-primary hover:text-primary transition-colors"
-                            :class="[sub.status !== 'pending' ? 'flex-1 justify-center' : '', statusCardBorder(sub.status)]">
+                            class="flex items-center gap-1.5 h-9 px-4 rounded-xl border border-gray-100 bg-white text-gray-500 font-black text-xs hover:border-primary hover:text-primary transition-colors flex-1 justify-center">
                             <Icon icon="ph:clock-counter-clockwise-bold" />
                             Riwayat
                         </button>
@@ -233,7 +226,7 @@
                         <div class="flex-1">
                             <h3 class="font-black text-gray-900 text-lg leading-tight">{{ pkg.name }}</h3>
                             <p v-if="pkg.description" class="text-sm text-gray-400 mt-1 line-clamp-2">{{ pkg.description
-                                }}</p>
+                            }}</p>
                         </div>
                         <div class="flex items-baseline gap-1.5">
                             <span class="text-3xl font-black text-gray-900">{{ formatCurrency(pkg.price) }}</span>
@@ -355,11 +348,8 @@
                                     <label class="label-xs">Pilih Anggota <span class="text-red-500">*</span></label>
                                     <select v-model="assignForm.archer_id" class="input-std bg-white">
                                         <option value="">— Pilih anggota —</option>
-                                        <option v-for="m in activeMembers" :key="m.uuid" :value="m.archer_id">
+                                        <option v-for="m in unassignedMembers" :key="m.uuid" :value="m.archer_id">
                                             {{ m.full_name || m.archer_name }}
-                                            <template v-if="m.status && m.status !== 'active'">
-                                                ({{ m.status === 'invited' ? 'Diundang' : 'Menunggu' }})
-                                            </template>
                                         </option>
                                     </select>
                                 </div>
@@ -411,87 +401,7 @@
                     </div>
                 </Transition>
 
-                <!-- ── Pay Modal ── -->
-                <Transition name="modal">
-                    <div v-if="showPayModal"
-                        class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
-                        <div @click="showPayModal = false" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-                        <div
-                            class="relative bg-white w-full sm:max-w-sm rounded-t-3xl sm:rounded-3xl overflow-hidden shadow-2xl">
-                            <div class="h-1.5 bg-primary"></div>
-                            <div class="flex items-center justify-between px-6 py-5 border-b border-gray-100">
-                                <h3 class="font-black text-gray-900 text-lg">Konfirmasi Pembayaran</h3>
-                                <button @click="showPayModal = false"
-                                    class="size-9 rounded-xl bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors">
-                                    <Icon icon="ph:x-bold" />
-                                </button>
-                            </div>
-                            <div class="p-6 flex flex-col gap-4">
-                                <!-- Archer info card -->
-                                <div
-                                    class="rounded-2xl bg-primary/5 border border-primary/30 p-4 flex items-center gap-3">
-                                    <div
-                                        class="size-10 rounded-xl bg-primary/20 flex items-center justify-center shrink-0">
-                                        <Icon icon="ph:user-bold" class="text-primary" />
-                                    </div>
-                                    <div class="min-w-0">
-                                        <p class="font-black text-gray-800 truncate">{{ selectedSub?.archer_name }}</p>
-                                        <p class="text-xs text-gray-500 truncate">{{ selectedSub?.package_name }} · {{
-                                            formatCurrency(selectedSub?.amount) }}</p>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="label-xs">Jumlah Bayar (Rp)</label>
-                                    <input v-model.number="payForm.amount" type="number" class="input-std"
-                                        :placeholder="String(selectedSub?.amount || 0)" />
-                                </div>
-                                <div>
-                                    <label class="label-xs">Metode Pembayaran</label>
-                                    <div class="flex gap-2">
-                                        <button v-for="m in ['cash', 'transfer', 'other']" :key="m"
-                                            @click="payForm.payment_method = m"
-                                            :class="payForm.payment_method === m ? 'bg-primary text-primary-text' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'"
-                                            class="flex-1 h-10 rounded-xl font-black text-xs uppercase tracking-wide capitalize transition-colors">
-                                            {{ m }}
-                                        </button>
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="label-xs">Catatan</label>
-                                    <input v-model="payForm.payment_note" type="text" class="input-std"
-                                        placeholder="Nomor bukti, catatan admin..." />
-                                </div>
-                                <div v-if="payForm.payment_method === 'transfer'">
-                                    <label class="label-xs">Bukti Transfer</label>
-                                    <div v-if="payForm.proof_url"
-                                        class="relative group aspect-video rounded-xl overflow-hidden mb-2">
-                                        <img :src="payForm.proof_url" class="size-full object-cover">
-                                        <button @click="payForm.proof_url = ''"
-                                            class="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                                            <Icon icon="ph:trash" />
-                                        </button>
-                                    </div>
-                                    <button @click="mediaContext = 'pay'; showMediaLibrary = true"
-                                        class="w-full h-11 rounded-xl border-2 border-dashed border-gray-200 text-gray-400 font-bold text-xs flex items-center justify-center gap-2 hover:border-primary hover:text-primary transition-all">
-                                        <Icon
-                                            :icon="payForm.proof_url ? 'ph:pencil-simple-bold' : 'ph:cloud-arrow-up-bold'" />
-                                        {{ payForm.proof_url ? 'Ubah Bukti' : 'Upload Bukti Transfer' }}
-                                    </button>
-                                </div>
-                                <div class="flex gap-3 pt-2 border-t border-gray-100">
-                                    <button @click="showPayModal = false"
-                                        class="flex-1 h-11 rounded-xl border border-gray-200 text-gray-600 font-black text-sm hover:bg-gray-50">Batal</button>
-                                    <button @click="recordPayment" :disabled="isSaving"
-                                        class="flex-1 h-11 rounded-xl bg-primary text-navy font-black text-sm hover:bg-primary/90 disabled:opacity-50 transition-colors flex items-center justify-center gap-2">
-                                        <Icon v-if="isSaving" icon="ph:spinner" class="animate-spin" />
-                                        <Icon v-else icon="ph:check-circle-bold" />
-                                        Konfirmasi
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </Transition>
+
 
                 <!-- ── History Modal ── -->
                 <Transition name="modal">
@@ -572,7 +482,7 @@
                                             </div>
                                             <div class="flex-1 min-w-0">
                                                 <p class="font-bold text-sm text-gray-800">{{ formatCurrency(p.amount)
-                                                }}</p>
+                                                    }}</p>
                                                 <p class="text-xs text-gray-400">{{ p.payment_method }} · {{
                                                     formatDate(p.paid_at) }}</p>
                                                 <p v-if="p.payment_note" class="text-xs text-gray-400 truncate">{{
@@ -631,7 +541,6 @@ const filterStatus = ref('')
 
 const showPackageModal = ref(false)
 const showAssignModal = ref(false)
-const showPayModal = ref(false)
 const showHistoryModal = ref(false)
 
 const editingPackage = ref(null)
@@ -640,7 +549,6 @@ const history = ref({ subscriptions: [], payments: [] })
 
 const packageForm = ref({ name: '', description: '', price: 0, duration_days: 30 })
 const assignForm = ref({ archer_id: '', membership_package_id: '', start_date: '' })
-const payForm = ref({ amount: 0, payment_method: 'cash', payment_note: '', proof_url: '' })
 
 const tabs = [
     { key: 'subscribers', label: 'Anggota', icon: 'ph:users-bold' },
@@ -663,6 +571,11 @@ const statCards = computed(() => [
 ])
 
 const activePackages = computed(() => packages.value.filter(p => p.is_active))
+const unassignedMembers = computed(() => {
+    const assignedIds = new Set(subscriptions.value.map(s => s.archer_id))
+    return activeMembers.value.filter(m => !assignedIds.has(m.archer_id))
+})
+
 const filteredSubs = computed(() => subscriptions.value.filter(s => {
     const bySearch = !search.value || s.archer_name?.toLowerCase().includes(search.value.toLowerCase()) || s.archer_email?.toLowerCase().includes(search.value.toLowerCase())
     const byStatus = !filterStatus.value || s.status === filterStatus.value
@@ -691,30 +604,15 @@ function statusPill(status) {
 }
 
 function statusCardBorder(status) {
-    return {
-        active: 'border-primary/40',
-        expired: 'border-red-200',
-        pending: 'border-amber-200',
-        canceled: 'border-gray-200'
-    }[status] || 'border-gray-100'
+    return 'border-gray-100'
 }
 
 function statusCardBg(status) {
-    return {
-        active: 'bg-primary/5',
-        expired: 'bg-red-50/40',
-        pending: 'bg-amber-50/40',
-        canceled: 'bg-gray-50/40'
-    }[status] || 'bg-white'
+    return 'bg-white'
 }
 
 function statusInnerBox(status) {
-    return {
-        active: 'bg-primary/10 border-primary/40',
-        expired: 'bg-red-100/50 border-red-100',
-        pending: 'bg-amber-100/60 border-amber-200',
-        canceled: 'bg-gray-100 border-gray-200'
-    }[status] || 'bg-gray-50 border-gray-100'
+    return 'bg-gray-50 border border-gray-100'
 }
 
 function statusText(status) {
@@ -727,12 +625,7 @@ function statusText(status) {
 }
 
 function statusStripe(status) {
-    return {
-        active: 'bg-primary',
-        expired: 'bg-red-400',
-        pending: 'bg-amber-400',
-        canceled: 'bg-gray-300'
-    }[status] || 'bg-gray-300'
+    return 'bg-gray-200'
 }
 
 function statusLabel(status) {
@@ -839,22 +732,6 @@ async function assignPackage() {
     } catch (e) {
         toast.error(e?.data?.error || 'Gagal assign paket')
     } finally { isSaving.value = false }
-}
-
-function openPayModal(sub) {
-    selectedSub.value = sub
-    payForm.value = { amount: sub.amount, payment_method: 'cash', payment_note: '' }
-    showPayModal.value = true
-}
-
-async function recordPayment() {
-    isSaving.value = true
-    try {
-        await post(`/clubs/membership/subscriptions/${selectedSub.value.uuid}/pay`, payForm.value)
-        toast.success('Pembayaran tercatat!')
-        showPayModal.value = false
-        await fetchAll()
-    } catch { toast.error('Gagal mencatat pembayaran') } finally { isSaving.value = false }
 }
 
 async function openHistoryModal(sub) {
