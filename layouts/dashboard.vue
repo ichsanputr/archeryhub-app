@@ -35,6 +35,25 @@
                 </NuxtLink>
             </div>
 
+            <!-- Package Expired Banner -->
+            <div v-if="showExpiredPackageBanner"
+                class="bg-gradient-to-r from-red-500 to-rose-500 px-4 py-3 flex items-center justify-between gap-4 shadow-md">
+                <div class="flex items-center gap-3">
+                    <div class="h-8 w-8 rounded-full bg-white/20 flex items-center justify-center">
+                        <Icon icon="ph:warning-octagon" class="text-white text-lg" />
+                    </div>
+                    <div class="text-white">
+                        <p class="font-bold text-sm">Paket Anda Sudah Kedaluwarsa</p>
+                        <p class="text-xs text-white/80">Perpanjang paket untuk melanjutkan fitur penuh dashboard.</p>
+                    </div>
+                </div>
+                <NuxtLink to="/dashboard/subscription"
+                    class="bg-white text-rose-600 font-bold text-sm px-4 py-2 rounded-lg hover:bg-white/90 transition-colors shadow-sm flex items-center gap-2 whitespace-nowrap">
+                    <Icon icon="ph:arrows-clockwise" />
+                    Perpanjang Paket
+                </NuxtLink>
+            </div>
+
             <!-- Page Content -->
             <main class="flex-grow overflow-y-auto p-4 md:p-6 lg:p-8 no-scrollbar bg-[#F8FAFC]">
                 <slot />
@@ -59,6 +78,62 @@ const route = useRoute()
 const { user, logout } = useAuth()
 const isMobileMenuOpen = useState('mobile-sidebar-open', () => false)
 const showLogoutDialog = useState('show-logout-dialog', () => false)
+
+const subscriptionData = useState<any | null>('subscription.data', () => null)
+
+const parseSubscriptionDate = (value: string | null | undefined) => {
+    if (!value) return null
+
+    const isoLike = /^\d{4}-\d{2}-\d{2}/.test(value)
+    if (isoLike) {
+        const parsedIso = new Date(value)
+        return Number.isNaN(parsedIso.getTime()) ? null : parsedIso
+    }
+
+    const parts = value.trim().split(/\s+/)
+    if (parts.length < 3) {
+        const parsedFallback = new Date(value)
+        return Number.isNaN(parsedFallback.getTime()) ? null : parsedFallback
+    }
+
+    const day = Number(parts[0])
+    const monthRaw = parts[1].toLowerCase()
+    const year = Number(parts[2])
+    const monthMap: Record<string, number> = {
+        jan: 0, januari: 0,
+        feb: 1, februari: 1,
+        mar: 2, maret: 2,
+        apr: 3, april: 3,
+        may: 4, mei: 4,
+        jun: 5, juni: 5,
+        jul: 6, juli: 6,
+        aug: 7, agustus: 7,
+        sep: 8, september: 8,
+        oct: 9, oktober: 9,
+        nov: 10, november: 10,
+        dec: 11, desember: 11,
+    }
+
+    if (!Number.isFinite(day) || !Number.isFinite(year) || monthMap[monthRaw] === undefined) return null
+
+    const parsed = new Date(year, monthMap[monthRaw], day, 23, 59, 59)
+    return Number.isNaN(parsed.getTime()) ? null : parsed
+}
+
+const showExpiredPackageBanner = computed(() => {
+    if (!user.value) return false
+    const role = user.value.role || user.value.type || user.value.user_type
+    if (role !== 'club' && role !== 'organization') return false
+
+    const status = (subscriptionData.value?.current?.status || '').toLowerCase()
+    if (status === 'expired') return true
+
+    const nextBilling = subscriptionData.value?.current?.next_billing_date
+    const expiry = parseSubscriptionDate(nextBilling)
+    if (!expiry) return false
+
+    return expiry.getTime() < new Date().getTime() && status !== 'active'
+})
 
 // Show profile completion banner if user hasn't completed their profile
 const showProfileBanner = computed(() => {

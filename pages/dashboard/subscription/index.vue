@@ -1,7 +1,7 @@
 <template>
     <div class="space-y-8">
         <!-- Header Section -->
-        <SubscriptionHeader :status="subscriptionRes?.current?.status" />
+        <SubscriptionHeader :status="headerStatus" />
 
 
         <!-- Status & Stats Section -->
@@ -9,8 +9,8 @@
             :billing-cycle="currentPlan?.billing === 'atlet' ? 'per penggunaan' : 'bulanan'"
             :price-label="`${currentPlan?.priceLabel} / ${currentPlan?.billing}`"
             :next-billing="subscriptionRes?.current?.next_billing_date" :usage-media="usageMedia"
-            :usage-members="usageMembers" :remaining-days="remainingDays"
-            :expiry-percent="Math.min((remainingDays / totalDays) * 100, 100)" />
+            :usage-members="usageMembers" :remaining-days-label="remainingDaysLabel"
+            :expiry-percent="expiryPercent" />
 
         <div class="space-y-8">
             <!-- Pilihan Paket Section -->
@@ -56,6 +56,13 @@ onMounted(() => {
 })
 
 const subscriptionRes = computed(() => subscriptionData.value)
+const headerStatus = computed(() => {
+    const current = subscriptionRes.value?.current
+    if (current?.status === 'trial' && !current?.next_billing_date) {
+        return ''
+    }
+    return current?.status || ''
+})
 
 const handleSelectPlan = (plan) => {
     if (plan.isCurrent) return
@@ -115,6 +122,14 @@ const availablePlans = computed(() => {
         ]
     }
 
+    const sortedPlans = [...uniquePlans].sort((a, b) => {
+        if (a.price !== b.price) return a.price - b.price
+        return a.id - b.id
+    })
+
+    const fallbackPlanId = sortedPlans[0]?.id || null
+    const effectiveCurrentPlanId = currentPlanId || fallbackPlanId
+
     return uniquePlans.map(plan => {
         const detail = planDetails.find(d => Array.isArray(d.id) ? d.id.includes(plan.id) : d.id === plan.id)
 
@@ -142,8 +157,8 @@ const availablePlans = computed(() => {
                     return plan.features.split(',').map(f => f.trim())
                 }
             })(),
-            isCurrent: plan.id === currentPlanId || (!currentPlanId && localizedName === 'Standar'),
-            isUpgrade: plan.id > (currentPlanId || 0) && !(!currentPlanId && localizedName === 'Standar')
+            isCurrent: plan.id === effectiveCurrentPlanId,
+            isUpgrade: effectiveCurrentPlanId ? plan.id > effectiveCurrentPlanId : false
         }
     })
 })
@@ -153,6 +168,43 @@ const currentPlan = computed(() => {
 })
 
 const invoices = computed(() => subscriptionRes.value?.invoices || [])
+
+const parseSubscriptionDate = (value) => {
+    if (!value) return null
+
+    if (/^\d{4}-\d{2}-\d{2}/.test(value)) {
+        const d = new Date(value)
+        return Number.isNaN(d.getTime()) ? null : d
+    }
+
+    const parts = value.trim().split(/\s+/)
+    if (parts.length < 3) {
+        const fallback = new Date(value)
+        return Number.isNaN(fallback.getTime()) ? null : fallback
+    }
+
+    const day = Number(parts[0])
+    const monthRaw = parts[1].toLowerCase()
+    const year = Number(parts[2])
+    const monthMap = {
+        jan: 0, januari: 0,
+        feb: 1, februari: 1,
+        mar: 2, maret: 2,
+        apr: 3, april: 3,
+        may: 4, mei: 4,
+        jun: 5, juni: 5,
+        jul: 6, juli: 6,
+        aug: 7, agustus: 7,
+        sep: 8, september: 8,
+        oct: 9, oktober: 9,
+        nov: 10, november: 10,
+        dec: 11, desember: 11,
+    }
+
+    if (!Number.isFinite(day) || !Number.isFinite(year) || monthMap[monthRaw] === undefined) return null
+    const parsed = new Date(year, monthMap[monthRaw], day, 23, 59, 59)
+    return Number.isNaN(parsed.getTime()) ? null : parsed
+}
 
 const usageMedia = computed(() => ({
     current: '256 MB',
@@ -168,9 +220,18 @@ const usageMembers = computed(() => ({
 
 const remainingDays = computed(() => {
     const nextBilling = subscriptionRes.value?.current?.next_billing_date
-    if (!nextBilling) return 0
-    const diff = new Date(nextBilling) - new Date()
+    const parsedDate = parseSubscriptionDate(nextBilling)
+    if (!parsedDate) return null
+    const diff = parsedDate.getTime() - new Date().getTime()
     return Math.max(Math.ceil(diff / (1000 * 60 * 60 * 24)), 0)
+})
+
+const remainingDaysLabel = computed(() => {
+    if (remainingDays.value === null) {
+        const status = (subscriptionRes.value?.current?.status || '').toLowerCase()
+        return status === 'active' ? 'Aktif' : '-'
+    }
+    return `${remainingDays.value} Hari Tersisa`
 })
 
 const totalDays = computed(() => {
@@ -178,6 +239,14 @@ const totalDays = computed(() => {
     if (cur?.status === 'trial') return 90
     if (cur?.billing_type === 'yearly') return 360
     return 30
+})
+
+const expiryPercent = computed(() => {
+    if (remainingDays.value === null) {
+        const status = (subscriptionRes.value?.current?.status || '').toLowerCase()
+        return status === 'active' ? 100 : 0
+    }
+    return Math.min((remainingDays.value / totalDays.value) * 100, 100)
 })
 
 const roleContent = computed(() => {

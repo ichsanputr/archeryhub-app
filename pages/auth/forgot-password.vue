@@ -263,7 +263,6 @@ const form = ref({
 })
 
 const otpDigits = ref(['', '', '', '', '', ''])
-const resetToken = ref('')
 
 const steps = [
     { title: 'Masukkan Email', desc: 'Kami kirim kode verifikasi' },
@@ -367,11 +366,10 @@ const verifyOTP = async () => {
     errors.otp = ''
     isLoading.value = true
     try {
-        const res = await $fetch(`${config.public.apiBaseUrl}/auth/verify-reset-otp`, {
+        await $fetch(`${config.public.apiBaseUrl}/auth/verify-reset-otp`, {
             method: 'POST',
             body: { email: form.value.email, otp: otpValue.value }
         })
-        resetToken.value = res.reset_token
         currentStep.value = 2
     } catch (err) {
         errors.otp = err?.data?.error || 'Kode OTP tidak valid atau sudah kedaluwarsa'
@@ -393,11 +391,11 @@ const resetPassword = async () => {
 
     isLoading.value = true
     try {
-        await $fetch(`${config.public.apiBaseUrl}/auth/reset-password`, {
+        await $fetch(`${config.public.apiBaseUrl}/auth/change-password-otp`, {
             method: 'POST',
             body: {
                 email: form.value.email,
-                reset_token: resetToken.value,
+                otp: otpValue.value,
                 new_password: form.value.newPassword
             }
         })

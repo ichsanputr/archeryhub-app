@@ -145,7 +145,7 @@ const isSidebarOpen = useState('mobile-sidebar-open', () => false)
 const isSidebarCollapsed = useState('sidebar-collapsed', () => false)
 
 // Groups that are expanded (open)
-const openGroups = ref(['Manajemen Klub'])
+const openGroups = ref(['Manajemen Klub', 'Menu Event', 'Menu Organisasi'])
 
 function toggleGroup(label) {
   const idx = openGroups.value.indexOf(label)
@@ -301,10 +301,27 @@ const navSections = computed(() => {
   if (role === 'organization') {
     return [
       { label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard' },
-      { label: 'Event Saya', icon: 'ph:trophy', path: '/dashboard/events' },
-      { label: 'Laporan', icon: 'ph:chart-bar', path: '/dashboard/reports' },
-      { label: 'Profil Organisasi', icon: 'ph:building-office', path: '/dashboard/organizations/profile' },
-      { label: 'Scorekeeper', icon: 'ph:user-focus', path: '/dashboard/organizations/scorekeepers' },
+      { type: 'label', label: 'Manajemen Event' },
+      {
+        label: 'Event',
+        icon: 'ph:trophy',
+        type: 'group',
+        children: [
+          { label: 'Event Saya', icon: 'material-symbols:event-list-outline', path: '/dashboard/events' },
+          { label: 'Laporan', icon: 'ph:chart-bar', path: '/dashboard/reports' },
+        ]
+      },
+      { type: 'label', label: 'Manajemen Organisasi' },
+      {
+        label: 'Organisasi',
+        icon: 'ph:building-office',
+        type: 'group',
+        children: [
+          { label: 'Profil Organisasi', icon: 'icomoon-free:profile', path: '/dashboard/organizations/profile' },
+          { label: 'Scorekeeper', icon: 'ph:user-focus', path: '/dashboard/organizations/scorekeepers' },
+        ]
+      },
+      { type: 'label', label: 'Lainnya' },
       { label: 'Subscription', icon: 'ph:credit-card', path: '/dashboard/subscription' },
       ...(!isEventManagePage.value ? [{ label: 'Berita', icon: 'ph:newspaper', path: '/dashboard/news' }] : []),
       ...(!isEventManagePage.value ? [{ label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/settings' }] : []),

@@ -66,7 +66,7 @@
                     <div class="flex justify-between items-end">
                         <div>
                             <p class="text-xs font-black text-gray-400 uppercase tracking-widest">Masa Aktif</p>
-                            <p class="text-sm font-black text-navy mt-1">{{ remainingDays }} Hari Tersisa</p>
+                            <p class="text-sm font-black text-navy mt-1">{{ remainingDaysLabel }}</p>
                         </div>
                         <Icon icon="ph:clock-countdown-bold" class="text-primary text-xl" />
                     </div>
@@ -90,7 +90,7 @@ defineProps({
     nextBilling: String,
     usageMedia: Object,
     usageMembers: Object,
-    remainingDays: Number,
+    remainingDaysLabel: String,
     expiryPercent: Number
 })
 </script>

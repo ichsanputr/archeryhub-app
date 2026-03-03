@@ -490,10 +490,16 @@
                     </div>
                   </td>
                   <td class="px-6 py-3.5">
-                    <div class="text-navy-dark font-bold group-hover:text-primary-hover transition-colors">{{
-                      archer.name
-                    }}</div>
-                    <div class="text-gray-400 text-xs">{{ archer.category }}</div>
+                    <div class="flex items-center gap-3">
+                      <img :src="useImageOrDefault(archer.avatar_url || archer.photo_url || archer.image, archer.name)"
+                        :alt="archer.name" class="w-9 h-9 rounded-full object-cover border border-gray-200 bg-gray-50" />
+                      <div>
+                        <div class="text-navy-dark font-bold group-hover:text-primary-hover transition-colors">{{
+                          archer.name
+                          }}</div>
+                        <div class="text-gray-400 text-xs">{{ archer.category || '-' }}</div>
+                      </div>
+                    </div>
                   </td>
                   <td
                     :class="index === 0 ? 'text-navy-dark font-bold text-base' : 'text-navy-dark font-semibold text-sm'"
