@@ -82,6 +82,9 @@
                     <div class="space-y-2">
                         <div class="flex items-center justify-between px-1">
                             <label class="text-xs font-bold text-navy  tracking-wider">Kata Sandi</label>
+                            <NuxtLink to="/auth/forgot-password" class="text-xs font-bold transition-colors">
+                                Lupa password?
+                            </NuxtLink>
                         </div>
                         <BaseInput v-model="form.password" placeholder="••••••••" type="password" icon="lock" required
                             :error="errors.password"
