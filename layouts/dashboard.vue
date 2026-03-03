@@ -68,6 +68,7 @@
 
         <BaseToast />
     </div>
+
 </template>
 
 <script setup>
@@ -79,9 +80,9 @@ const { user, logout } = useAuth()
 const isMobileMenuOpen = useState('mobile-sidebar-open', () => false)
 const showLogoutDialog = useState('show-logout-dialog', () => false)
 
-const subscriptionData = useState<any | null>('subscription.data', () => null)
+const subscriptionData = useState('subscription.data', () => null)
 
-const parseSubscriptionDate = (value: string | null | undefined) => {
+const parseSubscriptionDate = (value) => {
     if (!value) return null
 
     const isoLike = /^\d{4}-\d{2}-\d{2}/.test(value)
