@@ -125,8 +125,8 @@
                             </td>
                             <td class="px-6 py-4">
                                 <p class="text-sm font-bold text-navy">{{ payment.package_name || 'Membership' }}</p>
-                                <p class="text-[10px] text-gray-400 font-medium tracking-tight">ID: #{{
-                                    payment.uuid.substring(0, 8).toUpperCase() }}</p>
+                                <p class="text-[10px] text-gray-400 font-medium tracking-tight">ID: {{
+                                    payment.invoice_id }}</p>
                             </td>
                             <td class="px-6 py-4 text-center">
                                 <span
@@ -149,7 +149,7 @@
                                         title="Lihat Bukti Transfer">
                                         <Icon icon="ph:image-bold" />
                                     </button>
-                                    <NuxtLink :to="`/dashboard/payments-membership/${payment.uuid}`"
+                                    <NuxtLink :to="`/dashboard/payments-membership/${payment.invoice_id}`"
                                         class="size-8 rounded-lg border border-gray-100 flex items-center justify-center text-gray-400 hover:text-navy hover:bg-gray-50 transition-all">
                                         <Icon icon="ph:eye-bold" />
                                     </NuxtLink>

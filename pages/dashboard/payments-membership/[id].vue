@@ -37,33 +37,40 @@
         </div>
 
         <!-- ── Main Content ────────────────────────────────────────────── -->
-        <div v-else-if="payment" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <div v-else-if="payment" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start pb-10">
             <!-- Summary Card -->
             <div class="lg:col-span-8 space-y-6">
-                <div class="bg-white rounded-[2rem] border border-gray-100 shadow-xl shadow-navy/5 overflow-hidden">
-                    <div class="p-10 space-y-10">
+                <div
+                    class="bg-white rounded-[1.5rem] sm:rounded-[2rem] border border-gray-100 shadow-sm shadow-navy/5 overflow-hidden">
+                    <div class="p-6 sm:p-10 space-y-8 sm:space-y-10">
                         <!-- Profile/Package Info -->
-                        <div class="flex items-center gap-6">
+                        <div
+                            class="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 sm:gap-6">
                             <div
-                                class="size-20 rounded-3xl bg-navy/5 border border-navy/5 overflow-hidden shrink-0 flex items-center justify-center text-navy/10 text-4xl">
+                                class="size-16 sm:size-20 rounded-2xl sm:rounded-3xl bg-navy/5 border border-navy/5 overflow-hidden shrink-0 flex items-center justify-center text-navy/10 text-3xl sm:text-4xl">
                                 <img v-if="payment.avatar_url" :src="payment.avatar_url" class="size-full object-cover">
                                 <Icon v-else icon="ph:user-bold" />
                             </div>
-                            <div>
-                                <h1 class="text-3xl font-black text-navy leading-none">{{ payment.archer_name }}</h1>
-                                <div class="flex flex-wrap items-center gap-x-4 gap-y-2 mt-4">
+                            <div class="flex-1 min-w-0">
+                                <h1
+                                    class="text-xl sm:text-3xl font-black text-navy leading-tight sm:leading-none truncate">
+                                    {{ payment.archer_name }}</h1>
+                                <div
+                                    class="flex flex-wrap items-center justify-center sm:justify-start gap-x-3 gap-y-2 mt-3 sm:mt-4">
                                     <div
-                                        class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-gray-100 text-primary text-[10px] font-black uppercase tracking-widest">
+                                        class="flex items-center gap-2 px-2.5 py-1 rounded-lg sm:rounded-xl bg-gray-100 text-primary text-[9px] sm:text-[10px] font-black uppercase tracking-widest whitespace-nowrap">
                                         <Icon icon="ph:package-bold" />
                                         {{ payment.package_name || 'Membership' }}
                                     </div>
-                                    <div class="flex items-center gap-2 text-gray-400 text-xs font-bold">
+                                    <div
+                                        class="flex items-center gap-2 text-gray-400 text-[11px] sm:text-xs font-bold whitespace-nowrap">
                                         <Icon icon="ph:envelope-simple-bold" />
                                         {{ payment.archer_email }}
                                     </div>
-                                    <div class="flex items-center gap-2 text-gray-400 text-xs font-bold">
+                                    <div
+                                        class="flex items-center gap-2 text-gray-400 text-[11px] sm:text-xs font-bold whitespace-nowrap">
                                         <Icon icon="ph:hash-bold" />
-                                        #{{ payment.uuid.substring(0, 8).toUpperCase() }}
+                                        {{ payment.invoice_id }}
                                     </div>
                                 </div>
                             </div>
@@ -73,46 +80,56 @@
                         <div class="h-px bg-gray-50"></div>
 
                         <!-- Details Grid -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                            <div class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10">
+                            <div class="space-y-6 sm:space-y-8">
                                 <div>
-                                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3">
+                                    <p
+                                        class="text-[9px] sm:text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 sm:mb-3">
                                         Nominal Transaksi</p>
-                                    <p class="text-4xl font-black text-navy">{{ formatCurrency(payment.amount) }}</p>
+                                    <p class="text-3xl sm:text-4xl font-black text-navy">{{
+                                        formatCurrency(payment.amount) }}</p>
                                 </div>
 
                                 <div>
-                                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3">
+                                    <p
+                                        class="text-[9px] sm:text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 sm:mb-3">
                                         Metode Pembayaran</p>
                                     <div class="flex items-center gap-3">
                                         <div
-                                            class="size-10 rounded-xl bg-gray-50 flex items-center justify-center text-navy border border-gray-100">
-                                            <Icon :icon="getMethodIcon(payment.payment_method)" class="text-xl" />
+                                            class="size-9 sm:size-10 rounded-xl bg-gray-50 flex items-center justify-center text-navy border border-gray-100">
+                                            <Icon :icon="getMethodIcon(payment.payment_method)"
+                                                class="text-lg sm:text-xl" />
                                         </div>
-                                        <span class="text-sm font-black text-navy uppercase tracking-widest">{{
-                                            payment.payment_method }}</span>
+                                        <span
+                                            class="text-xs sm:text-sm font-black text-navy uppercase tracking-widest">{{
+                                                payment.payment_method }}</span>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="space-y-6">
+                            <div class="space-y-6 sm:space-y-8">
                                 <div>
-                                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3">
+                                    <p
+                                        class="text-[9px] sm:text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 sm:mb-3">
                                         Waktu Pembayaran</p>
-                                    <div class="flex items-center gap-3 text-navy">
-                                        <Icon icon="ph:calendar-bold" class="text-lg text-primary" />
-                                        <span class="text-sm font-black">{{ formatDate(payment.paid_at) }}</span>
-                                        <span class="size-1 rounded-full bg-gray-300"></span>
-                                        <span class="text-sm font-bold text-gray-400">{{ formatTime(payment.paid_at)
+                                    <div class="flex items-center gap-2 sm:gap-3 text-navy">
+                                        <Icon icon="ph:calendar-bold"
+                                            class="text-base sm:text-lg text-primary shrink-0" />
+                                        <span class="text-xs sm:text-sm font-black whitespace-nowrap">{{
+                                            formatDate(payment.paid_at) }}</span>
+                                        <span class="size-1 rounded-full bg-gray-300 shrink-0"></span>
+                                        <span class="text-xs sm:text-sm font-bold text-gray-400 whitespace-nowrap">{{
+                                            formatTime(payment.paid_at)
                                         }}</span>
                                     </div>
                                 </div>
 
                                 <div>
-                                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-3">
+                                    <p
+                                        class="text-[9px] sm:text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 sm:mb-3">
                                         Catatan / Referensi</p>
                                     <div
-                                        class="p-4 rounded-2xl bg-gray-50 border border-gray-100 text-sm font-medium text-navy italic">
+                                        class="p-4 rounded-xl sm:rounded-2xl bg-gray-50 border border-gray-100 text-xs sm:text-sm font-medium text-navy italic">
                                         {{ payment.payment_note || 'Tidak ada catatan tambahan untuk transaksi ini.' }}
                                     </div>
                                 </div>
@@ -121,14 +138,18 @@
                     </div>
 
                     <!-- Footer -->
-                    <div class="px-10 py-6 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
-                        <div class="flex items-center gap-2">
+                    <div
+                        class="px-6 sm:px-10 py-5 sm:py-6 bg-gray-50 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div class="flex items-center gap-2 order-2 sm:order-1">
                             <Icon icon="ph:shield-check-bold" class="text-green-500" />
-                            <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Transaksi Telah
+                            <span
+                                class="text-[9px] sm:text-[10px] font-black text-gray-400 uppercase tracking-widest">Transaksi
+                                Telah
                                 Diverifikasi</span>
                         </div>
-                        <div class="flex gap-3">
-                            <BaseButton variant="white" icon="ph:printer-bold">Cetak Kwitansi</BaseButton>
+                        <div class="flex w-full sm:w-auto gap-3 order-1 sm:order-2">
+                            <BaseButton variant="white" icon="ph:printer-bold" block class="sm:w-auto h-10 text-xs">
+                                Cetak Kwitansi</BaseButton>
                         </div>
                     </div>
                 </div>
@@ -136,7 +157,8 @@
 
             <!-- Proof Image -->
             <div class="lg:col-span-4 space-y-6">
-                <div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm overflow-hidden p-6 space-y-4">
+                <div
+                    class="bg-white rounded-[1.5rem] sm:rounded-[2rem] border border-gray-100 shadow-sm overflow-hidden p-6 space-y-4">
                     <h3 class="font-black text-navy text-xs uppercase tracking-widest flex items-center gap-2">
                         <Icon icon="ph:image-bold" class="text-primary text-base" />
                         Bukti Pembayaran

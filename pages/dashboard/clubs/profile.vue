@@ -7,13 +7,10 @@
         <p class="text-gray-500 mt-1">Perbarui identitas, kontak, fasilitas, dan jadwal latihan klub Anda.</p>
       </div>
       <div class="flex gap-3">
-        <button
-          class="inline-flex items-center gap-2 px-4 py-2.5 bg-navy text-white rounded-xl font-semibold text-sm shadow-md shadow-primary/20 hover:bg-navy-dark transition"
-          :disabled="saving" @click="saveProfile">
-          <LoadingSpinner v-if="saving" size="sm" />
-          <Icon v-else icon="ph:floppy-disk" class="text-lg" />
-          <span>{{ saving ? 'Menyimpan...' : 'Simpan Profil' }}</span>
-        </button>
+        <BaseButton variant="navy" icon="ph:floppy-disk" :loading="saving" @click="saveProfile"
+          class="shadow-md shadow-primary/20 !px-4 !py-2.5 !rounded-xl !text-sm">
+          Simpan Profil
+        </BaseButton>
       </div>
     </div>
 
@@ -90,13 +87,12 @@
                     <button v-for="city in filteredCities" :key="city" type="button"
                       class="w-full px-4 py-2.5 text-left text-sm font-bold text-navy hover:bg-gray-50 rounded-xl transition-colors"
                       @mousedown.prevent="selectCity(city)">
-                      {{ city }}
+                      {{ city.name }}
                     </button>
                   </div>
                 </div>
               </div>
 
-              <BaseInput v-model="form.province" label="Provinsi" placeholder="Contoh: Jawa Tengah" />
             </div>
             <BaseTextarea v-model="form.description" label="Tentang Klub" rows="5"
               placeholder="Berikan deskripsi singkat dan menarik tentang klub Anda..." />
@@ -170,7 +166,6 @@
               <Icon icon="ph:phone-bold" class="text-primary text-xl" /> Informasi Kontak
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <BaseInput v-model="form.phone" label="Nomor Telepon" placeholder="Contoh: 021-xxxxxxxx" />
               <BaseInput v-model="form.whatsapp" label="Nomor WhatsApp" placeholder="Contoh: 08xx-xxxx-xxxx" />
               <BaseInput v-model="form.email" label="Alamat Email" type="email" placeholder="info@klub.id" />
               <BaseInput v-model="form.website" label="Website Resmi" placeholder="https://www.klub.id" />
@@ -432,36 +427,31 @@ const citySearch = ref('')
 const showCityDropdown = ref(false)
 const filteredCities = ref([])
 
-const indonesiaCities = [
-  'Jakarta Pusat', 'Jakarta Utara', 'Jakarta Barat', 'Jakarta Selatan', 'Jakarta Timur',
-  'Bandung', 'Cimahi', 'Bekasi', 'Depok', 'Bogor', 'Tangerang', 'Tangerang Selatan',
-  'Surabaya', 'Malang', 'Sidoarjo', 'Gresik', 'Kediri', 'Mojokerto', 'Madiun', 'Jember',
-  'Semarang', 'Solo', 'Surakarta', 'Yogyakarta', 'Magelang', 'Salatiga', 'Pekalongan',
-  'Medan', 'Binjai', 'Pematang Siantar', 'Tebing Tinggi', 'Padang', 'Bukittinggi', 'Palembang',
-  'Bandar Lampung', 'Metro', 'Bengkulu', 'Jambi', 'Pekanbaru', 'Dumai', 'Batam', 'Tanjung Pinang',
-  'Pontianak', 'Singkawang', 'Banjarmasin', 'Banjarbaru', 'Balikpapan', 'Samarinda', 'Tarakan',
-  'Makassar', 'Parepare', 'Palopo', 'Manado', 'Bitung', 'Tomohon', 'Gorontalo', 'Kendari',
-  'Denpasar', 'Mataram', 'Kupang', 'Ambon', 'Ternate', 'Jayapura', 'Sorong', 'Manokwari',
-  'Cirebon', 'Tasikmalaya', 'Sukabumi', 'Garut', 'Karawang', 'Purwakarta', 'Subang',
-  'Tegal', 'Brebes', 'Purwokerto', 'Cilacap', 'Kudus', 'Jepara', 'Demak', 'Kendal',
-  'Blitar', 'Probolinggo', 'Pasuruan', 'Batu', 'Lumajang', 'Tulungagung', 'Nganjuk',
-  'Serang', 'Cilegon', 'Pandeglang', 'Lebak'
-]
+const indonesiaCities = ref([])
+
+const fetchCities = async () => {
+  try {
+    const resp = await get('/cities')
+    indonesiaCities.value = resp.data || []
+  } catch (e) {
+    console.error('Failed to fetch cities', e)
+  }
+}
 
 const filterCities = () => {
   const search = citySearch.value.toLowerCase()
   if (!search) {
-    filteredCities.value = indonesiaCities.slice(0, 10)
+    filteredCities.value = indonesiaCities.value.slice(0, 10)
   } else {
-    filteredCities.value = indonesiaCities
-      .filter(city => city.toLowerCase().includes(search))
+    filteredCities.value = indonesiaCities.value
+      .filter(city => city.name.toLowerCase().includes(search))
       .slice(0, 10)
   }
 }
 
 const selectCity = (city) => {
-  form.city = city
-  citySearch.value = city
+  form.city = city.name
+  citySearch.value = city.name
   showCityDropdown.value = false
 }
 
@@ -659,6 +649,7 @@ const updateFieldOptions = (field) => {
 
 
 onMounted(() => {
+  fetchCities()
   loadProfile()
 })
 </script>

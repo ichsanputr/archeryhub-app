@@ -38,7 +38,7 @@
                 class="flex flex-wrap items-center gap-1.5 sm:gap-4 text-[10px] sm:text-xs text-slate-300 font-bold uppercase tracking-widest">
                 <span class="px-2 py-0.5 rounded bg-white/10 border border-white/10 font-mono">{{
                   sessionData?.session_code
-                }}</span>
+                  }}</span>
                 <span class="opacity-20 hidden sm:inline">•</span>
                 <div class="flex items-center gap-1.5">
                   <Icon icon="ph:arrow-clockwise-bold" class="text-xs sm:text-sm text-primary" />
@@ -151,10 +151,6 @@
               <p
                 class="font-extrabold text-navy group-hover:text-primary transition-colors leading-tight mb-1.5 line-clamp-2">
                 {{ getCategoryName(category) }}</p>
-              <div class="flex items-center gap-2 text-[10px] text-gray-400 font-bold uppercase tracking-wider">
-                <Icon icon="ph:users-three-bold" class="text-sm text-primary" />
-                <span>Total Participant</span>
-              </div>
             </div>
           </div>
         </div>

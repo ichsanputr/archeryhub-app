@@ -10,7 +10,7 @@
             <slot />
             <Icon v-if="iconRight && isIconify(iconRight)" :icon="iconRight" :class="iconSizeClass" />
             <span v-else-if="iconRight" class="material-symbols-outlined shrink-0" :class="iconSizeClass">{{ iconRight
-            }}</span>
+                }}</span>
         </template>
         <span v-if="!loading && loadingText" class="ml-2">{{ loadingText }}</span>
     </NuxtLink>
@@ -26,7 +26,7 @@
             <slot />
             <Icon v-if="iconRight && isIconify(iconRight)" :icon="iconRight" :class="iconSizeClass" />
             <span v-else-if="iconRight" class="material-symbols-outlined shrink-0" :class="iconSizeClass">{{ iconRight
-            }}</span>
+                }}</span>
         </template>
         <span v-if="!loading && loadingText" class="ml-2">{{ loadingText }}</span>
     </button>
@@ -91,7 +91,7 @@ const isIconify = (iconPath) => iconPath.includes(':')
 
 const variantClass = computed(() => {
     const variants = {
-        primary: 'bg-primary text-btn-text shadow-sm hover:bg-primary-hover transition-all',
+        primary: 'bg-primary text-btn-text shadow-sm transition-all',
         secondary: 'bg-surface-highlight text-btn-inverse hover:opacity-90',
         navy: 'bg-navy-dark text-btn-inverse shadow-sm hover:opacity-95',
         outline: 'border border-primary text-navy hover:bg-primary/5',

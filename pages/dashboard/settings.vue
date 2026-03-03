@@ -16,98 +16,79 @@
       </button>
     </div>
 
-    <!-- Account Info -->
-    <div v-if="activeTab === 'account'"
-      class="bg-white rounded-xl border border-gray-200 p-6 md:p-8 shadow-sm space-y-8">
-
-      <!-- Profile Header -->
-      <div class="flex items-center gap-6 pb-6 border-b border-gray-100">
-        <div class="relative">
-          <div
-            class="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center overflow-hidden border-4 border-primary/20">
-            <img
-              :src="useImageOrDefault(userData?.avatar_url || userData?.logo_url, userData?.full_name || userData?.name)"
-              class="w-full h-full object-cover" />
-          </div>
-        </div>
-        <div>
-          <h3 class="text-xl font-bold text-navy">{{ userData?.full_name || userData?.name || 'Pengguna' }}</h3>
-          <p class="text-gray-500">{{ userData?.email }}</p>
-          <span
-            class="inline-flex items-center gap-1 mt-2 px-3 py-1 rounded-full text-xs font-bold  bg-primary/10 text-primary-dark">
-            <Icon :icon="userTypeIcon" />
-            {{ userTypeLabel }}
-          </span>
-        </div>
-      </div>
-
-      <div>
-        <h3 class="text-xl font-bold text-navy mb-2">Informasi Akun</h3>
-        <p class="text-gray-500 text-sm mb-6">Data dasar akun Anda</p>
-
-        <div class="space-y-6">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <BaseInput v-model="accountForm.full_name" label="Nama Lengkap" placeholder="Nama lengkap Anda" required />
-            <BaseInput v-model="accountForm.username" label="Username" placeholder="username" />
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <BaseInput v-model="accountForm.email" label="Email" type="email" placeholder="email@example.com"
-              disabled />
-            <BaseInput v-model="accountForm.phone" label="Nomor Telepon" type="tel" placeholder="+62 812-3456-7890" />
-          </div>
-
-          <template v-if="userType === 'archer'">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <BaseInput v-model="accountForm.date_of_birth" label="Tanggal Lahir" type="date" />
-              <BaseSelect v-model="accountForm.gender" label="Jenis Kelamin" :items="[
-                { title: 'Laki-laki', value: 'M' },
-                { title: 'Perempuan', value: 'F' },
-                { title: 'Lainnya', value: 'X' }
-              ]" />
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <BaseInput v-model="accountForm.city" label="Kota" placeholder="Kota tempat tinggal" />
-              <BaseInput v-model="accountForm.school" label="Sekolah / Universitas"
-                placeholder="Nama sekolah / universitas" />
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <BaseInput v-model="accountForm.address" label="Alamat" placeholder="Alamat lengkap" />
-              <BaseSelect v-model="accountForm.bow_type" label="Tipe Busur" :items="[
-                { title: 'Recurve', value: 'recurve' },
-                { title: 'Compound', value: 'compound' },
-                { title: 'Barebow', value: 'barebow' },
-                { title: 'Traditional', value: 'traditional' },
-                { title: 'Standard', value: 'standard' }
-              ]" />
-            </div>
-          </template>
-
-          <template v-else>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <BaseInput v-model="accountForm.city" label="Kota" placeholder="Kota" />
-              <BaseInput v-model="accountForm.address" label="Alamat" placeholder="Alamat lengkap" />
-            </div>
-          </template>
-
-          <div class="mt-6">
-            <BaseButton variant="gold" size="md" icon="ph:floppy-disk" @click="saveAccountInfo"
-              :loading="isSavingAccount">
-              Simpan Informasi Akun
-            </BaseButton>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Security Settings -->
+    <!-- Keamanan Tab Content -->
     <div v-if="activeTab === 'security'"
       class="bg-white rounded-xl border border-gray-200 p-6 md:p-8 shadow-sm space-y-8">
+
       <div>
-        <h3 class="text-xl font-bold text-navy mb-2">Keamanan Akun</h3>
-        <p class="text-gray-500 text-sm mb-6">Kelola password dan metode login akun Anda</p>
+        <h3 class="text-xl font-bold text-navy mb-2">Keamanan & Login</h3>
+        <p class="text-gray-500 text-sm mb-6">Kelola kredensial, email, dan metode login akun Anda</p>
+
+        <!-- Email Change Section -->
+        <div class="mb-8">
+          <h4 class="text-sm font-black text-navy tracking-widest mb-4 flex items-center gap-2">
+            <Icon icon="ph:envelope-simple-open-bold" class="text-primary" />
+            Ubah Alamat Email
+          </h4>
+
+          <div class="space-y-4 max-w-xl">
+            <div>
+              <label class="label-xs">Email Saat Ini</label>
+              <div
+                class="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-400 font-medium">
+                <Icon icon="ph:envelope-bold" />
+                {{ userData?.email }}
+              </div>
+            </div>
+
+            <div v-if="!otpSent">
+              <label class="label-xs">Email Baru</label>
+              <div class="flex gap-2">
+                <div class="relative flex-1">
+                  <Icon icon="ph:at-bold" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <input v-model="emailForm.new_email" type="email" placeholder="email-baru@example.com"
+                    class="w-full pl-11 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium focus:outline-none focus:border-primary transition-all" />
+                </div>
+                <BaseButton variant="primary" size="md" @click="requestOTP" :loading="isRequestingOTP"
+                  :disabled="!emailForm.new_email">
+                  Kirim OTP
+                </BaseButton>
+              </div>
+              <p class="text-[10px] text-gray-400 mt-2">Kami akan mengirimkan kode verifikasi ke email baru Anda untuk
+                memastikan kepemilikan.</p>
+            </div>
+
+            <div v-else class="space-y-4 pt-2 animate-in fade-in slide-in-from-top-2">
+              <div class="p-3 bg-primary/10 border border-primary/20 rounded-xl flex items-center gap-3">
+                <Icon icon="ph:info-bold" class="text-primary" />
+                <p class="text-xs text-primary-dark font-medium">Kode OTP telah dikirim ke <strong>{{
+                  emailForm.new_email }}</strong></p>
+              </div>
+
+              <div>
+                <label class="label-xs">Kode Verifikasi (6 Digit)</label>
+                <div class="flex gap-2">
+                  <div class="relative flex-1">
+                    <Icon icon="ph:key-bold" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <input v-model="emailForm.otp" type="text" maxlength="6" placeholder="000000"
+                      class="w-full pl-11 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-black tracking-[0.5em] focus:outline-none focus:border-primary transition-all" />
+                  </div>
+                  <BaseButton variant="gold" size="md" @click="verifyEmailChange" :loading="isVerifyingOTP"
+                    :disabled="emailForm.otp.length < 6">
+                    Verifikasi & Ubah
+                  </BaseButton>
+                </div>
+              </div>
+
+              <button @click="otpSent = false"
+                class="text-xs font-bold text-gray-400 hover:text-navy transition-colors">
+                Gunakan email lain
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Password Status -->
 
         <!-- Password Status -->
         <div class="p-4 rounded-xl border-2 mb-6"
@@ -199,74 +180,69 @@
         </div>
       </div>
     </div>
+    <!-- TAB: Tema -->
+    <div v-show="activeTab === 'theme'" class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100">
+      <h3 class="text-xl font-black text-navy mb-2 flex items-center justify-between">
+        Tema Dashboard
+        <Icon v-if="isSyncing" icon="ph:circle-notch" class="animate-spin text-primary" />
+      </h3>
+      <p class="text-gray-500 text-sm mb-6">Pilih palet warna yang sesuai dengan preferensi Anda</p>
 
-
-
-    <!-- Theme Settings -->
-    <div v-if="activeTab === 'theme'" class="bg-white rounded-xl border border-gray-200 p-6 md:p-8 shadow-sm space-y-8">
-      <div>
-        <h3 class="text-xl font-bold text-navy mb-2 flex items-center gap-2">
-          Tema Dashboard
-          <Icon v-if="isSyncing" icon="ph:circle-notch" class="animate-spin text-primary" />
-        </h3>
-        <p class="text-gray-500 text-sm mb-6">Pilih palet warna yang sesuai dengan preferensi Anda</p>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div v-for="(theme, key) in themes" :key="key" role="button"
-            class="relative overflow-hidden rounded-2xl border-2 transition-all group" :class="currentTheme === key
-              ? 'border-primary bg-primary/5 ring-4 ring-primary/10'
-              : 'border-gray-100 hover:border-gray-300 bg-white'" @click="currentTheme = key">
-            <!-- Theme Preview Header -->
-            <div class="h-24 w-full flex" :style="{ backgroundColor: theme.sidebarBg }">
-              <div class="w-1/4 h-full border-r border-white/10 flex flex-col gap-2 p-3">
-                <div class="w-full h-2 rounded bg-white/20"></div>
-                <div class="w-2/3 h-2 rounded bg-white/10"></div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div v-for="(theme, key) in themes" :key="key" role="button"
+          class="relative overflow-hidden rounded-2xl border-2 transition-all group" :class="currentTheme === key
+            ? 'border-primary bg-primary/5 ring-4 ring-primary/10'
+            : 'border-gray-100 hover:border-gray-300 bg-white'" @click="currentTheme = key">
+          <!-- Theme Preview Header -->
+          <div class="h-24 w-full flex" :style="{ backgroundColor: theme.sidebarBg }">
+            <div class="w-1/4 h-full border-r border-white/10 flex flex-col gap-2 p-3">
+              <div class="w-full h-2 rounded bg-white/20"></div>
+              <div class="w-2/3 h-2 rounded bg-white/10"></div>
+            </div>
+            <div class="w-3/4 h-full flex flex-col">
+              <div class="h-1/3 w-full bg-white flex items-center px-3">
+                <div class="w-12 h-2 rounded bg-gray-100"></div>
               </div>
-              <div class="w-3/4 h-full flex flex-col">
-                <div class="h-1/3 w-full bg-white flex items-center px-3">
-                  <div class="w-12 h-2 rounded bg-gray-100"></div>
-                </div>
-                <div class="flex-1 p-3">
-                  <div
-                    class="h-full w-full rounded-lg border-2 border-dashed border-gray-200 flex items-center justify-center"
-                    :style="{ color: theme.primary }">
-                    <Icon icon="ph:check-circle-fill" v-if="currentTheme === key" class="text-2xl" />
-                  </div>
+              <div class="flex-1 p-3">
+                <div
+                  class="h-full w-full rounded-lg border-2 border-dashed border-gray-200 flex items-center justify-center"
+                  :style="{ color: theme.primary }">
+                  <Icon icon="ph:check-circle-fill" v-if="currentTheme === key" class="text-2xl" />
                 </div>
               </div>
             </div>
+          </div>
 
-            <!-- Theme Info -->
-            <div class="p-4">
-              <div class="flex items-center justify-between mb-2">
-                <h4 class="font-bold text-navy capitalize">{{ key }}</h4>
-                <div class="flex gap-1">
-                  <div class="size-3 rounded-full" :style="{ backgroundColor: theme.primary }"></div>
-                  <div class="size-3 rounded-full" :style="{ backgroundColor: theme.sidebarBg }"></div>
-                </div>
+          <!-- Theme Info -->
+          <div class="p-4">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="font-bold text-navy capitalize">{{ key }}</h4>
+              <div class="flex gap-1">
+                <div class="size-3 rounded-full" :style="{ backgroundColor: theme.primary }"></div>
+                <div class="size-3 rounded-full" :style="{ backgroundColor: theme.sidebarBg }"></div>
               </div>
-              <p class="text-xs text-gray-400 capitalize">{{ key }} theme for professional look</p>
             </div>
+            <p class="text-xs text-gray-400 capitalize">{{ key }} theme for professional look</p>
+          </div>
 
-            <!-- Selection Indicator -->
-            <div v-if="currentTheme === key"
-              class="absolute top-2 right-2 flex items-center justify-center bg-white rounded-full p-1 shadow-lg">
-              <Icon icon="ph:check-circle-fill" class="text-primary text-xl" />
-            </div>
+          <!-- Selection Indicator -->
+          <div v-if="currentTheme === key"
+            class="absolute top-2 right-2 flex items-center justify-center bg-white rounded-full p-1 shadow-lg">
+            <Icon icon="ph:check-circle-fill" class="text-primary text-xl" />
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Save Button -->
-    <div class="flex justify-end gap-3 mt-10 pt-6 border-t border-gray-100">
-      <BaseButton variant="outline" size="md" @click="resetForm" :loading="isResetting">
-        Batal
-      </BaseButton>
-      <BaseButton variant="gold" size="md" icon="ph:floppy-disk" @click="saveSettings" :loading="isSavingGeneral">
-        Simpan Perubahan
-      </BaseButton>
-    </div>
+  <!-- Save Button (Optional depending on tab) -->
+  <div v-if="activeTab === 'theme'" class="flex justify-end gap-3 mt-10 pt-6 border-t border-gray-100">
+    <BaseButton variant="outline" size="md" @click="resetForm" :loading="isResetting">
+      Batal
+    </BaseButton>
+    <BaseButton variant="gold" size="md" icon="ph:floppy-disk" @click="saveSettings" :loading="isSavingGeneral">
+      Simpan Perubahan
+    </BaseButton>
   </div>
 </template>
 
@@ -294,22 +270,19 @@ const toast = useToast()
 const { currentTheme, themes, isSyncing } = useTheme()
 const route = useRoute()
 
-const tabs = computed(() => {
-  const allTabs = [
-    { label: 'Keamanan', value: 'security', icon: 'ph:shield-check' },
-    { label: 'Tema', value: 'theme', icon: 'ph:palette' },
-  ]
+const tabs = [
+  { label: 'Keamanan', value: 'security', icon: 'ph:shield-check' },
+  { label: 'Tema', value: 'theme', icon: 'ph:palette' },
+]
 
-  if (user.value?.role === 'archer') return allTabs
-  if (user.value?.role === 'organization') return allTabs
-
-  return [
-    { label: 'Akun', value: 'account', icon: 'ph:user-circle' },
-    ...allTabs
-  ]
+const activeTab = ref('security')
+const isRequestingOTP = ref(false)
+const isVerifyingOTP = ref(false)
+const otpSent = ref(false)
+const emailForm = ref({
+  new_email: '',
+  otp: ''
 })
-
-const activeTab = ref(user.value?.role === 'archer' || user.value?.role === 'organization' ? 'security' : 'account')
 const isSavingAccount = ref(false)
 const isSavingGeneral = ref(false)
 const isChangingPassword = ref(false)
@@ -492,6 +465,50 @@ const changePassword = async () => {
     toast.error(errorMessage)
   } finally {
     isChangingPassword.value = false
+  }
+}
+
+const requestOTP = async () => {
+  if (!emailForm.value.new_email) return
+  isRequestingOTP.value = true
+  try {
+    const { post } = useApi()
+    await post('/user/request-email-change', {
+      new_email: emailForm.value.new_email
+    })
+    otpSent.value = true
+    toast.success('Kode OTP telah dikirim ke email baru Anda')
+  } catch (error) {
+    const errorMsg = error?.data?.error || 'Gagal mengirim OTP'
+    toast.error(errorMsg)
+  } finally {
+    isRequestingOTP.value = false
+  }
+}
+
+const verifyEmailChange = async () => {
+  if (!emailForm.value.otp) return
+  isVerifyingOTP.value = true
+  try {
+    const { post } = useApi()
+    const response = await post('/user/verify-email-change', {
+      new_email: emailForm.value.new_email,
+      otp: emailForm.value.otp
+    })
+
+    toast.success(response.message)
+
+    // Refresh user data to show new email
+    if (userData.value) userData.value.email = emailForm.value.new_email
+
+    // Reset form
+    otpSent.value = false
+    emailForm.value = { new_email: '', otp: '' }
+  } catch (error) {
+    const errorMsg = error?.data?.error || 'Gagal memverifikasi OTP'
+    toast.error(errorMsg)
+  } finally {
+    isVerifyingOTP.value = false
   }
 }
 

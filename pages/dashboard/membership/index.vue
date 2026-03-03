@@ -26,29 +26,14 @@
                         <p class="text-white/60 text-sm mt-1">Kelola paket dan langganan anggota klub Anda</p>
                     </div>
                 </div>
-                <button @click="showAssignModal = true"
-                    class="flex items-center gap-2.5 h-11 px-7 rounded-2xl bg-primary text-primary-text font-black text-sm shadow-lg shadow-primary/30 hover:opacity-90 transition-all shrink-0">
-                    <Icon icon="ph:plus-bold" />
+                <BaseButton @click="showAssignModal = true" variant="primary" icon="ph:plus-bold"
+                    class="h-11 px-7 rounded-2xl text-sm shadow-lg shadow-primary/30 hover:opacity-90 transition-all shrink-0">
                     Assign Paket
-                </button>
+                </BaseButton>
             </div>
         </div>
 
-        <!-- ── Stats ────────────────────────────────────────────────────── -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-3">
-            <div v-for="stat in statCards" :key="stat.label"
-                class="bg-white rounded-xl p-4 border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all"
-                :class="stat.span ? 'col-span-2 xl:col-span-1' : ''">
-                <div
-                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors shrink-0">
-                    <Icon :icon="stat.icon" class="text-xl" />
-                </div>
-                <div class="min-w-0">
-                    <p class="text-[10px] text-gray-400 font-bold tracking-wider mb-1">{{ stat.label }}</p>
-                    <p class="text-lg font-bold text-navy">{{ stat.value }}</p>
-                </div>
-            </div>
-        </div>
+        <!-- ── Stats Removed ── -->
 
         <!-- ── Tabs ──────────────────────────────────────────────────────── -->
         <div class="flex gap-1 bg-gray-100/80 rounded-2xl p-1.5">
@@ -75,12 +60,12 @@
                         class="w-full pl-11 pr-4 h-11 rounded-xl border border-gray-200 bg-white text-sm font-medium focus:outline-none focus:border-primary transition-colors" />
                 </div>
                 <div class="flex gap-2">
-                    <button v-for="f in statusFilters" :key="f.value" @click="filterStatus = f.value" :class="filterStatus === f.value
-                        ? 'bg-primary text-primary-text shadow shadow-primary/20'
-                        : 'bg-white text-gray-500 border border-gray-200 hover:border-primary hover:text-primary'"
-                        class="h-11 px-4 rounded-xl font-black text-xs uppercase tracking-wide transition-all">
+                    <BaseButton v-for="f in statusFilters" :key="f.value" @click="filterStatus = f.value"
+                        :variant="filterStatus === f.value ? 'primary' : 'outline'" size="md"
+                        class="h-11 !px-4 !rounded-xl !text-xs !font-black !uppercase !tracking-wide transition-all"
+                        :class="filterStatus === f.value ? 'shadow shadow-primary/20' : '!bg-white !text-gray-500 !border-gray-200 hover:!border-primary hover:!text-primary'">
                         {{ f.label }}
-                    </button>
+                    </BaseButton>
                 </div>
             </div>
 
@@ -183,11 +168,10 @@
     ════════════════════════════════════════════════════════════════ -->
         <div v-if="activeTab === 'packages'" class="flex flex-col gap-4">
             <div class="flex justify-end">
-                <button @click="openPackageModal(null)"
-                    class="flex items-center gap-2 h-11 px-6 rounded-2xl bg-primary text-primary-text font-black text-sm shadow-lg shadow-primary/20 hover:opacity-90 transition-all">
-                    <Icon icon="ph:plus-bold" />
+                <BaseButton @click="openPackageModal(null)" variant="primary" icon="ph:plus-bold"
+                    class="h-11 px-6 rounded-2xl text-sm shadow-lg shadow-primary/20 hover:opacity-90 transition-all">
                     Buat Paket Baru
-                </button>
+                </BaseButton>
             </div>
 
             <!-- Empty packages -->
@@ -200,10 +184,10 @@
                     <p class="font-black text-gray-700">Belum Ada Paket</p>
                     <p class="text-sm text-gray-400 mt-1">Buat paket membership untuk ditetapkan ke anggota</p>
                 </div>
-                <button @click="openPackageModal(null)"
-                    class="h-11 px-8 rounded-2xl bg-primary text-primary-text font-black text-sm shadow-lg shadow-primary/20 hover:opacity-90 transition-all">
+                <BaseButton @click="openPackageModal(null)" variant="primary"
+                    class="h-11 px-8 rounded-2xl text-sm shadow-lg shadow-primary/20 hover:opacity-90 transition-all">
                     Buat Paket Pertama
-                </button>
+                </BaseButton>
             </div>
 
             <!-- Packages grid -->
@@ -226,7 +210,7 @@
                         <div class="flex-1">
                             <h3 class="font-black text-gray-900 text-lg leading-tight">{{ pkg.name }}</h3>
                             <p v-if="pkg.description" class="text-sm text-gray-400 mt-1 line-clamp-2">{{ pkg.description
-                                }}</p>
+                            }}</p>
                         </div>
                         <div class="flex items-baseline gap-1.5">
                             <span class="text-3xl font-black text-gray-900">{{ formatCurrency(pkg.price) }}</span>
@@ -311,12 +295,11 @@
                                         class="flex-1 h-11 rounded-xl border border-gray-200 text-gray-600 font-black text-sm hover:bg-gray-50 transition-colors">
                                         Batal
                                     </button>
-                                    <button @click="savePackage" :disabled="isSaving"
-                                        class="flex-1 h-11 rounded-xl bg-primary text-primary-text font-black text-sm hover:opacity-90 disabled:opacity-50 transition-all flex items-center justify-center gap-2">
-                                        <Icon v-if="isSaving" icon="ph:spinner" class="animate-spin" />
-                                        <Icon v-else icon="ph:check-bold" />
+                                    <BaseButton @click="savePackage" :disabled="isSaving" variant="primary"
+                                        icon="ph:check-bold" :loading="isSaving"
+                                        class="flex-1 h-11 rounded-xl text-sm hover:opacity-90 disabled:opacity-50 transition-all flex items-center justify-center gap-2">
                                         Simpan Paket
-                                    </button>
+                                    </BaseButton>
                                 </div>
                             </div>
                         </div>
@@ -484,7 +467,7 @@
                                             </div>
                                             <div class="flex-1 min-w-0">
                                                 <p class="font-bold text-sm text-gray-800">{{ formatCurrency(p.amount)
-                                                }}</p>
+                                                    }}</p>
                                                 <p class="text-xs text-gray-400">{{ p.payment_method }} · {{
                                                     formatDate(p.paid_at) }}</p>
                                                 <p v-if="p.payment_note" class="text-xs text-gray-400 truncate">{{
@@ -563,11 +546,7 @@ const statusFilters = [
     { label: 'Expired', value: 'expired' },
 ]
 
-const statCards = computed(() => [
-    { label: 'Aktif', value: stats.value.total_active, icon: 'ph:check-circle-bold' },
-    { label: 'Expired', value: stats.value.total_expired, icon: 'ph:x-circle-bold' },
-    { label: 'Hampir Habis', value: stats.value.expiring_in_3_days, icon: 'ph:warning-bold' },
-] || [])
+
 
 const activePackages = computed(() => packages.value.filter(p => p.is_active))
 const eligibleMembers = computed(() => {

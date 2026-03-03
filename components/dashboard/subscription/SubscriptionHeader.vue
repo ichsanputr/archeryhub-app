@@ -16,7 +16,7 @@
                 </div>
                 <div>
                     <h1 class="text-xl sm:text-3xl font-black tracking-tight">Subscription Saya</h1>
-                    <p class="text-slate-300 text-xs sm:text-sm font-medium mt-1 uppercase tracking-widest opacity-70">
+                    <p class="text-slate-300 text-xs sm:text-sm font-medium mt-1 tracking-widest opacity-70">
                         {{ subTitle }}
                     </p>
                 </div>
@@ -25,7 +25,7 @@
                 <div v-if="status === 'trial'"
                     class="px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl flex items-center gap-2">
                     <Icon icon="ph:clock-countdown-fill" class="text-primary text-lg" />
-                    <span class="text-xs font-black text-white uppercase tracking-widest">Trial 3 Bulan Aktif</span>
+                    <span class="text-xs font-black text-white tracking-widest">Trial 3 Bulan Aktif</span>
                 </div>
             </div>
         </div>
