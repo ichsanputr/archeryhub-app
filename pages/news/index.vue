@@ -369,10 +369,18 @@ const loadMore = async () => {
 const subscribe = async () => {
     if (!subscribeEmail.value) return
     isSubscribing.value = true
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    toast.success('Berhasil berlangganan!')
-    subscribeEmail.value = ''
-    isSubscribing.value = false
+    try {
+        await $fetch(`${config.public.apiBaseUrl}/news/subscribe`, {
+            method: 'POST',
+            body: { email: subscribeEmail.value }
+        })
+        toast.success('Berhasil berlangganan!')
+        subscribeEmail.value = ''
+    } catch (err) {
+        toast.error('Gagal berlangganan. Silakan coba lagi nanti.')
+    } finally {
+        isSubscribing.value = false
+    }
 }
 useHead({
     title: 'Berita Panahan Terbaru - Archeryhub.id',

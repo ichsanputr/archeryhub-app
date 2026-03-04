@@ -84,6 +84,7 @@
 
     <button
       class="size-12 md:size-14 bg-primary text-navy rounded-full flex items-center justify-center shadow-[0_10px_25px_-5px_rgba(0,0,0,0.12)] hover:scale-105 active:scale-95 transition-all duration-300 relative"
+      :class="isOpen ? 'max-sm:hidden' : ''"
       @click="isOpen = !isOpen"
       aria-label="Toggle support chat"
     >

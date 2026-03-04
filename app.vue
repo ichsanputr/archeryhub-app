@@ -4,6 +4,7 @@
     <NuxtLayout>
       <NuxtPage :page-key="pageKey" />
     </NuxtLayout>
+    <SupportChatWidget v-if="showSupportChat" />
   </div>
 </template>
 
@@ -20,6 +21,7 @@ const route = useRoute()
 // Force page to remount when route changes (fixes blank page on browser back / touchpad back)
 const pageKey = computed(() => route.fullPath)
 const isDashboard = computed(() => route.path.startsWith('/dashboard'))
+const showSupportChat = computed(() => !isDashboard.value)
 
 // Initialize theme and auth at app level
 const { initializeTheme, removeTheme, isThemeLoading } = useTheme()

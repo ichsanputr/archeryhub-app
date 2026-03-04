@@ -30,6 +30,63 @@
       <div class="lg:col-span-2 space-y-6">
         <!-- Tab: Informasi (Personal Data) -->
         <div v-if="activeTab === 'information'" class="space-y-6">
+          <!-- Media Section -->
+          <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
+            <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
+              <Icon icon="ph:image-bold" class="text-primary text-xl" />
+              MEDIA PROFIL
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <!-- Avatar -->
+              <div class="space-y-4">
+                <p class="text-[10px] font-black text-navy/30 uppercase tracking-widest">Foto Profil</p>
+                <div class="flex items-center gap-6">
+                  <div
+                    class="w-24 h-24 rounded-full bg-gray-50 border-4 border-white shadow-md overflow-hidden shrink-0 relative group">
+                    <img :src="useImageOrDefault(accountForm.avatar_url, accountForm.full_name)"
+                      class="w-full h-full object-cover" />
+                    <div
+                      class="absolute inset-0 bg-navy/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer"
+                      @click="openMediaLibrary('avatar')">
+                      <Icon icon="ph:camera-bold" class="text-white text-2xl" />
+                    </div>
+                  </div>
+                  <div class="space-y-2">
+                    <h5 class="text-xs font-black text-navy uppercase">Profile Picture</h5>
+                    <p class="text-[10px] text-gray-500 max-w-[160px]">Rasio 1:1 direkomendasikan. Maksimal 10MB.</p>
+                    <BaseButton variant="outline" size="xs" icon="ph:pencil-simple" @click="openMediaLibrary('avatar')">
+                      Ganti Foto</BaseButton>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Banner -->
+              <div class="space-y-4">
+                <p class="text-[10px] font-black text-navy/30 uppercase tracking-widest">Banner Profil (Hero)</p>
+                <div
+                  class="w-full aspect-[21/9] rounded-xl bg-gray-50 border-2 border-dashed border-gray-200 overflow-hidden relative group">
+                  <img v-if="accountForm.banner_url" :src="useImageOrDefault(accountForm.banner_url)"
+                    class="w-full h-full object-cover" />
+                  <div v-else class="w-full h-full flex flex-col items-center justify-center text-gray-400">
+                    <Icon icon="ph:image-square" class="text-3xl mb-1" />
+                    <span class="text-[10px] font-bold">Belum ada banner</span>
+                  </div>
+                  <div
+                    class="absolute inset-0 bg-navy/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer"
+                    @click="openMediaLibrary('banner')">
+                    <Icon icon="ph:pencil-simple-bold" class="text-white text-2xl" />
+                  </div>
+                  <button v-if="accountForm.banner_url" @click.stop="accountForm.banner_url = ''"
+                    class="absolute top-2 right-2 w-8 h-8 rounded-lg bg-red-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Icon icon="ph:trash" />
+                  </button>
+                </div>
+                <p class="text-[10px] text-gray-500">Akan digunakan sebagai latar belakang di profil publik Anda. Rasio
+                  lebar disarankan.</p>
+              </div>
+            </div>
+          </div>
+
           <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
             <h3 class="text-sm font-black text-navy  tracking-widest flex items-center gap-2">
               <Icon icon="ph:user-circle" class="text-black text-xl" />
@@ -81,6 +138,9 @@
           </div>
         </div>
 
+        <!-- Media Library Modal -->
+        <MediaLibrary :show="showMediaLibrary" @close="showMediaLibrary = false" @select="handleMediaSelect" />
+
         <!-- Tab: Profil (Bio, Prestasi, Riwayat Event) -->
         <div v-if="activeTab === 'profile'" class="space-y-6">
           <!-- Bio Section -->
@@ -105,10 +165,56 @@
               PRESTASI & PENGHARGAAN
             </h3>
             <div class="space-y-4">
-              <BaseTextarea v-model="profile.achievements" label="Daftar Prestasi"
-                placeholder="Contoh: Juara 1 Kejurnas 2023, Pemanah Terbaik Piala Walikota..." :rows="6" />
+              <div v-for="(ach, idx) in achievementsList" :key="idx" class="flex items-center gap-3">
+                <div class="flex-1 flex items-center gap-2">
+                  <button @click="toggleHighlight(idx)"
+                    class="shrink-0 w-8 h-8 rounded-lg flex items-center justify-center transition-all"
+                    :class="ach.is_highlighted ? 'bg-amber-100 text-amber-600' : 'bg-gray-50 text-gray-300 hover:text-gray-400'">
+                    <Icon :icon="ach.is_highlighted ? 'ph:star-fill' : 'ph:star'" />
+                  </button>
+                  <BaseInput v-model="ach.text" placeholder="Contoh: Juara 1 Kejurnas 2023" icon="ph:medal-bold"
+                    class="flex-1" />
+                </div>
+                <button @click="achievementsList.splice(idx, 1)"
+                  class="text-gray-400 hover:text-red-500 transition-colors p-2 mt-1">
+                  <Icon icon="ph:trash-bold" />
+                </button>
+              </div>
+
+              <BaseButton variant="outline" size="sm" icon="ph:plus-bold"
+                @click="achievementsList.push({ text: '', is_highlighted: false })" class="w-full">
+                Tambah Prestasi
+              </BaseButton>
+
               <p class="text-[10px] text-gray-400 font-medium italic">
-                * Masukkan prestasi Anda (satu per baris atau gunakan format teks bebas).
+                * Klik ikon bintang untuk menampilkan prestasi di bagian atas (maksimal 3).
+              </p>
+            </div>
+          </div>
+
+          <!-- Equipment Section -->
+          <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
+            <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
+              <Icon icon="ph:bow-arrow-bold" class="text-primary text-xl" />
+              PERALATAN (GEAR)
+            </h3>
+            <div class="space-y-4">
+              <div v-for="(eq, idx) in equipmentList" :key="idx" class="flex items-center gap-3">
+                <BaseInput v-model="equipmentList[idx]" placeholder="Contoh: Hoyt Formula XD, Easton X10" class="flex-1"
+                  icon="ph:gear-bold" />
+                <button @click="equipmentList.splice(idx, 1)"
+                  class="text-gray-400 hover:text-red-500 transition-colors p-2 mt-1">
+                  <Icon icon="ph:trash-bold" />
+                </button>
+              </div>
+
+              <BaseButton variant="outline" size="sm" icon="ph:plus-bold" @click="equipmentList.push('')"
+                class="w-full">
+                Tambah Peralatan
+              </BaseButton>
+
+              <p class="text-[10px] text-gray-400 font-medium italic">
+                * Daftar peralatan yang Anda gunakan saat ini.
               </p>
             </div>
           </div>
@@ -132,76 +238,62 @@
           </div>
         </div>
 
-        <!-- Tab: Kontak & Sosial -->
+        <!-- Tab: Kontak (Sosial Media) -->
         <div v-if="activeTab === 'contact'" class="space-y-6">
           <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
-            <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
-              <Icon icon="ph:phone-bold" class="text-primary text-xl" />
-              KONTAK
-            </h3>
-            <div class="space-y-4">
-              <p class="text-sm text-gray-600">
-                Informasi kontak Anda yang dapat dihubungi oleh penyelenggara event.
-              </p>
-              <div class="p-4 bg-gray-50 rounded-xl space-y-3">
-                <div v-if="accountForm.email" class="flex items-center gap-3">
-                  <Icon icon="ph:envelope" class="text-primary" />
-                  <span class="text-sm text-gray-700 font-medium">{{ accountForm.email }}</span>
-                </div>
-                <div v-if="accountForm.phone" class="flex items-center gap-3">
-                  <Icon icon="ph:phone" class="text-primary" />
-                  <span class="text-sm text-gray-700 font-medium">{{ accountForm.phone }}</span>
-                </div>
-                <div v-if="accountForm.address" class="flex items-start gap-3 border-t border-gray-200/50 pt-3 mt-1">
-                  <Icon icon="ph:map-pin" class="text-primary mt-0.5" />
-                  <span class="text-sm text-gray-700 leading-relaxed font-medium">{{ accountForm.address }}</span>
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
+                <Icon icon="ph:share-network-bold" class="text-primary text-xl" />
+                MEDIA SOSIAL
+              </h3>
+
+              <div class="relative group">
+                <BaseButton variant="outline" size="xs" icon="ph:plus-bold">
+                  Tambah Media Sosial
+                </BaseButton>
+                <!-- Dropdown for adding socials -->
+                <div
+                  class="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all">
+                  <button v-for="plat in remainingPlatforms" :key="plat.value" @click="addSocial(plat.value)"
+                    class="w-full text-left px-4 py-2 text-sm font-bold text-navy hover:bg-gray-50 flex items-center gap-3">
+                    <Icon :icon="plat.icon" :class="plat.iconColor" />
+                    {{ plat.title }}
+                  </button>
+                  <p v-if="remainingPlatforms.length === 0" class="px-4 py-2 text-xs text-gray-400 italic">
+                    Semua platform sudah ditambahkan
+                  </p>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
-            <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
-              <Icon icon="ph:share-network-bold" class="text-primary text-xl" />
-              MEDIA SOSIAL
-            </h3>
-            <div class="space-y-4">
-              <p class="text-sm text-gray-600">Tautkan akun media sosial Anda untuk dilihat oleh publik.</p>
-              <div class="grid grid-cols-1 gap-4 mt-2">
-                <div class="space-y-2">
-                  <label class="text-xs font-black text-navy uppercase tracking-widest pl-1">WhatsApp</label>
-                  <div class="flex items-center gap-3">
-                    <div
-                      class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center shrink-0 border border-green-100">
-                      <Icon icon="ph:whatsapp-logo" class="text-green-600 text-xl" />
-                    </div>
-                    <input v-model="profile.social_whatsapp" type="text" placeholder="Contoh: 081234567890"
-                      class="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-medium" />
-                  </div>
-                </div>
+            <p class="text-sm text-gray-600">Tautkan akun media sosial Anda untuk dilihat oleh publik.</p>
 
-                <div class="space-y-2">
-                  <label class="text-xs font-black text-navy uppercase tracking-widest pl-1">Instagram</label>
-                  <div class="flex items-center gap-3">
-                    <div
-                      class="w-10 h-10 rounded-xl bg-pink-50 flex items-center justify-center shrink-0 border border-pink-100">
-                      <Icon icon="ph:instagram-logo" class="text-pink-600 text-xl" />
+            <div class="grid grid-cols-1 gap-4 mt-2">
+              <div v-for="(social, idx) in userSocials" :key="social.platform"
+                class="bg-gray-50/50 p-4 rounded-2xl border border-gray-100 space-y-3">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center"
+                      :class="getPlatformIconBagde(social.platform)">
+                      <Icon :icon="getPlatformInfo(social.platform).icon" class="text-lg" />
                     </div>
-                    <input v-model="profile.social_instagram" type="text" placeholder="@username_instagram"
-                      class="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-medium" />
+                    <span class="text-xs font-black text-navy uppercase tracking-widest">{{
+                      getPlatformInfo(social.platform).title }}</span>
                   </div>
+                  <button @click="removeSocial(idx)" class="text-gray-400 hover:text-red-500 transition-colors">
+                    <Icon icon="ph:trash-bold" />
+                  </button>
                 </div>
+                <div class="flex items-center gap-3">
+                  <input v-model="social.handle" type="text" :placeholder="getPlatformInfo(social.platform).placeholder"
+                    class="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-medium shadow-sm transition-all" />
+                </div>
+              </div>
 
-                <div class="space-y-2">
-                  <label class="text-xs font-black text-navy uppercase tracking-widest pl-1">TikTok</label>
-                  <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-black flex items-center justify-center shrink-0">
-                      <Icon icon="ph:tiktok-logo" class="text-white text-xl" />
-                    </div>
-                    <input v-model="profile.social_tiktok" type="text" placeholder="@username_tiktok"
-                      class="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-medium" />
-                  </div>
-                </div>
+              <div v-if="userSocials.length === 0"
+                class="py-12 text-center border-2 border-dashed border-gray-100 rounded-2xl">
+                <Icon icon="ph:share-network" class="text-4xl text-gray-200 mx-auto mb-3" />
+                <p class="text-sm text-gray-400 font-medium">Belum ada media sosial yang ditambahkan</p>
               </div>
             </div>
           </div>
@@ -214,12 +306,15 @@
         <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm overflow-hidden relative">
           <div class="absolute top-0 left-0 w-full h-2 bg-primary"></div>
           <div class="flex flex-col items-center text-center mt-4">
-            <div class="w-24 h-24 rounded-full bg-primary/10 border-4 border-primary/20 p-1 mb-4 overflow-hidden">
-              <img :src="useImageOrDefault(user?.avatar_url, user?.full_name)"
+            <div
+              class="w-24 h-24 rounded-full bg-primary/10 border-4 border-white p-1 mb-4 overflow-hidden shadow-lg relative">
+              <img
+                :src="useImageOrDefault(accountForm.avatar_url || user?.avatar_url, accountForm.full_name || user?.full_name)"
                 class="w-full h-full object-cover rounded-full" />
             </div>
-            <h4 class="font-black text-navy text-lg leading-tight">{{ user?.full_name }}</h4>
-            <p class="text-gray-400 text-xs font-bold  tracking-tighter mt-1">{{ user?.username }}</p>
+            <h4 class="font-black text-navy text-lg leading-tight">{{ accountForm.full_name || user?.full_name }}</h4>
+            <p class="text-gray-400 text-xs font-bold  tracking-tighter mt-1">@{{ accountForm.username || user?.username
+            }}</p>
 
             <div v-if="profile.bio" class="mt-4 px-2">
               <p class="text-xs text-gray-500 italic line-clamp-3">"{{ profile.bio }}"</p>
@@ -266,7 +361,8 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, onMounted, watch, computed } from 'vue'
+import MediaLibrary from '~/components/common/MediaLibrary.vue'
+import { ref, onMounted, watch, computed, nextTick } from 'vue'
 import { useAuth } from '~/composables/useAuth'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
@@ -288,10 +384,70 @@ const isSavingAccount = ref(false)
 const profile = ref({
   bio: '',
   achievements: '',
-  social_instagram: '',
-  social_tiktok: '',
-  social_whatsapp: ''
+  equipment: ''
 })
+
+const achievementsList = ref([])
+const equipmentList = ref([])
+
+const showMediaLibrary = ref(false)
+const mediaTarget = ref('') // 'avatar' or 'banner'
+
+const openMediaLibrary = (target) => {
+  mediaTarget.value = target
+  showMediaLibrary.value = true
+}
+
+const handleMediaSelect = (media) => {
+  if (mediaTarget.value === 'avatar') {
+    accountForm.value.avatar_url = media.url
+  } else if (mediaTarget.value === 'banner') {
+    accountForm.value.banner_url = media.url
+  }
+}
+
+const platformOptions = [
+  { value: 'instagram', title: 'Instagram', icon: 'ph:instagram-logo', iconColor: 'text-pink-500', placeholder: '@username_instagram' },
+  { value: 'tiktok', title: 'TikTok', icon: 'ph:tiktok-logo', iconColor: 'text-black', placeholder: '@username_tiktok' },
+  { value: 'whatsapp', title: 'WhatsApp', icon: 'ph:whatsapp-logo', iconColor: 'text-green-600', placeholder: '081234567890' },
+  { value: 'facebook', title: 'Facebook', icon: 'ph:facebook-logo', iconColor: 'text-blue-600', placeholder: 'username / link' },
+  { value: 'twitter', title: 'Twitter / X', icon: 'ph:twitter-logo', iconColor: 'text-slate-800', placeholder: '@username' }
+]
+
+const userSocials = ref([]) // Dynamic list: [{ platform: 'instagram', handle: 'stewie' }]
+
+const remainingPlatforms = computed(() => {
+  return platformOptions.filter(p => !userSocials.value.some(s => s.platform === p.value))
+})
+
+const addSocial = (platform) => {
+  userSocials.value.push({ platform, handle: '' })
+}
+
+const toggleHighlight = (index) => {
+  const item = achievementsList.value[index]
+  if (!item.is_highlighted) {
+    const activeHighlights = achievementsList.value.filter(a => a.is_highlighted).length
+    if (activeHighlights >= 3) {
+      toast.warning('Maksimal 3 prestasi yang dapat di-highlight')
+      return
+    }
+  }
+  item.is_highlighted = !item.is_highlighted
+}
+
+const getPlatformInfo = (platform) => {
+  return platformOptions.find(p => p.value === platform) || platformOptions[0]
+}
+
+const getPlatformIconBagde = (platform) => {
+  if (platform === 'instagram') return 'bg-pink-50 text-pink-600 border border-pink-100'
+  if (platform === 'tiktok') return 'bg-black text-white border border-black'
+  if (platform === 'whatsapp') return 'bg-green-50 text-green-600 border border-green-100'
+  if (platform === 'facebook') return 'bg-blue-50 text-blue-600 border border-blue-100'
+  if (platform === 'twitter') return 'bg-slate-50 text-slate-800 border border-slate-100'
+  return 'bg-gray-100 text-gray-600'
+}
 
 const accountForm = ref({
   full_name: '',
@@ -302,7 +458,9 @@ const accountForm = ref({
   city: '',
   school: '',
   bow_type: '',
-  address: ''
+  address: '',
+  avatar_url: '',
+  banner_url: ''
 })
 
 const cityOptions = ref([])
@@ -369,7 +527,7 @@ const activeTab = ref('information')
 const tabs = [
   { id: 'information', label: 'Informasi', icon: 'ph:user-circle-bold' },
   { id: 'profile', label: 'Profil', icon: 'ph:identification-card-bold' },
-  { id: 'contact', label: 'Kontak & Sosial', icon: 'ph:phone-bold' }
+  { id: 'contact', label: 'Kontak', icon: 'ph:phone-bold' }
 ]
 
 
@@ -401,7 +559,8 @@ onMounted(async () => {
       const stats = await get('/archers/me/stats')
       if (stats) {
         userStats.value = {
-          totalEvents: stats.total_events || 0
+          totalEvents: stats.total_events || 0,
+          bestScore: stats.best_score || null
         }
       }
     } catch (error) {
@@ -414,19 +573,43 @@ onMounted(async () => {
 const loadProfile = async () => {
   try {
     const response = await get('/archer/me')
+    const data = response.data || response
 
     // Load account information
     accountForm.value = {
-      full_name: response.full_name || '',
-      username: response.username || '',
-      date_of_birth: response.date_of_birth ? new Date(response.date_of_birth).toISOString().split('T')[0] : '',
-      gender: response.gender || '',
-      phone: response.phone || '',
-      city: response.city || '',
-      school: response.school || '',
-      bow_type: response.bow_type || '',
-      address: response.address || ''
+      full_name: data.full_name || '',
+      username: data.username || '',
+      date_of_birth: data.date_of_birth ? new Date(data.date_of_birth).toISOString().split('T')[0] : '',
+      gender: data.gender || '',
+      phone: data.phone || '',
+      city: data.city || '',
+      school: data.school || '',
+      bow_type: data.bow_type || '',
+      address: data.address || '',
+      avatar_url: data.avatar_url || '',
+      banner_url: data.banner_url || ''
     }
+
+    // Load detailed profile information
+    profile.value = {
+      bio: data.bio || '',
+      achievements: data.achievements || '',
+      equipment: data.equipment || ''
+    }
+
+    achievementsList.value = data.achievements ? data.achievements.split('\n').filter(a => a.trim() !== '').map(a => {
+      if (a.startsWith('[H] ')) return { text: a.replace('[H] ', ''), is_highlighted: true }
+      return { text: a, is_highlighted: false }
+    }) : []
+    equipmentList.value = data.equipment ? data.equipment.split('\n').filter(e => e.trim() !== '') : []
+
+    // Populate dynamic socials
+    userSocials.value = []
+    if (data.social_instagram) userSocials.value.push({ platform: 'instagram', handle: data.social_instagram })
+    if (data.social_tiktok) userSocials.value.push({ platform: 'tiktok', handle: data.social_tiktok })
+    if (data.social_whatsapp) userSocials.value.push({ platform: 'whatsapp', handle: data.social_whatsapp })
+    if (data.social_facebook) userSocials.value.push({ platform: 'facebook', handle: data.social_facebook })
+    if (data.social_twitter) userSocials.value.push({ platform: 'twitter', handle: data.social_twitter })
 
   } catch (error) {
     console.error('Failed to load profile:', error)
@@ -450,13 +633,19 @@ const saveAccountInfo = async () => {
 const saveProfile = async () => {
   isSaving.value = true
   try {
-    await put('/user/profile', {
+    const payload = {
       bio: profile.value.bio,
-      achievements: profile.value.achievements,
-      social_instagram: profile.value.social_instagram,
-      social_tiktok: profile.value.social_tiktok,
-      social_whatsapp: profile.value.social_whatsapp
-    })
+      achievements: achievementsList.value.filter(a => a.text.trim() !== '').map(a => a.is_highlighted ? `[H] ${a.text}` : a.text).join('\n'),
+      equipment: equipmentList.value.filter(e => e.trim() !== '').join('\n'),
+      social_instagram: userSocials.value.find(s => s.platform === 'instagram')?.handle || '',
+      social_tiktok: userSocials.value.find(s => s.platform === 'tiktok')?.handle || '',
+      social_whatsapp: userSocials.value.find(s => s.platform === 'whatsapp')?.handle || '',
+      social_facebook: userSocials.value.find(s => s.platform === 'facebook')?.handle || '',
+      social_twitter: userSocials.value.find(s => s.platform === 'twitter')?.handle || '',
+      avatar_url: accountForm.value.avatar_url,
+      banner_url: accountForm.value.banner_url
+    }
+    await put('/user/profile', payload)
     toast.success('Profil berhasil disimpan')
   } catch (error) {
     toast.error(error.message || 'Gagal menyimpan profil')

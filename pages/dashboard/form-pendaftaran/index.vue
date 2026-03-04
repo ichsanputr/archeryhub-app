@@ -69,18 +69,7 @@
 
         <!-- ── Builder ───────────────────────────────────────────────── -->
         <div v-else class="flex flex-col gap-6">
-
-            <!-- Tab Bar -->
-            <div class="flex gap-1 bg-gray-100 rounded-2xl p-1.5">
-                <button v-for="tab in tabs" :key="tab.key" @click="activeTab = tab.key"
-                    :class="activeTab === tab.key ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'"
-                    class="flex items-center gap-2 flex-1 justify-center px-4 py-2.5 rounded-xl text-sm font-black transition-all">
-                    <Icon :icon="tab.icon" class="text-base" />
-                    <span class="hidden sm:inline">{{ tab.label }}</span>
-                </button>
-            </div>
-
-            <div v-if="activeTab === 'info'" class="flex flex-col gap-6 w-full">
+            <div class="flex flex-col gap-6 w-full">
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex flex-col gap-5">
                     <h2 class="font-black text-gray-800 flex items-center gap-2">
                         <Icon icon="ph:info-bold" class="text-primary" /> Informasi Dasar
@@ -109,8 +98,13 @@
                 </div>
             </div>
 
-            <!-- Tab: Bangun Form (2 Columns) -->
-            <div v-if="activeTab === 'builder' && form" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            <div class="flex items-center gap-2 text-[11px] font-black uppercase tracking-widest text-gray-400 px-1">
+                <Icon icon="ph:clipboard-text-bold" class="text-primary" />
+                <span>Bangun Form</span>
+            </div>
+
+            <!-- Bangun Form (2 Columns) -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
                 <!-- Left Sidebar: Field Palette & Templates -->
                 <div class="lg:col-span-4 space-y-6 lg:sticky lg:top-24">
@@ -162,7 +156,7 @@
                                 </div>
                             </div>
 
-                            <button @click="addSection(false)"
+                            <button @click="addSection()"
                                 class="w-full mt-4 py-3 rounded-xl border-2 border-dashed border-gray-100 text-primary font-black text-[11px] uppercase tracking-widest hover:border-primary hover:bg-primary/5 transition-all flex items-center justify-center gap-2">
                                 <Icon icon="ph:plus-circle-bold" />
                                 Tambah Seksi Baru
@@ -181,7 +175,7 @@
                         <h3 class="text-xl font-black text-gray-800 mb-2">Form Kosong</h3>
                         <p class="text-sm text-gray-400 max-w-sm mx-auto mb-8 font-medium">Mulai dengan memilih template
                             di panel kiri atau buat seksi baru untuk membangun dari nol.</p>
-                        <button @click="addSection(false)"
+                        <button @click="addSection()"
                             class="px-8 py-3 bg-navy text-white rounded-xl font-black text-xs uppercase tracking-widest shadow-lg shadow-navy/20 hover:scale-105 active:scale-95 transition-all">
                             Buat Seksi Pertama
                         </button>
@@ -200,7 +194,7 @@
                                 class="flex-1 bg-transparent font-black text-gray-800 focus:outline-none border-b-2 border-transparent focus:border-primary transition-colors"
                                 placeholder="Nama Seksi" @click.stop />
                             <div class="flex items-center gap-1 shrink-0">
-                                <button @click.stop="activeSectionId = section.uuid; addSection(false)"
+                                <button @click.stop="activeSectionId = section.uuid; addSection()"
                                     class="text-[10px] font-black uppercase tracking-wider px-3 py-1.5 rounded-lg bg-gray-100 text-primary hover:bg-primary hover:text-primary-text transition-colors">
                                     + Field
                                 </button>
@@ -353,7 +347,7 @@
                     </div>
 
                     <!-- Add Section Button at bottom of list -->
-                    <button v-if="form.sections?.length" @click="addSection(true)"
+                    <button v-if="form.sections?.length" @click="addSection()"
                         class="flex items-center justify-center gap-2 w-full py-5 rounded-2xl border-2 border-dashed border-gray-100 text-gray-400 text-sm font-black tracking-wider hover:border-primary hover:text-primary hover:bg-primary/5 transition-all">
                         <Icon icon="ph:plus-circle-bold" class="text-xl" />
                         Tambah Seksi Baru
@@ -361,8 +355,13 @@
                 </div>
             </div>
 
-            <!-- TAB: Tema -->
-            <div v-if="activeTab === 'theme'" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="flex items-center gap-2 text-[11px] font-black uppercase tracking-widest text-gray-400 px-1 pt-2">
+                <Icon icon="ph:palette-bold" class="text-primary" />
+                <span>Tema & Preview</span>
+            </div>
+
+            <!-- Tema -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex flex-col gap-5">
                     <h2 class="font-black text-gray-800 flex items-center gap-2">
                         <Icon icon="ph:palette-bold" class="text-primary" /> Kustomisasi Tema
@@ -571,7 +570,6 @@ const toast = useToast()
 const isLoading = ref(true)
 const isSaving = ref(false)
 const form = ref(null)
-const activeTab = ref('info')
 const activeSectionId = ref('')
 const editingFieldId = ref('')
 const editingField = ref({})
@@ -594,12 +592,6 @@ const patterns = [
 ]
 
 const presetColors = ['#22D3EE', '#6366F1', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899']
-
-const tabs = [
-    { key: 'info', label: 'Informasi', icon: 'ph:info-bold' },
-    { key: 'builder', label: 'Bangun Form', icon: 'ph:clipboard-text-bold' },
-    { key: 'theme', label: 'Tema & Preview', icon: 'ph:palette-bold' },
-]
 
 const fieldCategories = [
     {
@@ -846,7 +838,6 @@ async function createForm() {
     try {
         await post('/clubs/forms', { title: 'Form Pendaftaran Anggota' })
         await fetchForm()
-        activeTab.value = 'builder'
         toast.success('Form berhasil dibuat!')
     } catch (e) {
         toast.error('Gagal membuat form')
@@ -909,7 +900,7 @@ async function saveTheme() {
 
 // ── Section ───────────────────────────────────────────────────────────────────
 
-async function addSection(switchToBuilder = false) {
+async function addSection() {
     if (!form.value) return
     isSaving.value = true
     try {
@@ -919,7 +910,6 @@ async function addSection(switchToBuilder = false) {
         const newSection = { uuid: resp.id, form_id: form.value.uuid, title, description: null, order_index: form.value.sections.length, fields: [] }
         form.value.sections.push(newSection)
         activeSectionId.value = resp.id
-        if (switchToBuilder) activeTab.value = 'builder'
         toast.success('Seksi ditambahkan!')
     } catch { toast.error('Gagal menambah seksi') } finally { isSaving.value = false }
 }

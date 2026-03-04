@@ -345,14 +345,21 @@ const upcomingTournaments = computed(() => {
         }))
 })
 
-const handleSubscribe = () => {
+const handleSubscribe = async () => {
     if (!subscribeEmail.value) return
     isSubscribing.value = true
-    setTimeout(() => {
+    try {
+        await $fetch(`${apiBaseUrl}/news/subscribe`, {
+            method: 'POST',
+            body: { email: subscribeEmail.value }
+        })
         toast.success('Terima kasih! Anda telah terdaftar dalam newsletter kami.')
         subscribeEmail.value = ''
+    } catch (err) {
+        toast.error('Gagal berlangganan. Silakan coba lagi nanti.')
+    } finally {
         isSubscribing.value = false
-    }, 1000)
+    }
 }
 
 const copyToClipboard = () => {

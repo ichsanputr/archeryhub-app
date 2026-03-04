@@ -18,6 +18,12 @@
         </p>
       </div>
       <div class="flex gap-3">
+        <button v-if="member?.status === 'pending'" @click="approveMember" :disabled="isApproving"
+          class="inline-flex items-center gap-2 px-4 py-2.5 bg-green-50 text-green-600 border border-green-100 rounded-xl font-semibold text-sm hover:bg-green-100 transition disabled:opacity-50">
+          <Icon v-if="!isApproving" icon="ph:check-circle" class="text-lg" />
+          <LoadingSpinner v-else size="sm" />
+          {{ isApproving ? 'Memproses...' : 'Terima Anggota' }}
+        </button>
         <button @click="kickMember" :disabled="isKicking"
           class="inline-flex items-center gap-2 px-4 py-2.5 bg-red-50 text-red-600 border border-red-100 rounded-xl font-semibold text-sm hover:bg-red-100 transition disabled:opacity-50">
           <Icon v-if="!isKicking" icon="ph:user-minus" class="text-lg" />
@@ -78,10 +84,10 @@
           <div>
             <p class="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-1">Status</p>
             <span
-              class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest"
+              class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border"
               :class="statusBadgeClass">
               <span class="h-1.5 w-1.5 rounded-full bg-current"></span>
-              {{ member?.status || 'Aktif' }}
+              {{ getStatusLabel(member?.status) }}
             </span>
           </div>
         </div>
@@ -179,6 +185,7 @@ const toast = useToast()
 const member = ref(null)
 const coachNotes = ref('')
 const isKicking = ref(false)
+const isApproving = ref(false)
 const isSavingNotes = ref(false)
 const showKickDialog = ref(false)
 
@@ -231,10 +238,23 @@ const bowBadgeClass = computed(() => {
 
 const statusBadgeClass = computed(() => {
   const status = (member.value?.status || 'active').toLowerCase()
-  if (status === 'active') return 'bg-green-50 text-green-600 border border-green-100'
-  if (status === 'inactive') return 'bg-gray-50 text-gray-500 border border-gray-200'
-  return 'bg-amber-50 text-amber-600 border border-amber-100'
+  if (status === 'active') return 'bg-green-50 text-green-600 border-green-100'
+  if (status === 'invited') return 'bg-blue-50 text-blue-600 border-blue-100'
+  if (status === 'pending') return 'bg-amber-50 text-amber-600 border-amber-100'
+  if (status === 'left') return 'bg-red-50 text-red-600 border-red-100'
+  return 'bg-gray-50 text-gray-600 border-gray-100'
 })
+
+const getStatusLabel = (status) => {
+  const s = status?.toLowerCase() || 'active'
+  const labels = {
+    'active': 'Aktif',
+    'invited': 'Diundang',
+    'pending': 'Menunggu Acc',
+    'left': 'Keluar'
+  }
+  return labels[s] || s
+}
 
 const fetchMember = async () => {
   try {
@@ -283,6 +303,30 @@ const executeKick = async () => {
   } finally {
     isKicking.value = false
     showKickDialog.value = false
+  }
+}
+
+const approveMember = async () => {
+  if (!member.value?.uuid) return
+  isApproving.value = true
+  try {
+    // Determine which field to use for the membership record uuid
+    // Based on the handler, ApproveClubMember expects the member record ID (the one in club_members table)
+    // We need to make sure we have that ID. 
+    // In GetArcherByID, it LEFT JOIN club_members cm ON a.uuid = cm.archer_id AND a.club_id = cm.club_id
+    // But does it return cm.uuid? Let's check api/handler/archer.go
+
+    // Wait, the API handler for ApproveClubMember takes :memberId which is the UUID of the row in club_members.
+    // Let's verify what the member object contains.
+
+    await post(`/clubs/approve/${member.value.club_member_uuid || member.value.uuid}`)
+    toast.success(`${member.value.full_name} berhasil diterima sebagai anggota`)
+    await fetchMember()
+  } catch (error) {
+    console.error('Failed to approve member:', error)
+    toast.error(error.data?.error || 'Gagal menerima anggota')
+  } finally {
+    isApproving.value = false
   }
 }
 

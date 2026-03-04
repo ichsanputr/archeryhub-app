@@ -110,6 +110,9 @@
       <div class="w-full md:w-48">
         <BaseSelect v-model="genderFilter" :items="genderOptions" label="Jenis Kelamin" />
       </div>
+      <div class="w-full md:w-48">
+        <BaseSelect v-model="statusFilter" :items="statusOptions" label="Status" />
+      </div>
       <BaseButton @click="resetFilters" variant="white" size="md" icon="ph:funnel"
         class="h-11 px-6 font-semibold text-sm text-navy bg-white border-gray-200 hover:bg-gray-50">
         Reset
@@ -180,8 +183,13 @@
               </td>
               <td class="px-6 py-4 text-right">
                 <div class="flex items-center justify-end gap-2">
+                  <button v-if="member.status === 'pending'" @click="approveMember(member)"
+                    class="p-2 text-green-500 hover:bg-green-50 rounded-lg transition-colors" title="Terima Anggota">
+                    <Icon icon="ph:check-bold" class="text-lg" />
+                  </button>
                   <NuxtLink :to="`/dashboard/members/${member.id || member.uuid}`"
-                    class="p-2 text-gray-400 hover:text-navy hover:bg-gray-100 rounded-lg transition-colors">
+                    class="p-2 text-gray-400 hover:text-navy hover:bg-gray-100 rounded-lg transition-colors"
+                    title="Detail">
                     <Icon icon="ph:eye" class="text-lg" />
                   </NuxtLink>
                 </div>
@@ -345,6 +353,7 @@ const searchQuery = ref('')
 const inviteSearchQuery = ref('')
 const bowTypeFilter = ref('all')
 const genderFilter = ref('all')
+const statusFilter = ref('all')
 
 const bowTypeOptions = [
   { title: 'Semua', value: 'all' },
@@ -358,6 +367,14 @@ const genderOptions = [
   { title: 'Semua', value: 'all' },
   { title: 'Putra', value: 'male' },
   { title: 'Putri', value: 'female' }
+]
+
+const statusOptions = [
+  { title: 'Semua', value: 'all' },
+  { title: 'Aktif', value: 'active' },
+  { title: 'Menunggu Acc', value: 'pending' },
+  { title: 'Diundang', value: 'invited' },
+  { title: 'Keluar', value: 'left' }
 ]
 
 const fetchMembers = async () => {
@@ -376,6 +393,7 @@ const fetchMembers = async () => {
       if (resp && resp.data) {
         members.value = resp.data.map(m => ({
           ...m,
+          membership_uuid: m.uuid, // Preserve the club_members record UUID
           uuid: m.archer_id,
           photo_url: m.avatar_url, // Map avatar_url to what the frontend expects
         }))
@@ -423,8 +441,9 @@ const filteredMembers = computed(() => {
     const matchesGender = genderFilter.value === 'all' ||
       (genderFilter.value === 'male' && member.gender === 'M') ||
       (genderFilter.value === 'female' && member.gender === 'F')
+    const matchesStatus = statusFilter.value === 'all' || member.status === statusFilter.value
 
-    return matchesSearch && matchesBow && matchesGender
+    return matchesSearch && matchesBow && matchesGender && matchesStatus
   })
 })
 
@@ -441,6 +460,7 @@ const resetFilters = () => {
   searchQuery.value = ''
   bowTypeFilter.value = 'all'
   genderFilter.value = 'all'
+  statusFilter.value = 'all'
 }
 
 const getStatusBadgeClass = (status) => {
@@ -457,7 +477,7 @@ const getStatusLabel = (status) => {
   const labels = {
     'active': 'Aktif',
     'invited': 'Diundang',
-    'pending': 'Menunggu',
+    'pending': 'Menunggu Acc',
     'left': 'Keluar'
   }
   return labels[s] || s
@@ -504,6 +524,18 @@ const inviteToClub = async (archer) => {
     toast.error(e.response?.data?.error || 'Gagal mengirim undangan')
   } finally {
     invitingId.value = null
+  }
+}
+
+const approveMember = async (member) => {
+  try {
+    const memberId = member.membership_uuid || member.uuid
+    await post(`/clubs/approve/${memberId}`)
+    toast.success(`${member.full_name} berhasil diterima sebagai anggota`)
+    await fetchMembers()
+  } catch (error) {
+    console.error('Approve member error:', error)
+    toast.error(error.data?.error || 'Gagal menerima anggota')
   }
 }
 </script>

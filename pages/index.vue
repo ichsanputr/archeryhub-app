@@ -28,8 +28,6 @@
 
         <!-- Latest News Section -->
         <HomeLatestNews />
-
-        <SupportChatWidget />
     </div>
 </template>
 
@@ -41,7 +39,6 @@ import HomeLiveEvents from '~/components/Home/HomeLiveEvents.vue'
 import HomeFeaturedClubs from '~/components/Home/HomeFeaturedClubs.vue'
 import HomeLatestNews from '~/components/Home/HomeLatestNews.vue'
 import HomeFeatures from '~/components/Home/HomeFeatures.vue'
-import SupportChatWidget from '~/components/common/SupportChatWidget.vue'
 import SubscriptionPromo from '~/components/dashboard/subscription/SubscriptionPromo.vue'
 
 definePageMeta({
