@@ -18,7 +18,7 @@
                             Indonesia</span>
                     </div>
                     <h1 ref="heroTitle"
-                        class="text-3xl sm:text-4xl md:text-5xl font-black text-white leading-[1.2] sm:leading-[1.1] mb-4 sm:mb-6 tracking-tight drop-shadow-sm font-display opacity-0 translate-y-8">
+                        class="text-3xl sm:text-4xl font-black text-white leading-[1.2] sm:leading-[1.1] mb-4 sm:mb-6 tracking-tight drop-shadow-sm font-display opacity-0 translate-y-8">
                         All in One<br />
                         <span
                             class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary to-green-300">Platform

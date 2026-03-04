@@ -209,7 +209,6 @@ const eventLinks = computed(() => {
       { label: 'Registrasi', icon: 'ph:clipboard-text', path: `/dashboard/events/${eventId.value}/my-registration` },
       { label: 'Hasil Kualifikasi', icon: 'ph:chart-line-up-bold', path: `/dashboard/events/${eventId.value}/my-qualification` },
       { label: 'Hasil Eliminasi', icon: 'ph:git-merge-bold', path: `/dashboard/events/${eventId.value}/my-elimination` },
-      { label: 'Sertifikat', icon: 'ph:certificate', path: `/dashboard/events/${eventId.value}/certificate` },
     ]
   }
 

@@ -1,14 +1,14 @@
 <template>
     <div class="bg-navy-dark min-h-screen flex flex-col selection:bg-primary selection:text-navy-dark">
         <!-- ── Hero Section ── -->
-        <section class="relative h-[85vh] w-full overflow-hidden bg-navy-dark">
+        <section class="relative h-[28rem] w-full overflow-hidden bg-navy-dark">
             <img :src="useImageOrDefault(archer.banner_url || archer.avatar_url, archer.full_name)"
                 class="w-full h-full object-cover object-top opacity-80" :alt="archer.full_name" />
             <div class="absolute inset-0 bg-gradient-to-t from-navy-dark via-navy-dark/40 to-transparent"></div>
 
             <div
-                class="absolute bottom-12 left-0 right-0 p-8 md:p-12 max-w-7xl mx-auto flex flex-col md:flex-row items-end justify-between gap-8 z-10">
-                <div class="text-white space-y-4 w-full md:w-auto">
+                class="absolute bottom-12 left-0 right-0 p-8 sm:p-12 max-w-7xl mx-auto flex flex-col sm:flex-row items-end justify-between gap-8 z-10">
+                <div class="text-white space-y-4 w-full sm:w-auto">
                     <div class="flex flex-wrap items-center gap-4">
                         <span
                             class="px-4 py-1 bg-primary text-navy-dark text-[10px] font-black rounded-full uppercase tracking-[0.2em]">Atlet
@@ -16,19 +16,19 @@
                         <div v-if="archer.club_name" class="flex items-center gap-1 text-primary">
                             <Icon icon="ph:shield-star-fill" class="text-lg" />
                             <span class="text-[10px] font-extrabold uppercase tracking-widest">{{ archer.club_name
-                                }}</span>
+                            }}</span>
                         </div>
                     </div>
 
-                    <div class="flex flex-col md:flex-row md:items-center gap-6 md:gap-10">
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-10">
                         <div
-                            class="w-24 h-24 md:w-40 md:h-40 rounded-full border-4 md:border-[8px] border-white/20 shadow-2xl overflow-hidden shrink-0 group">
+                            class="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-4 sm:border-[6px] border-white/20 shadow-2xl overflow-hidden shrink-0 group">
                             <img :src="useImageOrDefault(archer.avatar_url, archer.full_name)"
                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                 :alt="archer.full_name" />
                         </div>
                         <h1
-                            class="text-4xl md:text-8xl font-black uppercase tracking-tighter leading-none italic break-words">
+                            class="text-3xl sm:text-4xl font-black uppercase tracking-tighter leading-[0.95] break-words">
                             {{ archer.full_name?.split(' ')[0] }} <br />
                             <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-white">
                                 {{ archer.full_name?.split(' ').slice(1).join(' ') }}
@@ -46,7 +46,7 @@
                         <div v-if="bowTypeLabel" class="flex items-center gap-2">
                             <span class="text-white/60 text-[10px] font-black uppercase tracking-widest">Busur</span>
                             <span class="font-bold uppercase tracking-widest text-sm text-primary">{{ bowTypeLabel
-                            }}</span>
+                                }}</span>
                         </div>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
                                 class="text-sm font-black uppercase tracking-[0.4em] text-navy/30 flex items-center gap-4">
                                 Biografi <span class="h-px flex-1 bg-gray-100"></span>
                             </h3>
-                            <p class="text-base md:text-xl text-navy/80 leading-relaxed font-light">
+                            <p class="text-base sm:text-lg text-navy/80 leading-relaxed font-light">
                                 {{ archer.bio || `${archer.full_name} adalah atlet panahan berdedikasi yang berkompetisi
                                 di kategori ${bowTypeLabel || 'Recurve'}. Aktif berpartisipasi dalam berbagai kejuaraan
                                 untuk mengasah kemampuan dan meraih prestasi terbaik.` }}
@@ -109,7 +109,7 @@
 
                                 <div class="p-6 bg-gray-50 rounded-2xl border border-gray-100 flex items-start gap-4">
                                     <div class="p-3 bg-white rounded-xl shadow-sm">
-                                        <Icon icon="ph:id-card" class="text-xl text-navy" />
+                                        <Icon icon="material-symbols:id-card-outline" class="text-xl text-navy" />
                                     </div>
                                     <div>
                                         <p class="text-[10px] font-black text-navy/30 uppercase tracking-[0.2em]">Archer
@@ -172,7 +172,7 @@
                                             <span class="text-[10px] font-black text-navy/40 uppercase">{{
                                                 formatDate(event.date, 'MMM') }}</span>
                                             <span class="text-2xl font-black text-navy">{{ formatDate(event.date, 'DD')
-                                            }}</span>
+                                                }}</span>
                                         </div>
                                         <div>
                                             <h4
@@ -214,7 +214,7 @@
                                     <div v-for="(ach, idx) in processedAchievements.highlights" :key="idx"
                                         class="flex items-start gap-3">
                                         <Icon icon="ph:caret-right-bold" class="text-primary mt-1 shrink-0" />
-                                        <p class="text-sm font-bold leading-relaxed italic text-white/90">{{ ach }}</p>
+                                        <p class="text-sm font-bold leading-relaxed text-white/90">{{ ach }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -360,7 +360,7 @@
                             <div :class="`w-12 h-12 rounded-xl ${plat.bg} flex items-center justify-center shadow-sm group-hover:scale-110 transition-all`"
                                 v-html="plat.iconHtml"></div>
                             <span class="text-[9px] font-black text-slate-400 uppercase tracking-wider">{{ plat.name
-                                }}</span>
+                            }}</span>
                         </button>
                     </div>
 

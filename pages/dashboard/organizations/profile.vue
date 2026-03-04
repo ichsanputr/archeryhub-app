@@ -144,36 +144,62 @@
           </div>
 
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
-            <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
-              <Icon icon="ph:share-network-bold" class="text-primary text-xl" /> Kehadiran Media Sosial
-            </h3>
+            <div class="flex items-center justify-between">
+              <h3 class="text-[11px] font-black text-navy tracking-[0.2em] flex items-center gap-2">
+                <Icon icon="ph:share-network-bold" class="text-primary text-xl" /> Kehadiran Media Sosial
+              </h3>
+
+              <div class="relative group">
+                <BaseButton variant="white" size="xs" icon="ph:plus-bold"
+                  class="border-dashed border-2 hover:border-primary hover:text-primary transition-all">
+                  Tambah Media Sosial
+                </BaseButton>
+                <!-- Dropdown for adding socials -->
+                <div
+                  class="absolute right-0 top-full mt-2 w-48 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 z-50 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all">
+                  <button v-for="plat in remainingPlatforms" :key="plat.value" @click="addSocialMedia(plat.value)"
+                    class="w-full text-left px-4 py-2 text-sm font-bold text-navy hover:bg-gray-50 flex items-center gap-3">
+                    <Icon :icon="plat.icon" :class="plat.iconColor" />
+                    {{ plat.title }}
+                  </button>
+                  <p v-if="remainingPlatforms.length === 0" class="px-4 py-2 text-xs text-gray-400 italic">
+                    Semua platform sudah ditambahkan
+                  </p>
+                </div>
+              </div>
+            </div>
+
             <p class="text-sm text-gray-500 font-medium">Hubungkan organisasi dengan anggota melalui platform sosial
               favorit.</p>
 
-            <div class="space-y-4">
-              <transition-group name="list">
-                <div v-for="(social, idx) in form.socialMedia" :key="idx"
-                  class="flex items-center gap-4 p-5 bg-gray-50 rounded-2xl border border-gray-100 group">
-                  <div class="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="md:col-span-1">
-                      <BaseSelect v-model="social.platform" :items="socialPlatformOptions"
-                        placeholder="Pilih Platform" />
+            <div class="grid grid-cols-1 gap-4 mt-2">
+              <div v-for="(social, idx) in form.socialMedia" :key="social.platform"
+                class="bg-gray-50/30 p-4 rounded-2xl border border-gray-100 space-y-3">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center shadow-sm"
+                      :class="getPlatformIconBagde(social.platform)">
+                      <Icon :icon="getPlatformInfo(social.platform).icon" class="text-lg" />
                     </div>
-                    <BaseInput v-model="social.username" placeholder="Username atau Link Profil"
-                      class="md:col-span-2 !bg-white" />
+                    <span class="text-xs font-black text-navy uppercase tracking-widest">{{
+                      getPlatformInfo(social.platform).title }}</span>
                   </div>
-                  <BaseButton @click="removeSocialMedia(idx)" variant="white" size="sm" icon="ph:trash-bold"
-                    class="h-11 w-11 p-0 text-red-400 hover:text-red-500 bg-red-50/50 border-red-100/50 hover:bg-red-50 shadow-none" />
+                  <button @click="removeSocialMedia(idx)" class="text-gray-400 hover:text-red-500 transition-colors">
+                    <Icon icon="ph:trash-bold" />
+                  </button>
                 </div>
-              </transition-group>
+                <div class="flex items-center gap-3">
+                  <input v-model="social.username" type="text"
+                    :placeholder="getPlatformInfo(social.platform).placeholder"
+                    class="flex-1 px-4 py-2.5 rounded-xl border border-gray-100 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-bold shadow-sm transition-all" />
+                </div>
+              </div>
 
-              <BaseButton v-if="form.socialMedia.length < 5" @click="addSocialMedia" variant="white"
-                class="w-full h-14 border-2 border-dashed border-gray-200 text-gray-400 hover:border-primary hover:text-primary shadow-none font-black text-sm uppercase tracking-widest"
-                icon="ph:plus-circle-bold">
-                Tambah Platform Baru
-              </BaseButton>
-              <p v-else class="text-[10px] text-gray-400 text-center font-bold tracking-widest ">Maksimal 5
-                platform media sosial</p>
+              <div v-if="form.socialMedia.length === 0"
+                class="py-12 text-center border-2 border-dashed border-gray-100 rounded-2xl">
+                <Icon icon="ph:share-network" class="text-4xl text-gray-200 mx-auto mb-3" />
+                <p class="text-sm text-gray-400 font-bold tracking-widest">Belum ada media sosial yang ditambahkan</p>
+              </div>
             </div>
           </div>
         </div>
@@ -320,14 +346,34 @@ const pageSettings = reactive({
   }
 })
 
-const socialPlatformOptions = [
-  { value: 'instagram', title: 'Instagram', icon: 'ph:instagram-logo' },
-  { value: 'facebook', title: 'Facebook', icon: 'ph:facebook-logo' },
-  { value: 'twitter', title: 'X (Twitter)', icon: 'ph:x-logo' },
-  { value: 'youtube', title: 'YouTube', icon: 'ph:youtube-logo' },
-  { value: 'tiktok', title: 'TikTok', icon: 'ph:tiktok-logo' },
-  { value: 'linkedin', title: 'LinkedIn', icon: 'ph:linkedin-logo' }
+const platformOptions = [
+  { value: 'instagram', title: 'Instagram', icon: 'ph:instagram-logo', iconColor: 'text-pink-500', placeholder: '@username_instagram' },
+  { value: 'facebook', title: 'Facebook', icon: 'ph:facebook-logo', iconColor: 'text-blue-600', placeholder: 'username / link' },
+  { value: 'twitter', title: 'Twitter / X', icon: 'ph:x-logo', iconColor: 'text-slate-800', placeholder: '@username' },
+  { value: 'youtube', title: 'YouTube', icon: 'ph:youtube-logo', iconColor: 'text-red-600', placeholder: 'channel_id / link' },
+  { value: 'tiktok', title: 'TikTok', icon: 'ph:tiktok-logo', iconColor: 'text-black', placeholder: '@username_tiktok' },
+  { value: 'whatsapp', title: 'WhatsApp', icon: 'ph:whatsapp-logo', iconColor: 'text-green-600', placeholder: '081234567890' },
+  { value: 'linkedin', title: 'LinkedIn', icon: 'ph:linkedin-logo', iconColor: 'text-blue-700', placeholder: 'username / link' }
 ]
+
+const remainingPlatforms = computed(() => {
+  return platformOptions.filter(p => !form.socialMedia.some(s => s.platform === p.value))
+})
+
+const getPlatformInfo = (platform) => {
+  return platformOptions.find(p => p.value === platform) || platformOptions[0]
+}
+
+const getPlatformIconBagde = (platform) => {
+  if (platform === 'instagram') return 'bg-pink-50 text-pink-600 border border-pink-100'
+  if (platform === 'tiktok') return 'bg-black text-white border border-black'
+  if (platform === 'whatsapp') return 'bg-green-50 text-green-600 border border-green-100'
+  if (platform === 'facebook') return 'bg-blue-50 text-blue-600 border border-blue-100'
+  if (platform === 'twitter') return 'bg-slate-50 text-slate-800 border border-slate-100'
+  if (platform === 'youtube') return 'bg-red-50 text-red-600 border border-red-100'
+  if (platform === 'linkedin') return 'bg-blue-50 text-blue-700 border border-blue-100'
+  return 'bg-gray-100 text-gray-600'
+}
 
 
 const form = reactive({
@@ -426,9 +472,11 @@ const handleMediaSelect = (media) => {
 }
 
 // Social media handlers
-const addSocialMedia = () => {
-  if (form.socialMedia.length < 5) {
-    form.socialMedia.push({ platform: 'instagram', username: '' })
+const addSocialMedia = (platform) => {
+  if (form.socialMedia.length < 6) {
+    // If platform is not provided (legacy call), use first available or instagram
+    const p = platform || (remainingPlatforms.value.length > 0 ? remainingPlatforms.value[0].value : 'instagram')
+    form.socialMedia.push({ platform: p, username: '' })
   }
 }
 

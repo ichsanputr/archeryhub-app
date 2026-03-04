@@ -54,20 +54,6 @@
           </div>
         </NuxtLink>
 
-        <!-- Sertifikat Card -->
-        <NuxtLink :to="`/dashboard/events/${eventId}/certificate`"
-          class="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:shadow-md transition-all group overflow-hidden relative">
-          <div class="size-14 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400 mb-6">
-            <Icon icon="ph:certificate-bold" class="text-2xl" />
-          </div>
-          <h3 class="text-xl font-black text-navy mb-2">Sertifikat</h3>
-          <p class="text-sm text-gray-400 font-bold">Sertifikat elektronik akan tersedia di sini setelah turnamen
-            selesai.</p>
-          <div class="mt-6 flex items-center gap-2 text-slate-500 text-xs font-black uppercase tracking-widest">
-            Buka Sertifikat
-            <Icon icon="ph:arrow-right-bold" />
-          </div>
-        </NuxtLink>
       </div>
 
       <!-- Quick Tips / Info -->

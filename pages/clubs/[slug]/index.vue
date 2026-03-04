@@ -9,90 +9,78 @@
         <!-- ══════════════════════════════════════
              HERO HEADER — Full Width
              ══════════════════════════════════════ -->
-        <section class="relative w-full bg-navy overflow-hidden">
-            <!-- Background Elements -->
-            <div class="absolute inset-0 z-0">
-                <img v-if="club.bannerUrl" :src="club.bannerUrl" class="w-full h-full object-cover opacity-30" />
-                <div v-else class="w-full h-full bg-gradient-to-br from-navy to-navy-light opacity-80"></div>
-                <!-- Dynamic Overlay -->
-                <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/40 to-transparent"></div>
-            </div>
+        <!-- ── Hero Section ── -->
+        <section class="relative h-[28rem] w-full overflow-hidden bg-navy-dark">
+            <img :src="useImageOrDefault(club.bannerUrl || club.logoUrl, club.name)"
+                class="w-full h-full object-cover object-center opacity-80" :alt="club.name" />
+            <div class="absolute inset-0 bg-gradient-to-t from-navy-dark via-navy-dark/40 to-transparent"></div>
 
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-10 sm:pb-12 relative z-10 text-white">
-                <!-- Back nav -->
-                <NuxtLink to="/clubs"
-                    class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white/50 hover:text-primary transition-colors mb-10">
-                    <Icon icon="ph:arrow-left-bold" />
-                    Semua Klub
-                </NuxtLink>
-
-                <!-- Logo + Club name row -->
-                <div class="flex flex-col md:flex-row md:items-end gap-5 md:gap-6 mb-8 sm:mb-10">
-                    <!-- Logo -->
-                    <div
-                        class="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 rounded-3xl border-4 border-white/10 overflow-hidden bg-white shadow-2xl flex-shrink-0 animate-fade-in">
-                        <img :src="useImageOrDefault(club.logoUrl, club.name)" :alt="club.name"
-                            class="w-full h-full object-cover" />
-                    </div>
-                    <div class="flex-1">
-                        <!-- Official tag -->
+            <div
+                class="absolute bottom-12 left-0 right-0 p-8 sm:p-12 max-w-7xl mx-auto flex flex-col sm:flex-row items-end justify-between gap-8 z-10">
+                <div class="text-white space-y-4 w-full sm:w-auto">
+                    <div class="flex flex-wrap items-center gap-4">
                         <span
-                            class="inline-block bg-primary text-navy text-[10px] font-black px-2 py-1 mb-4 tracking-widest uppercase">
-                            Profil Resmi
-                        </span>
-                        <h1
-                            class="text-2xl sm:text-4xl font-black tracking-tight leading-none mb-4 sm:mb-5 uppercase break-words drop-shadow-md">
-                            {{ club.name || 'Klub Panahan' }}
+                            class="px-4 py-1 bg-primary text-navy-dark text-[10px] font-black rounded-full uppercase tracking-[0.2em]">Profil
+                            Resmi Klub</span>
+                        <div v-if="club.abbreviation" class="flex items-center gap-1 text-primary">
+                            <Icon icon="ph:shield-star-fill" class="text-lg" />
+                            <span class="text-[10px] font-extrabold uppercase tracking-widest">{{ club.abbreviation
+                            }}</span>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-10">
+                        <div
+                            class="w-24 h-24 sm:w-32 sm:h-32 rounded-3xl border-4 sm:border-[6px] border-white/20 shadow-2xl overflow-hidden bg-white shrink-0 group">
+                            <img :src="useImageOrDefault(club.logoUrl, club.name)"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                :alt="club.name" />
+                        </div>
+                        <h1 class="text-3xl sm:text-4xl font-black uppercase tracking-tight leading-[0.9] text-white">
+                            {{ club.name }}
                         </h1>
-                        <p class="text-base sm:text-lg md:text-xl font-light text-white/80 max-w-3xl leading-snug">
-                            {{ club.description || defaultDesc }}
-                        </p>
+                    </div>
+
+                    <div class="flex items-center gap-6 pt-4">
+                        <div class="flex items-center gap-2">
+                            <span class="text-white/60 text-[10px] font-black uppercase tracking-widest">Lokasi</span>
+                            <span class="font-bold flex items-center gap-2 text-sm">{{ club.city || 'Indonesia' }}
+                                🇮🇩</span>
+                        </div>
+                        <div v-if="club.established" class="w-px h-4 bg-white/20"></div>
+                        <div v-if="club.established" class="flex items-center gap-2">
+                            <span class="text-white/60 text-[10px] font-black uppercase tracking-widest">Berdiri</span>
+                            <span class="font-bold uppercase tracking-widest text-sm text-primary">{{ club.established
+                                }}</span>
+                        </div>
+                        <div v-if="club.memberCount" class="w-px h-4 bg-white/20"></div>
+                        <div v-if="club.memberCount" class="flex items-center gap-2">
+                            <span class="text-white/60 text-[10px] font-black uppercase tracking-widest">Anggota</span>
+                            <span class="font-bold uppercase tracking-widest text-sm text-primary">{{ club.memberCount
+                            }}+</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Stats bar -->
-                <div class="flex flex-wrap gap-5 sm:gap-10 py-6 sm:py-8 border-y border-white/10 mb-0">
-                    <div>
-                        <span class="text-[10px] uppercase tracking-widest text-white/40 font-black block mb-1">Total
-                            Anggota</span>
-                        <span class="text-xl sm:text-2xl font-black text-primary">{{ club.memberCount || '—' }}{{
-                            club.memberCount ? '+' : ''
-                        }}</span>
-                    </div>
-                    <div v-if="club.established">
-                        <span
-                            class="text-[10px] uppercase tracking-widest text-white/40 font-black block mb-1">Berdiri</span>
-                        <span class="text-xl sm:text-2xl font-black">{{ club.established }}</span>
-                    </div>
-                    <div v-if="club.city || club.province">
-                        <span
-                            class="text-[10px] uppercase tracking-widest text-white/40 font-black block mb-1">Lokasi</span>
-                        <span class="text-xl sm:text-2xl font-black">{{ club.formattedLocation }}</span>
-                    </div>
-                    <div v-if="club.headCoach">
-                        <span class="text-[10px] uppercase tracking-widest text-white/40 font-black block mb-1">Pelatih
-                            Kepala</span>
-                        <span class="text-xl sm:text-2xl font-black">{{ club.headCoach }}</span>
-                    </div>
-                    <div class="w-full sm:w-auto sm:ml-auto self-center flex gap-3">
-                        <!-- Membership action -->
+                <div class="flex flex-col items-end gap-3 w-full md:w-auto">
+                    <div class="flex gap-3 w-full md:w-auto">
                         <BaseButton v-if="!membership" variant="primary" size="md" icon="ph:plus-bold"
                             :loading="isJoining" @click="joinClub"
-                            class="shadow-xl shadow-primary/20 whitespace-nowrap">
-                            Gabung Klub
+                            class="shadow-xl shadow-primary/20 whitespace-nowrap !rounded-xl text-navy-dark flex-1 md:flex-none">
+                            Gabung
                         </BaseButton>
                         <div v-else-if="membership && membership.status === 'active' && membership.club_id === club.id"
-                            class="px-5 py-2.5 bg-primary text-navy font-black text-xs flex items-center gap-2 rounded-xl shadow-lg shadow-primary/10">
+                            class="px-8 py-4 bg-primary text-navy font-black text-xs flex items-center justify-center gap-2 rounded-xl shadow-lg shadow-primary/10 flex-1 md:flex-none">
                             <Icon icon="ph:check-circle-fill" class="text-base" />
-                            Anggota Aktif
+                            ANGGOTA AKTIF
                         </div>
                         <div v-else-if="membership && membership.status === 'pending' && membership.club_id === club.id"
-                            class="px-5 py-2.5 bg-white/5 border border-white/10 text-white/60 font-black text-xs flex items-center gap-2 rounded-xl backdrop-blur-md">
+                            class="px-8 py-4 bg-white/5 border border-white/10 text-white/60 font-black text-xs flex items-center justify-center gap-2 rounded-xl backdrop-blur-md flex-1 md:flex-none">
                             <Icon icon="ph:clock-bold" class="text-base" />
-                            Menunggu Persetujuan
+                            MENUNGGU PERSETUJUAN
                         </div>
                         <button @click="openShareDialog"
-                            class="size-11 sm:size-12 rounded-xl border border-white/10 hover:border-primary hover:bg-primary transition-all flex items-center justify-center group sm:ml-0 ml-auto backdrop-blur-md">
+                            class="size-14 rounded-xl border border-white/10 hover:border-primary hover:bg-primary transition-all flex items-center justify-center group backdrop-blur-md shrink-0">
                             <Icon icon="ph:share-network-bold" class="text-xl text-white group-hover:text-navy" />
                         </button>
                     </div>
@@ -100,250 +88,367 @@
             </div>
         </section>
 
-        <!-- ══════════════════════════════════════
-             MAIN BODY
-             ══════════════════════════════════════ -->
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 sm:pb-24">
-
-            <!-- ── About + Facilities grid ── -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 py-10 sm:py-16">
-                <!-- About / philosophy -->
-                <section>
-                    <div class="flex items-center gap-3 mb-6">
-                        <span class="bg-navy p-1.5 rounded text-primary flex items-center">
-                            <Icon icon="ph:info-bold" class="text-sm" />
-                        </span>
-                        <h2 class="text-xl font-black uppercase tracking-tight">Tentang Klub</h2>
-                    </div>
-                    <div class="space-y-4 text-[#0f172a]/70 leading-relaxed font-medium">
-                        <p>{{ club.description || defaultDesc }}</p>
-                        <p v-if="club.registrationNumber">
-                            No. Registrasi: <strong class="text-navy">{{ club.registrationNumber }}</strong>
-                        </p>
-                    </div>
-                </section>
-
-                <!-- Facilities / Schedules -->
-                <section>
-                    <div class="flex items-center gap-3 mb-6">
-                        <span class="bg-navy p-1.5 rounded text-primary flex items-center">
-                            <Icon icon="ph:calendar-bold" class="text-sm" />
-                        </span>
-                        <h2 class="text-xl font-black uppercase tracking-tight">Jadwal & Fasilitas</h2>
-                    </div>
-
-                    <!-- Schedules -->
-                    <ul v-if="club.schedules?.length" class="space-y-3 mb-6">
-                        <li v-for="schedule in club.schedules" :key="schedule.day"
-                            class="flex justify-between border-b border-[#0f172a]/10 pb-2">
-                            <span class="text-[#64748b] text-sm uppercase font-bold tracking-wider">{{ schedule.day
-                                }}</span>
-                            <span class="font-bold text-primary bg-navy px-2 py-0.5 text-xs">{{ schedule.time }}</span>
-                        </li>
-                    </ul>
-
-                    <!-- Facilities chips -->
-                    <div v-if="club.facilities?.length" class="flex flex-wrap gap-2">
-                        <span v-for="f in club.facilities" :key="f"
-                            class="px-3 py-1 border border-[#0f172a]/20 text-xs font-bold uppercase tracking-wider hover:bg-navy hover:text-primary hover:border-navy transition-all">
-                            {{ f }}
-                        </span>
-                    </div>
-                    <p v-if="!club.schedules?.length && !club.facilities?.length"
-                        class="text-[#64748b] text-sm font-medium italic">Informasi jadwal belum tersedia.</p>
-                </section>
-            </div>
-
-            <div class="border-t border-[#0f172a]/10 my-0"></div>
-
-            <!-- ── Elite Rankings (Members) ── -->
-            <section class="py-10 sm:py-16">
-                <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-3 mb-8 sm:mb-10">
-                    <div>
-                        <h2 class="text-3xl font-black tracking-tighter uppercase">Anggota</h2>
-                        <p class="text-[#64748b] font-medium mt-1 uppercase text-[10px] tracking-widest">
-                            Daftar Atlet Aktif
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Ranked list header -->
-                <div class="grid grid-cols-1 gap-0.5">
-                    <div class="flex items-center justify-between p-4 bg-navy text-white">
-                        <div class="flex items-center gap-6">
-                            <span class="w-8 text-[10px] font-bold text-white/50">NO</span>
-                            <span class="font-bold text-sm">ATLET</span>
-                        </div>
-                        <span class="text-[10px] font-bold text-white/50 uppercase tracking-widest">KATEGORI</span>
-                    </div>
-
-                    <template v-if="club.topMembers?.length">
-                        <NuxtLink v-for="(member, idx) in club.topMembers" :key="member.id"
-                            :to="`/archers/${member.username || member.slug || member.uuid}`"
-                            class="flex items-center justify-between p-4 border border-[#0f172a]/10 hover:bg-white transition-colors group"
-                            :class="idx === 0 ? '' : 'border-t-0'">
-                            <div class="flex items-center gap-6">
-                                <span class="w-8 font-black text-[#0f172a]/25 italic text-lg">
-                                    {{ String(idx + 1).padStart(2, '0') }}
-                                </span>
-                                <div class="flex items-center gap-3">
-                                    <div class="w-9 h-9 rounded-full overflow-hidden border border-[#0f172a]/10 flex-shrink-0"
-                                        :class="idx === 0 ? 'ring-2 ring-primary' : ''">
-                                        <img :src="useImageOrDefault(member.avatar, member.name)" :alt="member.name"
-                                            class="w-full h-full object-cover" />
+        <!-- ── Main Content ── -->
+        <div class="bg-white rounded-t-[3rem] -mt-12 relative z-20">
+            <main class="max-w-7xl mx-auto px-6 md:px-12 py-24">
+                <div class="space-y-24">
+                    <!-- About Section -->
+                    <div class="space-y-8">
+                        <h3 class="text-sm font-black uppercase tracking-[0.4em] text-navy/30 flex items-center gap-4">
+                            Tentang Klub <span class="h-px flex-1 bg-gray-100"></span>
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+                            <div class="md:col-span-8">
+                                <p class="text-base md:text-xl text-navy/80 leading-relaxed font-light">
+                                    {{ club.description || defaultDesc }}
+                                </p>
+                            </div>
+                            <div class="md:col-span-4 space-y-6">
+                                <div v-if="club.headCoach"
+                                    class="p-6 bg-gray-50 rounded-2xl border border-gray-100 flex items-start gap-4">
+                                    <div class="p-3 bg-white rounded-xl shadow-sm">
+                                        <Icon icon="ph:sketch-logo" class="text-xl text-navy" />
                                     </div>
-                                    <span class="font-bold text-sm group-hover:text-navy transition-colors">{{
-                                        member.name }}</span>
+                                    <div>
+                                        <p class="text-[10px] font-black text-navy/30 uppercase tracking-[0.2em]">
+                                            Pelatih Kepala</p>
+                                        <h5 class="font-bold text-navy mt-1">{{ club.headCoach }}</h5>
+                                    </div>
+                                </div>
+                                <div v-if="club.registrationNumber"
+                                    class="p-6 bg-gray-50 rounded-2xl border border-gray-100 flex items-start gap-4">
+                                    <div class="p-3 bg-white rounded-xl shadow-sm">
+                                        <Icon icon="ph:fingerprint" class="text-xl text-navy" />
+                                    </div>
+                                    <div>
+                                        <p class="text-[10px] font-black text-navy/30 uppercase tracking-[0.2em]">
+                                            Registrasi</p>
+                                        <h5 class="font-bold text-navy mt-1">{{ club.registrationNumber }}</h5>
+                                    </div>
                                 </div>
                             </div>
-                            <span class="text-[#64748b] text-xs font-bold uppercase tracking-wider">{{ member.division
-                                || '—' }}</span>
-                        </NuxtLink>
-                    </template>
-
-                    <div v-else class="py-16 text-center border border-[#0f172a]/10">
-                        <Icon icon="ph:users-light" class="text-5xl mx-auto mb-3 opacity-20" />
-                        <p class="text-[10px] font-black uppercase tracking-widest text-[#64748b]">Belum ada data
-                            anggota</p>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Pagination -->
-                <div v-if="totalPages > 1" class="mt-8 flex justify-center items-center gap-2">
-                    <button @click="memberPage--" :disabled="memberPage === 1"
-                        class="w-10 h-10 border border-navy/20 flex items-center justify-center font-bold hover:bg-navy hover:text-primary hover:border-navy disabled:opacity-40 disabled:cursor-not-allowed transition-all">
-                        <Icon icon="ph:caret-left-bold" />
-                    </button>
-                    <button v-for="p in totalPages" :key="p" @click="memberPage = p"
-                        class="w-10 h-10 font-black text-sm border transition-all"
-                        :class="memberPage === p ? 'bg-navy text-primary border-navy' : 'border-navy/20 hover:border-navy text-[#64748b]'">
-                        {{ p }}
-                    </button>
-                    <button @click="memberPage++" :disabled="memberPage === totalPages"
-                        class="w-10 h-10 border border-navy/20 flex items-center justify-center font-bold hover:bg-navy hover:text-primary hover:border-navy disabled:opacity-40 disabled:cursor-not-allowed transition-all">
-                        <Icon icon="ph:caret-right-bold" />
-                    </button>
-                </div>
-            </section>
+                    <!-- Facilities & Schedules -->
+                    <div v-if="club.schedules?.length || club.facilities?.length" class="space-y-12">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+                            <!-- Schedules -->
+                            <div v-if="club.schedules?.length" class="space-y-8">
+                                <h3
+                                    class="text-sm font-black uppercase tracking-[0.4em] text-navy/30 flex items-center gap-4">
+                                    Jadwal Latihan <span class="h-px flex-1 bg-gray-100"></span>
+                                </h3>
+                                <div class="space-y-4">
+                                    <div v-for="schedule in club.schedules" :key="schedule.day"
+                                        class="flex items-center justify-between p-5 bg-gray-50 rounded-2xl border border-gray-100">
+                                        <span class="text-xs font-black text-navy uppercase tracking-widest">{{
+                                            schedule.day }}</span>
+                                        <span
+                                            class="px-4 py-1.5 bg-navy text-primary text-[10px] font-black rounded-full uppercase tracking-widest">{{
+                                                schedule.time }}</span>
+                                    </div>
+                                </div>
+                            </div>
 
-            <!-- ── Section divider ── -->
-            <div class="border-t border-[#0f172a]/10"></div>
+                            <!-- Facilities -->
+                            <div v-if="club.facilities?.length" class="space-y-8">
+                                <h3
+                                    class="text-sm font-black uppercase tracking-[0.4em] text-navy/30 flex items-center gap-4">
+                                    Fasilitas <span class="h-px flex-1 bg-gray-100"></span>
+                                </h3>
+                                <div class="flex flex-wrap gap-3">
+                                    <span v-for="f in club.facilities" :key="f"
+                                        class="px-5 py-3 bg-white border border-gray-100 rounded-2xl text-xs font-black text-navy shadow-sm hover:border-primary transition-colors uppercase tracking-wider">
+                                        {{ f }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-            <!-- ── Section divider ── -->
-            <div class="border-t border-[#0f172a]/10"></div>
-
-            <!-- ── Achievements Section ── -->
-            <section class="py-10 sm:py-16">
-                <div class="flex items-center gap-3 mb-8">
-                    <span class="bg-navy p-1.5 rounded text-primary flex items-center">
-                        <Icon icon="ph:trophy-bold" class="text-sm" />
-                    </span>
-                    <h2 class="text-2xl font-black uppercase tracking-tight">Prestasi Utama</h2>
-                </div>
-                <div class="space-y-0">
-                    <template v-if="club.achievements?.length">
-                        <div v-for="(event, idx) in club.achievements" :key="event.id || idx" class="py-8"
-                            :class="idx < club.achievements.length - 1 ? 'border-b border-[#0f172a]/5' : ''">
-                            <span
-                                class="text-[10px] font-black tracking-widest text-[#64748b] uppercase mb-2 block italic">
-                                {{ event.published_at ? new Date(event.published_at).toLocaleDateString('id-ID', {
-                                    day:
-                                        '2-digit', month: 'short', year: 'numeric'
-                                }) : '' }}
-                            </span>
-                            <h3 class="text-2xl font-black leading-tight mb-3 hover:text-primary transition-colors cursor-pointer"
-                                @click="router.push(`/news/${event.slug}`)">
-                                {{ event.title }}
+                    <!-- Members Section -->
+                    <div class="space-y-12">
+                        <div class="flex items-center justify-between">
+                            <h3
+                                class="text-sm font-black uppercase tracking-[0.4em] text-navy/30 flex items-center gap-4 flex-1">
+                                Atlet Aktif <span class="h-px flex-1 bg-gray-100"></span>
                             </h3>
-                            <div v-if="event.excerpt" class="text-sm text-[#64748b] mb-4 line-clamp-2">
-                                {{ event.excerpt }}
+                        </div>
+
+                        <div class="overflow-x-auto bg-white rounded-3xl border border-gray-100 shadow-sm">
+                            <table class="w-full text-left border-collapse min-w-[600px]">
+                                <thead>
+                                    <tr class="bg-gray-50/50 border-b border-gray-100">
+                                        <th
+                                            class="px-6 py-4 text-[10px] font-black text-navy/60 uppercase tracking-[0.2em] w-16">
+                                            No</th>
+                                        <th
+                                            class="px-6 py-4 text-[10px] font-black text-navy/60 uppercase tracking-[0.2em]">
+                                            Nama Atlet</th>
+                                        <th
+                                            class="px-8 py-4 text-[10px] font-black text-navy/60 uppercase tracking-[0.2em]">
+                                            Divisi</th>
+                                        <th
+                                            class="px-6 py-4 text-[10px] font-black text-navy/60 uppercase tracking-[0.2em] text-right">
+                                            Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-50">
+                                    <template v-if="club.topMembers?.length">
+                                        <tr v-for="(member, idx) in club.topMembers" :key="member.id"
+                                            class="group hover:bg-gray-50/30 transition-colors">
+                                            <td class="px-6 py-5">
+                                                <span class="text-xs font-bold text-navy/20">{{ (memberPage - 1) *
+                                                    memberLimit + idx + 1 }}</span>
+                                            </td>
+                                            <td class="px-6 py-5">
+                                                <NuxtLink
+                                                    :to="`/archers/${member.username || member.slug || member.uuid}`"
+                                                    class="flex items-center gap-4">
+                                                    <div
+                                                        class="w-10 h-10 rounded-full overflow-hidden border border-gray-100 shrink-0">
+                                                        <img :src="useImageOrDefault(member.avatar, member.name)"
+                                                            :alt="member.name" class="w-full h-full object-cover" />
+                                                    </div>
+                                                    <span
+                                                        class="font-bold text-navy group-hover:text-primary transition-colors">{{
+                                                            member.name }}</span>
+                                                </NuxtLink>
+                                            </td>
+                                            <td class="px-8 py-5">
+                                                <span
+                                                    class="px-3 py-1 bg-navy/5 text-navy text-[10px] font-black rounded-full uppercase tracking-widest whitespace-nowrap">{{
+                                                        member.division || 'Archer' }}</span>
+                                            </td>
+                                            <td class="px-6 py-5 text-right">
+                                                <NuxtLink
+                                                    :to="`/archers/${member.username || member.slug || member.uuid}`"
+                                                    class="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-gray-50 text-navy/40 group-hover:bg-navy group-hover:text-primary transition-all">
+                                                    <Icon icon="ph:caret-right-bold" />
+                                                </NuxtLink>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                    <tr v-else>
+                                        <td colspan="4" class="py-12 text-center bg-gray-50/50">
+                                            <Icon icon="ph:users-three-light"
+                                                class="text-4xl text-gray-200 mx-auto mb-3" />
+                                            <p class="text-[10px] font-black text-navy/20 uppercase tracking-widest">
+                                                Belum
+                                                ada anggota terdaftar</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Pagination -->
+                        <div v-if="totalPages > 1" class="flex justify-center items-center gap-2 pt-8">
+                            <button @click="memberPage--" :disabled="memberPage === 1"
+                                class="w-12 h-12 rounded-xl border border-gray-100 flex items-center justify-center text-navy hover:bg-navy hover:text-primary disabled:opacity-30 transition-all">
+                                <Icon icon="ph:caret-left-bold" />
+                            </button>
+                            <button v-for="p in totalPages" :key="p" @click="memberPage = p"
+                                class="w-12 h-12 rounded-xl font-black text-sm border transition-all"
+                                :class="memberPage === p ? 'bg-navy text-primary border-navy' : 'border-gray-100 text-navy/40 hover:border-navy'">
+                                {{ p }}
+                            </button>
+                            <button @click="memberPage++" :disabled="memberPage === totalPages"
+                                class="w-12 h-12 rounded-xl border border-gray-100 flex items-center justify-center text-navy hover:bg-navy hover:text-primary disabled:opacity-30 transition-all">
+                                <Icon icon="ph:caret-right-bold" />
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Achievements & News -->
+                    <!-- Achievements Row -->
+                    <div class="space-y-12">
+                        <h3 class="text-sm font-black uppercase tracking-[0.4em] text-navy/30 flex items-center gap-4">
+                            Prestasi Terbaru <span class="h-px flex-1 bg-gray-100"></span>
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <template v-if="club.achievements?.length">
+                                <div v-for="event in club.achievements" :key="event.id"
+                                    class="group cursor-pointer bg-white border border-gray-100 p-8 rounded-3xl shadow-sm hover:border-primary transition-all flex flex-col gap-4"
+                                    @click="router.push(`/news/${event.slug}`)">
+                                    <span class="text-[10px] font-black tracking-widest text-navy/20 uppercase">{{
+                                        formatDate(event.published_at) }}</span>
+                                    <h4
+                                        class="text-xl font-black text-navy group-hover:text-primary transition-colors leading-tight">
+                                        {{ event.title }}</h4>
+                                    <p class="text-sm text-navy/60 line-clamp-2 leading-relaxed">{{ event.excerpt }}</p>
+                                </div>
+                            </template>
+                            <div v-else
+                                class="col-span-full py-16 text-center bg-gray-50 rounded-3xl border border-dashed border-gray-200">
+                                <Icon icon="ph:trophy-light" class="text-4xl text-gray-200 mx-auto mb-3" />
+                                <p class="text-[10px] font-black text-navy/20 uppercase tracking-widest">Belum ada
+                                    prestasi</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- News Row -->
+                    <div class="space-y-12">
+                        <h3 class="text-sm font-black uppercase tracking-[0.4em] text-navy/30 flex items-center gap-4">
+                            Berita & Artikel <span class="h-px flex-1 bg-gray-100"></span>
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <template v-if="club.news?.length">
+                                <div v-for="item in club.news" :key="item.id"
+                                    class="group cursor-pointer bg-white border border-gray-100 p-8 rounded-3xl shadow-sm hover:border-primary transition-all flex flex-col gap-4"
+                                    @click="router.push(`/news/${item.slug}`)">
+                                    <span class="text-[10px] font-black tracking-widest text-navy/20 uppercase">{{
+                                        formatDate(item.published_at) }}</span>
+                                    <h4
+                                        class="text-xl font-black text-navy group-hover:text-primary transition-colors leading-tight">
+                                        {{ item.title }}</h4>
+                                    <p class="text-sm text-navy/60 line-clamp-2 leading-relaxed">{{ item.excerpt }}</p>
+                                </div>
+                            </template>
+                            <div v-else
+                                class="col-span-full py-16 text-center bg-gray-50 rounded-3xl border border-dashed border-gray-200">
+                                <Icon icon="ph:newspaper-light" class="text-4xl text-gray-200 mx-auto mb-3" />
+                                <p class="text-[10px] font-black text-navy/20 uppercase tracking-widest">Belum ada
+                                    berita</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Revamped Location & Contact Section -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+                        <!-- Left: Contact & Social -->
+                        <div class="space-y-12">
+                            <h3
+                                class="text-sm font-black uppercase tracking-[0.4em] text-navy/30 flex items-center gap-4">
+                                Kontak Resmi <span class="h-px flex-1 bg-gray-100"></span>
+                            </h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <a v-if="club.phone" :href="`tel:${club.phone}`"
+                                    class="p-6 bg-white border border-gray-100 rounded-3xl flex items-center gap-5 hover:border-primary transition-all shadow-sm group">
+                                    <div
+                                        class="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center text-navy group-hover:bg-navy group-hover:text-white transition-colors shrink-0">
+                                        <Icon icon="ph:phone-bold" class="text-xl" />
+                                    </div>
+                                    <div class="min-w-0">
+                                        <p class="text-[10px] font-black text-navy/30 uppercase tracking-widest">Telepon
+                                        </p>
+                                        <p class="font-bold text-navy mt-0.5 truncate">{{ club.phone }}</p>
+                                    </div>
+                                </a>
+
+                                <a v-if="club.website" :href="club.website" target="_blank"
+                                    class="p-6 bg-white border border-gray-100 rounded-3xl flex items-center gap-5 hover:border-primary transition-all shadow-sm group">
+                                    <div
+                                        class="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center text-navy group-hover:bg-navy group-hover:text-white transition-colors shrink-0">
+                                        <Icon icon="ph:globe-bold" class="text-xl" />
+                                    </div>
+                                    <div class="min-w-0">
+                                        <p class="text-[10px] font-black text-navy/30 uppercase tracking-widest">Website
+                                        </p>
+                                        <p class="font-bold text-navy mt-0.5 truncate">
+                                            {{ club.website.replace('https://', '').replace('http://', '') }}
+                                        </p>
+                                    </div>
+                                </a>
+
+                                <template v-if="club.socialMedia?.length">
+                                    <a v-for="social in club.socialMedia" :key="social.platform"
+                                        :href="getSocialUrl(social)" target="_blank"
+                                        class="p-6 bg-white border border-gray-100 rounded-3xl flex items-center gap-5 hover:border-primary transition-all shadow-sm group">
+                                        <div class="w-12 h-12 rounded-2xl flex items-center justify-center transition-colors shrink-0"
+                                            :class="getPlatformIconBagde(social.platform)">
+                                            <Icon :icon="getSocialIcon(social.platform)" class="text-xl" />
+                                        </div>
+                                        <div class="min-w-0">
+                                            <p class="text-[10px] font-black text-navy/30 uppercase tracking-widest">{{
+                                                social.platform }}</p>
+                                            <p class="font-bold text-navy mt-0.5 truncate">{{ social.username }}</p>
+                                        </div>
+                                    </a>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Right: Location (Revamped like event detail) -->
+                        <div class="space-y-12">
+                            <h3
+                                class="text-sm font-black uppercase tracking-[0.4em] text-navy/30 flex items-center gap-4">
+                                Lokasi Latihan <span class="h-px flex-1 bg-gray-100"></span>
+                            </h3>
+                            <div
+                                class="bg-white rounded-3xl md:rounded-[2.5rem] overflow-hidden shadow-sm border border-gray-100">
+                                <div class="h-48 md:h-64 w-full bg-gray-50 relative group">
+                                    <iframe v-if="gmapsEmbedUrl" :src="gmapsEmbedUrl" width="100%" height="100%"
+                                        style="border:0;" allowfullscreen="" loading="lazy"
+                                        referrerpolicy="no-referrer-when-downgrade">
+                                    </iframe>
+                                    <div v-else class="w-full h-full flex items-center justify-center bg-gray-50">
+                                        <div class="text-center">
+                                            <Icon icon="ph:map-pin-light" class="text-5xl text-gray-200 mb-2 mx-auto" />
+                                            <p class="text-[10px] font-black text-navy/20 uppercase tracking-widest">
+                                                Peta belum tersedia</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-if="club.address"
+                                    class="p-6 md:p-8 flex flex-col md:flex-row items-start gap-4 md:gap-6 bg-white">
+                                    <div class="p-3 md:p-4 bg-gray-50 rounded-2xl shrink-0">
+                                        <Icon icon="ph:map-pin-fill" class="text-xl md:text-2xl text-navy" />
+                                    </div>
+                                    <div class="min-w-0">
+                                        <h4 class="text-base md:text-lg font-bold text-navy leading-snug mb-1">{{
+                                            club.address }}</h4>
+                                        <p
+                                            class="text-[10px] md:text-xs font-black text-navy/30 uppercase tracking-[0.1em]">
+                                            {{
+                                                club.formattedLocation }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Sections (FAQ, Gallery) ── -->
+                    <template v-if="club.sections?.length">
+                        <div v-for="(section, sIdx) in club.sections" :key="sIdx" class="space-y-12">
+                            <h3
+                                class="text-sm font-black uppercase tracking-[0.4em] text-navy/30 flex items-center gap-4">
+                                {{ section.title }} <span class="h-px flex-1 bg-gray-100"></span>
+                            </h3>
+
+                            <p v-if="section.content"
+                                class="text-base md:text-xl text-navy/80 leading-relaxed font-light max-w-2xl">
+                                {{ section.content }}
+                            </p>
+
+                            <!-- FAQ -->
+                            <div v-if="section.type === 'faq'" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div v-for="(item, iIdx) in section.items" :key="iIdx"
+                                    class="p-8 bg-gray-50 rounded-3xl border border-gray-100 hover:border-primary/40 transition-all">
+                                    <h4 class="font-black text-navy text-lg mb-4 flex items-start gap-3">
+                                        <Icon icon="ph:question-bold" class="text-primary mt-1 shrink-0" />
+                                        {{ item.question }}
+                                    </h4>
+                                    <p class="text-navy/60 text-base leading-relaxed pl-8">{{ item.answer }}</p>
+                                </div>
+                            </div>
+
+                            <!-- Gallery -->
+                            <div v-if="section.type === 'gallery'" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div v-for="(img, iIdx) in (section.images ? section.images.split(',') : [])"
+                                    :key="iIdx"
+                                    class="aspect-square rounded-3xl overflow-hidden bg-gray-50 border border-gray-100 group">
+                                    <img :src="img.trim()"
+                                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                                </div>
                             </div>
                         </div>
                     </template>
-                    <div v-else class="py-16 text-center">
-                        <Icon icon="ph:trophy-light" class="text-5xl mx-auto mb-3 opacity-20" />
-                        <p class="text-[10px] font-black uppercase tracking-widest text-[#64748b]">Belum ada catatan
-                            prestasi</p>
-                    </div>
                 </div>
-            </section>
-
-            <div class="border-t border-[#0f172a]/10"></div>
-
-            <!-- ── News Section ── -->
-            <section class="py-10 sm:py-16">
-                <div class="flex items-center gap-3 mb-8">
-                    <span class="bg-navy p-1.5 rounded text-primary flex items-center">
-                        <Icon icon="ph:newspaper-bold" class="text-sm" />
-                    </span>
-                    <h2 class="text-2xl font-black uppercase tracking-tight">Berita Terbaru</h2>
-                </div>
-                <div class="space-y-0">
-                    <template v-if="club.news?.length">
-                        <div v-for="(item, idx) in club.news" :key="item.id || idx" class="py-8"
-                            :class="idx < club.news.length - 1 ? 'border-b border-[#0f172a]/5' : ''">
-                            <span
-                                class="text-[10px] font-black tracking-widest text-[#64748b] uppercase mb-2 block italic">
-                                {{ item.published_at ? new Date(item.published_at).toLocaleDateString('id-ID', {
-                                    day:
-                                        '2-digit', month: 'short', year: 'numeric'
-                                }) : '' }}
-                            </span>
-                            <h3 class="text-2xl font-black leading-tight mb-3 hover:text-primary transition-colors cursor-pointer"
-                                @click="router.push(`/news/${item.slug}`)">
-                                {{ item.title }}
-                            </h3>
-                            <div v-if="item.excerpt" class="text-sm text-[#64748b] mb-4 line-clamp-2">
-                                {{ item.excerpt }}
-                            </div>
-                        </div>
-                    </template>
-                    <div v-else class="py-16 text-center">
-                        <Icon icon="ph:newspaper-light" class="text-5xl mx-auto mb-3 opacity-20" />
-                        <p class="text-[10px] font-black uppercase tracking-widest text-[#64748b]">Belum ada berita
-                            terbaru</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ── Dynamic Sections (FAQ, Gallery) ── -->
-            <template v-if="club.sections?.length">
-                <div class="border-t border-[#0f172a]/10"></div>
-                <section v-for="(section, sIdx) in club.sections" :key="sIdx" class="py-16">
-                    <div class="flex items-center gap-3 mb-8">
-                        <span class="bg-navy p-1.5 rounded text-primary flex items-center">
-                            <Icon :icon="section.type === 'faq' ? 'ph:question-bold' : 'ph:image-bold'"
-                                class="text-sm" />
-                        </span>
-                        <h2 class="text-2xl font-black uppercase tracking-tight">{{ section.title }}</h2>
-                    </div>
-
-                    <p v-if="section.content" class="text-[#0f172a]/70 leading-relaxed mb-8 max-w-2xl">{{
-                        section.content }}</p>
-
-                    <!-- FAQ -->
-                    <div v-if="section.type === 'faq'" class="space-y-4 max-w-2xl">
-                        <div v-for="(item, iIdx) in section.items" :key="iIdx"
-                            class="p-5 border border-[#0f172a]/10 hover:border-primary/40 transition-all">
-                            <h4 class="font-black text-navy text-sm mb-2 flex items-start gap-2">
-                                <Icon icon="ph:caret-right-bold" class="text-primary mt-0.5 flex-shrink-0" />
-                                {{ item.question }}
-                            </h4>
-                            <p class="text-[#64748b] text-sm leading-relaxed pl-5">{{ item.answer }}</p>
-                        </div>
-                    </div>
-
-                    <!-- Gallery -->
-                    <div v-if="section.type === 'gallery'" class="grid grid-cols-2 md:grid-cols-3 gap-3">
-                        <div v-for="(img, iIdx) in (section.images ? section.images.split(',') : [])" :key="iIdx"
-                            class="aspect-square overflow-hidden bg-[#0f172a]/5 group">
-                            <img :src="img.trim()"
-                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                        </div>
-                    </div>
-                </section>
-            </template>
-        </main>
+            </main>
+        </div>
 
 
 
@@ -391,7 +496,7 @@
                             <div :class="`w-12 h-12 rounded-xl ${plat.bg} flex items-center justify-center shadow-sm group-hover:scale-110 transition-all`"
                                 v-html="plat.iconHtml"></div>
                             <span class="text-[9px] font-black text-[#64748b] uppercase tracking-wider">{{ plat.name
-                            }}</span>
+                                }}</span>
                         </button>
                     </div>
 
@@ -485,6 +590,17 @@ const totalPages = computed(() => Math.ceil((club.value?.memberCount || 0) / mem
 
 const club = computed(() => {
     const data = clubData.value || {}
+    let socials = parseSocialMedia(data.social_media).filter(s => s.username && s.username !== 'null')
+
+    // Add individual social columns if they exist and aren't in the list
+    const platforms = ['whatsapp', 'instagram', 'facebook', 'tiktok', 'twitter', 'youtube']
+    platforms.forEach(plat => {
+        const val = data[`social_${plat}`]
+        if (val && val !== 'null' && !socials.find(s => s.platform === plat)) {
+            socials.push({ platform: plat, username: val })
+        }
+    })
+
     return {
         id: data.id || data.uuid || 0,
         name: data.name || '',
@@ -499,9 +615,10 @@ const club = computed(() => {
         memberCount: data.member_count || data.members || 0,
         description: data.description || '',
         facilities: parseFacilities(data.facilities),
-        phone: data.phone || '',
+        phone: data.phone || data.social_whatsapp || '',
         email: data.email || '',
         address: data.address || '',
+        website: data.website || '',
         headCoach: data.head_coach_name || '',
         registrationNumber: data.registration_number || '',
         schedules: parseSchedules(data.schedules || data.training_schedule),
@@ -510,8 +627,23 @@ const club = computed(() => {
         news: data.news || [],
         topMembers: data.top_members || [],
         sections: (data.sections || []).filter(s => s.title?.toLowerCase() !== 'apa kata anggota'),
-        socialMedia: parseSocialMedia(data.social_media),
-        registrationConfig: data.registration_config
+        socialMedia: socials,
+        registrationConfig: data.registration_config,
+        google_maps_link: data.google_maps_link || data.gmaps_link || ''
+    }
+})
+
+const gmapsEmbedUrl = computed(() => {
+    if (!club.value?.google_maps_link && !club.value?.address) return null
+
+    try {
+        const link = club.value.google_maps_link
+        if (link && link.includes('google.com/maps/embed')) return link
+
+        const searchQuery = club.value.address || club.value.formattedLocation || link
+        return `https://www.google.com/maps?q=${encodeURIComponent(searchQuery)}&output=embed`
+    } catch (e) {
+        return null
     }
 })
 
@@ -535,6 +667,7 @@ const getSocialUrl = (social) => {
         twitter: `https://twitter.com/${social.username?.replace('@', '')}`,
         youtube: `https://youtube.com/@${social.username}`,
         tiktok: `https://tiktok.com/@${social.username?.replace('@', '')}`,
+        whatsapp: `https://wa.me/${social.username?.replace(/[^0-9]/g, '')}`,
     }
     return base[social.platform] || social.username
 }
@@ -570,6 +703,27 @@ const shareTo = (platform) => {
     else if (platform === 'facebook') link = `https://www.facebook.com/sharer/sharer.php?u=${url}`
     else if (platform === 'twitter') link = `https://twitter.com/intent/tweet?text=${text}&url=${url}`
     if (link) { window.open(link, '_blank', 'noopener,noreferrer'); closeShareDialog() }
+}
+
+const formatDate = (date) => {
+    if (!date) return ''
+    return new Date(date).toLocaleDateString('id-ID', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+    })
+}
+
+const getPlatformIconBagde = (platform) => {
+    const badges = {
+        instagram: 'bg-pink-50 text-pink-600',
+        facebook: 'bg-blue-50 text-blue-600',
+        twitter: 'bg-slate-50 text-slate-900',
+        youtube: 'bg-red-50 text-red-600',
+        tiktok: 'bg-slate-50 text-slate-950',
+        whatsapp: 'bg-green-50 text-green-600',
+    }
+    return badges[platform] || 'bg-gray-50 text-gray-600'
 }
 
 const joinClub = async () => {

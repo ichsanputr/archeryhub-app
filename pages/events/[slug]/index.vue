@@ -22,7 +22,7 @@
                     <div class="flex flex-col lg:flex-row items-end justify-between gap-8 mb-12">
                         <div class="max-w-3xl">
                             <h1
-                                class="text-3xl md:text-5xl font-black leading-tight tracking-tight mb-6 font-display text-white">
+                                class="text-3xl sm:text-4xl font-black leading-tight tracking-tight mb-6 font-display text-white">
                                 {{ tournament.name }}
                             </h1>
                             <div
@@ -154,7 +154,7 @@
                                                 </div>
                                                 <div>
                                                     <h3 class="font-black text-navy text-lg md:text-xl">{{ division.name
-                                                        }}
+                                                    }}
                                                     </h3>
                                                     <span
                                                         class="text-[10px] font-black tracking-[0.2em] uppercase">Tournament
@@ -341,7 +341,7 @@
                                                     </div>
                                                     <div class="text-white text-lg sm:text-xl font-black">{{
                                                         displayValue(tournament.prizes?.second)
-                                                        }}</div>
+                                                    }}</div>
                                                 </div>
                                                 <div class="w-full h-2 bg-white/10 overflow-hidden">
                                                     <div class="h-full bg-white/60 w-1/2"></div>

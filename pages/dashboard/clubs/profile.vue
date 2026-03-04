@@ -27,15 +27,72 @@
     <!-- Main Content -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <!-- Main form -->
-      <div class="lg:col-span-2 space-y-8">
+      <div class="lg:col-span-2 space-y-6">
 
         <!-- Tab: Umum -->
-        <div v-if="activeTab === 'general'" class="space-y-8">
+        <div v-if="activeTab === 'general'" class="space-y-6">
+          <!-- Logo & Banner -->
+          <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
+            <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
+              <Icon icon="ph:image-bold" class="text-primary text-xl" />
+              BRANDING VISUAL
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <!-- Logo Upload -->
+              <div class="space-y-4">
+                <p class="text-[10px] font-black text-navy/30 uppercase tracking-widest">Logo Klub</p>
+                <div class="flex items-center gap-6">
+                  <div
+                    class="w-24 h-24 rounded-full bg-gray-50 border-4 border-white shadow-md overflow-hidden shrink-0 relative group">
+                    <img v-if="form.logoUrl" :src="form.logoUrl" class="w-full h-full object-cover" />
+                    <Icon v-else icon="ph:shield-bold" class="w-full h-full p-6 text-gray-200" />
+                    <div
+                      class="absolute inset-0 bg-navy/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer"
+                      @click="openMediaLibrary('logo')">
+                      <Icon icon="ph:camera-bold" class="text-white text-2xl" />
+                    </div>
+                  </div>
+                  <div class="space-y-2">
+                    <h5 class="text-xs font-black text-navy uppercase">Club Logo</h5>
+                    <p class="text-[10px] text-gray-500 max-w-[160px]">Rasio 1:1 direkomendasikan. Gunakan logo
+                      transparan jika ada.</p>
+                    <BaseButton variant="outline" size="xs" icon="ph:pencil-simple" @click="openMediaLibrary('logo')">
+                      Ganti Logo</BaseButton>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Banner Upload -->
+              <div class="space-y-4">
+                <p class="text-[10px] font-black text-navy/30 uppercase tracking-widest">Banner Profil (Hero)</p>
+                <div
+                  class="w-full aspect-[21/9] rounded-xl bg-gray-50 border-2 border-dashed border-gray-200 overflow-hidden relative group">
+                  <img v-if="form.bannerUrl" :src="form.bannerUrl" class="w-full h-full object-cover" />
+                  <div v-else class="w-full h-full flex flex-col items-center justify-center text-gray-400">
+                    <Icon icon="ph:image-square" class="text-3xl mb-1" />
+                    <span class="text-[10px] font-bold">Belum ada banner</span>
+                  </div>
+                  <div
+                    class="absolute inset-0 bg-navy/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer"
+                    @click="openMediaLibrary('banner')">
+                    <Icon icon="ph:pencil-simple-bold" class="text-white text-2xl" />
+                  </div>
+                  <button v-if="form.bannerUrl" @click.stop="form.bannerUrl = ''"
+                    class="absolute top-2 right-2 w-8 h-8 rounded-lg bg-red-500 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Icon icon="ph:trash" />
+                  </button>
+                </div>
+                <p class="text-[10px] text-gray-500">Akan digunakan sebagai latar belakang di profil publik klub Anda.
+                </p>
+              </div>
+            </div>
+          </div>
+
           <!-- Identitas -->
-          <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 space-y-6">
             <div class="flex items-center justify-between">
-              <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
-                <Icon icon="ph:identification-badge-bold" class="text-primary text-lg" /> Identitas Utama
+              <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
+                <Icon icon="ph:identification-badge-bold" class="text-primary text-xl" /> IDENTITAS UTAMA
               </h3>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -97,76 +154,16 @@
             <BaseTextarea v-model="form.description" label="Tentang Klub" rows="5"
               placeholder="Berikan deskripsi singkat dan menarik tentang klub Anda..." />
           </div>
-
-          <!-- Logo & Banner -->
-          <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-8">
-            <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
-              <Icon icon="ph:image-bold" class="text-primary text-lg" /> Branding Visual
-            </h3>
-
-            <div class="space-y-8">
-              <!-- Logo Upload -->
-              <div class="space-y-4">
-                <label class="block text-sm font-black text-navy">Logo Klub</label>
-                <div class="flex flex-col items-center gap-5 p-6 bg-gray-50 rounded-3xl border border-gray-100">
-                  <div
-                    class="w-32 h-32 rounded-2xl bg-white border-2 border-dashed border-gray-200 overflow-hidden flex items-center justify-center shadow-inner group">
-                    <img v-if="form.logoUrl" :src="form.logoUrl"
-                      class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                    <Icon v-else icon="ph:shield-bold" class="text-5xl text-gray-200" />
-                  </div>
-                  <div class="flex gap-2 w-full">
-                    <button type="button" @click="openMediaLibrary('logo')"
-                      class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-navy text-white text-xs font-black rounded-xl hover:bg-navy-dark transition shadow-md">
-                      <Icon icon="ph:cloud-arrow-up-bold" class="text-base" />
-                      Pilih Logo
-                    </button>
-                    <button v-if="form.logoUrl" type="button" @click="form.logoUrl = ''"
-                      class="px-4 py-2.5 bg-red-50 text-red-600 text-xs font-black rounded-xl hover:bg-red-100 transition">
-                      <Icon icon="ph:trash-bold" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Banner Upload -->
-              <div class="space-y-4">
-                <label class="block text-sm font-black text-navy">Banner Profil</label>
-                <div class="relative group">
-                  <div
-                    class="h-44 rounded-3xl bg-gray-50 border-2 border-dashed border-gray-200 overflow-hidden flex items-center justify-center shadow-inner">
-                    <img v-if="form.bannerUrl" :src="form.bannerUrl"
-                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                    <div v-else class="text-center p-6">
-                      <Icon icon="ph:image-square-bold" class="text-4xl text-gray-200 mx-auto mb-2" />
-                      <p class="text-[10px] text-gray-400 font-bold  tracking-wider">Upload banner 1200x400</p>
-                    </div>
-                  </div>
-                  <div class="mt-4 flex gap-2">
-                    <button type="button" @click="openMediaLibrary('banner')"
-                      class="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-navy text-white text-xs font-black rounded-xl hover:bg-navy-dark transition shadow-md">
-                      <Icon icon="ph:image-bold" class="text-base" />
-                      Ganti Banner
-                    </button>
-                    <button v-if="form.bannerUrl" type="button" @click="form.bannerUrl = ''"
-                      class="px-4 py-2.5 bg-red-50 text-red-600 text-xs font-black rounded-xl hover:bg-red-100 transition">
-                      <Icon icon="ph:trash-bold" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
         <!-- Tab: Kontak -->
-        <div v-if="activeTab === 'contact'" class="space-y-8">
-          <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
-            <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
-              <Icon icon="ph:phone-bold" class="text-primary text-xl" /> Informasi Kontak
+        <div v-if="activeTab === 'contact'" class="space-y-6">
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 space-y-6">
+            <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
+              <Icon icon="ph:phone-bold" class="text-primary text-xl" /> INFORMASI KONTAK
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <BaseInput v-model="form.whatsapp" label="Nomor WhatsApp" placeholder="Contoh: 08xx-xxxx-xxxx" />
+              <BaseInput v-model="form.whatsapp" label="Nomor WhatsApp" placeholder="Contoh: 081234567890" />
               <BaseInput v-model="form.email" label="Alamat Email" type="email" placeholder="info@klub.id" />
               <BaseInput v-model="form.website" label="Website Resmi" placeholder="https://www.klub.id" />
             </div>
@@ -174,49 +171,72 @@
               placeholder="Tuliskan alamat lengkap lokasi latihan atau kantor sekretariat..." />
           </div>
 
-          <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
-            <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
-              <Icon icon="ph:share-network-bold" class="text-primary text-xl" /> Kehadiran Media Sosial
-            </h3>
-            <p class="text-sm text-gray-500 font-medium">Hubungkan klub dengan member melalui platform sosial favorit.
-            </p>
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 space-y-6">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
+                <Icon icon="ph:share-network-bold" class="text-primary text-xl" />
+                MEDIA SOSIAL
+              </h3>
 
-            <div class="space-y-4">
-              <transition-group name="list">
-                <div v-for="(social, idx) in form.socialMedia" :key="idx"
-                  class="flex items-center gap-4 p-5 bg-gray-50 rounded-2xl border border-gray-100 group">
-                  <div class="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="md:col-span-1">
-                      <BaseSelect v-model="social.platform" :items="socialPlatformOptions"
-                        placeholder="Pilih Platform" />
+              <div class="relative group">
+                <BaseButton variant="outline" size="xs" icon="ph:plus-bold">
+                  Tambah Media Sosial
+                </BaseButton>
+                <!-- Dropdown for adding socials -->
+                <div
+                  class="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all">
+                  <button v-for="plat in remainingPlatforms" :key="plat.value"
+                    @mousedown.prevent="addSocial(plat.value)"
+                    class="w-full text-left px-4 py-2 text-sm font-bold text-navy hover:bg-gray-50 flex items-center gap-3">
+                    <Icon :icon="plat.icon" :class="plat.iconColor" />
+                    {{ plat.title }}
+                  </button>
+                  <p v-if="remainingPlatforms.length === 0" class="px-4 py-2 text-xs text-gray-400 italic">
+                    Semua platform sudah ditambahkan
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <p class="text-sm text-gray-600">Hubungkan klub dengan member melalui platform sosial favorit.</p>
+
+            <div class="grid grid-cols-1 gap-4 mt-2">
+              <div v-for="(social, idx) in userSocials" :key="social.platform"
+                class="bg-gray-50/50 p-4 rounded-2xl border border-gray-100 space-y-3">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center shadow-sm"
+                      :class="getPlatformIconBagde(social.platform)">
+                      <Icon :icon="getPlatformInfo(social.platform).icon" class="text-lg" />
                     </div>
-                    <BaseInput v-model="social.username" placeholder="Username atau Link Profil"
-                      class="md:col-span-2 !bg-white" />
+                    <span class="text-xs font-black text-navy uppercase tracking-widest">{{
+                      getPlatformInfo(social.platform).title }}</span>
                   </div>
-                  <button @click="removeSocialMedia(idx)"
-                    class="p-3 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all">
-                    <Icon icon="ph:trash-bold" class="text-xl" />
+                  <button @click="removeSocial(idx)" class="text-gray-400 hover:text-red-500 transition-colors">
+                    <Icon icon="ph:trash-bold" />
                   </button>
                 </div>
-              </transition-group>
+                <div class="flex items-center gap-3">
+                  <input v-model="social.handle" type="text" :placeholder="getPlatformInfo(social.platform).placeholder"
+                    class="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-bold shadow-sm transition-all" />
+                </div>
+              </div>
 
-              <button v-if="form.socialMedia.length < 5" @click="addSocialMedia"
-                class="w-full py-4 border-2 border-dashed border-gray-200 rounded-2xl text-sm font-black text-gray-400 hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2 group">
-                <Icon icon="ph:plus-circle-bold" class="text-xl group-hover:rotate-90 transition-transform" />
-                Tambah Platform Baru
-              </button>
-              <p v-else class="text-[10px] text-gray-400 text-center font-bold tracking-widest ">Maksimal 5
-                platform media sosial</p>
+              <div v-if="userSocials.length === 0"
+                class="py-12 text-center border-2 border-dashed border-gray-100 rounded-2xl">
+                <Icon icon="ph:share-network" class="text-4xl text-gray-200 mx-auto mb-3" />
+                <p class="text-sm text-gray-400 font-medium">Belum ada media sosial yang ditambahkan</p>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Tab: Fasilitas & Jadwal -->
-        <div v-if="activeTab === 'facilities'" class="space-y-8">
-          <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
+        <div v-if="activeTab === 'facilities'" class="space-y-6">
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8 space-y-6">
             <div class="flex items-center justify-between">
-              <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
-                <Icon icon="ph:check-circle-bold" class="text-primary text-xl" /> Daftar Fasilitas
+              <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
+                <Icon icon="ph:check-circle-bold" class="text-primary text-xl" /> DAFTAR FASILITAS
               </h3>
             </div>
             <div class="flex gap-3">
@@ -295,19 +315,17 @@
       <!-- Side card -->
       <div class="space-y-4">
 
-        <!-- Public Profile Link -->
-        <div
-          class="bg-gradient-to-br from-navy to-navy-light rounded-3xl p-6 text-white shadow-md shadow-navy/20 relative overflow-hidden group">
+        <div class="bg-navy rounded-2xl p-6 text-white shadow-sm relative overflow-hidden group">
           <Icon icon="ph:broadcast-bold"
             class="absolute -right-4 -top-4 text-8xl text-white/5 -rotate-12 group-hover:rotate-0 transition-transform duration-700" />
-          <h3 class="font-black mb-2 flex items-center gap-2 relative z-10">
+          <h3 class="font-black mb-2 flex items-center gap-2 relative z-10 uppercase tracking-widest text-sm">
             Profil Publik
             <Icon icon="ph:check-circle-fill" class="text-primary" />
           </h3>
           <p class="text-xs text-blue-200 mb-6 relative z-10 leading-relaxed font-medium">Profil Anda aktif dan dapat
             diakses publik melalui URL unik Archery Hub.</p>
           <NuxtLink v-if="form.slug" :to="`/clubs/${form.slug}`" target="_blank"
-            class="relative z-10 block w-full py-3.5 bg-primary text-navy font-black rounded-2xl text-center hover:bg-primary-hover hover:scale-[1.02] transition-all shadow-md active:scale-95">
+            class="relative z-10 block w-full py-3.5 bg-primary text-navy font-black rounded-xl text-center hover:bg-white hover:scale-[1.02] transition-all shadow-md active:scale-95 text-xs uppercase tracking-widest">
             Lihat Halaman Publik
           </NuxtLink>
           <p v-else class="text-xs text-blue-300 italic relative z-10">Slug URL belum diatur</p>
@@ -364,13 +382,40 @@ const pageSettings = reactive({
 })
 
 const socialPlatformOptions = [
-  { value: 'instagram', title: 'Instagram', icon: 'ph:instagram-logo' },
-  { value: 'facebook', title: 'Facebook', icon: 'ph:facebook-logo' },
-  { value: 'twitter', title: 'X (Twitter)', icon: 'ph:x-logo' },
-  { value: 'youtube', title: 'YouTube', icon: 'ph:youtube-logo' },
-  { value: 'tiktok', title: 'TikTok', icon: 'ph:tiktok-logo' },
-  { value: 'linkedin', title: 'LinkedIn', icon: 'ph:linkedin-logo' }
+  { value: 'instagram', title: 'Instagram', icon: 'ph:instagram-logo', iconColor: 'text-pink-500', placeholder: '@username_instagram' },
+  { value: 'facebook', title: 'Facebook', icon: 'ph:facebook-logo', iconColor: 'text-blue-600', placeholder: 'username / link' },
+  { value: 'twitter', title: 'Twitter / X', icon: 'ph:twitter-logo', iconColor: 'text-slate-800', placeholder: '@username' },
+  { value: 'tiktok', title: 'TikTok', icon: 'ph:tiktok-logo', iconColor: 'text-black', placeholder: '@username_tiktok' },
+  { value: 'youtube', title: 'YouTube', icon: 'ph:youtube-logo', iconColor: 'text-red-600', placeholder: 'channel link' }
 ]
+
+const userSocials = ref([])
+const remainingPlatforms = computed(() => {
+  return socialPlatformOptions.filter(p => !userSocials.value.some(s => s.platform === p.value))
+})
+
+const addSocial = (platform) => {
+  if (!userSocials.value.some(s => s.platform === platform)) {
+    userSocials.value.push({ platform, handle: '' })
+  }
+}
+
+const removeSocial = (index) => {
+  userSocials.value.splice(index, 1)
+}
+
+const getPlatformInfo = (platform) => {
+  return socialPlatformOptions.find(p => p.value === platform) || socialPlatformOptions[0]
+}
+
+const getPlatformIconBagde = (platform) => {
+  if (platform === 'instagram') return 'bg-pink-50 text-pink-600 border border-pink-100'
+  if (platform === 'tiktok') return 'bg-black text-white border border-black'
+  if (platform === 'facebook') return 'bg-blue-50 text-blue-600 border border-blue-100'
+  if (platform === 'twitter') return 'bg-slate-50 text-slate-800 border border-slate-100'
+  if (platform === 'youtube') return 'bg-red-50 text-red-600 border border-red-100'
+  return 'bg-gray-100 text-gray-600'
+}
 
 const form = reactive({
   name: '',
@@ -479,16 +524,7 @@ const handleMediaSelect = (media) => {
   showMediaLibrary.value = false
 }
 
-// Social media handlers
-const addSocialMedia = () => {
-  if (form.socialMedia.length < 5) {
-    form.socialMedia.push({ platform: 'instagram', username: '' })
-  }
-}
-
-const removeSocialMedia = (index) => {
-  form.socialMedia.splice(index, 1)
-}
+// Social media handlers (moved to new methods addSocial/removeSocial)
 
 const loadProfile = async () => {
   try {
@@ -502,7 +538,6 @@ const loadProfile = async () => {
       form.logoUrl = data.logo_url || ''
       form.city = data.city || ''
       form.province = data.province || ''
-      form.established = data.established || ''
       form.description = data.description || ''
       form.phone = data.phone || ''
       form.whatsapp = data.whatsapp || ''
@@ -510,7 +545,6 @@ const loadProfile = async () => {
       form.website = data.website || ''
       form.address = data.address || ''
 
-      // Handle JSON strings if necessary
       const parseOrRaw = (val) => {
         if (typeof val === 'string' && val.startsWith('[')) {
           try { return JSON.parse(val) } catch (e) { return [] }
@@ -520,7 +554,26 @@ const loadProfile = async () => {
 
       form.facilities = parseOrRaw(data.facilities)
       form.schedules = parseOrRaw(data.schedules)
-      form.socialMedia = parseOrRaw(data.social_media)
+
+      // Initialize userSocials for dynamic UI
+      userSocials.value = []
+      if (data.instagram) userSocials.value.push({ platform: 'instagram', handle: data.instagram })
+      if (data.facebook) userSocials.value.push({ platform: 'facebook', handle: data.facebook })
+      if (data.tiktok) userSocials.value.push({ platform: 'tiktok', handle: data.tiktok })
+      if (data.twitter) userSocials.value.push({ platform: 'twitter', handle: data.twitter })
+      if (data.whatsapp) form.whatsapp = data.whatsapp
+
+      // Convert established date to year number
+      if (data.established) {
+        try {
+          const date = new Date(data.established)
+          form.established = date.getFullYear()
+        } catch (e) {
+          form.established = ''
+        }
+      } else {
+        form.established = ''
+      }
 
       // Handle registration config
       if (data.registration_config) {
@@ -561,6 +614,12 @@ const loadProfile = async () => {
 const saveProfile = async () => {
   saving.value = true
   try {
+    // Extract individual socials from userSocials
+    const instagram = userSocials.value.find(s => s.platform === 'instagram')?.handle || ''
+    const facebook = userSocials.value.find(s => s.platform === 'facebook')?.handle || ''
+    const tiktok = userSocials.value.find(s => s.platform === 'tiktok')?.handle || ''
+    const twitter = userSocials.value.find(s => s.platform === 'twitter')?.handle || ''
+
     await put('/clubs/me', {
       name: form.name,
       slug: form.slug,
@@ -568,16 +627,20 @@ const saveProfile = async () => {
       logo_url: form.logoUrl,
       city: form.city,
       province: form.province,
-      established: form.established,
+      established: form.established ? `${form.established}-01-01` : '',
       description: form.description,
       phone: form.phone,
       whatsapp: form.whatsapp,
       email: form.email,
       website: form.website,
+      instagram,
+      facebook,
+      tiktok,
+      twitter,
       address: form.address,
       facilities: form.facilities,
       schedules: form.schedules,
-      social_media: form.socialMedia,
+      social_media: userSocials.value,
       page_settings: JSON.stringify(pageSettings),
       registration_config: JSON.stringify(form.registrationConfig)
     })

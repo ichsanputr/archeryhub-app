@@ -55,11 +55,11 @@
                         <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Status Eliminasi
                         </p>
                         <div class="flex items-center gap-2">
-                            <Icon v-if="elimStatusLabel === 'Winner'" icon="ph:crown-fill"
+                            <Icon v-if="elimStatusLabel === 'Juara'" icon="ph:crown-fill"
                                 class="text-primary text-2xl" />
                             <span class="text-xl font-black"
-                                :class="elimStatusLabel === 'Winner' ? 'text-primary' : 'text-navy dark:text-white'">
-                                {{ elimStatusLabel === 'Winner' ? 'Champion' : elimStatusLabel }}
+                                :class="elimStatusLabel === 'Juara' ? 'text-primary' : 'text-navy dark:text-white'">
+                                {{ elimStatusLabel }}
                             </span>
                         </div>
                     </div>
@@ -68,13 +68,13 @@
 
             <!-- Elimination Path Track -->
             <div
-                class="bg-white dark:bg-slate-800 rounded-[40px] border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/30 dark:shadow-none p-10 overflow-hidden">
+                class="bg-white dark:bg-slate-800 rounded-[40px] border border-slate-100 dark:border-slate-700 shadow-sm p-10 overflow-hidden">
                 <h4 class="font-black text-2xl text-navy dark:text-white flex items-center gap-4 mb-12">
                     <div
                         class="w-10 h-10 rounded-2xl bg-indigo-500/20 flex items-center justify-center text-indigo-500 shadow-lg shadow-indigo-500/10">
                         <Icon icon="ph:git-merge-bold" class="text-xl" />
                     </div>
-                    Elimination Flow
+                    Alur Eliminasi
                 </h4>
 
                 <div v-if="elimMatches.length === 0"
@@ -90,7 +90,7 @@
                             <div class="w-[280px] shrink-0">
                                 <div
                                     class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-center mb-6">
-                                    Round {{ match.round_no }}</div>
+                                    Babak {{ match.round_no }}</div>
                                 <div class="relative p-6 rounded-[32px] overflow-hidden transition-all group border"
                                     :class="match.winner_entry_uuid === myEntryUuid ? 'bg-navy text-white shadow-xl shadow-primary/20 border-primary' : 'bg-slate-50 dark:bg-slate-900 border-slate-100 dark:border-slate-700'">
 
@@ -104,7 +104,7 @@
                                                         match.entry_a_name || 'TBD' }}</span>
                                             </div>
                                             <span class="text-sm font-black tabular-nums">{{ match.total_score_a ?? 0
-                                            }}</span>
+                                                }}</span>
                                         </div>
 
                                         <div class="h-px bg-slate-200 dark:bg-slate-800 opacity-20" />
@@ -118,7 +118,7 @@
                                                         match.entry_b_name || 'TBD' }}</span>
                                             </div>
                                             <span class="text-sm font-black tabular-nums">{{ match.total_score_b ?? 0
-                                            }}</span>
+                                                }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -156,11 +156,11 @@ const archerUuid = ref(null)
 const elimMatches = ref([])
 
 const elimStatusLabel = computed(() => {
-    if (!elimMatches.value.length) return 'Ready'
+    if (!elimMatches.value.length) return 'Siap'
     const lastMatch = [...elimMatches.value].reverse()[0]
-    if (lastMatch.status !== 'completed') return 'Active'
-    if (lastMatch.winner_entry_uuid === myEntryUuid.value) return 'Winner'
-    return 'Done'
+    if (lastMatch.status !== 'completed') return 'Aktif'
+    if (lastMatch.winner_entry_uuid === myEntryUuid.value) return 'Juara'
+    return 'Selesai'
 })
 
 const handleBack = () => router.back()

@@ -69,11 +69,11 @@
                 </div>
             </div>
 
-            <!-- Qualification Journey & Heatmap Section -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Qualification Journey Section -->
+            <div class="space-y-8">
                 <!-- Qualification Table -->
                 <div
-                    class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/30 dark:shadow-none overflow-hidden">
+                    class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm overflow-hidden">
                     <div
                         class="p-8 border-b border-slate-50 dark:border-slate-700 flex items-center justify-between bg-slate-50/30 dark:bg-slate-900/10">
                         <h4 class="font-black text-xl text-navy dark:text-white flex items-center gap-3">
@@ -148,53 +148,6 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
-                </div>
-
-                <!-- Heatmap Clustering -->
-                <div
-                    class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/30 dark:shadow-none p-8 flex flex-col">
-                    <h4 class="font-black text-xl text-navy dark:text-white flex items-center gap-3 mb-8">
-                        <div class="w-8 h-8 rounded-lg bg-red-500/20 flex items-center justify-center text-red-500">
-                            <Icon icon="ph:gps-fixed-bold" class="text-lg" />
-                        </div>
-                        Precision Heatmap
-                    </h4>
-
-                    <div class="flex-1 flex flex-col items-center justify-center py-4">
-                        <div class="relative w-64 h-64 mb-8 group">
-                            <svg class="w-full h-full drop-shadow-2xl relative z-10" viewbox="0 0 100 100">
-                                <circle cx="50" cy="50" r="48" fill="white" stroke="#e2e8f0" stroke-width="0.5" />
-                                <circle cx="50" cy="50" r="40" fill="white" stroke="#e2e8f0" stroke-width="0.5" />
-                                <circle cx="50" cy="50" r="32" fill="#1e293b" stroke="#0f172a" stroke-width="0.5" />
-                                <circle cx="50" cy="50" r="24" fill="#1e293b" stroke="#000" stroke-width="0.5" />
-                                <circle cx="50" cy="50" r="16" fill="#3b82f6" stroke="#2563eb" stroke-width="0.5" />
-                                <circle cx="50" cy="50" r="8" fill="#ef4444" stroke="#dc2626" stroke-width="0.5" />
-                                <circle cx="50" cy="50" r="4" fill="#D9FF00" stroke="#a3c000" stroke-width="0.5" />
-
-                                <g v-if="qualTotalScore > 0">
-                                    <circle cx="48" cy="49" fill="#D9FF00" fill-opacity="0.3" r="10" />
-                                    <circle cx="51" cy="50" fill="#D9FF00" fill-opacity="0.4" r="7" />
-                                    <circle cx="50" cy="50" fill="#D9FF00" fill-opacity="0.6" r="4" />
-                                </g>
-                            </svg>
-                        </div>
-
-                        <div class="w-full space-y-4">
-                            <div
-                                class="flex justify-between items-center bg-slate-50 dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-700">
-                                <span
-                                    class="text-slate-400 font-black uppercase text-[10px] tracking-widest">Grouping</span>
-                                <span class="font-black text-green-500">{{ qualTotalScore > 650 ? 'Elite' : 'Stable'
-                                }}</span>
-                            </div>
-                            <div
-                                class="flex justify-between items-center bg-slate-50 dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-700">
-                                <span class="text-slate-400 font-black uppercase text-[10px] tracking-widest">Score
-                                    Total</span>
-                                <span class="font-black text-navy dark:text-white">{{ qualTotalScore || 0 }} PTS</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
