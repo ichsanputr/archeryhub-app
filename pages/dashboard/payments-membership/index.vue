@@ -130,7 +130,7 @@
                             </td>
                             <td class="px-6 py-4 text-center">
                                 <span
-                                    class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider border"
+                                    class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-[10px] font-black capitalize tracking-wider border"
                                     :class="getMethodClass(payment.payment_method)">
                                     {{ payment.payment_method }}
                                 </span>

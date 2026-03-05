@@ -42,7 +42,7 @@
                     <div>
                         <div class="flex items-center gap-2 mb-1">
                             <span
-                                class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 text-[9px] font-black uppercase tracking-widest">Undangan</span>
+                                class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 text-[9px] font-black capitalize tracking-widest">Undangan</span>
                             <p class="text-xs text-gray-400 font-bold">{{ formatDate(invite.created_at) }}</p>
                         </div>
                         <h3 class="font-black text-navy text-sm sm:text-base leading-tight">{{ invite.club_name }}</h3>

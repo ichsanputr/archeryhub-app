@@ -246,7 +246,7 @@
                             Pilih Anggota ({{ teamForm.member_ids.length }}/{{ maxMembers }})
                         </h3>
                         <span v-if="teamForm.member_ids.length === maxMembers"
-                            class="text-[10px] bg-amber-100 text-amber-600 px-2 py-0.5 rounded-full font-black uppercase tracking-widest animate-pulse">
+                            class="text-[10px] bg-amber-100 text-amber-600 px-2 py-0.5 rounded-full font-black capitalize tracking-widest animate-pulse">
                             Slot Penuh
                         </span>
                     </div>
@@ -291,7 +291,7 @@
                                             </span>
                                         </div>
                                         <!-- Gender Badge -->
-                                        <div class="px-1.5 py-0.5 rounded-md text-[9px] font-black uppercase tracking-tighter leading-none"
+                                        <div class="px-1.5 py-0.5 rounded-md text-[9px] font-black capitalize tracking-tighter leading-none"
                                             :class="participant.gender_division_name?.toLowerCase().includes('putra') || participant.gender_division_name?.toLowerCase().includes('men')
                                                 ? 'bg-blue-50 text-blue-500'
                                                 : 'bg-pink-50 text-pink-500'">

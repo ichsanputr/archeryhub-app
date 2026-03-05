@@ -357,7 +357,7 @@
                                                     class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Tipe
                                                     Metode</span>
                                                 <span
-                                                    class="px-3 py-1 bg-navy text-primary rounded-full text-[10px] font-black w-fit ml-auto uppercase shadow-sm">
+                                                    class="px-3 py-1 bg-navy text-primary rounded-full text-[10px] font-black w-fit ml-auto capitalize shadow-sm">
                                                     {{ method.type === 'bank' ? 'Bank Transfer' : method.type === 'qris'
                                                         ? 'QRIS' : 'E-Wallet' }}
                                                 </span>
@@ -908,8 +908,7 @@ const paymentMethodTypes = [
 ]
 
 definePageMeta({
-    layout: 'dashboard',
-    transition: false
+    layout: 'dashboard'
 })
 
 useHead({
@@ -964,20 +963,7 @@ const tabs = [
     { id: 'faq', name: 'FAQ', icon: 'ph:question' }
 ]
 
-const activeTab = ref(route.query.tab || 'informasi')
-
-// Sync tab with URL query
-watch(activeTab, (newTab) => {
-    if (newTab !== route.query.tab) {
-        router.replace({ query: { ...route.query, tab: newTab } })
-    }
-})
-
-watch(() => route.query.tab, (newTab) => {
-    if (newTab && newTab !== activeTab.value && tabs.some(t => t.id === newTab)) {
-        activeTab.value = newTab
-    }
-})
+const activeTab = ref('informasi')
 
 // Media Library State
 const showMediaLibrary = ref(false)

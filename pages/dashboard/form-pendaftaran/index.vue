@@ -428,7 +428,7 @@
                             </div>
                             <div class="flex-1 flex gap-2">
                                 <button @click="openMediaLibrary('logo')"
-                                    class="flex-1 px-4 py-2 bg-gray-800 text-white rounded-lg text-xs font-black uppercase tracking-widest hover:bg-gray-700 transition-colors">
+                                    class="flex-1 px-4 py-2 bg-gray-800 text-white rounded-lg text-xs font-black capitalize tracking-widest hover:bg-gray-700 transition-colors">
                                     Pilih Logo
                                 </button>
                                 <button v-if="themeLogoUrl" @click="themeLogoUrl = ''"

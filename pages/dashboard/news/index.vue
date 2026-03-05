@@ -111,17 +111,23 @@
                         <Icon icon="ph:newspaper" class="text-6xl text-white/20" />
                     </div>
 
-                    <!-- Category Badge -->
-                    <div class="absolute top-4 left-4">
+                    <!-- Category & Tags Badge -->
+                    <div class="absolute top-4 left-4 flex flex-wrap gap-2">
                         <span :class="[
-                            'px-3 py-1 rounded-full text-xs font-bold  tracking-wider backdrop-blur-sm',
-                            item.category === 'Event' ? 'bg-blue-500/90 text-white' :
-                                item.category === 'Pengumuman' ? 'bg-amber-500/90 text-white' :
-                                    item.category === 'Prestasi' ? 'bg-green-500/90 text-white' :
+                            'px-3 py-1 rounded-full text-xs font-black tracking-wider backdrop-blur-md',
+                            item.category === 'event' ? 'bg-blue-500/90 text-white' :
+                                item.category === 'pengumuman' ? 'bg-amber-500/90 text-white' :
+                                    item.category === 'prestasi' ? 'bg-green-500/90 text-white' :
                                         'bg-gray-500/90 text-white'
                         ]">
                             {{ item.category }}
                         </span>
+                        <template v-if="item.tags">
+                            <span v-for="tag in item.tags.split(',')" :key="tag"
+                                class="px-2 py-1 rounded-full text-[9px] font-black tracking-widest bg-navy/80 text-primary backdrop-blur-md border border-primary/20 capitalize">
+                                {{ tag.trim() }}
+                            </span>
+                        </template>
                     </div>
                 </div>
 
@@ -155,17 +161,17 @@
                 <!-- Actions -->
                 <div class="px-6 py-4 bg-gray-50/50 border-t border-gray-100 flex gap-2">
                     <NuxtLink :to="`/dashboard/news/${item.slug}`" class="flex-1">
-                        <BaseButton variant="white" size="sm" icon="ph:eye" block>
+                        <BaseButton variant="white" size="sm" icon="ph:eye" block class="!h-9">
                             Lihat
                         </BaseButton>
                     </NuxtLink>
                     <NuxtLink :to="`/dashboard/news/${item.slug}/edit`" class="flex-1">
-                        <BaseButton variant="outline" size="sm" icon="ph:pencil-simple" block>
+                        <BaseButton variant="outline" size="sm" icon="ph:pencil-simple" block class="!h-9">
                             Edit
                         </BaseButton>
                     </NuxtLink>
                     <BaseButton @click="confirmDelete(item)" variant="white" size="sm" icon="ph:trash"
-                        class="h-9 w-9 p-0 text-red-500 hover:text-red-600 border-slate-200" />
+                        class="!h-9 !w-9 !p-0 text-red-500 hover:text-red-600 border-slate-200 flex items-center justify-center shrink-0" />
                 </div>
             </div>
 
@@ -212,6 +218,20 @@ const isLoading = ref(true)
 const searchQuery = ref('')
 const statusFilter = ref('all')
 const categoryFilter = ref('all')
+
+const statusOptions = [
+    { title: 'Semua Status', value: 'all' },
+    { title: 'Draft', value: 'draft' },
+    { title: 'Publik', value: 'published' }
+]
+
+const categoryOptions = [
+    { title: 'Semua Kategori', value: 'all' },
+    { title: 'Event', value: 'event' },
+    { title: 'Pengumuman', value: 'pengumuman' },
+    { title: 'Prestasi', value: 'prestasi' },
+    { title: 'Lainnya', value: 'lainnya' }
+]
 
 const showDeleteDialog = ref(false)
 const newsToDelete = ref(null)

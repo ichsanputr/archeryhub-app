@@ -199,11 +199,11 @@
                                         <Icon icon="ph:image" />
                                         Bukti Pembayaran <span class="text-red-500">*</span>
                                     </label>
-                                    <button type="button" @click="showMediaLibrary = true"
-                                        class="text-[10px] font-black uppercase tracking-widest text-navy bg-primary px-3 py-1.5 rounded-lg hover:shadow-md transition-all flex items-center gap-1.5">
-                                        <Icon icon="ph:plus-circle-bold" class="text-xs" />
-                                        Tambah Bukti
-                                    </button>
+                                    <BaseButton type="button" variant="primary" icon="ph:plus-circle-bold"
+                                        @click="showMediaLibrary = true" class="!h-8 !px-3 shadow-md shadow-primary/20">
+                                        <span class="text-[10px] font-black uppercase tracking-widest">Tambah
+                                            Bukti</span>
+                                    </BaseButton>
                                 </div>
 
                                 <div v-if="form.payment_proof_urls?.length"
@@ -578,13 +578,6 @@ const copyQrRaw = async () => {
 }
 
 const handleSubmit = async () => {
-    // Validation
-    if (form.payment_status === 'lunas' && !form.payment_proof_urls?.length) {
-        if (!confirm('Status diatur ke Lunas tetapi belum ada bukti pembayaran. Lanjutkan?')) {
-            return
-        }
-    }
-
     isSubmitting.value = true
     try {
         const payload = {

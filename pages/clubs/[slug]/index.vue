@@ -20,7 +20,7 @@
                 <div class="text-white space-y-4 w-full sm:w-auto">
                     <div class="flex flex-wrap items-center gap-4">
                         <span
-                            class="px-4 py-1 bg-primary text-navy-dark text-[10px] font-black rounded-full uppercase tracking-[0.2em]">Profil
+                            class="px-4 py-1 bg-primary text-navy-dark text-[10px] font-black rounded-full capitalize tracking-[0.2em]">Profil
                             Resmi Klub</span>
                         <div v-if="club.abbreviation" class="flex items-center gap-1 text-primary">
                             <Icon icon="ph:shield-star-fill" class="text-lg" />
@@ -145,7 +145,7 @@
                                         <span class="text-xs font-black text-navy uppercase tracking-widest">{{
                                             schedule.day }}</span>
                                         <span
-                                            class="px-4 py-1.5 bg-navy text-primary text-[10px] font-black rounded-full uppercase tracking-widest">{{
+                                            class="px-4 py-1.5 bg-navy text-primary text-[10px] font-black rounded-full capitalize tracking-widest">{{
                                                 schedule.time }}</span>
                                     </div>
                                 </div>
@@ -218,7 +218,7 @@
                                             </td>
                                             <td class="px-8 py-5">
                                                 <span
-                                                    class="px-3 py-1 bg-navy/5 text-navy text-[10px] font-black rounded-full uppercase tracking-widest whitespace-nowrap">{{
+                                                    class="px-3 py-1 bg-navy/5 text-navy text-[10px] font-black rounded-full capitalize tracking-widest whitespace-nowrap">{{
                                                         member.division || 'Archer' }}</span>
                                             </td>
                                             <td class="px-6 py-5 text-right">

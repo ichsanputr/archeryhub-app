@@ -70,10 +70,18 @@
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent">
                             </div>
                             <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                                <span
-                                    class="px-3 py-1 bg-primary text-navy text-xs font-bold rounded-full  tracking-wider">
-                                    {{ featuredArticle.category }}
-                                </span>
+                                <div class="flex flex-wrap items-center gap-2">
+                                    <span
+                                        class="px-3 py-1 bg-primary text-navy text-xs font-black rounded-full  tracking-wider capitalize">
+                                        {{ featuredArticle.category }}
+                                    </span>
+                                    <template v-if="featuredArticle.tags">
+                                        <span v-for="tag in featuredArticle.tags.split(',')" :key="tag"
+                                            class="px-2 py-1 bg-white/20 backdrop-blur-md rounded-lg text-white text-[10px] font-black tracking-widest capitalize border border-white/20">
+                                            #{{ tag.trim() }}
+                                        </span>
+                                    </template>
+                                </div>
                                 <h2
                                     class="text-white text-2xl md:text-3xl font-black mt-4 leading-tight group-hover:text-primary transition-colors">
                                     {{ featuredArticle.title }}
@@ -108,7 +116,7 @@
                                     <div>
                                         <div class="flex items-center gap-3 mb-3">
                                             <span :class="[
-                                                'px-3 py-1 rounded-lg text-[10px] font-black  tracking-wider',
+                                                'px-3 py-1 rounded-lg text-[10px] font-black  tracking-wider capitalize',
                                                 article.category === 'event' ? 'bg-blue-50 text-blue-600' :
                                                     article.category === 'pengumuman' ? 'bg-amber-50 text-amber-600' :
                                                         article.category === 'prestasi' ? 'bg-green-50 text-green-600' :
@@ -116,6 +124,14 @@
                                             ]">
                                                 {{ article.category }}
                                             </span>
+                                            <template v-if="article.tags">
+                                                <div class="flex flex-wrap gap-1">
+                                                    <span v-for="tag in article.tags.split(',')" :key="tag"
+                                                        class="px-2 py-0.5 rounded bg-gray-50 text-gray-400 text-[9px] font-black tracking-widest capitalize border border-gray-100 italic">
+                                                        #{{ tag.trim() }}
+                                                    </span>
+                                                </div>
+                                            </template>
                                             <div class="flex items-center gap-1.5 text-xs text-gray-400 font-bold">
                                                 <Icon icon="ph:calendar-blank-bold" />
                                                 {{ article.date }}
@@ -299,6 +315,7 @@ const articles = computed(() => {
         title: article.title,
         excerpt: article.excerpt || '',
         category: article.category || 'event',
+        tags: article.tags || '',
         date: article.published_at ? new Date(article.published_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : new Date(article.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }),
         author: article.author_name || 'Tim Redaksi',
         views: article.views || 0,

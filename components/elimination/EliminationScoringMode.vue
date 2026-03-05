@@ -28,15 +28,15 @@
                         <div class="flex items-center justify-between mb-4">
                             <div class="flex items-center gap-2">
                                 <div
-                                    class="px-2 py-0.5 rounded-lg bg-primary text-btn-text text-[9px] font-black shadow-sm uppercase tracking-wider">
+                                    class="px-2 py-0.5 rounded-lg bg-primary text-btn-text text-[9px] font-black shadow-sm capitalize tracking-wider">
                                     M{{ match.match_no }}
                                 </div>
                                 <div v-if="match.board_code"
-                                    class="px-2 py-0.5 rounded-lg bg-navy text-primary text-[9px] font-black uppercase tracking-wider shadow-sm">
+                                    class="px-2 py-0.5 rounded-lg bg-navy text-primary text-[9px] font-black capitalize tracking-wider shadow-sm">
                                     {{ match.board_code }}
                                 </div>
                                 <div v-else-if="match.target_name"
-                                    class="px-2 py-0.5 rounded-lg bg-slate-100/80 text-slate-500 text-[9px] font-black uppercase tracking-wider">
+                                    class="px-2 py-0.5 rounded-lg bg-slate-100/80 text-slate-500 text-[9px] font-black capitalize tracking-wider">
                                     {{ match.target_name }}
                                 </div>
                             </div>
@@ -210,7 +210,7 @@
                         <!-- Mobile Header Mid (Target & Status) -->
                         <div class="md:hidden flex flex-col items-center gap-4 w-full">
                             <div
-                                class="px-4 py-1.5 rounded-lg bg-white/5 border border-white/10 text-[8px] font-black tracking-[0.3em] text-white/40 uppercase">
+                                class="px-4 py-1.5 rounded-lg bg-white/5 border border-white/10 text-[8px] font-black tracking-[0.3em] text-white/40 capitalize">
                                 {{ getFullTargetName(selectedScoringMatch) }}
                             </div>
                             <div class="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent">
@@ -302,7 +302,7 @@
                         </div>
                         <div class="hidden sm:block text-right">
                             <h5 class="text-[9px] font-black text-gray-400 tracking-widest uppercase mb-1">Mode</h5>
-                            <span class="px-2 py-0.5 rounded-lg bg-navy/5 text-navy text-[10px] font-black uppercase">
+                            <span class="px-2 py-0.5 rounded-lg bg-navy/5 text-navy text-[10px] font-black capitalize">
                                 {{ bracket.format === 'recurve_set' ? 'SET' : 'ACCUMULATED' }}
                             </span>
                         </div>
@@ -337,12 +337,12 @@
                                             <div class="flex flex-col items-end">
                                                 <div class="flex items-center gap-1 mb-1">
                                                     <div
-                                                        class="px-1.5 py-0.5 rounded-md bg-gray-100 text-navy font-black text-[7px] sm:text-[8px] uppercase">
+                                                        class="px-1.5 py-0.5 rounded-md bg-gray-100 text-navy font-black text-[7px] sm:text-[8px] capitalize">
                                                         X:{{ calculateEndStats(selectedScoringMatch.id, currentEnd,
                                                             side).x }}
                                                     </div>
                                                     <div
-                                                        class="px-1.5 py-0.5 rounded-md bg-gray-100 text-navy font-black text-[7px] sm:text-[8px] uppercase">
+                                                        class="px-1.5 py-0.5 rounded-md bg-gray-100 text-navy font-black text-[7px] sm:text-[8px] capitalize">
                                                         10:{{ calculateEndStats(selectedScoringMatch.id, currentEnd,
                                                             side).ten }}
                                                     </div>

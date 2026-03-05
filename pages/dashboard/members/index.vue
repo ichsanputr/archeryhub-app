@@ -177,7 +177,7 @@
               </td>
               <td class="px-6 py-4">
                 <span :class="getStatusBadgeClass(member.status)"
-                  class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border">
+                  class="px-2.5 py-1 rounded-full text-[10px] font-black capitalize tracking-widest border">
                   {{ getStatusLabel(member.status) }}
                 </span>
               </td>

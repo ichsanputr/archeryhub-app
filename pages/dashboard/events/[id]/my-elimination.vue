@@ -43,7 +43,7 @@
                         <div
                             class="flex flex-wrap items-center justify-center md:justify-start gap-3 text-slate-500 dark:text-slate-400 font-medium text-xs mb-4">
                             <span
-                                class="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-700 text-[10px] font-black uppercase tracking-widest text-slate-500">BIB
+                                class="px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-700 text-[10px] font-black capitalize tracking-widest text-slate-500">BIB
                                 #{{ userProfile?.bib_number || '-' }}</span>
                             <span class="w-1 h-1 rounded-full bg-slate-300" />
                             <span>{{ categoryName || '-' }}</span>

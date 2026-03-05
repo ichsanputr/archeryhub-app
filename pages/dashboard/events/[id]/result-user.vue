@@ -63,7 +63,7 @@
                             <h3 class="text-3xl sm:text-4xl font-black text-navy dark:text-white tracking-tight">{{
                                 userProfile?.full_name || 'Archer' }}</h3>
                             <span
-                                class="inline-flex items-center px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-black uppercase tracking-widest border border-slate-200 dark:border-slate-600 shadow-sm">
+                                class="inline-flex items-center px-4 py-1.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-black capitalize tracking-widest border border-slate-200 dark:border-slate-600 shadow-sm">
                                 BIB #{{ userProfile?.bib_number || '42' }}
                             </span>
                         </div>

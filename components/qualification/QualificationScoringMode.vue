@@ -78,10 +78,10 @@
 
                             <div class="flex items-center justify-between mb-3 text-[10px] sm:text-xs font-bold">
                                 <span
-                                    class="px-2.5 py-1 rounded-lg bg-slate-50 text-slate-500 uppercase tracking-wider">
+                                    class="px-2.5 py-1 rounded-lg bg-slate-50 text-slate-500 capitalize tracking-wider">
                                     End {{ assignment.currentEnd || 1 }} / {{ sessionData?.total_ends || 0 }}
                                 </span>
-                                <span class="px-2.5 py-1 rounded-lg bg-primary/10 text-navy uppercase tracking-wider">
+                                <span class="px-2.5 py-1 rounded-lg bg-primary/10 text-navy capitalize tracking-wider">
                                     Total {{ calculateEndSum(assignment.currentEndScores) }}
                                 </span>
                             </div>

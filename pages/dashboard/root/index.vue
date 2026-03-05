@@ -72,7 +72,7 @@
                                 </div>
                             </td>
                             <td class="px-8 py-5">
-                                <span class="px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest"
+                                <span class="px-3 py-1.5 rounded-lg text-[10px] font-black capitalize tracking-widest"
                                     :class="getTypeClass(user.type)">
                                     {{ user.type }}
                                 </span>

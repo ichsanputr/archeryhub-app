@@ -167,7 +167,7 @@
                             <td class="px-6 py-5">
                                 <span
                                     :class="sk.status === 'active' ? 'bg-green-50 text-green-700 border-green-100' : 'bg-red-50 text-red-700 border-red-100'"
-                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold border uppercase tracking-wider">
+                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold border capitalize tracking-wider">
                                     <span :class="sk.status === 'active' ? 'bg-green-500' : 'bg-red-500'"
                                         class="h-1.5 w-1.5 rounded-full"></span>
                                     {{ sk.status === 'active' ? 'Aktif' : 'Nonaktif' }}

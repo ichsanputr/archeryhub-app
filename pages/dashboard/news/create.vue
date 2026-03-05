@@ -57,6 +57,9 @@
                         <BaseSelect v-model="form.status" :items="statusOptions" label="Status Publikasi" required />
                     </div>
 
+                    <BaseInput v-model="form.tags" label="Tags" placeholder="Contoh: event, turnamen, sleman"
+                        icon="ph:tag" />
+
                     <div>
                         <label class="block text-xs font-bold text-navy  tracking-wider mb-2">
                             Kutipan Singkat
@@ -156,6 +159,7 @@ const form = ref({
     title: '',
     category: 'pengumuman',
     status: 'draft',
+    tags: '',
     excerpt: '',
     content: '',
     imageURL: '',
@@ -181,7 +185,7 @@ const categoryOptions = [
 
 const statusOptions = [
     { title: 'Draft', value: 'draft' },
-    { title: 'Publikasikan', value: 'published' }
+    { title: 'Publik', value: 'published' }
 ]
 
 const previewNews = () => {
@@ -203,6 +207,7 @@ const submitNews = async () => {
             content: form.value.content,
             image_url: form.value.imageURL,
             category: form.value.category,
+            tags: form.value.tags,
             status: form.value.status,
             meta_title: form.value.metaTitle,
             meta_description: form.value.metaDescription

@@ -51,7 +51,7 @@
                                         <h3 class="text-3xl font-black text-navy dark:text-white tracking-tight">{{
                                             participant.full_name }}</h3>
                                         <span
-                                            class="inline-flex px-3 py-1 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-500 font-black text-[10px] uppercase tracking-widest border border-slate-200 dark:border-slate-600">
+                                            class="inline-flex px-3 py-1 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-500 font-black text-[10px] capitalize tracking-widest border border-slate-200 dark:border-slate-600">
                                             #{{ participant.bib_number || '-' }}
                                         </span>
                                     </div>

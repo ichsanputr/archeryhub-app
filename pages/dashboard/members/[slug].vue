@@ -84,7 +84,7 @@
           <div>
             <p class="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-1">Status</p>
             <span
-              class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border"
+              class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] font-black capitalize tracking-widest border"
               :class="statusBadgeClass">
               <span class="h-1.5 w-1.5 rounded-full bg-current"></span>
               {{ getStatusLabel(member?.status) }}

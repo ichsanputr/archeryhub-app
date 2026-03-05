@@ -11,7 +11,7 @@
                 <div class="text-white space-y-4 w-full sm:w-auto">
                     <div class="flex flex-wrap items-center gap-4">
                         <span
-                            class="px-4 py-1 bg-primary text-navy-dark text-[10px] font-black rounded-full uppercase tracking-[0.2em]">Atlet
+                            class="px-4 py-1 bg-primary text-navy-dark text-[10px] font-black rounded-full capitalize tracking-[0.2em]">Atlet
                             ArcherHub</span>
                         <div v-if="archer.club_name" class="flex items-center gap-1 text-primary">
                             <Icon icon="ph:shield-star-fill" class="text-lg" />

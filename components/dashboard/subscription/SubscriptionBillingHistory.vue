@@ -28,7 +28,7 @@
                             <td class="px-8 py-4 text-sm font-black text-navy">{{ invoice.description }}</td>
                             <td class="px-8 py-4 text-sm font-black text-navy">{{ invoice.amount }}</td>
                             <td class="px-8 py-4">
-                                <span class="px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-wider"
+                                <span class="px-2.5 py-1 rounded-full text-[9px] font-black capitalize tracking-wider"
                                     :class="{
                                         'bg-green-100 text-green-700': invoice.status === 'paid',
                                         'bg-orange-100 text-orange-700': invoice.status === 'pending',

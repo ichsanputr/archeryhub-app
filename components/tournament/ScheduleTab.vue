@@ -75,16 +75,16 @@
 
                                     <!-- Detailed Status Badges -->
                                     <div v-if="getSessionStatus(session) === 'ongoing'"
-                                        class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[10px] font-black bg-primary text-btn-text uppercase tracking-widest shadow-lg shadow-primary/20">
+                                        class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[10px] font-black bg-primary text-btn-text capitalize tracking-widest shadow-lg shadow-primary/20">
                                         <span class="w-1.5 h-1.5 rounded-full bg-navy animate-pulse"></span>
                                         LIVE NOW
                                     </div>
                                     <div v-else-if="getSessionStatus(session) === 'completed'"
-                                        class="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-gray-100 text-gray-500 uppercase tracking-widest">
+                                        class="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-gray-100 text-gray-500 capitalize tracking-widest">
                                         Selesai
                                     </div>
                                     <div v-else
-                                        class="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-blue-50 text-blue-600 uppercase tracking-widest">
+                                        class="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-blue-50 text-blue-600 capitalize tracking-widest">
                                         Mendatang
                                     </div>
                                 </div>

@@ -25,7 +25,7 @@
                     <!-- Badge -->
                     <div class="flex flex-wrap items-center gap-3">
                         <span
-                            class="px-4 py-1 bg-primary text-navy-dark text-[10px] sm:text-[11px] font-black rounded-full uppercase tracking-[0.2em]">
+                            class="px-4 py-1 bg-primary text-navy-dark text-[10px] sm:text-[11px] font-black rounded-full capitalize tracking-[0.2em]">
                             Profil Resmi Organisasi
                         </span>
                         <div v-if="org.verification_status === 'verified'"
@@ -230,7 +230,7 @@
                                 <div class="flex-1 flex flex-col justify-between py-0.5 min-w-0">
                                     <div class="space-y-2">
                                         <span :class="statusClass(event)"
-                                            class="inline-block px-2.5 py-0.5 rounded-full text-[10px] sm:text-[11px] font-black uppercase tracking-wider">
+                                            class="inline-block px-2.5 py-0.5 rounded-full text-[10px] sm:text-[11px] font-black capitalize tracking-wider">
                                             {{ statusLabel(event) }}
                                         </span>
                                         <h4 class="font-black text-navy text-sm leading-tight uppercase truncate">

@@ -268,7 +268,7 @@
                         <!-- Session Label -->
                         <div class="w-6 shrink-0">
                           <span
-                            class="text-[9px] px-1.5 py-0.5 rounded-md bg-navy text-white font-black uppercase tracking-widest whitespace-nowrap">
+                            class="text-[9px] px-1.5 py-0.5 rounded-md bg-navy text-white font-black capitalize tracking-widest whitespace-nowrap">
                             S{{ session.sessionNumber }}
                           </span>
                         </div>

@@ -58,7 +58,7 @@
                                 <div
                                     class="flex flex-wrap items-center justify-center sm:justify-start gap-x-3 gap-y-2 mt-3 sm:mt-4">
                                     <div
-                                        class="flex items-center gap-2 px-2.5 py-1 rounded-lg sm:rounded-xl bg-gray-100 text-primary text-[9px] sm:text-[10px] font-black uppercase tracking-widest whitespace-nowrap">
+                                        class="flex items-center gap-2 px-2.5 py-1 rounded-lg sm:rounded-xl bg-gray-100 text-primary text-[9px] sm:text-[10px] font-black capitalize tracking-widest whitespace-nowrap">
                                         <Icon icon="ph:package-bold" />
                                         {{ payment.package_name || 'Membership' }}
                                     </div>

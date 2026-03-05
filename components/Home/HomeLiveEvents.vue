@@ -27,11 +27,11 @@
                         <img :src="live.image || '/logo.png'" :alt="live.name"
                             class="w-full h-full object-cover transition-transform duration-500" />
                         <span v-if="live.isOngoing"
-                            class="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-red-500 text-white text-[10px] font-black uppercase tracking-wider shadow-md">
+                            class="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-red-500 text-white text-[10px] font-black capitalize tracking-wider shadow-md">
                             Berlangsung
                         </span>
                         <span v-else
-                            class="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-gray-600/90 text-white text-[10px] font-black uppercase tracking-wider shadow-md">
+                            class="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-gray-600/90 text-white text-[10px] font-black capitalize tracking-wider shadow-md">
                             Selesai
                         </span>
                     </div>

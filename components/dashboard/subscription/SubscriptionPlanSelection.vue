@@ -41,7 +41,7 @@
                         :class="plan.isCurrent ? 'border-primary ring-8 ring-primary/5' : 'border-gray-100 hover:border-primary/20 hover:shadow-lg'">
 
                         <div v-if="plan.isCurrent"
-                            class="absolute -top-3 left-6 bg-navy text-btn-inverse text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-sm">
+                            class="absolute -top-3 left-6 bg-navy text-btn-inverse text-[10px] font-black px-4 py-1.5 rounded-full capitalize tracking-widest shadow-sm">
                             Aktif
                         </div>
 
