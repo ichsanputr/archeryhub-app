@@ -3,23 +3,21 @@
         <!-- Header Section -->
         <SubscriptionHeader :status="headerStatus" />
 
-
         <!-- Status & Stats Section -->
         <SubscriptionStatus :plan-name="currentPlan?.name"
             :billing-cycle="currentPlan?.billing === 'atlet' ? 'per penggunaan' : 'bulanan'"
             :price-label="`${currentPlan?.priceLabel} / ${currentPlan?.billing}`"
             :next-billing="subscriptionRes?.current?.next_billing_date" :usage-media="usageMedia"
-            :usage-members="usageMembers" :remaining-days-label="remainingDaysLabel"
-            :expiry-percent="expiryPercent" />
+            :usage-members="usageMembers" :remaining-days-label="remainingDaysLabel" :expiry-percent="expiryPercent"
+            :show-members="userType !== 'organization'" />
 
         <div class="space-y-8">
-            <!-- Pilihan Paket Section -->
-            <SubscriptionPlanSelection :package-title="roleContent.packageTitle"
-                :recommendation-badge="roleContent.recommendationBadge"
-                :elite-description="roleContent.eliteDescription" :plans="availablePlans" @select="handleSelectPlan" />
+            <!-- Organization Plans -->
+            <SubscriptionOrganizationPlans v-if="userType === 'organization'" :plans="availablePlans"
+                @select="handleSelectPlan" />
 
-            <!-- Comparison Table Section -->
-            <SubscriptionComparison :data="comparisonData" />
+            <!-- Club Plans -->
+            <SubscriptionClubPlans v-else-if="userType === 'club'" :plans="availablePlans" @select="handleSelectPlan" />
 
             <!-- Riwayat Tagihan Section -->
             <SubscriptionBillingHistory :invoices="invoices" />
@@ -32,10 +30,9 @@ import { computed, onBeforeMount, onMounted } from 'vue'
 import { useAuth } from '~/composables/useAuth'
 import { useSubscription } from '~/composables/useSubscription'
 import SubscriptionHeader from '~/components/dashboard/subscription/SubscriptionHeader.vue'
-import SubscriptionPromo from '~/components/dashboard/subscription/SubscriptionPromo.vue'
 import SubscriptionStatus from '~/components/dashboard/subscription/SubscriptionStatus.vue'
-import SubscriptionPlanSelection from '~/components/dashboard/subscription/SubscriptionPlanSelection.vue'
-import SubscriptionComparison from '~/components/dashboard/subscription/SubscriptionComparison.vue'
+import SubscriptionOrganizationPlans from '~/components/dashboard/subscription/SubscriptionOrganizationPlans.vue'
+import SubscriptionClubPlans from '~/components/dashboard/subscription/SubscriptionClubPlans.vue'
 import SubscriptionBillingHistory from '~/components/dashboard/subscription/SubscriptionBillingHistory.vue'
 
 definePageMeta({
@@ -76,24 +73,36 @@ const handleSelectPlan = (plan) => {
     })
 }
 
-const planDetails = [
+const clubPlanDetails = [
     {
         id: [3, 5],
-        features: ['Akses Konten Eksklusif', 'Badge Pendukung Profil', 'Update Berita Prioritas', 'E-Certificate Pendukung'],
+        features: ['Maksimal 50 Anggota Klub', 'Penyimpanan Media 1 GB', 'Profil Klub Lengkap', 'Publikasi Berita Klub', 'Akses Forum Komunitas'],
     },
     {
         id: [4, 6],
-        features: ['Semua fitur Basic Support', 'Diskon Khusus Event Klub', 'Grup Komunitas Prioritas', 'Konsultasi Coach Bulanan', 'Akses Awal Fitur Baru'],
+        features: ['Anggota Tak Terbatas', 'Penyimpanan Media 3 GB', 'Semua fitur Standar Klub', 'Konsultasi Coach Bulanan', 'Akses Awal Fitur Baru'],
+    }
+]
+
+const orgPlanDetails = [
+    {
+        id: [3, 5],
+        features: ['Maksimum Peserta 40 / Event', 'Penyimpanan Media 1 GB', 'Profil Organisasi Lengkap & Kustom', 'Buat Berita (News)', 'Promosi Event', 'Analitik Lanjutan', 'Dukungan Prioritas'],
+    },
+    {
+        id: [4, 6],
+        features: ['Maksimum Peserta Tak Terbatas', 'Penyimpanan Media 3 GB', 'Profil Organisasi Lengkap & Kustom', 'Buat Berita (News)', 'Promosi Event', 'Analitik Lanjutan', 'Dukungan Prioritas'],
     }
 ]
 
 const comparisonData = [
-    { feature: 'Maksimum Anggota', basic: '50 Orang', elite: 'Tak Terbatas', icon: 'ph:users-three-bold' },
-    { feature: 'Penyimpanan Media', basic: '1 GB', elite: 'Tak Terbatas', icon: 'ph:hard-drives-bold' },
-    { feature: 'Sertifikat Kustom', basic: false, elite: true, icon: 'ph:certificate-bold' },
-    { feature: 'Analitik Lanjutan', basic: false, elite: true, icon: 'ph:chart-bar-bold' },
-    { feature: 'Dukungan Prioritas', basic: 'Email', elite: 'Prioritas 24/7', icon: 'ph:headset-bold' },
-    { feature: 'Iklan/Promo Event', basic: false, elite: true, icon: 'ph:megaphone-bold' },
+    { feature: 'Maksimum Peserta', basic: '40 / Event', elite: 'Tak Terbatas', icon: 'ph:users-three-bold' },
+    { feature: 'Penyimpanan Media', basic: '1 GB', elite: '3 GB', icon: 'ph:hard-drives-bold' },
+    { feature: 'Buat Berita (News)', basic: true, elite: true, icon: 'ph:newspaper-bold' },
+    { feature: 'Profil Organisasi', basic: 'Lengkap & Kustom', elite: 'Lengkap & Kustom', icon: 'ph:buildings-bold' },
+    { feature: 'Promosi Event', basic: true, elite: true, icon: 'ph:megaphone-bold' },
+    { feature: 'Analitik Lanjutan', basic: true, elite: true, icon: 'ph:chart-bar-bold' },
+    { feature: 'Dukungan Prioritas', basic: true, elite: true, icon: 'ph:headset-bold' },
 ]
 
 const isSubscribed = computed(() => !!subscriptionRes.value?.current?.plan_id)
@@ -101,6 +110,8 @@ const isSubscribed = computed(() => !!subscriptionRes.value?.current?.plan_id)
 const availablePlans = computed(() => {
     const plansFromApi = subscriptionRes.value?.plans || []
     const currentPlanId = subscriptionRes.value?.current?.plan_id
+    const isOrg = userType.value === 'organization'
+    const currentPlanDetails = isOrg ? orgPlanDetails : clubPlanDetails
 
     const uniquePlans = []
     const seenNames = new Set()
@@ -117,8 +128,8 @@ const availablePlans = computed(() => {
 
     if (uniquePlans.length === 0) {
         return [
-            { id: 3, name: 'Standar', priceLabel: 'Rp 34.999', priceRaw: 34999, billing: 'bln', features: planDetails[0].features, isCurrent: false, isUpgrade: false },
-            { id: 4, name: 'Elite', priceLabel: 'Rp 79.999', priceRaw: 79999, billing: 'bln', features: planDetails[1].features, isCurrent: false, isUpgrade: true }
+            { id: 3, name: 'Standar', priceLabel: isOrg ? 'Rp 29.999' : 'Rp 24.999', priceRaw: isOrg ? 29999 : 24999, billing: 'bln', features: currentPlanDetails[0].features, isCurrent: false, isUpgrade: false },
+            { id: 4, name: 'Elite', priceLabel: isOrg ? 'Rp 49.999' : 'Rp 39.999', priceRaw: isOrg ? 49999 : 39999, billing: 'bln', features: currentPlanDetails[1].features, isCurrent: false, isUpgrade: true }
         ]
     }
 
@@ -131,20 +142,35 @@ const availablePlans = computed(() => {
     const effectiveCurrentPlanId = currentPlanId || fallbackPlanId
 
     return uniquePlans.map(plan => {
-        const detail = planDetails.find(d => Array.isArray(d.id) ? d.id.includes(plan.id) : d.id === plan.id)
+        const detail = currentPlanDetails.find(d => Array.isArray(d.id) ? d.id.includes(plan.id) : d.id === plan.id)
 
         let localizedName = plan.name
-        if (plan.name.toLowerCase().includes('basic') || plan.name.toLowerCase().includes('standard')) {
+        if (plan.name.toLowerCase().includes('basic') || plan.name.toLowerCase().includes('standard') || plan.name.toLowerCase().includes('standar')) {
             localizedName = 'Standar'
         } else if (plan.name.toLowerCase().includes('elite') || plan.name.toLowerCase().includes('premium')) {
             localizedName = 'Elite'
         }
 
+        let finalPrice = plan.price
+        if (isOrg) {
+            if (localizedName === 'Standar' || plan.name.toLowerCase().includes('basic')) {
+                finalPrice = 29999
+            } else if (localizedName === 'Elite' || plan.name.toLowerCase().includes('premium')) {
+                finalPrice = 49999
+            }
+        } else if (userType.value === 'club') {
+            if (localizedName === 'Standar' || plan.name.toLowerCase().includes('basic')) {
+                finalPrice = 24999
+            } else if (localizedName === 'Elite' || plan.name.toLowerCase().includes('premium')) {
+                finalPrice = 39999
+            }
+        }
+
         return {
             id: plan.id,
             name: localizedName,
-            priceLabel: plan.price < 1000 ? 'Gratis' : `Rp ${new Intl.NumberFormat('id-ID').format(plan.price)}`,
-            priceRaw: plan.price,
+            priceLabel: finalPrice < 1000 ? 'Gratis' : `Rp ${new Intl.NumberFormat('id-ID').format(finalPrice)}`,
+            priceRaw: finalPrice,
             billing: plan.type === 'yearly' ? 'thn' : 'bln',
             features: detail ? detail.features : (function () {
                 if (!plan.features) return []
@@ -208,15 +234,22 @@ const parseSubscriptionDate = (value) => {
 
 const usageMedia = computed(() => ({
     current: '256 MB',
-    limit: currentPlan.value?.id === 2 ? 'Unlimited' : '1 GB',
+    limit: currentPlan.value?.name === 'Elite' ? '3 GB' : '1 GB',
     percent: 25
 }))
 
-const usageMembers = computed(() => ({
-    current: subscriptionRes.value?.current?.usage?.current || 0,
-    limit: currentPlan.value?.id === 2 ? 'Unlimited' : (subscriptionRes.value?.current?.usage?.limit || 50),
-    percent: Math.min(((subscriptionRes.value?.current?.usage?.current || 0) / (subscriptionRes.value?.current?.usage?.limit || 50)) * 100, 100)
-}))
+const usageMembers = computed(() => {
+    const isElite = currentPlan.value?.name === 'Elite'
+    const limit = isElite ? 'Tak Terbatas' : 40 // Force Standar limit to 40 regardless of backend current state
+    const current = subscriptionRes.value?.current?.usage?.current || 0
+    const percent = isElite ? 0 : Math.min((current / 40) * 100, 100)
+
+    return {
+        current,
+        limit,
+        percent
+    }
+})
 
 const remainingDays = computed(() => {
     const nextBilling = subscriptionRes.value?.current?.next_billing_date

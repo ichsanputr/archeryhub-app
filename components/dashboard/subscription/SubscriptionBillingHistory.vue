@@ -4,8 +4,10 @@
         <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
             <div class="p-6 border-b border-gray-100 bg-slate-50/50 flex items-center justify-between">
                 <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Invoice</span>
-                <button v-if="invoices?.length" class="text-navy hover:text-primary-hover">
-                    <Icon icon="ph:download-simple-bold" class="text-lg" />
+                <button v-if="invoices?.length" @click="handleDownload"
+                    class="flex items-center gap-2 px-4 py-2 text-[10px] font-black uppercase tracking-widest text-navy bg-white border border-gray-200 rounded-xl hover:border-primary hover:shadow-lg transition-all group">
+                    <Icon icon="ph:download-simple-bold" class="text-lg group-hover:text-primary transition-colors" />
+                    <span>Download Report</span>
                 </button>
             </div>
 
@@ -66,13 +68,39 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import { useApi } from '~/composables/useApi'
 
 const config = useRuntimeConfig()
 const apiBaseUrl = config.public.apiBaseUrl
+const api = useApi()
 
 defineProps({
     invoices: Array
 })
+
+const handleDownload = async () => {
+    try {
+        const response = await $fetch(`${apiBaseUrl}/api/v1/user/subscription/export`, {
+            headers: {
+                ...api.createFetchOptions().headers
+            },
+            credentials: 'include',
+            responseType: 'blob'
+        })
+
+        const url = window.URL.createObjectURL(new Blob([response]))
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', `billing-history-${new Date().toISOString().split('T')[0]}.csv`)
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+        window.URL.revokeObjectURL(url)
+    } catch (err) {
+        console.error('Failed to download report:', err)
+        alert('Gagal mengunduh laporan. Silakan coba lagi.')
+    }
+}
 
 const getStatusLabel = (status) => {
     const labels = {
