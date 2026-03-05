@@ -42,15 +42,18 @@
               <Transition name="slide-down">
                 <div v-if="openGroups.includes(section.label)"
                   class="overflow-hidden mt-0.5 ml-3 flex flex-col gap-0.5">
-                  <NuxtLink v-for="item in section.children" :key="item.path" :to="item.path"
-                    class="flex items-center gap-3 pl-5 pr-3 py-2 rounded-xl transition-all relative" :class="isActive(item.path)
-                      ? 'bg-primary/15 text-primary'
-                      : 'text-gray-400 hover:bg-white/5 hover:text-white'">
+                  <NuxtLink v-for="item in section.children" :key="item.path" :to="item.isLocked ? '#' : item.path"
+                    class="flex items-center gap-3 pl-5 pr-3 py-2 rounded-xl transition-all relative" :class="[
+                      isActive(item.path) ? 'bg-primary/15 text-primary' : 'text-gray-400 hover:bg-white/5 hover:text-white',
+                      item.isLocked ? 'opacity-50 cursor-not-allowed' : ''
+                    ]">
                     <!-- Active indicator bar -->
                     <div v-if="isActive(item.path)"
                       class="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-4 bg-primary rounded-r-full"></div>
                     <Icon :icon="item.icon" class="text-lg shrink-0" />
                     <span v-if="!isSidebarCollapsed" class="text-sm font-bold whitespace-nowrap">{{ item.label }}</span>
+                    <Icon v-if="item.isLocked && !isSidebarCollapsed" icon="ph:lock-key-bold"
+                      class="ml-auto text-xs opacity-60" />
                   </NuxtLink>
                 </div>
               </Transition>
@@ -66,14 +69,17 @@
 
           <!-- Regular nav item -->
           <template v-else>
-            <NuxtLink :to="section.path" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group"
-              :class="isActive(section.path)
-                ? 'bg-primary text-primary-text shadow-lg shadow-primary/20'
-                : 'text-gray-400 hover:bg-white/5 hover:text-white'">
+            <NuxtLink :to="section.isLocked ? '#' : section.path"
+              class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group" :class="[
+                isActive(section.path) ? 'bg-primary text-primary-text shadow-lg shadow-primary/20' : 'text-gray-400 hover:bg-white/5 hover:text-white',
+                section.isLocked ? 'opacity-50 cursor-not-allowed' : ''
+              ]">
               <Icon :icon="section.icon.includes(':') ? section.icon : `ph:${section.icon}`"
                 class="text-xl transition-transform" :class="isActive(section.path) ? 'text-primary-text' : ''" />
               <span v-if="!isSidebarCollapsed" class="text-sm font-bold whitespace-nowrap">{{ section.label }}</span>
-              <span v-if="section.badge && !isSidebarCollapsed"
+              <Icon v-if="section.isLocked && !isSidebarCollapsed" icon="ph:lock-key-bold"
+                class="ml-auto text-sm opacity-60" />
+              <span v-if="section.badge && !isSidebarCollapsed && !section.isLocked"
                 class="ml-auto bg-primary/20 text-primary text-[10px] font-black px-2 py-0.5 rounded-full tracking-tighter">
                 {{ section.badge }}
               </span>
@@ -242,9 +248,12 @@ const userRoleLabel = computed(() => {
   return labels[role] || 'Pengguna'
 })
 
+const { isSubscriptionActive, isElite } = useSubscription()
+
 // ── Nav sections (supports labels, items, and group dropdowns) ─────────────
 const navSections = computed(() => {
-  const role = user.value?.role || user.value?.type || 'archer'
+  const role = user.value?.role || user.value?.type || user.value?.user_type
+  const isActiveSub = isSubscriptionActive.value
 
   if (role === 'archer') {
     return [
@@ -276,16 +285,17 @@ const navSections = computed(() => {
         icon: 'ph:users-bold',
         type: 'group',
         children: [
-          { label: 'Anggota', icon: 'ph:identification-badge-bold', path: '/dashboard/members' },
-          { label: 'Membership', icon: 'ph:crown-bold', path: '/dashboard/membership' },
-          { label: 'Pembayaran', icon: 'ph:money-bold', path: '/dashboard/payments-membership' },
+          { label: 'Anggota', icon: 'ph:identification-badge-bold', path: '/dashboard/members', isLocked: !isActiveSub },
+          { label: 'Membership', icon: 'ph:crown-bold', path: '/dashboard/membership', isLocked: !isActiveSub },
+          { label: 'Pembayaran', icon: 'ph:money-bold', path: '/dashboard/payments-membership', isLocked: !isActiveSub },
         ]
       },
-      { label: 'Form Pendaftaran', icon: 'ph:clipboard-text-bold', path: '/dashboard/form-pendaftaran' },
+      { label: 'Form Pendaftaran', icon: 'ph:clipboard-text-bold', path: '/dashboard/form-pendaftaran', isLocked: !isActiveSub },
+      { label: 'Laporan', icon: 'ph:chart-bar-bold', path: '/dashboard/reports', isLocked: !isActiveSub },
       { label: 'Profil Klub', icon: 'ph:buildings', path: '/dashboard/clubs/profile' },
       { type: 'label', label: 'Lainnya' },
       { label: 'Subscription', icon: 'ph:credit-card', path: '/dashboard/subscription' },
-      ...(!isEventManagePage.value ? [{ label: 'Berita', icon: 'ph:newspaper', path: '/dashboard/news' }] : []),
+      ...(!isEventManagePage.value ? [{ label: 'Berita', icon: 'ph:newspaper', path: '/dashboard/news', isLocked: !isActiveSub }] : []),
       ...(!isEventManagePage.value ? [{ label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/settings' }] : []),
     ]
   }
@@ -299,8 +309,8 @@ const navSections = computed(() => {
         icon: 'ph:trophy',
         type: 'group',
         children: [
-          { label: 'Event Saya', icon: 'material-symbols:event-list-outline', path: '/dashboard/events' },
-          { label: 'Laporan', icon: 'ph:chart-bar', path: '/dashboard/reports' },
+          { label: 'Event Saya', icon: 'material-symbols:event-list-outline', path: '/dashboard/events', isLocked: !isActiveSub },
+          { label: 'Laporan', icon: 'ph:chart-bar', path: '/dashboard/reports', isLocked: !isActiveSub },
         ]
       },
       { type: 'label', label: 'Manajemen Organisasi' },
@@ -310,13 +320,23 @@ const navSections = computed(() => {
         type: 'group',
         children: [
           { label: 'Profil Organisasi', icon: 'icomoon-free:profile', path: '/dashboard/organizations/profile' },
-          { label: 'Scorekeeper', icon: 'ph:user-focus', path: '/dashboard/organizations/scorekeepers' },
+          { label: 'Scorekeeper', icon: 'ph:user-focus', path: '/dashboard/organizations/scorekeepers', isLocked: !isActiveSub },
         ]
       },
       { type: 'label', label: 'Lainnya' },
       { label: 'Subscription', icon: 'ph:credit-card', path: '/dashboard/subscription' },
-      ...(!isEventManagePage.value ? [{ label: 'Berita', icon: 'ph:newspaper', path: '/dashboard/news' }] : []),
+      ...(!isEventManagePage.value ? [{ label: 'Berita', icon: 'ph:newspaper', path: '/dashboard/news', isLocked: !isActiveSub }] : []),
       ...(!isEventManagePage.value ? [{ label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/settings' }] : []),
+    ]
+  }
+
+  // Root admin — clean minimal nav
+  if (role === 'root') {
+    return [
+      { type: 'label', label: 'Manajemen Akun' },
+      { label: 'Pengguna', icon: 'ph:users-four-bold', path: '/dashboard/root' },
+      { type: 'label', label: 'Manajemen Paket' },
+      { label: 'Subscription', icon: 'ph:credit-card-bold', path: '/dashboard/root/subscriptions' },
     ]
   }
 
@@ -352,6 +372,10 @@ const isActive = (path) => {
   if (!path) return false
   if (path === '/dashboard') {
     return route.path === '/dashboard' || route.path === '/dashboard/'
+  }
+  // Root sub-pages — use exact match to prevent /dashboard/root matching /dashboard/root/subscriptions
+  if (path.startsWith('/dashboard/root')) {
+    return route.path === path
   }
   // Exact match first, then check if route path starts with path + '/'
   return route.path === path || route.path.startsWith(path + '/')

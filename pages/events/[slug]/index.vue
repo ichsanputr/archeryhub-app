@@ -41,28 +41,6 @@
                 </div>
             </div>
 
-            <!-- Promo Banner -->
-            <div class="bg-primary py-3 relative overflow-hidden group">
-                <div class="absolute inset-0 opacity-20"
-                    style="background-image: radial-gradient(circle, #0f172a 1px, transparent 1px); background-size: 20px 20px;">
-                </div>
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                    <div class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 text-center">
-                        <span class="text-[10px] sm:text-xs font-black text-navy-dark tracking-[0.2em] uppercase">
-                            🏹 Ingin Mengadakan Event Sendiri?
-                        </span>
-                        <div class="flex items-center gap-2">
-                            <span class="text-xs sm:text-sm font-black text-navy-dark">Mulai Turnamen Anda Gratis 3
-                                Bulan!</span>
-                            <NuxtLink to="/subscription"
-                                class="bg-navy-dark text-white text-[9px] sm:text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest hover:bg-navy transition-colors">
-                                Cek Paket
-                            </NuxtLink>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Sticky Tabs -->
             <div class="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

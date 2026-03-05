@@ -4,6 +4,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    p {
+        @apply text-sm sm:text-base leading-relaxed mb-4;
+    }
+}
+
 /* Logo .id color */
 .text-logo-id {
     color: #D9FF00;

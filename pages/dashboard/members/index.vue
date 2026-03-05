@@ -36,19 +36,24 @@
 
         <!-- Action Buttons -->
         <div class="flex flex-col sm:flex-row gap-3">
-          <BaseButton @click="openInviteModal" variant="white" icon="ph:user-plus-bold"
-            class="h-10 sm:h-11 px-6 bg-white/10 text-white border-white/20 hover:bg-white/20 backdrop-blur-md font-black text-[10px] sm:text-xs tracking-widest uppercase">
+          <BaseButton @click="canAddMember ? openInviteModal() : (showPremiumModal = true)" variant="white"
+            icon="ph:user-plus-bold"
+            class="h-10 sm:h-11 px-6 bg-white/10 text-white border-white/20 hover:bg-white/20 backdrop-blur-md font-black text-[10px] sm:text-xs tracking-widest uppercase"
+            :class="{ 'opacity-50 grayscale cursor-not-allowed': !canAddMember }">
             Invite
           </BaseButton>
-          <NuxtLink to="/dashboard/members/create" class="w-full sm:w-auto">
+          <NuxtLink :to="canAddMember ? '/dashboard/members/create' : undefined"
+            @click="!canAddMember && (showPremiumModal = true)" class="w-full sm:w-auto">
             <BaseButton variant="primary" icon="ph:plus-bold"
-              class="w-full h-10 sm:h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-[10px] sm:text-xs">
+              class="w-full h-10 sm:h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-[10px] sm:text-xs"
+              :class="{ 'opacity-50 grayscale cursor-not-allowed': !canAddMember }">
               Tambah Anggota
             </BaseButton>
           </NuxtLink>
         </div>
       </div>
     </div>
+    <PremiumRequiredModal v-model:show="showPremiumModal" :feature="premiumModalFeature" />
 
     <!-- Stats -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -183,8 +188,11 @@
               </td>
               <td class="px-6 py-4 text-right">
                 <div class="flex items-center justify-end gap-2">
-                  <button v-if="member.status === 'pending'" @click="approveMember(member)"
-                    class="p-2 text-green-500 hover:bg-green-50 rounded-lg transition-colors" title="Terima Anggota">
+                  <button v-if="member.status === 'pending'"
+                    @click="isSubscriptionActive ? approveMember(member) : (showPremiumModal = true)"
+                    class="p-2 text-green-500 hover:bg-green-50 rounded-lg transition-colors"
+                    :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }"
+                    title="Terima Anggota">
                     <Icon icon="ph:check-bold" class="text-lg" />
                   </button>
                   <NuxtLink :to="`/dashboard/members/${member.id || member.uuid}`"
@@ -310,12 +318,21 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import Breadcrumbs from '~/components/common/Breadcrumbs.vue'
 import { ref, computed } from 'vue'
 import { definePageMeta, onMounted } from '#imports'
 import { useApi } from '~/composables/useApi'
 import { useAuth } from '~/composables/useAuth'
 import { useToast } from '#imports'
+import { useSubscription } from '~/composables/useSubscription'
+import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
+
+const { isSubscriptionActive, canAddMember, subscriptionData } = useSubscription()
+const showPremiumModal = ref(false)
+
+const premiumModalFeature = computed(() => {
+  if (!isSubscriptionActive.value) return 'active_subscription'
+  return 'member_limit'
+})
 
 definePageMeta({
   title: 'Anggota Klub',

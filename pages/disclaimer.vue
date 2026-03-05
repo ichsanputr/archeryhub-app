@@ -34,21 +34,21 @@
                 class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 md:p-12">
                 <div class="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300">
                     <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">1. Informasi Umum</h3>
-                    <p class="mb-4">
+                    <p>
                         Seluruh informasi yang disediakan di situs web Archery Hub Indonesia ("Situs") dipublikasikan
                         dengan itikad baik dan hanya untuk tujuan informasi umum. Archery Hub Indonesia tidak memberikan
                         jaminan apa pun tentang kelengkapan, keandalan, dan keakuratan informasi ini.
                     </p>
                     <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">2. Tanggung Jawab
                         Pengguna</h3>
-                    <p class="mb-4">
+                    <p>
                         Tindakan apa pun yang Anda lakukan terhadap informasi yang Anda temukan di Situs ini adalah
                         tanggung jawab Anda sendiri. Archery Hub Indonesia tidak akan bertanggung jawab atas kerugian
                         dan/atau kerusakan sehubungan dengan penggunaan Situs kami.
                     </p>
                     <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">3. Tautan Eksternal
                     </h3>
-                    <p class="mb-4">
+                    <p>
                         Dari Situs kami, Anda dapat mengunjungi situs web lain dengan mengikuti hyperlink ke situs
                         eksternal tersebut. Meskipun kami berusaha menyediakan tautan berkualitas ke situs web yang
                         bermanfaat dan etis, kami tidak memiliki kendali atas konten dan sifat situs-situs tersebut.
@@ -56,7 +56,7 @@
                         situs tersebut.
                     </p>
                     <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">4. Persetujuan</h3>
-                    <p class="mb-4">
+                    <p>
                         Dengan menggunakan Situs kami, Anda dengan ini menyetujui disclaimer kami dan menyetujui
                         ketentuan-ketentuannya.
                     </p>

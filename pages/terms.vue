@@ -32,24 +32,24 @@
       <div
         class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 md:p-12">
         <div class="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300">
-          <p class="mb-6 leading-relaxed">
+          <p>
             Harap baca Syarat dan Ketentuan ("Syarat", "Syarat dan Ketentuan") ini dengan teliti sebelum menggunakan
             situs web Archery Hub (the "Layanan") yang dioperasikan oleh Archery Hub Indonesia ("kami", "kita",
             atau "milik kami").
           </p>
           <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">1. Penerimaan Syarat</h3>
-          <p class="mb-4">
+          <p>
             Dengan mengakses atau menggunakan Layanan, Anda setuju untuk terikat oleh Syarat ini. Jika Anda tidak setuju
             dengan bagian mana pun dari syarat tersebut, maka Anda tidak boleh mengakses Layanan.
           </p>
           <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">2. Direktori Klub & Verifikasi
           </h3>
-          <p class="mb-4">
+          <p>
             Archery Hub menyediakan direktori klub panahan di Indonesia. Meskipun kami berusaha untuk
             memverifikasi klub, kami tidak dapat menjamin keakuratan lengkap
             semua detail klub, termasuk jadwal latihan dan biaya.
           </p>
-          <ol class="list-decimal pl-6 space-y-2 mb-6 marker:text-navy marker:font-bold">
+          <ol class="list-decimal pl-6 space-y-2 mb-6 marker:text-navy marker:font-bold text-sm sm:text-base">
             <li><strong>Informasi Klub:</strong> Informasi tentang klub disediakan untuk tujuan informasi.</li>
             <li><strong>Ulasan Anggota:</strong> Pengguna bertanggung jawab atas konten ulasan mereka. Kami berhak
               menghapus ulasan yang melanggar pedoman komunitas kami.</li>
@@ -58,7 +58,7 @@
               operasi klub.</li>
           </ol>
           <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">3. Penghentian</h3>
-          <p class="mb-4">
+          <p>
             Kami dapat menghentikan atau menangguhkan akses ke Layanan kami secara segera, tanpa pemberitahuan
             sebelumnya atau
             tanggung jawab, untuk alasan apa pun, termasuk tanpa batasan jika Anda melanggar Syarat.

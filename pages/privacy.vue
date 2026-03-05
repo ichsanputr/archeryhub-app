@@ -32,7 +32,7 @@
       <div
         class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 md:p-12">
         <div class="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300">
-          <p class="mb-6 leading-relaxed">
+          <p>
             Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, mengungkapkan, dan melindungi
             informasi Anda ketika Anda mengunjungi
             situs web kami termasuk bentuk media lainnya, saluran media, situs web seluler, atau
@@ -40,9 +40,9 @@
           </p>
           <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">1. Pengumpulan Informasi Anda
           </h3>
-          <p class="mb-4">Kami dapat mengumpulkan informasi tentang Anda dengan berbagai cara. Informasi
+          <p>Kami dapat mengumpulkan informasi tentang Anda dengan berbagai cara. Informasi
             yang mungkin kami kumpulkan di Situs meliputi:</p>
-          <ul class="list-disc pl-6 space-y-2 mb-6 marker:text-primary">
+          <ul class="list-disc pl-6 space-y-2 marker:text-primary">
             <li><strong>Data Pribadi:</strong> Informasi yang dapat diidentifikasi secara pribadi, seperti nama Anda,
               alamat pengiriman, alamat email, dan nomor telepon, serta informasi demografis.</li>
             <li><strong>Data Turunan:</strong> Informasi yang secara otomatis dikumpulkan server kami ketika
@@ -57,10 +57,10 @@
           </ul>
           <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">2. Penggunaan Informasi Anda
           </h3>
-          <p class="mb-4">Memiliki informasi yang akurat tentang Anda memungkinkan kami memberikan Anda
+          <p>Memiliki informasi yang akurat tentang Anda memungkinkan kami memberikan Anda
             pengalaman yang lancar, efisien, dan disesuaikan. Secara khusus, kami dapat menggunakan informasi
             yang dikumpulkan tentang Anda melalui Situs untuk:</p>
-          <ol class="list-decimal pl-6 space-y-2 mb-6 marker:text-navy marker:font-bold">
+          <ol class="list-decimal pl-6 space-y-2 marker:text-navy marker:font-bold">
             <li>Membuat dan mengelola akun Anda.</li>
             <li>Memproses langganan keanggotaan klub dan pendaftaran turnamen.</li>
             <li>Mengirim email kepada Anda mengenai akun atau pesanan Anda.</li>

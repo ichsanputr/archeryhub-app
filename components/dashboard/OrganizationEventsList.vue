@@ -33,10 +33,10 @@
 
           <!-- Action Buttons -->
           <div class="flex flex-col sm:flex-row gap-3">
-            <BaseButton :to="isSubscriptionActive ? '/dashboard/events/create' : undefined" variant="primary"
-              icon="ph:plus-bold" @click="!isSubscriptionActive && (showPremiumModal = true)"
+            <BaseButton :to="canCreateEvent ? '/dashboard/events/create' : undefined" variant="primary"
+              icon="ph:plus-bold" @click="!canCreateEvent && (showPremiumModal = true)"
               class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black uppercase tracking-widest"
-              :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }">
+              :class="{ 'opacity-50 grayscale cursor-not-allowed': !canCreateEvent }">
               Buat Event
             </BaseButton>
           </div>
@@ -207,7 +207,7 @@ import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
 const { get, del } = useApi()
 const router = useRouter()
 const { setEvent } = useEventContext()
-const { isSubscriptionActive } = useSubscription()
+const { isSubscriptionActive, canCreateEvent } = useSubscription()
 const toast = useToast()
 
 const showPremiumModal = ref(false)

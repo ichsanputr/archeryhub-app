@@ -1,6 +1,7 @@
 import { computed } from 'vue'
 import { useState, useRuntimeConfig } from '#app'
 import { useApi } from './useApi'
+import { useAuth } from './useAuth'
 
 export interface SubscriptionData {
     current: {
@@ -27,6 +28,7 @@ export const useSubscription = () => {
 
     const config = useRuntimeConfig()
     const api = useApi()
+    const { user } = useAuth()
 
     const fetchSubscription = async (force = false) => {
         // Cache for 1 minute unless forced
@@ -51,12 +53,47 @@ export const useSubscription = () => {
 
     const isSubscribed = computed(() => !!subscriptionData.value?.current?.plan_id)
     const activePlan = computed(() => subscriptionData.value?.current)
-    const isSubscriptionActive = computed(() => {
-        const { user } = useAuth()
-        if (user.value?.role === 'root') return true
 
+    const isSubscriptionActive = computed(() => {
+        if (user.value?.role === 'root') return true
         const status = subscriptionData.value?.current?.status
         return status === 'active' || status === 'trial'
+    })
+
+    const isElite = computed(() => {
+        if (user.value?.role === 'root') return true
+        return activePlan.value?.plan_name?.toLowerCase().includes('elite') || false
+    })
+
+    // Feature Gates
+    const canCreateEvent = computed(() => {
+        if (user.value?.role === 'root') return true
+        return isSubscriptionActive.value
+    })
+
+    const canAddMember = computed(() => {
+        if (user.value?.role === 'root') return true
+        if (!isSubscriptionActive.value) return false
+
+        // Check limits for non-Elite
+        if (!isElite.value) {
+            const current = subscriptionData.value?.current?.usage?.current || 0
+            const limit = 50 // Standard limit
+            return current < limit
+        }
+        return true
+    })
+
+    const canExportData = computed(() => {
+        if (user.value?.role === 'root') return true
+        return isSubscriptionActive.value
+    })
+
+    const canAccessAnalytics = computed(() => {
+        if (user.value?.role === 'root') return true
+        // Advanced analytics are for Active Elite or Active Standard (base)
+        // according to policy, Standard has basic, Elite has advanced.
+        return isSubscriptionActive.value
     })
 
     return {
@@ -65,6 +102,11 @@ export const useSubscription = () => {
         fetchSubscription,
         isSubscribed,
         isSubscriptionActive,
+        isElite,
+        canCreateEvent,
+        canAddMember,
+        canExportData,
+        canAccessAnalytics,
         activePlan
     }
 }

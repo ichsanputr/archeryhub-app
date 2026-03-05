@@ -26,15 +26,18 @@
             </div>
           </div>
           <div class="flex flex-col sm:flex-row gap-3">
-            <NuxtLink to="/dashboard/members" class="w-full sm:w-auto">
+            <NuxtLink :to="canAddMember ? '/dashboard/members/create' : undefined"
+              @click="!canAddMember && (showPremiumModal = true)" class="w-full sm:w-auto">
               <BaseButton variant="primary" icon="ph:user-plus-bold"
-                class="w-full h-10 sm:h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-xs">
+                class="w-full h-10 sm:h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-xs"
+                :class="{ 'opacity-50 grayscale cursor-not-allowed': !canAddMember }">
                 Tambah Anggota
               </BaseButton>
             </NuxtLink>
           </div>
         </div>
       </div>
+      <PremiumRequiredModal v-model:show="showPremiumModal" :feature="premiumModalFeature" />
 
       <!-- Club Stats Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -492,11 +495,12 @@
                   <td class="px-6 py-3.5">
                     <div class="flex items-center gap-3">
                       <img :src="useImageOrDefault(archer.avatar_url || archer.photo_url || archer.image, archer.name)"
-                        :alt="archer.name" class="w-9 h-9 rounded-full object-cover border border-gray-200 bg-gray-50" />
+                        :alt="archer.name"
+                        class="w-9 h-9 rounded-full object-cover border border-gray-200 bg-gray-50" />
                       <div>
                         <div class="text-navy-dark font-bold group-hover:text-primary-hover transition-colors">{{
                           archer.name
-                          }}</div>
+                        }}</div>
                         <div class="text-gray-400 text-xs">{{ archer.category || '-' }}</div>
                       </div>
                     </div>
@@ -541,6 +545,16 @@ const api = useApi()
 const toast = useToast()
 const { user } = useAuth()
 const { themeColors } = useTheme()
+const { isSubscriptionActive, canAddMember } = useSubscription()
+import { useSubscription } from '~/composables/useSubscription'
+import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
+
+const showPremiumModal = ref(false)
+const premiumModalFeature = computed(() => {
+  if (!isSubscriptionActive.value) return 'active_subscription'
+  return 'member_limit'
+})
+
 const userRole = computed(() => user.value?.role || user.value?.type || 'archer')
 
 // Seller-specific reactive state

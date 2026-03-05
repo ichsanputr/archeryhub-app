@@ -9,6 +9,7 @@
             :price-label="`${currentPlan?.priceLabel} / ${currentPlan?.billing}`"
             :next-billing="subscriptionRes?.current?.next_billing_date" :usage-media="usageMedia"
             :usage-members="usageMembers" :remaining-days-label="remainingDaysLabel" :expiry-percent="expiryPercent"
+            :is-expired="headerStatus === 'expired' || headerStatus === 'canceled'"
             :show-members="userType !== 'organization'" />
 
         <div class="space-y-8">

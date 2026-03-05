@@ -39,17 +39,15 @@
                     <!-- Action Buttons -->
                     <div class="flex gap-3 flex-shrink-0">
                         <BaseButton variant="white" icon="ph:download" class="h-11 px-5"
-                            @click="isSubscriptionActive ? exportCSV() : (showPremiumModal = true)"
-                            :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }">
+                            @click="canExportData ? exportCSV() : (showPremiumModal = true)"
+                            :class="{ 'opacity-50 grayscale cursor-not-allowed': !canExportData }">
                             <span class="hidden sm:inline">Export CSV</span>
                             <span class="sm:hidden">Export</span>
                         </BaseButton>
-                        <BaseButton
-                            :to="isSubscriptionActive ? `/dashboard/events/${eventId}/participants/add` : undefined"
-                            variant="primary" icon="ph:plus-bold"
-                            @click="!isSubscriptionActive && (showPremiumModal = true)"
+                        <BaseButton :to="canCreateEvent ? `/dashboard/events/${eventId}/participants/add` : undefined"
+                            variant="primary" icon="ph:plus-bold" @click="!canCreateEvent && (showPremiumModal = true)"
                             class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all"
-                            :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }">
+                            :class="{ 'opacity-50 grayscale cursor-not-allowed': !canCreateEvent }">
                             <span class="hidden sm:inline">Tambah Peserta</span>
                             <span class="sm:hidden">Tambah</span>
                         </BaseButton>
@@ -132,7 +130,7 @@
                                 class="group hover:bg-gray-50/50 transition-colors">
                                 <td class="px-6 py-4 align-top text-center w-16">
                                     <span class="text-sm font-bold text-gray-400">{{ (page - 1) * limit + index + 1
-                                    }}</span>
+                                        }}</span>
                                 </td>
                                 <td class="px-6 py-4 align-top min-w-[250px]">
                                     <div class="flex items-center gap-3">
@@ -217,12 +215,13 @@ const route = useRoute()
 const eventId = computed(() => route.params.id)
 const { get } = useApi()
 const { setEvent, clearEvent } = useEventContext()
-const { isSubscriptionActive } = useSubscription()
-import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
-import { useSubscription } from '~/composables/useSubscription'
-
+const { isSubscriptionActive, canExportData, canCreateEvent } = useSubscription()
 const showPremiumModal = ref(false)
-const premiumFeature = ref('export_data') // default
+
+const premiumFeature = computed(() => {
+    if (!isSubscriptionActive.value) return 'active_subscription'
+    return 'export_data'
+})
 
 const breadcrumbItems = computed(() => [
     { label: 'Dashboard', path: '/dashboard' },

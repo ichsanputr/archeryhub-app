@@ -27,87 +27,142 @@
 
         <!-- Reports Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <NuxtLink v-for="report in reports" :key="report.title" :to="report.link"
-                class="group bg-white rounded-[32px] p-8 border border-gray-100 shadow-sm hover:shadow-md hover:border-primary transition-all duration-300 relative overflow-hidden flex flex-col h-full">
-                <!-- Subtle Hover Glow -->
-                <div
-                    class="absolute -right-10 -top-10 size-40 bg-primary/5 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                </div>
-
-                <div class="relative z-10">
+            <template v-for="report in reports" :key="report.title">
+                <NuxtLink v-if="!report.isLocked" :to="report.link"
+                    class="group bg-white rounded-[32px] p-8 border border-gray-100 shadow-sm hover:shadow-md hover:border-primary transition-all duration-300 relative overflow-hidden flex flex-col h-full">
+                    <!-- Subtle Hover Glow -->
                     <div
-                        class="size-16 rounded-2xl bg-slate-50 border border-gray-100 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:border-primary transition-all duration-300 shadow-sm">
-                        <Icon :icon="report.icon" class="text-3xl text-navy" />
+                        class="absolute -right-10 -top-10 size-40 bg-primary/5 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     </div>
 
-                    <h3 class="text-xl font-black text-navy mb-3">{{ report.title }}</h3>
-                    <p class="text-gray-500 text-sm font-medium leading-relaxed mb-8">
-                        {{ report.description }}
-                    </p>
-                </div>
+                    <div class="relative z-10">
+                        <div
+                            class="size-16 rounded-2xl bg-slate-50 border border-gray-100 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:border-primary transition-all duration-300 shadow-sm">
+                            <Icon :icon="report.icon" class="text-3xl text-navy" />
+                        </div>
 
-                <div
-                    class="mt-auto flex items-center justify-between pt-6 border-t border-gray-50 group-hover:border-primary/10 transition-colors">
-                    <span
-                        class="text-[10px] font-black uppercase tracking-widest text-gray-400 group-hover:text-navy transition-colors">
-                        Buka Laporan
-                    </span>
+                        <h3 class="text-xl font-black text-navy mb-3">{{ report.title }}</h3>
+                        <p class="text-gray-500 text-sm font-medium leading-relaxed mb-8">
+                            {{ report.description }}
+                        </p>
+                    </div>
+
                     <div
-                        class="size-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-primary transition-all duration-300 group-hover:translate-x-1">
-                        <Icon icon="ph:arrow-right-bold" class="text-navy text-sm" />
+                        class="mt-auto flex items-center justify-between pt-6 border-t border-gray-50 group-hover:border-primary/10 transition-colors">
+                        <span
+                            class="text-[10px] font-black uppercase tracking-widest text-gray-400 group-hover:text-navy transition-colors">
+                            Buka Laporan
+                        </span>
+                        <div
+                            class="size-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:bg-primary transition-all duration-300 group-hover:translate-x-1">
+                            <Icon icon="ph:arrow-right-bold" class="text-navy text-sm" />
+                        </div>
+                    </div>
+                </NuxtLink>
+
+                <!-- Locked State -->
+                <div v-else @click="openPremiumModal(report)"
+                    class="group bg-gray-50/50 rounded-[32px] p-8 border border-gray-100 shadow-none cursor-pointer hover:border-amber-200 transition-all duration-300 relative overflow-hidden flex flex-col h-full opacity-70 grayscale-[0.5]">
+                    <div class="relative z-10">
+                        <div
+                            class="size-16 rounded-2xl bg-white border border-gray-100 flex items-center justify-center mb-6 shadow-sm">
+                            <Icon :icon="report.icon" class="text-3xl text-gray-400" />
+                        </div>
+
+                        <div class="flex items-center gap-2 mb-3">
+                            <h3 class="text-xl font-black text-gray-600">{{ report.title }}</h3>
+                            <Icon icon="ph:lock-key-bold" class="text-amber-500 text-lg" />
+                        </div>
+                        <p class="text-gray-400 text-sm font-medium leading-relaxed mb-8">
+                            {{ report.description }}
+                        </p>
+                    </div>
+
+                    <div class="mt-auto flex items-center justify-between pt-6 border-t border-gray-200/50">
+                        <div
+                            class="flex items-center gap-2 bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
+                            <Icon icon="ph:crown" />
+                            <span>Fitur Premium</span>
+                        </div>
                     </div>
                 </div>
-            </NuxtLink>
+            </template>
         </div>
+        <PremiumRequiredModal v-model:show="showPremiumModal" :feature="premiumFeature" />
 
     </div>
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import { useSubscription } from '~/composables/useSubscription'
 
 definePageMeta({
     layout: 'dashboard'
 })
 
-const reports = [
-    {
-        title: 'Laporan Keuangan',
-        description: 'Kelola kas klub, iuran bulanan, pendapatan turnamen, and pengeluaran operasional secara detail.',
-        icon: 'ph:money-bold',
-        link: '/dashboard/reports/finance'
-    },
-    {
-        title: 'Statistik Anggota',
-        description: 'Pantau pertumbuhan anggota, tingkat kehadiran latihan, and distribusi kategori usia atlet.',
-        icon: 'ph:users-four-bold',
-        link: '#'
-    },
-    {
-        title: 'Analisis Performa',
-        description: 'Lihat progres skor atlet, hasil turnamen terakhir, and grafik peningkatan performa individu.',
-        icon: 'ph:chart-line-up-bold',
-        link: '#'
-    },
-    {
-        title: 'Inventaris & Aset',
-        description: 'Data peminjaman alat, stok busur klub, anak panah, and perlengkapan lainnya.',
-        icon: 'ph:package-bold',
-        link: '#'
-    },
-    {
-        title: 'Laporan Event',
-        description: 'Evaluasi hasil penyelenggaraan event internal maupun open tournament yang diikuti klub.',
-        icon: 'ph:calendar-check-bold',
-        link: '#'
-    },
-    {
-        title: 'Sertifikasi & Lisensi',
-        description: 'Data sertifikat atlet, lisensi pelatih aktif, and riwayat pelatihan internal klub.',
-        icon: 'ph:certificate-bold',
-        link: '#'
+const { isSubscriptionActive, canAccessAnalytics, isElite } = useSubscription()
+const showPremiumModal = ref(false)
+const premiumFeature = ref('analytics')
+
+const openPremiumModal = (report) => {
+    if (!isSubscriptionActive.value) {
+        premiumFeature.value = 'active_subscription'
+    } else {
+        premiumFeature.value = 'analytics'
     }
-]
+    showPremiumModal.value = true
+}
+
+const reports = computed(() => {
+    const isActive = isSubscriptionActive.value
+    const isElitePlan = isElite.value
+
+    return [
+        {
+            title: 'Laporan Keuangan',
+            description: 'Kelola kas klub, iuran bulanan, pendapatan turnamen, and pengeluaran operasional secara detail.',
+            icon: 'ph:money-bold',
+            link: '/dashboard/reports/finance',
+            isLocked: !isActive
+        },
+        {
+            title: 'Statistik Anggota',
+            description: 'Pantau pertumbuhan anggota, tingkat kehadiran latihan, and distribusi kategori usia atlet.',
+            icon: 'ph:users-four-bold',
+            link: '#',
+            isLocked: !isActive || !isElitePlan
+        },
+        {
+            title: 'Analisis Performa',
+            description: 'Lihat progres skor atlet, hasil turnamen terakhir, and grafik peningkatan performa individu.',
+            icon: 'ph:chart-line-up-bold',
+            link: '#',
+            isLocked: !isActive || !isElitePlan
+        },
+        {
+            title: 'Inventaris & Aset',
+            description: 'Data peminjaman alat, stok busur klub, anak panah, and perlengkapan lainnya.',
+            icon: 'ph:package-bold',
+            link: '#',
+            isLocked: !isActive
+        },
+        {
+            title: 'Laporan Event',
+            description: 'Evaluasi hasil penyelenggaraan event internal maupun open tournament yang diikuti klub.',
+            icon: 'ph:calendar-check-bold',
+            link: '#',
+            isLocked: !isActive
+        },
+        {
+            title: 'Sertifikasi & Lisensi',
+            description: 'Data sertifikat atlet, lisensi pelatih aktif, and riwayat pelatihan internal klub.',
+            icon: 'ph:certificate-bold',
+            link: '#',
+            isLocked: !isActive
+        }
+    ]
+})
 
 useSeoMeta({
     title: 'Pusat Laporan - Archeryhub.id',
