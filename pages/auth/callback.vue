@@ -30,7 +30,7 @@ import { useRoute } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 
 const route = useRoute()
-const { handleCallback } = useAuth()
+const { handleCallback, user } = useAuth()
 
 useHead({
   title: 'Menyambungkan Akun... - Archeryhub.id'
@@ -53,7 +53,10 @@ onMounted(async () => {
     await handleCallback(code, state)
 
     // Full page reload so auth state is restored from cookie/SSR
-    const redirect = route.query.redirect || '/dashboard'
+    let redirect = route.query.redirect || '/dashboard'
+    if ((!route.query.redirect || redirect === '/dashboard') && user.value?.role === 'archer') {
+      redirect = '/dashboard/archers/events'
+    }
     window.location.href = redirect
   } catch (err) {
     const statusCode = err?.statusCode ?? err?.status

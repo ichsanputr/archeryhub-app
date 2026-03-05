@@ -138,7 +138,7 @@ import { useFormValidation } from '~/composables/useFormValidation'
 import { useToast } from '~/composables/useToast'
 
 const route = useRoute()
-const { login, loginWithEmail, isLoggedIn } = useAuth()
+const { login, loginWithEmail, isLoggedIn, user } = useAuth()
 const toast = useToast()
 
 useHead({
@@ -199,7 +199,10 @@ onMounted(async () => {
     startSlideshow()
 
     if (isLoggedIn.value) {
-        const redirect = route.query.redirect || '/dashboard'
+        let redirect = route.query.redirect || '/dashboard'
+        if ((!route.query.redirect || redirect === '/dashboard') && user.value?.role === 'archer') {
+            redirect = '/dashboard/archers/events'
+        }
         window.location.href = redirect
         return
     }
@@ -232,7 +235,10 @@ const handleEmailAuth = async () => {
     try {
         await loginWithEmail(form.value.email, form.value.password)
         // Full page reload so auth state is restored from cookie/SSR
-        const redirect = route.query.redirect || '/dashboard'
+        let redirect = route.query.redirect || '/dashboard'
+        if ((!route.query.redirect || redirect === '/dashboard') && user.value?.role === 'archer') {
+            redirect = '/dashboard/archers/events'
+        }
         window.location.href = redirect
     } catch (err) {
         console.error('Auth failed:', err)
