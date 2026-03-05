@@ -10,14 +10,14 @@
       </div>
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div>
-          <div class="flex items-center gap-2 text-primary text-sm font-bold  tracking-wider mb-3">
-            <Icon icon="ph:gavel" class="text-lg" />
+          <div class="flex items-center gap-2 text-primary text-[10px] sm:text-sm font-bold tracking-wider mb-3">
+            <Icon icon="ph:gavel" class="text-base sm:text-lg" />
             Legal
           </div>
-          <h1 class="text-3xl md:text-5xl font-black text-white leading-tight mb-4">
+          <h1 class="text-2xl sm:text-3xl md:text-5xl font-black text-white leading-tight mb-4">
             Syarat dan Ketentuan
           </h1>
-          <p class="text-slate-300 text-lg leading-relaxed">
+          <p class="text-slate-300 text-sm md:text-lg leading-relaxed">
             Harap baca Syarat dan Ketentuan ini dengan teliti sebelum menggunakan platform kami.
           </p>
           <p class="text-slate-400 text-sm mt-6">
@@ -37,12 +37,13 @@
             situs web Archery Hub (the "Layanan") yang dioperasikan oleh Archery Hub Indonesia ("kami", "kita",
             atau "milik kami").
           </p>
-          <h3 class="text-xl font-bold text-navy dark:text-white mt-8 mb-4">1. Penerimaan Syarat</h3>
+          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">1. Penerimaan Syarat</h3>
           <p class="mb-4">
             Dengan mengakses atau menggunakan Layanan, Anda setuju untuk terikat oleh Syarat ini. Jika Anda tidak setuju
             dengan bagian mana pun dari syarat tersebut, maka Anda tidak boleh mengakses Layanan.
           </p>
-          <h3 class="text-xl font-bold text-navy dark:text-white mt-8 mb-4">2. Direktori Klub & Verifikasi</h3>
+          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">2. Direktori Klub & Verifikasi
+          </h3>
           <p class="mb-4">
             Archery Hub menyediakan direktori klub panahan di Indonesia. Meskipun kami berusaha untuk
             memverifikasi klub, kami tidak dapat menjamin keakuratan lengkap
@@ -56,7 +57,7 @@
               platform kami harus diselesaikan langsung antara para pihak. Archery Hub tidak bertanggung jawab atas
               operasi klub.</li>
           </ol>
-          <h3 class="text-xl font-bold text-navy dark:text-white mt-8 mb-4">3. Penghentian</h3>
+          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">3. Penghentian</h3>
           <p class="mb-4">
             Kami dapat menghentikan atau menangguhkan akses ke Layanan kami secara segera, tanpa pemberitahuan
             sebelumnya atau

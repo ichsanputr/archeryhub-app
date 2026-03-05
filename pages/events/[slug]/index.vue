@@ -4,7 +4,7 @@
         <template v-else>
 
             <!-- Hero Header -->
-            <div class="bg-navy relative overflow-hidden h-[400px] flex items-center">
+            <div class="bg-navy relative overflow-hidden min-h-[420px] pt-24 sm:pt-32 pb-12 flex items-center">
                 <div class="absolute inset-0 z-0">
                     <img :alt="tournament.name" class="w-full h-full object-cover object-center"
                         :src="tournament.image" />
@@ -12,7 +12,7 @@
                     <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90">
                     </div>
                 </div>
-                <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mt-16">
+                <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
                     <!-- Breadcrumb -->
                     <div class="mb-8">
                         <Breadcrumbs :items="[{ label: 'Event', path: '/events' }]"
@@ -22,7 +22,7 @@
                     <div class="flex flex-col lg:flex-row items-end justify-between gap-8 mb-12">
                         <div class="max-w-3xl">
                             <h1
-                                class="text-3xl sm:text-4xl font-black leading-tight tracking-tight mb-6 font-display text-white">
+                                class="text-2xl sm:text-3xl md:text-5xl font-black leading-tight tracking-tight mb-6 font-display text-white">
                                 {{ tournament.name }}
                             </h1>
                             <div
@@ -36,6 +36,28 @@
                                     <span>{{ displayValue(tournament.location) }}</span>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Promo Banner -->
+            <div class="bg-primary py-3 relative overflow-hidden group">
+                <div class="absolute inset-0 opacity-20"
+                    style="background-image: radial-gradient(circle, #0f172a 1px, transparent 1px); background-size: 20px 20px;">
+                </div>
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 text-center">
+                        <span class="text-[10px] sm:text-xs font-black text-navy-dark tracking-[0.2em] uppercase">
+                            🏹 Ingin Mengadakan Event Sendiri?
+                        </span>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs sm:text-sm font-black text-navy-dark">Mulai Turnamen Anda Gratis 3
+                                Bulan!</span>
+                            <NuxtLink to="/subscription"
+                                class="bg-navy-dark text-white text-[9px] sm:text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest hover:bg-navy transition-colors">
+                                Cek Paket
+                            </NuxtLink>
                         </div>
                     </div>
                 </div>
@@ -66,7 +88,7 @@
                             <section v-if="tournament.page_settings?.sections?.about !== false"
                                 class="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-gray-100">
                                 <h2
-                                    class="font-black text-navy text-lg md:text-2xl mb-6 flex items-center gap-2 md:gap-3">
+                                    class="font-black text-navy text-lg sm:text-2xl mb-6 flex items-center gap-2 md:gap-3">
                                     <div
                                         class="w-8 h-8 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-navy/5 flex items-center justify-center shrink-0">
                                         <Icon icon="ph:info-bold" class="text-base md:text-xl text-navy" />
@@ -154,7 +176,7 @@
                                                 </div>
                                                 <div>
                                                     <h3 class="font-black text-navy text-lg md:text-xl">{{ division.name
-                                                    }}
+                                                        }}
                                                     </h3>
                                                     <span
                                                         class="text-[10px] font-black tracking-[0.2em] uppercase">Tournament
@@ -341,7 +363,7 @@
                                                     </div>
                                                     <div class="text-white text-lg sm:text-xl font-black">{{
                                                         displayValue(tournament.prizes?.second)
-                                                    }}</div>
+                                                        }}</div>
                                                 </div>
                                                 <div class="w-full h-2 bg-white/10 overflow-hidden">
                                                     <div class="h-full bg-white/60 w-1/2"></div>

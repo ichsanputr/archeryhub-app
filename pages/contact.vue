@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="bg-navy relative overflow-hidden pt-32 pb-16 md:pt-40 md:pb-24">
+    <section class="bg-navy relative overflow-hidden pt-36 pb-16 md:pt-48 md:pb-24">
       <div class="absolute inset-0 z-0">
         <img src="/hero-homepage.jpeg" class="w-full h-full object-cover" />
         <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
@@ -10,14 +10,14 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="max-w-3xl font-display">
           <div
-            class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold tracking-widest mb-6">
-            <Icon icon="ph:headset-bold" class="text-lg" />
-            <span class="text-xs uppercase">Get in Touch</span>
+            class="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-[10px] sm:text-sm font-bold tracking-widest mb-6">
+            <Icon icon="ph:headset-bold" class="text-base sm:text-lg" />
+            <span class="uppercase">Get in Touch</span>
           </div>
-          <h1 class="text-white text-3xl md:text-5xl font-black leading-tight tracking-tight mb-4">
+          <h1 class="text-white text-2xl sm:text-3xl md:text-5xl font-black leading-tight tracking-tight mb-4">
             Hubungi <span class="text-primary">Kami</span>
           </h1>
-          <p class="text-slate-300 text-lg leading-relaxed max-w-2xl">
+          <p class="text-slate-300 text-sm md:text-lg leading-relaxed max-w-2xl">
             Ada pertanyaan tentang platform? Baik Anda pemilik klub, atlet, atau penyelenggara event, kami
             di sini untuk membantu Anda mencapai target.
           </p>
@@ -30,7 +30,7 @@
         <div class="lg:col-span-8">
           <div
             class="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 h-full">
-            <h2 class="text-2xl font-bold text-navy dark:text-white mb-6">Kirim pesan kepada kami</h2>
+            <h2 class="text-lg md:text-2xl font-black text-navy dark:text-white mb-6">Kirim pesan kepada kami</h2>
             <form class="space-y-6" @submit.prevent="handleSubmit">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -81,15 +81,15 @@
             <div class="absolute top-0 right-0 p-8 opacity-5 pointer-events-none">
               <Icon icon="ph:globe-hemisphere-west-bold" class="text-9xl" />
             </div>
-            <h3 class="font-bold text-xl mb-6 relative z-10">Informasi Kontak</h3>
+            <h3 class="font-black text-lg md:text-xl mb-6 relative z-10">Informasi Kontak</h3>
             <div class="space-y-6 relative z-10">
               <div class="flex items-start gap-4">
                 <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0">
                   <Icon icon="ph:map-pin-fill" class="text-primary" />
                 </div>
                 <div>
-                  <h4 class="text-sm font-bold text-slate-300  tracking-wide mb-1">Kantor Pusat</h4>
-                  <p class="text-white leading-relaxed text-sm">
+                  <h4 class="text-xs md:text-sm font-black text-slate-300 tracking-wide mb-1">Kantor Pusat</h4>
+                  <p class="text-white leading-relaxed text-xs md:text-sm">
                     Kompleks Olahraga Gelora Bung Karno<br />
                     Jl. Pintu Satu Senayan<br />
                     Jakarta Pusat, DKI Jakarta 10270
@@ -101,8 +101,8 @@
                   <Icon icon="ph:envelope-simple-fill" class="text-primary" />
                 </div>
                 <div>
-                  <h4 class="text-sm font-bold text-slate-300  tracking-wide mb-1">Dukungan Email</h4>
-                  <a class="text-white hover:text-primary transition-colors text-sm font-medium"
+                  <h4 class="text-xs md:text-sm font-black text-slate-300 tracking-wide mb-1">Dukungan Email</h4>
+                  <a class="text-white hover:text-primary transition-colors text-xs md:text-sm font-medium"
                     href="mailto:support@archeryhub.id">support@archeryhub.id</a>
                 </div>
               </div>
@@ -111,15 +111,15 @@
                   <Icon icon="ph:phone-fill" class="text-primary" />
                 </div>
                 <div>
-                  <h4 class="text-sm font-bold text-slate-300  tracking-wide mb-1">Telepon</h4>
-                  <a class="text-white hover:text-primary transition-colors text-sm font-medium"
+                  <h4 class="text-xs md:text-sm font-black text-slate-300 tracking-wide mb-1">Telepon</h4>
+                  <a class="text-white hover:text-primary transition-colors text-xs md:text-sm font-medium"
                     href="tel:+62215758888">+62 21 575 8888</a>
                   <div class="text-xs text-slate-400 mt-1">Senin-Jumat, 09.00 - 17.00 WIB</div>
                 </div>
               </div>
             </div>
             <div class="mt-8 pt-8 border-t border-white/10 relative z-10">
-              <h4 class="text-sm font-bold text-slate-300  tracking-wide mb-4">Ikuti Kami</h4>
+              <h4 class="text-xs md:text-sm font-black text-slate-300 tracking-wide mb-4">Ikuti Kami</h4>
               <div class="flex gap-4">
                 <a href="#"
                   class="w-10 h-10 rounded-lg bg-white/10 hover:bg-primary hover:text-navy transition-all flex items-center justify-center group">
@@ -146,7 +146,7 @@
             </div>
           </div>
           <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
-            <h3 class="font-bold text-navy dark:text-white mb-2 flex items-center gap-2">
+            <h3 class="font-black text-lg md:text-xl text-navy dark:text-white mb-2 flex items-center gap-2">
               <Icon icon="ph:question-bold" class="text-primary" />
               Bantuan Cepat
             </h3>

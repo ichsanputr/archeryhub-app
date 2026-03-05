@@ -1,7 +1,7 @@
 <template>
     <div class="min-h-screen bg-background-light text-navy">
         <!-- Hero Section -->
-        <section class="bg-navy relative overflow-hidden py-16 md:py-24 flex items-center">
+        <section class="bg-navy relative overflow-hidden pt-36 pb-16 md:pt-48 md:pb-24 flex items-center">
             <div class="absolute inset-0 z-0">
                 <img src="/hero-event-detail.jpeg" alt="Subscription Hero"
                     class="w-full h-full object-cover object-center opacity-40" />
@@ -12,14 +12,15 @@
             <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
                 <div class="max-w-3xl">
                     <div
-                        class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold tracking-widest mb-6">
-                        <Icon icon="ph:credit-card-bold" class="text-lg" />
+                        class="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-[10px] sm:text-sm font-bold tracking-widest mb-6">
+                        <Icon icon="ph:credit-card-bold" class="text-base sm:text-lg" />
                         <span>PAKET BERLANGGANAN</span>
                     </div>
-                    <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
+                    <h1
+                        class="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
                         Skalakan Manajemen Panahan Anda
                     </h1>
-                    <p class="text-white/90 text-base sm:text-lg leading-relaxed max-w-2xl">
+                    <p class="text-white/90 text-sm md:text-lg leading-relaxed max-w-2xl">
                         Opsi fleksibel untuk klub akar rumput sampai penyelenggara turnamen skala internasional.
                         <span class="text-primary font-bold">Dapatkan 3 bulan gratis</span> paket Standard untuk
                         pendaftaran organisasi/klub baru.
@@ -281,7 +282,8 @@
             <div class="mt-24 md:mt-40 max-w-4xl mx-auto px-4">
                 <div class="text-center mb-16">
                     <h2 class="text-sm font-black text-primary uppercase tracking-[0.3em] mb-4">FAQ</h2>
-                    <h4 class="font-black text-navy text-3xl md:text-5xl tracking-tight">Punya Pertanyaan?</h4>
+                    <h4 class="font-black text-navy text-2xl sm:text-3xl md:text-5xl tracking-tight">Punya Pertanyaan?
+                    </h4>
                 </div>
                 <div class="space-y-4">
                     <div v-for="(faq, index) in faqs" :key="index"

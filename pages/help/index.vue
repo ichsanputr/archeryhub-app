@@ -1,7 +1,7 @@
 <template>
     <div class="min-h-screen bg-gray-50">
         <!-- Hero Section -->
-        <section class="bg-navy relative overflow-hidden pt-32 pb-16 md:pt-40 md:pb-24">
+        <section class="bg-navy relative overflow-hidden pt-36 pb-16 md:pt-48 md:pb-24">
             <div class="absolute inset-0 z-0">
                 <img src="/hero-homepage.jpeg" class="w-full h-full object-cover" />
                 <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
@@ -12,11 +12,12 @@
             <div class="container mx-auto px-4 max-w-7xl relative z-10">
                 <div class="max-w-3xl text-center md:text-left">
                     <div
-                        class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold  tracking-widest mb-6">
-                        <Icon icon="ph:lifebuoy-bold" class="text-lg" />
+                        class="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-[10px] sm:text-sm font-bold tracking-widest mb-6">
+                        <Icon icon="ph:lifebuoy-bold" class="text-base sm:text-lg" />
                         <span>Pusat Bantuan</span>
                     </div>
-                    <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
+                    <h1
+                        class="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
                         Bagaimana Kami Bisa <span class="text-primary">Membantu Anda?</span>
                     </h1>
                     <div class="relative max-w-xl mx-auto md:mx-0">
@@ -38,7 +39,7 @@
                         class="w-14 h-14 rounded-2xl bg-gray-50 group-hover:bg-primary/10 flex items-center justify-center mb-6 text-gray-400 group-hover:text-primary transition-colors">
                         <Icon :icon="cat.icon" class="text-3xl" />
                     </div>
-                    <h3 class="text-xl font-bold text-navy mb-3">{{ cat.title }}</h3>
+                    <h3 class="text-lg sm:text-xl font-black text-navy mb-3">{{ cat.title }}</h3>
                     <p class="text-gray-500 text-sm leading-relaxed mb-6">{{ cat.description }}</p>
                     <NuxtLink :to="cat.link"
                         class="text-primary font-bold text-sm inline-flex items-center gap-2 hover:gap-3 transition-all">
@@ -51,7 +52,7 @@
             <!-- Popular Topics -->
             <div class="mt-16 grid grid-cols-1 lg:grid-cols-12 gap-10">
                 <div class="lg:col-span-8">
-                    <h2 class="text-2xl font-black text-navy mb-8 flex items-center gap-3">
+                    <h2 class="text-lg sm:text-2xl font-black text-navy mb-8 flex items-center gap-3">
                         <span class="w-1 h-8 bg-primary rounded-full"></span>
                         Topik Populer
                     </h2>
@@ -70,7 +71,7 @@
                 <div class="lg:col-span-4">
                     <div class="bg-navy rounded-3xl p-8 text-white relative overflow-hidden h-full">
                         <div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/20 rounded-full blur-3xl"></div>
-                        <h3 class="text-xl font-bold mb-6 relative z-10">Kontak Cepat</h3>
+                        <h3 class="text-lg sm:text-xl font-black mb-6 relative z-10">Kontak Cepat</h3>
                         <div class="space-y-6 relative z-10">
                             <div class="flex gap-4">
                                 <Icon icon="ph:envelope-simple-bold" class="text-2xl text-primary shrink-0" />

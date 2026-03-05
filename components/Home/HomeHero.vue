@@ -11,21 +11,20 @@
             <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
                 <div class="max-w-2xl">
                     <div ref="heroBadge"
-                        class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 w-fit mb-6 border border-white/10 backdrop-blur-md opacity-0 translate-y-4">
-                        <span class="w-2 h-2 rounded-full bg-primary"></span>
-                        <span class="text-white/90 text-xs font-medium tracking-wide ">Platform Panahan
-                            No.1 di
-                            Indonesia</span>
+                        class="inline-flex items-center gap-2 px-2 py-0.5 sm:px-3 sm:py-1 rounded-full bg-white/10 w-fit mb-6 border border-white/10 backdrop-blur-md opacity-0 translate-y-4">
+                        <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-primary"></span>
+                        <span class="text-white/90 text-[10px] sm:text-xs font-medium tracking-wide">Platform Panahan
+                            No.1 di Indonesia</span>
                     </div>
                     <h1 ref="heroTitle"
-                        class="text-3xl sm:text-4xl font-black text-white leading-[1.2] sm:leading-[1.1] mb-4 sm:mb-6 tracking-tight drop-shadow-sm font-display opacity-0 translate-y-8">
+                        class="text-3xl sm:text-5xl font-black text-white leading-[1.2] sm:leading-[1.1] mb-6 tracking-tight drop-shadow-sm font-display opacity-0 translate-y-8">
                         All in One<br />
                         <span
                             class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary to-green-300">Platform
                             Panahan</span><br /> Indonesia
                     </h1>
                     <p ref="heroText"
-                        class="text-white/80 text-base sm:text-lg font-light leading-relaxed mb-8 sm:mb-10 max-w-xl drop-shadow-md opacity-0 translate-y-8">
+                        class="text-white/80 text-sm sm:text-base font-light leading-relaxed mb-8 sm:mb-10 max-w-xl drop-shadow-md opacity-0 translate-y-8">
                         Archeryhub.id hadir sebagai wadah bagi seluruh penggiat panahan di Indonesia. Dari pemula
                         hingga juara nasional, di sini kita terhubung lewat event, prestasi, dan semangat yang sama.
                     </p>

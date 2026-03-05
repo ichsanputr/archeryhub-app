@@ -1,7 +1,7 @@
 <template>
     <div class="min-h-screen bg-background-light font-body text-navy">
         <!-- Hero Section: List Events -->
-        <div class="bg-navy relative overflow-hidden pt-32 pb-16 md:pt-40 md:pb-24">
+        <div class="bg-navy relative overflow-hidden pt-36 pb-16 md:pt-48 md:pb-24">
             <div class="absolute inset-0 z-0">
                 <img src="/hero-event.jpeg" class="w-full h-full object-cover" />
                 <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
@@ -11,15 +11,16 @@
             <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="max-w-3xl">
                     <div
-                        class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold  tracking-widest mb-6">
-                        <Icon icon="ph:calendar-bold" class="text-lg" />
+                        class="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-[10px] sm:text-sm font-bold tracking-widest mb-6">
+                        <Icon icon="ph:calendar-bold" class="text-base sm:text-lg" />
                         <span>Event Panahan</span>
                     </div>
-                    <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
+                    <h1
+                        class="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
                         Temukan <span class="text-primary">Target</span><br />
                         Kemenanganmu
                     </h1>
-                    <p class="text-white/90 text-base sm:text-lg leading-relaxed max-w-xl mb-8">
+                    <p class="text-white/90 text-sm md:text-lg leading-relaxed max-w-xl mb-8">
                         Ikuti berbagai turnamen panahan bergengsi di seluruh Indonesia. Dari tingkat klub hingga
                         nasional, semua tersedia dalam satu platform.
                     </p>
@@ -127,7 +128,7 @@
                 <!-- Main Content: Tournament Grid -->
                 <div class="flex-1">
                     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
-                        <h2 class="text-2xl font-black text-navy flex items-center gap-3">
+                        <h2 class="text-lg sm:text-2xl font-black text-navy flex items-center gap-3">
                             Semua Event
                             <span class="px-3 py-1 bg-gray-100 text-gray-400 font-bold text-sm rounded-full">{{
                                 filteredTournaments.length }}</span>
@@ -231,7 +232,8 @@
             <div class="container mx-auto px-4 max-w-7xl relative z-10">
                 <div class="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-10">
                     <div class="text-center md:text-left">
-                        <h2 class="text-2xl md:text-3xl font-black text-white mb-3 tracking-tight">Punya Event Panahan?
+                        <h2 class="text-lg sm:text-2xl md:text-3xl font-black text-white mb-3 tracking-tight">Punya
+                            Event Panahan?
                         </h2>
                         <p class="text-white/70 text-sm sm:text-base font-bold max-w-xl leading-relaxed">Daftarkan event
                             Anda di Archeryhub.id dan kelola pendaftaran serta scoring dengan lebih profesional.</p>

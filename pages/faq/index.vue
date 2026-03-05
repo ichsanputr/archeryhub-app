@@ -1,7 +1,7 @@
 <template>
     <div class="min-h-screen bg-gray-50">
         <!-- Hero Section -->
-        <section class="bg-navy relative overflow-hidden pt-32 pb-16 md:pt-40 md:pb-24">
+        <section class="bg-navy relative overflow-hidden pt-36 pb-16 md:pt-48 md:pb-24">
             <div class="absolute inset-0 z-0">
                 <img src="/hero-homepage.jpeg" class="w-full h-full object-cover" />
                 <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
@@ -12,14 +12,15 @@
             <div class="container mx-auto px-4 max-w-4xl relative z-10">
                 <div class="max-w-3xl text-center md:text-left">
                     <div
-                        class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold  tracking-widest mb-6">
-                        <Icon icon="ph:question-bold" class="text-lg" />
-                        <span class="text-xs">Support Center</span>
+                        class="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-[10px] sm:text-sm font-bold tracking-widest mb-6">
+                        <Icon icon="ph:question-bold" class="text-base sm:text-lg" />
+                        <span>Support Center</span>
                     </div>
-                    <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
+                    <h1
+                        class="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
                         Pertanyaan <span class="text-primary">Sering Diajukan</span>
                     </h1>
-                    <p class="text-white/90 text-base sm:text-lg leading-relaxed max-w-xl mx-auto md:mx-0">
+                    <p class="text-white/90 text-sm md:text-lg leading-relaxed max-w-xl mx-auto md:mx-0">
                         Temukan jawaban cepat untuk pertanyaan umum mengenai pendaftaran, manajemen klub, dan sistem
                         scoring Archeryhub.id.
                     </p>
@@ -35,7 +36,7 @@
                     <button @click="toggleFaq(index)"
                         class="w-full px-6 py-5 flex items-center justify-between text-left group">
                         <span class="font-bold text-navy group-hover:text-primary transition-colors">{{ faq.question
-                            }}</span>
+                        }}</span>
                         <Icon icon="ph:caret-down-bold"
                             :class="['text-gray-400 transition-transform duration-300', activeFaq === index ? 'rotate-180' : '']" />
                     </button>
@@ -51,7 +52,7 @@
                     class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-primary">
                     <Icon icon="ph:chat-circle-dots-bold" class="text-3xl" />
                 </div>
-                <h2 class="text-2xl font-black text-navy mb-3">Masih Butuh Bantuan?</h2>
+                <h2 class="text-lg sm:text-2xl font-black text-navy mb-3">Masih Butuh Bantuan?</h2>
                 <p class="text-gray-500 mb-8 max-w-md mx-auto">
                     Tim dukungan kami siap membantu Anda dengan kendala teknis atau pertanyaan lainnya.
                 </p>

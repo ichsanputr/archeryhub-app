@@ -163,12 +163,12 @@ defineProps({
 defineEmits(['select'])
 
 const comparisonData = [
-    { feature: 'Maksimum Peserta', basic: '40 / Event', elite: 'Tak Terbatas', icon: 'ph:users-three-bold' },
-    { feature: 'Penyimpanan Media', basic: '1 GB', elite: '3 GB', icon: 'ph:hard-drives-bold' },
-    { feature: 'Buat Berita (News)', basic: true, elite: true, icon: 'ph:newspaper-bold' },
-    { feature: 'Profil Organisasi', basic: 'Lengkap & Kustom', elite: 'Lengkap & Kustom', icon: 'ph:buildings-bold' },
-    { feature: 'Promosi Event', basic: true, elite: true, icon: 'ph:megaphone-bold' },
-    { feature: 'Analitik Lanjutan', basic: true, elite: true, icon: 'ph:chart-bar-bold' },
+    { feature: 'Maksimum Peserta', basic: '50 / Event', elite: 'Tak Terbatas', icon: 'ph:users-three-bold' },
+    { feature: 'Sistem Digital Scoring', basic: true, elite: true, icon: 'ph:target-bold' },
+    { feature: 'Manajemen Match Finals', basic: false, elite: true, icon: 'ph:trophy-bold' },
+    { feature: 'Integrasi Pembayaran', basic: false, elite: true, icon: 'ph:credit-card-bold' },
+    { feature: 'Penyimpanan Media', basic: '1 GB', elite: '5 GB', icon: 'ph:hard-drives-bold' },
+    { feature: 'Analitik Lanjutan', basic: false, elite: true, icon: 'ph:chart-bar-bold' },
     { feature: 'Dukungan Prioritas', basic: true, elite: true, icon: 'ph:headset-bold' },
 ]
 </script>

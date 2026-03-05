@@ -3,7 +3,7 @@
         <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between mb-6">
                 <div>
-                    <h2 class="text-xl sm:text-2xl font-bold text-navy mb-2 font-display">Klub Pilihan</h2>
+                    <h2 class="text-lg sm:text-2xl font-black text-navy mb-2 font-display">Klub Pilihan</h2>
                     <p class="text-gray-500 text-xs sm:text-sm hidden sm:block">Cek klub panahan keren di sekitar
                         kamu.</p>
                 </div>

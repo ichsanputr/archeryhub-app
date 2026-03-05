@@ -1,13 +1,14 @@
 <template>
     <div class="bg-navy-dark min-h-screen flex flex-col selection:bg-primary selection:text-navy-dark">
         <!-- ── Hero Section ── -->
-        <section class="relative h-[28rem] w-full overflow-hidden bg-navy-dark">
+        <section
+            class="relative min-h-[32rem] w-full overflow-hidden bg-navy-dark pt-28 sm:pt-36 pb-12 sm:pb-20 flex items-end">
             <img :src="useImageOrDefault(archer.banner_url || archer.avatar_url, archer.full_name)"
                 class="w-full h-full object-cover object-top opacity-80" :alt="archer.full_name" />
             <div class="absolute inset-0 bg-gradient-to-t from-navy-dark via-navy-dark/40 to-transparent"></div>
 
             <div
-                class="absolute bottom-12 left-0 right-0 p-8 sm:p-12 max-w-7xl mx-auto flex flex-col sm:flex-row items-end justify-between gap-8 z-10">
+                class="relative w-full p-8 sm:p-12 max-w-7xl mx-auto flex flex-col sm:flex-row items-end justify-between gap-8 z-10">
                 <div class="text-white space-y-4 w-full sm:w-auto">
                     <div class="flex flex-wrap items-center gap-4">
                         <span
@@ -28,7 +29,7 @@
                                 :alt="archer.full_name" />
                         </div>
                         <h1
-                            class="text-3xl sm:text-4xl font-black uppercase tracking-tighter leading-[0.95] break-words">
+                            class="text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tighter leading-[0.95] break-words">
                             {{ archer.full_name?.split(' ')[0] }} <br />
                             <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-white">
                                 {{ archer.full_name?.split(' ').slice(1).join(' ') }}
@@ -65,7 +66,7 @@
                                 class="text-sm font-black uppercase tracking-[0.4em] text-navy/30 flex items-center gap-4">
                                 Biografi <span class="h-px flex-1 bg-gray-100"></span>
                             </h3>
-                            <p class="text-base sm:text-lg text-navy/80 leading-relaxed font-light">
+                            <p class="text-sm md:text-lg text-navy/80 leading-relaxed font-light">
                                 {{ archer.bio || `${archer.full_name} adalah atlet panahan berdedikasi yang berkompetisi
                                 di kategori ${bowTypeLabel || 'Recurve'}. Aktif berpartisipasi dalam berbagai kejuaraan
                                 untuk mengasah kemampuan dan meraih prestasi terbaik.` }}

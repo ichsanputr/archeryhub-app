@@ -1,7 +1,7 @@
 <template>
     <div class="min-h-screen bg-gray-50">
         <!-- Hero Section -->
-        <section class="bg-navy relative overflow-hidden py-16 md:py-24">
+        <section class="bg-navy relative overflow-hidden pt-32 pb-16 md:pt-48 md:pb-24">
             <div class="absolute inset-0 z-0">
                 <img src="/hero-archer.jpeg" alt="Archers Background" class="w-full h-full object-cover" />
                 <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
@@ -12,15 +12,16 @@
             <div class="container mx-auto px-4 max-w-7xl relative z-10">
                 <div class="max-w-3xl">
                     <div
-                        class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold  tracking-widest mb-6">
-                        <Icon icon="ph:user-circle-gear-bold" class="text-lg" />
+                        class="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-[10px] sm:text-sm font-bold tracking-widest mb-6">
+                        <Icon icon="ph:user-circle-gear-bold" class="text-base sm:text-lg" />
                         <span>Komunitas Pemanah</span>
                     </div>
-                    <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
+                    <h1
+                        class="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
                         Temukan <span class="text-primary">Inspirasi</span> & <br />
                         Koneksi Pemanah Indonesia
                     </h1>
-                    <p class="text-white/90 text-base sm:text-lg leading-relaxed max-w-xl">
+                    <p class="text-white/90 text-sm md:text-lg leading-relaxed max-w-xl">
                         Jelajahi profil para pemanah berbakat dari seluruh penjuru nusantara. Lihat prestasi, klub, dan
                         dedikasi mereka dalam dunia panahan.
                     </p>
@@ -182,7 +183,7 @@
             <!-- Empty State -->
             <div v-if="archers.length === 0 && !isLoading" class="text-center py-20">
                 <Icon icon="ph:user-focus-light" class="text-7xl text-gray-200 mb-6 mx-auto" />
-                <h3 class="text-2xl font-black text-navy mb-3">Pemanah Tidak Ditemukan</h3>
+                <h3 class="text-lg sm:text-2xl font-black text-navy mb-3">Pemanah Tidak Ditemukan</h3>
                 <p class="text-gray-500 max-w-md mx-auto">Coba ubah filter atau kata kunci pencarian untuk menemukan
                     pemanah yang sesuai.</p>
             </div>

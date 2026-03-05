@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-screen bg-gray-50 pt-16">
+    <div class="min-h-screen bg-gray-50 pt-24">
         <!-- Breadcrumb -->
         <div class="bg-white border-b border-gray-200 sticky top-16 z-30">
             <div class="container mx-auto px-4 max-w-7xl py-3 md:py-4">
@@ -57,7 +57,8 @@
                 <div class="space-y-6">
                     <!-- Title & Stock -->
                     <div class="space-y-2">
-                        <h1 class="text-2xl lg:text-3xl font-black text-navy leading-tight">{{ product.name }}</h1>
+                        <h1 class="text-xl sm:text-2xl md:text-3xl font-black text-navy leading-tight">{{ product.name
+                        }}</h1>
                         <div class="flex items-center gap-2 text-sm">
                             <span v-if="product.stock > 0" class="font-bold text-green-600">
                                 Stok: {{ product.stock }}
@@ -74,7 +75,8 @@
                             <span class="text-3xl md:text-4xl font-black text-navy">
                                 Rp {{ formatPrice(product.sale_price || product.price) }}
                             </span>
-                            <span v-if="product.sale_price" class="text-lg md:text-xl text-gray-400 line-through mb-1">
+                            <span v-if="product.sale_price"
+                                class="text-base sm:text-lg md:text-xl text-gray-400 line-through mb-1">
                                 Rp {{ formatPrice(product.price) }}
                             </span>
                         </div>

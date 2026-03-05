@@ -1,7 +1,7 @@
 <template>
     <div class="min-h-screen bg-gray-50">
         <!-- Hero Section -->
-        <section class="bg-navy relative overflow-hidden pt-32 pb-16 md:pt-40 md:pb-24">
+        <section class="bg-navy relative overflow-hidden pt-36 pb-16 md:pt-48 md:pb-24">
             <div class="absolute inset-0 z-0">
                 <img src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=1600&auto=format&fit=crop&q=80"
                     alt="Shop Background" class="w-full h-full object-cover" />
@@ -12,15 +12,16 @@
             <div class="container mx-auto px-4 max-w-7xl relative z-10">
                 <div class="max-w-3xl">
                     <div
-                        class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold  tracking-widest mb-6">
-                        <Icon icon="ph:shopping-bag-bold" class="text-lg" />
+                        class="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-[10px] sm:text-sm font-bold tracking-widest mb-6">
+                        <Icon icon="ph:shopping-bag-bold" class="text-base sm:text-lg" />
                         <span>Marketplace Panahan</span>
                     </div>
-                    <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
+                    <h1
+                        class="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
                         Lengkapi <span class="text-primary">Peralatan</span><br />
                         Panahan Terbaikmu
                     </h1>
-                    <p class="text-white/90 text-base sm:text-lg leading-relaxed max-w-xl">
+                    <p class="text-white/90 text-sm md:text-lg leading-relaxed max-w-xl">
                         Temukan peralatan berkualitas dari berbagai klub dan organisasi terpercaya di seluruh Indonesia.
                     </p>
 
@@ -91,7 +92,7 @@
             <div v-else-if="filteredProducts.length === 0 && !isLoading"
                 class="flex flex-col items-center justify-center py-20">
                 <Icon icon="ph:package-light" class="text-7xl text-gray-200 mb-6" />
-                <h3 class="text-2xl font-black text-navy mb-3">Produk Tidak Ditemukan</h3>
+                <h3 class="text-lg sm:text-2xl font-black text-navy mb-3">Produk Tidak Ditemukan</h3>
                 <p class="text-gray-500 max-w-md mx-auto text-center">Coba ubah filter atau kata kunci pencarian untuk
                     menemukan produk yang sesuai.</p>
             </div>
@@ -177,7 +178,7 @@
         <!-- Become a Seller CTA -->
         <section class="bg-gradient-to-r from-primary to-amber-400 py-16">
             <div class="container mx-auto px-4 max-w-7xl text-center">
-                <h2 class="text-3xl font-black text-navy mb-4">Ingin Jual Produk Panahan?</h2>
+                <h2 class="text-xl sm:text-2xl md:text-3xl font-black text-navy mb-4">Ingin Jual Produk Panahan?</h2>
                 <p class="text-navy/70 max-w-xl mx-auto mb-8">
                     Gabung sebagai penjual dan jangkau ribuan pemanah di seluruh Indonesia. Gratis untuk klub dan
                     organisasi!

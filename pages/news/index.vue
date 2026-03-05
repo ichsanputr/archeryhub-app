@@ -1,7 +1,7 @@
 <template>
     <div class="min-h-screen bg-gray-50">
         <!-- Hero Section -->
-        <section class="bg-navy relative overflow-hidden pt-32 pb-16 md:pt-40 md:pb-24">
+        <section class="bg-navy relative overflow-hidden pt-36 pb-16 md:pt-48 md:pb-24">
             <div class="absolute inset-0 z-0">
                 <img src="/hero-berita.jpeg" class="w-full h-full object-cover" />
                 <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
@@ -12,15 +12,16 @@
             <div class="container mx-auto px-4 max-w-7xl relative z-10">
                 <div class="max-w-3xl">
                     <div
-                        class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold  tracking-widest mb-6">
-                        <Icon icon="ph:newspaper-clipping" class="text-lg" />
+                        class="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-[10px] sm:text-sm font-bold tracking-widest mb-6">
+                        <Icon icon="ph:newspaper-clipping" class="text-base sm:text-lg" />
                         <span>Berita & Artikel</span>
                     </div>
-                    <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
+                    <h1
+                        class="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
                         Kabar Terbaru <br />
                         <span class="text-primary">Dunia Panahan</span>
                     </h1>
-                    <p class="text-white/90 text-base sm:text-lg leading-relaxed max-w-xl">
+                    <p class="text-white/90 text-sm md:text-lg leading-relaxed max-w-xl">
                         Ikuti perkembangan terbaru turnamen, prestasi atlet, dan berita seputar komunitas panahan
                         Indonesia.
                     </p>
@@ -83,7 +84,7 @@
                                     </template>
                                 </div>
                                 <h2
-                                    class="text-white text-2xl md:text-3xl font-black mt-4 leading-tight group-hover:text-primary transition-colors">
+                                    class="text-white text-xl sm:text-2xl md:text-3xl font-black mt-4 leading-tight group-hover:text-primary transition-colors">
                                     {{ featuredArticle.title }}
                                 </h2>
                                 <p class="text-gray-300 mt-3 line-clamp-2 max-w-2xl">{{ featuredArticle.excerpt }}</p>

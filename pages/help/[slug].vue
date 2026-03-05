@@ -1,5 +1,5 @@
 <template>
-    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 md:py-12 pt-20 md:pt-24">
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 md:py-12 pt-28 md:pt-36">
         <!-- Breadcrumb -->
         <div class="mb-8">
             <Breadcrumbs :items="[
@@ -27,7 +27,7 @@
                             Diperbarui: {{ tutorial.lastUpdated }}
                         </div>
                     </div>
-                    <h1 class="text-3xl md:text-4xl lg:text-5xl font-black text-navy leading-tight mb-6">
+                    <h1 class="text-2xl sm:text-3xl md:text-5xl font-black text-navy leading-tight mb-6">
                         {{ tutorial.title }}
                     </h1>
                 </div>
@@ -51,7 +51,7 @@
                 <div
                     class="mt-12 p-8 bg-white rounded-2xl border border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
                     <div>
-                        <h4 class="font-black text-navy text-lg mb-1">Apakah panduan ini membantu?</h4>
+                        <h4 class="font-black text-navy text-lg sm:text-xl mb-1">Apakah panduan ini membantu?</h4>
                         <p class="text-sm text-slate-500">Berikan feedback Anda untuk membantu kami meningkatkan
                             layanan.</p>
                     </div>

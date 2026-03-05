@@ -2,7 +2,7 @@
     <section class="bg-gray-50 py-16 md:py-20 overflow-hidden">
         <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between mb-8">
-                <h2 class="text-xl sm:text-2xl font-bold text-navy flex items-center gap-2 sm:gap-3 font-display">
+                <h2 class="text-lg sm:text-2xl font-black text-navy flex items-center gap-2 sm:gap-3 font-display">
                     <span class="w-2.5 h-2.5 sm:w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
                     Lagi Berlangsung Nih!
                 </h2>

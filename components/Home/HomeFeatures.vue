@@ -32,7 +32,7 @@
                                 leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 -translate-y-8">
                                 <div :key="activeFeature" class="max-w-xl">
                                     <h3
-                                        class="text-xl sm:text-2xl md:text-3xl lg:text-5xl font-black text-white mb-2 sm:mb-4 font-display leading-tight">
+                                        class="text-xl sm:text-2xl lg:text-5xl font-black text-white mb-2 sm:mb-4 font-display leading-tight">
                                         {{ featureItems[activeFeature].title }}
                                     </h3>
                                     <div class="text-white/80 text-sm sm:text-base leading-relaxed font-light">
@@ -50,7 +50,7 @@
                         <span
                             class="inline-block py-1 px-3 bg-primary text-navy text-[10px] font-black  tracking-[0.2em] rounded-md">Ekosistem
                             Presisi</span>
-                        <h2 class="text-3xl md:text-4xl lg:text-5xl font-black text-navy leading-[1.1] font-display">
+                        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-navy leading-[1.1] font-display">
                             Semua Makin <span
                                 class="text-transparent bg-clip-text bg-gradient-to-r from-navy to-navy/40">Presisi.</span>
                         </h2>

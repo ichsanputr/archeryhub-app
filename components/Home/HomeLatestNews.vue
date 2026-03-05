@@ -2,7 +2,7 @@
     <section class="bg-white py-16 md:py-20 border-t border-gray-100">
         <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between mb-8">
-                <h2 class="text-xl sm:text-2xl font-bold text-navy font-display">Kabar Terbaru</h2>
+                <h2 class="text-lg sm:text-2xl font-black text-navy font-display">Kabar Terbaru</h2>
                 <NuxtLink class="text-gray-500 hover:text-navy font-bold text-xs sm:text-sm" to="/news">Cek Berita
                     Lainnya
                 </NuxtLink>

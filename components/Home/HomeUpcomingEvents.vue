@@ -2,7 +2,7 @@
     <div class="bg-white rounded-3xl shadow-sm border border-border-subtle/50 p-6 md:p-8 h-full">
         <div class="flex items-center justify-between mb-8">
             <div>
-                <h2 class="text-navy text-xl sm:text-2xl font-bold tracking-tight font-display">Event
+                <h2 class="text-navy text-lg sm:text-2xl font-black tracking-tight font-display">Event
                     Terbaru</h2>
                 <p class="text-text-sub text-xs sm:text-sm mt-1">Event terbaru yang bisa kamu ikuti!
                 </p>

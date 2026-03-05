@@ -76,32 +76,32 @@ const handleSelectPlan = (plan) => {
 const clubPlanDetails = [
     {
         id: [3, 5],
-        features: ['Maksimal 50 Anggota Klub', 'Penyimpanan Media 1 GB', 'Profil Klub Lengkap', 'Publikasi Berita Klub', 'Akses Forum Komunitas'],
+        features: ['Maksimal 50 Anggota Klub', 'Manajemen Absensi & Check-in', 'Manajemen Prestasi & Medali', 'Publikasi Berita & Artikel', 'Penyimpanan Media 1 GB'],
     },
     {
         id: [4, 6],
-        features: ['Anggota Tak Terbatas', 'Penyimpanan Media 3 GB', 'Semua fitur Standar Klub', 'Konsultasi Coach Bulanan', 'Akses Awal Fitur Baru'],
+        features: ['Anggota Tak Terbatas', 'Manajemen Tim & Official', 'Kustom Form Pendaftaran', 'Analitik & Statistik Lanjutan', 'Penyimpanan Media 3 GB'],
     }
 ]
 
 const orgPlanDetails = [
     {
         id: [3, 5],
-        features: ['Maksimum Peserta 40 / Event', 'Penyimpanan Media 1 GB', 'Profil Organisasi Lengkap & Kustom', 'Buat Berita (News)', 'Promosi Event', 'Analitik Lanjutan', 'Dukungan Prioritas'],
+        features: ['Maksimum 50 Peserta / Event', 'Manajemen Pendaftaran Online', 'Sistem Digital Scoring', 'Live Results (Public)', 'Penyimpanan Media 1 GB'],
     },
     {
         id: [4, 6],
-        features: ['Maksimum Peserta Tak Terbatas', 'Penyimpanan Media 3 GB', 'Profil Organisasi Lengkap & Kustom', 'Buat Berita (News)', 'Promosi Event', 'Analitik Lanjutan', 'Dukungan Prioritas'],
+        features: ['Maksimum Peserta Tak Terbatas', 'Manajemen Match Finals', 'Integrasi Pembayaran Otomatis', 'Analitik & Laporan Lanjutan', 'Penyimpanan Media 5 GB'],
     }
 ]
 
 const comparisonData = [
-    { feature: 'Maksimum Peserta', basic: '40 / Event', elite: 'Tak Terbatas', icon: 'ph:users-three-bold' },
-    { feature: 'Penyimpanan Media', basic: '1 GB', elite: '3 GB', icon: 'ph:hard-drives-bold' },
-    { feature: 'Buat Berita (News)', basic: true, elite: true, icon: 'ph:newspaper-bold' },
-    { feature: 'Profil Organisasi', basic: 'Lengkap & Kustom', elite: 'Lengkap & Kustom', icon: 'ph:buildings-bold' },
-    { feature: 'Promosi Event', basic: true, elite: true, icon: 'ph:megaphone-bold' },
-    { feature: 'Analitik Lanjutan', basic: true, elite: true, icon: 'ph:chart-bar-bold' },
+    { feature: 'Pendaftaran Online', basic: true, elite: true, icon: 'ph:clipboard-text-bold' },
+    { feature: 'Sistem Digital Scoring', basic: true, elite: true, icon: 'ph:target-bold' },
+    { feature: 'Manajemen Match Finals', basic: false, elite: true, icon: 'ph:trophy-bold' },
+    { feature: 'Penyimpanan Media', basic: '1 GB', elite: '5 GB', icon: 'ph:hard-drives-bold' },
+    { feature: 'Analitik Lanjutan', basic: false, elite: true, icon: 'ph:chart-bar-bold' },
+    { feature: 'Integrasi Pembayaran', basic: false, elite: true, icon: 'ph:credit-card-bold' },
     { feature: 'Dukungan Prioritas', basic: true, elite: true, icon: 'ph:headset-bold' },
 ]
 
@@ -240,9 +240,10 @@ const usageMedia = computed(() => ({
 
 const usageMembers = computed(() => {
     const isElite = currentPlan.value?.name === 'Elite'
-    const limit = isElite ? 'Tak Terbatas' : 40 // Force Standar limit to 40 regardless of backend current state
+    const limitCount = 50 // Standard limit updated to 50
+    const limit = isElite ? 'Tak Terbatas' : limitCount
     const current = subscriptionRes.value?.current?.usage?.current || 0
-    const percent = isElite ? 0 : Math.min((current / 40) * 100, 100)
+    const percent = isElite ? 0 : Math.min((current / limitCount) * 100, 100)
 
     return {
         current,

@@ -10,14 +10,14 @@
       </div>
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div>
-          <div class="flex items-center gap-2 text-primary text-sm font-bold  tracking-wider mb-3">
-            <Icon icon="ph:shield-check" class="text-lg" />
+          <div class="flex items-center gap-2 text-primary text-[10px] sm:text-sm font-bold tracking-wider mb-3">
+            <Icon icon="ph:shield-check" class="text-base sm:text-lg" />
             Legal
           </div>
-          <h1 class="text-3xl md:text-5xl font-black text-white leading-tight mb-4">
+          <h1 class="text-2xl sm:text-3xl md:text-5xl font-black text-white leading-tight mb-4">
             Kebijakan Privasi
           </h1>
-          <p class="text-slate-300 text-lg leading-relaxed">
+          <p class="text-slate-300 text-sm md:text-lg leading-relaxed">
             Di Archery Hub Indonesia, kami sangat menjaga privasi Anda.
           </p>
           <p class="text-slate-400 text-sm mt-6">
@@ -38,7 +38,8 @@
             situs web kami termasuk bentuk media lainnya, saluran media, situs web seluler, atau
             aplikasi seluler yang terkait atau terhubung dengannya.
           </p>
-          <h3 class="text-xl font-bold text-navy dark:text-white mt-8 mb-4">1. Pengumpulan Informasi Anda</h3>
+          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">1. Pengumpulan Informasi Anda
+          </h3>
           <p class="mb-4">Kami dapat mengumpulkan informasi tentang Anda dengan berbagai cara. Informasi
             yang mungkin kami kumpulkan di Situs meliputi:</p>
           <ul class="list-disc pl-6 space-y-2 mb-6 marker:text-primary">
@@ -54,7 +55,8 @@
               tentang
               layanan kami dari Situs.</li>
           </ul>
-          <h3 class="text-xl font-bold text-navy dark:text-white mt-8 mb-4">2. Penggunaan Informasi Anda</h3>
+          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">2. Penggunaan Informasi Anda
+          </h3>
           <p class="mb-4">Memiliki informasi yang akurat tentang Anda memungkinkan kami memberikan Anda
             pengalaman yang lancar, efisien, dan disesuaikan. Secara khusus, kami dapat menggunakan informasi
             yang dikumpulkan tentang Anda melalui Situs untuk:</p>

@@ -17,7 +17,7 @@
                 <div class="absolute inset-0 bg-gradient-to-t from-navy via-navy/40 to-transparent"></div>
             </div>
 
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-32 pb-10 sm:pb-16 relative z-10 text-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 sm:pt-40 pb-10 sm:pb-16 relative z-10 text-white">
                 <!-- Back nav -->
                 <NuxtLink to="/news"
                     class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white/50 hover:text-primary transition-colors mb-8 sm:mb-12">
@@ -28,12 +28,12 @@
                 <div class="w-full">
                     <!-- Category Tag -->
                     <span
-                        class="inline-block bg-primary text-navy text-[10px] font-black px-2 py-1 mb-6 tracking-widest uppercase rounded-sm">
+                        class="inline-block bg-primary text-navy text-[10px] sm:text-xs font-black px-2 py-1 mb-6 tracking-widest uppercase rounded-sm">
                         {{ article.category || 'Berita' }}
                     </span>
 
                     <h1
-                        class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight mb-8 sm:mb-10 uppercase drop-shadow-lg">
+                        class="text-2xl sm:text-3xl md:text-5xl font-black tracking-tight leading-tight mb-8 sm:mb-10 uppercase drop-shadow-lg">
                         {{ article.title }}
                     </h1>
 

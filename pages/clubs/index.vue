@@ -1,7 +1,7 @@
 <template>
     <div class="min-h-screen bg-gray-50">
         <!-- Hero Section -->
-        <section class="bg-navy relative overflow-hidden py-16 md:py-24">
+        <section class="bg-navy relative overflow-hidden pt-32 pb-16 md:pt-48 md:pb-24">
             <div class="absolute inset-0 z-0">
                 <img src="/hero-club.jpeg" class="w-full h-full object-cover" />
                 <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
@@ -12,15 +12,16 @@
             <div class="container mx-auto px-4 max-w-7xl relative z-10">
                 <div class="max-w-3xl">
                     <div
-                        class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-sm font-bold  tracking-widest mb-6">
-                        <Icon icon="ph:users-three-bold" class="text-lg" />
+                        class="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-[10px] sm:text-sm font-bold tracking-widest mb-6">
+                        <Icon icon="ph:users-three-bold" class="text-base sm:text-lg" />
                         <span>Komunitas Pemanah</span>
                     </div>
-                    <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
+                    <h1
+                        class="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
                         Temukan <span class="text-primary">Klub Panahan</span><br />
                         Terbaik di Indonesia
                     </h1>
-                    <p class="text-white/90 text-base sm:text-lg leading-relaxed max-w-xl">
+                    <p class="text-white/90 text-sm md:text-lg leading-relaxed max-w-xl">
                         Bergabunglah dengan komunitas pemanah dan tingkatkan kemampuan bersama pelatih dan fasilitas
                         terbaik.
                     </p>
@@ -48,7 +49,7 @@
             <div
                 class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 grid grid-cols-2 md:grid-cols-4 gap-6">
                 <div class="text-center">
-                    <p class="text-2xl md:text-4xl font-black text-navy tracking-tight">{{ totalItems }}+</p>
+                    <p class="text-xl sm:text-2xl md:text-4xl font-black text-navy tracking-tight">{{ totalItems }}+</p>
                     <p class="text-[10px] md:text-sm text-gray-500 font-bold  tracking-wide mt-1">Klub</p>
                 </div>
                 <div class="text-center border-l border-gray-100">
@@ -139,7 +140,7 @@
                     <!-- Club Info -->
                     <div class="px-6 pb-6 flex-1 flex flex-col text-center">
                         <h3
-                            class="font-black text-navy text-xl leading-tight mb-1 group-hover:text-primary transition-colors">
+                            class="font-black text-lg sm:text-xl leading-tight mb-1 group-hover:text-primary transition-colors">
                             {{ club.name }}
                         </h3>
                         <div

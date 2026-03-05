@@ -10,13 +10,14 @@
              HERO HEADER — Full Width
              ══════════════════════════════════════ -->
         <!-- ── Hero Section ── -->
-        <section class="relative h-[28rem] w-full overflow-hidden bg-navy-dark">
+        <section
+            class="relative min-h-[32rem] w-full overflow-hidden bg-navy-dark pt-28 sm:pt-36 pb-12 sm:pb-20 flex items-end">
             <img :src="useImageOrDefault(club.bannerUrl || club.logoUrl, club.name)"
                 class="w-full h-full object-cover object-center opacity-80" :alt="club.name" />
             <div class="absolute inset-0 bg-gradient-to-t from-navy-dark via-navy-dark/40 to-transparent"></div>
 
             <div
-                class="absolute bottom-12 left-0 right-0 p-8 sm:p-12 max-w-7xl mx-auto flex flex-col sm:flex-row items-end justify-between gap-8 z-10">
+                class="relative w-full p-8 sm:p-12 max-w-7xl mx-auto flex flex-col sm:flex-row items-end justify-between gap-8 z-10">
                 <div class="text-white space-y-4 w-full sm:w-auto">
                     <div class="flex flex-wrap items-center gap-4">
                         <span
@@ -36,7 +37,8 @@
                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                 :alt="club.name" />
                         </div>
-                        <h1 class="text-3xl sm:text-4xl font-black uppercase tracking-tight leading-[0.9] text-white">
+                        <h1
+                            class="text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tight leading-[0.9] text-white">
                             {{ club.name }}
                         </h1>
                     </div>
@@ -99,7 +101,7 @@
                         </h3>
                         <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
                             <div class="md:col-span-8">
-                                <p class="text-base md:text-xl text-navy/80 leading-relaxed font-light">
+                                <p class="text-sm md:text-xl text-navy/80 leading-relaxed font-light">
                                     {{ club.description || defaultDesc }}
                                 </p>
                             </div>
@@ -431,7 +433,8 @@
                                         <Icon icon="ph:question-bold" class="text-primary mt-1 shrink-0" />
                                         {{ item.question }}
                                     </h4>
-                                    <p class="text-navy/60 text-base leading-relaxed pl-8">{{ item.answer }}</p>
+                                    <p class="text-navy/60 text-sm md:text-base leading-relaxed pl-8">{{ item.answer }}
+                                    </p>
                                 </div>
                             </div>
 
