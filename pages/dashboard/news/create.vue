@@ -77,40 +77,7 @@
                         <Icon icon="ph:text-aa" class="text-primary" />
                         Konten Berita
                     </h3>
-
-                    <!-- Rich Text Toolbar -->
-                    <div class="flex items-center gap-1 p-2 bg-gray-50 rounded-t-xl border border-gray-200 border-b-0">
-                        <button type="button" class="p-2 hover:bg-white rounded-lg transition-colors" title="Bold">
-                            <Icon icon="ph:text-b-bold" class="text-gray-600" />
-                        </button>
-                        <button type="button" class="p-2 hover:bg-white rounded-lg transition-colors" title="Italic">
-                            <Icon icon="ph:text-italic-bold" class="text-gray-600" />
-                        </button>
-                        <button type="button" class="p-2 hover:bg-white rounded-lg transition-colors" title="Underline">
-                            <Icon icon="ph:text-underline-bold" class="text-gray-600" />
-                        </button>
-                        <div class="w-px h-6 bg-gray-200 mx-1"></div>
-                        <button type="button" class="p-2 hover:bg-white rounded-lg transition-colors" title="Heading">
-                            <Icon icon="ph:text-h-bold" class="text-gray-600" />
-                        </button>
-                        <button type="button" class="p-2 hover:bg-white rounded-lg transition-colors" title="List">
-                            <Icon icon="ph:list-bullets-bold" class="text-gray-600" />
-                        </button>
-                        <button type="button" class="p-2 hover:bg-white rounded-lg transition-colors" title="Link">
-                            <Icon icon="ph:link-bold" class="text-gray-600" />
-                        </button>
-                        <div class="w-px h-6 bg-gray-200 mx-1"></div>
-                        <button type="button" class="p-2 hover:bg-white rounded-lg transition-colors" title="Image">
-                            <Icon icon="ph:image-bold" class="text-gray-600" />
-                        </button>
-                        <button type="button" class="p-2 hover:bg-white rounded-lg transition-colors" title="Video">
-                            <Icon icon="ph:video-bold" class="text-gray-600" />
-                        </button>
-                    </div>
-
-                    <textarea v-model="form.content"
-                        class="w-full px-6 py-4 rounded-b-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none min-h-[400px] text-gray-700 leading-relaxed"
-                        placeholder="Tulis konten berita Anda di sini..."></textarea>
+                    <TiptapEditor v-model="form.content" placeholder="Tulis konten berita Anda di sini..." />
                 </div>
 
                 <!-- Actions -->
@@ -139,6 +106,8 @@ import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from '~/composables/useToast'
+import TiptapEditor from '~/components/common/TiptapEditor.client.vue'
+import MediaLibrary from '~/components/common/MediaLibrary.vue'
 
 definePageMeta({
     title: 'Buat Berita',

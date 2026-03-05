@@ -74,10 +74,7 @@
                         <Icon icon="ph:text-aa" class="text-primary" />
                         Konten Berita
                     </h3>
-
-                    <textarea v-model="form.content"
-                        class="w-full px-6 py-4 border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none min-h-[400px] text-gray-700 leading-relaxed"
-                        placeholder="Tulis konten berita Anda di sini..."></textarea>
+                    <TiptapEditor v-model="form.content" placeholder="Tulis konten berita Anda di sini..." />
                 </div>
 
                 <!-- Actions -->
@@ -107,6 +104,8 @@ import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useToast } from '~/composables/useToast'
 import { useApi } from '~/composables/useApi'
+import TiptapEditor from '~/components/common/TiptapEditor.client.vue'
+import MediaLibrary from '~/components/common/MediaLibrary.vue'
 
 definePageMeta({
     title: 'Edit Berita',

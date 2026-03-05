@@ -891,7 +891,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import TiptapEditor from '~/components/common/TiptapEditor.vue'
+import TiptapEditor from '~/components/common/TiptapEditor.client.vue'
 import MediaLibrary from '~/components/common/MediaLibrary.vue'
 import BaseSelect from '~/components/common/BaseSelect.vue'
 import { useApi } from '~/composables/useApi'

@@ -35,8 +35,8 @@
                   @blur="validate('name', form.name, [rules.required()])" />
               </div>
               <div class="md:col-span-2">
-                <BaseInput v-model="form.slug" label="Slug Event" placeholder="contoh: national-indoor-championship-2024"
-                  required :error="errors.slug"
+                <BaseInput v-model="form.slug" label="Slug Event"
+                  placeholder="contoh: national-indoor-championship-2024" required :error="errors.slug"
                   @input="onSlugInput"
                   @blur="validate('slug', form.slug, [rules.required(), rules.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Slug hanya boleh huruf kecil, angka, dan tanda minus (-)')])" />
                 <p class="text-xs text-gray-500 mt-1.5">
@@ -208,7 +208,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import TiptapEditor from '~/components/common/TiptapEditor.vue'
+import TiptapEditor from '~/components/common/TiptapEditor.client.vue'
 import FormSection from '~/components/common/FormSection.vue'
 import MediaLibrary from '~/components/common/MediaLibrary.vue'
 import { useFormValidation } from '~/composables/useFormValidation'
