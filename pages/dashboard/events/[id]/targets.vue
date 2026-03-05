@@ -4,9 +4,8 @@
     <!-- Enhanced Header -->
     <div
       class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-      <!-- Background Pattern -->
-      <div class="absolute inset-0 opacity-20"
-        style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);">
+      <!-- Theme Motif Pattern -->
+      <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
       </div>
 
       <!-- Decorative Background Elements -->
@@ -21,7 +20,7 @@
             <!-- Icon Badge -->
             <div
               class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
-              <Icon icon="ph:target" class="text-primary text-2xl" />
+              <Icon icon="ph:target" class="text-white text-2xl" />
             </div>
 
             <!-- Title Section -->
@@ -128,7 +127,7 @@
             <div class="flex items-center gap-2">
               <span class="text-[10px] font-black text-gray-400 tracking-[0.2em] uppercase">Bantalan</span>
               <span
-                class="size-8 rounded-lg bg-navy text-primary flex items-center justify-center font-black text-sm font-mono shadow-sm">
+                class="size-8 rounded-lg bg-navy text-white flex items-center justify-center font-black text-sm font-mono shadow-sm">
                 {{ target.target_number }}
               </span>
             </div>

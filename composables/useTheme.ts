@@ -106,6 +106,19 @@ export const useTheme = () => {
         '0 0 0'
     }
 
+    const getLuminance = (hex: string) => {
+      const rgbStr = hexToRgb(hex)
+      const rgb = rgbStr.split(' ').map(Number)
+      const res = rgb.map((v) => {
+        v /= 255
+        return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)
+      })
+      return 0.2126 * res[0] + 0.7152 * res[1] + 0.0722 * res[2]
+    }
+
+    const primaryLuminance = getLuminance(colors.primary)
+    const contrastText = primaryLuminance > 0.5 ? '#0f172a' : '#ffffff'
+
     root.style.setProperty('--primary-color', colors.primary)
     root.style.setProperty('--primary-rgb', hexToRgb(colors.primary))
     root.style.setProperty('--primary-hover', colors.primaryHover)
@@ -121,14 +134,14 @@ export const useTheme = () => {
     root.style.setProperty('--motif-opacity', colors.motifOpacity)
     root.style.setProperty('--primary-text', colors.primaryText)
 
-    // Set button text colors
-    root.style.setProperty('--btn-text', colors.primaryText)
+    // Set button text colors with smart contrast
+    root.style.setProperty('--btn-text', colors.primaryText || contrastText)
 
     // For inverse (buttons with dark backgrounds like navy), 
     // we want high contrast. If the primary is a light/neon color (like lime #D9FF00), 
     // we use it as the accent. Else we use white.
     const primaryHex = colors.primary.toUpperCase()
-    const isNeonColor = ['#D9FF00', '#F9D006', '#F59E0B'].includes(primaryHex)
+    const isNeonColor = ['#D9FF00', '#F9D006', '#F59E0B'].includes(primaryHex) || primaryLuminance > 0.7
     root.style.setProperty('--btn-text-inverse', isNeonColor ? colors.primary : '#ffffff')
   }
 

@@ -36,16 +36,16 @@
                     <div v-for="div in divisions" :key="div.uuid" @click="toggleSelection(div.uuid, selectedDivisions)"
                         :class="selectedDivisions.includes(div.uuid) ? 'border-primary bg-primary/10 ring-2 ring-primary/20' : 'border-gray-50 bg-gray-50/30 hover:bg-gray-50'"
                         class="flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all duration-200">
-                        <div :class="selectedDivisions.includes(div.uuid) ? 'bg-primary text-navy' : 'bg-white text-gray-300'"
+                        <div :class="selectedDivisions.includes(div.uuid) ? 'bg-primary text-btn-text' : 'bg-white text-gray-300'"
                             class="h-6 w-6 rounded-lg flex items-center justify-center transition-colors shadow-sm">
                             <Icon icon="ph:check-bold" v-if="selectedDivisions.includes(div.uuid)" class="text-sm" />
                         </div>
                         <div class="min-w-0">
                             <span class="text-sm font-bold block"
-                                :class="selectedDivisions.includes(div.uuid) ? 'text-navy' : 'text-gray-600'">{{
+                                :class="selectedDivisions.includes(div.uuid) ? 'text-primary-dark' : 'text-gray-600'">{{
                                     div.name }}</span>
                             <span class="text-[10px] font-medium text-gray-400  tracking-wide">Ref: {{ div.code
-                            }}</span>
+                                }}</span>
                         </div>
                     </div>
                 </div>
@@ -68,13 +68,13 @@
                     <div v-for="age in ageGroups" :key="age.uuid" @click="toggleSelection(age.uuid, selectedAgeGroups)"
                         :class="selectedAgeGroups.includes(age.uuid) ? 'border-primary bg-primary/10 ring-2 ring-primary/20' : 'border-gray-50 bg-gray-50/30 hover:bg-gray-50'"
                         class="flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all duration-200">
-                        <div :class="selectedAgeGroups.includes(age.uuid) ? 'bg-primary text-navy' : 'bg-white text-gray-300'"
+                        <div :class="selectedAgeGroups.includes(age.uuid) ? 'bg-primary text-btn-text' : 'bg-white text-gray-300'"
                             class="h-6 w-6 rounded-lg flex items-center justify-center transition-colors shadow-sm">
                             <Icon icon="ph:check-bold" v-if="selectedAgeGroups.includes(age.uuid)" class="text-sm" />
                         </div>
                         <div class="min-w-0">
                             <span class="text-sm font-bold block"
-                                :class="selectedAgeGroups.includes(age.uuid) ? 'text-navy' : 'text-gray-600'">{{
+                                :class="selectedAgeGroups.includes(age.uuid) ? 'text-primary-dark' : 'text-gray-600'">{{
                                     age.name }}</span>
                             <span class="text-[10px] font-medium text-gray-400  tracking-wide">{{ age.min_age
                                 || 'Any' }} - {{ age.max_age || 'Any' }} Tahun</span>

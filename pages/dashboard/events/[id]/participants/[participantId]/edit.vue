@@ -3,9 +3,9 @@
         <!-- Enhanced Header -->
         <div
             class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-            <!-- Background Pattern -->
-            <div class="absolute inset-0 opacity-20"
-                style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);">
+            <!-- Theme Motif Pattern -->
+            <div class="absolute inset-0"
+                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
             </div>
 
             <!-- Decorative Background Elements -->

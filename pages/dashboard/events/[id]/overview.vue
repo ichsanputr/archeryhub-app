@@ -3,9 +3,9 @@
         <!-- Enhanced Header -->
         <div
             class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-            <!-- Background Pattern -->
-            <div class="absolute inset-0 opacity-20"
-                style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);">
+            <!-- Theme Motif Pattern -->
+            <div class="absolute inset-0"
+                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
             </div>
 
             <!-- Decorative Background Elements -->
@@ -20,7 +20,7 @@
                         <!-- Icon Badge -->
                         <div
                             class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md flex-shrink-0">
-                            <Icon icon="ph:calendar-check" class="text-primary text-2xl" />
+                            <Icon icon="ph:calendar-check" class="text-white text-2xl" />
                         </div>
 
                         <!-- Title Section -->
@@ -42,7 +42,7 @@
                                 <div class="flex flex-wrap items-center gap-4">
                                     <div
                                         class="flex items-center gap-2 text-slate-300 text-xs font-bold  tracking-wider">
-                                        <Icon icon="ph:hash-bold" class="text-primary text-sm" />
+                                        <Icon icon="ph:hash-bold" class="text-white text-sm" />
                                         <span>{{ event?.code }}</span>
                                     </div>
                                 </div>

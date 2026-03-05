@@ -31,18 +31,18 @@
                 <div class="lg:col-span-2 space-y-8">
                     <!-- Athlete Profile Card -->
                     <div
-                        class="bg-white dark:bg-slate-800 rounded-[32px] border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/30 overflow-hidden">
+                        class="bg-white dark:bg-slate-800 rounded-[32px] border border-slate-100 dark:border-slate-700 shadow-sm shadow-slate-200/30 overflow-hidden">
                         <div class="p-8">
                             <div
                                 class="flex flex-col md:flex-row gap-8 items-center md:items-start text-center md:text-left">
                                 <div class="relative">
                                     <div
-                                        class="w-32 h-32 rounded-3xl border-4 border-primary p-1 bg-white dark:bg-slate-800 shadow-lg">
+                                        class="w-32 h-32 rounded-3xl border-4 border-primary p-1 bg-white dark:bg-slate-800 shadow-sm">
                                         <img :src="useImageOrDefault(participant.avatar_url, participant.full_name)"
                                             class="w-full h-full rounded-2xl object-cover" />
                                     </div>
                                     <div
-                                        class="absolute -bottom-2 -right-2 bg-navy text-primary text-[10px] font-black px-3 py-1.5 rounded-xl border-2 border-white dark:border-slate-800 shadow-lg">
+                                        class="absolute -bottom-2 -right-2 bg-navy text-white text-[10px] font-black px-3 py-1.5 rounded-xl border-2 border-white dark:border-slate-800 shadow-sm">
                                         ARCHER
                                     </div>
                                 </div>
@@ -82,7 +82,7 @@
 
                     <!-- Kategori & Target Info -->
                     <div
-                        class="bg-white dark:bg-slate-800 rounded-[32px] border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/30 overflow-hidden p-8">
+                        class="bg-white dark:bg-slate-800 rounded-[32px] border border-slate-100 dark:border-slate-700 shadow-sm shadow-slate-200/30 overflow-hidden p-8">
                         <h4 class="text-xl font-black text-navy dark:text-white mb-6 flex items-center gap-3">
                             <Icon icon="ph:squares-four-bold" class="text-primary" />
                             Detail Pertandingan
@@ -118,7 +118,7 @@
                 <div class="space-y-8">
                     <!-- Status Card -->
                     <div
-                        class="bg-white dark:bg-slate-800 rounded-[32px] border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/30 overflow-hidden p-8">
+                        class="bg-white dark:bg-slate-800 rounded-[32px] border border-slate-100 dark:border-slate-700 shadow-sm shadow-slate-200/30 overflow-hidden p-8">
                         <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-6">Status Pembayaran
                         </h4>
 
@@ -159,7 +159,7 @@
                                             <div
                                                 class="absolute inset-0 bg-navy/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
                                                 <button @click="openImage(url)"
-                                                    class="p-3 bg-primary text-navy rounded-xl shadow-xl shadow-primary/20">
+                                                    class="p-3 bg-primary text-navy rounded-xl shadow-sm shadow-primary/20">
                                                     <Icon icon="ph:magnifying-glass-plus-bold" class="text-xl" />
                                                 </button>
                                             </div>

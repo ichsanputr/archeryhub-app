@@ -3,9 +3,8 @@
     <!-- Enhanced Header -->
     <div
       class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-      <!-- Background Pattern -->
-      <div class="absolute inset-0 opacity-20"
-        style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);">
+      <!-- Theme Motif Pattern -->
+      <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
       </div>
 
       <!-- Decorative Background Elements -->
@@ -20,7 +19,7 @@
             <!-- Icon Badge -->
             <div
               class="h-12 w-12 sm:h-14 sm:w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
-              <Icon icon="ph:brackets-curly" class="text-primary text-xl sm:text-2xl" />
+              <Icon icon="ph:brackets-curly" class="text-white text-xl sm:text-2xl" />
             </div>
 
             <!-- Title Section -->
@@ -695,8 +694,8 @@ const categoryOptions = computed(() => {
 })
 
 const formatOptions = [
-  { value: 'recurve_set', title: 'Set System (untuk Recurve)' },
-  { value: 'compound_total', title: 'Total Score (untuk Compound)' }
+  { value: 'recurve_set', title: 'Set System' },
+  { value: 'compound_total', title: 'Total Score' }
 ]
 
 const bracketSizeOptions = [

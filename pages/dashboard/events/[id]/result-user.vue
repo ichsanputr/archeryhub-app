@@ -7,7 +7,7 @@
                     <NuxtLink :to="`/dashboard/events/${eventId}`" class="hover:text-primary transition-colors">Event
                     </NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[10px]" />
-                    <span class="text-slate-600 dark:text-slate-300">Athlete Profile</span>
+                    <span class="text-slate-600 dark:text-slate-300">Profil Atlet</span>
                 </nav>
                 <div class="flex items-center gap-4">
                     <button @click="handleBack"
@@ -21,9 +21,9 @@
                 <BaseButton variant="white" icon="ph:download-bold" class="h-11 px-6 shadow-sm font-bold">
                     Export PDF
                 </BaseButton>
-                <BaseButton variant="primary" icon="ph:share-network-bold"
-                    class="h-11 px-6 shadow-lg shadow-primary/20 font-black text-navy">
-                    Share Report
+                <BaseButton variant="navy" icon="ph:share-network-bold"
+                    class="h-11 px-6 shadow-lg shadow-navy/20 font-black">
+                    Bagikan Laporan
                 </BaseButton>
             </div>
         </div>
@@ -53,7 +53,7 @@
                                 class="w-full h-full rounded-2xl object-cover" />
                         </div>
                         <div
-                            class="absolute -bottom-2 -right-2 bg-navy text-primary text-[10px] font-black px-3 py-1.5 rounded-xl border-2 border-white dark:border-slate-800 shadow-lg">
+                            class="absolute -bottom-2 -right-2 bg-navy text-white text-[10px] font-black px-3 py-1.5 rounded-xl border-2 border-white dark:border-slate-800 shadow-lg">
                             ARCHER
                         </div>
                     </div>
@@ -85,26 +85,26 @@
                             <div
                                 class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-700 transition-colors hover:border-primary/30">
                                 <p class="text-[10px] uppercase font-black text-slate-400 tracking-widest mb-1.5">
-                                    Division</p>
+                                    Divisi</p>
                                 <p class="font-black text-navy dark:text-white">{{ categoryName || 'Standard Bow' }}</p>
                             </div>
                             <div
                                 class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-700 transition-colors hover:border-primary/30">
                                 <p class="text-[10px] uppercase font-black text-slate-400 tracking-widest mb-1.5">
-                                    Qualification Rank</p>
+                                    Peringkat Kualifikasi</p>
                                 <p class="font-black text-navy dark:text-white">#{{ qualRank || '-' }} <span
                                         class="text-[10px] text-slate-400">/ {{ totalParticipants }}</span></p>
                             </div>
                             <div
                                 class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-700 transition-colors hover:border-primary/30">
                                 <p class="text-[10px] uppercase font-black text-slate-400 tracking-widest mb-1.5">
-                                    Equipment</p>
+                                    Peralatan</p>
                                 <p class="font-black text-navy dark:text-white">{{ userProfile?.bow_type || '-' }}</p>
                             </div>
                             <div
                                 class="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-700 transition-colors hover:border-primary/30 text-primary">
-                                <p class="text-[10px] uppercase font-black text-slate-400 tracking-widest mb-1.5">Avg.
-                                    Arrow</p>
+                                <p class="text-[10px] uppercase font-black text-slate-400 tracking-widest mb-1.5">
+                                    Rata-rata Skor</p>
                                 <p class="font-black text-navy dark:text-white">{{ averageArrowScore }}</p>
                             </div>
                         </div>
@@ -117,7 +117,8 @@
                 <div
                     class="bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/30 dark:shadow-none flex items-center justify-between transform transition-all hover:scale-[1.02]">
                     <div>
-                        <p class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-2">Qual Rank</p>
+                        <p class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-2">Peringkat
+                            Kualifikasi</p>
                         <p class="text-5xl font-black text-navy dark:text-white tracking-tighter">
                             {{ qualRank || '-' }}<span class="text-lg font-bold align-top mt-2 ml-0.5">{{
                                 getOrdinal(qualRank) }}</span>
@@ -134,14 +135,15 @@
                     <div
                         class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none" />
                     <div>
-                        <p class="text-primary/60 text-[10px] font-black uppercase tracking-widest mb-2">Final Standing
+                        <p class="text-white/60 text-[10px] font-black uppercase tracking-widest mb-2">Peringkat Akhir
                         </p>
-                        <p class="text-4xl font-black text-primary tracking-tight">
-                            {{ elimStatusLabel === 'Winner' ? 'Champion' : elimStatusLabel }}
+                        <p class="text-4xl font-black text-white tracking-tight">
+                            {{ elimStatusLabel === 'Winner' ? 'Juara' : elimStatusLabel === 'Done' ? 'Selesai' :
+                            elimStatusLabel }}
                         </p>
                     </div>
                     <div
-                        class="w-16 h-16 bg-primary/20 rounded-3xl flex items-center justify-center text-primary shadow-lg shadow-primary/20">
+                        class="w-16 h-16 bg-white/20 rounded-3xl flex items-center justify-center text-white shadow-lg shadow-black/20">
                         <Icon :icon="elimStatusLabel === 'Winner' ? 'ph:crown-bold' : 'ph:trophy-bold'"
                             class="text-4xl" />
                     </div>
@@ -150,7 +152,7 @@
                 <div
                     class="bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/30 dark:shadow-none flex items-center justify-between transform transition-all hover:scale-[1.02]">
                     <div>
-                        <p class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-2">Total Score</p>
+                        <p class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-2">Total Skor</p>
                         <p class="text-5xl font-black text-navy dark:text-white tracking-tighter">{{ qualTotalScore || 0
                             }}<span class="text-sm font-bold text-slate-400 ml-2 tracking-widest">PTS</span></p>
                     </div>
@@ -174,7 +176,7 @@
                                     class="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
                                     <Icon icon="ph:chart-line-up-bold" class="text-lg" />
                                 </div>
-                                Qualification Journey
+                                Jejak Kualifikasi
                             </h4>
                         </div>
                         <div
@@ -193,8 +195,8 @@
                                 class="bg-slate-50/50 dark:bg-slate-900/50 text-slate-400 uppercase text-[10px] font-black tracking-widest">
                                 <tr>
                                     <th class="px-8 py-4">End</th>
-                                    <th class="px-8 py-4 text-center">Arrows Breakdown</th>
-                                    <th class="px-8 py-4 text-center">Score</th>
+                                    <th class="px-8 py-4 text-center">Rincian Skor</th>
+                                    <th class="px-8 py-4 text-center">Skor</th>
                                     <th class="px-8 py-4 text-center">10s+X</th>
                                 </tr>
                             </thead>
@@ -226,7 +228,7 @@
                                     </tr>
                                     <tr class="bg-primary/5 dark:bg-primary/5 font-black">
                                         <td class="px-8 py-6 text-right uppercase tracking-widest text-[10px] text-slate-500"
-                                            colspan="2">Session Summary:
+                                            colspan="2">Ringkasan Sesi:
                                         </td>
                                         <td class="px-8 py-6 text-center text-primary text-2xl tracking-tighter">{{
                                             activeSession.total_score }}</td>
@@ -291,9 +293,9 @@
                             </div>
                             <div
                                 class="flex justify-between items-center bg-slate-50 dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-700">
-                                <span class="text-slate-400 font-black uppercase text-[10px] tracking-widest">Vertical
-                                    Bias</span>
-                                <span class="font-black text-navy dark:text-white">Neutral</span>
+                                <span class="text-slate-400 font-black uppercase text-[10px] tracking-widest">Bias
+                                    Vertikal</span>
+                                <span class="font-black text-navy dark:text-white">Netral</span>
                             </div>
                         </div>
                     </div>
@@ -308,7 +310,7 @@
                         class="w-10 h-10 rounded-2xl bg-indigo-500/20 flex items-center justify-center text-indigo-500 shadow-lg shadow-indigo-500/10">
                         <Icon icon="ph:git-merge-bold" class="text-xl" />
                     </div>
-                    Elimination Flow
+                    Bagan Eliminasi
                 </h4>
 
                 <div v-if="elimMatches.length === 0"
@@ -324,7 +326,7 @@
                             <div class="w-[280px] shrink-0">
                                 <div
                                     class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-center mb-6">
-                                    Round {{ match.round_no }}</div>
+                                    Babak {{ match.round_no }}</div>
                                 <div class="relative p-6 rounded-[32px] overflow-hidden transition-all hover:translate-y-[-4px] group"
                                     :class="match.winner_entry_uuid === myEntryUuid ? 'bg-navy text-white shadow-2xl shadow-primary/20 border-b-4 border-primary' : 'bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-700'">
 
@@ -334,7 +336,7 @@
                                                 <img :src="getAvatarUrl(match.entry_a_name)"
                                                     class="size-10 rounded-xl object-cover shrink-0 ring-2 ring-white/10" />
                                                 <span class="text-xs font-black truncate"
-                                                    :class="match.winner_entry_uuid === match.entry_a_uuid ? 'text-primary' : 'text-slate-500'">{{
+                                                    :class="match.winner_entry_uuid === match.entry_a_uuid ? 'text-white' : 'text-slate-400'">{{
                                                         match.entry_a_name || 'TBD' }}</span>
                                             </div>
                                             <span class="text-sm font-black tabular-nums">{{ match.total_score_a ?? 0
@@ -348,7 +350,7 @@
                                                 <img :src="getAvatarUrl(match.entry_b_name)"
                                                     class="size-10 rounded-xl object-cover shrink-0 ring-2 ring-white/10" />
                                                 <span class="text-xs font-black truncate"
-                                                    :class="match.winner_entry_uuid === match.entry_b_uuid ? 'text-primary' : 'text-slate-500'">{{
+                                                    :class="match.winner_entry_uuid === match.entry_b_uuid ? 'text-white' : 'text-slate-400'">{{
                                                         match.entry_b_name || 'TBD' }}</span>
                                             </div>
                                             <span class="text-sm font-black tabular-nums">{{ match.total_score_b ?? 0
@@ -434,8 +436,8 @@ const getOrdinal = (n) => {
 }
 
 const getScoreColorClass = (score) => {
-    if (score === 'X' || score === '10') return 'bg-primary text-navy'
-    if (score === '9') return 'bg-primary/20 text-navy-dark border border-primary/30'
+    if (score === 'X' || score === '10') return 'bg-primary text-slate-900'
+    if (score === '9') return 'bg-primary/20 text-slate-900 border border-primary/30'
     if (score === '8' || score === '7') return 'bg-red-500 text-white shadow-red-500/20'
     if (score === '6' || score === '5') return 'bg-blue-500 text-white shadow-blue-500/20'
     if (score === '4' || score === '3') return 'bg-slate-800 text-white'

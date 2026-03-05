@@ -80,7 +80,7 @@
                             <div class="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
                                 <Icon icon="ph:chart-line-up-bold" class="text-lg" />
                             </div>
-                            Qualification Journey
+                            Jejak Kualifikasi
                         </h4>
                         <div
                             class="flex bg-slate-100 dark:bg-slate-900 p-1 rounded-xl text-[10px] font-black uppercase tracking-widest border border-slate-200 dark:border-slate-700 shadow-inner">
@@ -98,8 +98,8 @@
                                 class="bg-slate-50/50 dark:bg-slate-900/50 text-slate-400 uppercase text-[10px] font-black tracking-widest">
                                 <tr>
                                     <th class="px-8 py-4">End</th>
-                                    <th class="px-8 py-4 text-center">Arrows Breakdown</th>
-                                    <th class="px-8 py-4 text-center">Score</th>
+                                    <th class="px-8 py-4 text-center">Rincian Skor</th>
+                                    <th class="px-8 py-4 text-center">Skor</th>
                                     <th class="px-8 py-4 text-center">10s+X</th>
                                 </tr>
                             </thead>
@@ -131,7 +131,7 @@
                                     </tr>
                                     <tr class="bg-primary/5 dark:bg-primary/5 font-black">
                                         <td class="px-8 py-6 text-right uppercase tracking-widest text-[10px] text-slate-500"
-                                            colspan="2">Session Summary:
+                                            colspan="2">Ringkasan Sesi:
                                         </td>
                                         <td class="px-8 py-6 text-center text-primary text-2xl tracking-tighter">{{
                                             activeSession.total_score }}</td>
@@ -189,8 +189,8 @@ const getOrdinal = (n) => {
 }
 
 const getScoreColorClass = (score) => {
-    if (score === 'X' || score === '10') return 'bg-primary text-navy'
-    if (score === '9') return 'bg-primary/20 text-navy-dark border border-primary/30'
+    if (score === 'X' || score === '10') return 'bg-primary text-slate-900'
+    if (score === '9') return 'bg-primary/20 text-slate-900 border border-primary/30'
     if (score === '8' || score === '7') return 'bg-red-500 text-white shadow-red-500/20'
     if (score === '6' || score === '5') return 'bg-blue-500 text-white shadow-blue-500/20'
     return 'bg-slate-100 text-slate-500'

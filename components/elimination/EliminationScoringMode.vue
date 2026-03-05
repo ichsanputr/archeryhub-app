@@ -28,10 +28,14 @@
                         <div class="flex items-center justify-between mb-4">
                             <div class="flex items-center gap-2">
                                 <div
-                                    class="px-2 py-0.5 rounded-lg bg-navy text-btn-inverse text-[9px] font-black shadow-sm uppercase tracking-wider">
-                                    Match {{ match.match_no }}
+                                    class="px-2 py-0.5 rounded-lg bg-primary text-btn-text text-[9px] font-black shadow-sm uppercase tracking-wider">
+                                    M{{ match.match_no }}
                                 </div>
-                                <div v-if="match.target_name"
+                                <div v-if="match.board_code"
+                                    class="px-2 py-0.5 rounded-lg bg-navy text-primary text-[9px] font-black uppercase tracking-wider shadow-sm">
+                                    {{ match.board_code }}
+                                </div>
+                                <div v-else-if="match.target_name"
                                     class="px-2 py-0.5 rounded-lg bg-slate-100/80 text-slate-500 text-[9px] font-black uppercase tracking-wider">
                                     {{ match.target_name }}
                                 </div>
@@ -110,7 +114,7 @@
                                 <img :src="useImageOrDefault(selectedScoringMatch.entry_a_avatar || selectedScoringMatch.entry_a_photo, selectedScoringMatch.entry_a_name)"
                                     class="size-16 sm:size-24 rounded-[2rem] sm:rounded-[2.5rem] border-2 sm:border-4 border-white/10 shadow-sm relative z-10" />
                                 <div
-                                    class="absolute -bottom-1 -left-1 z-20 size-6 sm:size-8 bg-navy border-2 border-primary rounded-lg sm:rounded-xl flex items-center justify-center text-[8px] sm:text-[10px] font-black text-primary shadow-sm">
+                                    class="absolute -bottom-1 -left-1 z-20 size-6 sm:size-8 bg-primary border-2 border-white rounded-lg sm:rounded-xl flex items-center justify-center text-[8px] sm:text-[10px] font-black text-btn-text shadow-sm">
                                     {{ selectedScoringMatch.entry_a_seed || '-' }}
                                 </div>
                             </div>
@@ -185,7 +189,7 @@
                                     </button>
                                 </div>
                                 <button v-else-if="canEndMatch" @click="$emit('end-match')" :disabled="isEndingMatch"
-                                    class="group px-6 py-2 rounded-xl w-[100px] bg-primary text-navy font-black text-[10px] tracking-widest uppercase hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-sm shadow-primary/20 hover:-translate-y-0.5">
+                                    class="group px-6 py-2 rounded-xl w-[100px] bg-primary text-btn-text font-black text-[10px] tracking-widest uppercase hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-sm shadow-primary/20 hover:-translate-y-0.5">
                                     <div class="flex-none">
                                         <Icon v-if="isEndingMatch" icon="ph:circle-notch-bold"
                                             class="animate-spin text-xs" />
@@ -228,7 +232,7 @@
                                 <img :src="useImageOrDefault(selectedScoringMatch.entry_b_avatar || selectedScoringMatch.entry_b_photo, selectedScoringMatch.entry_b_name)"
                                     class="size-16 sm:size-24 rounded-[2rem] sm:rounded-[2.5rem] border-2 sm:border-4 border-white/10 shadow-sm relative z-10" />
                                 <div
-                                    class="absolute -bottom-1 -right-1 z-20 size-6 sm:size-8 bg-navy border-2 border-white/20 rounded-lg sm:rounded-xl flex items-center justify-center text-[8px] sm:text-[10px] font-black text-white/40 shadow-sm">
+                                    class="absolute -bottom-1 -right-1 z-20 size-6 sm:size-8 bg-primary border-2 border-white rounded-lg sm:rounded-xl flex items-center justify-center text-[8px] sm:text-[10px] font-black text-btn-text shadow-sm">
                                     {{ selectedScoringMatch.entry_b_seed || '-' }}
                                 </div>
                             </div>
@@ -253,7 +257,7 @@
                                     FINISHED</span>
                             </div>
                             <button v-else-if="canEndMatch" @click="$emit('end-match')" :disabled="isEndingMatch"
-                                class="w-full py-3.5 sm:py-4 rounded-xl bg-primary text-navy font-black text-[10px] sm:text-xs tracking-widest uppercase flex items-center justify-center gap-2 sm:gap-3 transition-all active:scale-[0.98]">
+                                class="w-full py-3.5 sm:py-4 rounded-xl bg-primary text-btn-text font-black text-[10px] sm:text-xs tracking-widest uppercase flex items-center justify-center gap-2 sm:gap-3 transition-all active:scale-[0.98]">
                                 <Icon v-if="isEndingMatch" icon="ph:circle-notch-bold" class="animate-spin text-lg" />
                                 <Icon v-else icon="ph:flag-checkered-fill" class="text-lg" />
                                 <span>{{ isEndingMatch ? 'Ending...' : 'Finish Match' }}</span>
@@ -616,8 +620,9 @@ const calculateSetPoints = (matchId, side) => {
 
 const getFullTargetName = (match) => {
     if (!match) return 'Belum Ada Target'
-    if (match.target_name) return match.target_name.startsWith('Target') ? match.target_name : `${match.target_name}`
-    return 'Target Terpilih'
+    if (match.board_code) return `${match.board_code}`
+    if (match.target_name) return match.target_name.startsWith('Target') ? match.target_name : `Target ${match.target_name}`
+    return 'Belum Ada Target'
 }
 
 const calculateEndTotal = (matchId, endNo, side) => {

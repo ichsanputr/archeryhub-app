@@ -3,9 +3,9 @@
         <!-- Header -->
         <div
             class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-            <!-- Background Pattern -->
-            <div class="absolute inset-0 opacity-20"
-                style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);">
+            <!-- Theme Motif Pattern -->
+            <div class="absolute inset-0"
+                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
             </div>
 
             <!-- Decorative Background Elements -->
@@ -157,7 +157,7 @@
                                     <div class="flex justify-between items-center text-sm">
                                         <span class="text-gray-600">Entry Fee ({{ reg.category_name }})</span>
                                         <span class="font-bold text-navy">Rp {{ formatPrice(reg.entry_fee || 350000)
-                                            }}</span>
+                                        }}</span>
                                     </div>
                                 </div>
                                 <div class="flex justify-between items-center text-sm">
@@ -167,7 +167,7 @@
                                 <div class="border-t border-gray-200 my-2 pt-2 flex justify-between items-center">
                                     <span class="text-base font-bold text-navy">Total Payment</span>
                                     <span class="text-xl font-black text-primary">Rp {{ formatPrice(totalPayment)
-                                        }}</span>
+                                    }}</span>
                                 </div>
                             </div>
                         </div>

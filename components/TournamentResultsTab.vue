@@ -217,7 +217,8 @@
                                         Sesi:</span>
                                     <select v-model="selectedSession"
                                         class="bg-white/10 border border-white/20 text-white text-xs font-bold px-4 py-2 rounded-xl outline-none focus:border-primary transition-all">
-                                        <option value="total" class="text-navy">Hasil Akhir (Semua Sesi)</option>
+                                        <option v-if="availableSessions.length > 1" value="total" class="text-navy">
+                                            Hasil Akhir (Semua Sesi)</option>
                                         <option v-for="sCode in availableSessions" :key="sCode" :value="sCode"
                                             class="text-navy">
                                             Sesi {{ sCode.replace('S', '') }}
@@ -375,7 +376,14 @@ const currentQualResults = computed(() => {
 const selectedSession = ref('total')
 
 watch(selectedCategory, () => {
-    selectedSession.value = 'total'
+    // Determine default session: if only 1 session exists, select it. Otherwise 'total'.
+    nextTick(() => {
+        if (availableSessions.value.length === 1) {
+            selectedSession.value = availableSessions.value[0]
+        } else {
+            selectedSession.value = 'total'
+        }
+    })
 })
 
 const availableSessions = computed(() => {
@@ -540,6 +548,13 @@ const selectCategory = async (categoryUuid) => {
         loadQualificationResults(categoryUuid),
         loadEliminationBracket(categoryUuid)
     ])
+
+    // Auto-select session if only one exists
+    if (availableSessions.value.length === 1) {
+        selectedSession.value = availableSessions.value[0]
+    } else {
+        selectedSession.value = 'total'
+    }
 }
 
 const loadQualificationResults = async (categoryUuid) => {

@@ -5,6 +5,10 @@
             <div class="flex items-center gap-1.5" :class="headerTextStyle">
                 <Icon :icon="headerIcon" class="text-[10px]" />
                 <span class="text-[8px] font-black tracking-widest uppercase">{{ headerLabel }}</span>
+                <span v-if="match.board_code || match.target_name"
+                    class="ml-1 px-1.5 py-0.5 rounded bg-navy text-primary text-[7px] font-black uppercase">
+                    {{ match.board_code || match.target_name }}
+                </span>
             </div>
             <span class="text-[10px] font-black text-navy/10">#{{ match.match_no }}</span>
         </div>
@@ -131,7 +135,7 @@ const isLoser = (side) => {
 }
 
 .avatar-seed-badge {
-    @apply absolute -left-2 -bottom-1 min-w-[14px] h-3.5 px-1 bg-navy text-primary-text text-[8px] font-black rounded-full flex items-center justify-center border border-white shadow-sm transition-all z-20;
+    @apply absolute -left-2 -bottom-1 min-w-[14px] h-3.5 px-1 bg-navy text-primary text-[8px] font-black rounded-full flex items-center justify-center border border-white shadow-sm transition-all z-20;
 }
 
 .winner-indicator {

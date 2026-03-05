@@ -908,7 +908,8 @@ const paymentMethodTypes = [
 ]
 
 definePageMeta({
-    layout: 'dashboard'
+    layout: 'dashboard',
+    transition: false
 })
 
 useHead({

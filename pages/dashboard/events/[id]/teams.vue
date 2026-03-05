@@ -3,9 +3,9 @@
         <!-- Enhanced Header -->
         <div
             class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-            <!-- Background Pattern -->
-            <div class="absolute inset-0 opacity-20"
-                style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);">
+            <!-- Theme Motif Pattern -->
+            <div class="absolute inset-0"
+                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
             </div>
 
             <!-- Decorative Background Elements -->
@@ -20,7 +20,7 @@
                         <!-- Icon Badge -->
                         <div
                             class="size-12 sm:size-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg shrink-0">
-                            <Icon icon="ph:users-three" class="text-primary text-xl sm:text-2xl" />
+                            <Icon icon="ph:users-three" class="text-white text-xl sm:text-2xl" />
                         </div>
 
                         <!-- Title Section -->
@@ -142,7 +142,7 @@
                         class="bg-white rounded-3xl border border-gray-100 p-6 hover:shadow-sm hover:shadow-navy/5 transition-all group border-b-4 border-b-gray-100 hover:border-b-primary relative">
                         <!-- Rank Badge -->
                         <div
-                            class="absolute -top-3 -right-3 size-10 bg-navy text-primary rounded-xl flex items-center justify-center font-black text-lg shadow-sm border-4 border-white group-hover:bg-primary group-hover:text-navy transition-colors">
+                            class="absolute -top-3 -right-3 size-10 bg-navy text-white rounded-xl flex items-center justify-center font-black text-lg shadow-sm border-4 border-white group-hover:bg-primary group-hover:text-navy transition-colors">
                             {{ team.team_rank || '-' }}
                         </div>
 

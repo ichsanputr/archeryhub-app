@@ -159,7 +159,7 @@ const isLoser = (side) => {
 }
 
 .winner-indicator {
-    @apply absolute -top-1.5 -right-1.5 size-4 bg-primary text-navy rounded-full flex items-center justify-center text-[8px] shadow-sm border border-white z-20;
+    @apply absolute -top-1.5 -right-1.5 size-4 bg-primary text-btn-text rounded-full flex items-center justify-center text-[8px] shadow-sm border border-white z-20;
 }
 
 .archer-info {

@@ -4,9 +4,9 @@
         <!-- Enhanced Header -->
         <div
             class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-            <!-- Background Pattern -->
-            <div class="absolute inset-0 opacity-20"
-                style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);">
+            <!-- Theme Motif Pattern -->
+            <div class="absolute inset-0"
+                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
             </div>
 
             <!-- Decorative Background Elements -->
@@ -22,7 +22,7 @@
                         <!-- Icon Badge -->
                         <div
                             class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
-                            <Icon icon="ph:users" class="text-primary text-2xl" />
+                            <Icon icon="ph:users" class="text-white text-2xl" />
                         </div>
 
                         <!-- Title Section -->
@@ -38,7 +38,7 @@
 
                     <!-- Action Buttons -->
                     <div class="flex gap-3 flex-shrink-0">
-                        <BaseButton variant="white" icon="ph:download" class="h-11 px-5">
+                        <BaseButton variant="white" icon="ph:download" class="h-11 px-5" @click="exportCSV">
                             <span class="hidden sm:inline">Export CSV</span>
                             <span class="sm:hidden">Export</span>
                         </BaseButton>
@@ -126,7 +126,7 @@
                                 class="group hover:bg-gray-50/50 transition-colors">
                                 <td class="px-6 py-4 align-top text-center w-16">
                                     <span class="text-sm font-bold text-gray-400">{{ (page - 1) * limit + index + 1
-                                        }}</span>
+                                    }}</span>
                                 </td>
                                 <td class="px-6 py-4 align-top min-w-[250px]">
                                     <div class="flex items-center gap-3">
@@ -238,6 +238,13 @@ const statusOptions = [
 ]
 
 const searchTimeout = ref(null)
+
+const exportCSV = () => {
+    const config = useRuntimeConfig()
+    const apiBaseUrl = config.public.apiBaseUrl
+    const url = `${apiBaseUrl}/events/${eventId.value}/participants/export`
+    window.open(url, '_blank')
+}
 
 const handleFilterStatus = () => {
     page.value = 1

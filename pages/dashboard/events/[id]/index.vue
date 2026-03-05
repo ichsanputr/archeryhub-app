@@ -61,7 +61,7 @@
         <div class="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
         <div class="relative z-10">
           <h4 class="text-xl font-black mb-4 flex items-center gap-3">
-            <Icon icon="ph:info-bold" class="text-primary text-2xl" />
+            <Icon icon="ph:info-bold" class="text-white text-2xl" />
             Informasi Penting
           </h4>
           <p class="text-slate-300 text-sm max-w-2xl leading-relaxed mb-6">

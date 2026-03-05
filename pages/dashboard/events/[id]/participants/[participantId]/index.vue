@@ -3,9 +3,9 @@
         <!-- Enhanced Header -->
         <div
             class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-            <!-- Background Pattern -->
-            <div class="absolute inset-0 opacity-20"
-                style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);">
+            <!-- Theme Motif Pattern -->
+            <div class="absolute inset-0"
+                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
             </div>
 
             <!-- Decorative Background Elements -->
@@ -20,7 +20,7 @@
                         <!-- Icon Badge -->
                         <div
                             class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-lg flex-shrink-0">
-                            <Icon icon="ph:user" class="text-primary text-2xl" />
+                            <Icon icon="ph:user" class="text-white text-2xl" />
                         </div>
 
                         <!-- Title Section -->
@@ -36,15 +36,15 @@
 
                     <!-- Action Buttons -->
                     <div class="flex gap-3 flex-shrink-0">
-                        <BaseButton variant="white" icon="ph:chart-line-up-bold"
-                            class="h-10 md:h-11 px-4 md:px-6 shadow-xl shadow-white/5"
+                        <BaseButton variant="navy" icon="ph:chart-line-up-bold"
+                            class="h-10 md:h-11 px-6 shadow-xl shadow-navy/20"
                             :to="`/dashboard/events/${eventId}/result-user?archer_id=${participant?.athlete_code || participant?.id}`"
                             target="_blank">
                             <span class="hidden sm:inline">Lihat Hasil</span>
-                            <span class="sm:hidden">Hasil</span>
+                            <span class="sm:hidden text-xs">Hasil</span>
                         </BaseButton>
                         <BaseButton variant="primary" icon="ph:floppy-disk"
-                            class="h-10 md:h-11 px-4 md:px-6 shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all font-black text-navy"
+                            class="h-10 md:h-11 px-4 md:px-6 shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all font-black"
                             @click="handleSubmit" :loading="isSubmitting">
                             <span class="hidden sm:inline">Simpan Perubahan</span>
                             <span class="sm:hidden">Simpan</span>
@@ -330,7 +330,7 @@
                             <p class="text-gray-500 text-sm leading-relaxed">
                                 Apakah Anda yakin ingin mengeluarkan <span class="font-bold text-navy">{{
                                     participant?.full_name
-                                    }}</span> dari event ini?
+                                }}</span> dari event ini?
                             </p>
                             <p class="text-red-600 text-xs mt-2 font-semibold">
                                 Tindakan ini akan menghapus semua data target dan skor yang terkait dan tidak dapat

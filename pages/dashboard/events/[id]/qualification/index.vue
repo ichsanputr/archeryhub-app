@@ -3,9 +3,8 @@
     <!-- Enhanced Header -->
     <div
       class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
-      <!-- Background Pattern -->
-      <div class="absolute inset-0 opacity-20"
-        style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);">
+      <!-- Theme Motif Pattern -->
+      <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
       </div>
 
       <!-- Decorative Background Elements -->
@@ -20,7 +19,7 @@
             <!-- Icon Badge -->
             <div
               class="h-12 w-12 sm:h-14 sm:w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md flex-shrink-0">
-              <Icon icon="ph:crosshair" class="text-primary text-xl sm:text-2xl" />
+              <Icon icon="ph:crosshair" class="text-white text-xl sm:text-2xl" />
             </div>
 
             <!-- Title Section -->
@@ -223,7 +222,7 @@
           </div>
 
           <div v-else-if="selectedCategory && reportEntries.length > 0"
-            class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            class="bg-white rounded-xl border border-gray-200 overflow-x-auto no-scrollbar">
             <table class="w-full">
               <thead>
                 <tr class="bg-gray-50/50 border-b border-gray-100">
@@ -280,7 +279,7 @@
                             class="flex flex-col items-center bg-gray-50 border border-gray-100 rounded-lg overflow-hidden shadow-sm group/score hover:border-primary/50 transition-all">
                             <div class="bg-navy/5 px-2 py-0.5 w-full text-center border-b border-gray-100">
                               <span class="text-[8px] font-black text-gray-400 uppercase tracking-tighter">E{{ sIdx + 1
-                                }}</span>
+                              }}</span>
                             </div>
                             <div class="px-3 py-1 min-w-[45px] flex items-center justify-center">
                               <span
@@ -308,7 +307,7 @@
                   <td class="px-6 py-4 text-right">
                     <NuxtLink
                       :to="`/dashboard/events/${eventId}/result-user?archer_id=${archer.athlete_code || archer.participant_uuid}`"
-                      class="inline-flex items-center justify-center gap-2 px-3 py-1.5 bg-primary/10 text-btn-text text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-primary transition-all">
+                      class="inline-flex items-center justify-center gap-2 px-3 py-1.5 bg-primary/10 text-btn-text text-[10px] font-black uppercase tracking-widest rounded-lg transition-all">
                       <Icon icon="ph:eye-bold" class="text-sm" />
                       Detail
                     </NuxtLink>

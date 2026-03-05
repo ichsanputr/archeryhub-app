@@ -1,89 +1,107 @@
 <template>
-    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm relative">
-        <div class="p-6 md:p-8">
-            <div class="flex items-center justify-between mb-8 pb-4 border-b border-gray-50">
-                <div>
-                    <h2 class="text-xl font-black text-navy tracking-tight">Penempatan Target</h2>
-                    <p class="text-sm text-gray-500 mt-1">Alokasikan target (bantalan) untuk setiap pertandingan di
-                        babak ini</p>
-                </div>
-                <button @click="$emit('auto-assign')" :disabled="isAutoAssigning"
-                    class="h-10 px-6 rounded-xl bg-navy text-primary font-black text-[10px] tracking-widest uppercase shadow-lg shadow-navy/20 hover:bg-navy/90 hover:shadow-navy/30 transition-all flex items-center gap-2 disabled:opacity-50">
-                    <Icon v-if="isAutoAssigning" icon="ph:circle-notch-bold" class="animate-spin text-sm" />
-                    <Icon v-else icon="ph:magic-wand-bold" class="text-sm" />
-                    <span>Auto Assign</span>
-                </button>
+    <div class="space-y-8 pb-32">
+        <!-- New Header Style -->
+        <div class="flex items-center gap-4 p-6 bg-navy/5 rounded-3xl border border-navy/5">
+            <div class="size-12 rounded-2xl bg-navy flex items-center justify-center text-primary shrink-0 shadow-lg">
+                <Icon icon="ph:target-bold" class="text-2xl" />
             </div>
+            <div class="flex-1 min-w-0">
+                <h3 class="text-lg font-black text-navy leading-tight">Alokasi Bantalan Target</h3>
+                <p class="text-xs text-navy/50 font-medium">Tentukan posisi bantalan untuk setiap pertandingan di babak
+                    ini. Gunakan Auto Assign untuk alokasi cepat.</p>
+            </div>
+            <BaseButton variant="primary" icon="ph:magic-wand-bold" :loading="isAutoAssigning"
+                loading-text="Memproses..." @click="$emit('auto-assign')"
+                class="hidden sm:flex shadow-xl shadow-primary/20 !rounded-2xl">
+                <span class="text-[10px] font-black tracking-widest uppercase">Auto Assign</span>
+            </BaseButton>
+        </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pb-32">
-                <div v-for="match in roundMatches" :key="match.id"
-                    class="bg-gray-50/50 rounded-3xl border border-gray-100 p-6 hover:bg-white hover:shadow-navy/5 transition-all group relative hover:z-20 focus-within:z-50">
-                    <div class="flex items-center justify-between mb-6">
-                        <div class="flex items-center gap-3">
+        <!-- Mobile Auto Assign -->
+        <div class="sm:hidden">
+            <BaseButton variant="primary" icon="ph:magic-wand-bold" :loading="isAutoAssigning"
+                loading-text="Memproses..." @click="$emit('auto-assign')" block
+                class="shadow-xl shadow-primary/20 !rounded-2xl">
+                <span class="text-[10px] font-black tracking-widest uppercase">Auto Assign</span>
+            </BaseButton>
+        </div>
+
+        <!-- Grid Matches -->
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div v-for="match in roundMatches" :key="match.id"
+                class="group bg-white rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-xl hover:shadow-navy/5 transition-all duration-500 overflow-hidden flex flex-col">
+
+                <!-- Header: Match Info -->
+                <div class="px-6 py-5 bg-navy/[0.02] border-b border-gray-50 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="size-9 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center text-navy font-black text-xs">
+                            {{ match.match_no }}
+                        </div>
+                        <div>
                             <div
-                                class="size-10 rounded-2xl bg-navy text-primary flex items-center justify-center text-xs font-black shadow-sm shadow-navy/20">
-                                M{{ match.match_no }}
-                            </div>
-                            <span class="text-[10px] font-black text-gray-400 tracking-widest uppercase">Match
-                                Detail</span>
-                        </div>
-                        <div v-if="match.winner_entry_id"
-                            class="size-6 rounded-full bg-green-500 text-white flex items-center justify-center">
-                            <Icon icon="ph:check-bold" class="text-xs" />
+                                class="text-[10px] font-black text-navy/30 uppercase tracking-[0.2em] leading-none mb-1">
+                                Pertandingan</div>
+                            <div class="text-xs font-black text-navy/80 uppercase">Match {{ match.match_no }}</div>
                         </div>
                     </div>
 
-                    <div class="space-y-3 mb-6">
-                        <div
-                            class="flex items-center justify-between bg-white rounded-2xl p-3 border border-gray-100 shadow-sm">
-                            <div class="flex items-center gap-3">
-                                <div class="relative shrink-0">
-                                    <img :src="getAvatarUrl(match.entry_a_name)"
-                                        class="size-9 rounded-full border-2 border-white shadow-sm" />
-                                    <div v-if="match.entry_a_seed"
-                                        class="absolute -top-1 -left-1 size-5 z-10 rounded-full bg-navy text-primary text-[8px] font-black flex items-center justify-center border-2 border-white shadow-sm ring-1 ring-navy/10">
-                                        {{ match.entry_a_seed }}
-                                    </div>
-                                </div>
-                                <div class="min-w-0">
-                                    <span class="text-xs font-bold text-navy truncate block">{{ match.entry_a_name ||
-                                        (match.is_bye ? 'BYE' : 'TBD') }}</span>
-                                </div>
-                            </div>
-                            <span class="text-[9px] font-black text-gray-300 tracking-tighter shrink-0 ml-2">SIDE
-                                A</span>
-                        </div>
-                        <div
-                            class="flex items-center justify-between bg-white rounded-2xl p-3 border border-gray-100 shadow-sm">
-                            <div class="flex items-center gap-3">
-                                <div class="relative shrink-0">
-                                    <img :src="getAvatarUrl(match.entry_b_name)"
-                                        class="size-9 rounded-full border-2 border-white shadow-sm" />
-                                    <div v-if="match.entry_b_seed"
-                                        class="absolute -top-1 -left-1 size-5 rounded-full z-10 bg-navy text-primary text-[8px] font-black flex items-center justify-center border-2 border-white shadow-sm ring-1 ring-navy/10">
-                                        {{ match.entry_b_seed }}
-                                    </div>
-                                </div>
-                                <div class="min-w-0">
-                                    <span class="text-xs font-bold text-navy truncate block">{{ match.entry_b_name ||
-                                        'TBD'
-                                        }}</span>
+                    <div v-if="match.winner_entry_id"
+                        class="size-8 rounded-full bg-green-50 flex items-center justify-center text-green-500">
+                        <Icon icon="ph:check-circle-fill" class="text-xl" />
+                    </div>
+                    <div v-else-if="match.target_name"
+                        class="px-3 py-1 bg-primary/10 rounded-full border border-primary/20">
+                        <span class="text-[10px] font-black text-primary-hover tracking-widest uppercase">TERPLOT</span>
+                    </div>
+                </div>
+
+                <!-- Body: Participants -->
+                <div class="p-6 flex-1 space-y-4">
+                    <div v-for="side in ['a', 'b']" :key="side"
+                        class="flex items-center justify-between p-3 rounded-2xl border transition-all" :class="[
+                            match[`entry_${side}_name`] ? 'bg-gray-50/50 border-gray-100' : 'bg-slate-50 border-dashed border-gray-200 opacity-60'
+                        ]">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="relative shrink-0">
+                                <img :src="getAvatarUrl(match[`entry_${side}_name`])"
+                                    class="size-10 rounded-xl border-2 border-white shadow-sm object-cover" />
+                                <div v-if="match[`entry_${side}_seed`]"
+                                    class="absolute -top-1.5 -left-1.5 size-5 rounded-lg bg-navy text-primary text-[8px] font-black flex items-center justify-center shadow-lg border-2 border-white">
+                                    {{ match[`entry_${side}_seed`] }}
                                 </div>
                             </div>
-                            <span class="text-[9px] font-black text-gray-300 tracking-tighter shrink-0 ml-2">SIDE
-                                B</span>
+                            <div class="min-w-0">
+                                <p class="text-[10px] font-black text-gray-400 uppercase tracking-tighter mb-0.5">
+                                    Side {{ side.toUpperCase() }}
+                                </p>
+                                <p class="text-xs font-black text-navy truncate">
+                                    {{ match[`entry_${side}_name`] || (match.is_bye && side === 'b' ? 'BYE' : 'TBD') }}
+                                </p>
+                            </div>
                         </div>
                     </div>
+                </div>
 
-                    <div>
-                        <label
-                            class="text-[9px] font-black text-gray-400 tracking-widest uppercase mb-2 block ml-1">Alokasi
-                            Target</label>
-                        <div class="group/select">
-                            <BaseSelect :model-value="match.target_id" :items="getFilteredOptions(match.id)"
-                                item-title="displayName" item-value="id" placeholder="-- Pilih Target --"
-                                @update:modelValue="val => { match.target_id = val; $emit('update-target', match) }" />
+                <!-- Footer: Target Selection -->
+                <div class="p-6 pt-0 mt-auto">
+                    <div
+                        class="p-1 px-3 bg-navy/5 rounded-2xl border border-navy/5 group/sel focus-within:bg-white focus-within:border-primary/30 transition-all">
+                        <div class="flex items-center justify-between mb-1 mt-1">
+                            <label class="text-[9px] font-black text-navy/30 uppercase tracking-widest block">Garis
+                                Target</label>
+                            <span v-if="match.board_code"
+                                class="text-[8px] font-black bg-navy text-primary px-1.5 py-0.5 rounded shadow-sm">{{
+                                match.board_code }}</span>
                         </div>
+                        <select :value="match.target_id"
+                            class="w-full bg-transparent border-none focus:ring-0 text-sm font-black text-navy outline-none py-1.5 cursor-pointer"
+                            @change="e => { match.target_id = e.target.value; $emit('update-target', match) }">
+                            <option value="">-- Pilih Target --</option>
+                            <option v-for="opt in getFilteredOptions(match.id)" :key="opt.id" :value="opt.id">
+                                {{ opt.displayName || opt.name }} {{ opt.board_code ? `(${opt.board_code})` : '' }}
+                            </option>
+                        </select>
                     </div>
                 </div>
             </div>

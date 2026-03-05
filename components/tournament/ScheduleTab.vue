@@ -24,7 +24,7 @@
                         <h2 class="text-lg sm:text-xl font-black text-navy uppercase tracking-tight whitespace-nowrap">
                             {{ formatDate(groupedByDay[day][0]?.start_time) }} <span
                                 class="text-[10px] sm:text-xs font-bold text-gray-400 ml-2 tracking-normal">/ HARI {{
-                                day }}</span>
+                                    day }}</span>
                         </h2>
                         <div class="h-[2px] flex-1 bg-gray-100"></div>
                     </div>
@@ -75,7 +75,7 @@
 
                                     <!-- Detailed Status Badges -->
                                     <div v-if="getSessionStatus(session) === 'ongoing'"
-                                        class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[10px] font-black bg-primary text-navy uppercase tracking-widest shadow-lg shadow-primary/20">
+                                        class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-[10px] font-black bg-primary text-btn-text uppercase tracking-widest shadow-lg shadow-primary/20">
                                         <span class="w-1.5 h-1.5 rounded-full bg-navy animate-pulse"></span>
                                         LIVE NOW
                                     </div>

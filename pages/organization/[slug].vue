@@ -25,13 +25,14 @@
                     <!-- Badge -->
                     <div class="flex flex-wrap items-center gap-3">
                         <span
-                            class="px-4 py-1 bg-primary text-navy-dark text-[10px] font-black rounded-full uppercase tracking-[0.2em]">
+                            class="px-4 py-1 bg-primary text-navy-dark text-[10px] sm:text-[11px] font-black rounded-full uppercase tracking-[0.2em]">
                             Profil Resmi Organisasi
                         </span>
                         <div v-if="org.verification_status === 'verified'"
                             class="flex items-center gap-1.5 text-primary">
                             <Icon icon="ph:seal-check-fill" class="text-base" />
-                            <span class="text-[10px] font-black uppercase tracking-widest">Terverifikasi</span>
+                            <span
+                                class="text-[10px] sm:text-[11px] font-black uppercase tracking-widest">Terverifikasi</span>
                         </div>
                     </div>
 
@@ -51,19 +52,22 @@
                     <!-- Meta row -->
                     <div class="flex flex-wrap items-center gap-4 sm:gap-6 pt-2">
                         <div v-if="org.city" class="flex items-center gap-2">
-                            <span class="text-white/50 text-[10px] font-black uppercase tracking-widest">Wilayah</span>
+                            <span
+                                class="text-white/50 text-[10px] sm:text-[11px] font-black uppercase tracking-widest">Wilayah</span>
                             <Icon icon="ph:map-pin-fill" class="text-primary text-sm" />
                             <span class="font-bold text-sm text-white">{{ org.city }}</span>
                         </div>
                         <div v-if="org.established_date" class="w-px h-4 bg-white/20"></div>
                         <div v-if="org.established_date" class="flex items-center gap-2">
-                            <span class="text-white/50 text-[10px] font-black uppercase tracking-widest">Berdiri</span>
+                            <span
+                                class="text-white/50 text-[10px] sm:text-[11px] font-black uppercase tracking-widest">Berdiri</span>
                             <span class="font-bold text-sm text-primary">{{ new Date(org.established_date).getFullYear()
                             }}</span>
                         </div>
                         <div class="w-px h-4 bg-white/20"></div>
                         <div class="flex items-center gap-2">
-                            <span class="text-white/50 text-[10px] font-black uppercase tracking-widest">Event</span>
+                            <span
+                                class="text-white/50 text-[10px] sm:text-[11px] font-black uppercase tracking-widest">Event</span>
                             <span class="font-bold text-sm text-primary">{{ totalEvents || 0 }}</span>
                         </div>
                     </div>
@@ -81,7 +85,7 @@
                     <!-- Profil Organisasi -->
                     <div v-if="pageSettings.sections.about" class="space-y-8">
                         <h3
-                            class="text-[10px] font-black uppercase tracking-[0.3em] text-navy/30 flex items-center gap-4">
+                            class="text-[11px] sm:text-xs font-black uppercase tracking-[0.3em] text-navy/30 flex items-center gap-4">
                             Profil Organisasi <span class="h-px flex-1 bg-gray-100"></span>
                         </h3>
                         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
@@ -93,7 +97,9 @@
                                     class="inline-flex items-center gap-3 px-5 py-3 bg-gray-50 border border-gray-100 rounded-2xl">
                                     <Icon icon="ph:fingerprint-bold" class="text-navy/20 text-lg shrink-0" />
                                     <div>
-                                        <p class="text-[9px] font-black text-navy/30 uppercase tracking-widest">Nomor
+                                        <p
+                                            class="text-[10px] sm:text-[11px] font-black text-navy/30 uppercase tracking-widest">
+                                            Nomor
                                             Registrasi Resmi</p>
                                         <p class="font-black text-navy text-sm uppercase">{{ org.registration_number }}
                                         </p>
@@ -103,11 +109,244 @@
                         </div>
                     </div>
 
-                    <!-- Contact & Social Media — 2 column -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+
+
+                    <!-- Visi & Misi -->
+                    <div v-if="pageSettings.sections.about && (org.vision || org.mission)" class="space-y-8">
+                        <h3
+                            class="text-[11px] sm:text-xs font-black uppercase tracking-[0.3em] text-navy/30 flex items-center gap-4">
+                            Visi &amp; Misi <span class="h-px flex-1 bg-gray-100"></span>
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                            <div v-if="org.vision"
+                                class="p-6 sm:p-8 bg-gray-50 rounded-2xl sm:rounded-3xl border border-gray-100">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div
+                                        class="size-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                                        <Icon icon="ph:eye-fill" class="text-lg text-primary" />
+                                    </div>
+                                    <h4
+                                        class="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.3em] text-navy/40">
+                                        Visi
+                                        Organisasi</h4>
+                                </div>
+                                <p
+                                    class="text-base sm:text-lg font-bold text-navy leading-relaxed italic whitespace-pre-line">
+                                    "{{ org.vision }}"
+                                </p>
+                            </div>
+                            <div v-if="org.mission" class="p-6 sm:p-8 bg-navy rounded-2xl sm:rounded-3xl text-white">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div
+                                        class="size-9 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+                                        <Icon icon="ph:target-fill" class="text-lg text-primary" />
+                                    </div>
+                                    <h4
+                                        class="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.3em] text-white/30">
+                                        Misi
+                                        Strategis</h4>
+                                </div>
+                                <p
+                                    class="text-sm sm:text-base text-white/80 leading-relaxed font-medium whitespace-pre-line">
+                                    {{ org.mission }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Prestasi Organisasi -->
+                    <div v-if="achievements.length > 0" class="space-y-8">
+                        <h3
+                            class="text-[11px] sm:text-xs font-black uppercase tracking-[0.3em] text-navy/30 flex items-center gap-4">
+                            Prestasi Organisasi <span class="h-px flex-1 bg-gray-100"></span>
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                            <div v-for="item in achievements" :key="item.id"
+                                class="bg-white border border-gray-100 p-6 rounded-2xl shadow-sm flex flex-col gap-3">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[9px] font-black tracking-widest text-navy/20 uppercase">{{
+                                        formatDate(item.published_at) }}</span>
+                                    <div class="size-9 rounded-xl bg-primary/10 flex items-center justify-center">
+                                        <Icon icon="ph:trophy-fill" class="text-primary text-base" />
+                                    </div>
+                                </div>
+                                <h4 class="text-base font-black text-navy leading-tight">{{ item.title }}</h4>
+                                <p class="text-xs text-navy/60 line-clamp-2 leading-relaxed">{{ item.excerpt }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Berita & Artikel -->
+                    <div v-if="news.length > 0" class="space-y-8">
+                        <h3
+                            class="text-[11px] sm:text-xs font-black uppercase tracking-[0.3em] text-navy/30 flex items-center gap-4">
+                            Berita &amp; Artikel <span class="h-px flex-1 bg-gray-100"></span>
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                            <div v-for="item in news" :key="item.id"
+                                class="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden flex flex-col">
+                                <div class="w-full aspect-video bg-gray-100 overflow-hidden">
+                                    <img :src="item.image_url" class="w-full h-full object-cover" />
+                                </div>
+                                <div class="p-5 flex flex-col gap-2 flex-1">
+                                    <span class="text-[9px] font-black tracking-widest text-navy/20 uppercase">{{
+                                        formatDate(item.published_at) }}</span>
+                                    <h4 class="text-sm font-black text-navy leading-tight">{{ item.title }}</h4>
+                                    <p class="text-xs text-navy/60 line-clamp-2 leading-relaxed">{{ item.excerpt }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Event Diselenggarakan -->
+                    <div class="space-y-8">
+                        <div class="flex items-center justify-between">
+                            <h3
+                                class="text-[11px] sm:text-xs font-black uppercase tracking-[0.3em] text-navy/30 flex items-center gap-4 flex-1">
+                                Event Diselenggarakan <span class="h-px flex-1 bg-gray-100"></span>
+                            </h3>
+                            <NuxtLink v-if="totalEvents > 4" to="/events"
+                                class="ml-4 text-[11px] sm:text-xs font-black uppercase tracking-widest text-primary">
+                                Lihat Semua
+                            </NuxtLink>
+                        </div>
+
+                        <div v-if="events.length === 0"
+                            class="py-16 text-center border-2 border-dashed border-gray-100 rounded-2xl">
+                            <Icon icon="ph:calendar-blank-light" class="text-5xl text-gray-100 mx-auto mb-3" />
+                            <p class="text-[11px] sm:text-xs font-black uppercase tracking-[0.3em] text-navy/20">Belum
+                                ada event
+                                terjadwal</p>
+                        </div>
+
+                        <div v-else class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <NuxtLink v-for="event in events" :key="event.id" :to="`/events/${event.slug || event.id}`"
+                                class="bg-white p-5 sm:p-6 rounded-2xl border border-gray-100 shadow-sm flex gap-5">
+                                <div
+                                    class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 shrink-0">
+                                    <img :src="useImageOrDefault(event.logo_url, event.name)" :alt="event.name"
+                                        class="w-full h-full object-cover" />
+                                </div>
+                                <div class="flex-1 flex flex-col justify-between py-0.5 min-w-0">
+                                    <div class="space-y-2">
+                                        <span :class="statusClass(event)"
+                                            class="inline-block px-2.5 py-0.5 rounded-full text-[10px] sm:text-[11px] font-black uppercase tracking-wider">
+                                            {{ statusLabel(event) }}
+                                        </span>
+                                        <h4 class="font-black text-navy text-sm leading-tight uppercase truncate">
+                                            {{ event.name }}
+                                        </h4>
+                                    </div>
+                                    <div class="flex flex-wrap gap-3 pt-2 border-t border-gray-50">
+                                        <div
+                                            class="flex items-center gap-1.5 text-navy/40 text-[10px] sm:text-[11px] font-black uppercase tracking-widest">
+                                            <Icon icon="ph:calendar-blank-fill" class="text-xs text-primary" />
+                                            {{ formatDate(event.start_date) }}
+                                        </div>
+                                        <div v-if="event.venue"
+                                            class="flex items-center gap-1.5 text-navy/40 text-[10px] sm:text-[11px] font-black uppercase tracking-widest">
+                                            <Icon icon="ph:map-pin-fill" class="text-xs text-primary" />
+                                            <span class="truncate max-w-[120px]">{{ event.venue }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </NuxtLink>
+                        </div>
+                    </div>
+
+                    <!-- Sejarah Singkat -->
+                    <div v-if="pageSettings.sections.about && org.history" class="space-y-8">
+                        <h3
+                            class="text-[11px] sm:text-xs font-black uppercase tracking-[0.3em] text-navy/30 flex items-center gap-4">
+                            Sejarah Singkat <span class="h-px flex-1 bg-gray-100"></span>
+                        </h3>
+                        <div class="max-w-3xl">
+                            <p
+                                class="text-sm sm:text-base text-navy/70 leading-relaxed font-medium whitespace-pre-line">
+                                {{ org.history }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Lokasi & Sekretariat -->
+                    <div v-if="org.address || org.gmaps_link" class="space-y-8">
+                        <h3
+                            class="text-[11px] sm:text-xs font-black uppercase tracking-[0.3em] text-navy/30 flex items-center gap-4">
+                            Lokasi &amp; Sekretariat <span class="h-px flex-1 bg-gray-100"></span>
+                        </h3>
+                        <div
+                            class="bg-white rounded-2xl sm:rounded-3xl overflow-hidden border border-gray-100 shadow-sm">
+                            <div class="h-52 sm:h-80 w-full bg-gray-50">
+                                <iframe v-if="gmapsEmbedUrl" :src="gmapsEmbedUrl" width="100%" height="100%"
+                                    style="border:0;" allowfullscreen="" loading="lazy"
+                                    referrerpolicy="no-referrer-when-downgrade">
+                                </iframe>
+                                <div v-else class="w-full h-full flex items-center justify-center bg-gray-50">
+                                    <div class="text-center">
+                                        <Icon icon="ph:map-pin-light" class="text-4xl text-gray-200 mb-2 mx-auto" />
+                                        <p
+                                            class="text-[11px] sm:text-xs font-black text-navy/20 uppercase tracking-widest">
+                                            Peta
+                                            belum tersedia</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-5 sm:p-8 flex flex-col sm:flex-row items-start gap-5 sm:gap-8">
+                                <div class="p-4 bg-navy rounded-2xl shrink-0">
+                                    <Icon icon="ph:map-pin-fill" class="text-xl text-primary" />
+                                </div>
+                                <div class="min-w-0">
+                                    <h4 class="text-base sm:text-xl font-black text-navy leading-tight mb-1 uppercase">
+                                        {{ org.address || 'Sekretariat Utama' }}
+                                    </h4>
+                                    <p
+                                        class="text-[11px] sm:text-xs font-black text-navy/30 uppercase tracking-widest mb-4">
+                                        {{ org.city }}, {{ org.province }}
+                                    </p>
+                                    <a v-if="org.gmaps_link" :href="org.gmaps_link" target="_blank"
+                                        class="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 text-navy rounded-xl text-[11px] sm:text-xs font-black uppercase tracking-widest border border-gray-100">
+                                        Buka di Maps
+                                        <Icon icon="ph:arrow-square-out-bold" class="text-sm" />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAQ -->
+                    <div v-if="pageSettings.sections.faq && org.faq?.length > 0" class="space-y-8">
+                        <h3
+                            class="text-[11px] sm:text-xs font-black uppercase tracking-[0.3em] text-navy/30 flex items-center gap-4">
+                            Tanya Jawab (FAQ) <span class="h-px flex-1 bg-gray-100"></span>
+                        </h3>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            <div v-for="(item, idx) in org.faq" :key="idx"
+                                class="p-5 sm:p-7 bg-white border border-gray-100 rounded-2xl shadow-sm">
+                                <div class="flex items-start gap-4">
+                                    <div
+                                        class="size-8 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
+                                        <Icon icon="ph:question-bold" class="text-sm text-primary" />
+                                    </div>
+                                    <div class="space-y-3 flex-1 min-w-0">
+                                        <h4 class="font-black text-navy text-sm uppercase leading-tight tracking-tight">
+                                            {{ item.question }}
+                                        </h4>
+                                        <div class="h-px bg-gray-100"></div>
+                                        <p class="text-xs sm:text-sm text-navy/60 leading-relaxed">
+                                            {{ item.answer }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact & Social Media — Moved to bottom -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 pt-10">
                         <!-- Hubungi Kami -->
                         <div class="bg-navy p-6 sm:p-8 rounded-[2rem] text-white shadow-sm relative overflow-hidden">
-                            <h4 class="text-[9px] font-black uppercase tracking-[0.25em] text-primary mb-5">Hubungi Kami
+                            <h4 class="text-[11px] sm:text-xs font-black uppercase tracking-[0.2em] text-primary mb-6">
+                                Hubungi Kami
                             </h4>
                             <div class="space-y-4">
                                 <a v-if="org.whatsapp_no" :href="`https://wa.me/${org.whatsapp_no.replace(/\D/g, '')}`"
@@ -128,7 +367,7 @@
                                     }}</span>
                                 </a>
                                 <div v-if="!org.whatsapp_no && !org.email"
-                                    class="text-white/30 text-[10px] font-black uppercase tracking-widest">
+                                    class="text-white/30 text-[11px] sm:text-xs font-black uppercase tracking-widest">
                                     Belum tersedia
                                 </div>
                             </div>
@@ -137,7 +376,8 @@
                         <!-- Media Sosial -->
                         <div v-if="hasSocialMedia"
                             class="bg-gray-50 p-6 sm:p-8 rounded-[2rem] border border-gray-100 shadow-sm">
-                            <h4 class="text-[9px] font-black uppercase tracking-[0.25em] text-navy/30 mb-5">Media Sosial
+                            <h4 class="text-[11px] sm:text-xs font-black uppercase tracking-[0.2em] text-navy/30 mb-6">
+                                Media Sosial
                             </h4>
                             <div class="flex flex-wrap gap-3">
                                 <a v-if="org.social_instagram"
@@ -168,259 +408,6 @@
                         </div>
                     </div>
 
-                    <!-- Klub Binaan -->
-                    <div v-if="clubs.length > 0" class="space-y-8">
-                        <div class="flex items-center justify-between">
-                            <h3
-                                class="text-[10px] font-black uppercase tracking-[0.3em] text-navy/30 flex items-center gap-4 flex-1">
-                                Klub Binaan <span class="h-px flex-1 bg-gray-100"></span>
-                            </h3>
-                        </div>
-                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                            <NuxtLink v-for="club in clubs" :key="club.id" :to="`/clubs/${club.slug}`"
-                                class="bg-white p-4 sm:p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col items-center text-center gap-3">
-                                <div
-                                    class="w-14 h-14 sm:w-20 sm:h-20 rounded-xl sm:rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 shrink-0">
-                                    <img :src="useImageOrDefault(club.logo_url, club.name)" :alt="club.name"
-                                        class="w-full h-full object-cover" />
-                                </div>
-                                <div class="min-w-0 w-full">
-                                    <h4
-                                        class="font-black text-navy text-xs sm:text-sm uppercase leading-tight mb-1 truncate">
-                                        {{ club.name }}</h4>
-                                    <p class="text-[9px] font-black text-navy/30 uppercase tracking-widest truncate">{{
-                                        club.city || 'Indonesia' }}</p>
-                                </div>
-                                <div class="px-3 py-1 bg-gray-50 rounded-full">
-                                    <span class="text-[9px] font-black text-navy uppercase tracking-widest">{{
-                                        club.member_count || 0 }} Archer</span>
-                                </div>
-                            </NuxtLink>
-                        </div>
-                    </div>
-
-                    <!-- Visi & Misi -->
-                    <div v-if="pageSettings.sections.about && (org.vision || org.mission)" class="space-y-8">
-                        <h3
-                            class="text-[10px] font-black uppercase tracking-[0.3em] text-navy/30 flex items-center gap-4">
-                            Visi &amp; Misi <span class="h-px flex-1 bg-gray-100"></span>
-                        </h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                            <div v-if="org.vision"
-                                class="p-6 sm:p-8 bg-gray-50 rounded-2xl sm:rounded-3xl border border-gray-100">
-                                <div class="flex items-center gap-3 mb-4">
-                                    <div
-                                        class="size-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-                                        <Icon icon="ph:eye-fill" class="text-lg text-primary" />
-                                    </div>
-                                    <h4 class="text-[10px] font-black uppercase tracking-[0.3em] text-navy/40">Visi
-                                        Organisasi</h4>
-                                </div>
-                                <p
-                                    class="text-base sm:text-lg font-bold text-navy leading-relaxed italic whitespace-pre-line">
-                                    "{{ org.vision }}"
-                                </p>
-                            </div>
-                            <div v-if="org.mission" class="p-6 sm:p-8 bg-navy rounded-2xl sm:rounded-3xl text-white">
-                                <div class="flex items-center gap-3 mb-4">
-                                    <div
-                                        class="size-9 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
-                                        <Icon icon="ph:target-fill" class="text-lg text-primary" />
-                                    </div>
-                                    <h4 class="text-[10px] font-black uppercase tracking-[0.3em] text-white/30">Misi
-                                        Strategis</h4>
-                                </div>
-                                <p
-                                    class="text-sm sm:text-base text-white/80 leading-relaxed font-medium whitespace-pre-line">
-                                    {{ org.mission }}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Prestasi Organisasi -->
-                    <div v-if="achievements.length > 0" class="space-y-8">
-                        <h3
-                            class="text-[10px] font-black uppercase tracking-[0.3em] text-navy/30 flex items-center gap-4">
-                            Prestasi Organisasi <span class="h-px flex-1 bg-gray-100"></span>
-                        </h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                            <div v-for="item in achievements" :key="item.id"
-                                class="bg-white border border-gray-100 p-6 rounded-2xl shadow-sm flex flex-col gap-3">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-[9px] font-black tracking-widest text-navy/20 uppercase">{{
-                                        formatDate(item.published_at) }}</span>
-                                    <div class="size-9 rounded-xl bg-primary/10 flex items-center justify-center">
-                                        <Icon icon="ph:trophy-fill" class="text-primary text-base" />
-                                    </div>
-                                </div>
-                                <h4 class="text-base font-black text-navy leading-tight">{{ item.title }}</h4>
-                                <p class="text-xs text-navy/60 line-clamp-2 leading-relaxed">{{ item.excerpt }}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Berita & Artikel -->
-                    <div v-if="news.length > 0" class="space-y-8">
-                        <h3
-                            class="text-[10px] font-black uppercase tracking-[0.3em] text-navy/30 flex items-center gap-4">
-                            Berita &amp; Artikel <span class="h-px flex-1 bg-gray-100"></span>
-                        </h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                            <div v-for="item in news" :key="item.id"
-                                class="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden flex flex-col">
-                                <div class="w-full aspect-video bg-gray-100 overflow-hidden">
-                                    <img :src="item.image_url" class="w-full h-full object-cover" />
-                                </div>
-                                <div class="p-5 flex flex-col gap-2 flex-1">
-                                    <span class="text-[9px] font-black tracking-widest text-navy/20 uppercase">{{
-                                        formatDate(item.published_at) }}</span>
-                                    <h4 class="text-sm font-black text-navy leading-tight">{{ item.title }}</h4>
-                                    <p class="text-xs text-navy/60 line-clamp-2 leading-relaxed">{{ item.excerpt }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Event Diselenggarakan -->
-                    <div class="space-y-8">
-                        <div class="flex items-center justify-between">
-                            <h3
-                                class="text-[10px] font-black uppercase tracking-[0.3em] text-navy/30 flex items-center gap-4 flex-1">
-                                Event Diselenggarakan <span class="h-px flex-1 bg-gray-100"></span>
-                            </h3>
-                            <NuxtLink v-if="totalEvents > 4" to="/events"
-                                class="ml-4 text-[10px] font-black uppercase tracking-widest text-primary">
-                                Lihat Semua
-                            </NuxtLink>
-                        </div>
-
-                        <div v-if="events.length === 0"
-                            class="py-16 text-center border-2 border-dashed border-gray-100 rounded-2xl">
-                            <Icon icon="ph:calendar-blank-light" class="text-5xl text-gray-100 mx-auto mb-3" />
-                            <p class="text-[10px] font-black uppercase tracking-[0.3em] text-navy/20">Belum ada event
-                                terjadwal</p>
-                        </div>
-
-                        <div v-else class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <NuxtLink v-for="event in events" :key="event.id" :to="`/events/${event.slug || event.id}`"
-                                class="bg-white p-5 sm:p-6 rounded-2xl border border-gray-100 shadow-sm flex gap-5">
-                                <div
-                                    class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 shrink-0">
-                                    <img :src="useImageOrDefault(event.logo_url, event.name)" :alt="event.name"
-                                        class="w-full h-full object-cover" />
-                                </div>
-                                <div class="flex-1 flex flex-col justify-between py-0.5 min-w-0">
-                                    <div class="space-y-2">
-                                        <span :class="statusClass(event)"
-                                            class="inline-block px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider">
-                                            {{ statusLabel(event) }}
-                                        </span>
-                                        <h4 class="font-black text-navy text-sm leading-tight uppercase truncate">
-                                            {{ event.name }}
-                                        </h4>
-                                    </div>
-                                    <div class="flex flex-wrap gap-3 pt-2 border-t border-gray-50">
-                                        <div
-                                            class="flex items-center gap-1.5 text-navy/40 text-[9px] font-black uppercase tracking-widest">
-                                            <Icon icon="ph:calendar-blank-fill" class="text-xs text-primary" />
-                                            {{ formatDate(event.start_date) }}
-                                        </div>
-                                        <div v-if="event.venue"
-                                            class="flex items-center gap-1.5 text-navy/40 text-[9px] font-black uppercase tracking-widest">
-                                            <Icon icon="ph:map-pin-fill" class="text-xs text-primary" />
-                                            <span class="truncate max-w-[120px]">{{ event.venue }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </NuxtLink>
-                        </div>
-                    </div>
-
-                    <!-- Sejarah Singkat -->
-                    <div v-if="pageSettings.sections.about && org.history" class="space-y-8">
-                        <h3
-                            class="text-[10px] font-black uppercase tracking-[0.3em] text-navy/30 flex items-center gap-4">
-                            Sejarah Singkat <span class="h-px flex-1 bg-gray-100"></span>
-                        </h3>
-                        <div class="max-w-3xl">
-                            <p
-                                class="text-sm sm:text-base text-navy/70 leading-relaxed font-medium whitespace-pre-line">
-                                {{ org.history }}
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Lokasi & Sekretariat -->
-                    <div v-if="org.address || org.gmaps_link" class="space-y-8">
-                        <h3
-                            class="text-[10px] font-black uppercase tracking-[0.3em] text-navy/30 flex items-center gap-4">
-                            Lokasi &amp; Sekretariat <span class="h-px flex-1 bg-gray-100"></span>
-                        </h3>
-                        <div
-                            class="bg-white rounded-2xl sm:rounded-3xl overflow-hidden border border-gray-100 shadow-sm">
-                            <div class="h-52 sm:h-80 w-full bg-gray-50">
-                                <iframe v-if="gmapsEmbedUrl" :src="gmapsEmbedUrl" width="100%" height="100%"
-                                    style="border:0;" allowfullscreen="" loading="lazy"
-                                    referrerpolicy="no-referrer-when-downgrade">
-                                </iframe>
-                                <div v-else class="w-full h-full flex items-center justify-center bg-gray-50">
-                                    <div class="text-center">
-                                        <Icon icon="ph:map-pin-light" class="text-4xl text-gray-200 mb-2 mx-auto" />
-                                        <p class="text-[10px] font-black text-navy/20 uppercase tracking-widest">Peta
-                                            belum tersedia</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="p-5 sm:p-8 flex flex-col sm:flex-row items-start gap-5 sm:gap-8">
-                                <div class="p-4 bg-navy rounded-2xl shrink-0">
-                                    <Icon icon="ph:map-pin-fill" class="text-xl text-primary" />
-                                </div>
-                                <div class="min-w-0">
-                                    <h4 class="text-base sm:text-xl font-black text-navy leading-tight mb-1 uppercase">
-                                        {{ org.address || 'Sekretariat Utama' }}
-                                    </h4>
-                                    <p class="text-[10px] font-black text-navy/30 uppercase tracking-widest mb-4">
-                                        {{ org.city }}, {{ org.province }}
-                                    </p>
-                                    <a v-if="org.gmaps_link" :href="org.gmaps_link" target="_blank"
-                                        class="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 text-navy rounded-xl text-[10px] font-black uppercase tracking-widest border border-gray-100">
-                                        Buka di Maps
-                                        <Icon icon="ph:arrow-square-out-bold" class="text-sm" />
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- FAQ -->
-                    <div v-if="pageSettings.sections.faq && org.faq?.length > 0" class="space-y-8">
-                        <h3
-                            class="text-[10px] font-black uppercase tracking-[0.3em] text-navy/30 flex items-center gap-4">
-                            Tanya Jawab (FAQ) <span class="h-px flex-1 bg-gray-100"></span>
-                        </h3>
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                            <div v-for="(item, idx) in org.faq" :key="idx"
-                                class="p-5 sm:p-7 bg-white border border-gray-100 rounded-2xl shadow-sm">
-                                <div class="flex items-start gap-4">
-                                    <div
-                                        class="size-8 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
-                                        <Icon icon="ph:question-bold" class="text-sm text-primary" />
-                                    </div>
-                                    <div class="space-y-3 flex-1 min-w-0">
-                                        <h4 class="font-black text-navy text-sm uppercase leading-tight tracking-tight">
-                                            {{ item.question }}
-                                        </h4>
-                                        <div class="h-px bg-gray-100"></div>
-                                        <p class="text-xs sm:text-sm text-navy/60 leading-relaxed">
-                                            {{ item.answer }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </main>
         </div>
@@ -445,7 +432,8 @@
                                 class="w-full h-full object-cover" />
                         </div>
                         <div>
-                            <p class="text-[9px] font-black text-navy/40 uppercase tracking-widest mb-0.5">Organisasi
+                            <p class="text-[11px] sm:text-xs font-black text-navy/40 uppercase tracking-widest mb-0.5">
+                                Organisasi
                                 Resmi</p>
                             <p class="font-black text-navy text-sm uppercase leading-none">{{ org.name }}</p>
                         </div>
@@ -456,16 +444,17 @@
                             class="flex flex-col items-center gap-2">
                             <div :class="`size-12 rounded-2xl ${plat.bg} flex items-center justify-center`"
                                 v-html="plat.iconHtml"></div>
-                            <span class="text-[9px] font-black text-navy/40 uppercase tracking-wider">{{ plat.name
-                            }}</span>
+                            <span class="text-[10px] sm:text-[11px] font-black text-navy/40 uppercase tracking-wider">{{
+                                plat.name
+                                }}</span>
                         </button>
                     </div>
 
                     <div class="flex gap-2">
                         <input type="text" readonly :value="shareUrl"
-                            class="flex-1 px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-[10px] font-black uppercase text-navy/40 outline-none" />
+                            class="flex-1 px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-[10px] sm:text-[11px] font-black uppercase text-navy/40 outline-none" />
                         <button @click="copyLink"
-                            class="px-5 py-3 bg-navy text-white rounded-xl text-[10px] font-black uppercase tracking-widest">
+                            class="px-5 py-3 bg-navy text-white rounded-xl text-[10px] sm:text-[11px] font-black uppercase tracking-widest">
                             {{ copied ? 'Tersalin' : 'Salin' }}
                         </button>
                     </div>

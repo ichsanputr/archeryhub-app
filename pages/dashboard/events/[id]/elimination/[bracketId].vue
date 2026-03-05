@@ -76,9 +76,9 @@
             <!-- Enhanced Header Section -->
             <div
                 class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm mb-6">
-                <!-- Background Pattern -->
-                <div class="absolute inset-0 opacity-20"
-                    style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,0.15) 10px, rgba(255,255,255,0.15) 20px);">
+                <!-- Theme Motif Pattern -->
+                <div class="absolute inset-0"
+                    style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
                 </div>
 
                 <!-- Decorative Background Elements -->
@@ -167,37 +167,15 @@
                                 Generate Bracket
                             </BaseButton>
 
-                            <!-- Scoresheet split button (color / B&W) -->
+                            <!-- Scoresheet button -->
                             <div v-if="bracket && !(currentRoundNo && route.query.mode === 'scoring')"
-                                class="flex-shrink-0 relative" v-click-outside="() => showScoresheetMenu = false">
-                                <div class="flex">
-                                    <BaseButton @click="openScoresheet('bw')"
-                                        :icon="isDownloadingScoresheet ? 'ph:spinner' : 'ph:printer-bold'"
-                                        :disabled="isDownloadingScoresheet"
-                                        class="h-10 sm:h-11 !bg-white/10 !text-white hover:!bg-primary hover:!text-btn-text backdrop-blur-sm !border-white/20 !border-r-0 !rounded-r-none tracking-[0.1em] font-black uppercase text-[10px] sm:text-xs">
-                                        {{ isDownloadingScoresheet ? 'Membuka...' : 'Scoresheet B&W' }}
-                                    </BaseButton>
-                                    <BaseButton @click="showScoresheetMenu = !showScoresheetMenu"
-                                        :disabled="isDownloadingScoresheet" icon="ph:caret-down-bold"
-                                        class="h-10 sm:h-11 !bg-white/10 !text-white hover:!bg-primary hover:!text-primary-text backdrop-blur-sm !border-white/20 !rounded-l-none !px-2" />
-                                </div>
-                                <!-- Dropdown -->
-                                <div v-if="showScoresheetMenu"
-                                    class="absolute right-0 top-full mt-1.5 z-[100] bg-white border border-gray-100 rounded-xl shadow-xl overflow-hidden min-w-[170px]">
-                                    <button
-                                        class="w-full flex items-center gap-2.5 px-4 py-2.5 text-[11px] font-bold text-navy hover:bg-primary/10 transition-colors"
-                                        @click="openScoresheet('color'); showScoresheetMenu = false">
-                                        <Icon icon="ph:paint-brush-bold" class="text-base text-primary" />
-                                        Berwarna (Color)
-                                    </button>
-                                    <div class="h-px bg-gray-50"></div>
-                                    <button
-                                        class="w-full flex items-center gap-2.5 px-4 py-2.5 text-[11px] font-bold text-navy hover:bg-gray-50 transition-colors"
-                                        @click="openScoresheet('bw'); showScoresheetMenu = false">
-                                        <Icon icon="ph:circle-half-bold" class="text-base text-gray-500" />
-                                        Hitam Putih (B&amp;W)
-                                    </button>
-                                </div>
+                                class="flex-shrink-0 relative">
+                                <BaseButton @click="openScoresheet()"
+                                    :icon="isDownloadingScoresheet ? 'ph:spinner' : 'ph:printer-bold'"
+                                    :disabled="isDownloadingScoresheet"
+                                    class="h-8 sm:h-9 !px-4 !bg-white/10 !text-white hover:!bg-primary hover:!text-btn-text backdrop-blur-sm !border-white/20 tracking-[0.1em] font-black uppercase text-[9px] sm:text-[10px]">
+                                    {{ isDownloadingScoresheet ? 'Membuka...' : 'Cetak Scoresheet' }}
+                                </BaseButton>
                             </div>
                         </div>
                     </div>
@@ -619,28 +597,16 @@ const generateBracket = async () => {
 
 const downloadScoresheet = async () => { openScoresheet('color') }
 
-const showScoresheetMenu = ref(false)
 
-// Local click-outside directive for the scoresheet dropdown
-const vClickOutside = {
-    mounted(el, binding) {
-        el._clickOutside = (event) => {
-            if (!(el === event.target || el.contains(event.target))) binding.value(event)
-        }
-        document.addEventListener('mousedown', el._clickOutside)
-    },
-    unmounted(el) {
-        if (el._clickOutside) document.removeEventListener('mousedown', el._clickOutside)
-    }
-}
 
-const openScoresheet = async (theme = 'color') => {
+
+
+const openScoresheet = async () => {
     if (isDownloadingScoresheet.value) return
     isDownloadingScoresheet.value = true
     try {
         const apiBase = config.public.apiBaseUrl
         const params = new URLSearchParams({ autoprint: '1' })
-        if (theme === 'bw') params.set('theme', 'bw')
         const url = `${apiBase}/events/${eventId}/elimination/brackets/${bracketId}/scoresheet?${params}`
         const win = window.open(url, '_blank')
         if (!win) {
