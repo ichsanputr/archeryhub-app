@@ -1,31 +1,32 @@
 <template>
     <!-- Expired Banner -->
     <div v-if="status === 'expired' || status === 'canceled'"
-        class="relative overflow-hidden rounded-3xl border border-red-200 bg-red-50 shadow-sm">
-        <div class="absolute inset-0 bg-gradient-to-r from-red-50 to-orange-50 opacity-60"></div>
+        class="relative overflow-hidden rounded-3xl border border-orange-200 bg-orange-50 shadow-sm">
+        <div class="absolute inset-0 bg-gradient-to-r from-orange-50 to-amber-50 opacity-60"></div>
         <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div class="flex items-center gap-4">
                 <div
-                    class="size-12 sm:size-14 rounded-2xl bg-red-100 border border-red-200 flex items-center justify-center shrink-0">
-                    <Icon icon="ph:warning-octagon-fill" class="text-red-500 text-2xl sm:text-3xl" />
+                    class="size-12 sm:size-14 rounded-2xl bg-orange-100 border border-orange-200 flex items-center justify-center shrink-0">
+                    <Icon icon="ph:warning-octagon-fill" class="text-orange-500 text-2xl sm:text-3xl" />
                 </div>
                 <div>
                     <div class="flex items-center gap-2 mb-1">
                         <span
-                            class="px-2.5 py-0.5 bg-red-500 text-white text-[9px] font-black uppercase tracking-widest rounded-full">
+                            class="px-2.5 py-0.5 bg-orange-500 text-white text-[9px] font-black uppercase tracking-widest rounded-full">
                             {{ status === 'expired' ? 'Kedaluwarsa' : 'Dibatalkan' }}
                         </span>
                     </div>
-                    <h1 class="text-xl sm:text-2xl font-black text-red-700 tracking-tight">Subscription Anda Tidak Aktif
+                    <h1 class="text-xl sm:text-2xl font-black text-orange-700 tracking-tight">Subscription Anda Tidak
+                        Aktif
                     </h1>
-                    <p class="text-red-500/80 text-xs sm:text-sm font-medium mt-1">
+                    <p class="text-orange-600/80 text-xs sm:text-sm font-medium mt-1">
                         Fitur premium tidak dapat diakses. Perbarui paket Anda untuk melanjutkan.
                     </p>
                 </div>
             </div>
             <div class="flex items-center gap-3 shrink-0">
                 <NuxtLink to="/dashboard/subscription"
-                    class="px-5 py-3 bg-red-500 hover:bg-red-600 text-white rounded-xl text-sm font-black transition-all shadow-lg shadow-red-200 flex items-center gap-2">
+                    class="px-5 py-3 bg-navy text-primary hover:bg-navy/90 rounded-xl text-sm font-black transition-all shadow-lg shadow-navy/20 flex items-center gap-2">
                     <Icon icon="ph:crown-bold" />
                     Perbarui Sekarang
                 </NuxtLink>

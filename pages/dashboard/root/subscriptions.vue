@@ -21,9 +21,9 @@
                         </div>
                         <div>
                             <h1 class="text-xl sm:text-3xl font-black tracking-tight">Manajemen Subscription</h1>
-                            <p class="text-slate-300 text-[10px] sm:text-sm font-medium mt-1">
+                            <div class="text-slate-300 text-[10px] sm:text-sm font-medium mt-1">
                                 Kelola paket langganan club & organisasi
-                            </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -39,45 +39,12 @@
                     <Icon :icon="stat.icon" class="text-xl" />
                 </div>
                 <div>
-                    <p class="text-xs text-gray-400 font-bold tracking-wider">{{ stat.label }}</p>
-                    <p class="text-lg font-bold text-navy">{{ stat.value }}</p>
+                    <div class="text-xs text-gray-400 font-bold tracking-wider">{{ stat.label }}</div>
+                    <div class="text-lg font-bold text-navy">{{ stat.value }}</div>
                 </div>
             </div>
         </div>
 
-        <!-- Plans Section -->
-        <div class="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
-            <button @click="showPlans = !showPlans"
-                class="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50/60 transition-colors border-b border-gray-50">
-                <div class="flex items-center gap-3">
-                    <Icon icon="ph:package-bold" class="text-navy text-lg" />
-                    <div class="text-left">
-                        <p class="text-[11px] font-extrabold text-gray-400 tracking-widest">PAKET LANGGANAN</p>
-                    </div>
-                </div>
-                <Icon :icon="showPlans ? 'ph:caret-up-bold' : 'ph:caret-down-bold'" class="text-gray-400" />
-            </button>
-            <div v-if="showPlans" class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div v-for="plan in plans" :key="plan.id"
-                    class="p-5 border border-gray-100 rounded-xl hover:border-primary/30 hover:shadow-sm transition-all">
-                    <div class="flex items-start justify-between mb-3">
-                        <span class="font-bold text-navy">{{ plan.name }}</span>
-                        <span class="px-2.5 py-1 rounded-full text-[10px] font-black border" :class="plan.is_active
-                            ? 'bg-green-50 text-green-600 border-green-100'
-                            : 'bg-gray-50 text-gray-400 border-gray-200'">
-                            {{ plan.is_active ? 'Aktif' : 'Nonaktif' }}
-                        </span>
-                    </div>
-                    <p class="text-2xl font-black text-navy mb-1">{{ formatCurrency(plan.price) }}</p>
-                    <p class="text-xs text-gray-400 capitalize">{{ plan.billing_type }} · {{ plan.user_type || 'semua'
-                        }}</p>
-                </div>
-                <div v-if="!plans.length" class="col-span-3 py-12 text-center">
-                    <Icon icon="ph:package-bold" class="text-3xl text-gray-200 mb-2 mx-auto" />
-                    <p class="text-sm font-bold text-gray-300">Tidak ada data paket</p>
-                </div>
-            </div>
-        </div>
 
         <!-- Filters -->
         <div
@@ -122,26 +89,45 @@
                 <table class="w-full text-left border-collapse min-w-[800px]">
                     <thead>
                         <tr class="bg-gray-50/50 border-b border-gray-100">
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest">Akun</th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest">Tipe</th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest">Paket</th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest">Status</th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest">Expires</th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest text-right">
+                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest uppercase">
+                                Akun</th>
+                            <th
+                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest uppercase text-center">
+                                Tipe</th>
+                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest uppercase">
+                                Paket</th>
+                            <th
+                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest uppercase text-center">
+                                Status</th>
+                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest uppercase">
+                                Expires</th>
+                            <th
+                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest uppercase text-right">
                                 Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-50">
-                        <tr v-for="sub in filteredSubs" :key="sub.uuid"
+                        <tr v-for="sub in paginatedSubs" :key="sub.uuid"
                             class="hover:bg-primary/5 transition-colors group">
                             <td class="px-6 py-4">
-                                <div>
-                                    <p class="font-bold text-navy group-hover:text-primary transition-colors">{{
-                                        sub.name || '—' }}</p>
-                                    <p class="text-xs text-gray-400 mt-0.5">{{ sub.email || '—' }}</p>
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="h-10 w-10 rounded-xl overflow-hidden bg-gray-50 border border-gray-100 flex items-center justify-center shrink-0">
+                                        <img :src="useImageOrDefault(sub.avatar_url, sub.name)"
+                                            class="w-full h-full object-cover">
+                                    </div>
+                                    <div>
+                                        <div
+                                            class="font-bold text-navy group-hover:text-primary transition-colors line-clamp-1 truncate max-w-[180px]">
+                                            {{ sub.name || '—' }}
+                                        </div>
+                                        <div class="text-xs text-gray-400 mt-0.5 line-clamp-1 truncate max-w-[180px]">
+                                            {{ sub.email || '—' }}
+                                        </div>
+                                    </div>
                                 </div>
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-4 text-center">
                                 <span
                                     class="px-2.5 py-1 rounded-full text-[10px] font-black capitalize tracking-widest border"
                                     :class="sub.user_type === 'club'
@@ -151,7 +137,7 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-700 font-medium">{{ sub.plan_name || '—' }}</td>
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-4 text-center">
                                 <span
                                     class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border"
                                     :class="getStatusBadgeClass(sub.subscription_status)">
@@ -164,15 +150,10 @@
                             </td>
                             <td class="px-6 py-4 text-right">
                                 <div class="flex items-center justify-end gap-2">
-                                    <button @click="openAddon(sub)"
-                                        class="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors"
-                                        title="Tambah hari">
-                                        <Icon icon="ph:calendar-plus-bold" class="text-lg" />
-                                    </button>
                                     <button @click="openEdit(sub)"
-                                        class="p-2 text-gray-400 hover:text-navy hover:bg-gray-100 rounded-lg transition-colors"
+                                        class="p-2 text-gray-400 hover:text-navy hover:bg-gray-100 rounded-xl transition-all"
                                         title="Edit subscription">
-                                        <Icon icon="ph:pencil-bold" class="text-lg" />
+                                        <Icon icon="ph:pencil-simple-bold" class="text-xl" />
                                     </button>
                                 </div>
                             </td>
@@ -181,13 +162,13 @@
                             <td colspan="6" class="px-6 py-24 text-center">
                                 <div class="flex flex-col items-center gap-4 max-w-xs mx-auto">
                                     <div
-                                        class="h-16 w-16 bg-gray-50 rounded-2xl flex items-center justify-center text-gray-300">
+                                        class="h-16 w-16 bg-gray-50 rounded-2xl flex items-center justify-center text-gray-300 border border-gray-100">
                                         <Icon icon="ph:credit-card-bold" class="text-3xl" />
                                     </div>
                                     <div>
-                                        <p class="text-sm font-bold text-gray-400">Tidak ada data subscription</p>
-                                        <p class="text-xs text-gray-300 mt-1">Coba ubah filter atau kata kunci pencarian
-                                        </p>
+                                        <div class="text-sm font-bold text-gray-400">Tidak ada data subscription</div>
+                                        <div class="text-xs text-gray-300 mt-1">Coba ubah filter atau kata kunci
+                                            pencarian</div>
                                     </div>
                                 </div>
                             </td>
@@ -195,44 +176,28 @@
                     </tbody>
                 </table>
             </div>
-        </div>
 
-        <!-- Addon Modal -->
-        <div v-if="showAddonModal"
-            class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
-            @click.self="showAddonModal = false">
-            <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-8 space-y-6">
-                <div class="flex items-center gap-4">
-                    <div class="size-12 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0">
-                        <Icon icon="ph:calendar-plus-bold" class="text-navy text-xl" />
-                    </div>
-                    <div>
-                        <h3 class="text-base font-black text-navy">Tambah Hari</h3>
-                        <p class="text-xs text-gray-400 mt-0.5">{{ selectedSub?.name }}</p>
-                    </div>
+            <!-- Pagination -->
+            <div v-if="filteredSubs.length > 0"
+                class="px-6 py-4 bg-gray-50/50 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="text-xs font-bold text-gray-400 uppercase tracking-widest">
+                    Menampilkan <span class="text-navy">{{ subStartIndex + 1 }} - {{ Math.min(subEndIndex,
+                        filteredSubs.length) }}</span>
+                    dari <span class="text-navy">{{ filteredSubs.length }}</span> Langganan
                 </div>
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 mb-1.5 tracking-wider">Jumlah Hari</label>
-                        <input v-model.number="addonDays" type="number" min="1" max="365"
-                            class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm font-bold focus:ring-2 focus:ring-primary/20 outline-none" />
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 mb-1.5 tracking-wider">Catatan
-                            (opsional)</label>
-                        <input v-model="addonNote" type="text" placeholder="alasan penambahan..."
-                            class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-primary/20 outline-none" />
-                    </div>
-                </div>
-                <div class="flex gap-3">
-                    <button @click="showAddonModal = false"
-                        class="flex-1 py-3 border border-gray-200 rounded-xl text-sm font-bold text-gray-500 hover:bg-gray-50 transition-all">
-                        Batal
+                <div class="flex items-center gap-2">
+                    <button @click="currentPage--" :disabled="currentPage === 1"
+                        class="size-9 flex items-center justify-center rounded-xl bg-white border border-gray-200 text-gray-500 hover:border-primary hover:text-primary transition-all disabled:opacity-30 disabled:pointer-events-none shadow-sm">
+                        <Icon icon="ph:caret-left-bold" />
                     </button>
-                    <button @click="submitAddon" :disabled="addonLoading || !addonDays"
-                        class="flex-1 py-3 bg-navy text-primary rounded-xl text-sm font-black hover:bg-navy/90 transition-all disabled:opacity-50 flex items-center justify-center gap-2">
-                        <Icon v-if="addonLoading" icon="ph:spinner-bold" class="animate-spin" />
-                        Tambahkan
+                    <div class="flex items-center gap-1 px-3">
+                        <span class="text-xs font-black text-navy">{{ currentPage }}</span>
+                        <span class="text-[10px] font-bold text-gray-300">/</span>
+                        <span class="text-[10px] font-bold text-gray-400">{{ totalPages }}</span>
+                    </div>
+                    <button @click="currentPage++" :disabled="currentPage === totalPages"
+                        class="size-9 flex items-center justify-center rounded-xl bg-white border border-gray-200 text-gray-500 hover:border-primary hover:text-primary transition-all disabled:opacity-30 disabled:pointer-events-none shadow-sm">
+                        <Icon icon="ph:caret-right-bold" />
                     </button>
                 </div>
             </div>
@@ -242,57 +207,67 @@
         <div v-if="showEditModal"
             class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
             @click.self="showEditModal = false">
-            <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-8 space-y-6">
+            <div
+                class="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-8 space-y-6 animate-in zoom-in-95 duration-200">
                 <div class="flex items-center gap-4">
-                    <div class="size-12 rounded-2xl bg-gray-100 flex items-center justify-center shrink-0">
-                        <Icon icon="ph:pencil-bold" class="text-navy text-xl" />
+                    <div
+                        class="size-14 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center shrink-0">
+                        <Icon icon="ph:pencil-simple-line-bold" class="text-navy text-2xl" />
                     </div>
                     <div>
-                        <h3 class="text-base font-black text-navy">Edit Subscription</h3>
-                        <p class="text-xs text-gray-400 mt-0.5">{{ selectedSub?.name }}</p>
+                        <h3 class="text-lg font-black text-navy tracking-tight">Edit Subscription</h3>
+                        <div class="text-[10px] font-bold text-gray-400 mt-0.5">{{ selectedSub?.name }}</div>
                     </div>
                 </div>
+
                 <div class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 mb-1.5 tracking-wider">Status</label>
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Status
+                            Langganan</label>
                         <select v-model="editStatus"
-                            class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20">
-                            <option value="">Tidak diubah</option>
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-4 focus:ring-primary/10 transition-all">
                             <option value="active">Active</option>
                             <option value="trial">Trial</option>
                             <option value="expired">Expired</option>
                             <option value="canceled">Canceled</option>
                         </select>
                     </div>
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 mb-1.5 tracking-wider">Upgrade Paket</label>
+
+                    <div class="space-y-1.5">
+                        <label class="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Pilih
+                            Paket</label>
                         <select v-model.number="editPlanId"
-                            class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20">
-                            <option :value="null">Tidak diubah</option>
-                            <option v-for="p in plans" :key="p.id" :value="p.id">{{ p.name }}</option>
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-4 focus:ring-primary/10 transition-all">
+                            <option v-for="p in availablePlansForEdit" :key="p.id" :value="p.id">
+                                {{ p.name }} ({{ formatCurrency(p.price) }})
+                            </option>
                         </select>
                     </div>
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 mb-1.5 tracking-wider">Set Tanggal
-                            Expired</label>
-                        <input v-model="editExpiresAt" type="date"
-                            class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20" />
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-gray-500 mb-1.5 tracking-wider">Perpanjang
-                            (hari)</label>
-                        <input v-model.number="editExtendDays" type="number" min="0"
-                            placeholder="0 = tidak diperpanjang"
-                            class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20" />
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Tgl
+                                Kadaluarsa</label>
+                            <input v-model="editExpiresAt" type="date"
+                                class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-4 focus:ring-primary/10 transition-all" />
+                        </div>
+                        <div class="space-y-1.5">
+                            <label
+                                class="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Perpanjang
+                                (Hari)</label>
+                            <input v-model.number="editExtendDays" type="number" min="0" placeholder="+0"
+                                class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-4 focus:ring-primary/10 transition-all" />
+                        </div>
                     </div>
                 </div>
+
                 <div class="flex gap-3">
                     <button @click="showEditModal = false"
-                        class="flex-1 py-3 border border-gray-200 rounded-xl text-sm font-bold text-gray-500 hover:bg-gray-50 transition-all">
+                        class="flex-1 py-3 border border-gray-200 rounded-xl text-xs font-black text-gray-500 hover:bg-gray-50 transition-all uppercase tracking-widest">
                         Batal
                     </button>
                     <button @click="submitEdit" :disabled="editLoading"
-                        class="flex-1 py-3 bg-navy text-primary rounded-xl text-sm font-black hover:bg-navy/90 transition-all disabled:opacity-50 flex items-center justify-center gap-2">
+                        class="flex-1 py-3 bg-navy text-primary rounded-xl text-xs font-black hover:bg-navy/90 transition-all disabled:opacity-50 flex items-center justify-center gap-2 uppercase tracking-widest shadow-lg shadow-navy/20">
                         <Icon v-if="editLoading" icon="ph:spinner-bold" class="animate-spin" />
                         Simpan
                     </button>
@@ -304,9 +279,10 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 
 const config = useRuntimeConfig()
+const route = useRoute()
 
 definePageMeta({ layout: 'dashboard', middleware: ['auth'] })
 useHead({ title: 'Manajemen Subscription — Root Terminal' })
@@ -315,18 +291,48 @@ useHead({ title: 'Manajemen Subscription — Root Terminal' })
 const subSearch = ref('')
 const subTypeFilter = ref('')
 const subStatusFilter = ref('')
-const showPlans = ref(true)
 
-const { data: subData, refresh: refreshSubs } = await useFetch(
+// Pagination state
+const currentPage = ref(1)
+const itemsPerPage = 8
+
+// Reset to page 1 when filters change
+watch([subSearch, subTypeFilter, subStatusFilter], () => {
+    currentPage.value = 1
+})
+
+// Fetch Subscriptions with unique key to prevent caching issues
+const { data: subData, refresh: refreshSubs, pending: subsPending } = await useFetch(
     `${config.public.apiBaseUrl}/root/dashboard/subscriptions`,
-    { credentials: 'include' }
-)
-const { data: plansData } = await useFetch(
-    `${config.public.apiBaseUrl}/root/dashboard/plans`,
-    { credentials: 'include' }
+    {
+        key: 'root-subscriptions',
+        credentials: 'include',
+        onResponseError({ response }) {
+            console.error('Subscription Fetch Error:', response._data)
+        }
+    }
 )
 
-const subs = computed(() => subData.value?.subscriptions || [])
+// Fetch Plans with unique key (Backend now handles grouping to return 4 plans)
+const { data: plansData, refresh: refreshPlans } = await useFetch(
+    `${config.public.apiBaseUrl}/root/dashboard/plans`,
+    {
+        key: 'root-subscription-plans',
+        credentials: 'include'
+    }
+)
+
+// Manual refresh on mount just in case SSR failed to populate or cache is stale
+onMounted(() => {
+    refreshSubs()
+    refreshPlans()
+})
+
+const subs = computed(() => {
+    const list = subData.value?.subscriptions || []
+    // Client-side sort: Newer records first
+    return [...list].sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+})
 const plans = computed(() => plansData.value?.plans || [])
 
 const filteredSubs = computed(() => {
@@ -339,58 +345,41 @@ const filteredSubs = computed(() => {
     })
 })
 
+// Pagination Calculation
+const totalPages = computed(() => Math.ceil(filteredSubs.value.length / itemsPerPage) || 1)
+const subStartIndex = computed(() => (currentPage.value - 1) * itemsPerPage)
+const subEndIndex = computed(() => subStartIndex.value + itemsPerPage)
+const paginatedSubs = computed(() => filteredSubs.value.slice(subStartIndex.value, subEndIndex.value))
+
 const subStats = computed(() => {
     const all = subs.value
     return [
-        { label: 'Total', value: all.length, icon: 'ph:credit-card', color: 'text-primary' },
-        { label: 'Aktif', value: all.filter(s => s.subscription_status === 'active').length, icon: 'ph:seal-check', color: 'text-green-500' },
-        { label: 'Trial', value: all.filter(s => s.subscription_status === 'trial').length, icon: 'ph:clock-countdown', color: 'text-yellow-500' },
-        { label: 'Expired', value: all.filter(s => s.subscription_status === 'expired').length, icon: 'ph:warning', color: 'text-red-500' },
+        { label: 'Total', value: all.length, icon: 'ph:credit-card-bold', color: 'text-primary' },
+        { label: 'Aktif', value: all.filter(s => s.subscription_status === 'active').length, icon: 'ph:seal-check-bold', color: 'text-green-500' },
+        { label: 'Trial', value: all.filter(s => s.subscription_status === 'trial').length, icon: 'ph:clock-countdown-bold', color: 'text-yellow-500' },
+        { label: 'Expired', value: all.filter(s => s.subscription_status === 'expired').length, icon: 'ph:warning-circle-bold', color: 'text-red-500' },
     ]
 })
 
-// ── Addon ──────────────────────────────────────────────────────────────
-const showAddonModal = ref(false)
-const selectedSub = ref(null)
-const addonDays = ref(30)
-const addonNote = ref('')
-const addonLoading = ref(false)
-
-const openAddon = (sub) => {
-    selectedSub.value = sub
-    addonDays.value = 30
-    addonNote.value = ''
-    showAddonModal.value = true
-}
-
-const submitAddon = async () => {
-    addonLoading.value = true
-    try {
-        await $fetch(
-            `${config.public.apiBaseUrl}/root/dashboard/subscriptions/${selectedSub.value.user_type}/${selectedSub.value.uuid}/addon`,
-            { method: 'POST', body: { addon_days: addonDays.value, note: addonNote.value }, credentials: 'include' }
-        )
-        showAddonModal.value = false
-        await refreshSubs()
-    } catch (err) {
-        alert(err.data?.error || 'Gagal menambahkan hari')
-    } finally {
-        addonLoading.value = false
-    }
-}
-
 // ── Edit ───────────────────────────────────────────────────────────────
 const showEditModal = ref(false)
+const selectedSub = ref(null)
 const editStatus = ref('')
 const editPlanId = ref(null)
 const editExpiresAt = ref('')
 const editExtendDays = ref(0)
 const editLoading = ref(false)
 
+const availablePlansForEdit = computed(() => {
+    if (!selectedSub.value) return []
+    // Only show plans that match the user type (club/organization)
+    return plans.value.filter(p => p.user_type === selectedSub.value.user_type)
+})
+
 const openEdit = (sub) => {
     selectedSub.value = sub
-    editStatus.value = ''
-    editPlanId.value = null
+    editStatus.value = sub.subscription_status
+    editPlanId.value = sub.plan_id
     editExpiresAt.value = sub.expires_at ? sub.expires_at.slice(0, 10) : ''
     editExtendDays.value = 0
     showEditModal.value = true
@@ -429,11 +418,20 @@ const getStatusBadgeClass = (status) => {
     }
 }
 
-const isExpiredSoon = (exp) => exp && (new Date(exp) - new Date()) < 7 * 86400000
+const isExpiredSoon = (exp) => {
+    if (!exp) return false
+    const d = new Date(exp)
+    if (isNaN(d.getTime())) return false
+    return (d - new Date()) < 7 * 86400000
+}
 
 const formatDate = (d) => {
     if (!d || d.startsWith('1970')) return '—'
-    return new Intl.DateTimeFormat('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(d))
+    try {
+        return new Intl.DateTimeFormat('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(d))
+    } catch (e) {
+        return '—'
+    }
 }
 
 const formatCurrency = (v) =>

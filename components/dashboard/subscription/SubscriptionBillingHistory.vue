@@ -47,8 +47,7 @@
                                         Bayar Sekarang
                                     </a>
                                     <a v-else-if="invoice.status === 'paid'"
-                                        :href="`${apiBaseUrl}/api/v1/payment/invoice/${invoice.reference}`"
-                                        target="_blank"
+                                        :href="`${apiBaseUrl}/payment/invoice/${invoice.reference}`" target="_blank"
                                         class="p-2 bg-white border border-gray-100 rounded-xl text-gray-400 hover:text-navy hover:border-primary hover:shadow-lg transition-all">
                                         <Icon icon="ph:file-pdf-bold" class="text-lg" />
                                     </a>
@@ -80,7 +79,7 @@ defineProps({
 
 const handleDownload = async () => {
     try {
-        const response = await $fetch(`${apiBaseUrl}/api/v1/user/subscription/export`, {
+        const response = await $fetch(`${apiBaseUrl}/user/subscription/export`, {
             headers: {
                 ...api.createFetchOptions().headers
             },

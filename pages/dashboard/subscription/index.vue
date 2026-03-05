@@ -184,7 +184,7 @@ const availablePlans = computed(() => {
                     return plan.features.split(',').map(f => f.trim())
                 }
             })(),
-            isCurrent: plan.id === effectiveCurrentPlanId,
+            isCurrent: plan.id === effectiveCurrentPlanId && headerStatus.value !== 'expired' && headerStatus.value !== 'canceled',
             isUpgrade: effectiveCurrentPlanId ? plan.id > effectiveCurrentPlanId : false
         }
     })
@@ -233,11 +233,26 @@ const parseSubscriptionDate = (value) => {
     return Number.isNaN(parsed.getTime()) ? null : parsed
 }
 
-const usageMedia = computed(() => ({
-    current: '256 MB',
-    limit: currentPlan.value?.name === 'Elite' ? '3 GB' : '1 GB',
-    percent: 25
-}))
+const usageMedia = computed(() => {
+    const rawUsage = subscriptionRes.value?.current?.media_usage
+    const currentBytes = rawUsage?.current || 0
+    // Dynamic limit based on plan name
+    const limitBytes = currentPlan.value?.name === 'Elite' ? (5 * 1024 * 1024 * 1024) : (1 * 1024 * 1024 * 1024)
+
+    const formatSize = (bytes) => {
+        if (bytes === 0) return '0 MB'
+        const k = 1024
+        const sizes = ['B', 'KB', 'MB', 'GB', 'TB']
+        const i = Math.max(2, Math.floor(Math.log(bytes) / Math.log(k))) // Start at MB for consistency
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i]
+    }
+
+    return {
+        current: formatSize(currentBytes),
+        limit: formatSize(limitBytes),
+        percent: parseFloat(((currentBytes / limitBytes) * 100).toFixed(1))
+    }
+})
 
 const usageMembers = computed(() => {
     const isElite = currentPlan.value?.name === 'Elite'
