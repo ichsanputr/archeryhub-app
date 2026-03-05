@@ -1,11 +1,9 @@
 <template>
   <div class="space-y-6">
     <!-- Header -->
-    <div
-      class="relative overflow-hidden rounded-2xl border border-primary/20 bg-navy text-white shadow-sm">
+    <div class="relative overflow-hidden rounded-2xl border border-primary/20 bg-navy text-white shadow-sm">
       <!-- Theme Motif Pattern -->
-      <div class="absolute inset-0"
-        style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
+      <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
       </div>
 
       <!-- Decorative Background Elements (Glows) -->
@@ -35,14 +33,17 @@
 
           <!-- Action Buttons -->
           <div class="flex flex-col sm:flex-row gap-3">
-            <BaseButton to="/dashboard/events/create" variant="primary" icon="ph:plus-bold"
-              class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black uppercase tracking-widest">
+            <BaseButton :to="isSubscriptionActive ? '/dashboard/events/create' : undefined" variant="primary"
+              icon="ph:plus-bold" @click="!isSubscriptionActive && (showPremiumModal = true)"
+              class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black uppercase tracking-widest"
+              :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }">
               Buat Event
             </BaseButton>
           </div>
         </div>
       </div>
     </div>
+    <PremiumRequiredModal v-model:show="showPremiumModal" feature="create_event" />
 
     <!-- Search & Filter Card -->
     <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
@@ -187,16 +188,9 @@
     </div>
 
     <!-- Delete Confirmation Dialog -->
-    <AppDialog 
-      v-model:show="showDeleteDialog"
-      title="Hapus Event"
+    <AppDialog v-model:show="showDeleteDialog" title="Hapus Event"
       :message="`Apakah Anda yakin ingin menghapus event '${eventToDelete?.name}'? Tindakan ini tidak dapat dibatalkan.`"
-      confirm-text="Ya, Hapus"
-      type="danger"
-      icon="ph:trash"
-      @confirm="deleteEvent"
-      @cancel="cancelDelete"
-    />
+      confirm-text="Ya, Hapus" type="danger" icon="ph:trash" @confirm="deleteEvent" @cancel="cancelDelete" />
   </div>
 </template>
 
@@ -205,14 +199,18 @@ import { Icon } from '@iconify/vue'
 import { useEventContext } from '~/composables/useEventContext'
 import { useToast } from '~/composables/useToast'
 import { useRouter } from 'vue-router'
+import { useSubscription } from '~/composables/useSubscription'
 import BasePagination from '~/components/common/BasePagination.vue'
 import AppDialog from '~/components/common/AppDialog.vue'
+import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
 
 const { get, del } = useApi()
 const router = useRouter()
 const { setEvent } = useEventContext()
+const { isSubscriptionActive } = useSubscription()
 const toast = useToast()
 
+const showPremiumModal = ref(false)
 const searchQuery = ref('')
 const events = ref([])
 const isLoading = ref(true)

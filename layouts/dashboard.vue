@@ -71,7 +71,7 @@
 
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { useAuth } from '~/composables/useAuth'
 import { useSubscription } from '~/composables/useSubscription'
 
@@ -79,8 +79,6 @@ const route = useRoute()
 const { user, logout } = useAuth()
 const isMobileMenuOpen = useState('mobile-sidebar-open', () => false)
 const showLogoutDialog = useState('show-logout-dialog', () => false)
-
-const subscriptionData = useState('subscription.data', () => null)
 
 const parseSubscriptionDate = (value) => {
     if (!value) return null
@@ -100,7 +98,7 @@ const parseSubscriptionDate = (value) => {
     const day = Number(parts[0])
     const monthRaw = parts[1].toLowerCase()
     const year = Number(parts[2])
-    const monthMap: Record<string, number> = {
+    const monthMap = {
         jan: 0, januari: 0,
         feb: 1, februari: 1,
         mar: 2, maret: 2,
@@ -121,19 +119,14 @@ const parseSubscriptionDate = (value) => {
     return Number.isNaN(parsed.getTime()) ? null : parsed
 }
 
+const { isSubscriptionActive, subscriptionData, fetchSubscription } = useSubscription()
+
 const showExpiredPackageBanner = computed(() => {
     if (!user.value) return false
     const role = user.value.role || user.value.type || user.value.user_type
     if (role !== 'club' && role !== 'organization') return false
 
-    const status = (subscriptionData.value?.current?.status || '').toLowerCase()
-    if (status === 'expired') return true
-
-    const nextBilling = subscriptionData.value?.current?.next_billing_date
-    const expiry = parseSubscriptionDate(nextBilling)
-    if (!expiry) return false
-
-    return expiry.getTime() < new Date().getTime() && status !== 'active'
+    return !isSubscriptionActive.value
 })
 
 // Show profile completion banner if user hasn't completed their profile
@@ -163,7 +156,6 @@ watch(isMobileMenuOpen, (open) => {
 })
 
 // Global Subscription Check (only for klub & organisasi)
-const { fetchSubscription } = useSubscription()
 onMounted(async () => {
     if (!user.value) return
     const role = user.value.role || user.value.type || user.value.user_type

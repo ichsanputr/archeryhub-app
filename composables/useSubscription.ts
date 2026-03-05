@@ -51,12 +51,20 @@ export const useSubscription = () => {
 
     const isSubscribed = computed(() => !!subscriptionData.value?.current?.plan_id)
     const activePlan = computed(() => subscriptionData.value?.current)
+    const isSubscriptionActive = computed(() => {
+        const { user } = useAuth()
+        if (user.value?.role === 'root') return true
+
+        const status = subscriptionData.value?.current?.status
+        return status === 'active' || status === 'trial'
+    })
 
     return {
         subscriptionData,
         isLoading,
         fetchSubscription,
         isSubscribed,
+        isSubscriptionActive,
         activePlan
     }
 }

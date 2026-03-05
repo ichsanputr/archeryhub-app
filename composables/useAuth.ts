@@ -28,6 +28,8 @@ export interface AuthUser {
   banner_url?: string
   google_id?: string
   is_active?: boolean
+  subscription_status?: string
+  subscription_expires_at?: string
   created_at?: string
   updated_at?: string
 }

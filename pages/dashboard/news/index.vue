@@ -22,14 +22,15 @@
                             organisasi Anda.</p>
                     </div>
                 </div>
-                <NuxtLink to="/dashboard/news/create">
-                    <BaseButton variant="primary" icon="ph:plus-bold"
-                        class="h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-xs">
-                        Buat Berita Baru
-                    </BaseButton>
-                </NuxtLink>
+                <BaseButton :to="isSubscriptionActive ? '/dashboard/news/create' : undefined" variant="primary"
+                    icon="ph:plus-bold" @click="!isSubscriptionActive && (showPremiumModal = true)"
+                    class="h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-xs"
+                    :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }">
+                    Buat Berita Baru
+                </BaseButton>
             </div>
         </div>
+        <PremiumRequiredModal v-model:show="showPremiumModal" feature="create_news" />
 
         <!-- Quick Stats -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -210,10 +211,15 @@ useHead({
     title: 'Manajemen Berita - ArcheryHub Dashboard'
 })
 
+import { useSubscription } from '~/composables/useSubscription'
+import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
+
 const { get, delete: del } = useApi()
+const { isSubscriptionActive } = useSubscription()
 const toast = useToast()
 
 const news = ref([])
+const showPremiumModal = ref(false)
 const isLoading = ref(true)
 const searchQuery = ref('')
 const statusFilter = ref('all')

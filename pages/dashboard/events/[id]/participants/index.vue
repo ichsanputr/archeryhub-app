@@ -38,13 +38,18 @@
 
                     <!-- Action Buttons -->
                     <div class="flex gap-3 flex-shrink-0">
-                        <BaseButton variant="white" icon="ph:download" class="h-11 px-5" @click="exportCSV">
+                        <BaseButton variant="white" icon="ph:download" class="h-11 px-5"
+                            @click="isSubscriptionActive ? exportCSV() : (showPremiumModal = true)"
+                            :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }">
                             <span class="hidden sm:inline">Export CSV</span>
                             <span class="sm:hidden">Export</span>
                         </BaseButton>
-                        <BaseButton :to="`/dashboard/events/${eventId}/participants/add`" variant="primary"
-                            icon="ph:plus-bold"
-                            class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all">
+                        <BaseButton
+                            :to="isSubscriptionActive ? `/dashboard/events/${eventId}/participants/add` : undefined"
+                            variant="primary" icon="ph:plus-bold"
+                            @click="!isSubscriptionActive && (showPremiumModal = true)"
+                            class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all"
+                            :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }">
                             <span class="hidden sm:inline">Tambah Peserta</span>
                             <span class="sm:hidden">Tambah</span>
                         </BaseButton>
@@ -52,6 +57,7 @@
                 </div>
             </div>
         </div>
+        <PremiumRequiredModal v-model:show="showPremiumModal" :feature="premiumFeature" />
 
         <!-- Search and Filter Bar -->
         <div
@@ -211,6 +217,12 @@ const route = useRoute()
 const eventId = computed(() => route.params.id)
 const { get } = useApi()
 const { setEvent, clearEvent } = useEventContext()
+const { isSubscriptionActive } = useSubscription()
+import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
+import { useSubscription } from '~/composables/useSubscription'
+
+const showPremiumModal = ref(false)
+const premiumFeature = ref('export_data') // default
 
 const breadcrumbItems = computed(() => [
     { label: 'Dashboard', path: '/dashboard' },

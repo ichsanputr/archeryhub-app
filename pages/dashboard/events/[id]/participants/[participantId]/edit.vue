@@ -56,13 +56,16 @@
                         </BaseButton>
                         <BaseButton variant="primary" icon="ph:floppy-disk"
                             class="h-11 px-5 shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all"
-                            @click="handleSubmit" :loading="isSubmitting">
+                            @click="isSubscriptionActive ? handleSubmit() : (showPremiumModal = true)"
+                            :loading="isSubmitting"
+                            :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }">
                             Simpan Perubahan
                         </BaseButton>
                     </div>
                 </div>
             </div>
         </div>
+        <PremiumRequiredModal v-model:show="showPremiumModal" feature="participant_update" />
 
         <!-- Loading State -->
         <div v-if="isLoading" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 text-center">
@@ -205,7 +208,10 @@
                         skor yang terkait.
                     </p>
                     <BaseButton variant="danger" block icon="ph:user-minus"
-                        class="h-10 text-xs shadow-lg shadow-red-200" @click="handleKickUser" :loading="isKicking">
+                        class="h-10 text-xs shadow-lg shadow-red-200"
+                        @click="isSubscriptionActive ? handleKickUser() : (showPremiumModal = true)"
+                        :loading="isKicking"
+                        :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }">
                         Keluarkan Peserta
                     </BaseButton>
                 </div>
@@ -239,7 +245,10 @@ definePageMeta({
 const route = useRoute()
 const router = useRouter()
 const { get, put } = useApi()
+const { isSubscriptionActive } = useSubscription()
 const toast = useToast()
+import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
+import { useSubscription } from '~/composables/useSubscription'
 
 const eventId = route.params.id
 const participantId = route.params.participantId
@@ -248,6 +257,7 @@ const participant = ref(null)
 const event = ref(null)
 const categories = ref([])
 const clubs = ref([])
+const showPremiumModal = ref(false)
 const isSubmitting = ref(false)
 const isKicking = ref(false)
 

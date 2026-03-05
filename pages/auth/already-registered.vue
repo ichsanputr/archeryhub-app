@@ -53,7 +53,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -72,8 +72,8 @@ const email = computed(() => {
 
 const userTypeLabel = computed(() => {
   const t = route.query.user_type
-  const type = typeof t === 'string' ? (t as string).toLowerCase() : ''
-  const labels: Record<string, string> = {
+  const type = typeof t === 'string' ? t.toLowerCase() : ''
+  const labels = {
     archer: 'Pemanah',
     organization: 'Organisasi',
     club: 'Klub',

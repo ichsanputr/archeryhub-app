@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup>
 definePageMeta({
     layout: 'dashboard'
 })
@@ -30,12 +30,12 @@ const { data: channelsRes, pending: loadingChannels, error: fetchError } = useFe
 const channels = computed(() => {
     if (!channelsRes.value) return []
     const data = channelsRes.value.data || channelsRes.value || []
-    return Array.isArray(data) ? data.filter((c: any) => c.active) : []
+    return Array.isArray(data) ? data.filter((c) => c.active) : []
 })
 
 const groupedChannels = computed(() => {
-    const groups: Record<string, any[]> = {}
-    channels.value.forEach((channel: any) => {
+    const groups = {}
+    channels.value.forEach((channel) => {
         if (!groups[channel.group]) {
             groups[channel.group] = []
         }
@@ -73,20 +73,20 @@ const handlePayment = async () => {
             method: 'POST',
             body: {
                 type: 'subscription',
-                plan_id: parseInt(planId.value as string),
+                plan_id: parseInt(planId.value),
                 method: selectedChannel.value,
                 months: selectedMonths.value,
-                event_id: (route.query.event_id as string) || ""
+                event_id: route.query.event_id || ""
             },
             credentials: 'include'
         })
 
-        if ((res as any).checkout_url) {
-            window.location.href = (res as any).checkout_url
+        if (res.checkout_url) {
+            window.location.href = res.checkout_url
         } else {
             errorMessage.value = 'Gagal mendapatkan tautan pembayaran'
         }
-    } catch (err: any) {
+    } catch (err) {
         console.error('Payment failed:', err)
         errorMessage.value = err.data?.error || 'Terjadi kesalahan saat memproses pembayaran'
     } finally {
@@ -143,7 +143,7 @@ useHead({
                             <span class="text-slate-400 text-[10px] font-black uppercase tracking-widest">Total
                                 Bayar</span>
                             <span class="text-primary font-black text-xl">Rp {{ totalAmount.toLocaleString('id-ID')
-                            }}</span>
+                                }}</span>
                         </div>
                     </div>
                 </div>

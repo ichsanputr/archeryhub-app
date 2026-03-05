@@ -35,14 +35,17 @@
 
                     <!-- Action Buttons -->
                     <div class="flex flex-col sm:flex-row gap-3">
-                        <BaseButton @click="openAddModal" variant="primary" icon="ph:plus-bold"
-                            class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black uppercase tracking-widest">
+                        <BaseButton @click="isSubscriptionActive ? openAddModal() : (showPremiumModal = true)"
+                            variant="primary" icon="ph:plus-bold"
+                            class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black uppercase tracking-widest"
+                            :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }">
                             Tambah Scorekeeper
                         </BaseButton>
                     </div>
                 </div>
             </div>
         </div>
+        <PremiumRequiredModal v-model:show="showPremiumModal" feature="scorekeeper" />
 
         <!-- Search & Filter Card -->
         <div
@@ -178,11 +181,16 @@
                             </td>
                             <td class="px-6 py-5 text-right">
                                 <div class="flex items-center justify-end gap-2">
-                                    <BaseButton @click="openEditModal(sk)" variant="white" size="sm"
-                                        icon="ph:pencil-simple"
-                                        class="h-9 w-9 p-0 text-gray-400 hover:text-primary border-slate-200" />
-                                    <BaseButton @click="confirmDelete(sk)" variant="white" size="sm" icon="ph:trash"
-                                        class="h-9 w-9 p-0 text-red-400 hover:text-red-500 border-slate-200" />
+                                    <BaseButton
+                                        @click="isSubscriptionActive ? openEditModal(sk) : (showPremiumModal = true)"
+                                        variant="white" size="sm" icon="ph:pencil-simple"
+                                        class="h-9 w-9 p-0 text-gray-400 hover:text-primary border-slate-200"
+                                        :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }" />
+                                    <BaseButton
+                                        @click="isSubscriptionActive ? confirmDelete(sk) : (showPremiumModal = true)"
+                                        variant="white" size="sm" icon="ph:trash"
+                                        class="h-9 w-9 p-0 text-red-400 hover:text-red-500 border-slate-200"
+                                        :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }" />
                                 </div>
                             </td>
                         </tr>
@@ -244,10 +252,12 @@
 import { ref, onMounted, reactive, computed } from 'vue'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
+import { useSubscription } from '~/composables/useSubscription'
 import LoadingSpinner from '~/components/common/LoadingSpinner.vue'
 import BaseDialogForm from '~/components/common/BaseDialogForm.vue'
 import BaseInput from '~/components/common/BaseInput.vue'
 import AppDialog from '~/components/common/AppDialog.vue'
+import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
 
 definePageMeta({
     middleware: ['auth'],
@@ -258,9 +268,11 @@ useHead({
     title: 'Manajemen Scorekeeper - ArcheryHub Dashboard'
 })
 
+const { isSubscriptionActive } = useSubscription()
 const api = useApi()
 const toast = useToast()
 
+const showPremiumModal = ref(false)
 const scorekeepers = ref([])
 const searchQuery = ref('')
 const loading = ref(true)
