@@ -195,16 +195,23 @@
                             <NuxtLink v-for="(article, index) in popularArticles" :key="article.id"
                                 :to="`/news/${article.slug || article.id}`"
                                 class="group flex flex-col items-center text-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-all">
-                                <div
-                                    class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary font-black text-sm flex-shrink-0">
-                                    {{ index + 1 }}
-                                </div>
-                                <div>
-                                    <h4
-                                        class="font-bold text-navy text-sm leading-snug group-hover:text-primary transition-colors line-clamp-2">
-                                        {{ article.title }}
-                                    </h4>
-                                    <span class="text-xs text-gray-400 mt-1 block">{{ article.date }}</span>
+                                <div class="flex items-center gap-3 w-full text-left">
+                                    <div
+                                        class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary font-black text-sm flex-shrink-0">
+                                        {{ index + 1 }}
+                                    </div>
+                                    <div class="w-14 h-14 bg-gray-100 rounded-xl overflow-hidden shrink-0">
+                                        <img :src="useImageOrDefault(article.image || article.image_url)"
+                                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4
+                                            class="font-bold text-navy text-sm leading-snug group-hover:text-primary transition-colors line-clamp-2">
+                                            {{ article.title }}
+                                        </h4>
+                                        <span class="text-[10px] text-gray-400 mt-1 block font-medium">{{ article.date
+                                            }}</span>
+                                    </div>
                                 </div>
                             </NuxtLink>
                         </div>

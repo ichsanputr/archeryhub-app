@@ -85,7 +85,7 @@ import { useAuth } from '~/composables/useAuth'
 import { useSubscription } from '~/composables/useSubscription'
 
 const route = useRoute()
-const { user, logout } = useAuth()
+const { user, userPersona, logout } = useAuth()
 const isMobileMenuOpen = useState('mobile-sidebar-open', () => false)
 const showLogoutDialog = useState('show-logout-dialog', () => false)
 

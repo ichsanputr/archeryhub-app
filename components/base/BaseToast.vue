@@ -11,7 +11,7 @@
                     <Icon :icon="icons[toast.type]" class="text-2xl" />
                 </div>
                 <div class="flex-grow">
-                    <p class="text-sm font-bold">{{ toast.message }}</p>
+                    <div class="text-sm font-bold">{{ toast.message }}</div>
                 </div>
                 <button @click="removeToast(toast.id)" class="ml-4 p-1 hover:bg-black/5 rounded-full transition-colors">
                     <Icon icon="ph:x" class="text-lg" />

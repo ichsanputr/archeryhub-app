@@ -105,85 +105,86 @@
 
         <!-- Clubs Grid -->
         <section class="container mx-auto px-4 max-w-7xl pb-16">
-            <div v-if="isLoading"
-                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-60 pointer-events-none">
-                <div v-for="i in 6" :key="i"
-                    class="h-[400px] bg-white rounded-2xl border-2 border-gray-100 animate-pulse"></div>
-            </div>
+            <Transition name="fade" mode="out-in">
+                <ClubListSkeleton v-if="isLoading" key="skeleton" />
 
-            <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <NuxtLink v-for="club in clubs" :key="club.uuid" :to="`/clubs/${club.slug}`"
-                    class="group bg-white rounded-3xl border border-gray-200 overflow-hidden hover:shadow-2xl hover:shadow-primary/10 hover:border-primary/40 transition-all duration-500 flex flex-col relative">
+                <div v-else key="content" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <NuxtLink v-for="club in clubs" :key="club.uuid" :to="`/clubs/${club.slug}`"
+                        class="group bg-white rounded-3xl border border-gray-200 overflow-hidden hover:shadow-2xl hover:shadow-primary/10 hover:border-primary/40 transition-all duration-500 flex flex-col relative">
 
-                    <!-- Decorative Banner Background -->
-                    <div class="h-24 w-full bg-gradient-to-br from-navy-light to-navy relative overflow-hidden">
-                        <div class="absolute inset-0 opacity-20">
-                            <Icon icon="ph:target-bold"
-                                class="text-white text-6xl absolute -right-4 -top-4 rotate-12" />
-                            <Icon icon="ph:bow-arrow-bold"
-                                class="text-white text-4xl absolute -left-2 -bottom-2 -rotate-12" />
-                        </div>
-                    </div>
-
-                    <!-- Club Logo Section -->
-                    <div class="flex justify-center -mt-12 mb-4 px-5 relative z-10">
-                        <div
-                            class="w-24 h-24 rounded-2xl bg-white border-4 border-white shadow-md overflow-hidden group-hover:scale-105 transition-transform duration-500">
-                            <img v-if="club.logo_url" :src="getImageUrl(club.logo_url)" :alt="club.name"
-                                class="w-full h-full object-cover" />
-                            <div v-else class="w-full h-full bg-primary flex items-center justify-center">
-                                <span class="text-2xl font-black text-primary-text">{{ club.name.charAt(0) }}</span>
+                        <!-- Decorative Banner Background -->
+                        <div class="h-24 w-full bg-gradient-to-br from-navy-light to-navy relative overflow-hidden">
+                            <div class="absolute inset-0 opacity-20">
+                                <Icon icon="ph:target-bold"
+                                    class="text-white text-6xl absolute -right-4 -top-4 rotate-12" />
+                                <Icon icon="ph:bow-arrow-bold"
+                                    class="text-white text-4xl absolute -left-2 -bottom-2 -rotate-12" />
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Club Info -->
-                    <div class="px-6 pb-6 flex-1 flex flex-col text-center">
-                        <h3
-                            class="font-black text-lg sm:text-xl leading-tight mb-1 group-hover:text-primary transition-colors">
-                            {{ club.name }}
-                        </h3>
-                        <div
-                            class="flex items-center justify-center gap-1.5 text-gray-500 text-xs font-bold  tracking-wider mb-6">
-                            <Icon icon="ph:map-pin-bold" class="text-primary" />
-                            <span>{{ club.city || club.province || 'Indonesia' }}</span>
-                        </div>
-
-                        <!-- Info Grid -->
-                        <div class="grid grid-cols-2 gap-3 mb-6">
+                        <!-- Club Logo Section -->
+                        <div class="flex justify-center -mt-12 mb-4 px-5 relative z-10">
                             <div
-                                class="bg-gray-50 rounded-2xl p-3 flex flex-col items-center justify-center border border-gray-100">
-                                <span class="text-[9px] font-black text-gray-400  tracking-widest mb-1">Anggota</span>
-                                <span class="text-base font-black text-navy">{{ club.member_count || 0 }}</span>
-                            </div>
-                            <div
-                                class="bg-gray-50 rounded-2xl p-3 flex flex-col items-center justify-center border border-gray-100">
-                                <span class="text-[9px] font-black text-gray-400  tracking-widest mb-1">Prestasi</span>
-                                <span class="text-base font-black text-navy">{{ club.achievements || 0 }}</span>
-                            </div>
-                        </div>
-
-                        <!-- Footer -->
-                        <div class="mt-auto pt-5 border-t border-gray-100 flex items-center justify-between">
-                            <div class="flex items-center gap-2">
-                                <div v-if="club.member_avatars && club.member_avatars.length" class="flex -space-x-2">
-                                    <img v-for="(avatar, idx) in club.member_avatars" :key="idx"
-                                        :src="getImageUrl(avatar)"
-                                        class="w-7 h-7 rounded-full border-2 border-white bg-gray-100 object-cover" />
-                                    <div v-if="club.member_count > 3"
-                                        class="w-7 h-7 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-[10px] font-black text-gray-400">
-                                        +{{ club.member_count - 3 }}
-                                    </div>
+                                class="w-24 h-24 rounded-2xl bg-white border-4 border-white shadow-md overflow-hidden group-hover:scale-105 transition-transform duration-500">
+                                <img v-if="club.logo_url" :src="getImageUrl(club.logo_url)" :alt="club.name"
+                                    class="w-full h-full object-cover" />
+                                <div v-else class="w-full h-full bg-primary flex items-center justify-center">
+                                    <span class="text-2xl font-black text-primary-text">{{ club.name.charAt(0) }}</span>
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Club Info -->
+                        <div class="px-6 pb-6 flex-1 flex flex-col text-center">
+                            <h3
+                                class="font-black text-lg sm:text-xl leading-tight mb-1 group-hover:text-primary transition-colors">
+                                {{ club.name }}
+                            </h3>
                             <div
-                                class="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center text-navy group-hover:bg-primary transition-all duration-300">
-                                <Icon icon="ph:arrow-right-bold" class="text-lg" />
+                                class="flex items-center justify-center gap-1.5 text-gray-500 text-xs font-bold  tracking-wider mb-6">
+                                <Icon icon="ph:map-pin-bold" class="text-primary" />
+                                <span>{{ club.city || club.province || 'Indonesia' }}</span>
+                            </div>
+
+                            <!-- Info Grid -->
+                            <div class="grid grid-cols-2 gap-3 mb-6">
+                                <div
+                                    class="bg-gray-50 rounded-2xl p-3 flex flex-col items-center justify-center border border-gray-100">
+                                    <span
+                                        class="text-[9px] font-black text-gray-400  tracking-widest mb-1">Anggota</span>
+                                    <span class="text-base font-black text-navy">{{ club.member_count || 0 }}</span>
+                                </div>
+                                <div
+                                    class="bg-gray-50 rounded-2xl p-3 flex flex-col items-center justify-center border border-gray-100">
+                                    <span
+                                        class="text-[9px] font-black text-gray-400  tracking-widest mb-1">Prestasi</span>
+                                    <span class="text-base font-black text-navy">{{ club.achievements || 0 }}</span>
+                                </div>
+                            </div>
+
+                            <!-- Footer -->
+                            <div class="mt-auto pt-5 border-t border-gray-100 flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <div v-if="club.member_avatars && club.member_avatars.length"
+                                        class="flex -space-x-2">
+                                        <img v-for="(avatar, idx) in club.member_avatars" :key="idx"
+                                            :src="getImageUrl(avatar)"
+                                            class="w-7 h-7 rounded-full border-2 border-white bg-gray-100 object-cover" />
+                                        <div v-if="club.member_count > 3"
+                                            class="w-7 h-7 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-[10px] font-black text-gray-400">
+                                            +{{ club.member_count - 3 }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center text-navy group-hover:bg-primary transition-all duration-300">
+                                    <Icon icon="ph:arrow-right-bold" class="text-lg" />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </NuxtLink>
-            </div>
+                    </NuxtLink>
+                </div>
+            </Transition>
 
             <!-- Empty State -->
             <div v-if="clubs.length === 0 && !isLoading" class="text-center py-20">

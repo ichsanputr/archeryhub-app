@@ -30,7 +30,7 @@
                         </p>
                         <p class="text-xs text-gray-600 line-clamp-2 mb-2 font-medium">{{ note.message }}</p>
                         <span class="text-[10px] text-gray-300 font-bold  tracking-wider">{{ note.time
-                            }}</span>
+                        }}</span>
                     </div>
 
                     <!-- Unread Dot -->
@@ -62,6 +62,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+const { userPersona } = useAuth()
 
 const props = defineProps({
     notifications: {

@@ -138,7 +138,7 @@ import { useImageOrDefault } from '~/composables/useImageHelper'
 
 const route = useRoute()
 const router = useRouter()
-const { user, archerProfile, clubProfile, organizationProfile, sellerProfile, logout } = useAuth()
+const { user, userPersona, archerProfile, clubProfile, organizationProfile, sellerProfile, logout } = useAuth()
 
 const isSidebarOpen = useState('mobile-sidebar-open', () => false)
 const isSidebarCollapsed = useState('sidebar-collapsed', () => false)
@@ -178,18 +178,6 @@ const displayName = computed(() => {
 })
 
 
-
-const userPersona = computed(() => {
-  const roleMap = {
-    'archer': 'archer',
-    'club': 'club',
-    'organization': 'organization',
-    'seller': 'seller',
-    'root': 'root',
-    'admin': 'organization'
-  }
-  return roleMap[user.value?.role || user.value?.user_type || user.value?.type] || 'archer'
-})
 
 const eventId = computed(() => route.params.id)
 
@@ -394,10 +382,13 @@ const isActive = (path) => {
   if (path === '/dashboard') {
     return route.path === '/dashboard' || route.path === '/dashboard/'
   }
-  // Root sub-pages — use exact match to prevent /dashboard/root matching /dashboard/root/subscriptions
-  if (path.startsWith('/dashboard/root')) {
-    return route.path === path
+
+  // Dashboard roots should use exact match and not match sub-pages
+  const dashboardRoots = ['/dashboard/root', '/dashboard/organization', '/dashboard/club', '/dashboard/seller', '/dashboard/archer']
+  if (dashboardRoots.includes(path)) {
+    return route.path === path || route.path === path + '/'
   }
+
   // Exact match first, then check if route path starts with path + '/'
   return route.path === path || route.path.startsWith(path + '/')
 }

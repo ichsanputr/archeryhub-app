@@ -140,10 +140,10 @@
                                                 class="w-full h-full object-cover">
                                         </div>
                                         <div class="min-w-0">
-                                            <p class="text-sm font-black text-navy truncate leading-snug">{{
-                                                participant.full_name }}</p>
-                                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">{{
-                                                participant.email || '-' }}</p>
+                                            <div class="text-sm font-black text-navy mb-2 truncate leading-snug">{{
+                                                participant.full_name }}</div>
+                                            <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">{{
+                                                participant.email || '-' }}</div>
                                         </div>
                                     </div>
                                 </td>

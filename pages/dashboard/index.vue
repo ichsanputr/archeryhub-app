@@ -1,22 +1,5 @@
 <script setup>
-const { user } = useAuth()
-
-onMounted(async () => {
-  const role = user.value?.role || user.value?.type || user.value?.user_type || 'archer'
-
-  // Clean up role string to match folder names (singular)
-  const roleMap = {
-    'archer': 'archer',
-    'club': 'club',
-    'organization': 'organization',
-    'seller': 'seller',
-    'root': 'root',
-    'admin': 'organization'
-  }
-
-  const targetRole = roleMap[role] || 'archer'
-  await navigateTo(`/dashboard/${targetRole}`, { replace: true })
-})
+// Redirection is handled by the global persona-redirect middleware
 </script>
 
 <template>

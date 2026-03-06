@@ -85,94 +85,95 @@
 
         <!-- Products Grid -->
         <section class="container mx-auto px-4 max-w-7xl pb-16">
-            <div v-if="isLoading" class="flex flex-col items-center justify-center py-20">
-                <Icon icon="ph:spinner-gap-bold" class="text-4xl text-primary animate-spin mb-4" />
-                <p class="text-gray-500 font-medium">Memuat produk...</p>
-            </div>
-            <div v-else-if="filteredProducts.length === 0 && !isLoading"
-                class="flex flex-col items-center justify-center py-20">
-                <Icon icon="ph:package-light" class="text-7xl text-gray-200 mb-6" />
-                <h3 class="text-lg sm:text-2xl font-black text-navy mb-3">Produk Tidak Ditemukan</h3>
-                <p class="text-gray-500 max-w-md mx-auto text-center">Coba ubah filter atau kata kunci pencarian untuk
-                    menemukan produk yang sesuai.</p>
-            </div>
-            <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-                <!-- Product Card Premium -->
-                <NuxtLink v-for="product in filteredProducts" :key="product.id"
-                    :to="`/products/${product.slug || product.id}`"
-                    class="bg-white rounded-3xl border border-gray-100 flex flex-col hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] hover:border-primary/50 transition-all group overflow-hidden h-full">
+            <Transition name="fade" mode="out-in">
+                <ProductListSkeleton v-if="isLoading" key="skeleton" />
+                <div v-else-if="filteredProducts.length === 0 && !isLoading" key="empty"
+                    class="flex flex-col items-center justify-center py-20">
+                    <Icon icon="ph:package-light" class="text-7xl text-gray-200 mb-6" />
+                    <h3 class="text-lg sm:text-2xl font-black text-navy mb-3">Produk Tidak Ditemukan</h3>
+                    <p class="text-gray-500 max-w-md mx-auto text-center">Coba ubah filter atau kata kunci pencarian
+                        untuk
+                        menemukan produk yang sesuai.</p>
+                </div>
+                <div v-else key="content" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                    <!-- Product Card Premium -->
+                    <NuxtLink v-for="product in filteredProducts" :key="product.id"
+                        :to="`/products/${product.slug || product.id}`"
+                        class="bg-white rounded-3xl border border-gray-100 flex flex-col hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] hover:border-primary/50 transition-all group overflow-hidden h-full">
 
-                    <!-- Product Image Container -->
-                    <div class="relative pt-[100%] bg-gray-50 overflow-hidden">
-                        <img :src="useImageOrDefault(product.image_url)" :alt="product.name"
-                            class="absolute inset-0 w-full h-full object-cover transition-transform duration-700" />
+                        <!-- Product Image Container -->
+                        <div class="relative pt-[100%] bg-gray-50 overflow-hidden">
+                            <img :src="useImageOrDefault(product.image_url)" :alt="product.name"
+                                class="absolute inset-0 w-full h-full object-cover transition-transform duration-700" />
 
-                        <!-- Premium Overlays -->
-                        <div
-                            class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                        </div>
-
-                        <!-- Sale Badge -->
-                        <div v-if="product.sale_price" class="absolute top-4 left-4 z-10">
+                            <!-- Premium Overlays -->
                             <div
-                                class="px-3 py-1 bg-red-500 text-white text-[10px] font-black rounded-lg shadow-lg flex items-center gap-1">
-                                <Icon icon="ph:tag-fill" />
-                                PROMO
+                                class="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                            </div>
+
+                            <!-- Sale Badge -->
+                            <div v-if="product.sale_price" class="absolute top-4 left-4 z-10">
+                                <div
+                                    class="px-3 py-1 bg-red-500 text-white text-[10px] font-black rounded-lg shadow-lg flex items-center gap-1">
+                                    <Icon icon="ph:tag-fill" />
+                                    PROMO
+                                </div>
+                            </div>
+
+                            <div
+                                class="absolute bottom-4 left-4 right-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 z-10">
+                                <div
+                                    class="w-full py-2.5 bg-white/90 backdrop-blur-md text-navy text-xs font-black rounded-xl text-center shadow-lg flex items-center justify-center gap-2">
+                                    <Icon icon="ph:arrow-square-out-bold" class="text-sm" />
+                                    LIHAT DETAIL
+                                </div>
                             </div>
                         </div>
 
-                        <div
-                            class="absolute bottom-4 left-4 right-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 z-10">
-                            <div
-                                class="w-full py-2.5 bg-white/90 backdrop-blur-md text-navy text-xs font-black rounded-xl text-center shadow-lg flex items-center justify-center gap-2">
-                                <Icon icon="ph:arrow-square-out-bold" class="text-sm" />
-                                LIHAT DETAIL
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Product Content -->
-                    <div class="p-6 flex flex-col flex-1">
-                        <!-- Category & Status -->
-                        <div class="flex items-center justify-between mb-3">
-                            <span
-                                class="text-[10px] font-black text-primary  tracking-widest bg-primary/5 px-2 py-0.5 rounded-md">
-                                {{ product.category }}
-                            </span>
-                            <span v-if="product.stock > 0"
-                                class="text-[10px] font-bold text-green-500 flex items-center gap-1">
-                                <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-                                Tersedia
-                            </span>
-                        </div>
-
-                        <!-- Title -->
-                        <h3
-                            class="font-black text-navy text-sm md:text-base mb-3 line-clamp-2 leading-snug group-hover:text-primary transition-colors h-10">
-                            {{ product.name }}
-                        </h3>
-
-                        <!-- Price Section -->
-                        <div class="mt-auto pt-4 border-t border-gray-50">
-                            <div class="flex flex-col">
-                                <span v-if="product.sale_price" class="text-[10px] text-gray-400 line-through mb-0.5">
-                                    Rp {{ formatPrice(product.price) }}
+                        <!-- Product Content -->
+                        <div class="p-6 flex flex-col flex-1">
+                            <!-- Category & Status -->
+                            <div class="flex items-center justify-between mb-3">
+                                <span
+                                    class="text-[10px] font-black text-primary  tracking-widest bg-primary/5 px-2 py-0.5 rounded-md">
+                                    {{ product.category }}
                                 </span>
-                                <div class="flex items-center justify-between">
-                                    <span
-                                        class="text-lg font-black text-navy group-hover:text-primary transition-colors">
-                                        Rp {{ formatPrice(product.sale_price || product.price) }}
+                                <span v-if="product.stock > 0"
+                                    class="text-[10px] font-bold text-green-500 flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                                    Tersedia
+                                </span>
+                            </div>
+
+                            <!-- Title -->
+                            <h3
+                                class="font-black text-navy text-sm md:text-base mb-3 line-clamp-2 leading-snug group-hover:text-primary transition-colors h-10">
+                                {{ product.name }}
+                            </h3>
+
+                            <!-- Price Section -->
+                            <div class="mt-auto pt-4 border-t border-gray-50">
+                                <div class="flex flex-col">
+                                    <span v-if="product.sale_price"
+                                        class="text-[10px] text-gray-400 line-through mb-0.5">
+                                        Rp {{ formatPrice(product.price) }}
                                     </span>
-                                    <div
-                                        class="w-8 h-8 rounded-lg bg-gray-50 group-hover:bg-primary/10 flex items-center justify-center text-gray-400 group-hover:text-primary transition-all">
-                                        <Icon icon="ph:arrow-right-bold" class="text-xs" />
+                                    <div class="flex items-center justify-between">
+                                        <span
+                                            class="text-lg font-black text-navy group-hover:text-primary transition-colors">
+                                            Rp {{ formatPrice(product.sale_price || product.price) }}
+                                        </span>
+                                        <div
+                                            class="w-8 h-8 rounded-lg bg-gray-50 group-hover:bg-primary/10 flex items-center justify-center text-gray-400 group-hover:text-primary transition-all">
+                                            <Icon icon="ph:arrow-right-bold" class="text-xs" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </NuxtLink>
-            </div>
+                    </NuxtLink>
+                </div>
+            </Transition>
         </section>
 
         <!-- Become a Seller CTA -->
@@ -223,7 +224,8 @@ const sortOptions = [
     { value: 'popular', title: 'Terpopuler' }
 ]
 
-const { data: productResponse, pending: isLoading } = await useAsyncData('products', () => $fetch(`${apiBaseUrl}/products`), {
+const { data: productResponse, pending: isLoading } = useAsyncData('products', () => $fetch(`${apiBaseUrl}/products`), {
+    lazy: true,
     server: true
 })
 

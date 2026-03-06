@@ -1,13 +1,13 @@
 <template>
-    <div class="animate-pulse">
+    <div>
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            <div v-for="i in 6" :key="i" 
+            <div v-for="i in 6" :key="i"
                 class="bg-white rounded-2xl border border-gray-100 overflow-hidden flex flex-col h-full shadow-sm">
                 <!-- Image area -->
                 <div class="relative h-52 bg-gray-100">
                     <div class="absolute top-4 left-4 h-6 bg-gray-200 rounded-lg w-16"></div>
                 </div>
-                
+
                 <!-- Content area -->
                 <div class="p-6 flex-1 flex flex-col space-y-4">
                     <!-- Title -->

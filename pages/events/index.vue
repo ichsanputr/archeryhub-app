@@ -144,68 +144,71 @@
                         </div>
                     </div>
 
-                    <!-- Loading State -->
-                    <EventsListSkeleton v-if="isLoading" />
+                    <Transition name="fade" mode="out-in">
+                        <EventsListSkeleton v-if="isLoading" key="skeleton" />
 
-                    <!-- Empty State -->
-                    <div v-else-if="!isLoading && filteredTournaments.length === 0" class="text-center py-20">
-                        <Icon icon="ph:calendar-x-light" class="text-7xl text-gray-200 mb-6 mx-auto" />
-                        <h3 class="text-2xl font-black text-navy mb-3">Belum Ada Event</h3>
-                        <p class="text-gray-500 text-sm leading-relaxed max-w-sm mx-auto mb-8">
-                            Coba ubah pencarian atau filter Anda untuk menemukan event yang tersedia.
-                        </p>
-                        <BaseButton v-if="searchQuery" variant="primary" @click="searchQuery = ''"
-                            class="shadow-sm shadow-primary/20">
-                            Hapus Pencarian
-                        </BaseButton>
-                    </div>
+                        <!-- Empty State -->
+                        <div v-else-if="!isLoading && filteredTournaments.length === 0" key="empty"
+                            class="text-center py-20">
+                            <Icon icon="ph:calendar-x-light" class="text-7xl text-gray-200 mb-6 mx-auto" />
+                            <h3 class="text-2xl font-black text-navy mb-3">Belum Ada Event</h3>
+                            <p class="text-gray-500 text-sm leading-relaxed max-w-sm mx-auto mb-8">
+                                Coba ubah pencarian atau filter Anda untuk menemukan event yang tersedia.
+                            </p>
+                            <BaseButton v-if="searchQuery" variant="primary" @click="searchQuery = ''"
+                                class="shadow-sm shadow-primary/20">
+                                Hapus Pencarian
+                            </BaseButton>
+                        </div>
 
-                    <!-- Grid -->
-                    <div v-else class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                        <NuxtLink v-for="tournament in filteredTournaments.slice(0, displayedLimit)"
-                            :key="tournament.slug || tournament.id" :to="`/events/${tournament.slug || tournament.id}`"
-                            class="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] hover:border-primary/50 transition-all duration-500 flex flex-col h-full">
-                            <div class="relative h-52 overflow-hidden bg-gray-100">
-                                <img :alt="tournament.name"
-                                    class="w-full h-full object-cover transition-transform duration-700"
-                                    :src="tournament.image" />
-                                <div class="absolute top-4 left-4">
-                                    <span
-                                        class="px-3 py-1.5 bg-white/90 backdrop-blur-sm text-navy text-[10px] font-black rounded-lg  tracking-wider shadow-sm">
-                                        {{ tournament.category || 'Umum' }}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="p-6 flex-1 flex flex-col">
-                                <h3
-                                    class="text-lg font-black text-navy mb-2 leading-tight group-hover:text-primary transition-colors line-clamp-2">
-                                    {{ tournament.name }}
-                                </h3>
-                                <div class="space-y-3 mb-8">
-                                    <div class="flex items-center gap-3 text-gray-500">
-                                        <div
-                                            class="h-8 w-8 rounded-lg bg-gray-50 flex items-center justify-center transition-colors">
-                                            <Icon icon="ph:calendar-blank-bold" class="text-lg transition-colors" />
-                                        </div>
-                                        <span class="text-xs font-bold">{{ tournament.date }}</span>
-                                    </div>
-                                    <div class="flex items-center gap-3 text-gray-500">
-                                        <div
-                                            class="h-8 w-8 rounded-lg bg-gray-50 flex items-center justify-center transition-colors">
-                                            <Icon icon="ph:map-pin-bold" class="text-lg transition-colors" />
-                                        </div>
-                                        <span class="text-xs font-bold truncate">{{ tournament.location }}</span>
+                        <!-- Grid -->
+                        <div v-else key="content" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                            <NuxtLink v-for="tournament in filteredTournaments.slice(0, displayedLimit)"
+                                :key="tournament.slug || tournament.id"
+                                :to="`/events/${tournament.slug || tournament.id}`"
+                                class="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] hover:border-primary/50 transition-all duration-500 flex flex-col h-full">
+                                <div class="relative h-52 overflow-hidden bg-gray-100">
+                                    <img :alt="tournament.name"
+                                        class="w-full h-full object-cover transition-transform duration-700"
+                                        :src="tournament.image" />
+                                    <div class="absolute top-4 left-4">
+                                        <span
+                                            class="px-3 py-1.5 bg-white/90 backdrop-blur-sm text-navy text-[10px] font-black rounded-lg  tracking-wider shadow-sm">
+                                            {{ tournament.category || 'Umum' }}
+                                        </span>
                                     </div>
                                 </div>
-                                <div class="mt-auto">
-                                    <BaseButton variant="primary" block size="lg" iconRight="ph:arrow-right-bold"
-                                        class="shadow-sm group-hover:shadow-sm group-hover:shadow-primary/20 transition-all">
-                                        Detail Event
-                                    </BaseButton>
+                                <div class="p-6 flex-1 flex flex-col">
+                                    <h3
+                                        class="text-lg font-black text-navy mb-2 leading-tight group-hover:text-primary transition-colors line-clamp-2">
+                                        {{ tournament.name }}
+                                    </h3>
+                                    <div class="space-y-3 mb-8">
+                                        <div class="flex items-center gap-3 text-gray-500">
+                                            <div
+                                                class="h-8 w-8 rounded-lg bg-gray-50 flex items-center justify-center transition-colors">
+                                                <Icon icon="ph:calendar-blank-bold" class="text-lg transition-colors" />
+                                            </div>
+                                            <span class="text-xs font-bold">{{ tournament.date }}</span>
+                                        </div>
+                                        <div class="flex items-center gap-3 text-gray-500">
+                                            <div
+                                                class="h-8 w-8 rounded-lg bg-gray-50 flex items-center justify-center transition-colors">
+                                                <Icon icon="ph:map-pin-bold" class="text-lg transition-colors" />
+                                            </div>
+                                            <span class="text-xs font-bold truncate">{{ tournament.location }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="mt-auto">
+                                        <BaseButton variant="primary" block size="lg" iconRight="ph:arrow-right-bold"
+                                            class="shadow-sm group-hover:shadow-sm group-hover:shadow-primary/20 transition-all">
+                                            Detail Event
+                                        </BaseButton>
+                                    </div>
                                 </div>
-                            </div>
-                        </NuxtLink>
-                    </div>
+                            </NuxtLink>
+                        </div>
+                    </Transition>
 
                     <!-- Pagination -->
                     <div v-if="!isLoading && displayedLimit < filteredTournaments.length"

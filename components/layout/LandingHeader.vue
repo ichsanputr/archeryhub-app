@@ -144,7 +144,7 @@
                                 <img v-if="user?.avatar_url" :src="user.avatar_url"
                                     class="w-full h-full object-cover" />
                                 <span v-else class="text-navy font-bold text-sm">{{ user?.full_name?.charAt(0) || 'U'
-                                }}</span>
+                                    }}</span>
                             </div>
                         </button>
 
@@ -159,12 +159,12 @@
                                         <div class="font-bold text-navy truncate">{{ user?.full_name || 'User' }}</div>
                                         <div class="text-xs text-gray-400 truncate">{{ user?.email }}</div>
                                     </div>
-                                    <NuxtLink :to="dashboardUrl"
+                                    <NuxtLink :to="dashboardUrl" @click="showUserMenu = false"
                                         class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-navy transition-colors">
                                         <Icon icon="ph:layout" class="text-lg" />
                                         Dashboard
                                     </NuxtLink>
-                                    <NuxtLink :to="`/dashboard/${userPersona}/settings`"
+                                    <NuxtLink :to="`/dashboard/${userPersona}/settings`" @click="showUserMenu = false"
                                         class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-navy transition-colors">
                                         <Icon icon="ph:gear" class="text-lg" />
                                         Pengaturan
@@ -254,7 +254,7 @@
                                 <img v-if="user?.avatar_url" :src="user.avatar_url"
                                     class="w-full h-full object-cover" />
                                 <span v-else class="text-navy font-black text-xl">{{ user?.full_name?.charAt(0) || 'U'
-                                }}</span>
+                                    }}</span>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <div class="text-navy font-black truncate">{{ user?.full_name || 'User' }}</div>
@@ -355,7 +355,7 @@ const props = defineProps({
 })
 
 const route = useRoute()
-const { isLoggedIn, user, logout } = useAuth()
+const { isLoggedIn, user, userPersona, logout } = useAuth()
 
 const mobileMenuOpen = ref(false)
 const mobileSubmenuOpen = ref(false)
@@ -447,8 +447,10 @@ const isActive = (path) => {
 }
 
 const dashboardUrl = computed(() => {
-    if (user.value?.role === 'organization' || user.value?.role === 'archer') return '/dashboard/events'
-    return '/dashboard'
+    // Direct persona path to avoid middleware hop
+    const persona = userPersona.value
+    if (persona === 'organization' || persona === 'archer') return `/dashboard/${persona}/events`
+    return `/dashboard/${persona}`
 })
 
 const latestEvents = ref([])

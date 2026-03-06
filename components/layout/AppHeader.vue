@@ -161,7 +161,7 @@ const props = defineProps({
 
 const route = useRoute()
 const router = useRouter()
-const { user } = useAuth()
+const { user, userPersona } = useAuth()
 const { isEventMode, eventTitle } = useEventContext()
 
 const isEventManageMode = computed(() => {
@@ -181,17 +181,7 @@ const isEventManageMode = computed(() => {
   return !excludedPaths.includes(subPath)
 })
 
-const userPersona = computed(() => {
-  const roleMap = {
-    'archer': 'archer',
-    'club': 'club',
-    'organization': 'organization',
-    'seller': 'seller',
-    'root': 'root',
-    'admin': 'organization'
-  }
-  return roleMap[user.value?.role || user.value?.user_type] || 'archer'
-})
+
 
 const backToDashboardPath = computed(() => {
   return `/dashboard/${userPersona.value}/events`

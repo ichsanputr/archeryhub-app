@@ -1,0 +1,37 @@
+URL,Test
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Pastikan tampilan halaman saat dibuka di perangkat mobile sudah rapi (responsive)
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Pastikan seluruh tombol pendaftaran berfungsi dan mengarah ke halaman yang benar
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Pastikan gambar banner event tampil dengan jelas dan tidak pecah
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Halaman harus dapat dimuat dengan cepat tanpa ada error 404 atau server error
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Tombol bagikan (share) ke WhatsApp/Medsos harus berfungsi dan link yang dibagikan benar
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Teks pada tab pengumuman atau peraturan event harus dapat dibaca dengan jelas
+https://archeryhub.id/dashboard,Periksa menu sidebar apakah fitur yang membutuhkan langganan sudah terkunci dengan benar
+https://archeryhub.id/dashboard,Pastikan menu "Berita" tidak terkunci meskipun akun belum berlangganan paket aktif
+https://archeryhub.id/dashboard,Banner "Lengkapi Profil" atau "Paket Expired" harus menggunakan tema premium (navy/primary)
+https://archeryhub.id/dashboard,Pastikan seluruh elemen teks di dashboard menggunakan tag <div> (tidak lagi menggunakan tag <p>)
+https://archeryhub.id/dashboard/subscription,Pastikan status "Paket Aktif" tidak muncul jika paket langganan sudah kedaluwarsa
+https://archeryhub.id/dashboard/subscription,Periksa warna banner expired (harus menggunakan warna orange/amber atau navy sesuai desain terbaru)
+https://archeryhub.id/dashboard/subscription,Tombol perpanjang/upgrade paket harus mengarah ke halaman pembayaran yang benar
+https://archeryhub.id/dashboard/news,Tombol "Buat Berita Baru" harus dapat diklik meskipun akun tidak memiliki paket aktif
+https://archeryhub.id/dashboard/news,Pastikan berita yang baru dibuat muncul dalam daftar manajemen berita
+https://archeryhub.id/dashboard/news,Fitur hapus berita harus berfungsi dengan normal tanpa munculnya error
+https://archeryhub.id/dashboard/news/create,Uji coba fitur upload gambar melalui Media Library saat membuat berita baru
+https://archeryhub.id/dashboard/news/create,Simpan berita sebagai "Draft" dan pastikan statusnya tercatat dengan benar di daftar berita
+https://archeryhub.id/dashboard/settings,Ubah foto profil dan pastikan foto avatar pada sidebar ikut diperbarui otomatis
+https://archeryhub.id/auth/login,Lakukan login dengan email dan password yang benar dan pastikan langsung diarahkan ke dashboard
+https://archeryhub.id/auth/login,Pastikan fitur login menggunakan Google OAuth masih berjalan dengan lancar
+https://archeryhub.id/api/v1/news,Pastikan API mengizinkan akun gratis untuk memposting berita (tidak terblokir oleh status paket)
+https://archeryhub.id/api/v1/events,Pastikan data event yang diambil dari API sudah lengkap (kategori/jadwal/peserta)
+https://archeryhub.id/events,Pastikan Skeleton Loader tampil secara halus tanpa berkedip (no pulse animation) saat memuat daftar event
+https://archeryhub.id/events,Pastikan transisi "fade" bekerja mulus saat Skeleton Loader tergantikan oleh data event
+https://archeryhub.id/clubs,Pastikan Skeleton Loader tampil tanpa pulse animation saat memuat daftar klub
+https://archeryhub.id/clubs/archery-club,Pastikan Skeleton Loader halaman profil klub berfungsi normal dan tergantikan data dengan transisi halus
+https://archeryhub.id/products,Pastikan Skeleton Loader list produk bekerja mulus tanpa pulse animation
+https://archeryhub.id/products/bow-series,Pastikan Skeleton Loader detail produk dan transisinya berjalan semestinya tanpa lonjakan layout
+https://archeryhub.id/archers/john-doe,Pastikan Skeleton Loader profil pemanah memuat data secara asinkron tanpa pulse animation
+https://archeryhub.id/news,Pastikan thumbnail (foto) tampil di samping judul pada section Berita Populer
+https://archeryhub.id/news,Pastikan gambar thumbnail berita populer berubah rasio secara dinamis dan tidak terdistorsi (object-cover berfungsi dengan baik)
+https://archeryhub.id/dashboard/organization,Pastikan menu aktif pada sidebar untuk Ringkasan tidak terduplikasi saat menavigasi ke sub-menu seperti /subscription
+https://archeryhub.id/dashboard/club,Pastikan sidebar menonjolkan menu Ringkasan hanya ketika URL benar-benar di /dashboard/club (bukan di sub-path)
+https://archeryhub.id/dashboard/seller,Pastikan menu Ringkasan untuk seller aktif secara eksklusif hanya untuk root /dashboard/seller
+https://archeryhub.id/dashboard/archer,Pastikan sidebar dengan tepat membedakan path root archer dan sub-menu untuk highlight menu

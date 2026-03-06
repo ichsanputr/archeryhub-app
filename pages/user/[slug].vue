@@ -176,7 +176,7 @@ definePageMeta({
 })
 
 const route = useRoute()
-const { user, isLoggedIn } = useAuth()
+const { user, userPersona, isLoggedIn } = useAuth()
 const slug = route.params.slug
 
 const isOwnProfile = computed(() => {
