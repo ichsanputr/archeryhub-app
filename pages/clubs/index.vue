@@ -35,7 +35,7 @@
                                 class="w-full pl-12 pr-4 py-4 rounded-xl bg-white text-navy font-medium placeholder:text-gray-400 focus:ring-4 focus:ring-primary/30 outline-none transition-all text-base" />
                         </div>
                         <button
-                            class="px-8 py-4 bg-primary hover:bg-primary-hover text-navy font-black rounded-xl transition-all shadow-lg shadow-primary/30 flex items-center justify-center gap-2">
+                            class="px-6 py-3.5 bg-primary hover:bg-primary-hover text-navy font-black rounded-xl transition-all shadow-lg shadow-primary/30 flex items-center justify-center gap-2">
                             <Icon icon="ph:magnifying-glass-bold" />
                             Cari
                         </button>
@@ -166,22 +166,14 @@
                         <!-- Footer -->
                         <div class="mt-auto pt-5 border-t border-gray-100 flex items-center justify-between">
                             <div class="flex items-center gap-2">
-                                <div class="flex -space-x-2">
-                                    <template v-if="club.member_avatars && club.member_avatars.length">
-                                        <img v-for="(avatar, idx) in club.member_avatars" :key="idx"
-                                            :src="getImageUrl(avatar)"
-                                            class="w-7 h-7 rounded-full border-2 border-white bg-gray-100 object-cover" />
-                                        <div v-if="club.member_count > 3"
-                                            class="w-7 h-7 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-[10px] font-black text-gray-400">
-                                            +{{ club.member_count - 3 }}
-                                        </div>
-                                    </template>
-                                    <template v-else>
-                                        <div v-for="i in 3" :key="i"
-                                            class="w-7 h-7 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-gray-300">
-                                            <Icon icon="ph:user-bold" class="text-xs" />
-                                        </div>
-                                    </template>
+                                <div v-if="club.member_avatars && club.member_avatars.length" class="flex -space-x-2">
+                                    <img v-for="(avatar, idx) in club.member_avatars" :key="idx"
+                                        :src="getImageUrl(avatar)"
+                                        class="w-7 h-7 rounded-full border-2 border-white bg-gray-100 object-cover" />
+                                    <div v-if="club.member_count > 3"
+                                        class="w-7 h-7 rounded-full border-2 border-white bg-gray-100 flex items-center justify-center text-[10px] font-black text-gray-400">
+                                        +{{ club.member_count - 3 }}
+                                    </div>
                                 </div>
                             </div>
                             <div

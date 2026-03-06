@@ -183,17 +183,21 @@ const eventId = computed(() => route.params.id)
 
 const isOnEventSubPage = computed(() => {
   const path = route.path
-  if (!path.includes('/dashboard/events/')) return false
-  const eventPathMatch = path.match(/\/dashboard\/events\/([^/]+)\/(.+)/)
+  // Check if it's an event page under any role
+  const isEventPath = path.includes('/events/') && path.includes('/dashboard/')
+  if (!isEventPath) return false
+  const eventPathMatch = path.match(/\/dashboard\/(?:archer|organization|club)\/events\/([^/]+)\/(.+)/)
+  if (!eventPathMatch) return path.match(/\/dashboard\/events\/([^/]+)\/(.+)/)
   return !!eventPathMatch
 })
 
 const isEventManagePage = computed(() => {
   const path = route.path
-  if (!path.includes('/dashboard/events/')) return false
-  const eventPathMatch = path.match(/\/dashboard\/events\/([^/]+)\/(.+)/)
-  if (!eventPathMatch) return false
-  const [, , subPath] = eventPathMatch
+  const isEventPath = path.includes('/events/') && path.includes('/dashboard/')
+  if (!isEventPath) return false
+  const eventPathMatch = path.match(/\/dashboard\/(?:archer|organization|club)\/events\/([^/]+)\/(.+)/)
+  const [, , subPath] = eventPathMatch || path.match(/\/dashboard\/events\/([^/]+)\/(.+)/) || []
+  if (!subPath) return false
   const excludedPaths = ['edit', 'checkout', 'register', 'register-edit', 'results', 'setup', 'timeline', 'venue']
   return !excludedPaths.includes(subPath)
 })
@@ -203,29 +207,32 @@ const eventLinks = computed(() => {
   const isOrganization = role === 'organization'
   const isArcher = role === 'archer'
 
+  // Use persona prefix
+  const prefix = `/dashboard/${isArcher ? 'archer' : 'organization'}`
+
   if (isArcher) {
     return [
-      { label: 'Registrasi', icon: 'ph:clipboard-text', path: `/dashboard/events/${eventId.value}/my-registration` },
-      { label: 'Hasil Kualifikasi', icon: 'ph:chart-line-up-bold', path: `/dashboard/events/${eventId.value}/my-qualification` },
-      { label: 'Hasil Eliminasi', icon: 'ph:git-merge-bold', path: `/dashboard/events/${eventId.value}/my-elimination` },
+      { label: 'Registrasi', icon: 'ph:clipboard-text', path: `${prefix}/events/${eventId.value}/my-registration` },
+      { label: 'Hasil Kualifikasi', icon: 'ph:chart-line-up-bold', path: `${prefix}/events/${eventId.value}/my-qualification` },
+      { label: 'Hasil Eliminasi', icon: 'ph:git-merge-bold', path: `${prefix}/events/${eventId.value}/my-elimination` },
     ]
   }
 
   const links = [
-    { label: 'Ringkasan', icon: 'ph:squares-four', path: `/dashboard/events/${eventId.value}/overview` },
-    { label: 'Halaman Event', icon: 'ph:browser', path: `/dashboard/events/${eventId.value}/page` },
-    { label: 'Peserta', icon: 'ph:users-three', path: `/dashboard/events/${eventId.value}/participants` },
-    { label: 'Tim', icon: 'ph:users-four', path: `/dashboard/events/${eventId.value}/teams` },
+    { label: 'Ringkasan', icon: 'ph:squares-four', path: `${prefix}/events/${eventId.value}/overview` },
+    { label: 'Halaman Event', icon: 'ph:browser', path: `${prefix}/events/${eventId.value}/page` },
+    { label: 'Peserta', icon: 'ph:users-three', path: `${prefix}/events/${eventId.value}/participants` },
+    { label: 'Tim', icon: 'ph:users-four', path: `${prefix}/events/${eventId.value}/teams` },
   ]
 
   if (isOrganization) {
-    links.push({ label: 'Kategori Lomba', icon: 'ph:tag', path: `/dashboard/events/${eventId.value}/categories` })
+    links.push({ label: 'Kategori Lomba', icon: 'ph:tag', path: `${prefix}/events/${eventId.value}/categories` })
   }
 
   links.push(
-    { label: 'Target', icon: 'ph:target', path: `/dashboard/events/${eventId.value}/targets` },
-    { label: 'Kualifikasi', icon: 'fluent:table-freeze-column-20-regular', path: `/dashboard/events/${eventId.value}/qualification` },
-    { label: 'Eliminasi', icon: 'mdi:bracket', path: `/dashboard/events/${eventId.value}/elimination` },
+    { label: 'Target', icon: 'ph:target', path: `${prefix}/events/${eventId.value}/targets` },
+    { label: 'Kualifikasi', icon: 'fluent:table-freeze-column-20-regular', path: `${prefix}/events/${eventId.value}/qualification` },
+    { label: 'Eliminasi', icon: 'mdi:bracket', path: `${prefix}/events/${eventId.value}/elimination` },
     { label: 'Scan QR', icon: 'ph:qr-code', path: '/scan/qr' },
   )
 
@@ -257,27 +264,27 @@ const navSections = computed(() => {
 
   if (role === 'archer') {
     return [
-      { label: 'Event Saya', icon: 'ph:trophy', path: '/dashboard/archers/events' },
-      { label: 'Klub', icon: 'ph:buildings', path: '/dashboard/archers/club' },
-      { label: 'Keranjang', icon: 'ph:shopping-cart', path: '/dashboard/cart' },
-      { label: 'Profil Pemanah', icon: 'ph:user-circle', path: '/dashboard/archers/profile' },
+      { label: 'Event Saya', icon: 'ph:trophy', path: '/dashboard/archer/events' },
+      { label: 'Klub', icon: 'ph:buildings', path: '/dashboard/archer/club' },
+      { label: 'Keranjang', icon: 'ph:shopping-cart', path: '/dashboard/archer/cart' },
+      { label: 'Profil Pemanah', icon: 'ph:user-circle', path: '/dashboard/archer/profile' },
       { label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/settings' },
     ]
   }
 
   if (role === 'seller') {
     return [
-      { label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard' },
-      { label: 'Toko Saya', icon: 'ph:storefront', path: '/dashboard/store' },
-      { label: 'Produk', icon: 'ph:package', path: '/dashboard/products' },
-      { label: 'Pesanan', icon: 'ph:shopping-cart', path: '/dashboard/orders' },
+      { label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard/seller' },
+      { label: 'Toko Saya', icon: 'ph:storefront', path: '/dashboard/seller/store' },
+      { label: 'Produk', icon: 'ph:package', path: '/dashboard/seller/products' },
+      { label: 'Pesanan', icon: 'ph:shopping-cart', path: '/dashboard/seller/orders' },
       { label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/settings' },
     ]
   }
 
   if (role === 'club') {
     return [
-      { label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard' },
+      { label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard/club' },
       { type: 'label', label: 'Manajemen Klub' },
       // Group: Anggota & Membership
       {
@@ -285,14 +292,14 @@ const navSections = computed(() => {
         icon: 'ph:users-bold',
         type: 'group',
         children: [
-          { label: 'Anggota', icon: 'ph:identification-badge-bold', path: '/dashboard/members', isLocked: !isActiveSub },
-          { label: 'Membership', icon: 'ph:crown-bold', path: '/dashboard/membership', isLocked: !isActiveSub },
-          { label: 'Pembayaran', icon: 'ph:money-bold', path: '/dashboard/payments-membership', isLocked: !isActiveSub },
+          { label: 'Anggota', icon: 'ph:identification-badge-bold', path: '/dashboard/club/members', isLocked: !isActiveSub },
+          { label: 'Membership', icon: 'ph:crown-bold', path: '/dashboard/club/membership', isLocked: !isActiveSub },
+          { label: 'Pembayaran', icon: 'ph:money-bold', path: '/dashboard/club/payments-membership', isLocked: !isActiveSub },
         ]
       },
-      { label: 'Form Pendaftaran', icon: 'ph:clipboard-text-bold', path: '/dashboard/form-pendaftaran', isLocked: !isActiveSub },
-      { label: 'Laporan', icon: 'ph:chart-bar-bold', path: '/dashboard/reports', isLocked: !isActiveSub },
-      { label: 'Profil Klub', icon: 'ph:buildings', path: '/dashboard/clubs/profile' },
+      { label: 'Form Pendaftaran', icon: 'ph:clipboard-text-bold', path: '/dashboard/club/form-pendaftaran', isLocked: !isActiveSub },
+      { label: 'Laporan', icon: 'ph:chart-bar-bold', path: '/dashboard/club/reports', isLocked: !isActiveSub },
+      { label: 'Profil Klub', icon: 'ph:buildings', path: '/dashboard/club/profile' },
       { type: 'label', label: 'Lainnya' },
       { label: 'Subscription', icon: 'ph:credit-card', path: '/dashboard/subscription' },
       ...(!isEventManagePage.value ? [{ label: 'Berita', icon: 'ph:newspaper', path: '/dashboard/news' }] : []),
@@ -302,15 +309,15 @@ const navSections = computed(() => {
 
   if (role === 'organization') {
     return [
-      { label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard' },
+      { label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard/organization' },
       { type: 'label', label: 'Manajemen Event' },
       {
         label: 'Event',
         icon: 'ph:trophy',
         type: 'group',
         children: [
-          { label: 'Event Saya', icon: 'material-symbols:event-list-outline', path: '/dashboard/events', isLocked: !isActiveSub },
-          { label: 'Laporan', icon: 'ph:chart-bar', path: '/dashboard/reports', isLocked: !isActiveSub },
+          { label: 'Event Saya', icon: 'material-symbols:event-list-outline', path: '/dashboard/organization/events', isLocked: !isActiveSub },
+          { label: 'Laporan', icon: 'ph:chart-bar', path: '/dashboard/organization/reports', isLocked: !isActiveSub },
         ]
       },
       { type: 'label', label: 'Manajemen Organisasi' },
@@ -319,8 +326,8 @@ const navSections = computed(() => {
         icon: 'ph:building-office',
         type: 'group',
         children: [
-          { label: 'Profil Organisasi', icon: 'icomoon-free:profile', path: '/dashboard/organizations/profile' },
-          { label: 'Scorekeeper', icon: 'ph:user-focus', path: '/dashboard/organizations/scorekeepers', isLocked: !isActiveSub },
+          { label: 'Profil Organisasi', icon: 'icomoon-free:profile', path: '/dashboard/organization/profile' },
+          { label: 'Scorekeeper', icon: 'ph:user-focus', path: '/dashboard/organization/scorekeepers', isLocked: !isActiveSub },
         ]
       },
       { type: 'label', label: 'Lainnya' },

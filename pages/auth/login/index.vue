@@ -201,7 +201,7 @@ onMounted(async () => {
     if (isLoggedIn.value) {
         let redirect = route.query.redirect || '/dashboard'
         if ((!route.query.redirect || redirect === '/dashboard') && user.value?.role === 'archer') {
-            redirect = '/dashboard/archers/events'
+            redirect = '/dashboard/archer/events'
         }
         window.location.href = redirect
         return
@@ -237,7 +237,7 @@ const handleEmailAuth = async () => {
         // Full page reload so auth state is restored from cookie/SSR
         let redirect = route.query.redirect || '/dashboard'
         if ((!route.query.redirect || redirect === '/dashboard') && user.value?.role === 'archer') {
-            redirect = '/dashboard/archers/events'
+            redirect = '/dashboard/archer/events'
         }
         window.location.href = redirect
     } catch (err) {

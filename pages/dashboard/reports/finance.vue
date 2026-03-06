@@ -190,7 +190,7 @@
                         <h3 class="text-navy font-bold text-base md:text-lg flex items-center gap-2">
                             Top Atlet Bulan Ini
                         </h3>
-                        <NuxtLink to="/dashboard/archers"
+                        <NuxtLink to="/dashboard/archer"
                             class="text-xs text-text-secondary hover:text-navy font-bold transition-colors">Lihat Semua
                         </NuxtLink>
                     </div>

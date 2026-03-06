@@ -13,8 +13,13 @@
         <section
             class="relative min-h-[32rem] w-full overflow-hidden bg-navy-dark pt-28 sm:pt-36 pb-12 sm:pb-20 flex items-end">
             <img :src="useImageOrDefault(club.bannerUrl || club.logoUrl, club.name)"
-                class="w-full h-full object-cover object-center opacity-80" :alt="club.name" />
+                class="absolute inset-x-0 inset-y-0 w-full h-full object-cover object-center opacity-80"
+                :alt="club.name" />
             <div class="absolute inset-0 bg-gradient-to-t from-navy-dark via-navy-dark/40 to-transparent"></div>
+            <!-- Permanent Backdrop for content visibility -->
+            <div
+                class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-navy-dark/95 to-transparent pointer-events-none">
+            </div>
 
             <div
                 class="relative w-full p-8 sm:p-12 max-w-7xl mx-auto flex flex-col sm:flex-row items-end justify-between gap-8 z-10">
@@ -72,12 +77,12 @@
                             Gabung
                         </BaseButton>
                         <div v-else-if="membership && membership.status === 'active' && membership.club_id === club.id"
-                            class="px-8 py-4 bg-primary text-navy font-black text-xs flex items-center justify-center gap-2 rounded-xl shadow-lg shadow-primary/10 flex-1 md:flex-none">
+                            class="px-6 py-3 bg-primary text-navy font-black text-xs flex items-center justify-center gap-2 rounded-xl shadow-lg shadow-primary/10 flex-1 md:flex-none">
                             <Icon icon="ph:check-circle-fill" class="text-base" />
                             ANGGOTA AKTIF
                         </div>
                         <div v-else-if="membership && membership.status === 'pending' && membership.club_id === club.id"
-                            class="px-8 py-4 bg-white/5 border border-white/10 text-white/60 font-black text-xs flex items-center justify-center gap-2 rounded-xl backdrop-blur-md flex-1 md:flex-none">
+                            class="px-6 py-3 bg-white/5 border border-white/10 text-white/60 font-black text-xs flex items-center justify-center gap-2 rounded-xl backdrop-blur-md flex-1 md:flex-none">
                             <Icon icon="ph:clock-bold" class="text-base" />
                             MENUNGGU PERSETUJUAN
                         </div>

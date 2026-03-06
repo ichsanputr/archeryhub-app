@@ -4,8 +4,11 @@
         <section
             class="relative min-h-[32rem] w-full overflow-hidden bg-navy-dark pt-28 sm:pt-36 pb-12 sm:pb-20 flex items-end">
             <img :src="useImageOrDefault(archer.banner_url || archer.avatar_url, archer.full_name)"
-                class="w-full h-full object-cover object-top opacity-80" :alt="archer.full_name" />
-            <div class="absolute inset-0 bg-gradient-to-t from-navy-dark via-navy-dark/40 to-transparent"></div>
+                class="absolute inset-0 w-full h-full object-cover object-top opacity-80" :alt="archer.full_name" />
+            <!-- Permanent Backdrop for content visibility -->
+            <div
+                class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-navy-dark/95 to-transparent pointer-events-none">
+            </div>
 
             <div
                 class="relative w-full p-8 sm:p-12 max-w-7xl mx-auto flex flex-col sm:flex-row items-end justify-between gap-8 z-10">
@@ -319,7 +322,7 @@
                                 </a>
 
                                 <button @click="openShareDialog"
-                                    class="w-full flex items-center justify-center gap-3 p-4 bg-navy rounded-xl text-white font-black text-[10px] uppercase tracking-[0.2em] hover:bg-navy-dark transition-all shadow-sm shadow-navy/20">
+                                    class="w-full flex items-center justify-center gap-3 py-3 px-4 bg-navy rounded-xl text-white font-black text-[10px] uppercase tracking-[0.2em] hover:bg-navy-dark transition-all shadow-sm shadow-navy/20">
                                     <Icon icon="ph:share-network-bold" class="text-sm" />
                                     Bagikan Profil Atlet
                                 </button>

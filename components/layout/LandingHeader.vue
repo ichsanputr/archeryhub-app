@@ -144,7 +144,7 @@
                                 <img v-if="user?.avatar_url" :src="user.avatar_url"
                                     class="w-full h-full object-cover" />
                                 <span v-else class="text-navy font-bold text-sm">{{ user?.full_name?.charAt(0) || 'U'
-                                    }}</span>
+                                }}</span>
                             </div>
                         </button>
 
@@ -156,8 +156,8 @@
                             <div v-if="showUserMenu" class="absolute right-0 top-full pt-2 w-56">
                                 <div class="bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden py-2">
                                     <div class="px-4 py-3 border-b border-gray-100">
-                                        <p class="font-bold text-navy truncate">{{ user?.full_name || 'User' }}</p>
-                                        <p class="text-xs text-gray-400 truncate">{{ user?.email }}</p>
+                                        <div class="font-bold text-navy truncate">{{ user?.full_name || 'User' }}</div>
+                                        <div class="text-xs text-gray-400 truncate">{{ user?.email }}</div>
                                     </div>
                                     <NuxtLink :to="dashboardUrl"
                                         class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-navy transition-colors">
@@ -254,11 +254,11 @@
                                 <img v-if="user?.avatar_url" :src="user.avatar_url"
                                     class="w-full h-full object-cover" />
                                 <span v-else class="text-navy font-black text-xl">{{ user?.full_name?.charAt(0) || 'U'
-                                    }}</span>
+                                }}</span>
                             </div>
                             <div class="flex-1 min-w-0">
-                                <p class="text-navy font-black truncate">{{ user?.full_name || 'User' }}</p>
-                                <p class="text-xs text-gray-400 truncate">{{ user?.email }}</p>
+                                <div class="text-navy font-black truncate">{{ user?.full_name || 'User' }}</div>
+                                <div class="text-xs text-gray-400 truncate">{{ user?.email }}</div>
                                 <span
                                     class="inline-block mt-2 px-2 py-0.5 bg-primary/20 text-navy text-[10px] font-black rounded  tracking-wider">
                                     {{ user?.user_type || 'Archer' }}

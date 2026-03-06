@@ -5,11 +5,11 @@ onMounted(async () => {
   const role = user.value?.role || user.value?.type || 'archer'
 
   if (role === 'archer') {
-    await navigateTo('/dashboard/archers/profile')
+    await navigateTo('/dashboard/archer/profile')
   } else if (role === 'club') {
-    await navigateTo('/dashboard/clubs/profile')
+    await navigateTo('/dashboard/club/profile')
   } else if (role === 'organization') {
-    await navigateTo('/dashboard/organizations/profile')
+    await navigateTo('/dashboard/organization/profile')
   } else if (role === 'seller') {
     await navigateTo('/dashboard/store')
   } else {
