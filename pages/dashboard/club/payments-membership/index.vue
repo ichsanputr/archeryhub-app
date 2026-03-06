@@ -18,7 +18,7 @@
                     <div>
                         <div
                             class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary/70 mb-1">
-                            <NuxtLink to="/dashboard" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
+                            <NuxtLink to="/dashboard/club" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
                             <Icon icon="ph:caret-right-bold" class="opacity-50" />
                             <NuxtLink to="/dashboard/club/membership"
                                 class="hover:text-primary transition-colors text-white/80">Membership</NuxtLink>
@@ -31,7 +31,7 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
-                    <NuxtLink to="/dashboard/payments-membership/create"
+                    <NuxtLink to="/dashboard/club/payments-membership/create"
                         class="flex items-center gap-2.5 h-11 px-7 rounded-2xl bg-primary text-primary-text font-black text-sm shadow-lg shadow-primary/30 hover:opacity-90 transition-all shrink-0">
                         <Icon icon="ph:plus-bold" />
                         Catat Pembayaran
@@ -149,7 +149,7 @@
                                         title="Lihat Bukti Transfer">
                                         <Icon icon="ph:image-bold" />
                                     </button>
-                                    <NuxtLink :to="`/dashboard/payments-membership/${payment.invoice_id}`"
+                                    <NuxtLink :to="`/dashboard/club/payments-membership/${payment.invoice_id}`"
                                         class="size-8 rounded-lg border border-gray-100 flex items-center justify-center text-gray-400 hover:text-navy hover:bg-gray-50 transition-all">
                                         <Icon icon="ph:eye-bold" />
                                     </NuxtLink>

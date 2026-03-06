@@ -16,7 +16,7 @@ const planPrice = computed(() => route.query.plan_price || '0')
 // Redirect back if no plan selected (client-side only for safety)
 onBeforeMount(() => {
     if (!planId.value) {
-        router.push('/dashboard/subscription')
+        router.push('/dashboard/club/subscription')
     }
 })
 
@@ -103,7 +103,7 @@ useHead({
     <div class="space-y-8 pb-20">
         <!-- Header Section -->
         <div>
-            <nuxt-link to="/dashboard/subscription"
+            <nuxt-link to="/dashboard/club/subscription"
                 class="inline-flex items-center gap-2 text-navy hover:text-primary transition-all font-bold text-sm mb-6 group">
                 <Icon icon="ph:arrow-left-bold" />
                 Kembali ke Subscription

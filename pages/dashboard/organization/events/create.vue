@@ -3,7 +3,7 @@
     <!-- Breadcrumb & Header -->
     <div class="flex flex-col gap-6">
       <nav class="flex flex-wrap gap-2 items-center">
-        <NuxtLink to="/dashboard" class="text-gray-500 hover:text-primary-hover text-sm font-medium transition-colors">
+        <NuxtLink to="/dashboard/organization" class="text-gray-500 hover:text-primary-hover text-sm font-medium transition-colors">
           Dashboard</NuxtLink>
         <Icon icon="ph:caret-right" class="text-gray-300 text-sm" />
         <NuxtLink to="/dashboard/organization/events"

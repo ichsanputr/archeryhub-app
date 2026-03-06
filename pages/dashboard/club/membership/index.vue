@@ -18,7 +18,7 @@
                     <div>
                         <div
                             class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary/70 mb-1">
-                            <NuxtLink to="/dashboard" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
+                            <NuxtLink to="/dashboard/club" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
                             <Icon icon="ph:caret-right-bold" class="opacity-50" />
                             <span class="text-white/80">Membership</span>
                         </div>

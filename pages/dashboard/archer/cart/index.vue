@@ -16,7 +16,7 @@
             <!-- Header Content -->
             <div class="relative p-6 sm:p-8">
                 <div class="flex items-center gap-2 text-sm text-white/60 mb-4">
-                    <NuxtLink to="/dashboard" class="hover:text-white transition-colors">Dashboard</NuxtLink>
+                    <NuxtLink to="/dashboard/archer" class="hover:text-white transition-colors">Dashboard</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-base" />
                     <span class="text-primary font-medium">Keranjang Belanja</span>
                 </div>

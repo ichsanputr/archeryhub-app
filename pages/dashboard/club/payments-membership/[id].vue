@@ -9,16 +9,17 @@
 
             <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div class="flex items-center gap-5">
-                    <NuxtLink to="/dashboard/payments-membership"
+                    <NuxtLink to="/dashboard/club/payments-membership"
                         class="size-12 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-white hover:bg-primary hover:border-primary transition-all backdrop-blur-md shrink-0">
                         <Icon icon="ph:arrow-left-bold" />
                     </NuxtLink>
                     <div>
                         <div
                             class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary/70 mb-1">
-                            <NuxtLink to="/dashboard" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
+                            <NuxtLink to="/dashboard/club" class="hover:text-primary transition-colors">Dashboard
+                            </NuxtLink>
                             <Icon icon="ph:caret-right-bold" class="opacity-50" />
-                            <NuxtLink to="/dashboard/payments-membership"
+                            <NuxtLink to="/dashboard/club/payments-membership"
                                 class="hover:text-primary transition-colors text-white/80">Pembayaran</NuxtLink>
                             <Icon icon="ph:caret-right-bold" class="opacity-50" />
                             <span class="text-white">Detail</span>
@@ -120,7 +121,7 @@
                                         <span class="size-1 rounded-full bg-gray-300 shrink-0"></span>
                                         <span class="text-xs sm:text-sm font-bold text-gray-400 whitespace-nowrap">{{
                                             formatTime(payment.paid_at)
-                                        }}</span>
+                                            }}</span>
                                     </div>
                                 </div>
 

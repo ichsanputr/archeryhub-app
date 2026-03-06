@@ -268,7 +268,7 @@ const navSections = computed(() => {
       { label: 'Klub', icon: 'ph:buildings', path: '/dashboard/archer/club' },
       { label: 'Keranjang', icon: 'ph:shopping-cart', path: '/dashboard/archer/cart' },
       { label: 'Profil Pemanah', icon: 'ph:user-circle', path: '/dashboard/archer/profile' },
-      { label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/settings' },
+      { label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/archer/settings' },
     ]
   }
 
@@ -278,7 +278,7 @@ const navSections = computed(() => {
       { label: 'Toko Saya', icon: 'ph:storefront', path: '/dashboard/seller/store' },
       { label: 'Produk', icon: 'ph:package', path: '/dashboard/seller/products' },
       { label: 'Pesanan', icon: 'ph:shopping-cart', path: '/dashboard/seller/orders' },
-      { label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/settings' },
+      { label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/seller/settings' },
     ]
   }
 
@@ -301,9 +301,9 @@ const navSections = computed(() => {
       { label: 'Laporan', icon: 'ph:chart-bar-bold', path: '/dashboard/club/reports', isLocked: !isActiveSub },
       { label: 'Profil Klub', icon: 'ph:buildings', path: '/dashboard/club/profile' },
       { type: 'label', label: 'Lainnya' },
-      { label: 'Subscription', icon: 'ph:credit-card', path: '/dashboard/subscription' },
-      ...(!isEventManagePage.value ? [{ label: 'Berita', icon: 'ph:newspaper', path: '/dashboard/news' }] : []),
-      ...(!isEventManagePage.value ? [{ label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/settings' }] : []),
+      { label: 'Subscription', icon: 'ph:credit-card', path: '/dashboard/club/subscription' },
+      ...(!isEventManagePage.value ? [{ label: 'Berita', icon: 'ph:newspaper', path: '/dashboard/club/news' }] : []),
+      ...(!isEventManagePage.value ? [{ label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/club/settings' }] : []),
     ]
   }
 
@@ -331,9 +331,9 @@ const navSections = computed(() => {
         ]
       },
       { type: 'label', label: 'Lainnya' },
-      { label: 'Subscription', icon: 'ph:credit-card', path: '/dashboard/subscription' },
-      ...(!isEventManagePage.value ? [{ label: 'Berita', icon: 'ph:newspaper', path: '/dashboard/news' }] : []),
-      ...(!isEventManagePage.value ? [{ label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/settings' }] : []),
+      { label: 'Subscription', icon: 'ph:credit-card', path: '/dashboard/organization/subscription' },
+      ...(!isEventManagePage.value ? [{ label: 'Berita', icon: 'ph:newspaper', path: '/dashboard/organization/news' }] : []),
+      ...(!isEventManagePage.value ? [{ label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/organization/settings' }] : []),
     ]
   }
 

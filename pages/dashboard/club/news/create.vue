@@ -4,7 +4,7 @@
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
                 <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
-                    <NuxtLink to="/dashboard" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
+                    <NuxtLink to="/dashboard/club" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
                     <NuxtLink to="/dashboard/club/news" class="hover:text-primary transition-colors">Berita</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />

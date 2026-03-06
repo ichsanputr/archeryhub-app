@@ -13,7 +13,7 @@
         <div class="space-y-4">
           <!-- Mobile-styled Breadcrumb -->
           <div class="flex items-center gap-2 text-xs sm:text-sm font-black uppercase tracking-widest text-primary/80">
-            <NuxtLink to="/dashboard" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
+            <NuxtLink to="/dashboard/club" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
             <Icon icon="ph:caret-right-bold" class="text-[10px] opacity-50" />
             <NuxtLink to="/dashboard/club/members" class="hover:text-primary transition-colors text-primary font-black">
               Anggota</NuxtLink>

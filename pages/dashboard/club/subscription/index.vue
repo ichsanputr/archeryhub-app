@@ -30,11 +30,11 @@
 import { computed, onBeforeMount, onMounted } from 'vue'
 import { useAuth } from '~/composables/useAuth'
 import { useSubscription } from '~/composables/useSubscription'
-import SubscriptionHeader from '~/components/dashboard/subscription/SubscriptionHeader.vue'
-import SubscriptionStatus from '~/components/dashboard/subscription/SubscriptionStatus.vue'
-import SubscriptionOrganizationPlans from '~/components/dashboard/subscription/SubscriptionOrganizationPlans.vue'
-import SubscriptionClubPlans from '~/components/dashboard/subscription/SubscriptionClubPlans.vue'
-import SubscriptionBillingHistory from '~/components/dashboard/subscription/SubscriptionBillingHistory.vue'
+import SubscriptionHeader from '~/components/dashboard/club/subscription/SubscriptionHeader.vue'
+import SubscriptionStatus from '~/components/dashboard/club/subscription/SubscriptionStatus.vue'
+import SubscriptionOrganizationPlans from '~/components/dashboard/club/subscription/SubscriptionOrganizationPlans.vue'
+import SubscriptionClubPlans from '~/components/dashboard/club/subscription/SubscriptionClubPlans.vue'
+import SubscriptionBillingHistory from '~/components/dashboard/club/subscription/SubscriptionBillingHistory.vue'
 
 definePageMeta({
     layout: 'dashboard'
@@ -65,7 +65,7 @@ const headerStatus = computed(() => {
 const handleSelectPlan = (plan) => {
     if (plan.isCurrent) return
     router.push({
-        path: '/dashboard/subscription/payment',
+        path: '/dashboard/club/subscription/payment',
         query: {
             plan_id: plan.id,
             plan_name: plan.name,
