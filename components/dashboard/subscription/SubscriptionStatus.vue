@@ -11,10 +11,11 @@
             </div>
             <h3 class="text-[11px] font-black text-gray-500 uppercase tracking-widest mb-6">Paket Saat Ini</h3>
             <div class="mb-6">
-                <p class="text-3xl font-black mb-1" :class="isExpired ? 'text-orange-600' : 'text-navy'">{{ planName ||
+                <div class="text-3xl font-black mb-1" :class="isExpired ? 'text-orange-600' : 'text-navy'">{{ planName
+                    ||
                     '—'
-                    }}</p>
-                <p class="text-sm text-gray-500">Ditagih {{ billingCycle }}</p>
+                }}</div>
+                <div class="text-sm text-gray-500">Ditagih {{ billingCycle }}</div>
             </div>
             <div v-if="!isExpired" class="space-y-4 mb-6">
                 <div class="flex justify-between items-center text-sm">
@@ -41,17 +42,19 @@
             <h3 class="text-[11px] font-black text-gray-500 uppercase tracking-widest mb-6">Pemakaian &amp; Batas</h3>
             <div v-if="isExpired" class="flex flex-col items-center justify-center py-8 text-center gap-3">
                 <Icon icon="ph:lock-bold" class="text-4xl text-orange-300" />
-                <p class="text-sm font-black text-orange-400">Data pemakaian tidak tersedia</p>
-                <p class="text-xs text-gray-400">Perbarui subscription untuk melihat statistik pemakaian Anda.</p>
+                <div class="text-sm font-black text-orange-400">Data pemakaian tidak tersedia</div>
+                <div class="text-xs text-gray-400">Perbarui subscription untuk melihat statistik pemakaian Anda.</div>
             </div>
             <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Media Storage Usage -->
                 <div class="space-y-3">
                     <div class="flex justify-between items-end">
                         <div>
-                            <p class="text-xs font-black text-gray-400 uppercase tracking-widest">Penyimpanan Media</p>
-                            <p class="text-sm font-black text-navy mt-1">{{ usageMedia.current }} / {{ usageMedia.limit
-                            }}</p>
+                            <div class="text-xs font-black text-gray-400 uppercase tracking-widest">Penyimpanan Media
+                            </div>
+                            <div class="text-sm font-black text-navy mt-1">{{ usageMedia.current }} / {{
+                                usageMedia.limit
+                            }}</div>
                         </div>
                         <span class="text-[10px] font-black text-primary">{{ usageMedia.percent }}%</span>
                     </div>
@@ -65,9 +68,9 @@
                 <div v-if="showMembers" class="space-y-3">
                     <div class="flex justify-between items-end">
                         <div>
-                            <p class="text-xs font-black text-gray-400 uppercase tracking-widest">Total Anggota</p>
-                            <p class="text-sm font-black text-navy mt-1">{{ usageMembers.current }} / {{
-                                usageMembers.limit }}</p>
+                            <div class="text-xs font-black text-gray-400 uppercase tracking-widest">Total Anggota</div>
+                            <div class="text-sm font-black text-navy mt-1">{{ usageMembers.current }} / {{
+                                usageMembers.limit }}</div>
                         </div>
                         <span class="text-[10px] font-black text-primary">{{ usageMembers.percent }}%</span>
                     </div>
@@ -81,8 +84,8 @@
                 <div class="space-y-3">
                     <div class="flex justify-between items-end">
                         <div>
-                            <p class="text-xs font-black text-gray-400 uppercase tracking-widest">Masa Aktif</p>
-                            <p class="text-sm font-black text-navy mt-1">{{ remainingDaysLabel }}</p>
+                            <div class="text-xs font-black text-gray-400 uppercase tracking-widest">Masa Aktif</div>
+                            <div class="text-sm font-black text-navy mt-1">{{ remainingDaysLabel }}</div>
                         </div>
                         <Icon icon="ph:clock-countdown-bold" class="text-primary text-xl" />
                     </div>

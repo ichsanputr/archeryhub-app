@@ -49,9 +49,9 @@
                 </tbody>
             </table>
             <div class="p-4 bg-slate-50/50 text-center border-t border-gray-50">
-                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em]">
+                <div class="text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em]">
                     * Downgrade akan berlaku setelah periode tagihan berjalan berakhir.
-                </p>
+                </div>
             </div>
         </div>
     </div>

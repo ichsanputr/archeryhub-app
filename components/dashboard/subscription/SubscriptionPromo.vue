@@ -12,10 +12,10 @@
                 <h2 class="text-3xl font-black text-white mb-3">
                     {{ promoTitle }}
                 </h2>
-                <p class="text-slate-300 text-sm font-medium leading-relaxed">
+                <div class="text-slate-300 text-sm font-medium leading-relaxed">
                     {{ promoDesc }}
                     Tanpa biaya pendaftaran, tanpa komitment.
-                </p>
+                </div>
             </div>
             <div class="shrink-0 flex flex-col items-center">
                 <div
@@ -23,8 +23,8 @@
                     <Icon icon="ph:gift-bold" class="text-primary text-4xl" />
                 </div>
                 <div class="text-center">
-                    <p class="text-white font-black text-lg">Hemat Rp {{ savings }}</p>
-                    <p class="text-white/50 text-[10px] font-bold uppercase tracking-widest">Total Nilai</p>
+                    <div class="text-white font-black text-lg">Hemat Rp {{ savings }}</div>
+                    <div class="text-white/50 text-[10px] font-bold uppercase tracking-widest">Total Nilai</div>
                 </div>
             </div>
         </div>

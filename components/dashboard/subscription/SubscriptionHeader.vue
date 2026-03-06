@@ -19,9 +19,9 @@
                     <h1 class="text-xl sm:text-2xl font-black text-orange-700 tracking-tight">Subscription Anda Tidak
                         Aktif
                     </h1>
-                    <p class="text-orange-600/80 text-xs sm:text-sm font-medium mt-1">
+                    <div class="text-orange-600/80 text-xs sm:text-sm font-medium mt-1">
                         Fitur premium tidak dapat diakses. Perbarui paket Anda untuk melanjutkan.
-                    </p>
+                    </div>
                 </div>
             </div>
             <div class="flex items-center gap-3 shrink-0">
@@ -50,9 +50,9 @@
                 </div>
                 <div>
                     <h1 class="text-xl sm:text-3xl font-black tracking-tight">Subscription Saya</h1>
-                    <p class="text-slate-300 text-xs sm:text-sm font-medium mt-1 tracking-widest opacity-70">
+                    <div class="text-slate-300 text-xs sm:text-sm font-medium mt-1 tracking-widest opacity-70">
                         {{ subTitle }}
-                    </p>
+                    </div>
                 </div>
             </div>
             <div class="flex items-center gap-3">

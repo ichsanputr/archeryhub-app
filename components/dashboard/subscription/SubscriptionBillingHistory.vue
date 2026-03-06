@@ -59,7 +59,7 @@
             </div>
             <div v-else class="flex flex-col items-center justify-center p-16 text-center text-gray-300">
                 <Icon icon="ph:receipt-bold" class="text-4xl mb-4 opacity-20" />
-                <p class="text-xs font-black uppercase tracking-widest">Belum Ada Transaksi</p>
+                <div class="text-xs font-black uppercase tracking-widest">Belum Ada Transaksi</div>
             </div>
         </div>
     </div>

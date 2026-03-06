@@ -20,9 +20,9 @@
                         </span>
                         <h3 class="text-white text-3xl font-black leading-tight mb-4 tracking-tight">Paket Elite</h3>
                         <div class="h-1.5 w-24 bg-primary mx-auto mb-8 rounded-full"></div>
-                        <p class="text-slate-400 text-sm font-medium max-w-[220px] mx-auto leading-relaxed">
+                        <div class="text-slate-400 text-sm font-medium max-w-[220px] mx-auto leading-relaxed">
                             Solusi lengkap untuk turnamen skala besar dengan peserta tak terbatas dan analitik lanjutan.
-                        </p>
+                        </div>
                         <div class="mt-12 space-y-4">
                             <div class="flex items-center gap-3 justify-center text-primary/80">
                                 <Icon icon="ph:users-three-fill" class="text-xl" />
@@ -144,9 +144,9 @@
                     </tbody>
                 </table>
                 <div class="p-4 bg-slate-50/50 text-center border-t border-gray-50">
-                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em]">
+                    <div class="text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em]">
                         * Downgrade akan berlaku setelah periode tagihan berjalan berakhir.
-                    </p>
+                    </div>
                 </div>
             </div>
         </div>

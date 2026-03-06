@@ -24,8 +24,9 @@
                         <Icon icon="ph:warning-circle" class="text-white text-lg" />
                     </div>
                     <div class="text-white">
-                        <p class="font-bold text-sm">Lengkapi Profil Anda</p>
-                        <p class="text-xs text-white/80">Data profil perlu dilengkapi untuk mengakses fitur lengkap</p>
+                        <div class="font-bold text-sm">Lengkapi Profil Anda</div>
+                        <div class="text-xs text-white/80">Data profil perlu dilengkapi untuk mengakses fitur lengkap
+                        </div>
                     </div>
                 </div>
                 <NuxtLink to="/dashboard/settings"
@@ -37,18 +38,19 @@
 
             <!-- Package Expired Banner -->
             <div v-if="showExpiredPackageBanner"
-                class="bg-gradient-to-r from-red-500 to-rose-500 px-4 py-3 flex items-center justify-between gap-4 shadow-md">
+                class="bg-gradient-to-r from-orange-500 to-amber-500 px-4 py-3 flex items-center justify-between gap-4 shadow-md">
                 <div class="flex items-center gap-3">
                     <div class="h-8 w-8 rounded-full bg-white/20 flex items-center justify-center">
                         <Icon icon="ph:warning-octagon" class="text-white text-lg" />
                     </div>
                     <div class="text-white">
-                        <p class="font-bold text-sm">Paket Anda Sudah Kedaluwarsa</p>
-                        <p class="text-xs text-white/80">Perpanjang paket untuk melanjutkan fitur penuh dashboard.</p>
+                        <div class="font-bold text-sm">Paket Anda Sudah Kedaluwarsa</div>
+                        <div class="text-xs text-white/80">Perpanjang paket untuk melanjutkan fitur penuh dashboard.
+                        </div>
                     </div>
                 </div>
                 <NuxtLink to="/dashboard/subscription"
-                    class="bg-white text-rose-600 font-bold text-sm px-4 py-2 rounded-lg hover:bg-white/90 transition-colors shadow-sm flex items-center gap-2 whitespace-nowrap">
+                    class="bg-white text-orange-600 font-bold text-sm px-4 py-2 rounded-lg hover:bg-white/90 transition-colors shadow-sm flex items-center gap-2 whitespace-nowrap">
                     <Icon icon="ph:arrows-clockwise" />
                     Perpanjang Paket
                 </NuxtLink>
