@@ -179,6 +179,18 @@ const displayName = computed(() => {
 
 
 
+const userPersona = computed(() => {
+  const roleMap = {
+    'archer': 'archer',
+    'club': 'club',
+    'organization': 'organization',
+    'seller': 'seller',
+    'root': 'root',
+    'admin': 'organization'
+  }
+  return roleMap[user.value?.role || user.value?.user_type || user.value?.type] || 'archer'
+})
+
 const eventId = computed(() => route.params.id)
 
 const isOnEventSubPage = computed(() => {
@@ -186,8 +198,8 @@ const isOnEventSubPage = computed(() => {
   // Check if it's an event page under any role
   const isEventPath = path.includes('/events/') && path.includes('/dashboard/')
   if (!isEventPath) return false
-  const eventPathMatch = path.match(/\/dashboard\/(?:archer|organization|club)\/events\/([^/]+)\/(.+)/)
-  if (!eventPathMatch) return path.match(/\/dashboard\/events\/([^/]+)\/(.+)/)
+  const eventPathMatch = path.match(/\/dashboard\/(?:archer|organization|club|seller|root|events)\/events\/([^/]+)\/(.+)/) ||
+    path.match(/\/dashboard\/events\/([^/]+)\/(.+)/)
   return !!eventPathMatch
 })
 
@@ -195,8 +207,9 @@ const isEventManagePage = computed(() => {
   const path = route.path
   const isEventPath = path.includes('/events/') && path.includes('/dashboard/')
   if (!isEventPath) return false
-  const eventPathMatch = path.match(/\/dashboard\/(?:archer|organization|club)\/events\/([^/]+)\/(.+)/)
-  const [, , subPath] = eventPathMatch || path.match(/\/dashboard\/events\/([^/]+)\/(.+)/) || []
+  const eventPathMatch = path.match(/\/dashboard\/(?:archer|organization|club|seller|root|events)\/events\/([^/]+)\/(.+)/) ||
+    path.match(/\/dashboard\/events\/([^/]+)\/(.+)/)
+  const [, , subPath] = eventPathMatch || []
   if (!subPath) return false
   const excludedPaths = ['edit', 'checkout', 'register', 'register-edit', 'results', 'setup', 'timeline', 'venue']
   return !excludedPaths.includes(subPath)
@@ -208,7 +221,7 @@ const eventLinks = computed(() => {
   const isArcher = role === 'archer'
 
   // Use persona prefix
-  const prefix = `/dashboard/${isArcher ? 'archer' : 'organization'}`
+  const prefix = `/dashboard/${userPersona.value}`
 
   if (isArcher) {
     return [

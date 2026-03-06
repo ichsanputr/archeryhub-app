@@ -44,9 +44,9 @@
           class="font-black text-sm transition-colors px-3 py-1.5 rounded-lg">Berita</NuxtLink>
       </nav>
 
-      <!-- Event Manage Mode (For Orgs/Admins) -->
-      <div v-if="isEventManageMode && user?.role !== 'club'" class="hidden md:flex items-center gap-4 flex-1">
-        <NuxtLink :to="user?.role === 'archer' ? '/dashboard/archer/events' : '/dashboard/organization/events'"
+      <!-- Event Manage Mode (For All Personas) -->
+      <div v-if="isEventManageMode" class="hidden md:flex items-center gap-4 flex-1">
+        <NuxtLink :to="backToDashboardPath"
           class="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-600 hover:text-navy shrink-0">
           <Icon icon="ph:arrow-left" class="text-xl" />
           <span class="text-sm font-bold">Kembali ke Dashboard</span>
@@ -165,15 +165,36 @@ const { user } = useAuth()
 const { isEventMode, eventTitle } = useEventContext()
 
 const isEventManageMode = computed(() => {
-  // Check if we're on any event management page (overview, targets, qualification, elimination, etc.)
+  // Check if we're on any event management page
   const path = route.path
-  if (!path.includes('/dashboard/events/')) return false
-  const eventPathMatch = path.match(/\/dashboard\/events\/([^/]+)\/(.+)/)
+  // Match both legacy /dashboard/events/ and new /dashboard/[persona]/events/
+  const eventPathMatch = path.match(/\/dashboard\/(?:archer|club|organization|seller|events)\/events\/([^/]+)\/(.+)/) ||
+    path.match(/\/dashboard\/events\/([^/]+)\/(.+)/)
+
   if (!eventPathMatch) return false
-  const [, eventId, subPath] = eventPathMatch
+
+  const subPaths = eventPathMatch[2].split('/')
+  const subPath = subPaths[0]
+
   // Exclude certain paths that are not management pages
   const excludedPaths = ['edit', 'checkout', 'register', 'register-edit', 'setup']
   return !excludedPaths.includes(subPath)
+})
+
+const userPersona = computed(() => {
+  const roleMap = {
+    'archer': 'archer',
+    'club': 'club',
+    'organization': 'organization',
+    'seller': 'seller',
+    'root': 'root',
+    'admin': 'organization'
+  }
+  return roleMap[user.value?.role || user.value?.user_type] || 'archer'
+})
+
+const backToDashboardPath = computed(() => {
+  return `/dashboard/${userPersona.value}/events`
 })
 
 const isSidebarOpen = useState('mobile-sidebar-open', () => false)

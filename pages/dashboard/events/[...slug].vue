@@ -19,20 +19,30 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 const { user } = useAuth()
-const router = useRouter()
 const route = useRoute()
 
-onMounted(() => {
-    const role = user.value?.role || user.value?.type || 'archer'
-    const slug = route.params.slug // This will be an array of path segments
-    const subPath = Array.isArray(slug) ? slug.join('/') : ''
+onMounted(async () => {
+    // Determine role and handle fallback
+    const role = user.value?.role || user.value?.user_type || user.value?.type || 'archer'
 
-    // Use persona prefix
-    const prefix = role === 'archer' ? '/dashboard/archer/events' : '/dashboard/organization/events'
+    // Normalize role to path segment
+    const roleMap = {
+        'archer': 'archer',
+        'club': 'club',
+        'organization': 'organization',
+        'seller': 'seller',
+        'root': 'root',
+        'admin': 'organization'
+    }
 
-    // Construct new URL
+    const targetRole = roleMap[role] || 'archer'
+    const slug = route.params.slug
+    const subPath = Array.isArray(slug) ? slug.join('/') : slug || ''
+
+    // Construct new URL using the persona prefix
+    const prefix = `/dashboard/${targetRole}/events`
     const targetUrl = subPath ? `${prefix}/${subPath}` : prefix
 
-    router.replace(targetUrl)
+    await navigateTo(targetUrl, { replace: true })
 })
 </script>

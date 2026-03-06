@@ -2,20 +2,19 @@
 const { user } = useAuth()
 
 onMounted(async () => {
-  const role = user.value?.role || user.value?.type || 'archer'
+  const role = user.value?.role || user.value?.type || user.value?.user_type || 'archer'
 
-  if (role === 'archer') {
-    await navigateTo('/dashboard/archer/profile')
-  } else if (role === 'club') {
-    await navigateTo('/dashboard/club/profile')
-  } else if (role === 'organization') {
-    await navigateTo('/dashboard/organization/profile')
-  } else if (role === 'seller') {
-    await navigateTo('/dashboard/store')
-  } else {
-    // Default or admin
-    await navigateTo('/dashboard/settings')
+  const roleMap = {
+    'archer': '/dashboard/archer/profile',
+    'club': '/dashboard/club/profile',
+    'organization': '/dashboard/organization/profile',
+    'seller': '/dashboard/seller/store',
+    'root': '/dashboard/root',
+    'admin': '/dashboard/organization/profile'
   }
+
+  const target = roleMap[role] || '/dashboard/settings'
+  await navigateTo(target, { replace: true })
 })
 
 definePageMeta({
