@@ -99,21 +99,6 @@
                 <p class="text-gray-400 font-medium">Tidak ada dokumentasi yang cocok dengan pencarian.</p>
             </div>
         </section>
-
-        <!-- CTA -->
-        <section class="bg-navy py-14 mt-4">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h2 class="text-xl md:text-2xl font-black text-white mb-3">Tidak menemukan yang dicari?</h2>
-                <p class="text-white/50 text-sm mb-7">Hubungi tim support kami dan kami akan bantu secepatnya.</p>
-                <NuxtLink to="/contact">
-                    <button
-                        class="inline-flex items-center gap-2 bg-primary text-navy font-black px-7 py-3 rounded-xl hover:bg-primary/90 transition-all text-sm">
-                        <Icon icon="ph:chat-circle-dots-bold" />
-                        Hubungi Support
-                    </button>
-                </NuxtLink>
-            </div>
-        </section>
     </div>
 </template>
 
