@@ -1,20 +1,20 @@
 <template>
     <section class="grid grid-cols-1 xl:grid-cols-3 gap-6">
         <!-- Current Plan Card -->
-        <div class="bg-white p-6 rounded-2xl shadow-sm relative overflow-hidden"
-            :class="isExpired ? 'border-2 border-orange-200' : 'border border-gray-200'">
+        <div class="bg-white p-6 rounded-2xl shadow-sm relative overflow-hidden group transition-all"
+            :class="isExpired ? 'border-2 border-primary/20 ring-4 ring-primary/5' : 'border border-gray-200 hover:border-primary/30'">
             <div class="absolute top-4 right-4">
                 <span class="px-3 py-1 text-[10px] font-black uppercase tracking-widest rounded-full"
-                    :class="isExpired ? 'bg-orange-100 text-orange-600' : 'bg-primary/20 text-navy'">
+                    :class="isExpired ? 'bg-navy text-primary' : 'bg-primary/20 text-navy'">
                     {{ isExpired ? 'Expired' : 'Aktif' }}
                 </span>
             </div>
             <h3 class="text-[11px] font-black text-gray-500 uppercase tracking-widest mb-6">Paket Saat Ini</h3>
             <div class="mb-6">
-                <div class="text-3xl font-black mb-1" :class="isExpired ? 'text-orange-600' : 'text-navy'">{{ planName
-                    ||
-                    '—'
-                }}</div>
+                <div class="text-3xl font-black mb-1 group-hover:text-primary transition-colors"
+                    :class="isExpired ? 'text-primary' : 'text-navy'">{{ planName ||
+                        '—'
+                    }}</div>
                 <div class="text-sm text-gray-500">Ditagih {{ billingCycle }}</div>
             </div>
             <div v-if="!isExpired" class="space-y-4 mb-6">
@@ -29,21 +29,25 @@
             </div>
             <div v-else class="mt-4">
                 <NuxtLink to="/dashboard/subscription"
-                    class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-navy text-primary hover:bg-navy/90 rounded-xl text-sm font-black transition-all shadow-lg shadow-navy/20">
-                    <Icon icon="ph:crown-bold" />
-                    Perbarui Paket
+                    class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-navy text-primary hover:bg-white hover:text-navy border border-navy rounded-xl text-xs font-black transition-all shadow-xl shadow-navy/10 uppercase tracking-widest active:scale-95">
+                    <Icon icon="ph:sketch-logo-bold" />
+                    Pilih Paket Baru
                 </NuxtLink>
             </div>
         </div>
 
         <!-- Usage Stats Card -->
-        <div class="xl:col-span-2 bg-white p-6 rounded-2xl border shadow-sm"
-            :class="isExpired ? 'border-orange-100 opacity-60' : 'border-gray-200'">
+        <div class="xl:col-span-2 bg-white p-6 rounded-2xl border shadow-sm transition-all"
+            :class="isExpired ? 'border-primary/10 opacity-70 group' : 'border-gray-200 hover:border-primary/20'">
             <h3 class="text-[11px] font-black text-gray-500 uppercase tracking-widest mb-6">Pemakaian &amp; Batas</h3>
             <div v-if="isExpired" class="flex flex-col items-center justify-center py-8 text-center gap-3">
-                <Icon icon="ph:lock-bold" class="text-4xl text-orange-300" />
-                <div class="text-sm font-black text-orange-400">Data pemakaian tidak tersedia</div>
-                <div class="text-xs text-gray-400">Perbarui subscription untuk melihat statistik pemakaian Anda.</div>
+                <div
+                    class="size-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-2 transform group-hover:rotate-6 transition-transform">
+                    <Icon icon="ph:lock-keyhole-fill" class="text-4xl text-primary" />
+                </div>
+                <div class="text-sm font-black text-navy uppercase tracking-widest">Data Terkunci</div>
+                <div class="text-xs text-gray-400 font-medium leading-relaxed">Perbarui subscription Anda untuk membuka
+                    kembali statistik pemakaian.</div>
             </div>
             <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Media Storage Usage -->
@@ -54,7 +58,7 @@
                             </div>
                             <div class="text-sm font-black text-navy mt-1">{{ usageMedia.current }} / {{
                                 usageMedia.limit
-                            }}</div>
+                                }}</div>
                         </div>
                         <span class="text-[10px] font-black text-primary">{{ usageMedia.percent }}%</span>
                     </div>

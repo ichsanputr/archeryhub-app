@@ -1,34 +1,38 @@
 <template>
     <!-- Expired Banner -->
     <div v-if="status === 'expired' || status === 'canceled'"
-        class="relative overflow-hidden rounded-3xl border border-orange-200 bg-orange-50 shadow-sm">
-        <div class="absolute inset-0 bg-gradient-to-r from-orange-50 to-amber-50 opacity-60"></div>
+        class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-lg group">
+        <!-- Premium Motif & Glow -->
+        <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: 0.1;"></div>
+        <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
+        <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-red-500/5 blur-3xl"></div>
+
         <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div class="flex items-center gap-4">
                 <div
-                    class="size-12 sm:size-14 rounded-2xl bg-orange-100 border border-orange-200 flex items-center justify-center shrink-0">
-                    <Icon icon="ph:warning-octagon-fill" class="text-orange-500 text-2xl sm:text-3xl" />
+                    class="size-12 sm:size-14 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 flex items-center justify-center shrink-0 group-hover:border-primary/40 transition-colors">
+                    <Icon icon="ph:crown-bold" class="text-primary text-2xl sm:text-3xl animate-pulse" />
                 </div>
                 <div>
-                    <div class="flex items-center gap-2 mb-1">
+                    <div class="flex items-center gap-2 mb-1.5">
                         <span
-                            class="px-2.5 py-0.5 bg-orange-500 text-white text-[9px] font-black uppercase tracking-widest rounded-full">
+                            class="px-2.5 py-0.5 bg-primary text-navy text-[9px] font-black uppercase tracking-widest rounded-full shadow-sm">
                             {{ status === 'expired' ? 'Kedaluwarsa' : 'Dibatalkan' }}
                         </span>
+                        <div class="size-1.5 rounded-full bg-primary/40"></div>
                     </div>
-                    <h1 class="text-xl sm:text-2xl font-black text-orange-700 tracking-tight">Subscription Anda Tidak
-                        Aktif
+                    <h1 class="text-xl sm:text-2xl font-black text-white tracking-tight">Subscription Anda Tidak Aktif
                     </h1>
-                    <div class="text-orange-600/80 text-xs sm:text-sm font-medium mt-1">
-                        Fitur premium tidak dapat diakses. Perbarui paket Anda untuk melanjutkan.
+                    <div class="text-slate-400 text-xs sm:text-sm font-medium mt-1">
+                        Nikmati kembali akses penuh fitur premium dengan memperbarui paket Anda.
                     </div>
                 </div>
             </div>
             <div class="flex items-center gap-3 shrink-0">
                 <NuxtLink to="/dashboard/subscription"
-                    class="px-5 py-3 bg-navy text-primary hover:bg-navy/90 rounded-xl text-sm font-black transition-all shadow-lg shadow-navy/20 flex items-center gap-2">
-                    <Icon icon="ph:crown-bold" />
-                    Perbarui Sekarang
+                    class="px-6 py-3.5 bg-primary hover:bg-white text-navy rounded-xl text-xs font-black transition-all shadow-xl shadow-primary/10 flex items-center gap-2 uppercase tracking-widest active:scale-95">
+                    <Icon icon="ph:sketch-logo-fill" />
+                    Pilih Paket Baru
                 </NuxtLink>
             </div>
         </div>

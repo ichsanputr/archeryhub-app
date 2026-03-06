@@ -38,22 +38,29 @@
 
             <!-- Package Expired Banner -->
             <div v-if="showExpiredPackageBanner"
-                class="bg-gradient-to-r from-orange-500 to-amber-500 px-4 py-3 flex items-center justify-between gap-4 shadow-md">
-                <div class="flex items-center gap-3">
-                    <div class="h-8 w-8 rounded-full bg-white/20 flex items-center justify-center">
-                        <Icon icon="ph:warning-octagon" class="text-white text-lg" />
-                    </div>
-                    <div class="text-white">
-                        <div class="font-bold text-sm">Paket Anda Sudah Kedaluwarsa</div>
-                        <div class="text-xs text-white/80">Perpanjang paket untuk melanjutkan fitur penuh dashboard.
+                class="relative overflow-hidden bg-navy border-b border-primary/20 py-6 shadow-lg shrink-0">
+                <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: 0.1;"></div>
+                <div class="relative px-4 flex items-center justify-between gap-4 max-w-7xl mx-auto">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <div
+                            class="h-9 w-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center backdrop-blur-md shrink-0">
+                            <Icon icon="ph:warning-octagon-bold" class="text-primary text-xl" />
+                        </div>
+                        <div class="text-white min-w-0">
+                            <div class="font-black text-xs sm:text-sm tracking-tight uppercase leading-tight">
+                                Paket Anda Sudah Kedaluwarsa
+                            </div>
+                            <div class="text-[10px] sm:text-xs text-slate-400 font-medium mt-0.5 leading-tight">
+                                Perpanjang paket untuk melanjutkan fitur penuh dashboard.</div>
                         </div>
                     </div>
+                    <NuxtLink to="/dashboard/subscription"
+                        class="bg-primary hover:bg-white text-navy font-black text-[10px] sm:text-xs px-4 sm:px-5 py-2.5 rounded-xl transition-all shadow-sm flex items-center gap-2 whitespace-nowrap uppercase tracking-widest active:scale-95 shrink-0">
+                        <Icon icon="ph:crown-bold" class="text-xs sm:text-sm" />
+                        <span class="hidden xs:inline">Perpanjang Sekarang</span>
+                        <span class="xs:hidden">Perpanjang</span>
+                    </NuxtLink>
                 </div>
-                <NuxtLink to="/dashboard/subscription"
-                    class="bg-white text-orange-600 font-bold text-sm px-4 py-2 rounded-lg hover:bg-white/90 transition-colors shadow-sm flex items-center gap-2 whitespace-nowrap">
-                    <Icon icon="ph:arrows-clockwise" />
-                    Perpanjang Paket
-                </NuxtLink>
             </div>
 
             <!-- Page Content -->

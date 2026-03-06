@@ -295,7 +295,7 @@ const navSections = computed(() => {
       { label: 'Profil Klub', icon: 'ph:buildings', path: '/dashboard/clubs/profile' },
       { type: 'label', label: 'Lainnya' },
       { label: 'Subscription', icon: 'ph:credit-card', path: '/dashboard/subscription' },
-      ...(!isEventManagePage.value ? [{ label: 'Berita', icon: 'ph:newspaper', path: '/dashboard/news', isLocked: !isActiveSub }] : []),
+      ...(!isEventManagePage.value ? [{ label: 'Berita', icon: 'ph:newspaper', path: '/dashboard/news' }] : []),
       ...(!isEventManagePage.value ? [{ label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/settings' }] : []),
     ]
   }
@@ -325,7 +325,7 @@ const navSections = computed(() => {
       },
       { type: 'label', label: 'Lainnya' },
       { label: 'Subscription', icon: 'ph:credit-card', path: '/dashboard/subscription' },
-      ...(!isEventManagePage.value ? [{ label: 'Berita', icon: 'ph:newspaper', path: '/dashboard/news', isLocked: !isActiveSub }] : []),
+      ...(!isEventManagePage.value ? [{ label: 'Berita', icon: 'ph:newspaper', path: '/dashboard/news' }] : []),
       ...(!isEventManagePage.value ? [{ label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/settings' }] : []),
     ]
   }

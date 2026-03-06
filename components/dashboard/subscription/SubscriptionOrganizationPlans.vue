@@ -165,6 +165,7 @@ defineEmits(['select'])
 const comparisonData = [
     { feature: 'Maksimum Peserta', basic: '50 / Event', elite: 'Tak Terbatas', icon: 'ph:users-three-bold' },
     { feature: 'Sistem Digital Scoring', basic: true, elite: true, icon: 'ph:target-bold' },
+    { feature: 'Publikasi Berita', basic: true, elite: true, icon: 'ph:newspaper-bold' },
     { feature: 'Manajemen Match Finals', basic: false, elite: true, icon: 'ph:trophy-bold' },
     { feature: 'Integrasi Pembayaran', basic: false, elite: true, icon: 'ph:credit-card-bold' },
     { feature: 'Penyimpanan Media', basic: '1 GB', elite: '5 GB', icon: 'ph:hard-drives-bold' },

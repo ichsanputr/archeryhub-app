@@ -165,6 +165,7 @@ defineEmits(['select'])
 const comparisonData = [
     { feature: 'Manajemen Anggota', basic: '50 Orang', elite: 'Tak Terbatas', icon: 'ph:users-three-bold' },
     { feature: 'Absensi & Check-in', basic: true, elite: true, icon: 'ph:fingerprint-bold' },
+    { feature: 'Publikasi Berita Klub', basic: true, elite: true, icon: 'ph:newspaper-bold' },
     { feature: 'Manajemen Tim & Official', basic: false, elite: true, icon: 'ph:shield-star-bold' },
     { feature: 'Penyimpanan Media', basic: '1 GB', elite: '3 GB', icon: 'ph:hard-drives-bold' },
     { feature: 'Kustom Form Daftar', basic: false, elite: true, icon: 'ph:note-pencil-bold' },
