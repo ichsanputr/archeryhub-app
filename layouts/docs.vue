@@ -19,29 +19,6 @@
                             Docs</NuxtLink>
                     </div>
                 </div>
-
-                <!-- Right: Nav links -->
-                <div class="flex items-center gap-4" v-if="!isSlugPage">
-                    <NuxtLink to="/docs"
-                        class="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-gray-500 hover:text-navy transition-colors">
-                        <Icon icon="ph:book-open-bold" class="text-base" />
-                        <span>Dokumentasi</span>
-                    </NuxtLink>
-                    <NuxtLink to="/faq"
-                        class="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-gray-500 hover:text-navy transition-colors">
-                        <Icon icon="ph:question-bold" class="text-base" />
-                        <span>FAQ</span>
-                    </NuxtLink>
-                    <NuxtLink to="/contact"
-                        class="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-gray-500 hover:text-navy transition-colors">
-                        <Icon icon="ph:chat-circle-dots-bold" class="text-base" />
-                        <span>Support</span>
-                    </NuxtLink>
-                    <NuxtLink to="/dashboard"
-                        class="inline-flex items-center gap-1.5 bg-navy text-primary text-sm font-bold px-4 py-2 rounded-xl hover:bg-navy/90 transition-all">
-                        Dashboard
-                    </NuxtLink>
-                </div>
             </div>
         </header>
 
