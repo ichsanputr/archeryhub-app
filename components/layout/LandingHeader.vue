@@ -164,7 +164,7 @@
                                         <Icon icon="ph:layout" class="text-lg" />
                                         Dashboard
                                     </NuxtLink>
-                                    <NuxtLink to="/dashboard/settings"
+                                    <NuxtLink :to="`/dashboard/${userPersona}/settings`"
                                         class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-navy transition-colors">
                                         <Icon icon="ph:gear" class="text-lg" />
                                         Pengaturan

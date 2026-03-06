@@ -6,7 +6,7 @@
                 <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
                     <NuxtLink to="/dashboard" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <NuxtLink to="/dashboard/news" class="hover:text-primary transition-colors">Berita</NuxtLink>
+                    <NuxtLink :to="`/dashboard/${userPersona}/news`" class="hover:text-primary transition-colors">Berita</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
                     <span class="text-navy">Detail</span>
                 </div>

@@ -271,8 +271,22 @@ export const useAuth = () => {
     }
   }
 
+  const userPersona = computed(() => {
+    const role = user.value?.role || user.value?.user_type || user.value?.type || 'archer'
+    const roleMap: Record<string, string> = {
+      'archer': 'archer',
+      'club': 'club',
+      'organization': 'organization',
+      'seller': 'seller',
+      'root': 'root',
+      'admin': 'organization'
+    }
+    return roleMap[role] || 'archer'
+  })
+
   return {
     user: readonly(user) as Ref<AuthUser | null>,
+    userPersona,
     archerProfile: readonly(archerProfile),
     organizationProfile: readonly(organizationProfile),
     clubProfile: readonly(clubProfile),

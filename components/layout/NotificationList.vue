@@ -51,7 +51,7 @@
 
         <!-- Footer -->
         <div class="px-5 py-3 border-t border-gray-100 bg-gray-50/50 text-center">
-            <NuxtLink to="/dashboard/notifications"
+            <NuxtLink :to="`/dashboard/${userPersona}/notifications`"
                 class="text-xs font-black text-navy hover:text-primary transition-colors flex items-center justify-center gap-2">
                 Lihat Semua Notifikasi
                 <Icon icon="ph:arrow-right-bold" />

@@ -361,13 +361,14 @@ const navSections = computed(() => {
   }
 
   // Admin / default
+  const prefix = `/dashboard/${userPersona.value}`
   return [
-    { label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard' },
-    { label: 'Event', icon: 'ph:trophy', path: '/dashboard/events' },
-    ...(!isEventManagePage.value ? [{ label: 'Laporan', icon: 'ph:chart-bar', path: '/dashboard/reports' }] : []),
-    { label: 'Tim', icon: 'ph:users-four', path: '/dashboard/teams' },
-    ...(!isEventManagePage.value ? [{ label: 'Berita', icon: 'ph:newspaper', path: '/dashboard/news' }] : []),
-    ...(!isEventManagePage.value ? [{ label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/settings' }] : []),
+    { label: 'Ringkasan', icon: 'ph:squares-four', path: prefix },
+    { label: 'Event', icon: 'ph:trophy', path: `${prefix}/events` },
+    ...(!isEventManagePage.value ? [{ label: 'Laporan', icon: 'ph:chart-bar', path: `${prefix}/reports` }] : []),
+    { label: 'Tim', icon: 'ph:users-four', path: `${prefix}/teams` },
+    ...(!isEventManagePage.value ? [{ label: 'Berita', icon: 'ph:newspaper', path: `${prefix}/news` }] : []),
+    ...(!isEventManagePage.value ? [{ label: 'Pengaturan', icon: 'ph:gear', path: `${prefix}/settings` }] : []),
   ]
 })
 

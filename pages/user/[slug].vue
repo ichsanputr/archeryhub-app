@@ -64,7 +64,7 @@
                         <div class="flex md:flex-col gap-3">
                             <BaseButton variant="primary" icon="ph:share-network-bold">Bagikan</BaseButton>
                             <BaseButton v-if="isOwnProfile" variant="outline" icon="ph:pencil-simple-bold"
-                                to="/dashboard/settings">Edit Profil</BaseButton>
+                                :to="`/dashboard/${userPersona}/settings`">Edit Profil</BaseButton>
                         </div>
                     </div>
                 </div>

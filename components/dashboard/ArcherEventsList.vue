@@ -45,7 +45,7 @@
             direspon.</p>
         </div>
       </div>
-      <BaseButton to="/dashboard/notifications" variant="white" size="sm"
+      <BaseButton :to="`/dashboard/${userPersona}/notifications`" variant="white" size="sm"
         class="h-9 px-4 font-black text-[10px] uppercase tracking-wider text-amber-700 border-amber-200">
         Lihat Detail
       </BaseButton>

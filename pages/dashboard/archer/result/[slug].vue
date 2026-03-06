@@ -465,7 +465,7 @@ definePageMeta({
               You haven't submitted any solutions for this problem. Start coding to see your results here!
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-              <BaseButton to="/dashboard/events" variant="gold" icon="ph:trophy">
+              <BaseButton :to="`/dashboard/${userPersona}/events`" variant="gold" icon="ph:trophy">
                 Lihat Turnamen
               </BaseButton>
               <BaseButton to="/dashboard/result" variant="outline" icon="ph:arrow-left">

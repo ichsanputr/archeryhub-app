@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div class="flex items-center gap-3 shrink-0">
-                <NuxtLink to="/dashboard/subscription"
+                <NuxtLink :to="`/dashboard/${userPersona}/subscription`"
                     class="px-6 py-3.5 bg-primary hover:bg-white text-navy rounded-xl text-xs font-black transition-all shadow-xl shadow-primary/10 flex items-center gap-2 uppercase tracking-widest active:scale-95">
                     <Icon icon="ph:sketch-logo-fill" />
                     Pilih Paket Baru

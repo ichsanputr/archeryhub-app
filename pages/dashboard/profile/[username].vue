@@ -18,7 +18,7 @@
           </div>
           <h2 class="text-2xl font-black text-navy mb-2">Profil Tidak Ditemukan</h2>
           <p class="text-text-secondary mb-8 max-w-sm mx-auto">{{ error }}</p>
-          <BaseButton to="/dashboard/events" variant="primary" icon="ph:arrow-left">
+          <BaseButton :to="`/dashboard/${userPersona}/events`" variant="primary" icon="ph:arrow-left">
             Kembali ke Beranda
           </BaseButton>
         </div>

@@ -12,7 +12,7 @@
                     </NuxtLink>
                 </div>
                 <div class="flex items-center gap-4">
-                    <BaseButton to="/dashboard/profile" variant="ghost" size="sm" icon="ph:arrow-left">
+                    <BaseButton :to="`/dashboard/${userPersona}/profile`" variant="ghost" size="sm" icon="ph:arrow-left">
                         Kembali ke Profil
                     </BaseButton>
                 </div>
@@ -181,7 +181,7 @@
             <div
                 class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-gray-100 p-4 z-40 transition-transform duration-300">
                 <div class="max-w-4xl mx-auto flex items-center justify-end gap-3">
-                    <BaseButton to="/dashboard/profile" variant="ghost" size="md">
+                    <BaseButton :to="`/dashboard/${userPersona}/profile`" variant="ghost" size="md">
                         Batal
                     </BaseButton>
                     <BaseButton type="submit" variant="gold" size="lg" icon="ph:floppy-disk">
