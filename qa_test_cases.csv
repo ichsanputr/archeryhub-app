@@ -8,7 +8,7 @@ https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Teks pada tab
 https://archeryhub.id/dashboard,Periksa menu sidebar apakah fitur yang membutuhkan langganan sudah terkunci dengan benar
 https://archeryhub.id/dashboard,Pastikan menu "Berita" tidak terkunci meskipun akun belum berlangganan paket aktif
 https://archeryhub.id/dashboard,Banner "Lengkapi Profil" atau "Paket Expired" harus menggunakan tema premium (navy/primary)
-https://archeryhub.id/dashboard,Pastikan seluruh elemen teks di dashboard menggunakan tag <div> (tidak lagi menggunakan tag <p>)
+https://archeryhub.id/dashboard,Pastikan seluruh teks di dashboard ditampilkan dengan ukuran dan format yang benar tanpa jarak spasi/layout paragraf yang berantakan
 https://archeryhub.id/dashboard/subscription,Pastikan status "Paket Aktif" tidak muncul jika paket langganan sudah kedaluwarsa
 https://archeryhub.id/dashboard/subscription,Periksa warna banner expired (harus menggunakan warna orange/amber atau navy sesuai desain terbaru)
 https://archeryhub.id/dashboard/subscription,Tombol perpanjang/upgrade paket harus mengarah ke halaman pembayaran yang benar
@@ -20,18 +20,46 @@ https://archeryhub.id/dashboard/news/create,Simpan berita sebagai "Draft" dan pa
 https://archeryhub.id/dashboard/settings,Ubah foto profil dan pastikan foto avatar pada sidebar ikut diperbarui otomatis
 https://archeryhub.id/auth/login,Lakukan login dengan email dan password yang benar dan pastikan langsung diarahkan ke dashboard
 https://archeryhub.id/auth/login,Pastikan fitur login menggunakan Google OAuth masih berjalan dengan lancar
-https://archeryhub.id/api/v1/news,Pastikan API mengizinkan akun gratis untuk memposting berita (tidak terblokir oleh status paket)
-https://archeryhub.id/api/v1/events,Pastikan data event yang diambil dari API sudah lengkap (kategori/jadwal/peserta)
-https://archeryhub.id/events,Pastikan Skeleton Loader tampil secara halus tanpa berkedip (no pulse animation) saat memuat daftar event
-https://archeryhub.id/events,Pastikan transisi "fade" bekerja mulus saat Skeleton Loader tergantikan oleh data event
-https://archeryhub.id/clubs,Pastikan Skeleton Loader tampil tanpa pulse animation saat memuat daftar klub
-https://archeryhub.id/clubs/archery-club,Pastikan Skeleton Loader halaman profil klub berfungsi normal dan tergantikan data dengan transisi halus
-https://archeryhub.id/products,Pastikan Skeleton Loader list produk bekerja mulus tanpa pulse animation
-https://archeryhub.id/products/bow-series,Pastikan Skeleton Loader detail produk dan transisinya berjalan semestinya tanpa lonjakan layout
-https://archeryhub.id/archers/john-doe,Pastikan Skeleton Loader profil pemanah memuat data secara asinkron tanpa pulse animation
+https://archeryhub.id/dashboard/news,Pastikan pengguna akun gratis tetap dapat memposting berita dan halaman tidak terkunci
+https://archeryhub.id/events,Pastikan daftar event menampilkan informasi yang lengkap (seperti kategori lomba, jadwal, dan kuota peserta)
+https://archeryhub.id/events,Pastikan animasi loading halaman tampil secara halus tanpa berkedip atau lonjakan layout saat memuat daftar event
+https://archeryhub.id/events,Pastikan transisi "fade" bekerja mulus saat tampilan loading tergantikan oleh data event
+https://archeryhub.id/clubs,Pastikan proses loading tampil tanpa animasi berkedip saat memuat daftar klub
+https://archeryhub.id/clubs/archery-club,Pastikan loading data di halaman profil klub berfungsi normal dan tergantikan data aslinya dengan transisi halus
+https://archeryhub.id/products,Pastikan loading daftar produk bekerja mulus tanpa animasi berkedip
+https://archeryhub.id/products/bow-series,Pastikan loading tampilan detail produk berjalan perlahan dan semestinya tanpa lonjakan layout
+https://archeryhub.id/archers/john-doe,Pastikan profil pemanah dapat menampilkan status "sedang memuat" yang stabil dan mulus sebelum data asli keluar
 https://archeryhub.id/news,Pastikan thumbnail (foto) tampil di samping judul pada section Berita Populer
 https://archeryhub.id/news,Pastikan gambar thumbnail berita populer berubah rasio secara dinamis dan tidak terdistorsi (object-cover berfungsi dengan baik)
 https://archeryhub.id/dashboard/organization,Pastikan menu aktif pada sidebar untuk Ringkasan tidak terduplikasi saat menavigasi ke sub-menu seperti /subscription
 https://archeryhub.id/dashboard/club,Pastikan sidebar menonjolkan menu Ringkasan hanya ketika URL benar-benar di /dashboard/club (bukan di sub-path)
 https://archeryhub.id/dashboard/seller,Pastikan menu Ringkasan untuk seller aktif secara eksklusif hanya untuk root /dashboard/seller
 https://archeryhub.id/dashboard/archer,Pastikan sidebar dengan tepat membedakan path root archer dan sub-menu untuk highlight menu
+Mobile App,Pastikan fitur login aplikasi mobile untuk scorekeeper memvalidasi kredensial pengguna
+Mobile App,Pastikan aplikasi mobile merespons dengan menampilkan daftar event yang tepat tempat wasit ditugaskan
+Mobile App,Pastikan fitur pemindaian kamera scan QR bereaksi dengan mendeteksi data target dan jadwal peserta secara tepat
+Mobile App,Pastikan mobile app sukses memuat desain kartu pengisian skor untuk sesi kualifikasi
+Mobile App,Uji pengisian skor pemanah pada sesi kualifikasi untuk memastikan total nilai bertambah dan tersimpan dengan benar
+Mobile App,Pastikan layar juri menampilkan detail pertarungan pihak-pihak yang sedang bertanding di bantalan yang mereka awasi
+Mobile App,Pastikan halaman input penjurian/penilaian jumlah anak panah per-set sudah stabil dan hanya menerima angka sah
+Mobile App,Pastikan juri dapat menekan tombol penyelesaian set pada pertandingan secara normal dan datanya direspon sistem
+https://archeryhub.id/auth/register,Pastikan form pendaftaran tipe pengguna apa pun dengan email duplikat ditolak oleh sistem
+https://archeryhub.id/auth/forgot-password,Pastikan request tombol OTP lupa password di frontend memunculkan notifikasi email berhasil masuk antrian
+https://archeryhub.id/products,Pastikan fitur pengurutan (sortir) dan filter pencarian produk berjalan dengan cepat saat diakses pembeli
+https://archeryhub.id/dashboard/seller/products,Pastikan pajangan produk tampil selaras dengan apa yang ada di dashboard pengelolaan daftar produk penjual
+https://archeryhub.id/dashboard/seller/orders,Pastikan data pembayaran transaksi akurat tercatat masuk di daftar histori order penjual
+https://archeryhub.id/dashboard/organization/events,Pastikan fitur penentuan target otomatis membagi peserta ke bantalan yang tersedia tanpa ada jadwal/orang yang bentrok
+https://archeryhub.id/dashboard/organization/events,Pastikan tombol "Buat Bagan Otomatis" untuk eliminasi bisa menyusun peserta berdasarkan peringkat akhir mereka di sesi kualifikasi
+https://archeryhub.id/dashboard/organization/events,Cobalah buat bagan pertandingan untuk divisi/kategori tertentu dan pastikan gambar bagannya terbentuk seperti pohon turnamen yang benar
+https://archeryhub.id/dashboard/organization,Pastikan aksi pada fitur Premium seperti "Undang Anggota" memunculkan peringatan bagi akun yang tidak berlangganan paket Premium
+https://archeryhub.id/dashboard/club/members,Pastikan invite sukses dan memunculkan umpan balik notification toast ke dashboard / notifications saat form dikirim
+https://archeryhub.id/dashboard/subscription,Pastikan teks info langganan aktif pengguna muncul dengan jelas beserta jenis label "addon" yang sedang mereka gunakan
+https://archeryhub.id/dashboard/root/subscriptions,Uji formulir penambahan atau pembaruan tier subscription (upgrade/downgrade) via panel root admin bekerja dan informasinya langsung berubah 
+https://archeryhub.id/clubs/archery-club,Pastikan setelah menekan tombol "Gabung Klub" status permohonan berubah menjadi "Menunggu Persetujuan"
+https://archeryhub.id/dashboard/club/members,Pastikan klub admin dapat merespons approval dan badge peran member klub tervisualisasi sempurna
+https://archeryhub.id/dashboard/archer/club,Pastikan halaman panel memfasilitasi arcer untuk bisa merespons tindakan (Accept/Reject) atas label undangan klub kepadanya
+https://archeryhub.id/events/seleksi-popda,Pastikan jalur pendaftaran individu ke sebuah event menampilkan laman ringkasan invoice/pembayaran jika pendaftaran berbiaya
+https://archeryhub.id/dashboard/club/events,Uji proses pendaftaran sekaligus banyak anggota (rombongan klub) berjalan lancar dan kuota pendaftaran turnamen langsung berkurang
+https://archeryhub.id/dashboard/organization/events,Uji halaman pengaturan turnamen (pembuatan kategori lomba dan harga pendaftaran) dan pastikan langkah-langkahnya mudah dipahami 
+https://archeryhub.id/dashboard/organization/events,Pastikan input rekapan nilai yang diketik manual secara otomatis menjumlahkan Angka Total Hit dan kena pas tengah (X10)
+https://archeryhub.id/dashboard/organization/events,Uji klik penyusunan update nilai pada bracket eliminasi di dashboard admin berjalan dengan logika penentuan poin kemenangan set (set points)
