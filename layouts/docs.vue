@@ -13,29 +13,15 @@
                         <span class="text-lg font-black tracking-tight text-navy">Archeryhub<span
                                 class="text-[#D9FF00]">.id</span></span>
                     </NuxtLink>
-                    <div class="hidden sm:flex items-center gap-2">
+                    <div class="items-center gap-2">
                         <span class="text-gray-200 text-lg font-light select-none">/</span>
                         <NuxtLink to="/docs" class="text-sm font-bold text-gray-500 hover:text-navy transition-colors">
                             Docs</NuxtLink>
                     </div>
                 </div>
 
-                <!-- Center: Search -->
-                <div class="hidden md:block flex-1 max-w-sm mx-8">
-                    <div class="relative">
-                        <Icon icon="ph:magnifying-glass-bold"
-                            class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
-                        <NuxtLink to="/docs">
-                            <div
-                                class="pl-9 pr-4 py-2 rounded-xl border border-gray-200 bg-gray-50 text-sm text-gray-400 cursor-pointer hover:border-primary transition-colors">
-                                Cari dokumentasi...
-                            </div>
-                        </NuxtLink>
-                    </div>
-                </div>
-
                 <!-- Right: Nav links -->
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-4" v-if="!isSlugPage">
                     <NuxtLink to="/docs"
                         class="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-gray-500 hover:text-navy transition-colors">
                         <Icon icon="ph:book-open-bold" class="text-base" />
@@ -63,22 +49,7 @@
             <slot />
         </main>
 
-        <!-- Simple docs footer -->
-        <footer class="bg-white border-t border-gray-100 py-8 mt-8">
-            <div
-                class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-400">
-                <div class="flex items-center gap-2">
-                    <img src="/logo.png" class="w-5 h-5 object-contain" alt="" />
-                    <span>© 2025 Archeryhub.id — Dokumentasi</span>
-                </div>
-                <div class="flex items-center gap-6">
-                    <NuxtLink to="/" class="hover:text-navy transition-colors">Beranda</NuxtLink>
-                    <NuxtLink to="/docs" class="hover:text-navy transition-colors">Docs</NuxtLink>
-                    <NuxtLink to="/faq" class="hover:text-navy transition-colors">FAQ</NuxtLink>
-                    <NuxtLink to="/contact" class="hover:text-navy transition-colors">Kontak</NuxtLink>
-                </div>
-            </div>
-        </footer>
+        <LayoutAppFooter />
         <BaseToast />
     </div>
 </template>
@@ -87,4 +58,24 @@
 import { Icon } from '@iconify/vue'
 
 defineOptions({ name: 'DocsLayout' })
+
+const route = useRoute()
+const router = useRouter()
+
+const isSlugPage = computed(() => route.path.startsWith('/docs/') && route.path !== '/docs')
+const headerSearch = ref(route.query.q || '')
+
+watch(() => route.query.q, (newQ) => {
+    if (newQ !== undefined) {
+        headerSearch.value = newQ
+    }
+})
+
+const onSearchSubmit = () => {
+    if (headerSearch.value.trim() !== '') {
+        router.push({ path: '/docs', query: { q: headerSearch.value } })
+    } else {
+        router.push({ path: '/docs' })
+    }
+}
 </script>

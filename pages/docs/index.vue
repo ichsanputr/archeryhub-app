@@ -32,7 +32,7 @@
 
         <!-- Category Tabs -->
         <div class="sticky top-16 z-30 bg-white border-b border-gray-100 shadow-sm">
-            <div class="container mx-auto px-4 max-w-6xl">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-3">
                     <button v-for="cat in categories" :key="cat.id" @click="activeCategory = cat.id"
                         class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold whitespace-nowrap transition-all"
@@ -47,7 +47,7 @@
         </div>
 
         <!-- Content -->
-        <section class="container mx-auto px-4 max-w-6xl py-10">
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div v-for="cat in filteredCategories" :key="cat.id" class="mb-12">
                 <div class="flex items-center gap-3 mb-5">
                     <div class="w-9 h-9 rounded-xl bg-navy flex items-center justify-center text-primary shrink-0">
@@ -102,7 +102,7 @@
 
         <!-- CTA -->
         <section class="bg-navy py-14 mt-4">
-            <div class="container mx-auto px-4 max-w-4xl text-center">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <h2 class="text-xl md:text-2xl font-black text-white mb-3">Tidak menemukan yang dicari?</h2>
                 <p class="text-white/50 text-sm mb-7">Hubungi tim support kami dan kami akan bantu secepatnya.</p>
                 <NuxtLink to="/contact">
@@ -127,7 +127,27 @@ useHead({
     meta: [{ name: 'description', content: 'Dokumentasi resmi Archeryhub.id. Panduan lengkap tentang platform, jenis busur, sistem berlangganan, dan tata cara turnamen.' }]
 })
 
-const searchQuery = ref('')
+const route = useRoute()
+const router = useRouter()
+
+const searchQuery = ref(route.query.q || '')
+
+watch(searchQuery, (newVal) => {
+    if (newVal.trim() !== '') {
+        router.replace({ query: { ...route.query, q: newVal } })
+    } else {
+        const q = { ...route.query }
+        delete q.q
+        router.replace({ query: q })
+    }
+})
+
+watch(() => route.query.q, (newQ) => {
+    if (newQ !== undefined && newQ !== searchQuery.value) {
+        searchQuery.value = newQ
+    }
+})
+
 const activeCategory = ref('all')
 
 const categories = [
