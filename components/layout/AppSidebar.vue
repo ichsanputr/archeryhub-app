@@ -144,7 +144,7 @@ const isSidebarOpen = useState('mobile-sidebar-open', () => false)
 const isSidebarCollapsed = useState('sidebar-collapsed', () => false)
 
 // Groups that are expanded (open)
-const openGroups = ref(['Menu Event', 'Menu Organisasi'])
+const openGroups = ref(['Event', 'Organisasi', 'Keuangan'])
 
 function toggleGroup(label) {
   const idx = openGroups.value.indexOf(label)
@@ -302,6 +302,17 @@ const navSections = computed(() => {
         children: [
           { label: 'Profil Organisasi', icon: 'icomoon-free:profile', path: '/dashboard/organization/profile' },
           { label: 'Scorekeeper', icon: 'ph:user-focus', path: '/dashboard/organization/scorekeepers', isLocked: !isActiveSub },
+        ]
+      },
+      { type: 'label', label: 'Manajemen Keuangan' },
+      {
+        label: 'Keuangan',
+        icon: 'ph:coins',
+        type: 'group',
+        children: [
+          { label: 'Penghasilan Saya', icon: 'ph:wallet', path: '/dashboard/organization/earnings', isLocked: !isActiveSub },
+          { label: 'Saldo', icon: 'ph:bank', path: '/dashboard/organization/balance', isLocked: !isActiveSub },
+          { label: 'Rekening Bank', icon: 'ph:credit-card', path: '/dashboard/organization/bank-accounts', isLocked: !isActiveSub },
         ]
       },
       { type: 'label', label: 'Lainnya' },

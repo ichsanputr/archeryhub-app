@@ -88,22 +88,19 @@
 
                         <div class="space-y-3 mb-6">
                             <div class="flex justify-between items-center text-sm">
-                                <span class="text-gray-500">Subtotal</span>
-                                <span class="font-bold text-navy">IDR 350.000</span>
-                            </div>
-                            <div class="flex justify-between items-center text-sm">
-                                <span class="text-gray-500">Biaya Layanan</span>
-                                <span class="font-bold text-navy">IDR 5.000</span>
+                                <span class="text-gray-500">Biaya Pendaftaran</span>
+                                <span class="font-bold text-navy">IDR {{ (registration?.payment_amount ||
+                                    0).toLocaleString() }}</span>
                             </div>
                             <div v-if="selectedChannelData" class="flex justify-between items-center text-sm">
-                                <span class="text-gray-500">Biaya Transaksi</span>
+                                <span class="text-gray-500">Biaya Transaksi ({{ selectedChannelData.name }})</span>
                                 <span class="font-bold text-navy text-primary">+ IDR {{
-                                    selectedChannelData.total_fee.toLocaleString() }}</span>
+                                    (totalAmount - (registration?.payment_amount || 0)).toLocaleString() }}</span>
                             </div>
                             <div class="pt-4 border-t border-gray-100 flex justify-between items-center">
                                 <span class="text-base font-bold text-navy">Total Bayar</span>
                                 <span class="text-xl font-black text-primary">IDR {{ totalAmount.toLocaleString()
-                                }}</span>
+                                    }}</span>
                             </div>
                         </div>
                     </div>
@@ -119,10 +116,10 @@ definePageMeta({
 })
 
 const route = useRoute()
-
 const router = useRouter()
+const { get } = useApi()
 const slug = route.params.slug
-const registrationId = route.query.reg
+const registrationId = route.query.registration_id
 const payment = usePayment()
 
 const loadingChannels = ref(true)
@@ -130,21 +127,30 @@ const loading = ref(false)
 const channels = ref([])
 const selectedChannel = ref(null)
 const registration = ref(null)
+const event = ref(null)
 
-const tournament = {
-    name: 'Indonesian Open Championship 2024',
-    image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuByxS8LZ93pBQXI_V_Vu3nB0633lwPZGiFCM3UtI-xk79b_O83ASmlHYA36lOzcnmVsbgs4DEe9awj543MvzCN1yzOo1wZ3ViXLdiMRV7vAMdy66lvu-l5dpFAOgZ0uCMKJxsBRXPJL1QeX4_ZdX2ynTEZR-ZMilrncma7gKG2YK0vsj0KJZnw_lD0UZaXFKW2aVFD1SU-mzi_sAT2D-62TP0j5LF6KprFriv2sV9rdypqLSvfrZekYDy45XaK8F1vVh7e5nfrgK7o'
-}
+const tournament = computed(() => ({
+    name: event.value?.name || 'Loading event...',
+    image: event.value?.banner_url || ''
+}))
 
 onMounted(async () => {
-    // Fetch channels
-    channels.value = await payment.getChannels()
-    loadingChannels.value = false
+    try {
+        // Fetch channels
+        channels.value = await payment.getChannels()
+        loadingChannels.value = false
 
-    // Fetch registration info (need API for this, for now mock)
-    registration.value = {
-        division: 'Recurve',
-        category: 'Umum'
+        // Fetch registration & event info
+        if (registrationId) {
+            const regData = await get(`/events/${slug}/participants/${registrationId}`)
+            registration.value = regData
+
+            // Also fetch event details for the name/image
+            const eventData = await get(`/events/${slug}`)
+            event.value = eventData
+        }
+    } catch (err) {
+        console.error('Failed to load payment data:', err)
     }
 })
 
@@ -174,25 +180,40 @@ const selectedChannelData = computed(() => {
 })
 
 const totalAmount = computed(() => {
-    let total = 355000
+    let baseAmount = registration.value?.payment_amount || 0
     if (selectedChannelData.value) {
-        total += selectedChannelData.value.total_fee
+        // Tripay documentation: total = (amount + flat) / (1 - percent/100)
+        // For simplicity we just add the fee returned by API if it's already pre-calculated
+        // but often we need to calculate it.
+        const feeFlat = selectedChannelData.value.fee_customer?.flat || 0
+        const feePercent = selectedChannelData.value.fee_customer?.percent || 0
+
+        let total = baseAmount + feeFlat
+        if (feePercent > 0) {
+            total = total / (1 - (feePercent / 100))
+        }
+        return Math.ceil(total)
     }
-    return total
+    return baseAmount
 })
 
 const handlePayment = async () => {
+    if (!selectedChannel.value || !registrationId) return
+
     loading.value = true
     try {
         const res = await payment.createTransaction({
             method: selectedChannel.value,
-            tournament_id: 'indonesian-open-2024',
-            registration_id: registrationId
+            event_id: event.value?.uuid || event.value?.id,
+            registration_id: registrationId,
+            type: 'registration'
         })
 
-        // Redirect to status page
-        router.push(`/payment/status/${res.reference}`)
+        if (res && res.reference) {
+            router.push(`/payment/status/${res.reference}`)
+        }
     } catch (error) {
+        console.error('Payment error:', error)
         alert('Gagal memproses pembayaran. Silakan coba lagi.')
     } finally {
         loading.value = false

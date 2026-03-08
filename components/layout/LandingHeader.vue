@@ -122,7 +122,7 @@
                 <!-- Desktop Auth Buttons -->
                 <div class="hidden md:flex items-center gap-3">
                     <!-- Cart Icon (For Archers) -->
-                    <NuxtLink v-if="isLoggedIn && user?.user_type === 'archer'" to="/dashboard/cart"
+                    <NuxtLink v-if="isLoggedIn && user?.user_type === 'archer'" to="/dashboard/archer/cart"
                         class="relative p-2 rounded-xl transition-all duration-300 group"
                         :class="showSolid ? 'text-navy hover:bg-gray-100' : 'text-white hover:bg-white/10'">
                         <Icon icon="ph:shopping-bag-bold" class="text-2xl" />
@@ -141,7 +141,7 @@
                                 <img v-if="user?.avatar_url" :src="user.avatar_url"
                                     class="w-full h-full object-cover" />
                                 <span v-else class="text-navy font-bold text-sm">{{ user?.full_name?.charAt(0) || 'U'
-                                    }}</span>
+                                }}</span>
                             </div>
                         </button>
 
@@ -193,7 +193,7 @@
                 <!-- Mobile Menu Toggle -->
                 <div class="flex items-center gap-2 md:hidden">
                     <!-- Mobile Cart (For Archers) -->
-                    <NuxtLink v-if="isLoggedIn && user?.user_type === 'archer'" to="/dashboard/cart"
+                    <NuxtLink v-if="isLoggedIn && user?.user_type === 'archer'" to="/dashboard/archer/cart"
                         class="relative p-2 rounded-xl transition-all duration-300"
                         :class="showSolid ? 'text-navy' : 'text-white'">
                         <Icon icon="ph:shopping-bag-bold" class="text-2xl" />
@@ -251,7 +251,7 @@
                                 <img v-if="user?.avatar_url" :src="user.avatar_url"
                                     class="w-full h-full object-cover" />
                                 <span v-else class="text-navy font-black text-xl">{{ user?.full_name?.charAt(0) || 'U'
-                                    }}</span>
+                                }}</span>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <div class="text-navy font-black truncate">{{ user?.full_name || 'User' }}</div>

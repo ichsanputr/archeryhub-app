@@ -121,44 +121,9 @@ const reports = computed(() => {
     return [
         {
             title: 'Laporan Keuangan',
-            description: 'Kelola kas klub, iuran bulanan, pendapatan turnamen, and pengeluaran operasional secara detail.',
+            description: 'Kelola kas organisasi, iuran bulanan, pendapatan turnamen, and pengeluaran operasional secara detail.',
             icon: 'ph:money-bold',
             link: '/dashboard/organization/reports/finance',
-            isLocked: !isActive
-        },
-        {
-            title: 'Statistik Anggota',
-            description: 'Pantau pertumbuhan anggota, tingkat kehadiran latihan, and distribusi kategori usia atlet.',
-            icon: 'ph:users-four-bold',
-            link: '#',
-            isLocked: !isActive || !isElitePlan
-        },
-        {
-            title: 'Analisis Performa',
-            description: 'Lihat progres skor atlet, hasil turnamen terakhir, and grafik peningkatan performa individu.',
-            icon: 'ph:chart-line-up-bold',
-            link: '#',
-            isLocked: !isActive || !isElitePlan
-        },
-        {
-            title: 'Inventaris & Aset',
-            description: 'Data peminjaman alat, stok busur klub, anak panah, and perlengkapan lainnya.',
-            icon: 'ph:package-bold',
-            link: '#',
-            isLocked: !isActive
-        },
-        {
-            title: 'Laporan Event',
-            description: 'Evaluasi hasil penyelenggaraan event internal maupun open tournament yang diikuti klub.',
-            icon: 'ph:calendar-check-bold',
-            link: '#',
-            isLocked: !isActive
-        },
-        {
-            title: 'Sertifikasi & Lisensi',
-            description: 'Data sertifikat atlet, lisensi pelatih aktif, and riwayat pelatihan internal klub.',
-            icon: 'ph:certificate-bold',
-            link: '#',
             isLocked: !isActive
         }
     ]
@@ -166,7 +131,7 @@ const reports = computed(() => {
 
 useSeoMeta({
     title: 'Pusat Laporan - Archeryhub.id',
-    description: 'Analisis dan pantau performa klub Anda dengan laporan komprehensif dari Archeryhub.id.'
+    description: 'Analisis dan pantau performa organisasi Anda dengan laporan komprehensif dari Archeryhub.id.'
 })
 </script>
 

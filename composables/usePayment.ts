@@ -69,10 +69,21 @@ export const usePayment = () => {
     }
   }
 
+  const simulateSuccess = async (reference: string): Promise<unknown> => {
+    try {
+      const data = await $fetch(`${apiBaseUrl}/payment/simulate-success/${reference}`)
+      return data
+    } catch (error) {
+      console.error('Failed to simulate payment success:', error)
+      throw error
+    }
+  }
+
   return {
     getChannels,
     registerTournament,
     createTransaction,
-    getPaymentStatus
+    getPaymentStatus,
+    simulateSuccess
   }
 }

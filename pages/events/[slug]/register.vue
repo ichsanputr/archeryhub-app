@@ -216,7 +216,7 @@
                                                 'Atlet Baru' }}</h3>
                                             <p class="text-sm text-gray-500 mb-2">{{ archerProfile?.email ||
                                                 userDisplay.email
-                                            }}</p>
+                                                }}</p>
                                             <div class="flex flex-wrap gap-2">
                                                 <span v-if="archerProfile?.id"
                                                     class="text-[10px] text-navy font-bold bg-gray-100 px-2.5 py-1 rounded-full border border-gray-200  tracking-wider">
@@ -390,64 +390,102 @@
                                 </h2>
                             </div>
                             <div class="p-6">
-                                <p class="text-sm text-gray-500 mb-6">Silakan unggah bukti transfer pembayaran sesuai
-                                    dengan biaya pendaftaran yang tertera. Anda dapat mengunggah lebih dari satu foto
-                                    jika diperlukan.</p>
-
-                                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-6">
-                                    <!-- Previews -->
-                                    <div v-for="(img, idx) in paymentPreviews" :key="idx"
-                                        class="relative aspect-square rounded-2xl overflow-hidden border-2 border-gray-100 group">
-                                        <img :src="img.url" class="w-full h-full object-cover" />
-                                        <div
-                                            class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <BaseButton @click="removeProof(idx)" variant="danger" size="sm"
-                                                icon="delete" />
-                                        </div>
-                                        <div v-if="img.uploading"
-                                            class="absolute inset-0 bg-white/80 flex items-center justify-center">
-                                            <span class="material-symbols-outlined animate-spin text-navy">sync</span>
-                                        </div>
+                                <div class="mb-6 space-y-4">
+                                    <p class="text-xs font-black text-gray-700 uppercase tracking-widest">Pilih Metode
+                                        Pembayaran</p>
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <button @click="form.payment_type = 'online'"
+                                            class="flex flex-col items-center gap-3 p-4 rounded-2xl border-2 transition-all"
+                                            :class="form.payment_type === 'online' ? 'border-navy bg-navy/5 text-navy' : 'border-gray-100 bg-white text-gray-400 hover:border-gray-200'">
+                                            <span class="material-symbols-outlined text-3xl">payments</span>
+                                            <div class="text-center">
+                                                <p class="text-xs font-black uppercase">Bayar Online</p>
+                                                <p class="text-[10px] opacity-70">Otomatis Terkonfirmasi</p>
+                                            </div>
+                                        </button>
+                                        <button @click="form.payment_type = 'manual'"
+                                            class="flex flex-col items-center gap-3 p-4 rounded-2xl border-2 transition-all"
+                                            :class="form.payment_type === 'manual' ? 'border-navy bg-navy/5 text-navy' : 'border-gray-100 bg-white text-gray-400 hover:border-gray-200'">
+                                            <span class="material-symbols-outlined text-3xl">account_balance</span>
+                                            <div class="text-center">
+                                                <p class="text-xs font-black uppercase">Transfer Manual</p>
+                                                <p class="text-[10px] opacity-70">Verifikasi 1-2 Hari</p>
+                                            </div>
+                                        </button>
                                     </div>
-
-                                    <!-- Add Button -->
-                                    <button v-if="isLoggedIn" @click="triggerProofUpload"
-                                        class="aspect-square rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50 hover:border-navy hover:bg-navy/5 transition-all flex flex-col items-center justify-center gap-2 group cursor-pointer">
-                                        <div
-                                            class="h-10 w-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform text-navy">
-                                            <span class="material-symbols-outlined text-2xl">add_a_photo</span>
-                                        </div>
-                                        <span class="text-[10px] font-black text-gray-400  tracking-widest">Tambah
-                                            Foto</span>
-                                    </button>
-                                    <div v-else
-                                        class="aspect-square rounded-2xl border-2 border-dashed border-gray-100 bg-gray-50 flex flex-col items-center justify-center gap-2 text-center p-2 opacity-60">
-                                        <span class="material-symbols-outlined text-2xl text-gray-400">lock</span>
-                                        <span class="text-[9px] font-bold text-gray-400  tracking-tight">Login
-                                            Pemanah <br /> untuk Unggah</span>
-                                    </div>
-                                </div>
-
-                                <input ref="proofInput" type="file" multiple accept="image/*" class="hidden"
-                                    @change="handleProofUpload" />
-
-                                <div
-                                    class="flex items-center gap-3 p-4 bg-gray-50 border border-gray-100 rounded-xl mb-6">
-                                    <span class="material-symbols-outlined text-navy">info</span>
-                                    <p class="text-xs text-navy/70 font-medium leading-relaxed">
-                                        Pastikan bukti transfer menampilkan <strong>Nominal</strong>,
-                                        <strong>Tanggal</strong>, dan <strong>Nama Pengirim</strong> dengan jelas.
-                                        Format file: JPG, PNG (Maks 5MB).
-                                    </p>
                                 </div>
 
                                 <!-- Payment Methods & Summary -->
                                 <div class="space-y-4">
-                                    <!-- Payment Methods -->
-                                    <div v-if="paymentMethods.length > 0" class="pt-3 border-t border-gray-200">
+                                    <!-- Payment Methods (Manual) -->
+                                    <div v-if="form.payment_type === 'manual'" class="pt-3 border-t border-gray-200">
+
+                                        <!-- Bukti Transfer Upload -->
+                                        <div class="mb-8">
+                                            <p class="text-sm text-gray-500 mb-6">Silakan unggah bukti transfer
+                                                pembayaran sesuai
+                                                dengan biaya pendaftaran yang tertera. Anda dapat mengunggah lebih dari
+                                                satu foto
+                                                jika diperlukan.</p>
+
+                                            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-2">
+                                                <!-- Previews -->
+                                                <div v-for="(img, idx) in paymentPreviews" :key="idx"
+                                                    class="relative aspect-square rounded-2xl overflow-hidden border-2 border-gray-100 group">
+                                                    <img :src="img.url" class="w-full h-full object-cover" />
+                                                    <div
+                                                        class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                        <BaseButton @click="removeProof(idx)" variant="danger" size="sm"
+                                                            icon="delete" />
+                                                    </div>
+                                                    <div v-if="img.uploading"
+                                                        class="absolute inset-0 bg-white/80 flex items-center justify-center">
+                                                        <span
+                                                            class="material-symbols-outlined animate-spin text-navy">sync</span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Add Button -->
+                                                <button v-if="isLoggedIn" @click="triggerProofUpload"
+                                                    class="aspect-square rounded-2xl border-2 border-dashed border-gray-200 bg-gray-50 hover:border-navy hover:bg-navy/5 transition-all flex flex-col items-center justify-center gap-2 group cursor-pointer">
+                                                    <div
+                                                        class="h-10 w-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center group-hover:scale-110 transition-transform text-navy">
+                                                        <span
+                                                            class="material-symbols-outlined text-2xl">add_a_photo</span>
+                                                    </div>
+                                                    <span
+                                                        class="text-[10px] font-black text-gray-400  tracking-widest">Tambah
+                                                        Foto</span>
+                                                </button>
+                                                <div v-else
+                                                    class="aspect-square rounded-2xl border-2 border-dashed border-gray-100 bg-gray-50 flex flex-col items-center justify-center gap-2 text-center p-2 opacity-60">
+                                                    <span
+                                                        class="material-symbols-outlined text-2xl text-gray-400">lock</span>
+                                                    <span
+                                                        class="text-[9px] font-bold text-gray-400  tracking-tight">Login
+                                                        Pemanah <br /> untuk Unggah</span>
+                                                </div>
+                                            </div>
+
+                                            <input ref="proofInput" type="file" multiple accept="image/*" class="hidden"
+                                                @change="handleProofUpload" />
+                                        </div>
+
+                                        <div
+                                            class="mb-6 flex items-center gap-3 p-4 bg-gray-50 border border-gray-100 rounded-xl">
+                                            <span class="material-symbols-outlined text-navy">info</span>
+                                            <p class="text-xs text-navy/70 font-medium leading-relaxed">
+                                                Pastikan bukti transfer menampilkan <strong>Nominal</strong>,
+                                                <strong>Tanggal</strong>, dan <strong>Nama Pengirim</strong> dengan
+                                                jelas.
+                                                Format file: JPG, PNG (Maks 5MB).
+                                            </p>
+                                        </div>
+
                                         <p class="text-xs font-black text-gray-700 mb-3  tracking-wider">Metode
                                             Pembayaran</p>
-                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                        <div v-if="paymentMethods.length > 0"
+                                            class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                             <div v-for="method in paymentMethods" :key="method.uuid"
                                                 class="flex items-start gap-3 p-4 bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-100">
                                                 <div
@@ -457,7 +495,7 @@
                                                         class="w-full h-full object-contain"
                                                         :alt="method.payment_method" />
                                                     <span v-else
-                                                        class="material-symbols-outlined text-base">payments</span>
+                                                        class="material-symbols-outlined text-base">account_balance</span>
                                                 </div>
                                                 <div class="flex-1 min-w-0">
                                                     <p class="font-bold text-navy text-sm mb-1 line-clamp-1">{{
@@ -470,6 +508,29 @@
                                                         class="text-xs font-mono font-bold text-navy bg-white border border-gray-200 px-2 py-1 rounded-md inline-block">
                                                         {{ method.account_number }}</p>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div v-else
+                                            class="p-4 bg-amber-50 rounded-xl border border-amber-100 flex gap-3">
+                                            <span class="material-symbols-outlined text-amber-500">warning</span>
+                                            <p class="text-xs text-amber-700 font-medium">Penyelenggara belum
+                                                menambahkan rekening bank untuk transfer manual. Silakan pilih metode
+                                                <strong>Bayar Online</strong>.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div v-if="form.payment_type === 'online'" class="pt-3 border-t border-gray-200">
+                                        <div
+                                            class="p-4 bg-blue-50 rounded-xl border border-blue-100 flex items-start gap-3">
+                                            <span class="material-symbols-outlined text-blue-500 mt-0.5">payments</span>
+                                            <div>
+                                                <p class="text-xs font-bold text-navy mb-1">Pembayaran Online Otomatis
+                                                </p>
+                                                <p class="text-[11px] text-blue-800 font-medium">Anda akan diarahkan ke
+                                                    halaman pembayaran Tripay (Virtual Account, E-Wallet, QRIS) <span
+                                                        class="font-bold">setelah</span> menekan tombol Daftar Sekarang.
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -666,7 +727,8 @@ const paymentPreviews = ref([])
 const form = ref({
     category_ids: [],
     payment_amount: 0,
-    payment_proofs: []
+    payment_proofs: [],
+    payment_type: 'online' // default to online
 })
 
 const profileForm = ref({
@@ -741,7 +803,7 @@ const isFormValid = computed(() => {
         !!profileForm.value.date_of_birth &&
         !!profileForm.value.bow_type
 
-    const paymentProofProvided = event.value.registration_fee > 0 ? form.value.payment_proofs.length > 0 : true
+    const paymentProofProvided = (event.value.registration_fee > 0 && form.value.payment_type === 'manual') ? form.value.payment_proofs.length > 0 : true
 
     return categoriesSelected && archerProfileExists && profileComplete && paymentProofProvided
 })
@@ -951,10 +1013,16 @@ const handleSubmit = async () => {
             athlete_id: athleteId,
             event_category_ids: form.value.category_ids,
             payment_amount: form.value.payment_amount || 0,
-            payment_proof_urls: form.value.payment_proofs
+            payment_proof_urls: form.value.payment_proofs,
+            payment_type: form.value.payment_type // 'manual' or 'gateway'
         }
 
-        await post(`/events/${event.value.id}/participants`, payload)
+        const response = await post(`/events/${event.value.id}/participants`, payload)
+
+        if (form.value.payment_type === 'online' && response.registration_id) {
+            router.push(`/events/${slug}/payment?registration_id=${response.registration_id}`)
+            return
+        }
 
         registrationSuccess.value = true
     } catch (err) {

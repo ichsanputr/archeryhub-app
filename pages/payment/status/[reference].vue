@@ -88,6 +88,11 @@
                         class="flex-1 py-4 bg-primary text-navy font-bold rounded-xl text-center hover:bg-primary-hover transition-colors shadow-md">
                         Saya Sudah Bayar
                     </button>
+                    <!-- Dev Simulation -->
+                    <button v-if="transaction.status === 'pending'" @click="handleSimulate"
+                        class="flex-1 py-4 bg-gray-900 text-white font-bold rounded-xl text-center hover:bg-black transition-colors shadow-md text-xs">
+                        [Dev] Simulasikan Lunas
+                    </button>
                 </div>
 
                 <!-- Support -->
@@ -169,6 +174,20 @@ const checkStatus = async () => {
         alert('Pembayaran belum diterima. Mohon tunggu beberapa saat atau cek kembali bukti transfer Anda.')
     }
     loading.value = false
+}
+
+const handleSimulate = async () => {
+    if (!confirm('Simulasikan pembayaran lunas? (Hanya untuk Testing)')) return
+    loading.value = true
+    try {
+        await payment.simulateSuccess(reference)
+        await fetchTransaction()
+        alert('Simulasi berhasil! Pembayaran sekarang LUNAS.')
+    } catch (err) {
+        alert('Simulasi gagal: ' + (err.data?.error || err.message))
+    } finally {
+        loading.value = false
+    }
 }
 
 const copyToClipboard = (text) => {
