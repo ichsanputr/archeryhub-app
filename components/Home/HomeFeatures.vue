@@ -182,13 +182,7 @@ const featureItems = [
         longDescription: 'Menang atau kalah, dedikasi kamu pantes dapet apresiasi. E-sertifikat resmi bakal langsung muncul di profil kamu begitu event selesai. Bisa langsung didownload buat diprint atau dipamerin ke story Instagram kamu!',
         image: 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&q=80&w=1200'
     },
-    {
-        title: 'Manajemen Klub Terpadu',
-        icon: 'ph:users-four-bold',
-        description: 'Kelola klub makin pro dan rapi.',
-        longDescription: 'Bikin klub kamu makin solid dengan manajemen data atlet yang rapi. Pantau kehadiran latihan, rekap skor internal klub, sampai pengingat iuran bulanan angggota, semuanya bisa dikelola lewat dashboard admin khusus klub.',
-        image: 'https://images.unsplash.com/photo-1565992441121-4367c2967103?auto=format&fit=crop&q=80&w=1200'
-    },
+
     {
         title: 'Integrasi Membership',
         icon: 'ph:identification-card-bold',

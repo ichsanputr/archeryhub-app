@@ -24,7 +24,7 @@
               </div>
             </div>
             <p class="text-gray-400 leading-relaxed text-sm sm:text-base">
-              Platform infrastruktur digital terintegrasi untuk manajemen klub, skor real-time, dan turnamen panahan
+              Platform infrastruktur digital terintegrasi untuk skor real-time dan turnamen panahan
               profesional yang lebih efisien.
             </p>
           </div>
@@ -42,10 +42,7 @@
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 Turnamen
               </NuxtLink>
-              <NuxtLink to="/clubs"
-                class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Klub
-              </NuxtLink>
+
               <NuxtLink to="/news"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 Berita
@@ -92,10 +89,6 @@
               Dukungan
             </h4>
             <div class="flex flex-col gap-3">
-              <NuxtLink to="/help"
-                class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Pusat Bantuan
-              </NuxtLink>
               <NuxtLink to="/faq"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 FAQ

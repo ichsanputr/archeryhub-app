@@ -21,9 +21,9 @@
                         Skalakan Manajemen Panahan Anda
                     </h1>
                     <p class="text-white/90 text-sm md:text-lg leading-relaxed max-w-2xl">
-                        Opsi fleksibel untuk klub akar rumput sampai penyelenggara turnamen skala internasional.
+                        Opsi fleksibel untuk penyelenggara turnamen skala kecil sampai skala internasional.
                         <span class="text-primary font-bold">Dapatkan 3 bulan gratis</span> paket Standard untuk
-                        pendaftaran organisasi/klub baru.
+                        pendaftaran organisasi baru.
                     </p>
                 </div>
             </div>
@@ -33,133 +33,21 @@
             <!-- Tab Switcher -->
             <div class="flex justify-center mb-16 md:mb-24">
                 <div
-                    class="bg-gray-100 p-1.5 rounded-2xl flex items-center relative w-full max-w-xs sm:max-w-sm shadow-inner transition-all hover:bg-gray-200/70">
-                    <div class="absolute h-[calc(100%-12px)] w-[calc(50%-6px)] bg-white rounded-xl shadow-md transition-all duration-500"
-                        :style="{ transform: activeTab === 'eo' ? 'translateX(0)' : 'translateX(100%)' }">
+                    class="bg-gray-100 p-1.5 rounded-2xl flex items-center relative w-full max-w-xs sm:max-w-sm shadow-inner transition-all">
+                    <div
+                        class="absolute h-[calc(100%-12px)] w-full bg-white rounded-xl shadow-md transition-all duration-500">
                     </div>
-                    <button @click="activeTab = 'eo'"
-                        :class="['flex-1 py-3.5 rounded-xl text-[11px] sm:text-xs font-black uppercase tracking-widest transition-all relative z-10', activeTab === 'eo' ? 'text-navy' : 'text-gray-400 hover:text-navy/70']">
-                        Paket EO
-                    </button>
-                    <button @click="activeTab = 'club'"
-                        :class="['flex-1 py-3.5 rounded-xl text-[11px] sm:text-xs font-black uppercase tracking-widest transition-all relative z-10', activeTab === 'club' ? 'text-navy' : 'text-gray-400 hover:text-navy/70']">
-                        Paket Klub
+                    <button
+                        class="flex-1 py-3.5 rounded-xl text-[11px] sm:text-xs font-black uppercase tracking-widest transition-all relative z-10 text-navy">
+                        Paket Penyelenggara (EO)
                     </button>
                 </div>
             </div>
 
-            <!-- ─── CLUB Packages ─── -->
-            <div v-show="activeTab === 'club'" class="space-y-16">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch max-w-5xl mx-auto">
-                    <!-- Standar Klub -->
-                    <div
-                        class="bg-white border border-gray-100 rounded-3xl p-8 flex flex-col shadow-sm transition-all duration-500 hover:-translate-y-2 group">
-                        <div class="mb-10">
-                            <div
-                                class="size-12 bg-gray-50 rounded-2xl flex items-center justify-center mb-6 text-gray-400 group-hover:bg-navy group-hover:text-white transition-colors duration-500">
-                                <Icon icon="ph:shield-check-bold" class="text-2xl" />
-                            </div>
-                            <h3 class="text-2xl font-black text-navy mb-2">Standar Klub</h3>
-                            <p class="text-gray-500 text-sm font-medium">Langkah awal mendukung ekosistem panahan
-                                digital.</p>
-                        </div>
-                        <div class="mb-10">
-                            <div class="flex items-baseline gap-1">
-                                <span class="text-xl font-bold text-navy opacity-40">Rp</span>
-                                <span class="text-5xl font-black text-navy tracking-tighter">24.999</span>
-                                <span class="text-gray-400 font-bold tracking-wider uppercase text-xs">/BLN</span>
-                            </div>
-                        </div>
-                        <ul class="space-y-4 mb-12 flex-1">
-                            <li v-for="feat in basicFeatures" :key="feat"
-                                class="flex items-start gap-3 text-sm font-medium text-navy">
-                                <Icon icon="ph:check-circle-fill" class="mt-0.5 text-lg shrink-0 text-green-500" />
-                                <span>{{ feat }}</span>
-                            </li>
-                        </ul>
-                        <button
-                            class="w-full py-4 px-6 rounded-2xl border-2 border-navy text-navy font-black hover:bg-navy hover:text-white transition-all duration-300">
-                            Pilih Paket
-                        </button>
-                    </div>
 
-                    <!-- Elite Klub -->
-                    <div
-                        class="bg-navy rounded-3xl p-8 flex flex-col shadow-sm relative overflow-hidden ring-4 ring-primary/20 transition-all duration-500 hover:-translate-y-2">
-                        <div
-                            class="absolute top-0 right-0 bg-primary text-navy px-6 py-2 text-[11px] font-black uppercase tracking-[0.2em] rounded-bl-2xl shadow-lg">
-                            REKOMENDASI
-                        </div>
-                        <div class="mb-10 pt-4">
-                            <div
-                                class="size-14 bg-primary rounded-2xl flex items-center justify-center mb-6 text-navy shadow-lg shadow-primary/20">
-                                <Icon icon="ph:crown-simple-fill" class="text-3xl" />
-                            </div>
-                            <h3 class="text-3xl font-black text-white mb-2">Elite Klub</h3>
-                            <p class="text-slate-400 text-sm font-medium">Akses penuh dan keuntungan eksklusif untuk
-                                pendukung utama.</p>
-                        </div>
-                        <div class="mb-10">
-                            <div class="flex items-baseline gap-1">
-                                <span class="text-xl font-bold text-white opacity-40">Rp</span>
-                                <span class="text-5xl font-black text-white tracking-tighter">39.999</span>
-                                <span class="text-slate-400 font-bold tracking-wider uppercase text-xs">/BLN</span>
-                            </div>
-                        </div>
-                        <ul class="space-y-5 mb-14 flex-1">
-                            <li v-for="feat in eliteFeatures" :key="feat"
-                                class="flex items-start gap-4 text-sm font-medium text-white">
-                                <Icon icon="ph:check-circle-fill" class="text-primary text-xl shrink-0" />
-                                <span>{{ feat }}</span>
-                            </li>
-                        </ul>
-                        <button
-                            class="w-full py-4 px-6 rounded-2xl bg-primary text-navy font-black hover:scale-[1.03] active:scale-95 transition-all shadow-primary/20">
-                            Aktifkan Elite
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Club Comparison Table -->
-                <div class="max-w-5xl mx-auto">
-                    <h3 class="text-center text-[11px] font-black text-gray-400 uppercase tracking-widest mb-8">
-                        Perbandingan Detail</h3>
-                    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-                        <div
-                            class="grid grid-cols-3 bg-gray-50 px-6 py-4 text-xs font-black uppercase tracking-widest text-gray-400">
-                            <div>Fitur</div>
-                            <div class="text-center">Standar</div>
-                            <div class="text-center">Elite</div>
-                        </div>
-                        <div v-for="(row, i) in clubComparisonData" :key="row.feature"
-                            :class="['grid grid-cols-3 px-6 py-4 items-center', i % 2 === 0 ? 'bg-white' : 'bg-gray-50/50']">
-                            <div class="flex items-center gap-3 text-sm font-bold text-navy">
-                                <Icon :icon="row.icon" class="text-gray-400 text-base shrink-0" />
-                                {{ row.feature }}
-                            </div>
-                            <div class="text-center">
-                                <template v-if="typeof row.basic === 'boolean'">
-                                    <Icon :icon="row.basic ? 'ph:check-circle-fill' : 'ph:x-circle-fill'"
-                                        :class="row.basic ? 'text-green-500' : 'text-gray-300'"
-                                        class="text-xl mx-auto" />
-                                </template>
-                                <span v-else class="text-sm font-bold text-navy">{{ row.basic }}</span>
-                            </div>
-                            <div class="text-center">
-                                <template v-if="typeof row.elite === 'boolean'">
-                                    <Icon :icon="row.elite ? 'ph:check-circle-fill' : 'ph:x-circle-fill'"
-                                        :class="row.elite ? 'text-green-500' : 'text-gray-300'"
-                                        class="text-xl mx-auto" />
-                                </template>
-                                <span v-else class="text-sm font-bold text-navy">{{ row.elite }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <!-- ─── EO Packages ─── -->
-            <div v-show="activeTab === 'eo'" class="space-y-16">
+            <div class="space-y-16">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch max-w-5xl mx-auto">
                     <!-- Standar EO -->
                     <div
@@ -274,7 +162,7 @@
             <!-- Subscription Promotion -->
             <section class="max-w-4xl mx-auto px-4 mb-24 mt-16">
                 <SubscriptionPromo promo-badge="Promo Terbatas" promo-title="Mulai Turnamen Anda Gratis 3 Bulan!"
-                    promo-desc="Daftarkan klub atau organisasi Anda sekarang dan nikmati akses penuh paket Standard tanpa biaya selama tiga bulan pertama."
+                    promo-desc="Daftarkan organisasi Anda sekarang dan nikmati akses penuh paket Standard tanpa biaya selama tiga bulan pertama."
                     savings="104.997" />
             </section>
 
@@ -317,35 +205,17 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
+const activeFaq = ref(0)
+const toggleFaq = (index) => {
+    activeFaq.value = activeFaq.value === index ? null : index
+}
 import SubscriptionPromo from '~/components/dashboard/subscription/SubscriptionPromo.vue'
 
 definePageMeta({
     layout: 'landing'
 })
 
-const activeTab = ref('eo')
-const activeFaq = ref(0)
-const toggleFaq = (index) => {
-    activeFaq.value = activeFaq.value === index ? null : index
-}
 
-// ─── Club feature lists ───────────────────────────────────────
-const basicFeatures = [
-    'Maksimal 50 Anggota Klub',
-    'Penyimpanan Media 1 GB',
-    'Profil Klub Lengkap',
-    'Publikasi Berita Klub',
-    'Akses Forum Komunitas',
-]
-
-const eliteFeatures = [
-    'Semua fitur Standar Klub',
-    'Anggota Tak Terbatas',
-    'Penyimpanan Media 3 GB',
-    'Diskon Khusus Event',
-    'Konsultasi Coach Bulanan',
-    'Akses Awal Fitur Baru',
-]
 
 // ─── EO feature lists ─────────────────────────────────────────
 const eoBasicFeatures = [
@@ -367,15 +237,7 @@ const eoEliteFeatures = [
     'Akses Awal Fitur Baru',
 ]
 
-// ─── Comparison tables ────────────────────────────────────────
-const clubComparisonData = [
-    { feature: 'Maksimum Anggota', basic: '50 Orang', elite: 'Tak Terbatas', icon: 'ph:users-three-bold' },
-    { feature: 'Penyimpanan Media', basic: '1 GB', elite: '3 GB', icon: 'ph:hard-drives-bold' },
-    { feature: 'Profil Klub', basic: 'Lengkap', elite: 'Lengkap & Kustom', icon: 'ph:buildings-bold' },
-    { feature: 'Publikasi Berita', basic: true, elite: true, icon: 'ph:newspaper-bold' },
-    { feature: 'Analitik Lanjutan', basic: false, elite: true, icon: 'ph:chart-bar-bold' },
-    { feature: 'Dukungan Prioritas', basic: true, elite: true, icon: 'ph:headset-bold' },
-]
+
 
 const eoComparisonData = [
     { feature: 'Maksimum Peserta', basic: '40 / Event', elite: 'Tak Terbatas', icon: 'ph:users-three-bold' },
@@ -408,7 +270,7 @@ const faqs = [
 
 useSeoMeta({
     title: 'Paket Berlangganan - Archeryhub.id',
-    description: 'Temukan solusi terbaik untuk klub dan EO panahan Anda. Paket fleksibel untuk segala jenis skala organisasi.'
+    description: 'Temukan solusi terbaik untuk penyelenggara turnamen (EO) panahan Anda. Paket fleksibel untuk segala jenis skala organisasi.'
 })
 </script>
 

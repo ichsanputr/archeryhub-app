@@ -103,10 +103,7 @@
                         </Transition>
                     </div>
 
-                    <NuxtLink to="/clubs"
-                        class="font-black text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
-                        :class="[navLinkClasses, { 'bg-primary !text-black hover:!text-black': isActive('/clubs') }]">
-                        Klub</NuxtLink>
+
                     <NuxtLink to="/archers"
                         class="font-black text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
                         :class="[navLinkClasses, { 'bg-primary !text-black hover:!text-black': isActive('/archers') }]">
@@ -271,7 +268,7 @@
                     <div class="p-4 space-y-1">
                         <NuxtLink v-for="link in [
                             { to: '/', label: 'Beranda', icon: 'ph:house-bold' },
-                            { to: '/clubs', label: 'Klub', icon: 'ph:shield-bold' },
+
                             { to: '/archers', label: 'Pemanah', icon: 'ph:users-bold' },
                             { to: '/news', label: 'Berita', icon: 'ph:newspaper-bold' },
                             { to: '/products', label: 'Marketplace', icon: 'ph:shopping-bag-bold' },

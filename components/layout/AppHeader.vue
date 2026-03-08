@@ -14,13 +14,12 @@
       <!-- Mobile Logo/Branding (Centered between hamburger and notification) -->
       <div v-if="isDashboard" class="lg:hidden flex items-center gap-2 mx-auto">
         <div class="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center bg-white shadow-sm">
-          <img v-if="user?.role === 'organization' || user?.role === 'club'"
+          <img v-if="user?.role === 'organization'"
             :src="useImageOrDefault(user.logo_url || user.avatar_url, user?.name || user?.full_name || 'Org')"
             :alt="user?.name || user?.full_name || 'Organization'" class="w-full h-full object-cover" />
           <img v-else src="/logo.png" alt="ArcheryHub" class="w-full h-full object-contain" />
         </div>
-        <span v-if="user?.role === 'organization' || user?.role === 'club'"
-          class="text-sm font-black text-header-text truncate max-w-[120px]">
+        <span v-if="user?.role === 'organization'" class="text-sm font-black text-header-text truncate max-w-[120px]">
           {{ getFirstWord(user?.full_name || user?.name || 'Dashboard') }}
         </span>
         <span v-else class="text-sm font-black text-header-text">
@@ -36,9 +35,7 @@
         <NuxtLink to="/events"
           :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-navy' : 'text-white/80 hover:text-white', { 'bg-primary text-primary-text font-bold': route.path.startsWith('/events') }]"
           class="font-black text-sm transition-colors px-3 py-1.5 rounded-lg">Event</NuxtLink>
-        <NuxtLink to="/clubs"
-          :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-navy' : 'text-white/80 hover:text-white', { 'bg-primary text-primary-text font-bold': route.path.startsWith('/clubs') }]"
-          class="font-black text-sm transition-colors px-3 py-1.5 rounded-lg">Klub</NuxtLink>
+
         <NuxtLink to="/news"
           :class="[isScrolled || !transparent ? 'text-gray-600 hover:text-navy' : 'text-white/80 hover:text-white', { 'bg-primary text-primary-text font-bold': route.path.startsWith('/news') }]"
           class="font-black text-sm transition-colors px-3 py-1.5 rounded-lg">Berita</NuxtLink>
@@ -57,19 +54,7 @@
         </h1>
       </div>
 
-      <!-- Dashboard Context: Club Name replaced Search -->
-      <div v-if="isDashboard && user?.role === 'club' && !isEventManageMode" class="hidden md:flex items-center gap-3">
-        <div class="flex items-center gap-3">
-          <div
-            class="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center bg-white shadow-sm duration-300">
-            <img :src="useImageOrDefault(user.logo_url || user.avatar_url, user?.full_name || 'Club')"
-              :alt="user?.full_name || 'Club'" class="w-full h-full object-cover" />
-          </div>
-          <h2 class="text-lg font-black text-header-text truncate max-w-sm tracking-tight">
-            {{ user?.full_name || user?.name || 'Klub Panahan' }}
-          </h2>
-        </div>
-      </div>
+
 
       <!-- Dashboard Context: Organization Name -->
       <div v-else-if="isDashboard && user?.role === 'organization' && !isEventManageMode"
@@ -86,16 +71,16 @@
         </div>
       </div>
 
-      <!-- Dashboard Title (only for non-clubs/orgs in general dashboard mode) -->
-      <div v-else-if="isDashboard && user?.role !== 'club' && user?.role !== 'organization' && !isEventManageMode"
+      <!-- Dashboard Title (only for non-orgs in general dashboard mode) -->
+      <div v-else-if="isDashboard && user?.role !== 'organization' && !isEventManageMode"
         class="hidden md:flex items-center gap-3 mr-4">
         <h1 class="text-lg font-black text-header-text whitespace-nowrap">
           {{ dashboardTitle }}
         </h1>
       </div>
 
-      <!-- Search Bar (hidden in event manage mode and for clubs) -->
-      <div v-else-if="!isEventManageMode && user?.role !== 'club'" class="max-w-xs xl:max-w-md w-full hidden md:block">
+      <!-- Search Bar (hidden in event manage mode) -->
+      <div v-else-if="!isEventManageMode" class="max-w-xs xl:max-w-md w-full hidden md:block">
         <div :class="[
           isScrolled || !transparent
             ? 'bg-gray-100 dark:bg-surface-highlight border-transparent'

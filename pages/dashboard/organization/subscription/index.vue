@@ -9,16 +9,12 @@
             :price-label="`${currentPlan?.priceLabel} / ${currentPlan?.billing}`"
             :next-billing="subscriptionRes?.current?.next_billing_date" :usage-media="usageMedia"
             :usage-members="usageMembers" :remaining-days-label="remainingDaysLabel" :expiry-percent="expiryPercent"
-            :is-expired="headerStatus === 'expired' || headerStatus === 'canceled'"
-            :show-members="userType !== 'organization'" />
+            :is-expired="headerStatus === 'expired' || headerStatus === 'canceled'" :show-members="true"
+            member-label="Peserta per Event" />
 
         <div class="space-y-8">
             <!-- Organization Plans -->
-            <SubscriptionOrganizationPlans v-if="userType === 'organization'" :plans="availablePlans"
-                @select="handleSelectPlan" />
-
-            <!-- Club Plans -->
-            <SubscriptionClubPlans v-else-if="userType === 'club'" :plans="availablePlans" @select="handleSelectPlan" />
+            <SubscriptionOrganizationPlans :plans="availablePlans" @select="handleSelectPlan" />
 
             <!-- Riwayat Tagihan Section -->
             <SubscriptionBillingHistory :invoices="invoices" />
@@ -33,7 +29,6 @@ import { useSubscription } from '~/composables/useSubscription'
 import SubscriptionHeader from '~/components/dashboard/subscription/SubscriptionHeader.vue'
 import SubscriptionStatus from '~/components/dashboard/subscription/SubscriptionStatus.vue'
 import SubscriptionOrganizationPlans from '~/components/dashboard/subscription/SubscriptionOrganizationPlans.vue'
-import SubscriptionClubPlans from '~/components/dashboard/subscription/SubscriptionClubPlans.vue'
 import SubscriptionBillingHistory from '~/components/dashboard/subscription/SubscriptionBillingHistory.vue'
 
 definePageMeta({
@@ -43,7 +38,7 @@ definePageMeta({
 const { user } = useAuth()
 const { subscriptionData, fetchSubscription } = useSubscription()
 const router = useRouter()
-const userType = computed(() => user.value?.user_type || user.value?.role || 'club')
+const userType = computed(() => user.value?.user_type || user.value?.role || 'organization')
 
 onBeforeMount(async () => {
     await fetchSubscription()
@@ -74,16 +69,7 @@ const handleSelectPlan = (plan) => {
     })
 }
 
-const clubPlanDetails = [
-    {
-        id: [3, 5],
-        features: ['Maksimal 50 Anggota Klub', 'Manajemen Absensi & Check-in', 'Manajemen Prestasi & Medali', 'Publikasi Berita & Artikel', 'Penyimpanan Media 1 GB'],
-    },
-    {
-        id: [4, 6],
-        features: ['Anggota Tak Terbatas', 'Manajemen Tim & Official', 'Kustom Form Pendaftaran', 'Analitik & Statistik Lanjutan', 'Penyimpanan Media 3 GB'],
-    }
-]
+
 
 const orgPlanDetails = [
     {
@@ -111,8 +97,7 @@ const isSubscribed = computed(() => !!subscriptionRes.value?.current?.plan_id)
 const availablePlans = computed(() => {
     const plansFromApi = subscriptionRes.value?.plans || []
     const currentPlanId = subscriptionRes.value?.current?.plan_id
-    const isOrg = userType.value === 'organization'
-    const currentPlanDetails = isOrg ? orgPlanDetails : clubPlanDetails
+    const currentPlanDetails = orgPlanDetails
 
     const uniquePlans = []
     const seenNames = new Set()
@@ -129,8 +114,8 @@ const availablePlans = computed(() => {
 
     if (uniquePlans.length === 0) {
         return [
-            { id: 3, name: 'Standar', priceLabel: isOrg ? 'Rp 29.999' : 'Rp 24.999', priceRaw: isOrg ? 29999 : 24999, billing: 'bln', features: currentPlanDetails[0].features, isCurrent: false, isUpgrade: false },
-            { id: 4, name: 'Elite', priceLabel: isOrg ? 'Rp 49.999' : 'Rp 39.999', priceRaw: isOrg ? 49999 : 39999, billing: 'bln', features: currentPlanDetails[1].features, isCurrent: false, isUpgrade: true }
+            { id: 3, name: 'Standar', priceLabel: 'Rp 29.999', priceRaw: 29999, billing: 'bln', features: currentPlanDetails[0].features, isCurrent: false, isUpgrade: false },
+            { id: 4, name: 'Elite', priceLabel: 'Rp 49.999', priceRaw: 49999, billing: 'bln', features: currentPlanDetails[1].features, isCurrent: false, isUpgrade: true }
         ]
     }
 
@@ -153,18 +138,10 @@ const availablePlans = computed(() => {
         }
 
         let finalPrice = plan.price
-        if (isOrg) {
-            if (localizedName === 'Standar' || plan.name.toLowerCase().includes('basic')) {
-                finalPrice = 29999
-            } else if (localizedName === 'Elite' || plan.name.toLowerCase().includes('premium')) {
-                finalPrice = 49999
-            }
-        } else if (userType.value === 'club') {
-            if (localizedName === 'Standar' || plan.name.toLowerCase().includes('basic')) {
-                finalPrice = 24999
-            } else if (localizedName === 'Elite' || plan.name.toLowerCase().includes('premium')) {
-                finalPrice = 39999
-            }
+        if (localizedName === 'Standar' || plan.name.toLowerCase().includes('basic')) {
+            finalPrice = 29999
+        } else if (localizedName === 'Elite' || plan.name.toLowerCase().includes('premium')) {
+            finalPrice = 49999
         }
 
         return {
@@ -300,19 +277,14 @@ const expiryPercent = computed(() => {
 })
 
 const roleContent = computed(() => {
-    const isOrg = userType.value === 'organization'
     return {
-        packageTitle: isOrg ? 'Event Optimizer' : 'Klub',
-        promoBadge: isOrg ? 'Penyelenggara Baru' : 'Klub Baru',
-        promoTitle: isOrg ? 'Mulai Turnamen Anda Gratis 3 Bulan!' : 'Mulai Klub Anda Gratis 3 Bulan!',
-        promoDesc: isOrg
-            ? 'Daftarkan organisasi Anda sekarang and dapatkan paket Standard secara gratis selama 3 bulan pertama.'
-            : 'Daftarkan klub Anda sekarang and dapatkan paket Standard secara gratis selama 3 bulan pertama.',
+        packageTitle: 'Event Optimizer',
+        promoBadge: 'Penyelenggara Baru',
+        promoTitle: 'Mulai Turnamen Anda Gratis 3 Bulan!',
+        promoDesc: 'Daftarkan organisasi Anda sekarang and dapatkan paket Standard secara gratis selama 3 bulan pertama.',
         savings: '104.997',
-        recommendationBadge: isOrg ? 'EO Profesional' : 'Klub Utama',
-        eliteDescription: isOrg
-            ? 'Solusi lengkap untuk turnamen skala besar dengan fitur kustom pendaftaran.'
-            : 'Dapatkan fitur eksklusif dan limit lebih besar untuk komunitas Anda.'
+        recommendationBadge: 'EO Profesional',
+        eliteDescription: 'Solusi lengkap untuk turnamen skala besar dengan fitur kustom pendaftaran.'
     }
 })
 

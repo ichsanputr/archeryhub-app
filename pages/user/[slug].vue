@@ -46,11 +46,11 @@
                                     <Icon icon="ph:calendar-bold" class="text-primary" />
                                     Gabung {{ userProfile.joinedDate }}
                                 </div>
-                                <NuxtLink v-if="userProfile.club" :to="`/clubs/${userProfile.club.slug}`"
-                                    class="flex items-center gap-2 px-4 py-2 bg-navy text-white rounded-xl text-sm font-bold shadow-lg shadow-navy/20 hover:scale-105 transition-all">
+                                <div v-if="userProfile.club"
+                                    class="flex items-center gap-2 px-4 py-2 bg-navy text-white rounded-xl text-sm font-bold shadow-lg shadow-navy/20">
                                     <Icon icon="ph:users-three-bold" class="text-primary" />
                                     {{ userProfile.club.name }}
-                                </NuxtLink>
+                                </div>
                                 <div v-else
                                     class="text-xs text-slate-400 font-bold  tracking-widest px-4 py-2 bg-gray-50 rounded-xl border border-dashed border-gray-200">
                                     Free Agent

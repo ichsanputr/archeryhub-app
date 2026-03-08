@@ -138,13 +138,13 @@ import { useImageOrDefault } from '~/composables/useImageHelper'
 
 const route = useRoute()
 const router = useRouter()
-const { user, userPersona, archerProfile, clubProfile, organizationProfile, sellerProfile, logout } = useAuth()
+const { user, userPersona, archerProfile, organizationProfile, sellerProfile, logout } = useAuth()
 
 const isSidebarOpen = useState('mobile-sidebar-open', () => false)
 const isSidebarCollapsed = useState('sidebar-collapsed', () => false)
 
 // Groups that are expanded (open)
-const openGroups = ref(['Manajemen Klub', 'Menu Event', 'Menu Organisasi'])
+const openGroups = ref(['Menu Event', 'Menu Organisasi'])
 
 function toggleGroup(label) {
   const idx = openGroups.value.indexOf(label)
@@ -156,9 +156,7 @@ const userAvatar = computed(() => {
   const role = user.value?.role || user.value?.type || 'archer'
   let url = user.value?.avatar_url
 
-  if (role === 'club' && clubProfile.value?.logo_url) {
-    url = clubProfile.value.logo_url
-  } else if (role === 'organization' && (organizationProfile.value?.avatar_url || organizationProfile.value?.logo_url)) {
+  if (role === 'organization' && (organizationProfile.value?.avatar_url || organizationProfile.value?.logo_url)) {
     url = organizationProfile.value.avatar_url || organizationProfile.value.logo_url
   } else if (role === 'seller' && sellerProfile.value?.avatar_url) {
     url = sellerProfile.value.avatar_url
@@ -171,8 +169,7 @@ const userAvatar = computed(() => {
 
 const displayName = computed(() => {
   const role = user.value?.role || user.value?.type || 'archer'
-  if (role === 'club' && clubProfile.value?.name) return clubProfile.value.name
-  else if (role === 'organization' && organizationProfile.value?.name) return organizationProfile.value.name
+  if (role === 'organization' && organizationProfile.value?.name) return organizationProfile.value.name
   else if (role === 'seller' && sellerProfile.value?.store_name) return sellerProfile.value.store_name
   return user.value?.full_name || user.value?.name || 'Guest'
 })
@@ -186,7 +183,7 @@ const isOnEventSubPage = computed(() => {
   // Check if it's an event page under any role
   const isEventPath = path.includes('/events/') && path.includes('/dashboard/')
   if (!isEventPath) return false
-  const eventPathMatch = path.match(/\/dashboard\/(?:archer|organization|club|seller|root|events)\/events\/([^/]+)\/(.+)/) ||
+  const eventPathMatch = path.match(/\/dashboard\/(?:archer|organization|seller|root|events)\/events\/([^/]+)\/(.+)/) ||
     path.match(/\/dashboard\/events\/([^/]+)\/(.+)/)
   return !!eventPathMatch
 })
@@ -195,7 +192,7 @@ const isEventManagePage = computed(() => {
   const path = route.path
   const isEventPath = path.includes('/events/') && path.includes('/dashboard/')
   if (!isEventPath) return false
-  const eventPathMatch = path.match(/\/dashboard\/(?:archer|organization|club|seller|root|events)\/events\/([^/]+)\/(.+)/) ||
+  const eventPathMatch = path.match(/\/dashboard\/(?:archer|organization|seller|root|events)\/events\/([^/]+)\/(.+)/) ||
     path.match(/\/dashboard\/events\/([^/]+)\/(.+)/)
   const [, , subPath] = eventPathMatch || []
   if (!subPath) return false
@@ -252,7 +249,7 @@ const canManageEvents = computed(() => {
 
 const userRoleLabel = computed(() => {
   const role = user.value?.role || user.value?.type || 'archer'
-  const labels = { 'archer': 'Pemanah', 'organization': 'Organisasi', 'club': 'Klub', 'admin': 'Admin', 'seller': 'Penjual', 'scorekeeper': 'Scorekeeper' }
+  const labels = { 'archer': 'Pemanah', 'organization': 'Organisasi', 'admin': 'Admin', 'seller': 'Penjual', 'scorekeeper': 'Scorekeeper' }
   return labels[role] || 'Pengguna'
 })
 
@@ -266,7 +263,6 @@ const navSections = computed(() => {
   if (role === 'archer') {
     return [
       { label: 'Event Saya', icon: 'ph:trophy', path: '/dashboard/archer/events' },
-      { label: 'Klub', icon: 'ph:buildings', path: '/dashboard/archer/club' },
       { label: 'Keranjang', icon: 'ph:shopping-cart', path: '/dashboard/archer/cart' },
       { label: 'Profil Pemanah', icon: 'ph:user-circle', path: '/dashboard/archer/profile' },
       { label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/archer/settings' },
@@ -283,30 +279,7 @@ const navSections = computed(() => {
     ]
   }
 
-  if (role === 'club') {
-    return [
-      { label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard/club' },
-      { type: 'label', label: 'Manajemen Klub' },
-      // Group: Anggota & Membership
-      {
-        label: 'Keanggotaan',
-        icon: 'ph:users-bold',
-        type: 'group',
-        children: [
-          { label: 'Anggota', icon: 'ph:identification-badge-bold', path: '/dashboard/club/members', isLocked: !isActiveSub },
-          { label: 'Membership', icon: 'ph:crown-bold', path: '/dashboard/club/membership', isLocked: !isActiveSub },
-          { label: 'Pembayaran', icon: 'ph:money-bold', path: '/dashboard/club/payments-membership', isLocked: !isActiveSub },
-        ]
-      },
-      { label: 'Form Pendaftaran', icon: 'ph:clipboard-text-bold', path: '/dashboard/club/form-pendaftaran', isLocked: !isActiveSub },
-      { label: 'Laporan', icon: 'ph:chart-bar-bold', path: '/dashboard/club/reports', isLocked: !isActiveSub },
-      { label: 'Profil Klub', icon: 'ph:buildings', path: '/dashboard/club/profile' },
-      { type: 'label', label: 'Lainnya' },
-      { label: 'Subscription', icon: 'ph:credit-card', path: '/dashboard/club/subscription' },
-      ...(!isEventManagePage.value ? [{ label: 'Berita', icon: 'ph:newspaper', path: '/dashboard/club/news' }] : []),
-      ...(!isEventManagePage.value ? [{ label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/club/settings' }] : []),
-    ]
-  }
+
 
   if (role === 'organization') {
     return [
@@ -384,7 +357,7 @@ const isActive = (path) => {
   }
 
   // Dashboard roots should use exact match and not match sub-pages
-  const dashboardRoots = ['/dashboard/root', '/dashboard/organization', '/dashboard/club', '/dashboard/seller', '/dashboard/archer']
+  const dashboardRoots = ['/dashboard/root', '/dashboard/organization', '/dashboard/seller', '/dashboard/archer']
   if (dashboardRoots.includes(path)) {
     return route.path === path || route.path === path + '/'
   }

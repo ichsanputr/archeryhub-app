@@ -58,7 +58,7 @@
                             </div>
                             <div class="text-sm font-black text-navy mt-1">{{ usageMedia.current }} / {{
                                 usageMedia.limit
-                                }}</div>
+                            }}</div>
                         </div>
                         <span class="text-[10px] font-black text-primary">{{ usageMedia.percent }}%</span>
                     </div>
@@ -72,7 +72,8 @@
                 <div v-if="showMembers" class="space-y-3">
                     <div class="flex justify-between items-end">
                         <div>
-                            <div class="text-xs font-black text-gray-400 uppercase tracking-widest">Total Anggota</div>
+                            <div class="text-xs font-black text-gray-400 uppercase tracking-widest">{{ memberLabel ||
+                                'Total Anggota' }}</div>
                             <div class="text-sm font-black text-navy mt-1">{{ usageMembers.current }} / {{
                                 usageMembers.limit }}</div>
                         </div>
@@ -116,6 +117,7 @@ defineProps({
     remainingDaysLabel: String,
     expiryPercent: Number,
     isExpired: Boolean,
+    memberLabel: String,
     showMembers: {
         type: Boolean,
         default: true

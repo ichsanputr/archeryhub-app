@@ -123,6 +123,9 @@
                 { title: 'Traditional', value: 'traditional' }
               ]" icon="hugeicons:archer" />
 
+              <BaseSelect v-model="accountForm.club_id" label="Klub" :items="clubOptions"
+                placeholder="Pilih klub" icon="ph:buildings" />
+
               <div class="md:col-span-2">
                 <BaseTextarea v-model="accountForm.address" label="Alamat Lengkap" placeholder="Alamat lengkap Anda"
                   :rows="3" icon="ph:house" />
@@ -460,10 +463,12 @@ const accountForm = ref({
   bow_type: '',
   address: '',
   avatar_url: '',
-  banner_url: ''
+  banner_url: '',
+  club_id: ''
 })
 
 const cityOptions = ref([])
+const clubOptions = ref([])
 
 const userStats = ref({
   totalEvents: 0,
@@ -542,6 +547,14 @@ onMounted(async () => {
     console.error('Failed to load cities:', e)
   }
 
+  // Load clubs
+  try {
+    const clubsRes = await get('/clubs?limit=1000')
+    clubOptions.value = (clubsRes.data || []).map(c => ({ title: c.name, value: c.uuid }))
+  } catch (e) {
+    console.error('Failed to load clubs:', e)
+  }
+
   // Load profile and account data
   await loadProfile()
 
@@ -587,7 +600,8 @@ const loadProfile = async () => {
       bow_type: data.bow_type || '',
       address: data.address || '',
       avatar_url: data.avatar_url || '',
-      banner_url: data.banner_url || ''
+      banner_url: data.banner_url || '',
+      club_id: data.club_id || ''
     }
 
     // Load detailed profile information

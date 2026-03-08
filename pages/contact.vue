@@ -18,7 +18,7 @@
             Hubungi <span class="text-primary">Kami</span>
           </h1>
           <p class="text-slate-300 text-sm md:text-lg leading-relaxed max-w-2xl">
-            Ada pertanyaan tentang platform? Baik Anda pemilik klub, atlet, atau penyelenggara event, kami
+            Ada pertanyaan tentang platform? Baik Anda atlet atau penyelenggara event, kami
             di sini untuk membantu Anda mencapai target.
           </p>
         </div>
@@ -53,7 +53,6 @@
                   required>
                   <option disabled value="">Pilih topik</option>
                   <option value="general">Pertanyaan Umum</option>
-                  <option value="club">Dukungan Pendaftaran Klub</option>
                   <option value="tech">Masalah Teknis</option>
                   <option value="partnership">Kemitraan</option>
                 </select>
@@ -150,12 +149,12 @@
               <Icon icon="ph:question-bold" class="text-primary" />
               Bantuan Cepat
             </h3>
-            <p class="text-sm text-slate-500 mb-3">Mencari pertanyaan yang sering diajukan? Kunjungi Pusat Bantuan kami
-              untuk
+            <p class="text-sm text-slate-500 mb-3">Mencari pertanyaan yang sering diajukan atau panduan teknis? Kunjungi
+              Dokumentasi kami untuk
               jawaban instan.</p>
-            <NuxtLink to="/faq"
+            <NuxtLink to="/docs"
               class="text-xs font-bold text-navy dark:text-white border-b-2 border-primary hover:border-navy transition-colors pb-0.5 inline-block">
-              Kunjungi Pusat Bantuan</NuxtLink>
+              Kunjungi Dokumentasi</NuxtLink>
           </div>
         </div>
       </div>

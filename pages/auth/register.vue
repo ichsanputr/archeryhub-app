@@ -164,19 +164,7 @@
                                 </div>
                             </div>
 
-                            <!-- Club: Nama Klub -->
-                            <div v-if="form.userType === 'club'">
-                                <h4 class="text-xs font-black text-navy  tracking-widest flex items-center gap-2 mb-4">
-                                    <Icon icon="ph:users-three-bold" class="text-primary text-lg" />
-                                    Data Klub
-                                </h4>
-                                <BaseInput v-model="form.clubName" label="Nama Klub" placeholder="Nama resmi klub"
-                                    required
-                                    :error="errors.clubName || (isNameTaken ? 'Nama klub sudah terdaftar' : '')"
-                                    @update:model-value="validate('clubName', form.clubName, [rules.required(), rules.minLength(3)])" />
-                                <p class="mt-2 text-xs text-gray-400">Data pelatih dan lokasi bisa dilengkapi di halaman
-                                    profil.</p>
-                            </div>
+
 
                             <!-- Seller: Nama Toko -->
                             <div v-if="form.userType === 'seller'">
@@ -253,7 +241,6 @@ useHead({
 const userTypes = [
     { value: 'archer', label: 'Pemanah', icon: 'temaki:archery' },
     { value: 'organization', label: 'Organisasi', icon: 'ph:buildings-bold' },
-    { value: 'club', label: 'Klub', icon: 'ph:users-three-bold' },
     { value: 'seller', label: 'Penjual', icon: 'ph:storefront-bold' }
 ]
 
@@ -272,7 +259,7 @@ const startSlideshow = () => {
 // Get initial user type from query param
 const getInitialUserType = () => {
     const typeParam = route.query.type
-    if (typeParam && ['archer', 'organization', 'club', 'seller'].includes(typeParam)) {
+    if (typeParam && ['archer', 'organization', 'seller'].includes(typeParam)) {
         return typeParam
     }
     return 'archer'
@@ -283,7 +270,6 @@ const form = ref({
     userType: getInitialUserType(),
     fullName: '',           // For archer
     organizationName: '',   // For organization
-    clubName: '',           // For club
     storeName: '',          // For seller
     terms: false,
 
@@ -331,7 +317,7 @@ const checkNameUnique = async (name) => {
     }
 }
 
-watch([() => form.value.fullName, () => form.value.organizationName, () => form.value.clubName, () => form.value.storeName], () => {
+watch([() => form.value.fullName, () => form.value.organizationName, () => form.value.storeName], () => {
     isNameTaken.value = false
     clearTimeout(debounceTimer)
     const name = getName()
@@ -368,7 +354,6 @@ const getName = () => {
     switch (form.value.userType) {
         case 'archer': return form.value.fullName
         case 'organization': return form.value.organizationName
-        case 'club': return form.value.clubName
         case 'seller': return form.value.storeName
         default: return ''
     }

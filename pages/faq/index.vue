@@ -21,7 +21,7 @@
                         Pertanyaan <span class="text-primary">Sering Diajukan</span>
                     </h1>
                     <p class="text-white/90 text-sm md:text-lg leading-relaxed max-w-xl mx-auto md:mx-0">
-                        Temukan jawaban cepat untuk pertanyaan umum mengenai pendaftaran, manajemen klub, dan sistem
+                        Temukan jawaban cepat untuk pertanyaan umum mengenai pendaftaran, organisasi, dan sistem
                         scoring Archeryhub.id.
                     </p>
                 </div>
@@ -36,7 +36,7 @@
                     <button @click="toggleFaq(index)"
                         class="w-full px-6 py-5 flex items-center justify-between text-left group">
                         <span class="font-bold text-navy group-hover:text-primary transition-colors">{{ faq.question
-                        }}</span>
+                            }}</span>
                         <Icon icon="ph:caret-down-bold"
                             :class="['text-gray-400 transition-transform duration-300', activeFaq === index ? 'rotate-180' : '']" />
                     </button>
@@ -62,9 +62,9 @@
                             Hubungi Kami
                         </BaseButton>
                     </NuxtLink>
-                    <NuxtLink to="/help">
+                    <NuxtLink to="/docs">
                         <BaseButton variant="outline" size="lg" icon="ph:book-open-bold">
-                            Pusat Bantuan
+                            Dokumentasi
                         </BaseButton>
                     </NuxtLink>
                 </div>
@@ -88,8 +88,8 @@ const toggleFaq = (index) => {
 
 const faqs = [
     {
-        question: 'Bagaimana cara mendaftarkan klub di Archeryhub.id?',
-        answer: 'Anda dapat mendaftarkan klub melalui halaman registrasi dengan memilih tipe akun "Klub". Setelah email terverifikasi, Anda dapat melengkapi profil klub dan mulai mengelola anggota.'
+        question: 'Bagaimana cara mendaftarkan organisasi di Archeryhub.id?',
+        answer: 'Anda dapat mendaftarkan organisasi melalui halaman registrasi dengan memilih tipe akun "Organisasi". Setelah email terverifikasi, Anda dapat melengkapi profil organisasi dan mulai mengelola event.'
     },
     {
         question: 'Apakah sistem scoring bisa digunakan untuk turnamen offline?',
@@ -101,7 +101,7 @@ const faqs = [
     },
     {
         question: 'Apakah data atlet dijamin keamanannya?',
-        answer: 'Kami menerapkan standar keamanan data yang ketat dan enkripsi end-to-end untuk memastikan seluruh informasi pribadi atlet dan klub tersimpan dengan aman.'
+        answer: 'Kami menerapkan standar keamanan data yang ketat dan enkripsi end-to-end untuk memastikan seluruh informasi pribadi atlet tersimpan dengan aman.'
     },
     {
         question: 'Bagaimana cara mengajukan bantuan teknis?',

@@ -23,8 +23,7 @@
         <!-- Features Section (Restored) -->
         <HomeFeatures />
 
-        <!-- Featured Clubs Section -->
-        <HomeFeaturedClubs />
+
 
         <!-- Latest News Section -->
         <HomeLatestNews />
@@ -36,7 +35,7 @@ import HomeHero from '~/components/Home/HomeHero.vue'
 import HomeUpcomingEvents from '~/components/Home/HomeUpcomingEvents.vue'
 import HomeCTAStack from '~/components/Home/HomeCTAStack.vue'
 import HomeLiveEvents from '~/components/Home/HomeLiveEvents.vue'
-import HomeFeaturedClubs from '~/components/Home/HomeFeaturedClubs.vue'
+
 import HomeLatestNews from '~/components/Home/HomeLatestNews.vue'
 import HomeFeatures from '~/components/Home/HomeFeatures.vue'
 import SubscriptionPromo from '~/components/dashboard/subscription/SubscriptionPromo.vue'

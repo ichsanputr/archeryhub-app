@@ -22,14 +22,13 @@ async function generateSitemap() {
     const staticPages = [
         '',
         '/archers',
-        '/clubs',
+
         '/events',
         '/news',
         '/products',
         '/organization',
         '/contact',
         '/faq',
-        '/help',
         '/privacy',
         '/terms',
         '/disclaimer',
@@ -81,18 +80,7 @@ async function generateSitemap() {
             });
         }
 
-        // 4. Add Clubs
-        if (data.clubs) {
-            console.log(`Adding ${data.clubs.length} clubs...`);
-            data.clubs.forEach(slug => {
-                xml += `
-  <url>
-    <loc>${SITE_URL}/clubs/${slug}</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>`;
-            });
-        }
+
 
         // 5. Add Organizations
         if (data.organizations) {

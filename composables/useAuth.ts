@@ -95,16 +95,7 @@ export const useAuth = () => {
     }
     return null
   })
-  const clubProfile = useState<any | null>('auth.clubProfile', () => {
-    // Populate clubProfile from server context if user is a club
-    if (import.meta.server) {
-      const event = useRequestEvent()
-      if (event?.context?.user && (event.context.user.role === 'club' || event.context.user.user_type === 'club')) {
-        return event.context.user
-      }
-    }
-    return null
-  })
+
   const sellerProfile = useState<any | null>('auth.sellerProfile', () => {
     // Populate sellerProfile from server context if user is a seller
     if (import.meta.server) {
@@ -189,7 +180,6 @@ export const useAuth = () => {
     user.value = null
     archerProfile.value = null
     organizationProfile.value = null
-    clubProfile.value = null
     sellerProfile.value = null
 
     if (import.meta.client) {
@@ -227,13 +217,7 @@ export const useAuth = () => {
             const profileRes = await $fetch<{ data: any }>(`${baseUrl}/organization/me`, fetchOptions).catch(() => null)
             organizationProfile.value = profileRes?.data || profileRes
           }
-        } else if (userType === 'club') {
-          if (user.value.club_id || user.value.logo_url) {
-            clubProfile.value = { ...user.value }
-          } else {
-            const profileRes = await $fetch<{ data: any }>(`${baseUrl}/club/me`, fetchOptions).catch(() => null)
-            clubProfile.value = profileRes?.data || profileRes
-          }
+
         } else if (userType === 'seller') {
           if (user.value.store_name) {
             sellerProfile.value = { ...user.value }
@@ -275,7 +259,6 @@ export const useAuth = () => {
     const role = user.value?.role || user.value?.user_type || user.value?.type || 'archer'
     const roleMap: Record<string, string> = {
       'archer': 'archer',
-      'club': 'club',
       'organization': 'organization',
       'seller': 'seller',
       'root': 'root',
@@ -289,7 +272,6 @@ export const useAuth = () => {
     userPersona,
     archerProfile: readonly(archerProfile),
     organizationProfile: readonly(organizationProfile),
-    clubProfile: readonly(clubProfile),
     sellerProfile: readonly(sellerProfile),
     isUserLoading: readonly(isUserLoading),
     isLoggedIn,
