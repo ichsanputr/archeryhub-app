@@ -137,72 +137,62 @@
           </div>
 
           <!-- Card Header -->
-          <div class="flex items-start gap-4 mb-6">
+          <div class="flex items-center gap-4 mb-4">
             <div
-              class="size-16 sm:size-20 rounded-2xl bg-slate-50 overflow-hidden flex items-center justify-center shrink-0 border border-slate-100 group-hover:border-primary/20 transition-colors">
+              class="size-14 sm:size-16 rounded-2xl bg-slate-50 overflow-hidden flex items-center justify-center shrink-0 border border-slate-100 group-hover:border-primary/20 transition-all">
               <img v-if="event.logo_url" :src="event.logo_url" class="size-full object-cover" />
               <Icon v-else icon="ph:trophy-bold"
-                class="text-3xl text-slate-300 group-hover:text-primary transition-colors" />
+                class="text-2xl text-slate-300 group-hover:text-primary transition-colors" />
             </div>
             <div class="min-w-0 flex-1">
-              <div class="flex items-center gap-2 mb-1.5">
+              <div class="flex items-center gap-2 mb-1">
                 <span
-                  class="px-2 py-0.5 bg-navy text-primary rounded text-[8px] font-black uppercase tracking-widest">{{
+                  class="px-1.5 py-0.5 bg-navy text-primary rounded-[4px] text-[8px] font-black uppercase tracking-widest">{{
                     event.code?.toUpperCase() }}</span>
-                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{{ event.location_type ||
-                  'Event' }}</span>
               </div>
               <h3
-                class="text-lg font-black text-navy leading-tight group-hover:text-primary transition-colors line-clamp-2">
+                class="text-base font-black text-navy leading-tight group-hover:text-primary transition-colors line-clamp-1">
                 {{ event.name }}
               </h3>
             </div>
           </div>
 
           <!-- Card Body -->
-          <div class="space-y-4 mb-8">
-            <div class="flex items-start gap-3">
-              <div class="size-8 rounded-xl bg-slate-50 flex items-center justify-center text-primary shrink-0">
-                <Icon icon="ph:calendar-blank-bold" />
+          <div class="grid grid-cols-2 gap-3 mb-4">
+            <div class="flex items-start gap-2">
+              <div class="size-7 rounded-lg bg-slate-50 flex items-center justify-center text-primary shrink-0">
+                <Icon icon="ph:calendar-blank-bold" class="text-xs" />
               </div>
-              <div>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Jadwal</p>
-                <p class="text-sm font-bold text-navy">{{ formatDate(event.start_date) }}</p>
+              <div class="min-w-0">
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0">Jadwal</p>
+                <p class="text-xs font-bold text-navy truncate">{{ formatDate(event.start_date) }}</p>
               </div>
             </div>
 
-            <div class="flex items-start gap-3">
-              <div class="size-8 rounded-xl bg-slate-50 flex items-center justify-center text-primary shrink-0">
-                <Icon icon="ph:map-pin-bold" />
+            <div class="flex items-start gap-2">
+              <div class="size-7 rounded-lg bg-slate-50 flex items-center justify-center text-primary shrink-0">
+                <Icon icon="ph:map-pin-bold" class="text-xs" />
               </div>
               <div class="min-w-0">
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Lokasi</p>
-                <p class="text-sm font-bold text-navy truncate">{{ event.venue }}</p>
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0">Lokasi</p>
+                <p class="text-xs font-bold text-navy truncate">{{ event.venue }}</p>
               </div>
             </div>
           </div>
 
-          <!-- Status Badges -->
-          <div class="flex flex-wrap gap-2 mb-8">
-            <div :class="getStatusClass(event.participant_status)"
-              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest border shrink-0">
-              <span :class="getStatusDotClass(event.participant_status)" class="size-1.5 rounded-full"></span>
-              {{ getStatusLabel(event.participant_status) }}
+          <!-- Status Badge (Consolidated) -->
+          <div class="mb-5">
+            <div :class="getMainStatusClass(event)"
+              class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest border shadow-sm">
+              <span :class="getMainStatusDotClass(event)" class="size-1.5 rounded-full"></span>
+              {{ getMainStatusLabel(event) }}
             </div>
-            <template
-              v-if="getPaymentStatusLabel(event.payment_status) !== '-' && getPaymentStatusLabel(event.payment_status) !== getStatusLabel(event.participant_status)">
-              <div :class="getPaymentStatusClass(event.payment_status)"
-                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest border shrink-0">
-                <span :class="getPaymentStatusDotClass(event.payment_status)" class="size-1.5 rounded-full"></span>
-                {{ getPaymentStatusLabel(event.payment_status) }}
-              </div>
-            </template>
           </div>
 
           <!-- Card Footer -->
-          <div class="mt-auto pt-6 border-t border-slate-50 flex items-center gap-3">
-            <BaseButton :to="`/dashboard/events/${event.slug || event.id}/my-qualification`" variant="primary" size="md"
-              class="flex-1 font-black uppercase tracking-widest text-xs h-11">
+          <div class="mt-auto pt-4 border-t border-slate-50 flex items-center gap-3">
+            <BaseButton :to="`/dashboard/events/${event.slug || event.id}/my-qualification`" variant="primary" size="sm"
+              class="flex-1 font-black uppercase tracking-widest text-[10px] h-10 shadow-sm shadow-primary/10">
               Buka Event
             </BaseButton>
           </div>
@@ -469,5 +459,35 @@ const getStatusLabel = (status) => {
     'rejected': 'Ditolak'
   }
   return labels[s] || status
+}
+
+const getMainStatusLabel = (event) => {
+  const pStatus = (event.participant_status || '').toLowerCase()
+  const payStatus = (event.payment_status || '').toLowerCase()
+  if (pStatus === 'rejected') return 'Ditolak'
+  if (payStatus !== 'lunas' && payStatus !== 'paid' && payStatus !== '-') {
+    return getPaymentStatusLabel(event.payment_status)
+  }
+  return getStatusLabel(event.participant_status)
+}
+
+const getMainStatusClass = (event) => {
+  const pStatus = (event.participant_status || '').toLowerCase()
+  const payStatus = (event.payment_status || '').toLowerCase()
+  if (pStatus === 'rejected') return getStatusClass('rejected')
+  if (payStatus !== 'lunas' && payStatus !== 'paid' && payStatus !== '-') {
+    return getPaymentStatusClass(event.payment_status)
+  }
+  return getStatusClass(event.participant_status)
+}
+
+const getMainStatusDotClass = (event) => {
+  const pStatus = (event.participant_status || '').toLowerCase()
+  const payStatus = (event.payment_status || '').toLowerCase()
+  if (pStatus === 'rejected') return getStatusDotClass('rejected')
+  if (payStatus !== 'lunas' && payStatus !== 'paid' && payStatus !== '-') {
+    return getPaymentStatusDotClass(event.payment_status)
+  }
+  return getStatusDotClass(event.participant_status)
 }
 </script>

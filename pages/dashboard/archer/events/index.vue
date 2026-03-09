@@ -1,5 +1,5 @@
 <template>
-  <DashboardOrganizationEventsList />
+  <DashboardArcherEventsList />
 </template>
 
 <script setup>

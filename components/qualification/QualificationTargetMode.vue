@@ -3,9 +3,9 @@
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
                 <h2 class="text-xl font-black text-navy leading-tight">Pengaturan Target</h2>
-                <p class="text-sm text-gray-500 mt-1">Kelola penempatan pemanah pada target kualifikasi (Geser &
+                <div class="text-sm text-gray-500 mt-1">Kelola penempatan pemanah pada target kualifikasi (Geser &
                     Letakkan)
-                </p>
+                </div>
             </div>
             <div class="flex items-center gap-3">
                 <BaseButton variant="white" icon="ph:trash-bold"
@@ -14,11 +14,61 @@
                     @click="resetAssignments">
                     Atur Ulang
                 </BaseButton>
-                <BaseButton variant="primary" icon="fa7-solid:random"
-                    :disabled="isAssigning || isReseting || props.archers.length === 0" :loading="isAssigning"
-                    @click="showAutoAssignDialog = true">
-                    Penempatan Otomatis
-                </BaseButton>
+
+                <div class="relative dropdown-container">
+                    <BaseButton variant="primary" icon="fa7-solid:random"
+                        :disabled="isAssigning || isReseting || props.archers.length === 0" :loading="isAssigning"
+                        @click="showAutoAssignMenu = !showAutoAssignMenu">
+                        Penempatan Otomatis
+                        <Icon icon="ph:caret-down-bold" class="ml-2 text-xs" />
+                    </BaseButton>
+
+                    <transition enter-active-class="transition ease-out duration-100"
+                        enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100"
+                        leave-active-class="transition ease-in duration-75"
+                        leave-from-class="transform opacity-100 scale-100"
+                        leave-to-class="transform opacity-0 scale-95">
+                        <div v-if="showAutoAssignMenu" v-click-outside="() => showAutoAssignMenu = false"
+                            class="absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-xl border border-gray-100 py-3 z-[1001] origin-top-right">
+                            <div class="px-4 py-2 border-b border-gray-50 mb-2">
+                                <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Pilih tipe
+                                    draw</span>
+                            </div>
+
+                            <button type="button" @click="handleAutoAssignSelection('standard')"
+                                class="w-full px-4 py-3 flex items-start gap-3 hover:bg-gray-50 transition-colors text-left group">
+                                <div
+                                    class="size-8 rounded-lg bg-gray-100 text-gray-400 group-hover:bg-primary group-hover:text-white flex items-center justify-center transition-colors">
+                                    <Icon icon="ph:list-numbers-bold" class="text-lg" />
+                                </div>
+                                <div class="flex-1">
+                                    <div
+                                        class="text-xs font-black text-navy group-hover:text-primary transition-colors">
+                                        Standard Draw</div>
+                                    <div class="text-[10px] text-gray-400 leading-tight mt-0.5">Berurutan A-C-B-D
+                                        (Standar
+                                        Ianseo)</div>
+                                </div>
+                            </button>
+
+                            <button type="button" @click="handleAutoAssignSelection('field')"
+                                class="w-full px-4 py-3 flex items-start gap-3 hover:bg-gray-50 transition-colors text-left group">
+                                <div
+                                    class="size-8 rounded-lg bg-gray-100 text-gray-400 group-hover:bg-primary group-hover:text-white flex items-center justify-center transition-colors">
+                                    <Icon icon="ph:steps-bold" class="text-lg" />
+                                </div>
+                                <div class="flex-1">
+                                    <div
+                                        class="text-xs font-black text-navy group-hover:text-primary transition-colors">
+                                        Field / 3D Draw</div>
+                                    <div class="text-[10px] text-gray-400 leading-tight mt-0.5">Lompat +2 target untuk
+                                        jarak
+                                        aman</div>
+                                </div>
+                            </button>
+                        </div>
+                    </transition>
+                </div>
             </div>
         </div>
 
@@ -37,7 +87,7 @@
                     <div v-if="unassignedArchersCount === 0"
                         class="flex-1 flex flex-col items-center justify-center text-center p-8 opacity-30">
                         <Icon icon="ph:check-circle-bold" class="text-4xl mb-2" />
-                        <p class="text-[10px] font-bold">Semua sudah terbagi</p>
+                        <div class="text-[10px] font-bold">Semua sudah terbagi</div>
                     </div>
 
                     <div v-else class="flex flex-col gap-0 max-h-[700px] overflow-y-auto no-scrollbar pb-10">
@@ -61,10 +111,10 @@
                                         class="w-full h-full object-cover">
                                 </div>
                                 <div class="flex-1 min-w-0 pointer-events-none">
-                                    <p class="text-[11px] font-black text-navy truncate">{{ archer.name }}</p>
-                                    <p class="text-[9px] text-gray-400 font-bold truncate uppercase tracking-tighter">
+                                    <div class="text-[11px] font-black text-navy truncate">{{ archer.name }}</div>
+                                    <div class="text-[9px] text-gray-400 font-bold truncate uppercase tracking-tighter">
                                         {{ archer.club || 'Independen' }}
-                                    </p>
+                                    </div>
                                 </div>
                                 <Icon icon="ph:dots-six-vertical-bold"
                                     class="text-gray-300 group-hover:text-primary pointer-events-none" />
@@ -100,9 +150,9 @@
                                 target.assignedCount === target.availableLetters.length ? 'bg-green-100 text-green-700' :
                                     target.assignedCount === 0 ? 'bg-gray-100 text-gray-400' : 'bg-blue-100 text-blue-700'
                             ]">
-                                {{ target.assignedCount === target.availableLetters.length ? 'PENUH' :
-                                    target.assignedCount === 0 ? 'KOSONG' : `${target.availableLetters.length -
-                                        target.assignedCount} Slot Tersedia` }}
+                                {{ target.assignedCount === target.availableLetters.length ? 'Penuh' :
+                                    target.assignedCount === 0 ? 'Kosong' : `${target.availableLetters.length -
+                                        target.assignedCount} Slot tersedia` }}
                             </span>
                         </div>
 
@@ -125,12 +175,12 @@
                                             :alt="target.slots[pos].name" />
                                     </div>
                                     <div class="flex-1 min-w-0 pointer-events-none">
-                                        <p class="text-[11px] font-black text-navy truncate leading-tight">{{
-                                            target.slots[pos].name }}</p>
-                                        <p
+                                        <div class="text-[11px] font-black text-navy truncate leading-tight">{{
+                                            target.slots[pos].name }}</div>
+                                        <div
                                             class="text-[9px] text-gray-500 truncate font-bold uppercase tracking-tighter">
                                             {{
-                                                target.slots[pos].club || 'Independen' }}</p>
+                                                target.slots[pos].club || 'Independen' }}</div>
                                     </div>
                                     <BaseButton variant="white" size="sm" icon="ph:x-bold"
                                         class="!size-6 !p-0 !rounded-lg text-gray-400 hover:!text-red-500 hover:!bg-red-50 opacity-0 group-hover/slot-filled:opacity-100"
@@ -147,12 +197,12 @@
                                             {{ pos }}
                                         </span>
                                         <div class="flex-1 min-w-0">
-                                            <p class="text-[11px] font-black text-gray-500 truncate leading-tight">
+                                            <div class="text-[11px] font-black text-gray-500 truncate leading-tight">
                                                 {{ target.otherSlots[pos].archer_name }}
-                                            </p>
-                                            <p class="text-[9px] text-gray-400 font-bold uppercase tracking-tighter">
+                                            </div>
+                                            <div class="text-[9px] text-gray-400 font-bold uppercase tracking-tighter">
                                                 Lain Kategori
-                                            </p>
+                                            </div>
                                         </div>
                                         <div class="size-6 flex items-center justify-center">
                                             <Icon icon="ph:lock-key-bold" class="text-gray-300" />
@@ -168,7 +218,8 @@
                                             {{ pos }}
                                         </span>
                                         <div class="flex-1 min-w-0">
-                                            <p class="text-xs font-bold text-gray-300">Pindahkan Kemari...</p>
+                                            <div class="text-xs font-bold text-gray-300">Pindahkan
+                                                Kemari...</div>
                                         </div>
                                         <Icon icon="ph:plus-circle-bold"
                                             class="text-gray-200 text-lg group-hover/slot:text-primary transition-colors" />
@@ -199,14 +250,14 @@
                                                         class="w-full h-full object-cover" />
                                                 </div>
                                                 <div class="flex-1 min-w-0">
-                                                    <p
+                                                    <div
                                                         class="text-xs font-black text-navy truncate leading-tight mb-0.5">
                                                         {{ archer.name }}
-                                                    </p>
-                                                    <p
+                                                    </div>
+                                                    <div
                                                         class="text-[9px] text-gray-500 font-bold truncate uppercase tracking-tighter">
                                                         {{
-                                                            archer.club || 'Independen' }}</p>
+                                                            archer.club || 'Independen' }}</div>
                                                 </div>
                                             </BaseButton>
                                         </div>
@@ -222,9 +273,21 @@
     <AppDialog v-model:show="showResetDialog" type="danger" title="Atur Ulang Penempatan"
         message="Apakah Anda yakin ingin menghapus semua penempatan target untuk kategori ini? Tindakan ini tidak dapat dibatalkan."
         confirmText="Ya, Atur Ulang" cancelText="Batal" icon="ph:trash-bold" @confirm="confirmReset" />
-    <AppDialog v-model:show="showAutoAssignDialog" type="warning" title="Penempatan Otomatis"
-        message="Penempatan otomatis akan menghapus semua penempatan yang ada untuk kategori ini, lalu mengacak ulang semua pemanah ke target secara otomatis. Lanjutkan?"
-        confirmText="Ya, Acak & Tempatkan" cancelText="Batal" icon="fa7-solid:random" @confirm="confirmAutoAssign" />
+
+    <AppDialog v-model:show="showAutoAssignDialog" type="warning" title="Konfirmasi Penempatan"
+        confirmText="Ya, Acak & Tempatkan" cancelText="Batal" icon="fa7-solid:random" @confirm="confirmAutoAssign">
+        <template #default>
+            <div class="space-y-4 text-left">
+                <div class="text-sm text-gray-500">
+                    Penempatan otomatis akan menghapus semua penempatan yang ada untuk kategori
+                    ini, lalu menempatkan ulang semua pemanah secara otomatis menggunakan mode:
+                    <span class="font-black text-navy block mt-1 uppercase">{{ drawType === 'standard' ? 'Standard Draw'
+                        :
+                        'Field / 3D Draw' }}</span>
+                </div>
+            </div>
+        </template>
+    </AppDialog>
 </template>
 
 <script setup>
@@ -257,6 +320,23 @@ const filterText = ref('')
 const openDropdown = ref(null)
 const showResetDialog = ref(false)
 const showAutoAssignDialog = ref(false)
+const showAutoAssignMenu = ref(false)
+const drawType = ref('standard')
+
+// Click outside directive implementation
+const vClickOutside = {
+    mounted(el, binding) {
+        el.clickOutsideEvent = (event) => {
+            if (!(el === event.target || el.contains(event.target))) {
+                binding.value(event)
+            }
+        }
+        document.addEventListener('mousedown', el.clickOutsideEvent)
+    },
+    unmounted(el) {
+        document.removeEventListener('mousedown', el.clickOutsideEvent)
+    }
+}
 
 // Drag and Drop States
 const draggedArcher = ref(null) // { archer, sourceTarget, sourcePos }
@@ -516,7 +596,8 @@ const autoAssignTargets = async () => {
         isAssigning.value = true
         await post(`/qualification/sessions/${props.sessionData.uuid}/auto-assign`, {
             category_id: props.selectedCategory,
-            archers_per_target: props.sessionData.archers_per_target || 4
+            archers_per_target: props.sessionData.archers_per_target || 4,
+            draw_type: drawType.value
         })
 
         toast.success('Auto-assignment berhasil')
@@ -551,7 +632,14 @@ const confirmReset = async () => {
         toast.error('Gagal mengatur ulang penempatan')
     } finally {
         isReseting.value = false
+        showResetDialog.value = false
     }
+}
+
+const handleAutoAssignSelection = (type) => {
+    drawType.value = type
+    showAutoAssignMenu.value = false
+    showAutoAssignDialog.value = true
 }
 </script>
 

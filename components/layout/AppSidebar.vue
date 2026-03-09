@@ -43,14 +43,13 @@
                 <div v-if="openGroups.includes(section.label)"
                   class="overflow-hidden mt-0.5 ml-3 flex flex-col gap-0.5">
                   <NuxtLink v-for="item in section.children" :key="item.path" :to="item.isLocked ? '#' : item.path"
-                    class="flex items-center gap-3 pl-5 pr-3 py-2 rounded-xl transition-all relative" :class="[
+                    class="flex items-center gap-3 pl-8 pr-3 py-2 rounded-xl transition-all relative" :class="[
                       isActive(item.path) ? 'bg-primary/15 text-primary' : 'text-gray-400 hover:bg-white/5 hover:text-white',
                       item.isLocked ? 'opacity-50 cursor-not-allowed' : ''
                     ]">
                     <!-- Active indicator bar -->
                     <div v-if="isActive(item.path)"
                       class="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-4 bg-primary rounded-r-full"></div>
-                    <Icon :icon="item.icon" class="text-lg shrink-0" />
                     <span v-if="!isSidebarCollapsed" class="text-sm font-bold whitespace-nowrap">{{ item.label }}</span>
                     <Icon v-if="item.isLocked && !isSidebarCollapsed" icon="ph:lock-key-bold"
                       class="ml-auto text-xs opacity-60" />
@@ -231,6 +230,7 @@ const eventLinks = computed(() => {
     { label: 'Target', icon: 'ph:target', path: `${prefix}/events/${eventId.value}/targets` },
     { label: 'Kualifikasi', icon: 'fluent:table-freeze-column-20-regular', path: `${prefix}/events/${eventId.value}/qualification` },
     { label: 'Eliminasi', icon: 'mdi:bracket', path: `${prefix}/events/${eventId.value}/elimination` },
+    { label: 'Printout', icon: 'ph:printer-bold', path: `${prefix}/events/${eventId.value}/printout` },
     { label: 'Scan QR', icon: 'ph:qr-code', path: '/scan/qr' },
   )
 
@@ -263,6 +263,7 @@ const navSections = computed(() => {
   if (role === 'archer') {
     return [
       { label: 'Event Saya', icon: 'ph:trophy', path: '/dashboard/archer/events' },
+      { label: 'Pembayaran', icon: 'ph:credit-card', path: '/dashboard/archer/payments' },
       { label: 'Keranjang', icon: 'ph:shopping-cart', path: '/dashboard/archer/cart' },
       { label: 'Profil Pemanah', icon: 'ph:user-circle', path: '/dashboard/archer/profile' },
       { label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/archer/settings' },

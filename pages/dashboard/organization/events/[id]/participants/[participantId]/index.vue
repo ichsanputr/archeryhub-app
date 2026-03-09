@@ -28,9 +28,9 @@
                             <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2 truncate">
                                 Detail Peserta
                             </h1>
-                            <p class="text-slate-300 text-sm max-w-2xl">
+                            <div class="text-slate-300 text-sm max-w-2xl">
                                 Lihat informasi lengkap dan status pendaftaran peserta
-                            </p>
+                            </div>
                         </div>
                     </div>
 
@@ -60,7 +60,7 @@
                 <div
                     class="inline-block h-8 w-8 border-4 border-primary border-t-transparent animate-spin rounded-full">
                 </div>
-                <p class="text-gray-500 mt-4 font-medium">Memuat data peserta...</p>
+                <div class="text-gray-500 mt-4 font-medium">Memuat data peserta...</div>
             </div>
         </template>
 
@@ -92,12 +92,12 @@
                                         class="w-full h-full object-cover">
                                 </div>
                                 <div class="flex-1 min-w-0">
-                                    <p class="font-black text-navy text-lg">{{ participant.full_name }}</p>
+                                    <div class="font-black text-navy text-lg">{{ participant.full_name }}</div>
                                     <div class="flex flex-wrap items-center gap-3 mt-2">
-                                        <p class="text-sm font-bold text-gray-500 flex items-center gap-1.5">
+                                        <div class="text-sm font-bold text-gray-500 flex items-center gap-1.5">
                                             <Icon icon="ph:identification-card" />
                                             {{ participant.athlete_code || '-' }}
-                                        </p>
+                                        </div>
                                         <span class="text-gray-300">•</span>
                                         <span :class="getStatusClass(form.status)"
                                             class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold border">
@@ -111,11 +111,11 @@
                                                 class="text-sm" />
                                             {{ getSourceLabel(participant.registration_source) }}
                                         </span>
-                                        <span class="text-gray-300">•</span>
-                                        <p class="text-xs font-bold text-gray-500 flex items-center gap-1.5">
+                                        <div class="text-gray-300">•</div>
+                                        <div class="text-xs font-bold text-gray-500 flex items-center gap-1.5">
                                             <Icon icon="ph:calendar-check" />
                                             {{ formatDate(participant?.registration_date) }}
-                                        </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -168,10 +168,10 @@
                                         </p>
                                     </div>
                                 </div>
-                                <p class="text-[11px] text-gray-500 font-medium px-1 flex items-center gap-2">
+                                <div class="text-[11px] text-gray-500 font-medium px-1 flex items-center gap-2">
                                     <Icon icon="ph:info-bold" class="text-navy" />
                                     Pemanah dapat mengikuti lebih dari satu kategori (Multiple Selection)
-                                </p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -274,13 +274,13 @@
                                 </div>
                             </div>
 
-                            <p v-if="participant?.qr_raw"
+                            <div v-if="participant?.qr_raw"
                                 class="text-[10px] font-bold text-gray-500 max-w-[180px] leading-relaxed mb-3">
                                 Tunjukkan QR ini kepada panitia saat melakukan daftar ulang di lokasi.
-                            </p>
-                            <p v-else class="text-[10px] font-bold text-amber-600 max-w-[180px] leading-relaxed mb-3">
+                            </div>
+                            <div v-else class="text-[10px] font-bold text-amber-600 max-w-[180px] leading-relaxed mb-3">
                                 QR akan muncul setelah status pembayaran diubah ke <strong>Lunas</strong>.
-                            </p>
+                            </div>
 
                             <!-- Raw QR value copy -->
                             <button v-if="participant?.qr_raw" @click="copyQrRaw"
@@ -297,15 +297,22 @@
                             <Icon icon="ph:warning-circle" class="text-lg" />
                             Kick Participant
                         </h3>
-                        <p class="text-[10px] text-red-500/80 mb-4 leading-relaxed font-bold">
+                        <div class="text-[10px] text-red-500/80 mb-4 leading-relaxed font-bold">
                             Hapus peserta dari event ini secara permanen. Tindakan ini juga akan menghapus data target
                             dan
                             skor yang terkait.
-                        </p>
+                        </div>
                         <BaseButton variant="danger" block icon="ph:user-minus"
-                            class="h-10 text-xs shadow-lg shadow-red-200" @click="showKickDialog = true">
-                            Keluarkan Peserta
+                            class="h-10 text-xs shadow-lg shadow-red-200" :disabled="participant.in_elimination"
+                            @click="showKickDialog = true">
+                            {{ participant.in_elimination ? 'Tidak Dapat Dikeluarkan' : 'Keluarkan Peserta' }}
                         </BaseButton>
+                        <div v-if="participant.in_elimination"
+                            class="mt-2 p-2 bg-red-100 rounded-lg text-[10px] text-red-700 font-bold border border-red-200 flex items-start gap-2">
+                            <Icon icon="ph:info-bold" class="mt-0.5" />
+                            Peserta sudah terdaftar dalam babak eliminasi. Hapus bracket eliminasi terlebih dahulu untuk
+                            mengeluarkan peserta ini.
+                        </div>
                     </div>
                 </div>
             </form>
@@ -322,15 +329,17 @@
                 </template>
                 <div class="space-y-4">
                     <div class="flex flex-col items-center text-center gap-4">
-                        <div class="h-16 w-16 rounded-2xl bg-red-50 flex items-center justify-center">
-                            <Icon icon="ph:warning-circle" class="text-4xl text-red-500" />
+                        <div
+                            class="h-20 w-20 rounded-2xl bg-white border-4 border-white shadow-xl overflow-hidden shrink-0 ring-4 ring-red-50">
+                            <img :src="useImageOrDefault(participant?.avatar_url, participant?.full_name)"
+                                class="w-full h-full object-cover">
                         </div>
                         <div>
                             <h3 class="text-lg font-bold text-navy mb-2">Keluarkan Peserta?</h3>
                             <p class="text-gray-500 text-sm leading-relaxed">
                                 Apakah Anda yakin ingin mengeluarkan <span class="font-bold text-navy">{{
                                     participant?.full_name
-                                }}</span> dari event ini?
+                                    }}</span> dari event ini?
                             </p>
                             <p class="text-red-600 text-xs mt-2 font-semibold">
                                 Tindakan ini akan menghapus semua data target dan skor yang terkait dan tidak dapat
@@ -355,7 +364,7 @@
             <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 text-center">
                 <Icon icon="ph:warning-circle" class="text-5xl text-gray-300 mx-auto mb-4" />
                 <h3 class="text-lg font-bold text-navy mb-2">Peserta Tidak Ditemukan</h3>
-                <p class="text-gray-500 mb-4">Peserta yang Anda cari tidak ditemukan atau telah dihapus.</p>
+                <div class="text-gray-500 mb-4">Peserta yang Anda cari tidak ditemukan atau telah dihapus.</div>
                 <BaseButton variant="primary" :to="`/dashboard/events/${route.params.id}/participants`">
                     Kembali ke Daftar Peserta
                 </BaseButton>
@@ -386,7 +395,7 @@ useHead({
 
 const route = useRoute()
 const router = useRouter()
-const { get, put, del } = useApi()
+const { get, put, delete: del } = useApi()
 const toast = useToast()
 
 const breadcrumbItems = computed(() => [
@@ -607,7 +616,7 @@ const handleKickUser = async () => {
         router.push(`/dashboard/events/${eventId}/participants`)
     } catch (error) {
         console.error('Failed to kick participant:', error)
-        toast.error('Gagal mengeluarkan peserta')
+        toast.error(error?.data?.error || 'Gagal mengeluarkan peserta')
     } finally {
         isKicking.value = false
     }
