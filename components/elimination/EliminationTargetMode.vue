@@ -29,7 +29,7 @@
         <!-- Grid Matches -->
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             <div v-for="match in roundMatches" :key="match.id"
-                class="group bg-white rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-xl hover:shadow-navy/5 transition-all duration-500 overflow-hidden flex flex-col">
+                class="group bg-white rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-md hover:shadow-navy/5 transition-all duration-500 overflow-hidden flex flex-col">
 
                 <!-- Header: Match Info -->
                 <div class="px-6 py-5 bg-navy/[0.02] border-b border-gray-50 flex items-center justify-between">

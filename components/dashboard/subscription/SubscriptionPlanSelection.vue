@@ -38,7 +38,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div v-for="plan in plans" :key="plan.id"
                         class="bg-white p-8 rounded-[24px] border-2 transition-all duration-300 flex flex-col relative group h-full shadow-sm"
-                        :class="plan.isCurrent ? 'border-primary ring-8 ring-primary/5' : 'border-gray-100 hover:border-primary/20 hover:shadow-lg'">
+                        :class="plan.isCurrent ? 'border-primary ring-8 ring-primary/5' : 'border-gray-100 hover:border-primary/20 hover:shadow-md'">
 
                         <div v-if="plan.isCurrent"
                             class="absolute -top-3 left-6 bg-navy text-btn-inverse text-[10px] font-black px-4 py-1.5 rounded-full capitalize tracking-widest shadow-sm">

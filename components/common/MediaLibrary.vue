@@ -75,7 +75,7 @@
                                 <div v-for="file in mediaFiles" :key="file.id" @click="selectMedia(file)" role="button"
                                     tabindex="0" @keydown.enter="selectMedia(file)"
                                     @keydown.space.prevent="selectMedia(file)"
-                                    class="group relative aspect-square rounded-xl overflow-hidden border-2 transition-all hover:shadow-lg active:scale-[0.98] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary touch-manipulation min-h-0"
+                                    class="group relative aspect-square rounded-xl overflow-hidden border-2 transition-all hover:shadow-md active:scale-[0.98] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary touch-manipulation min-h-0"
                                     :class="selectedMedia?.id === file.id ? 'border-primary ring-2 ring-primary/30' : 'border-gray-200 hover:border-primary/50'">
                                     <img v-if="file.mime_type?.startsWith('image/')" :src="file.url"
                                         :alt="file.filename" class="w-full h-full object-cover" />

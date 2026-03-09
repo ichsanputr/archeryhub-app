@@ -119,7 +119,7 @@ const parsedCategories = computed(() => {
 
 <template>
   <div
-    class="group bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6 transition-all duration-300 hover:shadow-lg hover:border-yellow-200 cursor-pointer h-full flex flex-col"
+    class="group bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6 transition-all duration-300 hover:shadow-md hover:border-yellow-200 cursor-pointer h-full flex flex-col"
     @click="navigateToProblem">
     <!-- Header -->
     <div class="flex items-start justify-between mb-3 sm:mb-4">

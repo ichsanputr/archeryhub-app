@@ -71,7 +71,7 @@
 
           <!-- Category Items -->
           <div v-for="(category, index) in categories" :key="index"
-            class="card border-l-4 border-l-primary hover:shadow-lg transition-all">
+            class="card border-l-4 border-l-primary hover:shadow-md transition-all">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div class="flex items-start gap-4 flex-1">
                 <div class="bg-primary/10 p-2 rounded-lg text-primary hidden sm:block">

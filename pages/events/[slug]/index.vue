@@ -201,7 +201,7 @@
                                     class="overflow-x-auto no-scrollbar scroll-smooth pb-4 -mx-1 px-1">
                                     <div class="flex gap-6 min-w-max">
                                         <div v-for="(fee, idx) in formattedFees" :key="idx"
-                                            class="bg-white border border-gray-200 p-7 rounded-[2rem] hover:border-primary hover:shadow-lg transition-all relative w-[340px] md:w-[360px]">
+                                            class="bg-white border border-gray-200 p-7 rounded-[2rem] hover:border-primary hover:shadow-md transition-all relative w-[340px] md:w-[360px]">
                                             <div
                                                 class="text-[10px] font-black tracking-widest text-gray-400 mb-2 uppercase">
                                                 {{ fee.typeLabel }}
@@ -407,7 +407,7 @@
                                 <div v-if="tournament.thumbnail || tournament.image"
                                     class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 relative z-10">
                                     <div v-if="tournament.image && tournament.image !== '/hero-event-detail.jpeg'"
-                                        class="group relative rounded-2xl overflow-hidden aspect-video cursor-pointer shadow-sm border border-gray-100 hover:shadow-lg transition-all"
+                                        class="group relative rounded-2xl overflow-hidden aspect-video cursor-pointer shadow-sm border border-gray-100 hover:shadow-md transition-all"
                                         @click="openLightbox(tournament.image)">
                                         <img :src="tournament.image" :alt="tournament.name + ' - Banner'"
                                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -418,7 +418,7 @@
                                         </div>
                                     </div>
                                     <div v-if="tournament.thumbnail"
-                                        class="group relative rounded-2xl overflow-hidden aspect-video cursor-pointer shadow-sm border border-gray-100 hover:shadow-lg transition-all"
+                                        class="group relative rounded-2xl overflow-hidden aspect-video cursor-pointer shadow-sm border border-gray-100 hover:shadow-md transition-all"
                                         @click="openLightbox(tournament.thumbnail)">
                                         <img :src="tournament.thumbnail" :alt="tournament.name + ' - Poster'"
                                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
@@ -437,7 +437,7 @@
                                         Dokumentasi</h3>
                                     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
                                         <div v-for="(img, idx) in galleryImages" :key="idx"
-                                            class="group relative aspect-square rounded-2xl overflow-hidden cursor-pointer shadow-sm border border-gray-100 hover:shadow-lg transition-all"
+                                            class="group relative aspect-square rounded-2xl overflow-hidden cursor-pointer shadow-sm border border-gray-100 hover:shadow-md transition-all"
                                             @click="openLightbox(img.url)">
                                             <img :src="img.url" :alt="img.caption || 'Foto event'"
                                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />

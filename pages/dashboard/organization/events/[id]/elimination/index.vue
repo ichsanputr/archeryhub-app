@@ -76,7 +76,7 @@
       <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <NuxtLink v-for="bracket in brackets" :key="bracket.id"
           :to="`/dashboard/events/${eventId}/elimination/${bracket.id}`"
-          class="p-5 bg-gradient-to-br from-white to-gray-50 rounded-xl border-2 border-gray-200 hover:border-primary hover:shadow-lg transition-all text-left group">
+          class="p-5 bg-gradient-to-br from-white to-gray-50 rounded-xl border-2 border-gray-200 hover:border-primary hover:shadow-md transition-all text-left group">
 
           <!-- Header -->
           <div class="flex items-start justify-between mb-4">

@@ -48,7 +48,7 @@
 
             <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <NuxtLink v-for="org in organizations" :key="org.id" :to="`/organization/${org.slug || org.id}`"
-                    class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:border-primary/30 transition-all overflow-hidden group">
+                    class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-primary/30 transition-all overflow-hidden group">
                     <!-- Banner -->
                     <div class="h-24 bg-gradient-to-r from-navy to-blue-900 relative">
                         <img v-if="org.banner_url" :src="org.banner_url"

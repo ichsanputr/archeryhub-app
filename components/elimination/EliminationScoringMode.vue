@@ -20,7 +20,7 @@
                         :class="[
                             selectedScoringMatch?.id === match.id
                                 ? 'border-primary bg-primary/5 shadow-xl shadow-primary/10 ring-4 ring-primary/5 scale-[1.02] z-10'
-                                : 'border-gray-50 bg-white hover:border-gray-200 hover:shadow-lg hover:shadow-primary/5',
+                                : 'border-gray-50 bg-white hover:border-gray-200 hover:shadow-md hover:shadow-primary/5',
                             (match.status === 'finished' || match.winner_entry_id) ? 'opacity-80' : ''
                         ]">
 

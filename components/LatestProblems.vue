@@ -30,7 +30,7 @@
       <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-16">
         <div v-for="item in features" :key="item.title" class="group">
           <NuxtLink :to="`/problem/${item.slug}`"
-            class="block bg-white rounded-lg shadow-sm border border-gray-200 p-6 h-full transition-all duration-300 hover:border-yellow-200 hover:shadow-lg transform hover:-translate-y-1 no-underline">
+            class="block bg-white rounded-lg shadow-sm border border-gray-200 p-6 h-full transition-all duration-300 hover:border-yellow-200 hover:shadow-md transform hover:-translate-y-1 no-underline">
             <div class="mb-4">
               <h3 class="font-bold text-lg text-gray-800 mb-2 line-clamp-2 min-h-[3.5rem]">{{ item.title }}</h3>
               <div class="flex items-center gap-2 mb-3">

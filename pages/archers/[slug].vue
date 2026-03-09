@@ -189,7 +189,7 @@
 
                                     <div class="space-y-4">
                                         <div v-for="event in groupedEventHistory.slice(0, 5)" :key="event.id"
-                                            class="group bg-white border border-gray-100 p-6 rounded-2xl flex items-center justify-between hover:shadow-xl hover:shadow-navy/5 transition-all cursor-pointer"
+                                            class="group bg-white border border-gray-100 p-6 rounded-2xl flex items-center justify-between hover:shadow-md hover:shadow-navy/5 transition-all cursor-pointer"
                                             @click="router.push(`/events/${event.slug}`)">
                                             <div class="flex items-center gap-6">
                                                 <div

@@ -5,7 +5,7 @@
             <div class="p-6 border-b border-gray-100 bg-slate-50/50 flex items-center justify-between">
                 <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Invoice</span>
                 <button v-if="invoices?.length" @click="handleDownload"
-                    class="flex items-center gap-2 px-4 py-2 text-[10px] font-black uppercase tracking-widest text-navy bg-white border border-gray-200 rounded-xl hover:border-primary hover:shadow-lg transition-all group">
+                    class="flex items-center gap-2 px-4 py-2 text-[10px] font-black uppercase tracking-widest text-navy bg-white border border-gray-200 rounded-xl hover:border-primary hover:shadow-md transition-all group">
                     <Icon icon="ph:download-simple-bold" class="text-lg group-hover:text-primary transition-colors" />
                     <span>Download Report</span>
                 </button>
@@ -48,7 +48,7 @@
                                     </a>
                                     <a v-else-if="invoice.status === 'paid'"
                                         :href="`${apiBaseUrl}/payment/invoice/${invoice.reference}`" target="_blank"
-                                        class="p-2 bg-white border border-gray-100 rounded-xl text-gray-400 hover:text-navy hover:border-primary hover:shadow-lg transition-all">
+                                        class="p-2 bg-white border border-gray-100 rounded-xl text-gray-400 hover:text-navy hover:border-primary hover:shadow-md transition-all">
                                         <Icon icon="ph:file-pdf-bold" class="text-lg" />
                                     </a>
                                 </div>

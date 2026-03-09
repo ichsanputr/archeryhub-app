@@ -65,7 +65,7 @@
               </div>
               <div class="pt-2">
                 <button
-                  class="w-full md:w-auto bg-primary hover:bg-primary-hover text-navy px-8 py-3.5 rounded-xl text-sm font-bold transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 transform active:scale-95"
+                  class="w-full md:w-auto bg-primary hover:bg-primary-hover text-navy px-8 py-3.5 rounded-xl text-sm font-bold transition-all shadow-md hover:shadow-md flex items-center justify-center gap-2 transform active:scale-95"
                   type="submit" :disabled="loading">
                   <span>{{ loading ? 'Mengirim...' : 'Kirim Pesan' }}</span>
                   <Icon icon="ph:paper-plane-tilt-bold" class="text-lg" />

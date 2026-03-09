@@ -32,7 +32,7 @@
         <!-- Bank Accounts Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div v-for="account in bankAccounts" :key="account.uuid"
-                class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm relative group hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm relative group hover:shadow-md hover:-translate-y-1 transition-all duration-300">
                 <div class="flex justify-between items-start mb-6">
                     <div class="size-12 rounded-2xl bg-navy/5 flex items-center justify-center text-navy shrink-0">
                         <Icon :icon="getBankIcon(account.bank_name)" class="text-2xl" />
@@ -79,7 +79,7 @@
 
             <!-- Empty State / Add Card -->
             <button @click="openAddModal"
-                class="border-2 border-dashed border-gray-100 rounded-3xl p-6 flex flex-col items-center justify-center gap-4 hover:border-primary hover:bg-primary/5 transition-all group min-h-[280px]">
+                class="border-2 border-dotted border-gray-200 rounded-3xl p-6 flex flex-col items-center justify-center gap-4 hover:border-primary hover:bg-primary/5 transition-all group min-h-[280px]">
                 <div
                     class="size-14 rounded-full bg-gray-50 flex items-center justify-center text-gray-300 group-hover:bg-primary group-hover:text-white transition-all">
                     <Icon icon="ph:plus-bold" class="text-2xl" />
@@ -89,20 +89,6 @@
                     <p class="text-xs text-gray-400 font-medium mt-1">Gunakan rekening lain untuk pencairan</p>
                 </div>
             </button>
-        </div>
-
-        <!-- Information Box -->
-        <div class="bg-navy/5 border border-navy/10 rounded-2xl p-6 flex gap-4">
-            <div class="size-10 rounded-xl bg-navy/10 flex items-center justify-center text-navy shrink-0">
-                <Icon icon="ph:info-bold" class="text-xl" />
-            </div>
-            <div>
-                <h4 class="text-sm font-black text-navy uppercase tracking-widest mb-1">Informasi Verifikasi</h4>
-                <p class="text-xs text-navy/70 leading-relaxed font-medium">
-                    Demi keamanan, setiap penambahan atau perubahan rekening bank memerlukan waktu verifikasi manual
-                    selama 1x24 jam oleh tim ArcheryHub sebelum dapat digunakan untuk penarikan dana.
-                </p>
-            </div>
         </div>
 
         <!-- Add/Edit Modal -->

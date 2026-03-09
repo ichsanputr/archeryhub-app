@@ -2,24 +2,38 @@
     <div class="relative">
         <!-- Security Overlay -->
         <div v-if="!isVerified"
-            class="absolute inset-0 z-50 backdrop-blur-xl bg-white/30 flex items-center justify-center p-6 rounded-3xl min-h-[600px]">
+            class="absolute inset-0 z-50 backdrop-blur-md bg-white/40 flex items-center justify-center p-6 rounded-3xl min-h-[600px]">
             <div
-                class="max-w-md w-full bg-white rounded-3xl shadow-2xl border border-gray-100 p-8 text-center space-y-6">
-                <div class="size-20 bg-navy/5 rounded-full flex items-center justify-center mx-auto text-navy">
-                    <Icon icon="ph:lock-keyhole-bold" class="text-4xl" />
-                </div>
-                <div>
-                    <h2 class="text-2xl font-black text-navy tracking-tight">Verifikasi Keamanan</h2>
-                    <p class="text-sm text-gray-400 font-medium mt-1">Masukkan password akun Anda untuk mengakses
-                        halaman keuangan</p>
-                </div>
-                <div class="space-y-4">
-                    <BaseInput v-model="password" type="password" placeholder="Password Akun" icon="ph:password-bold"
-                        @keyup.enter="verifyPassword" />
-                    <BaseButton @click="verifyPassword" variant="navy" block :loading="verifying"
-                        class="h-12 font-black uppercase tracking-widest text-xs">
-                        Buka Akses
-                    </BaseButton>
+                class="max-w-md w-full bg-white rounded-[2.5rem] shadow-md border border-gray-100 p-8 sm:p-10 text-center space-y-8 relative overflow-hidden">
+                <!-- Background Decoration -->
+                <div class="absolute -top-12 -right-12 size-40 bg-primary/5 rounded-full blur-3xl"></div>
+                <div class="absolute -bottom-12 -left-12 size-40 bg-navy/5 rounded-full blur-3xl"></div>
+
+                <div class="relative space-y-6">
+                    <div
+                        class="size-24 bg-gradient-to-br from-navy to-navy-dark rounded-[2rem] flex items-center justify-center mx-auto text-white shadow-sm shadow-navy/20 relative group transition-transform hover:scale-105 duration-500">
+                        <div
+                            class="absolute inset-0 bg-primary/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity">
+                        </div>
+                        <Icon icon="ph:key-bold" class="text-4xl relative z-10" />
+                    </div>
+
+                    <div class="space-y-2">
+                        <h2 class="text-3xl font-black text-navy tracking-tight">Verifikasi Keamanan</h2>
+                        <p class="text-[13px] text-gray-400 font-medium leading-relaxed max-w-[240px] mx-auto">
+                            Masukkan password akun Anda untuk mengakses fitur keuangan yang aman
+                        </p>
+                    </div>
+
+                    <div class="space-y-4 pt-2">
+                        <BaseInput v-model="password" type="password" placeholder="Password Akun"
+                            class="!rounded-2xl border-gray-100 focus:!border-primary/30" icon="ph:lock-bold"
+                            @keyup.enter="verifyPassword" />
+                        <BaseButton @click="verifyPassword" variant="primary" block :loading="verifying"
+                            class="h-14 !rounded-2xl font-black uppercase tracking-[0.2em] text-[11px] shadow-lg shadow-primary/20">
+                            Buka Akses Keamanan
+                        </BaseButton>
+                    </div>
                 </div>
             </div>
         </div>
