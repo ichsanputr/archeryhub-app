@@ -19,7 +19,8 @@ defineOptions({
 const route = useRoute()
 
 // Force page to remount when route changes (fixes blank page on browser back / touchpad back)
-const pageKey = computed(() => route.fullPath)
+// We use path instead of fullPath to avoid unnecessary remounts when query parameters change
+const pageKey = computed(() => route.path)
 const isDashboard = computed(() => route.path.startsWith('/dashboard'))
 const showSupportChat = computed(() => !isDashboard.value)
 
