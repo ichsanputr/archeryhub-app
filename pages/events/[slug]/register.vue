@@ -216,7 +216,7 @@
                                                 'Atlet Baru' }}</h3>
                                             <p class="text-sm text-gray-500 mb-2">{{ archerProfile?.email ||
                                                 userDisplay.email
-                                                }}</p>
+                                            }}</p>
                                             <div class="flex flex-wrap gap-2">
                                                 <span v-if="archerProfile?.id"
                                                     class="text-[10px] text-navy font-bold bg-gray-100 px-2.5 py-1 rounded-full border border-gray-200  tracking-wider">
@@ -399,8 +399,8 @@
                                             :class="form.payment_type === 'online' ? 'border-navy bg-navy/5 text-navy' : 'border-gray-100 bg-white text-gray-400 hover:border-gray-200'">
                                             <span class="material-symbols-outlined text-3xl">payments</span>
                                             <div class="text-center">
-                                                <p class="text-xs font-black uppercase">Bayar Online</p>
-                                                <p class="text-[10px] opacity-70">Otomatis Terkonfirmasi</p>
+                                                <div class="text-xs font-black uppercase">Bayar Online</div>
+                                                <div class="text-[10px] opacity-70">Otomatis Terkonfirmasi</div>
                                             </div>
                                         </button>
                                         <button @click="form.payment_type = 'manual'"
@@ -408,8 +408,8 @@
                                             :class="form.payment_type === 'manual' ? 'border-navy bg-navy/5 text-navy' : 'border-gray-100 bg-white text-gray-400 hover:border-gray-200'">
                                             <span class="material-symbols-outlined text-3xl">account_balance</span>
                                             <div class="text-center">
-                                                <p class="text-xs font-black uppercase">Transfer Manual</p>
-                                                <p class="text-[10px] opacity-70">Verifikasi 1-2 Hari</p>
+                                                <div class="text-xs font-black uppercase">Transfer Manual</div>
+                                                <div class="text-[10px] opacity-70">Verifikasi 1-2 Hari</div>
                                             </div>
                                         </button>
                                     </div>
@@ -513,10 +513,10 @@
                                         <div v-else
                                             class="p-4 bg-amber-50 rounded-xl border border-amber-100 flex gap-3">
                                             <span class="material-symbols-outlined text-amber-500">warning</span>
-                                            <p class="text-xs text-amber-700 font-medium">Penyelenggara belum
+                                            <div class="text-xs text-amber-700 font-medium">Penyelenggara belum
                                                 menambahkan rekening bank untuk transfer manual. Silakan pilih metode
                                                 <strong>Bayar Online</strong>.
-                                            </p>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -1020,7 +1020,7 @@ const handleSubmit = async () => {
         const response = await post(`/events/${event.value.id}/participants`, payload)
 
         if (form.value.payment_type === 'online' && response.registration_id) {
-            router.push(`/events/${slug}/payment?registration_id=${response.registration_id}`)
+            router.push(`/events/${slug}/payment`)
             return
         }
 

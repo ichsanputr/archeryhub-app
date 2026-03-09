@@ -3,7 +3,7 @@
         <!-- Loading State -->
         <div v-if="isLoading" class="min-h-screen flex items-center justify-center">
             <div class="text-center">
-                <span class="material-symbols-outlined text-4xl text-primary animate-spin mb-4">sync</span>
+                <span class="material-symbols-outlined text-4xl text-navy animate-spin mb-4">sync</span>
                 <div class="text-gray-500">Memuat data pembayaran...</div>
             </div>
         </div>
@@ -23,31 +23,34 @@
         </div>
 
         <template v-else>
-            <!-- Hero Header (Verbatim sync from register.vue) -->
-            <div class="bg-navy relative overflow-hidden h-[240px] md:h-[320px] flex items-center">
+            <!-- Hero Header -->
+            <div class="bg-navy relative overflow-hidden h-[200px] md:h-[280px] flex items-center">
                 <div class="absolute inset-0 z-0">
-                    <img :alt="event?.name" class="w-full h-full object-cover object-center"
-                        :src="event?.banner_url || '/hero-event-detail.jpeg'" />
-                    <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
-                    <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90">
-                    </div>
+                    <img alt="Hero Background" class="w-full h-full object-cover object-center"
+                        src="/hero-event-detail.jpeg" />
+                    <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/80 to-transparent"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-navy/40 via-transparent to-transparent"></div>
                 </div>
-                <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-2 md:mt-4 w-full">
-                    <div class="flex flex-col lg:flex-row items-end justify-between gap-8 mb-6 md:mb-10">
-                        <div class="max-w-3xl">
-                            <h1
-                                class="text-2xl md:text-4xl font-black leading-tight tracking-tight mb-2 md:mb-4 font-display text-white">
-                                Pembayaran {{ event?.name }}
-                            </h1>
-                            <div class="flex flex-wrap items-center gap-4 text-white/80 text-sm md:text-base">
-                                <div class="flex items-center gap-2">
-                                    <Icon icon="ph:calendar-blank" class="text-primary" />
-                                    <span>{{ formatEventDate(event) }}</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <Icon icon="ph:map-pin" class="text-primary" />
-                                    <span>{{ event?.location || 'TBA' }}</span>
-                                </div>
+                <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mt-6 md:mt-10">
+                    <div class="max-w-3xl">
+                        <nav class="flex text-sm font-black text-white/40 mb-2 items-center gap-2">
+                            <NuxtLink :to="`/events/${event?.slug}`" class="hover:text-white transition-colors">Event
+                            </NuxtLink>
+                            <Icon icon="ph:caret-right-bold" />
+                            <span>Pembayaran</span>
+                        </nav>
+                        <h1
+                            class="text-xl md:text-3xl font-black leading-tight tracking-tight mb-4 font-display text-white uppercase-none">
+                            Pembayaran {{ event?.name }}
+                        </h1>
+                        <div class="flex flex-wrap items-center gap-6 text-white/70">
+                            <div class="flex items-center gap-2 text-xs font-bold">
+                                <Icon icon="ph:calendar-blank" class="text-white/40" />
+                                <span>{{ formatEventDate(event) }}</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-xs font-bold">
+                                <Icon icon="ph:map-pin" class="text-white/40" />
+                                <span>{{ event?.location || 'TBA' }}</span>
                             </div>
                         </div>
                     </div>
@@ -55,117 +58,135 @@
             </div>
 
             <!-- Main Content -->
-            <main class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 md:py-10 -mt-8 relative z-30">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div class="lg:col-span-2 space-y-6">
-                        <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                            <div class="p-6 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white">
+            <main class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 -mt-6 md:-mt-10 relative z-30">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+                    <!-- Left Column: Payment Options -->
+                    <div class="lg:col-span-8 space-y-6">
+
+                        <section class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+                            <div class="p-6 md:p-8 border-b border-gray-50">
                                 <h2 class="text-lg font-black text-navy flex items-center gap-3">
-                                    <div
-                                        class="h-9 w-9 rounded-xl bg-navy flex items-center justify-center text-primary shadow-sm">
-                                        <span class="material-symbols-outlined text-lg">payments</span>
-                                    </div>
-                                    Pilih Metode Pembayaran
+                                    <Icon icon="ph:credit-card-bold" class="text-gray-400" />
+                                    Pilih metode pembayaran
                                 </h2>
                             </div>
 
                             <div class="p-6 md:p-8 space-y-8">
-                                <div v-if="loadingChannels" class="flex justify-center py-10">
-                                    <div class="animate-spin material-symbols-outlined text-4xl text-primary">sync</div>
+                                <div v-if="loadingChannels"
+                                    class="flex flex-col items-center justify-center py-12 gap-3">
+                                    <div
+                                        class="animate-spin size-8 border-2 border-navy border-t-transparent rounded-full">
+                                    </div>
+                                    <p class="text-[10px] font-black text-gray-400">Memuat...</p>
                                 </div>
 
-                                <div v-else-if="channels.length === 0" class="text-center py-10">
-                                    <Icon icon="ph:warning-circle" class="text-4xl text-amber-500 mx-auto mb-3" />
-                                    <div class="text-navy font-bold">Metode pembayaran tidak tersedia</div>
-                                    <div class="text-gray-500 text-sm mt-1">Silakan hubungi penyelenggara event.</div>
+                                <div v-else-if="channels.length === 0" class="text-center py-12 bg-gray-50 rounded-2xl">
+                                    <Icon icon="ph:warning-circle-bold" class="text-4xl text-amber-500 mx-auto mb-3" />
+                                    <div class="text-navy font-black text-sm">Metode tidak tersedia</div>
                                 </div>
 
                                 <div v-else v-for="(group, name) in groupedChannels" :key="name" class="space-y-4">
-                                    <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest ml-1">{{ name
-                                        }}</h3>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="flex items-center gap-3">
+                                        <h3 class="text-[10px] font-bold text-gray-400 ml-1">{{ name }}</h3>
+                                        <div class="h-px bg-gray-50 flex-1"></div>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                                         <label v-for="channel in group" :key="channel.code"
-                                            class="relative flex items-center p-4 border-2 rounded-2xl cursor-pointer hover:border-primary hover:bg-primary/5 transition-all group"
-                                            :class="selectedChannel === channel.code ? 'border-primary bg-primary/5 shadow-sm' : 'border-gray-50 bg-gray-50/30'">
+                                            class="relative flex items-center p-4 border rounded-2xl cursor-pointer transition-all group"
+                                            :class="selectedChannel === channel.code
+                                                ? 'border-navy bg-navy/[0.02]'
+                                                : 'border-gray-100 bg-gray-50/30 hover:bg-white hover:border-gray-200'">
                                             <input type="radio" v-model="selectedChannel" :value="channel.code"
                                                 class="sr-only">
+
                                             <div class="flex items-center gap-4 w-full">
                                                 <div
-                                                    class="w-12 h-12 bg-white rounded-xl border border-gray-100 p-2 flex items-center justify-center shrink-0 shadow-sm">
+                                                    class="size-10 bg-white rounded-xl border border-gray-100 p-1.5 flex items-center justify-center shrink-0 shadow-sm">
                                                     <img :src="channel.icon_url" :alt="channel.name"
-                                                        class="max-w-full max-h-full object-contain">
+                                                        class="size-full object-contain">
                                                 </div>
-                                                <div class="flex-grow">
+                                                <div class="flex-grow min-w-0">
                                                     <div
-                                                        class="text-sm font-black text-navy group-hover:text-primary transition-colors">
+                                                        class="text-[13px] font-black text-navy truncate transition-colors">
                                                         {{ channel.name }}
                                                     </div>
-                                                    <div class="text-[10px] text-gray-500 font-medium">Biaya: Rp {{
-                                                        formatNumber(channel.total_fee) }}</div>
                                                 </div>
-                                                <div v-if="selectedChannel === channel.code" class="text-primary">
-                                                    <Icon icon="ph:check-circle-fill" class="text-2xl" />
+                                                <div class="shrink-0 size-5 rounded-full border flex items-center justify-center transition-all"
+                                                    :class="selectedChannel === channel.code ? 'border-navy bg-navy text-white' : 'border-gray-200 bg-white'">
+                                                    <Icon v-if="selectedChannel === channel.code" icon="ph:check-bold"
+                                                        class="text-[10px]" />
                                                 </div>
                                             </div>
                                         </label>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="p-6 md:p-8 pt-0">
-                                <BaseButton @click="handlePayment" :disabled="!selectedChannel || loading"
-                                    variant="primary" size="lg" block icon="lock" :loading="loading"
-                                    class="h-14 !rounded-2xl shadow-lg shadow-primary/20">
-                                    Bayar Sekarang
-                                </BaseButton>
-                            </div>
                         </section>
                     </div>
 
-                    <!-- Order Summary -->
-                    <aside class="space-y-6">
-                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 sticky top-24">
-                            <h3 class="text-lg font-black text-navy mb-4 flex items-center gap-2">
-                                <Icon icon="ph:receipt" />
-                                Ringkasan Pesanan
+                    <!-- Right Column: Order Summary -->
+                    <aside class="lg:col-span-4 space-y-6">
+                        <div
+                            class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 sticky top-24 overflow-hidden">
+                            <h3 class="text-sm font-black text-navy mb-6 flex items-center gap-2">
+                                <Icon icon="ph:receipt-bold" class="text-gray-400" />
+                                Ringkasan
                             </h3>
-                            <div class="flex gap-4 mb-6 pt-4 border-t border-gray-100">
+
+                            <div class="flex gap-4 mb-6 pt-4 border-t border-gray-50">
                                 <div
-                                    class="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-gray-100 bg-gray-50 shadow-inner">
+                                    class="size-14 rounded-xl overflow-hidden shrink-0 border border-gray-100 bg-gray-50 shadow-sm">
                                     <img :src="event?.banner_url || '/hero-event-detail.jpeg'"
-                                        class="w-full h-full object-cover">
+                                        class="size-full object-cover">
                                 </div>
                                 <div class="flex-1 min-w-0">
-                                    <div class="text-sm font-black text-navy line-clamp-2 leading-tight mb-1">{{
-                                        event?.name }}</div>
-                                    <div
-                                        class="text-[11px] text-gray-500 font-medium bg-gray-50 px-2 py-0.5 rounded-md inline-block">
-                                        {{ registration?.division_name || registration?.division || 'Semua Divisi' }} -
-                                        {{ registration?.category_name || registration?.category || 'Semua Kategori' }}
+                                    <div class="text-[13px] font-black text-navy leading-tight mb-1 line-clamp-2">
+                                        {{ event?.name }}</div>
+                                    <div class="inline-flex">
+                                        <span
+                                            class="text-[10px] font-black text-navy bg-navy/5 px-2 py-0.5 rounded whitespace-nowrap">
+                                            {{ registration?.category_name || registration?.category || 'General' }}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="space-y-3 mb-6">
-                                <div class="flex justify-between items-center text-sm">
-                                    <span class="text-gray-500 font-medium">Biaya Pendaftaran</span>
-                                    <span class="font-bold text-navy">Rp {{ formatNumber(registration?.payment_amount)
-                                        }}</span>
+                                <div class="flex justify-between items-center text-[10px] font-bold">
+                                    <span class="text-gray-400">Registrasi</span>
+                                    <span class="text-navy font-black">Rp {{ formatNumber(registration?.payment_amount)
+                                    }}</span>
                                 </div>
-                                <div v-if="selectedChannelData" class="flex justify-between items-center text-sm">
-                                    <span class="text-gray-500 font-medium">Biaya Layanan ({{ selectedChannelData.name
-                                        }})</span>
-                                    <span class="font-bold text-primary">+ Rp {{ formatNumber(transactionFee) }}</span>
+                                <div class="pt-4 border-t border-dashed border-gray-100 mt-4 flex flex-col gap-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-[11px] font-black text-navy">Total Bayar</span>
+                                        <span class="text-xl font-black text-navy tracking-tight">Rp {{
+                                            formatNumber(totalAmount) }}</span>
+                                    </div>
+                                    <p v-if="selectedChannelData" class="text-[9px] text-gray-400 font-bold italic">
+                                        *Sudah termasuk biaya admin {{ selectedChannelData.name }}
+                                    </p>
                                 </div>
-                                <div
-                                    class="pt-4 border-t-2 border-dashed border-gray-100 flex justify-between items-center">
-                                    <span class="text-base font-black text-navy uppercase tracking-wider">Total
-                                        Bayar</span>
-                                    <div class="text-right">
-                                        <div class="text-2xl font-black text-navy">Rp {{ formatNumber(totalAmount) }}
-                                        </div>
-                                        <div class="text-[10px] text-gray-400 font-medium italic mt-0.5">*Sudah termasuk
-                                            biaya admin</div>
+                            </div>
+
+                            <div class="space-y-4">
+                                <BaseButton @click="handlePayment" :disabled="!selectedChannel || loading"
+                                    variant="primary" size="lg" block :loading="loading"
+                                    class="h-12 !rounded-xl text-sm font-black shadow-sm">
+                                    Bayar sekarang
+                                </BaseButton>
+
+                                <div class="p-3 bg-gray-50 rounded-xl border border-gray-100">
+                                    <div class="flex gap-2">
+                                        <Icon icon="ph:shield-check-bold" class="text-navy/20 text-sm shrink-0" />
+                                        <p class="text-[9px] text-gray-500 font-bold leading-relaxed italic">
+                                            Transaksi aman & terenkripsi. Segera selesaikan pembayaran untuk
+                                            mengamankan
+                                            slot
+                                            Anda.
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -189,7 +210,7 @@ const route = useRoute()
 const router = useRouter()
 const { get } = useApi()
 const slug = route.params.slug
-const registrationId = route.query.registration_id
+const registrationId = route.query.registration_id || route.query.id
 const payment = usePayment()
 
 const isLoading = ref(true)
@@ -209,7 +230,7 @@ const formatNumber = (val) => {
 
 const formatEventDate = (evt) => {
     if (!evt) return 'TBA'
-    if (!evt.start_date) return 'TBA'
+    if (!evt.start_date) return evt.date || 'TBA'
 
     const start = useDateFormat(evt.start_date, 'DD MMM YYYY', { locales: 'id-ID' }).value
     if (!evt.end_date) return start
@@ -223,7 +244,7 @@ const loadData = async () => {
     isLoading.value = true
     error.value = ''
     try {
-        console.log(`[DEBUG] Loading payment page for slug: ${slug}, registration: ${registrationId}`)
+        console.log(`[DEBUG] Loading payment page for slug: ${slug}, ID: ${registrationId}`)
 
         // Fetch event details first
         const eventData = await get(`/events/${slug}`)
@@ -231,10 +252,17 @@ const loadData = async () => {
 
         // Fetch registration info
         if (registrationId) {
+            // Backend handles UUID or Archer ID (e.g. ARC-0001)
             const regData = await get(`/events/${slug}/participants/${registrationId}`)
             registration.value = regData
         } else {
-            error.value = 'Registration ID tidak ditemukan.'
+            // If No ID provided, try to fetch current user's registration for this event
+            try {
+                const regData = await get(`/events/${slug}/participants/me`)
+                registration.value = regData
+            } catch (err) {
+                error.value = 'Data registrasi tidak ditemukan. Silakan masuk melalui dashboard atau pastikan Anda sudah terdaftar.'
+            }
         }
 
         // Fetch payment channels
@@ -298,16 +326,12 @@ const transactionFee = computed(() => {
 })
 
 const handlePayment = async () => {
-    if (!selectedChannel.value || !registrationId) return
+    if (!selectedChannel.value || !registration.value?.id) return
 
     loading.value = true
     try {
-        const res = await payment.createTransaction({
-            method: selectedChannel.value,
-            event_id: event.value?.uuid || event.value?.id,
-            registration_id: registrationId,
-            type: 'registration'
-        })
+        // Use registration UUID for the transaction creation
+        const res = await payment.createParticipantPayment(registration.value.id, selectedChannel.value)
 
         if (res && res.reference) {
             router.push(`/payment/status/${res.reference}`)
@@ -320,3 +344,9 @@ const handlePayment = async () => {
     }
 }
 </script>
+
+<style scoped>
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+</style>

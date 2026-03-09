@@ -89,7 +89,7 @@
 
       <!-- Dynamic Event Navigation (Manajemen Event) -->
       <div v-if="eventId && (canManageEvents || isArcher)" class="flex flex-col gap-1"
-        :class="isEventManagePage ? '' : 'mt-4'">
+        :class="isOnEventSubPage ? '' : 'mt-4'">
         <div v-if="!isOnEventSubPage && !isEventManagePage" class="h-px bg-white/10 mb-2 mx-3"></div>
         <div v-if="!isSidebarCollapsed" class="px-3 mb-2">
           <p class="text-xs font-bold text-gray-500">Manajemen Event</p>

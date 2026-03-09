@@ -4,7 +4,7 @@
     <template v-if="isArcher">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <!-- Data Registrasi Card -->
-        <NuxtLink :to="`/dashboard/events/${eventId}/my-registration`"
+        <NuxtLink :to="`/dashboard/archer/events/${eventId}/my-registration`"
           class="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:shadow-md transition-all group overflow-hidden relative">
           <div
             class="absolute -right-4 -bottom-4 size-32 bg-amber-500/5 rounded-full blur-2xl group-hover:bg-amber-500/10 transition-colors">
@@ -21,7 +21,7 @@
         </NuxtLink>
 
         <!-- Hasil Kualifikasi Card -->
-        <NuxtLink :to="`/dashboard/events/${eventId}/my-qualification`"
+        <NuxtLink :to="`/dashboard/archer/events/${eventId}/my-qualification`"
           class="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:shadow-md transition-all group overflow-hidden relative">
           <div
             class="absolute -right-4 -bottom-4 size-32 bg-emerald-500/5 rounded-full blur-2xl group-hover:bg-emerald-500/10 transition-colors">
@@ -38,7 +38,7 @@
         </NuxtLink>
 
         <!-- Hasil Eliminasi Card -->
-        <NuxtLink :to="`/dashboard/events/${eventId}/my-elimination`"
+        <NuxtLink :to="`/dashboard/archer/events/${eventId}/my-elimination`"
           class="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:shadow-md transition-all group overflow-hidden relative">
           <div
             class="absolute -right-4 -bottom-4 size-32 bg-indigo-500/5 rounded-full blur-2xl group-hover:bg-indigo-500/10 transition-colors">

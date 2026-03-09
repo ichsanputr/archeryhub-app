@@ -146,6 +146,48 @@
                                 </div>
                             </div>
 
+                            <!-- Transaction Detail (If automated) -->
+                            <div v-if="participant.transaction"
+                                class="p-5 bg-navy/5 dark:bg-white/5 rounded-2xl border border-navy/10 dark:border-white/10 space-y-4">
+                                <p
+                                    class="text-[10px] font-black text-navy/40 dark:text-white/40 uppercase tracking-[0.2em]">
+                                    Detail Transaksi Otomatis</p>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between text-xs font-bold">
+                                        <span class="text-slate-400">Metode</span>
+                                        <span class="text-navy dark:text-white">{{
+                                            participant.transaction.payment_method }}</span>
+                                    </div>
+                                    <div class="flex justify-between text-xs font-bold">
+                                        <span class="text-slate-400">Ref</span>
+                                        <span class="text-navy dark:text-white">{{ participant.transaction.reference
+                                        }}</span>
+                                    </div>
+                                    <div v-if="participant.transaction.va_number || participant.transaction.pay_code"
+                                        class="p-3 bg-white dark:bg-slate-900 rounded-xl border border-navy/10 dark:border-white/10 flex justify-between items-center">
+                                        <div>
+                                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                                {{ participant.transaction.va_number ? 'Nomor VA' : 'Kode Bayar' }}</p>
+                                            <p class="text-lg font-black text-navy dark:text-white tracking-tight">
+                                                {{ participant.transaction.va_number || participant.transaction.pay_code
+                                                }}
+                                            </p>
+                                        </div>
+                                        <button
+                                            @click="copyText(participant.transaction.va_number || participant.transaction.pay_code)"
+                                            class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-primary transition-colors">
+                                            <Icon icon="ph:copy-bold" />
+                                        </button>
+                                    </div>
+
+                                    <BaseButton v-if="participant.transaction.status === 'pending'"
+                                        :to="participant.transaction.checkout_url" target="_blank" variant="primary"
+                                        block size="sm" class="h-10 text-[10px] font-black tracking-widest uppercase">
+                                        Bayar Sekarang
+                                    </BaseButton>
+                                </div>
+                            </div>
+
                             <div v-if="participant.payment_proof_urls && participant.payment_proof_urls.length"
                                 class="mt-4">
                                 <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Bukti
@@ -167,7 +209,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div v-else
+                            <div v-else-if="!participant.transaction"
                                 class="p-6 border-2 border-dashed border-slate-100 dark:border-slate-700 rounded-2xl text-center">
                                 <Icon icon="ph:image-square-light" class="text-4xl text-slate-200 mx-auto mb-3" />
                                 <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Belum ada bukti
@@ -231,8 +273,15 @@ const getDisplayStatus = (status) => {
     return s
 }
 
+const toast = useToast()
 const formatCurrency = (val) => {
     return new Intl.NumberFormat('id-ID').format(val)
+}
+
+const copyText = (text) => {
+    if (!text) return
+    navigator.clipboard.writeText(text)
+    toast.success('Nomor disalin ke clipboard')
 }
 
 const openImage = (url) => {

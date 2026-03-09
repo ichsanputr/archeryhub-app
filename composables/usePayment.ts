@@ -59,6 +59,24 @@ export const usePayment = () => {
     }
   }
 
+  const createParticipantPayment = async (
+    participantId: string,
+    method: string
+  ): Promise<any> => {
+    try {
+      const data = await $fetch(`${apiBaseUrl}/events/participants/${participantId}/payment`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: { method },
+        credentials: 'include'
+      })
+      return data
+    } catch (error) {
+      console.error('Failed to create participant payment:', error)
+      throw error
+    }
+  }
+
   const getPaymentStatus = async (reference: string): Promise<unknown> => {
     try {
       const data = await $fetch(`${apiBaseUrl}/payment/status/${reference}`)
@@ -83,6 +101,7 @@ export const usePayment = () => {
     getChannels,
     registerTournament,
     createTransaction,
+    createParticipantPayment,
     getPaymentStatus,
     simulateSuccess
   }

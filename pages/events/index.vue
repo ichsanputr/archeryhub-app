@@ -166,7 +166,7 @@
                             <NuxtLink v-for="tournament in filteredTournaments.slice(0, displayedLimit)"
                                 :key="tournament.slug || tournament.id"
                                 :to="`/events/${tournament.slug || tournament.id}`"
-                                class="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] hover:border-primary/50 transition-all duration-500 flex flex-col h-full">
+                                class="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:border-primary/50 transition-all duration-500 flex flex-col h-full">
                                 <div class="relative h-52 overflow-hidden bg-gray-100">
                                     <img :alt="tournament.name"
                                         class="w-full h-full object-cover transition-transform duration-700"

@@ -3,7 +3,8 @@
     <!-- Breadcrumb & Header -->
     <div class="flex flex-col gap-6">
       <nav class="flex flex-wrap gap-2 items-center">
-        <NuxtLink to="/dashboard/organization" class="text-gray-500 hover:text-primary-hover text-sm font-medium transition-colors">
+        <NuxtLink to="/dashboard/organization"
+          class="text-gray-500 hover:text-primary-hover text-sm font-medium transition-colors">
           Dashboard</NuxtLink>
         <Icon icon="ph:caret-right" class="text-gray-300 text-sm" />
         <NuxtLink to="/dashboard/organization/events"
@@ -75,8 +76,13 @@
                 :error="errors.startDate" @blur="validate('startDate', form.startDate, [rules.required()])" />
               <BaseInput v-model="form.endDate" label="Tanggal & Waktu Selesai" type="datetime-local" required
                 :error="errors.endDate" @blur="validate('endDate', form.endDate, [rules.required()])" />
-              <BaseInput v-model.number="form.entryFee" label="Biaya pendaftaran (Rp)" type="number"
-                placeholder="350000" />
+              <div class="space-y-2">
+                <label class="text-sm font-bold text-gray-700">Biaya Pendaftaran (Rp)</label>
+                <input v-model.number="form.entryFee" type="number" placeholder="350000" min="10000"
+                  class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" />
+                <p class="text-[10px] text-gray-400 font-bold italic pl-1">Minimal biaya pendaftaran adalah Rp 10.000
+                </p>
+              </div>
               <BaseInput v-model="form.registrationDeadline" label="Batas pendaftaran" type="datetime-local" />
             </div>
           </FormSection>

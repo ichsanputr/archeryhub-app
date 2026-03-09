@@ -1,6 +1,5 @@
 <template>
-    <div class="flex flex-col gap-8 pb-16">
-        <!-- Breadcrumbs & Header Actions -->
+    <div class="flex flex-col gap-8 pb-16"> <!-- Breadcrumbs & Header Actions -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
                 <nav class="flex text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 items-center gap-2">
