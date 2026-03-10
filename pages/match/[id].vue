@@ -4,30 +4,30 @@
         <!-- ── Top Bar ───────────────────────────────────────────── -->
         <header
             class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100 shadow-sm h-16 flex items-center">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <NuxtLink to="/" class="flex items-center gap-2.5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center justify-between gap-4">
+                <div class="flex items-center gap-2 sm:gap-3 min-w-0">
+                    <NuxtLink to="/" class="flex items-center gap-2.5 shrink-0">
                         <div class="w-8 h-8 bg-[#0f172a] rounded-lg flex items-center justify-center">
                             <img src="/logo.png" alt="Archeryhub.id" class="w-5 h-5 object-contain" />
                         </div>
-                        <span class="text-lg font-black tracking-tight text-[#0f172a]">Archeryhub<span
+                        <span class="text-lg font-black tracking-tight text-[#0f172a] hidden md:block">Archeryhub<span
                                 class="text-[#D9FF00]">.id</span></span>
                     </NuxtLink>
-                    <div class="flex items-center gap-2">
-                        <span class="text-gray-200 text-lg font-light select-none">/</span>
-                        <span class="text-sm font-bold text-gray-500">Detail Pertandingan</span>
+                    <div class="flex items-center gap-2 min-w-0">
+                        <span class="text-gray-200 text-lg font-light select-none hidden md:block">/</span>
+                        <span class="text-xs sm:text-sm font-bold text-gray-500 truncate">Detail Pertandingan</span>
                     </div>
                 </div>
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-2 sm:gap-3 shrink-0">
                     <div v-if="matchData"
-                        class="hidden sm:flex px-3 py-1 bg-[#D9FF00] text-[#0f172a] rounded-full text-[10px] font-black tracking-wider uppercase border border-[#0f172a]/10">
+                        class="hidden sm:flex px-2 sm:px-3 py-1 bg-[#D9FF00] text-[#0f172a] rounded-full text-[9px] sm:text-[10px] font-black tracking-wider uppercase border border-[#0f172a]/10 max-w-[120px] md:max-w-none truncate">
                         {{ formatLabel }}
                     </div>
                     <button @click="handleBack"
-                        class="p-2 hover:bg-slate-50 rounded-lg transition-colors border border-gray-100 group"
+                        class="p-1.5 sm:p-2 hover:bg-slate-50 rounded-lg transition-colors border border-gray-100 group shrink-0"
                         title="Kembali">
                         <Icon icon="ph:arrow-left-bold"
-                            class="text-lg text-gray-400 group-hover:text-[#0f172a] transition-colors" />
+                            class="text-base sm:text-lg text-gray-400 group-hover:text-[#0f172a] transition-colors" />
                     </button>
                 </div>
             </div>
@@ -158,18 +158,20 @@
                     ════════════════════════════════════════ -->
                     <div class="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-[#e2e8f0] overflow-hidden">
                         <div
-                            class="px-4 sm:px-6 py-3.5 sm:py-4 bg-slate-50 border-b border-[#e2e8f0] flex items-center justify-between">
-                            <div class="flex items-center gap-2">
-                                <Icon icon="ph:table-bold" class="text-[#0f172a] text-sm" />
+                            class="px-3 sm:px-6 py-3 sm:py-4 bg-slate-50 border-b border-[#e2e8f0] flex items-center justify-between gap-2">
+                            <div class="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                                <Icon icon="ph:table-bold" class="text-[#0f172a] text-sm shrink-0" />
                                 <h3
-                                    class="text-[11px] sm:text-xs font-black text-[#0f172a] uppercase tracking-[0.15em]">
-                                    Rincian Skor Per Seri
+                                    class="text-[10px] sm:text-xs font-black text-[#0f172a] uppercase tracking-widest sm:tracking-[0.15em] truncate">
+                                    <span class="sm:hidden">Skor Seri</span>
+                                    <span class="hidden sm:inline">Rincian Skor Per Seri</span>
                                 </h3>
                             </div>
                             <div
-                                class="flex items-center gap-1.5 text-[10px] font-bold text-[#64748b] uppercase tracking-widest">
-                                <Icon icon="ph:info-bold" />
-                                <span>{{ formatLabel }}</span>
+                                class="flex items-center gap-1 sm:gap-1.5 text-[9px] sm:text-[10px] font-bold text-[#64748b] uppercase tracking-wider sm:tracking-widest shrink-0">
+                                <Icon icon="ph:info-bold" class="shrink-0" />
+                                <span class="sm:hidden">{{ formatLabelMobile }}</span>
+                                <span class="hidden sm:inline">{{ formatLabel }}</span>
                             </div>
                         </div>
 
@@ -392,6 +394,13 @@ const formatLabel = computed(() => {
     return matchData.value.format === 'recurve_set'
         ? 'Sistem Set (Recurve)'
         : 'Akumulasi Skor (Compound)'
+})
+
+const formatLabelMobile = computed(() => {
+    if (!matchData.value) return '-'
+    return matchData.value.format === 'recurve_set'
+        ? 'Set (Recurve)'
+        : 'Akumulasi'
 })
 
 const sortedEnds = computed(() => {

@@ -22,7 +22,8 @@ const route = useRoute()
 // We use path instead of fullPath to avoid unnecessary remounts when query parameters change
 const pageKey = computed(() => route.path)
 const isDashboard = computed(() => route.path.startsWith('/dashboard'))
-const showSupportChat = computed(() => !isDashboard.value)
+const isMatchPage = computed(() => route.path.startsWith('/match'))
+const showSupportChat = computed(() => !isDashboard.value && !isMatchPage.value)
 
 // Initialize theme and auth at app level
 const { initializeTheme, removeTheme, isThemeLoading } = useTheme()
