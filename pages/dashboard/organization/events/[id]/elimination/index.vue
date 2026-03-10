@@ -27,9 +27,9 @@
               <h1 class="text-xl sm:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2 truncate">
                 Manajemen Eliminasi
               </h1>
-              <p class="text-slate-300 text-xs sm:text-sm max-w-2xl line-clamp-1 sm:line-clamp-none">
+              <div class="text-slate-300 text-xs sm:text-sm max-w-2xl line-clamp-1 sm:line-clamp-none">
                 Kelola bracket eliminasi untuk {{ eventName }}
-              </p>
+              </div>
             </div>
           </div>
 
@@ -69,8 +69,8 @@
       <div v-else-if="brackets.length === 0"
         class="text-center py-12 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
         <Icon icon="ph:brackets-curly" class="text-4xl text-gray-300 mx-auto mb-3" />
-        <p class="text-sm font-bold text-gray-600 mb-1">Belum Ada Bracket Eliminasi</p>
-        <p class="text-xs text-gray-400">Buat bracket pertama untuk memulai pertandingan eliminasi</p>
+        <div class="text-sm font-bold text-gray-600 mb-1">Belum Ada Bracket Eliminasi</div>
+        <div class="text-xs text-gray-400">Buat bracket pertama untuk memulai pertandingan eliminasi</div>
       </div>
 
       <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -149,7 +149,7 @@
         <div class="flex flex-col sm:flex-row sm:items-center w-full justify-between gap-4">
           <div>
             <h2 class="text-lg font-bold text-navy">Kategori Tanpa Bracket</h2>
-            <p class="text-sm text-gray-500 mt-1">Saran kategori yang belum memiliki bracket eliminasi</p>
+            <div class="text-sm text-gray-500 mt-1">Saran kategori yang belum memiliki bracket eliminasi</div>
           </div>
           <div class="relative w-full sm:w-72">
             <Icon icon="ph:magnifying-glass" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -183,10 +183,10 @@
                 :alt="cat.division_name" class="w-full h-full object-contain group-hover:invert transition-all" />
             </div>
             <div class="min-w-0 flex-1">
-              <p class="text-sm font-bold text-navy group-hover:text-primary transition-colors truncate">
+              <div class="text-sm font-bold text-navy group-hover:text-primary transition-colors truncate">
                 {{ getCategoryName(cat) }}
-              </p>
-              <p class="text-[10px] text-gray-500 font-medium">Klik untuk membuat bracket</p>
+              </div>
+              <div class="text-[10px] text-gray-500 font-medium">Klik untuk membuat bracket</div>
             </div>
             <Icon icon="ph:plus" class="text-gray-300 group-hover:text-primary" />
           </div>
@@ -211,7 +211,7 @@
               </div>
               <div>
                 <h3 class="text-xl font-black text-white leading-tight">{{ modalTitle }}</h3>
-                <p class="text-gray-400 text-xs mt-0.5">Konfigurasikan detail bracket eliminasi</p>
+                <div class="text-gray-400 text-xs mt-0.5">Konfigurasikan detail bracket eliminasi</div>
               </div>
             </div>
             <button @click="showCreateDialog = false; resetForm()"
@@ -251,7 +251,7 @@
             <div class="p-6 bg-gray-50/80 rounded-3xl border border-gray-100 space-y-6">
               <div class="flex items-center gap-2 mb-1">
                 <div class="h-4 w-1 bg-primary rounded-full"></div>
-                <p class="text-[10px] font-black text-navy uppercase tracking-widest">Konfigurasi Match</p>
+                <div class="text-[10px] font-black text-navy uppercase tracking-widest">Konfigurasi Match</div>
               </div>
 
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -279,7 +279,7 @@
             <div class="p-6 bg-gray-50/80 rounded-3xl border border-gray-100 space-y-6">
               <div class="flex items-center gap-2 mb-1">
                 <div class="h-4 w-1 bg-primary rounded-full"></div>
-                <p class="text-[10px] font-black text-navy uppercase tracking-widest">Waktu Pelaksanaan</p>
+                <div class="text-[10px] font-black text-navy uppercase tracking-widest">Waktu Pelaksanaan</div>
               </div>
 
               <div class="space-y-6">
@@ -339,10 +339,10 @@
           </div>
           <div class="relative z-10">
             <h4 class="text-sm font-black text-red-700 uppercase tracking-widest mb-2">Peringatan Penghapusan</h4>
-            <p class="text-xs font-bold text-red-600/80 leading-relaxed mb-4">
+            <div class="text-xs font-bold text-red-600/80 leading-relaxed mb-4">
               Anda akan menghapus bracket eliminasi ini secara permanen. Seluruh riwayat pertandingan, skor, dan kode
               scoring akan ikut terhapus.
-            </p>
+            </div>
 
             <div class="flex items-center gap-2 px-3 py-1.5 bg-red-100 rounded-xl w-fit">
               <Icon icon="ph:info-bold" class="text-red-600" />

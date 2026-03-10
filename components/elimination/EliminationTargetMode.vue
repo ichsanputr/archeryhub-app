@@ -11,8 +11,7 @@
                     ini. Gunakan Auto Assign untuk alokasi cepat.</p>
             </div>
             <BaseButton variant="primary" icon="ph:magic-wand-bold" :loading="isAutoAssigning"
-                loading-text="Memproses..." @click="$emit('auto-assign')"
-                class="hidden sm:flex shadow-xl shadow-primary/20 !rounded-2xl">
+                @click="$emit('auto-assign')" class="hidden sm:flex shadow-xl shadow-primary/20 !rounded-2xl">
                 <span class="text-[10px] font-black tracking-widest uppercase">Auto Assign</span>
             </BaseButton>
         </div>
@@ -20,8 +19,7 @@
         <!-- Mobile Auto Assign -->
         <div class="sm:hidden">
             <BaseButton variant="primary" icon="ph:magic-wand-bold" :loading="isAutoAssigning"
-                loading-text="Memproses..." @click="$emit('auto-assign')" block
-                class="shadow-xl shadow-primary/20 !rounded-2xl">
+                @click="$emit('auto-assign')" block class="shadow-xl shadow-primary/20 !rounded-2xl">
                 <span class="text-[10px] font-black tracking-widest uppercase">Auto Assign</span>
             </BaseButton>
         </div>
@@ -92,7 +90,7 @@
                                 Target</label>
                             <span v-if="match.board_code"
                                 class="text-[8px] font-black bg-navy text-primary px-1.5 py-0.5 rounded shadow-sm">{{
-                                match.board_code }}</span>
+                                    match.board_code }}</span>
                         </div>
                         <select :value="match.target_id"
                             class="w-full bg-transparent border-none focus:ring-0 text-sm font-black text-navy outline-none py-1.5 cursor-pointer"

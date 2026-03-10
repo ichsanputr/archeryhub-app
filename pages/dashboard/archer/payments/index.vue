@@ -45,16 +45,15 @@
                 class="group bg-white p-5 sm:p-6 rounded-2xl border border-slate-100 shadow-sm hover:border-primary/20 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div class="flex items-start gap-4">
                     <div
-                        class="size-10 rounded-xl bg-slate-50 flex items-center justify-center text-primary shrink-0 group-hover:bg-primary/10 transition-colors">
+                        class="size-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-500 shrink-0 group-hover:bg-navy/5 transition-colors">
                         <Icon :icon="getPaymentIcon(payment)" class="text-xl" />
                     </div>
                     <div class="min-w-0">
                         <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{{
                             formatDate(payment.created_at) }} • {{ payment.reference }}</p>
-                        <h3
-                            class="text-base font-black text-navy leading-tight mb-1 group-hover:text-primary transition-colors">
+                        <h3 class="text-base font-black text-navy leading-tight mb-1">
                             {{ payment.event_name || payment.plan_name || 'Pembayaran ArcheryHub' }}</h3>
-                        <p class="text-sm font-bold text-primary">{{ formatCurrency(payment.total_amount) }}</p>
+                        <span class="text-sm font-bold text-navy/70">{{ formatCurrency(payment.total_amount) }}</span>
                     </div>
                 </div>
 

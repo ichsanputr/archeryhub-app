@@ -23,10 +23,11 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
             <!-- Options Group 1 -->
             <div class="space-y-6">
-                <div class="bg-white rounded-3xl border border-gray-100 p-8 shadow-sm">
+                <div
+                    class="bg-white rounded-3xl border border-gray-100 p-8 shadow-sm h-full flex flex-col justify-between items-start">
                     <div class="flex items-center gap-4 mb-6">
                         <div class="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
                             <Icon icon="ph:file-pdf-bold" class="text-2xl text-navy" />
@@ -46,17 +47,14 @@
                             <Icon icon="ph:file-pdf-bold" class="text-lg" />
                             Cetak PDF
                         </button>
-                        <button @click="printList('alphabetical', true)"
-                            class="px-6 py-3 border border-gray-200 text-navy rounded-xl font-black text-xs tracking-widest hover:bg-gray-50 transition-colors">
-                            Pratinjau
-                        </button>
                     </div>
                 </div>
             </div>
 
             <!-- Options Group 2 -->
             <div class="space-y-6">
-                <div class="bg-white rounded-3xl border border-gray-100 p-8 shadow-sm">
+                <div
+                    class="bg-white rounded-3xl border border-gray-100 p-8 shadow-sm h-full flex flex-col justify-between items-start">
                     <div class="flex items-center gap-4 mb-6">
                         <div class="h-12 w-12 rounded-xl bg-yellow-400/10 flex items-center justify-center">
                             <Icon icon="ph:file-pdf-bold" class="text-2xl text-navy" />
@@ -75,10 +73,6 @@
                             class="px-6 py-3 bg-navy text-white rounded-xl font-black text-xs tracking-widest hover:bg-primary transition-colors flex items-center gap-2">
                             <Icon icon="ph:file-pdf-bold" class="text-lg" />
                             Cetak PDF
-                        </button>
-                        <button @click="printList('by-club', true)"
-                            class="px-6 py-3 border border-gray-200 text-navy rounded-xl font-black text-xs tracking-widest hover:bg-gray-50 transition-colors">
-                            Pratinjau
                         </button>
                     </div>
                 </div>

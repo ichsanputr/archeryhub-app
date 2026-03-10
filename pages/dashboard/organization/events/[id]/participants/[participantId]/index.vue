@@ -307,12 +307,6 @@
                             @click="showKickDialog = true">
                             {{ participant.in_elimination ? 'Tidak Dapat Dikeluarkan' : 'Keluarkan Peserta' }}
                         </BaseButton>
-                        <div v-if="participant.in_elimination"
-                            class="mt-2 p-2 bg-red-100 rounded-lg text-[10px] text-red-700 font-bold border border-red-200 flex items-start gap-2">
-                            <Icon icon="ph:info-bold" class="mt-0.5" />
-                            Peserta sudah terdaftar dalam babak eliminasi. Hapus bracket eliminasi terlebih dahulu untuk
-                            mengeluarkan peserta ini.
-                        </div>
                     </div>
                 </div>
             </form>
@@ -339,7 +333,7 @@
                             <p class="text-gray-500 text-sm leading-relaxed">
                                 Apakah Anda yakin ingin mengeluarkan <span class="font-bold text-navy">{{
                                     participant?.full_name
-                                }}</span> dari event ini?
+                                    }}</span> dari event ini?
                             </p>
                             <p class="text-red-600 text-xs mt-2 font-semibold">
                                 Tindakan ini akan menghapus semua data target dan skor yang terkait dan tidak dapat

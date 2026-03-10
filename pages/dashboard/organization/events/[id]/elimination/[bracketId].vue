@@ -167,16 +167,6 @@
                                 Generate Bracket
                             </BaseButton>
 
-                            <!-- Scoresheet button -->
-                            <div v-if="bracket && !(currentRoundNo && route.query.mode === 'scoring')"
-                                class="flex-shrink-0 relative">
-                                <BaseButton @click="openScoresheet()"
-                                    :icon="isDownloadingScoresheet ? 'ph:spinner' : 'ph:printer-bold'"
-                                    :disabled="isDownloadingScoresheet"
-                                    class="h-8 sm:h-9 !px-4 !bg-white/10 !text-white hover:!bg-primary hover:!text-btn-text backdrop-blur-sm !border-white/20 tracking-[0.1em] font-black uppercase text-[9px] sm:text-[10px]">
-                                    {{ isDownloadingScoresheet ? 'Membuka...' : 'Cetak Scoresheet' }}
-                                </BaseButton>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -325,7 +315,7 @@
                                         class="w-full flex items-center justify-between p-3 rounded-xl border transition-all"
                                         :class="manualWinnerId === selectedScoringMatch.entry_a_id ? 'bg-primary/20 border-primary text-primary' : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'">
                                         <span class="text-sm font-bold text-white">{{ selectedScoringMatch.entry_a_name
-                                        }}</span>
+                                            }}</span>
                                         <Icon v-if="manualWinnerId === selectedScoringMatch.entry_a_id"
                                             icon="ph:check-circle-fill" class="text-primary" />
                                     </button>
@@ -335,7 +325,7 @@
                                         class="w-full flex items-center justify-between p-3 rounded-xl border transition-all"
                                         :class="manualWinnerId === selectedScoringMatch.entry_b_id ? 'bg-primary/20 border-primary text-primary' : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'">
                                         <span class="text-sm font-bold text-white">{{ selectedScoringMatch.entry_b_name
-                                        }}</span>
+                                            }}</span>
                                         <Icon v-if="manualWinnerId === selectedScoringMatch.entry_b_id"
                                             icon="ph:check-circle-fill" class="text-primary" />
                                     </button>
