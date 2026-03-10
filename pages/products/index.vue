@@ -233,7 +233,7 @@ const products = computed(() => productResponse.value?.data || [])
 
 const filteredProducts = computed(() => {
     let filtered = products.value.filter(p => {
-        const matchesSearch = p.name?.toLowerCase().includes(searchQuery.value.toLowerCase()) || false
+        const matchesSearch = !searchQuery.value || p.name?.toLowerCase().includes(searchQuery.value.toLowerCase())
         const matchesCategory = categoryFilter.value === 'all' || p.category === categoryFilter.value
         return matchesSearch && matchesCategory
     })

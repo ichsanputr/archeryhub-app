@@ -38,25 +38,26 @@
         <!-- Seller Stats Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
             <div v-for="stat in renderedSellerStats" :key="stat.label"
-                class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm hover:shadow-sm transition-all group overflow-hidden relative">
+                class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-all group overflow-hidden relative">
                 <div
-                    class="absolute -right-4 -top-4 w-24 h-24 bg-gray-50 rounded-full group-hover:bg-primary/5 transition-colors duration-500">
+                    class="absolute -right-4 -top-4 w-24 h-24 bg-primary/5 rounded-full group-hover:bg-primary/10 transition-colors duration-500">
                 </div>
 
                 <div class="flex justify-between items-start mb-4 relative z-10">
                     <div
-                        class="p-3 rounded-2xl bg-gray-50 text-gray-400 group-hover:bg-primary group-hover:text-navy transition-all duration-300">
+                        class="p-3 rounded-2xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-navy transition-all duration-300">
                         <Icon :icon="stat.icon" class="text-2xl" />
                     </div>
                 </div>
 
                 <div class="relative z-10">
-                    <p class="text-gray-400 text-[10px] font-black  tracking-widest mb-1">{{ stat.label }}</p>
+                    <p class="text-gray-400 text-[10px] font-black tracking-widest mb-1">{{ stat.label }}</p>
                     <p class="text-navy text-3xl font-black tracking-tight tabular-nums">{{ stat.value }}</p>
                     <p class="text-gray-400 text-xs mt-2 font-medium">{{ stat.desc }}</p>
                 </div>
             </div>
         </div>
+
 
         <!-- Main Content for Seller -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -94,7 +95,7 @@
                                         <span class="font-bold text-navy text-sm">{{ order.uuid.substring(0,
                                             8).toUpperCase() }}</span>
                                         <p class="text-[10px] text-gray-400 font-medium">{{ formatDate(order.created_at)
-                                        }}</p>
+                                            }}</p>
                                     </td>
                                     <td class="px-6 py-4">
                                         <p class="font-black text-navy text-sm">Rp {{ formatPrice(order.total_amount) }}
@@ -245,25 +246,32 @@ const fetchSellerDashboardData = async () => {
     isLoadingSellerData.value = true
     try {
         const [statsRes, ordersRes, productsRes] = await Promise.all([
-            api.get('/orders/stats'),
-            api.get('/orders'),
-            api.get('/products/my')
+            api.get('/orders/stats').catch(() => null),
+            api.get('/orders').catch(() => null),
+            api.get('/products/my').catch(() => null),
         ])
 
-        sellerStatsRaw.value = statsRes.data
-        sellerRecentOrders.value = (ordersRes.data || []).slice(0, 5)
-
-        if (productsRes.data) {
-            sellerStockAlerts.value = productsRes.data.filter(p => p.stock < 5)
+        if (statsRes?.data) {
+            sellerStatsRaw.value = statsRes.data
         }
 
-        prepareChartData(ordersRes.data || [])
+        if (ordersRes?.data) {
+            sellerRecentOrders.value = (ordersRes.data || []).slice(0, 5)
+            prepareChartData(ordersRes.data || [])
+        } else {
+            prepareChartData([])
+        }
+
+        if (productsRes?.data) {
+            sellerStockAlerts.value = productsRes.data.filter(p => p.stock < 5)
+        }
     } catch (error) {
         console.error('Failed to fetch seller data:', error)
     } finally {
         isLoadingSellerData.value = false
     }
 }
+
 
 const prepareChartData = (orders) => {
     const last7Days = [...Array(7)].map((_, i) => {

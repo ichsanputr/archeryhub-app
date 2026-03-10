@@ -3,7 +3,7 @@
     <!-- Header -->
     <div>
       <h1 class="text-3xl font-black text-navy">Pengaturan Akun</h1>
-      <p class="text-text-secondary mt-1 font-medium">Kelola kredensial dan keamanan akun Anda</p>
+      <div class="text-text-secondary mt-1 font-medium">Kelola kredensial dan keamanan akun Anda</div>
     </div>
 
     <!-- Settings Nav Tabs -->
@@ -22,7 +22,7 @@
 
       <div>
         <h3 class="text-xl font-bold text-navy mb-2">Keamanan & Login</h3>
-        <p class="text-gray-500 text-sm mb-6">Kelola kredensial, email, dan metode login akun Anda</p>
+        <div class="text-gray-500 text-sm mb-6">Kelola kredensial, email, dan metode login akun Anda</div>
 
         <!-- Email Change Section -->
         <div class="mb-8">
@@ -54,15 +54,15 @@
                   Kirim OTP
                 </BaseButton>
               </div>
-              <p class="text-[10px] text-gray-400 mt-2">Kami akan mengirimkan kode verifikasi ke email baru Anda untuk
-                memastikan kepemilikan.</p>
+              <div class="text-[10px] text-gray-400 mt-2">Kami akan mengirimkan kode verifikasi ke email baru Anda untuk
+                memastikan kepemilikan.</div>
             </div>
 
             <div v-else class="space-y-4 pt-2 animate-in fade-in slide-in-from-top-2">
               <div class="p-3 bg-primary/10 border border-primary/20 rounded-xl flex items-center gap-3">
                 <Icon icon="ph:info-bold" class="text-primary" />
-                <p class="text-xs text-primary-dark font-medium">Kode OTP telah dikirim ke <strong>{{
-                  emailForm.new_email }}</strong></p>
+                <div class="text-xs text-primary-dark font-medium">Kode OTP telah dikirim ke <strong>{{
+                  emailForm.new_email }}</strong></div>
               </div>
 
               <div>
@@ -97,12 +97,12 @@
             <Icon :icon="hasPassword ? 'ph:check-circle-fill' : 'ph:warning-circle-fill'"
               :class="hasPassword ? 'text-green-500' : 'text-amber-500'" class="text-2xl" />
             <div>
-              <p class="font-bold" :class="hasPassword ? 'text-green-700' : 'text-amber-700'">
+              <div class="font-bold" :class="hasPassword ? 'text-green-700' : 'text-amber-700'">
                 {{ passwordStatusLabel }}
-              </p>
-              <p class="text-sm" :class="hasPassword ? 'text-green-600' : 'text-amber-600'">
+              </div>
+              <div class="text-sm" :class="hasPassword ? 'text-green-600' : 'text-amber-600'">
                 {{ passwordStatusDescription }}
-              </p>
+              </div>
             </div>
           </div>
         </div>
@@ -120,8 +120,8 @@
                   <Icon icon="flat-color-icons:google" class="text-xl" />
                 </div>
                 <div>
-                  <p class="font-bold text-navy">Google Login</p>
-                  <p class="text-xs text-gray-400">Hubungkan untuk login lebih cepat</p>
+                  <div class="font-bold text-navy">Google Login</div>
+                  <div class="text-xs text-gray-400">Hubungkan untuk login lebih cepat</div>
                 </div>
               </div>
               <div class="flex items-center gap-2">
@@ -142,8 +142,8 @@
                   <Icon icon="ph:envelope-bold" class="text-xl text-gray-400" />
                 </div>
                 <div>
-                  <p class="font-bold text-navy">Email & Password</p>
-                  <p class="text-xs text-gray-400">Login manual dengan password</p>
+                  <div class="font-bold text-navy">Email & Password</div>
+                  <div class="text-xs text-gray-400">Login manual dengan password</div>
                 </div>
               </div>
               <span
@@ -186,7 +186,7 @@
         Tema Dashboard
         <Icon v-if="isSyncing" icon="ph:circle-notch" class="animate-spin text-primary" />
       </h3>
-      <p class="text-gray-500 text-sm mb-6">Pilih palet warna yang sesuai dengan preferensi Anda</p>
+      <div class="text-gray-500 text-sm mb-6">Pilih palet warna yang sesuai dengan preferensi Anda</div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div v-for="(theme, key) in themes" :key="key" role="button"
@@ -222,7 +222,7 @@
                 <div class="size-3 rounded-full" :style="{ backgroundColor: theme.sidebarBg }"></div>
               </div>
             </div>
-            <p class="text-xs text-gray-400 capitalize">{{ key }} theme for professional look</p>
+            <div class="text-xs text-gray-400 capitalize">{{ key }} theme for professional look</div>
           </div>
 
           <!-- Selection Indicator -->

@@ -33,7 +33,7 @@
                     <div class="flex flex-col sm:flex-row gap-3">
                         <BaseButton variant="primary" icon="ph:plus-bold"
                             class="w-full sm:w-auto h-10 sm:h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-[10px] sm:text-xs"
-                            @click="openCreateModal">
+                            to="/dashboard/seller/products/add">
                             Tambah Produk
                         </BaseButton>
                     </div>
@@ -212,9 +212,9 @@
                             <!-- Actions -->
                             <td class="px-6 py-4 text-right">
                                 <div class="flex items-center justify-end gap-2">
-                                    <BaseButton @click="editProduct(product)" variant="white" size="sm"
-                                        icon="ph:pencil-simple"
-                                        class="h-9 w-9 p-0 text-gray-400 hover:text-primary border-slate-200" />
+                                    <BaseButton variant="white" size="sm" icon="ph:pencil-simple"
+                                        class="h-9 w-9 p-0 text-gray-400 hover:text-primary border-slate-200"
+                                        :to="`/dashboard/seller/products/${product.id}`" />
                                     <BaseButton @click="deleteProduct(product)" variant="white" size="sm"
                                         icon="ph:trash"
                                         class="h-9 w-9 p-0 text-red-500 hover:text-red-600 border-slate-200" />
@@ -236,7 +236,8 @@
                                             Tambahkan produk pertama Anda untuk mulai berjualan di marketplace.
                                         </p>
                                     </div>
-                                    <BaseButton variant="primary" icon="ph:plus-bold" @click="openCreateModal">
+                                    <BaseButton variant="primary" icon="ph:plus-bold"
+                                        to="/dashboard/seller/products/add">
                                         Tambah Produk Pertama
                                     </BaseButton>
                                 </div>
@@ -247,67 +248,14 @@
             </div>
         </div>
 
-        <!-- Create/Edit Modal -->
-        <div v-if="showCreateModal"
-            class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-navy/40 backdrop-blur-sm">
-            <div
-                class="bg-white rounded-3xl shadow-md w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col animate-in fade-in zoom-in duration-200">
-                <!-- Modal Header -->
-                <div class="p-6 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
-                    <div>
-                        <h2 class="text-xl font-extrabold text-navy tracking-tight">
-                            {{ isEditing ? 'Edit Produk' : 'Tambah Produk Baru' }}
-                        </h2>
-                        <p class="text-sm text-gray-500 font-medium mt-1">Lengkapi informasi detail produk di bawah
-                            ini.</p>
-                    </div>
-                    <BaseButton @click="showCreateModal = false" variant="white" size="sm" icon="ph:x-bold"
-                        class="h-10 w-10 p-0 rounded-xl border-none shadow-none text-gray-400 hover:text-navy" />
-                </div>
-
-                <!-- Modal Body -->
-                <div class="p-8 overflow-y-auto flex-grow space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <BaseInput v-model="productForm.name" label="Nama Produk" placeholder="Contoh: Recurve Bow"
-                            required />
-                        <BaseSelect v-model="productForm.category"
-                            :items="categoryOptions.filter(o => o.value !== 'all')" label="Kategori" required />
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <BaseInput v-model="productForm.price" type="number" label="Harga (Rp)" placeholder="0"
-                            required />
-                        <BaseInput v-model="productForm.salePrice" type="number" label="Harga Diskon (Rp) - Opsional"
-                            placeholder="0" />
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <BaseInput v-model="productForm.stock" type="number" label="Stok" placeholder="0" required />
-                        <BaseSelect v-model="productForm.status" :items="statusOptions.filter(o => o.value !== 'all')"
-                            label="Status" required />
-                    </div>
-
-                    <BaseInput v-model="productForm.image_url" label="URL Gambar Utama" placeholder="https://..." />
-
-                    <BaseTextarea v-model="productForm.description" label="Deskripsi Produk"
-                        placeholder="Jelaskan detail produk Anda..." rows="4" />
-                </div>
-
-                <!-- Modal Footer -->
-                <div class="p-6 border-t border-gray-100 bg-gray-50/50 flex items-center justify-end gap-3">
-                    <BaseButton variant="white" @click="showCreateModal = false">Batal</BaseButton>
-                    <BaseButton variant="primary" :loading="isSubmitting" @click="handleSubmit">
-                        {{ isEditing ? 'Simpan Perubahan' : 'Tambah Produk' }}
-                    </BaseButton>
-                </div>
-            </div>
-        </div>
+        <!-- removed modal: edit/add now use dedicated pages -->
     </div>
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue'
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 
 definePageMeta({
     title: 'Marketplace',
@@ -318,7 +266,8 @@ useHead({
     title: 'Manajemen Produk - ArcheryHub Dashboard'
 })
 
-const { get, post, put, delete: del } = useApi()
+const { get, delete: del } = useApi()
+const router = useRouter()
 const toast = useToast()
 
 const products = ref([])
@@ -326,22 +275,6 @@ const isLoading = ref(true)
 const searchQuery = ref('')
 const statusFilter = ref('all')
 const categoryFilter = ref('all')
-const showCreateModal = ref(false)
-const isSubmitting = ref(false)
-
-const productForm = ref({
-    name: '',
-    description: '',
-    price: 0,
-    sale_price: 0,
-    category: 'other',
-    stock: 0,
-    status: 'draft',
-    image_url: ''
-})
-
-const isEditing = ref(false)
-const currentProductId = ref(null)
 
 const fetchProducts = async () => {
     isLoading.value = true
@@ -394,72 +327,11 @@ const getStatusLabel = (status) => {
     return labels[status] || status
 }
 
-const openCreateModal = () => {
-    isEditing.value = false
-    currentProductId.value = null
-    productForm.value = {
-        name: '',
-        description: '',
-        price: 0,
-        sale_price: 0,
-        category: 'other',
-        stock: 0,
-        status: 'draft',
-        image_url: ''
-    }
-    showCreateModal.value = true
-}
-
-const editProduct = (product) => {
-    isEditing.value = true
-    currentProductId.value = product.id
-    productForm.value = {
-        name: product.name,
-        description: product.description || '',
-        price: product.price,
-        sale_price: product.salePrice || 0,
-        category: product.category,
-        stock: product.stock,
-        status: product.status,
-        image_url: product.image_url || ''
-    }
-    showCreateModal.value = true
-}
-
-const handleSubmit = async () => {
-    if (!productForm.value.name || !productForm.value.price) {
-        toast.warning('Nama dan harga harus diisi')
-        return
-    }
-
-    isSubmitting.value = true
-    try {
-        const payload = {
-            ...productForm.value,
-            price: Number(productForm.value.price),
-            sale_price: productForm.value.sale_price ? Number(productForm.value.sale_price) : null,
-            stock: Number(productForm.value.stock)
-        }
-
-        if (isEditing.value) {
-            await put(`/products/${currentProductId.value}`, payload)
-            toast.success('Produk berhasil diperbarui')
-        } else {
-            await post('/products', payload)
-            toast.success('Produk berhasil ditambahkan')
-        }
-        showCreateModal.value = false
-        fetchProducts()
-    } catch (error) {
-        toast.error('Gagal menyimpan produk')
-    } finally {
-        isSubmitting.value = false
-    }
-}
+const openCreateModal = () => router.push('/dashboard/seller/products/add')
+const editProduct = (product) => router.push(`/dashboard/seller/products/${product.id}`)
 
 const deleteProduct = async (product) => {
     if (!confirm(`Apakah Anda yakin ingin menghapus produk "${product.name}"?`)) return
-
     try {
         await del(`/products/${product.id}`)
         toast.success('Produk berhasil dihapus')

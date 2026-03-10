@@ -204,7 +204,7 @@ const orderStats = computed(() => [
     label: 'Pendapatan',
     value: `Rp ${formatPrice(sellerStatsRaw.value?.total_revenue || 0)}`,
     icon: 'ph:money',
-    colorClass: 'bg-green-50 text-green-500',
+    colorClass: 'bg-primary/10 text-primary',
     trendIcon: 'ph:trend-up',
     trendColor: 'text-green-500',
     trendText: 'Live'
@@ -213,7 +213,7 @@ const orderStats = computed(() => [
     label: 'Produk Terjual',
     value: sellerStatsRaw.value?.products_sold || 0,
     icon: 'ph:package',
-    colorClass: 'bg-amber-50 text-amber-500',
+    colorClass: 'bg-primary/10 text-primary',
     trendIcon: 'ph:trend-up',
     trendColor: 'text-green-500',
     trendText: 'Live'
@@ -222,7 +222,7 @@ const orderStats = computed(() => [
     label: 'Rating Toko',
     value: sellerStatsRaw.value?.rating || '0.0',
     icon: 'ph:star',
-    colorClass: 'bg-blue-50 text-blue-500',
+    colorClass: 'bg-primary/10 text-primary',
     trendIcon: 'ph:trend-up',
     trendColor: 'text-green-500',
     trendText: 'Live'
@@ -249,7 +249,7 @@ const filteredOrders = computed(() => {
 
 const updateStatus = async (orderId, newStatus) => {
   try {
-    await put(`/orders/status/${orderId}`, { status: newStatus })
+    await put(`/orders/${orderId}/status`, { status: newStatus })
     toast.success('Status pesanan diperbarui')
     fetchOrdersData()
   } catch (error) {

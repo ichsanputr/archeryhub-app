@@ -138,36 +138,14 @@ const activeCategory = ref('all')
 const categories = [
     { id: 'all', label: 'Semua', icon: 'ph:squares-four-bold', description: '' },
     { id: 'platform', label: 'Platform', icon: 'ph:rocket-bold', description: 'Mengenal Archeryhub.id secara mendalam' },
-    { id: 'archery', label: 'Panahan', icon: 'ph:crosshair-bold', description: 'Pengetahuan dasar dan teknis panahan' },
+    { id: 'archer', label: 'Akun Pemanah', icon: 'ph:user-bold', description: 'Panduan khusus untuk pengguna akun Pemanah' },
+    { id: 'archery', label: 'Teknis Panahan', icon: 'ph:crosshair-bold', description: 'Pengetahuan dasar dan teknis panahan' },
     { id: 'subscription', label: 'Berlangganan', icon: 'ph:crown-bold', description: 'Paket dan fitur berlangganan' },
-    { id: 'event', label: 'Event & Turnamen', icon: 'ph:trophy-bold', description: 'Panduan pengelolaan event' },
+    { id: 'event', label: 'Manajemen Event', icon: 'ph:trophy-bold', description: 'Panduan pengelolaan event' },
     { id: 'scoring', label: 'Scoring', icon: 'ph:target-bold', description: 'Sistem penilaian dan scoring' },
 ]
 
-const docs = [
-    { slug: 'apa-itu-archeryhub', title: 'Apa itu Archeryhub.id?', excerpt: 'Pengenalan menyeluruh tentang platform manajemen panahan terpadu pertama di Indonesia.', icon: 'ph:info-bold', category: 'platform', readTime: '3 menit' },
-    { slug: 'cara-daftar', title: 'Cara Mendaftar Akun', excerpt: 'Panduan langkah demi langkah untuk mendaftarkan akun baru, baik sebagai pemanah, klub, organisasi, maupun penjual.', icon: 'ph:user-plus-bold', category: 'platform', readTime: '4 menit' },
-    { slug: 'peran-pengguna', title: 'Peran Pengguna di Platform', excerpt: 'Penjelasan tentang tipe akun: Pemanah, Klub, Organisasi, dan Penjual beserta hak aksesnya masing-masing.', icon: 'ph:users-three-bold', category: 'platform', readTime: '8 menit' },
-    { slug: 'manajemen-profil', title: 'Manajemen Profil & Pengaturan', excerpt: 'Panduan lengkap mengelola profil, media, keamanan akun, dan visibilitas halaman publik.', icon: 'ph:gear-six-bold', category: 'platform', readTime: '9 menit' },
-    { slug: 'dashboard-pemanah', title: 'Dashboard Pemanah', excerpt: 'Panduan fitur utama dashboard pemanah: profil, riwayat event, prestasi, dan pengaturan akun.', icon: 'ph:user-circle-bold', category: 'platform', readTime: '7 menit' },
-    { slug: 'fitur-klub', title: 'Fitur untuk Akun Klub', excerpt: 'Dokumentasi fitur akun klub: profil, anggota, form pendaftaran, dan halaman publik klub.', icon: 'ph:users-three-bold', category: 'platform', readTime: '8 menit' },
-    { slug: 'modul-news', title: 'Modul News & Publikasi', excerpt: 'Cara kerja modul berita untuk pengumuman, publikasi hasil, dan update komunitas.', icon: 'ph:newspaper-clipping-bold', category: 'platform', readTime: '6 menit' },
-    { slug: 'jenis-busur', title: 'Jenis-Jenis Busur Panahan', excerpt: 'Mengenal Recurve, Compound, Barebow, Tradisional, dan Longbow beserta karakteristik dan penggunaannya.', icon: 'ph:crosshair-bold', category: 'archery', readTime: '6 menit' },
-    { slug: 'kategori-lomba', title: 'Kategori dan Divisi Lomba', excerpt: 'Penjelasan lengkap tentang divisi usia, jenis kelamin, dan jenis busur pada perlombaan panahan resmi.', icon: 'ph:list-numbers-bold', category: 'archery', readTime: '5 menit' },
-    { slug: 'jarak-dan-target', title: 'Jarak Tembak dan Format Target', excerpt: 'Standar jarak tembak panahan indoor/outdoor serta format target face sesuai standar WA.', icon: 'ph:ruler-bold', category: 'archery', readTime: '4 menit' },
-    { slug: 'paket-berlangganan', title: 'Paket Berlangganan Archeryhub.id', excerpt: 'Perbandingan paket Gratis, Starter, dan Pro lengkap dengan use case tiap role.', icon: 'ph:crown-bold', category: 'subscription', readTime: '7 menit' },
-    { slug: 'cara-berlangganan', title: 'Cara Berlangganan dan Pembayaran', excerpt: 'Alur pemilihan paket, checkout invoice, metode bayar, dan verifikasi status langganan.', icon: 'ph:credit-card-bold', category: 'subscription', readTime: '6 menit' },
-    { slug: 'fitur-premium', title: 'Fitur Eksklusif Paket Premium', excerpt: 'Rincian fitur premium dan dampaknya ke workflow event serta scoring.', icon: 'ph:star-bold', category: 'subscription', readTime: '6 menit' },
-    { slug: 'addon-langganan', title: 'Add-on dan Perluasan Paket', excerpt: 'Kapan perlu add-on, contoh use case, dan strategi upgrade bertahap.', icon: 'ph:plus-circle-bold', category: 'subscription', readTime: '5 menit' },
-    { slug: 'membuat-event', title: 'Membuat dan Mempublish Event', excerpt: 'Panduan merancang event dari draft, setup kategori, hingga siap tayang publik.', icon: 'ph:plus-square-bold', category: 'event', readTime: '9 menit' },
-    { slug: 'pendaftaran-peserta', title: 'Pendaftaran Peserta ke Event', excerpt: 'Panduan pendaftaran individu/klub, validasi data, dan status pembayaran peserta.', icon: 'ph:clipboard-text-bold', category: 'event', readTime: '7 menit' },
-    { slug: 'manajemen-peserta', title: 'Manajemen Peserta dan Bantalan', excerpt: 'Panduan operasional monitoring peserta dan strategi penempatan bantalan kualifikasi.', icon: 'ph:table-bold', category: 'event', readTime: '7 menit' },
-    { slug: 'pengelolaan-klub', title: 'Pengelolaan Anggota Klub', excerpt: 'Alur undang anggota, review permohonan, dan praktik baik manajemen member klub.', icon: 'ph:users-bold', category: 'event', readTime: '6 menit' },
-    { slug: 'sistem-scoring-kualifikasi', title: 'Sistem Scoring Kualifikasi', excerpt: 'Setup sesi, input skor, validasi hasil, dan pembaruan leaderboard secara real-time.', icon: 'ph:chart-bar-bold', category: 'scoring', readTime: '7 menit' },
-    { slug: 'sistem-eliminasi', title: 'Sistem Pertandingan Eliminasi', excerpt: 'Bracket eliminasi, mekanisme tie, dan additional end pada mode scoring.', icon: 'ph:git-branch-bold', category: 'scoring', readTime: '8 menit' },
-    { slug: 'mobile-app-scoring', title: 'Scoring via Aplikasi Mobile', excerpt: 'Panduan mobile scoring dari login, scan assignment, input skor, sampai sinkronisasi.', icon: 'ph:device-mobile-bold', category: 'scoring', readTime: '6 menit' },
-    { slug: 'scorekeeper', title: 'Manajemen Scorekeeper', excerpt: 'Panduan mengelola akun scorekeeper, assignment sesi, dan kontrol akses operasional.', icon: 'ph:identification-badge-bold', category: 'scoring', readTime: '5 menit' },
-]
+import { docs } from '~/data/docs'
 
 const filteredCategories = computed(() => {
     const cats = activeCategory.value === 'all' ? categories.filter(c => c.id !== 'all') : categories.filter(c => c.id === activeCategory.value)
