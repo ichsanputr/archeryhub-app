@@ -98,8 +98,7 @@
                         </div>
 
                         <!-- VS Divider -->
-                        <div
-                            class="md:col-span-3 flex flex-col items-center justify-center py-2 sm:py-4 order-first md:order-none">
+                        <div class="md:col-span-3 flex flex-col items-center justify-center py-2 sm:py-4">
                             <span
                                 class="text-[8px] sm:text-[10px] font-black text-[#64748b] uppercase tracking-[0.4em] mb-1 sm:mb-2">
                                 Babak Eliminasi
