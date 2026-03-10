@@ -5,12 +5,7 @@
             <div class="flex items-center gap-1.5" :class="headerTextStyle">
                 <Icon :icon="headerIcon" class="text-[10px]" />
                 <span class="text-[8px] font-black tracking-widest uppercase">{{ headerLabel }}</span>
-                <span v-if="match.board_code || match.target_name"
-                    class="ml-1 px-1.5 py-0.5 rounded bg-navy text-primary text-[7px] font-black uppercase">
-                    {{ match.board_code || match.target_name }}
-                </span>
             </div>
-            <span class="text-[10px] font-black text-navy/10">#{{ match.match_no }}</span>
         </div>
         <div class="archer-list">
             <div v-for="side in ['A', 'B']" :key="side" class="archer-item"
@@ -53,8 +48,8 @@ defineEmits(['select'])
 
 const headerLabel = computed(() => {
     if (props.isFinal) return 'Perebutan Juara 1 & 2'
-    if (props.isBronze) return 'Third Place'
-    return `Match`
+    if (props.isBronze) return 'Perebutan Juara 3'
+    return `Match ${props.match.match_no}`
 })
 
 const headerIcon = computed(() => {

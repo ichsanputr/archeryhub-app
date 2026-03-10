@@ -23,10 +23,7 @@
                 </div>
 
                 <div v-if="participant" class="flex items-center gap-2">
-                    <BaseButton variant="navy" icon="ph:printer-bold"
-                        class="h-11 px-6 shadow-xl shadow-navy/10 text-xs font-black uppercase tracking-widest">
-                        Cetak Invoice
-                    </BaseButton>
+                    <!-- Invoice button removed as requested -->
                 </div>
             </div>
         </div>
@@ -56,12 +53,12 @@
                             <div class="flex flex-col md:flex-row gap-8 items-center md:items-end">
                                 <div class="relative group">
                                     <div
-                                        class="size-32 rounded-[32px] border-[6px] border-white dark:border-slate-800 shadow-2xl overflow-hidden bg-slate-100">
+                                        class="size-32 rounded-[32px] border-[6px] border-white dark:border-slate-800 shadow-sm overflow-hidden bg-slate-100">
                                         <img :src="useImageOrDefault(participant.avatar_url, participant.full_name)"
                                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                                     </div>
                                     <div
-                                        class="absolute -bottom-2 -right-2 size-10 bg-primary text-navy rounded-2xl border-4 border-white dark:border-slate-800 flex items-center justify-center shadow-lg">
+                                        class="absolute -bottom-2 -right-2 size-10 bg-primary text-navy rounded-2xl border-4 border-white dark:border-slate-800 flex items-center justify-center shadow-sm">
                                         <Icon icon="ph:user-circle-fill" class="text-xl" />
                                     </div>
                                 </div>
@@ -112,10 +109,10 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div v-for="cat in participant.categories" :key="cat.id"
-                                class="bg-white dark:bg-slate-800 p-6 rounded-[32px] border border-slate-100 dark:border-slate-700 shadow-sm hover:border-primary/30 transition-all group">
+                                class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm hover:border-primary/40 transition-all group">
                                 <div class="flex justify-between items-start mb-4">
                                     <div
-                                        class="size-10 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-700 flex items-center justify-center group-hover:bg-primary group-hover:text-navy transition-colors">
+                                        class="size-10 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-700 flex items-center justify-center group-hover:bg-primary group-hover:text-navy transition-colors shadow-sm">
                                         <Icon icon="ph:target-bold" class="text-xl" />
                                     </div>
                                     <span :class="getStatusClass(cat.payment_status)"
@@ -154,131 +151,113 @@
                 <div class="space-y-8">
                     <!-- Overall Status & QR -->
                     <div
-                        class="bg-white dark:bg-slate-800 rounded-[40px] p-8 text-navy dark:text-white border border-slate-100 dark:border-slate-700 shadow-sm relative overflow-hidden">
+                        class="bg-white dark:bg-slate-800 rounded-[40px] p-6 sm:p-8 text-navy dark:text-white border border-slate-100 dark:border-slate-700 shadow-sm relative overflow-hidden">
                         <div class="absolute -top-12 -right-12 size-48 bg-primary/5 rounded-full blur-3xl"></div>
-                        <div
-                            class="absolute -bottom-12 -left-12 size-48 bg-slate-50 dark:bg-slate-900/50 rounded-full blur-3xl">
-                        </div>
 
                         <div class="relative flex flex-col items-center">
-                            <div class="w-full flex justify-between items-center mb-8">
-                                <span class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Status
-                                    Pendaftaran</span>
-                                <span :class="getStatusClass(participant.payment_status)"
-                                    class="px-2.5 py-1 rounded-xl text-[10px] font-black uppercase tracking-widest border">
-                                    {{ getDisplayStatus(participant.payment_status) }}
-                                </span>
+                            <div class="w-full flex justify-between items-center mb-6">
+                                <span class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Total
+                                    Tagihan</span>
+                                <span class="text-xl font-black text-primary">Rp {{
+                                    formatCurrency(participant.payment_amount)
+                                    }}</span>
                             </div>
 
-                            <!-- Integrated QR Viewer -->
+                            <!-- QR Code Section -->
                             <div
-                                class="relative bg-white p-6 rounded-[32px] shadow-2xl mb-8 group overflow-hidden border border-slate-100">
-                                <div v-if="participant.payment_status === 'lunas'" class="relative">
+                                class="w-full bg-slate-50 dark:bg-slate-900 rounded-3xl p-6 flex flex-col items-center mb-6 border border-slate-100 dark:border-slate-700 shadow-sm">
+                                <div v-if="participant.payment_status === 'lunas'"
+                                    class="relative p-4 bg-white rounded-2xl shadow-sm border border-slate-100">
                                     <QrcodeVue :value="participant.categories?.[0]?.qr_raw || participant.id"
-                                        :size="180" level="H" render-as="svg" background="#ffffff"
+                                        :size="160" level="H" render-as="svg" background="#ffffff"
                                         foreground="#1a2e4d" />
-                                    <div
-                                        class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-white/95 backdrop-blur-sm rounded-2xl">
-                                        <Icon icon="ph:qr-code-bold" class="text-5xl text-navy animate-pulse" />
-                                    </div>
                                 </div>
-                                <div v-else
-                                    class="size-[180px] flex flex-col items-center justify-center text-slate-300 gap-3 border-2 border-dashed border-slate-100 rounded-2xl">
-                                    <Icon icon="ph:lock-key-bold" class="text-4xl" />
-                                    <span class="text-[10px] font-black uppercase tracking-widest text-center px-4">QR
+                                <div v-else class="flex flex-col items-center justify-center text-slate-300 py-8 gap-3">
+                                    <div
+                                        class="size-16 rounded-2xl bg-white dark:bg-slate-800 flex items-center justify-center shadow-sm text-slate-400">
+                                        <Icon icon="ph:lock-key-bold" class="text-3xl" />
+                                    </div>
+                                    <span
+                                        class="text-[10px] font-black uppercase tracking-widest text-center px-4 leading-relaxed">QR
                                         Terkunci Hingga Pembayaran Lunas</span>
                                 </div>
                             </div>
 
-                            <div class="w-full space-y-4 mb-8">
-                                <div
-                                    class="flex justify-between items-center bg-slate-50 dark:bg-slate-900 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 group hover:border-primary/50 transition-colors">
-                                    <div class="flex flex-col">
-                                        <span
-                                            class="text-[9px] font-black uppercase tracking-widest text-slate-400">Total
-                                            Tagihan</span>
-                                        <span class="text-xl font-black text-navy dark:text-white">Rp {{
-                                            formatCurrency(participant.payment_amount) }}</span>
-                                    </div>
-                                    <div
-                                        class="size-10 bg-white dark:bg-slate-800 rounded-xl flex items-center justify-center shadow-sm">
-                                        <Icon icon="ph:wallet-bold" class="text-xl text-primary" />
-                                    </div>
+                            <!-- Payment Actions / Status -->
+                            <div class="w-full space-y-4">
+                                <div class="flex items-center justify-between px-1">
+                                    <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Status
+                                        Pembayaran</span>
+                                    <span :class="getStatusClass(participant.payment_status)"
+                                        class="px-2.5 py-1 rounded-xl text-[10px] font-black uppercase tracking-widest border">
+                                        {{ getDisplayStatus(participant.payment_status) }}
+                                    </span>
                                 </div>
 
-                                <!-- Payment Method Used -->
-                                <div
-                                    class="bg-slate-50 dark:bg-slate-900 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 space-y-3">
+                                <!-- Active Transaction / Methods -->
+                                <div v-if="participant.transaction"
+                                    class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-primary/20 shadow-sm space-y-4">
                                     <div class="flex justify-between items-center">
-                                        <span
-                                            class="text-[9px] font-black uppercase tracking-widest text-slate-400">Metode
-                                            Pembayaran</span>
-                                        <span
-                                            class="px-2 py-0.5 bg-primary/10 text-primary rounded-md text-[10px] font-black uppercase tracking-tight border border-primary/20">
-                                            {{ participant.transaction?.payment_method ||
-                                                participant.payment_method_manual || 'Belum Dipilih' }}
-                                        </span>
+                                        <div class="flex items-center gap-2">
+                                            <Icon icon="ph:credit-card-bold" class="text-primary" />
+                                            <span
+                                                class="text-xs font-black text-navy dark:text-white uppercase tracking-tight">Metode:
+                                                {{ participant.transaction.payment_method }}</span>
+                                        </div>
                                     </div>
-
-                                    <div v-if="participant.transaction"
-                                        class="pt-3 border-t border-slate-100 dark:border-slate-700 space-y-2">
-                                        <div class="flex justify-between text-[11px] font-bold">
-                                            <span class="text-slate-400">Referensi</span>
+                                    <div class="pt-3 border-t border-slate-100 dark:border-slate-700 space-y-3">
+                                        <div class="flex justify-between text-[10px] font-bold">
+                                            <span class="text-slate-400">No. Tagihan</span>
                                             <span class="text-navy dark:text-white font-mono">{{
                                                 participant.transaction.reference }}</span>
                                         </div>
-                                        <div v-if="participant.transaction.status === 'pending'" class="mt-4">
-                                            <BaseButton :to="participant.transaction.checkout_url" target="_blank"
-                                                variant="primary" block
-                                                class="h-11 font-black uppercase tracking-widest text-xs shadow-lg shadow-primary/20">
-                                                Bayar Sekarang
-                                                <Icon icon="ph:arrow-right-bold" class="ml-2" />
-                                            </BaseButton>
-                                        </div>
-                                    </div>
-                                    <div v-else-if="participant.payment_proof_urls?.length"
-                                        class="pt-3 border-t border-slate-100 dark:border-slate-700">
-                                        <div class="flex justify-between text-[11px] font-bold">
-                                            <span class="text-slate-400">Jenis</span>
-                                            <span class="text-navy dark:text-white">Transfer Manual (Dicek
-                                                Panitia)</span>
-                                        </div>
-                                    </div>
-                                    <div v-else-if="participant.payment_status === 'menunggu'" class="pt-4 space-y-4">
-                                        <p class="text-[10px] text-slate-400 font-bold text-center">Pilih metode untuk
-                                            melanjutkan pembayaran</p>
-                                        <div class="grid grid-cols-1 gap-2">
-                                            <BaseButton variant="primary" block @click="initiatePaymentGateway"
-                                                :loading="isProcessingPayment"
-                                                class="h-11 font-black uppercase tracking-widest text-[10px]">
-                                                Payment Gateway (Otomatis)
-                                            </BaseButton>
-                                            <BaseButton variant="white" block @click="initiateManualPayment"
-                                                class="h-11 font-black uppercase tracking-widest text-[10px] border-slate-200">
-                                                Transfer Manual
-                                            </BaseButton>
-                                        </div>
+                                        <BaseButton v-if="participant.transaction.status === 'pending'"
+                                            :to="participant.transaction.checkout_url" target="_blank" variant="primary"
+                                            block class="h-11 font-black uppercase tracking-widest text-xs shadow-sm">
+                                            Bayar Sekarang
+                                            <Icon icon="ph:arrow-right-bold" class="ml-2" />
+                                        </BaseButton>
                                     </div>
                                 </div>
-                            </div>
 
-                            <!-- Payment Proofs -->
-                            <div v-if="participant.payment_proof_urls?.length" class="w-full">
-                                <div class="flex items-center gap-2 mb-4">
-                                    <div class="h-px bg-slate-100 dark:bg-slate-700 flex-1"></div>
-                                    <span class="text-[9px] font-black uppercase tracking-widest text-slate-400">Bukti
-                                        Transfer</span>
-                                    <div class="h-px bg-slate-100 dark:bg-slate-700 flex-1"></div>
+                                <div v-else-if="participant.payment_status !== 'lunas'"
+                                    class="bg-slate-50 dark:bg-slate-900 p-5 rounded-3xl border border-slate-100 dark:border-slate-700 space-y-4 shadow-sm">
+                                    <p
+                                        class="text-[10px] text-slate-500 font-bold text-center uppercase tracking-widest">
+                                        Lanjutkan ke Pembayaran</p>
+                                    <div class="flex flex-col gap-2">
+                                        <BaseButton variant="primary" block @click="initiatePaymentGateway"
+                                            :loading="isProcessingPayment"
+                                            class="h-12 font-black uppercase tracking-widest text-xs shadow-sm">
+                                            <Icon icon="ph:lightning-bold" class="text-lg mr-2" />
+                                            Payment Gateway (Otomatis)
+                                        </BaseButton>
+                                        <BaseButton variant="white" block @click="initiateManualPayment"
+                                            class="h-12 font-black uppercase tracking-widest text-xs border-slate-200 shadow-sm">
+                                            <Icon icon="ph:bank-bold" class="text-lg mr-2" />
+                                            Transfer Manual
+                                        </BaseButton>
+                                    </div>
                                 </div>
-                                <div class="grid grid-cols-2 gap-3">
-                                    <div v-for="(url, idx) in paymentProofs" :key="idx"
-                                        class="aspect-[4/3] rounded-2xl overflow-hidden border border-slate-100 bg-slate-50 group relative cursor-pointer"
-                                        @click="openImage(url)">
-                                        <img :src="url"
-                                            class="size-full object-cover group-hover:scale-110 transition-transform" />
-                                        <div
-                                            class="absolute inset-0 bg-navy/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            <Icon icon="ph:magnifying-glass-plus-bold" class="text-xl text-white" />
+
+                                <div v-if="participant.payment_proof_urls?.length" class="space-y-4 pt-2">
+                                    <div class="flex items-center gap-2">
+                                        <div class="h-px bg-slate-100 dark:bg-slate-700 flex-1"></div>
+                                        <span
+                                            class="text-[9px] font-black uppercase tracking-widest text-slate-400">Bukti
+                                            Transfer</span>
+                                        <div class="h-px bg-slate-100 dark:bg-slate-700 flex-1"></div>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <div v-for="(url, idx) in paymentProofs" :key="idx"
+                                            class="aspect-video rounded-xl overflow-hidden border border-slate-100 bg-slate-50 group relative cursor-pointer shadow-sm"
+                                            @click="openImage(url)">
+                                            <img :src="url"
+                                                class="size-full object-cover group-hover:scale-110 transition-transform" />
+                                            <div
+                                                class="absolute inset-0 bg-navy/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                <Icon icon="ph:magnifying-glass-plus-bold" class="text-white text-xl" />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
