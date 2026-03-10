@@ -36,9 +36,9 @@
                             class="text-lg sm:text-xl font-bold text-navy mb-3 group-hover:text-primary line-clamp-2 font-display transition-colors">
                             {{ news.title }}
                         </h3>
-                        <p class="text-gray-500 mb-4 line-clamp-2 text-sm sm:text-base">
+                        <div class="text-gray-500 mb-4 line-clamp-2 text-sm sm:text-base">
                             {{ news.excerpt }}
-                        </p>
+                        </div>
                         <span
                             class="text-navy group-hover:text-primary font-bold text-xs sm:text-sm flex items-center gap-1 transition-colors">
                             Simak Selengkapnya <span class="material-symbols-outlined text-sm">arrow_right_alt</span>

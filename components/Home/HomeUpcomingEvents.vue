@@ -4,8 +4,8 @@
             <div>
                 <h2 class="text-navy text-lg sm:text-2xl font-black tracking-tight font-display">Event
                     Terbaru</h2>
-                <p class="text-text-sub text-xs sm:text-sm mt-1">Event terbaru yang bisa kamu ikuti!
-                </p>
+                <div class="text-text-sub text-xs sm:text-sm mt-1">Event terbaru yang bisa kamu ikuti!
+                </div>
             </div>
             <NuxtLink to="/events"
                 class="flex items-center gap-1 text-navy text-xs sm:text-sm font-semibold hover:text-primary transition-colors group">

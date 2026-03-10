@@ -11,9 +11,9 @@
                 </div>
                 <h3 class="text-lg sm:text-2xl font-black text-white mb-2 font-display">Gabung Jadi Pemanah
                 </h3>
-                <p class="text-white/60 text-sm mb-6">Bikin profil prestasi dan ikut event seru
+                <div class="text-white/60 text-sm mb-6">Bikin profil prestasi dan ikut event seru
                     se-Indonesia.
-                </p>
+                </div>
             </div>
             <div class="relative z-10">
                 <NuxtLink to="/auth/register?type=archer"
@@ -31,7 +31,7 @@
                     <span class="material-symbols-outlined text-xl">domain_add</span>
                 </div>
                 <h3 class="text-lg sm:text-2xl font-black text-navy mb-2 font-display">Organisasi</h3>
-                <p class="text-text-sub text-sm mb-6">Kelola organisasi kamu, buat event sebanyaknya.</p>
+                <div class="text-text-sub text-sm mb-6">Kelola organisasi kamu, buat event sebanyaknya.</div>
             </div>
             <div class="relative z-10">
                 <NuxtLink to="/auth/register?type=organization"

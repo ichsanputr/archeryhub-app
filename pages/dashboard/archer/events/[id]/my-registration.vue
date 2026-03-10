@@ -67,10 +67,6 @@
                                         class="flex flex-col md:flex-row md:items-center gap-3 mb-4 justify-center md:justify-start">
                                         <h1 class="text-4xl font-black text-navy dark:text-white tracking-tight">{{
                                             participant.full_name }}</h1>
-                                        <span
-                                            class="px-3 py-1 bg-primary/10 dark:bg-primary/20 text-primary rounded-xl text-[10px] font-black uppercase tracking-[0.2em] border border-primary/20">
-                                            #{{ participant.athlete_code || 'ARCHER' }}
-                                        </span>
                                     </div>
                                     <div
                                         class="flex flex-wrap items-center justify-center md:justify-start gap-4 text-slate-500 dark:text-slate-400 font-bold text-sm">
@@ -138,7 +134,7 @@
                                     <div class="flex flex-col text-right">
                                         <span
                                             class="text-[9px] text-slate-400 font-black uppercase tracking-widest">Biaya</span>
-                                        <span class="text-sm font-black text-primary">Rp {{
+                                        <span class="text-sm font-black">Rp {{
                                             formatCurrency(cat.payment_amount) }}</span>
                                     </div>
                                 </div>
@@ -158,9 +154,9 @@
                             <div class="w-full flex justify-between items-center mb-6">
                                 <span class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Total
                                     Tagihan</span>
-                                <span class="text-xl font-black text-primary">Rp {{
+                                <span class="text-xl font-black">Rp {{
                                     formatCurrency(participant.payment_amount)
-                                    }}</span>
+                                }}</span>
                             </div>
 
                             <!-- QR Code Section -->

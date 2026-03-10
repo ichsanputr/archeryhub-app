@@ -25,7 +25,7 @@
                                     <Icon icon="ph:shield-star-fill" class="text-lg" />
                                     <span class="text-[10px] font-extrabold uppercase tracking-widest">{{
                                         archer.club_name
-                                        }}</span>
+                                    }}</span>
                                 </div>
                             </div>
 
@@ -59,7 +59,7 @@
                                         class="text-white/60 text-[10px] font-black uppercase tracking-widest">Busur</span>
                                     <span class="font-bold uppercase tracking-widest text-sm text-primary">{{
                                         bowTypeLabel
-                                        }}</span>
+                                    }}</span>
                                 </div>
                             </div>
                         </div>
@@ -78,13 +78,13 @@
                                         class="text-sm font-black uppercase tracking-[0.4em] text-navy/30 flex items-center gap-4">
                                         Biografi <span class="h-px flex-1 bg-gray-100"></span>
                                     </h3>
-                                    <p class="text-sm md:text-lg text-navy/80 leading-relaxed font-light">
+                                    <div class="text-sm md:text-lg text-navy/80 leading-relaxed font-light">
                                         {{ archer.bio || `${archer.full_name} adalah atlet panahan berdedikasi yang
                                         berkompetisi
                                         di kategori ${bowTypeLabel || 'Recurve'}. Aktif berpartisipasi dalam berbagai
                                         kejuaraan
                                         untuk mengasah kemampuan dan meraih prestasi terbaik.` }}
-                                    </p>
+                                    </div>
                                 </div>
 
                                 <!-- Personal Data Grid -->
@@ -100,10 +100,10 @@
                                                 <Icon icon="ph:student" class="text-xl text-navy" />
                                             </div>
                                             <div>
-                                                <p
+                                                <div
                                                     class="text-[10px] font-black text-navy/30 uppercase tracking-[0.2em]">
                                                     Pendidikan
-                                                </p>
+                                                </div>
                                                 <h5 class="font-bold text-navy mt-1">{{ archer.school }}</h5>
                                             </div>
                                         </div>
@@ -114,10 +114,10 @@
                                                 <Icon icon="ph:info" class="text-xl text-navy" />
                                             </div>
                                             <div>
-                                                <p
+                                                <div
                                                     class="text-[10px] font-black text-navy/30 uppercase tracking-[0.2em]">
                                                     Informasi
-                                                </p>
+                                                </div>
                                                 <h5 class="font-bold text-navy mt-1">
                                                     {{ archer.gender === 'male' ? 'Laki-laki' : 'Perempuan' }}
                                                     <span v-if="age" class="text-navy/40 ml-1">({{ age }} Tahun)</span>
@@ -132,11 +132,11 @@
                                                     class="text-xl text-navy" />
                                             </div>
                                             <div>
-                                                <p
+                                                <div
                                                     class="text-[10px] font-black text-navy/30 uppercase tracking-[0.2em]">
                                                     Archer
                                                     ID
-                                                </p>
+                                                </div>
                                                 <h5 class="font-bold text-navy mt-1">{{ archer.id }}</h5>
                                             </div>
                                         </div>
@@ -147,12 +147,12 @@
                                                 <Icon icon="ph:map-pin" class="text-xl text-navy" />
                                             </div>
                                             <div>
-                                                <p
+                                                <div
                                                     class="text-[10px] font-black text-navy/30 uppercase tracking-[0.2em]">
                                                     Domisili /
-                                                    Alamat</p>
+                                                    Alamat</div>
                                                 <h5 class="font-bold text-navy mt-1 uppercase text-xs">{{ archer.address
-                                                    }},
+                                                }},
                                                     {{
                                                         archer.city }}</h5>
                                             </div>
@@ -198,8 +198,8 @@
                                                         formatDate(event.date, 'MMM') }}</span>
                                                     <span class="text-2xl font-black text-navy">{{
                                                         formatDate(event.date,
-                                                        'DD')
-                                                        }}</span>
+                                                            'DD')
+                                                    }}</span>
                                                 </div>
                                                 <div>
                                                     <h4
@@ -216,7 +216,7 @@
                                                 <span
                                                     class="text-[10px] font-black uppercase tracking-widest text-navy/20 mb-1">Rank</span>
                                                 <span class="text-2xl font-black text-navy italic">#{{ event.rank
-                                                    }}</span>
+                                                }}</span>
                                             </div>
                                         </div>
 
@@ -245,7 +245,8 @@
                                             <div v-for="(ach, idx) in processedAchievements.highlights" :key="idx"
                                                 class="flex items-start gap-3">
                                                 <Icon icon="ph:caret-right-bold" class="text-primary mt-1 shrink-0" />
-                                                <p class="text-sm font-bold leading-relaxed text-white/90">{{ ach }}</p>
+                                                <div class="text-sm font-bold leading-relaxed text-white/90">{{ ach }}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -260,11 +261,12 @@
                                         <template v-for="(gear, idx) in archer.equipment.split('\n')" :key="idx">
                                             <div v-if="gear.trim()"
                                                 class="p-5 border border-gray-100 rounded-2xl bg-white hover:border-primary transition-colors shadow-sm">
-                                                <p class="text-xs font-black text-navy leading-tight">{{ gear.trim() }}
-                                                </p>
-                                                <p class="text-[9px] text-navy/30 uppercase tracking-widest mt-1.5">
+                                                <div class="text-xs font-black text-navy leading-tight">{{ gear.trim()
+                                                    }}
+                                                </div>
+                                                <div class="text-[9px] text-navy/30 uppercase tracking-widest mt-1.5">
                                                     Primary
-                                                    Equipment</p>
+                                                    Equipment</div>
                                             </div>
                                         </template>
                                     </div>
@@ -286,10 +288,11 @@
                                                 <Icon icon="ph:instagram-logo-bold" class="text-xl" />
                                             </div>
                                             <div class="flex-1">
-                                                <p
+                                                <div
                                                     class="text-[10px] font-black text-navy/40 uppercase tracking-widest">
-                                                    Instagram</p>
-                                                <p class="text-xs font-bold text-navy">{{ archer.social_instagram }}</p>
+                                                    Instagram</div>
+                                                <div class="text-xs font-bold text-navy">{{ archer.social_instagram }}
+                                                </div>
                                             </div>
                                         </a>
 
@@ -302,11 +305,12 @@
                                                 <Icon icon="ph:tiktok-logo-bold" class="text-xl" />
                                             </div>
                                             <div class="flex-1">
-                                                <p
+                                                <div
                                                     class="text-[10px] font-black text-navy/40 uppercase tracking-widest">
                                                     TikTok
-                                                </p>
-                                                <p class="text-xs font-bold text-navy">{{ archer.social_tiktok }}</p>
+                                                </div>
+                                                <div class="text-xs font-bold text-navy">{{ archer.social_tiktok }}
+                                                </div>
                                             </div>
                                         </a>
 
@@ -319,10 +323,11 @@
                                                 <Icon icon="ph:whatsapp-logo-bold" class="text-xl" />
                                             </div>
                                             <div class="flex-1">
-                                                <p
+                                                <div
                                                     class="text-[10px] font-black text-navy/40 uppercase tracking-widest">
-                                                    WhatsApp</p>
-                                                <p class="text-xs font-bold text-navy">{{ archer.social_whatsapp }}</p>
+                                                    WhatsApp</div>
+                                                <div class="text-xs font-bold text-navy">{{ archer.social_whatsapp }}
+                                                </div>
                                             </div>
                                         </a>
 
@@ -335,10 +340,11 @@
                                                 <Icon icon="ph:facebook-logo-bold" class="text-xl" />
                                             </div>
                                             <div class="flex-1">
-                                                <p
+                                                <div
                                                     class="text-[10px] font-black text-navy/40 uppercase tracking-widest">
-                                                    Facebook</p>
-                                                <p class="text-xs font-bold text-navy">{{ archer.social_facebook }}</p>
+                                                    Facebook</div>
+                                                <div class="text-xs font-bold text-navy">{{ archer.social_facebook }}
+                                                </div>
                                             </div>
                                         </a>
 
@@ -351,11 +357,12 @@
                                                 <Icon icon="ph:twitter-logo-bold" class="text-xl" />
                                             </div>
                                             <div class="flex-1">
-                                                <p
+                                                <div
                                                     class="text-[10px] font-black text-navy/40 uppercase tracking-widest">
                                                     Twitter
-                                                    (X)</p>
-                                                <p class="text-xs font-bold text-navy">{{ archer.social_twitter }}</p>
+                                                    (X)</div>
+                                                <div class="text-xs font-bold text-navy">{{ archer.social_twitter }}
+                                                </div>
                                             </div>
                                         </a>
 
@@ -392,11 +399,11 @@
                                         class="w-full h-full object-cover" />
                                 </div>
                                 <div>
-                                    <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-0.5">Profil
+                                    <div class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-0.5">Profil
                                         Atlet
-                                    </p>
-                                    <p class="font-black text-[#0e1e3a] text-base">{{ archer.full_name }}</p>
-                                    <p v-if="shareMetaLine" class="text-xs text-slate-500">{{ shareMetaLine }}</p>
+                                    </div>
+                                    <div class="font-black text-[#0e1e3a] text-base">{{ archer.full_name }}</div>
+                                    <div v-if="shareMetaLine" class="text-xs text-slate-500">{{ shareMetaLine }}</div>
                                 </div>
                             </div>
 
@@ -407,7 +414,7 @@
                                         v-html="plat.iconHtml"></div>
                                     <span class="text-[9px] font-black text-slate-400 uppercase tracking-wider">{{
                                         plat.name
-                                        }}</span>
+                                    }}</span>
                                 </button>
                             </div>
 

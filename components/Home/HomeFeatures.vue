@@ -54,9 +54,9 @@
                             Semua Makin <span
                                 class="text-transparent bg-clip-text bg-gradient-to-r from-navy to-navy/40">Presisi.</span>
                         </h2>
-                        <p class="text-sm sm:text-base lg:text-lg text-text-sub leading-relaxed max-w-md">
+                        <div class="text-sm sm:text-base lg:text-lg text-text-sub leading-relaxed max-w-md">
                             Solusi digital lengkap buat semua penggiat panahan Indonesia.
-                        </p>
+                        </div>
                     </div>
 
                     <!-- Mobile: Main Feature Image with Description Overlay -->
@@ -80,9 +80,9 @@
                                     <h3 class="text-xl font-black text-white mb-2 font-display">
                                         {{ featureItems[activeFeature].title }}
                                     </h3>
-                                    <p class="text-white/80 text-[11px] leading-relaxed line-clamp-3">
+                                    <div class="text-white/80 text-[11px] leading-relaxed line-clamp-3">
                                         {{ featureItems[activeFeature].longDescription }}
-                                    </p>
+                                    </div>
                                 </div>
                             </Transition>
                         </div>
@@ -105,10 +105,10 @@
                                         :class="activeFeature === idx ? 'text-white' : 'text-navy'">
                                         {{ feature.title }}
                                     </h4>
-                                    <p v-if="activeFeature === idx"
+                                    <div v-if="activeFeature === idx"
                                         class="text-white/60 text-[10px] sm:text-xs mt-0.5 animate-fade-in line-clamp-1">
                                         {{ feature.description }}
-                                    </p>
+                                    </div>
                                 </div>
                                 <Icon icon="ph:caret-right-bold"
                                     class="text-lg sm:text-xl transition-all duration-300 flex-shrink-0"
