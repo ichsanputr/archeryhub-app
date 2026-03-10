@@ -61,7 +61,7 @@
                             <div class="flex items-center gap-3 sm:gap-4 md:gap-5">
                                 <div
                                     class="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-lg sm:rounded-xl bg-gray-100 overflow-hidden relative border border-[#e2e8f0] shrink-0">
-                                    <img :src="getAvatarUrl(participantA?.name)"
+                                    <img :src="useImageOrDefault(null, participantA?.name)"
                                         class="size-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                     <div
                                         class="absolute top-0.5 left-0.5 bg-[#0f172a] text-[#D9FF00] text-[8px] sm:text-[10px] font-bold px-1 sm:px-1.5 rounded">
@@ -118,7 +118,7 @@
                             class="md:col-span-4 bg-white p-4 sm:p-6 rounded-xl sm:rounded-2xl shadow-sm border border-gray-100 border-r-4 sm:border-r-8 border-r-[#e2e8f0] flex flex-row-reverse items-center gap-3 sm:gap-4 md:gap-5 group text-right relative overflow-hidden">
                             <div
                                 class="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-lg sm:rounded-xl bg-gray-100 overflow-hidden relative border border-[#e2e8f0] shrink-0">
-                                <img :src="getAvatarUrl(participantB?.name)"
+                                <img :src="useImageOrDefault(null, participantB?.name)"
                                     class="size-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                 <div
                                     class="absolute top-0.5 right-0.5 bg-[#0f172a] text-white text-[8px] sm:text-[10px] font-bold px-1 sm:px-1.5 rounded">
@@ -468,11 +468,7 @@ const isWinner = (side) => {
     return matchData.value.winner_entry_id === id
 }
 
-const getAvatarUrl = (name) => {
-    if (!name || name === 'TBD' || name === 'BYE')
-        return `https://ui-avatars.com/api/?name=??&background=f1f5f9&color=94a3b8`
-    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=D9FF00&color=0f172a&bold=true`
-}
+
 
 /** Arrow color by archery scoring zone */
 const getArrowClass = (score) => {

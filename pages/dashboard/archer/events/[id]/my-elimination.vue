@@ -128,12 +128,13 @@
                     <div class="relative">
                         <!-- Connecting line -->
                         <div v-if="elimMatches.length > 1"
-                            class="absolute left-6 top-12 bottom-12 w-0.5 bg-slate-100 dark:bg-slate-700 z-0" />
+                            class="absolute left-5 sm:left-6 top-12 bottom-12 w-0.5 bg-slate-100 dark:bg-slate-700 z-0 hidden sm:block" />
 
-                        <div class="space-y-4 relative z-10">
-                            <div v-for="(match, mIdx) in elimMatches" :key="match.uuid" class="flex items-start gap-5">
+                        <div class="space-y-6 relative z-10">
+                            <div v-for="(match, mIdx) in elimMatches" :key="match.uuid"
+                                class="flex flex-col sm:flex-row items-start gap-3 sm:gap-5">
                                 <!-- Round node -->
-                                <div class="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 font-black text-[10px] tracking-widest uppercase shadow-sm"
+                                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 font-black text-[9px] sm:text-[10px] tracking-widest uppercase shadow-sm"
                                     :class="match.winner_entry_uuid === myEntryUuid
                                         ? 'bg-primary text-navy'
                                         : (match.status === 'finished' ? 'bg-navy text-white' : 'bg-white border border-slate-200 text-slate-500')">
@@ -146,16 +147,16 @@
                                         ? 'border-primary/40 bg-navy/5 dark:bg-navy/20'
                                         : 'border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800'">
                                     <!-- Match header -->
-                                    <div class="px-5 py-3 border-b" :class="match.winner_entry_uuid === myEntryUuid
-                                        ? ''
-                                        : 'border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800'">
-                                        <div class="flex items-center justify-between">
+                                    <div
+                                        class="px-5 py-3 border-b border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800">
+                                        <div
+                                            class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-0">
                                             <span class="text-[10px] font-black uppercase tracking-widest"
                                                 :class="match.winner_entry_uuid === myEntryUuid ? 'text-navy dark:text-primary' : 'text-slate-400'">
                                                 Babak {{ match.round_no }} · Match #{{ match.match_no || '-' }}
                                             </span>
                                             <span class="flex items-center gap-1 text-[10px] font-black"
-                                                :class="match.winner_entry_uuid === myEntryUuid ? 'text-primary' : 'text-slate-300'">
+                                                :class="match.winner_entry_uuid === myEntryUuid ? '' : 'text-slate-300'">
                                                 <Icon
                                                     :icon="match.winner_entry_uuid === myEntryUuid ? 'ph:crown-fill' : (match.status === 'finished' ? 'ph:check-circle-bold' : 'ph:clock-bold')" />
                                                 {{ match.winner_entry_uuid === myEntryUuid ? 'MENANG' : (match.status
@@ -165,10 +166,10 @@
                                     </div>
 
                                     <!-- Archer A -->
-                                    <div class="px-5 py-4 flex items-center justify-between border-b border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800"
-                                        :class="match.winner_entry_uuid === myEntryUuid ? '!bg-transparent' : ''">
+                                    <div class="px-5 py-4 flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 bg-white gap-3 sm:gap-0"
+                                        :class="match.winner_entry_uuid === myEntryUuid ? '' : ''">
                                         <div class="flex items-center gap-3 min-w-0">
-                                            <img :src="getAvatarUrl(match.entry_a_name)"
+                                            <img :src="useImageOrDefault(null, match.entry_a_name)"
                                                 class="size-10 rounded-xl object-cover shrink-0 ring-1 ring-slate-100 dark:ring-slate-700" />
                                             <div class="min-w-0">
                                                 <span
@@ -182,17 +183,17 @@
                                         </div>
                                         <div class="flex items-center gap-2 shrink-0">
                                             <Icon v-if="match.winner_entry_uuid === match.entry_a_uuid"
-                                                icon="ph:crown-fill" class="text-primary text-sm" />
+                                                icon="ph:crown-fill" class="text-sm" />
                                             <span class="text-xl font-black tabular-nums text-navy dark:text-white">{{
                                                 match.total_score_a ?? 0 }}</span>
                                         </div>
                                     </div>
 
                                     <!-- Archer B -->
-                                    <div class="px-5 py-4 flex items-center justify-between bg-white dark:bg-slate-800"
-                                        :class="match.winner_entry_uuid === myEntryUuid ? '!bg-transparent' : ''">
+                                    <div class="px-5 py-4 flex flex-col sm:flex-row sm:items-center justify-between bg-white dark:bg-slate-800 gap-3 sm:gap-0"
+                                        :class="match.winner_entry_uuid === myEntryUuid ? '' : ''">
                                         <div class="flex items-center gap-3 min-w-0">
-                                            <img :src="getAvatarUrl(match.entry_b_name)"
+                                            <img :src="useImageOrDefault(null, match.entry_b_name)"
                                                 class="size-10 rounded-xl object-cover shrink-0 ring-1 ring-slate-100 dark:ring-slate-700" />
                                             <div class="min-w-0">
                                                 <span
@@ -223,7 +224,7 @@
                                         <div class="flex flex-col gap-2 text-xs">
                                             <div class="flex items-center min-w-0 gap-3">
                                                 <div class="w-16 font-bold shrink-0 truncate"
-                                                    :class="match.entry_a_uuid === myEntryUuid ? 'text-primary' : 'text-slate-500 dark:text-slate-400'">
+                                                    :class="match.entry_a_uuid === myEntryUuid ? '' : 'text-slate-500 dark:text-slate-400'">
                                                     {{ match.entry_a_name?.split(' ')[0] || 'A' }}
                                                 </div>
                                                 <div
@@ -308,10 +309,7 @@ const elimStatusLabel = computed(() => {
 
 const handleBack = () => router.back()
 
-const getAvatarUrl = (name) => {
-    if (!name) return `https://ui-avatars.com/api/?name=??&background=f1f5f9&color=94a3b8&font-size=0.45`
-    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=1e293b&color=D9FF00&font-size=0.45&bold=true`
-}
+
 
 const fetchInitialData = async () => {
     isLoading.value = true

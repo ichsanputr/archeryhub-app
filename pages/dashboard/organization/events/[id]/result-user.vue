@@ -139,7 +139,7 @@
                         </p>
                         <p class="text-4xl font-black text-white tracking-tight">
                             {{ elimStatusLabel === 'Winner' ? 'Juara' : elimStatusLabel === 'Done' ? 'Selesai' :
-                            elimStatusLabel }}
+                                elimStatusLabel }}
                         </p>
                     </div>
                     <div
@@ -154,7 +154,7 @@
                     <div>
                         <p class="text-slate-400 text-[10px] font-black uppercase tracking-widest mb-2">Total Skor</p>
                         <p class="text-5xl font-black text-navy dark:text-white tracking-tighter">{{ qualTotalScore || 0
-                            }}<span class="text-sm font-bold text-slate-400 ml-2 tracking-widest">PTS</span></p>
+                        }}<span class="text-sm font-bold text-slate-400 ml-2 tracking-widest">PTS</span></p>
                     </div>
                     <div
                         class="w-16 h-16 bg-slate-50 dark:bg-slate-900 rounded-3xl flex items-center justify-center text-slate-300 dark:text-slate-600">
@@ -289,7 +289,7 @@
                                 <span class="text-slate-400 font-black uppercase text-[10px] tracking-widest">Center
                                     Grouping</span>
                                 <span class="font-black text-green-500">{{ qualTotalScore > 650 ? 'Elite' : 'Stable'
-                                    }}</span>
+                                }}</span>
                             </div>
                             <div
                                 class="flex justify-between items-center bg-slate-50 dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-700">
@@ -333,28 +333,28 @@
                                     <div class="flex flex-col gap-4">
                                         <div class="flex items-center justify-between gap-3">
                                             <div class="flex items-center gap-3 min-w-0">
-                                                <img :src="getAvatarUrl(match.entry_a_name)"
+                                                <img :src="useImageOrDefault(null, match.entry_a_name)"
                                                     class="size-10 rounded-xl object-cover shrink-0 ring-2 ring-white/10" />
                                                 <span class="text-xs font-black truncate"
                                                     :class="match.winner_entry_uuid === match.entry_a_uuid ? 'text-white' : 'text-slate-400'">{{
                                                         match.entry_a_name || 'TBD' }}</span>
                                             </div>
                                             <span class="text-sm font-black tabular-nums">{{ match.total_score_a ?? 0
-                                                }}</span>
+                                            }}</span>
                                         </div>
 
                                         <div class="h-px bg-slate-200 dark:bg-slate-800 opacity-20" />
 
                                         <div class="flex items-center justify-between gap-3">
                                             <div class="flex items-center gap-3 min-w-0">
-                                                <img :src="getAvatarUrl(match.entry_b_name)"
+                                                <img :src="useImageOrDefault(null, match.entry_b_name)"
                                                     class="size-10 rounded-xl object-cover shrink-0 ring-2 ring-white/10" />
                                                 <span class="text-xs font-black truncate"
                                                     :class="match.winner_entry_uuid === match.entry_b_uuid ? 'text-white' : 'text-slate-400'">{{
                                                         match.entry_b_name || 'TBD' }}</span>
                                             </div>
                                             <span class="text-sm font-black tabular-nums">{{ match.total_score_b ?? 0
-                                                }}</span>
+                                            }}</span>
                                         </div>
                                     </div>
 
@@ -475,10 +475,6 @@ const handleBack = () => {
     router.back()
 }
 
-const getAvatarUrl = (name) => {
-    if (!name) return `https://ui-avatars.com/api/?name=TBD&background=f1f5f9&color=94a3b8&font-size=0.45`
-    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random&color=fff&font-size=0.45`
-}
 
 const fetchInitialData = async () => {
     isLoading.value = true

@@ -742,7 +742,7 @@
 </template>
 
 <script setup>
-/* eslint-disable vue/multi-word-component-names */
+ 
 import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted, onUnmounted, watch, nextTick, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'

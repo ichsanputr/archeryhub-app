@@ -253,7 +253,7 @@
                                     <!-- Side A -->
                                     <div
                                         class="flex-1 w-full sm:w-auto text-center flex flex-row sm:flex-col items-center sm:justify-center gap-4">
-                                        <img :src="getAvatarUrl(selectedScoringMatch.entry_a_name)"
+                                        <img :src="useImageOrDefault(null, selectedScoringMatch.entry_a_name)"
                                             class="size-12 sm:size-16 rounded-xl sm:rounded-2xl border-2 shrink-0"
                                             :class="(getMatchScore(selectedScoringMatch, 'A') > getMatchScore(selectedScoringMatch, 'B') || manualWinnerId === selectedScoringMatch.entry_a_id) ? 'border-primary shadow-lg shadow-primary/30' : 'border-white/20'" />
                                         <div class="flex-1 sm:flex-none text-left sm:text-center min-w-0">
@@ -284,7 +284,7 @@
                                     <!-- Side B -->
                                     <div
                                         class="flex-1 w-full sm:w-auto text-center flex flex-row-reverse sm:flex-col items-center sm:justify-center gap-4">
-                                        <img :src="getAvatarUrl(selectedScoringMatch.entry_b_name)"
+                                        <img :src="useImageOrDefault(null, selectedScoringMatch.entry_b_name)"
                                             class="size-12 sm:size-16 rounded-xl sm:rounded-2xl border-2 shrink-0"
                                             :class="(getMatchScore(selectedScoringMatch, 'B') > getMatchScore(selectedScoringMatch, 'A') || manualWinnerId === selectedScoringMatch.entry_b_id) ? 'border-primary shadow-lg shadow-primary/30' : 'border-white/20'" />
                                         <div class="flex-1 sm:flex-none text-right sm:text-center min-w-0">
@@ -325,7 +325,7 @@
                                         class="w-full flex items-center justify-between p-3 rounded-xl border transition-all"
                                         :class="manualWinnerId === selectedScoringMatch.entry_a_id ? 'bg-primary/20 border-primary text-primary' : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'">
                                         <span class="text-sm font-bold text-white">{{ selectedScoringMatch.entry_a_name
-                                        }}</span>
+                                            }}</span>
                                         <Icon v-if="manualWinnerId === selectedScoringMatch.entry_a_id"
                                             icon="ph:check-circle-fill" class="text-primary" />
                                     </button>
@@ -335,7 +335,7 @@
                                         class="w-full flex items-center justify-between p-3 rounded-xl border transition-all"
                                         :class="manualWinnerId === selectedScoringMatch.entry_b_id ? 'bg-primary/20 border-primary text-primary' : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'">
                                         <span class="text-sm font-bold text-white">{{ selectedScoringMatch.entry_b_name
-                                        }}</span>
+                                            }}</span>
                                         <Icon v-if="manualWinnerId === selectedScoringMatch.entry_b_id"
                                             icon="ph:check-circle-fill" class="text-primary" />
                                     </button>
@@ -728,10 +728,7 @@ const fetchMatchScores = async (matchId) => {
     }
 }
 
-const getAvatarUrl = (name) => {
-    if (!name || name === 'TBD' || name === 'BYE') return 'https://api.dicebear.com/7.x/initials/svg?seed=??&backgroundColor=f1f5f9'
-    return `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name)}&backgroundColor=ffaa00`
-}
+
 
 const getMatchScore = (match, side) => {
     const isRecurve = bracket.value?.format === 'recurve_set'

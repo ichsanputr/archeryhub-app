@@ -214,16 +214,17 @@
                                 </tr>
 
                                 <!-- Summary row -->
-                                <tr class="bg-primary/5 dark:bg-primary/5 border-t-2 border-primary/20">
+                                <tr class="bg dark:bg-primary/5 border-t-2 border-primary">
                                     <td class="px-6 sm:px-8 py-5 text-right uppercase tracking-widest text-[10px] text-slate-500 font-black"
                                         colspan="2">
                                         Total Sesi:
                                     </td>
                                     <td
-                                        class="px-6 sm:px-8 py-5 text-center text-primary text-3xl font-black tracking-tighter tabular-nums">
+                                        class="px-6 sm:px-8 py-5 text-center text-3xl font-black tracking-tighter tabular-nums">
                                         {{ activeSession.total_score }}
                                     </td>
-                                    <td class="px-6 sm:px-8 py-5 text-center text-navy dark:text-white font-black">
+                                    <td
+                                        class="px-6 sm:px-8 py-5 text-center text-3xl text-navy dark:text-white font-black">
                                         {{ activeSession.total_10x || '-' }}
                                     </td>
                                 </tr>

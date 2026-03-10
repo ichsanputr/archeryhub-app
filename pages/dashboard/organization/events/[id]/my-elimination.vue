@@ -97,28 +97,28 @@
                                     <div class="flex flex-col gap-4">
                                         <div class="flex items-center justify-between gap-3">
                                             <div class="flex items-center gap-3 min-w-0">
-                                                <img :src="getAvatarUrl(match.entry_a_name)"
+                                                <img :src="useImageOrDefault(null, match.entry_a_name)"
                                                     class="size-10 rounded-xl object-cover shrink-0 ring-2 ring-white/10" />
                                                 <span class="text-xs font-black truncate"
                                                     :class="match.winner_entry_uuid === match.entry_a_uuid ? 'text-primary' : 'text-slate-500'">{{
                                                         match.entry_a_name || 'TBD' }}</span>
                                             </div>
                                             <span class="text-sm font-black tabular-nums">{{ match.total_score_a ?? 0
-                                                }}</span>
+                                            }}</span>
                                         </div>
 
                                         <div class="h-px bg-slate-200 dark:bg-slate-800 opacity-20" />
 
                                         <div class="flex items-center justify-between gap-3">
                                             <div class="flex items-center gap-3 min-w-0">
-                                                <img :src="getAvatarUrl(match.entry_b_name)"
+                                                <img :src="useImageOrDefault(null, match.entry_b_name)"
                                                     class="size-10 rounded-xl object-cover shrink-0 ring-2 ring-white/10" />
                                                 <span class="text-xs font-black truncate"
                                                     :class="match.winner_entry_uuid === match.entry_b_uuid ? 'text-primary' : 'text-slate-500'">{{
                                                         match.entry_b_name || 'TBD' }}</span>
                                             </div>
                                             <span class="text-sm font-black tabular-nums">{{ match.total_score_b ?? 0
-                                                }}</span>
+                                            }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -165,10 +165,6 @@ const elimStatusLabel = computed(() => {
 
 const handleBack = () => router.back()
 
-const getAvatarUrl = (name) => {
-    if (!name) return `https://ui-avatars.com/api/?name=TBD&background=f1f5f9&color=94a3b8`
-    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random&color=fff`
-}
 
 const fetchInitialData = async () => {
     isLoading.value = true

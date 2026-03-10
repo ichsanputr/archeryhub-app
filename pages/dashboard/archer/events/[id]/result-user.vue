@@ -139,7 +139,7 @@
                         </p>
                         <p class="text-4xl font-black text-white tracking-tight">
                             {{ elimStatusLabel === 'Winner' ? 'Juara' : elimStatusLabel === 'Done' ? 'Selesai' :
-                            elimStatusLabel }}
+                                elimStatusLabel }}
                         </p>
                     </div>
                     <div
@@ -333,7 +333,7 @@
                                     <div class="flex flex-col gap-4">
                                         <div class="flex items-center justify-between gap-3">
                                             <div class="flex items-center gap-3 min-w-0">
-                                                <img :src="getAvatarUrl(match.entry_a_name)"
+                                                <img :src="useImageOrDefault(null, match.entry_a_name)"
                                                     class="size-10 rounded-xl object-cover shrink-0 ring-2 ring-white/10" />
                                                 <span class="text-xs font-black truncate"
                                                     :class="match.winner_entry_uuid === match.entry_a_uuid ? 'text-white' : 'text-slate-400'">{{
@@ -347,7 +347,7 @@
 
                                         <div class="flex items-center justify-between gap-3">
                                             <div class="flex items-center gap-3 min-w-0">
-                                                <img :src="getAvatarUrl(match.entry_b_name)"
+                                                <img :src="useImageOrDefault(null, match.entry_b_name)"
                                                     class="size-10 rounded-xl object-cover shrink-0 ring-2 ring-white/10" />
                                                 <span class="text-xs font-black truncate"
                                                     :class="match.winner_entry_uuid === match.entry_b_uuid ? 'text-white' : 'text-slate-400'">{{
@@ -475,10 +475,6 @@ const handleBack = () => {
     router.back()
 }
 
-const getAvatarUrl = (name) => {
-    if (!name) return `https://ui-avatars.com/api/?name=TBD&background=f1f5f9&color=94a3b8&font-size=0.45`
-    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random&color=fff&font-size=0.45`
-}
 
 const fetchInitialData = async () => {
     isLoading.value = true
