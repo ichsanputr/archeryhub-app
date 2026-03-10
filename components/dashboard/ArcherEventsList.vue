@@ -151,7 +151,7 @@
                     event.code?.toUpperCase() }}</span>
               </div>
               <h3
-                class="text-base font-black text-navy leading-tight group-hover:text-primary transition-colors line-clamp-1">
+                class="text-base font-black text-navy leading-tight group-hover:text-primary transition-colors line-clamp-2">
                 {{ event.name }}
               </h3>
             </div>
@@ -191,7 +191,8 @@
 
           <!-- Card Footer -->
           <div class="mt-auto pt-4 border-t border-slate-50 flex items-center gap-3">
-            <BaseButton :to="`/dashboard/events/${event.slug || event.id}/my-qualification`" variant="primary" size="sm"
+            <BaseButton :to="`/dashboard/archer/events/${event.slug || event.id}/my-registration`" variant="primary"
+              size="sm"
               class="flex-1 font-black uppercase tracking-widest text-[10px] h-10 shadow-sm shadow-primary/10">
               Buka Event
             </BaseButton>

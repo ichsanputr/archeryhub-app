@@ -12,79 +12,86 @@
                 <div class="flex items-center gap-4">
                     <button @click="router.back()"
                         class="size-10 rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors">
-                        <Icon icon="ph:arrow-left-bold" />
+                        <Icon icon="ph:arrow-left-bold" class="text-white text-xl" />
                     </button>
                     <div>
-                        <h1 class="text-xl sm:text-2xl font-black tracking-tight">{{ eventName || 'Detail Penghasilan'
+                        <h1 class="text-xl sm:text-3xl font-black tracking-tight">{{ eventName || 'Detail Penghasilan'
                             }}</h1>
-                        <p class="text-slate-300 text-xs sm:text-sm font-medium mt-1">Daftar transaksi pendaftaran
-                            peserta</p>
+                        <p class="text-slate-300 text-xs sm:text-sm font-medium mt-1">Rincian pembayaran per peserta</p>
                     </div>
                 </div>
-                <div class="flex gap-4 items-center">
-                    <div class="text-right hidden sm:block">
-                        <p class="text-[10px] font-black text-primary uppercase tracking-widest">Total Terkumpul</p>
-                        <p class="text-xl font-black">Rp {{ totalEarnings.toLocaleString('id-ID') }}</p>
+                <div class="flex gap-3">
+                    <div class="bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-2xl border border-white/20 text-right">
+                        <p class="text-[10px] font-black uppercase tracking-wider text-primary">Total Event Ini</p>
+                        <p class="text-xl font-black tabular-nums">Rp {{ totalAmount.toLocaleString('id-ID') }}</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Transactions Table -->
-        <div class="bg-white rounded-3xl border border-gray-200 overflow-hidden shadow-sm">
-            <div class="p-6 border-b border-gray-100 flex items-center justify-between">
-                <h3 class="font-black text-navy uppercase tracking-widest text-sm">Log Transaksi Berhasil</h3>
-                <div
-                    class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-[10px] font-black uppercase tracking-widest">
-                    {{ payments.length }} Transaksi
-                </div>
+        <!-- Filter & Search -->
+        <div
+            class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
+            <div class="flex-grow w-full">
+                <BaseInput v-model="searchQuery" icon="ph:magnifying-glass"
+                    placeholder="Cari nama peserta atau referensi..." label="Pencarian Transaksi" />
             </div>
+            <div class="flex gap-2 w-full md:w-auto">
+                <BaseButton variant="white" icon="ph:download-simple-bold" class="h-11 flex-1 md:flex-initial">Export
+                    CSV</BaseButton>
+            </div>
+        </div>
+
+        <!-- Payments Table -->
+        <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
             <div class="overflow-x-auto">
                 <table class="w-full text-left">
                     <thead>
                         <tr
                             class="bg-gray-50/50 text-gray-500 font-bold text-[10px] uppercase tracking-widest border-b border-gray-100">
-                            <th class="px-6 py-4">Referensi</th>
-                            <th class="px-6 py-4">Archer / Pemanah</th>
+                            <th class="px-6 py-4">Peserta</th>
+                            <th class="px-6 py-4">Tanggal Bayar</th>
                             <th class="px-6 py-4">Metode</th>
-                            <th class="px-6 py-4">Waktu Bayar</th>
+                            <th class="px-6 py-4">Referensi</th>
                             <th class="px-6 py-4 text-right">Nominal</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
-                        <tr v-for="payment in payments" :key="payment.reference"
-                            class="hover:bg-gray-50 transition-colors">
+                        <tr v-for="payment in filteredPayments" :key="payment.id"
+                            class="hover:bg-gray-50 transition-colors group">
                             <td class="px-6 py-4">
-                                <span class="font-mono text-[10px] font-bold text-gray-400">#{{ payment.reference
-                                    }}</span>
+                                <div class="font-bold text-navy leading-tight">{{ payment.archerName }}</div>
+                                <div class="text-[10px] text-gray-400 font-medium mt-0.5">{{ payment.archerEmail }}
+                                </div>
                             </td>
-                            <td class="px-6 py-4">
-                                <div class="font-bold text-navy">{{ payment.athlete_name || 'Anonymous' }}</div>
+                            <td class="px-6 py-4 text-sm text-gray-600 font-medium">
+                                {{ formatPaymentDate(payment.createdAt) }}
                             </td>
                             <td class="px-6 py-4">
                                 <span
-                                    class="px-2 py-0.5 bg-gray-100 text-[10px] font-black text-gray-500 rounded uppercase">{{
-                                    payment.payment_method || 'N/A' }}</span>
+                                    class="px-2 py-1 bg-gray-100 text-gray-600 text-[10px] font-black rounded-lg uppercase">
+                                    {{ payment.method }}
+                                </span>
                             </td>
-                            <td class="px-6 py-4 text-xs text-gray-500 font-medium">
-                                {{ formatDate(payment.paid_at || payment.created_at) }}
+                            <td class="px-6 py-4 font-mono text-xs text-gray-400">
+                                {{ payment.reference }}
                             </td>
-                            <td class="px-6 py-4 text-right font-black text-navy">
+                            <td class="px-6 py-4 text-right font-black text-navy tabular-nums">
                                 Rp {{ payment.amount.toLocaleString('id-ID') }}
                             </td>
                         </tr>
-                        <tr v-if="!payments.length && !loading">
+                        <tr v-if="!loading && filteredPayments.length === 0">
                             <td colspan="5" class="px-6 py-12 text-center">
-                                <Icon icon="ph:money-slash" class="text-4xl text-gray-200 mx-auto mb-2" />
-                                <p class="text-gray-400 text-sm font-bold">Belum ada transaksi berhasil untuk event ini
-                                </p>
+                                <Icon icon="ph:mask-sad" class="text-4xl text-gray-200 mx-auto mb-2" />
+                                <p class="text-gray-400">Tidak ada data pembayaran yang ditemukan.</p>
                             </td>
-                        </tr>
-                        <tr v-if="loading">
-                            <td colspan="5" class="px-6 py-12 text-center text-gray-400">Loading...</td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
+            <div v-if="loading" class="p-12 text-center">
+                <Icon icon="ph:circle-notch-bold" class="text-3xl text-primary animate-spin mx-auto" />
+                <p class="text-gray-400 mt-2 text-sm font-medium">Memuat rincian pembayaran...</p>
             </div>
         </div>
     </div>
@@ -95,57 +102,58 @@ import { Icon } from '@iconify/vue'
 import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useApi } from '~/composables/useApi'
+import { useDateFormat } from '@vueuse/core'
 
 const route = useRoute()
 const router = useRouter()
 const api = useApi()
 
 definePageMeta({
-    layout: 'dashboard'
+    layout: 'dashboard',
+    middleware: ['auth']
 })
 
-const eventId = computed(() => route.params.id)
-const payments = ref([])
+useHead({
+    title: 'Detail Penghasilan Event - ArcheryHub'
+})
+
+const eventId = route.params.id
 const eventName = ref('')
+const payments = ref([])
 const loading = ref(true)
+const searchQuery = ref('')
 
-const totalEarnings = computed(() => {
-    return payments.value.reduce((acc, curr) => acc + curr.amount, 0)
-})
-
-const fetchPayments = async () => {
+const fetchDetails = async () => {
     try {
         loading.value = true
-        const res = await api.get(`/events/${eventId.value}/payments`)
-        payments.value = res?.data || res || []
-
-        // Fetch event name if possible
-        const eventRes = await api.get(`/events/${eventId.value}`)
-        eventName.value = eventRes?.data?.name || eventRes?.name || ''
+        const res = await api.get(`/organizations/earnings/${eventId}`)
+        eventName.value = res.eventName
+        payments.value = res.payments || []
     } catch (error) {
-        console.error('Failed to fetch payments:', error)
+        console.error('Failed to fetch details:', error)
     } finally {
         loading.value = false
     }
 }
 
-const formatDate = (dateStr) => {
-    if (!dateStr) return '-'
-    const d = new Date(dateStr)
-    return d.toLocaleString('id-ID', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    })
+const totalAmount = computed(() => {
+    return payments.value.reduce((acc, curr) => acc + curr.amount, 0)
+})
+
+const filteredPayments = computed(() => {
+    if (!searchQuery.value) return payments.value
+    const q = searchQuery.value.toLowerCase()
+    return payments.value.filter(p =>
+        p.archerName.toLowerCase().includes(q) ||
+        p.reference.toLowerCase().includes(q)
+    )
+})
+
+const formatPaymentDate = (date) => {
+    return useDateFormat(date, 'DD MMM YYYY, HH:mm', { locales: 'id-ID' }).value
 }
 
 onMounted(() => {
-    fetchPayments()
-})
-
-useHead({
-    title: computed(() => `${eventName.value || 'Detail Penghasilan'} - ArcheryHub`)
+    fetchDetails()
 })
 </script>

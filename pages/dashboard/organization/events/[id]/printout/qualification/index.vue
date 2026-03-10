@@ -286,10 +286,13 @@ const handlePrint = () => {
 
     const url = `${apiBase}/events/${eventId}/qualification/sessions/${form.value.session}/scoresheet?${params.toString()}`
 
-    const win = window.open(url, '_blank')
-    if (!win) {
-        toast.addToast('Popup diblokir. Izinkan popup untuk mencetak.', 'warning')
-    }
+    // Trigger direct download instead of opening new tab
+    const anchor = document.createElement('a')
+    anchor.href = url
+    anchor.download = `Scoresheet_${form.value.session}.pdf`
+    document.body.appendChild(anchor)
+    anchor.click()
+    document.body.removeChild(anchor)
 
     isProcessing.value = false
 }

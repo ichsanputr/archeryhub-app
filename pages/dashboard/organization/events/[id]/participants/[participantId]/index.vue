@@ -99,9 +99,9 @@
                                             {{ participant.athlete_code || '-' }}
                                         </div>
                                         <span class="text-gray-300">•</span>
-                                        <span :class="getStatusClass(form.status)"
+                                        <span :class="getStatusClass(form.payment_status)"
                                             class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold border">
-                                            {{ getDisplayStatus(form.status) }}
+                                            {{ getDisplayStatus(form.payment_status) }}
                                         </span>
                                         <span class="text-gray-300">•</span>
                                         <!-- Registration Source Badge -->
@@ -339,7 +339,7 @@
                             <p class="text-gray-500 text-sm leading-relaxed">
                                 Apakah Anda yakin ingin mengeluarkan <span class="font-bold text-navy">{{
                                     participant?.full_name
-                                    }}</span> dari event ini?
+                                }}</span> dari event ini?
                             </p>
                             <p class="text-red-600 text-xs mt-2 font-semibold">
                                 Tindakan ini akan menghapus semua data target dan skor yang terkait dan tidak dapat

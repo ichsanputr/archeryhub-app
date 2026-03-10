@@ -27,9 +27,9 @@
               <h1 class="text-xl sm:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2 truncate">
                 Manajemen Kualifikasi
               </h1>
-              <p class="text-slate-300 text-xs sm:text-sm max-w-2xl line-clamp-1 sm:line-clamp-none">
+              <div class="text-slate-300 text-xs sm:text-sm max-w-2xl line-clamp-1 sm:line-clamp-none">
                 Kelola penempatan pemanah dan penilaian untuk {{ eventName }}
-              </p>
+              </div>
             </div>
           </div>
 
@@ -68,8 +68,8 @@
         <div v-else-if="qualificationSessions.length === 0"
           class="text-center py-12 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
           <Icon icon="ph:calendar-blank" class="text-4xl text-gray-300 mx-auto mb-3" />
-          <p class="text-sm font-bold text-gray-600 mb-1">Belum Ada Sesi Kualifikasi</p>
-          <p class="text-xs text-gray-400 mb-4">Buat sesi pertama untuk mulai mengelola kualifikasi</p>
+          <div class="text-sm font-bold text-gray-600 mb-1">Belum Ada Sesi Kualifikasi</div>
+          <div class="text-xs text-gray-400 mb-4">Buat sesi pertama untuk mulai mengelola kualifikasi</div>
           <BaseButton variant="primary" icon="ph:plus-bold" @click="openCreateModal">
             Buat Sesi Pertama
           </BaseButton>
@@ -178,8 +178,8 @@
         <div v-else-if="categories.length === 0"
           class="text-center py-12 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
           <Icon icon="ph:folder-notch-open" class="text-4xl text-gray-300 mx-auto mb-3" />
-          <p class="text-sm font-bold text-gray-600 mb-1">Belum Ada Kategori</p>
-          <p class="text-xs text-gray-400">Kategori akan muncul setelah event dikonfigurasi</p>
+          <div class="text-sm font-bold text-gray-600 mb-1">Belum Ada Kategori</div>
+          <div class="text-xs text-gray-400">Kategori akan muncul setelah event dikonfigurasi</div>
         </div>
 
         <div v-else>
@@ -201,9 +201,9 @@
                     class="w-full h-full object-contain invert group-hover:invert-0 transition-all" />
                 </div>
                 <div class="flex-1 min-w-0">
-                  <p
+                  <div
                     class="font-bold text-navy group-hover:text-primary transition-colors leading-tight mb-1.5 line-clamp-2">
-                    {{ getCategoryName(category) }}</p>
+                    {{ getCategoryName(category) }}</div>
                   <div class="flex items-center gap-2 text-xs text-gray-500">
                     <Icon icon="ph:users-three" class="text-base" />
                     <span class="font-semibold">{{ category.participant_count || 0 }} pemanah</span>
@@ -218,7 +218,7 @@
             <div class="animate-spin inline-block">
               <Icon icon="ph:circle-notch" class="text-4xl text-primary" />
             </div>
-            <p class="text-gray-500 mt-4">Memuat laporan...</p>
+            <div class="text-gray-500 mt-4">Memuat laporan...</div>
           </div>
 
           <div v-else-if="selectedCategory && reportEntries.length > 0"
@@ -234,8 +234,6 @@
                     Skor Per Rambahan</th>
                   <th class="px-6 py-4 text-right text-[10px] font-black text-gray-400  tracking-widest w-32">
                     Total Score</th>
-                  <th class="px-6 py-4 text-right text-[10px] font-black text-gray-400  tracking-widest w-32">
-                    Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -251,12 +249,13 @@
                       <img :src="useImageOrDefault(archer.avatar_url, archer.archer_name)"
                         class="size-9 rounded-lg object-cover border border-gray-100" />
                       <div>
-                        <p class="text-[11px] sm:text-base font-bold text-navy leading-tight">{{ archer.archer_name }}
-                        </p>
+                        <div class="text-[11px] sm:text-base font-bold text-navy leading-tight">{{ archer.archer_name }}
+                        </div>
                         <div class="flex items-center gap-2 mt-1">
-                          <p class="text-[10px] text-gray-400 font-bold uppercase tracking-tighter">{{ archer.club_name
+                          <div class="text-[10px] text-gray-400 font-bold uppercase tracking-tighter">{{
+                            archer.club_name
                             ||
-                            'Independen' }}</p>
+                            'Independen' }}</div>
                         </div>
                       </div>
                     </div>
@@ -302,15 +301,7 @@
                     </div>
                   </td>
                   <td class="px-6 py-4 text-right">
-                    <p class="text-xl font-black text-navy">{{ archer.total_score || 0 }}</p>
-                  </td>
-                  <td class="px-6 py-4 text-right">
-                    <NuxtLink
-                      :to="`/dashboard/events/${eventId}/result-user?archer_id=${archer.athlete_code || archer.participant_uuid}`"
-                      class="inline-flex items-center justify-center gap-2 px-3 py-1.5 bg-primary/10 text-btn-text text-[10px] font-black uppercase tracking-widest rounded-lg transition-all">
-                      <Icon icon="ph:eye-bold" class="text-sm" />
-                      Detail
-                    </NuxtLink>
+                    <div class="text-xl font-black text-navy">{{ archer.total_score || 0 }}</div>
                   </td>
                 </tr>
               </tbody>
@@ -319,11 +310,11 @@
             <!-- Pagination Controls -->
             <div v-if="totalPages > 1"
               class="px-6 py-4 bg-gray-50/30 border-t border-gray-100 flex items-center justify-between">
-              <p class="text-xs text-gray-400 font-bold">
+              <div class="text-xs text-gray-400 font-bold">
                 Menampilkan <span class="text-navy">{{ (currentPage - 1) * pageSize + 1 }}</span> -
                 <span class="text-navy">{{ Math.min(currentPage * pageSize, reportEntries.length) }}</span> dari
                 <span class="text-navy">{{ reportEntries.length }}</span> pemanah
-              </p>
+              </div>
               <div class="flex items-center gap-2">
                 <button @click="currentPage = Math.max(1, currentPage - 1)" :disabled="currentPage === 1"
                   class="size-8 rounded-lg border border-gray-200 flex items-center justify-center text-gray-500 hover:border-primary hover:text-primary disabled:opacity-30 disabled:hover:border-gray-200 disabled:hover:text-gray-500 transition-all shadow-sm bg-white">
@@ -353,12 +344,12 @@
           <div v-else-if="selectedCategory"
             class="bg-gray-50 rounded-xl border-2 border-dashed border-gray-200 p-12 text-center">
             <Icon icon="ph:users-three" class="text-5xl text-gray-300 mx-auto mb-4" />
-            <p class="text-gray-500">Tidak ada pemanah di kategori ini</p>
+            <div class="text-gray-500">Tidak ada pemanah di kategori ini</div>
           </div>
 
           <div v-else class="bg-gray-50 rounded-xl border-2 border-dashed border-gray-200 p-12 text-center">
             <Icon icon="ph:selection" class="text-5xl text-gray-300 mx-auto mb-4" />
-            <p class="text-gray-500">Pilih kategori untuk melihat hasil kualifikasi</p>
+            <div class="text-gray-500">Pilih kategori untuk melihat hasil kualifikasi</div>
           </div>
         </div>
       </div>
@@ -381,7 +372,7 @@
               </div>
               <div>
                 <h3 class="text-xl font-black text-white leading-tight">{{ modalTitle }}</h3>
-                <p class="text-gray-400 text-xs mt-0.5">Konfigurasi jadwal dan aturan penilaian</p>
+                <div class="text-gray-400 text-xs mt-0.5">Konfigurasi jadwal dan aturan penilaian</div>
               </div>
             </div>
             <button @click="showSessionDialog = false"
@@ -531,10 +522,10 @@
           </div>
           <div class="relative z-10">
             <h4 class="text-sm font-black text-red-700 uppercase tracking-widest mb-2">Peringatan Penghapusan</h4>
-            <p class="text-xs font-bold text-red-600/80 leading-relaxed mb-4">
+            <div class="text-xs font-bold text-red-600/80 leading-relaxed mb-4">
               Anda akan menghapus sesi kualifikasi ini secara permanen. Tindakan ini bersifat destruktif dan tidak dapat
               dibatalkan.
-            </p>
+            </div>
 
             <div class="flex items-center gap-2 px-3 py-1.5 bg-red-100 rounded-xl w-fit">
               <Icon icon="ph:info-bold" class="text-red-600" />

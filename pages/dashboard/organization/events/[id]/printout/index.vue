@@ -47,7 +47,7 @@
         </p>
 
         <div class="flex items-center gap-2 text-primary font-black text-xs tracking-widest">
-          <span>Buka pengaturan</span>
+          <span>Lihat Selengkapnya</span>
           <Icon icon="ph:arrow-right-bold" class="text-lg group-hover:translate-x-1 transition-transform" />
         </div>
       </NuxtLink>
@@ -68,7 +68,7 @@
         </p>
 
         <div class="flex items-center gap-2 text-primary font-black text-xs tracking-widest">
-          <span>Buka daftar</span>
+          <span>Lihat Selengkapnya</span>
           <Icon icon="ph:arrow-right-bold" class="text-lg group-hover:translate-x-1 transition-transform" />
         </div>
       </NuxtLink>
@@ -78,7 +78,7 @@
         class="bg-white rounded-3xl border border-gray-100 p-8 shadow-sm hover:border-primary/40 hover:shadow-md hover:-translate-y-1 transition-all group flex flex-col">
         <div
           class="size-16 bg-primary/10 rounded-2xl flex items-center justify-center group-hover:bg-primary transition-colors mb-6">
-          <Icon icon="ph:chart-bar-bold" class="text-3xl text-navy group-hover:text-white" />
+          <Icon icon="ph:file-pdf-bold" class="text-3xl text-navy group-hover:text-white" />
         </div>
 
         <h3 class="text-xl font-black text-navy mb-3 group-hover:text-primary transition-colors capitalize">Statistik
@@ -89,7 +89,7 @@
         </p>
 
         <div class="flex items-center gap-2 text-primary font-black text-xs tracking-widest">
-          <span>Lihat statistik</span>
+          <span>Lihat Selengkapnya</span>
           <Icon icon="ph:arrow-right-bold" class="text-lg group-hover:translate-x-1 transition-transform" />
         </div>
       </NuxtLink>

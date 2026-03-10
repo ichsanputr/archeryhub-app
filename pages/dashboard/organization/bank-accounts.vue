@@ -31,14 +31,18 @@
 
         <!-- Bank Accounts Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div v-for="account in bankAccounts" :key="account.uuid"
+            <div v-for="account in bankAccounts" :key="account.id"
                 class="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm relative group hover:shadow-md hover:-translate-y-1 transition-all duration-300">
                 <div class="flex justify-between items-start mb-6">
-                    <div class="size-12 rounded-2xl bg-navy/5 flex items-center justify-center text-navy shrink-0">
-                        <Icon :icon="getBankIcon(account.bank_name)" class="text-2xl" />
+                    <div
+                        class="size-12 rounded-2xl bg-navy/5 flex items-center justify-center text-navy shrink-0 overflow-hidden p-2">
+                        <img v-if="getBankLogo(account.bank_name)"
+                            :src="`/payment-method/${getBankLogo(account.bank_name)}`"
+                            class="h-full w-full object-contain" />
+                        <Icon v-else :icon="getBankIcon(account.bank_name)" class="text-2xl" />
                     </div>
                     <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button
+                        <button @click="openEditModal(account)"
                             class="p-2 hover:bg-gray-100 rounded-lg text-gray-400 hover:text-navy transition-colors">
                             <Icon icon="ph:pencil-simple-bold" />
                         </button>
@@ -55,12 +59,11 @@
                         <p class="text-sm font-black text-navy">{{ account.bank_name }}</p>
                     </div>
                     <div>
-                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Nomor Rekening
-                        </p>
+                        <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Nomor Rekening
+                        </div>
                         <div class="flex items-center gap-2">
-                            <p class="text-lg font-black text-navy tracking-tight">{{ account.account_number }}</p>
-                            <button @click="copyToClipboard(account.account_number)"
-                                class="text-primary hover:scale-110 transition-transform">
+                            <div class="text-lg font-black text-navy tracking-tight">{{ account.account_number }}</div>
+                            <button @click="copyToClipboard(account.account_number)" class="transition-transform">
                                 <Icon icon="ph:copy-bold" />
                             </button>
                         </div>
@@ -69,11 +72,6 @@
                         <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Nama Pemilik</p>
                         <p class="text-sm font-bold text-gray-700 truncate">{{ account.account_name }}</p>
                     </div>
-                </div>
-
-                <div v-if="account.is_primary" class="absolute top-6 right-6 lg:static lg:mt-6">
-                    <span
-                        class="bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">Utama</span>
                 </div>
             </div>
 
@@ -94,7 +92,19 @@
         <!-- Add/Edit Modal -->
         <BaseDialogForm v-model="modal.show" :header="modal.isEdit ? 'Edit Rekening' : 'Tambah Rekening Bank'">
             <div class="space-y-4">
-                <BaseInput v-model="form.bankName" label="Nama Bank" placeholder="Contoh: BCA, Mandiri, BNI" required />
+                <div class="space-y-2">
+                    <label class="text-xs font-black text-gray-400 uppercase tracking-widest">Pilih Bank</label>
+                    <div class="grid grid-cols-3 sm:grid-cols-5 gap-2">
+                        <button v-for="bank in supportedBanks" :key="bank.id" type="button"
+                            @click="form.bankName = bank.name"
+                            class="flex flex-col items-center justify-center p-2 rounded-xl border-2 transition-all gap-1.5"
+                            :class="form.bankName === bank.name ? 'border-primary bg-primary/5' : 'border-gray-100 hover:border-primary/30'">
+                            <img :src="`/payment-method/${bank.logo}`" :alt="bank.name" class="h-6 object-contain" />
+                            <span class="text-[8px] font-black uppercase text-gray-500">{{ bank.name }}</span>
+                        </button>
+                    </div>
+                </div>
+                <BaseInput v-model="form.bankName" label="Nama Bank Kustom" placeholder="Jika bank tidak ada di list" />
                 <BaseInput v-model="form.accountNumber" label="Nomor Rekening" placeholder="Masukkan nomor rekening"
                     required />
                 <BaseInput v-model="form.accountName" label="Nama Pemilik Rekening" placeholder="Sesuai buku tabungan"
@@ -146,6 +156,18 @@ useHead({
 const bankAccounts = ref([])
 const loading = ref(true)
 
+const supportedBanks = [
+    { id: 'bca', name: 'BCA', logo: 'bca.png' },
+    { id: 'mandiri', name: 'Mandiri', logo: 'mandiri.png' },
+    { id: 'bri', name: 'BRI', logo: 'bri.png' },
+    { id: 'bni', name: 'BNI', logo: 'bni.png' },
+    { id: 'bsi', name: 'BSI', logo: 'bsi.png' },
+    { id: 'danamon', name: 'Danamon', logo: 'danamon.png' },
+    { id: 'gopay', name: 'GoPay', logo: 'gopay.png' },
+    { id: 'ovo', name: 'OVO', logo: 'ovo.png' },
+    { id: 'dana', name: 'DANA', logo: 'dana.png' },
+]
+
 const modal = reactive({
     show: false,
     isEdit: false,
@@ -187,6 +209,16 @@ const openAddModal = () => {
     modal.show = true
 }
 
+const openEditModal = (account) => {
+    modal.isEdit = true
+    modal.currentId = account.id
+    form.bankName = account.bank_name
+    form.accountNumber = account.account_number
+    form.accountName = account.account_name
+    form.isPrimary = account.is_primary
+    modal.show = true
+}
+
 const handleSubmit = async () => {
     if (!form.bankName || !form.accountNumber || !form.accountName) {
         toast.error('Mohon lengkapi semua data')
@@ -195,13 +227,20 @@ const handleSubmit = async () => {
 
     modal.loading = true
     try {
-        await api.post('/organizations/bank-accounts', {
+        const payload = {
             bank_name: form.bankName,
             account_number: form.accountNumber,
             account_name: form.accountName,
             is_primary: form.isPrimary
-        })
-        toast.success('Rekening berhasil ditambahkan')
+        }
+
+        if (modal.isEdit) {
+            await api.put(`/organizations/bank-accounts/${modal.currentId}`, payload)
+            toast.success('Rekening berhasil diperbarui')
+        } else {
+            await api.post('/organizations/bank-accounts', payload)
+            toast.success('Rekening berhasil ditambahkan')
+        }
         modal.show = false
         fetchBankAccounts()
     } catch (error) {
@@ -219,7 +258,7 @@ const confirmDelete = (account) => {
 const handleDelete = async () => {
     if (!deleteState.target) return
     try {
-        await api.delete(`/organizations/bank-accounts/${deleteState.target.uuid}`)
+        await api.delete(`/organizations/bank-accounts/${deleteState.target.id}`)
         toast.success('Rekening berhasil dihapus')
         fetchBankAccounts()
     } catch (error) {
@@ -232,6 +271,12 @@ const handleDelete = async () => {
 onMounted(() => {
     fetchBankAccounts()
 })
+
+const getBankLogo = (bankName) => {
+    if (!bankName) return null
+    const bank = supportedBanks.find(b => bankName.toLowerCase().includes(b.id.toLowerCase()))
+    return bank ? bank.logo : null
+}
 
 const getBankIcon = (bankName) => {
     if (!bankName) return 'ph:credit-card-bold'

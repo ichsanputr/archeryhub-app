@@ -23,47 +23,6 @@
             </div>
         </div>
 
-        <!-- Stats Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100 group">
-                <div class="flex justify-between items-start mb-4">
-                    <p class="text-text-secondary text-xs font-bold uppercase tracking-widest">Total Penghasilan</p>
-                    <div
-                        class="bg-gray-50 p-2 rounded-lg text-primary transition-colors group-hover:bg-primary group-hover:text-white">
-                        <Icon icon="ph:money-bold" class="text-xl" />
-                    </div>
-                </div>
-                <p class="text-navy-dark text-2xl font-black">Rp {{ totalEarningsAmount.toLocaleString('id-ID') }}</p>
-                <p class="text-green-600 text-[10px] font-black mt-2 flex items-center gap-1">
-                    <Icon icon="ph:trend-up-bold" /> +15% dari bulan lalu
-                </p>
-            </div>
-
-            <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100 group">
-                <div class="flex justify-between items-start mb-4">
-                    <p class="text-text-secondary text-xs font-bold uppercase tracking-widest">Bulan Ini</p>
-                    <div
-                        class="bg-gray-50 p-2 rounded-lg text-primary transition-colors group-hover:bg-primary group-hover:text-white">
-                        <Icon icon="ph:calendar-check-bold" class="text-xl" />
-                    </div>
-                </div>
-                <p class="text-navy-dark text-2xl font-black">Rp {{ monthlyEarnings.toLocaleString('id-ID') }}</p>
-                <p class="text-gray-400 text-[10px] font-black mt-2">Dihitung dari {{ currentMonthLabel }}</p>
-            </div>
-
-            <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100 group">
-                <div class="flex justify-between items-start mb-4">
-                    <p class="text-text-secondary text-xs font-bold uppercase tracking-widest">Event Teraktif</p>
-                    <div
-                        class="bg-gray-50 p-2 rounded-lg text-primary transition-colors group-hover:bg-primary group-hover:text-white">
-                        <Icon icon="ph:fire-bold" class="text-xl" />
-                    </div>
-                </div>
-                <p class="text-navy-dark text-xl font-bold truncate">{{ mostActiveEvent?.eventName || 'Belum Ada' }}</p>
-                <p class="text-primary text-[10px] font-black mt-2">Total {{ mostActiveEvent?.participants || 0 }}
-                    Peserta</p>
-            </div>
-        </div>
 
         <!-- Earnings Table -->
         <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
@@ -82,24 +41,36 @@
                             <th class="px-6 py-4">Tanggal Selesai</th>
                             <th class="px-6 py-4">Peserta</th>
                             <th class="px-6 py-4 text-right">Penghasilan Bersih</th>
+                            <th class="px-6 py-4 text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
                         <tr v-for="item in earningsHistory" :key="item.id"
-                            @click="router.push(`/dashboard/organization/earnings/${item.id}`)"
-                            class="hover:bg-gray-50 transition-colors group cursor-pointer">
+                            class="hover:bg-gray-50 transition-colors group">
                             <td class="px-6 py-4">
                                 <div class="font-bold text-navy group-hover:text-primary transition-colors">{{
-                                    item.eventName }}</div>
+                                    item.eventName
+                                }}</div>
                                 <div class="text-[10px] text-gray-400 font-medium">{{ item.category }}</div>
                             </td>
-                            <td class="px-6 py-4 text-sm text-gray-600 font-medium">{{ item.date }}</td>
+                            <td class="px-6 py-4 text-sm text-gray-600 font-medium">
+                                {{ formatItemDate(item.date) }}
+                            </td>
                             <td class="px-6 py-4">
                                 <span class="px-2 py-1 bg-navy/5 text-navy text-[10px] font-black rounded-lg">{{
-                                    item.participants }} Peserta</span>
+                                    item.participants
+                                }} Peserta</span>
                             </td>
                             <td class="px-6 py-4 text-right font-bold text-navy">
                                 Rp {{ item.amount.toLocaleString('id-ID') }}
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <NuxtLink :to="`/dashboard/organization/earnings/${item.id}`">
+                                    <button
+                                        class="p-2 hover:bg-primary/10 rounded-lg text-gray-400 hover:text-primary transition-colors">
+                                        <Icon icon="ph:eye-bold" class="text-lg" />
+                                    </button>
+                                </NuxtLink>
                             </td>
                         </tr>
                     </tbody>
@@ -115,6 +86,7 @@ import { Icon } from '@iconify/vue'
 import { ref, onMounted, computed } from 'vue'
 import { useApi } from '~/composables/useApi'
 import { useRouter } from 'vue-router'
+import { useDateFormat } from '@vueuse/core'
 
 const api = useApi()
 const router = useRouter()
@@ -171,6 +143,11 @@ const mostActiveEvent = computed(() => {
 const currentMonthLabel = computed(() => {
     return new Date().toLocaleDateString('id-ID', { month: 'short', year: 'numeric' })
 })
+
+const formatItemDate = (date) => {
+    if (!date) return '-'
+    return useDateFormat(date, 'DD MMM YYYY', { locales: 'id-ID' }).value
+}
 
 onMounted(() => {
     fetchEarnings()

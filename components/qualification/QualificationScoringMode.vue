@@ -272,12 +272,21 @@ watch(() => props.targetAssignments, (newVal) => {
             return (a.target_name || '').localeCompare(b.target_name || '')
         })
 
-        const exists = newVal.find(a => a.uuid === currentScoringAssignment.value?.uuid)
-        if (!exists) {
-            currentScoringAssignment.value = sorted[0]
-            if (sorted[0]) initEndScores(sorted[0])
+        const route = useRoute()
+        const targetArcherId = route.query.archer
+        const targetArcher = newVal.find(a => a.uuid === targetArcherId || a.participant_id === targetArcherId)
+
+        if (targetArcher) {
+            currentScoringAssignment.value = targetArcher
+            initEndScores(targetArcher)
         } else {
-            currentScoringAssignment.value = exists
+            const exists = newVal.find(a => a.uuid === currentScoringAssignment.value?.uuid)
+            if (!exists) {
+                currentScoringAssignment.value = sorted[0]
+                if (sorted[0]) initEndScores(sorted[0])
+            } else {
+                currentScoringAssignment.value = exists
+            }
         }
     } else {
         currentScoringAssignment.value = null

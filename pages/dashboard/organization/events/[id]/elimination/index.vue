@@ -50,7 +50,7 @@
       <div class="flex items-center justify-between mb-6">
         <div>
           <h2 class="text-lg font-bold text-navy">Daftar Bracket Eliminasi</h2>
-          <p class="text-sm text-gray-500 mt-1">Kelola dan monitor bracket pertandingan eliminasi</p>
+          <div class="text-sm text-gray-500 mt-1">Kelola dan monitor bracket pertandingan eliminasi</div>
         </div>
       </div>
 
@@ -86,10 +86,10 @@
                 <img :src="`/${getCategoryIcon(bracket.category_name)}`" class="w-8 h-8 object-contain" />
               </div>
               <div class="min-w-0 flex-1">
-                <p class="font-bold text-navy group-hover:text-primary transition-colors line-clamp-2">
+                <div class="font-bold text-navy group-hover:text-primary transition-colors line-clamp-2">
                   {{ getBracketName(bracket) }}
-                </p>
-                <p class="text-xs text-gray-500 font-mono mt-1">{{ bracket.id }}</p>
+                </div>
+                <div class="text-xs text-gray-500 font-mono mt-1">{{ bracket.id }}</div>
               </div>
             </div>
             <div class="flex items-center gap-2">

@@ -115,7 +115,7 @@
                     <h3 class="text-lg font-bold text-navy">Hasil Tidak Ditemukan</h3>
                     <p class="text-sm text-gray-500 max-w-xs mx-auto">
                         Tidak ada staff yang cocok dengan kata kunci "<span class="font-bold text-navy">{{ searchQuery
-                        }}</span>".
+                            }}</span>".
                     </p>
                 </div>
                 <BaseButton @click="searchQuery = ''" variant="white" size="sm" class="font-bold">
@@ -146,12 +146,6 @@
                             class="hover:bg-gray-50/50 transition-all group">
                             <td class="px-6 py-5">
                                 <div class="flex items-center gap-4">
-                                    <div
-                                        class="w-10 h-10 rounded-xl bg-navy/5 border border-navy/5 overflow-hidden flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-                                        <img v-if="sk.avatar_url" :src="sk.avatar_url"
-                                            class="w-full h-full object-cover" />
-                                        <Icon v-else icon="ph:user-circle-bold" class="text-2xl text-navy/20" />
-                                    </div>
                                     <div class="flex flex-col min-w-0">
                                         <span
                                             class="text-[14px] font-bold text-navy group-hover:text-primary-dark transition-colors">{{
@@ -161,10 +155,8 @@
                             </td>
                             <td class="px-6 py-5">
                                 <div class="flex items-center gap-2">
-                                    <span class="text-lg font-black font-mono text-primary tracking-tighter">{{ sk.code
-                                        }}</span>
-                                    <BaseButton @click="copyCode(sk.code)" variant="white" size="sm" icon="ph:copy"
-                                        class="h-8 w-8 p-0 text-gray-400 hover:text-navy border-none shadow-none" />
+                                    <span class="text-lg font-black font-mono tracking-tighter">{{ sk.code
+                                    }}</span>
                                 </div>
                             </td>
                             <td class="px-6 py-5">

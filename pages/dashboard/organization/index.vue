@@ -41,7 +41,9 @@
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Total Atlet</p>
-                        <p class="text-navy-dark text-3xl font-extrabold tracking-tight">124</p>
+                        <p class="text-navy-dark text-3xl font-extrabold tracking-tight">{{ dashboardStats.totalArchers
+                            }}
+                        </p>
                     </div>
                     <div
                         class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-btn-text transition-colors">
@@ -49,9 +51,9 @@
                     </div>
                 </div>
                 <div class="mt-auto">
-                    <p class="text-green-600 text-xs font-bold flex items-center gap-1">
-                        <Icon icon="ph:trend-up" class="text-[14px]" />
-                        +12 check-ins today
+                    <p class="text-slate-400 text-[10px] font-bold flex items-center gap-1">
+                        <Icon icon="ph:info-bold" class="text-[12px]" />
+                        Dikelola oleh organisasi
                     </p>
                 </div>
             </div>
@@ -62,8 +64,12 @@
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Target Aktif</p>
-                        <p class="text-navy-dark text-3xl font-extrabold tracking-tight">32<span
-                                class="text-lg text-gray-400 font-medium ml-1">/ 35</span></p>
+                        <p class="text-navy-dark text-3xl font-extrabold tracking-tight">
+                            {{ dashboardStats.activeTargets }}
+                            <span v-if="dashboardStats.activeTotalTargets > 0"
+                                class="text-lg text-gray-400 font-medium ml-1">/ {{ dashboardStats.activeTotalTargets
+                                }}</span>
+                        </p>
                     </div>
                     <div
                         class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-btn-text transition-colors">
@@ -71,9 +77,11 @@
                     </div>
                 </div>
                 <div class="mt-auto">
-                    <p class="text-text-secondary text-xs font-medium flex items-center gap-1">
-                        <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-                        All systems online
+                    <p class="text-text-secondary text-[10px] font-medium flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full"
+                            :class="dashboardStats.activeTotalTargets > 0 ? 'bg-green-500' : 'bg-slate-300'"></span>
+                        {{ dashboardStats.activeTotalTargets > 0 ? 'Event sedang berlangsung' : 'Tidak ada event aktif'
+                        }}
                     </p>
                 </div>
             </div>
@@ -84,7 +92,9 @@
                 <div class="flex justify-between items-start">
                     <div>
                         <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Penyelesaian</p>
-                        <p class="text-navy-dark text-3xl font-extrabold tracking-tight">85%</p>
+                        <p class="text-navy-dark text-3xl font-extrabold tracking-tight">
+                            {{ Math.round(dashboardStats.completionRate || 0) }}%
+                        </p>
                     </div>
                     <div
                         class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-btn-text transition-colors">
@@ -92,7 +102,8 @@
                     </div>
                 </div>
                 <div class="w-full bg-gray-100 rounded-full h-1.5 mt-auto">
-                    <div class="bg-primary h-1.5 rounded-full" style="width: 85%"></div>
+                    <div class="bg-primary h-1.5 rounded-full transition-all duration-1000"
+                        :style="{ width: `${dashboardStats.completionRate || 0}%` }"></div>
                 </div>
             </div>
 
@@ -101,8 +112,10 @@
                 class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-sm transition-all border border-gray-100 group">
                 <div class="flex justify-between items-start">
                     <div>
-                        <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Time Left</p>
-                        <p class="text-navy-dark text-3xl font-extrabold tracking-tight tabular-nums">45:20</p>
+                        <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Status Event</p>
+                        <p class="text-navy-dark text-xl font-extrabold tracking-tight uppercase tabular-nums">
+                            {{ dashboardStats.timeLeft || '-' }}
+                        </p>
                     </div>
                     <div
                         class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-btn-text transition-colors">
@@ -110,7 +123,7 @@
                     </div>
                 </div>
                 <div class="mt-auto">
-                    <p class="text-text-secondary text-xs font-medium">Est. End: 14:30 PM</p>
+                    <p class="text-text-secondary text-[10px] font-medium">Berdasarkan event terbaru</p>
                 </div>
             </div>
         </div>
@@ -224,7 +237,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, reactive } from 'vue'
 import { useAuth } from '~/composables/useAuth'
 import { useRouter } from 'vue-router'
 import { useApi } from '~/composables/useApi'
@@ -243,11 +256,28 @@ const api = useApi()
 const { user } = useAuth()
 
 const orgCompletedEventsData = ref([])
+const dashboardStats = reactive({
+    totalArchers: 0,
+    activeTargets: 0,
+    activeTotalTargets: 0,
+    completionRate: 0,
+    timeLeft: '-'
+})
 const welcomeName = computed(() => user.value?.full_name || 'Admin')
 
 onMounted(() => {
     fetchOrgCompletedEvents()
+    fetchDashboardStats()
 })
+
+const fetchDashboardStats = async () => {
+    try {
+        const res = await api.get('/organizations/stats')
+        Object.assign(dashboardStats, res)
+    } catch (error) {
+        console.error('Failed to fetch dashboard stats:', error)
+    }
+}
 
 const fetchOrgCompletedEvents = async () => {
     try {

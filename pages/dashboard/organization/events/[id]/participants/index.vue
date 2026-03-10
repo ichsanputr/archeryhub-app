@@ -130,7 +130,7 @@
                                 class="group hover:bg-gray-50/50 transition-colors">
                                 <td class="px-6 py-4 align-top text-center w-16">
                                     <span class="text-sm font-bold text-gray-400">{{ (page - 1) * limit + index + 1
-                                        }}</span>
+                                    }}</span>
                                 </td>
                                 <td class="px-6 py-4 align-top min-w-[250px]">
                                     <div class="flex items-center gap-3">
@@ -139,10 +139,10 @@
                                             <img :src="useImageOrDefault(participant.avatar_url, participant.full_name)"
                                                 class="w-full h-full object-cover">
                                         </div>
-                                        <div class="min-w-0">
-                                            <div class="text-sm font-black text-navy mb-2 truncate leading-snug">{{
+                                        <div class="min-w-0 py-1">
+                                            <div class="text-sm font-black text-navy leading-tight">{{
                                                 participant.full_name }}</div>
-                                            <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">{{
+                                            <div class="text-[11px] text-gray-400 font-medium mt-1 leading-none">{{
                                                 participant.email || '-' }}</div>
                                         </div>
                                     </div>

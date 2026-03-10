@@ -100,28 +100,7 @@
 
     <!-- Right Section -->
     <div class="flex items-center gap-3 pl-4">
-      <!-- Notifications -->
-      <div ref="notificationRef" class="relative">
-        <button @click="showNotifications = !showNotifications" :class="[
-          isScrolled || !transparent
-            ? 'bg-gray-100 dark:bg-surface-highlight text-gray-700 dark:text-white hover:bg-gray-200'
-            : 'bg-white/10 text-white hover:bg-white/20'
-        ]" class="size-10 flex items-center justify-center rounded-lg transition-colors relative group">
-          <Icon icon="ph:bell" class="text-[20px] transition-transform" />
-          <span v-if="notifications.some(n => !n.read)"
-            class="absolute top-2 right-2 size-2.5 bg-primary rounded-full border border-white dark:border-surface-highlight"></span>
-        </button>
-
-        <!-- Notification Dropdown -->
-        <transition enter-active-class="transition duration-200 ease-out"
-          enter-from-class="transform scale-95 opacity-0" enter-to-class="transform scale-100 opacity-100"
-          leave-active-class="transition duration-150 ease-in" leave-from-class="transform scale-100 opacity-100"
-          leave-to-class="transform scale-95 opacity-0">
-          <NotificationList v-if="showNotifications" :notifications="notifications" @close="showNotifications = false"
-            @mark-all-read="notifications.forEach(n => n.read = true)" class="absolute right-0 mt-2 z-[100]" />
-        </transition>
-      </div>
-
+      <!-- Deleted Notification Section -->
     </div>
   </header>
 </template>
