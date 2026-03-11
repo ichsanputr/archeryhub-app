@@ -3,7 +3,7 @@
         <section class="sticky top-16 z-30 border-b border-black/5 bg-white/95 backdrop-blur">
             <div class="container mx-auto max-w-7xl px-4 py-3">
                 <Breadcrumbs :items="[
-                    { label: 'Marketplace', path: '/products' },
+                    { label: 'Produk', path: '/products' },
                     { label: breadcrumbCategory }
                 ]" :current="product?.name || 'Detail Produk'" />
             </div>
@@ -26,7 +26,7 @@
                                 <div class="absolute left-4 top-4 flex items-center gap-2">
                                     <span
                                         class="inline-flex items-center gap-1 rounded-full bg-black px-3 py-1 text-xs font-bold uppercase tracking-wider text-white">
-                                        {{ (product.category || 'product').replace('_', ' ') }}
+                                        {{ productCategoryLabel }}
                                     </span>
                                     <span v-if="product.sale_price"
                                         class="inline-flex rounded-full bg-red-500 px-3 py-1 text-xs font-black uppercase tracking-wider text-white">
@@ -53,14 +53,14 @@
                             <div class="grid grid-cols-3 gap-3 rounded-2xl border border-black/5 bg-white p-4 text-center text-xs">
                                 <div>
                                     <div class="font-black text-navy">100% Ori</div>
-                                    <div class="text-gray-500">Quality Checked</div>
+                                    <div class="text-gray-500">Sudah Dicek</div>
                                 </div>
                                 <div>
                                     <div class="font-black text-navy">Garansi 7 Hari</div>
                                     <div class="text-gray-500">Tukar Produk</div>
                                 </div>
                                 <div>
-                                    <div class="font-black text-navy">Fast Shipping</div>
+                                    <div class="font-black text-navy">Pengiriman Cepat</div>
                                     <div class="text-gray-500">Estimasi 1-3 Hari</div>
                                 </div>
                             </div>
@@ -68,7 +68,7 @@
 
                         <aside class="space-y-5 lg:sticky lg:top-28 lg:h-fit">
                             <div class="rounded-3xl border border-black/5 bg-white p-6 shadow-sm">
-                                <div class="text-xs font-bold uppercase tracking-[0.2em] text-gray-400">Marketplace</div>
+                                <div class="text-xs font-bold uppercase tracking-[0.2em] text-gray-400">Produk Pilihan</div>
                                 <h1 class="mt-2 text-3xl font-black leading-tight text-navy">{{ product.name }}</h1>
 
                                 <div class="mt-4 flex flex-wrap items-center gap-3 text-sm">
@@ -136,10 +136,10 @@
                             <div class="rounded-3xl border border-black/5 bg-white p-5 shadow-sm">
                                 <div class="text-xs font-bold uppercase tracking-[0.2em] text-gray-400">Penjual</div>
                                 <div class="mt-3 flex items-center gap-3">
-                                    <img :src="product.seller?.avatar_url || 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=300'"
+                                    <img :src="allowedProductImages[4]"
                                         alt="seller" class="h-12 w-12 rounded-full object-cover" />
                                     <div>
-                                        <div class="font-black text-navy">{{ product.seller?.store_name || 'ArcheryHub Store' }}</div>
+                                        <div class="font-black text-navy">{{ product.seller?.store_name || 'Toko ArcheryHub' }}</div>
                                         <div class="text-xs text-gray-500">Respon chat cepat</div>
                                     </div>
                                 </div>
@@ -180,20 +180,6 @@
             </div>
         </Transition>
 
-        <div v-if="product && !isLoading"
-            class="fixed bottom-0 left-0 right-0 z-40 border-t border-black/10 bg-white/95 p-3 backdrop-blur md:hidden">
-            <div class="mx-auto flex max-w-7xl items-center gap-3">
-                <div>
-                    <div class="text-[11px] font-bold uppercase tracking-widest text-gray-400">Harga</div>
-                    <div class="text-sm font-black text-navy">Rp {{ formatPrice(finalPrice) }}</div>
-                </div>
-                <BaseButton @click="handleAddToCart" variant="primary" size="lg" icon="ph:shopping-cart-simple-bold"
-                    class="flex-1 rounded-xl py-3 text-sm font-black" :loading="isAddingToCart" :disabled="maxQty < 1">
-                    Beli Sekarang
-                </BaseButton>
-            </div>
-        </div>
-
         <div v-if="isZoomOpen" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4">
             <button @click="isZoomOpen = false" class="absolute right-5 top-5 text-white">
                 <Icon icon="ph:x-bold" class="text-3xl" />
@@ -221,11 +207,41 @@ const { isLoggedIn, user } = useAuth()
 const config = useRuntimeConfig()
 const apiBaseUrl = config.public.apiBaseUrl
 
+const categoryLabels = {
+    equipment: 'Peralatan',
+    apparel: 'Pakaian',
+    accessories: 'Aksesoris',
+    training: 'Latihan',
+    other: 'Lainnya'
+}
+
+useHead(() => ({
+    title: product.value?.name
+        ? `${product.value.name} | Produk Panahan | ArcheryHub`
+        : 'Detail Produk | ArcheryHub',
+    meta: [
+        {
+            name: 'description',
+            content: product.value?.description
+                ? String(product.value.description).slice(0, 160)
+                : 'Lihat detail produk panahan, foto, spesifikasi, dan harga terbaru di ArcheryHub.'
+        }
+    ]
+}))
+
 const quantity = ref(1)
 const selectedColor = ref('')
 const selectedImage = ref('')
 const isZoomOpen = ref(false)
 const isAddingToCart = ref(false)
+
+const allowedProductImages = [
+    'https://images.unsplash.com/photo-1503602642458-232111445657',
+    'https://images.unsplash.com/photo-1523275335684-37898b6baf30',
+    'https://images.unsplash.com/photo-1512496015851-a90fb38ba796',
+    'https://images.unsplash.com/photo-1511556820780-d912e42b4980',
+    'https://images.unsplash.com/photo-1491553895911-0055eca6402d'
+]
 
 const { data: productResponse, pending: isLoading } = useAsyncData(
     `product-${route.params.slug}`,
@@ -263,10 +279,10 @@ const galleryImages = computed(() => {
     if (product.value?.image_url) imgs.push(product.value.image_url)
     if (Array.isArray(product.value?.images)) imgs.push(...product.value.images)
 
-    const unique = [...new Set(imgs.filter(Boolean))]
+    const unique = [...new Set(imgs.filter((img) => allowedProductImages.includes(img)))]
     if (unique.length > 0) return unique
 
-    return ['https://images.unsplash.com/photo-1601233069150-f8f4a135a507?q=80&w=2000']
+    return [allowedProductImages[0]]
 })
 
 watchEffect(() => {
@@ -284,8 +300,10 @@ watchEffect(() => {
 
 const breadcrumbCategory = computed(() => {
     const cat = product.value?.category || ''
-    return cat ? cat.charAt(0).toUpperCase() + cat.slice(1) : 'Produk'
+    return categoryLabels[cat] || 'Produk'
 })
+
+const productCategoryLabel = computed(() => categoryLabels[product.value?.category] || 'Produk')
 
 const finalPrice = computed(() => product.value?.sale_price || product.value?.price || 0)
 const maxQty = computed(() => Math.max(0, Number(product.value?.stock || 0)))

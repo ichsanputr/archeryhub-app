@@ -3,7 +3,7 @@
         <!-- Hero Section -->
         <section class="bg-navy relative overflow-hidden pt-36 pb-16 md:pt-48 md:pb-24">
             <div class="absolute inset-0 z-0">
-                <img src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=1600&auto=format&fit=crop&q=80"
+                <img :src="allowedProductImages[0]"
                     alt="Shop Background" class="w-full h-full object-cover" />
                 <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
                 <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90">
@@ -14,7 +14,7 @@
                     <div
                         class="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-[10px] sm:text-sm font-bold tracking-widest mb-6">
                         <Icon icon="ph:shopping-bag-bold" class="text-base sm:text-lg" />
-                        <span>Marketplace Panahan</span>
+                        <span>Katalog Produk Panahan</span>
                     </div>
                     <h1
                         class="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
@@ -97,13 +97,13 @@
                 </div>
                 <div v-else key="content" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                     <!-- Product Card Premium -->
-                    <NuxtLink v-for="product in filteredProducts" :key="product.id"
-                        :to="`/products/${product.slug || product.id}`"
+                    <a v-for="product in filteredProducts" :key="product.id"
+                        :href="`/products/${product.slug || product.id}`"
                         class="bg-white rounded-3xl border border-stone-200 flex flex-col shadow-sm hover:border-stone-300 transition-all group overflow-hidden h-full">
 
                         <!-- Product Image Container -->
                         <div class="relative pt-[100%] bg-stone-50 overflow-hidden">
-                            <img :src="useImageOrDefault(product.image_url)" :alt="product.name"
+                            <img :src="getProductImage(product.image_url)" :alt="product.name"
                                 class="absolute inset-0 w-full h-full object-cover transition-transform duration-700" />
 
                             <!-- Premium Overlays -->
@@ -136,7 +136,7 @@
                             <div class="flex items-center justify-between mb-3">
                                 <span
                                     class="text-[10px] font-black text-stone-600 tracking-widest bg-stone-100 px-2 py-0.5 rounded-md uppercase">
-                                    {{ product.category }}
+                                    {{ getCategoryLabel(product.category) }}
                                 </span>
                                 <span v-if="product.stock > 0"
                                     class="text-[10px] font-bold text-emerald-700 flex items-center gap-1">
@@ -171,7 +171,7 @@
                                 </div>
                             </div>
                         </div>
-                    </NuxtLink>
+                    </a>
                 </div>
             </Transition>
         </section>
@@ -184,11 +184,11 @@
                     Gabung sebagai penjual dan jangkau ribuan pemanah di seluruh Indonesia. Gratis untuk klub dan
                     organisasi!
                 </p>
-                <NuxtLink to="/auth/register?type=club">
+                <a href="/auth/register?type=club">
                     <BaseButton variant="navy" size="lg" icon="ph:storefront">
                         Daftar Sebagai Penjual
                     </BaseButton>
-                </NuxtLink>
+                </a>
             </div>
         </section>
     </div>
@@ -204,18 +204,44 @@ definePageMeta({
     layout: 'landing'
 })
 
+useHead({
+    title: 'Produk Panahan | ArcheryHub',
+    meta: [
+        {
+            name: 'description',
+            content: 'Temukan perlengkapan dan aksesoris panahan pilihan untuk latihan dan kompetisi di ArcheryHub.'
+        }
+    ]
+})
+
 const searchQuery = ref('')
 const categoryFilter = ref('all')
 const sortBy = ref('newest')
+
+const allowedProductImages = [
+    'https://images.unsplash.com/photo-1503602642458-232111445657',
+    'https://images.unsplash.com/photo-1523275335684-37898b6baf30',
+    'https://images.unsplash.com/photo-1512496015851-a90fb38ba796',
+    'https://images.unsplash.com/photo-1511556820780-d912e42b4980',
+    'https://images.unsplash.com/photo-1491553895911-0055eca6402d'
+]
 
 const categories = [
     { label: 'Semua', value: 'all', icon: 'ph:squares-four' },
     { label: 'Peralatan', value: 'equipment', icon: 'ph:target' },
     { label: 'Pakaian', value: 'apparel', icon: 'ph:t-shirt' },
     { label: 'Aksesoris', value: 'accessories', icon: 'ph:bag' },
-    { label: 'Training', value: 'training', icon: 'ph:graduation-cap' },
+    { label: 'Latihan', value: 'training', icon: 'ph:graduation-cap' },
     { label: 'Lainnya', value: 'other', icon: 'ph:package' },
 ]
+
+const categoryLabels = {
+    equipment: 'Peralatan',
+    apparel: 'Pakaian',
+    accessories: 'Aksesoris',
+    training: 'Latihan',
+    other: 'Lainnya'
+}
 
 const sortOptions = [
     { value: 'newest', title: 'Terbaru' },
@@ -253,6 +279,10 @@ const filteredProducts = computed(() => {
 const formatPrice = (price) => {
     return new Intl.NumberFormat('id-ID').format(price)
 }
+
+const getCategoryLabel = (category) => categoryLabels[category] || 'Produk'
+
+const getProductImage = (url) => allowedProductImages.includes(url) ? url : allowedProductImages[0]
 </script>
 
 <style scoped>
