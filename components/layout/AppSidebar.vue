@@ -292,7 +292,6 @@ const navSections = computed(() => {
         type: 'group',
         children: [
           { label: 'Event Saya', icon: 'material-symbols:event-list-outline', path: '/dashboard/organization/events', isLocked: !isActiveSub },
-          { label: 'Laporan', icon: 'ph:chart-bar', path: '/dashboard/organization/reports', isLocked: !isActiveSub },
         ]
       },
       { type: 'label', label: 'Manajemen Organisasi' },

@@ -1,194 +1,214 @@
 <template>
-    <div class="min-h-screen bg-gray-50 pt-16">
-        <!-- Breadcrumb -->
-        <div class="bg-white border-b border-gray-200 sticky top-16 z-30">
-            <div class="container mx-auto px-4 max-w-7xl py-3 md:py-4">
+    <div class="min-h-screen bg-[#f7f8f5] pt-16 pb-20">
+        <section class="sticky top-16 z-30 border-b border-black/5 bg-white/95 backdrop-blur">
+            <div class="container mx-auto max-w-7xl px-4 py-3">
                 <Breadcrumbs :items="[
                     { label: 'Marketplace', path: '/products' },
                     { label: breadcrumbCategory }
-                ]" :current="product.name" />
+                ]" :current="product?.name || 'Detail Produk'" />
             </div>
-        </div>
+        </section>
 
         <Transition name="fade" mode="out-in">
             <ProductPageSkeleton v-if="isLoading || !product" key="skeleton"
-                class="container mx-auto px-4 max-w-7xl pt-8 pb-20" />
+                class="container mx-auto max-w-7xl px-4 pt-8" />
 
-            <div v-else key="content">
-                <!-- Main Product Section -->
-                <section class="container mx-auto px-4 max-w-7xl py-8">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-
-                        <!-- Product Images -->
+            <div v-else key="content" class="container mx-auto max-w-7xl px-4 pt-8">
+                <section
+                    class="rounded-3xl border border-black/5 bg-gradient-to-br from-[#fffaf1] via-white to-[#f1f5ff] p-4 shadow-sm md:p-8">
+                    <div class="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_430px]">
                         <div class="space-y-4">
-                            <!-- Main Image -->
                             <div
-                                class="relative aspect-square bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+                                class="relative aspect-[4/3] overflow-hidden rounded-3xl bg-white ring-1 ring-black/5 shadow-sm">
                                 <img :src="selectedImage" :alt="product.name"
-                                    class="w-full h-full object-contain p-4" />
+                                    class="h-full w-full object-cover transition duration-500 hover:scale-[1.03]" />
 
-                                <!-- Sale Badge -->
-                                <div v-if="product.sale_price" class="absolute top-4 left-4">
-                                    <span class="px-4 py-2 bg-red-500 text-white font-bold rounded-full shadow-lg">
+                                <div class="absolute left-4 top-4 flex items-center gap-2">
+                                    <span
+                                        class="inline-flex items-center gap-1 rounded-full bg-black px-3 py-1 text-xs font-bold uppercase tracking-wider text-white">
+                                        {{ (product.category || 'product').replace('_', ' ') }}
+                                    </span>
+                                    <span v-if="product.sale_price"
+                                        class="inline-flex rounded-full bg-red-500 px-3 py-1 text-xs font-black uppercase tracking-wider text-white">
                                         -{{ discountPercent }}%
                                     </span>
                                 </div>
 
-                                <!-- Zoom Button -->
                                 <button @click="isZoomOpen = true"
-                                    class="absolute bottom-4 right-4 p-3 bg-white/90 backdrop-blur-sm rounded-xl shadow-lg hover:bg-primary hover:text-navy transition-colors">
-                                    <Icon icon="ph:magnifying-glass-plus" class="text-xl" />
+                                    class="absolute bottom-4 right-4 rounded-xl bg-white/90 p-2.5 text-navy shadow-sm hover:bg-white">
+                                    <Icon icon="ph:magnifying-glass-plus-bold" class="text-lg" />
                                 </button>
                             </div>
 
-                            <!-- Thumbnails -->
-                            <div class="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
-                                <button v-for="(img, idx) in product.images" :key="idx" @click="selectedImage = img"
+                            <div class="grid grid-cols-4 gap-2 sm:grid-cols-6">
+                                <button v-for="(img, idx) in galleryImages" :key="idx" @click="selectedImage = img"
                                     :class="[
-                                        'w-20 h-20 rounded-xl border-2 overflow-hidden flex-shrink-0 transition-all',
-                                        selectedImage === img ? 'border-primary shadow-lg' : 'border-gray-200 hover:border-gray-300'
+                                        'aspect-square overflow-hidden rounded-2xl border-2 bg-white transition',
+                                        selectedImage === img ? 'border-primary shadow-sm' : 'border-transparent hover:border-black/10'
                                     ]">
-                                    <img :src="img" class="w-full h-full object-cover" />
+                                    <img :src="img" :alt="`${product.name} ${idx + 1}`" class="h-full w-full object-cover" />
                                 </button>
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-3 rounded-2xl border border-black/5 bg-white p-4 text-center text-xs">
+                                <div>
+                                    <div class="font-black text-navy">100% Ori</div>
+                                    <div class="text-gray-500">Quality Checked</div>
+                                </div>
+                                <div>
+                                    <div class="font-black text-navy">Garansi 7 Hari</div>
+                                    <div class="text-gray-500">Tukar Produk</div>
+                                </div>
+                                <div>
+                                    <div class="font-black text-navy">Fast Shipping</div>
+                                    <div class="text-gray-500">Estimasi 1-3 Hari</div>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Product Info -->
-                        <div class="space-y-6">
-                            <!-- Title & Stock -->
-                            <div class="space-y-2">
-                                <h1 class="text-xl sm:text-2xl md:text-3xl font-black text-navy leading-tight">{{
-                                    product.name
-                                }}</h1>
-                                <div class="flex items-center gap-2 text-sm">
-                                    <span v-if="product.stock > 0" class="font-bold text-green-600">
-                                        Stok: {{ product.stock }}
+                        <aside class="space-y-5 lg:sticky lg:top-28 lg:h-fit">
+                            <div class="rounded-3xl border border-black/5 bg-white p-6 shadow-sm">
+                                <div class="text-xs font-bold uppercase tracking-[0.2em] text-gray-400">Marketplace</div>
+                                <h1 class="mt-2 text-3xl font-black leading-tight text-navy">{{ product.name }}</h1>
+
+                                <div class="mt-4 flex flex-wrap items-center gap-3 text-sm">
+                                    <span
+                                        class="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1.5 font-bold text-emerald-700">
+                                        <span class="h-2 w-2 rounded-full" :class="product.stock > 0 ? 'bg-emerald-600' : 'bg-red-500'" />
+                                        {{ product.stock > 0 ? `Stok ${product.stock}` : 'Stok Habis' }}
                                     </span>
-                                    <span v-else class="font-bold text-red-600">
-                                        Stok Habis
+                                    <span class="inline-flex items-center gap-1 rounded-full bg-amber-50 px-3 py-1.5 font-bold text-amber-700">
+                                        <Icon icon="ph:star-fill" /> 4.9
                                     </span>
                                 </div>
-                            </div>
 
-                            <!-- Price -->
-                            <div class="bg-gray-50 rounded-2xl py-4 md:py-6 border border-gray-100">
-                                <div class="flex items-end gap-3 md:gap-4">
-                                    <span class="text-3xl md:text-4xl font-black text-navy">
-                                        Rp {{ formatPrice(product.sale_price || product.price) }}
-                                    </span>
-                                    <span v-if="product.sale_price"
-                                        class="text-base sm:text-lg md:text-xl text-gray-400 line-through mb-1">
-                                        Rp {{ formatPrice(product.price) }}
-                                    </span>
+                                <div class="mt-5 rounded-2xl bg-[#0f172a] p-5 text-white">
+                                    <div class="text-xs uppercase tracking-[0.18em] text-white/70">Harga</div>
+                                    <div class="mt-1 flex items-end gap-3">
+                                        <div class="text-3xl font-black">Rp {{ formatPrice(finalPrice) }}</div>
+                                        <div v-if="product.sale_price" class="pb-1 text-sm text-white/60 line-through">Rp {{ formatPrice(product.price) }}</div>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <!-- Quantity Selector -->
-                            <div class="flex flex-wrap items-center gap-4">
-                                <span class="font-bold text-navy text-sm md:text-base">Jumlah:</span>
-                                <div
-                                    class="flex items-center border border-gray-200 rounded-xl overflow-hidden bg-white">
-                                    <button @click="quantity = Math.max(1, quantity - 1)"
-                                        class="px-4 py-2 hover:bg-gray-100 transition-colors">
-                                        <Icon icon="ph:minus" />
-                                    </button>
-                                    <input v-model.number="quantity" type="number" min="1" :max="product.stock"
-                                        class="w-16 text-center font-bold text-navy py-2 outline-none" />
-                                    <button @click="quantity = Math.min(product.stock, quantity + 1)"
-                                        class="px-4 py-2 hover:bg-gray-100 transition-colors">
-                                        <Icon icon="ph:plus" />
-                                    </button>
+                                <div v-if="product.colors?.length" class="mt-5">
+                                    <div class="mb-2 text-xs font-bold uppercase tracking-wider text-gray-400">Warna</div>
+                                    <div class="flex flex-wrap gap-2">
+                                        <button v-for="color in product.colors" :key="color" @click="selectedColor = color"
+                                            :class="[
+                                                'rounded-full border px-3 py-1.5 text-xs font-bold transition',
+                                                selectedColor === color ? 'border-navy bg-navy text-white' : 'border-gray-200 text-gray-600 hover:border-gray-300'
+                                            ]">
+                                            {{ color }}
+                                        </button>
+                                    </div>
                                 </div>
-                                <span class="text-gray-400 text-xs md:text-sm">Tersisa {{ product.stock }} pcs</span>
-                            </div>
 
-                            <!-- Actions (Desktop) -->
-                            <div class="hidden sm:flex gap-4 pt-2">
-                                <BaseButton @click="handleAddToCart" variant="primary" size="lg" icon="ph:shopping-cart"
-                                    class="w-full" :loading="isAddingToCart">
+                                <div class="mt-5 flex items-center justify-between rounded-2xl border border-black/5 bg-[#fafafa] p-3">
+                                    <div class="text-sm font-bold text-navy">Jumlah</div>
+                                    <div class="flex items-center rounded-xl border border-black/10 bg-white">
+                                        <button @click="quantity = Math.max(1, quantity - 1)" class="px-3 py-2 text-navy">
+                                            <Icon icon="ph:minus-bold" />
+                                        </button>
+                                        <input v-model.number="quantity" type="number" min="1" :max="maxQty"
+                                            class="w-12 border-x border-black/10 text-center text-sm font-black text-navy outline-none" />
+                                        <button @click="quantity = Math.min(maxQty, quantity + 1)" class="px-3 py-2 text-navy">
+                                            <Icon icon="ph:plus-bold" />
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <BaseButton @click="handleAddToCart" variant="primary" size="lg" icon="ph:shopping-cart-simple-bold"
+                                    class="mt-5 w-full rounded-2xl py-4 font-black" :loading="isAddingToCart" :disabled="maxQty < 1">
                                     Tambah ke Keranjang
                                 </BaseButton>
+
+                                <div class="mt-4 flex items-center justify-between rounded-2xl border border-black/5 bg-white p-3">
+                                    <div class="text-xs font-bold uppercase tracking-widest text-gray-400">Bagikan</div>
+                                    <div class="flex items-center gap-2">
+                                        <button @click="share('facebook')" class="rounded-lg bg-blue-50 p-2 text-blue-600"><Icon icon="ph:facebook-logo-bold" /></button>
+                                        <button @click="share('twitter')" class="rounded-lg bg-sky-50 p-2 text-sky-600"><Icon icon="ph:twitter-logo-bold" /></button>
+                                        <button @click="share('whatsapp')" class="rounded-lg bg-green-50 p-2 text-green-600"><Icon icon="ph:whatsapp-logo-bold" /></button>
+                                        <button @click="copyLink" class="rounded-lg bg-gray-100 p-2 text-gray-700"><Icon icon="ph:link-bold" /></button>
+                                    </div>
+                                </div>
                             </div>
 
-                            <!-- Mobile Actions (Visible on small screens) -->
-                            <div class="sm:hidden space-y-3">
-                                <BaseButton @click="handleAddToCart" variant="primary" size="lg" icon="ph:shopping-cart"
-                                    class="w-full py-4 text-base font-black" :loading="isAddingToCart">
-                                    Tambah Keranjang
-                                </BaseButton>
+                            <div class="rounded-3xl border border-black/5 bg-white p-5 shadow-sm">
+                                <div class="text-xs font-bold uppercase tracking-[0.2em] text-gray-400">Penjual</div>
+                                <div class="mt-3 flex items-center gap-3">
+                                    <img :src="product.seller?.avatar_url || 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=300'"
+                                        alt="seller" class="h-12 w-12 rounded-full object-cover" />
+                                    <div>
+                                        <div class="font-black text-navy">{{ product.seller?.store_name || 'ArcheryHub Store' }}</div>
+                                        <div class="text-xs text-gray-500">Respon chat cepat</div>
+                                    </div>
+                                </div>
                             </div>
-
-                            <!-- Sticky Mobile Bottom Bar -->
-                            <div
-                                class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 z-40 flex gap-3 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
-                                <BaseButton @click="handleAddToCart" variant="primary" size="lg" icon="ph:shopping-cart"
-                                    class="flex-1 font-black text-sm" :loading="isAddingToCart">
-                                    Tambah Keranjang
-                                </BaseButton>
-                            </div>
-
-                        </div>
+                        </aside>
                     </div>
                 </section>
-                <section class="bg-white border-t border-gray-200 py-8">
-                    <div class="container mx-auto px-4 max-w-7xl">
-                        <!-- Tabs -->
-                        <div class="flex gap-1 border-b border-gray-200 mb-8">
-                            <button v-for="tab in tabs" :key="tab.value" @click="activeTab = tab.value" :class="[
-                                'px-6 py-3 font-bold text-sm transition-colors relative',
-                                activeTab === tab.value
-                                    ? 'text-navy'
-                                    : 'text-gray-400 hover:text-gray-600'
-                            ]">
-                                {{ tab.label }}
-                                <span v-if="activeTab === tab.value"
-                                    class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full"></span>
-                            </button>
-                        </div>
 
-                        <!-- Tab Content -->
-                        <div v-if="activeTab === 'description'" class="prose max-w-none text-gray-700">
-                            <div v-if="product.description" class="mb-6">
-                                <h3 class="text-lg font-bold text-navy mb-3">Deskripsi</h3>
-                                <p class="text-gray-700 whitespace-pre-line">{{ product.description }}</p>
-                            </div>
-                            <div v-if="product.specifications && Object.keys(product.specifications).length > 0">
-                                <h3 class="text-lg font-bold text-navy mt-6 mb-4">Spesifikasi</h3>
-                                <table class="w-full">
-                                    <tr v-for="(value, key) in product.specifications" :key="key"
-                                        class="border-b border-gray-100">
-                                        <td class="py-3 text-gray-500 w-1/3">{{ key }}</td>
-                                        <td class="py-3 font-medium text-navy">{{ value }}</td>
-                                    </tr>
-                                </table>
+                <section class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_340px]">
+                    <div class="rounded-3xl border border-black/5 bg-white p-6 shadow-sm md:p-8">
+                        <h2 class="text-xl font-black text-navy">Deskripsi Produk</h2>
+                        <p class="mt-3 whitespace-pre-line leading-relaxed text-gray-600">
+                            {{ product.description || 'Belum ada deskripsi detail untuk produk ini.' }}
+                        </p>
+
+                        <div v-if="Object.keys(product.specifications || {}).length" class="mt-6">
+                            <h3 class="text-sm font-black uppercase tracking-[0.2em] text-gray-400">Spesifikasi</h3>
+                            <div class="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2">
+                                <div v-for="(value, key) in product.specifications" :key="key"
+                                    class="rounded-2xl border border-black/5 bg-[#fafafa] p-4">
+                                    <div class="text-xs font-bold uppercase tracking-wider text-gray-400">{{ key }}</div>
+                                    <div class="mt-1 font-black text-navy">{{ value }}</div>
+                                </div>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="rounded-3xl border border-black/5 bg-white p-5 shadow-sm">
+                        <h3 class="text-sm font-black uppercase tracking-[0.2em] text-gray-400">Ringkasan</h3>
+                        <ul class="mt-4 space-y-3 text-sm text-gray-600">
+                            <li class="flex items-center justify-between"><span>SKU</span><span class="font-bold text-navy">{{ (product.slug || '-').toUpperCase() }}</span></li>
+                            <li class="flex items-center justify-between"><span>Kategori</span><span class="font-bold text-navy">{{ breadcrumbCategory }}</span></li>
+                            <li class="flex items-center justify-between"><span>Harga Jual</span><span class="font-bold text-navy">Rp {{ formatPrice(finalPrice) }}</span></li>
+                            <li class="flex items-center justify-between"><span>Kondisi</span><span class="font-bold text-navy">Baru</span></li>
+                        </ul>
                     </div>
                 </section>
             </div>
         </Transition>
 
-        <!-- Image Zoom Modal -->
-        <div v-if="isZoomOpen"
-            class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-navy/95 backdrop-blur-sm">
-            <button @click="isZoomOpen = false"
-                class="absolute top-6 right-6 text-white hover:text-primary transition-colors">
-                <Icon icon="ph:x-bold" class="text-3xl" />
-            </button>
-            <div class="max-w-4xl max-h-[90vh] w-full h-full flex items-center justify-center">
-                <img :src="selectedImage" class="max-w-full max-h-full object-contain" />
+        <div v-if="product && !isLoading"
+            class="fixed bottom-0 left-0 right-0 z-40 border-t border-black/10 bg-white/95 p-3 backdrop-blur md:hidden">
+            <div class="mx-auto flex max-w-7xl items-center gap-3">
+                <div>
+                    <div class="text-[11px] font-bold uppercase tracking-widest text-gray-400">Harga</div>
+                    <div class="text-sm font-black text-navy">Rp {{ formatPrice(finalPrice) }}</div>
+                </div>
+                <BaseButton @click="handleAddToCart" variant="primary" size="lg" icon="ph:shopping-cart-simple-bold"
+                    class="flex-1 rounded-xl py-3 text-sm font-black" :loading="isAddingToCart" :disabled="maxQty < 1">
+                    Beli Sekarang
+                </BaseButton>
             </div>
         </div>
 
+        <div v-if="isZoomOpen" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4">
+            <button @click="isZoomOpen = false" class="absolute right-5 top-5 text-white">
+                <Icon icon="ph:x-bold" class="text-3xl" />
+            </button>
+            <img :src="selectedImage" :alt="product?.name" class="max-h-[90vh] max-w-[92vw] rounded-2xl object-contain" />
+        </div>
     </div>
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
-import { useToast } from '~/composables/useToast'
 import { useAuth } from '~/composables/useAuth'
+import { useToast } from '~/composables/useToast'
 
 definePageMeta({
     layout: 'landing',
@@ -196,24 +216,16 @@ definePageMeta({
 })
 
 const route = useRoute()
-const quantity = ref(1)
-const activeTab = ref('description')
-const isZoomOpen = ref(false)
+const toast = useToast()
 const { isLoggedIn, user } = useAuth()
-
-const breadcrumbCategory = computed(() => {
-    const cat = product.value?.category || ''
-    if (!cat) return ''
-    return cat.charAt(0).toUpperCase() + cat.slice(1)
-})
-
-const tabs = [
-    { label: 'Deskripsi', value: 'description' },
-]
-
 const config = useRuntimeConfig()
 const apiBaseUrl = config.public.apiBaseUrl
-const toast = useToast()
+
+const quantity = ref(1)
+const selectedColor = ref('')
+const selectedImage = ref('')
+const isZoomOpen = ref(false)
+const isAddingToCart = ref(false)
 
 const { data: productResponse, pending: isLoading } = useAsyncData(
     `product-${route.params.slug}`,
@@ -221,56 +233,85 @@ const { data: productResponse, pending: isLoading } = useAsyncData(
     { lazy: true, server: true }
 )
 
+const parseJSON = (val, fallback) => {
+    if (typeof val === 'string' && val.trim() !== '') {
+        try {
+            return JSON.parse(val)
+        } catch {
+            return fallback
+        }
+    }
+    return val || fallback
+}
+
 const product = computed(() => {
     const data = productResponse.value?.data || productResponse.value
     if (!data) return null
 
-    // Clone data to avoid mutating reactive state directly if needed, 
-    // although computed return is read-only.
     const p = { ...data }
-
-    // Parse images from JSON string if needed
-    if (p.images && typeof p.images === 'string') {
-        try {
-            p.images = JSON.parse(p.images)
-        } catch {
-            p.images = []
-        }
-    }
-
-    // Parse specifications from JSON string if needed
-    if (p.specifications && typeof p.specifications === 'string') {
-        try {
-            p.specifications = JSON.parse(p.specifications)
-        } catch {
-            p.specifications = {}
-        }
-    }
-
-    // Set default images array if empty
-    if (!p.images || p.images.length === 0) {
-        p.images = p.image_url ? [p.image_url] : []
-    }
-
+    p.price = Number(p.price || 0)
+    p.sale_price = p.sale_price !== null && p.sale_price !== undefined ? Number(p.sale_price) : null
+    p.stock = Number(p.stock || 0)
+    p.images = parseJSON(p.images, [])
+    p.colors = parseJSON(p.colors, [])
+    p.specifications = parseJSON(p.specifications, {})
     return p
 })
 
-const selectedImage = ref('')
+const galleryImages = computed(() => {
+    const imgs = []
+    if (product.value?.image_url) imgs.push(product.value.image_url)
+    if (Array.isArray(product.value?.images)) imgs.push(...product.value.images)
 
-watchEffect(() => {
-    if (product.value) {
-        selectedImage.value = useImageOrDefault(product.value.images[0] || product.value.image_url)
-    }
+    const unique = [...new Set(imgs.filter(Boolean))]
+    if (unique.length > 0) return unique
+
+    return ['https://images.unsplash.com/photo-1601233069150-f8f4a135a507?q=80&w=2000']
 })
 
+watchEffect(() => {
+    if (!selectedImage.value && galleryImages.value.length) {
+        selectedImage.value = galleryImages.value[0]
+    }
+
+    if (product.value?.colors?.length && !selectedColor.value) {
+        selectedColor.value = product.value.colors[0]
+    }
+
+    const safeMax = Math.max(1, Number(product.value?.stock || 1))
+    if (quantity.value > safeMax) quantity.value = safeMax
+})
+
+const breadcrumbCategory = computed(() => {
+    const cat = product.value?.category || ''
+    return cat ? cat.charAt(0).toUpperCase() + cat.slice(1) : 'Produk'
+})
+
+const finalPrice = computed(() => product.value?.sale_price || product.value?.price || 0)
+const maxQty = computed(() => Math.max(0, Number(product.value?.stock || 0)))
+
 const discountPercent = computed(() => {
-    if (!product.value || !product.value.sale_price) return 0
+    if (!product.value?.sale_price || !product.value?.price) return 0
     return Math.round((1 - product.value.sale_price / product.value.price) * 100)
 })
 
-const relatedProducts = ref([])
+const share = (platform) => {
+    const url = window.location.href
+    const text = `Cek ${product.value.name} di ArcheryHub! Rp ${formatPrice(finalPrice.value)}`
 
-const isAddingToCart = ref(false)
+    const links = {
+        facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+        twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`,
+        whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent(text + ' ' + url)}`
+    }
+
+    if (links[platform]) window.open(links[platform], '_blank')
+}
+
+const copyLink = () => {
+    navigator.clipboard.writeText(window.location.href)
+    toast.success('Link produk berhasil disalin')
+}
 
 const handleAddToCart = async () => {
     if (!isLoggedIn.value) {
@@ -283,38 +324,43 @@ const handleAddToCart = async () => {
         return
     }
 
+    if (!product.value || maxQty.value < 1) {
+        toast.error('Stok produk sedang tidak tersedia')
+        return
+    }
+
     isAddingToCart.value = true
     try {
         await $fetch(`${apiBaseUrl}/cart`, {
             method: 'POST',
             body: {
-                product_id: product.value.id,
-                quantity: quantity.value
+                product_id: product.value.id || product.value.uuid,
+                quantity: quantity.value,
+                color: selectedColor.value
             },
             headers: {
-                'Authorization': `Bearer ${useCookie('auth_token').value}`
+                Authorization: `Bearer ${useCookie('auth_token').value}`
             }
         })
         toast.success('Berhasil ditambah ke keranjang')
-    } catch (error) {
+    } catch {
         toast.error('Gagal menambah ke keranjang')
     } finally {
         isAddingToCart.value = false
     }
 }
 
-const formatPrice = (price) => new Intl.NumberFormat('id-ID').format(price)
+const formatPrice = (price) => new Intl.NumberFormat('id-ID').format(Number(price || 0))
 </script>
 
 <style scoped>
-.no-scrollbar::-webkit-scrollbar {
-    display: none;
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.2s ease;
 }
 
-.line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
 }
 </style>

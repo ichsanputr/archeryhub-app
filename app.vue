@@ -24,7 +24,12 @@ const pageKey = computed(() => route.path)
 const isDashboard = computed(() => route.path.startsWith('/dashboard'))
 const isMatchPage = computed(() => route.path.startsWith('/match'))
 const isAuthPage = computed(() => ['/auth/login', '/auth/register'].includes(route.path))
-const showSupportChat = computed(() => !isDashboard.value && !isMatchPage.value && !isAuthPage.value)
+const showSupportChat = computed(() => 
+  !isDashboard.value && 
+  !isMatchPage.value && 
+  !isAuthPage.value && 
+  !route.path.startsWith('/products/')
+)
 
 // Initialize theme and auth at app level
 const { initializeTheme, removeTheme, isThemeLoading } = useTheme()

@@ -107,23 +107,92 @@
                 </div>
             </div>
 
-            <!-- Time Left -->
+            <!-- Revenue Status -->
             <div
                 class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-sm transition-all border border-gray-100 group">
                 <div class="flex justify-between items-start">
                     <div>
-                        <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Status Event</p>
+                        <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Total Pendapatan</p>
                         <p class="text-navy-dark text-xl font-extrabold tracking-tight uppercase tabular-nums">
-                            {{ dashboardStats.timeLeft || '-' }}
+                            Rp {{ formatPrice(dashboardStats.totalRevenue || 0) }}
                         </p>
                     </div>
                     <div
-                        class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-btn-text transition-colors">
-                        <Icon icon="ph:timer" class="text-xl" />
+                        class="bg-green-50 p-2 rounded-lg text-green-600 group-hover:bg-green-500 group-hover:text-white transition-colors">
+                        <Icon icon="ph:wallet-bold" class="text-xl" />
                     </div>
                 </div>
-                <div class="mt-auto">
-                    <p class="text-text-secondary text-[10px] font-medium">Berdasarkan event terbaru</p>
+                <div class="mt-auto flex items-center justify-between text-[10px] font-bold">
+                    <span class="text-orange-500 flex items-center gap-1">
+                        <Icon icon="ph:clock-bold" />
+                        {{ dashboardStats.pendingPayments || 0 }} Menunggu Verif
+                    </span>
+                    <NuxtLink to="/dashboard/organization/balance" class="text-primary hover:underline">Detail</NuxtLink>
+                </div>
+            </div>
+        </div>
+
+        <!-- Revenue & Registration Analytics -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-navy-dark font-black text-lg flex items-center gap-2">
+                        <Icon icon="ph:chart-bar-bold" class="text-primary" />
+                        Tren Pendaftaran & Pendapatan
+                    </h3>
+                    <div class="flex gap-2">
+                        <button class="px-3 py-1 text-[10px] font-bold rounded-lg bg-gray-100 text-gray-500">7 Hari</button>
+                        <button class="px-3 py-1 text-[10px] font-bold rounded-lg bg-primary/10 text-primary">30 Hari</button>
+                    </div>
+                </div>
+                <!-- Mock Chart Placeholder -->
+                <div class="h-64 w-full bg-gray-50 rounded-2xl border border-dashed border-gray-200 flex items-center justify-center relative overflow-hidden group">
+                    <div class="absolute inset-0 opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/graphy.png')]"></div>
+                    <div class="text-center space-y-2">
+                        <Icon icon="ph:presentation-chart-bold" class="text-4xl text-gray-300 group-hover:text-primary transition-colors" />
+                        <p class="text-gray-400 text-xs font-bold">Analisis Tren Sedang Disiapkan</p>
+                    </div>
+                    <!-- Decorative bars -->
+                    <div class="absolute bottom-0 left-0 right-0 px-8 flex items-end gap-4 h-32 opacity-20">
+                        <div v-for="i in 12" :key="i" class="flex-1 bg-primary rounded-t-lg transition-all duration-1000" :style="{ height: `${Math.random() * 100}%` }"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-navy rounded-xl p-6 text-white shadow-xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-8 opacity-10">
+                    <Icon icon="ph:seal-check-fill" class="text-9xl rotate-12" />
+                </div>
+                <h3 class="text-lg font-black mb-4 flex items-center gap-2">
+                    <Icon icon="ph:lightning-bold" class="text-yellow-400" />
+                    Quick Actions
+                </h3>
+                <div class="space-y-3 relative z-10">
+                    <NuxtLink to="/dashboard/organization/events" class="flex items-center justify-between p-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <Icon icon="ph:user-circle-check-bold" class="text-xl text-primary" />
+                            <span class="text-sm font-bold">Kelola Pendaftar</span>
+                        </div>
+                        <Icon icon="ph:caret-right-bold" class="text-xs group-hover:translate-x-1 transition-transform" />
+                    </NuxtLink>
+                    <NuxtLink to="/dashboard/organization/events/create" class="flex items-center justify-between p-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <Icon icon="ph:plus-circle-bold" class="text-xl text-green-400" />
+                            <span class="text-sm font-bold">Buat Event Baru</span>
+                        </div>
+                        <Icon icon="ph:caret-right-bold" class="text-xs group-hover:translate-x-1 transition-transform" />
+                    </NuxtLink>
+                    <NuxtLink to="/dashboard/organization/news/create" class="flex items-center justify-between p-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <Icon icon="ph:article-bold" class="text-xl text-blue-400" />
+                            <span class="text-sm font-bold">Publikasi Berita</span>
+                        </div>
+                        <Icon icon="ph:caret-right-bold" class="text-xs group-hover:translate-x-1 transition-transform" />
+                    </NuxtLink>
+                </div>
+                <div class="mt-8 pt-6 border-t border-white/10">
+                    <div class="flex items-center gap-3 text-xs opacity-60 font-bold mb-4 uppercase tracking-widest">Pusat Bantuan</div>
+                    <BaseButton variant="primary" size="sm" class="w-full text-xs font-black">Kontak Support</BaseButton>
                 </div>
             </div>
         </div>
@@ -261,9 +330,15 @@ const dashboardStats = reactive({
     activeTargets: 0,
     activeTotalTargets: 0,
     completionRate: 0,
-    timeLeft: '-'
+    timeLeft: '-',
+    totalRevenue: 0,
+    pendingPayments: 0
 })
 const welcomeName = computed(() => user.value?.full_name || 'Admin')
+
+const formatPrice = (value) => {
+    return new Intl.NumberFormat('id-ID').format(value)
+}
 
 onMounted(() => {
     fetchOrgCompletedEvents()
