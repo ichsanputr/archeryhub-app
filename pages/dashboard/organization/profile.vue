@@ -65,8 +65,10 @@
                 </div>
               </div>
             </div>
-            <BaseTextarea v-model="form.description" label="Tentang Organisasi" rows="5"
-              placeholder="Berikan deskripsi singkat dan menarik tentang organisasi Anda..." />
+            <div>
+              <label class="block text-sm font-bold text-navy mb-2">Tentang Organisasi</label>
+              <TiptapEditor v-model="form.description" placeholder="Berikan deskripsi singkat dan menarik tentang organisasi Anda..." minHeight="180px" />
+            </div>
           </div>
 
           <!-- Logo & Banner -->
@@ -210,17 +212,24 @@
             <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
               <Icon icon="ph:eye-bold" class="text-primary text-xl" /> Visi & Misi
             </h3>
-            <BaseTextarea v-model="form.vision" label="Visi" rows="3" placeholder="Tuliskan visi organisasi..." />
-            <BaseTextarea v-model="form.mission" label="Misi" rows="5"
-              placeholder="Tuliskan misi organisasi (bisa per poin)..." />
+            <div>
+              <label class="block text-sm font-bold text-navy mb-2">Visi</label>
+              <TiptapEditor v-model="form.vision" placeholder="Tuliskan visi organisasi..." minHeight="120px" />
+            </div>
+            <div>
+              <label class="block text-sm font-bold text-navy mb-2">Misi</label>
+              <TiptapEditor v-model="form.mission" placeholder="Tuliskan misi organisasi (bisa per poin)..." minHeight="180px" />
+            </div>
           </div>
 
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
             <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
               <Icon icon="ph:book-open-bold" class="text-primary text-xl" /> Sejarah Organisasi
             </h3>
-            <BaseTextarea v-model="form.history" label="Sejarah Singkat" rows="8"
-              placeholder="Ceritakan sejarah berdirinya organisasi..." />
+            <div>
+              <label class="block text-sm font-bold text-navy mb-2">Sejarah Singkat</label>
+              <TiptapEditor v-model="form.history" placeholder="Ceritakan sejarah berdirinya organisasi..." minHeight="240px" />
+            </div>
           </div>
         </div>
 
@@ -246,8 +255,10 @@
                 </button>
                 <BaseInput v-model="item.question" label="Pertanyaan"
                   placeholder="Contoh: Bagaimana cara menjadi anggota?" />
-                <BaseTextarea v-model="item.answer" label="Jawaban" rows="3"
-                  placeholder="Tuliskan jawaban lengkap..." />
+                <div>
+                  <label class="block text-sm font-bold text-navy mb-2">Jawaban</label>
+                  <TiptapEditor v-model="item.answer" placeholder="Tuliskan jawaban lengkap..." minHeight="120px" />
+                </div>
               </div>
 
               <div v-if="form.faq.length === 0"

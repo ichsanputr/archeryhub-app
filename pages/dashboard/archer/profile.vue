@@ -153,8 +153,10 @@
               TENTANG SAYA
             </h3>
             <div class="space-y-4">
-              <BaseTextarea v-model="profile.bio" label="Deskripsi Diri"
-                placeholder="Ceritakan sejarah panahan Anda, filosofi, atau informasi menarik lainnya..." :rows="5" />
+              <div>
+                <label class="block text-sm font-bold text-navy mb-2">Deskripsi Diri</label>
+                <TiptapEditor v-model="profile.bio" placeholder="Ceritakan sejarah panahan Anda, filosofi, atau informasi menarik lainnya..." minHeight="180px" />
+              </div>
               <p class="text-[10px] text-gray-400 font-medium italic">
                 * Bio akan ditampilkan di halaman profil publik Anda untuk dilihat oleh klub dan penyelenggara event.
               </p>

@@ -30,9 +30,7 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-bold text-gray-700 mb-2">Deskripsi</label>
-                                <textarea v-model="form.description" rows="6"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
-                                    placeholder="Jelaskan produk Anda secara detail..."></textarea>
+                                <TiptapEditor v-model="form.description" placeholder="Jelaskan produk Anda secara detail..." minHeight="200px" />
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div>

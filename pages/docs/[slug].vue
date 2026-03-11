@@ -6,8 +6,7 @@
                 <div class="flex items-center gap-2 h-11 text-xs text-gray-500 overflow-x-auto no-scrollbar">
                     <NuxtLink to="/" class="hover:text-navy transition-colors whitespace-nowrap">Beranda</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-gray-300 shrink-0" />
-                    <NuxtLink to="/docs" class="hover:text-navy transition-colors whitespace-nowrap">Dokumentasi
-                    </NuxtLink>
+                    <NuxtLink to="/docs" class="hover:text-navy transition-colors whitespace-nowrap">Dokumentasi</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-gray-300 shrink-0" />
                     <span class="text-navy font-semibold whitespace-nowrap truncate">{{ currentDoc?.title }}</span>
                 </div>
@@ -32,13 +31,6 @@
                 <!-- Sidebar content (collapsible on mobile, always visible on desktop) -->
                 <div :class="isMobileMenuOpen ? 'block' : 'hidden lg:block'"
                     class="bg-gray-50 lg:bg-transparent -mx-4 px-4 py-4 lg:p-0 lg:mx-0 border-y border-gray-100 lg:border-0 rounded-none lg:rounded-none">
-                    <!-- Search -->
-                    <div class="relative mb-4">
-                        <Icon icon="ph:magnifying-glass-bold"
-                            class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
-                        <input v-model="sidebarSearch" type="text" placeholder="Cari..."
-                            class="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all bg-white" />
-                    </div>
 
                     <!-- Nav sections -->
                     <div v-for="cat in sidebarVisibleCategories" :key="cat.id" class="mb-4">
@@ -173,6 +165,10 @@ import { Icon } from '@iconify/vue'
 
 definePageMeta({ layout: 'docs' })
 
+const openSearch = () => {
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true }))
+}
+
 const route = useRoute()
 const currentSlug = computed(() => route.params.slug)
 const sidebarSearch = ref('')
@@ -189,6 +185,7 @@ const categories = [
     { id: 'subscription', label: 'Berlangganan', icon: 'ph:crown-bold' },
     { id: 'event', label: 'Manajemen Event', icon: 'ph:trophy-bold' },
     { id: 'scoring', label: 'Scoring', icon: 'ph:target-bold' },
+    { id: 'marketplace', label: 'Marketplace', icon: 'ph:storefront-bold' },
 ]
 
 const sidebarCategories = categories

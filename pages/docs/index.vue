@@ -20,12 +20,16 @@
                     Panduan lengkap tentang platform, jenis busur panahan, sistem berlangganan, tata cara turnamen, dan
                     banyak lagi — semua tersedia di satu tempat.
                 </p>
-                <!-- Search -->
-                <div class="max-w-lg mx-auto relative">
-                    <Icon icon="ph:magnifying-glass-bold"
-                        class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
-                    <input v-model="searchQuery" type="text" placeholder="Cari dokumentasi..."
-                        class="w-full pl-11 pr-4 py-3.5 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all text-sm" />
+                <!-- Search trigger -->
+                <div class="max-w-lg mx-auto">
+                    <button
+                        @click="openSearch"
+                        class="w-full flex items-center gap-3 pl-4 pr-4 py-3.5 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 text-white/50 hover:bg-white/15 hover:border-primary/50 transition-all text-sm group"
+                    >
+                        <Icon icon="ph:magnifying-glass-bold" class="text-lg text-gray-300 group-hover:text-primary transition-colors" />
+                        <span class="flex-1 text-left text-white/40">Cari dokumentasi...</span>
+                        <kbd class="hidden sm:inline-flex items-center gap-1 px-2 py-1 bg-white/10 border border-white/20 rounded-lg text-xs text-white/30 font-mono">Ctrl K</kbd>
+                    </button>
                 </div>
             </div>
         </section>
@@ -102,7 +106,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { Icon } from '@iconify/vue'
 
 definePageMeta({ layout: 'docs' })
@@ -114,6 +118,11 @@ useHead({
 
 const route = useRoute()
 const router = useRouter()
+
+const openSearch = () => {
+    // Trigger the Ctrl+K event so the global DocSearchDialog opens
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true }))
+}
 
 const searchQuery = ref(route.query.q || '')
 
@@ -133,7 +142,11 @@ watch(() => route.query.q, (newQ) => {
     }
 })
 
-const activeCategory = ref('all')
+const activeCategory = ref((route.query.cat as string) || 'all')
+
+watch(() => route.query.cat, (newCat) => {
+    activeCategory.value = (newCat as string) || 'all'
+})
 
 const categories = [
     { id: 'all', label: 'Semua', icon: 'ph:squares-four-bold', description: '' },
@@ -143,6 +156,7 @@ const categories = [
     { id: 'subscription', label: 'Berlangganan', icon: 'ph:crown-bold', description: 'Paket dan fitur berlangganan' },
     { id: 'event', label: 'Manajemen Event', icon: 'ph:trophy-bold', description: 'Panduan pengelolaan event' },
     { id: 'scoring', label: 'Scoring', icon: 'ph:target-bold', description: 'Sistem penilaian dan scoring' },
+    { id: 'marketplace', label: 'Marketplace', icon: 'ph:storefront-bold', description: 'Jual beli perlengkapan panahan' },
 ]
 
 import { docs } from '~/data/docs'

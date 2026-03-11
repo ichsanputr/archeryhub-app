@@ -42,12 +42,12 @@ export const kategori_lomba = {
                         <li><strong>Eliminasi (Aduan):</strong> Sistem gugur (bracket) di mana pemanah bertanding satu lawan satu hingga babak final.</li>
                     </ol>
 
-                    <div class="not-prose bg-navy text-white rounded-2xl p-6 mt-8">
+                    <div class="not-prose bg-amber-50 border border-amber-200 rounded-2xl p-6 mt-8">
                         <div class="flex items-center gap-3 mb-3">
                             <span class="text-2xl">📝</span>
-                            <div class="font-bold text-primary">Catatan Penting</div>
+                            <div class="font-bold text-amber-800">Catatan Penting</div>
                         </div>
-                        <p class="text-sm opacity-80">Beberapa event mungkin memiliki penamaan kategori yang unik (misalnya: "SD Kelas 1-3" atau "Internal Club"). Selalu periksa detail Technical Handbook event yang Anda ikuti melalui Archeryhub.id sebelum mendaftar.</p>
+                        <p class="text-sm text-amber-700">Beberapa event mungkin memiliki penamaan kategori yang unik (misalnya: "SD Kelas 1-3" atau "Internal Club"). Selalu periksa detail Technical Handbook event yang Anda ikuti melalui Archeryhub.id sebelum mendaftar.</p>
                     </div>
                 `
 }

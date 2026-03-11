@@ -60,6 +60,5 @@ export const apa_itu_archeryhub = {
           <p>Selain ketiga pilar utama di atas, platform ini juga sangat bermanfaat bagi <strong>Pelatih dan Pembina</strong>. Dengan data statistik yang akurat dari setiap event yang diikuti, pelatih dapat melakukan analisis objektif terhadap performa atlet mereka tanpa harus mengandalkan catatan manual yang berserakan. Archeryhub.id membantu merangkum pola tembakan dan konsistensi skor atlet dari waktu ke waktu.</p>
           
           <p>Kami terus berkomitmen untuk memperluas jangkauan platform ini agar dapat mengakomodasi lebih banyak skenario di lapangan, memastikan bahwa setiap kemajuan kecil yang dicapai oleh seorang pemanah tercatat dan diapresiasi dalam ekosistem panahan digital Indonesia yang semakin berkembang.</p>
-          <img src="/docs/chatbot.png" alt="Archeryhub Support Chatbot" />
         `
 }

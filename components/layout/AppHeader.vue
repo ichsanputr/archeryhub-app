@@ -79,34 +79,47 @@
         </h1>
       </div>
 
-      <!-- Search Bar (hidden in event manage mode) -->
-      <div v-else-if="!isEventManageMode" class="max-w-xs xl:max-w-md w-full hidden md:block">
-        <div :class="[
-          isScrolled || !transparent
-            ? 'bg-gray-100 dark:bg-surface-highlight border-transparent'
-            : 'bg-white/10 border-white/20 backdrop-blur-md'
-        ]"
-          class="flex w-full items-center rounded-lg border h-10 px-3 transition-all focus-within:ring-2 focus-within:ring-primary/50">
-          <Icon icon="ph:magnifying-glass" class="text-lg" />
-          <input v-model="searchQuery" :class="[
-            isScrolled || !transparent
-              ? 'text-gray-900 dark:text-white placeholder-gray-500'
-              : 'text-white placeholder-white/60'
-          ]" class="w-full bg-transparent border-none text-sm focus:ring-0 ml-2 focus:outline-none"
-            placeholder="Cari..." @keyup.enter="handleSearch" />
-        </div>
-      </div>
     </div>
 
     <!-- Right Section -->
     <div class="flex items-center gap-3 pl-4">
-      <!-- Deleted Notification Section -->
+      <!-- Search Button -->
+      <button
+        @click="searchDialog?.open()"
+        :class="[
+          isScrolled || !transparent
+            ? 'bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-navy'
+            : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white border border-white/20'
+        ]"
+        class="hidden sm:flex items-center gap-2 rounded-xl px-3 h-9 text-sm transition-all"
+        title="Cari dokumentasi (Ctrl+K)"
+      >
+        <Icon icon="ph:magnifying-glass-bold" class="text-base" />
+        <span class="hidden md:inline text-xs font-medium">Cari docs</span>
+        <kbd
+          :class="isScrolled || !transparent ? 'bg-white border-gray-200 text-gray-400' : 'bg-white/10 border-white/20 text-white/50'"
+          class="hidden lg:inline-flex items-center px-1.5 py-0.5 border rounded text-xs font-mono ml-1"
+        >Ctrl K</kbd>
+      </button>
+      <!-- Mobile search icon -->
+      <button
+        @click="searchDialog?.open()"
+        :class="isScrolled || !transparent ? 'text-gray-500 hover:text-navy' : 'text-white/70 hover:text-white'"
+        class="sm:hidden p-2 rounded-xl transition-colors"
+        title="Cari"
+      >
+        <Icon icon="ph:magnifying-glass-bold" class="text-xl" />
+      </button>
     </div>
+
+    <!-- Docs Search Dialog -->
+    <DocSearchDialog ref="searchDialog" />
   </header>
 </template>
 
 <script setup>
 import NotificationList from './NotificationList.vue'
+import DocSearchDialog from './DocSearchDialog.vue'
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
@@ -154,6 +167,7 @@ const backToDashboardPath = computed(() => {
 const isSidebarOpen = useState('mobile-sidebar-open', () => false)
 const searchQuery = ref('')
 const showNotifications = ref(false)
+const searchDialog = ref(null)
 const notifications = ref([
   { id: 1, type: 'info', title: 'Selamat Datang!', message: 'Selamat bergabung di Archery Hub. Lengkapi profil klub Anda sekarang.', time: '2 MENIT LALU', read: false },
   { id: 2, type: 'success', title: 'Profil Diperbarui', message: 'Informasi klub Anda telah berhasil diperbarui.', time: '1 JAM LALU', read: true },

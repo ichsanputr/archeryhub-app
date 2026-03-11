@@ -19,8 +19,20 @@
                             Docs</NuxtLink>
                     </div>
                 </div>
+
+                <!-- Right: Search button -->
+                <button
+                    @click="searchDialog?.open()"
+                    class="flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-100 hover:bg-primary/10 text-gray-400 transition-all text-xs font-medium group"
+                >
+                    <Icon icon="ph:magnifying-glass-bold" class="text-base group-hover:text-primary transition-colors" />
+                    <span class="hidden sm:inline text-gray-500 transition-colors">Cari dokumentasi</span>
+                    <kbd class="hidden md:inline-flex items-center px-1.5 py-0.5 bg-white border border-gray-200 rounded text-xs text-gray-300 font-mono ml-1">Ctrl K</kbd>
+                </button>
             </div>
         </header>
+
+        <DocSearchDialog ref="searchDialog" />
 
         <main class="flex-grow pt-16">
             <slot />
@@ -33,9 +45,11 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import DocSearchDialog from '~/components/layout/DocSearchDialog.vue'
 
 defineOptions({ name: 'DocsLayout' })
 
+const searchDialog = ref(null)
 const route = useRoute()
 const router = useRouter()
 

@@ -50,18 +50,27 @@
                                 </button>
                             </div>
 
-                            <div class="grid grid-cols-3 gap-3 rounded-2xl border border-black/5 bg-white p-4 text-center text-xs">
-                                <div>
-                                    <div class="font-black text-navy">100% Ori</div>
-                                    <div class="text-gray-500">Sudah Dicek</div>
+                            <div class="grid grid-cols-3 gap-2">
+                                <div class="flex flex-col items-center gap-2 rounded-2xl border border-black/5 bg-white p-4 text-center shadow-sm hover:shadow transition">
+                                    <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+                                        <Icon icon="ph:seal-check-bold" class="text-xl" />
+                                    </div>
+                                    <div class="font-black text-navy text-xs leading-tight">100% Ori</div>
+                                    <div class="text-[10px] text-gray-400 leading-tight">Sudah Dicek</div>
                                 </div>
-                                <div>
-                                    <div class="font-black text-navy">Garansi 7 Hari</div>
-                                    <div class="text-gray-500">Tukar Produk</div>
+                                <div class="flex flex-col items-center gap-2 rounded-2xl border border-black/5 bg-white p-4 text-center shadow-sm hover:shadow transition">
+                                    <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-50 text-amber-500">
+                                        <Icon icon="ph:shield-check-bold" class="text-xl" />
+                                    </div>
+                                    <div class="font-black text-navy text-xs leading-tight">Garansi 7 Hari</div>
+                                    <div class="text-[10px] text-gray-400 leading-tight">Tukar Produk</div>
                                 </div>
-                                <div>
-                                    <div class="font-black text-navy">Pengiriman Cepat</div>
-                                    <div class="text-gray-500">Estimasi 1-3 Hari</div>
+                                <div class="flex flex-col items-center gap-2 rounded-2xl border border-black/5 bg-white p-4 text-center shadow-sm hover:shadow transition">
+                                    <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-500">
+                                        <Icon icon="ph:rocket-launch-bold" class="text-xl" />
+                                    </div>
+                                    <div class="font-black text-navy text-xs leading-tight">Pengiriman Cepat</div>
+                                    <div class="text-[10px] text-gray-400 leading-tight">Estimasi 1-3 Hari</div>
                                 </div>
                             </div>
                         </div>
@@ -167,13 +176,38 @@
                         </div>
                     </div>
 
-                    <div class="rounded-3xl border border-black/5 bg-white p-5 shadow-sm">
-                        <h3 class="text-sm font-black uppercase tracking-[0.2em] text-gray-400">Ringkasan</h3>
-                        <ul class="mt-4 space-y-3 text-sm text-gray-600">
-                            <li class="flex items-center justify-between"><span>SKU</span><span class="font-bold text-navy">{{ (product.slug || '-').toUpperCase() }}</span></li>
-                            <li class="flex items-center justify-between"><span>Kategori</span><span class="font-bold text-navy">{{ breadcrumbCategory }}</span></li>
-                            <li class="flex items-center justify-between"><span>Harga Jual</span><span class="font-bold text-navy">Rp {{ formatPrice(finalPrice) }}</span></li>
-                            <li class="flex items-center justify-between"><span>Kondisi</span><span class="font-bold text-navy">Baru</span></li>
+                    <div class="rounded-3xl border border-black/5 bg-white shadow-sm overflow-hidden">
+                        <div class="bg-navy px-5 py-4 flex items-center gap-2">
+                            <Icon icon="ph:clipboard-text-bold" class="text-primary text-lg" />
+                            <h3 class="text-sm font-black text-white tracking-wide">Ringkasan Produk</h3>
+                        </div>
+                        <ul class="divide-y divide-gray-50">
+                            <li class="flex items-center justify-between px-5 py-3.5">
+                                <span class="flex items-center gap-2 text-xs text-gray-400">
+                                    <Icon icon="ph:barcode-bold" class="text-sm" /> SKU
+                                </span>
+                                <span class="font-bold text-navy text-xs bg-gray-50 px-2 py-0.5 rounded-lg">{{ (product.slug || '-').toUpperCase() }}</span>
+                            </li>
+                            <li class="flex items-center justify-between px-5 py-3.5">
+                                <span class="flex items-center gap-2 text-xs text-gray-400">
+                                    <Icon icon="ph:tag-bold" class="text-sm" /> Kategori
+                                </span>
+                                <span class="font-bold text-navy text-xs">{{ breadcrumbCategory }}</span>
+                            </li>
+                            <li class="flex items-center justify-between px-5 py-3.5">
+                                <span class="flex items-center gap-2 text-xs text-gray-400">
+                                    <Icon icon="ph:currency-circle-dollar-bold" class="text-sm" /> Harga Jual
+                                </span>
+                                <span class="font-black text-navy text-sm">Rp {{ formatPrice(finalPrice) }}</span>
+                            </li>
+                            <li class="flex items-center justify-between px-5 py-3.5">
+                                <span class="flex items-center gap-2 text-xs text-gray-400">
+                                    <Icon icon="ph:sparkle-bold" class="text-sm" /> Kondisi
+                                </span>
+                                <span class="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-700">
+                                    <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span> Baru
+                                </span>
+                            </li>
                         </ul>
                     </div>
                 </section>

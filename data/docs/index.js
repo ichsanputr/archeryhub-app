@@ -1,5 +1,6 @@
 import { apa_itu_archeryhub } from './apa-itu-archeryhub.js'
 import { cara_daftar } from './cara-daftar.js'
+import { registrasi_ulang } from './registrasi-ulang.js'
 import { peran_pengguna } from './peran-pengguna.js'
 import { manajemen_profil } from './manajemen-profil.js'
 import { mendaftar_event } from './mendaftar-event.js'
@@ -20,10 +21,19 @@ import { addon_langganan } from './addon-langganan.js'
 import { scorekeeper } from './scorekeeper.js'
 import { kategori_lomba } from './kategori-lomba.js'
 import { jarak_dan_target } from './jarak-dan-target.js'
+import { fase_kualifikasi } from './fase-kualifikasi.js'
+import { fase_eliminasi } from './fase-eliminasi.js'
+import { apa_itu_end } from './apa-itu-end.js'
+import { penempatan_bantalan } from './penempatan-bantalan.js'
+import { cara_menjual_barang } from './cara-menjual-barang.js'
+import { membeli_barang } from './membeli-barang.js'
+import { kategorisasi_produk } from './kategorisasi-produk.js'
+import { fee_biaya_admin } from './fee-biaya-admin.js'
 
 export const docs = [
     apa_itu_archeryhub,
     cara_daftar,
+    registrasi_ulang,
     peran_pengguna,
     manajemen_profil,
     mendaftar_event,
@@ -43,5 +53,13 @@ export const docs = [
     addon_langganan,
     scorekeeper,
     kategori_lomba,
-    jarak_dan_target
+    jarak_dan_target,
+    fase_kualifikasi,
+    fase_eliminasi,
+    apa_itu_end,
+    penempatan_bantalan,
+    cara_menjual_barang,
+    membeli_barang,
+    kategorisasi_produk,
+    fee_biaya_admin,
 ]

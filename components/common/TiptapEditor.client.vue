@@ -249,19 +249,6 @@
                             class="text-xs text-gray-500 hover:text-red-500 font-bold">Reset</button>
                     </div>
                 </div>
-            </div>
-
-            <!-- Superscript / Subscript -->
-            <div class="flex gap-0.5">
-                <TBtn @click="editor.chain().focus().toggleSuperscript().run()" :active="editor.isActive('superscript')"
-                    title="Superscript">
-                    <Icon icon="ph:text-superscript-bold" />
-                </TBtn>
-                <TBtn @click="editor.chain().focus().toggleSubscript().run()" :active="editor.isActive('subscript')"
-                    title="Subscript">
-                    <Icon icon="ph:text-subscript-bold" />
-                </TBtn>
-            </div>
 
             <!-- Word count -->
             <div class="ml-auto flex items-center pl-2">
@@ -412,8 +399,6 @@ import Underline from '@tiptap/extension-underline'
 import Highlight from '@tiptap/extension-highlight'
 import { TextStyle } from '@tiptap/extension-text-style'
 import Color from '@tiptap/extension-color'
-import Subscript from '@tiptap/extension-subscript'
-import Superscript from '@tiptap/extension-superscript'
 import CharacterCount from '@tiptap/extension-character-count'
 import Youtube from '@tiptap/extension-youtube'
 import Placeholder from '@tiptap/extension-placeholder'
@@ -531,8 +516,6 @@ const editor = useEditor({
         Highlight.configure({ multicolor: false }),
         TextStyle,
         Color,
-        Subscript,
-        Superscript,
         CharacterCount,
         Youtube.configure({ width: '100%', height: 360, nocookie: true }),
         Placeholder.configure({ placeholder: props.placeholder }),
