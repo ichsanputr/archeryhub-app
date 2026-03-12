@@ -11,7 +11,7 @@
                     ini. Gunakan Auto Assign untuk alokasi cepat.</p>
             </div>
             <BaseButton variant="primary" icon="ph:magic-wand-bold" :loading="isAutoAssigning"
-                @click="$emit('auto-assign')" class="hidden sm:flex shadow-xl shadow-primary/20 !rounded-2xl">
+                @click="$emit('auto-assign')" class="hidden sm:flex shadow-sm shadow-primary/20 !rounded-2xl">
                 <span class="text-[10px] font-black tracking-widest uppercase">Auto Assign</span>
             </BaseButton>
         </div>

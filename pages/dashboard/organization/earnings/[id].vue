@@ -36,10 +36,6 @@
                 <BaseInput v-model="searchQuery" icon="ph:magnifying-glass"
                     placeholder="Cari nama peserta atau referensi..." label="Pencarian Transaksi" />
             </div>
-            <div class="flex gap-2 w-full md:w-auto">
-                <BaseButton variant="white" icon="ph:download-simple-bold" class="h-11 flex-1 md:flex-initial">Export
-                    CSV</BaseButton>
-            </div>
         </div>
 
         <!-- Payments Table -->

@@ -1,29 +1,33 @@
 <template>
     <div class="flex flex-col gap-8 pb-16">
-        <!-- Breadcrumbs & Header -->
-        <div class="flex flex-col gap-1">
-            <nav class="flex text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 items-center gap-2">
-                <NuxtLink to="/dashboard/archer/events" class="hover:text-primary transition-colors">Event Saya
-                </NuxtLink>
-                <Icon icon="ph:caret-right-bold" class="text-[8px]" />
-                <span class="text-slate-600 dark:text-slate-300">Data Registrasi</span>
-            </nav>
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div class="flex items-center gap-4">
-                    <button @click="$router.back()"
-                        class="size-11 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:border-primary/50 transition-all text-navy dark:text-white flex items-center justify-center group">
-                        <Icon icon="ph:arrow-left-bold" class="group-hover:-translate-x-1 transition-transform" />
-                    </button>
+        <!-- Header -->
+        <div
+            class="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-r from-navy via-navy to-navy/90 text-white shadow-sm">
+            <div class="absolute inset-0"
+                style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.15);"></div>
+            <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
+            <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-yellow-200 to-primary"></div>
+            <div class="relative p-6 sm:p-8">
+                <div class="flex items-center justify-between gap-4">
                     <div>
-                        <h2 class="text-3xl font-black text-navy dark:text-white tracking-tight leading-none">Status
-                            Registrasi</h2>
-                        <p class="text-xs text-slate-400 font-bold uppercase tracking-widest mt-2">Detail Pendaftaran &
-                            Pembayaran</p>
+                        <nav
+                            class="flex text-[10px] font-bold text-white/40 uppercase tracking-widest mb-1 items-center gap-1.5">
+                            <NuxtLink to="/dashboard/archer/events"
+                                class="hover:text-white transition-colors">Event Saya</NuxtLink>
+                            <Icon icon="ph:caret-right-bold" class="text-[9px]" />
+                            <span class="text-white/70">Status Registrasi</span>
+                        </nav>
+                        <h1 class="text-2xl font-black tracking-tight">Status Registrasi Saya</h1>
                     </div>
-                </div>
-
-                <div v-if="participant" class="flex items-center gap-2">
-                    <!-- Invoice button removed as requested -->
+                    <div v-if="participant && participant.payment_status !== 'lunas'">
+                        <BaseButton variant="danger-outline" @click="showCancelConfirm = true"
+                            :loading="isCancelling"
+                            class="h-9 font-black uppercase tracking-widest text-[10px] !border-red-400/50 !text-red-300 hover:!bg-red-500 hover:!text-white hover:!border-red-500">
+                            <Icon icon="ph:x-circle-bold" class="mr-1.5" />
+                            Batalkan
+                        </BaseButton>
+                    </div>
                 </div>
             </div>
         </div>
@@ -124,13 +128,7 @@
                                     {{ cat.division_name }} - {{ cat.event_type_name }}
                                 </p>
                                 <div
-                                    class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-700">
-                                    <div class="flex flex-col">
-                                        <span
-                                            class="text-[9px] text-slate-400 font-black uppercase tracking-widest">Bantalan</span>
-                                        <span class="text-sm font-black text-navy dark:text-white">{{ cat.target_name ||
-                                            '-' }}</span>
-                                    </div>
+                                    class="flex items-center justify-end pt-4 border-t border-slate-100 dark:border-slate-700">
                                     <div class="flex flex-col text-right">
                                         <span
                                             class="text-[9px] text-slate-400 font-black uppercase tracking-widest">Biaya</span>
@@ -207,12 +205,63 @@
                                             <span class="text-navy dark:text-white font-mono">{{
                                                 participant.transaction.reference }}</span>
                                         </div>
+
+                                        <!-- VA / Pay code -->
+                                        <div v-if="participant.transaction.va_number || participant.transaction.pay_code"
+                                            class="flex items-center justify-between bg-slate-50 dark:bg-slate-800 rounded-xl px-3 py-2.5 border border-slate-100 dark:border-slate-700">
+                                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                                {{ participant.transaction.va_number ? 'Nomor VA' : 'Kode Bayar' }}
+                                            </span>
+                                            <span class="text-sm font-black text-navy dark:text-white font-mono tracking-wider select-all">
+                                                {{ participant.transaction.va_number || participant.transaction.pay_code }}
+                                            </span>
+                                        </div>
+
+                                        <!-- QR code -->
+                                        <div v-if="participant.transaction.qr_url" class="flex justify-center">
+                                            <img :src="participant.transaction.qr_url" alt="QR Code"
+                                                class="w-40 h-40 rounded-xl border border-slate-200" />
+                                        </div>
+
                                         <BaseButton v-if="participant.transaction.status === 'pending'"
                                             :to="participant.transaction.checkout_url" target="_blank" variant="primary"
                                             block class="h-11 font-black uppercase tracking-widest text-xs shadow-sm">
                                             Bayar Sekarang
                                             <Icon icon="ph:arrow-right-bold" class="ml-2" />
                                         </BaseButton>
+
+                                        <!-- Instruction groups -->
+                                        <template v-if="parseInstructionGroups(participant.transaction.instructions).length">
+                                            <div class="pt-2 space-y-3">
+                                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Cara Pembayaran</p>
+                                                <!-- Tab selector -->
+                                                <div v-if="parseInstructionGroups(participant.transaction.instructions).length > 1"
+                                                    class="flex gap-2 flex-wrap">
+                                                    <button
+                                                        v-for="(group, gi) in parseInstructionGroups(participant.transaction.instructions)"
+                                                        :key="group.title"
+                                                        @click="activeInstructionGroup = gi"
+                                                        :class="activeInstructionGroup === gi
+                                                            ? 'bg-navy text-white border-navy'
+                                                            : 'bg-white dark:bg-slate-700 text-slate-500 border-slate-200 hover:border-primary/40'"
+                                                        class="px-2.5 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest transition-colors">
+                                                        {{ group.title }}
+                                                    </button>
+                                                </div>
+                                                <div v-for="(group, gi) in parseInstructionGroups(participant.transaction.instructions)"
+                                                    :key="group.title"
+                                                    v-show="parseInstructionGroups(participant.transaction.instructions).length === 1 || activeInstructionGroup === gi"
+                                                    class="space-y-2">
+                                                    <div v-if="parseInstructionGroups(participant.transaction.instructions).length === 1"
+                                                        class="text-[9px] font-black text-slate-400 uppercase tracking-widest">{{ group.title }}</div>
+                                                    <div v-for="(step, si) in group.steps" :key="si" class="flex gap-2.5">
+                                                        <span class="size-4 mt-0.5 rounded-full bg-primary/10 text-primary font-black flex items-center justify-center shrink-0 text-[9px]">{{ si + 1 }}</span>
+                                                        <span v-html="step"
+                                                            class="text-[11px] text-slate-600 dark:text-slate-300 font-medium leading-relaxed"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
                                     </div>
                                 </div>
 
@@ -235,6 +284,7 @@
                                         </BaseButton>
                                     </div>
                                 </div>
+
 
                                 <div v-if="participant.payment_proof_urls?.length" class="space-y-4 pt-2">
                                     <div class="flex items-center gap-2">
@@ -280,6 +330,26 @@
             </BaseButton>
         </div>
 
+        <!-- Cancel Confirmation Dialog -->
+        <AppDialog v-model:show="showCancelConfirm" title="Batalkan Pendaftaran" type="danger"
+            icon="ph:warning-circle-bold" size="sm">
+            <template #default>
+                <p class="text-sm text-slate-600 dark:text-slate-300 text-center">
+                    Yakin ingin membatalkan pendaftaran ini? Tindakan ini tidak dapat dibatalkan.
+                </p>
+            </template>
+            <template #actions>
+                <BaseButton variant="white" @click="showCancelConfirm = false"
+                    class="flex-1 font-black uppercase tracking-widest text-xs">
+                    Kembali
+                </BaseButton>
+                <BaseButton variant="danger" @click="cancelRegistration" :loading="isCancelling"
+                    class="flex-1 font-black uppercase tracking-widest text-xs">
+                    Ya, Batalkan
+                </BaseButton>
+            </template>
+        </AppDialog>
+
         <!-- Image Lightbox -->
         <AppDialog v-model:show="showImageDialog" title="Bukti Pembayaran" type="primary" icon="payments" size="lg">
             <template #default>
@@ -294,7 +364,7 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import QrcodeVue from 'qrcode.vue'
-const { get } = useApi()
+const { get, del } = useApi()
 const route = useRoute()
 const eventId = route.params.id
 
@@ -313,6 +383,43 @@ const paymentProofs = computed(() => {
 })
 
 const isProcessingPayment = ref(false)
+const showCancelConfirm = ref(false)
+const isCancelling = ref(false)
+const activeInstructionGroup = ref(0)
+
+// Parses Tripay instructions JSON into [{title, steps[]}] groups.
+// Tripay format: [{ "title": "Internet Banking", "steps": ["Login...", ...] }]
+const parseInstructionGroups = (raw) => {
+    if (!raw) return []
+    try {
+        const parsed = JSON.parse(raw)
+        if (Array.isArray(parsed)) {
+            return parsed
+                .map(group => ({
+                    title: group.title || '',
+                    steps: Array.isArray(group.steps) ? group.steps : []
+                }))
+                .filter(g => g.steps.length > 0)
+        }
+    } catch {
+        // Not JSON
+    }
+    return []
+}
+
+const cancelRegistration = async () => {
+    isCancelling.value = true
+    try {
+        await del(`/events/${eventId}/participants/me`)
+        showCancelConfirm.value = false
+        navigateTo('/dashboard/archer/events')
+    } catch (e) {
+        console.error('Failed to cancel registration:', e)
+        toast.error('Gagal membatalkan pendaftaran')
+    } finally {
+        isCancelling.value = false
+    }
+}
 
 const initiatePaymentGateway = async () => {
     isProcessingPayment.value = true

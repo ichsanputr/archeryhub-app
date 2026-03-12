@@ -115,7 +115,13 @@
                                 <div
                                     class="absolute -inset-3 sm:-inset-4 bg-primary/20 rounded-[2rem] sm:rounded-[3rem] blur-xl sm:blur-2xl opacity-0 group-hover:opacity-100 transition-opacity">
                                 </div>
-                                <img :src="useImageOrDefault(selectedScoringMatch.entry_a_avatar || selectedScoringMatch.entry_a_photo, selectedScoringMatch.entry_a_name)"
+                                <!-- Team mode: show team shield icon; Individual mode: show archer photo -->
+                                <div v-if="bracket.bracket_type === 'team' || bracket.bracket_type === 'mixed_team'"
+                                    class="size-16 sm:size-24 rounded-[2rem] sm:rounded-[2.5rem] border-2 sm:border-4 border-white/10 bg-white/10 flex items-center justify-center relative z-10 shadow-sm">
+                                    <Icon icon="ph:users-three-bold" class="text-3xl sm:text-5xl text-white/70" />
+                                </div>
+                                <img v-else
+                                    :src="useImageOrDefault(selectedScoringMatch.entry_a_avatar || selectedScoringMatch.entry_a_photo, selectedScoringMatch.entry_a_name)"
                                     class="size-16 sm:size-24 rounded-[2rem] sm:rounded-[2.5rem] border-2 sm:border-4 border-white/10 shadow-sm relative z-10" />
                                 <div
                                     class="absolute -bottom-1 -left-1 z-20 size-6 sm:size-8 bg-primary border-2 border-white rounded-lg sm:rounded-xl flex items-center justify-center text-[8px] sm:text-[10px] font-black text-btn-text shadow-sm">
@@ -129,8 +135,18 @@
                                 </h4>
                                 <p
                                     class="text-[8px] sm:text-[10px] font-black text-primary uppercase tracking-[0.2em] opacity-60">
-                                    Peserta A
+                                    {{ (bracket.bracket_type === 'team' || bracket.bracket_type === 'mixed_team') ? 'Tim A' : 'Peserta A' }}
                                 </p>
+                                <!-- Team member roster for team/mixed_team brackets -->
+                                <div v-if="(bracket.bracket_type === 'team' || bracket.bracket_type === 'mixed_team') && membersA.length"
+                                    class="flex flex-wrap justify-center gap-2 mt-2">
+                                    <div v-for="member in membersA" :key="member.member_order"
+                                        class="flex flex-col items-center gap-0.5">
+                                        <img :src="useImageOrDefault(member.avatar_url, member.full_name)"
+                                            class="size-7 sm:size-8 rounded-lg border-2 border-white/20 shadow-sm object-cover" />
+                                        <span class="text-[7px] sm:text-[8px] font-bold text-white/50 max-w-[48px] sm:max-w-[56px] truncate">{{ member.full_name }}</span>
+                                    </div>
+                                </div>
                             </div>
                             <!-- Mobile Score Display A -->
                             <div
@@ -232,7 +248,13 @@
                                 <div
                                     class="absolute -inset-3 sm:-inset-4 bg-white/10 rounded-[2rem] sm:rounded-[3rem] blur-xl sm:blur-2xl opacity-0 group-hover:opacity-100 transition-opacity">
                                 </div>
-                                <img :src="useImageOrDefault(selectedScoringMatch.entry_b_avatar || selectedScoringMatch.entry_b_photo, selectedScoringMatch.entry_b_name)"
+                                <!-- Team mode: show team shield icon; Individual mode: show archer photo -->
+                                <div v-if="bracket.bracket_type === 'team' || bracket.bracket_type === 'mixed_team'"
+                                    class="size-16 sm:size-24 rounded-[2rem] sm:rounded-[2.5rem] border-2 sm:border-4 border-white/10 bg-white/10 flex items-center justify-center relative z-10 shadow-sm">
+                                    <Icon icon="ph:users-three-bold" class="text-3xl sm:text-5xl text-white/70" />
+                                </div>
+                                <img v-else
+                                    :src="useImageOrDefault(selectedScoringMatch.entry_b_avatar || selectedScoringMatch.entry_b_photo, selectedScoringMatch.entry_b_name)"
                                     class="size-16 sm:size-24 rounded-[2rem] sm:rounded-[2.5rem] border-2 sm:border-4 border-white/10 shadow-sm relative z-10" />
                                 <div
                                     class="absolute -bottom-1 -right-1 z-20 size-6 sm:size-8 bg-primary border-2 border-white rounded-lg sm:rounded-xl flex items-center justify-center text-[8px] sm:text-[10px] font-black text-btn-text shadow-sm">
@@ -246,8 +268,18 @@
                                 </h4>
                                 <p
                                     class="text-[8px] sm:text-[10px] font-black text-white uppercase tracking-[0.2em] opacity-40">
-                                    Peserta B
+                                    {{ (bracket.bracket_type === 'team' || bracket.bracket_type === 'mixed_team') ? 'Tim B' : 'Peserta B' }}
                                 </p>
+                                <!-- Team member roster for team/mixed_team brackets -->
+                                <div v-if="(bracket.bracket_type === 'team' || bracket.bracket_type === 'mixed_team') && membersB.length"
+                                    class="flex flex-wrap justify-center gap-2 mt-2">
+                                    <div v-for="member in membersB" :key="member.member_order"
+                                        class="flex flex-col items-center gap-0.5">
+                                        <img :src="useImageOrDefault(member.avatar_url, member.full_name)"
+                                            class="size-7 sm:size-8 rounded-lg border-2 border-white/20 shadow-sm object-cover" />
+                                        <span class="text-[7px] sm:text-[8px] font-bold text-white/50 max-w-[48px] sm:max-w-[56px] truncate">{{ member.full_name }}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -473,7 +505,8 @@ const props = defineProps({
     canEndMatch: { type: Boolean, default: false },
     manualWinnerId: { type: String, default: null },
     isMatchFinished: { type: Boolean, default: false },
-    isResetting: { type: Boolean, default: false }
+    isResetting: { type: Boolean, default: false },
+    teamMembersMap: { type: Object, default: () => ({}) }
 })
 
 defineEmits([
@@ -672,6 +705,16 @@ const isWinner = (match, entryId) => {
     if (!match || !match.winner_entry_id || !entryId) return false
     return match.winner_entry_id === entryId
 }
+
+const membersA = computed(() => {
+    if (!props.selectedScoringMatch?.entry_a_id) return []
+    return props.teamMembersMap[props.selectedScoringMatch.entry_a_id] || []
+})
+
+const membersB = computed(() => {
+    if (!props.selectedScoringMatch?.entry_b_id) return []
+    return props.teamMembersMap[props.selectedScoringMatch.entry_b_id] || []
+})
 </script>
 
 <style scoped>

@@ -195,6 +195,7 @@
                     v-model:current-end="currentEnd" :match-ends="matchEnds" :is-saving="isSaving"
                     :is-ending-match="isEndingMatch" :selected-arrow-index="selectedArrowIndex"
                     :can-end-match="canEndMatch" :manual-winner-id="manualWinnerId"
+                    :team-members-map="teamMembersMap"
                     @select-match="selectMatchForScoring" @add-score="addArrowScore"
                     @delete-last-arrow="deleteLastArrow" @save-and-next="saveAndNext" @end-match="endMatch"
                     @select-arrow-box="selectArrowBox" @reset-match="resetMatch" :is-match-finished="isMatchFinished"
@@ -398,6 +399,7 @@ const selectedArrowIndex = ref(0)
 const selectedScoringMatch = ref(null)
 const matchEnds = ref({}) // { matchId: { A: { 1: {total: 0, arrows: []} }, B: { ... } } }
 const manualWinnerId = ref(null)
+const teamMembersMap = ref({})
 const isResetting = ref(false)
 const isMatchFinished = computed(() => {
     return selectedScoringMatch.value?.status === 'finished' || !!selectedScoringMatch.value?.winner_entry_id
@@ -548,6 +550,7 @@ const fetchBracket = async (silent = false) => {
 
         // Fetch all scores for the bracket list
         fetchAllScores()
+        fetchTeamMembers()
     } catch (error) {
         console.error('Failed to fetch bracket:', error)
         toast.error('Gagal memuat bracket')
@@ -647,6 +650,16 @@ const selectMatchForScoring = (match) => {
     currentEnd.value = 1
     selectedArrowIndex.value = 0
     fetchMatchScores(match.id)
+}
+
+const fetchTeamMembers = async () => {
+    if (bracket.value?.bracket_type !== 'team' && bracket.value?.bracket_type !== 'mixed_team') return
+    try {
+        const res = await get(`/events/${eventId}/elimination/brackets/${bracketId}/team-members`)
+        teamMembersMap.value = res?.members || {}
+    } catch (e) {
+        console.error('Failed to fetch team members:', e)
+    }
 }
 
 const fetchAllScores = async () => {

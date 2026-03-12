@@ -14,7 +14,7 @@
               ref="inputRef"
               v-model="query"
               type="text"
-              placeholder="Cari dokumentasi..."
+              placeholder="Cari halaman..."
               class="flex-1 text-sm text-gray-900 placeholder-gray-400 focus:outline-none bg-transparent"
               @keydown.esc="close"
               @keydown.down.prevent="moveDown"
@@ -32,9 +32,9 @@
             <template v-if="query.trim()">
               <template v-if="results.length">
                 <NuxtLink
-                  v-for="(doc, i) in results"
-                  :key="doc.slug"
-                  :to="`/docs/${doc.slug}`"
+                  v-for="(page, i) in results"
+                  :key="page.path"
+                  :to="page.path"
                   @click="close"
                   class="flex items-center gap-4 px-5 py-3.5 transition-colors cursor-pointer border-b border-gray-50 last:border-0"
                   :class="i === activeIndex ? 'bg-gray-100' : 'hover:bg-gray-50'"
@@ -43,52 +43,42 @@
                     class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-colors"
                     :class="i === activeIndex ? 'bg-navy/10 text-navy' : 'bg-gray-100 text-gray-400'"
                   >
-                    <Icon :icon="doc.icon" class="text-base" />
+                    <Icon :icon="page.icon" class="text-base" />
                   </div>
                   <div class="flex-1 min-w-0">
-                    <div class="text-sm font-bold text-navy leading-snug" v-html="highlight(doc.title)" />
-                    <div class="text-xs text-gray-400 truncate mt-0.5" v-html="highlight(doc.excerpt)" />
+                    <div class="text-sm font-bold text-navy leading-snug" v-html="highlight(page.title)" />
+                    <div class="text-xs text-gray-400 truncate mt-0.5" v-html="highlight(page.description)" />
                   </div>
-                  <span class="text-xs text-gray-300 whitespace-nowrap shrink-0 hidden sm:block">{{ categoryLabel(doc.category) }}</span>
                   <Icon icon="ph:arrow-right-bold" class="text-xs text-gray-300 shrink-0" :class="i === activeIndex ? 'text-navy' : ''" />
                 </NuxtLink>
               </template>
               <div v-else class="py-14 text-center">
                 <div class="flex justify-center w-full">
-                    <Icon icon="ph:file-search-bold" class="text-4xl text-gray-200 mb-3" />
+                  <Icon icon="ph:file-search-bold" class="text-4xl text-gray-200 mb-3" />
                 </div>
                 <p class="text-sm text-gray-400">Tidak ada hasil untuk <strong class="text-navy">"{{ query }}"</strong></p>
               </div>
             </template>
 
-            <!-- Empty / Default state -->
+            <!-- Empty / Default state: quick links -->
             <template v-else>
-              <div class="px-5 pt-5 pb-2">
-                <p class="text-xs text-gray-300 font-bold uppercase tracking-widest mb-3">Sering Dicari</p>
-                <div class="flex flex-wrap gap-2 mb-4">
-                  <button
-                    v-for="doc in popularDocs"
-                    :key="doc.slug"
-                    @click="goTo(doc.slug)"
-                    class="flex items-center gap-2 px-3 py-1.5 bg-gray-50 hover:bg-primary/10 rounded-lg text-xs text-gray-500 transition-colors border border-gray-100"
-                  >
-                    <Icon :icon="doc.icon" class="text-sm" />
-                    {{ doc.title }}
-                  </button>
-                </div>
-              </div>
-              <div class="border-t border-gray-50 px-5 py-3">
-                <p class="text-xs text-gray-300 font-bold uppercase tracking-widest mb-3">Kategori</p>
-                <div class="grid grid-cols-2 gap-2 pb-3">
+              <div class="px-5 pt-5 pb-4">
+                <p class="text-xs text-gray-300 font-bold uppercase tracking-widest mb-3">Navigasi Cepat</p>
+                <div class="flex flex-col gap-1">
                   <NuxtLink
-                    v-for="cat in categoryLinks"
-                    :key="cat.id"
-                    :to="`/docs?cat=${cat.id}`"
+                    v-for="(page, i) in quickLinks"
+                    :key="page.path"
+                    :to="page.path"
                     @click="close"
-                    class="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-gray-50 hover:bg-primary/10 hover:text-primary transition-colors text-xs text-gray-500 border border-gray-100"
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors text-xs text-gray-600 border border-gray-100"
+                    :class="i === activeIndex ? 'bg-primary/10 text-primary border-primary/20' : 'hover:bg-gray-50'"
                   >
-                    <Icon :icon="cat.icon" class="text-base text-gray-400" />
-                    <span class="font-semibold">{{ cat.label }}</span>
+                    <Icon :icon="page.icon" class="text-base text-gray-400 shrink-0" />
+                    <div class="flex-1 min-w-0">
+                      <span class="font-bold text-navy">{{ page.title }}</span>
+                      <span class="text-gray-400 ml-2 truncate hidden sm:inline">{{ page.description }}</span>
+                    </div>
+                    <Icon icon="ph:arrow-right" class="text-xs text-gray-300 shrink-0" />
                   </NuxtLink>
                 </div>
               </div>
@@ -121,7 +111,8 @@
 import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Icon } from '@iconify/vue'
-import { docs } from '~/data/docs'
+import { useAuth } from '~/composables/useAuth'
+import pagesData from '~/data/pages.json'
 
 const isOpen = ref(false)
 const query = ref('')
@@ -129,36 +120,35 @@ const activeIndex = ref(-1)
 const inputRef = ref(null)
 const router = useRouter()
 
-const categoryLabels = {
-  platform: 'Platform',
-  archer: 'Akun Pemanah',
-  archery: 'Teknis Panahan',
-  subscription: 'Berlangganan',
-  event: 'Manajemen Event',
-  scoring: 'Scoring',
-  marketplace: 'Marketplace',
-}
+const { user } = useAuth()
 
-const categoryLinks = [
-  { id: 'platform', label: 'Platform', icon: 'ph:rocket-bold' },
-  { id: 'archer', label: 'Akun Pemanah', icon: 'ph:user-bold' },
-  { id: 'archery', label: 'Teknis Panahan', icon: 'ph:crosshair-bold' },
-  { id: 'subscription', label: 'Berlangganan', icon: 'ph:crown-bold' },
-  { id: 'event', label: 'Manajemen Event', icon: 'ph:trophy-bold' },
-  { id: 'scoring', label: 'Scoring', icon: 'ph:target-bold' },
-]
+// Build the page list based on the logged-in user's role
+const rolePages = computed(() => {
+  const role = user.value?.role || user.value?.type
+  const specific = pagesData[role] || []
+  const common = pagesData.common || []
+  // Deduplicate by path
+  const seen = new Set()
+  return [...specific, ...common].filter(p => {
+    if (seen.has(p.path)) return false
+    seen.add(p.path)
+    return true
+  })
+})
 
-const categoryLabel = (cat) => categoryLabels[cat] || cat
+const quickLinks = computed(() => rolePages.value.slice(0, 6))
 
 const results = computed(() => {
   if (!query.value.trim()) return []
   const q = query.value.toLowerCase()
-  return docs
-    .filter(d => d.title.toLowerCase().includes(q) || d.excerpt.toLowerCase().includes(q))
+  return rolePages.value
+    .filter(p =>
+      p.title.toLowerCase().includes(q) ||
+      p.description.toLowerCase().includes(q) ||
+      p.keywords.some(k => k.toLowerCase().includes(q))
+    )
     .slice(0, 8)
 })
-
-const popularDocs = computed(() => docs.slice(0, 5))
 
 const highlight = (text) => {
   if (!query.value.trim()) return text
@@ -172,23 +162,20 @@ const highlight = (text) => {
 watch(results, () => { activeIndex.value = -1 })
 
 const moveDown = () => {
-  if (activeIndex.value < results.value.length - 1) activeIndex.value++
+  const list = query.value.trim() ? results.value : quickLinks.value
+  if (activeIndex.value < list.length - 1) activeIndex.value++
 }
 const moveUp = () => {
   if (activeIndex.value > 0) activeIndex.value--
 }
 const navigate = () => {
+  const list = query.value.trim() ? results.value : quickLinks.value
   const idx = activeIndex.value === -1 ? 0 : activeIndex.value
-  const doc = results.value[idx]
-  if (doc) {
-    router.push(`/docs/${doc.slug}`)
+  const page = list[idx]
+  if (page) {
+    router.push(page.path)
     close()
   }
-}
-
-const goTo = (slug) => {
-  router.push(`/docs/${slug}`)
-  close()
 }
 
 const open = () => {
@@ -199,7 +186,7 @@ const open = () => {
 const close = () => {
   isOpen.value = false
   query.value = ''
-  activeIndex.value = 0
+  activeIndex.value = -1
 }
 
 const handleKeydown = (e) => {

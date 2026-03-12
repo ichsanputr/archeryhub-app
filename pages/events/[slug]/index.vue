@@ -621,7 +621,7 @@
                                     </NuxtLink>
                                     <p class="text-center text-xs text-gray-400 mt-3">Sudah terdaftar?
                                         <NuxtLink class="text-navy font-bold hover:underline"
-                                            :to="isArcher ? '/dashboard/archers/events' : '/dashboard/events'">
+                                            :to="isArcher ? '/dashboard/archer/events' : '/dashboard/events'">
                                             Cek status
                                         </NuxtLink>
                                     </p>

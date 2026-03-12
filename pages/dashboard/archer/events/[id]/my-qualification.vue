@@ -12,10 +12,6 @@
             <div class="relative p-6 sm:p-8">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div class="flex items-center gap-4">
-                        <button @click="handleBack"
-                            class="h-10 w-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center hover:bg-white/20 transition-colors">
-                            <Icon icon="ph:arrow-left-bold" class="text-white" />
-                        </button>
                         <div>
                             <nav
                                 class="flex text-[10px] font-bold text-white/40 uppercase tracking-widest mb-1 items-center gap-1.5">

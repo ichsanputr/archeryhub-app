@@ -1,0 +1,264 @@
+{
+  "archer": [
+    {
+      "path": "/dashboard/archer",
+      "title": "Dashboard",
+      "description": "Halaman utama dashboard pemanah",
+      "icon": "ph:squares-four",
+      "keywords": ["dashboard", "beranda", "home", "ringkasan", "overview"]
+    },
+    {
+      "path": "/dashboard/archer/events",
+      "title": "Event Saya",
+      "description": "Daftar event yang sudah kamu daftarkan atau ikuti",
+      "icon": "ph:trophy",
+      "keywords": ["event", "lomba", "kompetisi", "turnamen", "daftar", "terdaftar", "jadwal", "pertandingan"]
+    },
+    {
+      "path": "/dashboard/archer/payments",
+      "title": "Pembayaran",
+      "description": "Riwayat dan status pembayaran event",
+      "icon": "ph:credit-card",
+      "keywords": ["pembayaran", "bayar", "invoice", "tagihan", "payment", "lunas", "transfer", "bukti"]
+    },
+    {
+      "path": "/dashboard/archer/cart",
+      "title": "Keranjang",
+      "description": "Keranjang belanja dan pendaftaran event yang belum diselesaikan",
+      "icon": "ph:shopping-cart",
+      "keywords": ["keranjang", "cart", "belanja", "checkout", "daftar event", "bayar pendaftaran"]
+    },
+    {
+      "path": "/dashboard/archer/profile",
+      "title": "Profil Pemanah",
+      "description": "Profil dan informasi pribadi pemanah",
+      "icon": "ph:user-circle",
+      "keywords": ["profil", "profile", "biodata", "identitas", "foto", "avatar", "nama", "tanggal lahir", "gender", "bow type", "busur", "klub", "kota", "sekolah", "instagram", "sosial media"]
+    },
+    {
+      "path": "/dashboard/archer/settings",
+      "title": "Pengaturan",
+      "description": "Pengaturan akun dan preferensi",
+      "icon": "ph:gear",
+      "keywords": ["pengaturan", "settings", "akun", "password", "kata sandi", "ubah password", "keamanan", "privasi"]
+    },
+    {
+      "path": "/dashboard/archer/notifications",
+      "title": "Notifikasi",
+      "description": "Pemberitahuan dan notifikasi terbaru",
+      "icon": "ph:bell",
+      "keywords": ["notifikasi", "notification", "pemberitahuan", "info", "pesan", "update", "kabar"]
+    },
+    {
+      "path": "/dashboard/archer/result",
+      "title": "Hasil Pertandingan",
+      "description": "Riwayat hasil dan statistik pertandingan",
+      "icon": "ph:chart-line-up",
+      "keywords": ["hasil", "result", "skor", "score", "statistik", "riwayat", "performa", "prestasi", "nilai", "ranking"]
+    },
+    {
+      "path": "/dashboard/archer/saved",
+      "title": "Disimpan",
+      "description": "Event dan konten yang kamu simpan",
+      "icon": "ph:bookmark",
+      "keywords": ["simpan", "saved", "favorit", "bookmark", "wishlist", "tersimpan"]
+    },
+    {
+      "path": "/events",
+      "title": "Temukan Event",
+      "description": "Jelajahi semua event dan kompetisi panahan",
+      "icon": "ph:magnifying-glass",
+      "keywords": ["cari event", "temukan event", "daftar event", "kompetisi", "lomba", "turnamen"]
+    }
+  ],
+  "organization": [
+    {
+      "path": "/dashboard/organization",
+      "title": "Dashboard",
+      "description": "Halaman utama dashboard organisasi",
+      "icon": "ph:squares-four",
+      "keywords": ["dashboard", "beranda", "home", "ringkasan", "overview", "statistik"]
+    },
+    {
+      "path": "/dashboard/organization/events",
+      "title": "Event Saya",
+      "description": "Kelola semua event dan kompetisi yang diselenggarakan",
+      "icon": "ph:trophy",
+      "keywords": ["event", "lomba", "kompetisi", "turnamen", "kelola event", "manajemen event", "buat event", "daftar event"]
+    },
+    {
+      "path": "/dashboard/organization/events/create",
+      "title": "Buat Event",
+      "description": "Buat event atau kompetisi panahan baru",
+      "icon": "ph:plus-circle",
+      "keywords": ["buat event", "tambah event", "create event", "event baru", "kompetisi baru", "turnamen baru"]
+    },
+    {
+      "path": "/dashboard/organization/profile",
+      "title": "Profil Organisasi",
+      "description": "Informasi dan profil organisasi",
+      "icon": "icomoon-free:profile",
+      "keywords": ["profil", "profile", "organisasi", "informasi", "logo", "nama", "deskripsi", "kontak", "alamat"]
+    },
+    {
+      "path": "/dashboard/organization/scorekeepers",
+      "title": "Scorekeeper",
+      "description": "Kelola akun scorekeeper untuk event",
+      "icon": "ph:user-focus",
+      "keywords": ["scorekeeper", "penilaian", "penilai", "tambah scorekeeper", "kelola scorekeeper", "akses scoring"]
+    },
+    {
+      "path": "/dashboard/organization/earnings",
+      "title": "Penghasilan",
+      "description": "Rincian penghasilan dan pemasukan dari event",
+      "icon": "ph:wallet",
+      "keywords": ["penghasilan", "pendapatan", "pemasukan", "earnings", "uang masuk", "pendaftaran", "keuangan"]
+    },
+    {
+      "path": "/dashboard/organization/balance",
+      "title": "Saldo",
+      "description": "Saldo dan riwayat transaksi organisasi",
+      "icon": "ph:bank",
+      "keywords": ["saldo", "balance", "transaksi", "withdraw", "tarik dana", "keuangan"]
+    },
+    {
+      "path": "/dashboard/organization/bank-accounts",
+      "title": "Rekening Bank",
+      "description": "Kelola rekening bank untuk pencairan dana",
+      "icon": "ph:credit-card",
+      "keywords": ["rekening", "bank", "akun bank", "nomor rekening", "transfer", "pencairan", "withdraw"]
+    },
+    {
+      "path": "/dashboard/organization/subscription",
+      "title": "Subscription",
+      "description": "Kelola paket berlangganan organisasi",
+      "icon": "ph:crown",
+      "keywords": ["subscription", "berlangganan", "paket", "upgrade", "aktif", "masa berlaku", "premium"]
+    },
+    {
+      "path": "/dashboard/organization/news",
+      "title": "Berita",
+      "description": "Buat dan kelola berita atau pengumuman",
+      "icon": "ph:newspaper",
+      "keywords": ["berita", "news", "artikel", "pengumuman", "konten", "publikasi", "tulisan"]
+    },
+    {
+      "path": "/dashboard/organization/settings",
+      "title": "Pengaturan",
+      "description": "Pengaturan akun organisasi",
+      "icon": "ph:gear",
+      "keywords": ["pengaturan", "settings", "akun", "password", "keamanan", "konfigurasi"]
+    },
+    {
+      "path": "/dashboard/organization/teams",
+      "title": "Tim",
+      "description": "Mengelola tim dan anggota organisasi",
+      "icon": "ph:users-four",
+      "keywords": ["tim", "team", "anggota", "member", "kelola tim", "daftar tim"]
+    },
+    {
+      "path": "/dashboard/organization/event-categories",
+      "title": "Kategori Event",
+      "description": "Kelola kategori standar untuk event",
+      "icon": "ph:tag",
+      "keywords": ["kategori", "divisi", "recurve", "compound", "barebow", "gender", "usia", "kelas"]
+    },
+    {
+      "path": "/dashboard/organization/reports",
+      "title": "Laporan",
+      "description": "Laporan dan analitik event serta pendapatan",
+      "icon": "ph:chart-bar",
+      "keywords": ["laporan", "report", "analitik", "statistik", "grafik", "data", "rekap"]
+    }
+  ],
+  "seller": [
+    {
+      "path": "/dashboard/seller",
+      "title": "Dashboard",
+      "description": "Halaman utama dashboard seller",
+      "icon": "ph:squares-four",
+      "keywords": ["dashboard", "beranda", "home", "ringkasan", "overview", "penjualan"]
+    },
+    {
+      "path": "/dashboard/seller/store",
+      "title": "Toko Saya",
+      "description": "Profil dan informasi toko",
+      "icon": "ph:storefront",
+      "keywords": ["toko", "store", "profil toko", "informasi toko", "nama toko", "deskripsi toko"]
+    },
+    {
+      "path": "/dashboard/seller/products",
+      "title": "Produk",
+      "description": "Kelola katalog produk yang dijual",
+      "icon": "ph:package",
+      "keywords": ["produk", "product", "barang", "katalog", "daftar produk", "stok", "harga"]
+    },
+    {
+      "path": "/dashboard/seller/products/add",
+      "title": "Tambah Produk",
+      "description": "Tambahkan produk baru ke toko",
+      "icon": "ph:plus-circle",
+      "keywords": ["tambah produk", "produk baru", "add product", "upload produk", "jual barang baru"]
+    },
+    {
+      "path": "/dashboard/seller/orders",
+      "title": "Pesanan",
+      "description": "Daftar dan kelola pesanan dari pembeli",
+      "icon": "ph:shopping-cart",
+      "keywords": ["pesanan", "order", "transaksi", "pembeli", "pembelian", "kirim", "status pesanan"]
+    },
+    {
+      "path": "/dashboard/seller/settings",
+      "title": "Pengaturan",
+      "description": "Pengaturan akun seller",
+      "icon": "ph:gear",
+      "keywords": ["pengaturan", "settings", "akun", "password", "keamanan"]
+    }
+  ],
+  "root": [
+    {
+      "path": "/dashboard/root",
+      "title": "Pengguna",
+      "description": "Kelola semua akun pengguna platform",
+      "icon": "ph:users-four-bold",
+      "keywords": ["pengguna", "user", "akun", "kelola akun", "daftar pengguna", "admin", "manajemen user"]
+    },
+    {
+      "path": "/dashboard/root/create-account",
+      "title": "Buat Akun",
+      "description": "Buat akun baru untuk pengguna platform",
+      "icon": "ph:user-plus-bold",
+      "keywords": ["buat akun", "akun baru", "tambah pengguna", "create account", "daftarkan pengguna"]
+    },
+    {
+      "path": "/dashboard/root/subscriptions",
+      "title": "Subscription",
+      "description": "Kelola paket subscription dan berlangganan",
+      "icon": "ph:credit-card-bold",
+      "keywords": ["subscription", "berlangganan", "paket", "kelola paket", "upgrade", "manajemen subscription"]
+    }
+  ],
+  "common": [
+    {
+      "path": "/",
+      "title": "Beranda",
+      "description": "Halaman utama ArcheryHub",
+      "icon": "ph:house",
+      "keywords": ["beranda", "home", "utama", "archeryhub", "panahan"]
+    },
+    {
+      "path": "/events",
+      "title": "Event",
+      "description": "Temukan dan daftarkan diri di event panahan",
+      "icon": "ph:trophy",
+      "keywords": ["event", "lomba", "kompetisi", "turnamen", "mencari event", "jadwal", "daftar event"]
+    },
+    {
+      "path": "/news",
+      "title": "Berita",
+      "description": "Berita dan artikel seputar panahan",
+      "icon": "ph:newspaper",
+      "keywords": ["berita", "news", "artikel", "informasi", "panahan", "archery"]
+    }
+  ]
+}

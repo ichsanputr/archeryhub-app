@@ -156,12 +156,6 @@
                                     <h3
                                         class="font-black text-navy text-lg group-hover:text-primary transition-colors line-clamp-1">
                                         {{ team.team_name }}</h3>
-                                    <div class="flex items-center gap-2">
-                                        <p
-                                            class="text-[10px] font-black text-primary tracking-widest uppercase bg-primary/10 px-2 py-0.5 rounded">
-                                            Klub Resmi
-                                        </p>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -198,7 +192,7 @@
                                     class="p-2 text-gray-400 hover:text-navy transition-colors">
                                     <Icon icon="ph:pencil-simple" class="text-lg" />
                                 </button>
-                                <button @click="handleDeleteTeam(team)"
+                                <button @click="teamToDelete = team; showDeleteConfirm = true"
                                     class="p-2 text-gray-400 hover:text-red-500 transition-colors">
                                     <Icon icon="ph:trash" class="text-lg" />
                                 </button>
@@ -369,6 +363,44 @@
             </template>
         </BaseDialogForm>
 
+        <!-- Delete Team Confirmation Dialog -->
+        <BaseDialogForm v-model="showDeleteConfirm" @close="showDeleteConfirm = false">
+            <template #header>
+                <div class="flex items-center gap-3">
+                    <div class="size-10 bg-red-50 rounded-xl flex items-center justify-center shadow-inner">
+                        <Icon icon="ph:trash-bold" class="text-xl text-red-600" />
+                    </div>
+                    <h2 class="text-xl font-black text-navy">Hapus Tim?</h2>
+                </div>
+            </template>
+            <div class="space-y-6">
+                <div class="flex flex-col items-center text-center space-y-4">
+                    <div
+                        class="size-20 rounded-full bg-red-50 flex items-center justify-center text-red-500">
+                        <Icon icon="ph:trash-bold" class="text-5xl" />
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="text-lg font-black text-navy uppercase tracking-widest">Konfirmasi Hapus</h3>
+                        <p class="text-sm text-gray-500 max-w-sm">
+                            Yakin ingin menghapus tim
+                            <span class="font-bold text-navy">"{{ teamToDelete?.team_name }}"</span>?
+                            Tindakan ini tidak dapat dibatalkan.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <template #action>
+                <div class="flex justify-end gap-3 pt-2">
+                    <BaseButton variant="white" @click="showDeleteConfirm = false" class="px-8 font-bold">Batal
+                    </BaseButton>
+                    <BaseButton variant="primary" :loading="isDeleting" @click="executeDeleteTeam"
+                        class="px-8 bg-red-500 hover:bg-red-600 border-red-500 shadow-lg shadow-red-200 font-bold">
+                        Ya, Hapus
+                    </BaseButton>
+                </div>
+            </template>
+        </BaseDialogForm>
+
         <!-- Sync Confirmation Dialog -->
         <BaseDialogForm v-model="showSyncConfirm" @close="showSyncConfirm = false">
             <template #header>
@@ -449,10 +481,13 @@ const loadingTeams = ref(false)
 const loadingParticipants = ref(false)
 const isSyncing = ref(false)
 const isSaving = ref(false)
+const isDeleting = ref(false)
 
 // Modal State
 const showTeamModal = ref(false)
 const showSyncConfirm = ref(false)
+const showDeleteConfirm = ref(false)
+const teamToDelete = ref(null)
 const isEditing = ref(false)
 const currentTeamId = ref(null)
 const clubFilter = ref('')
@@ -780,16 +815,20 @@ const handleSaveTeam = async () => {
     }
 }
 
-const handleDeleteTeam = async (team) => {
-    if (!confirm(`Hapus tim "${team.team_name}"?`)) return
-
+const executeDeleteTeam = async () => {
+    if (!teamToDelete.value) return
+    isDeleting.value = true
     try {
-        await del(`/teams/${team.id}`)
+        await del(`/teams/${teamToDelete.value.id}`)
         toast.success('Tim berhasil dihapus')
+        showDeleteConfirm.value = false
+        teamToDelete.value = null
         await fetchTeams(selectedCategory.value.id)
     } catch (error) {
         console.error('Failed to delete team:', error)
         toast.error('Gagal menghapus tim')
+    } finally {
+        isDeleting.value = false
     }
 }
 
