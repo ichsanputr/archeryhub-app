@@ -249,6 +249,7 @@
                             class="text-xs text-gray-500 hover:text-red-500 font-bold">Reset</button>
                     </div>
                 </div>
+            </div>
 
             <!-- Word count -->
             <div class="ml-auto flex items-center pl-2">

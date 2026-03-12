@@ -164,7 +164,7 @@
                             <BaseButton v-if="!currentRoundNo && Object.keys(rounds).length === 0"
                                 @click="generateBracket" variant="primary" icon="ph:magic-wand-bold"
                                 class="h-10 sm:h-11 shadow-lg shadow-primary/30 tracking-[0.2em] font-black uppercase text-[10px] sm:text-xs">
-                                Generate Bracket
+                                Buat Bracket
                             </BaseButton>
 
                         </div>
@@ -295,13 +295,13 @@
                                 </div>
                             </div>
 
-                            <!-- Manual Winner Selection (for Shoot-off Tie) -->
+                            <!-- Pilih Pemenang Manual (untuk Shoot-off Seri) -->
                             <div v-if="isShootOffTie"
                                 class="mb-6 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-2xl text-left">
                                 <div class="flex items-center gap-2 mb-3">
                                     <Icon icon="ph:info-bold" class="text-yellow-500" />
-                                    <span class="text-xs font-black text-yellow-500 uppercase tracking-widest">Tie Break
-                                        Manual</span>
+                                    <span class="text-xs font-black text-yellow-500 uppercase tracking-widest">Penentuan
+                                        Pemenang Manual</span>
                                 </div>
                                 <p class="text-[10px] text-white/40 mb-4 leading-relaxed">
                                     Skor shoot-off sama. Silahkan pilih pemenang secara manual berdasarkan kriteria
@@ -424,7 +424,7 @@ const targetOptions = computed(() => {
 const activeTab = ref(route.query.mode === 'scoring' ? 'scoring' : 'target')
 const tabs = [
     { id: 'target', label: 'Target', icon: 'ph:target-bold' },
-    { id: 'scoring', label: 'Scoring', icon: 'ph:pencil-circle-bold' }
+    { id: 'scoring', label: 'Penilaian', icon: 'ph:pencil-circle-bold' }
 ]
 
 // Sync activeTab with route query

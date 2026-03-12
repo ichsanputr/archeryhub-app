@@ -372,11 +372,6 @@
                             Sistem akan menghapus semua data tim yang ada di kategori ini dan membuat tim baru secara
                             otomatis berdasarkan peringkat skor kualifikasi tertinggi.
                         </p>
-                        <div class="mx-auto p-4 bg-red-50 border border-red-100 rounded-2xl max-w-[280px]">
-                            <p class="text-[11px] font-black text-red-600 uppercase tracking-tighter text-center">
-                                Proses ini tidak dapat dibatalkan.
-                            </p>
-                        </div>
                     </div>
                 </div>
             </div>

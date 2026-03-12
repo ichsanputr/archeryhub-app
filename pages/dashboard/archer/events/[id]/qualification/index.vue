@@ -306,7 +306,7 @@
                   </td>
                   <td class="px-6 py-4 text-right">
                     <NuxtLink
-                      :to="`/dashboard/events/${eventId}/result-user?archer_id=${archer.athlete_code || archer.participant_uuid}`"
+                      :to="`/dashboard/events/${eventId}/participants/${archer.athlete_code || archer.participant_uuid}`"
                       class="inline-flex items-center justify-center gap-2 px-3 py-1.5 bg-primary/10 text-btn-text text-[10px] font-black uppercase tracking-widest rounded-lg transition-all">
                       <Icon icon="ph:eye-bold" class="text-sm" />
                       Detail

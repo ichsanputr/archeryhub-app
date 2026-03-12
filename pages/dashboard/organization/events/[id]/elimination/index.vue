@@ -258,8 +258,37 @@
                 <div>
                   <label class="block text-[10px] font-black text-gray-400 tracking-widest mb-2 px-1 uppercase">Ukuran
                     Bracket</label>
-                  <BaseSelect v-model="newBracket.bracketSize" :items="bracketSizeOptions" placeholder="Pilih Ukuran"
-                    required teleport />
+                  <!-- Loading -->
+                  <div v-if="loadingBracketSize"
+                    class="h-12 bg-gray-50 rounded-xl border border-gray-100 animate-pulse"></div>
+                  <!-- Editing: bracket size is locked -->
+                  <div v-else-if="isEditing"
+                    class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200 h-12">
+                    <Icon icon="ph:brackets-curly-bold" class="text-navy text-lg flex-shrink-0" />
+                    <div>
+                      <div class="font-black text-navy text-sm">{{ newBracket.bracketSize }} Slot</div>
+                      <div class="text-[10px] text-gray-400">Tetap sejak dibuat</div>
+                    </div>
+                  </div>
+                  <!-- Creating: dropdown of valid options -->
+                  <div v-else-if="bracketSizeDropdownOptions.length > 0" class="space-y-2">
+                    <BaseSelect v-model="newBracket.bracketSize" :items="bracketSizeDropdownOptions"
+                      placeholder="Pilih Ukuran" required teleport />
+                    <!-- Hint below dropdown -->
+                    <div class="text-[10px] px-1" :class="selectedBracketHint.isEstimate ? 'text-amber-600' : 'text-gray-400'">
+                      {{ selectedBracketHint.text }}
+                    </div>
+                  </div>
+                  <!-- No participants -->
+                  <div v-else-if="newBracket.categoryId"
+                    class="flex items-center gap-2 p-3 bg-yellow-50 border border-yellow-200 rounded-xl h-12">
+                    <Icon icon="ph:warning-bold" class="text-yellow-500 flex-shrink-0" />
+                    <span class="text-xs font-bold text-yellow-700">Belum ada peserta di kategori ini</span>
+                  </div>
+                  <div v-else class="flex items-center gap-2 p-3 bg-gray-50 border border-gray-200 rounded-xl h-12">
+                    <Icon icon="ph:info-bold" class="text-gray-300 flex-shrink-0" />
+                    <span class="text-xs text-gray-400">Pilih kategori untuk kalkulasi otomatis</span>
+                  </div>
                 </div>
                 <div>
                   <label class="block text-[10px] font-black text-gray-400 tracking-widest mb-2 px-1 uppercase">Ends per
@@ -310,7 +339,7 @@
               class="flex-1 px-6 py-4 bg-white border-2 border-gray-200 text-gray-500 rounded-2xl font-black hover:bg-gray-100 hover:border-gray-300 transition-all tracking-widest text-[10px] uppercase">
               Batal
             </button>
-            <BaseButton :disabled="!newBracket.categoryId || creatingBracket" :loading="creatingBracket"
+            <BaseButton :disabled="(!isEditing && bracketSizeDropdownOptions.length === 0) || !newBracket.categoryId || creatingBracket" :loading="creatingBracket"
               variant="primary"
               class="flex-[2] py-4 rounded-2xl font-black shadow-lg shadow-primary/10 tracking-widest text-[10px] uppercase"
               @click="handleCreateOrUpdate">
@@ -433,6 +462,8 @@ const brackets = ref([])
 const categories = ref([])
 const loadingBrackets = ref(false)
 const loadingCategories = ref(false)
+const loadingBracketSize = ref(false)
+const bracketSizeInfo = ref({ participant_count: 0, max_bracket_size: 0, byes: 0, synced_teams: 0, possible_teams: 0, team_size: 1 })
 const creatingBracket = ref(false)
 const showCreateDialog = ref(false)
 
@@ -456,7 +487,7 @@ const newBracket = ref({
   categoryId: '',
   bracketType: 'individual',
   format: 'recurve_set',
-  bracketSize: 8,
+  bracketSize: 0, // display-only when editing; auto-calculated from API when creating
   endsPerMatch: 5,
   arrowsPerEnd: 3,
   startDate: defaultStartDate(),
@@ -464,6 +495,41 @@ const newBracket = ref({
   endDate: defaultStartDate(),
   endTime: defaultEndTime
 })
+
+const fetchBracketSizeInfo = async () => {
+  const catId = newBracket.value.categoryId
+  const type = newBracket.value.bracketType
+  if (!catId || !eventId.value || isEditing.value) return
+
+  loadingBracketSize.value = true
+  bracketSizeInfo.value = { participant_count: 0, max_bracket_size: 0, byes: 0, synced_teams: 0, possible_teams: 0, team_size: 1 }
+  try {
+    const response = await get(`/events/${eventId.value}/elimination/bracket-size`, {
+      params: { category_id: catId, bracket_type: type }
+    })
+    bracketSizeInfo.value = {
+      participant_count: response?.participant_count || 0,
+      max_bracket_size: response?.max_bracket_size || 0,
+      byes: response?.byes || 0,
+      synced_teams: response?.synced_teams ?? 0,
+      possible_teams: response?.possible_teams ?? 0,
+      team_size: response?.team_size ?? 1
+    }
+    // Auto-select max bracket size as default
+    if (bracketSizeInfo.value.max_bracket_size > 0) {
+      newBracket.value.bracketSize = bracketSizeInfo.value.max_bracket_size
+    }
+  } catch (e) {
+    bracketSizeInfo.value = { participant_count: 0, max_bracket_size: 0, byes: 0, synced_teams: 0, possible_teams: 0, team_size: 1 }
+  } finally {
+    loadingBracketSize.value = false
+  }
+}
+
+watch(
+  [() => newBracket.value.categoryId, () => newBracket.value.bracketType],
+  () => { fetchBracketSizeInfo() }
+)
 
 const searchQuery = ref('')
 
@@ -523,6 +589,7 @@ const openEditBracket = (bracket) => {
   editBracketId.value = bracket.id || bracket.uuid
   const start = parseBracketDatetime(bracket.start_time, defaultStartTime)
   const end = parseBracketDatetime(bracket.end_time, defaultEndTime)
+  bracketSizeInfo.value = { participant_count: 0, bracket_size: bracket.bracket_size, byes: 0 }
   newBracket.value = {
     categoryId: bracket.category_id,
     bracketType: bracket.bracket_type,
@@ -553,7 +620,6 @@ const updateBracket = async () => {
       category_id: newBracket.value.categoryId,
       bracket_type: newBracket.value.bracketType,
       format: newBracket.value.format,
-      bracket_size: newBracket.value.bracketSize,
       ends_per_match: newBracket.value.endsPerMatch,
       arrows_per_end: newBracket.value.arrowsPerEnd
     }
@@ -579,11 +645,12 @@ const updateBracket = async () => {
 
 const resetForm = () => {
   editBracketId.value = null
+  bracketSizeInfo.value = { participant_count: 0, max_bracket_size: 0, byes: 0, synced_teams: 0, possible_teams: 0, team_size: 1 }
   newBracket.value = {
     categoryId: '',
     bracketType: 'individual',
     format: 'recurve_set',
-    bracketSize: 8,
+    bracketSize: 0,
     endsPerMatch: 5,
     arrowsPerEnd: 3,
     startDate: defaultStartDate(),
@@ -601,6 +668,10 @@ function toDatetimeISO(dateStr, timeStr) {
 const createBracket = async () => {
   if (!newBracket.value.categoryId) {
     toast.warning('Pilih kategori terlebih dahulu')
+    return
+  }
+  if (bracketSizeDropdownOptions.value.length === 0) {
+    toast.warning('Tidak ada peserta untuk kategori ini. Bracket tidak dapat dibuat.')
     return
   }
 
@@ -698,14 +769,41 @@ const formatOptions = [
   { value: 'compound_total', title: 'Total Score' }
 ]
 
-const bracketSizeOptions = [
-  { value: 4, title: '4 Peserta' },
-  { value: 8, title: '8 Peserta' },
-  { value: 16, title: '16 Peserta' },
-  { value: 32, title: '32 Peserta' },
-  { value: 64, title: '64 Peserta' },
-  { value: 128, title: '128 Peserta' }
-]
+// Generate all valid power-of-2 bracket size options from 4 up to max_bracket_size
+const bracketSizeDropdownOptions = computed(() => {
+  const max = bracketSizeInfo.value.max_bracket_size
+  if (!max || max < 4) return []
+  const opts = []
+  for (let s = 4; s <= max; s *= 2) {
+    opts.push({ value: s, title: `${s} Slot` })
+  }
+  return opts
+})
+
+// Dynamic hint shown below the bracket size dropdown
+const selectedBracketHint = computed(() => {
+  const size = newBracket.value.bracketSize
+  const count = bracketSizeInfo.value.participant_count
+  const synced = bracketSizeInfo.value.synced_teams
+  const possible = bracketSizeInfo.value.possible_teams
+  const isTeam = newBracket.value.bracketType !== 'individual'
+  if (!size || !count) return { text: '', isEstimate: false }
+
+  if (size >= count) {
+    const byes = size - count
+    if (isTeam && synced === 0 && possible > 0) {
+      return { text: `~${count} tim potensial · ${byes} bye · estimasi (belum disinkron)`, isEstimate: true }
+    }
+    return { text: `${count} peserta · ${byes} bye`, isEstimate: false }
+  } else {
+    // bracket smaller than count: only top N qualify
+    const label = isTeam ? 'tim' : 'peserta'
+    if (isTeam && synced === 0 && possible > 0) {
+      return { text: `Top ${size} dari ~${count} ${label} potensial (estimasi)`, isEstimate: true }
+    }
+    return { text: `Top ${size} dari ${count} ${label} berdasarkan ranking`, isEstimate: false }
+  }
+})
 
 const categoriesWithoutBracket = computed(() => {
   const bracketCatIds = brackets.value.map(b => b.category_id)

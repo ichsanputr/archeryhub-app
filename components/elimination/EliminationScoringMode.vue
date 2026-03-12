@@ -6,7 +6,7 @@
                 <div class="flex items-center justify-between mb-4 lg:mb-6 pb-2 border-b border-gray-50">
                     <h3 class="text-[10px] font-black tracking-[0.2em] text-navy/40 flex items-center gap-2 uppercase">
                         <Icon icon="ph:list-bullets-bold" class="text-sm" />
-                        Daftar Match
+                        Daftar Pertandingan
                     </h3>
                     <span class="px-2 py-0.5 rounded-lg bg-slate-100 text-[10px] font-black text-slate-400">{{
                         roundMatches.length }}</span>
@@ -91,9 +91,15 @@
             <div v-if="selectedScoringMatch" class="space-y-6">
                 <!-- Match Summary Header -->
                 <div
-                    class="bg-navy rounded-[2.5rem] sm:rounded-[3rem] p-6 sm:p-12 flex flex-col items-center justify-center gap-6 sm:gap-8 text-white shadow-sm overflow-hidden relative border border-white/5">
-                    <!-- Premium Background Layers -->
-                    <div class="absolute inset-0 opacity-[0.03] pointer-events-none">
+                    class="bg-gradient-to-br from-navy via-[#112f5f] to-navy rounded-[2.5rem] sm:rounded-[3rem] p-6 sm:p-10 text-white shadow-sm overflow-hidden relative border border-primary/20">
+                    <!-- Latar Pola & Layer Dekoratif -->
+                    <div class="absolute inset-0 opacity-20 pointer-events-none"
+                        style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.25) 1px, transparent 0); background-size: 18px 18px;">
+                    </div>
+                    <div class="absolute inset-0 opacity-30 pointer-events-none"
+                        style="background-image: linear-gradient(120deg, rgba(212,175,55,0.12) 0%, transparent 35%, transparent 65%, rgba(255,255,255,0.08) 100%);">
+                    </div>
+                    <div class="absolute inset-0 opacity-[0.06] pointer-events-none">
                         <Icon icon="ph:target"
                             class="text-[300px] sm:text-[500px] absolute -right-32 -bottom-32 rotate-12" />
                     </div>
@@ -102,11 +108,9 @@
                     <div class="absolute bottom-0 left-0 w-1/2 h-full bg-gradient-to-r from-blue-500/5 to-transparent">
                     </div>
 
-                    <div
-                        class="relative z-10 flex flex-col md:flex-row items-center justify-center gap-6 sm:gap-10 md:gap-20 w-full">
+                    <div class="relative z-10 grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center gap-6 md:gap-12 w-full">
                         <!-- Side A View -->
-                        <div
-                            class="flex flex-row md:flex-col items-center gap-4 sm:gap-5 text-center group w-full md:w-auto px-4 md:px-0">
+                        <div class="flex flex-col items-center gap-4 sm:gap-5 text-center group w-full px-2">
                             <div class="relative shrink-0">
                                 <div
                                     class="absolute -inset-3 sm:-inset-4 bg-primary/20 rounded-[2rem] sm:rounded-[3rem] blur-xl sm:blur-2xl opacity-0 group-hover:opacity-100 transition-opacity">
@@ -118,14 +122,14 @@
                                     {{ selectedScoringMatch.entry_a_seed || '-' }}
                                 </div>
                             </div>
-                            <div class="space-y-0.5 sm:space-y-1 text-left md:text-center min-w-0 flex-1 md:flex-none">
+                            <div class="space-y-0.5 sm:space-y-1 text-center min-w-0 w-full">
                                 <h4
                                     class="font-black text-base sm:text-2xl leading-tight truncate tracking-tight text-white">
                                     {{ selectedScoringMatch.entry_a_name || 'TBD' }}
                                 </h4>
                                 <p
                                     class="text-[8px] sm:text-[10px] font-black text-primary uppercase tracking-[0.2em] opacity-60">
-                                    Archer A
+                                    Peserta A
                                 </p>
                             </div>
                             <!-- Mobile Score Display A -->
@@ -178,14 +182,14 @@
                                         class="px-5 py-1.5 rounded-xl bg-green-500/10 border border-green-500/20 backdrop-blur-sm flex items-center gap-2">
                                         <Icon icon="ph:seal-check-fill" class="text-green-500 text-[10px]" />
                                         <span
-                                            class="text-[9px] font-black tracking-[0.3em] text-green-400 uppercase">DONE</span>
+                                            class="text-[9px] font-black tracking-[0.3em] text-green-400 uppercase">SELESAI</span>
                                     </div>
                                     <button @click="$emit('reset-match')" :disabled="isResetting"
                                         class="group px-3 py-1.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500/20 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-2"
-                                        title="Reset Match to LIVE">
+                                        title="Atur Ulang Pertandingan ke Mode Berlangsung">
                                         <Icon :icon="isResetting ? 'ph:circle-notch-bold' : 'ph:lock-open-bold'"
                                             :class="{ 'animate-spin': isResetting }" class="text-xs" />
-                                        <span class="text-[8px] font-black uppercase tracking-wider">RESET</span>
+                                        <span class="text-[8px] font-black uppercase tracking-wider">ATUR ULANG</span>
                                     </button>
                                 </div>
                                 <button v-else-if="canEndMatch" @click="$emit('end-match')" :disabled="isEndingMatch"
@@ -196,13 +200,13 @@
                                         <Icon v-else icon="ph:flag-checkered-fill"
                                             class="group-hover:rotate-12 transition-transform text-xs" />
                                     </div>
-                                    <span>{{ isEndingMatch ? 'Ending...' : 'Finish' }}</span>
+                                    <span>{{ isEndingMatch ? 'Proses...' : 'Akhiri' }}</span>
                                 </button>
                                 <div v-else
                                     class="px-5 py-1.5 rounded-xl bg-white/5 border border-white/10 flex items-center gap-2">
                                     <div class="size-1 rounded-full bg-white/20 animate-pulse"></div>
                                     <span
-                                        class="text-[9px] font-black tracking-[0.3em] text-white/30 uppercase">LIVE</span>
+                                        class="text-[9px] font-black tracking-[0.3em] text-white/30 uppercase">BERLANGSUNG</span>
                                 </div>
                             </div>
                         </div>
@@ -218,8 +222,7 @@
                         </div>
 
                         <!-- Side B View -->
-                        <div
-                            class="flex flex-row md:flex-col items-center gap-4 sm:gap-5 text-center group w-full md:w-auto px-4 md:px-0">
+                        <div class="flex flex-col items-center gap-4 sm:gap-5 text-center group w-full px-2">
                             <!-- Mobile Score Display B -->
                             <div
                                 class="md:hidden text-3xl font-black text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.1)] tabular-nums">
@@ -236,14 +239,14 @@
                                     {{ selectedScoringMatch.entry_b_seed || '-' }}
                                 </div>
                             </div>
-                            <div class="space-y-0.5 sm:space-y-1 text-right md:text-center min-w-0 flex-1 md:flex-none">
+                            <div class="space-y-0.5 sm:space-y-1 text-center min-w-0 w-full">
                                 <h4
                                     class="font-black text-base sm:text-2xl leading-tight truncate tracking-tight text-white">
                                     {{ selectedScoringMatch.entry_b_name || 'TBD' }}
                                 </h4>
                                 <p
                                     class="text-[8px] sm:text-[10px] font-black text-white uppercase tracking-[0.2em] opacity-40">
-                                    Archer B
+                                    Peserta B
                                 </p>
                             </div>
                         </div>
@@ -253,14 +256,14 @@
                             <div v-if="selectedScoringMatch.winner_entry_id || selectedScoringMatch.status === 'finished'"
                                 class="w-full py-3 rounded-xl bg-green-500/10 border border-green-500/20 flex items-center justify-center gap-2">
                                 <Icon icon="ph:seal-check-fill" class="text-green-500 text-sm" />
-                                <span class="text-[10px] font-black tracking-[0.3em] text-green-400 uppercase">MATCH
-                                    FINISHED</span>
+                                <span class="text-[10px] font-black tracking-[0.3em] text-green-400 uppercase">PERTANDINGAN
+                                    SELESAI</span>
                             </div>
                             <button v-else-if="canEndMatch" @click="$emit('end-match')" :disabled="isEndingMatch"
                                 class="w-full py-3.5 sm:py-4 rounded-xl bg-primary text-btn-text font-black text-[10px] sm:text-xs tracking-widest uppercase flex items-center justify-center gap-2 sm:gap-3 transition-all active:scale-[0.98]">
                                 <Icon v-if="isEndingMatch" icon="ph:circle-notch-bold" class="animate-spin text-lg" />
                                 <Icon v-else icon="ph:flag-checkered-fill" class="text-lg" />
-                                <span>{{ isEndingMatch ? 'Ending...' : 'Finish Match' }}</span>
+                                <span>{{ isEndingMatch ? 'Mengakhiri...' : 'Akhiri Pertandingan' }}</span>
                             </button>
                         </div>
                     </div>
@@ -420,7 +423,7 @@
                                                     <template v-else>
                                                         <span
                                                             class="text-[9px] sm:text-[10px] tracking-widest uppercase truncate">{{
-                                                                isMatchFinished ? 'READ ONLY' : 'Simpan Skor' }}</span>
+                                                                isMatchFinished ? 'HANYA BACA' : 'Simpan Skor' }}</span>
                                                         <Icon icon="ph:paper-plane-right-fill"
                                                             class="text-base sm:text-lg group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                                                     </template>

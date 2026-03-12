@@ -229,17 +229,36 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <BaseSelect v-model="teamForm.category_id" :items="mappedCategories" label="Kategori Lomba"
-                            placeholder="Pilih Kategori" @update:modelValue="onModalCategoryChange" searchable />
-
-                        <BaseSelect v-model="teamForm.club_name" :items="mappedClubs" label="Pilih Klub"
-                            placeholder="Pilih Klub" :disabled="!teamForm.category_id || loadingParticipants"
-                            @update:modelValue="onModalClubChange" searchable />
+                        <!-- Editing: lock category and club as read-only -->
+                        <template v-if="isEditing">
+                            <div class="space-y-1.5">
+                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest">Kategori Lomba</label>
+                                <div class="h-10 px-3 flex items-center rounded-xl bg-gray-50 border border-gray-200 text-sm font-semibold text-navy">
+                                    <Icon icon="ph:lock-simple" class="text-gray-400 mr-2 shrink-0" />
+                                    {{ getCategoryName(categories.find(c => c.id === teamForm.category_id)) || teamForm.category_id }}
+                                </div>
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest">Klub</label>
+                                <div class="h-10 px-3 flex items-center rounded-xl bg-gray-50 border border-gray-200 text-sm font-semibold text-navy">
+                                    <Icon icon="ph:lock-simple" class="text-gray-400 mr-2 shrink-0" />
+                                    {{ teamForm.club_name || '—' }}
+                                </div>
+                            </div>
+                        </template>
+                        <!-- Adding: show dropdowns -->
+                        <template v-else>
+                            <BaseSelect v-model="teamForm.category_id" :items="mappedCategories" label="Kategori Lomba"
+                                placeholder="Pilih Kategori" @update:modelValue="onModalCategoryChange" searchable />
+                            <BaseSelect v-model="teamForm.club_name" :items="mappedClubs" label="Pilih Klub"
+                                placeholder="Pilih Klub" :disabled="!teamForm.category_id || loadingParticipants"
+                                @update:modelValue="onModalClubChange" searchable />
+                        </template>
                     </div>
                 </div>
 
                 <!-- Section 2: Pemilihan Anggota -->
-                <div class="space-y-4 pt-4 border-t border-gray-100" v-if="teamForm.club_name">
+                <div class="space-y-4 pt-4 border-t border-gray-100" v-if="teamForm.club_name || isEditing">
                     <div class="flex items-center justify-between">
                         <h3 class="text-sm font-black text-navy uppercase tracking-widest flex items-center gap-2">
                             <Icon icon="ph:users-four-bold" class="text-primary text-lg" />
@@ -372,11 +391,6 @@
                             Sistem akan menghapus semua data tim yang ada di kategori ini dan membuat tim baru secara
                             otomatis berdasarkan peringkat skor kualifikasi tertinggi.
                         </p>
-                        <div class="mx-auto p-4 bg-red-50 border border-red-100 rounded-2xl max-w-[280px]">
-                            <p class="text-[11px] font-black text-red-600 uppercase tracking-tighter text-center">
-                                Proses ini tidak dapat dibatalkan.
-                            </p>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -640,17 +654,62 @@ const handleSyncTeams = () => {
     showSyncConfirm.value = true
 }
 
+const formatSyncDetailsMessage = (details = {}) => {
+    if (!details || typeof details !== 'object') return ''
+
+    if (details.reason) {
+        const extras = []
+
+        if (typeof details.total_participants === 'number') {
+            extras.push(`total peserta: ${details.total_participants}`)
+        }
+
+        if (typeof details.clubs_with_participants === 'number') {
+            extras.push(`klub terlibat: ${details.clubs_with_participants}`)
+        }
+
+        if (typeof details.male_participants === 'number') {
+            extras.push(`putra: ${details.male_participants}`)
+        }
+
+        if (typeof details.female_participants === 'number') {
+            extras.push(`putri: ${details.female_participants}`)
+        }
+
+        if (typeof details.eligible_team_groups === 'number') {
+            extras.push(`grup layak: ${details.eligible_team_groups}`)
+        }
+
+        return extras.length > 0
+            ? `${details.reason} (${extras.join(', ')})`
+            : details.reason
+    }
+
+    return ''
+}
+
 const executeSyncTeams = async () => {
     isSyncing.value = true
     try {
-        await post(`/teams/event/${eventId}/sync`, {
+        const response = await post(`/teams/event/${eventId}/sync`, {
             category_id: selectedCategory.value.id
         })
-        toast.success('Tim berhasil disinkronisasi otomatis')
+
+        const syncCount = Number(response?.count || 0)
+        const detailMessage = formatSyncDetailsMessage(response?.details)
+
+        if (syncCount > 0) {
+            toast.success(response?.message
+                ? `${response.message}. ${syncCount} tim dibuat.`
+                : `${syncCount} tim berhasil disinkronisasi otomatis`)
+        } else {
+            toast.error(detailMessage || 'Sinkronisasi tidak menghasilkan tim. Periksa kecukupan peserta dan skor kualifikasi.')
+        }
+
         await fetchTeams(selectedCategory.value.id)
     } catch (error) {
         console.error('Failed to sync teams:', error)
-        toast.error('Gagal sinkronisasi tim')
+        toast.error(error?.response?.data?.details || error?.response?.data?.error || 'Gagal sinkronisasi tim')
     } finally {
         isSyncing.value = false
         showSyncConfirm.value = false
@@ -676,15 +735,12 @@ const openEditTeamModal = (team) => {
     isEditing.value = true
     currentTeamId.value = team.id
     teamForm.team_name = team.team_name
-    teamForm.category_id = team.event_id || selectedCategory.value?.id || ''
-    // First fetch participants for this category to populate the list
-    fetchParticipants(teamForm.category_id).then(() => {
-        // Try to identify the club from members
-        if (team.members && team.members.length > 0) {
-            teamForm.club_name = team.members[0].club_name
-        }
-        teamForm.member_ids = team.members.map(m => m.participant_id)
-    })
+    teamForm.category_id = team.category_id || selectedCategory.value?.id || ''
+    if (team.members && team.members.length > 0) {
+        teamForm.club_name = team.members[0].club_name
+    }
+    teamForm.member_ids = team.members?.map(m => m.participant_id) ?? []
+    // participants already loaded by selectCategory — no need to re-fetch
     showTeamModal.value = true
 }
 

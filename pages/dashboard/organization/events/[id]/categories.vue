@@ -56,6 +56,9 @@
                     <span class="text-sm font-medium text-gray-500 hidden sm:inline">Filter Busur:</span>
                     <BaseSelect v-model="selectedBowType" :items="bowFilterOptions" placeholder="Semua Busur"
                         class="w-full sm:w-48" />
+                    <span class="text-sm font-medium text-gray-500 hidden sm:inline">Jenis Team:</span>
+                    <BaseSelect v-model="selectedTeamType" :items="teamTypeFilterOptions" placeholder="Semua Jenis Team"
+                        class="w-full sm:w-48" />
                 </div>
             </div>
             <!-- Skeleton Loader -->
@@ -337,6 +340,7 @@ const currentPage = ref(1)
 const totalItems = ref(0)
 const limit = ref(10)
 const selectedBowType = ref('all')
+const selectedTeamType = ref('all')
 
 const bowFilterOptions = computed(() => {
     return [
@@ -345,7 +349,19 @@ const bowFilterOptions = computed(() => {
     ]
 })
 
+const teamTypeFilterOptions = computed(() => {
+    return [
+        { value: 'all', title: 'Semua Jenis Team' },
+        ...eventTypes.value.map(type => ({ value: type.id, title: type.name }))
+    ]
+})
+
 watch(selectedBowType, () => {
+    currentPage.value = 1
+    fetchCategories()
+})
+
+watch(selectedTeamType, () => {
     currentPage.value = 1
     fetchCategories()
 })
@@ -455,6 +471,10 @@ const fetchCategories = async () => {
 
         if (selectedBowType.value !== 'all') {
             params.append('bow_type', selectedBowType.value)
+        }
+
+        if (selectedTeamType.value !== 'all') {
+            params.append('event_type', selectedTeamType.value)
         }
 
         const [categoriesRes, bowRes, ageRes, eventTypeRes, genderRes] = await Promise.all([

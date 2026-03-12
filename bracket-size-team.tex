@@ -1,0 +1,100 @@
+\section{Maximum Bracket Size pada Team Event}
+
+Pada \textit{team event}, peserta yang digunakan untuk membentuk bracket eliminasi bukan lagi individu, melainkan \textbf{jumlah tim yang terbentuk}. 
+Setiap tim biasanya terdiri dari beberapa atlet (misalnya 3 atlet per tim pada kompetisi panahan standar).
+
+\subsection{Pembentukan Tim}
+
+Jika terdapat $N$ atlet dan setiap tim terdiri dari $k$ atlet, maka jumlah maksimum tim yang dapat terbentuk adalah:
+
+\[
+T = \left\lfloor \frac{N}{k} \right\rfloor
+\]
+
+dengan:
+
+\begin{itemize}
+\item $N$ = jumlah atlet
+\item $k$ = jumlah atlet per tim
+\item $T$ = jumlah tim maksimum
+\item $\lfloor \cdot \rfloor$ = fungsi pembulatan ke bawah
+\end{itemize}
+
+\textbf{Contoh:}
+
+Jika terdapat $N = 60$ atlet dan setiap tim terdiri dari $k = 3$ atlet:
+
+\[
+T = \left\lfloor \frac{60}{3} \right\rfloor = 20
+\]
+
+Secara teoritis dapat terbentuk maksimal \textbf{20 tim}.  
+Namun dalam praktiknya jumlah tim bisa lebih sedikit karena pembentukan tim biasanya berdasarkan klub atau negara.
+
+\subsection{Penentuan Ukuran Bracket Tim}
+
+Ukuran bracket eliminasi untuk tim juga mengikuti bilangan pangkat dua:
+
+\[
+2, 4, 8, 16, 32
+\]
+
+Ukuran bracket ditentukan dengan rumus:
+
+\[
+\text{Bracket Size} = 2^{\lceil \log_2(T) \rceil}
+\]
+
+dengan:
+
+\begin{itemize}
+\item $T$ = jumlah tim yang berpartisipasi
+\item $\lceil \cdot \rceil$ = fungsi pembulatan ke atas
+\end{itemize}
+
+\subsection{Contoh}
+
+Misalkan hanya terbentuk \textbf{12 tim} dari hasil qualification.
+
+\[
+\log_2(12) \approx 3.58
+\]
+
+\[
+\lceil 3.58 \rceil = 4
+\]
+
+Sehingga ukuran bracket yang digunakan adalah:
+
+\[
+2^4 = 16
+\]
+
+Artinya bracket eliminasi memiliki \textbf{16 slot tim}.
+
+\subsection{Perhitungan Bye}
+
+Jika jumlah tim lebih kecil dari ukuran bracket, maka slot kosong akan menjadi \textbf{bye}.
+
+\[
+\text{Bye} = \text{Bracket Size} - T
+\]
+
+Contoh:
+
+\[
+16 - 12 = 4
+\]
+
+Sehingga terdapat \textbf{4 bye} pada ronde pertama.
+
+Bye biasanya diberikan kepada tim dengan \textbf{ranking qualification tertinggi}.
+
+\subsection{Ringkasan}
+
+\begin{itemize}
+\item Team event menggunakan jumlah \textbf{tim} sebagai dasar pembentukan bracket.
+\item Ukuran bracket tetap mengikuti bilangan pangkat dua.
+\item Maximum bracket size ditentukan dengan fungsi $2^{\lceil \log_2(T) \rceil}$.
+\item Jika jumlah tim lebih kecil dari ukuran bracket, maka slot kosong menjadi \textbf{bye}.
+\end{itemize}

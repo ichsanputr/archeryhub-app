@@ -36,13 +36,6 @@
 
                     <!-- Action Buttons -->
                     <div class="flex gap-3 flex-shrink-0">
-                        <BaseButton variant="navy" icon="ph:chart-line-up-bold"
-                            class="h-10 md:h-11 px-6 shadow-xl shadow-navy/20"
-                            :to="`/dashboard/events/${eventId}/result-user?archer_id=${participant?.athlete_code || participant?.id}`"
-                            target="_blank">
-                            <span class="hidden sm:inline">Lihat Hasil</span>
-                            <span class="sm:hidden text-xs">Hasil</span>
-                        </BaseButton>
                         <BaseButton variant="primary" icon="ph:floppy-disk"
                             class="h-10 md:h-11 px-4 md:px-6 shadow-lg shadow-primary/30 hover:shadow-sm hover:shadow-primary/40 transition-all font-black"
                             @click="handleSubmit" :loading="isSubmitting">

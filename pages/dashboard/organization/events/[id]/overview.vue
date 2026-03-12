@@ -343,7 +343,7 @@
                         <div class="flex-1 overflow-y-auto max-h-[440px] p-4">
                             <div class="space-y-3">
                                 <div v-for="(participant, idx) in topParticipants" :key="participant.id"
-                                    @click="navigateTo(`/dashboard/events/${route.params.id}/result-user?archer_id=${participant.athlete_code || participant.id}`)"
+                                    @click="navigateTo(`/dashboard/events/${route.params.id}/participants/${participant.athlete_code || participant.id}`)"
                                     class="group relative bg-white border border-gray-50 rounded-2xl p-4 hover:border-primary/50 hover:shadow-md transition-all cursor-pointer flex items-center gap-4">
 
                                     <!-- Avatar with Rank Badge -->

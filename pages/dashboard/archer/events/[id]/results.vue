@@ -143,7 +143,7 @@
                             <td class="px-6 py-4 text-text-sub/50 font-bold tabular-nums">-</td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center gap-3">
-                                    <div @click="navigateTo(`/dashboard/events/${eventId}/result-user?archer_id=${stand.athlete_code || stand.participant_id}`)"
+                                    <div @click="navigateTo(`/dashboard/events/${eventId}/participants/${stand.athlete_code || stand.participant_id}`)"
                                         class="font-bold text-navy group-hover:text-primary transition-colors cursor-pointer">
                                         {{ stand.archer_name }}
                                     </div>

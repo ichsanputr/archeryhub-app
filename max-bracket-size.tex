@@ -1,0 +1,100 @@
+\section{Maximum Bracket Size}
+
+Dalam sistem eliminasi, ukuran bracket harus mengikuti bilangan pangkat dua. 
+Hal ini dilakukan agar setiap ronde dapat membagi jumlah peserta secara seimbang hingga tersisa satu pemenang.
+
+Ukuran bracket yang umum digunakan adalah:
+
+\[
+2^n \quad \text{dengan } n \in \mathbb{N}
+\]
+
+Sehingga ukuran bracket yang valid antara lain:
+
+\[
+2, 4, 8, 16, 32, 64, 128, 256
+\]
+
+\subsection{Penentuan Maximum Bracket}
+
+Maximum bracket size ditentukan sebagai bilangan pangkat dua terkecil yang lebih besar atau sama dengan jumlah peserta.
+
+Secara matematis:
+
+\[
+\text{Bracket Size} = 2^{\lceil \log_2(N) \rceil}
+\]
+
+dengan:
+
+\begin{itemize}
+\item $N$ = jumlah peserta
+\item $\lceil \cdot \rceil$ = fungsi pembulatan ke atas (ceiling)
+\end{itemize}
+
+\subsection{Contoh Perhitungan}
+
+Jika jumlah peserta adalah:
+
+\begin{itemize}
+\item $N = 60$
+\end{itemize}
+
+maka:
+
+\[
+\log_2(60) \approx 5.91
+\]
+
+\[
+\lceil 5.91 \rceil = 6
+\]
+
+Sehingga:
+
+\[
+\text{Bracket Size} = 2^6 = 64
+\]
+
+Artinya bracket eliminasi yang digunakan adalah \textbf{64 slot}.
+
+\subsection{Hubungan dengan Bye}
+
+Jika jumlah peserta lebih kecil dari ukuran bracket, maka slot kosong akan menjadi \textbf{bye}.
+
+Rumus jumlah bye:
+
+\[
+\text{Bye} = \text{Bracket Size} - N
+\]
+
+Contoh:
+
+\[
+64 - 60 = 4
+\]
+
+Sehingga terdapat \textbf{4 bye} pada ronde pertama.
+
+\subsection{Contoh Tabel Penentuan Bracket}
+
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+Jumlah Peserta & Bracket Size & Bye \\
+\hline
+14 & 16 & 2 \\
+27 & 32 & 5 \\
+60 & 64 & 4 \\
+70 & 128 & 58 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Kesimpulan}
+
+\begin{itemize}
+\item Ukuran bracket eliminasi selalu mengikuti bilangan pangkat dua.
+\item Maximum bracket size dipilih sebagai pangkat dua terkecil yang lebih besar atau sama dengan jumlah peserta.
+\item Jika jumlah peserta tidak memenuhi ukuran bracket, maka slot kosong diisi dengan bye.
+\end{itemize}
