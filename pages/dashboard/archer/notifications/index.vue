@@ -101,26 +101,14 @@ const toast = useToast()
 
 const invitations = ref([])
 const isResponding = ref(null)
-const isLoading = ref(true)
-
-const fetchInvitations = async () => {
-    isLoading.value = true
-    try {
-        const response = await get('/clubs/my/invitations')
-        invitations.value = response?.data || []
-    } catch (error) {
-        console.error('Failed to fetch invitations:', error)
-    } finally {
-        isLoading.value = false
-    }
-}
+const isLoading = ref(false)
 
 const respondInvitation = async (memberId, action) => {
     isResponding.value = memberId
     try {
         await post(`/clubs/invitations/${memberId}/respond`, { action })
         toast.success(action === 'accept' ? 'Berhasil bergabung dengan klub!' : 'Undangan ditolak')
-        await fetchInvitations()
+        invitations.value = invitations.value.filter(i => i.uuid !== memberId)
     } catch (error) {
         console.error('Failed to respond to invitation:', error)
         toast.error('Gagal memproses undangan')
@@ -135,6 +123,5 @@ const formatDate = (val) => {
 }
 
 onMounted(() => {
-    fetchInvitations()
 })
 </script>

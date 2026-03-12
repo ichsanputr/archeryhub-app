@@ -110,7 +110,8 @@
               ]" icon="ph:gender-intersex" />
 
               <BaseInput v-model="accountForm.phone" label="Nomor Telepon" type="tel" placeholder="+62 812-3456-7890"
-                icon="ph:phone" />
+                icon="ph:phone" numberOnly
+                :rules="[v => !v || String(v).length >= 8 || 'Nomor HP minimal 8 digit']" />
               <BaseSelect v-model="accountForm.city" label="Kota / Kabupaten" :items="cityOptions"
                 placeholder="Pilih kota" icon="mingcute:building-2-line" />
 

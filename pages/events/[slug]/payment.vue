@@ -124,6 +124,38 @@
                                 </div>
                             </div>
                         </section>
+
+                        <!-- Payment Instructions -->
+                        <section v-if="selectedChannel"
+                            class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+                            <div class="p-6 md:p-8 border-b border-gray-50">
+                                <h2 class="text-lg font-black text-navy flex items-center gap-3">
+                                    <Icon icon="ph:list-checks-bold" class="text-gray-400" />
+                                    Cara Pembayaran
+                                </h2>
+                            </div>
+                            <div class="p-6 md:p-8">
+                                <div v-if="loadingInstructions" class="flex items-center justify-center py-8 gap-3">
+                                    <div class="animate-spin size-6 border-2 border-navy border-t-transparent rounded-full"></div>
+                                    <span class="text-xs font-bold text-gray-400">Memuat panduan...</span>
+                                </div>
+                                <div v-else-if="instructions.length === 0" class="text-center py-8 text-gray-400 text-sm font-bold">
+                                    Panduan tidak tersedia untuk metode ini.
+                                </div>
+                                <div v-else class="space-y-6">
+                                    <div v-for="(section, si) in instructions" :key="si" class="space-y-3">
+                                        <h3 class="text-sm font-black text-navy">{{ section.title }}</h3>
+                                        <ol class="space-y-2">
+                                            <li v-for="(step, idx) in section.steps" :key="idx"
+                                                class="flex items-start gap-3 text-sm text-gray-600">
+                                                <span class="shrink-0 size-5 rounded-full bg-navy text-white text-[10px] font-black flex items-center justify-center mt-0.5">{{ idx + 1 }}</span>
+                                                <span class="font-medium leading-snug">{{ step.description }}</span>
+                                            </li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
                     </div>
 
                     <!-- Right Column: Order Summary -->
@@ -215,9 +247,11 @@ const payment = usePayment()
 
 const isLoading = ref(true)
 const loadingChannels = ref(true)
+const loadingInstructions = ref(false)
 const loading = ref(false)
 const channels = ref([])
 const selectedChannel = ref(null)
+const instructions = ref([])
 const registration = ref(null)
 const event = ref(null)
 const error = ref('')
@@ -323,6 +357,16 @@ const totalAmount = computed(() => {
 
 const transactionFee = computed(() => {
     return totalAmount.value - (Number(registration.value?.payment_amount) || 0)
+})
+
+watch(selectedChannel, async (code) => {
+    if (!code) {
+        instructions.value = []
+        return
+    }
+    loadingInstructions.value = true
+    instructions.value = await payment.getInstruction(code)
+    loadingInstructions.value = false
 })
 
 const handlePayment = async () => {

@@ -3,11 +3,12 @@ definePageMeta({
     layout: 'dashboard'
 })
 import { Icon } from '@iconify/vue'
-import { computed, ref, onBeforeMount } from 'vue'
+import { computed, ref, watch, onBeforeMount } from 'vue'
 const route = useRoute()
 const router = useRouter()
 const config = useRuntimeConfig()
 const { user } = useAuth()
+const payment = usePayment()
 
 const planId = computed(() => route.query.plan_id)
 const planName = computed(() => route.query.plan_name || 'Paket Langganan')
@@ -53,6 +54,15 @@ const selectedChannel = ref(null)
 const selectedMonths = ref(1)
 const isProcessing = ref(false)
 const errorMessage = ref('')
+const instructions = ref([])
+const loadingInstructions = ref(false)
+
+watch(selectedChannel, async (code) => {
+    if (!code) { instructions.value = []; return }
+    loadingInstructions.value = true
+    instructions.value = await payment.getInstruction(code)
+    loadingInstructions.value = false
+})
 
 const totalAmount = computed(() => {
     const price = parseInt(planPrice.value?.toString() || '0') || 0
@@ -227,6 +237,38 @@ useHead({
                                     <Icon v-if="selectedChannel === method.code" icon="ph:check-bold"
                                         class="text-white text-xs" />
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Instructions -->
+                    <div v-if="selectedChannel" class="bg-white rounded-[32px] border border-gray-100 shadow-sm p-8">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="size-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                                <Icon icon="ph:list-checks-bold" class="text-navy text-xl" />
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-black text-navy leading-none">Cara Pembayaran</h3>
+                                <p class="text-[11px] font-bold text-gray-400 uppercase tracking-widest mt-2">Langkah-langkah pembayaran</p>
+                            </div>
+                        </div>
+                        <div v-if="loadingInstructions" class="flex items-center gap-3 py-4">
+                            <div class="animate-spin size-5 border-2 border-navy border-t-transparent rounded-full"></div>
+                            <span class="text-xs font-bold text-gray-400">Memuat panduan...</span>
+                        </div>
+                        <div v-else-if="instructions.length === 0" class="text-sm text-gray-400 font-bold py-4">
+                            Panduan tidak tersedia untuk metode ini.
+                        </div>
+                        <div v-else class="space-y-6">
+                            <div v-for="(section, si) in instructions" :key="si" class="space-y-3">
+                                <h4 class="text-sm font-black text-navy">{{ section.title }}</h4>
+                                <ol class="space-y-2">
+                                    <li v-for="(step, idx) in section.steps" :key="idx"
+                                        class="flex items-start gap-3 text-sm text-gray-600">
+                                        <span class="shrink-0 size-5 rounded-full bg-navy text-white text-[10px] font-black flex items-center justify-center mt-0.5">{{ idx + 1 }}</span>
+                                        <span class="font-medium leading-snug">{{ step.description }}</span>
+                                    </li>
+                                </ol>
                             </div>
                         </div>
                     </div>

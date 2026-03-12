@@ -136,8 +136,9 @@
                 </h3>
                 <BaseInput v-model="form.email" label="Email Toko" type="email" placeholder="toko@email.com"
                     icon="ph:envelope" />
-                <BaseInput v-model="form.phone" label="Nomor WhatsApp / Telepon" placeholder="08xx-xxxx-xxxx"
-                    icon="ph:phone" />
+                <BaseInput v-model="form.phone" label="Nomor WhatsApp / Telepon" placeholder="08xxxxxxxxxx"
+                    icon="ph:phone" numberOnly
+                    :rules="[v => !v || String(v).length >= 8 || 'Nomor HP minimal 8 digit']" />
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <BaseInput v-model="form.city" label="Kota" placeholder="Jakarta" icon="ph:buildings" />
                     <BaseInput v-model="form.province" label="Provinsi" placeholder="DKI Jakarta"

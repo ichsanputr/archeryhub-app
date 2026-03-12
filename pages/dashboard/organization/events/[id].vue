@@ -16,10 +16,7 @@ const tId = route.params.id || '1'
 
 const tabs = [
     { id: 'overview', name: 'Ringkasan', path: `/dashboard/events/${tId}` },
-    { id: 'timeline', name: 'Jadwal Pertandingan', path: `/dashboard/events/${tId}/timeline` },
-    { id: 'participants', name: 'Daftar Atlet', path: `/dashboard/events/${tId}/participants` },
-    { id: 'results', name: 'Hasil Live', path: `/dashboard/events/${tId}/results` },
-    { id: 'venue', name: 'Informasi Venue', path: `/dashboard/events/${tId}/venue` }
+    { id: 'participants', name: 'Daftar Atlet', path: `/dashboard/events/${tId}/participants` }
 ]
 
 const isTabActive = (tab) => {

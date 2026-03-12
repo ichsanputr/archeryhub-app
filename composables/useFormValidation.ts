@@ -38,6 +38,8 @@ export const useFormValidation = () => {
   const minLength = (len: number, msg?: string): Rule =>
     (v) => !v || String(v).length >= len || (msg ?? `Minimal ${len} karakter`)
   const sameAs = (otherValue: unknown, msg: string): Rule => (v) => v === otherValue || msg
+  const phone = (msg = 'Nomor HP minimal 8 digit'): Rule =>
+    (v) => !v || /^\d{8,}$/.test(String(v).replace(/\D/g, '')) || msg
 
   return {
     errors,
@@ -48,7 +50,8 @@ export const useFormValidation = () => {
       required,
       email,
       minLength,
-      sameAs
+      sameAs,
+      phone
     }
   }
 }

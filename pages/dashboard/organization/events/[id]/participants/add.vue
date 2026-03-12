@@ -202,7 +202,8 @@
                                 <BaseInput v-model="newArcherForm.email" label="Email" type="email"
                                     placeholder="email@example.com (opsional)" />
                                 <BaseInput v-model="newArcherForm.phone" label="No. Telepon" type="tel"
-                                    placeholder="08xxxxxxxxxx (opsional)" />
+                                    placeholder="08xxxxxxxxxx (opsional)" numberOnly
+                                    :rules="[v => !v || String(v).length >= 8 || 'Nomor HP minimal 8 digit']" />
                                 <BaseInput v-model="newArcherForm.password" label="Password Akun" type="password"
                                     placeholder="Buat password minimal 6 karakter"
                                     :required="!!newArcherForm.phone && !newArcherForm.email" />

@@ -1,276 +1,275 @@
-URL,Test
-https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Pastikan tampilan halaman saat dibuka di perangkat mobile sudah rapi (responsive)
-https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Pastikan seluruh tombol pendaftaran berfungsi dan mengarah ke halaman yang benar
-https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Pastikan gambar banner event tampil dengan jelas dan tidak pecah
-https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Halaman harus dapat dimuat dengan cepat tanpa ada error 404 atau server error
-https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Tombol bagikan (share) ke WhatsApp/Medsos harus berfungsi dan link yang dibagikan benar
-https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Teks pada tab pengumuman atau peraturan event harus dapat dibaca dengan jelas
-https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Pastikan info lokasi event (nama venue dan link Google Maps) tampil dan link Maps-nya bisa dibuka
-https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Pastikan batas waktu pendaftaran (deadline) tampil jelas dan tombol daftar otomatis nonaktif kalau sudah lewat deadline
-https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Pastikan tab jadwal event menampilkan sesi-sesi lomba dengan urutan waktu yang benar
-https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Pastikan daftar kategori lomba (jenis busur + gender + kelompok usia) tampil lengkap sesuai data
-https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Pastikan jumlah peserta yang sudah terdaftar tampil dan cocok dengan data di dashboard panitia
-https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Pastikan file panduan teknis (PDF) bisa dibuka atau diunduh tanpa error
-https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Pastikan tab FAQ atau pertanyaan umum tampil dan isi kontennya bisa dibaca
-https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Pastikan halaman hasil (qualification leaderboard) tampil dengan peringkat dan skor yang benar setelah babak kualifikasi selesai
-https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Pastikan halaman hasil eliminasi menampilkan bracket pertandingan beserta nama pemenang di setiap ronde
-https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c/register,"Pastikan alur pendaftaran (form entry) lancar dan validasi input (email, telp, kategori) berfungsi"
-https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c/register,Pastikan pilihan kategori lomba di form sesuai dengan kategori yang sudah dibuat oleh panitia event
-https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c/register,Pastikan input nomor HP hanya menerima angka dan formatnya masuk akal (tidak kurang dari 8 digit)
-https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c/register,Pastikan kalau peserta sudah pernah daftar di event yang sama muncul pesan info yang jelas bukan halaman error
-https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c/register,Pastikan peserta yang belum login otomatis diarahkan ke halaman login sebelum bisa daftar
-https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c/payment,Pastikan rincian biaya pendaftaran sesuai dan pilihan metode pembayaran (Tripay/Manual) muncul
-https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c/payment,Pastikan instruksi pembayaran via Virtual Account tampil lengkap beserta nomor VA dan nama bank tujuan
-https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c/payment,Pastikan timer countdown kadaluarsa pembayaran berjalan dengan benar dan halaman menampilkan status expired kalau waktu habis
-https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c/payment,Pastikan upload bukti bayar (untuk pembayaran manual) berhasil dan file tersimpan dengan benar di server
-https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c/payment,Pastikan QR code pembayaran Tripay bisa di-scan dan jumlah yang tertera sesuai tagihan
-https://archeryhub.id/dashboard/archer/events,"Pastikan event yang sudah didaftar muncul di daftar ""Event Saya"" dengan status pendaftaran yang benar"
-https://archeryhub.id/dashboard/archer/events,"Pastikan event yang status pembayarannya masih ""unpaid"" ada tombol ""Bayar Sekarang"" yang aktif dan berfungsi"
-https://archeryhub.id/dashboard/archer/events,Pastikan peserta bisa membatalkan pendaftaran yang belum dibayar dan slot-nya terhapus dari data
-https://archeryhub.id/dashboard/archer/payments,Pastikan status pembayaran (Pending/Success/Expired) sinkron dengan data dari penyedia layanan pembayaran
-https://archeryhub.id/dashboard/archer/payments,Pastikan detail transaksi (jumlah bayar + biaya admin + metode pembayaran) tampil lengkap di halaman detail pembayaran
-https://archeryhub.id/dashboard/archer,"Pastikan ringkasan profil pemanah (nama, foto, statistik event yang diikuti) tampil dengan benar di dashboard"
-https://archeryhub.id/dashboard/archer/profile,"Pastikan form edit profil (foto profil, biodata, jenis busur utama) bisa disimpan dan perubahan langsung keliatan"
-https://archeryhub.id/dashboard/archer/profile,Pastikan upload foto profil berhasil dan gambar baru langsung tampil menggantikan foto lama
-https://archeryhub.id/dashboard/archer/settings,Pastikan pengaturan notifikasi (email/push) bisa diubah dan statusnya tersimpan setelah halaman di-refresh
-https://archeryhub.id/dashboard/archer/result,Pastikan daftar hasil event (kualifikasi) yang pernah diikuti peserta tampil lengkap dengan nama event dan skor akhir
-https://archeryhub.id/dashboard/archer/saved,Pastikan daftar event yang disimpan (bookmark) tampil dan event bisa dihapus dari daftar simpan
-https://archeryhub.id/dashboard/archer/notifications,"Pastikan daftar notifikasi (event baru dari org yang diikuti, update status pembayaran) tampil dan bisa ditandai sudah dibaca"
-https://archeryhub.id/dashboard/organization,Pastikan ringkasan statistik pendaftar dan total pendapatan di dashboard organisasi tampil real-time
-https://archeryhub.id/dashboard/organization,Pastikan grafik atau ringkasan event aktif dan jumlah peserta tampil di dashboard utama organisasi
-https://archeryhub.id/dashboard/organization/events/create,"Pastikan proses pembuatan event baru (upload banner, set kategori, set harga) tersimpan dengan benar ke database"
-https://archeryhub.id/dashboard/organization/events/create,"Pastikan field wajib di form buat event (nama event, tanggal, lokasi) divalidasi dan tidak bisa kosong"
-https://archeryhub.id/dashboard/organization/events/create,Pastikan upload banner event berhasil dan preview gambar muncul sebelum form disubmit
-https://archeryhub.id/dashboard/organization/events/create,"Pastikan event yang baru dibuat masuk ke status ""draft"" dan belum tampil di halaman publik sebelum di-publish"
-https://archeryhub.id/dashboard/organization/events,Pastikan daftar event milik organisasi tampil dengan filter status (draft/active) yang berfungsi
-https://archeryhub.id/dashboard/organization/events/[id]/overview,Pastikan halaman overview event menampilkan total peserta per kategori dan total pemasukan yang sudah terkonfirmasi
-https://archeryhub.id/dashboard/organization/events/[id]/overview,"Pastikan tombol ""Publish Event"" mengubah status event dari draft menjadi active dan langsung tampil di halaman publik"
-https://archeryhub.id/dashboard/organization/events/[id]/categories,Pastikan kategori lomba baru (jenis busur + gender + usia) bisa ditambah dan langsung tampil di form pendaftaran peserta
-https://archeryhub.id/dashboard/organization/events/[id]/categories,Pastikan harga pendaftaran per kategori bisa diedit dan perubahan tersimpan dengan benar
-https://archeryhub.id/dashboard/organization/events/[id]/categories,Pastikan kategori yang sudah ada pesertanya tidak bisa dihapus atau menampilkan peringatan sebelum dihapus
-https://archeryhub.id/dashboard/organization/events/[id]/participants,Pastikan tabel daftar peserta bisa difilter berdasarkan kategori lomba dan status pembayaran
-https://archeryhub.id/dashboard/organization/events/[id]/participants,Pastikan fungsi export daftar peserta ke CSV atau Excel berjalan dan file yang diunduh berisi data yang benar
-https://archeryhub.id/dashboard/organization/events/[id]/participants,Pastikan panitia bisa menambah peserta secara manual (admin_created) dan data peserta langsung masuk ke daftar
-https://archeryhub.id/dashboard/organization/events/[id]/qualification,Pastikan sesi kualifikasi bisa dibuat dengan setting jumlah end dan panah per end yang fleksibel
-https://archeryhub.id/dashboard/organization/events/[id]/qualification,Pastikan fitur auto-assign peserta ke target board berjalan dan semua peserta kebagian target
-https://archeryhub.id/dashboard/organization/events/[id]/qualification,Pastikan scoresheet kualifikasi (per sesi dan per papan) bisa dibuka dan dicetak
-https://archeryhub.id/dashboard/organization/events/[id]/qualification,Pastikan leaderboard kualifikasi tampil dengan peringkat yang benar setelah semua skor diinput
-https://archeryhub.id/dashboard/organization/events/[id]/elimination,Pastikan bracket eliminasi berhasil digenerate otomatis dari hasil peringkat kualifikasi
-https://archeryhub.id/dashboard/organization/events/[id]/elimination,Pastikan skor pertandingan eliminasi bisa diinput per end dan pemenang otomatis lanjut ke ronde berikutnya
-https://archeryhub.id/dashboard/organization/events/[id]/elimination,Pastikan bracket tampil dengan benar di halaman publik setelah diupdate oleh panitia
-https://archeryhub.id/dashboard/organization/events/[id]/targets,"Pastikan target board bisa ditambah dan diedit (nama target, jumlah papan) tanpa error"
-https://archeryhub.id/dashboard/organization/scorekeepers,Pastikan scorekeeper baru bisa ditambah dan kode unik login mereka muncul dan bisa disalin
-https://archeryhub.id/dashboard/organization/scorekeepers,Pastikan scorekeeper yang tidak aktif bisa dihapus dan tidak bisa login lagi setelah dihapus
-https://archeryhub.id/dashboard/organization/scorekeepers,Pastikan hanya organisasi dengan langganan aktif (active/trial) yang bisa menambah scorekeeper baru
-https://archeryhub.id/dashboard/organization/balance,Pastikan total saldo wallet organisasi tampil sesuai dengan total pembayaran peserta yang sudah lunas dikurangi biaya platform
-https://archeryhub.id/dashboard/organization/balance,"Pastikan riwayat transaksi masuk ke wallet tampil dengan detail (nominal, event, tanggal)"
-https://archeryhub.id/dashboard/organization/balance,Pastikan form pengajuan pencairan saldo (withdrawal) bisa disubmit dan statusnya muncul di riwayat penarikan
-https://archeryhub.id/dashboard/organization/bank-accounts,Pastikan rekening bank baru bisa ditambah lengkap dengan nama bank dan nomor rekening
-https://archeryhub.id/dashboard/organization/bank-accounts,Pastikan rekening bank yang sudah ada bisa diedit atau dihapus
-https://archeryhub.id/dashboard/organization/subscription,Pastikan pilihan paket langganan organisasi (Standar Rp29.999 dan Elite Rp49.999 per bulan) tampil lengkap dengan fitur-fiturnya
-https://archeryhub.id/dashboard/organization/subscription,"Pastikan proses berlangganan atau perpanjangan berhasil dan status langganan di dashboard berubah ke ""active"""
-https://archeryhub.id/dashboard/organization/subscription,"Pastikan organisasi dengan status ""trial"" mendapat info kapan masa trial habis"
-https://archeryhub.id/dashboard/organization/news,Pastikan berita baru bisa dibuat dengan judul dan konten yang lengkap lalu dipublikasikan
-https://archeryhub.id/dashboard/organization/news,Pastikan berita yang sudah dipublikasikan tampil di halaman berita publik dengan data yang benar
-https://archeryhub.id/dashboard/seller,"Pastikan statistik seller (total produk aktif, total order masuk, total pendapatan) tampil di halaman overview"
-https://archeryhub.id/dashboard/seller/products,"Pastikan produk baru bisa ditambah lengkap dengan foto (multiple images), deskripsi, harga, dan stok awal"
-https://archeryhub.id/dashboard/seller/products,Pastikan stok produk bisa diupdate dan perubahan langsung terlihat di halaman produk publik
-https://archeryhub.id/dashboard/seller/products,Pastikan produk bisa dinonaktifkan (status archived/sold out) dan tidak muncul di halaman publik setelah dinonaktifkan
-https://archeryhub.id/dashboard/seller/orders,"Pastikan daftar pesanan masuk tampil dengan status order (pending, processing, dll) yang benar"
-https://archeryhub.id/dashboard/seller/orders,"Pastikan seller bisa update status pesanan ke ""dikirim"" atau ""selesai"" dan perubahan tersimpan"
-https://archeryhub.id/dashboard/seller/settings,"Pastikan profil toko (nama toko, deskripsi, foto) bisa diedit dan tersimpan dengan benar"
-https://archeryhub.id/products,"Pastikan daftar produk peralatan panahan tampil dengan gambar, nama, dan harga yang benar"
-https://archeryhub.id/products,"Pastikan filter produk berdasarkan kategori (equipment, apparel, accessories) berfungsi dan hasilnya relevan"
-https://archeryhub.id/products/[slug],"Pastikan halaman detail produk menampilkan foto produk, deskripsi lengkap, spesifikasi, dan harga"
-https://archeryhub.id/products/[slug],"Pastikan tombol ""Tambah ke Keranjang"" berfungsi dan produk masuk ke keranjang belanja peserta"
-https://archeryhub.id/events,"Pastikan daftar semua event tampil dengan informasi singkat (nama, tanggal, lokasi, penyelenggara) yang lengkap"
-https://archeryhub.id/events,Pastikan filter atau pencarian event berdasarkan kota berfungsi dan hasilnya relevan
-https://archeryhub.id/,"Pastikan halaman beranda tampil dengan cepat dan semua section (hero, event unggulan, statistik) muncul dengan benar"
-https://archeryhub.id/,"Pastikan tombol CTA di halaman beranda (seperti ""Lihat Event"" atau ""Daftar Sekarang"") mengarah ke halaman yang tepat"
-https://archeryhub.id/news,Pastikan daftar berita tampil dengan gambar thumbnail dan judul yang benar
-https://archeryhub.id/news,Pastikan halaman detail berita bisa dibuka dan kontennya tampil lengkap tanpa ada elemen yang rusak
-https://archeryhub.id/auth/login,Pastikan login dengan email dan password yang valid langsung masuk ke dashboard sesuai tipe akun (archer/org/seller)
-https://archeryhub.id/auth/login,Pastikan muncul pesan error yang jelas kalau email atau password salah (bukan error 500)
-https://archeryhub.id/auth/login,"Pastikan tombol ""Login dengan Google"" bisa redirect ke halaman OAuth Google dengan benar"
-https://archeryhub.id/auth/login,Pastikan setelah JWT expired (sesi habis) pengguna diarahkan ke halaman login dengan pesan yang informatif
-https://archeryhub.id/auth/register,"Pastikan form registrasi bisa membedakan tipe akun: Pemanah, Organisasi, dan Seller"
-https://archeryhub.id/auth/register,Pastikan validasi email sudah format yang benar (ada @ dan domain) dan tidak bisa submit kalau salah format
-https://archeryhub.id/auth/register,Pastikan password minimal 6 karakter dan ada info error yang jelas kalau kurang
-https://archeryhub.id/auth/register,"Pastikan email yang sudah terdaftar tidak bisa dipakai lagi dan muncul pesan ""email sudah digunakan"""
-https://archeryhub.id/auth/forgot-password,Pastikan OTP dikirim ke email yang terdaftar dalam waktu wajar (tidak lebih dari 1 menit)
-https://archeryhub.id/auth/forgot-password,Pastikan halaman reset password muncul setelah OTP berhasil diverifikasi
-https://archeryhub.id/auth/forgot-password,Pastikan OTP yang sudah kadaluarsa atau salah menampilkan pesan error yang benar
-https://archeryhub.id/match/[matchId],Pastikan halaman pertandingan eliminasi live menampilkan nama kedua peserta dan skor per end secara realtime
-https://archeryhub.id/match/[matchId],Pastikan hasil akhir pertandingan (nama pemenang dan skor total) tampil jelas setelah match selesai
-https://archeryhub.id/dashboard/archer/events,Pastikan semua halaman yang butuh login otomatis redirect ke /auth/login kalau pengguna belum masuk
-https://archeryhub.id/subscription,Pastikan halaman informasi paket langganan menjelaskan perbedaan fitur antar plan dengan jelas
-https://archeryhub.id/dashboard/organization/events/[id]/targets,Pastikan pembagian peserta ke target board tidak melebihi kapasitas tiap target
-https://archeryhub.id/dashboard/organization/events/[id]/targets,Pastikan perubahan jumlah papan target otomatis memperbarui total slot peserta
-https://archeryhub.id/dashboard/organization/events/[id]/targets,Pastikan peserta yang sudah ter-assign tetap konsisten setelah halaman di-refresh
-https://archeryhub.id/dashboard/organization/events/[id]/qualification,Pastikan input skor per panah hanya menerima rentang nilai valid (0-10 dan X bila didukung)
-https://archeryhub.id/dashboard/organization/events/[id]/qualification,Pastikan total skor per end dan total kumulatif dihitung otomatis tanpa selisih
-https://archeryhub.id/dashboard/organization/events/[id]/qualification,Pastikan perubahan skor terakhir langsung memperbarui leaderboard secara realtime/near realtime
-https://archeryhub.id/dashboard/organization/events/[id]/qualification,Pastikan data skor tidak hilang saat koneksi terputus lalu tersambung kembali (retry/simpan ulang)
-https://archeryhub.id/dashboard/organization/events/[id]/qualification,Pastikan jika dua peserta memiliki total skor sama maka urutan ranking mengikuti aturan tie-break (X count/10 count) yang berlaku
-https://archeryhub.id/dashboard/organization/events/[id]/elimination,Pastikan tie score pada match eliminasi memunculkan alur shoot-off sesuai peraturan
-https://archeryhub.id/dashboard/organization/events/[id]/elimination,Pastikan pemenang shoot-off otomatis tercatat dan bracket lanjut ke ronde berikutnya tanpa edit manual
-https://archeryhub.id/events/[slug]/register,Pastikan pendaftaran kategori beregu (team event) hanya bisa dipilih jika kategori team tersedia
-https://archeryhub.id/dashboard/organization/events/[id]/participants,Pastikan panitia dapat membuat tim baru dari peserta terdaftar dan mencegah duplikasi anggota dalam tim yang sama
-https://archeryhub.id/dashboard/organization/events/[id]/participants,Pastikan perubahan susunan anggota tim tersimpan dan langsung tercermin di start list/scoresheet
-https://archeryhub.id/dashboard/archer/events,Pastikan pemanah dapat melihat status kelengkapan data profil sebelum ikut event (mis. usia/jenis busur)
-https://archeryhub.id/dashboard/archer/result,"Pastikan detail hasil per event menampilkan breakdown skor per sesi/end, bukan hanya total akhir"
-https://archeryhub.id/dashboard/organization/balance,Pastikan saldo tersedia untuk withdrawal berkurang otomatis setelah request pencairan dibuat
-https://archeryhub.id/dashboard/organization/balance,Pastikan status withdrawal (pending/approved/rejected) menampilkan waktu update terakhir dan catatan admin bila ada
-https://archeryhub.id/dashboard/organization/balance,"Pastikan perhitungan biaya platform konsisten antara halaman balance, detail event, dan invoice pembayaran"
-https://archeryhub.id/dashboard/organization/events/[id]/overview,Pastikan total pemasukan event cocok dengan jumlah peserta paid dikali harga kategori setelah diskon (jika ada)
-https://archeryhub.id/archers,"Pastikan halaman daftar pemanah menampilkan nama, foto profil, dan jenis busur utama setiap pemanah"
-https://archeryhub.id/archers,Pastikan fungsi pencarian pemanah berdasarkan nama menghasilkan hasil yang relevan
-https://archeryhub.id/archers,Pastikan halaman dapat dimuat tanpa error jika belum ada pemanah yang terdaftar (empty state tampil rapi)
-https://archeryhub.id/archers/[slug],"Pastikan profil publik pemanah menampilkan foto, biodata, jenis busur utama, dan statistik event yang diikuti"
-https://archeryhub.id/archers/[slug],Pastikan daftar riwayat event dan skor terbaik pemanah tampil dengan benar di halaman profil publik
-https://archeryhub.id/archers/[slug],Pastikan halaman menampilkan pesan yang sesuai jika slug pemanah tidak ditemukan (bukan error 500)
-https://archeryhub.id/organization,"Pastikan daftar semua organisasi penyelenggara tampil lengkap dengan nama, logo, dan lokasi"
-https://archeryhub.id/organization,Pastikan setiap kartu organisasi dapat diklik dan mengarah ke halaman profil organisasi yang benar
-https://archeryhub.id/organization/[slug],"Pastikan halaman profil organisasi menampilkan nama, deskripsi, event aktif, dan kontak"
-https://archeryhub.id/organization/[slug],Pastikan daftar event yang diselenggarakan organisasi muncul dan bisa diklik ke halaman detail event
-https://archeryhub.id/organization/[slug],"Pastikan tombol ""Ikuti Organisasi"" (follow) berfungsi dan statusnya persisten setelah refresh"
-https://archeryhub.id/contact,"Pastikan form kontak (nama, email, pesan) bisa diisi dan disubmit tanpa error"
-https://archeryhub.id/contact,Pastikan ada feedback konfirmasi setelah form kontak berhasil dikirim
-https://archeryhub.id/contact,Pastikan validasi berjalan sehingga form tidak bisa disubmit dengan email kosong atau tidak valid
-https://archeryhub.id/faq,Pastikan semua item FAQ tampil dengan pertanyaan dan jawaban yang dapat dibuka-tutup (accordion) dengan baik
-https://archeryhub.id/faq,Pastikan halaman FAQ dapat dimuat dengan cepat dan tidak ada broken layout di mobile
-https://archeryhub.id/docs,Pastikan halaman indeks dokumentasi menampilkan daftar artikel/topik dengan link yang bisa diklik
-https://archeryhub.id/docs/[slug],Pastikan konten artikel dokumentasi tampil lengkap dengan heading dan formatting yang rapi
-https://archeryhub.id/docs/[slug],Pastikan navigasi antar artikel (previous/next atau sidebar) berfungsi dengan benar
-https://archeryhub.id/privacy,Pastikan halaman kebijakan privasi tampil dengan konten yang bisa dibaca tanpa elemen yang rusak
-https://archeryhub.id/terms,Pastikan halaman syarat & ketentuan tampil lengkap dan scroll berjalan normal
-https://archeryhub.id/disclaimer,Pastikan halaman disclaimer tampil dengan konten yang benar dan tidak ada broken link
-https://archeryhub.id/payment/status/[reference],"Pastikan halaman status pembayaran menampilkan detail transaksi (nomor referensi, jumlah, status) dengan benar"
-https://archeryhub.id/payment/status/[reference],"Pastikan status ""SUCCESS"" menampilkan pesan konfirmasi dan link untuk kembali ke event"
-https://archeryhub.id/payment/status/[reference],"Pastikan status ""FAILED"" atau ""EXPIRED"" menampilkan pesan yang jelas dan ada opsi untuk mencoba lagi"
-https://archeryhub.id/auth/callback,Pastikan halaman OAuth callback memproses token dari Google dengan benar dan redirect ke dashboard sesuai tipe akun
-https://archeryhub.id/auth/callback,Pastikan jika terjadi error OAuth (token invalid/denied) pengguna diarahkan ke halaman login dengan pesan error
-https://archeryhub.id/auth/already-registered,Pastikan halaman ini muncul dengan pesan yang jelas bahwa email sudah terdaftar dan ada link untuk login
-https://archeryhub.id/scan/qr,Pastikan halaman scan QR bisa mengakses kamera perangkat dan menampilkan pratinjau kamera
-https://archeryhub.id/scan/qr,"Pastikan setelah QR target berhasil di-scan, pengguna langsung diarahkan ke scoresheet yang sesuai"
-https://archeryhub.id/scan/qr,Pastikan jika izin kamera ditolak muncul pesan panduan yang jelas bukan blank screen
-https://archeryhub.id/dashboard/search,"Pastikan fitur pencarian global menghasilkan hasil dari event, pemanah, dan organisasi sekaligus"
-https://archeryhub.id/dashboard/search,Pastikan hasil pencarian tampil dalam waktu wajar dan ada empty state jika tidak ada hasil
-https://archeryhub.id/dashboard/archer/cart,"Pastikan daftar produk di keranjang belanja tampil dengan nama, gambar, harga, dan jumlah yang benar"
-https://archeryhub.id/dashboard/archer/cart,Pastikan peserta bisa mengubah jumlah item di keranjang dan total harga otomatis dihitung ulang
-https://archeryhub.id/dashboard/archer/cart,Pastikan peserta bisa menghapus item dari keranjang dan keranjang kosong menampilkan empty state yang rapi
-https://archeryhub.id/dashboard/archer/cart,"Pastikan tombol ""Checkout"" di keranjang mengarah ke halaman pembayaran produk yang benar"
-https://archeryhub.id/dashboard/archer/result/[slug],Pastikan halaman detail hasil event pemanah menampilkan breakdown skor per sesi dan per end
-https://archeryhub.id/dashboard/archer/result/[slug],Pastikan peringkat akhir pemanah di event tersebut tampil di halaman hasil detail
-https://archeryhub.id/dashboard/archer/events/[id]/overview,Pastikan overview event dari sisi pemanah menampilkan status pendaftaran dan status pembayaran dengan benar
-https://archeryhub.id/dashboard/archer/events/[id]/overview,Pastikan info tanggal dan lokasi event tampil lengkap di halaman overview pemanah
-https://archeryhub.id/dashboard/archer/events/[id]/my-registration,"Pastikan pemanah dapat melihat detail pendaftarannya (kategori, nama tim jika ada, status) di halaman ini"
-https://archeryhub.id/dashboard/archer/events/[id]/my-registration,Pastikan ada notifikasi atau status jika pendaftaran sedang menunggu konfirmasi
-https://archeryhub.id/dashboard/archer/events/[id]/my-qualification,Pastikan pemanah dapat melihat skor kualifikasinya sendiri per end dan total skor
-https://archeryhub.id/dashboard/archer/events/[id]/my-qualification,Pastikan peringkat pemanah di babak kualifikasi tampil di halaman ini
-https://archeryhub.id/dashboard/archer/events/[id]/my-elimination,Pastikan pemanah dapat melihat bracket eliminasi dan posisi dirinya dalam bracket
-https://archeryhub.id/dashboard/archer/events/[id]/my-elimination,Pastikan skor hasil setiap ronde eliminasi yang sudah selesai tampil dengan benar
-https://archeryhub.id/dashboard/archer/events/[id]/results,Pastikan halaman hasil event menampilkan leaderboard kualifikasi per kategori
-https://archeryhub.id/dashboard/archer/events/[id]/results,Pastikan pemanah bisa melihat hasil event orang lain (bukan hanya dirinya sendiri)
-https://archeryhub.id/dashboard/archer/events/[id]/targets,Pastikan pemanah bisa melihat nomor target dan papan yang ditugaskan padanya
-https://archeryhub.id/dashboard/archer/events/[id]/targets,Pastikan info sesi dan jam tembak untuk target yang ditugaskan tampil jelas
-https://archeryhub.id/dashboard/archer/events/[id]/venue,"Pastikan informasi lokasi venue (nama, alamat, link Google Maps) tampil dan bisa dibuka"
-https://archeryhub.id/dashboard/archer/events/[id]/timeline,Pastikan jadwal/timeline event tampil dengan urutan waktu yang benar (tanggal dan jam)
-https://archeryhub.id/dashboard/archer/events/[id]/teams,Pastikan daftar tim yang terdaftar di event tampil dengan nama tim dan anggotanya
-https://archeryhub.id/dashboard/archer/events/[id]/teams,Pastikan pemanah bisa melihat timnya sendiri di halaman ini jika ia bagian dari tim
-https://archeryhub.id/dashboard/archer/events/[id]/categories,"Pastikan daftar kategori lomba tampil dengan detail (jenis busur, gender, kelompok usia, harga)"
-https://archeryhub.id/dashboard/archer/events/[id]/checkout,Pastikan halaman checkout event menampilkan ringkasan biaya dan pilihan metode pembayaran
-https://archeryhub.id/dashboard/archer/events/[id]/checkout,Pastikan tombol konfirmasi pembayaran di checkout berfungsi dan mengarah ke instruksi pembayaran
-https://archeryhub.id/dashboard/archer/events/[id]/register,Pastikan form pendaftaran event muncul dengan pilihan kategori yang tersedia
-https://archeryhub.id/dashboard/archer/events/[id]/register-edit,Pastikan halaman edit pendaftaran memuat data sebelumnya dan perubahan bisa disimpan
-https://archeryhub.id/dashboard/archer/events/[id]/register-edit,Pastikan edit pendaftaran tidak bisa dilakukan setelah batas waktu edit atau setelah pembayaran terkonfirmasi
-https://archeryhub.id/dashboard/archer/events/[id]/page,Pastikan tampilan halaman publik event yang dilihat oleh pemanah sama dengan tampilan halaman event publik
-https://archeryhub.id/dashboard/archer/events/[id]/certificate,Pastikan sertifikat peserta dapat diunduh atau dicetak dalam format PDF
-https://archeryhub.id/dashboard/archer/events/[id]/certificate,"Pastikan sertifikat berisi nama pemanah, nama event, kategori, dan peringkat yang benar"
-https://archeryhub.id/dashboard/archer/events/[id]/result-user,Pastikan halaman menampilkan hasil individual pemanah tertentu dengan skor lengkap per end
-https://archeryhub.id/dashboard/archer/events/[id]/participants,Pastikan daftar peserta event bisa dilihat oleh pemanah yang terdaftar dengan filter kategori
-https://archeryhub.id/dashboard/archer/events/[id]/participants/add,Pastikan form tambah peserta manual hanya dapat diakses oleh akun dengan hak yang sesuai
-https://archeryhub.id/dashboard/archer/events/[id]/participants/[participantId],"Pastikan detail peserta menampilkan nama, kategori, nomor target, dan status pembayaran"
-https://archeryhub.id/dashboard/archer/events/[id]/participants/[participantId]/edit,Pastikan form edit peserta memuat data sebelumnya dan validasi berjalan sebelum simpan
-https://archeryhub.id/dashboard/archer/events/[id]/qualification,Pastikan tab kualifikasi menampilkan daftar sesi yang tersedia beserta status (pending/selesai)
-https://archeryhub.id/dashboard/archer/events/[id]/qualification/[session],Pastikan scoresheet sesi kualifikasi memuat data target dan peserta yang benar untuk sesi tersebut
-https://archeryhub.id/dashboard/archer/events/[id]/qualification/[session],Pastikan scorekeeper bisa input skor per panah per end dan disimpan secara otomatis
-https://archeryhub.id/dashboard/archer/events/[id]/qualification/[session],Pastikan total skor per end dan grand total otomatis dihitung setelah semua skor diinput
-https://archeryhub.id/dashboard/archer/events/[id]/elimination,Pastikan halaman eliminasi menampilkan bracket pertandingan dengan seeding dari peringkat kualifikasi
-https://archeryhub.id/dashboard/archer/events/[id]/elimination/[bracketId],"Pastikan detail pertandingan bracket menampilkan nama peserta/tim, skor per end, dan status ronde"
-https://archeryhub.id/dashboard/archer/events/[id]/elimination/[bracketId],Pastikan skor eliminasi bisa diinput dan pemenang otomatis lanjut ke ronde berikutnya
-https://archeryhub.id/dashboard/archer/events/leaderboard,Pastikan leaderboard tampil dengan peringkat terkini dan dikelompokkan per kategori lomba
-https://archeryhub.id/dashboard/archer/events/leaderboard,Pastikan fitur filter leaderboard berdasarkan kategori atau sesi berfungsi dengan benar
-https://archeryhub.id/dashboard/organization/profile,"Pastikan form edit profil organisasi (nama, deskripsi, logo, kontak) bisa disimpan dan perubahan langsung tampil"
-https://archeryhub.id/dashboard/organization/profile,Pastikan upload logo organisasi berhasil dan pratinjau logo baru langsung muncul sebelum disimpan
-https://archeryhub.id/dashboard/organization/settings,Pastikan pengaturan notifikasi dan preferensi organisasi bisa diubah dan tersimpan
-https://archeryhub.id/dashboard/organization/settings,Pastikan perubahan pengaturan tetap tersimpan setelah halaman di-refresh
-https://archeryhub.id/dashboard/organization/teams,"Pastikan daftar semua tim yang terdaftar di seluruh event organisasi tampil dengan nama tim, event, dan anggota"
-https://archeryhub.id/dashboard/organization/teams,Pastikan panitia bisa membuat tim baru dan menambah/menghapus anggota dari tim
-https://archeryhub.id/dashboard/organization/earnings,Pastikan halaman ringkasan penghasilan menampilkan total pendapatan per event dengan status withdrawal
-https://archeryhub.id/dashboard/organization/earnings,Pastikan bisa difilter berdasarkan periode (bulan/tahun) dan hasilnya akurat
-https://archeryhub.id/dashboard/organization/earnings/[id],Pastikan halaman detail penghasilan event menampilkan breakdown per kategori peserta dan biaya platform
-https://archeryhub.id/dashboard/organization/earnings/[id],Pastikan nominal yang ditampilkan konsisten dengan data di halaman balance
-https://archeryhub.id/dashboard/organization/news/create,"Pastikan form pembuatan berita memiliki input judul, konten (rich text), dan upload gambar"
-https://archeryhub.id/dashboard/organization/news/create,Pastikan draft berita bisa disimpan sebelum dipublikasikan
-https://archeryhub.id/dashboard/organization/news/create,Pastikan field wajib (judul) divalidasi dan tidak bisa submit kosong
-https://archeryhub.id/dashboard/organization/news/[slug],Pastikan halaman pratinjau berita dari sisi organisasi menampilkan konten final sebelum atau setelah dipublikasikan
-https://archeryhub.id/dashboard/organization/news/[slug]/edit,Pastikan halaman edit berita memuat konten yang sudah ada dan perubahan bisa disimpan
-https://archeryhub.id/dashboard/organization/news/[slug]/edit,"Pastikan tombol ""Publikasikan"" di halaman edit mengubah status berita dari draft ke published"
-https://archeryhub.id/dashboard/organization/event-categories,"Pastikan daftar template kategori lomba global (jenis busur, gender, usia) tampil dan bisa dikelola"
-https://archeryhub.id/dashboard/organization/event-categories,Pastikan kategori baru bisa ditambah dan langsung bisa dipilih saat membuat event
-https://archeryhub.id/dashboard/organization/events/leaderboard,Pastikan halaman leaderboard level organisasi menampilkan peringkat terbaik dari semua event
-https://archeryhub.id/dashboard/organization/subscription/payment,Pastikan halaman pembayaran langganan menampilkan ringkasan paket yang dipilih dengan harga yang benar
-https://archeryhub.id/dashboard/organization/subscription/payment,"Pastikan proses pembayaran langganan berhasil dan status langganan berubah ke ""active"""
-https://archeryhub.id/dashboard/organization/subscription/payment,Pastikan jika pembayaran gagal muncul pesan error yang informatif bukan blank page
-https://archeryhub.id/dashboard/organization/finals/[eventId],Pastikan halaman final event menampilkan bracket final dengan nama peserta/tim dan skor terakhir
-https://archeryhub.id/dashboard/organization/finals/[eventId],Pastikan panitia bisa input skor final dan pemenang grand final otomatis tercatat
-https://archeryhub.id/dashboard/organization/events/[id]/venue,"Pastikan panitia bisa menambah atau mengedit informasi venue (nama, alamat, koordinat peta)"
-https://archeryhub.id/dashboard/organization/events/[id]/venue,Pastikan preview link Google Maps sesuai koordinat yang dimasukkan
-https://archeryhub.id/dashboard/organization/events/[id]/timeline,"Pastikan panitia bisa menambah sesi/jadwal (nama sesi, tanggal, jam mulai dan selesai)"
-https://archeryhub.id/dashboard/organization/events/[id]/timeline,Pastikan urutan jadwal tampil kronologis dan perubahan jam langsung tersimpan
-https://archeryhub.id/dashboard/organization/events/[id]/teams,Pastikan daftar tim yang terdaftar di event tampil dengan anggota tiap tim
-https://archeryhub.id/dashboard/organization/events/[id]/teams,Pastikan panitia bisa menghapus tim yang belum memiliki skor terkait
-https://archeryhub.id/dashboard/organization/events/[id]/setup,"Pastikan halaman pengaturan event menampilkan semua konfigurasi (jumlah end, format skor, aturan tie-break)"
-https://archeryhub.id/dashboard/organization/events/[id]/setup,Pastikan perubahan konfigurasi tersimpan dan tidak mereset data skor yang sudah ada
-https://archeryhub.id/dashboard/organization/events/[id]/results,Pastikan halaman hasil event menampilkan leaderboard lengkap semua kategori yang diikuti
-https://archeryhub.id/dashboard/organization/events/[id]/results,Pastikan panitia bisa mengekspor hasil ke format PDF atau Excel
-https://archeryhub.id/dashboard/organization/events/[id]/result-user,Pastikan halaman hasil individual menampilkan skor detail satu peserta beserta peringkatnya di kategori
-https://archeryhub.id/dashboard/organization/events/[id]/checkout,Pastikan halaman checkout event dari sisi panitia menampilkan ringkasan biaya yang benar
-https://archeryhub.id/dashboard/organization/events/[id]/certificate,Pastikan panitia bisa mencetak atau mengunduh sertifikat massal untuk semua peserta sekaligus
-https://archeryhub.id/dashboard/organization/events/[id]/certificate,"Pastikan template sertifikat menampilkan nama, event, kategori, dan peringkat dengan benar"
-https://archeryhub.id/dashboard/organization/events/[id]/my-registration,Pastikan panitia bisa melihat daftar peserta yang sudah registrasi dan statusnya secara ringkas
-https://archeryhub.id/dashboard/organization/events/[id]/my-qualification,Pastikan halaman my-qualification dari sisi org menampilkan rekapitulasi skor per peserta
-https://archeryhub.id/dashboard/organization/events/[id]/my-elimination,Pastikan halaman my-elimination dari sisi org menampilkan bracket dan hasil tiap ronde
-https://archeryhub.id/dashboard/organization/events/[id]/page,Pastikan panitia bisa melihat pratinjau halaman publik event sebelum dan sesudah dipublikasikan
-https://archeryhub.id/dashboard/organization/events/[id]/register,Pastikan form pendaftaran event bisa dibuka dari sisi panitia untuk pendaftaran manual peserta
-https://archeryhub.id/dashboard/organization/events/[id]/register-edit,Pastikan panitia bisa mengedit data pendaftaran peserta dan perubahan tersimpan
-https://archeryhub.id/dashboard/organization/events/[id]/printout,"Pastikan halaman printout menampilkan daftar dokumen yang bisa dicetak (peserta, scoresheet, statistik)"
-https://archeryhub.id/dashboard/organization/events/[id]/printout/qualification,Pastikan printout scoresheet kualifikasi berisi data peserta dan target per sesi dengan format yang rapi
-https://archeryhub.id/dashboard/organization/events/[id]/printout/qualification,Pastikan dokumen printout bisa dibuka di tab baru dan dicetak tanpa layout rusak
-https://archeryhub.id/dashboard/organization/events/[id]/printout/participants,"Pastikan printout daftar peserta berisi kolom nama, kategori, nomor target, dan status pembayaran"
-https://archeryhub.id/dashboard/organization/events/[id]/printout/participants,Pastikan data peserta di printout sesuai dengan data di tabel manajemen peserta
-https://archeryhub.id/dashboard/organization/events/[id]/printout/statistics,Pastikan printout statistik event menampilkan total peserta per kategori dan ringkasan skor tertinggi
-https://archeryhub.id/dashboard/organization/events/[id]/participants/add,"Pastikan form tambah peserta manual memvalidasi input wajib (nama, kategori) sebelum disimpan"
-https://archeryhub.id/dashboard/organization/events/[id]/participants/add,Pastikan peserta yang ditambah manual langsung muncul di tabel peserta tanpa perlu refresh manual
-https://archeryhub.id/dashboard/organization/events/[id]/participants/[participantId],Pastikan halaman detail peserta menampilkan informasi lengkap termasuk skor jika sudah ada
-https://archeryhub.id/dashboard/organization/events/[id]/participants/[participantId]/edit,Pastikan panitia bisa mengedit kategori atau data peserta dan perubahan tersimpan dengan validasi
-https://archeryhub.id/dashboard/organization/events/[id]/elimination/[bracketId],Pastikan halaman detail bracket eliminasi menampilkan dua peserta beserta skor per end
-https://archeryhub.id/dashboard/organization/events/[id]/elimination/[bracketId],Pastikan input skor di bracket langsung memperbarui hasil dan menyimpan pemenang ronde
-https://archeryhub.id/dashboard/seller/products/add,"Pastikan form tambah produk memiliki input nama, deskripsi, harga, stok, kategori, dan upload gambar"
-https://archeryhub.id/dashboard/seller/products/add,Pastikan upload multiple gambar produk berhasil dan semua foto tampil di pratinjau sebelum disimpan
-https://archeryhub.id/dashboard/seller/products/add,Pastikan validasi berjalan: form tidak bisa disubmit jika nama produk atau harga kosong
-https://archeryhub.id/dashboard/seller/products/[id],Pastikan halaman edit produk memuat semua data produk yang sudah ada
-https://archeryhub.id/dashboard/seller/products/[id],Pastikan perubahan harga dan stok tersimpan dan langsung terlihat di halaman produk publik
-https://archeryhub.id/dashboard/seller/store,Pastikan halaman toko seller menampilkan pratinjau tampilan publik toko beserta produk aktif
-https://archeryhub.id/dashboard/seller/store,"Pastikan informasi toko (nama, deskripsi, foto banner) bisa diedit dari halaman ini"
-https://archeryhub.id/dashboard/root,"Pastikan dashboard root admin menampilkan total pengguna aktif, total organisasi, dan total transaksi"
-https://archeryhub.id/dashboard/root,Pastikan root admin bisa mencari dan melihat detail akun pengguna manapun
-https://archeryhub.id/dashboard/root/subscriptions,Pastikan daftar semua langganan organisasi tampil dengan status (active/expired/trial) yang benar
-https://archeryhub.id/dashboard/root/subscriptions,Pastikan root admin bisa mengaktifkan atau menonaktifkan langganan organisasi secara manual
-https://archeryhub.id/dashboard/root/create-account,"Pastikan form buat akun baru oleh root admin memvalidasi semua field wajib (email, tipe akun, password)"
-https://archeryhub.id/dashboard/root/create-account,Pastikan akun yang berhasil dibuat langsung bisa login dan masuk ke dashboard yang sesuai
-https://archeryhub.id/dashboard/profile/edit,Pastikan halaman edit profil memuat data pengguna yang sedang login dan semua perubahan bisa disimpan
-https://archeryhub.id/dashboard/profile/edit,Pastikan upload foto profil berhasil dan foto baru langsung tampil setelah disimpan
-https://archeryhub.id/dashboard/profile/[username],"Pastikan halaman profil publik pengguna menampilkan nama, foto, dan statistik yang relevan"
-https://archeryhub.id/user/[slug],Pastikan halaman profil publik user bisa diakses tanpa login dan menampilkan data publik yang sesuai
+URL,Test,Mudah?,Passed,Error
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Pastikan tampilan halaman saat dibuka di perangkat mobile sudah rapi (responsive),Ya,TRUE,FALSE
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Pastikan seluruh tombol pendaftaran berfungsi dan mengarah ke halaman yang benar,Ya,TRUE,FALSE
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Pastikan gambar banner event tampil dengan jelas dan tidak pecah,Ya,TRUE,FALSE
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Halaman harus dapat dimuat dengan cepat tanpa ada error 404 atau server error,Ya,TRUE,FALSE
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Tombol bagikan (share) ke WhatsApp/Medsos harus berfungsi dan link yang dibagikan benar,Ya,TRUE,FALSE
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Pastikan info lokasi event (nama venue dan link Google Maps) tampil dan link Maps-nya bisa dibuka,Ya,TRUE,FALSE
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Pastikan batas waktu pendaftaran (deadline) tampil jelas dan tombol daftar otomatis nonaktif kalau sudah lewat deadline,Ya,TRUE,FALSE
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Pastikan tab jadwal event menampilkan sesi-sesi lomba dengan urutan waktu yang benar,Ya,TRUE,FALSE
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Pastikan daftar kategori lomba (jenis busur + gender + kelompok usia) tampil lengkap sesuai data,Ya,FALSE,FALSE
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Pastikan jumlah peserta yang sudah terdaftar tampil dan cocok dengan data di dashboard panitia,Tidak,FALSE,FALSE
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Pastikan file panduan teknis (PDF) bisa dibuka atau diunduh tanpa error,Ya,FALSE,FALSE
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Pastikan tab FAQ atau pertanyaan umum tampil dan isi kontennya bisa dibaca,Ya,FALSE,FALSE
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Pastikan halaman hasil (qualification leaderboard) tampil dengan peringkat dan skor yang benar setelah babak kualifikasi selesai,Tidak,FALSE,FALSE
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c,Pastikan halaman hasil eliminasi menampilkan bracket pertandingan beserta nama pemenang di setiap ronde,Tidak,FALSE,FALSE
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c/register,"Pastikan alur pendaftaran (form entry) lancar dan validasi input (email, telp, kategori) berfungsi",Ya,FALSE,FALSE
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c/register,Pastikan pilihan kategori lomba di form sesuai dengan kategori yang sudah dibuat oleh panitia event,Ya,FALSE,FALSE
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c/register,Pastikan input nomor HP hanya menerima angka dan formatnya masuk akal (tidak kurang dari 8 digit),Ya,FALSE,FALSE
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c/register,Pastikan kalau peserta sudah pernah daftar di event yang sama muncul pesan info yang jelas bukan halaman error,Tidak,FALSE,FALSE
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c/register,Pastikan peserta yang belum login otomatis diarahkan ke halaman login sebelum bisa daftar,Ya,FALSE,FALSE
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c/payment,Pastikan rincian biaya pendaftaran sesuai dan pilihan metode pembayaran (Tripay/Manual) muncul,Tidak,FALSE,FALSE
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c/payment,Pastikan instruksi pembayaran via Virtual Account tampil lengkap beserta nomor VA dan nama bank tujuan,Tidak,FALSE,FALSE
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c/payment,Pastikan timer countdown kadaluarsa pembayaran berjalan dengan benar dan halaman menampilkan status expired kalau waktu habis,Ya,FALSE,FALSE
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c/payment,Pastikan upload bukti bayar (untuk pembayaran manual) berhasil dan file tersimpan dengan benar di server,Tidak,FALSE,FALSE
+https://archeryhub.id/events/seleksi-popda-kabsleman-2026-7247378c/payment,Pastikan QR code pembayaran Tripay bisa di-scan dan jumlah yang tertera sesuai tagihan,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events,"Pastikan event yang sudah didaftar muncul di daftar ""Event Saya"" dengan status pendaftaran yang benar",Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events,"Pastikan event yang status pembayarannya masih ""unpaid"" ada tombol ""Bayar Sekarang"" yang aktif dan berfungsi",Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events,Pastikan peserta bisa membatalkan pendaftaran yang belum dibayar dan slot-nya terhapus dari data,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/payments,Pastikan status pembayaran (Pending/Success/Expired) sinkron dengan data dari penyedia layanan pembayaran,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/payments,Pastikan detail transaksi (jumlah bayar + biaya admin + metode pembayaran) tampil lengkap di halaman detail pembayaran,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer,"Pastikan ringkasan profil pemanah (nama, foto, statistik event yang diikuti) tampil dengan benar di dashboard",Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/profile,"Pastikan form edit profil (foto profil, biodata, jenis busur utama) bisa disimpan dan perubahan langsung keliatan",Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/profile,Pastikan upload foto profil berhasil dan gambar baru langsung tampil menggantikan foto lama,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/settings,Pastikan pengaturan notifikasi (email/push) bisa diubah dan statusnya tersimpan setelah halaman di-refresh,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/result,Pastikan daftar hasil event (kualifikasi) yang pernah diikuti peserta tampil lengkap dengan nama event dan skor akhir,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/saved,Pastikan daftar event yang disimpan (bookmark) tampil dan event bisa dihapus dari daftar simpan,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/notifications,"Pastikan daftar notifikasi (event baru dari org yang diikuti, update status pembayaran) tampil dan bisa ditandai sudah dibaca",Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/organization,Pastikan ringkasan statistik pendaftar dan total pendapatan di dashboard organisasi tampil real-time,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/organization,Pastikan grafik atau ringkasan event aktif dan jumlah peserta tampil di dashboard utama organisasi,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/create,"Pastikan proses pembuatan event baru (upload banner, set kategori, set harga) tersimpan dengan benar ke database",Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/create,"Pastikan field wajib di form buat event (nama event, tanggal, lokasi) divalidasi dan tidak bisa kosong",Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/create,Pastikan upload banner event berhasil dan preview gambar muncul sebelum form disubmit,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/create,"Pastikan event yang baru dibuat masuk ke status ""draft"" dan belum tampil di halaman publik sebelum di-publish",Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events,Pastikan daftar event milik organisasi tampil dengan filter status (draft/active) yang berfungsi,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/overview,Pastikan halaman overview event menampilkan total peserta per kategori dan total pemasukan yang sudah terkonfirmasi,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/overview,"Pastikan tombol ""Publish Event"" mengubah status event dari draft menjadi active dan langsung tampil di halaman publik",Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/categories,Pastikan kategori lomba baru (jenis busur + gender + usia) bisa ditambah dan langsung tampil di form pendaftaran peserta,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/categories,Pastikan harga pendaftaran per kategori bisa diedit dan perubahan tersimpan dengan benar,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/categories,Pastikan kategori yang sudah ada pesertanya tidak bisa dihapus atau menampilkan peringatan sebelum dihapus,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/participants,Pastikan tabel daftar peserta bisa difilter berdasarkan kategori lomba dan status pembayaran,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/participants,Pastikan fungsi export daftar peserta ke CSV atau Excel berjalan dan file yang diunduh berisi data yang benar,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/participants,Pastikan panitia bisa menambah peserta secara manual (admin_created) dan data peserta langsung masuk ke daftar,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/qualification,Pastikan sesi kualifikasi bisa dibuat dengan setting jumlah end dan panah per end yang fleksibel,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/qualification,Pastikan fitur auto-assign peserta ke target board berjalan dan semua peserta kebagian target,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/qualification,Pastikan scoresheet kualifikasi (per sesi dan per papan) bisa dibuka dan dicetak,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/qualification,Pastikan leaderboard kualifikasi tampil dengan peringkat yang benar setelah semua skor diinput,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/elimination,Pastikan bracket eliminasi berhasil digenerate otomatis dari hasil peringkat kualifikasi,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/elimination,Pastikan skor pertandingan eliminasi bisa diinput per end dan pemenang otomatis lanjut ke ronde berikutnya,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/elimination,Pastikan bracket tampil dengan benar di halaman publik setelah diupdate oleh panitia,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/targets,"Pastikan target board bisa ditambah dan diedit (nama target, jumlah papan) tanpa error",Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/scorekeepers,Pastikan scorekeeper baru bisa ditambah dan kode unik login mereka muncul dan bisa disalin,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/scorekeepers,Pastikan scorekeeper yang tidak aktif bisa dihapus dan tidak bisa login lagi setelah dihapus,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/scorekeepers,Pastikan hanya organisasi dengan langganan aktif (active/trial) yang bisa menambah scorekeeper baru,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/balance,Pastikan total saldo wallet organisasi tampil sesuai dengan total pembayaran peserta yang sudah lunas dikurangi biaya platform,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/balance,"Pastikan riwayat transaksi masuk ke wallet tampil dengan detail (nominal, event, tanggal)",Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/balance,Pastikan form pengajuan pencairan saldo (withdrawal) bisa disubmit dan statusnya muncul di riwayat penarikan,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/bank-accounts,Pastikan rekening bank baru bisa ditambah lengkap dengan nama bank dan nomor rekening,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/bank-accounts,Pastikan rekening bank yang sudah ada bisa diedit atau dihapus,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/subscription,Pastikan pilihan paket langganan organisasi (Standar Rp29.999 dan Elite Rp49.999 per bulan) tampil lengkap dengan fitur-fiturnya,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/subscription,"Pastikan proses berlangganan atau perpanjangan berhasil dan status langganan di dashboard berubah ke ""active""",Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/subscription,"Pastikan organisasi dengan status ""trial"" mendapat info kapan masa trial habis",Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/news,Pastikan berita baru bisa dibuat dengan judul dan konten yang lengkap lalu dipublikasikan,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/news,Pastikan berita yang sudah dipublikasikan tampil di halaman berita publik dengan data yang benar,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/seller,"Pastikan statistik seller (total produk aktif, total order masuk, total pendapatan) tampil di halaman overview",Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/seller/products,"Pastikan produk baru bisa ditambah lengkap dengan foto (multiple images), deskripsi, harga, dan stok awal",Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/seller/products,Pastikan stok produk bisa diupdate dan perubahan langsung terlihat di halaman produk publik,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/seller/products,Pastikan produk bisa dinonaktifkan (status archived/sold out) dan tidak muncul di halaman publik setelah dinonaktifkan,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/seller/orders,"Pastikan daftar pesanan masuk tampil dengan status order (pending, processing, dll) yang benar",Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/seller/orders,"Pastikan seller bisa update status pesanan ke ""dikirim"" atau ""selesai"" dan perubahan tersimpan",Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/seller/settings,"Pastikan profil toko (nama toko, deskripsi, foto) bisa diedit dan tersimpan dengan benar",Tidak,FALSE,FALSE
+https://archeryhub.id/products,"Pastikan daftar produk peralatan panahan tampil dengan gambar, nama, dan harga yang benar",Ya,FALSE,FALSE
+https://archeryhub.id/products,"Pastikan filter produk berdasarkan kategori (equipment, apparel, accessories) berfungsi dan hasilnya relevan",Ya,FALSE,FALSE
+https://archeryhub.id/products/[slug],"Pastikan halaman detail produk menampilkan foto produk, deskripsi lengkap, spesifikasi, dan harga",Ya,FALSE,FALSE
+https://archeryhub.id/products/[slug],"Pastikan tombol ""Tambah ke Keranjang"" berfungsi dan produk masuk ke keranjang belanja peserta",Ya,FALSE,FALSE
+https://archeryhub.id/events,"Pastikan daftar semua event tampil dengan informasi singkat (nama, tanggal, lokasi, penyelenggara) yang lengkap",Ya,FALSE,FALSE
+https://archeryhub.id/events,Pastikan filter atau pencarian event berdasarkan kota berfungsi dan hasilnya relevan,Ya,FALSE,FALSE
+https://archeryhub.id/,"Pastikan halaman beranda tampil dengan cepat dan semua section (hero, event unggulan, statistik) muncul dengan benar",Ya,FALSE,FALSE
+https://archeryhub.id/,"Pastikan tombol CTA di halaman beranda (seperti ""Lihat Event"" atau ""Daftar Sekarang"") mengarah ke halaman yang tepat",Ya,FALSE,FALSE
+https://archeryhub.id/news,Pastikan daftar berita tampil dengan gambar thumbnail dan judul yang benar,Ya,FALSE,FALSE
+https://archeryhub.id/news,Pastikan halaman detail berita bisa dibuka dan kontennya tampil lengkap tanpa ada elemen yang rusak,Ya,FALSE,FALSE
+https://archeryhub.id/auth/login,Pastikan login dengan email dan password yang valid langsung masuk ke dashboard sesuai tipe akun (archer/org/seller),Ya,FALSE,FALSE
+https://archeryhub.id/auth/login,Pastikan muncul pesan error yang jelas kalau email atau password salah (bukan error 500),Ya,FALSE,FALSE
+https://archeryhub.id/auth/login,"Pastikan tombol ""Login dengan Google"" bisa redirect ke halaman OAuth Google dengan benar",Ya,FALSE,FALSE
+https://archeryhub.id/auth/login,Pastikan setelah JWT expired (sesi habis) pengguna diarahkan ke halaman login dengan pesan yang informatif,Ya,FALSE,FALSE
+https://archeryhub.id/auth/register,"Pastikan form registrasi bisa membedakan tipe akun: Pemanah, Organisasi, dan Seller",Ya,FALSE,FALSE
+https://archeryhub.id/auth/register,Pastikan validasi email sudah format yang benar (ada @ dan domain) dan tidak bisa submit kalau salah format,Ya,FALSE,FALSE
+https://archeryhub.id/auth/register,Pastikan password minimal 6 karakter dan ada info error yang jelas kalau kurang,Tidak,FALSE,FALSE
+https://archeryhub.id/auth/register,"Pastikan email yang sudah terdaftar tidak bisa dipakai lagi dan muncul pesan ""email sudah digunakan""",Ya,FALSE,FALSE
+https://archeryhub.id/auth/forgot-password,Pastikan OTP dikirim ke email yang terdaftar dalam waktu wajar (tidak lebih dari 1 menit),Ya,FALSE,FALSE
+https://archeryhub.id/auth/forgot-password,Pastikan halaman reset password muncul setelah OTP berhasil diverifikasi,Ya,FALSE,FALSE
+https://archeryhub.id/auth/forgot-password,Pastikan OTP yang sudah kadaluarsa atau salah menampilkan pesan error yang benar,Ya,FALSE,FALSE
+https://archeryhub.id/match/[matchId],Pastikan halaman pertandingan eliminasi live menampilkan nama kedua peserta dan skor per end secara realtime,Ya,FALSE,FALSE
+https://archeryhub.id/match/[matchId],Pastikan hasil akhir pertandingan (nama pemenang dan skor total) tampil jelas setelah match selesai,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events,Pastikan semua halaman yang butuh login otomatis redirect ke /auth/login kalau pengguna belum masuk,Ya,FALSE,FALSE
+https://archeryhub.id/subscription,Pastikan halaman informasi paket langganan menjelaskan perbedaan fitur antar plan dengan jelas,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/targets,Pastikan pembagian peserta ke target board tidak melebihi kapasitas tiap target,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/targets,Pastikan perubahan jumlah papan target otomatis memperbarui total slot peserta,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/targets,Pastikan peserta yang sudah ter-assign tetap konsisten setelah halaman di-refresh,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/qualification,Pastikan input skor per panah hanya menerima rentang nilai valid (0-10 dan X bila didukung),Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/qualification,Pastikan total skor per end dan total kumulatif dihitung otomatis tanpa selisih,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/qualification,Pastikan perubahan skor terakhir langsung memperbarui leaderboard secara realtime/near realtime,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/qualification,Pastikan data skor tidak hilang saat koneksi terputus lalu tersambung kembali (retry/simpan ulang),Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/qualification,Pastikan jika dua peserta memiliki total skor sama maka urutan ranking mengikuti aturan tie-break (X count/10 count) yang berlaku,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/elimination,Pastikan tie score pada match eliminasi memunculkan alur shoot-off sesuai peraturan,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/elimination,Pastikan pemenang shoot-off otomatis tercatat dan bracket lanjut ke ronde berikutnya tanpa edit manual,Tidak,FALSE,FALSE
+https://archeryhub.id/events/[slug]/register,Pastikan pendaftaran kategori beregu (team event) hanya bisa dipilih jika kategori team tersedia,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/participants,Pastikan panitia dapat membuat tim baru dari peserta terdaftar dan mencegah duplikasi anggota dalam tim yang sama,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/participants,Pastikan perubahan susunan anggota tim tersimpan dan langsung tercermin di start list/scoresheet,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events,Pastikan pemanah dapat melihat status kelengkapan data profil sebelum ikut event (mis. usia/jenis busur),Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/result,"Pastikan detail hasil per event menampilkan breakdown skor per sesi/end, bukan hanya total akhir",Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/balance,Pastikan saldo tersedia untuk withdrawal berkurang otomatis setelah request pencairan dibuat,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/balance,Pastikan status withdrawal (pending/approved/rejected) menampilkan waktu update terakhir dan catatan admin bila ada,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/balance,"Pastikan perhitungan biaya platform konsisten antara halaman balance, detail event, dan invoice pembayaran",Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/overview,Pastikan total pemasukan event cocok dengan jumlah peserta paid dikali harga kategori setelah diskon (jika ada),Tidak,FALSE,FALSE
+https://archeryhub.id/archers,"Pastikan halaman daftar pemanah menampilkan nama, foto profil, dan jenis busur utama setiap pemanah",Ya,FALSE,FALSE
+https://archeryhub.id/archers,Pastikan fungsi pencarian pemanah berdasarkan nama menghasilkan hasil yang relevan,Ya,FALSE,FALSE
+https://archeryhub.id/archers,Pastikan halaman dapat dimuat tanpa error jika belum ada pemanah yang terdaftar (empty state tampil rapi),Ya,FALSE,FALSE
+https://archeryhub.id/archers/[slug],"Pastikan profil publik pemanah menampilkan foto, biodata, jenis busur utama, dan statistik event yang diikuti",Ya,FALSE,FALSE
+https://archeryhub.id/archers/[slug],Pastikan daftar riwayat event dan skor terbaik pemanah tampil dengan benar di halaman profil publik,Ya,FALSE,FALSE
+https://archeryhub.id/archers/[slug],Pastikan halaman menampilkan pesan yang sesuai jika slug pemanah tidak ditemukan (bukan error 500),Ya,FALSE,FALSE
+https://archeryhub.id/organization,"Pastikan daftar semua organisasi penyelenggara tampil lengkap dengan nama, logo, dan lokasi",Ya,FALSE,FALSE
+https://archeryhub.id/organization,Pastikan setiap kartu organisasi dapat diklik dan mengarah ke halaman profil organisasi yang benar,Ya,FALSE,FALSE
+https://archeryhub.id/organization/[slug],"Pastikan halaman profil organisasi menampilkan nama, deskripsi, event aktif, dan kontak",Ya,FALSE,FALSE
+https://archeryhub.id/organization/[slug],Pastikan daftar event yang diselenggarakan organisasi muncul dan bisa diklik ke halaman detail event,Tidak,FALSE,FALSE
+https://archeryhub.id/organization/[slug],"Pastikan tombol ""Ikuti Organisasi"" (follow) berfungsi dan statusnya persisten setelah refresh",Ya,FALSE,FALSE
+https://archeryhub.id/contact,"Pastikan form kontak (nama, email, pesan) bisa diisi dan disubmit tanpa error",Ya,FALSE,FALSE
+https://archeryhub.id/contact,Pastikan ada feedback konfirmasi setelah form kontak berhasil dikirim,Tidak,FALSE,FALSE
+https://archeryhub.id/contact,Pastikan validasi berjalan sehingga form tidak bisa disubmit dengan email kosong atau tidak valid,Ya,FALSE,FALSE
+https://archeryhub.id/faq,Pastikan semua item FAQ tampil dengan pertanyaan dan jawaban yang dapat dibuka-tutup (accordion) dengan baik,Ya,FALSE,FALSE
+https://archeryhub.id/faq,Pastikan halaman FAQ dapat dimuat dengan cepat dan tidak ada broken layout di mobile,Ya,FALSE,FALSE
+https://archeryhub.id/docs,Pastikan halaman indeks dokumentasi menampilkan daftar artikel/topik dengan link yang bisa diklik,Ya,FALSE,FALSE
+https://archeryhub.id/docs/[slug],Pastikan konten artikel dokumentasi tampil lengkap dengan heading dan formatting yang rapi,Ya,FALSE,FALSE
+https://archeryhub.id/docs/[slug],Pastikan navigasi antar artikel (previous/next atau sidebar) berfungsi dengan benar,Ya,FALSE,FALSE
+https://archeryhub.id/privacy,Pastikan halaman kebijakan privasi tampil dengan konten yang bisa dibaca tanpa elemen yang rusak,Ya,FALSE,FALSE
+https://archeryhub.id/terms,Pastikan halaman syarat & ketentuan tampil lengkap dan scroll berjalan normal,Ya,FALSE,FALSE
+https://archeryhub.id/disclaimer,Pastikan halaman disclaimer tampil dengan konten yang benar dan tidak ada broken link,Ya,FALSE,FALSE
+https://archeryhub.id/payment/status/[reference],"Pastikan halaman status pembayaran menampilkan detail transaksi (nomor referensi, jumlah, status) dengan benar",Tidak,FALSE,FALSE
+https://archeryhub.id/payment/status/[reference],"Pastikan status ""SUCCESS"" menampilkan pesan konfirmasi dan link untuk kembali ke event",Tidak,FALSE,FALSE
+https://archeryhub.id/payment/status/[reference],"Pastikan status ""FAILED"" atau ""EXPIRED"" menampilkan pesan yang jelas dan ada opsi untuk mencoba lagi",Ya,FALSE,FALSE
+https://archeryhub.id/auth/callback,Pastikan halaman OAuth callback memproses token dari Google dengan benar dan redirect ke dashboard sesuai tipe akun,Tidak,FALSE,FALSE
+https://archeryhub.id/auth/callback,Pastikan jika terjadi error OAuth (token invalid/denied) pengguna diarahkan ke halaman login dengan pesan error,Tidak,FALSE,FALSE
+https://archeryhub.id/auth/already-registered,Pastikan halaman ini muncul dengan pesan yang jelas bahwa email sudah terdaftar dan ada link untuk login,Ya,FALSE,FALSE
+https://archeryhub.id/scan/qr,Pastikan halaman scan QR bisa mengakses kamera perangkat dan menampilkan pratinjau kamera,Ya,FALSE,FALSE
+https://archeryhub.id/scan/qr,"Pastikan setelah QR target berhasil di-scan, pengguna langsung diarahkan ke scoresheet yang sesuai",Ya,FALSE,FALSE
+https://archeryhub.id/scan/qr,Pastikan jika izin kamera ditolak muncul pesan panduan yang jelas bukan blank screen,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/search,"Pastikan fitur pencarian global menghasilkan hasil dari event, pemanah, dan organisasi sekaligus",Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/search,Pastikan hasil pencarian tampil dalam waktu wajar dan ada empty state jika tidak ada hasil,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/cart,"Pastikan daftar produk di keranjang belanja tampil dengan nama, gambar, harga, dan jumlah yang benar",Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/cart,Pastikan peserta bisa mengubah jumlah item di keranjang dan total harga otomatis dihitung ulang,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/cart,Pastikan peserta bisa menghapus item dari keranjang dan keranjang kosong menampilkan empty state yang rapi,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/cart,"Pastikan tombol ""Checkout"" di keranjang mengarah ke halaman pembayaran produk yang benar",Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/result/[slug],Pastikan halaman detail hasil event pemanah menampilkan breakdown skor per sesi dan per end,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/result/[slug],Pastikan peringkat akhir pemanah di event tersebut tampil di halaman hasil detail,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/overview,Pastikan overview event dari sisi pemanah menampilkan status pendaftaran dan status pembayaran dengan benar,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/overview,Pastikan info tanggal dan lokasi event tampil lengkap di halaman overview pemanah,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/my-registration,"Pastikan pemanah dapat melihat detail pendaftarannya (kategori, nama tim jika ada, status) di halaman ini",Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/my-registration,Pastikan ada notifikasi atau status jika pendaftaran sedang menunggu konfirmasi,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/my-qualification,Pastikan pemanah dapat melihat skor kualifikasinya sendiri per end dan total skor,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/my-qualification,Pastikan peringkat pemanah di babak kualifikasi tampil di halaman ini,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/my-elimination,Pastikan pemanah dapat melihat bracket eliminasi dan posisi dirinya dalam bracket,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/my-elimination,Pastikan skor hasil setiap ronde eliminasi yang sudah selesai tampil dengan benar,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/results,Pastikan halaman hasil event menampilkan leaderboard kualifikasi per kategori,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/results,Pastikan pemanah bisa melihat hasil event orang lain (bukan hanya dirinya sendiri),Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/targets,Pastikan pemanah bisa melihat nomor target dan papan yang ditugaskan padanya,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/targets,Pastikan info sesi dan jam tembak untuk target yang ditugaskan tampil jelas,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/venue,"Pastikan informasi lokasi venue (nama, alamat, link Google Maps) tampil dan bisa dibuka",Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/timeline,Pastikan jadwal/timeline event tampil dengan urutan waktu yang benar (tanggal dan jam),Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/teams,Pastikan daftar tim yang terdaftar di event tampil dengan nama tim dan anggotanya,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/teams,Pastikan pemanah bisa melihat timnya sendiri di halaman ini jika ia bagian dari tim,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/categories,"Pastikan daftar kategori lomba tampil dengan detail (jenis busur, gender, kelompok usia, harga)",Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/checkout,Pastikan halaman checkout event menampilkan ringkasan biaya dan pilihan metode pembayaran,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/checkout,Pastikan tombol konfirmasi pembayaran di checkout berfungsi dan mengarah ke instruksi pembayaran,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/register,Pastikan form pendaftaran event muncul dengan pilihan kategori yang tersedia,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/register-edit,Pastikan halaman edit pendaftaran memuat data sebelumnya dan perubahan bisa disimpan,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/register-edit,Pastikan edit pendaftaran tidak bisa dilakukan setelah batas waktu edit atau setelah pembayaran terkonfirmasi,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/page,Pastikan tampilan halaman publik event yang dilihat oleh pemanah sama dengan tampilan halaman event publik,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/certificate,Pastikan sertifikat peserta dapat diunduh atau dicetak dalam format PDF,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/certificate,"Pastikan sertifikat berisi nama pemanah, nama event, kategori, dan peringkat yang benar",Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/result-user,Pastikan halaman menampilkan hasil individual pemanah tertentu dengan skor lengkap per end,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/participants,Pastikan daftar peserta event bisa dilihat oleh pemanah yang terdaftar dengan filter kategori,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/participants/add,Pastikan form tambah peserta manual hanya dapat diakses oleh akun dengan hak yang sesuai,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/participants/[participantId],"Pastikan detail peserta menampilkan nama, kategori, nomor target, dan status pembayaran",Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/participants/[participantId]/edit,Pastikan form edit peserta memuat data sebelumnya dan validasi berjalan sebelum simpan,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/qualification,Pastikan tab kualifikasi menampilkan daftar sesi yang tersedia beserta status (pending/selesai),Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/qualification/[session],Pastikan scoresheet sesi kualifikasi memuat data target dan peserta yang benar untuk sesi tersebut,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/qualification/[session],Pastikan scorekeeper bisa input skor per panah per end dan disimpan secara otomatis,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/qualification/[session],Pastikan total skor per end dan grand total otomatis dihitung setelah semua skor diinput,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/elimination,Pastikan halaman eliminasi menampilkan bracket pertandingan dengan seeding dari peringkat kualifikasi,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/elimination/[bracketId],"Pastikan detail pertandingan bracket menampilkan nama peserta/tim, skor per end, dan status ronde",Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/[id]/elimination/[bracketId],Pastikan skor eliminasi bisa diinput dan pemenang otomatis lanjut ke ronde berikutnya,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/leaderboard,Pastikan leaderboard tampil dengan peringkat terkini dan dikelompokkan per kategori lomba,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/archer/events/leaderboard,Pastikan fitur filter leaderboard berdasarkan kategori atau sesi berfungsi dengan benar,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/profile,"Pastikan form edit profil organisasi (nama, deskripsi, logo, kontak) bisa disimpan dan perubahan langsung tampil",Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/profile,Pastikan upload logo organisasi berhasil dan pratinjau logo baru langsung muncul sebelum disimpan,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/settings,Pastikan pengaturan notifikasi dan preferensi organisasi bisa diubah dan tersimpan,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/settings,Pastikan perubahan pengaturan tetap tersimpan setelah halaman di-refresh,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/teams,"Pastikan daftar semua tim yang terdaftar di seluruh event organisasi tampil dengan nama tim, event, dan anggota",Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/teams,Pastikan panitia bisa membuat tim baru dan menambah/menghapus anggota dari tim,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/earnings,Pastikan halaman ringkasan penghasilan menampilkan total pendapatan per event dengan status withdrawal,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/earnings,Pastikan bisa difilter berdasarkan periode (bulan/tahun) dan hasilnya akurat,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/earnings/[id],Pastikan halaman detail penghasilan event menampilkan breakdown per kategori peserta dan biaya platform,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/earnings/[id],Pastikan nominal yang ditampilkan konsisten dengan data di halaman balance,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/news/create,"Pastikan form pembuatan berita memiliki input judul, konten (rich text), dan upload gambar",Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/news/create,Pastikan draft berita bisa disimpan sebelum dipublikasikan,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/news/create,Pastikan field wajib (judul) divalidasi dan tidak bisa submit kosong,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/news/[slug],Pastikan halaman pratinjau berita dari sisi organisasi menampilkan konten final sebelum atau setelah dipublikasikan,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/news/[slug]/edit,Pastikan halaman edit berita memuat konten yang sudah ada dan perubahan bisa disimpan,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/news/[slug]/edit,"Pastikan tombol ""Publikasikan"" di halaman edit mengubah status berita dari draft ke published",Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/event-categories,"Pastikan daftar template kategori lomba global (jenis busur, gender, usia) tampil dan bisa dikelola",Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/event-categories,Pastikan kategori baru bisa ditambah dan langsung bisa dipilih saat membuat event,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/leaderboard,Pastikan halaman leaderboard level organisasi menampilkan peringkat terbaik dari semua event,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/subscription/payment,Pastikan halaman pembayaran langganan menampilkan ringkasan paket yang dipilih dengan harga yang benar,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/subscription/payment,"Pastikan proses pembayaran langganan berhasil dan status langganan berubah ke ""active""",Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/subscription/payment,Pastikan jika pembayaran gagal muncul pesan error yang informatif bukan blank page,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/finals/[eventId],Pastikan halaman final event menampilkan bracket final dengan nama peserta/tim dan skor terakhir,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/finals/[eventId],Pastikan panitia bisa input skor final dan pemenang grand final otomatis tercatat,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/venue,"Pastikan panitia bisa menambah atau mengedit informasi venue (nama, alamat, koordinat peta)",Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/venue,Pastikan preview link Google Maps sesuai koordinat yang dimasukkan,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/timeline,"Pastikan panitia bisa menambah sesi/jadwal (nama sesi, tanggal, jam mulai dan selesai)",Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/timeline,Pastikan urutan jadwal tampil kronologis dan perubahan jam langsung tersimpan,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/teams,Pastikan daftar tim yang terdaftar di event tampil dengan anggota tiap tim,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/teams,Pastikan panitia bisa menghapus tim yang belum memiliki skor terkait,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/setup,"Pastikan halaman pengaturan event menampilkan semua konfigurasi (jumlah end, format skor, aturan tie-break)",Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/setup,Pastikan perubahan konfigurasi tersimpan dan tidak mereset data skor yang sudah ada,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/results,Pastikan halaman hasil event menampilkan leaderboard lengkap semua kategori yang diikuti,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/results,Pastikan panitia bisa mengekspor hasil ke format PDF atau Excel,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/result-user,Pastikan halaman hasil individual menampilkan skor detail satu peserta beserta peringkatnya di kategori,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/checkout,Pastikan halaman checkout event dari sisi panitia menampilkan ringkasan biaya yang benar,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/certificate,Pastikan panitia bisa mencetak atau mengunduh sertifikat massal untuk semua peserta sekaligus,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/certificate,"Pastikan template sertifikat menampilkan nama, event, kategori, dan peringkat dengan benar",Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/my-registration,Pastikan panitia bisa melihat daftar peserta yang sudah registrasi dan statusnya secara ringkas,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/my-qualification,Pastikan halaman my-qualification dari sisi org menampilkan rekapitulasi skor per peserta,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/my-elimination,Pastikan halaman my-elimination dari sisi org menampilkan bracket dan hasil tiap ronde,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/page,Pastikan panitia bisa melihat pratinjau halaman publik event sebelum dan sesudah dipublikasikan,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/register,Pastikan form pendaftaran event bisa dibuka dari sisi panitia untuk pendaftaran manual peserta,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/register-edit,Pastikan panitia bisa mengedit data pendaftaran peserta dan perubahan tersimpan,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/printout,"Pastikan halaman printout menampilkan daftar dokumen yang bisa dicetak (peserta, scoresheet, statistik)",Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/printout/qualification,Pastikan printout scoresheet kualifikasi berisi data peserta dan target per sesi dengan format yang rapi,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/printout/qualification,Pastikan dokumen printout bisa dibuka di tab baru dan dicetak tanpa layout rusak,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/printout/participants,"Pastikan printout daftar peserta berisi kolom nama, kategori, nomor target, dan status pembayaran",Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/printout/participants,Pastikan data peserta di printout sesuai dengan data di tabel manajemen peserta,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/printout/statistics,Pastikan printout statistik event menampilkan total peserta per kategori dan ringkasan skor tertinggi,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/participants/add,"Pastikan form tambah peserta manual memvalidasi input wajib (nama, kategori) sebelum disimpan",Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/participants/add,Pastikan peserta yang ditambah manual langsung muncul di tabel peserta tanpa perlu refresh manual,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/participants/[participantId],Pastikan halaman detail peserta menampilkan informasi lengkap termasuk skor jika sudah ada,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/participants/[participantId]/edit,Pastikan panitia bisa mengedit kategori atau data peserta dan perubahan tersimpan dengan validasi,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/elimination/[bracketId],Pastikan halaman detail bracket eliminasi menampilkan dua peserta beserta skor per end,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/organization/events/[id]/elimination/[bracketId],Pastikan input skor di bracket langsung memperbarui hasil dan menyimpan pemenang ronde,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/seller/products/add,"Pastikan form tambah produk memiliki input nama, deskripsi, harga, stok, kategori, dan upload gambar",Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/seller/products/add,Pastikan upload multiple gambar produk berhasil dan semua foto tampil di pratinjau sebelum disimpan,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/seller/products/add,Pastikan validasi berjalan: form tidak bisa disubmit jika nama produk atau harga kosong,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/seller/products/[id],Pastikan halaman edit produk memuat semua data produk yang sudah ada,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/seller/products/[id],Pastikan perubahan harga dan stok tersimpan dan langsung terlihat di halaman produk publik,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/seller/store,Pastikan halaman toko seller menampilkan pratinjau tampilan publik toko beserta produk aktif,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/seller/store,"Pastikan informasi toko (nama, deskripsi, foto banner) bisa diedit dari halaman ini",Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/root,"Pastikan dashboard root admin menampilkan total pengguna aktif, total organisasi, dan total transaksi",Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/root,Pastikan root admin bisa mencari dan melihat detail akun pengguna manapun,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/root/subscriptions,Pastikan daftar semua langganan organisasi tampil dengan status (active/expired/trial) yang benar,Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/root/subscriptions,Pastikan root admin bisa mengaktifkan atau menonaktifkan langganan organisasi secara manual,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/root/create-account,"Pastikan form buat akun baru oleh root admin memvalidasi semua field wajib (email, tipe akun, password)",Ya,FALSE,FALSE
+https://archeryhub.id/dashboard/root/create-account,Pastikan akun yang berhasil dibuat langsung bisa login dan masuk ke dashboard yang sesuai,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/profile/edit,Pastikan halaman edit profil memuat data pengguna yang sedang login dan semua perubahan bisa disimpan,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/profile/edit,Pastikan upload foto profil berhasil dan foto baru langsung tampil setelah disimpan,Tidak,FALSE,FALSE
+https://archeryhub.id/dashboard/profile/[username],"Pastikan halaman profil publik pengguna menampilkan nama, foto, dan statistik yang relevan",Tidak,FALSE,FALSE
+https://archeryhub.id/user/[slug],Pastikan halaman profil publik user bisa diakses tanpa login dan menampilkan data publik yang sesuai,Ya,FALSE,FALSE

@@ -172,49 +172,27 @@
                             </div>
                         </div>
                         <div>
-                            <h3 class="text-sm font-bold text-navy mb-4">Select Payment Method</h3>
-                            <div class="space-y-4">
-                                <div>
-                                    <p class="text-xs font-bold text-gray-400  tracking-wider mb-2 ml-1">
-                                        Virtual Accounts</p>
+                            <h3 class="text-sm font-bold text-navy mb-4">Pilih Metode Pembayaran</h3>
+                            <div v-if="loadingChannels" class="flex items-center justify-center py-8 gap-3">
+                                <div class="animate-spin size-5 border-2 border-navy border-t-transparent rounded-full"></div>
+                                <span class="text-xs font-bold text-gray-400">Memuat metode...</span>
+                            </div>
+                            <div v-else class="space-y-5">
+                                <div v-for="(group, name) in groupedChannels" :key="name">
+                                    <p class="text-xs font-bold text-gray-400 tracking-wider mb-2 ml-1">{{ name }}</p>
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                        <label v-for="method in vaMethods" :key="method.value"
+                                        <label v-for="channel in group" :key="channel.code"
                                             class="relative flex items-center p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-primary hover:bg-primary/5 transition-all group">
                                             <input v-model="selectedPaymentMethod"
                                                 class="peer h-4 w-4 text-primary border-gray-300 focus:ring-primary"
-                                                type="radio" :value="method.value" />
+                                                type="radio" :value="channel.code" />
                                             <div class="ml-3 flex items-center gap-3 w-full">
-                                                <div :class="method.bgColor"
-                                                    class="w-10 h-10 rounded text-white flex items-center justify-center font-bold text-xs">
-                                                    {{ method.code }}
+                                                <div class="size-10 bg-white rounded-xl border border-gray-100 p-1.5 flex items-center justify-center shrink-0 shadow-sm">
+                                                    <img :src="channel.icon_url" :alt="channel.name" class="size-full object-contain" />
                                                 </div>
-                                                <span class="text-sm font-bold text-navy group-hover:text-primary">{{
-                                                    method.name }}</span>
+                                                <span class="text-sm font-bold text-navy group-hover:text-primary">{{ channel.name }}</span>
                                             </div>
-                                            <div
-                                                class="absolute inset-0 border-2 border-transparent peer-checked:border-primary rounded-xl pointer-events-none">
-                                            </div>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div>
-                                    <p class="text-xs font-bold text-gray-400  tracking-wider mb-2 ml-1">
-                                        E-Wallets & QRIS</p>
-                                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                                        <label v-for="method in ewalletMethods" :key="method.value"
-                                            class="relative flex items-center p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-primary hover:bg-primary/5 transition-all group">
-                                            <input v-model="selectedPaymentMethod"
-                                                class="peer h-4 w-4 text-primary border-gray-300 focus:ring-primary"
-                                                type="radio" :value="method.value" />
-                                            <div class="ml-3">
-                                                <div class="text-sm font-bold text-navy flex items-center gap-2">
-                                                    <Icon :icon="method.icon" :class="method.iconColor" />
-                                                    {{ method.name }}
-                                                </div>
-                                            </div>
-                                            <div
-                                                class="absolute inset-0 border-2 border-transparent peer-checked:border-primary rounded-xl pointer-events-none">
-                                            </div>
+                                            <div class="absolute inset-0 border-2 border-transparent peer-checked:border-primary rounded-xl pointer-events-none"></div>
                                         </label>
                                     </div>
                                 </div>
@@ -307,6 +285,7 @@ import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted } from 'vue'
 import { useAuth } from '~/composables/useAuth'
 import { useApi } from '~/composables/useApi'
+const { getChannels } = usePayment()
 import { useToast } from '~/composables/useToast'
 import BaseSelect from '~/components/common/BaseSelect.vue'
 
@@ -347,16 +326,23 @@ const jerseySizeOptions = ['S', 'M', 'L', 'XL', 'XXL']
 
 const platformFee = 5000
 
-const vaMethods = [
-    { value: 'bca', name: 'BCA Virtual Account', code: 'BCA', bgColor: 'bg-blue-600' },
-    { value: 'mandiri', name: 'Mandiri VA', code: 'BMRI', bgColor: 'bg-[#003d79] text-[#fdb913] border border-gray-100' }
-]
+const loadingChannels = ref(false)
+const channelList = ref([])
 
-const ewalletMethods = [
-    { value: 'gopay', name: 'GoPay', icon: 'ph:wallet-bold', iconColor: 'text-blue-500' },
-    { value: 'ovo', name: 'OVO', icon: 'ph:device-mobile-bold', iconColor: 'text-purple-600' },
-    { value: 'qris', name: 'QRIS', icon: 'ph:qr-code-bold', iconColor: 'text-gray-800' }
-]
+const groupedChannels = computed(() => {
+    const groups = {}
+    channelList.value.forEach(channel => {
+        if (!groups[channel.group]) groups[channel.group] = []
+        groups[channel.group].push(channel)
+    })
+    return groups
+})
+
+const fetchChannels = async () => {
+    loadingChannels.value = true
+    channelList.value = await getChannels()
+    loadingChannels.value = false
+}
 
 const totalPayment = computed(() => {
     const entryFees = registrations.value.reduce((sum, reg) => sum + (reg.entry_fee || 350000), 0)
@@ -459,5 +445,8 @@ const handlePayment = async () => {
     }
 }
 
-onMounted(fetchRegistrations)
+onMounted(() => {
+    fetchRegistrations()
+    fetchChannels()
+})
 </script>

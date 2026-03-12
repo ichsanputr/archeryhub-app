@@ -97,12 +97,23 @@ export const usePayment = () => {
     }
   }
 
+  const getInstruction = async (code: string): Promise<any[]> => {
+    try {
+      const data = await $fetch<{ data: any[] }>(`${apiBaseUrl}/payment/instruction?code=${code}`)
+      return data?.data ?? []
+    } catch (error) {
+      console.error('Failed to get payment instruction:', error)
+      return []
+    }
+  }
+
   return {
     getChannels,
     registerTournament,
     createTransaction,
     createParticipantPayment,
     getPaymentStatus,
-    simulateSuccess
+    simulateSuccess,
+    getInstruction
   }
 }

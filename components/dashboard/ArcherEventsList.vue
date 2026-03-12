@@ -317,12 +317,7 @@ const fetchEvents = async () => {
 }
 
 const fetchInvitations = async () => {
-  try {
-    const response = await get('/clubs/my/invitations')
-    invitations.value = response?.data || []
-  } catch (error) {
-    console.error('Failed to fetch invitations:', error)
-  }
+  // invitations endpoint removed
 }
 
 const respondInvitation = async (memberId, action) => {
@@ -330,12 +325,8 @@ const respondInvitation = async (memberId, action) => {
   try {
     await post(`/clubs/invitations/${memberId}/respond`, { action })
     toast.success(action === 'accept' ? 'Berhasil bergabung dengan klub!' : 'Undangan ditolak')
-    // Refresh data
-    await fetchInvitations()
-    if (action === 'accept') {
-      // If accepted, maybe refresh the whole page or status
-      window.location.reload()
-    }
+    invitations.value = invitations.value.filter(i => i.uuid !== memberId)
+    if (action === 'accept') window.location.reload()
   } catch (error) {
     console.error('Failed to respond to invitation:', error)
     toast.error('Gagal memproses undangan')
@@ -351,7 +342,6 @@ const handlePageChange = (page) => {
 
 onMounted(() => {
   fetchEvents()
-  fetchInvitations()
 })
 
 const resetFilters = () => {

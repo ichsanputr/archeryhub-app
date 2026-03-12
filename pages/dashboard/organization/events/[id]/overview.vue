@@ -336,9 +336,6 @@
                     <div class="bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-sm">
                         <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
                             <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">Papan Peringkat</h3>
-                            <NuxtLink :to="`/dashboard/events/${route.params.id}/results`"
-                                class="text-xs text-text-secondary hover:text-navy-dark font-semibold transition-colors">
-                                Lihat Semua</NuxtLink>
                         </div>
                         <div class="flex-1 overflow-y-auto max-h-[440px] p-4">
                             <div class="space-y-3">
