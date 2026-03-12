@@ -23,6 +23,8 @@ import { kategori_lomba } from './kategori-lomba.js'
 import { jarak_dan_target } from './jarak-dan-target.js'
 import { fase_kualifikasi } from './fase-kualifikasi.js'
 import { fase_eliminasi } from './fase-eliminasi.js'
+import { sinkronisasi_tim } from './sinkronisasi-tim.js'
+import { ukuran_bracket } from './ukuran-bracket.js'
 import { apa_itu_end } from './apa-itu-end.js'
 import { penempatan_bantalan } from './penempatan-bantalan.js'
 import { cara_menjual_barang } from './cara-menjual-barang.js'
@@ -56,6 +58,8 @@ export const docs = [
     jarak_dan_target,
     fase_kualifikasi,
     fase_eliminasi,
+    sinkronisasi_tim,
+    ukuran_bracket,
     apa_itu_end,
     penempatan_bantalan,
     cara_menjual_barang,

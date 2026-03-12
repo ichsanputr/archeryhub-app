@@ -133,7 +133,8 @@
 
             <!-- Right sidebar: Table of contents -->
             <aside
-                class="hidden lg:flex flex-col w-56 shrink-0 lg:sticky lg:top-24 lg:h-[calc(100vh-6rem)] overflow-y-auto pl-4 scrollbar-styled self-start">
+                class="hidden lg:block w-56 shrink-0 pl-4 self-start sticky top-24">
+                <div class="max-h-[calc(100vh-7rem)] overflow-y-auto scrollbar-styled flex flex-col">
                 <div class="text-xs font-black text-gray-400 tracking-widest uppercase mb-3">Di halaman ini</div>
                 <nav class="space-y-1">
                     <a v-for="heading in currentDoc?.toc || []" :key="heading.id" :href="`#${heading.id}`"
@@ -154,6 +155,7 @@
                         class="flex items-center gap-2 text-xs text-gray-400 hover:text-primary transition-colors font-medium">
                         <Icon icon="ph:chat-circle-dots-bold" class="text-sm" /> Hubungi Support
                     </NuxtLink>
+                </div>
                 </div>
             </aside>
         </div>
