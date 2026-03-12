@@ -643,7 +643,7 @@ const selectMatchForScoring = (match) => {
 }
 
 const fetchTeamMembers = async () => {
-    if (bracket.value?.bracket_type !== 'team' && bracket.value?.bracket_type !== 'mixed_team') return
+    if (bracket.value?.bracket_type === 'individual') return
     try {
         const res = await get(`/events/${eventId}/elimination/brackets/${bracketId}/team-members`)
         teamMembersMap.value = res?.members || {}

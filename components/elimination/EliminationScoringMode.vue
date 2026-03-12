@@ -59,7 +59,7 @@
                                 ]">
                                 <div class="flex items-center gap-3 min-w-0">
                                     <!-- Avatar for individual matches -->
-                                    <div v-if="bracket.bracket_type !== 'team' && bracket.bracket_type !== 'mixed_team'"
+                                    <div v-if="bracket.bracket_type === 'individual'"
                                         class="shrink-0 relative">
                                         <img :src="useImageOrDefault(side === 'A' ? (match.entry_a_avatar || match.entry_a_photo) : (match.entry_b_avatar || match.entry_b_photo), side === 'A' ? match.entry_a_name : match.entry_b_name)"
                                             class="size-8 rounded-lg object-cover border-2 shadow-sm"
@@ -116,7 +116,7 @@
                                     class="absolute -inset-3 sm:-inset-4 bg-primary/20 rounded-[2rem] sm:rounded-[3rem] blur-xl sm:blur-2xl opacity-0 group-hover:opacity-100 transition-opacity">
                                 </div>
                                 <!-- Team mode: show team shield icon; Individual mode: show archer photo -->
-                                <div v-if="bracket.bracket_type === 'team' || bracket.bracket_type === 'mixed_team'"
+                                <div v-if="bracket.bracket_type !== 'individual'"
                                     class="size-16 sm:size-24 rounded-[2rem] sm:rounded-[2.5rem] border-2 sm:border-4 border-white/10 bg-white/10 flex items-center justify-center relative z-10 shadow-sm">
                                     <Icon icon="ph:users-three-bold" class="text-3xl sm:text-5xl text-white/70" />
                                 </div>
@@ -135,10 +135,10 @@
                                 </h4>
                                 <p
                                     class="text-[8px] sm:text-[10px] font-black text-primary uppercase tracking-[0.2em] opacity-60">
-                                    {{ (bracket.bracket_type === 'team' || bracket.bracket_type === 'mixed_team') ? 'Tim A' : 'Peserta A' }}
+                                    {{ bracket.bracket_type !== 'individual' ? 'Tim A' : 'Peserta A' }}
                                 </p>
-                                <!-- Team member roster for team/mixed_team brackets -->
-                                <div v-if="(bracket.bracket_type === 'team' || bracket.bracket_type === 'mixed_team') && membersA.length"
+                                <!-- Team member roster for non-individual brackets -->
+                                <div v-if="bracket.bracket_type !== 'individual' && membersA.length"
                                     class="flex flex-wrap justify-center gap-2 mt-2">
                                     <div v-for="member in membersA" :key="member.member_order"
                                         class="flex flex-col items-center gap-0.5">
@@ -249,7 +249,7 @@
                                     class="absolute -inset-3 sm:-inset-4 bg-white/10 rounded-[2rem] sm:rounded-[3rem] blur-xl sm:blur-2xl opacity-0 group-hover:opacity-100 transition-opacity">
                                 </div>
                                 <!-- Team mode: show team shield icon; Individual mode: show archer photo -->
-                                <div v-if="bracket.bracket_type === 'team' || bracket.bracket_type === 'mixed_team'"
+                                <div v-if="bracket.bracket_type !== 'individual'"
                                     class="size-16 sm:size-24 rounded-[2rem] sm:rounded-[2.5rem] border-2 sm:border-4 border-white/10 bg-white/10 flex items-center justify-center relative z-10 shadow-sm">
                                     <Icon icon="ph:users-three-bold" class="text-3xl sm:text-5xl text-white/70" />
                                 </div>
@@ -268,10 +268,10 @@
                                 </h4>
                                 <p
                                     class="text-[8px] sm:text-[10px] font-black text-white uppercase tracking-[0.2em] opacity-40">
-                                    {{ (bracket.bracket_type === 'team' || bracket.bracket_type === 'mixed_team') ? 'Tim B' : 'Peserta B' }}
+                                    {{ bracket.bracket_type !== 'individual' ? 'Tim B' : 'Peserta B' }}
                                 </p>
-                                <!-- Team member roster for team/mixed_team brackets -->
-                                <div v-if="(bracket.bracket_type === 'team' || bracket.bracket_type === 'mixed_team') && membersB.length"
+                                <!-- Team member roster for non-individual brackets -->
+                                <div v-if="bracket.bracket_type !== 'individual' && membersB.length"
                                     class="flex flex-wrap justify-center gap-2 mt-2">
                                     <div v-for="member in membersB" :key="member.member_order"
                                         class="flex flex-col items-center gap-0.5">
