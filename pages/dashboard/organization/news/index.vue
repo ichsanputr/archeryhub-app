@@ -118,12 +118,12 @@
                                     item.category === 'prestasi' ? 'bg-green-500/90 text-white' :
                                         'bg-gray-500/90 text-white'
                         ]">
-                            {{ item.category }}
+                            {{ capitalizeChip(item.category) }}
                         </span>
-                        <template v-if="item.tags">
-                            <span v-for="tag in item.tags.split(',')" :key="tag"
+                        <template v-if="normalizeTags(item.tags).length > 0">
+                            <span v-for="tag in normalizeTags(item.tags)" :key="tag"
                                 class="px-2 py-1 rounded-full text-[9px] font-black tracking-widest bg-navy/80 text-primary backdrop-blur-md border border-primary/20 capitalize">
-                                {{ tag.trim() }}
+                                {{ capitalizeChip(tag) }}
                             </span>
                         </template>
                     </div>
@@ -298,6 +298,38 @@ const formatDate = (dateString) => {
         month: 'short',
         year: 'numeric'
     }).format(date)
+}
+
+const capitalizeChip = (value) => {
+    if (!value) return '-'
+    return value
+        .toString()
+        .trim()
+        .toLowerCase()
+        .split(/\s+/)
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ')
+}
+
+const normalizeTags = (tags) => {
+    if (!tags) return []
+    if (Array.isArray(tags)) {
+        return tags.map(t => t?.toString().trim()).filter(Boolean)
+    }
+
+    const raw = tags.toString().trim()
+    if (!raw) return []
+
+    try {
+        const parsed = JSON.parse(raw)
+        if (Array.isArray(parsed)) {
+            return parsed.map(t => t?.toString().trim()).filter(Boolean)
+        }
+    } catch (error) {
+        // keep fallback below for comma-separated text
+    }
+
+    return raw.split(',').map(t => t.trim()).filter(Boolean)
 }
 </script>
 

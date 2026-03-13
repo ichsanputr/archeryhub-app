@@ -236,7 +236,7 @@
                                             <span class="font-black text-navy text-lg leading-tight block">{{
                                                 profileForm.full_name || 'Atlet' }}</span>
                                             <span class="text-sm text-gray-400 block">{{ archerProfile?.email || ''
-                                            }}</span>
+                                                }}</span>
                                             <span v-if="archerProfile?.id"
                                                 class="text-[10px] text-navy font-black bg-gray-100 px-2 py-0.5 rounded-full tracking-wider">ID:
                                                 {{ archerProfile.id }}</span>
@@ -307,10 +307,10 @@
                                                     icon="ph:check-bold" class="text-navy text-xs" />
                                             </div>
                                             <span class="text-sm font-bold text-navy leading-tight">{{ category.name
-                                                }}</span>
+                                            }}</span>
                                         </div>
                                         <span v-if="event.registration_fee > 0"
-                                            class="text-xs font-black text-primary tabular-nums shrink-0 ml-2">
+                                            class="text-xs font-black tabular-nums shrink-0 ml-2">
                                             Rp {{ (event.registration_fee || 0).toLocaleString('id-ID') }}
                                         </span>
                                     </div>
@@ -442,7 +442,7 @@
                                                     class="text-[10px] font-black text-navy uppercase tracking-wider block leading-tight">{{
                                                         ch.label }}</span>
                                                 <span class="text-[9px] text-gray-400 font-medium block">{{ ch.type
-                                                }}</span>
+                                                    }}</span>
                                             </div>
                                             <div v-if="form.online_channel === ch.code" class="ml-auto shrink-0">
                                                 <div
@@ -605,12 +605,13 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
 
         const eventId = eventResponse.uuid || eventResponse.id
 
-        const [categoriesResponse, bowTypesRes, citiesRes, profileResponse, participantsResponse] = await Promise.all([
+        const [categoriesResponse, bowTypesRes, citiesRes, profileResponse, participantsResponse, channelsRes] = await Promise.all([
             $fetch(`${apiBaseUrl}/events/${slug}/categories`).catch(() => ({ events: [] })),
             $fetch(`${apiBaseUrl}/bow-types`).catch(() => ({ bow_types: [] })),
             $fetch(`${apiBaseUrl}/cities`).catch(() => ({ data: [] })),
             token ? $fetch(`${apiBaseUrl}/archer/me`, fetchOptions).catch(() => null) : Promise.resolve(null),
-            $fetch(`${apiBaseUrl}/events/${slug}/participants?limit=2000`).catch(() => ({ participants: [] }))
+            $fetch(`${apiBaseUrl}/events/${slug}/participants?limit=2000`).catch(() => ({ participants: [] })),
+            $fetch(`${apiBaseUrl}/payment/channels`).catch(() => [])
         ])
 
         const formatDate = (d) => d ? useDateFormat(d, 'DD MMM YYYY', { locales: 'id-ID' }).value : ''
@@ -657,7 +658,15 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
             paymentMethods: paymentMethodsData,
             bowTypes: (bowTypesRes.bow_types || []).map(b => ({ title: b.name, value: b.code })),
             cities: (citiesRes.data || []).map(c => ({ title: c.name, value: c.name })),
-            participants: participantsResponse?.participants || []
+            participants: participantsResponse?.participants || [],
+            onlineChannels: (Array.isArray(channelsRes) ? channelsRes : channelsRes?.data || [])
+                .filter(ch => ch.active !== false)
+                .map(ch => ({
+                    code: ch.code,
+                    label: ch.name,
+                    type: ch.group,
+                    icon: ch.icon_url
+                }))
         }
     } catch (err) {
         throw createError({ statusCode: 500, message: 'Gagal memuat data pendaftaran' })
@@ -715,17 +724,14 @@ const genderOptions = [
     { title: 'Wanita', value: 'female' }
 ]
 
-const onlineChannels = [
-    { code: 'QRIS', label: 'QRIS', type: 'Semua E-Wallet', icon: '/payment-method/qris.png' },
-    { code: 'BRIVA', label: 'BRI Virtual Account', type: 'Virtual Account', icon: '/payment-method/bri.png' },
-    { code: 'BNIVA', label: 'BNI Virtual Account', type: 'Virtual Account', icon: '/payment-method/bni.png' },
-    { code: 'BCAVA', label: 'BCA Virtual Account', type: 'Virtual Account', icon: '/payment-method/bca.png' },
-    { code: 'MANDIRIVA', label: 'Mandiri Virtual Account', type: 'Virtual Account', icon: '/payment-method/mandiri.png' },
-    { code: 'BSIVA', label: 'BSI Virtual Account', type: 'Virtual Account', icon: '/payment-method/bsi.png' },
-    { code: 'GOPAY', label: 'GoPay', type: 'E-Wallet', icon: '/payment-method/gopay.png' },
-    { code: 'DANA', label: 'DANA', type: 'E-Wallet', icon: '/payment-method/dana.png' },
-    { code: 'OVO', label: 'OVO', type: 'E-Wallet', icon: '/payment-method/ovo.png' },
-]
+const onlineChannels = computed(() => data.value?.onlineChannels || [])
+
+// Auto-select first channel if QRIS not available
+watch(onlineChannels, (chans) => {
+    if (chans.length > 0 && (!form.value.online_channel || !chans.find(c => c.code === form.value.online_channel))) {
+        form.value.online_channel = chans[0].code
+    }
+}, { immediate: true })
 
 // ─── COMPUTED ─────────────────────────────────────────────────────────────────
 const event = computed(() => data.value?.event || { name: '', date: '', location: '', image: '', description: '', registration_fee: 0 })

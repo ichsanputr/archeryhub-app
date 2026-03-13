@@ -6,7 +6,7 @@
       isSidebarCollapsed ? 'md:w-20' : 'md:w-64'
     ]" aria-hidden="false" :aria-label="isSidebarOpen ? 'Menu navigasi terbuka' : 'Menu navigasi tertutup'">
 
-    <!-- Logo/Brand -->
+      <!-- Logo/Brand -->
     <div class="h-16 flex items-center gap-3 px-6 border-b border-white/10 shrink-0">
       <div class="flex items-center gap-3 overflow-hidden">
         <img src="/logo.png" alt="Archeryhub.id Logo" class="h-8 w-8 object-contain shrink-0" />
@@ -273,9 +273,21 @@ const navSections = computed(() => {
   if (role === 'seller') {
     return [
       { label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard/seller' },
+      { type: 'label', label: 'Manajemen Toko' },
       { label: 'Toko Saya', icon: 'ph:storefront', path: '/dashboard/seller/store' },
       { label: 'Produk', icon: 'ph:package', path: '/dashboard/seller/products' },
       { label: 'Pesanan', icon: 'ph:shopping-cart', path: '/dashboard/seller/orders' },
+      { type: 'label', label: 'Keuangan' },
+      {
+        label: 'Manajemen Keuangan',
+        icon: 'ph:coins',
+        type: 'group',
+        children: [
+          { label: 'Transaksi', icon: 'ph:credit-card', path: '/dashboard/seller/finance/transactions' },
+          { label: 'Saldo & Penarikan', icon: 'ph:wallet', path: '/dashboard/seller/finance/balance' },
+        ]
+      },
+      { type: 'label', label: 'Lainnya' },
       { label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/seller/settings' },
     ]
   }

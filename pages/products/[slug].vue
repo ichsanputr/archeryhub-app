@@ -10,8 +10,24 @@
         </section>
 
         <Transition name="fade" mode="out-in">
-            <ProductPageSkeleton v-if="isLoading || !product" key="skeleton"
+            <ProductPageSkeleton v-if="isLoading" key="skeleton"
                 class="container mx-auto max-w-7xl px-4 pt-8" />
+
+            <div v-else-if="!product" key="not-found" class="container mx-auto max-w-7xl px-4 pt-8">
+                <section class="rounded-3xl border border-black/5 bg-white p-10 text-center shadow-sm">
+                    <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-red-50 text-red-500">
+                        <Icon icon="ph:package-bold" class="text-2xl" />
+                    </div>
+                    <h2 class="text-2xl font-black text-navy">Produk tidak ditemukan</h2>
+                    <p class="mt-2 text-sm text-gray-500">
+                        {{ fetchError?.data?.error || 'Produk yang Anda cari tidak tersedia atau sudah dihapus.' }}
+                    </p>
+                    <NuxtLink href="/products"
+                        class="mt-5 inline-flex items-center rounded-xl bg-navy px-5 py-2.5 text-xs font-black uppercase tracking-widest text-white hover:bg-navy/90">
+                        Kembali ke Produk
+                    </NuxtLink>
+                </section>
+            </div>
 
             <div v-else key="content" class="container mx-auto max-w-7xl px-4 pt-8">
                 <section
@@ -145,7 +161,7 @@
                             <div class="rounded-3xl border border-black/5 bg-white p-5 shadow-sm">
                                 <div class="text-xs font-bold uppercase tracking-[0.2em] text-gray-400">Penjual</div>
                                 <div class="mt-3 flex items-center gap-3">
-                                    <img :src="allowedProductImages[4]"
+                                        <img :src="sellerAvatar"
                                         alt="seller" class="h-12 w-12 rounded-full object-cover" />
                                     <div>
                                         <div class="font-black text-navy">{{ product.seller?.store_name || 'Toko ArcheryHub' }}</div>
@@ -277,7 +293,7 @@ const allowedProductImages = [
     'https://images.unsplash.com/photo-1491553895911-0055eca6402d'
 ]
 
-const { data: productResponse, pending: isLoading } = useAsyncData(
+const { data: productResponse, pending: isLoading, error: fetchError } = useAsyncData(
     `product-${route.params.slug}`,
     () => $fetch(`${apiBaseUrl}/products/${route.params.slug}`),
     { lazy: true, server: true }
@@ -313,10 +329,16 @@ const galleryImages = computed(() => {
     if (product.value?.image_url) imgs.push(product.value.image_url)
     if (Array.isArray(product.value?.images)) imgs.push(...product.value.images)
 
-    const unique = [...new Set(imgs.filter((img) => allowedProductImages.includes(img)))]
+    const unique = [...new Set(imgs.filter((img) => typeof img === 'string' && img.trim() !== ''))]
     if (unique.length > 0) return unique
 
     return [allowedProductImages[0]]
+})
+
+const sellerAvatar = computed(() => {
+    const avatar = product.value?.seller?.avatar_url
+    if (typeof avatar === 'string' && avatar.trim() !== '') return avatar
+    return allowedProductImages[4]
 })
 
 watchEffect(() => {

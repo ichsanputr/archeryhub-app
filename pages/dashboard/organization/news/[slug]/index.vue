@@ -6,14 +6,14 @@
                 <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
                     <NuxtLink to="/dashboard" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <NuxtLink :to="`/dashboard/${userPersona}/news`" class="hover:text-primary transition-colors">Berita</NuxtLink>
+                    <NuxtLink to="/dashboard/organization/news" class="hover:text-primary transition-colors">Berita</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
                     <span class="text-navy">Detail</span>
                 </div>
                 <h1 class="text-3xl font-extrabold text-navy tracking-tight">{{ article.title }}</h1>
             </div>
             <div class="flex items-center gap-3">
-                <NuxtLink :to="`/dashboard/news/${route.params.slug}/edit`">
+                <NuxtLink :to="`/dashboard/organization/news/${route.params.slug}/edit`">
                     <BaseButton variant="outline" icon="ph:pencil-simple">
                         Edit
                     </BaseButton>
@@ -40,12 +40,12 @@
                         <div class="absolute top-6 left-6">
                             <span :class="[
                                 'px-4 py-1.5 rounded-full text-sm font-bold  tracking-wider backdrop-blur-sm',
-                                article.category === 'Event' ? 'bg-blue-500/90 text-white' :
-                                    article.category === 'Pengumuman' ? 'bg-amber-500/90 text-white' :
-                                        article.category === 'Prestasi' ? 'bg-green-500/90 text-white' :
+                                articleCategoryLower === 'event' ? 'bg-blue-500/90 text-white' :
+                                    articleCategoryLower === 'pengumuman' ? 'bg-amber-500/90 text-white' :
+                                        articleCategoryLower === 'prestasi' ? 'bg-green-500/90 text-white' :
                                             'bg-gray-500/90 text-white'
                             ]">
-                                {{ article.category }}
+                                {{ capitalizeChip(article.category) }}
                             </span>
                         </div>
                     </div>
@@ -84,10 +84,11 @@
                         <div class="mt-8 pt-6 border-t border-gray-100">
                             <div class="flex items-center gap-2 flex-wrap">
                                 <span class="text-sm text-gray-400 font-medium">Tags:</span>
-                                <span v-for="tag in article.tags" :key="tag"
+                                <span v-for="tag in parsedTags" :key="tag"
                                     class="px-3 py-1 bg-gray-100 text-gray-600 text-sm font-medium rounded-full hover:bg-primary/10 hover:text-primary cursor-pointer transition-colors">
-                                    {{ tag }}
+                                    {{ capitalizeChip(tag) }}
                                 </span>
+                                <span v-if="parsedTags.length === 0" class="text-sm text-gray-400">-</span>
                             </div>
                         </div>
                     </div>
@@ -120,20 +121,33 @@
                         <Icon icon="ph:chart-line-up" class="text-primary" />
                         Statistik
                     </h3>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="text-center p-4 bg-navy/5 border border-navy/10 rounded-xl group transition-all hover:bg-navy/10">
-                            <div class="flex items-center justify-center gap-1.5 text-navy mb-1 opacity-60">
-                                <Icon icon="ph:eye" class="text-lg" />
+                    <div class="space-y-3">
+                        <div class="grid grid-cols-3 gap-3">
+                            <div class="rounded-xl border border-navy/10 bg-navy/5 p-3 text-center">
+                                <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">Views</p>
+                                <p class="text-xl font-black text-navy mt-1">{{ article.views?.toLocaleString() || 0 }}</p>
                             </div>
-                            <p class="text-2xl font-black text-navy">{{ article.views?.toLocaleString() || 0 }}</p>
-                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Views</p>
+                            <div class="rounded-xl border border-primary/20 bg-primary/5 p-3 text-center">
+                                <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">Words</p>
+                                <p class="text-xl font-black text-navy mt-1">{{ wordCount.toLocaleString() }}</p>
+                            </div>
+                            <div class="rounded-xl border border-amber-200 bg-amber-50 p-3 text-center">
+                                <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">Read Time</p>
+                                <p class="text-xl font-black text-navy mt-1">{{ readTimeMinutes }}m</p>
+                            </div>
                         </div>
-                        <div class="text-center p-4 bg-primary/5 border border-primary/20 rounded-xl group transition-all hover:bg-primary/10">
-                            <div class="flex items-center justify-center gap-1.5 text-primary mb-1">
-                                <Icon icon="ph:share-network" class="text-lg" />
+
+                        <div class="rounded-xl border border-gray-100 bg-gray-50 p-3">
+                            <div class="flex items-center justify-between text-xs font-bold">
+                                <span class="text-gray-500 uppercase tracking-widest">Status</span>
+                                <span :class="article.status === 'published' ? 'text-green-600' : 'text-amber-600'">
+                                    {{ article.status === 'published' ? 'Published' : 'Draft' }}
+                                </span>
                             </div>
-                            <p class="text-2xl font-black text-navy">0</p>
-                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Shares</p>
+                            <div class="mt-2 h-2 rounded-full bg-gray-200 overflow-hidden">
+                                <div class="h-full rounded-full transition-all duration-500"
+                                    :class="article.status === 'published' ? 'bg-green-500 w-full' : 'bg-amber-400 w-2/3'" />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -294,6 +308,46 @@ const article = ref({
     tags: []
 })
 
+const articleCategoryLower = computed(() => (article.value.category || '').toString().toLowerCase())
+
+const parsedTags = computed(() => {
+    const rawTags = article.value.tags
+    if (!rawTags) return []
+
+    if (Array.isArray(rawTags)) {
+        return rawTags.map(tag => tag?.toString().trim()).filter(Boolean)
+    }
+
+    const raw = rawTags.toString().trim()
+    if (!raw) return []
+
+    try {
+        const parsed = JSON.parse(raw)
+        if (Array.isArray(parsed)) {
+            return parsed.map(tag => tag?.toString().trim()).filter(Boolean)
+        }
+    } catch (error) {
+        // fallback to comma-separated
+    }
+
+    return raw.split(',').map(tag => tag.trim()).filter(Boolean)
+})
+
+const strippedContent = computed(() => {
+    const html = article.value.content || ''
+    return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
+})
+
+const wordCount = computed(() => {
+    if (!strippedContent.value) return 0
+    return strippedContent.value.split(' ').filter(Boolean).length
+})
+
+const readTimeMinutes = computed(() => {
+    const wordsPerMinute = 200
+    return Math.max(1, Math.ceil(wordCount.value / wordsPerMinute))
+})
+
 const fetchArticle = async () => {
     isLoading.value = true
     try {
@@ -322,6 +376,17 @@ const formatDate = (dateString, withTime = false) => {
         options.minute = '2-digit'
     }
     return new Intl.DateTimeFormat('id-ID', options).format(date)
+}
+
+const capitalizeChip = (value) => {
+    if (!value) return '-'
+    return value
+        .toString()
+        .trim()
+        .toLowerCase()
+        .split(/\s+/)
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ')
 }
 
 const publishArticle = async () => {
@@ -428,7 +493,7 @@ const deleteArticle = async () => {
     try {
         await del(`/news/${article.value.uuid}`)
         toast.success('Berita berhasil dihapus')
-        router.push('/dashboard/news')
+        router.push('/dashboard/organization/news')
     } catch (error) {
         toast.error('Gagal menghapus berita')
     }

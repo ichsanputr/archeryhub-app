@@ -41,55 +41,6 @@
             </div>
         </div>
 
-        <!-- Quick Stats -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div
-                class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div
-                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-                    <Icon icon="ph:package" class="text-xl" />
-                </div>
-                <div>
-                    <p class="text-xs text-gray-400 font-bold  tracking-wider">Total Produk</p>
-                    <p class="text-lg font-bold text-navy">{{ products.length }}</p>
-                </div>
-            </div>
-            <div
-                class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div
-                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-                    <Icon icon="ph:check-circle" class="text-xl" />
-                </div>
-                <div>
-                    <p class="text-xs text-gray-400 font-bold  tracking-wider">Aktif</p>
-                    <p class="text-lg font-bold text-navy">{{products.filter(p => p.status === 'active').length}}</p>
-                </div>
-            </div>
-            <div
-                class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div
-                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-                    <Icon icon="ph:eye" class="text-xl" />
-                </div>
-                <div>
-                    <p class="text-xs text-gray-400 font-bold  tracking-wider">Total View</p>
-                    <p class="text-lg font-bold text-navy">{{products.reduce((acc, p) => acc + p.views,
-                        0).toLocaleString()}}</p>
-                </div>
-            </div>
-            <div
-                class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div
-                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-                    <Icon icon="ph:shopping-cart" class="text-xl" />
-                </div>
-                <div>
-                    <p class="text-xs text-gray-400 font-bold  tracking-wider">Terjual</p>
-                    <p class="text-lg font-bold text-navy">{{products.reduce((acc, p) => acc + p.sold, 0)}}</p>
-                </div>
-            </div>
-        </div>
-
         <!-- Search & Filter -->
         <div
             class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
@@ -188,10 +139,7 @@
 
                             <!-- Stock -->
                             <td class="px-6 py-4">
-                                <span :class="[
-                                    'font-bold',
-                                    product.stock > 10 ? 'text-green-600' : product.stock > 0 ? 'text-amber-600' : 'text-red-600'
-                                ]">
+                                <span class="font-bold text-navy">
                                     {{ product.stock }}
                                 </span>
                             </td>

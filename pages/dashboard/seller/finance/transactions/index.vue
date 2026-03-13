@@ -11,21 +11,29 @@
         <div class="flex items-center gap-5">
           <div
             class="size-14 sm:size-16 rounded-[2rem] bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 shadow-inner">
-            <Icon icon="ph:shopping-cart-bold" class="text-primary text-3xl sm:text-4xl" />
+            <Icon icon="ph:list-bullets-bold" class="text-primary text-3xl sm:text-4xl" />
           </div>
           <div>
-            <h1 class="text-2xl sm:text-4xl font-black tracking-tight leading-tight">Pesanan Masuk</h1>
-            <div class="text-slate-300 text-xs sm:text-sm font-bold mt-1 tracking-wide">Kelola dan proses pesanan dari pembeli anda</div>
+            <h1 class="text-2xl sm:text-4xl font-black tracking-tight leading-tight">Riwayat Transaksi</h1>
+            <div class="text-slate-300 text-xs sm:text-sm font-bold mt-1 tracking-wide">Pantau semua arus kas masuk dan keluar toko anda</div>
           </div>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <NuxtLink to="/dashboard/seller/finance/balance">
+            <BaseButton variant="white" icon="ph:wallet-bold"
+              class="h-12 px-6 font-black text-[11px] !rounded-2xl border-white/10 hover:bg-white/10 hover:text-white transition-all">
+              Saldo & Rekening
+            </BaseButton>
+          </NuxtLink>
         </div>
       </div>
     </div>
 
-    <!-- Orders filter/content -->
+    <!-- Rest of the transactions page content would go here -->
     <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm p-8">
-       <div class="text-center py-20">
-        <Icon icon="ph:package-bold" class="text-6xl text-gray-100 mx-auto mb-4" />
-        <div class="text-gray-400 font-bold">Daftar pesanan akan muncul di sini</div>
+      <div class="text-center py-20">
+        <Icon icon="ph:clock-counter-clockwise-bold" class="text-6xl text-gray-100 mx-auto mb-4" />
+        <div class="text-gray-400 font-bold">Daftar transaksi akan muncul di sini</div>
       </div>
     </div>
   </div>
@@ -34,5 +42,5 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 definePageMeta({ layout: 'dashboard' })
-useHead({ title: 'Pesanan Masuk - Dashboard Seller' })
+useHead({ title: 'Riwayat Transaksi - Dashboard Seller' })
 </script>

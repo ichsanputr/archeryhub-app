@@ -114,21 +114,36 @@
                         </h2>
                         <div class="space-y-5">
                             <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2">Gambar Utama (URL)</label>
-                                <input v-model="form.image_url" type="url"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                    placeholder="https://example.com/image.jpg" />
+                                <div class="flex items-center justify-between gap-3 mb-2">
+                                    <label class="block text-sm font-bold text-gray-700">Gambar Utama</label>
+                                    <BaseButton type="button" variant="white" size="sm" icon="ph:images" @click="openMediaLibrary('primary')">
+                                        Pilih dari Media Library
+                                    </BaseButton>
+                                </div>
                                 <div v-if="form.image_url" class="mt-3">
                                     <img :src="form.image_url" alt="Preview"
                                         class="h-32 w-32 object-cover rounded-xl border border-gray-200" />
                                 </div>
+                                <p v-else class="text-sm text-gray-500">Belum ada gambar utama.</p>
                             </div>
+
                             <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2">Gambar Tambahan (URL, satu per
-                                    baris)</label>
-                                <textarea v-model="additionalImagesText" rows="4"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
-                                    placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg"></textarea>
+                                <div class="flex items-center justify-between gap-3 mb-2">
+                                    <label class="block text-sm font-bold text-gray-700">Gambar Tambahan</label>
+                                    <BaseButton type="button" variant="white" size="sm" icon="ph:images" @click="openMediaLibrary('gallery')">
+                                        Tambah dari Media Library
+                                    </BaseButton>
+                                </div>
+                                <div v-if="form.images.length" class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                    <div v-for="(img, idx) in form.images" :key="idx" class="relative group">
+                                        <img :src="img" :alt="`Image ${idx + 1}`" class="w-full aspect-square object-cover rounded-xl border border-gray-200" />
+                                        <button type="button" @click="removeImage(idx)"
+                                            class="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <Icon icon="ph:x-bold" class="text-xs" />
+                                        </button>
+                                    </div>
+                                </div>
+                                <p v-else class="text-sm text-gray-500">Belum ada gambar tambahan.</p>
                             </div>
                         </div>
                     </div>
@@ -157,11 +172,42 @@
                             </button>
                         </div>
                     </div>
+
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
+                        <h2 class="text-xl font-bold text-navy mb-2">Warna Produk</h2>
+                        <p class="text-sm text-gray-500 mb-5">Kelola opsi warna produk yang tersedia.</p>
+
+                        <div class="flex flex-col sm:flex-row gap-3 mb-4">
+                            <input
+                                v-model="newColor"
+                                type="text"
+                                class="flex-1 px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                                placeholder="Contoh: Hitam, Navy, Merah"
+                                @keyup.enter.prevent="addColor"
+                            />
+                            <BaseButton type="button" variant="white" icon="ph:plus-bold" @click="addColor">
+                                Tambah Warna
+                            </BaseButton>
+                        </div>
+
+                        <div class="flex flex-wrap gap-2">
+                            <button
+                                v-for="(color, idx) in form.colors"
+                                :key="`${color}-${idx}`"
+                                type="button"
+                                class="inline-flex items-center gap-2 rounded-full bg-primary/10 text-navy px-3 py-1.5 text-xs font-bold"
+                                @click="removeColor(idx)"
+                            >
+                                <span>{{ color }}</span>
+                                <Icon icon="ph:x-bold" class="text-[10px]" />
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Sidebar -->
                 <div class="lg:col-span-1">
-                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sticky top-24 space-y-4">
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
                         <h3 class="text-lg font-bold text-navy">Aksi</h3>
                         <BaseButton type="submit" variant="primary" size="lg" class="w-full" :loading="isSubmitting">
                             <Icon icon="ph:floppy-disk-bold" class="mr-2" />
@@ -184,15 +230,18 @@
                 </div>
             </div>
         </form>
+
+        <MediaLibrary :show="showMediaLibrary" @close="showMediaLibrary = false" @select="handleMediaSelect" />
     </div>
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, watch, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
+import MediaLibrary from '~/components/common/MediaLibrary.vue'
 
 definePageMeta({ layout: 'dashboard' })
 useHead({ title: 'Edit Produk - ArcheryHub Dashboard' })
@@ -206,8 +255,10 @@ const isLoadingProduct = ref(true)
 const isSubmitting = ref(false)
 const isDeleting = ref(false)
 const notFound = ref(false)
-const additionalImagesText = ref('')
 const specifications = ref([{ key: '', value: '' }])
+const showMediaLibrary = ref(false)
+const mediaTarget = ref('primary')
+const newColor = ref('')
 
 const categoryOptions = [
     { value: 'equipment', title: 'Peralatan' },
@@ -233,12 +284,47 @@ const form = ref({
     stock: 0,
     status: 'draft',
     image_url: '',
-    images: []
+    images: [],
+    colors: []
 })
 
-watch(additionalImagesText, (val) => {
-    form.value.images = val ? val.split('\n').filter(u => u.trim()) : []
-})
+const openMediaLibrary = (target) => {
+    mediaTarget.value = target
+    showMediaLibrary.value = true
+}
+
+const handleMediaSelect = (media) => {
+    if (!media?.url) return
+
+    if (mediaTarget.value === 'primary') {
+        form.value.image_url = media.url
+    } else {
+        const exists = form.value.images.includes(media.url)
+        if (!exists) {
+            form.value.images.push(media.url)
+        }
+    }
+
+    showMediaLibrary.value = false
+}
+
+const removeImage = (index) => {
+    form.value.images.splice(index, 1)
+}
+
+const addColor = () => {
+    const value = newColor.value.trim()
+    if (!value) return
+    const exists = form.value.colors.some(c => c.toLowerCase() === value.toLowerCase())
+    if (!exists) {
+        form.value.colors.push(value)
+    }
+    newColor.value = ''
+}
+
+const removeColor = (index) => {
+    form.value.colors.splice(index, 1)
+}
 
 onMounted(async () => {
     const id = route.params.id
@@ -263,7 +349,12 @@ onMounted(async () => {
             try { imgs = JSON.parse(imgs) } catch { imgs = [] }
         }
         form.value.images = imgs
-        additionalImagesText.value = imgs.join('\n')
+
+        let colors = p.colors || []
+        if (typeof colors === 'string') {
+            try { colors = JSON.parse(colors) } catch { colors = [] }
+        }
+        form.value.colors = Array.isArray(colors) ? colors : []
 
         // Parse specifications
         let specs = p.specifications || {}
@@ -304,6 +395,7 @@ const handleSubmit = async () => {
             status: form.value.status,
             image_url: form.value.image_url || null,
             images: form.value.images || [],
+            colors: form.value.colors || [],
             specifications: Object.keys(specs).length > 0 ? specs : null
         })
         toast.success('Produk berhasil diperbarui')

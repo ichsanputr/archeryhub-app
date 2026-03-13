@@ -87,21 +87,28 @@
                         <h2 class="text-xl font-bold text-navy mb-6">Gambar Produk</h2>
                         <div class="space-y-5">
                             <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2">Gambar Utama (URL)</label>
-                                <input v-model="form.image_url" type="url"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-                                    placeholder="https://example.com/image.jpg" />
-                                <p class="text-xs text-gray-400 mt-1">URL gambar utama produk</p>
+                                <div class="flex items-center justify-between gap-3 mb-2">
+                                    <label class="block text-sm font-bold text-gray-700">Gambar Utama</label>
+                                    <BaseButton type="button" variant="white" size="sm" icon="ph:images" @click="openMediaLibrary('primary')">
+                                        Pilih dari Media Library
+                                    </BaseButton>
+                                </div>
+                                <div class="rounded-xl border border-dashed border-gray-200 bg-gray-50 p-4">
+                                    <img v-if="form.image_url" :src="form.image_url" alt="Primary product"
+                                        class="h-40 w-full max-w-xs object-cover rounded-xl border border-gray-200" />
+                                    <p v-else class="text-sm text-gray-500">Belum ada gambar utama.</p>
+                                </div>
                             </div>
+
                             <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2">Gambar Tambahan (URL, satu per
-                                    baris)</label>
-                                <textarea v-model="additionalImagesText" rows="4"
-                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none"
-                                    placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg"></textarea>
-                                <p class="text-xs text-gray-400 mt-1">Masukkan URL gambar tambahan, satu URL per baris
-                                </p>
+                                <div class="flex items-center justify-between gap-3 mb-2">
+                                    <label class="block text-sm font-bold text-gray-700">Gambar Tambahan</label>
+                                    <BaseButton type="button" variant="white" size="sm" icon="ph:images" @click="openMediaLibrary('gallery')">
+                                        Tambah dari Media Library
+                                    </BaseButton>
+                                </div>
                             </div>
+
                             <div v-if="form.images && form.images.length > 0"
                                 class="grid grid-cols-2 md:grid-cols-4 gap-4">
                                 <div v-for="(img, idx) in form.images" :key="idx" class="relative group">
@@ -113,6 +120,40 @@
                                     </button>
                                 </div>
                             </div>
+                            <p v-else class="text-sm text-gray-500">Belum ada gambar tambahan.</p>
+                        </div>
+                    </div>
+
+                    <!-- Colors -->
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
+                        <h2 class="text-xl font-bold text-navy mb-2">Warna Produk</h2>
+                        <p class="text-sm text-gray-500 mb-5">Tambahkan opsi warna yang tersedia untuk produk ini.</p>
+
+                        <div class="flex flex-col sm:flex-row gap-3 mb-4">
+                            <input
+                                v-model="newColor"
+                                type="text"
+                                class="flex-1 px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                                placeholder="Contoh: Hitam, Navy, Merah"
+                                @keyup.enter.prevent="addColor"
+                            />
+                            <BaseButton type="button" variant="white" icon="ph:plus-bold" @click="addColor">
+                                Tambah Warna
+                            </BaseButton>
+                        </div>
+
+                        <div class="flex flex-wrap gap-2">
+                            <button
+                                v-for="(color, idx) in form.colors"
+                                :key="`${color}-${idx}`"
+                                type="button"
+                                class="inline-flex items-center gap-2 rounded-full bg-primary/10 text-navy px-3 py-1.5 text-xs font-bold"
+                                @click="removeColor(idx)"
+                                :title="`Hapus ${color}`"
+                            >
+                                <span>{{ color }}</span>
+                                <Icon icon="ph:x-bold" class="text-[10px]" />
+                            </button>
                         </div>
                     </div>
 
@@ -137,11 +178,36 @@
                             </button>
                         </div>
                     </div>
+
+                    <!-- Shipping Methods -->
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
+                        <h2 class="text-xl font-bold text-navy mb-2">Metode Pengiriman</h2>
+                        <p class="text-sm text-gray-500 mb-5">Tentukan metode pengiriman yang didukung seller untuk produk ini.</p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <label
+                                v-for="method in shippingMethodOptions"
+                                :key="method.value"
+                                class="flex items-start gap-3 rounded-xl border border-gray-200 px-4 py-3 cursor-pointer hover:border-primary/40 transition-colors"
+                            >
+                                <input
+                                    v-model="form.shipping_methods"
+                                    type="checkbox"
+                                    :value="method.value"
+                                    class="mt-0.5 rounded border-gray-300 text-primary focus:ring-primary"
+                                />
+                                <div>
+                                    <p class="text-sm font-bold text-navy">{{ method.title }}</p>
+                                    <p class="text-xs text-gray-500">{{ method.description }}</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Sidebar -->
                 <div class="lg:col-span-1">
-                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sticky top-24">
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
                         <h3 class="text-lg font-bold text-navy mb-4">Aksi</h3>
                         <div class="space-y-3">
                             <BaseButton type="submit" variant="primary" size="lg" class="w-full"
@@ -173,16 +239,18 @@
                 </div>
             </div>
         </form>
+
+        <MediaLibrary :show="showMediaLibrary" @close="showMediaLibrary = false" @select="handleMediaSelect" />
     </div>
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed, watch } from 'vue'
+    import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
-import { useAuth } from '~/composables/useAuth'
+    import MediaLibrary from '~/components/common/MediaLibrary.vue'
 
 definePageMeta({
     layout: 'dashboard'
@@ -195,11 +263,12 @@ useHead({
 const router = useRouter()
 const { post } = useApi()
 const toast = useToast()
-const { user } = useAuth()
 
 const isSubmitting = ref(false)
-const additionalImagesText = ref('')
 const specifications = ref([{ key: '', value: '' }])
+const showMediaLibrary = ref(false)
+const mediaTarget = ref('primary')
+const newColor = ref('')
 
 const categoryOptions = [
     { value: 'equipment', title: 'Peralatan' },
@@ -216,6 +285,13 @@ const statusOptions = [
     { value: 'archived', title: 'Arsip' }
 ]
 
+const shippingMethodOptions = [
+    { value: 'regular_courier', title: 'Kurir Reguler', description: 'Pengiriman standar via JNE, J&T, SiCepat, dan sejenisnya.' },
+    { value: 'instant_courier', title: 'Kurir Instan', description: 'Pengiriman cepat dalam kota melalui layanan instant/same-day.' },
+    { value: 'pickup', title: 'Ambil di Toko', description: 'Pembeli mengambil produk langsung ke lokasi seller.' },
+    { value: 'cargo', title: 'Kargo', description: 'Untuk produk besar atau berat dengan ongkir kargo.' }
+]
+
 const form = ref({
     name: '',
     description: '',
@@ -225,17 +301,30 @@ const form = ref({
     stock: 0,
     status: 'draft',
     image_url: '',
-    images: []
+    images: [],
+    colors: [],
+    shipping_methods: []
 })
 
-// Watch additional images text and update form.images
-watch(additionalImagesText, (newVal) => {
-    if (newVal) {
-        form.value.images = newVal.split('\n').filter(url => url.trim() !== '')
+const openMediaLibrary = (target) => {
+    mediaTarget.value = target
+    showMediaLibrary.value = true
+}
+
+const handleMediaSelect = (media) => {
+    if (!media?.url) return
+
+    if (mediaTarget.value === 'primary') {
+        form.value.image_url = media.url
     } else {
-        form.value.images = []
+        const exists = form.value.images.includes(media.url)
+        if (!exists) {
+            form.value.images.push(media.url)
+        }
     }
-})
+
+    showMediaLibrary.value = false
+}
 
 const addSpecification = () => {
     specifications.value.push({ key: '', value: '' })
@@ -250,7 +339,20 @@ const removeSpecification = (index) => {
 
 const removeImage = (index) => {
     form.value.images.splice(index, 1)
-    additionalImagesText.value = form.value.images.join('\n')
+}
+
+const addColor = () => {
+    const value = newColor.value.trim()
+    if (!value) return
+    const exists = form.value.colors.some(c => c.toLowerCase() === value.toLowerCase())
+    if (!exists) {
+        form.value.colors.push(value)
+    }
+    newColor.value = ''
+}
+
+const removeColor = (index) => {
+    form.value.colors.splice(index, 1)
 }
 
 const handleSubmit = async () => {
@@ -276,6 +378,7 @@ const handleSubmit = async () => {
             status: form.value.status,
             image_url: form.value.image_url || null,
             images: form.value.images || [],
+            colors: form.value.colors || [],
             specifications: (() => {
                 const specs = {}
                 specifications.value.forEach(spec => {
@@ -283,6 +386,9 @@ const handleSubmit = async () => {
                         specs[spec.key] = spec.value
                     }
                 })
+                if (form.value.shipping_methods.length > 0) {
+                    specs.shipping_methods = form.value.shipping_methods
+                }
                 return Object.keys(specs).length > 0 ? specs : null
             })()
         }

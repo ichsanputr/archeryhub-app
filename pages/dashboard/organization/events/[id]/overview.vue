@@ -163,24 +163,20 @@
                         class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-sm transition-all border border-gray-100 group">
                         <div class="flex justify-between items-start">
                             <div>
-                                <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Target
-                                    Aktif</p>
-                                <p class="text-navy-dark text-3xl font-extrabold tracking-tight">
-                                    {{ event?.active_target_count || 0 }}<span
-                                        class="text-lg text-gray-400 font-medium ml-1">/
-                                        {{ event?.target_count || 0
-                                        }}</span></p>
+                                <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Total Tim Resmi</p>
+                                <p class="text-navy-dark text-3xl font-extrabold tracking-tight">{{ totalTeams }}</p>
                             </div>
                             <div
                                 class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-                                <Icon icon="ph:target" class="text-xl" />
+                                <Icon icon="ph:users-three" class="text-xl" />
                             </div>
                         </div>
                         <div class="mt-auto">
-                            <p class="text-text-secondary text-xs font-medium flex items-center gap-1">
-                                <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-                                Sistem berjalan normal
-                            </p>
+                            <NuxtLink :to="`/dashboard/organization/events/${route.params.id}/teams`"
+                                class="text-primary text-[10px] font-black uppercase tracking-widest hover:underline flex items-center gap-1">
+                                Kelola Tim
+                                <Icon icon="ph:arrow-right-bold" />
+                            </NuxtLink>
                         </div>
                     </div>
 
@@ -522,6 +518,7 @@ const breadcrumbItems = computed(() => [
 const event = ref(null)
 const eventCategories = ref([])
 const participants = ref([])
+const totalTeams = ref(0)
 const searchQuery = ref('')
 const isLoading = ref(true)
 const isPublishing = ref(false)
@@ -740,14 +737,16 @@ const getTargetHasIssue = (targetNum) => {
 const fetchEventDetails = async () => {
     isLoading.value = true
     try {
-        const [eventRes, categoriesRes, participantsRes] = await Promise.all([
+        const [eventRes, categoriesRes, participantsRes, teamsRes] = await Promise.all([
             get(`/events/${route.params.id}`),
             get(`/events/${route.params.id}/categories`),
-            get(`/events/${route.params.id}/participants`)
+            get(`/events/${route.params.id}/participants`),
+            get(`/teams/event/${route.params.id}`)
         ])
         event.value = eventRes
         eventCategories.value = categoriesRes?.categories || []
         participants.value = participantsRes?.participants || []
+        totalTeams.value = teamsRes?.total || 0
 
         if (event.value) {
             setEvent(event.value)

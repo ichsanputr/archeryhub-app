@@ -60,13 +60,17 @@
         <!-- Search and Filter Bar -->
         <div
             class="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm flex flex-col sm:flex-row gap-4 justify-between items-center">
-            <div class="flex flex-col sm:flex-row gap-4 w-full sm:max-w-2xl">
+            <div class="flex flex-col sm:flex-row gap-4 w-full sm:max-w-4xl">
                 <div class="relative flex-1">
                     <Icon icon="ph:magnifying-glass"
                         class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
                     <input v-model="searchQuery" type="text" placeholder="Cari nama peserta atau email..."
                         class="w-full pl-11 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium"
                         @input="handleSearch" />
+                </div>
+                <div class="w-full sm:w-72">
+                    <BaseSelect v-model="categoryFilter" :items="categoryFilterOptions" multiple clearable
+                        @update:model-value="handleFilterCategory" />
                 </div>
                 <div class="w-full sm:w-48">
                     <BaseSelect v-model="statusFilter" :items="statusOptions"
@@ -91,6 +95,7 @@
                             <th class="px-6 py-4">No</th>
                             <th class="px-6 py-4">Nama Peserta / Email</th>
                             <th class="px-6 py-4">Klub / Kota</th>
+                            <th v-if="hasActiveCategoryFilter" class="px-6 py-4 min-w-[240px]">Kategori Event</th>
                             <th class="px-6 py-4 min-w-[160px]">Status Pembayaran</th>
                             <th class="px-6 py-4 text-right">Aksi</th>
                         </tr>
@@ -116,6 +121,9 @@
                                 </td>
                                 <td class="px-6 py-4 min-w-[160px]">
                                     <div class="h-6 w-28 bg-gray-100 animate-pulse rounded-lg"></div>
+                                </td>
+                                <td v-if="hasActiveCategoryFilter" class="px-6 py-4 min-w-[240px]">
+                                    <div class="h-4 w-40 bg-gray-50 animate-pulse rounded"></div>
                                 </td>
                                 <td class="px-6 py-4 text-right">
                                     <div class="flex justify-end gap-2">
@@ -157,6 +165,15 @@
                                     </div>
                                 </td>
 
+                                <td v-if="hasActiveCategoryFilter" class="px-6 py-4 align-top min-w-[240px]">
+                                    <div class="flex flex-wrap gap-1.5 max-w-[360px]">
+                                        <span v-for="label in getFilteredCategoryLabels(participant)" :key="label"
+                                            class="inline-flex px-2 py-0.5 rounded-full text-[10px] font-black bg-navy/5 text-navy border border-navy/10">
+                                            {{ label }}
+                                        </span>
+                                    </div>
+                                </td>
+
                                 <td class="px-6 py-4 align-top min-w-[160px]">
                                     <span :class="getStatusClass(participant.payment_status || participant.status)"
                                         class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold border capitalize">
@@ -174,7 +191,8 @@
                                 </td>
                             </tr>
                             <tr v-if="filteredParticipants.length === 0">
-                                <td colspan="5" class="px-6 py-12 text-center text-gray-400 italic font-medium">
+                                <td :colspan="hasActiveCategoryFilter ? 6 : 5"
+                                    class="px-6 py-12 text-center text-gray-400 italic font-medium">
                                     Tidak ada peserta yang ditemukan.
                                 </td>
                             </tr>
@@ -196,8 +214,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import Breadcrumbs from '~/components/common/Breadcrumbs.vue'
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useApi } from '~/composables/useApi'
 import { useEventContext } from '~/composables/useEventContext'
@@ -229,6 +246,7 @@ const breadcrumbItems = computed(() => [
 ])
 
 const participants = ref([])
+const categories = ref([])
 const total = ref(0)
 const verifiedCount = ref(0)
 const pendingCount = ref(0)
@@ -242,11 +260,27 @@ const filterDivs = ['Semua', 'Recurve', 'Compound', 'Barebow']
 const isLoading = ref(true)
 
 const statusFilter = ref('Semua')
+const categoryFilter = ref([])
 const statusOptions = [
     { title: 'Semua Status', value: 'Semua' },
     { title: 'Lunas', value: 'lunas' },
     { title: 'Menunggu ACC', value: 'menunggu acc' }
 ]
+
+const categoryFilterOptions = computed(() => {
+    const mapped = categories.value.map(category => ({
+        title: [
+            category.division_name,
+            category.category_name,
+            category.event_type_name,
+            category.gender_division_name
+        ].filter(Boolean).join(' - '),
+        value: category.id
+    }))
+    return mapped
+})
+
+const hasActiveCategoryFilter = computed(() => Array.isArray(categoryFilter.value) && categoryFilter.value.length > 0)
 
 const searchTimeout = ref(null)
 
@@ -258,6 +292,11 @@ const exportCSV = () => {
 }
 
 const handleFilterStatus = () => {
+    page.value = 1
+    fetchParticipants()
+}
+
+const handleFilterCategory = () => {
     page.value = 1
     fetchParticipants()
 }
@@ -285,6 +324,18 @@ const fetchEventDetails = async () => {
     }
 }
 
+const fetchCategories = async () => {
+    const id = eventId.value
+    if (!id) return
+    try {
+        const response = await get(`/events/${id}/categories`)
+        categories.value = response?.events || response?.categories || []
+    } catch (error) {
+        console.error('Failed to fetch categories:', error)
+        categories.value = []
+    }
+}
+
 const fetchParticipants = async () => {
     const id = eventId.value
     if (!id) return
@@ -294,6 +345,9 @@ const fetchParticipants = async () => {
         let url = `/events/${id}/participants?limit=${limit.value}&offset=${offset}&group_by=archer&search=${searchQuery.value}`
         if (statusFilter.value !== 'Semua') {
             url += `&payment_status=${statusFilter.value}`
+        }
+        if (hasActiveCategoryFilter.value) {
+            url += `&category_ids=${categoryFilter.value.join(',')}`
         }
         const response = await get(url)
         participants.value = response?.participants || []
@@ -319,6 +373,32 @@ const changePage = (newPage) => {
 const filteredParticipants = computed(() => {
     return participants.value
 })
+
+const getFilteredCategoryEntries = (participant) => {
+    const categoryList = participant?.categories || []
+    if (!Array.isArray(categoryList) || categoryList.length === 0) return []
+    if (!hasActiveCategoryFilter.value) return []
+    const selected = new Set(categoryFilter.value)
+    const matched = categoryList.filter(c => selected.has(c?.category_id))
+    return matched.length > 0 ? matched : []
+}
+
+const getFilteredCategoryLabels = (participant) => {
+    const entries = getFilteredCategoryEntries(participant)
+    if (entries.length === 0) return ['-']
+
+    const labels = entries.map((categoryEntry) => {
+        const parts = [
+            categoryEntry.division_name,
+            categoryEntry.category_name,
+            categoryEntry.event_type_name,
+            categoryEntry.gender_division_name
+        ].filter(Boolean)
+        return parts.length > 0 ? parts.join(' - ') : '-'
+    })
+
+    return Array.from(new Set(labels))
+}
 
 const getDisplayStatus = (status) => {
     const s = (status || '').toLowerCase()
@@ -358,6 +438,7 @@ const getCategoryName = (participant) => {
 const loadPageData = () => {
     if (!eventId.value) return
     fetchEventDetails()
+    fetchCategories()
     fetchParticipants()
 }
 

@@ -13,6 +13,7 @@ export const sinkronisasi_tim = {
         { id: 'kategori-individu-vs-tim', level: 2, text: 'Kategori Individu & Kategori Tim' },
         { id: 'estimasi-vs-hasil-sync', level: 2, text: 'Estimasi Tim vs Hasil Sync' },
         { id: 'sync-manual', level: 2, text: 'Kapan Perlu Sync Manual?' },
+        { id: 'troubleshooting', level: 2, text: 'Troubleshooting (Error Messages)' },
     ],
     content: `
         <h2 id="apa-itu-sync-tim">Apa Itu Sinkronisasi Tim?</h2>
@@ -131,7 +132,46 @@ export const sinkronisasi_tim = {
             <div class="text-red-500 text-2xl shrink-0">🔄</div>
             <div>
                 <div class="font-bold text-navy text-sm mb-1">Sync Otomatis Menghapus Data Tim Lama</div>
-                <div class="text-gray-600 text-sm">Setiap kali Sync Otomatis dijalankan, semua tim yang ada di kategori tersebut akan dihapus dan dibuat ulang dari awal berdasarkan data terkini. Pastikan skor kualifikasi sudah final sebelum menjalankan sync untuk terakhir kalinya.</div>
+                <div class="text-gray-600 text-sm">Setiap kali Sync Otomatis dijalankan, semua tim yang ada di kategori tersebut akan dihapus dan dibuat ulang dari awal. Pastikan skor kualifikasi sudah final sebelum menjalankan sync.</div>
+            </div>
+        </div>
+
+        <h2 id="troubleshooting">Troubleshooting (Error Messages)</h2>
+        <p>Berikut adalah beberapa error yang mungkin muncul saat proses sinkronisasi dan cara mengatasinya:</p>
+
+        <div class="space-y-4 my-6">
+            <div class="p-5 bg-gray-50 border border-gray-100 rounded-2xl">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="px-2 py-0.5 bg-red-100 text-red-600 font-bold text-[10px] rounded uppercase">Error</span>
+                    <h4 class="text-sm font-black text-navy uppercase tracking-tight">"Could not identify male/female categories"</h4>
+                </div>
+                <p class="text-[13px] text-gray-500 italic mb-3">Terjadi saat sinkronisasi Mixed Team.</p>
+                <div class="space-y-2">
+                    <p class="text-[13px] text-gray-700"><strong>Penyebab:</strong> Sistem tidak dapat menemukan kategori <em>Individual Putra</em> dan <em>Individual Putri</em> yang cocok sebagai sumber skor.</p>
+                    <p class="text-[13px] text-gray-700"><strong>Solusi:</strong> Pastikan Anda sudah membuat kategori Individual (Men & Women) dengan divisi dan kelompok umur yang sama di menu Kategori Lomba.</p>
+                </div>
+            </div>
+
+            <div class="p-5 bg-gray-50 border border-gray-100 rounded-2xl">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="px-2 py-0.5 bg-red-100 text-red-600 font-bold text-[10px] rounded uppercase">Error</span>
+                    <h4 class="text-sm font-black text-navy uppercase tracking-tight">"Mixed gender division not found in system"</h4>
+                </div>
+                <div class="space-y-2 mt-3">
+                    <p class="text-[13px] text-gray-700"><strong>Penyebab:</strong> Data referensi untuk gender "Mixed" tidak ditemukan di database sistem.</p>
+                    <p class="text-[13px] text-gray-700"><strong>Solusi:</strong> Masalah sistem. Hubungi administrator untuk menginisialisasi tabel referensi gender.</p>
+                </div>
+            </div>
+
+            <div class="p-5 bg-gray-50 border border-gray-100 rounded-2xl">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="px-2 py-0.5 bg-amber-100 text-amber-600 font-bold text-[10px] rounded uppercase">Warning</span>
+                    <h4 class="text-sm font-black text-navy uppercase tracking-tight">"Sinkronisasi tidak menghasilkan tim"</h4>
+                </div>
+                <div class="space-y-2 mt-3">
+                    <p class="text-[13px] text-gray-700"><strong>Penyebab:</strong> Tidak ada klub yang memiliki cukup anggota dengan skor kualifikasi di kategori individu terkait.</p>
+                    <p class="text-[13px] text-gray-700"><strong>Solusi:</strong> Pastikan peserta sudah input skor kualifikasi dan memenuhi kuota minimal per tim (misal 3 orang per klub).</p>
+                </div>
             </div>
         </div>
     `,

@@ -54,7 +54,7 @@
 
         <!-- Category Selection -->
         <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-            <h2 class="text-base font-bold text-navy mb-4">Pilih Kategori Lomba</h2>
+            <h2 class="text-base font-black text-navy mb-4">Pilih Kategori Lomba</h2>
 
             <div v-if="loadingCategories" class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
                 <div v-for="i in 4" :key="i"
@@ -95,13 +95,12 @@
                                 {{ getCategoryName(category) }}
                             </p>
                             <div class="flex flex-wrap items-center gap-2">
-                                <span
-                                    class="px-2 py-0.5 bg-primary/20 text-navy rounded-md text-[10px] font-black tracking-tighter">
-                                    {{ category.event_type_name }}
-                                </span>
-                                <div class="flex items-center gap-1 text-[10px] font-bold text-gray-400">
-                                    <Icon icon="ph:user-bold" />
-                                    <span>{{ category.participant_count || 0 }}</span>
+                                <div class="flex items-center gap-3">
+                                    <div v-if="category.team_count > 0"
+                                        class="flex items-center gap-1 text-[10px] font-bold text-primary">
+                                        <Icon icon="ph:users-three-bold" />
+                                        <span>{{ category.team_count }} Tim</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -115,7 +114,7 @@
             <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
                     <div>
-                        <h2 class="text-lg font-bold text-navy leading-tight">Daftar Tim Resmi</h2>
+                        <h2 class="text-lg font-black text-navy leading-tight">Daftar Tim Resmi</h2>
                         <p class="text-sm text-gray-500 mt-1">Tim yang terdaftar dalam kategori ini</p>
                     </div>
                 </div>
@@ -208,33 +207,51 @@
         </div>
 
         <!-- Team Modal (Manual) -->
-        <BaseDialogForm v-model="showTeamModal" :header="isEditing ? 'Edit Detil Tim' : 'Tambah Tim Manual'">
+        <BaseDialogForm v-model="showTeamModal" @close="showTeamModal = false">
+            <template #header>
+                <div class="flex items-center gap-3">
+                    <div class="size-10 bg-primary/10 rounded-xl flex items-center justify-center shadow-inner">
+                        <Icon :icon="isEditing ? 'ph:pencil-circle-bold' : 'ph:plus-circle-bold'" class="text-xl text-primary" />
+                    </div>
+                    <div class="flex flex-col -space-y-1">
+                        <h2 class="text-xl font-black text-navy tracking-tighter">{{ isEditing ? 'Edit Detil Tim' : 'Tambah Tim Manual' }}</h2>
+                        <p class="text-[10px] font-bold text-gray-400 tracking-widest">{{ teamForm.team_name || 'Tim Baru' }}</p>
+                    </div>
+                </div>
+            </template>
             <div class="space-y-8">
                 <!-- Section 1: Identitas Tim -->
                 <div class="space-y-4">
-                    <h3 class="text-sm font-black text-navy uppercase tracking-widest flex items-center gap-2">
+                    <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
                         <Icon icon="ph:identification-card-bold" class="text-primary text-lg" />
                         Identitas & Kategori
                     </h3>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <BaseInput v-model="teamForm.team_name" label="Nama Tim" placeholder="Contoh: Jogja Archery A"
-                            required icon="ph:users-four" />
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50/50 p-6 rounded-3xl border border-gray-100">
+                        <div class="md:col-span-2">
+                             <BaseInput v-model="teamForm.team_name" label="Nama Tim" placeholder="Contoh: Jogja Archery A"
+                                required icon="ph:users-four" />
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <!-- Editing: lock category and club as read-only -->
                         <template v-if="isEditing">
                             <div class="space-y-1.5">
-                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest">Kategori Lomba</label>
-                                <div class="h-10 px-3 flex items-center rounded-xl bg-gray-50 border border-gray-200 text-sm font-semibold text-navy">
+                                <label class="block text-xs font-bold text-gray-500 tracking-widest">Kategori
+                                    Lomba</label>
+                                <div
+                                    class="h-10 px-3 flex items-center rounded-xl bg-gray-50 border border-gray-200 text-sm font-semibold text-navy">
                                     <Icon icon="ph:lock-simple" class="text-gray-400 mr-2 shrink-0" />
-                                    {{ getCategoryName(categories.find(c => c.id === teamForm.category_id)) || teamForm.category_id }}
+                                    {{getCategoryName(categories.find(c => c.id === teamForm.category_id)) ||
+                                        teamForm.category_id}}
                                 </div>
                             </div>
                             <div class="space-y-1.5">
-                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest">Klub</label>
-                                <div class="h-10 px-3 flex items-center rounded-xl bg-gray-50 border border-gray-200 text-sm font-semibold text-navy">
+                                <label
+                                    class="block text-xs font-bold text-gray-500 tracking-widest">Klub</label>
+                                <div
+                                    class="h-10 px-3 flex items-center rounded-xl bg-gray-50 border border-gray-200 text-sm font-semibold text-navy">
                                     <Icon icon="ph:lock-simple" class="text-gray-400 mr-2 shrink-0" />
                                     {{ teamForm.club_name || '—' }}
                                 </div>
@@ -254,24 +271,33 @@
                 <!-- Section 2: Pemilihan Anggota -->
                 <div class="space-y-4 pt-4 border-t border-gray-100" v-if="teamForm.club_name || isEditing">
                     <div class="flex items-center justify-between">
-                        <h3 class="text-sm font-black text-navy uppercase tracking-widest flex items-center gap-2">
+                        <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2">
                             <Icon icon="ph:users-four-bold" class="text-primary text-lg" />
                             Pilih Anggota ({{ teamForm.member_ids.length }}/{{ maxMembers }})
                         </h3>
                         <span v-if="teamForm.member_ids.length === maxMembers"
-                            class="text-[10px] bg-amber-100 text-amber-600 px-2 py-0.5 rounded-full font-black capitalize tracking-widest animate-pulse">
+                            class="text-[10px] bg-amber-100 text-amber-600 px-2 py-0.5 rounded-full font-black tracking-widest animate-pulse">
                             Slot Penuh
                         </span>
                     </div>
 
                     <div v-if="loadingParticipants" class="py-12 text-center">
                         <LoadingSpinner />
-                        <p class="text-xs text-gray-400 mt-2">Memuat daftar pemanah...</p>
+                        <p class="text-xs text-gray-400 mt-2">memuat daftar pemanah...</p>
+                    </div>
+
+                    <div v-else-if="!teamForm.club_name"
+                        class="py-12 text-center bg-gray-50 rounded-3xl border border-dashed border-gray-200">
+                        <div class="size-16 rounded-full bg-white flex items-center justify-center mx-auto mb-4 shadow-sm border border-gray-100">
+                            <Icon icon="ph:buildings" class="text-3xl text-gray-300" />
+                        </div>
+                        <p class="text-sm font-bold text-gray-500">silakan pilih klub terlebih dahulu</p>
+                        <p class="text-xs text-gray-400 mt-1">satu tim harus berasal dari klub yang sama.</p>
                     </div>
 
                     <div v-else-if="filteredParticipants.length > 0"
                         class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
-                        <template v-for="participant in filteredParticipants" :key="participant.id">
+                        <template v-for="(participant, index) in filteredParticipants" :key="participant.id">
                             <label
                                 class="group relative flex items-center gap-3 p-3 rounded-2xl border-2 transition-all cursor-pointer overflow-hidden"
                                 :class="teamForm.member_ids.includes(participant.id)
@@ -290,11 +316,17 @@
                                 </div>
 
                                 <div class="flex-1 min-w-0">
-                                    <p
-                                        class="text-[13px] font-black text-navy truncate group-hover:text-primary transition-colors">
-                                        {{ participant.full_name }}
-                                    </p>
-                                    <div class="flex items-center gap-2 mt-1">
+                                    <div class="flex items-center justify-between gap-1">
+                                        <p class="text-[13px] font-black text-navy truncate group-hover:text-primary transition-colors flex-1">
+                                            {{ participant.full_name }}
+                                        </p>
+                                        <span class="text-[10px] font-black text-primary bg-primary/10 px-1.5 py-0.5 rounded shrink-0">#{{ index + 1 }}</span>
+                                    </div>
+                                    <div class="flex flex-wrap items-center gap-2 mt-1">
+                                        <!-- Category Label (Debug) -->
+                                        <div class="px-1.5 py-0.5 rounded-md text-[9px] font-black tracking-tighter bg-navy/5 text-navy/60">
+                                            {{ participant.division_name }} {{ participant.category_name }}
+                                        </div>
                                         <!-- Score Chip -->
                                         <div
                                             class="flex items-center gap-1 px-1.5 py-0.5 bg-white border border-gray-100 rounded-md shadow-sm">
@@ -304,7 +336,7 @@
                                             </span>
                                         </div>
                                         <!-- Gender Badge -->
-                                        <div class="px-1.5 py-0.5 rounded-md text-[9px] font-black capitalize tracking-tighter leading-none"
+                                        <div class="px-1.5 py-0.5 rounded-md text-[9px] font-black tracking-tighter leading-none"
                                             :class="participant.gender_division_name?.toLowerCase().includes('putra') || participant.gender_division_name?.toLowerCase().includes('men')
                                                 ? 'bg-blue-50 text-blue-500'
                                                 : 'bg-pink-50 text-pink-500'">
@@ -320,12 +352,6 @@
                                         : 'bg-white border-gray-100 text-transparent'">
                                     <Icon icon="ph:check-bold" class="text-sm" />
                                 </div>
-
-                                <!-- Order Badge -->
-                                <div v-if="teamForm.member_ids.includes(participant.id)"
-                                    class="absolute -top-2 -right-1 px-2 py-0.5 bg-navy text-primary rounded-bl-xl rounded-tr-lg flex items-center justify-center text-[10px] font-black shadow-sm">
-                                    #{{ teamForm.member_ids.indexOf(participant.id) + 1 }}
-                                </div>
                             </label>
                         </template>
                     </div>
@@ -336,20 +362,13 @@
                             class="size-16 rounded-full bg-white flex items-center justify-center mx-auto mb-4 shadow-sm border border-gray-100">
                             <Icon icon="ph:user-search" class="text-3xl text-gray-300" />
                         </div>
-                        <p class="text-sm font-bold text-gray-500">Pemanah Tidak Ditemukan</p>
+                        <p class="text-sm font-bold text-gray-500">pemanah tidak ditemukan</p>
                         <p class="text-xs text-gray-400 mt-1 max-w-[200px] mx-auto">
-                            Belum ada pemanah dari klub ini yang terdaftar di kategori tersebut.
+                            belum ada pemanah dari klub ini yang terdaftar di kategori tersebut.
                         </p>
                     </div>
-                </div>
-
-                <div v-else-if="teamForm.category_id"
-                    class="py-12 text-center bg-gray-50 rounded-3xl border border-dashed border-gray-200">
-                    <Icon icon="ph:buildings" class="text-4xl text-gray-200 mx-auto mb-3" />
-                    <p class="text-sm font-bold text-gray-500">Silakan pilih klub terlebih dahulu</p>
-                    <p class="text-xs text-gray-400 mt-1">Satu tim harus berasal dari klub yang sama.</p>
-                </div>
             </div>
+        </div>
 
             <template #action>
                 <div class="flex justify-end gap-3 pt-2">
@@ -375,12 +394,11 @@
             </template>
             <div class="space-y-6">
                 <div class="flex flex-col items-center text-center space-y-4">
-                    <div
-                        class="size-20 rounded-full bg-red-50 flex items-center justify-center text-red-500">
+                    <div class="size-20 rounded-full bg-red-50 flex items-center justify-center text-red-500">
                         <Icon icon="ph:trash-bold" class="text-5xl" />
                     </div>
                     <div class="space-y-2">
-                        <h3 class="text-lg font-black text-navy uppercase tracking-widest">Konfirmasi Hapus</h3>
+                        <h3 class="text-lg font-black text-navy tracking-widest">Konfirmasi Hapus</h3>
                         <p class="text-sm text-gray-500 max-w-sm">
                             Yakin ingin menghapus tim
                             <span class="font-bold text-navy">"{{ teamToDelete?.team_name }}"</span>?
@@ -418,7 +436,7 @@
                         <Icon icon="ph:warning-circle-bold" class="text-5xl" />
                     </div>
                     <div class="space-y-2">
-                        <h3 class="text-lg font-black text-navy uppercase tracking-widest">Tindakan Destruktif</h3>
+                        <h3 class="text-lg font-black text-navy tracking-widest">Tindakan Destruktif</h3>
                         <p class="text-sm text-gray-500 max-w-sm">
                             Sistem akan menghapus semua data tim yang ada di kategori ini dan membuat tim baru secara
                             otomatis berdasarkan peringkat skor kualifikasi tertinggi.
@@ -577,17 +595,18 @@ const filteredParticipants = computed(() => {
     const selectedClub = teamForm.club_name.trim().toLowerCase()
     let list = [...participants.value]
 
-    if (selectedClub === 'independen') {
-        list = list.filter(p => !p.club_name || p.club_name.trim().toLowerCase() === 'independen')
-    } else {
-        list = list.filter(p => p.club_name?.trim().toLowerCase() === selectedClub)
-    }
+    // Use a more robust filter that matches the mappedClubs logic
+    list = list.filter(p => {
+        const pClub = p.club_name?.trim() || 'Independen'
+        return pClub.toLowerCase() === selectedClub
+    })
 
     // Sort by score descending
     return list.sort((a, b) => (b.total_score || 0) - (a.total_score || 0))
 })
 
 const onModalCategoryChange = async () => {
+    participants.value = [] // Clear previous results immediately
     teamForm.member_ids = []
     teamForm.club_name = ''
     if (teamForm.category_id) {
@@ -664,6 +683,7 @@ const fetchParticipants = async (categoryId) => {
         const response = await get(`/events/${eventId}/participants`, {
             params: {
                 category_id: categoryId,
+                payment_status: 'Terbayar',
                 limit: 2000 // Get all
             }
         })
@@ -744,14 +764,15 @@ const executeSyncTeams = async () => {
         await fetchTeams(selectedCategory.value.id)
     } catch (error) {
         console.error('Failed to sync teams:', error)
-        toast.error(error?.response?.data?.details || error?.response?.data?.error || 'Gagal sinkronisasi tim')
+        const errorMessage = error?.data?.error || error?.data?.details?.reason || error?.data?.message || error?.message || 'Gagal sinkronisasi tim'
+        toast.error(errorMessage)
     } finally {
         isSyncing.value = false
         showSyncConfirm.value = false
     }
 }
 
-const openAddTeamModal = () => {
+const openAddTeamModal = async () => {
     isEditing.value = false
     currentTeamId.value = null
     teamForm.team_name = ''
@@ -760,7 +781,8 @@ const openAddTeamModal = () => {
     teamForm.club_name = ''
 
     if (teamForm.category_id) {
-        fetchParticipants(teamForm.category_id)
+        participants.value = [] // Clear before fetching
+        await fetchParticipants(teamForm.category_id)
     }
 
     showTeamModal.value = true
@@ -834,11 +856,28 @@ const executeDeleteTeam = async () => {
 
 const getCategoryName = (category) => {
     if (!category) return ''
-    return [
+    const parts = [
         category.division_name,
         category.category_name,
-        category.gender_division_name
-    ].filter(Boolean).join(' ')
+        category.gender_division_name,
+        category.event_type_name
+    ].filter(Boolean)
+
+    // De-duplicate words while preserving order (e.g., avoid "Mixed Mixed Team")
+    const words = []
+    const seen = new Set()
+
+    parts.forEach(part => {
+        part.split(' ').forEach(word => {
+            const lowerWord = word.toLowerCase()
+            if (!seen.has(lowerWord)) {
+                words.push(word)
+                seen.add(lowerWord)
+            }
+        })
+    })
+
+    return words.join(' ')
 }
 
 // Watchers and lifecycle
@@ -875,5 +914,17 @@ onMounted(() => {
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: #cbd5e1;
+}
+
+/* Animations */
+.scale-enter-active,
+.scale-leave-active {
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.scale-enter-from,
+.scale-leave-to {
+    opacity: 0;
+    transform: scale(0.5) translate(5px, -5px);
 }
 </style>
