@@ -217,15 +217,6 @@
                             <BaseButton type="button" variant="white" size="lg" class="w-full">Batal</BaseButton>
                         </NuxtLink>
 
-                        <!-- Danger Zone -->
-                        <div class="mt-4 pt-4 border-t border-gray-100">
-                            <h4 class="text-sm font-bold text-red-500 mb-3">Zona Berbahaya</h4>
-                            <BaseButton type="button" variant="white" size="sm"
-                                class="w-full border-red-100 text-red-500 hover:bg-red-50" icon="ph:trash"
-                                :loading="isDeleting" @click="handleDelete">
-                                Hapus Produk Ini
-                            </BaseButton>
-                        </div>
                     </div>
                 </div>
             </div>

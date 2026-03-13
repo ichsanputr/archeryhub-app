@@ -26,256 +26,150 @@
                         class="h-14 w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md flex-shrink-0">
                         <Icon icon="ph:shopping-cart" class="text-primary text-2xl" />
                     </div>
-                    <div>
+                    <div class="flex-grow">
                         <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight">Keranjang Belanja</h1>
-                        <p class="text-slate-300 text-sm mt-1">Kelola produk yang akan Anda beli</p>
+                        <p class="text-slate-300 text-sm mt-1">Kelola produk-produk pilihan Anda sebelum checkout</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div v-if="isLoading"
-            class="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-gray-100">
+        <!-- Content Area -->
+        <div v-if="isLoading" class="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
             <Icon icon="ph:spinner-gap-bold" class="text-4xl text-primary animate-spin mb-4" />
-            <p class="text-gray-500 font-medium">Memuat data registrasi...</p>
+            <p class="text-gray-500 font-medium">Memuat data keranjang...</p>
         </div>
 
-        <div v-else-if="cartItems.length === 0"
-            class="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-gray-100">
-            <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-6">
-                <Icon icon="ph:shopping-cart" class="text-4xl text-gray-300" />
+        <div v-else>
+            <div v-if="productCart.length === 0"
+                class="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
+                <div class="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center mb-6">
+                    <Icon icon="ph:shopping-bag-open" class="text-5xl text-gray-200" />
+                </div>
+                <h3 class="text-xl font-bold text-navy mb-2">Keranjang Belanja Kosong</h3>
+                <p class="text-gray-500 mb-8 px-6 text-center max-w-md">Belum ada perlengkapan archery di keranjang Anda.</p>
+                <NuxtLink to="/products">
+                    <BaseButton variant="primary" size="lg" icon="ph:shopping-bag">Mulai Belanja</BaseButton>
+                </NuxtLink>
             </div>
-            <h3 class="text-xl font-bold text-navy mb-2">Keranjang Kosong</h3>
-            <p class="text-gray-500 mb-8 px-6 text-center">Belum ada produk di keranjang. Mulai belanja produk archery
-                sekarang!</p>
-            <NuxtLink to="/products">
-                <BaseButton variant="primary" size="lg" icon="ph:shopping-bag">Belanja Produk</BaseButton>
-            </NuxtLink>
-        </div>
 
-        <div v-else class="grid grid-cols-1 lg:grid-cols-3 gap-8 xl:gap-12">
-            <!-- Main Content -->
-            <div class="lg:col-span-2 space-y-6">
-                <!-- Registration Details -->
-                <section
-                    class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden ring-2 ring-primary/50">
-                    <div class="p-6 border-b border-gray-100 flex justify-between items-center">
-                        <h2 class="text-lg font-bold text-navy flex items-center gap-2">
-                            <span
-                                class="flex items-center justify-center w-6 h-6 rounded-full bg-navy text-primary text-xs font-bold">1</span>
-                            Registration Details
-                        </h2>
-                        <button v-if="!isEditing" @click="isEditing = true"
-                            class="text-sm text-primary font-medium hover:underline">
-                            Edit
+            <div v-else class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Product List -->
+                <div class="lg:col-span-2 space-y-4">
+                    <div v-for="item in productCart" :key="item.uuid" 
+                        class="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100 flex gap-4 md:gap-6 relative group overflow-hidden hover:border-primary/20 transition-all">
+                        
+                        <!-- Product Image -->
+                        <div class="w-24 h-24 md:w-32 md:h-32 rounded-xl bg-gray-50 flex-shrink-0 overflow-hidden border border-gray-100">
+                            <img v-if="item.product_image_url" :src="item.product_image_url" :alt="item.product_name" class="w-full h-full object-cover" />
+                            <div v-else class="w-full h-full flex items-center justify-center">
+                                <Icon icon="ph:package" class="text-4xl text-gray-200" />
+                            </div>
+                        </div>
+
+                        <div class="flex-grow min-w-0 flex flex-col justify-between py-1">
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-1.5 text-[10px] text-gray-500 font-bold uppercase tracking-wider">
+                                    <Icon icon="ph:storefront" />
+                                    <span>{{ item.seller_name }}</span>
+                                </div>
+                                <h3 class="text-base md:text-lg font-bold text-navy truncate pr-8 group-hover:text-primary transition-colors">{{ item.product_name }}</h3>
+                                <div v-if="item.color" class="inline-flex items-center gap-2 px-2 py-0.5 bg-gray-100 rounded text-[10px] text-gray-600 font-bold">
+                                    Varian: {{ item.color }}
+                                </div>
+                            </div>
+
+                            <div class="flex items-end justify-between mt-4">
+                                <div class="space-y-1">
+                                    <p class="text-xs text-gray-400 line-through" v-if="item.product_sale_price">
+                                        Rp {{ formatPrice(item.product_price) }}
+                                    </p>
+                                    <p class="text-lg font-black text-primary">
+                                        Rp {{ formatPrice(item.product_sale_price || item.product_price) }}
+                                    </p>
+                                </div>
+
+                                <!-- Quantity Controls -->
+                                <div class="flex items-center gap-3 bg-gray-50 p-1 rounded-xl border border-gray-100">
+                                    <button 
+                                        @click="updateQty(item, -1)" 
+                                        class="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-white hover:text-red-500 transition-all text-gray-400 disabled:opacity-30"
+                                        :disabled="isProcessing"
+                                    >
+                                        <Icon icon="ph:minus-bold" class="text-sm" />
+                                    </button>
+                                    <span class="w-6 text-center font-black text-navy text-sm">{{ item.quantity }}</span>
+                                    <button 
+                                        @click="updateQty(item, 1)" 
+                                        class="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-white hover:text-primary transition-all text-gray-400 disabled:opacity-30"
+                                        :disabled="isProcessing"
+                                    >
+                                        <Icon icon="ph:plus-bold" class="text-sm" />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Remove Button -->
+                        <button 
+                            @click="removeItem(item.uuid)" 
+                            class="absolute top-4 right-4 p-2 text-gray-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
+                            title="Hapus Produk"
+                        >
+                            <Icon icon="ph:trash-bold" class="text-lg" />
                         </button>
                     </div>
-                    <div class="p-6 md:p-8">
-                        <div v-for="(reg, index) in registrations" :key="reg.id"
-                            :class="index > 0 ? 'mt-6 pt-6 border-t border-gray-100' : ''">
-                            <div class="flex flex-col md:flex-row gap-6 items-start">
-                                <div
-                                    class="w-20 h-20 rounded-xl bg-gray-100 overflow-hidden shrink-0 border border-gray-200">
-                                    <img v-if="user?.avatar_url" :src="user.avatar_url" alt="Athlete"
-                                        class="w-full h-full object-cover" />
-                                    <div v-else
-                                        class="w-full h-full flex items-center justify-center bg-primary text-navy">
-                                        <Icon icon="ph:user-bold" class="text-3xl" />
-                                    </div>
-                                </div>
-                                <div class="flex-grow w-full space-y-6">
-                                    <div>
-                                        <h3 class="text-xl font-bold text-navy">{{ user?.name || 'Athlete Name' }}</h3>
-                                        <p class="text-gray-500 text-sm">{{ user?.club_name || 'Club Name' }}</p>
-                                    </div>
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                                        <div>
-                                            <BaseSelect v-if="isEditing" v-model="reg.archer_id" :items="archerOptions"
-                                                label="ID Number" />
-                                            <div v-else>
-                                                <label
-                                                    class="block mb-2 text-xs font-bold tracking-wider text-gray-500">ID
-                                                    Number</label>
-                                                <div class="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
-                                                    <span class="text-sm font-semibold text-navy font-mono">{{
-                                                        reg.archer_id_number || 'INA-2024-XXXX' }}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <BaseSelect v-if="isEditing" v-model="reg.category_id"
-                                                :items="categoryOptions" label="Category" />
-                                            <div v-else>
-                                                <label
-                                                    class="block mb-2 text-xs font-bold tracking-wider text-gray-500">Category</label>
-                                                <div class="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
-                                                    <span class="text-sm font-semibold text-navy">{{ reg.category_name
-                                                        ||
-                                                        'Category Name' }}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div v-if="isEditing" class="pt-4 mt-2 border-t border-gray-100">
-                                        <h4 class="text-sm font-bold text-navy mb-4">Additional Information</h4>
-                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
-                                            <div>
-                                                <BaseSelect v-model="reg.jersey_size" :items="jerseySizeOptions"
-                                                    label="Jersey Size" placeholder="Select Size" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div v-if="isEditing" class="flex items-center gap-6 pt-2">
-                                        <BaseButton variant="primary" @click="saveRegistration(reg)">Save Changes
-                                        </BaseButton>
-                                        <button @click="isEditing = false"
-                                            class="text-sm font-semibold text-gray-500 hover:text-navy transition-colors cursor-pointer">
-                                            Cancel
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                </div>
 
-                <!-- Payment Section -->
-                <section class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
-                    :class="isEditing ? 'opacity-50 pointer-events-none grayscale-[0.5]' : ''">
-                    <div class="p-6 border-b border-gray-100">
-                        <h2 class="text-lg font-bold text-navy flex items-center gap-2">
-                            <span
-                                class="flex items-center justify-center w-6 h-6 rounded-full bg-navy text-primary text-xs font-bold">2</span>
-                            Payment
-                        </h2>
-                    </div>
-                    <div class="p-6 md:p-8 space-y-8">
-                        <div>
-                            <h3 class="text-sm font-bold text-navy mb-4">Payment Summary</h3>
-                            <div class="bg-gray-50 rounded-xl p-4 space-y-3">
-                                <div v-for="reg in registrations" :key="reg.id" class="space-y-2">
-                                    <div class="flex justify-between items-center text-sm">
-                                        <span class="text-gray-600">Entry Fee ({{ reg.category_name }})</span>
-                                        <span class="font-bold text-navy">Rp {{ formatPrice(reg.entry_fee || 350000)
-                                        }}</span>
-                                    </div>
+                <!-- Summary Sidebar -->
+                <div class="lg:col-span-1">
+                    <div class="sticky top-24 space-y-4">
+                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 ring-4 ring-primary/5">
+                            <h4 class="font-bold text-navy mb-6 flex items-center gap-2">
+                                <Icon icon="ph:receipt-bold" class="text-primary" />
+                                Ringkasan Pesanan
+                            </h4>
+                            
+                            <div class="space-y-4 mb-8">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-500 font-medium">Subtotal ({{ totalProductQty }} produk)</span>
+                                    <span class="font-bold text-navy">Rp {{ formatPrice(totalProductSubtotal) }}</span>
                                 </div>
-                                <div class="flex justify-between items-center text-sm">
-                                    <span class="text-gray-600">Platform Admin Fee</span>
-                                    <span class="font-bold text-navy">Rp {{ formatPrice(platformFee) }}</span>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-500 font-medium">Estimasi Ongkir</span>
+                                    <span class="text-gray-400 italic text-xs font-bold">Checkout untuk hitung</span>
                                 </div>
-                                <div class="border-t border-gray-200 my-2 pt-2 flex justify-between items-center">
-                                    <span class="text-base font-bold text-navy">Total Payment</span>
-                                    <span class="text-xl font-black text-primary">Rp {{ formatPrice(totalPayment)
-                                    }}</span>
+                                <div class="pt-4 border-t border-dashed border-gray-200 flex justify-between items-center">
+                                    <span class="font-bold text-navy uppercase tracking-widest text-xs">Total Pembayaran</span>
+                                    <span class="text-2xl font-black text-primary">Rp {{ formatPrice(totalProductSubtotal) }}</span>
                                 </div>
                             </div>
-                        </div>
-                        <div>
-                            <h3 class="text-sm font-bold text-navy mb-4">Pilih Metode Pembayaran</h3>
-                            <div v-if="loadingChannels" class="flex items-center justify-center py-8 gap-3">
-                                <div class="animate-spin size-5 border-2 border-navy border-t-transparent rounded-full"></div>
-                                <span class="text-xs font-bold text-gray-400">Memuat metode...</span>
-                            </div>
-                            <div v-else class="space-y-5">
-                                <div v-for="(group, name) in groupedChannels" :key="name">
-                                    <p class="text-xs font-bold text-gray-400 tracking-wider mb-2 ml-1">{{ name }}</p>
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                        <label v-for="channel in group" :key="channel.code"
-                                            class="relative flex items-center p-4 border border-gray-200 rounded-xl cursor-pointer hover:border-primary hover:bg-primary/5 transition-all group">
-                                            <input v-model="selectedPaymentMethod"
-                                                class="peer h-4 w-4 text-primary border-gray-300 focus:ring-primary"
-                                                type="radio" :value="channel.code" />
-                                            <div class="ml-3 flex items-center gap-3 w-full">
-                                                <div class="size-10 bg-white rounded-xl border border-gray-100 p-1.5 flex items-center justify-center shrink-0 shadow-sm">
-                                                    <img :src="channel.icon_url" :alt="channel.name" class="size-full object-contain" />
-                                                </div>
-                                                <span class="text-sm font-bold text-navy group-hover:text-primary">{{ channel.name }}</span>
-                                            </div>
-                                            <div class="absolute inset-0 border-2 border-transparent peer-checked:border-primary rounded-xl pointer-events-none"></div>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="pt-4 border-t border-gray-100 p-6">
-                        <BaseButton variant="primary" size="lg" icon="ph:lock" class="w-full text-lg h-14"
-                            @click="handlePayment" :disabled="!selectedPaymentMethod || isProcessing">
-                            <Icon v-if="isProcessing" icon="ph:spinner-gap-bold" class="animate-spin" />
-                            <span v-else>Confirm & Pay Rp {{ formatPrice(totalPayment) }}</span>
-                        </BaseButton>
-                        <div class="mt-6 flex flex-wrap justify-center items-center gap-6 text-gray-400">
-                            <div class="flex items-center gap-2 text-xs font-medium">
-                                <Icon icon="ph:shield-check-bold" class="text-lg text-green-500" />
-                                Secure Payment
-                            </div>
-                            <div class="flex items-center gap-2 text-xs font-medium">
-                                <Icon icon="ph:lock-bold" class="text-lg text-blue-500" />
-                                SSL Encrypted
-                            </div>
-                            <div class="flex items-center gap-2 text-xs font-medium">
-                                <Icon icon="ph:shield-bold" class="text-lg text-gray-500" />
-                                Data Protection
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
 
-            <!-- Sidebar -->
-            <aside class="space-y-6">
-                <div v-for="event in events" :key="event.id"
-                    class="bg-white rounded-2xl overflow-hidden shadow-md border border-gray-100 sticky top-24">
-                    <div class="relative h-48">
-                        <img :alt="event.name" class="w-full h-full object-cover"
-                            :src="useImageOrDefault(event.banner_url)" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-                        <div class="absolute bottom-4 left-4 right-4">
-                            <span
-                                class="inline-block px-2 py-1 mb-2 rounded bg-primary text-navy text-[10px] font-bold  tracking-wider">
-                                {{ event.type || 'National Series' }}
-                            </span>
-                            <h3 class="text-white font-bold text-lg leading-tight">{{ event.name }}</h3>
-                        </div>
-                    </div>
-                    <div class="p-6 space-y-4">
-                        <div class="flex items-start gap-3">
-                            <div
-                                class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-gray-500 shrink-0">
-                                <Icon icon="ph:calendar-bold" class="text-sm" />
-                            </div>
-                            <div>
-                                <span class="block text-xs text-gray-500  font-bold">Date</span>
-                                <span class="text-sm font-semibold text-navy">
-                                    {{ formatDate(event.start_date) }} - {{ formatDate(event.end_date) }}
-                                </span>
+                            <BaseButton class="w-full" variant="primary" size="lg" icon="ph:arrow-right-bold" :disabled="productCart.length === 0">
+                                Lanjut ke Pembayaran
+                            </BaseButton>
+                            
+                            <div class="mt-6 p-4 bg-navy/[0.02] rounded-xl border border-navy/5">
+                                <p class="text-[10px] text-gray-400 text-center italic">
+                                    Produk akan dikirim langsung oleh masing-masing penjual setelah pembayaran diverifikasi.
+                                </p>
                             </div>
                         </div>
-                        <div class="flex items-start gap-3">
-                            <div
-                                class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-gray-500 shrink-0">
-                                <Icon icon="ph:map-pin-bold" class="text-sm" />
+
+                        <!-- Info Cards -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="p-3 bg-white rounded-xl border border-gray-100 flex flex-col items-center text-center gap-2">
+                                <Icon icon="ph:shield-check-fill" class="text-primary text-xl" />
+                                <span class="text-[9px] font-bold text-navy uppercase tracking-tighter">Garansi Aman</span>
                             </div>
-                            <div>
-                                <span class="block text-xs text-gray-500  font-bold">Venue</span>
-                                <span class="text-sm font-semibold text-navy">{{ event.venue || 'TBA' }}</span>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-3 pt-4 border-t border-gray-100">
-                            <div
-                                class="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-gray-500 shrink-0">
-                                <Icon icon="ph:headset-bold" class="text-sm" />
-                            </div>
-                            <div>
-                                <span class="block text-xs text-gray-500  font-bold">Need Help?</span>
-                                <a class="text-sm font-semibold text-primary hover:underline" href="#">Contact
-                                    Organizer</a>
+                            <div class="p-3 bg-white rounded-xl border border-gray-100 flex flex-col items-center text-center gap-2">
+                                <Icon icon="ph:truck-fill" class="text-primary text-xl" />
+                                <span class="text-[9px] font-bold text-navy uppercase tracking-tighter">Kurir Terpercaya</span>
                             </div>
                         </div>
                     </div>
                 </div>
-            </aside>
+            </div>
         </div>
     </div>
 </template>
@@ -285,168 +179,89 @@ import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted } from 'vue'
 import { useAuth } from '~/composables/useAuth'
 import { useApi } from '~/composables/useApi'
-const { getChannels } = usePayment()
 import { useToast } from '~/composables/useToast'
-import BaseSelect from '~/components/common/BaseSelect.vue'
 
 definePageMeta({
     layout: 'dashboard'
 })
 
 useHead({
-    title: 'Keranjang Belanja - ArcheryHub Dashboard'
+    title: 'Keranjang Belanja - ArcheryHub'
 })
 
 const { user } = useAuth()
-const { get, post, put } = useApi()
+const { get, put, del } = useApi()
 const toast = useToast()
 
 const isLoading = ref(true)
-const isEditing = ref(false)
 const isProcessing = ref(false)
-const registrations = ref([])
-const cartItems = computed(() => registrations.value || [])
-const archers = ref([])
-const eventCategories = ref([])
-const events = ref([])
-const selectedPaymentMethod = ref(null)
+const productCart = ref([])
 
-const archerOptions = computed(() => {
-    const opts = archers.value.map(a => ({ value: a.id, title: a.id_number }))
-    opts.push({ value: '', title: 'Add New ID...' })
-    return opts
-})
+// Computed values
+const totalProductQty = computed(() => productCart.value.reduce((acc, item) => acc + item.quantity, 0))
+const totalProductSubtotal = computed(() => productCart.value.reduce((acc, item) => {
+    const price = item.product_sale_price || item.product_price
+    return acc + (price * item.quantity)
+}, 0))
 
-const categoryOptions = computed(() => eventCategories.value.map(c => ({
-    value: c.id,
-    title: `${c.division_name} - ${c.category_name}`
-})))
+// Utility functions
+const formatPrice = (p) => new Intl.NumberFormat('id-ID').format(p)
 
-const jerseySizeOptions = ['S', 'M', 'L', 'XL', 'XXL']
-
-const platformFee = 5000
-
-const loadingChannels = ref(false)
-const channelList = ref([])
-
-const groupedChannels = computed(() => {
-    const groups = {}
-    channelList.value.forEach(channel => {
-        if (!groups[channel.group]) groups[channel.group] = []
-        groups[channel.group].push(channel)
-    })
-    return groups
-})
-
-const fetchChannels = async () => {
-    loadingChannels.value = true
-    channelList.value = await getChannels()
-    loadingChannels.value = false
-}
-
-const totalPayment = computed(() => {
-    const entryFees = registrations.value.reduce((sum, reg) => sum + (reg.entry_fee || 350000), 0)
-    return entryFees + platformFee
-})
-
-const formatPrice = (price) => new Intl.NumberFormat('id-ID').format(price)
-
-const formatDate = (dateStr) => {
-    if (!dateStr) return 'TBA'
-    try {
-        return new Date(dateStr).toLocaleDateString('id-ID', {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric'
-        })
-    } catch {
-        return dateStr
-    }
-}
-
-const fetchRegistrations = async () => {
+// API Handlers
+const fetchCart = async () => {
     isLoading.value = true
     try {
-        // Fetch pending registrations for the user
-        const response = await get('/events/registrations/pending')
-        registrations.value = response.data || response.registrations || []
-
-        // Fetch event details for each registration
-        if (registrations.value.length > 0) {
-            const eventIds = [...new Set(registrations.value.map(r => r.event_id))]
-            const eventPromises = eventIds.map(id => get(`/events/${id}`))
-            const eventResults = await Promise.all(eventPromises)
-            events.value = eventResults.map(r => r.data || r.event || r)
-        }
-
-        // Fetch archers for the user
-        const archersRes = await get('/archers/my')
-        archers.value = archersRes.data || archersRes.archers || []
-
-        // Fetch categories for events
-        if (events.value.length > 0) {
-            const catPromises = events.value.map(e => get(`/events/${e.id}/categories`))
-            const catResults = await Promise.all(catPromises)
-            eventCategories.value = catResults.flatMap(r => r.events || r.data?.events || [])
-        }
-    } catch (error) {
-        console.error('Failed to fetch registrations:', error)
-        // For demo purposes, create mock data
-        registrations.value = []
+        const res = await get('/cart')
+        // Normalize UUIDs
+        productCart.value = (res.data || []).map(item => ({
+            ...item, 
+            uuid: item.uuid || item.id 
+        }))
+    } catch (e) {
+        console.error('Failed to load cart', e)
+        toast.error('Gagal mengambil data keranjang')
     } finally {
         isLoading.value = false
     }
 }
 
-const saveRegistration = async (reg) => {
-    try {
-        await put(`/events/${reg.event_id}/registrations/${reg.id}`, {
-            archer_id: reg.archer_id,
-            category_id: reg.category_id,
-            jersey_size: reg.jersey_size
-        })
-        toast.success('Registrasi berhasil diperbarui')
-        isEditing.value = false
-        await fetchRegistrations()
-    } catch (error) {
-        console.error('Failed to save registration:', error)
-        toast.error('Gagal menyimpan perubahan')
-    }
-}
-
-const handlePayment = async () => {
-    if (!selectedPaymentMethod.value) {
-        toast.error('Pilih metode pembayaran terlebih dahulu')
+const updateQty = async (item, delta) => {
+    const newQty = item.quantity + delta
+    
+    // Minimum quantity is 1 (removal handled separately)
+    if (newQty < 1) return removeItem(item.uuid)
+    
+    // Stock validation
+    if (newQty > item.product_stock) {
+        toast.error(`Maaf, stok hanya tersedia ${item.product_stock} unit`)
         return
     }
 
     isProcessing.value = true
     try {
-        // Create payment for all registrations
-        const paymentData = {
-            registrations: registrations.value.map(r => r.id),
-            payment_method: selectedPaymentMethod.value,
-            amount: totalPayment.value
-        }
-
-        const response = await post('/payment/create', paymentData)
-
-        if (response.payment_url) {
-            window.location.href = response.payment_url
-        } else {
-            toast.success('Pembayaran sedang diproses')
-            await fetchRegistrations()
-        }
-    } catch (error) {
-        console.error('Failed to process payment:', error)
-        toast.error('Gagal memproses pembayaran')
+        await put(`/cart/${item.uuid}`, { quantity: newQty })
+        item.quantity = newQty
+    } catch (e) {
+        toast.error('Gagal memperbarui jumlah produk')
     } finally {
         isProcessing.value = false
     }
 }
 
-onMounted(() => {
-    fetchRegistrations()
-    fetchChannels()
-})
+const removeItem = async (uuid) => {
+    if (!confirm('Hapus produk ini dari keranjang?')) return
+    
+    isProcessing.value = true
+    try {
+        await del(`/cart/${uuid}`)
+        productCart.value = productCart.value.filter(i => i.uuid !== uuid)
+        toast.success('Produk berhasil dihapus')
+    } catch (e) {
+        toast.error('Gagal menghapus produk')
+    } finally {
+        isProcessing.value = false
+    }
+}
+
+onMounted(fetchCart)
 </script>

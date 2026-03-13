@@ -18,14 +18,74 @@
             <div class="text-slate-300 text-xs sm:text-sm font-bold mt-1 tracking-wide">Kelola dan proses pesanan dari pembeli anda</div>
           </div>
         </div>
+        <BaseButton variant="primary" icon="ph:download-bold" @click="exportOrders" :loading="isExporting"
+          class="h-12 px-8 font-black uppercase tracking-widest text-xs shadow-lg shadow-primary/20">
+          Ekspor Laporan
+        </BaseButton>
       </div>
     </div>
 
-    <!-- Orders filter/content -->
-    <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm p-8">
-       <div class="text-center py-20">
+    <!-- Filters -->
+    <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-wrap gap-4 items-end">
+      <div class="w-full md:w-64">
+        <BaseSelect v-model="statusFilter" :items="statusOptions" label="Status Pesanan" />
+      </div>
+      <BaseButton variant="white" icon="ph:funnel" @click="statusFilter = 'all'" class="h-11">
+        Reset Filter
+      </BaseButton>
+    </div>
+
+    <!-- Orders Table -->
+    <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden">
+       <div v-if="isLoading" class="py-20 flex flex-col items-center gap-4">
+         <LoadingSpinner size="lg" />
+         <div class="text-gray-400 font-bold">Memuat pesanan...</div>
+       </div>
+       <div v-else-if="orders.length === 0" class="text-center py-20">
         <Icon icon="ph:package-bold" class="text-6xl text-gray-100 mx-auto mb-4" />
-        <div class="text-gray-400 font-bold">Daftar pesanan akan muncul di sini</div>
+        <div class="text-gray-400 font-bold">Tidak ada pesanan ditemukan</div>
+      </div>
+      <div v-else class="overflow-x-auto">
+        <table class="w-full border-collapse min-w-[1000px]">
+          <thead>
+            <tr class="text-left bg-gray-50/50 border-b border-gray-100">
+              <th class="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400">Order ID</th>
+              <th class="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400">Tanggal</th>
+              <th class="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400">Pelanggan</th>
+              <th class="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400">Total</th>
+              <th class="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400">Status</th>
+              <th class="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400 text-right">Aksi</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-50">
+            <tr v-for="order in orders" :key="order.uuid" class="group hover:bg-gray-50/80 transition-all duration-300">
+              <td class="px-8 py-6">
+                <div class="font-black text-navy text-sm uppercase tracking-wider group-hover:text-primary transition-colors">#{{ order.uuid.slice(0, 8) }}</div>
+              </td>
+              <td class="px-8 py-6">
+                <div class="text-sm text-gray-500 font-medium">{{ formatDate(order.created_at) }}</div>
+              </td>
+              <td class="px-8 py-6">
+                <div class="font-bold text-navy">{{ order.customer_name || 'Pelanggan' }}</div>
+                <div class="text-[10px] text-gray-400 mt-0.5">{{ order.customer_email }}</div>
+              </td>
+              <td class="px-8 py-6">
+                <div class="font-black text-navy">Rp {{ formatPrice(order.total_amount) }}</div>
+                <div class="text-[10px] text-gray-400 mt-0.5 tracking-wide">{{ order.total_items }} item dipesan</div>
+              </td>
+              <td class="px-8 py-6">
+                <span :class="getStatusClass(order.status)" class="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm">
+                  {{ getStatusLabel(order.status) }}
+                </span>
+              </td>
+              <td class="px-8 py-6 text-right">
+                <BaseButton variant="white" size="md" icon="ph:eye-bold" 
+                  class="h-10 w-10 border-gray-200 text-gray-400 hover:text-primary hover:border-primary transition-all p-0"
+                  :to="`/dashboard/seller/orders/${order.uuid}`" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -33,6 +93,89 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import { ref, onMounted, watch } from 'vue'
+
 definePageMeta({ layout: 'dashboard' })
 useHead({ title: 'Pesanan Masuk - Dashboard Seller' })
+
+const { get } = useApi()
+const toast = useToast()
+
+const orders = ref([])
+const isLoading = ref(true)
+const isExporting = ref(false)
+const statusFilter = ref('all')
+
+const statusOptions = [
+  { label: 'Semua Status', value: 'all' },
+  { label: 'Menunggu', value: 'pending' },
+  { label: 'Lunas', value: 'paid' },
+  { label: 'Dikirim', value: 'shipping' },
+  { label: 'Selesai', value: 'completed' },
+  { label: 'Dibatalkan', value: 'cancelled' }
+]
+
+const fetchOrders = async () => {
+  isLoading.value = true
+  try {
+    const response = await get('/orders', { status: statusFilter.value })
+    orders.value = response.data || []
+  } catch (error) {
+    toast.error('Gagal mengambil data pesanan')
+  } finally {
+    isLoading.value = false
+  }
+}
+
+const exportOrders = () => {
+  isExporting.value = true
+  try {
+    const config = useRuntimeConfig()
+    const url = `${config.public.apiBase}/orders/export?status=${statusFilter.value}`
+    window.open(url, '_blank')
+    toast.success('Laporan pesanan berhasil diekspor')
+  } catch (error) {
+    toast.error('Gagal mengekspor laporan')
+  } finally {
+    isExporting.value = false
+  }
+}
+
+onMounted(fetchOrders)
+watch(statusFilter, fetchOrders)
+
+const formatDate = (dateStr) => {
+  if (!dateStr) return '-'
+  return new Date(dateStr).toLocaleDateString('id-ID', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+  })
+}
+
+const formatPrice = (price) => {
+  return new Intl.NumberFormat('id-ID').format(price || 0)
+}
+
+const getStatusLabel = (status) => {
+  const labels = {
+    pending: 'Menunggu',
+    paid: 'Lunas',
+    shipping: 'Dikirim',
+    completed: 'Selesai',
+    cancelled: 'Batal'
+  }
+  return labels[status] || status
+}
+
+const getStatusClass = (status) => {
+  const classes = {
+    pending: 'bg-amber-50 text-amber-600 border border-amber-100',
+    paid: 'bg-blue-50 text-blue-600 border border-blue-100',
+    shipping: 'bg-purple-50 text-purple-600 border border-purple-100',
+    completed: 'bg-green-50 text-green-600 border border-green-100',
+    cancelled: 'bg-red-50 text-red-600 border border-red-100'
+  }
+  return classes[status] || 'bg-gray-50 text-gray-600 border border-gray-100'
+}
 </script>

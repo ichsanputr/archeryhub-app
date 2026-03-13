@@ -105,10 +105,6 @@
                                                 <Icon icon="ph:eye" />
                                                 {{ product.views }} views
                                             </span>
-                                            <span class="flex items-center gap-1">
-                                                <Icon icon="ph:shopping-cart" />
-                                                {{ product.sold }} terjual
-                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -139,7 +135,7 @@
 
                             <!-- Stock -->
                             <td class="px-6 py-4">
-                                <span class="font-bold text-navy">
+                                <span class="font-bold text-black">
                                     {{ product.stock }}
                                 </span>
                             </td>
@@ -202,7 +198,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 definePageMeta({
@@ -224,16 +220,33 @@ const searchQuery = ref('')
 const statusFilter = ref('all')
 const categoryFilter = ref('all')
 
+const statusOptions = [
+    { label: 'Semua Status', value: 'all' },
+    { label: 'Aktif', value: 'active' },
+    { label: 'Draft', value: 'draft' },
+    { label: 'Habis', value: 'sold_out' }
+]
+
+const categoryOptions = [
+    { label: 'Semua Kategori', value: 'all' },
+    { label: 'Peralatan', value: 'equipment' },
+    { label: 'Pakaian', value: 'apparel' },
+    { label: 'Aksesoris', value: 'accessories' }
+]
+
 const fetchProducts = async () => {
     isLoading.value = true
     try {
-        const response = await get('/products/my')
+        const response = await get('/products/my', {
+            status: statusFilter.value,
+            category: categoryFilter.value
+        })
         products.value = (response.data || []).map(p => ({
             ...p,
             id: p.id || p.uuid,
             salePrice: p.sale_price,
             image: useImageOrDefault(p.image_url),
-            sold: p.sold || 0 // Assuming 'sold' is handled by backend or aggregation
+            sold: p.sold || 0
         }))
     } catch (error) {
         toast.error('Gagal mengambil data produk')
@@ -241,6 +254,10 @@ const fetchProducts = async () => {
         isLoading.value = false
     }
 }
+
+watch([statusFilter, categoryFilter], () => {
+    fetchProducts()
+})
 
 onMounted(() => {
     fetchProducts()

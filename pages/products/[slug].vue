@@ -65,107 +65,83 @@
                                     <img :src="img" :alt="`${product.name} ${idx + 1}`" class="h-full w-full object-cover" />
                                 </button>
                             </div>
-
-                            <div class="grid grid-cols-3 gap-2">
-                                <div class="flex flex-col items-center gap-2 rounded-2xl border border-black/5 bg-white p-4 text-center shadow-sm hover:shadow transition">
-                                    <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
-                                        <Icon icon="ph:seal-check-bold" class="text-xl" />
-                                    </div>
-                                    <div class="font-black text-navy text-xs leading-tight">100% Ori</div>
-                                    <div class="text-[10px] text-gray-400 leading-tight">Sudah Dicek</div>
-                                </div>
-                                <div class="flex flex-col items-center gap-2 rounded-2xl border border-black/5 bg-white p-4 text-center shadow-sm hover:shadow transition">
-                                    <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-50 text-amber-500">
-                                        <Icon icon="ph:shield-check-bold" class="text-xl" />
-                                    </div>
-                                    <div class="font-black text-navy text-xs leading-tight">Garansi 7 Hari</div>
-                                    <div class="text-[10px] text-gray-400 leading-tight">Tukar Produk</div>
-                                </div>
-                                <div class="flex flex-col items-center gap-2 rounded-2xl border border-black/5 bg-white p-4 text-center shadow-sm hover:shadow transition">
-                                    <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-500">
-                                        <Icon icon="ph:rocket-launch-bold" class="text-xl" />
-                                    </div>
-                                    <div class="font-black text-navy text-xs leading-tight">Pengiriman Cepat</div>
-                                    <div class="text-[10px] text-gray-400 leading-tight">Estimasi 1-3 Hari</div>
-                                </div>
-                            </div>
                         </div>
 
                         <aside class="space-y-5 lg:sticky lg:top-28 lg:h-fit">
-                            <div class="rounded-3xl border border-black/5 bg-white p-6 shadow-sm">
-                                <div class="text-xs font-bold uppercase tracking-[0.2em] text-gray-400">Produk Pilihan</div>
-                                <h1 class="mt-2 text-3xl font-black leading-tight text-navy">{{ product.name }}</h1>
+                            <div class="rounded-[2rem] border border-black/5 bg-white p-5 sm:p-6 shadow-sm">
+                                <div class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Pilihan Terbaik</div>
+                                <h1 class="mt-2 text-xl sm:text-2xl lg:text-3xl font-black leading-tight text-navy">{{ product.name }}</h1>
 
-                                <div class="mt-4 flex flex-wrap items-center gap-3 text-sm">
+                                <div class="mt-3 flex flex-wrap items-center gap-2 text-sm">
                                     <span
-                                        class="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1.5 font-bold text-emerald-700">
-                                        <span class="h-2 w-2 rounded-full" :class="product.stock > 0 ? 'bg-emerald-600' : 'bg-red-500'" />
+                                        class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-700">
+                                        <span class="h-1.5 w-1.5 rounded-full" :class="product.stock > 0 ? 'bg-emerald-600' : 'bg-red-500'" />
                                         {{ product.stock > 0 ? `Stok ${product.stock}` : 'Stok Habis' }}
                                     </span>
-                                    <span class="inline-flex items-center gap-1 rounded-full bg-amber-50 px-3 py-1.5 font-bold text-amber-700">
+                                    <span class="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-[11px] font-bold text-amber-700">
                                         <Icon icon="ph:star-fill" /> 4.9
                                     </span>
                                 </div>
 
-                                <div class="mt-5 rounded-2xl bg-[#0f172a] p-5 text-white">
-                                    <div class="text-xs uppercase tracking-[0.18em] text-white/70">Harga</div>
-                                    <div class="mt-1 flex items-end gap-3">
-                                        <div class="text-3xl font-black">Rp {{ formatPrice(finalPrice) }}</div>
-                                        <div v-if="product.sale_price" class="pb-1 text-sm text-white/60 line-through">Rp {{ formatPrice(product.price) }}</div>
+                                <div class="mt-4 rounded-2xl bg-[#0f172a] p-4 sm:p-5 text-white">
+                                    <div class="text-[10px] uppercase tracking-[0.18em] text-white/70">Harga Spesial</div>
+                                    <div class="mt-1 flex items-end gap-2.5">
+                                        <div class="text-2xl sm:text-3xl font-black">Rp {{ formatPrice(finalPrice) }}</div>
+                                        <div v-if="product.sale_price" class="pb-1 text-xs text-white/60 line-through">Rp {{ formatPrice(product.price) }}</div>
                                     </div>
                                 </div>
 
                                 <div v-if="product.colors?.length" class="mt-5">
-                                    <div class="mb-2 text-xs font-bold uppercase tracking-wider text-gray-400">Warna</div>
+                                    <div class="mb-2 text-[10px] font-black uppercase tracking-wider text-gray-400">Pilihan Warna</div>
                                     <div class="flex flex-wrap gap-2">
                                         <button v-for="color in product.colors" :key="color" @click="selectedColor = color"
                                             :class="[
-                                                'rounded-full border px-3 py-1.5 text-xs font-bold transition',
-                                                selectedColor === color ? 'border-navy bg-navy text-white' : 'border-gray-200 text-gray-600 hover:border-gray-300'
+                                                'rounded-xl border px-3 py-2 text-[11px] font-bold transition',
+                                                selectedColor === color ? 'border-navy bg-navy text-white' : 'border-gray-100 bg-gray-50 text-gray-500 hover:border-gray-200'
                                             ]">
                                             {{ color }}
                                         </button>
                                     </div>
                                 </div>
 
-                                <div class="mt-5 flex items-center justify-between rounded-2xl border border-black/5 bg-[#fafafa] p-3">
-                                    <div class="text-sm font-bold text-navy">Jumlah</div>
-                                    <div class="flex items-center rounded-xl border border-black/10 bg-white">
-                                        <button @click="quantity = Math.max(1, quantity - 1)" class="px-3 py-2 text-navy">
-                                            <Icon icon="ph:minus-bold" />
+                                <div class="mt-5 flex items-center justify-between rounded-xl border border-black/5 bg-[#fafafa] p-3">
+                                    <div class="text-[11px] font-black text-navy uppercase tracking-widest">Jumlah</div>
+                                    <div class="flex items-center rounded-lg border border-black/10 bg-white overflow-hidden">
+                                        <button @click="quantity = Math.max(1, quantity - 1)" class="px-2.5 py-1.5 text-navy hover:bg-gray-50">
+                                            <Icon icon="ph:minus-bold" class="text-xs" />
                                         </button>
                                         <input v-model.number="quantity" type="number" min="1" :max="maxQty"
-                                            class="w-12 border-x border-black/10 text-center text-sm font-black text-navy outline-none" />
-                                        <button @click="quantity = Math.min(maxQty, quantity + 1)" class="px-3 py-2 text-navy">
-                                            <Icon icon="ph:plus-bold" />
+                                            class="w-10 text-center text-[11px] font-black text-navy outline-none" />
+                                        <button @click="quantity = Math.min(maxQty, quantity + 1)" class="px-2.5 py-1.5 text-navy hover:bg-gray-50">
+                                            <Icon icon="ph:plus-bold" class="text-xs" />
                                         </button>
                                     </div>
                                 </div>
 
                                 <BaseButton @click="handleAddToCart" variant="primary" size="lg" icon="ph:shopping-cart-simple-bold"
-                                    class="mt-5 w-full rounded-2xl py-4 font-black" :loading="isAddingToCart" :disabled="maxQty < 1">
+                                    class="mt-5 w-full rounded-2xl py-4 font-black tracking-[0.15em] text-[11px] uppercase shadow-xl shadow-primary/20" :loading="isAddingToCart" :disabled="maxQty < 1">
                                     Tambah ke Keranjang
                                 </BaseButton>
 
-                                <div class="mt-4 flex items-center justify-between rounded-2xl border border-black/5 bg-white p-3">
-                                    <div class="text-xs font-bold uppercase tracking-widest text-gray-400">Bagikan</div>
+                                <div class="mt-4 flex items-center justify-between rounded-xl border border-black/5 bg-white p-3">
+                                    <div class="text-[10px] font-black text-gray-400 tracking-widest uppercase">Bagikan</div>
                                     <div class="flex items-center gap-2">
-                                        <button @click="share('facebook')" class="rounded-lg bg-blue-50 p-2 text-blue-600"><Icon icon="ph:facebook-logo-bold" /></button>
-                                        <button @click="share('twitter')" class="rounded-lg bg-sky-50 p-2 text-sky-600"><Icon icon="ph:twitter-logo-bold" /></button>
-                                        <button @click="share('whatsapp')" class="rounded-lg bg-green-50 p-2 text-green-600"><Icon icon="ph:whatsapp-logo-bold" /></button>
-                                        <button @click="copyLink" class="rounded-lg bg-gray-100 p-2 text-gray-700"><Icon icon="ph:link-bold" /></button>
+                                        <button @click="share('facebook')" class="rounded-lg bg-blue-50 p-2 text-blue-600 hover:bg-blue-100 transition"><Icon icon="ph:facebook-logo-bold" /></button>
+                                        <button @click="share('twitter')" class="rounded-lg bg-sky-50 p-2 text-sky-600 hover:bg-sky-100 transition"><Icon icon="ph:twitter-logo-bold" /></button>
+                                        <button @click="share('whatsapp')" class="rounded-lg bg-green-50 p-2 text-green-600 hover:bg-green-100 transition"><Icon icon="ph:whatsapp-logo-bold" /></button>
+                                        <button @click="copyLink" class="rounded-lg bg-gray-50 p-2 text-gray-500 hover:bg-gray-100 transition"><Icon icon="ph:copy-bold" /></button>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="rounded-3xl border border-black/5 bg-white p-5 shadow-sm">
-                                <div class="text-xs font-bold uppercase tracking-[0.2em] text-gray-400">Penjual</div>
+                            <div class="rounded-2xl border border-black/5 bg-white p-4 shadow-sm">
+                                <div class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Informasi Penjual</div>
                                 <div class="mt-3 flex items-center gap-3">
                                         <img :src="sellerAvatar"
-                                        alt="seller" class="h-12 w-12 rounded-full object-cover" />
+                                        alt="seller" class="h-10 w-10 rounded-full object-cover border border-gray-100" />
                                     <div>
-                                        <div class="font-black text-navy">{{ product.seller?.store_name || 'Toko ArcheryHub' }}</div>
-                                        <div class="text-xs text-gray-500">Respon chat cepat</div>
+                                        <div class="font-black text-navy text-xs">{{ product.seller?.store_name || 'Toko ArcheryHub' }}</div>
+                                        <div class="text-[10px] text-gray-400 font-bold">Respon chat cepat • Terverifikasi</div>
                                     </div>
                                 </div>
                             </div>
@@ -174,28 +150,65 @@
                 </section>
 
                 <section class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_340px]">
-                    <div class="rounded-3xl border border-black/5 bg-white p-6 shadow-sm md:p-8">
-                        <h2 class="text-xl font-black text-navy">Deskripsi Produk</h2>
-                        <p class="mt-3 whitespace-pre-line leading-relaxed text-gray-600">
+                    <div class="rounded-[2.5rem] border border-black/5 bg-white p-6 sm:p-8 lg:p-10 shadow-sm relative overflow-hidden">
+                        <div class="absolute top-0 right-0 p-8 opacity-[0.03] pointer-events-none">
+                            <Icon icon="ph:quotes-bold" class="text-8xl text-navy" />
+                        </div>
+                        <h2 class="text-lg font-black text-navy tracking-tight flex items-center gap-2">
+                             <div class="w-1.5 h-6 bg-primary rounded-full"></div>
+                             Deskripsi Produk
+                        </h2>
+                        <div class="mt-6 whitespace-pre-line leading-relaxed text-gray-600 text-sm sm:text-base">
                             {{ product.description || 'Belum ada deskripsi detail untuk produk ini.' }}
-                        </p>
+                        </div>
 
-                        <div v-if="Object.keys(product.specifications || {}).length" class="mt-6">
-                            <h3 class="text-sm font-black uppercase tracking-[0.2em] text-gray-400">Spesifikasi</h3>
-                            <div class="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2">
+                        <div v-if="Object.keys(product.specifications || {}).length" class="mt-8">
+                            <h3 class="text-[11px] font-black uppercase tracking-[0.2em] text-gray-400 mb-4">Spesifikasi Detail</h3>
+                            <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
                                 <div v-for="(value, key) in product.specifications" :key="key"
-                                    class="rounded-2xl border border-black/5 bg-[#fafafa] p-4">
-                                    <div class="text-xs font-bold uppercase tracking-wider text-gray-400">{{ key }}</div>
-                                    <div class="mt-1 font-black text-navy">{{ value }}</div>
+                                    class="rounded-2xl border border-gray-50 bg-[#fafafa] p-4 flex flex-col gap-1">
+                                    <div class="text-[10px] font-bold uppercase tracking-wider text-gray-400">{{ key }}</div>
+                                    <div class="font-black text-navy text-sm">{{ value }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Trust Badges Relocated to Bottom -->
+                        <div class="mt-12 pt-8 border-t border-gray-50 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div class="flex items-center gap-4 rounded-3xl border border-black/5 bg-white p-5 shadow-sm hover:shadow-md transition duration-300">
+                                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-[1.25rem] bg-emerald-50 text-emerald-600">
+                                    <Icon icon="ph:seal-check-bold" class="text-2xl" />
+                                </div>
+                                <div>
+                                    <div class="font-black text-navy text-sm leading-tight">100% Ori</div>
+                                    <div class="text-[10px] text-gray-400 font-bold leading-tight mt-0.5">Sudah Dicek</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 rounded-3xl border border-black/5 bg-white p-5 shadow-sm hover:shadow-md transition duration-300">
+                                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-[1.25rem] bg-amber-50 text-amber-500">
+                                    <Icon icon="ph:shield-check-bold" class="text-2xl" />
+                                </div>
+                                <div>
+                                    <div class="font-black text-navy text-sm leading-tight">Garansi 7 Hari</div>
+                                    <div class="text-[10px] text-gray-400 font-bold leading-tight mt-0.5">Tukar Produk</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 rounded-3xl border border-black/5 bg-white p-5 shadow-sm hover:shadow-md transition duration-300">
+                                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-[1.25rem] bg-blue-50 text-blue-500">
+                                    <Icon icon="ph:rocket-launch-bold" class="text-2xl" />
+                                </div>
+                                <div>
+                                    <div class="font-black text-navy text-sm leading-tight">Pengiriman Cepat</div>
+                                    <div class="text-[10px] text-gray-400 font-bold leading-tight mt-0.5">Estimasi 1-3 Hari</div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="rounded-3xl border border-black/5 bg-white shadow-sm overflow-hidden">
-                        <div class="bg-navy px-5 py-4 flex items-center gap-2">
-                            <Icon icon="ph:clipboard-text-bold" class="text-primary text-lg" />
-                            <h3 class="text-sm font-black text-white tracking-wide">Ringkasan Produk</h3>
+                    <div class="rounded-[2rem] border border-black/5 bg-white shadow-sm overflow-hidden h-fit">
+                        <div class="bg-navy px-6 py-5 flex items-center gap-3">
+                            <Icon icon="ph:clipboard-text-bold" class="text-primary text-xl" />
+                            <h3 class="text-xs font-black text-white tracking-[0.15em] uppercase">Ringkasan</h3>
                         </div>
                         <ul class="divide-y divide-gray-50">
                             <li class="flex items-center justify-between px-5 py-3.5">
@@ -405,20 +418,19 @@ const handleAddToCart = async () => {
 
     isAddingToCart.value = true
     try {
-        await $fetch(`${apiBaseUrl}/cart`, {
-            method: 'POST',
-            body: {
-                product_id: product.value.id || product.value.uuid,
-                quantity: quantity.value,
-                color: selectedColor.value
-            },
-            headers: {
-                Authorization: `Bearer ${useCookie('auth_token').value}`
-            }
+        const api = useApi()
+        await api.post('/cart', {
+            product_id: product.value.id || product.value.uuid,
+            quantity: quantity.value,
+            color: selectedColor.value
         })
         toast.success('Berhasil ditambah ke keranjang')
-    } catch {
-        toast.error('Gagal menambah ke keranjang')
+    } catch (error) {
+        if (error.response?.data?.code === 'invalid_token') {
+            toast.error('Sesi anda telah berakhir, silahkan login kembali')
+        } else {
+            toast.error(error.response?.data?.error || 'Gagal menambah ke keranjang')
+        }
     } finally {
         isAddingToCart.value = false
     }
