@@ -161,7 +161,7 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { onMounted, reactive, ref } from 'vue'
-import MediaLibrary from '~/components/media/MediaLibrary.vue'
+import MediaLibrary from '~/components/common/MediaLibrary.vue'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 

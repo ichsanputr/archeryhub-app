@@ -136,41 +136,73 @@ export const sinkronisasi_tim = {
             </div>
         </div>
 
-        <h2 id="troubleshooting">Troubleshooting (Error Messages)</h2>
-        <p>Berikut adalah beberapa error yang mungkin muncul saat proses sinkronisasi dan cara mengatasinya:</p>
+        <h2 id="troubleshooting">Troubleshooting (Pesan Error)</h2>
+        <p>Berikut adalah beberapa pesan error yang mungkin muncul saat proses sinkronisasi dan penjelasan mengenai penyebabnya:</p>
 
         <div class="space-y-4 my-6">
+            <!-- 1. Kategori Putri/Putra Tidak Ditemukan -->
             <div class="p-5 bg-gray-50 border border-gray-100 rounded-2xl">
                 <div class="flex items-center gap-2 mb-2">
                     <span class="px-2 py-0.5 bg-red-100 text-red-600 font-bold text-[10px] rounded uppercase">Error</span>
-                    <h4 class="text-sm font-black text-navy uppercase tracking-tight">"Could not identify male/female categories"</h4>
+                    <h4 class="text-sm font-black text-navy uppercase tracking-tight">"Kategori pasangan putra/putri (Individual) tidak ditemukan..."</h4>
                 </div>
-                <p class="text-[13px] text-gray-500 italic mb-3">Terjadi saat sinkronisasi Mixed Team.</p>
+                <p class="text-[13px] text-gray-500 italic mb-3">Kasus: Sinkronisasi Mixed Team.</p>
                 <div class="space-y-2">
-                    <p class="text-[13px] text-gray-700"><strong>Penyebab:</strong> Sistem tidak dapat menemukan kategori <em>Individual Putra</em> dan <em>Individual Putri</em> yang cocok sebagai sumber skor.</p>
-                    <p class="text-[13px] text-gray-700"><strong>Solusi:</strong> Pastikan Anda sudah membuat kategori Individual (Men & Women) dengan divisi dan kelompok umur yang sama di menu Kategori Lomba.</p>
+                    <p class="text-[13px] text-gray-700"><strong>Penyebab:</strong> Sistem tidak dapat menemukan kategori <em>Individual</em> dengan divisi dan kelompok umur yang sama untuk menarik skor kualifikasi.</p>
+                    <p class="text-[13px] text-gray-700"><strong>Solusi:</strong> Pastikan Anda telah membuat kategori <em>Individual Putra</em> DAN <em>Individual Putri</em> untuk divisi tersebut. Sistem membutuhkan skor dari kedua kategori ini untuk membentuk tim campuran (mixed).</p>
                 </div>
             </div>
 
+            <!-- 2. Sinkronisasi Tidak Menghasilkan Tim -->
             <div class="p-5 bg-gray-50 border border-gray-100 rounded-2xl">
                 <div class="flex items-center gap-2 mb-2">
-                    <span class="px-2 py-0.5 bg-red-100 text-red-600 font-bold text-[10px] rounded uppercase">Error</span>
-                    <h4 class="text-sm font-black text-navy uppercase tracking-tight">"Mixed gender division not found in system"</h4>
-                </div>
-                <div class="space-y-2 mt-3">
-                    <p class="text-[13px] text-gray-700"><strong>Penyebab:</strong> Data referensi untuk gender "Mixed" tidak ditemukan di database sistem.</p>
-                    <p class="text-[13px] text-gray-700"><strong>Solusi:</strong> Masalah sistem. Hubungi administrator untuk menginisialisasi tabel referensi gender.</p>
-                </div>
-            </div>
-
-            <div class="p-5 bg-gray-50 border border-gray-100 rounded-2xl">
-                <div class="flex items-center gap-2 mb-2">
-                    <span class="px-2 py-0.5 bg-amber-100 text-amber-600 font-bold text-[10px] rounded uppercase">Warning</span>
+                    <span class="px-2 py-0.5 bg-amber-100 text-amber-600 font-bold text-[10px] rounded uppercase">Info</span>
                     <h4 class="text-sm font-black text-navy uppercase tracking-tight">"Sinkronisasi tidak menghasilkan tim"</h4>
                 </div>
                 <div class="space-y-2 mt-3">
-                    <p class="text-[13px] text-gray-700"><strong>Penyebab:</strong> Tidak ada klub yang memiliki cukup anggota dengan skor kualifikasi di kategori individu terkait.</p>
-                    <p class="text-[13px] text-gray-700"><strong>Solusi:</strong> Pastikan peserta sudah input skor kualifikasi dan memenuhi kuota minimal per tim (misal 3 orang per klub).</p>
+                    <p class="text-[13px] text-gray-700"><strong>Penyebab:</strong> Peserta ada, kategori ada, namun kuota per klub tidak mencukupi untuk membentuk satu pun tim.</p>
+                    <p class="text-[13px] text-gray-700"><strong>Solusi:</strong> 
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>Check skor kualifikasi peserta: Peserta tanpa skor tidak akan dihitung oleh sistem sync.</li>
+                            <li>Check jumlah peserta per klub: Tim standar butuh minimal 3 orang, Mixed butuh minimal 1 putra & 1 putri dari klub yang sama.</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+
+            <!-- 3. Event Tidak Ditemukan -->
+            <div class="p-5 bg-gray-50 border border-gray-100 rounded-2xl">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="px-2 py-0.5 bg-red-100 text-red-600 font-bold text-[10px] rounded uppercase">Error</span>
+                    <h4 class="text-sm font-black text-navy uppercase tracking-tight">"Event tidak ditemukan"</h4>
+                </div>
+                <div class="space-y-2 mt-3">
+                    <p class="text-[13px] text-gray-700"><strong>Penyebab:</strong> Masalah pada sinkronisasi URL atau data cache di browser.</p>
+                    <p class="text-[13px] text-gray-700"><strong>Solusi:</strong> Refresh halaman dashboard Anda dan coba jalankan kembali proses sinkronisasi.</p>
+                </div>
+            </div>
+
+            <!-- 4. Gagal Menghitung Peringkat -->
+            <div class="p-5 bg-gray-50 border border-gray-100 rounded-2xl">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="px-2 py-0.5 bg-red-100 text-red-600 font-bold text-[10px] rounded uppercase">Error</span>
+                    <h4 class="text-sm font-black text-navy uppercase tracking-tight">"Gagal menghitung peringkat tim" / "Gagal menghitung peringkat mixed team"</h4>
+                </div>
+                <div class="space-y-2 mt-3">
+                    <p class="text-[13px] text-gray-700"><strong>Penyebab:</strong> Terjadi ketidakkonsistenan data skor di database pada salah satu peserta.</p>
+                    <p class="text-[13px] text-gray-700"><strong>Solusi:</strong> Periksa kembali leaderboard kualifikasi. Jika ada skor yang terlihat tidak wajar atau error, lakukan reset dan input ulang skor pada peserta tersebut.</p>
+                </div>
+            </div>
+
+            <!-- 5. Database Transaction Error -->
+            <div class="p-5 bg-gray-50 border border-gray-100 rounded-2xl">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="px-2 py-0.5 bg-red-100 text-red-600 font-bold text-[10px] rounded uppercase">Error</span>
+                    <h4 class="text-sm font-black text-navy uppercase tracking-tight">"Gagal menyimpan hasil sinkronisasi" / "Gagal memulai transaksi"</h4>
+                </div>
+                <div class="space-y-2 mt-3">
+                    <p class="text-[13px] text-gray-700"><strong>Penyebab:</strong> Gangguan koneksi ke server database atau timeout saat memproses data dalam jumlah besar.</p>
+                    <p class="text-[13px] text-gray-700"><strong>Solusi:</strong> Tunggu beberapa saat dan ulangi proses. Jika masalah berlanjut, hubungi tim support ArcheryHub untuk pengecekan status server.</p>
                 </div>
             </div>
         </div>
