@@ -84,7 +84,7 @@
                                     <p class="text-xs text-gray-400 line-through" v-if="item.product_sale_price">
                                         Rp {{ formatPrice(item.product_price) }}
                                     </p>
-                                    <p class="text-lg font-black text-primary">
+                                    <p class="text-lg font-black text-navy">
                                         Rp {{ formatPrice(item.product_sale_price || item.product_price) }}
                                     </p>
                                 </div>
@@ -141,11 +141,11 @@
                                 </div>
                                 <div class="pt-4 border-t border-dashed border-gray-200 flex justify-between items-center">
                                     <span class="font-bold text-navy uppercase tracking-widest text-xs">Total Pembayaran</span>
-                                    <span class="text-2xl font-black text-primary">Rp {{ formatPrice(totalProductSubtotal) }}</span>
+                                    <span class="text-2xl font-black text-navy">Rp {{ formatPrice(totalProductSubtotal) }}</span>
                                 </div>
                             </div>
 
-                            <BaseButton class="w-full" variant="primary" size="lg" icon="ph:arrow-right-bold" :disabled="productCart.length === 0">
+                            <BaseButton @click="navigateTo('/dashboard/archer/cart/payment')" class="w-full" variant="primary" size="lg" icon="ph:arrow-right-bold" :disabled="productCart.length === 0">
                                 Lanjut ke Pembayaran
                             </BaseButton>
                             

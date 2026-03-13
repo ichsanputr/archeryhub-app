@@ -15,16 +15,9 @@
           </div>
           <div>
             <h1 class="text-2xl sm:text-4xl font-black tracking-tight leading-tight">Saldo & Rekening</h1>
-            <div class="text-slate-300 text-xs sm:text-sm font-bold mt-1 tracking-wide">Kelola dana masuk dan akun penarikan anda</div>
+            <div class="text-slate-300 text-xs sm:text-sm font-bold mt-1 tracking-wide">Kelola dana masuk dan akun
+              penarikan anda</div>
           </div>
-        </div>
-        <div class="flex flex-wrap gap-3">
-          <NuxtLink to="/dashboard/seller/finance/transactions">
-            <BaseButton variant="white" icon="ph:list-bullets-bold"
-              class="h-12 px-6 font-black text-[11px] !rounded-2xl border-white/10 hover:bg-white/10 hover:text-white transition-all">
-              Riwayat Transaksi
-            </BaseButton>
-          </NuxtLink>
         </div>
       </div>
     </div>
@@ -33,17 +26,18 @@
       <!-- Left: Balance Card -->
       <div class="lg:col-span-1 space-y-6">
         <div
-          class="bg-gradient-to-br from-navy to-navy-dark rounded-[2.5rem] p-8 sm:p-10 text-white shadow-2xl relative overflow-hidden border border-white/5 group">
-          <div class="absolute -top-8 -right-8 p-8 opacity-[0.03] transition-transform group-hover:scale-110 duration-700">
+          class="bg-gradient-to-br from-navy to-navy-dark rounded-[2.5rem] p-8 sm:p-10 text-white shadow-sm relative overflow-hidden border border-white/5 group">
+          <div
+            class="absolute -top-8 -right-8 p-8 opacity-[0.03] transition-transform group-hover:scale-110 duration-700">
             <Icon icon="ph:coins-bold" class="text-[12rem]" />
           </div>
-          
+
           <div class="relative z-10">
             <div class="flex items-center gap-2 mb-4">
-               <div class="size-2 bg-primary animate-pulse rounded-full"></div>
-               <div class="text-primary text-[10px] font-black tracking-[0.2em]">Saldo Tersedia</div>
+              <div class="size-2 bg-primary animate-pulse rounded-full"></div>
+              <div class="text-primary text-[10px] font-black tracking-[0.2em]">Saldo Tersedia</div>
             </div>
-            
+
             <h2 class="text-4xl sm:text-5xl font-black tracking-tighter mb-10 leading-none">
               <span class="text-2xl font-bold opacity-40 mr-1">Rp</span>{{ wallet.balance.toLocaleString('id-ID') }}
             </h2>
@@ -98,23 +92,27 @@
               <Icon icon="ph:circle-notched-bold" class="text-4xl text-primary animate-spin mx-auto mb-3" />
               <div class="text-xs font-bold text-gray-400 tracking-widest">Memuat Rekening...</div>
             </div>
-            
-            <div v-else-if="bankAccounts.length === 0" class="p-12 text-center border-2 border-dashed border-gray-100 rounded-[2rem] m-4">
+
+            <div v-else-if="bankAccounts.length === 0"
+              class="p-12 text-center border-2 border-dashed border-gray-100 rounded-[2rem] m-4">
               <Icon icon="ph:bank-bold" class="text-5xl text-gray-100 mx-auto mb-4" />
               <div class="text-sm font-bold text-gray-400">Belum ada rekening bank yang terdaftar</div>
-              <div class="text-[10px] text-gray-300 font-medium mt-1">Tambahkan rekening untuk melakukan pencairan saldo</div>
+              <div class="text-[10px] text-gray-300 font-medium mt-1">Tambahkan rekening untuk melakukan pencairan saldo
+              </div>
             </div>
 
             <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div v-for="account in bankAccounts" :key="account.id" 
+              <div v-for="account in bankAccounts" :key="account.id"
                 class="group p-5 rounded-3xl border transition-all duration-300"
                 :class="account.is_primary ? 'bg-navy border-navy text-white shadow-lg shadow-navy/20' : 'bg-gray-50/50 border-gray-100 hover:border-primary/30'">
                 <div class="flex justify-between items-start mb-4">
-                  <div class="size-10 rounded-xl bg-white flex items-center justify-center shrink-0 border border-gray-100 overflow-hidden shadow-sm">
-                    <span class="text-navy font-black text-[10px] truncate px-1 text-center">{{ account.bank_name }}</span>
+                  <div
+                    class="size-10 rounded-xl bg-white flex items-center justify-center shrink-0 border border-gray-100 overflow-hidden shadow-sm">
+                    <span class="text-navy font-black text-[10px] truncate px-1 text-center">{{ account.bank_name
+                    }}</span>
                   </div>
                   <div class="flex gap-1">
-                    <button @click="openEditModal(account)" 
+                    <button @click="openEditModal(account)"
                       class="size-8 rounded-lg flex items-center justify-center transition-colors"
                       :class="account.is_primary ? 'bg-white/10 text-white/50 hover:bg-white/20 hover:text-white' : 'bg-white text-gray-400 hover:bg-primary/10 hover:text-primary border border-gray-100'">
                       <Icon icon="ph:pencil-simple-bold" />
@@ -126,11 +124,13 @@
                     </button>
                   </div>
                 </div>
-                
+
                 <div class="min-w-0">
                   <div class="flex items-center gap-2 mb-1">
-                     <div class="text-[11px] font-black tracking-widest opacity-40">{{ account.bank_name }}</div>
-                     <span v-if="account.is_primary" class="text-[8px] font-black tracking-widest bg-primary text-navy px-1.5 py-0.5 rounded">Rekening Utama</span>
+                    <div class="text-[11px] font-black tracking-widest opacity-40">{{ account.bank_name }}</div>
+                    <span v-if="account.is_primary"
+                      class="text-[8px] font-black tracking-widest bg-primary text-navy px-1.5 py-0.5 rounded">Rekening
+                      Utama</span>
                   </div>
                   <div class="text-sm font-black tracking-widest mb-1">{{ account.account_number }}</div>
                   <div class="text-[10px] font-bold opacity-60 truncate">{{ account.account_name }}</div>
@@ -150,11 +150,12 @@
               <h2 class="text-lg font-black text-navy tracking-widest">Riwayat Pencairan</h2>
             </div>
           </div>
-          
+
           <div class="overflow-x-auto no-scrollbar">
             <table class="w-full text-left min-w-[600px]">
               <thead>
-                <tr class="bg-gray-50/50 text-[10px] font-black text-gray-400 tracking-[0.2em] border-b border-gray-100">
+                <tr
+                  class="bg-gray-50/50 text-[10px] font-black text-gray-400 tracking-[0.2em] border-b border-gray-100">
                   <th class="px-8 py-5 text-left">Status</th>
                   <th class="px-8 py-5 text-left">Tanggal</th>
                   <th class="px-8 py-5 text-left">ID Referensi</th>
@@ -162,9 +163,10 @@
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-50">
-                <tr v-for="item in withdrawals.slice(0, 10)" :key="item.id" class="hover:bg-gray-50/80 transition-colors">
+                <tr v-for="item in withdrawals.slice(0, 10)" :key="item.id"
+                  class="hover:bg-gray-50/80 transition-colors">
                   <td class="px-8 py-5 text-left">
-                    <span :class="getStatusClass(item.status)" 
+                    <span :class="getStatusClass(item.status)"
                       class="px-3 py-1.5 rounded-full text-[9px] font-black tracking-widest border">
                       {{ item.status || 'Pending' }}
                     </span>
@@ -173,7 +175,7 @@
                     {{ formatDate(item.created_at) }}
                   </td>
                   <td class="px-8 py-5 text-left text-xs font-mono font-bold text-gray-400">
-                    #{{ item.reference_no || item.id.toString().slice(0,8) }}
+                    #{{ item.reference_no || (item.id || '').toString().slice(0, 8) }}
                   </td>
                   <td class="px-8 py-5 text-right font-black text-navy">
                     {{ formatCurrency(item.amount) }}
@@ -181,7 +183,8 @@
                 </tr>
                 <tr v-if="withdrawals.length === 0">
                   <td colspan="4" class="px-8 py-16 text-center">
-                    <div class="size-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-100">
+                    <div
+                      class="size-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 border border-gray-100">
                       <Icon icon="ph:empty-bold" class="text-gray-200 text-3xl" />
                     </div>
                     <div class="text-sm font-bold text-gray-400">Belum ada riwayat penarikan</div>
@@ -195,40 +198,45 @@
     </div>
 
     <!-- Redesigned Bank Account Modal -->
-    <BaseDialogForm v-model="modal.show" :header="modal.isEdit ? 'Ubah Rekening' : 'Rekening Bank Baru'" 
+    <BaseDialogForm v-model="modal.show" :header="modal.isEdit ? 'Ubah Rekening' : 'Rekening Bank Baru'"
       class="rounded-[2.5rem] !max-w-xl overflow-hidden shadow-2xl">
-      <div v-if="!modal.isEdit" class="bg-primary/5 p-6 rounded-3xl mb-8 border border-primary/10 flex items-start gap-4">
+      <div v-if="!modal.isEdit"
+        class="bg-primary/5 p-6 rounded-3xl mb-8 border border-primary/10 flex items-start gap-4">
         <div class="size-10 rounded-2xl bg-white flex items-center justify-center shrink-0 shadow-sm">
-           <Icon icon="ph:info-bold" class="text-primary text-xl" />
+          <Icon icon="ph:info-bold" class="text-primary text-xl" />
         </div>
         <div class="text-[11px] font-bold text-navy/60 leading-relaxed tracking-tighter">
-          Pastikan nomor rekening dan nama pemilik sesuai dengan buku tabungan untuk kelancaran proses pencairan dana toko anda.
+          Pastikan nomor rekening dan nama pemilik sesuai dengan buku tabungan untuk kelancaran proses pencairan dana
+          toko anda.
         </div>
       </div>
 
       <div class="space-y-6">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-           <BaseInput v-model="form.bankName" label="Nama Bank" placeholder="Contoh: BCA, Mandiri" required 
+          <BaseInput v-model="form.bankName" label="Nama Bank" placeholder="Contoh: BCA, Mandiri" required
             class="!rounded-2xl" icon="ph:bank-bold" />
-           <BaseInput v-model="form.accountNumber" label="Nomor Rekening" placeholder="Masukkan angka saja" required 
+          <BaseInput v-model="form.accountNumber" label="Nomor Rekening" placeholder="Masukkan angka saja" required
             class="!rounded-2xl" icon="ph:hash-bold" numberOnly />
         </div>
-        
-        <BaseInput v-model="form.accountName" label="Nama Lengkap Pemilik" placeholder="Sesuai Buku Tabungan" required 
+
+        <BaseInput v-model="form.accountName" label="Nama Lengkap Pemilik" placeholder="Sesuai Buku Tabungan" required
           class="!rounded-2xl" icon="ph:user-focus-bold" />
 
         <div class="bg-gray-50 p-5 rounded-3xl border border-gray-100 transition-all hover:border-primary/20 group">
           <label class="flex items-center gap-4 cursor-pointer select-none">
             <div class="relative flex items-center">
-              <input v-model="form.isPrimary" type="checkbox" 
+              <input v-model="form.isPrimary" type="checkbox"
                 class="peer h-6 w-6 rounded-lg border-gray-200 text-primary focus:ring-primary transition-all cursor-pointer opacity-0 absolute z-10" />
-              <div class="h-6 w-6 rounded-lg border-2 border-gray-200 peer-checked:bg-primary peer-checked:border-primary transition-all flex items-center justify-center bg-white">
-                 <Icon icon="ph:check-bold" class="text-white text-sm scale-0 peer-checked:scale-100 transition-transform" />
+              <div
+                class="h-6 w-6 rounded-lg border-2 border-gray-200 peer-checked:bg-primary peer-checked:border-primary transition-all flex items-center justify-center bg-white">
+                <Icon icon="ph:check-bold"
+                  class="text-white text-sm scale-0 peer-checked:scale-100 transition-transform" />
               </div>
             </div>
             <div>
               <div class="text-xs font-black text-navy tracking-widest">Jadikan Rekening Utama</div>
-              <div class="text-[10px] text-gray-400 font-medium">Rekening ini akan dipilih otomatis saat penarikan saldo</div>
+              <div class="text-[10px] text-gray-400 font-medium">Rekening ini akan dipilih otomatis saat penarikan saldo
+              </div>
             </div>
           </label>
         </div>
@@ -236,7 +244,7 @@
 
       <template #action>
         <div class="flex items-center justify-end gap-4 w-full pt-4">
-          <button @click="modal.show = false" 
+          <button @click="modal.show = false"
             class="px-6 py-4 text-[11px] font-black tracking-[0.2em] text-gray-400 hover:text-navy transition-colors">
             Batalkan
           </button>
@@ -248,15 +256,9 @@
       </template>
     </BaseDialogForm>
 
-    <AppDialog
-      v-model:show="deleteState.show"
-      title="Hapus Rekening?"
-      message="Rekening ini akan dihapus dari daftar. Anda tetap dapat menambahkannya kembali nanti."
-      type="danger"
-      confirm-text="Ya, Hapus"
-      cancel-text="Kembali"
-      @confirm="handleDelete"
-    />
+    <AppDialog v-model:show="deleteState.show" title="Hapus Rekening?"
+      message="Rekening ini akan dihapus dari daftar. Anda tetap dapat menambahkannya kembali nanti." type="danger"
+      confirm-text="Ya, Hapus" cancel-text="Kembali" @confirm="handleDelete" />
   </div>
 </template>
 

@@ -40,6 +40,46 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 -mt-4">
+            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+                    <Icon icon="ph:package" class="text-xl" />
+                </div>
+                <div>
+                    <p class="text-xs text-gray-400 font-bold tracking-wider">Total Produk</p>
+                    <p class="text-lg font-bold text-navy">{{ products.length }}</p>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div class="bg-gray-50 p-2 rounded-lg text-green-500 group-hover:bg-green-500 group-hover:text-white transition-colors">
+                    <Icon icon="ph:check-circle" class="text-xl" />
+                </div>
+                <div>
+                    <p class="text-xs text-gray-400 font-bold tracking-wider">Produk Aktif</p>
+                    <p class="text-lg font-bold text-navy">{{ products.filter(p => p.status === 'active').length }}</p>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div class="bg-gray-50 p-2 rounded-lg text-amber-500 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                    <Icon icon="ph:warning-circle" class="text-xl" />
+                </div>
+                <div>
+                    <p class="text-xs text-gray-400 font-bold tracking-wider">Stok Tipis</p>
+                    <p class="text-lg font-bold text-navy">{{ products.filter(p => p.stock < 10).length }}</p>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div class="bg-gray-50 p-2 rounded-lg text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-colors">
+                    <Icon icon="ph:eye-bold" class="text-xl" />
+                </div>
+                <div>
+                    <p class="text-xs text-gray-400 font-bold tracking-wider">Total View</p>
+                    <p class="text-lg font-bold text-navy">{{ products.reduce((acc, p) => acc + (p.views || 0), 0).toLocaleString('id-ID') }}</p>
+                </div>
+            </div>
+        </div>
 
         <!-- Search & Filter -->
         <div
@@ -49,10 +89,10 @@
                     label="Pencarian" />
             </div>
             <div class="w-full md:w-48">
-                <BaseSelect v-model="statusFilter" :items="statusOptions" label="Status" />
+                <BaseSelect v-model="statusFilter" :items="statusOptions" label="Status" item-title="title" />
             </div>
             <div class="w-full md:w-48">
-                <BaseSelect v-model="categoryFilter" :items="categoryOptions" label="Kategori" />
+                <BaseSelect v-model="categoryFilter" :items="categoryOptions" label="Kategori" item-title="title" />
             </div>
             <BaseButton variant="white" icon="ph:funnel" @click="resetFilters" class="h-11">
                 Reset
@@ -112,13 +152,7 @@
 
                             <!-- Category -->
                             <td class="px-6 py-4">
-                                <span :class="[
-                                    'px-3 py-1 rounded-full text-xs font-bold  tracking-wider',
-                                    product.category === 'equipment' ? 'bg-blue-50 text-blue-600' :
-                                        product.category === 'apparel' ? 'bg-purple-50 text-purple-600' :
-                                            product.category === 'accessories' ? 'bg-amber-50 text-amber-600' :
-                                                'bg-gray-100 text-gray-600'
-                                ]">
+                                <span class="text-xs font-bold text-navy tracking-tight">
                                     {{ getCategoryLabel(product.category) }}
                                 </span>
                             </td>
@@ -192,7 +226,15 @@
             </div>
         </div>
 
-        <!-- removed modal: edit/add now use dedicated pages -->
+        <AppDialog 
+            v-model:show="deleteModal.show"
+            title="Hapus Produk?"
+            :message="`Produk '${deleteModal.productName}' akan dihapus permanen dari katalog Anda.`"
+            confirm-text="Ya, Hapus"
+            cancel-text="Batal"
+            type="danger"
+            @confirm="handleConfirmDelete"
+        />
     </div>
 </template>
 
@@ -220,18 +262,24 @@ const searchQuery = ref('')
 const statusFilter = ref('all')
 const categoryFilter = ref('all')
 
+const deleteModal = ref({
+    show: false,
+    id: null,
+    productName: ''
+})
+
 const statusOptions = [
-    { label: 'Semua Status', value: 'all' },
-    { label: 'Aktif', value: 'active' },
-    { label: 'Draft', value: 'draft' },
-    { label: 'Habis', value: 'sold_out' }
+    { title: 'Semua Status', value: 'all' },
+    { title: 'Aktif', value: 'active' },
+    { title: 'Draft', value: 'draft' },
+    { title: 'Habis', value: 'sold_out' }
 ]
 
 const categoryOptions = [
-    { label: 'Semua Kategori', value: 'all' },
-    { label: 'Peralatan', value: 'equipment' },
-    { label: 'Pakaian', value: 'apparel' },
-    { label: 'Aksesoris', value: 'accessories' }
+    { title: 'Semua Kategori', value: 'all' },
+    { title: 'Peralatan', value: 'equipment' },
+    { title: 'Pakaian', value: 'apparel' },
+    { title: 'Aksesoris', value: 'accessories' }
 ]
 
 const fetchProducts = async () => {
@@ -295,10 +343,17 @@ const getStatusLabel = (status) => {
 const openCreateModal = () => router.push('/dashboard/seller/products/add')
 const editProduct = (product) => router.push(`/dashboard/seller/products/${product.id}`)
 
-const deleteProduct = async (product) => {
-    if (!confirm(`Apakah Anda yakin ingin menghapus produk "${product.name}"?`)) return
+const deleteProduct = (product) => {
+    deleteModal.value = {
+        show: true,
+        id: product.id,
+        productName: product.name
+    }
+}
+
+const handleConfirmDelete = async () => {
     try {
-        await del(`/products/${product.id}`)
+        await del(`/products/${deleteModal.value.id}`)
         toast.success('Produk berhasil dihapus')
         fetchProducts()
     } catch (error) {

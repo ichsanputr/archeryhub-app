@@ -72,8 +72,7 @@
                 </div>
                 <div>
                     <p class="text-xs text-gray-400 font-bold  tracking-wider">Total View</p>
-                    <p class="text-lg font-bold text-navy">{{news.reduce((acc, n) => acc + n.views, 0).toLocaleString()
-                    }}</p>
+                    <p class="text-lg font-bold text-navy">{{ news.reduce((acc, n) => acc + (n.views || 0), 0).toLocaleString() }}</p>
                 </div>
             </div>
         </div>

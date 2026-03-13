@@ -49,7 +49,7 @@
         <table class="w-full border-collapse min-w-[1000px]">
           <thead>
             <tr class="text-left bg-gray-50/50 border-b border-gray-100">
-              <th class="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400">Order ID</th>
+              <th class="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400">ID Pesanan</th>
               <th class="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400">Tanggal</th>
               <th class="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400">Pelanggan</th>
               <th class="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400">Total</th>
@@ -58,9 +58,9 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-50">
-            <tr v-for="order in orders" :key="order.uuid" class="group hover:bg-gray-50/80 transition-all duration-300">
+            <tr v-for="order in orders" :key="order.id" class="group hover:bg-gray-50/80 transition-all duration-300">
               <td class="px-8 py-6">
-                <div class="font-black text-navy text-sm uppercase tracking-wider group-hover:text-primary transition-colors">#{{ order.uuid.slice(0, 8) }}</div>
+                <div class="font-black text-navy text-sm uppercase tracking-wider group-hover:text-primary transition-colors">#{{ (order.id || '').slice(0, 8) }}</div>
               </td>
               <td class="px-8 py-6">
                 <div class="text-sm text-gray-500 font-medium">{{ formatDate(order.created_at) }}</div>
@@ -79,9 +79,11 @@
                 </span>
               </td>
               <td class="px-8 py-6 text-right">
-                <BaseButton variant="white" size="md" icon="ph:eye-bold" 
-                  class="h-10 w-10 border-gray-200 text-gray-400 hover:text-primary hover:border-primary transition-all p-0"
-                  :to="`/dashboard/seller/orders/${order.uuid}`" />
+                <BaseButton variant="white" size="md" icon="ph:arrow-right-bold" 
+                  class="h-11 px-5 !rounded-xl border-gray-100 text-gray-400 hover:text-white hover:bg-navy hover:border-navy transition-all shadow-sm"
+                  :to="`/dashboard/seller/orders/${order.id}`">
+                  Detail
+                </BaseButton>
               </td>
             </tr>
           </tbody>
