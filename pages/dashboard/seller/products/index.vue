@@ -8,66 +8,54 @@
                 style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
             </div>
 
-            <div class="relative p-5 sm:p-8">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                    <div class="flex items-center sm:items-start gap-4 flex-1">
-                        <!-- Icon Badge -->
-                        <div
-                            class="h-12 w-12 sm:h-14 sm:w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md flex-shrink-0">
-                            <Icon icon="ph:package-bold" class="text-primary text-xl sm:text-2xl" />
-                        </div>
-
-                        <!-- Title Section -->
-                        <div class="min-w-0">
-                            <h1
-                                class="text-xl sm:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2 truncate">
-                                Manajemen Produk
-                            </h1>
-                            <p class="text-slate-300 text-xs sm:text-sm max-w-2xl line-clamp-1 sm:line-clamp-none">
-                                Kelola katalog produk yang Anda jual di marketplace
-                            </p>
-                        </div>
+            <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div class="flex items-center gap-5">
+                    <div
+                        class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 shadow-inner">
+                        <Icon icon="ph:package-bold" class="text-primary text-2xl sm:text-3xl" />
                     </div>
-
-                    <!-- Action Button -->
-                    <div class="flex flex-col sm:flex-row gap-3">
-                        <BaseButton variant="primary" icon="ph:plus-bold"
-                            class="w-full sm:w-auto h-10 sm:h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-[10px] sm:text-xs"
-                            to="/dashboard/seller/products/add">
-                            Tambah Produk
-                        </BaseButton>
+                    <div>
+                        <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none uppercase">Manajemen Produk</h1>
+                        <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider uppercase">Kelola katalog produk yang Anda jual</p>
                     </div>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <BaseButton variant="primary" icon="ph:plus-bold"
+                        class="w-full sm:w-auto h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-[10px] !rounded-xl"
+                        to="/dashboard/seller/products/add">
+                        Tambah Produk
+                    </BaseButton>
                 </div>
             </div>
         </div>
         
         <!-- Quick Stats -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 -mt-4">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
                 <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
-                    <Icon icon="ph:package" class="text-xl" />
+                    <Icon icon="ph:package-bold" class="text-xl" />
                 </div>
                 <div>
-                    <p class="text-xs text-gray-400 font-bold tracking-wider">Total Produk</p>
-                    <p class="text-lg font-bold text-navy">{{ products.length }}</p>
+                    <p class="text-[9px] text-gray-400 font-black tracking-widest uppercase">Total Produk</p>
+                    <p class="text-lg font-black text-navy">{{ products.length }}</p>
                 </div>
             </div>
             <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
                 <div class="bg-gray-50 p-2 rounded-lg text-green-500 group-hover:bg-green-500 group-hover:text-white transition-colors">
-                    <Icon icon="ph:check-circle" class="text-xl" />
+                    <Icon icon="ph:check-circle-bold" class="text-xl" />
                 </div>
                 <div>
-                    <p class="text-xs text-gray-400 font-bold tracking-wider">Produk Aktif</p>
-                    <p class="text-lg font-bold text-navy">{{ products.filter(p => p.status === 'active').length }}</p>
+                    <p class="text-[9px] text-gray-400 font-black tracking-widest uppercase">Produk Aktif</p>
+                    <p class="text-lg font-black text-navy">{{ products.filter(p => p.status === 'active').length }}</p>
                 </div>
             </div>
             <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
                 <div class="bg-gray-50 p-2 rounded-lg text-amber-500 group-hover:bg-amber-500 group-hover:text-white transition-colors">
-                    <Icon icon="ph:warning-circle" class="text-xl" />
+                    <Icon icon="ph:warning-circle-bold" class="text-xl" />
                 </div>
                 <div>
-                    <p class="text-xs text-gray-400 font-bold tracking-wider">Stok Tipis</p>
-                    <p class="text-lg font-bold text-navy">{{ products.filter(p => p.stock < 10).length }}</p>
+                    <p class="text-[9px] text-gray-400 font-black tracking-widest uppercase">Stok Tipis</p>
+                    <p class="text-lg font-black text-navy">{{ products.filter(p => p.stock < 10).length }}</p>
                 </div>
             </div>
             <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
@@ -75,8 +63,8 @@
                     <Icon icon="ph:eye-bold" class="text-xl" />
                 </div>
                 <div>
-                    <p class="text-xs text-gray-400 font-bold tracking-wider">Total View</p>
-                    <p class="text-lg font-bold text-navy">{{ products.reduce((acc, p) => acc + (p.views || 0), 0).toLocaleString('id-ID') }}</p>
+                    <p class="text-[9px] text-gray-400 font-black tracking-widest uppercase">Total Views</p>
+                    <p class="text-lg font-black text-navy">{{ products.reduce((acc, p) => acc + (p.views || 0), 0).toLocaleString('id-ID') }}</p>
                 </div>
             </div>
         </div>

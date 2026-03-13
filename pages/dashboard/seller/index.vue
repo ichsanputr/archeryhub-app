@@ -5,51 +5,69 @@
       <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
       <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
 
-      <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div class="flex items-center gap-4">
-          <div class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0">
+      <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div class="flex items-center gap-5">
+          <div
+            class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 shadow-inner">
             <Icon icon="ph:coins-bold" class="text-primary text-2xl sm:text-3xl" />
           </div>
           <div>
-            <h1 class="text-xl sm:text-3xl font-black tracking-tight">Keuangan Penjual</h1>
-            <p class="text-slate-300 text-xs sm:text-sm font-medium mt-1">Dashboard penjual difokuskan untuk Transaksi dan Saldo.</p>
+            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none uppercase">Keuangan Penjual</h1>
+            <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider uppercase">Monitoring pendapatan dan saldo toko anda</p>
           </div>
         </div>
-        <div class="flex gap-3">
+        <div class="flex flex-col sm:flex-row gap-3">
           <NuxtLink to="/dashboard/seller/finance/transactions">
-            <BaseButton variant="primary" icon="ph:credit-card-bold" class="h-11 px-5 font-black text-xs uppercase tracking-widest">Transaksi</BaseButton>
+            <BaseButton variant="primary" icon="ph:credit-card-bold"
+              class="h-11 px-5 font-black text-[10px] uppercase tracking-widest !rounded-xl shadow-lg shadow-primary/20">
+              Transaksi
+            </BaseButton>
           </NuxtLink>
           <NuxtLink to="/dashboard/seller/finance/balance">
-            <BaseButton variant="white" icon="ph:wallet-bold" class="h-11 px-5 font-black text-xs uppercase tracking-widest">Saldo</BaseButton>
+            <BaseButton variant="white" icon="ph:wallet-bold"
+              class="h-11 px-5 font-black text-[10px] uppercase tracking-widest !rounded-xl border-white/10">
+              Saldo
+            </BaseButton>
           </NuxtLink>
         </div>
       </div>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <NuxtLink to="/dashboard/seller/finance/transactions" class="block rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
-        <div class="flex items-center justify-between mb-3">
-          <p class="text-[10px] font-black text-gray-400 tracking-widest uppercase">Transaksi</p>
-          <Icon icon="ph:credit-card" class="text-primary text-xl" />
+      <NuxtLink to="/dashboard/seller/finance/transactions"
+        class="block rounded-3xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-all group">
+        <div class="flex items-center justify-between mb-4">
+          <p class="text-[10px] font-black text-gray-400 tracking-widest uppercase">Total Transaksi</p>
+          <div class="bg-primary/10 p-2 rounded-lg text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+            <Icon icon="ph:credit-card-bold" class="text-xl" />
+          </div>
         </div>
-        <p class="text-3xl font-black text-navy">{{ transactionCount }}</p>
-        <p class="text-xs text-gray-500 mt-2">Total transaksi pembayaran yang masuk.</p>
+        <p class="text-3xl font-black text-navy uppercase tabular-nums tracking-tight">{{ transactionCount }}</p>
+        <p class="text-[10px] text-gray-400 font-bold mt-2 uppercase tracking-wider">Transaksi pembayaran masuk</p>
       </NuxtLink>
 
-      <NuxtLink to="/dashboard/seller/finance/balance" class="block rounded-2xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
-        <div class="flex items-center justify-between mb-3">
-          <p class="text-[10px] font-black text-gray-400 tracking-widest uppercase">Saldo</p>
-          <Icon icon="ph:wallet" class="text-primary text-xl" />
+      <NuxtLink to="/dashboard/seller/finance/balance"
+        class="block rounded-3xl border border-gray-100 bg-white p-6 shadow-sm hover:shadow-md transition-all group">
+        <div class="flex items-center justify-between mb-4">
+          <p class="text-[10px] font-black text-gray-400 tracking-widest uppercase">Saldo Dompet</p>
+          <div class="bg-green-50 p-2 rounded-lg text-green-600 group-hover:bg-green-500 group-hover:text-white transition-colors">
+            <Icon icon="ph:wallet-bold" class="text-xl" />
+          </div>
         </div>
-        <p class="text-3xl font-black text-navy">{{ formatCurrency(walletBalance) }}</p>
-        <p class="text-xs text-gray-500 mt-2">Saldo dompet penjual saat ini.</p>
+        <p class="text-3xl font-black text-navy uppercase tabular-nums tracking-tight">{{ formatCurrency(walletBalance) }}</p>
+        <p class="text-[10px] text-gray-400 font-bold mt-2 uppercase tracking-wider">Saldo dompet penjual aktif</p>
       </NuxtLink>
     </div>
 
-    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-      <div class="p-5 border-b border-gray-100 flex items-center justify-between">
-        <h2 class="text-lg font-black text-navy">Transaksi Terbaru</h2>
-        <NuxtLink to="/dashboard/seller/finance/transactions" class="text-xs font-black text-primary uppercase tracking-widest hover:underline">Lihat Semua</NuxtLink>
+    <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+      <div class="p-5 px-6 border-b border-gray-100 flex items-center justify-between">
+        <h2 class="text-xs font-black text-navy uppercase tracking-widest flex items-center gap-2">
+          <Icon icon="ph:clock-counter-clockwise-bold" class="text-primary" />
+          Transaksi Terbaru
+        </h2>
+        <NuxtLink to="/dashboard/seller/finance/transactions">
+          <BaseButton variant="ghost" class="text-[10px] font-black uppercase tracking-widest text-primary">Lihat Semua</BaseButton>
+        </NuxtLink>
       </div>
       <div class="overflow-x-auto">
         <table class="w-full text-left min-w-[760px]">

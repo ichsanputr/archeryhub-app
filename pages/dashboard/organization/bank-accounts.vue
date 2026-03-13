@@ -9,20 +9,19 @@
             <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
 
             <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-5">
                     <div
-                        class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0">
+                        class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 shadow-inner">
                         <Icon icon="ph:credit-card-bold" class="text-primary text-2xl sm:text-3xl" />
                     </div>
                     <div>
-                        <h1 class="text-xl sm:text-3xl font-black tracking-tight">Rekening Bank</h1>
-                        <p class="text-slate-300 text-xs sm:text-sm font-medium mt-1">Kelola rekening tujuan pencairan
-                            dana Anda</p>
+                        <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none uppercase">Rekening Bank</h1>
+                        <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider uppercase">Kelola rekening tujuan pencairan dana Anda</p>
                     </div>
                 </div>
                 <div>
                     <BaseButton @click="openAddModal" variant="primary" icon="ph:plus-bold"
-                        class="font-black uppercase tracking-widest text-xs h-11 px-6 shadow-lg shadow-primary/20">
+                        class="font-black uppercase tracking-widest text-[10px] h-11 px-6 shadow-lg shadow-primary/20 !rounded-xl">
                         Tambah Rekening
                     </BaseButton>
                 </div>

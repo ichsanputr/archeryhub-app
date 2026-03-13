@@ -11,21 +11,21 @@
             <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
 
             <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-5">
                     <div
-                        class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0">
+                        class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 shadow-inner">
                         <Icon icon="ph:chart-pie-slice-bold" class="text-primary text-2xl sm:text-3xl" />
                     </div>
                     <div>
-                        <h1 class="text-xl sm:text-3xl font-black tracking-tight">Overview</h1>
-                        <p class="text-slate-300 text-xs sm:text-sm font-medium mt-1">Selamat datang kembali, <span
-                                class="text-white font-bold">{{ welcomeName }}</span></p>
+                        <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none uppercase">Overview</h1>
+                        <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider uppercase">Welcome back, <span
+                                class="text-white">{{ welcomeName }}</span></p>
                     </div>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-3">
                     <NuxtLink to="/dashboard/organization/events" class="w-full sm:w-auto">
                         <BaseButton variant="primary" icon="ph:trophy-bold"
-                            class="w-full h-10 sm:h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-xs">
+                            class="w-full h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-[10px] !rounded-xl">
                             Kelola Event
                         </BaseButton>
                     </NuxtLink>
@@ -112,8 +112,8 @@
                 class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-sm transition-all border border-gray-100 group">
                 <div class="flex justify-between items-start">
                     <div>
-                        <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Total Pendapatan</p>
-                        <p class="text-navy-dark text-xl font-extrabold tracking-tight uppercase tabular-nums">
+                        <p class="text-[10px] text-gray-400 font-bold tracking-widest uppercase mb-1">Total Pendapatan</p>
+                        <p class="text-navy-dark text-xl font-black tracking-tight uppercase tabular-nums">
                             Rp {{ formatPrice(dashboardStats.totalRevenue || 0) }}
                         </p>
                     </div>
@@ -122,10 +122,10 @@
                         <Icon icon="ph:wallet-bold" class="text-xl" />
                     </div>
                 </div>
-                <div class="mt-auto flex items-center justify-between text-[10px] font-bold">
+                <div class="mt-auto flex items-center justify-between text-[9px] font-black uppercase tracking-widest">
                     <span class="text-orange-500 flex items-center gap-1">
                         <Icon icon="ph:clock-bold" />
-                        {{ dashboardStats.pendingPayments || 0 }} Menunggu Verif
+                        {{ dashboardStats.pendingPayments || 0 }} Menunggu
                     </span>
                     <NuxtLink to="/dashboard/organization/balance" class="text-primary hover:underline">Detail</NuxtLink>
                 </div>
@@ -203,12 +203,12 @@
             <div
                 class="lg:col-span-2 bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-sm">
                 <div class="p-4 px-6 border-b border-gray-100 flex items-center justify-between bg-white">
-                    <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">
+                    <h3 class="text-navy-dark font-black text-xs uppercase tracking-widest flex items-center gap-2">
                         <Icon icon="ph:chart-line-up-bold" class="text-primary" />
                         Rekap Event
                     </h3>
                     <NuxtLink to="/dashboard/organization/events">
-                        <BaseButton variant="ghost" size="xs">Lihat Semua</BaseButton>
+                        <BaseButton variant="ghost" class="text-[10px] uppercase font-black tracking-widest">Lihat Semua</BaseButton>
                     </NuxtLink>
                 </div>
                 <div class="p-5 space-y-4 flex-1 overflow-y-auto">
@@ -255,9 +255,9 @@
             <!-- Leaderboard -->
             <div class="bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-sm">
                 <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
-                    <h3 class="text-navy-dark font-bold text-lg flex items-center gap-2">Leaderboard</h3>
-                    <BaseButton variant="ghost" size="sm">
-                        View All
+                    <h3 class="text-navy-dark font-black text-xs uppercase tracking-widest flex items-center gap-2">Leaderboard</h3>
+                    <BaseButton variant="ghost" class="text-[10px] uppercase font-black tracking-widest">
+                        Semua
                     </BaseButton>
                 </div>
                 <div class="flex-1 overflow-y-auto">

@@ -2,13 +2,18 @@
   <div class="flex flex-col gap-8">
     <!-- Header -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-      <div>
-        <h1 class="text-3xl font-black text-navy tracking-tight">Profil Organisasi</h1>
-        <p class="text-gray-500 mt-1">Perbarui identitas, kontak, dan halaman publik organisasi Anda.</p>
+      <div class="flex items-center gap-5">
+        <div class="size-12 rounded-2xl bg-navy flex items-center justify-center shrink-0 shadow-lg">
+          <Icon icon="ph:buildings-bold" class="text-primary text-2xl" />
+        </div>
+        <div>
+          <h1 class="text-xl sm:text-2xl font-black text-navy tracking-tight leading-none uppercase">Profil Organisasi</h1>
+          <p class="text-[10px] text-gray-400 font-bold mt-1 tracking-wider uppercase">Kelola identitas publik organisasi Anda</p>
+        </div>
       </div>
       <div class="flex gap-3">
         <BaseButton variant="primary" :loading="saving" @click="saveProfile" icon="ph:floppy-disk"
-          class="h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-xs">
+          class="h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-[10px] !rounded-xl">
           {{ saving ? 'Menyimpan...' : 'Simpan Profil' }}
         </BaseButton>
       </div>

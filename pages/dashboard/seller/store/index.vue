@@ -16,11 +16,11 @@
             </div>
           </div>
           <div>
-            <div class="flex items-center gap-2 mb-1">
-              <h1 class="text-lg sm:text-2xl font-black tracking-tight leading-none">{{ form.name || 'Nama Toko Belum Diatur' }}</h1>
-              <span class="px-2 py-0.5 bg-primary/20 border border-primary/30 rounded-lg text-[8px] font-black tracking-widest text-primary uppercase">Terverifikasi</span>
+            <div class="flex items-center gap-2 mb-1.5">
+              <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none uppercase">{{ form.name || 'Nama Toko Belum Diatur' }}</h1>
+              <span class="px-2 py-0.5 bg-primary/20 border border-primary/30 rounded-lg text-[7px] font-black tracking-widest text-primary uppercase">Terverifikasi</span>
             </div>
-            <div class="text-slate-300 text-[10px] sm:text-xs font-bold tracking-wide">Kelola data publik dan tampilan toko anda</div>
+            <div class="text-slate-300 text-[9px] sm:text-xs font-bold tracking-wider uppercase">Kelola data publik dan tampilan toko anda</div>
           </div>
         </div>
       </div>

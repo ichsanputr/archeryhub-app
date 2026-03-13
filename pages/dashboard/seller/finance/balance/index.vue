@@ -1,22 +1,21 @@
 <template>
   <div class="space-y-8">
     <!-- Header Section -->
-    <div class="relative overflow-hidden rounded-[2.5rem] border border-primary/20 bg-navy text-white shadow-sm">
+    <div class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
       <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
       </div>
       <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
       <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
 
-      <div class="relative p-8 sm:p-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
-        <div class="flex items-center gap-5">
+      <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div class="flex items-center gap-4 sm:gap-5">
           <div
-            class="size-14 sm:size-16 rounded-[2rem] bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 shadow-inner">
-            <Icon icon="ph:bank-bold" class="text-primary text-3xl sm:text-4xl" />
+            class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 shadow-inner">
+            <Icon icon="ph:bank-bold" class="text-primary text-2xl sm:text-3xl" />
           </div>
           <div>
-            <h1 class="text-2xl sm:text-4xl font-black tracking-tight leading-tight">Saldo & Rekening</h1>
-            <div class="text-slate-300 text-xs sm:text-sm font-bold mt-1 tracking-wide">Kelola dana masuk dan akun
-              penarikan anda</div>
+            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none uppercase">Saldo & Rekening</h1>
+            <div class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider">Kelola dana masuk dan akun penarikan anda</div>
           </div>
         </div>
       </div>
@@ -26,30 +25,30 @@
       <!-- Left: Balance Card -->
       <div class="lg:col-span-1 space-y-6">
         <div
-          class="bg-gradient-to-br from-navy to-navy-dark rounded-[2.5rem] p-8 sm:p-10 text-white shadow-sm relative overflow-hidden border border-white/5 group">
+          class="bg-gradient-to-br from-navy to-navy-dark rounded-3xl p-6 sm:p-8 text-white shadow-sm relative overflow-hidden border border-white/5 group">
           <div
             class="absolute -top-8 -right-8 p-8 opacity-[0.03] transition-transform group-hover:scale-110 duration-700">
-            <Icon icon="ph:coins-bold" class="text-[12rem]" />
+            <Icon icon="ph:coins-bold" class="text-[10rem]" />
           </div>
 
           <div class="relative z-10">
             <div class="flex items-center gap-2 mb-4">
-              <div class="size-2 bg-primary animate-pulse rounded-full"></div>
-              <div class="text-primary text-[10px] font-black tracking-[0.2em]">Saldo Tersedia</div>
+              <div class="size-1.5 bg-primary animate-pulse rounded-full"></div>
+              <div class="text-primary text-[9px] font-black tracking-[0.2em] uppercase">Saldo Tersedia</div>
             </div>
 
-            <h2 class="text-4xl sm:text-5xl font-black tracking-tighter mb-10 leading-none">
-              <span class="text-2xl font-bold opacity-40 mr-1">Rp</span>{{ wallet.balance.toLocaleString('id-ID') }}
+            <h2 class="text-3xl sm:text-4xl font-black tracking-tighter mb-8 leading-none">
+              <span class="text-xl font-bold opacity-40 mr-1">Rp</span>{{ wallet.balance.toLocaleString('id-ID') }}
             </h2>
 
-            <div class="space-y-4">
-              <BaseButton variant="primary" block size="lg"
-                class="font-black text-[11px] h-14 !rounded-2xl shadow-xl shadow-primary/20 hover:scale-[1.02] transition-transform active:scale-95">
+            <div class="space-y-3">
+              <BaseButton variant="primary" block
+                class="font-black text-[10px] tracking-widest h-11 !rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform active:scale-95 uppercase">
                 Tarik Saldo Ke Bank
               </BaseButton>
-              <div class="flex items-center justify-center gap-2 bg-white/5 rounded-xl py-3 border border-white/5">
-                <Icon icon="ph:info-bold" class="text-primary text-sm" />
-                <div class="text-[9px] text-slate-400 font-black tracking-widest">
+              <div class="flex items-center justify-center gap-2 bg-white/5 rounded-lg py-2.5 border border-white/5">
+                <Icon icon="ph:info-bold" class="text-primary text-xs" />
+                <div class="text-[8px] text-slate-400 font-black tracking-widest uppercase">
                   Proses Penarikan 1-3 Hari Kerja
                 </div>
               </div>
@@ -59,13 +58,13 @@
 
         <!-- Quick Stats Mini -->
         <div class="grid grid-cols-2 gap-4">
-          <div class="bg-white rounded-[2rem] p-6 border border-gray-100 shadow-sm text-center">
-            <div class="text-[9px] font-black text-gray-400 tracking-widest mb-1">Total Rekening</div>
-            <div class="text-2xl font-black text-navy">{{ bankAccounts.length }}</div>
+          <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm text-center">
+            <div class="text-[8px] font-black text-gray-400 tracking-widest mb-1 uppercase">Total Rekening</div>
+            <div class="text-xl font-black text-navy">{{ bankAccounts.length }}</div>
           </div>
-          <div class="bg-white rounded-[2rem] p-6 border border-gray-100 shadow-sm text-center">
-            <div class="text-[9px] font-black text-gray-400 tracking-widest mb-1">Total Penarikan</div>
-            <div class="text-2xl font-black text-navy">{{ withdrawals.length }}</div>
+          <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm text-center">
+            <div class="text-[8px] font-black text-gray-400 tracking-widest mb-1 uppercase">Total Penarikan</div>
+            <div class="text-xl font-black text-navy">{{ withdrawals.length }}</div>
           </div>
         </div>
       </div>
@@ -73,32 +72,31 @@
       <!-- Right: Content Tabs/Lists -->
       <div class="lg:col-span-2 space-y-8">
         <!-- Bank Accounts Card -->
-        <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden flex flex-col">
-          <div class="p-8 border-b border-gray-50 flex flex-wrap items-center justify-between gap-4">
+        <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
+          <div class="px-6 py-5 border-b border-gray-50 flex flex-wrap items-center justify-between gap-4">
             <div class="flex items-center gap-3">
-              <div class="size-10 rounded-2xl bg-primary/10 flex items-center justify-center">
-                <Icon icon="ph:credit-card-bold" class="text-primary text-xl" />
+              <div class="size-9 rounded-xl bg-primary/10 flex items-center justify-center">
+                <Icon icon="ph:credit-card-bold" class="text-primary text-lg" />
               </div>
-              <h2 class="text-lg font-black text-navy tracking-widest">Rekening Bank</h2>
+              <h2 class="text-sm font-black text-navy tracking-widest uppercase">Rekening Bank</h2>
             </div>
-            <BaseButton @click="openAddModal" variant="primary" size="sm" icon="ph:plus-bold"
-              class="h-10 px-5 !rounded-xl font-black tracking-widest text-[10px]">
+            <BaseButton @click="openAddModal" variant="primary" icon="ph:plus-bold"
+              class="h-9 px-4 !rounded-lg font-black tracking-widest text-[9px] uppercase">
               Tambah Rekening
             </BaseButton>
           </div>
 
           <div class="p-4 overflow-x-auto no-scrollbar">
-            <div v-if="loading" class="p-12 text-center">
-              <Icon icon="ph:circle-notched-bold" class="text-4xl text-primary animate-spin mx-auto mb-3" />
-              <div class="text-xs font-bold text-gray-400 tracking-widest">Memuat Rekening...</div>
+            <div v-if="loading" class="p-10 text-center">
+              <Icon icon="ph:circle-notched-bold" class="text-3xl text-primary animate-spin mx-auto mb-3" />
+              <div class="text-[10px] font-bold text-gray-400 tracking-widest uppercase">Memuat Rekening...</div>
             </div>
 
             <div v-else-if="bankAccounts.length === 0"
-              class="p-12 text-center border-2 border-dashed border-gray-100 rounded-[2rem] m-4">
-              <Icon icon="ph:bank-bold" class="text-5xl text-gray-100 mx-auto mb-4" />
-              <div class="text-sm font-bold text-gray-400">Belum ada rekening bank yang terdaftar</div>
-              <div class="text-[10px] text-gray-300 font-medium mt-1">Tambahkan rekening untuk melakukan pencairan saldo
-              </div>
+              class="p-10 text-center border-2 border-dashed border-gray-50 rounded-2xl m-2">
+              <Icon icon="ph:bank-bold" class="text-4xl text-gray-100 mx-auto mb-3" />
+              <div class="text-sm font-bold text-gray-400">Belum ada rekening bank</div>
+              <div class="text-[9px] text-gray-300 font-medium mt-1">Tambahkan rekening untuk pencairan saldo</div>
             </div>
 
             <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -141,13 +139,13 @@
         </div>
 
         <!-- Withdrawal History Table -->
-        <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden">
-          <div class="p-8 border-b border-gray-50 flex items-center justify-between">
+        <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
+          <div class="px-6 py-5 border-b border-gray-50 flex items-center justify-between">
             <div class="flex items-center gap-3">
-              <div class="size-10 rounded-2xl bg-navy/5 flex items-center justify-center">
-                <Icon icon="ph:clock-counter-clockwise-bold" class="text-navy/60 text-xl" />
+              <div class="size-9 rounded-xl bg-navy/5 flex items-center justify-center">
+                <Icon icon="ph:clock-counter-clockwise-bold" class="text-navy/60 text-lg" />
               </div>
-              <h2 class="text-lg font-black text-navy tracking-widest">Riwayat Pencairan</h2>
+              <h2 class="text-sm font-black text-navy tracking-widest uppercase">Riwayat Pencairan</h2>
             </div>
           </div>
 
@@ -243,13 +241,13 @@
       </div>
 
       <template #action>
-        <div class="flex items-center justify-end gap-4 w-full pt-4">
+        <div class="flex items-center justify-end gap-3 w-full pt-2">
           <button @click="modal.show = false"
-            class="px-6 py-4 text-[11px] font-black tracking-[0.2em] text-gray-400 hover:text-navy transition-colors">
+            class="px-5 py-3 text-[10px] font-black tracking-widest text-gray-400 hover:text-navy transition-colors uppercase">
             Batalkan
           </button>
           <BaseButton variant="primary" :loading="modal.loading" @click="handleSubmit"
-            class="h-14 px-10 !rounded-2xl font-black tracking-[0.2em] text-[11px] shadow-xl shadow-primary/20">
+            class="h-11 px-8 !rounded-xl font-black tracking-widest text-[10px] shadow-lg shadow-primary/20 uppercase">
             {{ modal.isEdit ? 'Simpan Perubahan' : 'Daftarkan Rekening' }}
           </BaseButton>
         </div>

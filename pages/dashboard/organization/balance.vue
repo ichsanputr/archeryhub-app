@@ -4,7 +4,7 @@
         <div v-if="!isVerified"
             class="absolute inset-0 z-50 backdrop-blur-md bg-white/40 flex items-center justify-center p-6 rounded-3xl min-h-[600px]">
             <div
-                class="max-w-md w-full bg-white rounded-[2.5rem] shadow-md border border-gray-100 p-8 sm:p-10 text-center space-y-8 relative overflow-hidden">
+                class="max-w-md w-full bg-white rounded-3xl shadow-md border border-gray-100 p-8 sm:p-10 text-center space-y-8 relative overflow-hidden">
                 <!-- Background Decoration -->
                 <div class="absolute -top-12 -right-12 size-40 bg-primary/5 rounded-full blur-3xl"></div>
                 <div class="absolute -bottom-12 -left-12 size-40 bg-navy/5 rounded-full blur-3xl"></div>
@@ -19,9 +19,9 @@
                     </div>
 
                     <div class="space-y-2">
-                        <h2 class="text-3xl font-black text-navy tracking-tight">Verifikasi Keamanan</h2>
-                        <p class="text-[13px] text-gray-400 font-medium leading-relaxed max-w-[240px] mx-auto">
-                            Masukkan password akun Anda untuk mengakses fitur keuangan yang aman
+                        <h2 class="text-2xl font-black text-navy tracking-tight uppercase">Verifikasi Keamanan</h2>
+                        <p class="text-[11px] text-gray-400 font-bold leading-relaxed max-w-[240px] mx-auto uppercase tracking-wider">
+                            Masukkan password akun Anda untuk mengakses fitur keuangan
                         </p>
                     </div>
 
@@ -30,7 +30,7 @@
                             class="!rounded-2xl border-gray-100 focus:!border-primary/30" icon="ph:lock-bold"
                             @keyup.enter="verifyPassword" />
                         <BaseButton @click="verifyPassword" variant="primary" block :loading="verifying"
-                            class="h-14 !rounded-2xl font-black uppercase tracking-[0.2em] text-[11px] shadow-lg shadow-primary/20">
+                            class="h-11 !rounded-xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-primary/20">
                             Buka Akses Keamanan
                         </BaseButton>
                     </div>
@@ -49,15 +49,14 @@
                 <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
 
                 <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                    <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-5">
                         <div
-                            class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0">
+                            class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 shadow-inner">
                             <Icon icon="ph:bank-bold" class="text-primary text-2xl sm:text-3xl" />
                         </div>
                         <div>
-                            <h1 class="text-xl sm:text-3xl font-black tracking-tight">Saldo & Penarikan</h1>
-                            <p class="text-slate-300 text-xs sm:text-sm font-medium mt-1">Kelola saldo Anda dan ajukan
-                                penarikan</p>
+                            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none uppercase">Saldo & Penarikan</h1>
+                            <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider uppercase">Kelola saldo Anda dan ajukan penarikan</p>
                         </div>
                     </div>
                 </div>
@@ -71,17 +70,18 @@
                         <div class="absolute top-0 right-0 p-8 opacity-10">
                             <Icon icon="ph:coins-bold" class="text-8xl" />
                         </div>
-                        <p class="text-primary text-xs font-black uppercase tracking-widest mb-2">Saldo Tersedia</p>
-                        <h2 class="text-4xl font-black tracking-tight mb-8">Rp {{ balance.toLocaleString('id-ID') }}
+                        <p class="text-primary text-[10px] font-black uppercase tracking-[0.2em] mb-3">Saldo Tersedia</p>
+                        <h2 class="text-3xl sm:text-4xl font-black tracking-tight mb-10 leading-none tabular-nums">
+                            <span class="text-lg font-bold opacity-40 mr-1">Rp</span>{{ balance.toLocaleString('id-ID') }}
                         </h2>
 
-                        <div class="space-y-4">
-                            <BaseButton variant="primary" block size="lg"
-                                class="font-black uppercase tracking-widest text-xs h-12">
+                        <div class="space-y-3">
+                            <BaseButton variant="primary" block 
+                                class="font-black uppercase tracking-widest text-[10px] h-11 !rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform active:scale-95">
                                 Tarik Saldo
                             </BaseButton>
-                            <p class="text-[10px] text-slate-400 text-center font-medium">
-                                Minimal penarikan Rp 100.000. Proses 1-3 hari kerja.
+                            <p class="text-[9px] text-slate-400 text-center font-black uppercase tracking-widest leading-loose">
+                                Min. Penarikan Rp 100.000<br/>Proses 1-3 hari kerja
                             </p>
                         </div>
                     </div>

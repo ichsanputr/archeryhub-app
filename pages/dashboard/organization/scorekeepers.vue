@@ -11,35 +11,25 @@
             <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
             <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
 
-            <!-- Header Content -->
-            <div class="relative p-5 sm:p-8">
+            <div class="relative p-6 sm:p-8">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                    <div class="flex items-center sm:items-start gap-4 flex-1">
+                    <div class="flex items-center gap-5">
                         <!-- Icon Badge -->
                         <div
-                            class="h-12 w-12 sm:h-14 sm:w-14 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center shadow-md flex-shrink-0">
-                            <Icon icon="ph:user-focus" class="text-primary text-xl sm:text-2xl" />
+                            class="size-12 sm:size-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 shadow-inner">
+                            <Icon icon="ph:user-focus-bold" class="text-primary text-2xl sm:text-3xl" />
                         </div>
-
-                        <!-- Title Section -->
-                        <div class="min-w-0">
-                            <h1
-                                class="text-xl sm:text-3xl font-black leading-tight tracking-tight mb-1 sm:mb-2 truncate">
-                                Manajemen Scorekeeper
-                            </h1>
-                            <p class="text-slate-300 text-xs sm:text-sm max-w-2xl line-clamp-1 sm:line-clamp-none">
-                                Kelola akun staff pencatat skor untuk organisasi Anda
-                            </p>
+                        <div>
+                            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none uppercase">Scorekeeper</h1>
+                            <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider uppercase">Kelola akun staff pencatat skor organisasi</p>
                         </div>
                     </div>
-
-                    <!-- Action Buttons -->
                     <div class="flex flex-col sm:flex-row gap-3">
                         <BaseButton @click="isSubscriptionActive ? openAddModal() : (showPremiumModal = true)"
                             variant="primary" icon="ph:plus-bold"
-                            class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black uppercase tracking-widest"
+                            class="w-full sm:w-auto h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-[10px] !rounded-xl"
                             :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }">
-                            Tambah Scorekeeper
+                            Tambah Staff
                         </BaseButton>
                     </div>
                 </div>
@@ -47,14 +37,13 @@
         </div>
         <PremiumRequiredModal v-model:show="showPremiumModal" feature="scorekeeper" />
 
-        <!-- Search & Filter Card -->
         <div
-            class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
+            class="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
             <div class="flex-grow w-full">
                 <BaseInput v-model="searchQuery" icon="ph:magnifying-glass" placeholder="Cari nama atau kode staff..."
-                    label="Pencarian Staff" />
+                    class="!mb-0" />
             </div>
-            <BaseButton variant="white" icon="ph:funnel" @click="searchQuery = ''" class="h-11">
+            <BaseButton variant="white" icon="ph:funnel" @click="searchQuery = ''" class="h-11 px-6 !rounded-xl text-[10px] font-black uppercase tracking-widest">
                 Reset
             </BaseButton>
         </div>

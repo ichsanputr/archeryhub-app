@@ -1,9 +1,14 @@
 <template>
     <div class="space-y-6">
         <!-- Header -->
-        <div>
-            <h1 class="text-3xl font-black text-navy">Pengaturan Akun</h1>
-            <div class="text-text-secondary mt-1 font-medium">Kelola kredensial dan keamanan akun Anda</div>
+        <div class="flex items-center gap-5">
+            <div class="size-12 rounded-2xl bg-navy flex items-center justify-center shrink-0 shadow-lg">
+                <Icon icon="ph:gear-six-bold" class="text-primary text-2xl" />
+            </div>
+            <div>
+                <h1 class="text-xl sm:text-2xl font-black text-navy tracking-tight leading-none uppercase">Pengaturan Akun</h1>
+                <p class="text-[10px] text-gray-400 font-bold mt-1 tracking-wider uppercase">Kelola kredensial dan keamanan akun Anda</p>
+            </div>
         </div>
 
         <!-- Settings Nav Tabs -->
