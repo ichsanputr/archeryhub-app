@@ -265,6 +265,7 @@ const navSections = computed(() => {
       { label: 'Event Saya', icon: 'ph:trophy', path: '/dashboard/archer/events' },
       { label: 'Pembayaran', icon: 'ph:credit-card', path: '/dashboard/archer/payments' },
       { label: 'Keranjang', icon: 'ph:shopping-cart', path: '/dashboard/archer/cart' },
+      { label: 'Pesan', icon: 'ph:chat-circle-dots', path: '/dashboard/archer/chat', badge: 'Chat' },
       { label: 'Profil Pemanah', icon: 'ph:user-circle', path: '/dashboard/archer/profile' },
       { label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/archer/settings' },
     ]
@@ -277,6 +278,7 @@ const navSections = computed(() => {
       { label: 'Toko Saya', icon: 'ph:storefront', path: '/dashboard/seller/store' },
       { label: 'Produk', icon: 'ph:package', path: '/dashboard/seller/products' },
       { label: 'Pesanan', icon: 'ph:shopping-cart', path: '/dashboard/seller/orders' },
+      { label: 'Chat', icon: 'ph:chat-circle-dots', path: '/dashboard/seller/chat', badge: 'New' },
       { type: 'label', label: 'Keuangan' },
       {
         label: 'Keuangan',

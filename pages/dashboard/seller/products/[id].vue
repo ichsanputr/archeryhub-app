@@ -10,7 +10,7 @@
                     <span class="text-navy">Edit Produk</span>
                 </div>
                 <h1 class="text-3xl font-extrabold text-navy tracking-tight">Edit Produk</h1>
-                <p class="text-gray-500 font-medium mt-1">Perbarui informasi produk Anda di marketplace.</p>
+                <div class="text-gray-500 font-medium mt-1">Perbarui informasi produk Anda di marketplace.</div>
             </div>
         </div>
 
@@ -18,7 +18,7 @@
         <div v-if="isLoadingProduct" class="flex items-center justify-center py-24">
             <div class="flex flex-col items-center gap-4">
                 <LoadingSpinner size="xl" />
-                <p class="text-gray-400 font-medium">Memuat data produk...</p>
+                <div class="text-gray-400 font-medium">Memuat data produk...</div>
             </div>
         </div>
 
@@ -26,7 +26,7 @@
         <div v-else-if="notFound" class="flex flex-col items-center justify-center py-24">
             <Icon icon="ph:package-x" class="text-6xl text-gray-200 mb-4" />
             <h3 class="text-xl font-black text-navy mb-2">Produk Tidak Ditemukan</h3>
-            <p class="text-gray-400 font-medium mb-6">Produk yang ingin Anda edit tidak ditemukan.</p>
+            <div class="text-gray-400 font-medium mb-6">Produk yang ingin Anda edit tidak ditemukan.</div>
             <NuxtLink to="/dashboard/seller/products">
                 <BaseButton variant="primary" icon="ph:arrow-left">Kembali ke Daftar Produk</BaseButton>
             </NuxtLink>
@@ -94,7 +94,7 @@
                                             class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                                             placeholder="0 (opsional)" />
                                     </div>
-                                    <p class="text-xs text-gray-400 mt-1">Kosongkan jika tidak ada diskon</p>
+                                    <div class="text-xs text-gray-400 mt-1">Kosongkan jika tidak ada diskon</div>
                                 </div>
                             </div>
                             <div>
@@ -124,7 +124,7 @@
                                     <img :src="form.image_url" alt="Preview"
                                         class="h-32 w-32 object-cover rounded-xl border border-gray-200" />
                                 </div>
-                                <p v-else class="text-sm text-gray-500">Belum ada gambar utama.</p>
+                                <div v-else class="text-sm text-gray-500">Belum ada gambar utama.</div>
                             </div>
 
                             <div>
@@ -143,7 +143,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                <p v-else class="text-sm text-gray-500">Belum ada gambar tambahan.</p>
+                                <div v-else class="text-sm text-gray-500">Belum ada gambar tambahan.</div>
                             </div>
                         </div>
                     </div>
@@ -175,7 +175,7 @@
 
                     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
                         <h2 class="text-xl font-bold text-navy mb-2">Warna Produk</h2>
-                        <p class="text-sm text-gray-500 mb-5">Kelola opsi warna produk yang tersedia.</p>
+                        <div class="text-sm text-gray-500 mb-5">Kelola opsi warna produk yang tersedia.</div>
 
                         <div class="flex flex-col sm:flex-row gap-3 mb-4">
                             <input

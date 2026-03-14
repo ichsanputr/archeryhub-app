@@ -1,89 +1,87 @@
 <template>
   <div class="space-y-8">
-    <!-- Store Summary Header -->
-    <div class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
-      <div class="absolute inset-0" :style="{ backgroundImage: 'var(--motif-pattern)', opacity: 'var(--motif-opacity, 0.2)' }">
-      </div>
-      <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
-      <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
-
-      <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div class="flex items-center gap-4 sm:gap-6">
-          <div class="relative group">
-            <div class="size-16 sm:size-20 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0 overflow-hidden shadow-inner">
-               <img v-if="form.logo" :src="form.logo" class="w-full h-full object-cover" />
-               <Icon v-else icon="ph:storefront-bold" class="text-primary text-2xl sm:text-3xl" />
-            </div>
-          </div>
-          <div>
-            <div class="flex items-center gap-2 mb-1.5">
-              <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none uppercase">{{ form.name || 'Nama Toko Belum Diatur' }}</h1>
-              <span class="px-2 py-0.5 bg-primary/20 border border-primary/30 rounded-lg text-[7px] font-black tracking-widest text-primary uppercase">Terverifikasi</span>
-            </div>
-            <div class="text-slate-300 text-[9px] sm:text-xs font-bold tracking-wider uppercase">Kelola data publik dan tampilan toko anda</div>
-          </div>
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div class="flex items-center gap-5">
+        <div class="size-12 rounded-2xl bg-navy flex items-center justify-center shrink-0 shadow-lg">
+          <Icon icon="ph:storefront-bold" class="text-primary text-2xl" />
         </div>
+        <div>
+          <h1 class="text-xl sm:text-2xl font-black text-navy tracking-tight leading-none capitalize">Profil Toko</h1>
+          <div class="text-[10px] text-gray-400 font-bold mt-1 tracking-wide capitalize">Atur data publik dan tampilan toko anda</div>
+        </div>
+      </div>
+      <div class="flex gap-3">
+        <BaseButton variant="outline" size="sm" icon="ph:eye" @click="viewStore"
+          class="h-11 px-6 font-black capitalize tracking-widest text-[10px] !rounded-xl">
+          Pratinjau toko
+        </BaseButton>
+        <BaseButton variant="primary" :loading="loading" @click="handleUpdate" icon="ph:floppy-disk"
+          class="h-11 px-6 shadow-lg shadow-primary/20 font-black capitalize tracking-widest text-[10px] !rounded-xl">
+          {{ loading ? 'Menyimpan...' : 'Simpan perubahan' }}
+        </BaseButton>
       </div>
     </div>
 
     <!-- Tabs Navigation -->
-    <div class="flex items-center gap-1.5 p-1 bg-gray-50 rounded-2xl border border-gray-100 w-fit mx-auto sm:mx-0">
-      <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id" 
-        class="px-5 py-2.5 rounded-xl text-[10px] font-black tracking-[0.15em] transition-all duration-300"
-        :class="activeTab === tab.id ? 'bg-navy text-white shadow-md' : 'text-gray-400 hover:text-navy hover:bg-white'">
+    <div class="flex gap-1 bg-gray-100/80 rounded-2xl p-1.5 overflow-x-auto no-scrollbar shadow-sm">
+      <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
+        :class="activeTab === tab.id ? 'bg-white shadow text-navy' : 'text-gray-500 hover:text-navy hover:bg-white/50'"
+        class="flex items-center justify-center gap-2 flex-1 min-w-[140px] px-5 py-2.5 rounded-xl text-sm font-black transition-all">
+        <Icon :icon="tab.icon" class="text-lg" />
         {{ tab.label }}
       </button>
     </div>
 
-    <div class="grid grid-cols-1 xl:grid-cols-4 gap-8">
-      <!-- Main Form -->
-      <div class="xl:col-span-3 space-y-8">
-        <div v-if="activeTab === 'basic'" class="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Main Content -->
+      <div class="lg:col-span-2 space-y-6">
+        <div v-if="activeTab === 'basic'" class="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
           <!-- Visual Branding Section -->
-          <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden mb-6">
-            <div class="px-6 py-5 border-b border-gray-50 flex items-center gap-3">
-              <div class="size-9 rounded-xl bg-primary/10 flex items-center justify-center">
-                <Icon icon="ph:image-bold" class="text-primary text-lg" />
-              </div>
-              <h2 class="text-sm font-black text-navy tracking-widest uppercase">Identitas Visual</h2>
-            </div>
-            <div class="p-6 sm:p-8 space-y-6">
+          <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
+            <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2 capitalize">
+              <Icon icon="ph:image-bold" class="text-primary text-xl" />
+              Identitas visual
+            </h3>
+            
+            <div class="space-y-6">
               <!-- Banner Selection -->
               <div class="space-y-4">
                 <div class="flex items-center justify-between">
                   <div>
-                    <div class="text-sm font-black text-navy">Banner Toko</div>
-                    <div class="text-[10px] text-gray-400 font-bold uppercase">Latar belakang profil toko anda</div>
+                    <div class="text-[10px] font-black text-navy/30 capitalize tracking-widest">Banner profil (hero)</div>
                   </div>
-                  <BaseButton @click="openMedia('banner')" variant="white" size="sm" icon="ph:pencil-simple-bold"
-                    class="h-10 px-5 !rounded-xl font-black text-[10px] tracking-widest border-gray-200">
+                  <BaseButton @click="openMedia('banner')" variant="outline" size="xs" icon="ph:pencil-simple"
+                    class="h-8 px-4 font-black text-[9px] tracking-widest !rounded-lg">
                     Ganti Banner
                   </BaseButton>
                 </div>
-                <div class="relative h-48 sm:h-64 rounded-3xl bg-gray-50 border-2 border-dashed border-gray-200 overflow-hidden flex items-center justify-center group transition-all hover:border-primary/30">
+                <div class="relative aspect-[21/9] rounded-2xl bg-gray-50 border-2 border-dashed border-gray-200 overflow-hidden flex items-center justify-center group transition-all hover:border-primary/30">
                   <img v-if="form.banner" :src="form.banner" class="w-full h-full object-cover" />
                   <div v-else class="text-center">
-                    <Icon icon="ph:image-square-bold" class="text-4xl text-gray-200 mx-auto mb-2" />
-                    <div class="text-[10px] font-bold text-gray-300">Format 16:9 direkomendasikan</div>
+                    <Icon icon="ph:image-square-bold" class="text-3xl text-gray-200 mx-auto mb-2" />
+                    <div class="text-[9px] font-black text-gray-300 uppercase tracking-tighter">Format 21:9 disarankan</div>
                   </div>
                 </div>
               </div>
 
               <!-- Logo Selection -->
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4 border-t border-gray-50">
-                <div class="flex items-start gap-6">
-                  <div class="size-24 rounded-3xl bg-gray-50 border-2 border-dashed border-gray-200 overflow-hidden shrink-0 flex items-center justify-center">
+              <div class="space-y-4 pt-4 border-t border-gray-50">
+                <div class="text-[10px] font-black text-navy/30 capitalize tracking-widest">Logo toko</div>
+                <div class="flex items-center gap-6">
+                  <div class="size-24 rounded-2xl bg-gray-50 border-4 border-white shadow-md overflow-hidden shrink-0 relative group flex items-center justify-center">
                     <img v-if="form.logo" :src="form.logo" class="w-full h-full object-cover" />
                     <Icon v-else icon="ph:storefront-bold" class="text-3xl text-gray-200" />
-                  </div>
-                  <div class="space-y-3 pt-2">
-                    <div>
-                      <div class="text-sm font-black text-navy">Logo Toko</div>
-                      <div class="text-[10px] text-gray-400 font-bold">Format persegi (1:1)</div>
+                    <div class="absolute inset-0 bg-navy/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer"
+                      @click="openMedia('logo')">
+                      <Icon icon="ph:camera-bold" class="text-white text-2xl" />
                     </div>
-                    <BaseButton @click="openMedia('logo')" variant="white" size="sm" icon="ph:camera-bold"
-                      class="h-10 px-5 !rounded-xl font-black text-[10px] tracking-widest border-gray-200">
-                      Upload Logo
+                  </div>
+                  <div class="space-y-2">
+                    <h5 class="text-xs font-black text-navy capitalize">Store logo</h5>
+                    <div class="text-[10px] text-gray-500 max-w-[160px]">Rasio 1:1 direkomendasikan. Format transparan (PNG) lebih baik.</div>
+                    <BaseButton variant="outline" size="xs" icon="ph:pencil-simple" @click="openMedia('logo')">
+                      Ganti Logo
                     </BaseButton>
                   </div>
                 </div>
@@ -92,63 +90,92 @@
           </div>
 
           <!-- Store Information Section -->
-          <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-             <div class="px-6 py-5 border-b border-gray-50 flex items-center gap-3">
-                <div class="size-9 rounded-xl bg-navy/5 flex items-center justify-center">
-                  <Icon icon="ph:identification-card-bold" class="text-navy text-lg" />
-                </div>
-                <h2 class="text-sm font-black text-navy tracking-widest uppercase">Informasi Profil</h2>
+          <div class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6">
+            <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2 capitalize">
+              <Icon icon="ph:user-circle" class="text-navy text-xl" />
+              Data toko
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="md:col-span-2">
+                <BaseInput v-model="form.name" label="Nama Toko" placeholder="Nama brand atau toko anda" required />
               </div>
-            <div class="p-6 sm:p-8 space-y-5">
-              <BaseInput v-model="form.name" label="Nama Toko" placeholder="Nama brand atau toko anda" required class="!rounded-2xl" />
-              <BaseInput v-model="form.username" label="Username / Link Toko" placeholder="Contoh: archeryhub.id/toko-saya" required class="!rounded-2xl" prefix="archeryhub.id/" />
-              <BaseTextarea v-model="form.description" label="Deskripsi Toko" placeholder="Ceritakan tentang toko anda..." rows="4" class="!rounded-2xl" />
+              <div class="md:col-span-2">
+                <BaseInput v-model="form.username" label="Username / Link Toko" placeholder="toko-saya" required prefix="archeryhub.id/s/" />
+              </div>
+              <div class="md:col-span-2">
+                <BaseTextarea v-model="form.description" label="Deskripsi Toko" placeholder="Ceritakan tentang toko anda..." rows="4" />
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Contact & Social Section -->
-        <div v-if="activeTab === 'contact'" class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <div class="px-6 py-5 border-b border-gray-50 flex items-center gap-3">
-                <div class="size-9 rounded-xl bg-green-50 flex items-center justify-center">
-                  <Icon icon="ph:whatsapp-logo-bold" class="text-green-600 text-lg" />
-                </div>
-                <h2 class="text-sm font-black text-navy tracking-widest uppercase">Kontak & Sosial</h2>
-              </div>
-          <div class="p-6 sm:p-8 space-y-5">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <BaseInput v-model="form.email" label="Email Bisnis" placeholder="email@toko.com" class="!rounded-2xl" icon="ph:envelope-simple-bold" />
-              <BaseInput v-model="form.phone" label="Nomor WhatsApp" placeholder="0812xxxx" class="!rounded-2xl" icon="ph:whatsapp-logo-bold" />
-            </div>
+        <div v-if="activeTab === 'contact'" class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+          <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2 capitalize">
+            <Icon icon="ph:share-network-bold" class="text-primary text-xl" />
+            Kontak & sosial
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <BaseInput v-model="form.email" label="Email Bisnis" placeholder="email@toko.com" icon="ph:envelope-simple-bold" />
+            <BaseInput v-model="form.phone" label="Nomor WhatsApp" placeholder="0812xxxx" icon="ph:whatsapp-logo-bold" />
           </div>
         </div>
       </div>
 
-      <!-- Side Actions -->
-      <div class="xl:col-span-1">
-        <div class="sticky top-24 space-y-4">
-          <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-5 space-y-3">
-            <div class="flex items-center gap-2 mb-1">
-               <div class="size-1.5 bg-primary rounded-full animate-pulse"></div>
-               <div class="text-[9px] font-black text-gray-400 tracking-widest uppercase">Tindakan</div>
+      <!-- Preview Sidebar -->
+      <div class="space-y-6">
+        <!-- Store Card Preview -->
+        <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm overflow-hidden relative">
+          <div class="absolute top-0 left-0 w-full h-2 bg-primary"></div>
+          
+          <div class="flex flex-col items-center text-center mt-4">
+            <div class="w-24 h-24 rounded-2xl bg-primary/10 border-4 border-white p-1 mb-4 overflow-hidden shadow-lg relative flex items-center justify-center">
+              <img v-if="form.logo" :src="form.logo" class="w-full h-full object-cover rounded-xl" />
+              <Icon v-else icon="ph:storefront-bold" class="text-primary text-4xl" />
             </div>
-            <BaseButton @click="handleUpdate" :loading="loading" block variant="primary"
-              class="h-11 !rounded-xl font-black tracking-widest text-[10px] shadow-lg shadow-primary/20">
-              Simpan Perubahan
-            </BaseButton>
-            <BaseButton block variant="white"
-              class="h-11 !rounded-xl font-black tracking-widest text-[10px] border-gray-100 text-slate-400">
-              Lihat Toko Saya
-            </BaseButton>
-          </div>
+            
+            <h4 class="font-black text-navy text-lg leading-tight capitalize">{{ form.name || 'Nama toko' }}</h4>
+            <div class="flex items-center justify-center gap-1.5 mt-1">
+              <span class="text-gray-400 text-xs font-bold tracking-tighter">@{{ form.username || 'username' }}</span>
+              <Icon icon="ph:seal-check-fill" class="text-primary text-sm" />
+            </div>
 
-          <div class="bg-navy/5 rounded-3xl p-5 border border-navy/5">
-             <div class="flex items-center gap-2 mb-2">
-               <Icon icon="ph:info-bold" class="text-navy/40" />
-               <div class="text-[8px] font-black text-navy/40 tracking-widest uppercase">Tips Optimasi</div>
-             </div>
-             <div class="text-[11px] text-navy/60 font-medium leading-relaxed">Gunakan banner resolusi tinggi (1920x1080) untuk kesan profesional.</div>
+            <div v-if="form.description" class="mt-4 px-2">
+              <div class="text-xs text-gray-500 italic line-clamp-3">"{{ form.description }}"</div>
+            </div>
+
+            <div class="w-full h-px bg-gray-50 my-6"></div>
+
+            <div class="grid grid-cols-2 w-full gap-4">
+              <div class="text-center">
+                <div class="text-[10px] font-black text-gray-400 tracking-widest capitalize">Produk</div>
+                <div class="text-navy font-black">-</div>
+              </div>
+              <div class="text-center border-l border-gray-50">
+                <div class="text-[10px] font-black text-gray-400 tracking-widest capitalize">Rating</div>
+                <div class="flex items-center justify-center gap-1">
+                  <div class="text-navy font-black">5.0</div>
+                  <Icon icon="ph:star-fill" class="text-amber-400 text-[10px]" />
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
+
+        <!-- Helpful Tips -->
+        <div class="bg-navy rounded-2xl p-6 text-white shadow-md relative overflow-hidden">
+          <Icon icon="ph:lightbulb" class="absolute -right-4 -bottom-4 text-8xl text-white/5 rotate-12" />
+          <h4 class="font-black text-white mb-3 flex items-center gap-2 capitalize text-xs tracking-widest">Tips optimasi</h4>
+          <ul class="text-[10px] space-y-3 text-gray-300 font-bold capitalize tracking-wide">
+            <li class="flex gap-2">
+              <Icon icon="ph:check-circle-fill" class="text-primary shrink-0 text-base" />
+              Gunakan banner resolusi tinggi (21:9) untuk kesan premium.
+            </li>
+            <li class="flex gap-2">
+              <Icon icon="ph:check-circle-fill" class="text-primary shrink-0 text-base" />
+              Lengkapi deskripsi toko untuk meningkatkan kepercayaan pembeli.
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -173,8 +200,8 @@ const toast = useToast()
 
 const activeTab = ref('basic')
 const tabs = [
-  { id: 'basic', label: 'Profil Dasar' },
-  { id: 'contact', label: 'Kontak & Sosial' }
+  { id: 'basic', label: 'Profil Dasar', icon: 'ph:storefront-bold' },
+  { id: 'contact', label: 'Kontak & Sosial', icon: 'ph:phone-bold' }
 ]
 
 const loading = ref(false)
@@ -231,6 +258,14 @@ const handleUpdate = async () => {
     toast.error(error?.response?.data?.error || 'Gagal memperbarui pengaturan')
   } finally {
     loading.value = false
+  }
+}
+
+const viewStore = () => {
+  if (form.username) {
+    window.open(`/s/${form.username}`, '_blank')
+  } else {
+    toast.warning('Username toko belum diatur')
   }
 }
 

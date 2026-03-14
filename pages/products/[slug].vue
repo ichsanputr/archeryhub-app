@@ -118,10 +118,20 @@
                                     </div>
                                 </div>
 
-                                <BaseButton @click="handleAddToCart" variant="primary" size="lg" icon="ph:shopping-cart-simple-bold"
-                                    class="mt-5 w-full rounded-2xl py-4 font-black tracking-[0.15em] text-[11px] uppercase shadow-xl shadow-primary/20" :loading="isAddingToCart" :disabled="maxQty < 1">
-                                    Tambah ke Keranjang
-                                </BaseButton>
+                                <div class="mt-5 grid grid-cols-2 gap-3">
+                                    <button type="button" @click="handleAddToCart" :disabled="maxQty < 1 || isAddingToCart"
+                                        class="w-full flex items-center justify-center gap-2 rounded-2xl bg-primary py-3.5 text-[11px] font-black text-navy shadow-xl shadow-primary/20 transition hover:opacity-90 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed">
+                                        <Icon v-if="isAddingToCart" icon="ph:spinner" class="animate-spin text-lg shrink-0" />
+                                        <Icon v-else icon="ph:shopping-cart-simple-bold" class="text-lg shrink-0" />
+                                        <span class="uppercase tracking-wide">Keranjang</span>
+                                    </button>
+                                    <button type="button" @click="openChatDialog" :disabled="isChatStarting"
+                                        class="w-full flex items-center justify-center gap-2 rounded-2xl border-2 border-navy py-3.5 text-[11px] font-black text-navy transition hover:bg-navy hover:text-white active:scale-95 disabled:opacity-60">
+                                        <Icon v-if="isChatStarting" icon="ph:spinner" class="animate-spin text-lg shrink-0" />
+                                        <Icon v-else icon="ph:chat-circle-dots-bold" class="text-lg shrink-0" />
+                                        <span class="uppercase tracking-wide">Chat</span>
+                                    </button>
+                                </div>
 
                                 <div class="mt-4 flex items-center justify-between rounded-xl border border-black/5 bg-white p-3">
                                     <div class="text-[10px] font-black text-gray-400 tracking-widest uppercase">Bagikan</div>
@@ -134,15 +144,42 @@
                                 </div>
                             </div>
 
-                            <div class="rounded-2xl border border-black/5 bg-white p-4 shadow-sm">
+                            <div class="rounded-[2rem] border border-black/5 bg-white p-5 sm:p-6 shadow-sm">
                                 <div class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Informasi Penjual</div>
-                                <div class="mt-3 flex items-center gap-3">
-                                        <img :src="sellerAvatar"
-                                        alt="seller" class="h-10 w-10 rounded-full object-cover border border-gray-100" />
-                                    <div>
-                                        <div class="font-black text-navy text-xs">{{ product.seller?.store_name || 'Toko ArcheryHub' }}</div>
-                                        <div class="text-[10px] text-gray-400 font-bold">Respon chat cepat • Terverifikasi</div>
+                                <template v-if="product.seller">
+                                    <div class="mt-3 flex items-center gap-3">
+                                        <template v-if="product.seller.avatar_url">
+                                            <img :src="product.seller.avatar_url" :alt="product.seller.store_name" class="h-12 w-12 rounded-full object-cover border-2 border-gray-100 shrink-0" />
+                                        </template>
+                                        <div v-else class="h-12 w-12 rounded-full border-2 border-gray-100 bg-gray-100 flex items-center justify-center shrink-0">
+                                            <Icon icon="ph:storefront-bold" class="text-gray-400 text-xl" />
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <div v-if="product.seller.store_name" class="font-black text-navy text-sm truncate">{{ product.seller.store_name }}</div>
+                                            <div v-if="sellerSubtitle" class="text-[10px] text-gray-400 font-bold mt-0.5">{{ sellerSubtitle }}</div>
+                                        </div>
                                     </div>
+                                    <div v-if="product.seller.chat_response_rate || product.seller.chat_response_time"
+                                        class="mt-3 flex items-center gap-4 text-[10px] font-bold text-gray-500">
+                                        <span v-if="product.seller.chat_response_rate" class="flex items-center gap-1">
+                                            <Icon icon="ph:check-circle-bold" class="text-emerald-500 text-sm" />
+                                            {{ product.seller.chat_response_rate }} respon
+                                        </span>
+                                        <span v-if="product.seller.chat_response_time && product.seller.chat_response_time.toLowerCase() !== 'hitungan jam'" class="flex items-center gap-1">
+                                            <Icon icon="ph:clock-bold" class="text-amber-500 text-sm" />
+                                            {{ product.seller.chat_response_time }}
+                                        </span>
+                                    </div>
+                                    <div v-if="product.seller.rating != null && product.seller.rating > 0" class="mt-2 flex items-center gap-1.5 text-[10px] font-bold text-amber-600">
+                                        <Icon icon="ph:star-fill" class="text-amber-500 text-sm" />
+                                        {{ Number(product.seller.rating).toFixed(1) }} rating
+                                    </div>
+                                </template>
+                                <div v-else class="mt-3 flex items-center gap-3">
+                                    <div class="h-12 w-12 rounded-full border-2 border-gray-100 bg-gray-100 flex items-center justify-center shrink-0">
+                                        <Icon icon="ph:storefront-bold" class="text-gray-400 text-xl" />
+                                    </div>
+                                    <div class="text-[11px] text-gray-500 font-medium">Data penjual tidak tersedia</div>
                                 </div>
                             </div>
                         </aside>
@@ -249,12 +286,112 @@
             </button>
             <img :src="selectedImage" :alt="product?.name" class="max-h-[90vh] max-w-[92vw] rounded-2xl object-contain" />
         </div>
+
+        <!-- ── Chat Dialog (floating bottom-right) ─────────────────────────── -->
+        <Transition name="chat-slide">
+            <div v-if="isChatOpen"
+                class="fixed bottom-6 right-6 z-[200] flex flex-col w-[360px] max-w-[calc(100vw-2rem)] h-[520px] max-h-[calc(100vh-6rem)] rounded-3xl shadow-2xl border border-gray-200 overflow-hidden"
+                style="background: #fff">
+
+                <!-- Header -->
+                <div class="flex items-center gap-3 px-4 py-3 bg-navy text-white shrink-0">
+                    <div class="size-9 rounded-xl overflow-hidden bg-white/10 border border-white/20 shrink-0">
+                        <img v-if="chatConv?.seller_avatar" :src="chatConv.seller_avatar" class="w-full h-full object-cover" />
+                        <div v-else class="w-full h-full flex items-center justify-center">
+                            <Icon icon="ph:storefront-bold" class="text-white/70" />
+                        </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-black leading-none truncate">{{ chatConv?.seller_name || product?.seller?.store_name || 'Penjual' }}</p>
+                        <div v-if="chatConv?.product_name" class="flex items-center gap-1 mt-0.5">
+                            <Icon icon="ph:package-bold" class="text-[9px] text-white/60" />
+                            <span class="text-[10px] text-white/60 font-semibold truncate">{{ chatConv.product_name }}</span>
+                        </div>
+                    </div>
+                    <button @click="closeChatDialog"
+                        class="size-8 rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center transition shrink-0">
+                        <Icon icon="ph:x-bold" class="text-sm text-white" />
+                    </button>
+                </div>
+
+                <!-- Product context bar -->
+                <div v-if="chatConv?.product_name"
+                    class="flex items-center gap-2.5 px-4 py-2 bg-primary/5 border-b border-primary/15 shrink-0">
+                    <div class="size-7 rounded-lg overflow-hidden bg-white border border-gray-200 shrink-0">
+                        <img v-if="chatConv.product_image" :src="chatConv.product_image" class="w-full h-full object-cover" />
+                        <Icon v-else icon="ph:package-bold" class="text-gray-400 text-xs m-auto mt-1" />
+                    </div>
+                    <p class="text-[10px] font-black text-navy truncate flex-1">{{ chatConv.product_name }}</p>
+                </div>
+
+                <!-- Messages -->
+                <div ref="chatContainer"
+                    class="flex-grow overflow-y-auto px-4 py-4 space-y-2.5 no-scrollbar"
+                    style="background: linear-gradient(180deg,#f4f6fb 0%,#eef1f8 100%)">
+
+                    <!-- Loading skeleton -->
+                    <div v-if="chatLoadingMsg" class="space-y-3 animate-pulse">
+                        <div v-for="i in 3" :key="i" class="flex" :class="i % 2 === 0 ? 'justify-end' : 'justify-start'">
+                            <div class="h-9 rounded-2xl bg-white border border-gray-200"
+                                :class="i % 2 === 0 ? 'w-3/4' : 'w-1/2'"></div>
+                        </div>
+                    </div>
+
+                    <!-- Empty state -->
+                    <div v-else-if="chatMessages.length === 0"
+                        class="flex flex-col items-center justify-center h-full text-center py-6">
+                        <Icon icon="ph:chat-circle-bold" class="text-4xl text-gray-200 mb-2" />
+                        <p class="text-xs font-bold text-gray-400">Mulai percakapan</p>
+                        <p class="text-[10px] text-gray-300 mt-0.5">Tanyakan tentang produk ini</p>
+                    </div>
+
+                    <!-- Messages -->
+                    <div v-else v-for="msg in chatMessages" :key="msg.id"
+                        class="flex flex-col"
+                        :class="msg.sender_type === 'archer' ? 'items-end' : 'items-start'">
+                        <div class="max-w-[85%] px-3.5 py-2.5 text-[12px] leading-relaxed font-medium shadow-sm"
+                            :class="msg.sender_type === 'archer'
+                                ? 'bg-navy text-white rounded-2xl rounded-tr-sm'
+                                : 'bg-white text-navy border border-gray-200 rounded-2xl rounded-tl-sm'">
+                            {{ msg.message }}
+                        </div>
+                        <div class="mt-0.5 text-[9px] font-semibold text-gray-400 flex items-center gap-1"
+                            :class="msg.sender_type === 'archer' ? 'justify-end' : 'justify-start'">
+                            {{ formatChatTime(msg.created_at) }}
+                            <Icon v-if="msg.sender_type === 'archer'"
+                                :icon="msg.is_read ? 'ph:checks-bold' : 'ph:check-bold'"
+                                class="text-[9px]"
+                                :class="msg.is_read ? 'text-primary' : 'text-gray-300'" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input -->
+                <div class="px-3 py-3 bg-white border-t-2 border-gray-200 shrink-0">
+                    <div class="flex items-end gap-2">
+                        <div class="flex-grow bg-gray-50 rounded-2xl border-2 border-gray-200 focus-within:border-primary/40 focus-within:bg-white transition-all overflow-hidden">
+                            <textarea v-model="chatInput" placeholder="Tulis pesan..." rows="1"
+                                @keydown.enter.exact.prevent="sendChatMessage"
+                                class="w-full bg-transparent border-none focus:ring-0 text-sm font-medium px-3.5 py-2.5 max-h-20 resize-none no-scrollbar text-navy placeholder:text-gray-300 outline-none" />
+                        </div>
+                        <button @click="sendChatMessage" :disabled="!chatInput.trim() || chatSending"
+                            class="size-10 rounded-2xl bg-navy flex items-center justify-center shrink-0 shadow-md hover:bg-primary hover:shadow-primary/30 active:scale-95 transition-all disabled:opacity-40 border-2 border-navy hover:border-primary">
+                            <Icon v-if="chatSending" icon="ph:spinner" class="animate-spin text-primary text-sm" />
+                            <Icon v-else icon="ph:paper-plane-right-fill" class="text-primary text-sm" />
+                        </button>
+                    </div>
+                    <p class="text-[9px] text-gray-300 font-semibold text-center mt-1.5">
+                        Enter kirim · <NuxtLink :to="`/dashboard/archer/chat?conv=${chatConv?.id}`" class="text-primary hover:underline" @click.native="closeChatDialog">Buka di dashboard →</NuxtLink>
+                    </p>
+                </div>
+            </div>
+        </Transition>
     </div>
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { computed, ref, watchEffect } from 'vue'
+import { computed, ref, watchEffect, nextTick, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 import { useToast } from '~/composables/useToast'
@@ -297,6 +434,17 @@ const selectedColor = ref('')
 const selectedImage = ref('')
 const isZoomOpen = ref(false)
 const isAddingToCart = ref(false)
+const isChatStarting = ref(false)
+
+// ── Chat dialog ────────────────────────────────────────────────────────────
+const isChatOpen = ref(false)
+const chatConv = ref(null)
+const chatMessages = ref([])
+const chatInput = ref('')
+const chatSending = ref(false)
+const chatLoadingMsg = ref(false)
+const chatContainer = ref(null)
+let chatPollTimer = null
 
 const allowedProductImages = [
     'https://images.unsplash.com/photo-1503602642458-232111445657',
@@ -350,8 +498,16 @@ const galleryImages = computed(() => {
 
 const sellerAvatar = computed(() => {
     const avatar = product.value?.seller?.avatar_url
-    if (typeof avatar === 'string' && avatar.trim() !== '') return avatar
-    return allowedProductImages[4]
+    return (typeof avatar === 'string' && avatar.trim() !== '') ? avatar : ''
+})
+
+const sellerSubtitle = computed(() => {
+    const s = product.value?.seller
+    if (!s) return ''
+    const parts = []
+    if (s.is_verified) parts.push('Terverifikasi')
+    if (s.city) parts.push(s.city)
+    return parts.join(' • ') || ''
 })
 
 watchEffect(() => {
@@ -437,6 +593,102 @@ const handleAddToCart = async () => {
 }
 
 const formatPrice = (price) => new Intl.NumberFormat('id-ID').format(Number(price || 0))
+
+const openChatDialog = async () => {
+    if (!isLoggedIn.value) {
+        toast.error('Silahkan login sebagai Pemanah untuk memulai chat')
+        navigateTo('/auth/login')
+        return
+    }
+    const role = user.value?.role || user.value?.type || user.value?.user_type
+    if (role !== 'archer') {
+        toast.error('Hanya akun Pemanah yang dapat menghubungi penjual via chat')
+        return
+    }
+    const sellerID = product.value?.seller?.uuid || product.value?.seller_id
+    if (!sellerID) {
+        toast.error('Informasi penjual tidak tersedia')
+        return
+    }
+
+    isChatStarting.value = true
+    try {
+        const api = useApi()
+        const conv = await api.post('/chat/conversations', {
+            seller_id: sellerID,
+            product_id: product.value?.uuid || product.value?.id || null,
+            product_name: product.value?.name || null,
+            product_image: product.value?.image_url || null,
+        })
+        chatConv.value = conv
+        isChatOpen.value = true
+        await fetchChatMessages()
+        startChatPoll()
+    } catch (error) {
+        toast.error(error?.data?.error || 'Gagal memulai percakapan')
+    } finally {
+        isChatStarting.value = false
+    }
+}
+
+const fetchChatMessages = async () => {
+    if (!chatConv.value) return
+    chatLoadingMsg.value = chatMessages.value.length === 0
+    try {
+        const api = useApi()
+        const res = await api.get(`/chat/conversations/${chatConv.value.id}/messages`)
+        chatMessages.value = res.messages || []
+        scrollChatToBottom()
+    } catch { /* silent */ } finally {
+        chatLoadingMsg.value = false
+    }
+}
+
+const sendChatMessage = async () => {
+    const text = chatInput.value.trim()
+    if (!text || chatSending.value || !chatConv.value) return
+    chatSending.value = true
+    const tmp = { id: 'tmp-' + Date.now(), sender_type: 'archer', message: text, created_at: new Date().toISOString(), is_read: false }
+    chatMessages.value.push(tmp)
+    chatInput.value = ''
+    scrollChatToBottom()
+    try {
+        const api = useApi()
+        const sent = await api.post(`/chat/conversations/${chatConv.value.id}/messages`, { message: text })
+        const idx = chatMessages.value.findIndex(m => m.id === tmp.id)
+        if (idx >= 0) chatMessages.value[idx] = sent
+    } catch { toast.error('Gagal mengirim pesan') ; chatMessages.value = chatMessages.value.filter(m => m.id !== tmp.id) }
+    finally { chatSending.value = false }
+}
+
+const scrollChatToBottom = () => {
+    nextTick(() => { if (chatContainer.value) chatContainer.value.scrollTop = chatContainer.value.scrollHeight })
+}
+
+const startChatPoll = () => {
+    clearInterval(chatPollTimer)
+    chatPollTimer = setInterval(async () => {
+        if (!isChatOpen.value || !chatConv.value) return
+        const api = useApi()
+        try {
+            const res = await api.get(`/chat/conversations/${chatConv.value.id}/messages`)
+            const msgs = res.messages || []
+            if (msgs.length !== chatMessages.value.length) { chatMessages.value = msgs; scrollChatToBottom() }
+        } catch { /* silent */ }
+    }, 5000)
+}
+
+const closeChatDialog = () => {
+    isChatOpen.value = false
+    clearInterval(chatPollTimer)
+}
+
+onUnmounted(() => clearInterval(chatPollTimer))
+
+const formatChatTime = (dt) => {
+    if (!dt) return ''
+    return new Date(dt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+}
 </script>
 
 <style scoped>
@@ -444,9 +696,21 @@ const formatPrice = (price) => new Intl.NumberFormat('id-ID').format(Number(pric
 .fade-leave-active {
     transition: opacity 0.2s ease;
 }
-
 .fade-enter-from,
 .fade-leave-to {
     opacity: 0;
 }
+
+.chat-slide-enter-active,
+.chat-slide-leave-active {
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.chat-slide-enter-from,
+.chat-slide-leave-to {
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 </style>

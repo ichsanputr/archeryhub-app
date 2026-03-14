@@ -14,8 +14,8 @@
             <Icon icon="ph:bank-bold" class="text-primary text-2xl sm:text-3xl" />
           </div>
           <div>
-            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none uppercase">Saldo & Rekening</h1>
-            <div class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider">Kelola dana masuk dan akun penarikan anda</div>
+            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none capitalize">Saldo & rekening</h1>
+            <div class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wide capitalize">Kelola dana masuk dan akun penarikan anda</div>
           </div>
         </div>
       </div>

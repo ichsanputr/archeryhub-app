@@ -14,8 +14,8 @@
             <Icon icon="ph:clock-counter-clockwise-bold" class="text-primary text-2xl sm:text-3xl" />
           </div>
           <div>
-            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none uppercase">Riwayat Transaksi</h1>
-            <div class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider">Pantau semua arus kas masuk dan keluar toko anda</div>
+            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none capitalize">Riwayat transaksi</h1>
+            <div class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wide capitalize">Pantau semua arus kas masuk dan keluar toko anda</div>
           </div>
         </div>
         <div class="flex flex-wrap gap-3">
@@ -36,8 +36,8 @@
                 <Icon icon="ph:trend-up-bold" class="text-xl" />
             </div>
             <div>
-                <p class="text-[10px] text-gray-400 font-bold tracking-widest uppercase">Total Pemasukan</p>
-                <p class="text-lg font-black text-navy">Rp {{ stats.income.toLocaleString('id-ID') }}</p>
+                <div class="text-[10px] text-gray-400 font-bold tracking-widest uppercase">Total Pemasukan</div>
+                <div class="text-lg font-black text-navy">Rp {{ stats.income.toLocaleString('id-ID') }}</div>
             </div>
         </div>
         <div class="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
@@ -45,8 +45,8 @@
                 <Icon icon="ph:trend-down-bold" class="text-xl" />
             </div>
             <div>
-                <p class="text-[10px] text-gray-400 font-bold tracking-widest uppercase">Total Penarikan</p>
-                <p class="text-lg font-black text-navy">Rp {{ stats.outcome.toLocaleString('id-ID') }}</p>
+                <div class="text-[10px] text-gray-400 font-bold tracking-widest uppercase">Total Penarikan</div>
+                <div class="text-lg font-black text-navy">Rp {{ stats.outcome.toLocaleString('id-ID') }}</div>
             </div>
         </div>
         <div class="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
@@ -54,8 +54,8 @@
                 <Icon icon="ph:wallet-bold" class="text-xl" />
             </div>
             <div>
-                <p class="text-[10px] text-gray-400 font-bold tracking-widest uppercase">Saldo Saat Ini</p>
-                <p class="text-lg font-black text-navy">Rp {{ walletBalance.toLocaleString('id-ID') }}</p>
+                <div class="text-[10px] text-gray-400 font-bold tracking-widest uppercase">Saldo Saat Ini</div>
+                <div class="text-lg font-black text-navy">Rp {{ walletBalance.toLocaleString('id-ID') }}</div>
             </div>
         </div>
     </div>

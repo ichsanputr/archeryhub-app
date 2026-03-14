@@ -9,8 +9,7 @@
                     <span class="text-navy">Tambah Produk</span>
                 </div>
                 <h1 class="text-3xl font-extrabold text-navy tracking-tight">Tambah Produk Baru</h1>
-                <p class="text-gray-500 font-medium mt-1">Lengkapi informasi produk untuk ditambahkan ke marketplace.
-                </p>
+                <div class="text-gray-500 font-medium mt-1">Lengkapi informasi produk untuk ditambahkan ke marketplace.</div>
             </div>
         </div>
 
@@ -69,7 +68,7 @@
                                             class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                                             placeholder="0 (opsional)" />
                                     </div>
-                                    <p class="text-xs text-gray-400 mt-1">Kosongkan jika tidak ada diskon</p>
+                                    <div class="text-xs text-gray-400 mt-1">Kosongkan jika tidak ada diskon</div>
                                 </div>
                             </div>
                             <div>
@@ -77,7 +76,7 @@
                                 <input v-model.number="form.stock" type="number" min="0"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                                     placeholder="0" />
-                                <p class="text-xs text-gray-400 mt-1">Kosongkan atau isi 0 untuk tidak terbatas</p>
+                                <div class="text-xs text-gray-400 mt-1">Kosongkan atau isi 0 untuk tidak terbatas</div>
                             </div>
                         </div>
                     </div>
@@ -96,7 +95,7 @@
                                 <div class="rounded-xl border border-dashed border-gray-200 bg-gray-50 p-4">
                                     <img v-if="form.image_url" :src="form.image_url" alt="Primary product"
                                         class="h-40 w-full max-w-xs object-cover rounded-xl border border-gray-200" />
-                                    <p v-else class="text-sm text-gray-500">Belum ada gambar utama.</p>
+                                    <div v-else class="text-sm text-gray-500">Belum ada gambar utama.</div>
                                 </div>
                             </div>
 
@@ -120,14 +119,14 @@
                                     </button>
                                 </div>
                             </div>
-                            <p v-else class="text-sm text-gray-500">Belum ada gambar tambahan.</p>
+                            <div v-else class="text-sm text-gray-500">Belum ada gambar tambahan.</div>
                         </div>
                     </div>
 
                     <!-- Colors -->
                     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
                         <h2 class="text-xl font-bold text-navy mb-2">Warna Produk</h2>
-                        <p class="text-sm text-gray-500 mb-5">Tambahkan opsi warna yang tersedia untuk produk ini.</p>
+                        <div class="text-sm text-gray-500 mb-5">Tambahkan opsi warna yang tersedia untuk produk ini.</div>
 
                         <div class="flex flex-col sm:flex-row gap-3 mb-4">
                             <input
@@ -182,7 +181,7 @@
                     <!-- Shipping Methods -->
                     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8">
                         <h2 class="text-xl font-bold text-navy mb-2">Metode Pengiriman</h2>
-                        <p class="text-sm text-gray-500 mb-5">Tentukan metode pengiriman yang didukung seller untuk produk ini.</p>
+                        <div class="text-sm text-gray-500 mb-5">Tentukan metode pengiriman yang didukung seller untuk produk ini.</div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <label
@@ -197,8 +196,8 @@
                                     class="mt-0.5 rounded border-gray-300 text-primary focus:ring-primary"
                                 />
                                 <div>
-                                    <p class="text-sm font-bold text-navy">{{ method.title }}</p>
-                                    <p class="text-xs text-gray-500">{{ method.description }}</p>
+                                    <div class="text-sm font-bold text-navy">{{ method.title }}</div>
+                                    <div class="text-xs text-gray-500">{{ method.description }}</div>
                                 </div>
                             </label>
                         </div>

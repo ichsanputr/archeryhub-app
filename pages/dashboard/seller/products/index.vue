@@ -15,15 +15,15 @@
                         <Icon icon="ph:package-bold" class="text-primary text-2xl sm:text-3xl" />
                     </div>
                     <div>
-                        <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none uppercase">Manajemen Produk</h1>
-                        <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider uppercase">Kelola katalog produk yang Anda jual</p>
+                        <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none capitalize">Manajemen produk</h1>
+                        <div class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wide capitalize">Kelola katalog produk yang Anda jual</div>
                     </div>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-3">
                     <BaseButton variant="primary" icon="ph:plus-bold"
-                        class="w-full sm:w-auto h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-[10px] !rounded-xl"
+                        class="w-full sm:w-auto h-11 px-6 shadow-lg shadow-primary/20 font-black capitalize tracking-widest text-[10px] !rounded-xl"
                         to="/dashboard/seller/products/add">
-                        Tambah Produk
+                        Tambah produk
                     </BaseButton>
                 </div>
             </div>
@@ -36,8 +36,8 @@
                     <Icon icon="ph:package-bold" class="text-xl" />
                 </div>
                 <div>
-                    <p class="text-[9px] text-gray-400 font-black tracking-widest uppercase">Total Produk</p>
-                    <p class="text-lg font-black text-navy">{{ products.length }}</p>
+                    <div class="text-[9px] text-gray-400 font-black tracking-widest capitalize">Total produk</div>
+                    <div class="text-lg font-black text-navy">{{ products.length }}</div>
                 </div>
             </div>
             <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
@@ -45,8 +45,8 @@
                     <Icon icon="ph:check-circle-bold" class="text-xl" />
                 </div>
                 <div>
-                    <p class="text-[9px] text-gray-400 font-black tracking-widest uppercase">Produk Aktif</p>
-                    <p class="text-lg font-black text-navy">{{ products.filter(p => p.status === 'active').length }}</p>
+                    <div class="text-[9px] text-gray-400 font-black tracking-widest capitalize">Produk aktif</div>
+                    <div class="text-lg font-black text-navy">{{ products.filter(p => p.status === 'active').length }}</div>
                 </div>
             </div>
             <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
@@ -54,8 +54,8 @@
                     <Icon icon="ph:warning-circle-bold" class="text-xl" />
                 </div>
                 <div>
-                    <p class="text-[9px] text-gray-400 font-black tracking-widest uppercase">Stok Tipis</p>
-                    <p class="text-lg font-black text-navy">{{ products.filter(p => p.stock < 10).length }}</p>
+                    <div class="text-[9px] text-gray-400 font-black tracking-widest capitalize">Stok tipis</div>
+                    <div class="text-lg font-black text-navy">{{ products.filter(p => p.stock < 10).length }}</div>
                 </div>
             </div>
             <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
@@ -63,8 +63,8 @@
                     <Icon icon="ph:eye-bold" class="text-xl" />
                 </div>
                 <div>
-                    <p class="text-[9px] text-gray-400 font-black tracking-widest uppercase">Total Views</p>
-                    <p class="text-lg font-black text-navy">{{ products.reduce((acc, p) => acc + (p.views || 0), 0).toLocaleString('id-ID') }}</p>
+                    <div class="text-[9px] text-gray-400 font-black tracking-widest capitalize">Total views</div>
+                    <div class="text-lg font-black text-navy">{{ products.reduce((acc, p) => acc + (p.views || 0), 0).toLocaleString('id-ID') }}</div>
                 </div>
             </div>
         </div>
@@ -93,17 +93,17 @@
                 <table class="w-full text-left border-collapse min-w-[900px]">
                     <thead>
                         <tr class="bg-gray-50/50 border-b border-gray-100">
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">
+                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest capitalize">
                                 Produk</th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">
+                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest capitalize">
                                 Kategori</th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">
+                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest capitalize">
                                 Harga</th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">
+                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest capitalize">
                                 Stok</th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">
+                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest capitalize">
                                 Status</th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest text-right">
+                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest capitalize text-right">
                                 Aksi</th>
                         </tr>
                     </thead>
@@ -113,7 +113,7 @@
                             <td colspan="6" class="px-6 py-12 text-center">
                                 <div class="flex flex-col items-center gap-3">
                                     <LoadingSpinner size="lg" />
-                                    <p class="text-sm text-gray-400 font-medium">Memuat data produk...</p>
+                                    <div class="text-sm text-gray-400 font-medium">Memuat data produk...</div>
                                 </div>
                             </td>
                         </tr>
@@ -126,8 +126,8 @@
                                         <img :src="product.image" class="w-full h-full object-cover" />
                                     </div>
                                     <div>
-                                        <p class="font-bold text-navy group-hover:text-primary transition-colors">{{
-                                            product.name }}</p>
+                                        <div class="font-bold text-navy group-hover:text-primary transition-colors">{{
+                                            product.name }}</div>
                                         <div class="flex items-center gap-3 text-xs text-gray-400 mt-1">
                                             <span class="flex items-center gap-1">
                                                 <Icon icon="ph:eye" />
@@ -148,10 +148,10 @@
                             <!-- Price -->
                             <td class="px-6 py-4">
                                 <div>
-                                    <p class="font-bold text-navy">Rp {{ formatPrice(product.price) }}</p>
-                                    <p v-if="product.salePrice" class="text-xs text-red-500 line-through">
+                                    <div class="font-bold text-navy">Rp {{ formatPrice(product.price) }}</div>
+                                    <div v-if="product.salePrice" class="text-xs text-red-500 line-through">
                                         Rp {{ formatPrice(product.salePrice) }}
-                                    </p>
+                                    </div>
                                 </div>
                             </td>
 
@@ -197,10 +197,10 @@
                                         <Icon icon="ph:package" class="text-4xl" />
                                     </div>
                                     <div class="space-y-1">
-                                        <p class="text-lg font-bold text-navy">Belum Ada Produk</p>
-                                        <p class="text-sm text-gray-500 font-medium leading-relaxed">
+                                        <div class="text-lg font-bold text-navy">Belum Ada Produk</div>
+                                        <div class="text-sm text-gray-500 font-medium leading-relaxed">
                                             Tambahkan produk pertama Anda untuk mulai berjualan di marketplace.
-                                        </p>
+                                        </div>
                                     </div>
                                     <BaseButton variant="primary" icon="ph:plus-bold"
                                         to="/dashboard/seller/products/add">

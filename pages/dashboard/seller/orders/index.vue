@@ -14,13 +14,13 @@
             <Icon icon="ph:shopping-cart-bold" class="text-primary text-3xl sm:text-4xl" />
           </div>
           <div>
-            <h1 class="text-2xl sm:text-4xl font-black tracking-tight leading-tight">Pesanan Masuk</h1>
-            <div class="text-slate-300 text-xs sm:text-sm font-bold mt-1 tracking-wide">Kelola dan proses pesanan dari pembeli anda</div>
+            <h1 class="text-2xl sm:text-4xl font-black tracking-tight leading-tight capitalize">Pesanan masuk</h1>
+            <div class="text-slate-300 text-xs sm:text-sm font-bold mt-1 tracking-wide capitalize">Kelola dan proses pesanan dari pembeli anda</div>
           </div>
         </div>
         <BaseButton variant="primary" icon="ph:download-bold" @click="exportOrders" :loading="isExporting"
-          class="h-12 px-8 font-black uppercase tracking-widest text-xs shadow-lg shadow-primary/20">
-          Ekspor Laporan
+          class="h-12 px-8 font-black capitalize tracking-widest text-xs shadow-lg shadow-primary/20">
+          Ekspor laporan
         </BaseButton>
       </div>
     </div>

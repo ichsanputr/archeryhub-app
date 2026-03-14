@@ -6,8 +6,8 @@
                 <Icon icon="ph:gear-six-bold" class="text-primary text-2xl" />
             </div>
             <div>
-                <h1 class="text-xl sm:text-2xl font-black text-navy tracking-tight leading-none uppercase">Pengaturan Akun</h1>
-                <p class="text-[10px] text-gray-400 font-bold mt-1 tracking-wider uppercase">Kelola kredensial dan keamanan akun Anda</p>
+                <h1 class="text-xl sm:text-2xl font-black text-navy tracking-tight leading-none capitalize">Pengaturan akun</h1>
+                <div class="text-[10px] text-gray-400 font-bold mt-1 tracking-wide capitalize">Kelola kredensial dan keamanan akun Anda</div>
             </div>
         </div>
 
