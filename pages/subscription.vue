@@ -30,22 +30,6 @@
         </section>
 
         <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
-            <!-- Tab Switcher -->
-            <div class="flex justify-center mb-16 md:mb-24">
-                <div
-                    class="bg-gray-100 p-1.5 rounded-2xl flex items-center relative w-full max-w-xs sm:max-w-sm shadow-inner transition-all">
-                    <div
-                        class="absolute h-[calc(100%-12px)] w-full bg-white rounded-xl shadow-md transition-all duration-500">
-                    </div>
-                    <button
-                        class="flex-1 py-3.5 rounded-xl text-[11px] sm:text-xs font-black uppercase tracking-widest transition-all relative z-10 text-navy">
-                        Paket Penyelenggara (EO)
-                    </button>
-                </div>
-            </div>
-
-
-
             <!-- ─── EO Packages ─── -->
             <div class="space-y-16">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch max-w-5xl mx-auto">

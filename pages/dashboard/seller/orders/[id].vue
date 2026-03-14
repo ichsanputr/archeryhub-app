@@ -24,10 +24,6 @@
               8).toUpperCase() }} • {{ formatDate(order?.created_at) }}</div>
           </div>
         </div>
-        <BaseButton variant="primary" icon="ph:printer-bold" @click="window.print()"
-          class="h-10 px-6 font-black capitalize tracking-widest text-[10px] shadow-sm w-full md:w-auto">
-          Cetak invoice
-        </BaseButton>
       </div>
     </div>
 
@@ -290,7 +286,7 @@
               </div>
             </div>
 
-            <BaseButton variant="white" block
+            <BaseButton variant="white" block @click="handleContactBuyer"
               class="h-11 font-black text-[10px] !rounded-xl tracking-widest uppercase !border-gray-100 hover:!border-primary hover:!bg-primary/5 hover:!text-primary transition-all">
               <Icon icon="ph:chat-circle-dots-bold" class="text-base mr-2" />
               Hubungi Pembeli
@@ -390,6 +386,21 @@ const handleUpdateStatus = async () => {
   } finally {
     isUpdating.value = false
   }
+}
+
+const handleContactBuyer = () => {
+  const phoneRaw = order.value?.customer_phone
+  if (!phoneRaw) {
+    toast.error('Nomor WhatsApp pembeli tidak tersedia')
+    return
+  }
+  const digits = String(phoneRaw).replace(/\D/g, '')
+  if (!digits) {
+    toast.error('Format nomor WhatsApp pembeli tidak valid')
+    return
+  }
+  const url = `https://wa.me/${digits}`
+  window.open(url, '_blank')
 }
 
 const logSteps = computed(() => [

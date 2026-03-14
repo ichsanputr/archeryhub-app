@@ -180,17 +180,23 @@ const fetchTransactions = async () => {
             get('/sellers/wallet')
         ])
 
-        const orderLogs = (ordersRes.data || []).filter(o => o.payment_status === 'paid').map(o => ({
-            id: o.uuid,
-            type: 'income',
-            amount: o.total_amount,
-            date: o.created_at,
-            ref: o.uuid.slice(0, 8).toUpperCase(),
-            status: 'SUCCESS',
-            notes: `Penjualan ${o.customer_name}`
-        }))
+        const ordersRaw = ordersRes?.data ?? ordersRes ?? []
+        const orderArray = Array.isArray(ordersRaw) ? ordersRaw : []
+        const orderLogs = orderArray
+            .filter(o => o.payment_status === 'paid')
+            .map(o => ({
+                id: o.uuid,
+                type: 'income',
+                amount: o.total_amount,
+                date: o.created_at,
+                ref: o.uuid.slice(0, 8).toUpperCase(),
+                status: 'SUCCESS',
+                notes: `Penjualan ${o.customer_name}`
+            }))
 
-        const withdrawalLogs = (withdrawalsRes.data || withdrawalsRes || []).map(w => ({
+        const withdrawalsRaw = withdrawalsRes?.data ?? withdrawalsRes ?? []
+        const withdrawalsArray = Array.isArray(withdrawalsRaw) ? withdrawalsRaw : []
+        const withdrawalLogs = withdrawalsArray.map(w => ({
             id: w.id || w.uuid,
             type: 'outcome',
             amount: w.amount,

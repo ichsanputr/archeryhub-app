@@ -116,7 +116,7 @@
                                         <p class="text-sm text-gray-400 font-medium">Kategori lomba yang tersedia dalam
                                             event ini</p>
                                     </div>
-                                    <div v-if="divisionsData.length > 1" class="hidden md:flex gap-2">
+                                    <div v-if="divisionsData.length > 2" class="hidden md:flex gap-2">
                                         <button @click="scroll('left')"
                                             class="w-11 h-11 rounded-full border border-gray-200 flex items-center justify-center text-navy hover:border-navy hover:bg-navy hover:text-white transition-all shadow-sm">
                                             <Icon icon="ph:caret-left-bold" />
@@ -129,8 +129,8 @@
                                 </div>
 
                                 <div class="relative z-10">
-                                    <!-- Mobile Arrows: only when more than one card -->
-                                    <div v-if="divisionsData.length > 1"
+                                    <!-- Mobile Arrows: only when more than two cards -->
+                                    <div v-if="divisionsData.length > 2"
                                         class="flex md:hidden absolute top-1/2 -translate-y-1/2 left-0 right-0 justify-between pointer-events-none z-20 px-2">
                                         <button @click="scroll('left')"
                                             class="w-10 h-10 rounded-full bg-white/90 border border-gray-200 flex items-center justify-center text-navy shadow-lg pointer-events-auto">
@@ -268,14 +268,16 @@
                                                     class="text-xl md:text-2xl text-navy" />
                                             </div>
                                             <div class="min-w-0">
-                                                <p
+                                                <div
                                                     class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-0.5">
-                                                    {{ method.bank_name }}</p>
-                                                <p class="text-sm font-black text-navy truncate">{{
-                                                    method.account_number }}</p>
-                                                <p class="text-[10px] font-bold text-gray-500 truncate mt-0.5 italic">
-                                                    a.n {{
-                                                        method.account_name }}</p>
+                                                    {{ method.bank_name }}
+                                                </div>
+                                                <div class="text-sm font-black text-navy truncate">
+                                                    {{ method.account_number }}
+                                                </div>
+                                                <div class="text-[10px] font-bold text-gray-500 truncate mt-0.5 italic">
+                                                    a.n {{ method.account_name }}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

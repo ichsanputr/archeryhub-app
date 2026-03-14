@@ -34,7 +34,7 @@
           <div class="relative z-10">
             <div class="flex items-center gap-2 mb-4">
               <div class="size-1.5 bg-primary animate-pulse rounded-full"></div>
-              <div class="text-primary text-[9px] font-black tracking-[0.2em] uppercase">Saldo Tersedia</div>
+              <div class="text-primary text-[9px] font-black tracking-[0.2em]">Saldo tersedia</div>
             </div>
 
             <h2 class="text-3xl sm:text-4xl font-black tracking-tighter mb-8 leading-none">
@@ -43,30 +43,19 @@
 
             <div class="space-y-3">
               <BaseButton variant="primary" block
-                class="font-black text-[10px] tracking-widest h-11 !rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform active:scale-95 uppercase">
+                class="font-black text-[10px] tracking-widest h-11 !rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform active:scale-95">
                 Tarik Saldo Ke Bank
               </BaseButton>
               <div class="flex items-center justify-center gap-2 bg-white/5 rounded-lg py-2.5 border border-white/5">
                 <Icon icon="ph:info-bold" class="text-primary text-xs" />
-                <div class="text-[8px] text-slate-400 font-black tracking-widest uppercase">
-                  Proses Penarikan 1-3 Hari Kerja
+                <div class="text-[8px] text-slate-400 font-black tracking-widest">
+                  Proses penarikan 1-3 hari kerja
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Quick Stats Mini -->
-        <div class="grid grid-cols-2 gap-4">
-          <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm text-center">
-            <div class="text-[8px] font-black text-gray-400 tracking-widest mb-1 uppercase">Total Rekening</div>
-            <div class="text-xl font-black text-navy">{{ bankAccounts.length }}</div>
-          </div>
-          <div class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm text-center">
-            <div class="text-[8px] font-black text-gray-400 tracking-widest mb-1 uppercase">Total Penarikan</div>
-            <div class="text-xl font-black text-navy">{{ withdrawals.length }}</div>
-          </div>
-        </div>
       </div>
 
       <!-- Right: Content Tabs/Lists -->
@@ -78,10 +67,10 @@
               <div class="size-9 rounded-xl bg-primary/10 flex items-center justify-center">
                 <Icon icon="ph:credit-card-bold" class="text-primary text-lg" />
               </div>
-              <h2 class="text-sm font-black text-navy tracking-widest uppercase">Rekening Bank</h2>
+              <h2 class="text-sm font-black text-navy tracking-widest">Rekening bank</h2>
             </div>
             <BaseButton @click="openAddModal" variant="primary" icon="ph:plus-bold"
-              class="h-9 px-4 !rounded-lg font-black tracking-widest text-[9px] uppercase">
+              class="h-9 px-4 !rounded-lg font-black tracking-widest text-[9px]">
               Tambah Rekening
             </BaseButton>
           </div>
@@ -89,7 +78,7 @@
           <div class="p-4 overflow-x-auto no-scrollbar">
             <div v-if="loading" class="p-10 text-center">
               <Icon icon="ph:circle-notched-bold" class="text-3xl text-primary animate-spin mx-auto mb-3" />
-              <div class="text-[10px] font-bold text-gray-400 tracking-widest uppercase">Memuat Rekening...</div>
+              <div class="text-[10px] font-bold text-gray-400 tracking-widest">Memuat rekening...</div>
             </div>
 
             <div v-else-if="bankAccounts.length === 0"
@@ -145,7 +134,7 @@
               <div class="size-9 rounded-xl bg-navy/5 flex items-center justify-center">
                 <Icon icon="ph:clock-counter-clockwise-bold" class="text-navy/60 text-lg" />
               </div>
-              <h2 class="text-sm font-black text-navy tracking-widest uppercase">Riwayat Pencairan</h2>
+              <h2 class="text-sm font-black text-navy tracking-widest">Riwayat pencairan</h2>
             </div>
           </div>
 
@@ -243,11 +232,11 @@
       <template #action>
         <div class="flex items-center justify-end gap-3 w-full pt-2">
           <button @click="modal.show = false"
-            class="px-5 py-3 text-[10px] font-black tracking-widest text-gray-400 hover:text-navy transition-colors uppercase">
+            class="px-5 py-3 text-[10px] font-black tracking-widest text-gray-400 hover:text-navy transition-colors">
             Batalkan
           </button>
           <BaseButton variant="primary" :loading="modal.loading" @click="handleSubmit"
-            class="h-11 px-8 !rounded-xl font-black tracking-widest text-[10px] shadow-lg shadow-primary/20 uppercase">
+            class="h-11 px-8 !rounded-xl font-black tracking-widest text-[10px] shadow-lg shadow-primary/20">
             {{ modal.isEdit ? 'Simpan Perubahan' : 'Daftarkan Rekening' }}
           </BaseButton>
         </div>

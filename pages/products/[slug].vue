@@ -618,7 +618,7 @@ const openChatDialog = async () => {
         const api = useApi()
         const conv = await api.post('/chat/conversations', {
             seller_id: sellerID,
-            product_id: product.value?.uuid || product.value?.id || null,
+            product_id: product.value?.slug || product.value?.uuid || product.value?.id || null,
             product_name: product.value?.name || null,
             product_image: product.value?.image_url || null,
         })

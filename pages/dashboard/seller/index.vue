@@ -12,7 +12,7 @@
             <Icon icon="ph:storefront-bold" class="text-primary text-2xl sm:text-3xl" />
           </div>
           <div>
-            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none text-navy">Ringkasan Seller</h1>
+            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none text-white">Ringkasan Seller</h1>
             <div class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wide capitalize">Pantau performa dan operasional toko anda</div>
           </div>
         </div>

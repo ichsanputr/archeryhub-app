@@ -265,7 +265,7 @@ const navSections = computed(() => {
       { label: 'Event Saya', icon: 'ph:trophy', path: '/dashboard/archer/events' },
       { label: 'Pembayaran', icon: 'ph:credit-card', path: '/dashboard/archer/payments' },
       { label: 'Keranjang', icon: 'ph:shopping-cart', path: '/dashboard/archer/cart' },
-      { label: 'Pesan', icon: 'ph:chat-circle-dots', path: '/dashboard/archer/chat', badge: 'Chat' },
+      { label: 'Pesan', icon: 'ph:chat-circle-dots', path: '/dashboard/archer/chat', badge: 'New' },
       { label: 'Profil Pemanah', icon: 'ph:user-circle', path: '/dashboard/archer/profile' },
       { label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/archer/settings' },
     ]

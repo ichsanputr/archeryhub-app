@@ -329,12 +329,8 @@
                                 </div>
                             </div>
                         </section>
-                    </div>
 
-                    <!-- RIGHT COLUMN — Payment + Summary (sticky) -->
-                    <div class="lg:col-span-2 lg:sticky lg:top-6 space-y-5">
-
-                        <!-- Order Summary -->
+                        <!-- Order Summary (below Pilih Kategori) -->
                         <section class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                             <div
                                 class="px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white flex items-center gap-3">
@@ -384,6 +380,10 @@
                                 </div>
                             </div>
                         </section>
+                    </div>
+
+                    <!-- RIGHT COLUMN — Payment + CTA (sticky) -->
+                    <div class="lg:col-span-2 lg:sticky lg:top-6 space-y-5">
 
                         <!-- Payment Method -->
                         <section v-if="event.registration_fee > 0"
@@ -421,36 +421,80 @@
                                     </button>
                                 </div>
 
-                                <!-- Online Payment Channels -->
-                                <div v-if="form.payment_type === 'online'" class="space-y-3">
+                                <!-- Online Payment Channels — Expansion panel -->
+                                <div v-if="form.payment_type === 'online'" class="space-y-2">
                                     <span
                                         class="text-[10px] font-black text-gray-600 uppercase tracking-widest block">Pilih
                                         Metode Pembayaran Online</span>
-                                    <div class="grid grid-cols-2 gap-2">
-                                        <button v-for="ch in onlineChannels" :key="ch.code"
-                                            @click="form.online_channel = ch.code"
-                                            class="flex items-center gap-2.5 p-3 rounded-xl border-2 transition-all text-left"
-                                            :class="form.online_channel === ch.code ? 'border-navy bg-navy/5' : 'border-gray-100 hover:border-gray-200 bg-gray-50'">
-                                            <div
-                                                class="h-8 w-8 rounded-lg bg-white border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden p-1">
-                                                <img v-if="ch.icon" :src="ch.icon"
-                                                    class="w-full h-full object-contain" />
-                                                <Icon v-else icon="ph:credit-card-bold" class="text-navy text-sm" />
-                                            </div>
-                                            <div class="min-w-0">
-                                                <span
-                                                    class="text-[10px] font-black text-navy uppercase tracking-wider block leading-tight">{{
-                                                        ch.label }}</span>
-                                                <span class="text-[9px] text-gray-400 font-medium block">{{ ch.type
-                                                    }}</span>
-                                            </div>
-                                            <div v-if="form.online_channel === ch.code" class="ml-auto shrink-0">
+                                    <div class="flex flex-col gap-2">
+                                        <div v-for="ch in onlineChannels" :key="ch.code"
+                                            class="rounded-xl border-2 transition-all overflow-hidden"
+                                            :class="form.online_channel === ch.code ? 'border-navy bg-navy/5' : 'border-gray-100 hover:border-gray-200 bg-white'">
+                                            <button @click="selectOnlineChannel(ch.code)"
+                                                class="w-full flex items-center gap-3 p-3 text-left">
                                                 <div
-                                                    class="size-4 rounded-full bg-navy flex items-center justify-center">
-                                                    <Icon icon="ph:check-bold" class="text-primary text-[8px]" />
+                                                    class="h-9 w-9 rounded-lg bg-white border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden p-1">
+                                                    <img v-if="ch.icon" :src="ch.icon"
+                                                        class="w-full h-full object-contain" />
+                                                    <Icon v-else icon="ph:credit-card-bold" class="text-navy text-sm" />
+                                                </div>
+                                                <div class="flex-1 min-w-0">
+                                                    <span
+                                                        class="text-sm font-black text-navy block leading-tight">{{
+                                                            ch.label }}</span>
+                                                    <span class="text-[10px] text-gray-400 font-medium">{{ ch.type }}</span>
+                                                </div>
+                                            </button>
+                                            <!-- Expanded: payment instructions -->
+                                            <div v-if="form.online_channel === ch.code"
+                                                class="border-t border-gray-100 bg-white/80 px-4 pb-4 pt-2">
+                                                <div v-if="channelInstructionsLoading === ch.code"
+                                                    class="flex items-center gap-2 py-4 text-gray-500">
+                                                    <Icon icon="ph:circle-notch-bold" class="animate-spin text-lg" />
+                                                    <span class="text-xs font-medium">Memuat panduan pembayaran...</span>
+                                                </div>
+                                                <div v-else-if="channelInstructionGroups(ch.code).length"
+                                                    class="space-y-4">
+                                                    <!-- Tab panel when multiple platforms (e.g. Internet Banking, Aplikasi BRImo) -->
+                                                    <div v-if="channelInstructionGroups(ch.code).length > 1"
+                                                        class="flex gap-2 flex-wrap border-b border-gray-100 pb-2 mb-2">
+                                                        <button
+                                                            v-for="(group, gi) in channelInstructionGroups(ch.code)"
+                                                            :key="group.title"
+                                                            @click="setActiveInstructionTab(ch.code, gi)"
+                                                            :class="getActiveInstructionTab(ch.code) === gi
+                                                                ? 'bg-navy text-white border-navy'
+                                                                : 'bg-white text-gray-500 border-gray-200 hover:border-navy/40'"
+                                                            class="px-3 py-1.5 rounded-lg border text-[10px] font-black uppercase tracking-widest transition-colors">
+                                                            {{ group.title }}
+                                                        </button>
+                                                    </div>
+                                                    <!-- Steps for active tab (or only group) -->
+                                                    <div
+                                                        v-for="(group, gi) in channelInstructionGroups(ch.code)"
+                                                        :key="group.title"
+                                                        v-show="channelInstructionGroups(ch.code).length === 1 || getActiveInstructionTab(ch.code) === gi"
+                                                        class="space-y-2.5">
+                                                        <div v-if="channelInstructionGroups(ch.code).length > 1"
+                                                            class="text-[10px] font-black text-gray-500 uppercase tracking-widest">
+                                                            {{ group.title }}
+                                                        </div>
+                                                        <div v-for="(step, si) in (group.steps || [])" :key="si"
+                                                            class="flex gap-3">
+                                                            <span
+                                                                class="size-5 mt-0.5 rounded-full bg-primary/10 text-primary font-black flex items-center justify-center shrink-0 text-[9px]">
+                                                                {{ si + 1 }}
+                                                            </span>
+                                                            <span v-html="step"
+                                                                class="text-xs text-gray-600 font-medium leading-relaxed"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div v-else class="py-3 text-xs text-gray-500 italic">
+                                                    Panduan tidak tersedia. Setelah mendaftar, instruksi pembayaran akan muncul.
                                                 </div>
                                             </div>
-                                        </button>
+                                        </div>
                                     </div>
                                     <div class="p-3 bg-blue-50 rounded-xl border border-blue-100 flex gap-2">
                                         <Icon icon="ph:shield-check-bold"
@@ -577,6 +621,7 @@
 definePageMeta({ layout: 'blank' })
 
 import { useApi } from '~/composables/useApi'
+import { usePayment } from '~/composables/usePayment'
 import { useImageOrDefault } from '~/composables/useImageHelper'
 import BaseButton from '~/components/common/BaseButton.vue'
 import BaseInput from '~/components/common/BaseInput.vue'
@@ -592,6 +637,7 @@ const apiBaseUrl = config.public.apiBaseUrl
 
 const { user, isLoggedIn, archerProfile: globalArcherProfile } = useAuth()
 const { upload, put, post } = useApi()
+const payment = usePayment()
 
 // ─── DATA FETCHING ────────────────────────────────────────────────────────────
 const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-register-${slug}`, async () => {
@@ -677,6 +723,9 @@ const { data, pending, error: fetchError, refresh } = await useAsyncData(`event-
 const loading = ref(false)
 const submitError = ref('')
 const registrationSuccess = ref(false)
+const channelInstructionsLoading = ref(null)
+const channelInstructionsCache = ref({})
+const activeInstructionTabByChannel = ref({}) // { [channelCode]: tabIndex } for multi-platform tabs
 const paymentResult = ref(null)
 const redirectCountdown = ref(4)
 const proofInput = ref(null)
@@ -705,7 +754,7 @@ const form = ref({
     payment_amount: 0,
     payment_proofs: [],
     payment_type: 'online',
-    online_channel: 'QRIS'
+    online_channel: ''
 })
 
 const profileForm = ref({
@@ -726,12 +775,7 @@ const genderOptions = [
 
 const onlineChannels = computed(() => data.value?.onlineChannels || [])
 
-// Auto-select first channel if QRIS not available
-watch(onlineChannels, (chans) => {
-    if (chans.length > 0 && (!form.value.online_channel || !chans.find(c => c.code === form.value.online_channel))) {
-        form.value.online_channel = chans[0].code
-    }
-}, { immediate: true })
+// No auto-select: user must explicitly choose payment method
 
 // ─── COMPUTED ─────────────────────────────────────────────────────────────────
 const event = computed(() => data.value?.event || { name: '', date: '', location: '', image: '', description: '', registration_fee: 0 })
@@ -810,6 +854,37 @@ const getPaymentMethodImage = (bankName) => {
         bankName.toLowerCase().includes(m.value.toLowerCase())
     )
     return m ? m.image : null
+}
+
+// Online channel expansion panel: fetch & show payment instructions
+const selectOnlineChannel = async (code) => {
+    form.value.online_channel = code
+    if (channelInstructionsCache.value[code]) return
+    channelInstructionsLoading.value = code
+    try {
+        const data = await payment.getInstruction(code)
+        const groups = Array.isArray(data)
+            ? data.map(g => ({ title: g.title || '', steps: Array.isArray(g.steps) ? g.steps : [] }))
+            : []
+        channelInstructionsCache.value = { ...channelInstructionsCache.value, [code]: groups }
+    } catch {
+        channelInstructionsCache.value = { ...channelInstructionsCache.value, [code]: [] }
+    } finally {
+        channelInstructionsLoading.value = null
+    }
+}
+
+const channelInstructionGroups = (code) => {
+    return channelInstructionsCache.value[code] || []
+}
+
+// Tab panel for multi-platform instructions (Internet Banking | Aplikasi BRImo)
+const getActiveInstructionTab = (code) => {
+    return activeInstructionTabByChannel.value[code] ?? 0
+}
+
+const setActiveInstructionTab = (code, index) => {
+    activeInstructionTabByChannel.value = { ...activeInstructionTabByChannel.value, [code]: index }
 }
 
 // ─── WATCHERS ─────────────────────────────────────────────────────────────────
