@@ -159,20 +159,22 @@
                                             <div v-if="sellerSubtitle" class="text-[10px] text-gray-400 font-bold mt-0.5">{{ sellerSubtitle }}</div>
                                         </div>
                                     </div>
-                                    <div v-if="product.seller.chat_response_rate || product.seller.chat_response_time"
+                                    <div class="flex items-center gap-2">
+                                        <div v-if="product.seller.chat_response_rate || product.seller.chat_response_time"
                                         class="mt-3 flex items-center gap-4 text-[10px] font-bold text-gray-500">
-                                        <span v-if="product.seller.chat_response_rate" class="flex items-center gap-1">
+                                        <div v-if="product.seller.chat_response_rate" class="flex items-center gap-1">
                                             <Icon icon="ph:check-circle-bold" class="text-emerald-500 text-sm" />
                                             {{ product.seller.chat_response_rate }} respon
-                                        </span>
-                                        <span v-if="product.seller.chat_response_time && product.seller.chat_response_time.toLowerCase() !== 'hitungan jam'" class="flex items-center gap-1">
+                                        </div>
+                                        <div v-if="product.seller.chat_response_time && product.seller.chat_response_time.toLowerCase() !== 'hitungan jam'" class="flex items-center gap-1">
                                             <Icon icon="ph:clock-bold" class="text-amber-500 text-sm" />
                                             {{ product.seller.chat_response_time }}
-                                        </span>
+                                        </div>
                                     </div>
                                     <div v-if="product.seller.rating != null && product.seller.rating > 0" class="mt-2 flex items-center gap-1.5 text-[10px] font-bold text-amber-600">
                                         <Icon icon="ph:star-fill" class="text-amber-500 text-sm" />
                                         {{ Number(product.seller.rating).toFixed(1) }} rating
+                                    </div>
                                     </div>
                                 </template>
                                 <div v-else class="mt-3 flex items-center gap-3">
