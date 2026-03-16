@@ -108,7 +108,7 @@
                             <h1 class="text-2xl font-black text-navy tracking-tight">Masukkan Kode OTP</h1>
                             <p class="mt-2 text-slate-500 text-sm leading-relaxed">
                                 Kode 6 digit telah dikirim ke <strong>{{ form.email }}</strong>.<br />
-                                Berlaku selama <strong>15 menit</strong>.
+                                Berlaku selama <strong>5 menit</strong>.
                             </p>
                         </div>
 

@@ -11,32 +11,32 @@
           <h1 class="text-2xl font-bold text-gray-900 dark:text-white font-display">
             Email sudah terdaftar
           </h1>
-          <p class="text-gray-600 dark:text-gray-300 text-sm font-body">
+          <div class="text-gray-600 dark:text-gray-300 text-sm font-body">
             Email yang kamu pakai buat daftar lewat Google udah punya akun di Archeryhub.id. Kamu bisa langsung masuk
             pakai akun itu.
-          </p>
+          </div>
         </div>
 
         <div class="rounded-xl bg-gray-50 dark:bg-gray-800/50 p-4 text-left space-y-3">
           <div v-if="email" class="flex items-center gap-3">
             <span class="material-symbols-outlined text-gray-500 dark:text-gray-400 text-xl">mail</span>
             <div class="min-w-0 flex-1">
-              <p class="text-xs font-medium text-gray-500 dark:text-gray-400  tracking-wider">Email</p>
-              <p class="text-sm font-medium text-gray-900 dark:text-white truncate">{{ email }}</p>
+              <div class="text-xs font-medium text-gray-500 dark:text-gray-400  tracking-wider">Email</div>
+              <div class="text-sm font-medium text-gray-900 dark:text-white truncate">{{ email }}</div>
             </div>
           </div>
           <div v-if="userTypeLabel" class="flex items-center gap-3">
             <span class="material-symbols-outlined text-gray-500 dark:text-gray-400 text-xl">badge</span>
             <div class="min-w-0 flex-1">
-              <p class="text-xs font-medium text-gray-500 dark:text-gray-400  tracking-wider">Tipe akun</p>
-              <p class="text-sm font-medium text-gray-900 dark:text-white">{{ userTypeLabel }}</p>
+              <div class="text-xs font-medium text-gray-500 dark:text-gray-400  tracking-wider">Tipe akun</div>
+              <div class="text-sm font-medium text-gray-900 dark:text-white">{{ userTypeLabel }}</div>
             </div>
           </div>
         </div>
 
-        <p class="text-xs text-gray-500 dark:text-gray-400 font-body">
+        <div class="text-xs text-gray-500 dark:text-gray-400 font-body">
           Klik tombol di bawah buat masuk ke akun yang udah ada.
-        </p>
+        </div>
 
         <NuxtLink to="/auth/login"
           class="inline-flex items-center justify-center gap-2 w-full px-6 py-3 bg-primary text-navy font-bold rounded-xl hover:bg-primary-hover transition-colors shadow-sm shadow-primary/20">
