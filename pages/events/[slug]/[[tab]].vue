@@ -45,11 +45,12 @@
             <div class="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex items-center gap-1 overflow-x-auto no-scrollbar -mb-px">
-                        <button v-for="tab in tabs" :key="tab" @click="setTabWithLoader(tab)"
+                        <NuxtLink v-for="tab in tabs" :key="tab"
+                            :to="getTabLink(tab)"
                             class="px-4 md:px-6 py-3 md:py-4 font-semibold text-sm md:text-base transition-colors whitespace-nowrap border-b-2"
                             :class="activeTab === tab ? 'text-navy border-primary bg-primary/5' : 'text-gray-500 border-transparent hover:text-navy hover:bg-gray-50'">
                             {{ tab }}
-                        </button>
+                        </NuxtLink>
                     </div>
                 </div>
             </div>
@@ -813,30 +814,42 @@ const tabs = computed(() => {
     }
     return list
 })
-const activeTab = ref('Ringkasan')
+const activeTab = computed(() => {
+    const sub = route.params.tab || ''
+    return slugToTab[sub] || 'Ringkasan'
+})
 const isTabLoading = ref(false)
 
-// Artificial delay for smooth skeleton demonstration and to prevent layout thrashing
+const getTabLink = (tabName) => {
+    const slug_tab = tabToSlug[tabName]
+    if (!slug_tab) return `/events/${slug}`
+    return `/events/${slug}/${slug_tab}`
+}
+
+const tabToSlug = {
+    'Ringkasan': '',
+    'Jadwal Lomba': 'jadwal-lomba',
+    'Peserta': 'peserta',
+    'Hasil': 'hasil',
+    'Lokasi': 'lokasi',
+    'Galeri': 'galeri',
+    'FAQ': 'faq'
+}
+
+const slugToTab = {
+    '': 'Ringkasan',
+    'jadwal-lomba': 'Jadwal Lomba',
+    'peserta': 'Peserta',
+    'hasil': 'Hasil',
+    'lokasi': 'Lokasi',
+    'galeri': 'Galeri',
+    'faq': 'FAQ'
+}
+
+// Keeping this for compatibility or if we need a fast way to switch without full reload (though NuxtLink handles it)
 const setTabWithLoader = async (newTab) => {
-    if (activeTab.value === newTab) return
-
-    // User requested "no need loader spinner for tab hasil" - skip skeleton for Hasil
-    if (newTab === 'Hasil') {
-        activeTab.value = newTab
-        isTabLoading.value = false
-        return
-    }
-
-    isTabLoading.value = true
-    activeTab.value = newTab
-
-    // Check if we need to wait for any content
-    // For now, most content is already in eventData, so we just toggle
-    // We can keep the skeleton for a tiny bit if mounting complex components takes time
-    // but the user hates "splash" animations, so we'll make it instant or very fast
-    nextTick(() => {
-        isTabLoading.value = false
-    })
+    const targetSlug = tabToSlug[newTab]
+    navigateTo(getTabLink(newTab))
 }
 
 // Helper function to decode tab name from URL
@@ -1068,12 +1081,16 @@ const formattedFees = computed(() => {
     }))
 })
 
-// Initial tab sync only on first load
+// Initial tab sync logic is now handled by computed activeTab
 onMounted(() => {
     if (!tournament.value) return
-    const initialTab = route.query.tab ? decodeTabName(route.query.tab) : 'Ringkasan'
-    if (initialTab && tabs.value.includes(initialTab)) {
-        activeTab.value = initialTab
+    // Handle old query param redirects if any
+    if (route.query.tab) {
+        const legacyTab = decodeTabName(route.query.tab)
+        const targetSlug = tabToSlug[legacyTab]
+        if (targetSlug !== undefined) {
+            navigateTo(`/events/${slug}/${targetSlug}`, { replace: true })
+        }
     }
 })
 
@@ -1082,19 +1099,28 @@ definePageMeta({
 })
 
 useHead({
+    title: () => {
+        if (!activeTab.value || activeTab.value === 'Ringkasan') {
+            return `${tournament.value.name} - Archeryhub.id`
+        }
+        return `${activeTab.value} ${tournament.value.name} - Archeryhub.id`
+    },
     link: [
         { rel: 'canonical', href: useRequestURL().href }
     ]
 })
 
 useSeoMeta({
-    title: () => `${tournament.value.name} - Archeryhub.id`,
     description: () => tournament.value.description,
-    ogTitle: () => tournament.value.name,
+    ogTitle: () => activeTab.value && activeTab.value !== 'Ringkasan' 
+        ? `${activeTab.value} ${tournament.value.name}` 
+        : tournament.value.name,
     ogDescription: () => tournament.value.description,
     ogImage: () => tournament.value.image,
     twitterCard: 'summary_large_image',
-    twitterTitle: () => tournament.value.name,
+    twitterTitle: () => activeTab.value && activeTab.value !== 'Ringkasan' 
+        ? `${activeTab.value} ${tournament.value.name}` 
+        : tournament.value.name,
     twitterDescription: () => tournament.value.description,
     twitterImage: () => tournament.value.image
 })
