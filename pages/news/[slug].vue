@@ -137,7 +137,90 @@
                             </div>
                         </div>
                     </div>
-                </article>
+
+
+                <!-- ── COMMENT SECTION ── -->
+                <section class="mt-16 pt-16 border-t border-navy/5">
+                    <div class="flex items-center justify-between mb-10">
+                        <h3 class="text-xl font-bold text-navy uppercase tracking-widest flex items-center gap-3">
+                            <Icon icon="ph:chats-circle-bold" class="text-navy text-2xl" />
+                            Komentar ({{ totalComments }})
+                        </h3>
+                    </div>
+
+                    <!-- Comment Form -->
+                    <div class="bg-white rounded-3xl p-8 border border-navy/10 mb-12 relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-1.5 h-full bg-navy/20"></div>
+                        <h4 class="font-bold text-navy uppercase tracking-widest text-[10px] mb-6 opacity-40">Tulis Komentar</h4>
+                        
+                        <form @submit.prevent="submitComment" class="space-y-6">
+                            <div v-if="!isLoggedIn" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="space-y-2">
+                                    <label class="text-[10px] font-bold uppercase tracking-widest text-navy/40 ml-1">Nama Anda</label>
+                                    <input v-model="commentForm.guest_name" type="text" placeholder="Contoh: Budi Archer" 
+                                        class="w-full px-5 py-3 rounded-xl bg-navy/[0.02] border border-navy/10 focus:ring-1 focus:ring-navy/30 text-navy font-bold placeholder:text-navy/20 transition-all outline-none"
+                                        required />
+                                </div>
+                            </div>
+                            <div v-else class="flex items-center gap-3 mb-4 p-3 bg-navy/[0.02] rounded-xl border border-navy/5">
+                                <div class="w-8 h-8 rounded-full bg-navy flex items-center justify-center text-white font-bold text-xs">
+                                    {{ user?.full_name?.charAt(0) || user?.name?.charAt(0) || 'U' }}
+                                </div>
+                                <div class="text-xs font-bold text-navy/60 uppercase tracking-widest">Komentar sebagai <span class="text-navy">{{ user?.full_name || user?.name }}</span></div>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-bold uppercase tracking-widest text-navy/40 ml-1">Pesan Komentar</label>
+                                <textarea v-model="commentForm.content" rows="4" placeholder="Tulis pendapat Anda di sini..."
+                                    class="w-full px-5 py-4 rounded-xl bg-navy/[0.02] border border-navy/10 focus:ring-1 focus:ring-navy/30 text-navy font-medium placeholder:text-navy/20 transition-all outline-none"
+                                    required></textarea>
+                            </div>
+
+                            <button type="submit" :disabled="isSubmittingComment"
+                                class="inline-flex items-center gap-3 bg-navy text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:bg-navy-light transition-all active:scale-95 disabled:opacity-50">
+                                <Icon v-if="isSubmittingComment" icon="ph:spinner" class="animate-spin" />
+                                <Icon v-else icon="ph:paper-plane-tilt-bold" />
+                                {{ isSubmittingComment ? 'Mengirim...' : 'Kirim Komentar' }}
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Comment List -->
+                    <div class="space-y-6">
+                        <div v-if="isCommentsLoading" class="flex flex-col items-center py-12 text-navy/20">
+                            <Icon icon="ph:spinner" class="text-3xl animate-spin mb-4" />
+                            <span class="font-bold uppercase tracking-widest text-[10px]">Memuat Komentar...</span>
+                        </div>
+
+                        <div v-else-if="comments.length === 0" class="text-center py-16 bg-navy/[0.01] rounded-3xl border border-dashed border-navy/10">
+                            <Icon icon="ph:chat-teardrop-dots-bold" class="text-4xl text-navy/10 mx-auto mb-4" />
+                            <p class="text-navy/30 text-[10px] font-bold uppercase tracking-widest">Belum ada komentar</p>
+                        </div>
+
+                        <div v-else v-for="comment in comments" :key="comment.id" class="group">
+                            <div class="flex gap-4 sm:gap-6 items-start">
+                                <div class="flex-shrink-0">
+                                    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-navy/5 border border-navy/10 flex items-center justify-center text-navy font-bold text-lg group-hover:bg-navy group-hover:text-white transition-all duration-300">
+                                        {{ comment.user_name?.charAt(0) || '?' }}
+                                    </div>
+                                </div>
+                                <div class="flex-grow pt-1">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center gap-2">
+                                            <h5 class="font-bold text-navy text-xs uppercase tracking-widest">{{ comment.user_name }}</h5>
+                                            <span v-if="comment.user_type !== 'guest'" class="bg-navy/10 text-navy text-[7px] font-bold uppercase px-2 py-0.5 rounded-full tracking-tighter">Member</span>
+                                        </div>
+                                        <span class="text-[8px] font-bold text-navy/20 uppercase tracking-widest">{{ formatDate(comment.created_at) }}</span>
+                                    </div>
+                                    <div class="text-navy/70 text-sm leading-relaxed font-medium bg-white p-5 rounded-2xl rounded-tl-none border border-navy/5 group-hover:border-navy/20 transition-all">
+                                        {{ comment.content }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </article>
 
                 <!-- Sidebar -->
                 <aside class="lg:col-span-4 space-y-8">
@@ -240,6 +323,11 @@ import { Icon } from '@iconify/vue'
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useToast } from '~/composables/useToast'
+import { useAuth } from '~/composables/useAuth'
+import { useApi } from '~/composables/useApi'
+
+const { isLoggedIn, user } = useAuth()
+const api = useApi()
 
 definePageMeta({
     layout: 'landing',
@@ -254,6 +342,58 @@ const route = useRoute()
 const slug = route.params.slug
 const subscribeEmail = ref('')
 const isSubscribing = ref(false)
+
+// Comments logic
+const isSubmittingComment = ref(false)
+const commentForm = ref({
+    guest_name: '',
+    content: ''
+})
+
+const { data: commentsResponse, pending: isCommentsLoading, refresh: refreshComments } = await useAsyncData(
+    `news-comments-${slug}`,
+    () => api.get(`/news/${slug}/comments`),
+    { server: true, lazy: true }
+)
+
+const comments = computed(() => commentsResponse.value?.comments || [])
+const totalComments = computed(() => commentsResponse.value?.count || 0)
+
+const formatDate = (dateStr) => {
+    if (!dateStr) return ''
+    return new Date(dateStr).toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    })
+}
+
+const submitComment = async () => {
+    if (!commentForm.value.content) return
+    if (!isLoggedIn.value && !commentForm.value.guest_name) {
+        toast.error('Silakan isi nama Anda')
+        return
+    }
+
+    isSubmittingComment.value = true
+    try {
+        await api.post(`/news/${slug}/comments`, {
+            guest_name: commentForm.value.guest_name,
+            content: commentForm.value.content
+        })
+
+        toast.success('Komentar Anda berhasil diposting!')
+        commentForm.value.content = ''
+        commentForm.value.guest_name = ''
+        await refreshComments()
+    } catch (err) {
+        toast.error('Gagal mengirim komentar. Silakan coba lagi nanti.')
+    } finally {
+        isSubmittingComment.value = false
+    }
+}
 
 const { data: newsResponse, pending: isLoading } = await useAsyncData(
     `news-${slug}`,
