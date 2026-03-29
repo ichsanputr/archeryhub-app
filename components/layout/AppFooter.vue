@@ -64,6 +64,10 @@
               Perusahaan
             </h4>
             <div class="flex flex-col gap-3">
+              <NuxtLink to="/about-us"
+                class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
+                Tentang Kami
+              </NuxtLink>
               <NuxtLink to="/contact"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 Kontak
@@ -96,6 +100,10 @@
               <NuxtLink to="/docs"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
                 Dokumentasi
+              </NuxtLink>
+              <NuxtLink to="/blog"
+                class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
+                Blog
               </NuxtLink>
             </div>
           </div>
