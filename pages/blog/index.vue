@@ -1,12 +1,14 @@
 <template>
     <div class="min-h-screen bg-[#f8fafc] relative">
+        <LayoutAppHeaderDynamic />
+        
         <!-- Blueprint Grid Background -->
         <div class="fixed inset-0 -z-10 pointer-events-none opacity-[0.035]"
             style="background-image: radial-gradient(circle, #0f172a 1px, transparent 1px); background-size: 40px 40px;">
         </div>
 
         <!-- ── HERO / FEATURED ARTICLE ── -->
-        <section v-if="featuredArticle" class="relative pt-32 pb-16 overflow-hidden">
+        <section v-if="featuredArticle" class="relative pt-24 pb-16 overflow-hidden">
             <div class="container mx-auto px-4 max-w-7xl">
                 <NuxtLink :to="`/blog/${featuredArticle.slug}`" class="group block relative rounded-[40px] overflow-hidden bg-navy">
                     <div class="aspect-[21/9] relative scale-100 group-hover:scale-105 transition-transform duration-1000">
@@ -16,7 +18,7 @@
                     
                     <div class="absolute inset-0 p-8 md:p-16 flex flex-col justify-end">
                         <div class="flex items-center gap-3 mb-6">
-                            <span class="bg-primary text-white text-[10px] font-black px-4 py-1.5 rounded-full tracking-widest uppercase">
+                            <span class="bg-primary text-navy text-[10px] font-black px-4 py-1.5 rounded-full tracking-widest uppercase">
                                 {{ featuredArticle.category }}
                             </span>
                             <span class="text-white/50 text-[10px] font-black tracking-widest uppercase">
@@ -128,6 +130,8 @@
                 </div>
             </div>
         </section>
+
+        <LayoutAppFooter />
     </div>
 </template>
 
@@ -138,7 +142,7 @@ import { articles as staticArticles } from '~/data/articles/index'
 import { useToast } from '~/composables/useToast'
 
 definePageMeta({
-    layout: 'landing'
+    layout: 'blank'
 })
 
 const toast = useToast()
@@ -166,7 +170,7 @@ const handleSubscribe = () => {
 }
 
 useHead({
-    title: 'Artikel & Tips Panahan - ArcheryHub',
+    title: 'Blog Artikel & Tips Panahan - ArcheryHub',
     meta: [
         { name: 'description', content: 'Pelajari teknik panahan, tips memilih gear, dan rahasia mental juara dari para ahli di ArcheryHub.' }
     ]
