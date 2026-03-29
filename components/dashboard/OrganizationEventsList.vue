@@ -62,15 +62,43 @@
         <table class="w-full text-left border-collapse min-w-[800px]">
           <thead>
             <tr class="bg-gray-50/50 border-b border-gray-100">
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">Informasi
-                Event
+              <th @click="toggleSort('name')"
+                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
+                <div class="flex items-center gap-2 uppercase">
+                  Informasi Event
+                  <Icon v-if="sortBy === 'name'" :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                    class="text-primary" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                </div>
               </th>
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">Jadwal & Lokasi
+              <th @click="toggleSort('start_date')"
+                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
+                <div class="flex items-center gap-2 uppercase">
+                  Jadwal & Lokasi
+                  <Icon v-if="sortBy === 'start_date'" :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                    class="text-primary" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                </div>
               </th>
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">Peserta /
-                Kategori</th>
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest">Status</th>
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest text-right">Aksi
+              <th @click="toggleSort('participant_count')"
+                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
+                <div class="flex items-center gap-2 uppercase">
+                  Peserta / Kategori
+                  <Icon v-if="sortBy === 'participant_count'"
+                    :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                </div>
+              </th>
+              <th @click="toggleSort('status')"
+                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
+                <div class="flex items-center gap-2 uppercase">
+                  Status
+                  <Icon v-if="sortBy === 'status'" :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                    class="text-primary" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                </div>
+              </th>
+              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest text-right uppercase">Aksi
               </th>
             </tr>
           </thead>
@@ -104,7 +132,8 @@
                   <BaseButton v-if="searchQuery" variant="outline" size="sm" @click="resetFilters">
                     Hapus Filter
                   </BaseButton>
-                  <BaseButton v-else :to="`/dashboard/${userPersona}/events/create`" variant="primary" size="sm" icon="ph:plus-bold">
+                  <BaseButton v-else :to="`/dashboard/${userPersona}/events/create`" variant="primary" size="sm"
+                    icon="ph:plus-bold">
                     Buat Event Pertama
                   </BaseButton>
                 </div>
@@ -217,17 +246,14 @@ const isLoading = ref(true)
 const showDeleteDialog = ref(false)
 const eventToDelete = ref(null)
 
-// Pagination state
+// Sorting and Pagination state
 const currentPage = ref(1)
 const totalItems = ref(0)
 const limit = ref(10)
+const sortBy = ref('created_at')
+const order = ref('DESC')
 
-watch(searchQuery, () => {
-  currentPage.value = 1
-  fetchEvents()
-})
-
-watch(limit, () => {
+watch([searchQuery, limit, sortBy, order], () => {
   currentPage.value = 1
   fetchEvents()
 })
@@ -238,7 +264,9 @@ const fetchEvents = async () => {
     const offset = (currentPage.value - 1) * limit.value
     const params = new URLSearchParams({
       limit: limit.value.toString(),
-      offset: offset.toString()
+      offset: offset.toString(),
+      sort_by: sortBy.value,
+      order: order.value
     })
 
     if (searchQuery.value) {
@@ -256,9 +284,13 @@ const fetchEvents = async () => {
   }
 }
 
-const handlePageChange = (page) => {
-  currentPage.value = page
-  fetchEvents()
+const toggleSort = (field) => {
+  if (sortBy.value === field) {
+    order.value = order.value === 'ASC' ? 'DESC' : 'ASC'
+  } else {
+    sortBy.value = field
+    order.value = 'ASC'
+  }
 }
 
 onMounted(() => {

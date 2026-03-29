@@ -78,10 +78,34 @@
                 <thead>
                     <tr class="bg-gray-50/50 text-[9px] font-black text-gray-400 tracking-[0.2em] uppercase border-b border-gray-50">
                         <th class="px-8 py-4">Tipe</th>
-                        <th class="px-8 py-4">Tanggal</th>
+                        <th @click="toggleSort('date')" class="px-8 py-4 cursor-pointer hover:text-navy transition-colors">
+                            <div class="flex items-center gap-2">
+                                Tanggal
+                                <Icon v-if="sortBy === 'date'"
+                                    :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                                    class="text-primary text-[11px]" />
+                                <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                            </div>
+                        </th>
                         <th class="px-8 py-4">Referensi</th>
-                        <th class="px-8 py-4 text-right">Nominal</th>
-                        <th class="px-8 py-4 text-center">Status</th>
+                        <th @click="toggleSort('amount')" class="px-8 py-4 text-right cursor-pointer hover:text-navy transition-colors">
+                            <div class="flex items-center justify-end gap-2">
+                                Nominal
+                                <Icon v-if="sortBy === 'amount'"
+                                    :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                                    class="text-primary text-[11px]" />
+                                <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                            </div>
+                        </th>
+                        <th @click="toggleSort('status')" class="px-8 py-4 text-center cursor-pointer hover:text-navy transition-colors">
+                            <div class="flex items-center justify-center gap-2">
+                                Status
+                                <Icon v-if="sortBy === 'status'"
+                                    :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                                    class="text-primary text-[11px]" />
+                                <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                            </div>
+                        </th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-50">
@@ -151,6 +175,8 @@ const isLoading = ref(true)
 const transactions = ref([])
 const walletBalance = ref(0)
 const filterType = ref('all')
+const sortBy = ref('date')
+const order = ref('DESC')
 
 const typeOptions = [
     { title: 'Semua Transaksi', value: 'all' },
@@ -167,9 +193,37 @@ const stats = computed(() => {
 })
 
 const filteredTransactions = computed(() => {
-    if (filterType.value === 'all') return transactions.value
-    return transactions.value.filter(t => t.type === filterType.value)
+    let result = transactions.value
+    if (filterType.value !== 'all') {
+        result = result.filter(t => t.type === filterType.value)
+    }
+
+    // Sort
+    return [...result].sort((a, b) => {
+        let aVal = a[sortBy.value]
+        let bVal = b[sortBy.value]
+
+        if (sortBy.value === 'date') {
+            aVal = new Date(aVal).getTime()
+            bVal = new Date(bVal).getTime()
+        }
+
+        if (order.value === 'DESC') {
+            return aVal > bVal ? -1 : 1
+        } else {
+            return aVal < bVal ? -1 : 1
+        }
+    })
 })
+
+const toggleSort = (field) => {
+    if (sortBy.value === field) {
+        order.value = order.value === 'ASC' ? 'DESC' : 'ASC'
+    } else {
+        sortBy.value = field
+        order.value = 'ASC'
+    }
+}
 
 const fetchTransactions = async () => {
     isLoading.value = true

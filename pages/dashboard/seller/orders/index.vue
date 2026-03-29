@@ -49,11 +49,45 @@
         <table class="w-full border-collapse min-w-[1000px]">
           <thead>
             <tr class="text-left bg-gray-50/50 border-b border-gray-100">
-              <th class="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400">ID Pesanan</th>
-              <th class="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400">Tanggal</th>
-              <th class="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400">Pelanggan</th>
-              <th class="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400">Total</th>
-              <th class="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400">Status</th>
+              <th
+                class="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400">
+                ID Pesanan</th>
+              <th @click="toggleSort('created_at')"
+                class="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400 cursor-pointer hover:text-navy transition-colors">
+                <div class="flex items-center gap-2">
+                  Tanggal
+                  <Icon v-if="sortBy === 'created_at'"
+                    :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                </div>
+              </th>
+              <th @click="toggleSort('buyer_name')"
+                class="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400 cursor-pointer hover:text-navy transition-colors">
+                <div class="flex items-center gap-2">
+                  Pelanggan
+                  <Icon v-if="sortBy === 'buyer_name'"
+                    :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                </div>
+              </th>
+              <th @click="toggleSort('total_amount')"
+                class="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400 cursor-pointer hover:text-navy transition-colors">
+                <div class="flex items-center gap-2">
+                  Total
+                  <Icon v-if="sortBy === 'total_amount'"
+                    :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                </div>
+              </th>
+              <th @click="toggleSort('status')"
+                class="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400 cursor-pointer hover:text-navy transition-colors">
+                <div class="flex items-center gap-2">
+                  Status
+                  <Icon v-if="sortBy === 'status'" :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                    class="text-primary" />
+                  <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                </div>
+              </th>
               <th class="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400 text-right">Aksi</th>
             </tr>
           </thead>
@@ -107,6 +141,8 @@ const orders = ref([])
 const isLoading = ref(true)
 const isExporting = ref(false)
 const statusFilter = ref('all')
+const sortBy = ref('created_at')
+const order = ref('DESC')
 
 const statusOptions = [
   { label: 'Semua Status', value: 'all' },
@@ -120,12 +156,27 @@ const statusOptions = [
 const fetchOrders = async () => {
   isLoading.value = true
   try {
-    const response = await get('/orders', { status: statusFilter.value })
+    const response = await get('/orders', { 
+      query: {
+        status: statusFilter.value,
+        sort_by: sortBy.value,
+        order: order.value
+      }
+    })
     orders.value = response.data || []
   } catch (error) {
     toast.error('Gagal mengambil data pesanan')
   } finally {
     isLoading.value = false
+  }
+}
+
+const toggleSort = (field) => {
+  if (sortBy.value === field) {
+    order.value = order.value === 'ASC' ? 'DESC' : 'ASC'
+  } else {
+    sortBy.value = field
+    order.value = 'ASC'
   }
 }
 
@@ -144,7 +195,7 @@ const exportOrders = () => {
 }
 
 onMounted(fetchOrders)
-watch(statusFilter, fetchOrders)
+watch([statusFilter, sortBy, order], fetchOrders)
 
 const formatDate = (dateStr) => {
   if (!dateStr) return '-'

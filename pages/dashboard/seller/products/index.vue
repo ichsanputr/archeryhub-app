@@ -93,17 +93,57 @@
                 <table class="w-full text-left border-collapse min-w-[900px]">
                     <thead>
                         <tr class="bg-gray-50/50 border-b border-gray-100">
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest capitalize">
-                                Produk</th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest capitalize">
-                                Kategori</th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest capitalize">
-                                Harga</th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest capitalize">
-                                Stok</th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest capitalize">
-                                Status</th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400  tracking-widest capitalize text-right">
+                            <th @click="toggleSort('name')"
+                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors uppercase">
+                                <div class="flex items-center gap-2">
+                                    Produk
+                                    <Icon v-if="sortBy === 'name'"
+                                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                                        class="text-primary" />
+                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                                </div>
+                            </th>
+                            <th @click="toggleSort('category')"
+                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors uppercase">
+                                <div class="flex items-center gap-2">
+                                    Kategori
+                                    <Icon v-if="sortBy === 'category'"
+                                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                                        class="text-primary" />
+                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                                </div>
+                            </th>
+                            <th @click="toggleSort('price')"
+                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors uppercase">
+                                <div class="flex items-center gap-2">
+                                    Harga
+                                    <Icon v-if="sortBy === 'price'"
+                                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                                        class="text-primary" />
+                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                                </div>
+                            </th>
+                            <th @click="toggleSort('stock')"
+                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors uppercase">
+                                <div class="flex items-center gap-2">
+                                    Stok
+                                    <Icon v-if="sortBy === 'stock'"
+                                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                                        class="text-primary" />
+                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                                </div>
+                            </th>
+                            <th @click="toggleSort('status')"
+                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors uppercase">
+                                <div class="flex items-center gap-2">
+                                    Status
+                                    <Icon v-if="sortBy === 'status'"
+                                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                                        class="text-primary" />
+                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                                </div>
+                            </th>
+                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest text-right uppercase">
                                 Aksi</th>
                         </tr>
                     </thead>
@@ -249,6 +289,8 @@ const isLoading = ref(true)
 const searchQuery = ref('')
 const statusFilter = ref('all')
 const categoryFilter = ref('all')
+const sortBy = ref('created_at')
+const order = ref('DESC')
 
 const deleteModal = ref({
     show: false,
@@ -274,8 +316,13 @@ const fetchProducts = async () => {
     isLoading.value = true
     try {
         const response = await get('/products/my', {
-            status: statusFilter.value,
-            category: categoryFilter.value
+            query: {
+                status: statusFilter.value,
+                category: categoryFilter.value,
+                search: searchQuery.value,
+                sort_by: sortBy.value,
+                order: order.value
+            }
         })
         products.value = (response.data || []).map(p => ({
             ...p,
@@ -291,7 +338,7 @@ const fetchProducts = async () => {
     }
 }
 
-watch([statusFilter, categoryFilter], () => {
+watch([statusFilter, categoryFilter, searchQuery, sortBy, order], () => {
     fetchProducts()
 })
 
@@ -299,14 +346,16 @@ onMounted(() => {
     fetchProducts()
 })
 
-const filteredProducts = computed(() => {
-    return products.value.filter(product => {
-        const matchesSearch = product.name.toLowerCase().includes(searchQuery.value.toLowerCase())
-        const matchesStatus = statusFilter.value === 'all' || product.status === statusFilter.value
-        const matchesCategory = categoryFilter.value === 'all' || product.category === categoryFilter.value
-        return matchesSearch && matchesStatus && matchesCategory
-    })
-})
+const toggleSort = (field) => {
+    if (sortBy.value === field) {
+        order.value = order.value === 'ASC' ? 'DESC' : 'ASC'
+    } else {
+        sortBy.value = field
+        order.value = 'ASC'
+    }
+}
+
+const filteredProducts = computed(() => products.value)
 
 const resetFilters = () => {
     searchQuery.value = ''

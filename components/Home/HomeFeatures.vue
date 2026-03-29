@@ -93,9 +93,11 @@
                         <div
                             class="flex flex-col gap-3 max-h-[350px] px-3 sm:max-h-[400px] overflow-y-auto pr-2 sm:pr-4 custom-scrollbar">
                             <div v-for="(feature, idx) in featureItems" :key="feature.title"
-                                @click="activeFeature = idx"
-                                class="group flex items-center p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer"
+                                @click="setFeature(idx)"
+                                class="group relative overflow-hidden flex items-center p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer"
                                 :class="activeFeature === idx ? 'bg-navy border-navy ring-1 sm:ring-2 ring-primary ring-offset-2 shadow-sm scale-[1.01]' : 'bg-white border-gray-100 hover:border-primary/50 hover:shadow-sm'">
+                                <div v-if="activeFeature === idx" class="progress-bar" :style="{ width: progress + '%' }">
+                                </div>
                                 <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center mr-3 sm:mr-5 transition-colors duration-300 flex-shrink-0"
                                     :class="activeFeature === idx ? 'bg-primary text-navy' : 'bg-gray-50 text-navy group-hover:bg-primary'">
                                     <Icon :icon="feature.icon" class="text-xl sm:text-2xl" />
@@ -132,6 +134,29 @@ import { ref, onMounted, onUnmounted } from 'vue'
 
 const activeFeature = ref(0)
 const isMobile = ref(false)
+const progress = ref(0)
+let timer = null
+
+const startTimer = () => {
+    if (timer) clearInterval(timer)
+    progress.value = 0
+    timer = setInterval(() => {
+        progress.value += 2
+        if (progress.value >= 100) {
+            nextFeature()
+        }
+    }, 100)
+}
+
+const nextFeature = () => {
+    activeFeature.value = (activeFeature.value + 1) % featureItems.length
+    progress.value = 0
+}
+
+const setFeature = (idx) => {
+    activeFeature.value = idx
+    startTimer()
+}
 
 const checkMobile = () => {
     isMobile.value = window.innerWidth < 1024
@@ -140,10 +165,12 @@ const checkMobile = () => {
 onMounted(() => {
     checkMobile()
     window.addEventListener('resize', checkMobile)
+    startTimer()
 })
 
 onUnmounted(() => {
     window.removeEventListener('resize', checkMobile)
+    if (timer) clearInterval(timer)
 })
 
 const featureItems = [
@@ -152,42 +179,42 @@ const featureItems = [
         icon: 'ph:user-plus-bold',
         description: 'Daftar turnamen dalam satu klik.',
         longDescription: 'Capek nginput data yang sama berulang kali? Di Archeryhub, profil atlet kamu udah kesimpan aman. Mau ikut turnamen apapun tinggal pilih eventnya, klik daftar, dan beres! Nggak perlu lagi isi form panjang yang bikin pening.',
-        image: 'https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&q=80&w=1200'
+        image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&q=80&w=1200'
     },
     {
         title: 'Skoring Digital Real-time',
         icon: 'ic:outline-scoreboard',
         description: 'Input skor langsung di genggaman.',
         longDescription: 'Nggak ada lagi catat manual pakai kertas. Wasit atau atlet tinggal klik skor di aplikasi, dan hasilnya langsung dihitung otomatis. Data skor langsung sinkron ke server buat ditampilin di TV atau layar besar saat event berlangsung.',
-        image: 'https://images.unsplash.com/photo-1541535881962-3bb380b08458?auto=format&fit=crop&q=80&w=1200'
+        image: 'https://images.unsplash.com/photo-1444491741275-3747c33cc99b?auto=format&fit=crop&q=80&w=1200'
     },
     {
         title: 'Leaderboard Realtime',
         icon: 'ph:chart-bar-horizontal-bold',
         description: 'Pantau posisi rival tanpa jeda.',
         longDescription: 'Mau tau siapa yang lagi memimpin? Leaderboard kami update setiap ada skor baru yang masuk. Atlet, pelatih, dan penonton bisa terus mantau siapa yang dapet peringkat teratas di babak kualifikasi maupun eliminasi secara detail.',
-        image: 'https://images.unsplash.com/photo-1444491741275-3747c33cc99b?auto=format&fit=crop&q=80&w=1200'
+        image: 'https://images.unsplash.com/photo-1541535881962-3bb380b08458?auto=format&fit=crop&q=80&w=1200'
     },
     {
         title: 'Laporan Beres Otomatis',
         icon: 'ph:article-bold',
         description: 'Hasil lomba siap dalam sekejap.',
         longDescription: 'Begitu panah terakhir ditembakkan, laporan hasil pertandingan udah siap. Panitia nggak perlu begadang buat rekap data. Sistem kita otomatis nge-generate PDF hasil lomba per divisi yang akurat dan sesuai standar federasi.',
-        image: 'https://images.unsplash.com/photo-1511880493577-f3d35706497f?auto=format&fit=crop&q=80&w=1200'
+        image: 'https://images.unsplash.com/photo-1504439468489-c8920d796a29?auto=format&fit=crop&q=80&w=1200'
     },
     {
         title: 'Integrasi Membership Payment Gateway',
         icon: 'ph:identification-card-bold',
         description: 'KTA digital buat akses nasional.',
         longDescription: 'Punya akses ke seluruh ekosistem panahan dengan satu ID. Membership Archeryhub bukan cuma buat keren-kerenan, tapi jadi syarat resmi buat ikut turnamen berlisensi nasional dan bukti kamu bagian dari komunitas atlet pro.',
-        image: 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?auto=format&fit=crop&q=80&w=1200'
+        image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200'
     },
     {
         title: 'Laporan Lengkap Atlet',
         icon: 'ph:trend-up-bold',
         description: 'Lihat progres kamu makin tajam.',
         longDescription: 'Lihat data di balik performa kamu. Sistem kita nangkep statistik skor kamu dari setiap event and latihan, terus nampilin grafik progres yang gampang dibaca. Bantu kamu dan pelatih nentuin apa yang perlu ditingkatkan buat ke depannya.',
-        image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200'
+        image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200'
     }
 ]
 </script>
@@ -198,7 +225,7 @@ const featureItems = [
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-    width: 4px;
+    width: 2px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -213,6 +240,16 @@ const featureItems = [
 .custom-scrollbar {
     scrollbar-width: thin;
     scrollbar-color: #e2e8f0 transparent;
+}
+
+.progress-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: #D91629;
+    /* Primary */
+    transition: width 0.1s linear;
 }
 
 .abstract-pattern {

@@ -117,14 +117,46 @@
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="bg-gray-50/50 border-b border-gray-100">
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">
-                                Profil Staff</th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">
-                                Kode Login</th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">
-                                Status Akun</th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest">Tgl
-                                Bergabung</th>
+                            <th @click="toggleSort('name')"
+                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest cursor-pointer hover:text-navy transition-colors">
+                                <div class="flex items-center gap-2">
+                                    Profil Staff
+                                    <Icon v-if="sortBy === 'name'"
+                                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                                        class="text-primary" />
+                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                                </div>
+                            </th>
+                            <th @click="toggleSort('code')"
+                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest cursor-pointer hover:text-navy transition-colors">
+                                <div class="flex items-center gap-2">
+                                    Kode Login
+                                    <Icon v-if="sortBy === 'code'"
+                                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                                        class="text-primary" />
+                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                                </div>
+                            </th>
+                            <th @click="toggleSort('status')"
+                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest cursor-pointer hover:text-navy transition-colors">
+                                <div class="flex items-center gap-2">
+                                    Status Akun
+                                    <Icon v-if="sortBy === 'status'"
+                                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                                        class="text-primary" />
+                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                                </div>
+                            </th>
+                            <th @click="toggleSort('created_at')"
+                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest cursor-pointer hover:text-navy transition-colors">
+                                <div class="flex items-center gap-2">
+                                    Tgl Bergabung
+                                    <Icon v-if="sortBy === 'created_at'"
+                                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                                        class="text-primary" />
+                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                                </div>
+                            </th>
                             <th
                                 class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest text-right">
                                 Aksi</th>
@@ -258,13 +290,48 @@ const scorekeepers = ref([])
 const searchQuery = ref('')
 const loading = ref(true)
 
-const filteredScorekeepers = computed(() => {
-    if (!searchQuery.value) return scorekeepers.value
-    const q = searchQuery.value.toLowerCase()
-    return scorekeepers.value.filter(s =>
-        s.name.toLowerCase().includes(q) ||
-        (s.code && s.code.toLowerCase().includes(q))
-    )
+// Sort & Pagination
+const sortBy = ref('created_at')
+const order = ref('DESC')
+const currentPage = ref(1)
+const totalItems = ref(0)
+const limit = ref(10)
+
+const filteredScorekeepers = computed(() => scorekeepers.value)
+
+const fetchScorekeepers = async () => {
+    loading.value = true
+    try {
+        const offset = (currentPage.value - 1) * limit.value
+        const res = await api.get('/organizations/scorekeepers', {
+            params: {
+                limit: limit.value,
+                offset: offset,
+                sort_by: sortBy.value,
+                order: order.value,
+                search: searchQuery.value
+            }
+        })
+        scorekeepers.value = res.scorekeepers || []
+        totalItems.value = res.meta?.total_items || 0
+    } catch (error) {
+        toast.error('Gagal memuat data scorekeeper')
+    } finally {
+        loading.value = false
+    }
+}
+
+const toggleSort = (field) => {
+    if (sortBy.value === field) {
+        order.value = order.value === 'ASC' ? 'DESC' : 'ASC'
+    } else {
+        sortBy.value = field
+        order.value = 'ASC'
+    }
+}
+
+watch([searchQuery, sortBy, order, currentPage], () => {
+    fetchScorekeepers()
 })
 
 const modal = reactive({

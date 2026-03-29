@@ -142,15 +142,36 @@
             <table class="w-full text-left min-w-[600px]">
               <thead>
                 <tr
-                  class="bg-gray-50/50 text-[10px] font-black text-gray-400 tracking-[0.2em] border-b border-gray-100">
-                  <th class="px-8 py-5 text-left">Status</th>
-                  <th class="px-8 py-5 text-left">Tanggal</th>
+                  class="bg-gray-50/50 text-[10px] font-black text-gray-400 tracking-[0.2em] border-b border-gray-100 uppercase">
+                  <th @click="toggleSort('status')" class="px-8 py-5 text-left cursor-pointer hover:text-navy transition-colors">
+                    <div class="flex items-center gap-2">
+                      Status
+                      <Icon v-if="sortBy === 'status'"
+                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-[11px]" />
+                      <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                    </div>
+                  </th>
+                  <th @click="toggleSort('created_at')" class="px-8 py-5 text-left cursor-pointer hover:text-navy transition-colors">
+                    <div class="flex items-center gap-2">
+                      Tanggal
+                      <Icon v-if="sortBy === 'created_at'"
+                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-[11px]" />
+                      <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                    </div>
+                  </th>
                   <th class="px-8 py-5 text-left">ID Referensi</th>
-                  <th class="px-8 py-5 text-right">Nominal</th>
+                  <th @click="toggleSort('amount')" class="px-8 py-5 text-right cursor-pointer hover:text-navy transition-colors">
+                    <div class="flex items-center justify-end gap-2">
+                      Nominal
+                      <Icon v-if="sortBy === 'amount'"
+                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-[11px]" />
+                      <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                    </div>
+                  </th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-50">
-                <tr v-for="item in withdrawals.slice(0, 10)" :key="item.id"
+                <tr v-for="item in withdrawals" :key="item.id"
                   class="hover:bg-gray-50/80 transition-colors">
                   <td class="px-8 py-5 text-left">
                     <span :class="getStatusClass(item.status)"
@@ -179,6 +200,10 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+          <div v-if="totalWithdrawals > withdrawalLimit" class="px-8 py-5 bg-gray-50/50 border-t border-gray-50">
+            <BasePagination v-model:items-per-page="withdrawalLimit" :current-page="withdrawalPage"
+              :total-items="totalWithdrawals" @change-page="withdrawalPage = $event" />
           </div>
         </div>
       </div>
@@ -267,6 +292,11 @@ const loading = ref(false)
 const wallet = ref({ balance: 0 })
 const bankAccounts = ref([])
 const withdrawals = ref([])
+const totalWithdrawals = ref(0)
+const withdrawalPage = ref(1)
+const withdrawalLimit = ref(10)
+const sortBy = ref('created_at')
+const order = ref('DESC')
 
 const modal = reactive({
   show: false,
@@ -309,13 +339,35 @@ const fetchBankAccounts = async () => {
 
 const fetchWithdrawals = async () => {
   try {
-    const res = await api.get('/sellers/wallet/withdrawals')
-    withdrawals.value = res?.data || res || []
+    const offset = (withdrawalPage.value - 1) * withdrawalLimit.value
+    const res = await api.get('/sellers/wallet/withdrawals', {
+      query: {
+        limit: withdrawalLimit.value,
+        offset: offset,
+        sort_by: sortBy.value,
+        order: order.value
+      }
+    })
+    withdrawals.value = res?.data || []
+    totalWithdrawals.value = res?.meta?.total_items || 0
   } catch (error) {
     console.error('Failed to fetch seller withdrawals:', error)
     withdrawals.value = []
   }
 }
+
+const toggleSort = (field) => {
+  if (sortBy.value === field) {
+    order.value = order.value === 'ASC' ? 'DESC' : 'ASC'
+  } else {
+    sortBy.value = field
+    order.value = 'ASC'
+  }
+}
+
+watch([withdrawalPage, sortBy, order], () => {
+  fetchWithdrawals()
+})
 
 const fetchAll = async () => {
   loading.value = true

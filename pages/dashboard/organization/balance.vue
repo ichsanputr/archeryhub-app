@@ -98,11 +98,35 @@
                             <table class="w-full text-left">
                                 <thead>
                                     <tr
-                                        class="bg-gray-50/50 text-gray-500 font-bold text-[10px] uppercase tracking-widest border-b border-gray-100">
+                                        class="bg-gray-50/50 text-gray-500 font-black text-[10px] uppercase tracking-widest border-b border-gray-100">
                                         <th class="px-6 py-4">ID Transaksi</th>
-                                        <th class="px-6 py-4">Tanggal</th>
-                                        <th class="px-6 py-4">Status</th>
-                                        <th class="px-6 py-4 text-right">Nominal</th>
+                                        <th @click="toggleSort('created_at')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors">
+                                            <div class="flex items-center gap-2">
+                                                Tanggal
+                                                <Icon v-if="sortBy === 'created_at'"
+                                                    :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                                                    class="text-primary text-[11px]" />
+                                                <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                                            </div>
+                                        </th>
+                                        <th @click="toggleSort('status')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors">
+                                            <div class="flex items-center gap-2">
+                                                Status
+                                                <Icon v-if="sortBy === 'status'"
+                                                    :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                                                    class="text-primary text-[11px]" />
+                                                <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                                            </div>
+                                        </th>
+                                        <th @click="toggleSort('amount')" class="px-6 py-4 text-right cursor-pointer hover:text-navy transition-colors">
+                                            <div class="flex items-center justify-end gap-2">
+                                                Nominal
+                                                <Icon v-if="sortBy === 'amount'"
+                                                    :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                                                    class="text-primary text-[11px]" />
+                                                <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                                            </div>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-100">
@@ -135,6 +159,10 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div v-if="totalItems > itemsPerPage" class="px-6 py-4 bg-gray-50 border-t border-gray-100">
+                            <BasePagination v-model:items-per-page="itemsPerPage" :current-page="currentPage"
+                                :total-items="totalItems" @change-page="currentPage = $event" />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -144,7 +172,7 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useAuth } from '~/composables/useAuth'
@@ -172,13 +200,17 @@ const withdrawalHistory = ref([])
 const loading = ref(true)
 const primaryAccount = ref(null)
 
+// Sort & Pagination
+const sortBy = ref('created_at')
+const order = ref('DESC')
+const currentPage = ref(1)
+const totalItems = ref(0)
+const itemsPerPage = ref(10)
+
 const verifyPassword = async () => {
     if (!password.value) return
     verifying.value = true
     try {
-        // We can hit a dummy endpoint or a specific verify endpoint
-        // For now, we'll try to fetch wallet with the password in header or just a separate check
-        // Simplified: use the login endpoint to verify password
         await api.post('/auth/login', {
             email: user.value?.email,
             password: password.value
@@ -205,19 +237,41 @@ const fetchWallet = async () => {
 
 const fetchWithdrawals = async () => {
     try {
-        const res = await api.get('/organizations/wallet/withdrawals')
-        const data = res?.data || res || []
+        const offset = (currentPage.value - 1) * itemsPerPage.value
+        const res = await api.get('/organizations/wallet/withdrawals', {
+            query: {
+                limit: itemsPerPage.value,
+                offset: offset,
+                sort_by: sortBy.value,
+                order: order.value
+            }
+        })
+        const data = res?.data || []
         withdrawalHistory.value = data.map(wd => ({
             id: wd.id,
             txId: wd.reference_no,
             date: new Date(wd.created_at).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }),
-            status: wd.status === 'pending' ? 'Pending' : (wd.status === 'completed' ? 'Selesai' : 'Gagal'),
+            status: wd.status.toUpperCase(),
             amount: wd.amount
         }))
+        totalItems.value = res?.meta?.total_items || 0
     } catch (error) {
         console.error('Failed to fetch withdrawals:', error)
     }
 }
+
+const toggleSort = (field) => {
+    if (sortBy.value === field) {
+        order.value = order.value === 'ASC' ? 'DESC' : 'ASC'
+    } else {
+        sortBy.value = field
+        order.value = 'ASC'
+    }
+}
+
+watch([sortBy, order, currentPage], () => {
+    fetchWithdrawals()
+})
 
 const fetchPrimaryAccount = async () => {
     try {
