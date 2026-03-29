@@ -148,6 +148,13 @@ onUnmounted(() => {
 
 const featureItems = [
     {
+        title: 'Registrasi Event Simpel',
+        icon: 'ph:user-plus-bold',
+        description: 'Daftar turnamen dalam satu klik.',
+        longDescription: 'Capek nginput data yang sama berulang kali? Di Archeryhub, profil atlet kamu udah kesimpan aman. Mau ikut turnamen apapun tinggal pilih eventnya, klik daftar, dan beres! Nggak perlu lagi isi form panjang yang bikin pening.',
+        image: 'https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&q=80&w=1200'
+    },
+    {
         title: 'Skoring Digital Real-time',
         icon: 'ic:outline-scoreboard',
         description: 'Input skor langsung di genggaman.',
@@ -155,14 +162,7 @@ const featureItems = [
         image: 'https://images.unsplash.com/photo-1541535881962-3bb380b08458?auto=format&fit=crop&q=80&w=1200'
     },
     {
-        title: 'Registrasi Simpel',
-        icon: 'ph:user-plus-bold',
-        description: 'Daftar turnamen dalam satu klik.',
-        longDescription: 'Capek nginput data yang sama berulang kali? Di Archeryhub, profil atlet kamu udah kesimpan aman. Mau ikut turnamen apapun tinggal pilih eventnya, klik daftar, dan beres! Nggak perlu lagi isi form panjang yang bikin pening.',
-        image: 'https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&q=80&w=1200'
-    },
-    {
-        title: 'Leaderboard Update Terus',
+        title: 'Leaderboard Realtime',
         icon: 'ph:chart-bar-horizontal-bold',
         description: 'Pantau posisi rival tanpa jeda.',
         longDescription: 'Mau tau siapa yang lagi memimpin? Leaderboard kami update setiap ada skor baru yang masuk. Atlet, pelatih, dan penonton bisa terus mantau siapa yang dapet peringkat teratas di babak kualifikasi maupun eliminasi secara detail.',
@@ -176,22 +176,14 @@ const featureItems = [
         image: 'https://images.unsplash.com/photo-1511880493577-f3d35706497f?auto=format&fit=crop&q=80&w=1200'
     },
     {
-        title: 'Sertifikat Digital Instant',
-        icon: 'ph:certificate-bold',
-        description: 'Klaim prestasi kamu hari itu juga.',
-        longDescription: 'Menang atau kalah, dedikasi kamu pantes dapet apresiasi. E-sertifikat resmi bakal langsung muncul di profil kamu begitu event selesai. Bisa langsung didownload buat diprint atau dipamerin ke story Instagram kamu!',
-        image: 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&q=80&w=1200'
-    },
-
-    {
-        title: 'Integrasi Membership',
+        title: 'Integrasi Membership Payment Gateway',
         icon: 'ph:identification-card-bold',
         description: 'KTA digital buat akses nasional.',
         longDescription: 'Punya akses ke seluruh ekosistem panahan dengan satu ID. Membership Archeryhub bukan cuma buat keren-kerenan, tapi jadi syarat resmi buat ikut turnamen berlisensi nasional dan bukti kamu bagian dari komunitas atlet pro.',
         image: 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?auto=format&fit=crop&q=80&w=1200'
     },
     {
-        title: 'Analitik Performa Atlet',
+        title: 'Laporan Lengkap Atlet',
         icon: 'ph:trend-up-bold',
         description: 'Lihat progres kamu makin tajam.',
         longDescription: 'Lihat data di balik performa kamu. Sistem kita nangkep statistik skor kamu dari setiap event and latihan, terus nampilin grafik progres yang gampang dibaca. Bantu kamu dan pelatih nentuin apa yang perlu ditingkatkan buat ke depannya.',

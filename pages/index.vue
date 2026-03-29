@@ -45,7 +45,7 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Archeryhub.id - All in One Platform Panahan Indonesia',
+    title: '- Platform Manajemen Panahan Indonesia',
     link: [
         { rel: 'canonical', href: useRequestURL().href }
     ],
