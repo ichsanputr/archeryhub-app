@@ -45,7 +45,7 @@ definePageMeta({
 })
 
 useHead({
-    title: '- Platform Manajemen Panahan Indonesia',
+    title: 'ArcheryHub - Platform Manajemen Panahan Indonesia',
     link: [
         { rel: 'canonical', href: useRequestURL().href }
     ],

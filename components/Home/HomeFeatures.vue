@@ -1,6 +1,6 @@
 <template>
     <!-- Precision Ecosystem Features -->
-    <section class="relative bg-white py-12 sm:py-24 md:py-32 overflow-hidden border-b border-gray-100">
+    <section ref="sectionRef" class="relative bg-white py-12 sm:py-24 md:py-32 overflow-hidden border-b border-gray-100">
         <!-- Background Glow/Patterns -->
         <div class="absolute inset-0 pointer-events-none opacity-20">
             <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/10 blur-[120px] rounded-full"></div>
@@ -94,7 +94,7 @@
                             class="flex flex-col gap-3 max-h-[350px] px-3 sm:max-h-[400px] overflow-y-auto pr-2 sm:pr-4 custom-scrollbar">
                             <div v-for="(feature, idx) in featureItems" :key="feature.title"
                                 @click="setFeature(idx)"
-                                class="group relative overflow-hidden flex items-center p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer"
+                                class="group relative overflow-hidden flex items-center p-4 py-5 sm:p-6 sm:py-8 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer"
                                 :class="activeFeature === idx ? 'bg-navy border-navy ring-1 sm:ring-2 ring-primary ring-offset-2 shadow-sm scale-[1.01]' : 'bg-white border-gray-100 hover:border-primary/50 hover:shadow-sm'">
                                 <div v-if="activeFeature === idx" class="progress-bar" :style="{ width: progress + '%' }">
                                 </div>
@@ -130,7 +130,8 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { useIntersectionObserver } from '@vueuse/core'
 
 const activeFeature = ref(0)
 const isMobile = ref(false)
@@ -158,14 +159,32 @@ const setFeature = (idx) => {
     startTimer()
 }
 
+const sectionRef = ref(null)
+const isVisible = ref(false)
+
 const checkMobile = () => {
     isMobile.value = window.innerWidth < 1024
 }
 
+useIntersectionObserver(
+    sectionRef,
+    ([{ isIntersecting }]) => {
+        isVisible.value = isIntersecting
+    },
+    { threshold: 0.2 }
+)
+
+watch(isVisible, (visible) => {
+    if (visible) {
+        startTimer()
+    } else {
+        if (timer) clearInterval(timer)
+    }
+})
+
 onMounted(() => {
     checkMobile()
     window.addEventListener('resize', checkMobile)
-    startTimer()
 })
 
 onUnmounted(() => {
@@ -178,43 +197,43 @@ const featureItems = [
         title: 'Registrasi Event Simpel',
         icon: 'ph:user-plus-bold',
         description: 'Daftar turnamen dalam satu klik.',
-        longDescription: 'Capek nginput data yang sama berulang kali? Di Archeryhub, profil atlet kamu udah kesimpan aman. Mau ikut turnamen apapun tinggal pilih eventnya, klik daftar, dan beres! Nggak perlu lagi isi form panjang yang bikin pening.',
-        image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&q=80&w=1200'
+        longDescription: 'Capek nginput data yang sama berulang kali? Di Archeryhub, profil atlet kamu udah kesimpan aman. Kamu tinggal pilih event, klik daftar, dan beres!',
+        image: '/features/feature_registration.png'
     },
     {
         title: 'Skoring Digital Real-time',
         icon: 'ic:outline-scoreboard',
         description: 'Input skor langsung di genggaman.',
-        longDescription: 'Nggak ada lagi catat manual pakai kertas. Wasit atau atlet tinggal klik skor di aplikasi, dan hasilnya langsung dihitung otomatis. Data skor langsung sinkron ke server buat ditampilin di TV atau layar besar saat event berlangsung.',
-        image: 'https://images.unsplash.com/photo-1444491741275-3747c33cc99b?auto=format&fit=crop&q=80&w=1200'
+        longDescription: 'Nggak ada lagi catat manual pakai kertas. Wasit atau atlet tinggal klik skor di aplikasi, dan hasilnya langsung dihitung otomatis secara akurat.',
+        image: '/features/feature_scoring.png'
     },
     {
         title: 'Leaderboard Realtime',
         icon: 'ph:chart-bar-horizontal-bold',
         description: 'Pantau posisi rival tanpa jeda.',
-        longDescription: 'Mau tau siapa yang lagi memimpin? Leaderboard kami update setiap ada skor baru yang masuk. Atlet, pelatih, dan penonton bisa terus mantau siapa yang dapet peringkat teratas di babak kualifikasi maupun eliminasi secara detail.',
-        image: 'https://images.unsplash.com/photo-1541535881962-3bb380b08458?auto=format&fit=crop&q=80&w=1200'
+        longDescription: 'Dilengkapi visualisasi bracket eliminasi yang canggih. Kamu bisa terus mantau siapa yang dapet peringkat teratas dan proses eliminasi secara detail.',
+        image: '/features/feature_leaderboard.png'
     },
     {
         title: 'Laporan Beres Otomatis',
         icon: 'ph:article-bold',
-        description: 'Hasil lomba siap dalam sekejap.',
-        longDescription: 'Begitu panah terakhir ditembakkan, laporan hasil pertandingan udah siap. Panitia nggak perlu begadang buat rekap data. Sistem kita otomatis nge-generate PDF hasil lomba per divisi yang akurat dan sesuai standar federasi.',
-        image: 'https://images.unsplash.com/photo-1504439468489-c8920d796a29?auto=format&fit=crop&q=80&w=1200'
+        description: 'Laporan event jadi dalam hitungan detik.',
+        longDescription: 'Sistem kami otomatis mengolah semua data pertandingan menjadi laporan PDF yang profesional dan siap cetak untuk panitia dan sponsor.',
+        image: '/features/feature_report.png'
     },
     {
-        title: 'Integrasi Membership Payment Gateway',
-        icon: 'ph:identification-card-bold',
-        description: 'KTA digital buat akses nasional.',
-        longDescription: 'Punya akses ke seluruh ekosistem panahan dengan satu ID. Membership Archeryhub bukan cuma buat keren-kerenan, tapi jadi syarat resmi buat ikut turnamen berlisensi nasional dan bukti kamu bagian dari komunitas atlet pro.',
-        image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200'
+        title: 'Pembayaran Terintegrasi',
+        icon: 'ph:credit-card-bold',
+        description: 'Transaksi aman dan instan.',
+        longDescription: 'Bayar pendaftaran turnamen kini lebih mudah dengan virtual account, e-wallet, dan QRIS yang terintegrasi langsung di aplikasi Archeryhub.',
+        image: '/features/feature_payment.png'
     },
     {
-        title: 'Laporan Lengkap Atlet',
-        icon: 'ph:trend-up-bold',
-        description: 'Lihat progres kamu makin tajam.',
-        longDescription: 'Lihat data di balik performa kamu. Sistem kita nangkep statistik skor kamu dari setiap event and latihan, terus nampilin grafik progres yang gampang dibaca. Bantu kamu dan pelatih nentuin apa yang perlu ditingkatkan buat ke depannya.',
-        image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200'
+        title: 'Profil Atlet Digital',
+        icon: 'ph:user-circle-gear-bold',
+        description: 'Rekam jejak prestasi yang rapi.',
+        longDescription: 'Simpan semua sertifikat, statistik skor, dan histori turnamen kamu dalam satu profil digital yang bisa diakses kapan saja untuk keperluan verifikasi.',
+        image: '/features/feature_profile.png'
     }
 ]
 </script>

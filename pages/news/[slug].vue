@@ -33,7 +33,7 @@
                     </span>
 
                     <h1
-                        class="text-2xl sm:text-3xl md:text-5xl font-black tracking-tight leading-tight mb-8 sm:mb-10 uppercase drop-shadow-lg">
+                        class="text-2xl sm:text-3xl md:text-5xl font-black tracking-tight leading-tight mb-8 sm:mb-10 drop-shadow-lg">
                         {{ article.title }}
                     </h1>
 
