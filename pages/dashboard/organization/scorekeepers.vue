@@ -262,7 +262,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, reactive, computed } from 'vue'
+import { ref, onMounted, reactive, computed, watch } from 'vue'
 import { useApi } from '~/composables/useApi'
 import { useToast } from '~/composables/useToast'
 import { useSubscription } from '~/composables/useSubscription'
@@ -362,18 +362,6 @@ const formatDate = (dateStr) => {
     return new Date(dateStr).toLocaleDateString('id-ID', {
         day: 'numeric', month: 'short', year: 'numeric'
     })
-}
-
-const fetchScorekeepers = async () => {
-    loading.value = true
-    try {
-        const res = await api.get('/organizations/scorekeepers')
-        scorekeepers.value = res.scorekeepers || []
-    } catch (error) {
-        toast.error('Gagal memuat data scorekeeper')
-    } finally {
-        loading.value = false
-    }
 }
 
 const openAddModal = () => {

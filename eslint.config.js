@@ -1,5 +1,6 @@
 import pluginVue from 'eslint-plugin-vue';
 import vueParser from 'vue-eslint-parser';
+import tseslint from 'typescript-eslint';
 
 export default [
   {
@@ -10,7 +11,7 @@ export default [
       'node_modules/**',
       'dist/**',
       'public/**',
-      'hyperformula docs/**' // User's custom folder with potential issues
+      'hyperformula docs/**'
     ],
   },
   {
@@ -18,9 +19,9 @@ export default [
     languageOptions: {
       parser: vueParser,
       parserOptions: {
+        parser: tseslint.parser,
         ecmaVersion: 'latest',
         sourceType: 'module',
-        // For Nuxt/Vue 3, allow template features
         extraFileExtensions: ['.vue'],
       },
     },
@@ -30,6 +31,7 @@ export default [
     rules: {
       // Only check for parsing errors as requested
       'vue/no-parsing-error': 'error',
+      '@typescript-eslint/no-unused-vars': 'off',
     },
   },
 ];
