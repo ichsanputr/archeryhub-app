@@ -1,0 +1,2 @@
+import{a0 as s,a1 as r,a2 as u,a3 as o,a4 as c,a5 as i}from"./BXUkwYKg.js";function n(t){var a;const e=t||u();return((a=e==null?void 0:e.ssrContext)==null?void 0:a.head)||(e==null?void 0:e.runWithContext(()=>{if(o())return c(i)}))}function f(t,e={}){const a=n(e.nuxt);if(a)return s(t,{head:a,...e})}function h(t,e={}){const a=n(e.nuxt);if(a)return r(t,{head:a,...e})}export{h as a,f as u};
+//# sourceMappingURL=B9Esh8vp.js.map

@@ -1,0 +1,2 @@
+import{L as a,o,c as n,b as s,e as r,i as c,a as i,I as l}from"./BXUkwYKg.js";const d={class:"flex items-center justify-center min-h-[60vh]"},p={class:"flex flex-col items-center gap-4"},_={__name:"index",setup(m){const t=a();return o(()=>{t.replace("/dashboard/archer/events")}),(u,e)=>(i(),n("div",d,[s("div",p,[r(c(l),{icon:"ph:spinner-gap-bold",class:"text-4xl text-primary animate-spin"}),e[0]||(e[0]=s("p",{class:"text-gray-400 font-bold animate-pulse"},"Memuat dashboard...",-1))])]))}};export{_ as default};
+//# sourceMappingURL=B8lPz9_h.js.map
