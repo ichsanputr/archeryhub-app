@@ -486,7 +486,7 @@ definePageMeta({ layout: 'landing' })
 
 const route = useRoute()
 const config = useRuntimeConfig()
-const apiBaseUrl = config.public.apiBaseUrl
+const apiBaseUrl = useApiBaseUrl()
 const page = ref(1)
 const isShareOpen = ref(false)
 const copied = ref(false)

@@ -369,6 +369,7 @@ definePageMeta({
 const route = useRoute()
 const router = useRouter()
 const config = useRuntimeConfig()
+const apiBaseUrl = useApiBaseUrl()
 const eventId = route.params.id
 const bracketId = route.params.bracketId
 const { get, post, put } = useApi()
@@ -598,7 +599,7 @@ const openScoresheet = async () => {
     if (isDownloadingScoresheet.value) return
     isDownloadingScoresheet.value = true
     try {
-        const apiBase = config.public.apiBaseUrl
+        const apiBase = apiBaseUrl
         const params = new URLSearchParams({ autoprint: '1' })
         const url = `${apiBase}/events/${eventId}/elimination/brackets/${bracketId}/scoresheet?${params}`
         const win = window.open(url, '_blank')

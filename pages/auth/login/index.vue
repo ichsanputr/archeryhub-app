@@ -145,12 +145,13 @@ useHead({
     title: 'Masuk - Archeryhub.id'
 })
 const config = useRuntimeConfig()
+const apiBaseUrl = useApiBaseUrl()
 
 const getMediaUrl = (filename) => {
     if (!filename) return ''
     if (filename.startsWith('http')) return filename
     // apiBaseUrl already contains /api/v1
-    return `${config.public.apiBaseUrl}/media/${filename}`
+    return `${apiBaseUrl}/media/${filename}`
 }
 
 const isLoading = ref(false)
@@ -167,7 +168,7 @@ watch(() => form.value.email, async (newEmail) => {
 
     // Debounce or wait for blur if preferred, but let's try real-time
     try {
-        const response = await $fetch(`${config.public.apiBaseUrl}/auth/avatar/${encodeURIComponent(newEmail)}`)
+        const response = await $fetch(`${apiBaseUrl}/auth/avatar/${encodeURIComponent(newEmail)}`)
         if (response && response.avatar_url) {
             userAvatar.value = getMediaUrl(response.avatar_url)
         } else {
@@ -210,8 +211,7 @@ onMounted(async () => {
     // Auto-fill for development
     if (import.meta.dev) {
         try {
-            const config = useRuntimeConfig()
-            const { email, password } = await $fetch(`${config.public.apiBaseUrl}/auth/sample-user`)
+            const { email, password } = await $fetch(`${apiBaseUrl}/auth/sample-user`)
             if (email) {
                 form.value.email = email
                 form.value.password = password

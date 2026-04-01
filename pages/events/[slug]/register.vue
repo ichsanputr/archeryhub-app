@@ -633,7 +633,7 @@ const route = useRoute()
 const router = useRouter()
 const slug = route.params.slug
 const config = useRuntimeConfig()
-const apiBaseUrl = config.public.apiBaseUrl
+const apiBaseUrl = useApiBaseUrl()
 
 const { user, isLoggedIn, archerProfile: globalArcherProfile } = useAuth()
 const { upload, put, post } = useApi()

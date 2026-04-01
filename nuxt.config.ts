@@ -21,8 +21,9 @@ export default defineNuxtConfig({
     "~/assets/scss/main.scss",
   ],
   runtimeConfig: {
+    apiBaseUrl: process.env.NUXT_API_BASE_URL || 'http://localhost:8001/api/v1',
     public: {
-      apiBaseUrl: 'http://localhost:8001/api/v1',
+      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || 'https://api.archeryhub.id/api/v1',
       siteUrl: 'https://archeryhub.id',
       siteName: 'Archeryhub.id',
     }

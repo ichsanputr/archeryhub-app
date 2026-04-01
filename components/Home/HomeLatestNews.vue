@@ -59,7 +59,7 @@
 import { Icon } from '@iconify/vue'
 
 const config = useRuntimeConfig()
-const apiBaseUrl = config.public.apiBaseUrl
+const apiBaseUrl = useApiBaseUrl()
 
 const { data: newsResponse, pending: loading } = await useAsyncData(
     'latest-news',

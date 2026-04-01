@@ -91,7 +91,7 @@
 import { Icon } from '@iconify/vue'
 
 const config = useRuntimeConfig()
-const apiBaseUrl = config.public.apiBaseUrl
+const apiBaseUrl = useApiBaseUrl()
 
 const formatDate = (dateStr, format) => {
     if (!dateStr) return ''

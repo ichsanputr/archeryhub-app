@@ -83,7 +83,7 @@ const props = defineProps({
 
 // Fetch latest problems
 const config = useRuntimeConfig()
-const apiBaseUrl = config.public.apiBaseUrl
+const apiBaseUrl = useApiBaseUrl()
 
 const { data: latestProblems, pending: problemsLoading } = await useAsyncData('latest-problems', async () => {
   try {

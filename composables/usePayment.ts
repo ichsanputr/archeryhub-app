@@ -11,8 +11,7 @@ export interface CreateTransactionPayload {
 }
 
 export const usePayment = () => {
-  const config = useRuntimeConfig()
-  const apiBaseUrl = config.public.apiBaseUrl as string
+  const apiBaseUrl = useApiBaseUrl()
 
   const getChannels = async (): Promise<PaymentChannel[]> => {
     try {

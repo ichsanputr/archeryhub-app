@@ -198,7 +198,7 @@
 import { Icon } from '@iconify/vue'
 import BaseSelect from '~/components/common/BaseSelect.vue'
 const config = useRuntimeConfig()
-const apiBaseUrl = config.public.apiBaseUrl
+const apiBaseUrl = useApiBaseUrl()
 
 definePageMeta({
     layout: 'landing'

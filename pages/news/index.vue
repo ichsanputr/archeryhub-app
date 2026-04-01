@@ -290,6 +290,7 @@ definePageMeta({
 })
 
 const config = useRuntimeConfig()
+const apiBaseUrl = useApiBaseUrl()
 const toast = useToast()
 const searchQuery = ref('')
 const activeCategory = ref('all')
@@ -309,7 +310,7 @@ const categories = [
 ]
 
 const { data: newsResponse, pending: isLoading } = await useAsyncData('news', () =>
-    $fetch(`${config.public.apiBaseUrl}/news`),
+    $fetch(`${apiBaseUrl}/news`),
     { server: true }
 )
 
@@ -348,7 +349,7 @@ const popularArticles = computed(() => {
 // SSR Data Fetching for Upcoming Events
 const { data: eventsResponse } = await useAsyncData(
     'news-sidebar-events',
-    () => $fetch(`${config.public.apiBaseUrl}/events`, {
+    () => $fetch(`${apiBaseUrl}/events`, {
         query: { limit: 3 }
     }),
     { server: true }
@@ -373,7 +374,7 @@ const loadMore = async () => {
     isLoadingMore.value = true
     try {
         currentPage.value++
-        const response = await $fetch(`${config.public.apiBaseUrl}/news`, {
+        const response = await $fetch(`${apiBaseUrl}/news`, {
             query: {
                 page: currentPage.value,
                 limit: pageSize.value
@@ -395,7 +396,7 @@ const subscribe = async () => {
     if (!subscribeEmail.value) return
     isSubscribing.value = true
     try {
-        await $fetch(`${config.public.apiBaseUrl}/news/subscribe`, {
+        await $fetch(`${apiBaseUrl}/news/subscribe`, {
             method: 'POST',
             body: { email: subscribeEmail.value }
         })

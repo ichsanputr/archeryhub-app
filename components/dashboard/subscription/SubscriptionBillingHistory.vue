@@ -70,7 +70,7 @@ import { Icon } from '@iconify/vue'
 import { useApi } from '~/composables/useApi'
 
 const config = useRuntimeConfig()
-const apiBaseUrl = config.public.apiBaseUrl
+const apiBaseUrl = useApiBaseUrl()
 const api = useApi()
 
 defineProps({

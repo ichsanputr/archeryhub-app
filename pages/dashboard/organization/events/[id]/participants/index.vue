@@ -232,6 +232,7 @@ const route = useRoute()
 const eventId = computed(() => route.params.id)
 const { get } = useApi()
 const { setEvent, clearEvent } = useEventContext()
+const apiBaseUrl = useApiBaseUrl()
 const { isSubscriptionActive, canExportData, canCreateEvent } = useSubscription()
 const showPremiumModal = ref(false)
 
@@ -285,8 +286,6 @@ const hasActiveCategoryFilter = computed(() => Array.isArray(categoryFilter.valu
 const searchTimeout = ref(null)
 
 const exportCSV = () => {
-    const config = useRuntimeConfig()
-    const apiBaseUrl = config.public.apiBaseUrl
     const url = `${apiBaseUrl}/events/${eventId.value}/participants/export`
     window.open(url, '_blank')
 }

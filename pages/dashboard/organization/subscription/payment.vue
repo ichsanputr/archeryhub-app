@@ -7,6 +7,7 @@ import { computed, ref, watch, onBeforeMount } from 'vue'
 const route = useRoute()
 const router = useRouter()
 const config = useRuntimeConfig()
+const apiBaseUrl = useApiBaseUrl()
 const { user } = useAuth()
 const payment = usePayment()
 
@@ -21,7 +22,7 @@ onBeforeMount(() => {
     }
 })
 
-const { data: channelsRes, pending: loadingChannels, error: fetchError } = useFetch(`${config.public.apiBaseUrl}/payment/channels`, {
+const { data: channelsRes, pending: loadingChannels, error: fetchError } = useFetch(`${apiBaseUrl}/payment/channels`, {
     key: 'payment-channels',
     credentials: 'include',
     lazy: true,
@@ -79,7 +80,7 @@ const handlePayment = async () => {
     errorMessage.value = ''
 
     try {
-        const res = await $fetch(`${config.public.apiBaseUrl}/payment/create`, {
+        const res = await $fetch(`${apiBaseUrl}/payment/create`, {
             method: 'POST',
             body: {
                 type: 'subscription',

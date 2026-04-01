@@ -112,7 +112,7 @@ export const useAuth = () => {
   const config = useRuntimeConfig()
 
   const login = async (userType = 'archer', metadata: Record<string, string> = {}): Promise<void> => {
-    const baseUrl = config.public.apiBaseUrl as string
+    const baseUrl = useApiBaseUrl()
     const callbackUrl = typeof window !== 'undefined' ? `${window.location.origin}/auth/callback` : ''
 
     // Build query params including metadata
@@ -141,7 +141,7 @@ export const useAuth = () => {
   }
 
   const loginWithEmail = async (email: string, password: string): Promise<unknown> => {
-    const baseUrl = config.public.apiBaseUrl as string
+    const baseUrl = useApiBaseUrl()
     const response = await $fetch<{ user?: AuthUser }>(`${baseUrl}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -156,7 +156,7 @@ export const useAuth = () => {
   }
 
   const register = async (userData: Record<string, unknown>): Promise<unknown> => {
-    const baseUrl = config.public.apiBaseUrl as string
+    const baseUrl = useApiBaseUrl()
     const response = await $fetch<{ user?: AuthUser }>(`${baseUrl}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -171,7 +171,7 @@ export const useAuth = () => {
   }
 
   const logout = async (): Promise<void> => {
-    const baseUrl = config.public.apiBaseUrl as string
+    const baseUrl = useApiBaseUrl()
     await $fetch(`${baseUrl}/auth/logout`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -194,7 +194,7 @@ export const useAuth = () => {
 
     try {
       isUserLoading.value = true
-      const baseUrl = config.public.apiBaseUrl as string
+      const baseUrl = useApiBaseUrl()
       const fetchOptions = {
         credentials: 'include' as const
       }
@@ -235,7 +235,7 @@ export const useAuth = () => {
   }
 
   const handleCallback = async (code: string, state: string): Promise<unknown> => {
-    const baseUrl = config.public.apiBaseUrl as string
+    const baseUrl = useApiBaseUrl()
     const response = await $fetch<{ user?: AuthUser }>(`${baseUrl}/auth/google/callback`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

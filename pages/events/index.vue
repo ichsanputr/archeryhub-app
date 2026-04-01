@@ -260,6 +260,7 @@
 import { Icon } from '@iconify/vue'
 
 const config = useRuntimeConfig()
+const apiBaseUrl = useApiBaseUrl()
 const searchQuery = ref('')
 const sortBy = ref('newest')
 const selectedCity = ref('')
@@ -312,7 +313,7 @@ const transformEventData = (event) => {
 }
 
 const { data: eventResponse, pending: isLoading } = await useAsyncData('events', () =>
-    $fetch(`${config.public.apiBaseUrl}/events`),
+    $fetch(`${apiBaseUrl}/events`),
     { server: true }
 )
 

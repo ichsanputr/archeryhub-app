@@ -203,6 +203,7 @@ import { ref, computed, onMounted } from 'vue'
 const route = useRoute()
 const { get } = useApi()
 const config = useRuntimeConfig()
+const apiBaseUrl = useApiBaseUrl()
 const toast = useToast()
 
 const eventId = route.params.id
@@ -269,7 +270,7 @@ const handlePrint = () => {
 
     isProcessing.value = true
 
-    const apiBase = config.public.apiBaseUrl
+    const apiBase = apiBaseUrl
     const params = new URLSearchParams()
 
     params.append('autoprint', form.value.autoPrint ? '1' : '0')

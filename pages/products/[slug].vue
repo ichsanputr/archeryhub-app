@@ -407,7 +407,7 @@ const route = useRoute()
 const toast = useToast()
 const { isLoggedIn, user } = useAuth()
 const config = useRuntimeConfig()
-const apiBaseUrl = config.public.apiBaseUrl
+const apiBaseUrl = useApiBaseUrl()
 
 const categoryLabels = {
     equipment: 'Peralatan',

@@ -107,6 +107,7 @@ import { Icon } from '@iconify/vue'
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const config = useRuntimeConfig()
+const apiBaseUrl = useApiBaseUrl()
 const router = useRouter()
 
 definePageMeta({
@@ -139,7 +140,7 @@ const handleLogin = async () => {
     loading.value = true
     error.value = ''
     try {
-        await $fetch(`${config.public.apiBaseUrl}/root/login`, {
+        await $fetch(`${apiBaseUrl}/root/login`, {
             method: 'POST',
             body: form.value,
             credentials: 'include'

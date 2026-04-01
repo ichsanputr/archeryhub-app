@@ -336,6 +336,7 @@ import PublicEliminationBracket from './elimination/PublicEliminationBracket.vue
 import BaseButton from '~/components/common/BaseButton.vue'
 
 const config = useRuntimeConfig()
+const apiBaseUrl = useApiBaseUrl()
 
 const props = defineProps({
     eventId: {
@@ -463,7 +464,7 @@ const handleDownload = async (file, index) => {
     downloadingIndex.value = index
     try {
         const filename = file.url.split('/').pop()
-        const downloadUrl = `${config.public.apiBaseUrl}/media/download/${filename}`
+        const downloadUrl = `${apiBaseUrl}/media/download/${filename}`
 
         const blob = await $fetch(downloadUrl, {
             responseType: 'blob'

@@ -178,6 +178,7 @@ import { Icon } from '@iconify/vue'
 import { ref } from 'vue'
 
 const config = useRuntimeConfig()
+const apiBaseUrl = useApiBaseUrl()
 const router = useRouter()
 
 definePageMeta({ layout: 'dashboard', middleware: ['auth'] })
@@ -206,7 +207,7 @@ const submitForm = async () => {
     error.value = ''
     loading.value = true
     try {
-        await $fetch(`${config.public.apiBaseUrl}/root/dashboard/users`, {
+        await $fetch(`${apiBaseUrl}/root/dashboard/users`, {
             method: 'POST',
             body: form.value,
             credentials: 'include'

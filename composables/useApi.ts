@@ -2,7 +2,7 @@ import type { FetchOptions } from 'ofetch'
 
 export const useApi = () => {
   const config = useRuntimeConfig()
-  const apiBaseUrl = config.public.apiBaseUrl as string
+  const apiBaseUrl = useApiBaseUrl()
 
   const createFetchOptions = (options: FetchOptions & { body?: unknown } = {}): FetchOptions & { body?: unknown } => {
     const isFormData = options.body instanceof FormData

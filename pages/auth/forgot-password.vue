@@ -223,13 +223,14 @@ definePageMeta({ layout: false })
 useHead({ title: 'Lupa Password - Archeryhub.id' })
 
 const config = useRuntimeConfig()
+const apiBaseUrl = useApiBaseUrl()
 const toast = useToast()
 const router = useRouter()
 
 const getMediaUrl = (filename) => {
     if (!filename) return ''
     if (filename.startsWith('http')) return filename
-    return `${config.public.apiBaseUrl}/media/${filename}`
+    return `${apiBaseUrl}/media/${filename}`
 }
 
 const slides = ['/slide-1.jpeg', '/slide-2.jpeg', '/slide-3.jpeg']
@@ -342,7 +343,7 @@ const requestOTP = async () => {
 
     isLoading.value = true
     try {
-        await $fetch(`${config.public.apiBaseUrl}/auth/forgot-password`, {
+        await $fetch(`${apiBaseUrl}/auth/forgot-password`, {
             method: 'POST',
             body: { email: form.value.email }
         })
@@ -366,7 +367,7 @@ const verifyOTP = async () => {
     errors.otp = ''
     isLoading.value = true
     try {
-        await $fetch(`${config.public.apiBaseUrl}/auth/verify-reset-otp`, {
+        await $fetch(`${apiBaseUrl}/auth/verify-reset-otp`, {
             method: 'POST',
             body: { email: form.value.email, otp: otpValue.value }
         })
@@ -391,7 +392,7 @@ const resetPassword = async () => {
 
     isLoading.value = true
     try {
-        await $fetch(`${config.public.apiBaseUrl}/auth/change-password-otp`, {
+        await $fetch(`${apiBaseUrl}/auth/change-password-otp`, {
             method: 'POST',
             body: {
                 email: form.value.email,

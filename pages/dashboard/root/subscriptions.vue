@@ -282,6 +282,7 @@ import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted, watch } from 'vue'
 
 const config = useRuntimeConfig()
+const apiBaseUrl = useApiBaseUrl()
 const route = useRoute()
 
 definePageMeta({ layout: 'dashboard', middleware: ['auth'] })
@@ -303,7 +304,7 @@ watch([subSearch, subTypeFilter, subStatusFilter], () => {
 
 // Fetch Subscriptions with unique key to prevent caching issues
 const { data: subData, refresh: refreshSubs, pending: subsPending } = await useFetch(
-    `${config.public.apiBaseUrl}/root/dashboard/subscriptions`,
+    `${apiBaseUrl}/root/dashboard/subscriptions`,
     {
         key: 'root-subscriptions',
         credentials: 'include',
@@ -315,7 +316,7 @@ const { data: subData, refresh: refreshSubs, pending: subsPending } = await useF
 
 // Fetch Plans with unique key (Backend now handles grouping to return 4 plans)
 const { data: plansData, refresh: refreshPlans } = await useFetch(
-    `${config.public.apiBaseUrl}/root/dashboard/plans`,
+    `${apiBaseUrl}/root/dashboard/plans`,
     {
         key: 'root-subscription-plans',
         credentials: 'include'
@@ -395,7 +396,7 @@ const submitEdit = async () => {
         if (editExtendDays.value > 0) body.extend_days = editExtendDays.value
 
         await $fetch(
-            `${config.public.apiBaseUrl}/root/dashboard/subscriptions/${selectedSub.value.user_type}/${selectedSub.value.uuid}`,
+            `${apiBaseUrl}/root/dashboard/subscriptions/${selectedSub.value.user_type}/${selectedSub.value.uuid}`,
             { method: 'PUT', body, credentials: 'include' }
         )
         showEditModal.value = false

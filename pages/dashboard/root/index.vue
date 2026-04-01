@@ -242,6 +242,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useImageOrDefault } from '~/composables/useImageHelper'
 
 const config = useRuntimeConfig()
+const apiBaseUrl = useApiBaseUrl()
 const route = useRoute()
 
 definePageMeta({ layout: 'dashboard', middleware: ['auth'] })
@@ -253,7 +254,7 @@ const typeFilter = ref('')
 const showSuccessToast = ref(false)
 
 const { data: usersData, refresh } = await useFetch(
-    `${config.public.apiBaseUrl}/root/dashboard/users`,
+    `${apiBaseUrl}/root/dashboard/users`,
     { credentials: 'include' }
 )
 
@@ -293,7 +294,7 @@ const executeAction = async () => {
     if (!selectedUser.value) return
     actionLoading.value = true
     try {
-        await $fetch(`${config.public.apiBaseUrl}/root/dashboard/users/${selectedUser.value.type}/${selectedUser.value.uuid}/terminate`, {
+        await $fetch(`${apiBaseUrl}/root/dashboard/users/${selectedUser.value.type}/${selectedUser.value.uuid}/terminate`, {
             method: 'PATCH',
             body: { action: pendingAction.value },
             credentials: 'include'

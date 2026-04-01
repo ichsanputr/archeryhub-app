@@ -175,6 +175,7 @@ import QualificationScoringMode from '~/components/qualification/QualificationSc
 const route = useRoute()
 const { get } = useApi()
 const config = useRuntimeConfig()
+const apiBaseUrl = useApiBaseUrl()
 const toast = useToast()
 const eventId = route.params.id
 const sessionCode = route.params.session
@@ -471,7 +472,7 @@ const downloadScoresheet = async () => {
   if (!sessionData.value || isDownloadingScoresheet.value) return
   isDownloadingScoresheet.value = true
   try {
-    const apiBase = config.public.apiBaseUrl
+    const apiBase = apiBaseUrl
     const params = new URLSearchParams({ autoprint: '1' })
     const url = `${apiBase}/events/${eventId}/qualification/sessions/${sessionData.value.session_code}/scoresheet?${params}`
     const win = window.open(url, '_blank')

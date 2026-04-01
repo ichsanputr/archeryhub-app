@@ -287,12 +287,13 @@ const form = ref({
 const { register, login } = useAuth()
 const { get } = useApi()
 const config = useRuntimeConfig()
+const apiBaseUrl = useApiBaseUrl()
 
 const getMediaUrl = (filename) => {
     if (!filename) return ''
     if (filename.startsWith('http')) return filename
     // apiBaseUrl already contains /api/v1
-    return `${config.public.apiBaseUrl}/media/${filename}`
+    return `${apiBaseUrl}/media/${filename}`
 }
 
 // Name uniqueness validation

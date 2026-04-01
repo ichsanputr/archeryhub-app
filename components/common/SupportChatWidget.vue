@@ -98,6 +98,7 @@
 import { nextTick, ref } from 'vue'
 
 const config = useRuntimeConfig()
+const apiBaseUrl = useApiBaseUrl()
 const isOpen = ref(false)
 const isLoading = ref(false)
 const inputMessage = ref('')
@@ -131,7 +132,7 @@ const sendMessage = async (prefilled) => {
 
   try {
     await new Promise((resolve) => setTimeout(resolve, 780))
-    const res = await $fetch(`${config.public.apiBaseUrl}/chatbot/message`, {
+    const res = await $fetch(`${apiBaseUrl}/chatbot/message`, {
       method: 'POST',
       body: { message: text },
     })

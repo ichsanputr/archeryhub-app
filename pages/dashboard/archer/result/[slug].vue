@@ -21,7 +21,7 @@ const problemResults = ref([])
 const isLoading = ref(true)
 const fetchError = ref(null)
 const config = useRuntimeConfig()
-const apiBaseUrl = config.public.apiBaseUrl || 'http://localhost:9000'
+const apiBaseUrl = useApiBaseUrl()
 const { get } = useApi()
 
 // Pagination state

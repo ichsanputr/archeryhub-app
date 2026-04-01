@@ -18,8 +18,7 @@ export interface LevelInfo {
 export type Difficulty = 'Easy' | 'Medium' | 'Hard'
 
 export const useUserLevel = () => {
-  const config = useRuntimeConfig()
-  const apiBaseUrl = config.public.apiBaseUrl as string
+  const apiBaseUrl = useApiBaseUrl()
 
   const userStats: Ref<UserStats | null> = ref(null)
   const levelSystem: Ref<LevelInfo[] | null> = ref(null)

@@ -757,6 +757,7 @@ import { getCategoryIcon } from '~/utils/logoArcheryCategory'
 const route = useRoute()
 const slug = route.params.slug
 const config = useRuntimeConfig()
+const apiBaseUrl = useApiBaseUrl()
 
 // Auth state
 const { user, isLoggedIn } = useAuth()
@@ -1018,11 +1019,11 @@ const { data: eventData, error: eventError, pending: isPageLoading } = useAsyncD
     `event-${slug}`,
     async () => {
         const [eventRes, categoriesRes, schedulesRes, participantsRes, imagesRes] = await Promise.all([
-            $fetch(`${config.public.apiBaseUrl}/events/${slug}`),
-            $fetch(`${config.public.apiBaseUrl}/events/${slug}/categories`).catch(() => null),
-            $fetch(`${config.public.apiBaseUrl}/events/${slug}/schedule`).catch(() => null),
-            $fetch(`${config.public.apiBaseUrl}/events/${slug}/participants?limit=2000`).catch(() => null),
-            $fetch(`${config.public.apiBaseUrl}/events/${slug}/images`).catch(() => null)
+            $fetch(`${apiBaseUrl}/events/${slug}`),
+            $fetch(`${apiBaseUrl}/events/${slug}/categories`).catch(() => null),
+            $fetch(`${apiBaseUrl}/events/${slug}/schedule`).catch(() => null),
+            $fetch(`${apiBaseUrl}/events/${slug}/participants?limit=2000`).catch(() => null),
+            $fetch(`${apiBaseUrl}/events/${slug}/images`).catch(() => null)
         ])
         return {
             event: eventRes,

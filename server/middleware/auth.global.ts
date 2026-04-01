@@ -56,7 +56,7 @@ export default defineEventHandler(async (event: H3Event) => {
             // Fetch detailed profile server-side
             try {
                 const config = useRuntimeConfig()
-                const apiBaseUrl = config.public.apiBaseUrl
+                const apiBaseUrl = config.apiBaseUrl || config.public.apiBaseUrl
                 let endpoint = ''
 
                 if (payload.role === 'archer') endpoint = '/archer/me'
