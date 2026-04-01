@@ -1,0 +1,2 @@
+import{hasInjectionContext as e,inject as t}from"vue";import{t as n}from"./server.mjs";import{u as r,a as o,h as u}from"../routes/renderer.mjs";function injectHead(r){var o;const a=r||n();return(null==(o=null==a?void 0:a.ssrContext)?void 0:o.head)||(null==a?void 0:a.runWithContext(()=>{if(e())return t(u)}))}function useHead(e,t={}){const n=injectHead(t.nuxt);if(n)return r(e,{head:n,...t})}function useSeoMeta(e,t={}){const n=injectHead(t.nuxt);if(n)return o(e,{head:n,...t})}export{useSeoMeta as a,useHead as u};
+//# sourceMappingURL=v3-Cph93NpW.mjs.map
