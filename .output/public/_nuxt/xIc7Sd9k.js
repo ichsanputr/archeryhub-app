@@ -1,2 +1,0 @@
-import{c as n,b as t,e as a,a as o,W as c,X as r}from"./nG-0U8Rs.js";const i=c(r),_={class:"flex items-center justify-center min-h-[60vh]"},l={class:"flex flex-col items-center gap-4"},x={__name:"index",setup(p){return(m,e)=>{const s=i;return o(),n("div",_,[t("div",l,[a(s,{icon:"ph:spinner-gap-bold",class:"text-4xl text-primary animate-spin"}),e[0]||(e[0]=t("p",{class:"text-gray-400 font-bold animate-pulse"},"Memuat dashboard...",-1))])])}}};export{x as default};
-//# sourceMappingURL=xIc7Sd9k.js.map

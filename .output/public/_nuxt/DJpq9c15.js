@@ -1,2 +1,0 @@
-import{f as a,K as o,c as s,b as e,e as c,a as _,ax as n}from"./nG-0U8Rs.js";const r={class:"min-h-screen bg-background-light font-body text-navy antialiased flex flex-col"},d={class:"flex-grow max-w-[1280px] mx-auto w-full"},l={class:"w-full"},i={__name:"[id]",setup(u){return o().params.id,(m,p)=>{const t=n;return _(),s("div",r,[e("main",d,[e("div",l,[c(t)])])])}}},h=a(i,[["__scopeId","data-v-9578c7d6"]]);export{h as default};
-//# sourceMappingURL=DJpq9c15.js.map

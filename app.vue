@@ -9,8 +9,6 @@
 </template>
 
 <script setup>
-import { useTheme } from '~/composables/useTheme'
-import { useAuth } from '~/composables/useAuth'
 
 defineOptions({
   name: 'App'
