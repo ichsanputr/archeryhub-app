@@ -28,7 +28,8 @@ const showSupportChat = computed(() =>
   !isDashboard.value && 
   !isMatchPage.value && 
   !isAuthPage.value && 
-  !route.path.startsWith('/products/')
+  !route.path.startsWith('/products/') &&
+  !route.path.startsWith('/embed/')
 )
 
 // Initialize theme and auth at app level
