@@ -354,7 +354,7 @@ const showMediaLibrary = ref(false)
 
 const form = reactive({
     category_ids: [],
-    payment_status: 'lunas',
+    payment_status: 'unpaid',
     payment_amount: 0,
     registration_source: 'invited',
     notes: ''
@@ -393,7 +393,7 @@ const bowOptions = [
 ]
 
 const paymentStatusOptions = [
-    { title: 'Menunggu ACC', value: 'menunggu_acc' },
+    { title: 'Unpaid', value: 'unpaid' },
     { title: 'Lunas', value: 'lunas' }
 ]
 

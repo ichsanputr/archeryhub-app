@@ -275,38 +275,12 @@
                                             :loading="isProcessingPayment"
                                             class="h-12 font-black uppercase tracking-widest text-xs shadow-sm">
                                             <Icon icon="ph:lightning-bold" class="text-lg mr-2" />
-                                            Payment Gateway (Otomatis)
-                                        </BaseButton>
-                                        <BaseButton variant="white" block @click="initiateManualPayment"
-                                            class="h-12 font-black uppercase tracking-widest text-xs border-slate-200 shadow-sm">
-                                            <Icon icon="ph:bank-bold" class="text-lg mr-2" />
-                                            Transfer Manual
+                                            Bayar Online (Otomatis)
                                         </BaseButton>
                                     </div>
                                 </div>
 
 
-                                <div v-if="participant.payment_proof_urls?.length" class="space-y-4 pt-2">
-                                    <div class="flex items-center gap-2">
-                                        <div class="h-px bg-slate-100 dark:bg-slate-700 flex-1"></div>
-                                        <span
-                                            class="text-[9px] font-black uppercase tracking-widest text-slate-400">Bukti
-                                            Transfer</span>
-                                        <div class="h-px bg-slate-100 dark:bg-slate-700 flex-1"></div>
-                                    </div>
-                                    <div class="grid grid-cols-2 gap-3">
-                                        <div v-for="(url, idx) in paymentProofs" :key="idx"
-                                            class="aspect-video rounded-xl overflow-hidden border border-slate-100 bg-slate-50 group relative cursor-pointer shadow-sm"
-                                            @click="openImage(url)">
-                                            <img :src="url"
-                                                class="size-full object-cover group-hover:scale-110 transition-transform" />
-                                            <div
-                                                class="absolute inset-0 bg-navy/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                                <Icon icon="ph:magnifying-glass-plus-bold" class="text-white text-xl" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -350,14 +324,6 @@
             </template>
         </AppDialog>
 
-        <!-- Image Lightbox -->
-        <AppDialog v-model:show="showImageDialog" title="Bukti Pembayaran" type="primary" icon="payments" size="lg">
-            <template #default>
-                <div class="flex justify-center -m-4 bg-slate-900 rounded-b-3xl overflow-hidden">
-                    <img :src="selectedImage" class="max-w-full max-h-[75vh] object-contain" />
-                </div>
-            </template>
-        </AppDialog>
     </div>
 </template>
 
@@ -377,10 +343,7 @@ const participant = ref(null)
 const showImageDialog = ref(false)
 const selectedImage = ref('')
 
-const paymentProofs = computed(() => {
-    if (!participant.value?.payment_proof_urls) return []
-    return participant.value.payment_proof_urls
-})
+const paymentProofs = computed(() => [])
 
 const isProcessingPayment = ref(false)
 const showCancelConfirm = ref(false)
@@ -437,10 +400,6 @@ const initiatePaymentGateway = async () => {
     }
 }
 
-const initiateManualPayment = () => {
-    // Navigate to manual payment view or show info
-    toast.info('Silakan hubungi panitia untuk transfer manual atau unggah bukti di menu yang tersedia.')
-}
 
 const getStatusClass = (status, onNavy = false) => {
     const s = (status || '').toLowerCase()
@@ -450,7 +409,7 @@ const getStatusClass = (status, onNavy = false) => {
 
 const getDisplayStatus = (status) => {
     const s = (status || '').toLowerCase()
-    if (s === 'menunggu' || s === 'menunggu acc' || !s) return 'Menunggu ACC'
+    if (s === 'menunggu' || s === 'menunggu acc' || !s) return 'UNPAID'
     return s.toUpperCase()
 }
 

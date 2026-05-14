@@ -131,34 +131,6 @@
                                 icon="ph:money" kind="currency" />
                         </div>
 
-                        <!-- Payment Proof Images -->
-                        <div class="pt-4 border-t border-gray-100">
-                            <label class="block text-sm font-bold text-gray-700 mb-4">Bukti Pembayaran</label>
-
-                            <div v-if="form.payment_proof_urls?.length" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                                <template v-for="(url, index) in form.payment_proof_urls" :key="index">
-                                    <div
-                                        class="group relative aspect-square rounded-xl overflow-hidden border border-gray-200 bg-gray-50">
-                                        <img :src="url.startsWith('http') ? url : `http://localhost:8001${url}`"
-                                            class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                            alt="Bukti Pembayaran" />
-                                        <div
-                                            class="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all flex items-center justify-center">
-                                            <a :href="url.startsWith('http') ? url : `http://localhost:8001${url}`"
-                                                target="_blank"
-                                                class="opacity-0 group-hover:opacity-100 p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/40 transition-all">
-                                                <Icon icon="ph:magnifying-glass-plus" class="text-xl" />
-                                            </a>
-                                        </div>
-                                    </div>
-                                </template>
-                            </div>
-                            <div v-else
-                                class="p-8 bg-gray-50 rounded-xl border border-dashed border-gray-200 text-center text-gray-400">
-                                <Icon icon="ph:image-slash" class="text-3xl mx-auto mb-2 opacity-50" />
-                                <p class="text-xs">Belum ada bukti pembayaran yang diunggah</p>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -262,15 +234,14 @@ const isSubmitting = ref(false)
 const isKicking = ref(false)
 
 const statusOptions = [
-    { title: 'Menunggu Acc', value: 'Menunggu Acc', icon: 'ph:hourglass' },
-    { title: 'Terdaftar', value: 'Terdaftar', icon: 'ph:check-circle' }
+    { title: 'Terdaftar / Lunas', value: 'Terdaftar', icon: 'ph:check-circle' },
+    { title: 'Unpaid', value: 'Unpaid', icon: 'ph:hourglass' }
 ]
 
 const form = reactive({
     category_id: '',
-    status: 'Menunggu Acc',
-    payment_amount: 0,
-    payment_proof_urls: []
+    status: 'Unpaid',
+    payment_amount: 0
 })
 
 const fetchParticipant = async () => {
@@ -284,9 +255,8 @@ const fetchParticipant = async () => {
             participant.value = found
             // Populate form
             form.category_id = found.category_id
-            form.status = found.status || 'Menunggu Acc'
+            form.status = found.status || 'Unpaid'
             form.payment_amount = found.payment_amount || 0
-            form.payment_proof_urls = found.payment_proof_urls ? found.payment_proof_urls.split(',') : []
         }
 
         // Fetch event details and categories
@@ -345,8 +315,7 @@ const handleSubmit = async () => {
         const payload = {
             category_id: form.category_id,
             status: form.status,
-            payment_amount: form.payment_amount || 0,
-            payment_proof_urls: form.payment_proof_urls
+            payment_amount: form.payment_amount || 0
         }
 
         // Use stable UUID if available, otherwise fallback to route param

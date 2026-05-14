@@ -184,54 +184,6 @@
                                 <BaseInput v-model="form.payment_amount" label="Jumlah Pembayaran" placeholder="0"
                                     icon="ph:money" kind="currency" required />
                             </div>
-
-                            <!-- Payment Proof Images -->
-                            <div class="pt-4 border-t border-gray-100">
-                                <div class="flex items-center justify-between mb-4">
-                                    <label class="block text-sm font-bold text-gray-700 flex items-center gap-2">
-                                        <Icon icon="ph:image" />
-                                        Bukti Pembayaran <span class="text-red-500">*</span>
-                                    </label>
-                                    <BaseButton type="button" variant="primary" icon="ph:plus-circle-bold"
-                                        @click="showMediaLibrary = true" class="!h-8 !px-3 shadow-md shadow-primary/20">
-                                        <span class="text-[10px] font-black uppercase tracking-widest">Tambah
-                                            Bukti</span>
-                                    </BaseButton>
-                                </div>
-
-                                <div v-if="form.payment_proof_urls?.length"
-                                    class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                                    <template v-for="(url, index) in form.payment_proof_urls" :key="index">
-                                        <div
-                                            class="group relative aspect-square rounded-xl overflow-hidden border border-gray-200 bg-gray-50">
-                                            <img :src="url.startsWith('http') ? url : `http://localhost:8001${url}`"
-                                                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                                alt="Bukti Pembayaran" />
-                                            <div
-                                                class="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all flex items-center justify-center">
-                                                <div
-                                                    class="flex gap-2 opacity-0 group-hover:opacity-100 transition-all">
-                                                    <a :href="url.startsWith('http') ? url : `http://localhost:8001${url}`"
-                                                        target="_blank"
-                                                        class="p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/40 transition-all">
-                                                        <Icon icon="ph:magnifying-glass-plus" class="text-xl" />
-                                                    </a>
-                                                    <button type="button" @click="removeProof(index)"
-                                                        class="p-2 bg-red-500/20 backdrop-blur-md rounded-full text-white hover:bg-red-500/40 transition-all">
-                                                        <Icon icon="ph:trash" class="text-xl" />
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </template>
-                                </div>
-                                <div v-else
-                                    class="p-8 bg-gray-50 rounded-xl border border-dashed border-gray-200 text-center text-gray-400">
-                                    <Icon icon="ph:image-slash" class="text-3xl mx-auto mb-2 opacity-50" />
-                                    <p class="text-xs font-bold  tracking-widest opacity-60">Belum ada
-                                        bukti</p>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -422,12 +374,10 @@ const filteredCategories = computed(() => {
         c.description.toLowerCase().includes(search)
     )
 })
-
 const form = reactive({
     category_ids: [],
-    payment_status: 'menunggu acc',
-    payment_amount: 0,
-    payment_proof_urls: []
+    payment_status: 'unpaid',
+    payment_amount: 0
 })
 
 const toggleCategory = (id) => {
@@ -438,7 +388,7 @@ const toggleCategory = (id) => {
 
 const paymentStatusOptions = [
     { label: 'Lunas', value: 'lunas' },
-    { label: 'Menunggu ACC', value: 'menunggu acc' }
+    { label: 'Unpaid', value: 'unpaid' }
 ]
 
 const targetNumberText = computed(() => {
@@ -456,9 +406,8 @@ const fetchParticipant = async () => {
             participant.value = found
             // Populate form
             form.category_ids = [...new Set(found.categories?.map(c => c.category_id) || (found.category_id ? [found.category_id] : []))]
-            form.payment_status = found.payment_status || 'menunggu acc'
+            form.payment_status = found.payment_status || 'unpaid'
             form.payment_amount = found.payment_amount || 0
-            form.payment_proof_urls = found.payment_proof_urls ? (Array.isArray(found.payment_proof_urls) ? found.payment_proof_urls : found.payment_proof_urls.split(',')) : []
         }
 
         // Fetch event details and categories
@@ -480,16 +429,6 @@ const fetchParticipant = async () => {
     }
 }
 
-const handleMediaSelect = (media) => {
-    if (media?.url) {
-        form.payment_proof_urls.push(media.url)
-        toast.success('Bukti pembayaran berhasil ditambahkan')
-    }
-}
-
-const removeProof = (index) => {
-    form.payment_proof_urls.splice(index, 1)
-}
 
 const formatCategoryName = (category) => {
     return [
@@ -580,7 +519,6 @@ const handleSubmit = async () => {
             category_ids: form.category_ids,
             payment_status: form.payment_status,
             payment_amount: parseFloat(form.payment_amount) || 0,
-            payment_proof_urls: form.payment_proof_urls,
             athlete_id: participant.value?.archer_id // Or participant.value?.athlete_code
         }
         await put(`/events/${eventId}/participants/${participantId}`, payload)

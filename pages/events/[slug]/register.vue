@@ -108,15 +108,6 @@
                     </div>
                 </div>
 
-                <!-- Manual payment -->
-                <div v-else class="bg-white/10 border border-white/20 rounded-2xl p-5 mb-6 flex items-start gap-3">
-                    <Icon icon="ph:clock-fill" class="text-primary text-xl shrink-0 mt-0.5" />
-                    <div>
-                        <span class="text-sm font-black text-white mb-1 block">Menunggu Konfirmasi</span>
-                        <span class="text-xs text-white/50 block">Anda akan menerima notifikasi setelah pendaftaran
-                            dikonfirmasi oleh penyelenggara.</span>
-                    </div>
-                </div>
 
                 <!-- Manual go to dashboard link (subtle) -->
                 <span class="text-center block text-white/30 text-xs font-medium">
@@ -397,28 +388,13 @@
                                 <h2 class="text-base font-black text-navy">Metode Pembayaran</h2>
                             </div>
                             <div class="p-6 space-y-5">
-                                <!-- Method Toggle -->
-                                <div class="grid grid-cols-2 gap-3">
-                                    <button @click="form.payment_type = 'online'"
-                                        class="flex flex-col items-center gap-2.5 p-4 rounded-xl border-2 transition-all"
-                                        :class="form.payment_type === 'online' ? 'border-navy bg-navy/5 text-navy' : 'border-gray-100 bg-white text-gray-400 hover:border-gray-200'">
-                                        <Icon icon="ph:lightning-bold" class="text-2xl" />
-                                        <div class="text-center">
-                                            <div class="text-[10px] font-black uppercase tracking-wider">Bayar Online
-                                            </div>
-                                            <div class="text-[9px] opacity-60 mt-0.5">Otomatis Terkonfirmasi</div>
-                                        </div>
-                                    </button>
-                                    <button @click="form.payment_type = 'manual'"
-                                        class="flex flex-col items-center gap-2.5 p-4 rounded-xl border-2 transition-all"
-                                        :class="form.payment_type === 'manual' ? 'border-navy bg-navy/5 text-navy' : 'border-gray-100 bg-white text-gray-400 hover:border-gray-200'">
-                                        <Icon icon="ph:bank-bold" class="text-2xl" />
-                                        <div class="text-center">
-                                            <div class="text-[10px] font-black uppercase tracking-wider">Transfer Manual
-                                            </div>
-                                            <div class="text-[9px] opacity-60 mt-0.5">Verifikasi 1–2 Hari</div>
-                                        </div>
-                                    </button>
+                                <!-- Method Info -->
+                                <div class="p-4 rounded-xl border-2 border-navy bg-navy/5 text-navy flex items-center gap-3">
+                                    <Icon icon="ph:lightning-bold" class="text-2xl" />
+                                    <div>
+                                        <div class="text-[10px] font-black uppercase tracking-wider text-navy">Bayar Online</div>
+                                        <div class="text-[9px] text-navy/70 mt-0.5">Otomatis Terkonfirmasi</div>
+                                    </div>
                                 </div>
 
                                 <!-- Online Payment Channels — Expansion panel -->
@@ -504,93 +480,6 @@
                                             aman via Tripay. Konfirmasi otomatis setelah pembayaran berhasil.</span>
                                     </div>
                                 </div>
-
-                                <!-- Manual: Bank Accounts -->
-                                <div v-if="form.payment_type === 'manual'" class="space-y-4">
-                                    <!-- Proof Upload -->
-                                    <div>
-                                        <span
-                                            class="text-[10px] font-black text-gray-600 uppercase tracking-widest mb-3 block">Unggah
-                                            Bukti Transfer</span>
-                                        <span class="text-xs text-gray-500 mb-3 block">Silakan unggah bukti transfer
-                                            sesuai nominal pendaftaran. Bisa lebih dari satu foto.</span>
-
-                                        <div class="grid grid-cols-3 gap-3 mb-3">
-                                            <!-- Previews -->
-                                            <div v-for="(img, idx) in paymentPreviews" :key="idx"
-                                                class="relative aspect-square rounded-xl overflow-hidden border-2 border-gray-100 group">
-                                                <img :src="img.url" class="w-full h-full object-cover" />
-                                                <div
-                                                    class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                                    <button @click="removeProof(idx)"
-                                                        class="bg-red-500 text-white rounded-lg p-1.5">
-                                                        <Icon icon="ph:trash-bold" class="text-sm" />
-                                                    </button>
-                                                </div>
-                                                <div v-if="img.uploading"
-                                                    class="absolute inset-0 bg-white/80 flex items-center justify-center">
-                                                    <Icon icon="ph:circle-notch-bold"
-                                                        class="text-navy text-xl animate-spin" />
-                                                </div>
-                                            </div>
-
-                                            <!-- Add Button -->
-                                            <button v-if="isLoggedIn" @click="triggerProofUpload"
-                                                class="aspect-square rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 hover:border-navy hover:bg-navy/5 transition-all flex flex-col items-center justify-center gap-1.5">
-                                                <Icon icon="ph:camera-plus-bold" class="text-2xl text-gray-400" />
-                                                <span
-                                                    class="text-[9px] font-black text-gray-400 uppercase tracking-widest">Tambah</span>
-                                            </button>
-                                        </div>
-
-                                        <div class="p-3 bg-gray-50 border border-gray-100 rounded-xl flex gap-2.5">
-                                            <Icon icon="ph:info-bold" class="text-navy shrink-0 mt-0.5 text-sm" />
-                                            <span
-                                                class="text-[10px] text-navy/70 font-medium leading-relaxed block">Pastikan
-                                                tampilkan <strong>Nominal</strong>, <strong>Tanggal</strong>, dan
-                                                <strong>Nama Pengirim</strong>. Format: JPG, PNG (Maks 5MB).</span>
-                                        </div>
-                                        <input ref="proofInput" type="file" multiple accept="image/*" class="hidden"
-                                            @change="handleProofUpload" />
-                                    </div>
-
-                                    <!-- Bank Accounts -->
-                                    <div>
-                                        <span
-                                            class="text-[10px] font-black text-gray-600 uppercase tracking-widest mb-3 block">Rekening
-                                            Tujuan</span>
-                                        <div v-if="paymentMethods.length > 0" class="space-y-2">
-                                            <div v-for="method in paymentMethods" :key="method.uuid"
-                                                class="flex items-center gap-3 p-3.5 bg-gray-50 rounded-xl border border-gray-100">
-                                                <div
-                                                    class="h-9 w-9 rounded-lg bg-white border border-gray-200 flex items-center justify-center shrink-0 overflow-hidden p-1">
-                                                    <img v-if="getPaymentMethodImage(method.payment_method)"
-                                                        :src="getPaymentMethodImage(method.payment_method)"
-                                                        class="w-full h-full object-contain" />
-                                                    <Icon v-else icon="ph:bank-bold" class="text-navy" />
-                                                </div>
-                                                <div class="flex-1 min-w-0">
-                                                    <span class="font-bold text-navy text-sm leading-tight block">{{
-                                                        method.payment_method }}</span>
-                                                    <span v-if="method.account_name"
-                                                        class="text-xs text-gray-500 font-medium block">{{
-                                                            method.account_name
-                                                        }}</span>
-                                                    <span v-if="method.account_number"
-                                                        class="text-xs font-mono font-bold text-navy bg-white border border-gray-200 px-2 py-0.5 rounded-md inline-block mt-0.5">
-                                                        {{ method.account_number }}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div v-else
-                                            class="p-4 bg-amber-50 rounded-xl border border-amber-100 flex gap-2.5">
-                                            <Icon icon="ph:warning-bold" class="text-amber-500 shrink-0" />
-                                            <span class="text-xs text-amber-700 font-medium block">Penyelenggara belum
-                                                menambahkan rekening. Pilih <strong>Bayar Online</strong>.</span>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </section>
 
@@ -606,9 +495,7 @@
                             <span v-if="submitError" class="text-sm text-red-500 font-bold text-center block">{{
                                 submitError }}</span>
                             <span
-                                class="text-[10px] text-gray-400 text-center font-medium leading-relaxed block">Pendaftaran
-                                akan diverifikasi oleh
-                                penyelenggara dalam 1–3 hari kerja.</span>
+                                class="text-[10px] text-gray-400 text-center font-medium leading-relaxed block">Konfirmasi otomatis setelah pembayaran berhasil.</span>
                         </div>
                     </div>
                 </div>
@@ -752,7 +639,6 @@ const copyToClipboard = (text) => {
 const form = ref({
     category_ids: [],
     payment_amount: 0,
-    payment_proofs: [],
     payment_type: 'online',
     online_channel: ''
 })
@@ -819,13 +705,10 @@ const isFormValid = computed(() => {
     const categoriesSelected = form.value.category_ids.length > 0
     const archerProfileExists = !!archerProfile.value
     const profileComplete = !!profileForm.value.full_name && !!profileForm.value.gender && !!profileForm.value.date_of_birth && !!profileForm.value.bow_type
-    const paymentProofProvided = (event.value.registration_fee > 0 && form.value.payment_type === 'manual')
-        ? form.value.payment_proofs.length > 0
-        : true
-    const channelSelected = event.value.registration_fee > 0 && form.value.payment_type === 'online'
+    const channelSelected = event.value.registration_fee > 0
         ? !!form.value.online_channel
         : true
-    return categoriesSelected && archerProfileExists && profileComplete && paymentProofProvided && channelSelected
+    return categoriesSelected && archerProfileExists && profileComplete && channelSelected
 })
 
 const loginUrl = computed(() => `/auth/login?redirect=${encodeURIComponent(route.fullPath)}`)
@@ -911,41 +794,6 @@ const toggleCategory = (id) => {
     idx === -1 ? form.value.category_ids.push(id) : form.value.category_ids.splice(idx, 1)
 }
 
-const triggerProofUpload = () => {
-    if (!isLoggedIn.value) return
-    proofInput.value?.click()
-}
-
-const handleProofUpload = async (ev) => {
-    const files = Array.from(ev.target.files)
-    if (!files.length) return
-    for (const file of files) {
-        if (file.size > 5 * 1024 * 1024) { alert(`File ${file.name} terlalu besar (Maks 5MB)`); continue }
-        const reader = new FileReader()
-        const previewId = Date.now() + Math.random()
-        reader.onload = (e) => paymentPreviews.value.push({ id: previewId, url: e.target.result, uploading: true })
-        reader.readAsDataURL(file)
-        const formData = new FormData()
-        formData.append('file', file)
-        formData.append('caption', 'payment-proof')
-        try {
-            const response = await upload('/media/upload', formData)
-            const idx = paymentPreviews.value.findIndex(p => p.id === previewId)
-            if (idx !== -1) { paymentPreviews.value[idx].uploading = false; paymentPreviews.value[idx].finalUrl = response.url }
-            form.value.payment_proofs.push(response.url)
-        } catch (err) {
-            paymentPreviews.value = paymentPreviews.value.filter(p => p.id !== previewId)
-            alert(`Upload gagal: ${err?.data?.error || err?.message || 'Gagal mengunggah'}`)
-        }
-    }
-    ev.target.value = ''
-}
-
-const removeProof = (index) => {
-    const removed = paymentPreviews.value[index].finalUrl
-    paymentPreviews.value.splice(index, 1)
-    form.value.payment_proofs = form.value.payment_proofs.filter(u => u !== removed)
-}
 
 const handleSubmit = async () => {
     if (!isFormValid.value) return
@@ -971,14 +819,12 @@ const handleSubmit = async () => {
             athlete_id: athleteId,
             event_category_ids: form.value.category_ids,
             payment_amount: form.value.payment_amount || 0,
-            payment_proof_urls: form.value.payment_proofs,
-            payment_type: form.value.payment_type
+            payment_type: 'online'
         }
 
         const response = await post(`/events/${event.value.id}/participants`, payload)
 
         // For online payment: call Tripay with chosen channel
-        if (form.value.payment_type === 'online' && (response.registration_id || response.uuid)) {
             const registrationId = response.registration_id || response.uuid
             try {
                 const payResult = await post('/payment/create', {
@@ -994,7 +840,6 @@ const handleSubmit = async () => {
                 registrationSuccess.value = true
             }
             return
-        }
 
         registrationSuccess.value = true
     } catch (err) {

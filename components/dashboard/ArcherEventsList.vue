@@ -372,7 +372,7 @@ const formatDate = (dateStr) => {
 const getPaymentStatusClass = (status) => {
   if (!status) return 'bg-gray-50 text-gray-500 border-gray-100'
   const s = status.toLowerCase()
-  if (s === 'menunggu' || s === 'menunggu_acc' || s === 'pending' || s === 'menunggu acc') {
+  if (s === 'menunggu' || s === 'menunggu_acc' || s === 'pending' || s === 'menunggu acc' || s === 'unpaid') {
     return 'bg-amber-50 text-amber-700 border-amber-100'
   }
   const classes = {
@@ -387,7 +387,7 @@ const getPaymentStatusClass = (status) => {
 const getPaymentStatusDotClass = (status) => {
   if (!status) return 'bg-gray-300'
   const s = status.toLowerCase()
-  if (s === 'menunggu' || s === 'menunggu_acc' || s === 'pending' || s === 'menunggu acc') {
+  if (s === 'menunggu' || s === 'menunggu_acc' || s === 'pending' || s === 'menunggu acc' || s === 'unpaid') {
     return 'bg-amber-500'
   }
   const classes = {
@@ -402,7 +402,7 @@ const getPaymentStatusDotClass = (status) => {
 const getPaymentStatusLabel = (status) => {
   if (!status) return '-'
   const s = status.toLowerCase()
-  if (s === 'menunggu' || s === 'menunggu_acc' || s === 'pending' || s === 'menunggu acc') return 'Menunggu ACC'
+  if (s === 'menunggu' || s === 'menunggu_acc' || s === 'pending' || s === 'menunggu acc' || s === 'unpaid') return 'UNPAID'
   const labels = {
     'belum_lunas': 'Belum Lunas',
     'lunas': 'Lunas',
@@ -415,7 +415,7 @@ const getPaymentStatusLabel = (status) => {
 const getStatusClass = (status) => {
   if (!status) return 'bg-gray-50 text-gray-500 border-gray-100'
   const s = status.toLowerCase()
-  if (s === 'menunggu' || s === 'menunggu acc' || s === 'pending' || s === 'menunggu_acc') {
+  if (s === 'menunggu' || s === 'menunggu acc' || s === 'pending' || s === 'menunggu_acc' || s === 'unpaid') {
     return 'bg-amber-50 text-amber-700 border-amber-100'
   }
   const classes = {
@@ -429,7 +429,7 @@ const getStatusClass = (status) => {
 const getStatusDotClass = (status) => {
   if (!status) return 'bg-gray-300'
   const s = status.toLowerCase()
-  if (s === 'menunggu' || s === 'menunggu acc' || s === 'pending' || s === 'menunggu_acc') {
+  if (s === 'menunggu' || s === 'menunggu acc' || s === 'pending' || s === 'menunggu_acc' || s === 'unpaid') {
     return 'bg-amber-500'
   }
   const classes = {
@@ -443,7 +443,7 @@ const getStatusDotClass = (status) => {
 const getStatusLabel = (status) => {
   if (!status) return 'Belum Daftar'
   const s = status.toLowerCase()
-  if (s === 'menunggu' || s === 'menunggu acc' || s === 'pending') return 'Menunggu ACC'
+  if (s === 'menunggu' || s === 'menunggu acc' || s === 'pending' || s === 'unpaid') return 'UNPAID'
   const labels = {
     'terdaftar': 'Terdaftar',
     'approved': 'Diterima',

@@ -265,7 +265,7 @@ const categoryFilter = ref([])
 const statusOptions = [
     { title: 'Semua Status', value: 'Semua' },
     { title: 'Lunas', value: 'lunas' },
-    { title: 'Menunggu ACC', value: 'menunggu acc' }
+    { title: 'Unpaid', value: 'unpaid' }
 ]
 
 const categoryFilterOptions = computed(() => {
@@ -401,7 +401,7 @@ const getFilteredCategoryLabels = (participant) => {
 
 const getDisplayStatus = (status) => {
     const s = (status || '').toLowerCase()
-    if (s === 'menunggu' || s === 'menunggu acc' || !s) return 'Menunggu ACC'
+    if (s === 'menunggu' || s === 'menunggu acc' || !s) return 'unpaid'
     return s
 }
 

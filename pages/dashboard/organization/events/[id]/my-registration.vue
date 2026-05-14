@@ -167,12 +167,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div v-else
-                                class="p-6 border-2 border-dashed border-slate-100 dark:border-slate-700 rounded-2xl text-center">
-                                <Icon icon="ph:image-square-light" class="text-4xl text-slate-200 mx-auto mb-3" />
-                                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Belum ada bukti
-                                </p>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -227,8 +221,8 @@ const getStatusClass = (status) => {
 
 const getDisplayStatus = (status) => {
     const s = (status || '').toLowerCase()
-    if (s === 'menunggu' || s === 'menunggu acc' || !s) return 'Menunggu ACC'
-    return s
+    if (s === 'menunggu' || s === 'menunggu acc' || !s) return 'UNPAID'
+    return s.toUpperCase()
 }
 
 const formatCurrency = (val) => {
