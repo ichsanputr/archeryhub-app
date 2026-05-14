@@ -41,6 +41,8 @@ export const useFormValidation = () => {
   const phone = (msg = 'Nomor HP minimal 8 digit'): Rule =>
     (v) => !v || /^\d{8,}$/.test(String(v).replace(/\D/g, '')) || msg
 
+  const pattern = (regex: RegExp, msg: string): Rule => (v) => !v || regex.test(String(v)) || msg
+
   return {
     errors,
     validate,
@@ -51,7 +53,8 @@ export const useFormValidation = () => {
       email,
       minLength,
       sameAs,
-      phone
+      phone,
+      pattern
     }
   }
 }
