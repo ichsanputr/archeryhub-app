@@ -1,4 +1,4 @@
-﻿<script setup>
+<script setup>
 // import removed: getPlatformContent not used in footer
 // removed: otherLanguages computed is no longer needed
 </script>
@@ -20,7 +20,7 @@
                 <img src="/logo.png" alt="archeris.net Logo" class="h-10 sm:h-12 w-auto" />
               </NuxtLink>
               <div class="text-2xl font-black tracking-tight text-white font-display">
-                Archeris<span class="text-logo-id">.id</span>
+                Archeris<span class="text-logo-id">.net</span>
               </div>
             </div>
             <p class="text-gray-400 leading-relaxed text-sm sm:text-base">

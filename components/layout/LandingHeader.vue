@@ -1,4 +1,4 @@
-﻿<template>
+<template>
     <nav class="fixed top-0 z-50 w-full transition-all duration-500" :class="navClasses">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
@@ -9,7 +9,7 @@
                         <img src="/logo.png" alt="Logo" class="w-5 h-5 object-contain" />
                     </div>
                     <span class="text-xl font-black tracking-tight font-display transition-colors duration-300"
-                        :class="logoTextClasses">Archeris<span class="text-logo-id">.id</span></span>
+                        :class="logoTextClasses">Archeris<span class="text-logo-id">.net</span></span>
                 </NuxtLink>
 
                 <!-- Desktop Navigation -->

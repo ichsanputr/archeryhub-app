@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 shadow-sm transition-all duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
@@ -8,7 +8,7 @@
             <img src="/logo.png" alt="Logo" class="w-5 h-5 object-contain" />
           </div>
           <span class="text-xl font-black tracking-tight font-display text-navy">Archeris<span
-              class="text-logo-id">.id</span></span>
+              class="text-logo-id">.net</span></span>
         </NuxtLink>
 
         <!-- Desktop Navigation -->
@@ -214,7 +214,7 @@
               <img src="/logo.png" alt="Logo" class="w-5 h-5 object-contain" />
             </div>
             <span class="text-lg font-black tracking-tight text-navy uppercase">Archeris<span
-                class="text-logo-id">.id</span></span>
+                class="text-logo-id">.net</span></span>
           </NuxtLink>
           <button @click="mobileMenuOpen = false" class="p-2 hover:bg-gray-100 rounded-xl transition-all scale-100">
             <Icon icon="ph:x-bold" class="text-xl text-navy" />

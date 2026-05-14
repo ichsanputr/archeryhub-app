@@ -1,8 +1,14 @@
-﻿/* archeris.net Custom Styles */
+@font-face {
+  font-family: 'Untitled Sans';
+  src: url('/fonts/Untitled-Sans-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
 /* Base styles */
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Untitled Sans', 'Inter', sans-serif;
 }
 
 /* Light theme base colors */
