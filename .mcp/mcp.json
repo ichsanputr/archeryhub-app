@@ -1,4 +1,4 @@
-{
+﻿{
     "servers": {
         "mysql": {
             "command": "npx",
@@ -10,7 +10,7 @@
                 "MYSQL_PORT": "30036",
                 "MYSQL_USER": "ichsan",
                 "MYSQL_PASSWORD": "12345",
-                "MYSQL_DATABASE": "archeryhub",
+                "MYSQL_DATABASE": "Archeris",
                 "ALLOW_DDL": "true",
                 "ALLOW_DROP": "true",
                 "ALLOW_DELETE": "true"

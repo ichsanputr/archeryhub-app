@@ -1,4 +1,4 @@
-export const manajemen_profil = {
+﻿export const manajemen_profil = {
     slug: 'manajemen-profil', title: 'Manajemen Profil & Pengaturan', excerpt: 'Panduan lengkap cara mengelola informasi profil, foto, keamanan akun, dan pengaturan tampilan dashboard Anda.', icon: 'ph:gear-six-bold', category: 'platform', readTime: '6 menit',
     toc: [
         { id: 'gambaran-umum', level: 2, text: 'Gambaran Umum' },
@@ -11,7 +11,7 @@ export const manajemen_profil = {
     ],
     content: `
                     <h2 id="gambaran-umum">Gambaran Umum</h2>
-                    <p>Halaman pengaturan di Archeryhub.id adalah pusat kontrol untuk identitas digital Anda. Di sini Anda dapat memastikan informasi yang tampil kepada publik tetap akurat, menjaga keamanan akses akun, serta menyesuaikan kenyamanan tampilan dashboard sesuai preferensi Anda.</p>
+                    <p>Halaman pengaturan di archeris.net adalah pusat kontrol untuk identitas digital Anda. Di sini Anda dapat memastikan informasi yang tampil kepada publik tetap akurat, menjaga keamanan akses akun, serta menyesuaikan kenyamanan tampilan dashboard sesuai preferensi Anda.</p>
                     
                     <h2 id="mengelola-data">Mengelola Data Diri</h2>
                     <p>Setiap tipe akun memiliki fokus informasi yang berbeda saat proses pembaruan profil:</p>
@@ -54,11 +54,12 @@ export const manajemen_profil = {
                     <p>Khusus untuk akun Organisasi, Anda memiliki kendali penuh atas bagian mana saja yang ingin ditampilkan kepada publik. Anda dapat mengatur apakah Visi-Misi, Sejarah, atau FAQ organisasi tampil di halaman depan profil publik Anda melalui menu Page Settings.</p>
 
                     <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-8 flex gap-4">
-                        <div class="text-primary text-2xl shrink-0">📌</div>
+                        <div class="text-primary text-2xl shrink-0">ðŸ“Œ</div>
                         <div>
                             <div class="font-bold text-navy text-sm mb-1">Tips Manajemen Profil</div>
-                            <div class="text-gray-600 text-sm">Pastikan "Slug" atau username Anda tetap unik dan mudah diingat, karena ini akan menjadi bagian dari alamat URL profil publik Anda di Archeryhub.id.</div>
+                            <div class="text-gray-600 text-sm">Pastikan "Slug" atau username Anda tetap unik dan mudah diingat, karena ini akan menjadi bagian dari alamat URL profil publik Anda di archeris.net.</div>
                         </div>
                     </div>
                 `
 }
+

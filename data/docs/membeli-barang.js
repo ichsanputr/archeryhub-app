@@ -1,7 +1,7 @@
-export const membeli_barang = {
+﻿export const membeli_barang = {
     slug: 'membeli-barang',
     title: 'Cara Membeli Barang di Marketplace',
-    excerpt: 'Panduan lengkap untuk menemukan, membeli, dan menerima perlengkapan panahan dari Marketplace Archeryhub.id.',
+    excerpt: 'Panduan lengkap untuk menemukan, membeli, dan menerima perlengkapan panahan dari Marketplace archeris.net.',
     icon: 'ph:bag-bold',
     category: 'marketplace',
     readTime: '4 menit',
@@ -17,21 +17,21 @@ export const membeli_barang = {
         <h2 id="cari-produk">Menemukan Produk</h2>
         <p>Anda dapat menemukan produk yang diinginkan melalui beberapa cara:</p>
         <ul>
-            <li><strong>Pencarian</strong> — Ketik nama produk, merek, atau kata kunci di kolom pencarian Marketplace.</li>
-            <li><strong>Filter Kategori</strong> — Gunakan filter di sidebar untuk mempersempit hasil berdasarkan kategori, harga, atau kondisi barang.</li>
-            <li><strong>Rekomendasi</strong> — Halaman utama Marketplace menampilkan produk populer dan pilihan editor yang relevan dengan minat Anda.</li>
+            <li><strong>Pencarian</strong> â€” Ketik nama produk, merek, atau kata kunci di kolom pencarian Marketplace.</li>
+            <li><strong>Filter Kategori</strong> â€” Gunakan filter di sidebar untuk mempersempit hasil berdasarkan kategori, harga, atau kondisi barang.</li>
+            <li><strong>Rekomendasi</strong> â€” Halaman utama Marketplace menampilkan produk populer dan pilihan editor yang relevan dengan minat Anda.</li>
         </ul>
 
         <h2 id="detail-produk">Membaca Detail Produk</h2>
         <p>Sebelum membeli, periksa detail produk dengan cermat:</p>
         <ul>
-            <li><strong>Foto produk</strong> — Lihat dari berbagai sudut. Foto yang buram atau sangat sedikit patut diwaspadai.</li>
-            <li><strong>Deskripsi</strong> — Pastikan spesifikasi, ukuran, dan material sesuai kebutuhan Anda.</li>
-            <li><strong>Info toko</strong> — Lihat rating toko dan ulasan dari pembeli sebelumnya.</li>
-            <li><strong>Status stok</strong> — Pastikan produk masih tersedia sebelum dimasukkan ke keranjang.</li>
+            <li><strong>Foto produk</strong> â€” Lihat dari berbagai sudut. Foto yang buram atau sangat sedikit patut diwaspadai.</li>
+            <li><strong>Deskripsi</strong> â€” Pastikan spesifikasi, ukuran, dan material sesuai kebutuhan Anda.</li>
+            <li><strong>Info toko</strong> â€” Lihat rating toko dan ulasan dari pembeli sebelumnya.</li>
+            <li><strong>Status stok</strong> â€” Pastikan produk masih tersedia sebelum dimasukkan ke keranjang.</li>
         </ul>
         <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-4 flex gap-4">
-            <div class="text-primary text-2xl shrink-0">💡</div>
+            <div class="text-primary text-2xl shrink-0">ðŸ’¡</div>
             <div>
                 <div class="font-bold text-navy text-sm mb-1">Tanya Penjual</div>
                 <div class="text-gray-600 text-sm">Ragu dengan spesifikasi produk? Gunakan fitur chat langsung di halaman produk untuk bertanya kepada penjual sebelum melakukan pembelian.</div>
@@ -48,10 +48,10 @@ export const membeli_barang = {
             <li>Klik <strong>Bayar Sekarang</strong> dan selesaikan pembayaran sebelum batas waktu.</li>
         </ol>
         <div class="not-prose bg-green-50 border border-green-200 rounded-2xl p-5 mt-4 flex gap-4">
-            <div class="text-green-600 text-2xl shrink-0">🔒</div>
+            <div class="text-green-600 text-2xl shrink-0">ðŸ”’</div>
             <div>
                 <div class="font-bold text-navy text-sm mb-1">Dana Aman dengan Sistem Escrow</div>
-                <div class="text-gray-600 text-sm">Dana pembayaran Anda <strong>tidak langsung diteruskan ke penjual</strong>. Dana ditahan sistem Archeryhub.id (escrow) dan baru dicairkan ke penjual setelah Anda mengonfirmasi barang diterima dengan baik.</div>
+                <div class="text-gray-600 text-sm">Dana pembayaran Anda <strong>tidak langsung diteruskan ke penjual</strong>. Dana ditahan sistem archeris.net (escrow) dan baru dicairkan ke penjual setelah Anda mengonfirmasi barang diterima dengan baik.</div>
             </div>
         </div>
 
@@ -84,6 +84,7 @@ export const membeli_barang = {
         <p>Jika tidak dikonfirmasi dalam 7 hari setelah status "Dikirim", sistem secara otomatis menganggap barang diterima.</p>
 
         <h2 id="retur">Retur & Komplain</h2>
-        <p>Jika barang tidak sesuai deskripsi, rusak, atau salah kirim, ajukan komplain <strong>sebelum mengonfirmasi penerimaan</strong> melalui tombol <strong>Ajukan Masalah</strong> di halaman detail pesanan. Tim Archeryhub.id akan memediasi dan keputusan akhir mengikuti kebijakan perlindungan pembeli yang berlaku.</p>
+        <p>Jika barang tidak sesuai deskripsi, rusak, atau salah kirim, ajukan komplain <strong>sebelum mengonfirmasi penerimaan</strong> melalui tombol <strong>Ajukan Masalah</strong> di halaman detail pesanan. Tim archeris.net akan memediasi dan keputusan akhir mengikuti kebijakan perlindungan pembeli yang berlaku.</p>
     `
 }
+

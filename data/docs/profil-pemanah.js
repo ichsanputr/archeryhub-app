@@ -1,4 +1,4 @@
-export const profil_pemanah = {
+﻿export const profil_pemanah = {
     slug: 'profil-pemanah', title: 'Kustomisasi Profil Atlet', excerpt: 'Panduan mengatur informasi identitas atlet, klub asal, dan jenis busur untuk profil publik yang profesional.', icon: 'ph:user-circle-gear-bold', category: 'archer', readTime: '4 menit',
     toc: [
         { id: 'identitas-atlet', level: 2, text: 'Informasi Identitas' },
@@ -21,12 +21,12 @@ export const profil_pemanah = {
                     <p>Halaman profil publik Anda adalah "kartu nama" digital Anda. Di sini pengunjung dapat melihat:</p>
                     <ul>
                         <li>Foto profil dan identitas singkat.</li>
-                        <li>Riwayat medali dan prestasi di turnamen yang menggunakan Archeryhub.id.</li>
+                        <li>Riwayat medali dan prestasi di turnamen yang menggunakan archeris.net.</li>
                         <li>Grafik perkembangan skor kualifikasi dari waktu ke waktu.</li>
                     </ul>
 
                     <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-8 flex gap-4">
-                        <div class="text-primary text-2xl shrink-0">📸</div>
+                        <div class="text-primary text-2xl shrink-0">ðŸ“¸</div>
                         <div>
                             <div class="font-bold text-navy text-sm mb-1">Tips Foto Profil</div>
                             <div class="text-gray-600 text-sm">Gunakan foto saat menggunakan peralatan panahan lengkap untuk memberikan kesan atlet yang profesional dan kredibel pada profil publik Anda.</div>
@@ -34,3 +34,4 @@ export const profil_pemanah = {
                     </div>
                 `
 }
+

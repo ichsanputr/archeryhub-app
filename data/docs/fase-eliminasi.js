@@ -1,4 +1,4 @@
-export const fase_eliminasi = {
+﻿export const fase_eliminasi = {
     slug: 'fase-eliminasi',
     title: 'Fase Eliminasi dalam Pertandingan Panahan',
     excerpt: 'Memahami format bracket, sistem set, mekanisme tie-break, dan relasi antara kualifikasi dengan eliminasi dalam kompetisi panahan.',
@@ -12,12 +12,12 @@ export const fase_eliminasi = {
         { id: 'sistem-poin-kumulatif', level: 2, text: 'Sistem Poin Kumulatif (Compound)' },
         { id: 'tie-break-shootoff', level: 2, text: 'Tie-Break & Shoot-Off' },
         { id: 'hubungan-kualifikasi', level: 2, text: 'Hubungan Eliminasi dengan Kualifikasi' },
-        { id: 'eliminasi-di-archeryhub', level: 2, text: 'Eliminasi di Archeryhub.id' },
+        { id: 'eliminasi-di-Archeris', level: 2, text: 'Eliminasi di archeris.net' },
     ],
     content: `
         <h2 id="apa-itu-eliminasi">Apa Itu Fase Eliminasi?</h2>
         <p><strong>Fase eliminasi</strong> adalah babak kedua kompetisi panahan di mana peserta bertanding secara <em>head-to-head</em> (satu lawan satu) berdasarkan bracket yang disusun dari hasil kualifikasi. Setiap pertandingan menghasilkan satu pemenang yang melanjutkan ke babak berikutnya, dan satu peserta yang gugur. Babak ini terus berlanjut hingga menyisakan satu pemenang sebagai juara.</p>
-        <p>Format ini dipopulerkan oleh World Archery sejak Olimpiade 1988 dan kini menjadi standar dalam hampir semua kompetisi panahan besar di dunia, termasuk kejuaraan yang difasilitasi oleh Archeryhub.id.</p>
+        <p>Format ini dipopulerkan oleh World Archery sejak Olimpiade 1988 dan kini menjadi standar dalam hampir semua kompetisi panahan besar di dunia, termasuk kejuaraan yang difasilitasi oleh archeris.net.</p>
 
         <h2 id="format-bracket">Format Bracket</h2>
         <p>Bracket eliminasi tersedia dalam berbagai ukuran, disesuaikan dengan jumlah peserta yang lolos kualifikasi:</p>
@@ -43,21 +43,21 @@ export const fase_eliminasi = {
         <h2 id="sistem-set">Sistem Set (Set System)</h2>
         <p>Digunakan untuk divisi <strong>Recurve</strong>, Standard Bow, dan Barebow. Dalam satu pertandingan, kedua atlet menembak beberapa <em>set</em>, masing-masing set terdiri dari 3 panah (outdoor) atau 3 panah (indoor). Pemenang setiap set ditentukan oleh siapa yang meraih total poin tertinggi dalam set tersebut:</p>
         <ul>
-            <li>Menang set → mendapat <strong>2 poin set</strong></li>
-            <li>Seri dalam satu set → masing-masing mendapat <strong>1 poin set</strong></li>
-            <li>Kalah set → mendapat <strong>0 poin set</strong></li>
+            <li>Menang set â†’ mendapat <strong>2 poin set</strong></li>
+            <li>Seri dalam satu set â†’ masing-masing mendapat <strong>1 poin set</strong></li>
+            <li>Kalah set â†’ mendapat <strong>0 poin set</strong></li>
         </ul>
-        <p>Atlet pertama yang mencapai <strong>6 poin set</strong> memenangkan pertandingan. Jika kedua atlet mencapai 5–5, pertandingan masuk ke <strong>shoot-off</strong> (lihat seksi Tie-Break di bawah).</p>
+        <p>Atlet pertama yang mencapai <strong>6 poin set</strong> memenangkan pertandingan. Jika kedua atlet mencapai 5â€“5, pertandingan masuk ke <strong>shoot-off</strong> (lihat seksi Tie-Break di bawah).</p>
         <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-4 mb-2 flex gap-4">
-            <div class="text-primary text-2xl shrink-0">🎯</div>
+            <div class="text-primary text-2xl shrink-0">ðŸŽ¯</div>
             <div>
                 <div class="font-bold text-navy text-sm mb-1">Kenapa Sistem Set Dibuat?</div>
-                <div class="text-gray-600 text-sm">Sistem set sengaja dirancang supaya setiap end terasa seperti "pertandingan kecil". Satu kesalahan tidak langsung mematikan peluang—tapi konsistensi per set adalah kunci. Ini membuat eliminasi lebih dramatis dan menarik bagi penonton.</div>
+                <div class="text-gray-600 text-sm">Sistem set sengaja dirancang supaya setiap end terasa seperti "pertandingan kecil". Satu kesalahan tidak langsung mematikan peluangâ€”tapi konsistensi per set adalah kunci. Ini membuat eliminasi lebih dramatis dan menarik bagi penonton.</div>
             </div>
         </div>
 
         <h2 id="sistem-poin-kumulatif">Sistem Poin Kumulatif (Compound)</h2>
-        <p>Divisi <strong>Compound</strong> menggunakan format berbeda: semua panah dalam seluruh end dijumlahkan langsung. Atlet dengan total poin kumulatif tertinggi setelah semua end selesai memenangkan pertandingan. Tidak ada poin set — setiap panah berpengaruh langsung pada total akhir.</p>
+        <p>Divisi <strong>Compound</strong> menggunakan format berbeda: semua panah dalam seluruh end dijumlahkan langsung. Atlet dengan total poin kumulatif tertinggi setelah semua end selesai memenangkan pertandingan. Tidak ada poin set â€” setiap panah berpengaruh langsung pada total akhir.</p>
         <p>Hal ini mencerminkan karakteristik compound: dengan akurasi tinggi, selisih skor biasanya sangat tipis dan setiap panah benar-benar menentukan.</p>
 
         <h2 id="tie-break-shootoff">Tie-Break & Shoot-Off</h2>
@@ -67,10 +67,10 @@ export const fase_eliminasi = {
             <li>Atlet dengan nilai panah tertinggi menang.</li>
             <li>Jika masih seri, pemenang ditentukan oleh panah yang <strong>lebih dekat ke pusat</strong> (diukur).</li>
         </ol>
-        <p>Shoot-off adalah momen paling menegangkan dalam eliminasi — satu panah tunggal menentukan siapa yang melanjutkan dan siapa yang pulang.</p>
+        <p>Shoot-off adalah momen paling menegangkan dalam eliminasi â€” satu panah tunggal menentukan siapa yang melanjutkan dan siapa yang pulang.</p>
 
-        <h2 id="hubungan-kualifikasi">Hubungan Eliminasi dengan Kualifikasi — Mengapa Atlet Butuh Keduanya</h2>
-        <p>Kualifikasi dan eliminasi <strong>bukan dua lomba yang terpisah</strong> — keduanya adalah satu sistem terpadu yang saling bergantung. Berikut alasan mengapa setiap atlet harus memahami dan mempersiapkan kedua fase ini secara berbeda:</p>
+        <h2 id="hubungan-kualifikasi">Hubungan Eliminasi dengan Kualifikasi â€” Mengapa Atlet Butuh Keduanya</h2>
+        <p>Kualifikasi dan eliminasi <strong>bukan dua lomba yang terpisah</strong> â€” keduanya adalah satu sistem terpadu yang saling bergantung. Berikut alasan mengapa setiap atlet harus memahami dan mempersiapkan kedua fase ini secara berbeda:</p>
         <div class="not-prose overflow-x-auto my-4">
             <table class="w-full text-sm border-collapse">
                 <thead>
@@ -88,13 +88,13 @@ export const fase_eliminasi = {
                     </tr>
                     <tr>
                         <td class="px-4 py-3 font-bold text-navy">Lawan</td>
-                        <td class="px-4 py-3">Tidak ada — melawan target sendiri</td>
+                        <td class="px-4 py-3">Tidak ada â€” melawan target sendiri</td>
                         <td class="px-4 py-3">Satu atlet spesifik per babak</td>
                     </tr>
                     <tr>
                         <td class="px-4 py-3 font-bold text-navy">Tekanan mental</td>
-                        <td class="px-4 py-3">Akumulatif — harus stabil puluhan panah</td>
-                        <td class="px-4 py-3">Situasional — setiap set bisa berbalik</td>
+                        <td class="px-4 py-3">Akumulatif â€” harus stabil puluhan panah</td>
+                        <td class="px-4 py-3">Situasional â€” setiap set bisa berbalik</td>
                     </tr>
                     <tr>
                         <td class="px-4 py-3 font-bold text-navy">Strategi</td>
@@ -108,24 +108,26 @@ export const fase_eliminasi = {
                     </tr>
                     <tr>
                         <td class="px-4 py-3 font-bold text-navy">Hasil</td>
-                        <td class="px-4 py-3">Ranking → posisi di bracket</td>
+                        <td class="px-4 py-3">Ranking â†’ posisi di bracket</td>
                         <td class="px-4 py-3">Posisi akhir: juara, runner-up, dll.</td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <p>Singkatnya: <strong>kualifikasi yang baik membuka jalan yang lebih mudah di eliminasi</strong> — Anda mendapat lawan yang secara seeding lebih lemah di babak awal, dan Anda berada di sisi bracket yang menguntungkan. Namun kualifikasi yang sempurna pun tidak menjamin kemenangan eliminasi, karena sifat head-to-head membuat siapapun bisa kalah pada hari yang berbeda.</p>
+        <p>Singkatnya: <strong>kualifikasi yang baik membuka jalan yang lebih mudah di eliminasi</strong> â€” Anda mendapat lawan yang secara seeding lebih lemah di babak awal, dan Anda berada di sisi bracket yang menguntungkan. Namun kualifikasi yang sempurna pun tidak menjamin kemenangan eliminasi, karena sifat head-to-head membuat siapapun bisa kalah pada hari yang berbeda.</p>
         <p>Itulah mengapa program latihan atlet yang baik harus mencakup <em>kedua</em> jenis mental training: latihan skor konsisten jangka panjang (untuk kualifikasi), dan latihan pressure shot situasional (untuk eliminasi).</p>
 
-        <h2 id="eliminasi-di-archeryhub">Eliminasi di Archeryhub.id</h2>
-        <p>Panitia event di Archeryhub.id dapat mengelola fase eliminasi melalui modul <strong>Elimination</strong> yang terintegrasi dengan hasil kualifikasi. Fitur utama:</p>
+        <h2 id="eliminasi-di-Archeris">Eliminasi di archeris.net</h2>
+        <p>Panitia event di archeris.net dapat mengelola fase eliminasi melalui modul <strong>Elimination</strong> yang terintegrasi dengan hasil kualifikasi. Fitur utama:</p>
         <ul>
             <li><strong>Generate bracket otomatis</strong> dari ranking kualifikasi dengan satu klik.</li>
             <li>Dukungan bracket 4/8/16/32 besar per kategori.</li>
             <li>Input skor set atau poin kumulatif langsung dari mobile app atau dashboard.</li>
-            <li>Visualisasi bracket real-time — dapat ditampilkan di layar TV/display venue.</li>
+            <li>Visualisasi bracket real-time â€” dapat ditampilkan di layar TV/display venue.</li>
             <li>Tambah <strong>Additional End</strong> (end tambahan) jika terjadi seri di akhir pertandingan, tanpa harus mereset seluruh data.</li>
             <li>Cetak bracket dalam format PDF untuk arsip atau tempel di venue.</li>
         </ul>
     `
 }
+
+

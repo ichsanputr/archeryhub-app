@@ -1,7 +1,7 @@
-export const sinkronisasi_tim = {
+﻿export const sinkronisasi_tim = {
     slug: 'sinkronisasi-tim',
     title: 'Sinkronisasi Tim Otomatis',
-    excerpt: 'Cara kerja fitur Sync Tim di Archeryhub.id — bagaimana sistem mengelompokkan pemanah menjadi tim berdasarkan klub dan skor kualifikasi secara otomatis.',
+    excerpt: 'Cara kerja fitur Sync Tim di archeris.net â€” bagaimana sistem mengelompokkan pemanah menjadi tim berdasarkan klub dan skor kualifikasi secara otomatis.',
     icon: 'ph:arrows-clockwise-bold',
     category: 'archery',
     readTime: '5 menit',
@@ -55,10 +55,10 @@ export const sinkronisasi_tim = {
                 </tbody>
             </table>
         </div>
-        <p>Jika salah satu syarat tidak terpenuhi, klub tersebut tidak akan menghasilkan tim — namun klub lain yang memenuhi syarat tetap akan diproses.</p>
+        <p>Jika salah satu syarat tidak terpenuhi, klub tersebut tidak akan menghasilkan tim â€” namun klub lain yang memenuhi syarat tetap akan diproses.</p>
 
         <h2 id="tipe-tim">Tipe Tim: Standar vs Mixed</h2>
-        <p>Archeryhub.id mendukung dua tipe kategori beregu:</p>
+        <p>archeris.net mendukung dua tipe kategori beregu:</p>
         <div class="not-prose overflow-x-auto my-4">
             <table class="w-full text-sm border-collapse">
                 <thead>
@@ -72,7 +72,7 @@ export const sinkronisasi_tim = {
                     <tr>
                         <td class="px-4 py-3 font-bold text-navy">Tim Standar</td>
                         <td class="px-4 py-3">3 pemanah dari klub yang sama (gender sama)</td>
-                        <td class="px-4 py-3">Diambil 3 pemanah dengan skor tertinggi per kelompok (grup 3 teratas, grup 4–6, dst.)</td>
+                        <td class="px-4 py-3">Diambil 3 pemanah dengan skor tertinggi per kelompok (grup 3 teratas, grup 4â€“6, dst.)</td>
                     </tr>
                     <tr>
                         <td class="px-4 py-3 font-bold text-navy">Mixed Team</td>
@@ -83,10 +83,10 @@ export const sinkronisasi_tim = {
             </table>
         </div>
         <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 my-4 flex gap-4">
-            <div class="text-primary text-2xl shrink-0">💡</div>
+            <div class="text-primary text-2xl shrink-0">ðŸ’¡</div>
             <div>
                 <div class="font-bold text-navy text-sm mb-1">Satu Klub, Banyak Tim</div>
-                <div class="text-gray-600 text-sm">Jika sebuah klub memiliki 6 pemanah berskor di satu kategori, sistem akan otomatis membentuk 2 tim dari klub tersebut — Tim A (peringkat 1–3 klub) dan Tim B (peringkat 4–6 klub).</div>
+                <div class="text-gray-600 text-sm">Jika sebuah klub memiliki 6 pemanah berskor di satu kategori, sistem akan otomatis membentuk 2 tim dari klub tersebut â€” Tim A (peringkat 1â€“3 klub) dan Tim B (peringkat 4â€“6 klub).</div>
             </div>
         </div>
 
@@ -104,10 +104,10 @@ export const sinkronisasi_tim = {
         <h2 id="kategori-individu-vs-tim">Kategori Individu &amp; Kategori Tim</h2>
         <p>Di sebuah event panahan, satu divisi biasanya memiliki <strong>dua kategori terpisah</strong>: kategori individu dan kategori tim.</p>
         <div class="not-prose bg-amber-50 border border-amber-200 rounded-2xl p-5 my-4 flex gap-4">
-            <div class="text-amber-500 text-2xl shrink-0">⚠️</div>
+            <div class="text-amber-500 text-2xl shrink-0">âš ï¸</div>
             <div>
                 <div class="font-bold text-navy text-sm mb-1">Pemanah Mendaftar di Kategori Individu</div>
-                <div class="text-gray-600 text-sm">Peserta <strong>selalu mendaftar ke kategori individu</strong> — bukan ke kategori tim. Saat Sync Tim dijalankan, sistem secara otomatis mencari peserta dari kategori individu yang memiliki divisi, kelompok usia, dan gender yang sama dengan kategori tim yang dipilih. Ini berarti sinkronisasi akan berhasil meski dari tampilan kategori tim tidak terlihat peserta terdaftar.</div>
+                <div class="text-gray-600 text-sm">Peserta <strong>selalu mendaftar ke kategori individu</strong> â€” bukan ke kategori tim. Saat Sync Tim dijalankan, sistem secara otomatis mencari peserta dari kategori individu yang memiliki divisi, kelompok usia, dan gender yang sama dengan kategori tim yang dipilih. Ini berarti sinkronisasi akan berhasil meski dari tampilan kategori tim tidak terlihat peserta terdaftar.</div>
             </div>
         </div>
         <p>Contoh: Kategori <em>Compound U-13 Putra Tim</em> akan mencari pesertanya dari kategori <em>Compound U-13 Putra Individual</em> di event yang sama.</p>
@@ -115,8 +115,8 @@ export const sinkronisasi_tim = {
         <h2 id="estimasi-vs-hasil-sync">Estimasi Tim vs Hasil Sync</h2>
         <p>Sebelum menjalankan sync, halaman <strong>Pembuatan Bracket</strong> menampilkan dua angka:</p>
         <ul>
-            <li><strong>Estimasi Tim</strong> <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-bold rounded-full">Estimasi</span> — perkiraan jumlah tim yang akan terbentuk, dihitung langsung dari data kualifikasi saat ini tanpa benar-benar membuat tim. Berguna untuk memutuskan ukuran bracket sebelum sync dijalankan.</li>
-            <li><strong>Tim Tersinkron</strong> <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-green-100 text-green-700 text-xs font-bold rounded-full">Auto</span> — jumlah tim yang sudah benar-benar dibuat dan tersimpan di database setelah sync dijalankan.</li>
+            <li><strong>Estimasi Tim</strong> <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-bold rounded-full">Estimasi</span> â€” perkiraan jumlah tim yang akan terbentuk, dihitung langsung dari data kualifikasi saat ini tanpa benar-benar membuat tim. Berguna untuk memutuskan ukuran bracket sebelum sync dijalankan.</li>
+            <li><strong>Tim Tersinkron</strong> <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-green-100 text-green-700 text-xs font-bold rounded-full">Auto</span> â€” jumlah tim yang sudah benar-benar dibuat dan tersimpan di database setelah sync dijalankan.</li>
         </ul>
         <p>Jika sudah ada tim tersinkron, angka tersebut yang digunakan sebagai dasar rekomendasi ukuran bracket. Jika belum ada, sistem menggunakan estimasi sebagai acuan.</p>
 
@@ -129,7 +129,7 @@ export const sinkronisasi_tim = {
         </ul>
         <p>Gunakan tombol <strong>Tambah Tim Manual</strong> atau <strong>Edit Detil Tim</strong> di halaman Manajemen Tim untuk kasus-kasus tersebut.</p>
         <div class="not-prose bg-red-50 border border-red-200 rounded-2xl p-5 my-4 flex gap-4">
-            <div class="text-red-500 text-2xl shrink-0">🔄</div>
+            <div class="text-red-500 text-2xl shrink-0">ðŸ”„</div>
             <div>
                 <div class="font-bold text-navy text-sm mb-1">Sync Otomatis Menghapus Data Tim Lama</div>
                 <div class="text-gray-600 text-sm">Setiap kali Sync Otomatis dijalankan, semua tim yang ada di kategori tersebut akan dihapus dan dibuat ulang dari awal. Pastikan skor kualifikasi sudah final sebelum menjalankan sync.</div>
@@ -202,9 +202,11 @@ export const sinkronisasi_tim = {
                 </div>
                 <div class="space-y-2 mt-3">
                     <p class="text-[13px] text-gray-700"><strong>Penyebab:</strong> Gangguan koneksi ke server database atau timeout saat memproses data dalam jumlah besar.</p>
-                    <p class="text-[13px] text-gray-700"><strong>Solusi:</strong> Tunggu beberapa saat dan ulangi proses. Jika masalah berlanjut, hubungi tim support ArcheryHub untuk pengecekan status server.</p>
+                    <p class="text-[13px] text-gray-700"><strong>Solusi:</strong> Tunggu beberapa saat dan ulangi proses. Jika masalah berlanjut, hubungi tim support Archeris untuk pengecekan status server.</p>
                 </div>
             </div>
         </div>
     `,
 }
+
+

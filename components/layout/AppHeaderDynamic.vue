@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 shadow-sm transition-all duration-300">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
@@ -7,7 +7,7 @@
           <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-navy transition-all duration-300">
             <img src="/logo.png" alt="Logo" class="w-5 h-5 object-contain" />
           </div>
-          <span class="text-xl font-black tracking-tight font-display text-navy">Archeryhub<span
+          <span class="text-xl font-black tracking-tight font-display text-navy">Archeris<span
               class="text-logo-id">.id</span></span>
         </NuxtLink>
 
@@ -40,7 +40,7 @@
                         <h3 class="text-white font-bold text-sm leading-tight line-clamp-2">
                           {{ featuredEvent.name }}
                         </h3>
-                        <p class="text-white/70 text-xs mt-1">{{ featuredEvent.location }} • {{
+                        <p class="text-white/70 text-xs mt-1">{{ featuredEvent.location }} â€¢ {{
                           featuredEvent.date }}</p>
                         <NuxtLink :to="`/events/${featuredEvent.slug || featuredEvent.id}`"
                           class="inline-flex items-center gap-1 mt-3 text-primary text-xs font-bold hover:text-white transition-colors uppercase tracking-widest">
@@ -77,7 +77,7 @@
                               {{ event.name }}
                             </span>
                             <span class="block text-gray-400 text-[10px] font-medium">{{
-                              event.location }} • {{ event.date }}</span>
+                              event.location }} â€¢ {{ event.date }}</span>
                           </div>
                         </NuxtLink>
                       </div>
@@ -213,7 +213,7 @@
             <div class="w-8 h-8 rounded-lg bg-navy flex items-center justify-center">
               <img src="/logo.png" alt="Logo" class="w-5 h-5 object-contain" />
             </div>
-            <span class="text-lg font-black tracking-tight text-navy uppercase">Archeryhub<span
+            <span class="text-lg font-black tracking-tight text-navy uppercase">Archeris<span
                 class="text-logo-id">.id</span></span>
           </NuxtLink>
           <button @click="mobileMenuOpen = false" class="p-2 hover:bg-gray-100 rounded-xl transition-all scale-100">
@@ -418,3 +418,4 @@ watch(() => route.path, () => {
   showUserMenu.value = false
 })
 </script>
+

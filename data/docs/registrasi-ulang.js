@@ -38,7 +38,7 @@ export const registrasi_ulang = {
                     <p>Keanggotaan di klub baru sepenuhnya dikelola oleh pengurus klub. Pastikan Anda telah resmi diterima oleh klub sebelum mengubah afiliasi di platform.</p>
 
                     <h2 id="update-kategori">Perbarui Kategori & Divisi</h2>
-                    <p>Archeryhub.id menghitung kelompok usia secara otomatis berdasarkan tanggal lahir yang terdaftar. Namun, divisi busur dapat diperbarui secara manual sesuai kebutuhan kompetisi:</p>
+                    <p>archeris.net menghitung kelompok usia secara otomatis berdasarkan tanggal lahir yang terdaftar. Namun, divisi busur dapat diperbarui secara manual sesuai kebutuhan kompetisi:</p>
                     <div class="not-prose overflow-x-auto my-4">
                         <table class="w-full text-sm border-collapse">
                             <thead>
@@ -77,16 +77,16 @@ export const registrasi_ulang = {
                     <p>Beberapa event dapat mensyaratkan verifikasi identitas yang diperbarui, terutama untuk event dengan kategori resmi atau berhadiah. Jika verifikasi Anda telah kedaluwarsa atau ditolak, ikuti langkah berikut:</p>
                     <ul>
                         <li>Siapkan foto KTP/KIA yang masih berlaku (format JPEG/PNG, maks. 5MB).</li>
-                        <li>Buka <strong>Profil Saya → Verifikasi Identitas</strong>.</li>
-                        <li>Unggah dokumen dan tunggu proses tinjauan oleh tim Archeryhub.id (1–2 hari kerja).</li>
+                        <li>Buka <strong>Profil Saya â†’ Verifikasi Identitas</strong>.</li>
+                        <li>Unggah dokumen dan tunggu proses tinjauan oleh tim archeris.net (1â€“2 hari kerja).</li>
                         <li>Status verifikasi akan diperbarui dan notifikasi dikirim ke email terdaftar.</li>
                     </ul>
 
                     <h2 id="langkah-langkah">Langkah-Langkah Registrasi Ulang</h2>
                     <p>Berikut ringkasan alur lengkap registrasi ulang akun pemanah:</p>
                     <ol>
-                        <li><strong>Login</strong> ke akun Archeryhub.id Anda.</li>
-                        <li>Buka <strong>Dasbor → Profil Saya → Edit Profil</strong>.</li>
+                        <li><strong>Login</strong> ke akun archeris.net Anda.</li>
+                        <li>Buka <strong>Dasbor â†’ Profil Saya â†’ Edit Profil</strong>.</li>
                         <li>Perbarui data yang berubah: nama, tanggal lahir, klub, divisi busur, dan foto profil.</li>
                         <li>Simpan perubahan dengan klik <strong>Simpan Profil</strong>.</li>
                         <li>Jika ada dokumen identitas yang perlu diperbarui, unggah di bagian <strong>Verifikasi Identitas</strong>.</li>
@@ -100,6 +100,7 @@ export const registrasi_ulang = {
                         <li>Sertifikat dan penghargaan digital tetap dapat diakses.</li>
                         <li>Bila berganti klub, prestasi lama tetap muncul dengan label klub asal saat event berlangsung.</li>
                     </ul>
-                    <p>Jika menemui kendala saat registrasi ulang, hubungi dukungan melalui fitur chat di aplikasi atau kirim email ke support@archeryhub.id.</p>
+                    <p>Jika menemui kendala saat registrasi ulang, hubungi dukungan melalui fitur chat di aplikasi atau kirim email ke support@archeris.net.</p>
                 `
 }
+

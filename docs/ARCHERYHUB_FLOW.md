@@ -1,6 +1,6 @@
-# ArcheryHub — Alur Sistem Kompetisi Panahan
+# Archeris — Alur Sistem Kompetisi Panahan
 
-> Dokumen ini menjelaskan alur lengkap pengelolaan kompetisi di platform ArcheryHub, mulai dari pembuatan event hingga hasil akhir eliminasi. Dokumen juga memetakan kesesuaian implementasi dengan dokumen referensi IANSEO (`docs.tex`).
+> Dokumen ini menjelaskan alur lengkap pengelolaan kompetisi di platform Archeris, mulai dari pembuatan event hingga hasil akhir eliminasi. Dokumen juga memetakan kesesuaian implementasi dengan dokumen referensi IANSEO (`docs.tex`).
 
 ---
 
@@ -12,7 +12,7 @@
 4. [Qualification (Babak Kualifikasi)](#4-qualification-babak-kualifikasi)
 5. [Elimination (Babak Eliminasi)](#5-elimination-babak-eliminasi)
 6. [Kesesuaian dengan Standar IANSEO](#6-kesesuaian-dengan-standar-ianseo)
-7. [Fitur Tambahan di ArcheryHub](#7-fitur-tambahan-di-archeryhub)
+7. [Fitur Tambahan di Archeris](#7-fitur-tambahan-di-Archeris)
 8. [Referensi API](#8-referensi-api)
 
 ---
@@ -49,13 +49,13 @@ Kategori berdasarkan usia atau status peserta.
 
 > Tersimpan di tabel `ref_age_groups`, direferensikan sebagai `category_uuid` di `event_categories`.
 
-> **Catatan terminologi**: docs.tex IANSEO menyebut ini sebagai "Class". Dalam kode ArcheryHub, field ini disimpan sebagai `category_uuid` yang mereferensikan `ref_age_groups`.
+> **Catatan terminologi**: docs.tex IANSEO menyebut ini sebagai "Class". Dalam kode Archeris, field ini disimpan sebagai `category_uuid` yang mereferensikan `ref_age_groups`.
 
 ---
 
 ### Event Category = Kombinasi Lengkap
 
-Satu **Event Category** di ArcheryHub adalah kombinasi dari 4 dimensi:
+Satu **Event Category** di Archeris adalah kombinasi dari 4 dimensi:
 
 ```
 Event Category = Division + Age Group + Event Type + Gender Division
@@ -74,7 +74,7 @@ Event Category = Division + Age Group + Event Type + Gender Division
 - Recurve Senior Mixed Team
 - Compound Senior Putra Team
 
-> **Catatan**: IANSEO (`docs.tex`) hanya menyebut Division + Class (tanpa Gender dan EventType sebagai bagian dari Category). ArcheryHub menambahkan dua dimensi ini agar kategori lebih presisi.
+> **Catatan**: IANSEO (`docs.tex`) hanya menyebut Division + Class (tanpa Gender dan EventType sebagai bagian dari Category). Archeris menambahkan dua dimensi ini agar kategori lebih presisi.
 
 ---
 
@@ -110,21 +110,21 @@ Panitia mengatur kategori melalui halaman:
 ┌─────────────────────────────────────────────────────────────────┐
 │                      EVENT DIBUAT                               │
 │               (Panitia membuat event baru)                      │
-└───────────────────────────────┬─────────────────────────────────┘
+└──────────────────────────────┬──────────────────────────────────┘
                                 │
                                 ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │                   KONFIGURASI KATEGORI                          │
 │   Panitia mendaftarkan kombinasi Division + Class + Gender +    │
 │   EventType yang akan dilombakan                                │
-└───────────────────────────────┬─────────────────────────────────┘
+└──────────────────────────────┬──────────────────────────────────┘
                                 │
                                 ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │                   PENDAFTARAN PESERTA                           │
 │   Peserta mendaftar ke event, memilih kategori yang sesuai.     │
 │   Panitia bisa tambah manual atau via undangan.                 │
-└───────────────────────────────┬─────────────────────────────────┘
+└──────────────────────────────┬──────────────────────────────────┘
                                 │
                                 ▼
 ┌─────────────────────────────────────────────────────────────────┐
@@ -136,7 +136,7 @@ Panitia mengatur kategori melalui halaman:
 │  3. Scorekeeper input skor via app mobile / desktop             │
 │  4. Sistem hitung ranking per kategori:                         │
 │       Total Skor ↓ → Total 10x ↓ → Total X ↓                   │
-└───────────────────────────────┬─────────────────────────────────┘
+└──────────────────────────────┬──────────────────────────────────┘
                                 │
                     ┌───────────┴───────────┐
                     │                       │
@@ -342,7 +342,7 @@ elimination_brackets
 
 Berdasarkan dokumen referensi `docs.tex`:
 
-| Konsep IANSEO | Implementasi ArcheryHub | Status |
+| Konsep IANSEO | Implementasi Archeris | Status |
 |---------------|------------------------|--------|
 | **Division** = jenis busur (Recurve, Compound, Barebow) | `ref_bow_types` → `division_uuid` | ✅ Sesuai |
 | **Class** = kelas usia (Senior, U15, U18) | `ref_age_groups` → `category_uuid` | ✅ Sesuai (terminologi berbeda: app pakai "category") |
@@ -356,7 +356,7 @@ Berdasarkan dokumen referensi `docs.tex`:
 
 ### Fitur di Luar Scope Dokumen IANSEO
 
-Beberapa fitur ArcheryHub tidak disebutkan dalam `docs.tex` karena merupakan tambahan implementasi:
+Beberapa fitur Archeris tidak disebutkan dalam `docs.tex` karena merupakan tambahan implementasi:
 
 | Fitur Tambahan | Keterangan |
 |----------------|------------|
@@ -370,7 +370,7 @@ Beberapa fitur ArcheryHub tidak disebutkan dalam `docs.tex` karena merupakan tam
 
 ---
 
-## 7. Fitur Tambahan di ArcheryHub
+## 7. Fitur Tambahan di Archeris
 
 ### 7.1 Mobile Scoring
 
@@ -386,9 +386,9 @@ Scorekeeper buka app mobile
 ```
 
 **API Mobile:**
-- `GET /mobile/qualification/scoring/cards` — Daftar kartu scoring
-- `GET /mobile/qualification/scoring/targets` — Detail target
-- `POST /mobile/qualification/scoring/scores/:assignmentId` — Submit skor
+- `GET /mobile/qualification/scoring/cards` â€” Daftar kartu scoring
+- `GET /mobile/qualification/scoring/targets` â€” Detail target
+- `POST /mobile/qualification/scoring/scores/:assignmentId` â€” Submit skor
 
 ### 7.2 Scorekeeper Assignment
 
@@ -400,7 +400,7 @@ Panitia dapat menugaskan scorekeeper ke target tertentu:
 
 Atlet dapat:
 1. Discover event melalui `/events` (halaman publik)
-2. Mendaftar ke event → pilih kategori
+2. Mendaftar ke event â†’ pilih kategori
 3. Membayar via payment gateway (Tripay)
 4. Menerima notifikasi status pendaftaran
 
@@ -417,47 +417,47 @@ Atlet dapat:
 ### Event & Kategori
 
 ```
-GET    /events                              — Daftar event publik
-GET    /events/:id                          — Detail event
-GET    /events/:id/categories               — Daftar kategori event
-POST   /events/:id/categories               — Buat kategori (auth)
-PUT    /events/:id/categories/:categoryId   — Edit kategori (auth)
-DELETE /events/:id/categories/:categoryId   — Hapus kategori (auth)
+GET    /events                              â€” Daftar event publik
+GET    /events/:id                          â€” Detail event
+GET    /events/:id/categories               â€” Daftar kategori event
+POST   /events/:id/categories               â€” Buat kategori (auth)
+PUT    /events/:id/categories/:categoryId   â€” Edit kategori (auth)
+DELETE /events/:id/categories/:categoryId   â€” Hapus kategori (auth)
 ```
 
 ### Kualifikasi
 
 ```
-GET    /events/:id/qualification/sessions                      — Daftar sesi
-POST   /events/:id/qualification/sessions                      — Buat sesi (auth)
-PATCH  /events/:id/qualification/sessions/:sessionId           — Edit sesi (auth)
-DELETE /events/:id/qualification/sessions/:sessionId           — Hapus sesi (auth)
-GET    /events/:id/qualification/leaderboard                   — Leaderboard kualifikasi
-GET    /events/:id/results/qualification?category_id=...       — Hasil publik per kategori
+GET    /events/:id/qualification/sessions                      â€” Daftar sesi
+POST   /events/:id/qualification/sessions                      â€” Buat sesi (auth)
+PATCH  /events/:id/qualification/sessions/:sessionId           â€” Edit sesi (auth)
+DELETE /events/:id/qualification/sessions/:sessionId           â€” Hapus sesi (auth)
+GET    /events/:id/qualification/leaderboard                   â€” Leaderboard kualifikasi
+GET    /events/:id/results/qualification?category_id=...       â€” Hasil publik per kategori
 ```
 
 ### Eliminasi
 
 ```
-GET    /events/:id/elimination/brackets                                         — Daftar bracket
-POST   /events/:id/elimination/brackets                                         — Buat bracket (auth)
-GET    /events/:id/elimination/brackets/:bracketId                              — Detail bracket
-PUT    /events/:id/elimination/brackets/:bracketId                              — Edit bracket (auth)
-DELETE /events/:id/elimination/brackets/:bracketId                              — Hapus bracket (auth)
-POST   /events/:id/elimination/brackets/:bracketId/generate                     — Generate seeding (auth)
-POST   /events/:id/elimination/brackets/:bracketId/matches/:matchId/score       — Input skor (auth)
-POST   /events/:id/elimination/brackets/:bracketId/matches/:matchId/finish      — Selesaikan match (auth)
-GET    /events/:id/results/elimination?category_id=...                          — Hasil publik per kategori
+GET    /events/:id/elimination/brackets                                         â€” Daftar bracket
+POST   /events/:id/elimination/brackets                                         â€” Buat bracket (auth)
+GET    /events/:id/elimination/brackets/:bracketId                              â€” Detail bracket
+PUT    /events/:id/elimination/brackets/:bracketId                              â€” Edit bracket (auth)
+DELETE /events/:id/elimination/brackets/:bracketId                              â€” Hapus bracket (auth)
+POST   /events/:id/elimination/brackets/:bracketId/generate                     â€” Generate seeding (auth)
+POST   /events/:id/elimination/brackets/:bracketId/matches/:matchId/score       â€” Input skor (auth)
+POST   /events/:id/elimination/brackets/:bracketId/matches/:matchId/finish      â€” Selesaikan match (auth)
+GET    /events/:id/results/elimination?category_id=...                          â€” Hasil publik per kategori
 ```
 
 ### Peserta
 
 ```
-GET    /events/:id/participants                     — Daftar peserta
-GET    /events/:id/participants/export              — Export CSV (auth)
-POST   /events/:id/participants                     — Tambah peserta manual (auth)
-PATCH  /events/:id/participants/:participantId      — Edit peserta (auth)
-DELETE /events/:id/participants/:participantId      — Hapus peserta (auth)
+GET    /events/:id/participants                     â€” Daftar peserta
+GET    /events/:id/participants/export              â€” Export CSV (auth)
+POST   /events/:id/participants                     â€” Tambah peserta manual (auth)
+PATCH  /events/:id/participants/:participantId      â€” Edit peserta (auth)
+DELETE /events/:id/participants/:participantId      â€” Hapus peserta (auth)
 ```
 
 ---
@@ -466,32 +466,33 @@ DELETE /events/:id/participants/:participantId      — Hapus peserta (auth)
 
 ```
 EVENT
-│
-├── EVENT CATEGORIES (Division × Age Group × EventType × Gender)
-│       │
-│       ├── QUALIFICATION SESSIONS (sesi bertanggal, banyak per event)
-│       │       │
-│       │       ├── TARGET ASSIGNMENTS (peserta → target)
-│       │       │
-│       │       └── END SCORES → ARROW SCORES
-│       │               ↓
-│       │       QUALIFICATION RANKING (per kategori)
-│       │
-│       └── ELIMINATION BRACKETS (bisa banyak, per kategori)
-│               ↓ (seeding dari qualification ranking)
-│               ├── ENTRIES (peserta dengan seed & skor kual)
-│               └── MATCHES (per ronde, per pertandingan)
-│                       └── MATCH ENDS → MATCH ARROW SCORES
-│                               ↓
-│                       PEMENANG → MAJU RONDE BERIKUTNYA
-│
-└── PESERTA (Participants)
-        ├── Mendaftar ke kategori
-        ├── Membayar (payment gateway)
-        ├── Dapat assignment target kualifikasi
-        └── Ikut bracket eliminasi
+â”‚
+â”œâ”€â”€ EVENT CATEGORIES (Division Ã— Age Group Ã— EventType Ã— Gender)
+â”‚       â”‚
+â”‚       â”œâ”€â”€ QUALIFICATION SESSIONS (sesi bertanggal, banyak per event)
+â”‚       â”‚       â”‚
+â”‚       â”‚       â”œâ”€â”€ TARGET ASSIGNMENTS (peserta â†’ target)
+â”‚       â”‚       â”‚
+â”‚       â”‚       â””â”€â”€ END SCORES â†’ ARROW SCORES
+â”‚       â”‚               â†“
+â”‚       â”‚       QUALIFICATION RANKING (per kategori)
+â”‚       â”‚
+â”‚       â””â”€â”€ ELIMINATION BRACKETS (bisa banyak, per kategori)
+â”‚               â†“ (seeding dari qualification ranking)
+â”‚               â”œâ”€â”€ ENTRIES (peserta dengan seed & skor kual)
+â”‚               â””â”€â”€ MATCHES (per ronde, per pertandingan)
+â”‚                       â””â”€â”€ MATCH ENDS â†’ MATCH ARROW SCORES
+â”‚                               â†“
+â”‚                       PEMENANG â†’ MAJU RONDE BERIKUTNYA
+â”‚
+â””â”€â”€ PESERTA (Participants)
+        â”œâ”€â”€ Mendaftar ke kategori
+        â”œâ”€â”€ Membayar (payment gateway)
+        â”œâ”€â”€ Dapat assignment target kualifikasi
+        â””â”€â”€ Ikut bracket eliminasi
 ```
 
 ---
 
-*Dokumen dibuat berdasarkan eksplorasi kode sumber ArcheryHub dan referensi dokumen IANSEO (`docs.tex`). Terakhir diupdate: Maret 2026.*
+*Dokumen dibuat berdasarkan eksplorasi kode sumber Archeris dan referensi dokumen IANSEO (`docs.tex`). Terakhir diupdate: Maret 2026.*
+

@@ -1,5 +1,5 @@
-export const paket_berlangganan = {
-    slug: 'paket-berlangganan', title: 'Sistem & Paket Berlangganan', excerpt: 'Informasi lengkap mengenai pilihan paket, fitur eksklusif, serta panduan tata cara berlangganan bagi Organisasi di Archeryhub.id.', icon: 'ph:crown-bold', category: 'subscription', readTime: '8 menit',
+﻿export const paket_berlangganan = {
+    slug: 'paket-berlangganan', title: 'Sistem & Paket Berlangganan', excerpt: 'Informasi lengkap mengenai pilihan paket, fitur eksklusif, serta panduan tata cara berlangganan bagi Organisasi di archeris.net.', icon: 'ph:crown-bold', category: 'subscription', readTime: '8 menit',
     toc: [
         { id: 'tipe-paket', level: 2, text: 'Tipe Paket Organisasi' },
         { id: 'perbandingan-fitur', level: 2, text: 'Fitur Standar vs Elite' },
@@ -10,30 +10,30 @@ export const paket_berlangganan = {
     ],
     content: `
                     <h2 id="tipe-paket">Tipe Paket Organisasi</h2>
-                    <p>Archeryhub.id menyediakan dua pilihan paket utama bagi Organisasi (Penyelenggara Event) untuk mengakomodasi berbagai skala kejuaraan panahan:</p>
+                    <p>archeris.net menyediakan dua pilihan paket utama bagi Organisasi (Penyelenggara Event) untuk mengakomodasi berbagai skala kejuaraan panahan:</p>
                     <img src="/docs/organization-pilihan-paket.png" alt="Pilihan Paket Organisasi" />
                     <div class="not-prose grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
                         <div class="border border-gray-100 rounded-2xl p-5 bg-white shadow-sm border-t-4 border-t-navy">
-                            <div class="font-bold text-navy h-8">💼 Paket Standar</div>
+                            <div class="font-bold text-navy h-8">ðŸ’¼ Paket Standar</div>
                             <div class="text-2xl font-black text-navy mb-2">Rp 29.999<span class="text-xs font-normal text-gray-400">/bln</span></div>
                             <p class="text-xs text-gray-500 mb-4">Cocok untuk klub lokal atau kejuaraan internal dengan peserta terbatas.</p>
                             <ul class="text-xs space-y-2 text-gray-600">
-                                <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Maks. 50 Peserta / Event</li>
-                                <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Digital Scoring Standar</li>
-                                <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Live Results Publik</li>
-                                <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Media Storage 1 GB</li>
+                                <li class="flex items-center gap-2"><span class="text-green-500">âœ“</span> Maks. 50 Peserta / Event</li>
+                                <li class="flex items-center gap-2"><span class="text-green-500">âœ“</span> Digital Scoring Standar</li>
+                                <li class="flex items-center gap-2"><span class="text-green-500">âœ“</span> Live Results Publik</li>
+                                <li class="flex items-center gap-2"><span class="text-green-500">âœ“</span> Media Storage 1 GB</li>
                             </ul>
                         </div>
                         <div class="border border-primary/30 rounded-2xl p-5 bg-primary/5 shadow-md border-t-4 border-t-primary relative overflow-hidden">
                             <div class="absolute top-2 right-2 bg-primary text-navy text-[10px] font-black px-2 py-0.5 rounded-full uppercase">Paling Populer</div>
-                            <div class="font-bold text-navy h-8">👑 Paket Elite</div>
+                            <div class="font-bold text-navy h-8">ðŸ‘‘ Paket Elite</div>
                             <div class="text-2xl font-black text-navy mb-2">Rp 49.999<span class="text-xs font-normal text-gray-400">/bln</span></div>
                             <p class="text-xs text-navy/70 mb-4">Solusi profesional untuk turnamen besar, open tournament, dan skala nasional.</p>
                             <ul class="text-xs space-y-2 text-navy/80">
-                                <li class="flex items-center gap-2"><span class="text-primary font-bold">✓</span> Peserta Tak Terbatas</li>
-                                <li class="flex items-center gap-2"><span class="text-primary font-bold">✓</span> Manajemen Match Finals</li>
-                                <li class="flex items-center gap-2"><span class="text-primary font-bold">✓</span> Integrasi Pembayaran Otomatis</li>
-                                <li class="flex items-center gap-2"><span class="text-primary font-bold">✓</span> Media Storage 5 GB</li>
+                                <li class="flex items-center gap-2"><span class="text-primary font-bold">âœ“</span> Peserta Tak Terbatas</li>
+                                <li class="flex items-center gap-2"><span class="text-primary font-bold">âœ“</span> Manajemen Match Finals</li>
+                                <li class="flex items-center gap-2"><span class="text-primary font-bold">âœ“</span> Integrasi Pembayaran Otomatis</li>
+                                <li class="flex items-center gap-2"><span class="text-primary font-bold">âœ“</span> Media Storage 5 GB</li>
                             </ul>
                         </div>
                     </div>
@@ -50,11 +50,11 @@ export const paket_berlangganan = {
                             </thead>
                             <tbody class="divide-y divide-gray-100 bg-white">
                                 <tr><td class="px-4 py-3 text-gray-700 font-medium">Kapasitas Peserta</td><td class="px-4 py-3 text-center">Maks. 50</td><td class="px-4 py-3 text-center font-bold text-primary">Unlimited</td></tr>
-                                <tr><td class="px-4 py-3 text-gray-700 font-medium">Digital Scoring & Leaderboard</td><td class="px-4 py-3 text-center text-green-600 text-lg">●</td><td class="px-4 py-3 text-center text-green-600 text-lg">●</td></tr>
-                                <tr><td class="px-4 py-3 text-gray-700 font-medium">Bracket Eliminasi (Aduan)</td><td class="px-4 py-3 text-center text-green-600 text-lg">●</td><td class="px-4 py-3 text-center text-green-600 text-lg">●</td></tr>
-                                <tr><td class="px-4 py-3 text-gray-700 font-medium">Manajemen Match Finals</td><td class="px-4 py-3 text-center text-gray-300">○</td><td class="px-4 py-3 text-center text-green-600 text-lg">●</td></tr>
-                                <tr><td class="px-4 py-3 text-gray-700 font-medium">Integrasi Pembayaran Otomatis</td><td class="px-4 py-3 text-center text-gray-300">○</td><td class="px-4 py-3 text-center text-green-600 text-lg">●</td></tr>
-                                <tr><td class="px-4 py-3 text-gray-700 font-medium">Analitik & Laporan Lanjutan</td><td class="px-4 py-3 text-center text-gray-300">○</td><td class="px-4 py-3 text-center text-green-600 text-lg">●</td></tr>
+                                <tr><td class="px-4 py-3 text-gray-700 font-medium">Digital Scoring & Leaderboard</td><td class="px-4 py-3 text-center text-green-600 text-lg">â—</td><td class="px-4 py-3 text-center text-green-600 text-lg">â—</td></tr>
+                                <tr><td class="px-4 py-3 text-gray-700 font-medium">Bracket Eliminasi (Aduan)</td><td class="px-4 py-3 text-center text-green-600 text-lg">â—</td><td class="px-4 py-3 text-center text-green-600 text-lg">â—</td></tr>
+                                <tr><td class="px-4 py-3 text-gray-700 font-medium">Manajemen Match Finals</td><td class="px-4 py-3 text-center text-gray-300">â—‹</td><td class="px-4 py-3 text-center text-green-600 text-lg">â—</td></tr>
+                                <tr><td class="px-4 py-3 text-gray-700 font-medium">Integrasi Pembayaran Otomatis</td><td class="px-4 py-3 text-center text-gray-300">â—‹</td><td class="px-4 py-3 text-center text-green-600 text-lg">â—</td></tr>
+                                <tr><td class="px-4 py-3 text-gray-700 font-medium">Analitik & Laporan Lanjutan</td><td class="px-4 py-3 text-center text-gray-300">â—‹</td><td class="px-4 py-3 text-center text-green-600 text-lg">â—</td></tr>
                                 <tr><td class="px-4 py-3 text-gray-700 font-medium">Penyimpanan Media</td><td class="px-4 py-3 text-center">1 GB</td><td class="px-4 py-3 text-center">5 GB</td></tr>
                             </tbody>
                         </table>
@@ -79,7 +79,7 @@ export const paket_berlangganan = {
                     </ol>
 
                     <h2 id="metode-pembayaran">Metode Pembayaran</h2>
-                    <p>Pembayaran paket berlangganan diproses melalui payment gateway Archeryhub.id dengan pilihan metode:</p>
+                    <p>Pembayaran paket berlangganan diproses melalui payment gateway archeris.net dengan pilihan metode:</p>
                     <ul>
                         <li><strong>Virtual Account (VA):</strong> Tersedia untuk Bank BNI, Mandiri, Permata, BRI, dan lainnya.</li>
                         <li><strong>QRIS & E-Wallet:</strong> Dukungan penuh untuk pembayaran instan via GoPay, ShopeePay, Dana, dll.</li>
@@ -90,7 +90,7 @@ export const paket_berlangganan = {
                     <img src="/docs/organization-riwayat-tagihan-paket.png" alt="Riwayat Tagihan Paket" />
 
                     <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-8 flex gap-4">
-                        <div class="text-primary text-2xl shrink-0">💡</div>
+                        <div class="text-primary text-2xl shrink-0">ðŸ’¡</div>
                         <div>
                             <div class="font-bold text-navy text-sm mb-1">Promo Pengguna Baru</div>
                             <div class="text-gray-600 text-sm">Organisasi yang baru mendaftar mendapatkan kesempatan mencoba Paket Standar secara GRATIS selama 3 bulan pertama sebagai bagian dari program digitalisasi panahan nasional.</div>
@@ -98,3 +98,4 @@ export const paket_berlangganan = {
                     </div>
                 `
 }
+

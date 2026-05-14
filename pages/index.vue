@@ -25,8 +25,7 @@
 
 
 
-        <!-- Latest News Section -->
-        <HomeLatestNews />
+
     </div>
 </template>
 
@@ -36,7 +35,7 @@ import HomeUpcomingEvents from '~/components/Home/HomeUpcomingEvents.vue'
 import HomeCTAStack from '~/components/Home/HomeCTAStack.vue'
 import HomeLiveEvents from '~/components/Home/HomeLiveEvents.vue'
 
-import HomeLatestNews from '~/components/Home/HomeLatestNews.vue'
+
 import HomeFeatures from '~/components/Home/HomeFeatures.vue'
 import SubscriptionPromo from '~/components/dashboard/subscription/SubscriptionPromo.vue'
 
@@ -45,14 +44,14 @@ definePageMeta({
 })
 
 useHead({
-    title: 'ArcheryHub - Platform Manajemen Panahan Indonesia',
+    title: 'Archeris.net - Platform Manajemen Panahan Indonesia',
     link: [
         { rel: 'canonical', href: useRequestURL().href }
     ],
     meta: [
         {
             name: 'description',
-            content: 'Archeryhub.id hadir sebagai wadah bagi seluruh penggiat panahan di Indonesia. Dari pemula hingga juara nasional, di sini kita terhubung lewat event, prestasi, dan semangat yang sama.'
+            content: 'Archeris.net hadir sebagai wadah bagi seluruh penggiat panahan di Indonesia. Dari pemula hingga juara nasional, di sini kita terhubung lewat event, prestasi, dan semangat yang sama.'
         }
     ]
 })

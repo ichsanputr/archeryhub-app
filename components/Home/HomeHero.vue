@@ -1,4 +1,4 @@
-<template>
+﻿<template>
     <section class="relative w-full h-screen overflow-hidden">
         <div class="absolute inset-0 w-full h-full">
             <img alt="Professional archer aiming at target" class="w-full h-full object-cover object-center"
@@ -25,7 +25,7 @@
                     </h1>
                     <p ref="heroText"
                         class="text-white/80 text-sm sm:text-base font-light leading-relaxed mb-8 sm:mb-10 max-w-xl drop-shadow-md opacity-0 translate-y-8">
-                        Archeryhub.id hadir sebagai wadah bagi seluruh penggiat panahan di Indonesia. Dari pemula
+                        archeris.net hadir sebagai wadah bagi seluruh penggiat panahan di Indonesia. Dari pemula
                         hingga juara nasional, di sini kita terhubung lewat event, prestasi, dan semangat yang sama.
                     </p>
                     <div ref="heroButtons" class="flex flex-col sm:flex-row gap-4 opacity-0 translate-y-8">
@@ -62,3 +62,4 @@ onMounted(() => {
         .to(heroButtons.value, { opacity: 1, y: 0, duration: 1 }, 0.8)
 })
 </script>
+

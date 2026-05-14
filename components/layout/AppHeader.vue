@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <header :class="[
     navClasses,
     'h-16 px-4 md:px-8 flex items-center justify-between shrink-0 z-50 sticky top-0 transition-all duration-300'
@@ -17,13 +17,13 @@
           <img v-if="user?.role === 'organization'"
             :src="useImageOrDefault(user.logo_url || user.avatar_url, user?.name || user?.full_name || 'Org')"
             :alt="user?.name || user?.full_name || 'Organization'" class="w-full h-full object-cover" />
-          <img v-else src="/logo.png" alt="ArcheryHub" class="w-full h-full object-contain" />
+          <img v-else src="/logo.png" alt="Archeris" class="w-full h-full object-contain" />
         </div>
         <span v-if="user?.role === 'organization'" class="text-sm font-black text-header-text truncate max-w-[120px]">
           {{ getFirstWord(user?.full_name || user?.name || 'Dashboard') }}
         </span>
         <span v-else class="text-sm font-black text-header-text">
-          ArcheryHub
+          Archeris
         </span>
       </div>
 
@@ -261,3 +261,4 @@ const getFirstWord = (text) => {
   return text.split(' ')[0]
 }
 </script>
+

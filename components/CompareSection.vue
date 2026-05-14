@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <section class="py-20 bg-gradient-to-br from-yellow-50 via-orange-50 to-red-50 relative overflow-hidden">
     <!-- Decorative background -->
     <div class="pointer-events-none absolute inset-0 -z-10">
@@ -22,13 +22,13 @@
         <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">
           Why choose
           <span class="bg-gradient-to-r from-yellow-600 via-orange-500 to-yellow-600 bg-clip-text text-transparent">
-            Archeryhub.id
+            archeris.net
           </span>
           for management?
         </h2>
 
         <p class="text-base sm:text-lg text-gray-600 leading-relaxed">
-          We're different. Archeryhub.id focuses on
+          We're different. archeris.net focuses on
           <span class="font-semibold text-gray-900">efficiency and real-time results</span>
           with automated brackets, participant tracking, and a user-friendly organizer dashboard.
         </p>
@@ -55,7 +55,7 @@
                 class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-500 to-orange-500 mb-4 shadow-lg">
                 <Icon :ssr="true" icon="ph:target-fill" class="w-8 h-8 text-white" />
               </div>
-              <h3 class="text-2xl font-bold text-gray-900 mb-1">Archeryhub.id</h3>
+              <h3 class="text-2xl font-bold text-gray-900 mb-1">archeris.net</h3>
               <p class="text-sm text-gray-600">Modern tournament oversight</p>
             </div>
 
@@ -278,3 +278,4 @@ const differentiators = [
   animation: float 3s ease-in-out infinite;
 }
 </style>
+

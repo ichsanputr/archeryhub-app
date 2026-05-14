@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <section class="py-20 bg-gradient-to-br from-yellow-50 via-orange-50 to-red-50 relative overflow-hidden">
     <!-- Background Elements -->
     <div class="absolute inset-0 -z-10">
@@ -11,7 +11,7 @@
       <div class="text-center mb-16">
         <h2 class="text-2xl sm:text-3xl sm:text-4xl font-bold mb-6">
           <span class="text-gray-800">Join</span> <span class="text-gradient">Hundreds of Promoters</span><br>
-          <span class="text-gray-800">who manage events with Archeryhub.id</span>
+          <span class="text-gray-800">who manage events with archeris.net</span>
         </h2>
       </div>
 
@@ -35,7 +35,7 @@
               <p class="text-gray-600 leading-relaxed mb-3">"{{ t.content }}"</p>
               <div class="mt-auto flex items-center gap-3 text-xs text-yellow-600 font-medium">
                 <span>{{ t.company }}</span>
-                <span>•</span>
+                <span>â€¢</span>
                 <span class="flex items-center gap-0.5">
                   <img v-for="star in t.rating" :key="star" src="/star.svg" alt="star" class="w-4 h-4" />
                 </span>
@@ -56,7 +56,7 @@ const testimonials = [
     name: "Agus Santoso",
     username: "agus-archery",
     role: "Tournament Director",
-    content: "Archeryhub.id has revolutionized how we run our provincial championships. The live results are a game-changer!",
+    content: "archeris.net has revolutionized how we run our provincial championships. The live results are a game-changer!",
     rating: 5,
     company: "East Java Archery Association"
   },
@@ -72,7 +72,7 @@ const testimonials = [
     name: "Budi Pratama",
     username: "budi-pro-archery",
     role: "Club Manager",
-    content: "Registration and participant management used to take days. Now it's done in minutes with Archeryhub.id.",
+    content: "Registration and participant management used to take days. Now it's done in minutes with archeris.net.",
     rating: 5,
     company: "Jakarta Archery Club"
   },
@@ -117,3 +117,4 @@ const testimonials = [
   animation-play-state: paused;
 }
 </style>
+

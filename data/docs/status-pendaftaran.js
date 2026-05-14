@@ -1,4 +1,4 @@
-export const status_pendaftaran = {
+﻿export const status_pendaftaran = {
     slug: 'status-pendaftaran', title: 'Melihat Status Pendaftaran', excerpt: 'Cara memantau status invoice, verifikasi peserta, dan mengunduh tiket elektronik di dashboard Pemanah.', icon: 'ph:magnifying-glass-bold', category: 'archer', readTime: '4 menit',
     toc: [
         { id: 'akses-dashboard', level: 2, text: 'Akses Riwayat Event' },
@@ -14,7 +14,7 @@ export const status_pendaftaran = {
                     <p>Ada beberapa tahapan status yang perlu Anda perhatikan:</p>
                     <ul>
                         <li><strong>Pending:</strong> Pendaftaran sudah tercatat, namun pembayaran belum dilakukan atau belum terkonfirmasi.</li>
-                        <li><strong>Paid:</strong> Pembayaran telah diterima oleh sistem Archeryhub.id.</li>
+                        <li><strong>Paid:</strong> Pembayaran telah diterima oleh sistem archeris.net.</li>
                         <li><strong>Verified:</strong> Data kepesertaan Anda telah diperiksa dan disetujui oleh panitia penyelenggara.</li>
                         <li><strong>Rejected:</strong> Pendaftaran ditolak (biasanya karena ketidaksesuaian kategori atau data tidak valid).</li>
                     </ul>
@@ -27,7 +27,7 @@ export const status_pendaftaran = {
                     <p>Setelah status Anda menjadi <strong>Verified</strong>, tombol untuk mengunduh E-Ticket akan aktif. Tiket ini berisi QR Code unik yang wajib Anda tunjukkan saat check-in di lokasi pertandingan untuk proses absensi dan verifikasi peralatan.</p>
 
                     <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-8 flex gap-4">
-                        <div class="text-primary text-2xl shrink-0">📱</div>
+                        <div class="text-primary text-2xl shrink-0">ðŸ“±</div>
                         <div>
                             <div class="font-bold text-navy text-sm mb-1">Tips Mobile</div>
                             <div class="text-gray-600 text-sm">Anda dapat menyimpan screenshot QR Code di ponsel Anda untuk mempercepat proses check-in di lapangan jika koneksi internet di lokasi pertandingan tidak stabil.</div>
@@ -35,3 +35,4 @@ export const status_pendaftaran = {
                     </div>
                 `
 }
+

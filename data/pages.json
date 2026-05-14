@@ -1,4 +1,4 @@
-{
+﻿{
   "archer": [
     {
       "path": "/dashboard/archer",
@@ -242,9 +242,9 @@
     {
       "path": "/",
       "title": "Beranda",
-      "description": "Halaman utama ArcheryHub",
+      "description": "Halaman utama Archeris",
       "icon": "ph:house",
-      "keywords": ["beranda", "home", "utama", "archeryhub", "panahan"]
+      "keywords": ["beranda", "home", "utama", "Archeris", "panahan"]
     },
     {
       "path": "/events",
@@ -262,3 +262,4 @@
     }
   ]
 }
+

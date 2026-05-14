@@ -1,4 +1,4 @@
-export const kategori_lomba = {
+﻿export const kategori_lomba = {
     slug: 'kategori-lomba', title: 'Kategori dan Divisi Lomba', excerpt: 'Panduan lengkap pembagian divisi berdasarkan jenis busur, kelompok usia, dan format pertandingan.', icon: 'ph:list-numbers-bold', category: 'archery', readTime: '7 menit',
     toc: [
         { id: 'divisi-busur', level: 2, text: 'Divisi Berdasarkan Jenis Busur' },
@@ -36,7 +36,7 @@ export const kategori_lomba = {
                     </ul>
 
                     <h2 id="format-lomba">Format Pertandingan</h2>
-                    <p>Di Archeryhub.id, sistem kami mendukung dua format utama pertandingan:</p>
+                    <p>Di archeris.net, sistem kami mendukung dua format utama pertandingan:</p>
                     <ol>
                         <li><strong>Kualifikasi:</strong> Babak penentuan skor total untuk mencari peringkat awal. Biasanya terdiri dari 2 sesi (masing-masing 36 anak panah).</li>
                         <li><strong>Eliminasi (Aduan):</strong> Sistem gugur (bracket) di mana pemanah bertanding satu lawan satu hingga babak final.</li>
@@ -44,10 +44,11 @@ export const kategori_lomba = {
 
                     <div class="not-prose bg-amber-50 border border-amber-200 rounded-2xl p-6 mt-8">
                         <div class="flex items-center gap-3 mb-3">
-                            <span class="text-2xl">📝</span>
+                            <span class="text-2xl">ðŸ“</span>
                             <div class="font-bold text-amber-800">Catatan Penting</div>
                         </div>
-                        <p class="text-sm text-amber-700">Beberapa event mungkin memiliki penamaan kategori yang unik (misalnya: "SD Kelas 1-3" atau "Internal Club"). Selalu periksa detail Technical Handbook event yang Anda ikuti melalui Archeryhub.id sebelum mendaftar.</p>
+                        <p class="text-sm text-amber-700">Beberapa event mungkin memiliki penamaan kategori yang unik (misalnya: "SD Kelas 1-3" atau "Internal Club"). Selalu periksa detail Technical Handbook event yang Anda ikuti melalui archeris.net sebelum mendaftar.</p>
                     </div>
                 `
 }
+

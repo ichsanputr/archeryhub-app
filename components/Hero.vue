@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <section class="relative overflow-hidden">
     <!-- Background -->
     <div class="absolute inset-0 -z-10">
@@ -27,7 +27,7 @@
             Indonesia
           </h1>
           <p class="mt-5 text-base sm:text-lg md:text-xl text-gray-600 max-w-xl leading-relaxed">
-            Archeryhub.id hadir sebagai wadah bagi seluruh penggiat panahan di Indonesia. Dari pemula hingga juara
+            archeris.net hadir sebagai wadah bagi seluruh penggiat panahan di Indonesia. Dari pemula hingga juara
             nasional, di sini kita terhubung lewat event, prestasi, dan semangat yang sama.
           </p>
 
@@ -110,3 +110,4 @@ onMounted(() => {
   }, 1500)
 })
 </script>
+

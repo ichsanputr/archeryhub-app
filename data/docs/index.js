@@ -1,4 +1,4 @@
-import { apa_itu_archeryhub } from './apa-itu-archeryhub.js'
+import { apa_itu_archeris } from './apa-itu-archeris.js'
 import { cara_daftar } from './cara-daftar.js'
 import { registrasi_ulang } from './registrasi-ulang.js'
 import { peran_pengguna } from './peran-pengguna.js'
@@ -33,7 +33,7 @@ import { kategorisasi_produk } from './kategorisasi-produk.js'
 import { fee_biaya_admin } from './fee-biaya-admin.js'
 
 export const docs = [
-    apa_itu_archeryhub,
+    apa_itu_archeris,
     cara_daftar,
     registrasi_ulang,
     peran_pengguna,
@@ -67,3 +67,4 @@ export const docs = [
     kategorisasi_produk,
     fee_biaya_admin,
 ]
+

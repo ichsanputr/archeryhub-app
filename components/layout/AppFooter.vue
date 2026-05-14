@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 // import removed: getPlatformContent not used in footer
 // removed: otherLanguages computed is no longer needed
 </script>
@@ -17,10 +17,10 @@
           <div class="flex flex-col items-start gap-4">
             <div class="flex items-center gap-3">
               <NuxtLink to="/" class="inline-block flex-none">
-                <img src="/logo.png" alt="Archeryhub.id Logo" class="h-10 sm:h-12 w-auto" />
+                <img src="/logo.png" alt="archeris.net Logo" class="h-10 sm:h-12 w-auto" />
               </NuxtLink>
               <div class="text-2xl font-black tracking-tight text-white font-display">
-                Archeryhub<span class="text-logo-id">.id</span>
+                Archeris<span class="text-logo-id">.id</span>
               </div>
             </div>
             <p class="text-gray-400 leading-relaxed text-sm sm:text-base">
@@ -113,7 +113,7 @@
       <!-- Bottom Bar -->
       <div class="py-8 border-t border-white/5">
         <p class="text-xs text-gray-500 font-medium text-center sm:text-left">
-          &copy; {{ new Date().getFullYear() }} Archeryhub.id. Hak cipta dilindungi undang-undang.
+          &copy; {{ new Date().getFullYear() }} archeris.net. Hak cipta dilindungi undang-undang.
         </p>
       </div>
     </div>
@@ -121,3 +121,5 @@
 </template>
 
 <style scoped></style>
+
+

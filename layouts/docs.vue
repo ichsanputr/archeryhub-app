@@ -1,6 +1,6 @@
-<template>
+﻿<template>
     <div class="min-h-screen flex flex-col bg-gray-50 font-body text-navy overflow-x-hidden">
-        <!-- Docs Header — always white -->
+        <!-- Docs Header â€” always white -->
         <header
             class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100 shadow-sm h-16 flex items-center">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex items-center justify-between">
@@ -8,9 +8,9 @@
                 <div class="flex items-center gap-3">
                     <NuxtLink to="/" class="flex items-center gap-2.5">
                         <div class="w-8 h-8 bg-navy rounded-lg flex items-center justify-center">
-                            <img src="/logo.png" alt="Archeryhub.id" class="w-5 h-5 object-contain" />
+                            <img src="/logo.png" alt="archeris.net" class="w-5 h-5 object-contain" />
                         </div>
-                        <span class="text-lg font-black tracking-tight text-navy">Archeryhub<span
+                        <span class="text-lg font-black tracking-tight text-navy">Archeris<span
                                 class="text-[#D9FF00]">.id</span></span>
                     </NuxtLink>
                     <div class="items-center gap-2">
@@ -70,3 +70,5 @@ const onSearchSubmit = () => {
     }
 }
 </script>
+
+

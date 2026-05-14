@@ -102,7 +102,7 @@
                 <div>
                   <h4 class="text-xs md:text-sm font-black text-slate-300 tracking-wide mb-1">Dukungan Email</h4>
                   <a class="text-white hover:text-primary transition-colors text-xs md:text-sm font-medium"
-                    href="mailto:support@archeryhub.id">support@archeryhub.id</a>
+                    href="mailto:support@archeris.net">support@archeris.net</a>
                 </div>
               </div>
               <div class="flex items-start gap-4">
@@ -170,7 +170,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Hubungi Kami - Archeryhub.id'
+  title: 'Hubungi Kami - Archeris.net'
 })
 
 const loading = ref(false)

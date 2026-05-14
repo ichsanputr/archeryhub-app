@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <aside
     class="w-64 max-w-[85vw] bg-navy flex flex-col fixed md:static inset-y-0 left-0 z-[100] md:z-auto transition-transform duration-300 ease-out md:translate-x-0 shrink-0 border-r border-white/10 md:shadow-xl"
     :class="[
@@ -9,9 +9,9 @@
     <!-- Logo/Brand -->
     <div class="h-16 flex items-center gap-3 px-6 border-b border-white/10 shrink-0">
       <div class="flex items-center gap-3 overflow-hidden">
-        <img src="/logo.png" alt="Archeryhub.id Logo" class="h-8 w-8 object-contain shrink-0" />
+        <img src="/logo.png" alt="archeris.net Logo" class="h-8 w-8 object-contain shrink-0" />
         <span v-if="!isSidebarCollapsed"
-          class="text-lg font-black tracking-tight whitespace-nowrap text-white">Archeryhub.id</span>
+          class="text-lg font-black tracking-tight whitespace-nowrap text-white">archeris.net</span>
       </div>
       <button class="md:hidden ml-auto text-gray-400 p-1 hover:text-white" @click="isSidebarOpen = false">
         <Icon icon="ph:x" class="text-xl" />
@@ -255,7 +255,7 @@ const userRoleLabel = computed(() => {
 
 const { isSubscriptionActive, isElite } = useSubscription()
 
-// ── Nav sections (supports labels, items, and group dropdowns) ─────────────
+// â”€â”€ Nav sections (supports labels, items, and group dropdowns) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const navSections = computed(() => {
   const role = user.value?.role || user.value?.type || user.value?.user_type
   const isActiveSub = isSubscriptionActive.value
@@ -336,7 +336,7 @@ const navSections = computed(() => {
     ]
   }
 
-  // Root admin — clean minimal nav
+  // Root admin â€” clean minimal nav
   if (role === 'root') {
     return [
       { type: 'label', label: 'Manajemen Akun' },
@@ -374,7 +374,7 @@ watch(() => route.path, (path) => {
   })
 }, { immediate: true })
 
-// ── Active detection — exact match for /dashboard, prefix for others ───────
+// â”€â”€ Active detection â€” exact match for /dashboard, prefix for others â”€â”€â”€â”€â”€â”€â”€
 const isActive = (path) => {
   if (!path) return false
   if (path === '/dashboard') {
@@ -416,3 +416,4 @@ const handleLogout = () => { showLogoutDialog.value = true }
   opacity: 0;
 }
 </style>
+

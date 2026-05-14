@@ -1,4 +1,4 @@
-<template>
+﻿<template>
     <nav class="fixed top-0 z-50 w-full transition-all duration-500" :class="navClasses">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
@@ -9,7 +9,7 @@
                         <img src="/logo.png" alt="Logo" class="w-5 h-5 object-contain" />
                     </div>
                     <span class="text-xl font-black tracking-tight font-display transition-colors duration-300"
-                        :class="logoTextClasses">Archeryhub<span class="text-logo-id">.id</span></span>
+                        :class="logoTextClasses">Archeris<span class="text-logo-id">.id</span></span>
                 </NuxtLink>
 
                 <!-- Desktop Navigation -->
@@ -45,7 +45,7 @@
                                                 <h3 class="text-white font-bold text-sm leading-tight line-clamp-2">
                                                     {{ featuredEvent.name }}
                                                 </h3>
-                                                <p class="text-white/70 text-xs mt-1">{{ featuredEvent.location }} • {{
+                                                <p class="text-white/70 text-xs mt-1">{{ featuredEvent.location }} â€¢ {{
                                                     featuredEvent.date }}</p>
                                                 <NuxtLink :to="`/events/${featuredEvent.slug || featuredEvent.id}`"
                                                     class="inline-flex items-center gap-1 mt-3 text-primary text-xs font-bold hover:text-white transition-colors">
@@ -86,7 +86,7 @@
                                                             {{ event.name }}
                                                         </span>
                                                         <span class="block text-gray-400 text-[10px] font-medium">{{
-                                                            event.location }} • {{ event.date }}</span>
+                                                            event.location }} â€¢ {{ event.date }}</span>
                                                     </div>
                                                 </NuxtLink>
                                             </div>
@@ -232,7 +232,7 @@
                         <div class="w-8 h-8 rounded-lg bg-navy flex items-center justify-center">
                             <img src="/logo.png" alt="Logo" class="w-5 h-5 object-contain" />
                         </div>
-                        <span class="text-lg font-black tracking-tight text-navy">Archeryhub<span
+                        <span class="text-lg font-black tracking-tight text-navy">Archeris<span
                                 class="text-logo-id">.id</span></span>
                     </NuxtLink>
                     <button @click="mobileMenuOpen = false"
@@ -500,3 +500,4 @@ watch(() => route.path, () => {
     }
 })
 </script>
+

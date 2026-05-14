@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 flex flex-col items-end gap-4">
     <Transition name="chat-window">
       <div v-if="isOpen"
@@ -110,7 +110,7 @@ const nowTime = () => new Date().toLocaleTimeString('id-ID', { hour: '2-digit', 
 const messages = ref([
   {
     role: 'bot',
-    text: 'Halo, saya Customer Service Archeryhub. Ada yang bisa saya bantu hari ini?',
+    text: 'Halo, saya Customer Service Archeris. Ada yang bisa saya bantu hari ini?',
     time: nowTime(),
   },
 ])
@@ -221,3 +221,4 @@ watch(isOpen, (open) => {
   }
 }
 </style>
+

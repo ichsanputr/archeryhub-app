@@ -1,11 +1,11 @@
-const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Pengenalan menyeluruh tentang platform manajemen panahan terpadu pertama di Indonesia.",icon:"ph:info-bold",category:"platform",readTime:"3 menit",toc:[{id:"tentang",level:2,text:"Tentang Archeryhub.id"},{id:"misi",level:2,text:"Misi Platform"},{id:"fitur-utama",level:2,text:"Fitur Utama"},{id:"untuk-siapa",level:2,text:"Untuk Siapa?"}],content:`
-          <h2 id="tentang">Tentang Archeryhub.id</h2>
-          <p>Archeryhub.id adalah ekosistem digital panahan terintegrasi pertama di Indonesia yang dirancang untuk menghubungkan seluruh elemen dalam olahraga panahan — mulai dari atlet, klub, penyelenggara event, hingga penyedia peralatan dalam satu platform yang harmonis.</p>
+﻿const a={slug:"apa-itu-Archeris",title:"Apa itu archeris.net?",excerpt:"Pengenalan menyeluruh tentang platform manajemen panahan terpadu pertama di Indonesia.",icon:"ph:info-bold",category:"platform",readTime:"3 menit",toc:[{id:"tentang",level:2,text:"Tentang archeris.net"},{id:"misi",level:2,text:"Misi Platform"},{id:"fitur-utama",level:2,text:"Fitur Utama"},{id:"untuk-siapa",level:2,text:"Untuk Siapa?"}],content:`
+          <h2 id="tentang">Tentang archeris.net</h2>
+          <p>archeris.net adalah ekosistem digital panahan terintegrasi pertama di Indonesia yang dirancang untuk menghubungkan seluruh elemen dalam olahraga panahan â€” mulai dari atlet, klub, penyelenggara event, hingga penyedia peralatan dalam satu platform yang harmonis.</p>
           <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mb-6 flex gap-4">
-            <div class="text-primary text-2xl shrink-0">💡</div>
+            <div class="text-primary text-2xl shrink-0">ðŸ’¡</div>
             <div>
               <div class="font-bold text-navy text-sm mb-1">Pusat Interaksi Panahan Indonesia</div>
-              <div class="text-gray-600 text-sm">Archeryhub.id bukan sekadar alat manajemen, melainkan rumah digital tempat komunitas panahan bertumbuh, berkompetisi, dan bertransaksi dengan aman dan transparan.</div>
+              <div class="text-gray-600 text-sm">archeris.net bukan sekadar alat manajemen, melainkan rumah digital tempat komunitas panahan bertumbuh, berkompetisi, dan bertransaksi dengan aman dan transparan.</div>
             </div>
           </div>
           <h2 id="misi">Misi Platform</h2>
@@ -18,43 +18,43 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
             <li><strong>Portofolio Atlet Digital:</strong> Rekam jejak prestasi dan statistik performa yang tersimpan rapi sebagai identitas profesional pemanah.</li>
           </ul>
           <h2 id="untuk-siapa">Untuk Siapa?</h2>
-          <p>Archeryhub.id dirancang untuk melayani setiap peran penting dalam ekosistem panahan Indonesia. Kami memahami bahwa setiap aktor memiliki kebutuhan unik, sehingga platform ini menyediakan fitur yang sangat spesifik dan terintegrasi untuk masing-masing peran.</p>
+          <p>archeris.net dirancang untuk melayani setiap peran penting dalam ekosistem panahan Indonesia. Kami memahami bahwa setiap aktor memiliki kebutuhan unik, sehingga platform ini menyediakan fitur yang sangat spesifik dan terintegrasi untuk masing-masing peran.</p>
           
           <p>Bagi <strong>Atlet dan Pemanah</strong>, platform ini bertindak sebagai asisten pribadi digital. Selain memudahkan pendaftaran event tanpa repot, sistem kami mencatat setiap skor dan prestasi Anda secara otomatis. Ini membantu Anda membangun identitas profesional (Digital Archer Profile) yang dapat diakses oleh sponsor, pelatih, maupun komunitas luas.</p>
           
           <div class="not-prose grid grid-cols-1 sm:grid-cols-2 gap-3 my-6">
             <div class="border border-gray-100 rounded-xl p-4 bg-gray-50 flex flex-col gap-2 shadow-sm">
               <div class="font-bold text-navy text-sm flex items-center gap-2">
-                <span class="text-lg">🏹</span> Atlet / Pemanah
+                <span class="text-lg">ðŸ¹</span> Atlet / Pemanah
               </div>
               <div class="text-gray-500 text-xs leading-relaxed">Pemanah individu dari berbagai level dapat mendaftar turnamen dengan instan, melihat ranking nasional, serta memantau statistik performa jangka panjang mereka.</div>
             </div>
             <div class="border border-gray-100 rounded-xl p-4 bg-gray-50 flex flex-col gap-2 shadow-sm">
               <div class="font-bold text-navy text-sm flex items-center gap-2">
-                <span class="text-lg">🎖️</span> Penyelenggara / Organisasi
+                <span class="text-lg">ðŸŽ–ï¸</span> Penyelenggara / Organisasi
               </div>
               <div class="text-gray-500 text-xs leading-relaxed">Penyelenggara event mendapatkan solusi end-to-end: dari manajemen pendaftaran, pengaturan jadwal, hingga sistem scoring digital real-time yang tersistematis.</div>
             </div>
             <div class="border border-gray-100 rounded-xl p-4 bg-gray-50 flex flex-col gap-2 shadow-sm">
               <div class="font-bold text-navy text-sm flex items-center gap-2">
-                <span class="text-lg">🛒</span> Toko & Seller Peralatan
+                <span class="text-lg">ðŸ›’</span> Toko & Seller Peralatan
               </div>
               <div class="text-gray-500 text-xs leading-relaxed">Pelaku bisnis peralatan panahan dapat menjangkau target pasar yang spesifik dan terverifikasi secara langsung di dalam ekosistem para penggiat panahan.</div>
             </div>
             <div class="border border-gray-100 rounded-xl p-4 bg-gray-50 flex flex-col gap-2 shadow-sm">
               <div class="font-bold text-navy text-sm flex items-center gap-2">
-                <span class="text-lg">👨‍👩‍👧</span> Orang Tua & Pendamping
+                <span class="text-lg">ðŸ‘¨â€ðŸ‘©â€ðŸ‘§</span> Orang Tua & Pendamping
               </div>
               <div class="text-gray-500 text-xs leading-relaxed">Memberikan kemudahan bagi keluarga untuk memantau jadwal pertandingan dan perkembangan prestasi atlet binaan secara transparan dan terukur.</div>
             </div>
           </div>
 
-          <p>Selain ketiga pilar utama di atas, platform ini juga sangat bermanfaat bagi <strong>Pelatih dan Pembina</strong>. Dengan data statistik yang akurat dari setiap event yang diikuti, pelatih dapat melakukan analisis objektif terhadap performa atlet mereka tanpa harus mengandalkan catatan manual yang berserakan. Archeryhub.id membantu merangkum pola tembakan dan konsistensi skor atlet dari waktu ke waktu.</p>
+          <p>Selain ketiga pilar utama di atas, platform ini juga sangat bermanfaat bagi <strong>Pelatih dan Pembina</strong>. Dengan data statistik yang akurat dari setiap event yang diikuti, pelatih dapat melakukan analisis objektif terhadap performa atlet mereka tanpa harus mengandalkan catatan manual yang berserakan. archeris.net membantu merangkum pola tembakan dan konsistensi skor atlet dari waktu ke waktu.</p>
           
           <p>Kami terus berkomitmen untuk memperluas jangkauan platform ini agar dapat mengakomodasi lebih banyak skenario di lapangan, memastikan bahwa setiap kemajuan kecil yang dicapai oleh seorang pemanah tercatat dan diapresiasi dalam ekosistem panahan digital Indonesia yang semakin berkembang.</p>
-        `},e={slug:"cara-daftar",title:"Cara Mendaftar Akun",excerpt:"Panduan langkah demi langkah untuk mendaftarkan akun baru di Archeryhub.id.",icon:"ph:user-plus-bold",category:"platform",readTime:"4 menit",toc:[{id:"pilih-tipe",level:2,text:"Pilih Tipe Akun"},{id:"daftar-email",level:2,text:"Daftar via Email"},{id:"daftar-google",level:2,text:"Daftar via Google"},{id:"verifikasi",level:2,text:"Verifikasi & Login"}],content:`
+        `},e={slug:"cara-daftar",title:"Cara Mendaftar Akun",excerpt:"Panduan langkah demi langkah untuk mendaftarkan akun baru di archeris.net.",icon:"ph:user-plus-bold",category:"platform",readTime:"4 menit",toc:[{id:"pilih-tipe",level:2,text:"Pilih Tipe Akun"},{id:"daftar-email",level:2,text:"Daftar via Email"},{id:"daftar-google",level:2,text:"Daftar via Google"},{id:"verifikasi",level:2,text:"Verifikasi & Login"}],content:`
           <h2 id="pilih-tipe">Pilih Tipe Akun</h2>
-          <p>Archeryhub.id menyediakan tiga tipe akun utama yang dapat dipilih saat pendaftaran: <strong>Pemanah</strong>, <strong>Organisasi</strong> (Penyelenggara), dan <strong>Penjual</strong>. Pilih tipe yang sesuai dengan peran Anda dalam ekosistem panahan.</p>
+          <p>archeris.net menyediakan tiga tipe akun utama yang dapat dipilih saat pendaftaran: <strong>Pemanah</strong>, <strong>Organisasi</strong> (Penyelenggara), dan <strong>Penjual</strong>. Pilih tipe yang sesuai dengan peran Anda dalam ekosistem panahan.</p>
           <h2 id="daftar-email">Daftar via Email</h2>
           <ol>
             <li>Kunjungi halaman <a href="/auth/register" class="text-primary font-semibold">Daftar</a>.</li>
@@ -79,7 +79,7 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     </ul>
 
                     <div class="not-prose bg-amber-50 border border-amber-200 rounded-2xl p-5 mb-6 flex gap-4">
-                        <div class="text-amber-500 text-2xl shrink-0">⚠️</div>
+                        <div class="text-amber-500 text-2xl shrink-0">âš ï¸</div>
                         <div>
                             <div class="font-bold text-amber-800 text-sm mb-1">Perhatikan Tenggat Waktu Event</div>
                             <div class="text-amber-700 text-sm">Pastikan registrasi ulang telah selesai <strong>sebelum mendaftar ke event baru</strong>. Panitia event umumnya menggunakan data profil terkini saat proses check-in dilakukan.</div>
@@ -89,15 +89,15 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     <h2 id="pindah-klub">Pindah atau Ganti Klub</h2>
                     <p>Jika Anda baru saja pindah klub, segera perbarui informasi klub pada profil pemanah Anda. Klub yang tercantum di profil akan menjadi representasi Anda di setiap event yang diikuti.</p>
                     <ol>
-                        <li>Masuk ke <strong>Dasbor Pemanah → Profil Saya</strong>.</li>
+                        <li>Masuk ke <strong>Dasbor Pemanah â†’ Profil Saya</strong>.</li>
                         <li>Klik ikon edit pada bagian <strong>Informasi Klub</strong>.</li>
                         <li>Cari nama klub baru melalui kolom pencarian.</li>
-                        <li>Konfirmasi perubahan — sistem akan mencatat tanggal perubahan afiliasi klub.</li>
+                        <li>Konfirmasi perubahan â€” sistem akan mencatat tanggal perubahan afiliasi klub.</li>
                     </ol>
                     <p>Keanggotaan di klub baru sepenuhnya dikelola oleh pengurus klub. Pastikan Anda telah resmi diterima oleh klub sebelum mengubah afiliasi di platform.</p>
 
                     <h2 id="update-kategori">Perbarui Kategori & Divisi</h2>
-                    <p>Archeryhub.id menghitung kelompok usia secara otomatis berdasarkan tanggal lahir yang terdaftar. Namun, divisi busur dapat diperbarui secara manual sesuai kebutuhan kompetisi:</p>
+                    <p>archeris.net menghitung kelompok usia secara otomatis berdasarkan tanggal lahir yang terdaftar. Namun, divisi busur dapat diperbarui secara manual sesuai kebutuhan kompetisi:</p>
                     <div class="not-prose overflow-x-auto my-4">
                         <table class="w-full text-sm border-collapse">
                             <thead>
@@ -136,16 +136,16 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     <p>Beberapa event dapat mensyaratkan verifikasi identitas yang diperbarui, terutama untuk event dengan kategori resmi atau berhadiah. Jika verifikasi Anda telah kedaluwarsa atau ditolak, ikuti langkah berikut:</p>
                     <ul>
                         <li>Siapkan foto KTP/KIA yang masih berlaku (format JPEG/PNG, maks. 5MB).</li>
-                        <li>Buka <strong>Profil Saya → Verifikasi Identitas</strong>.</li>
-                        <li>Unggah dokumen dan tunggu proses tinjauan oleh tim Archeryhub.id (1–2 hari kerja).</li>
+                        <li>Buka <strong>Profil Saya â†’ Verifikasi Identitas</strong>.</li>
+                        <li>Unggah dokumen dan tunggu proses tinjauan oleh tim archeris.net (1â€“2 hari kerja).</li>
                         <li>Status verifikasi akan diperbarui dan notifikasi dikirim ke email terdaftar.</li>
                     </ul>
 
                     <h2 id="langkah-langkah">Langkah-Langkah Registrasi Ulang</h2>
                     <p>Berikut ringkasan alur lengkap registrasi ulang akun pemanah:</p>
                     <ol>
-                        <li><strong>Login</strong> ke akun Archeryhub.id Anda.</li>
-                        <li>Buka <strong>Dasbor → Profil Saya → Edit Profil</strong>.</li>
+                        <li><strong>Login</strong> ke akun archeris.net Anda.</li>
+                        <li>Buka <strong>Dasbor â†’ Profil Saya â†’ Edit Profil</strong>.</li>
                         <li>Perbarui data yang berubah: nama, tanggal lahir, klub, divisi busur, dan foto profil.</li>
                         <li>Simpan perubahan dengan klik <strong>Simpan Profil</strong>.</li>
                         <li>Jika ada dokumen identitas yang perlu diperbarui, unggah di bagian <strong>Verifikasi Identitas</strong>.</li>
@@ -159,10 +159,10 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                         <li>Sertifikat dan penghargaan digital tetap dapat diakses.</li>
                         <li>Bila berganti klub, prestasi lama tetap muncul dengan label klub asal saat event berlangsung.</li>
                     </ul>
-                    <p>Jika menemui kendala saat registrasi ulang, hubungi dukungan melalui fitur chat di aplikasi atau kirim email ke support@archeryhub.id.</p>
-                `},t={slug:"peran-pengguna",title:"Jenis Akun di Platform",excerpt:"Panduan lengkap jenis akun, hak akses, dan alur kerja tiap tipe pengguna di Archeryhub.id.",icon:"ph:users-three-bold",category:"platform",readTime:"8 menit",toc:[{id:"tipe-akun",level:2,text:"Tipe Akun di Archeryhub.id"},{id:"pemanah",level:2,text:"Akun Pemanah"},{id:"organisasi",level:2,text:"Akun Organisasi"},{id:"penjual",level:2,text:"Akun Penjual"},{id:"perbandingan",level:2,text:"Perbandingan Hak Akses"},{id:"pilih-peran",level:2,text:"Bagaimana Memilih Akun yang Tepat?"}],content:`
-                    <h2 id="tipe-akun">Tipe Akun di Archeryhub.id</h2>
-                    <p>Archeryhub.id dirancang untuk melayani satu ekosistem panahan yang lengkap. Karena kebutuhan pengguna berbeda-beda, sistem menyediakan tiga tipe akun utama: <strong>Pemanah</strong>, <strong>Organisasi</strong> (Penyelenggara), dan <strong>Penjual</strong>. Masing-masing tipe memiliki dashboard, menu, serta kewenangan yang disesuaikan dengan fungsinya.</p>
+                    <p>Jika menemui kendala saat registrasi ulang, hubungi dukungan melalui fitur chat di aplikasi atau kirim email ke support@archeris.net.</p>
+                `},t={slug:"peran-pengguna",title:"Jenis Akun di Platform",excerpt:"Panduan lengkap jenis akun, hak akses, dan alur kerja tiap tipe pengguna di archeris.net.",icon:"ph:users-three-bold",category:"platform",readTime:"8 menit",toc:[{id:"tipe-akun",level:2,text:"Tipe Akun di archeris.net"},{id:"pemanah",level:2,text:"Akun Pemanah"},{id:"organisasi",level:2,text:"Akun Organisasi"},{id:"penjual",level:2,text:"Akun Penjual"},{id:"perbandingan",level:2,text:"Perbandingan Hak Akses"},{id:"pilih-peran",level:2,text:"Bagaimana Memilih Akun yang Tepat?"}],content:`
+                    <h2 id="tipe-akun">Tipe Akun di archeris.net</h2>
+                    <p>archeris.net dirancang untuk melayani satu ekosistem panahan yang lengkap. Karena kebutuhan pengguna berbeda-beda, sistem menyediakan tiga tipe akun utama: <strong>Pemanah</strong>, <strong>Organisasi</strong> (Penyelenggara), dan <strong>Penjual</strong>. Masing-masing tipe memiliki dashboard, menu, serta kewenangan yang disesuaikan dengan fungsinya.</p>
                     <p>Memilih tipe akun yang tepat sejak awal akan membuat alur kerja Anda lebih efisien, mulai dari pendaftaran event, penyelenggaraan turnamen, hingga penjualan produk panahan.</p>
 
                     <h2 id="pemanah">Akun Pemanah</h2>
@@ -232,7 +232,7 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     <p>Setiap tipe akun memiliki workflow yang berbeda. Pastikan Anda memilih sesuai kebutuhan utama Anda saat ini.</p>
                 `},i={slug:"manajemen-profil",title:"Manajemen Profil & Pengaturan",excerpt:"Panduan lengkap cara mengelola informasi profil, foto, keamanan akun, dan pengaturan tampilan dashboard Anda.",icon:"ph:gear-six-bold",category:"platform",readTime:"6 menit",toc:[{id:"gambaran-umum",level:2,text:"Gambaran Umum"},{id:"mengelola-data",level:2,text:"Mengelola Data Diri"},{id:"foto-profil",level:2,text:"Foto Profil & Banner"},{id:"keamanan-akun",level:2,text:"Keamanan & Kata Sandi"},{id:"ubah-email",level:2,text:"Mengubah Alamat Email"},{id:"pengaturan-tema",level:2,text:"Tema & Tampilan"},{id:"visibilitas-publik",level:2,text:"Kontrol Halaman Publik"}],content:`
                     <h2 id="gambaran-umum">Gambaran Umum</h2>
-                    <p>Halaman pengaturan di Archeryhub.id adalah pusat kontrol untuk identitas digital Anda. Di sini Anda dapat memastikan informasi yang tampil kepada publik tetap akurat, menjaga keamanan akses akun, serta menyesuaikan kenyamanan tampilan dashboard sesuai preferensi Anda.</p>
+                    <p>Halaman pengaturan di archeris.net adalah pusat kontrol untuk identitas digital Anda. Di sini Anda dapat memastikan informasi yang tampil kepada publik tetap akurat, menjaga keamanan akses akun, serta menyesuaikan kenyamanan tampilan dashboard sesuai preferensi Anda.</p>
                     
                     <h2 id="mengelola-data">Mengelola Data Diri</h2>
                     <p>Setiap tipe akun memiliki fokus informasi yang berbeda saat proses pembaruan profil:</p>
@@ -275,13 +275,13 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     <p>Khusus untuk akun Organisasi, Anda memiliki kendali penuh atas bagian mana saja yang ingin ditampilkan kepada publik. Anda dapat mengatur apakah Visi-Misi, Sejarah, atau FAQ organisasi tampil di halaman depan profil publik Anda melalui menu Page Settings.</p>
 
                     <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-8 flex gap-4">
-                        <div class="text-primary text-2xl shrink-0">📌</div>
+                        <div class="text-primary text-2xl shrink-0">ðŸ“Œ</div>
                         <div>
                             <div class="font-bold text-navy text-sm mb-1">Tips Manajemen Profil</div>
-                            <div class="text-gray-600 text-sm">Pastikan "Slug" atau username Anda tetap unik dan mudah diingat, karena ini akan menjadi bagian dari alamat URL profil publik Anda di Archeryhub.id.</div>
+                            <div class="text-gray-600 text-sm">Pastikan "Slug" atau username Anda tetap unik dan mudah diingat, karena ini akan menjadi bagian dari alamat URL profil publik Anda di archeris.net.</div>
                         </div>
                     </div>
-                `},r={slug:"mendaftar-event",title:"Cara Mendaftar ke Event",excerpt:"Panduan lengkap langkah demi langkah untuk mendaftar ke turnamen atau event panahan di Archeryhub.id.",icon:"ph:clipboard-text-bold",category:"archer",readTime:"5 menit",toc:[{id:"cari-event",level:2,text:"Mencari Event"},{id:"pilihan-kategori",level:2,text:"Memilih Kategori Lomba"},{id:"isi-data",level:2,text:"Melengkapi Data Kepesertaan"},{id:"proses-bayar",level:2,text:"Pembayaran Pendaftaran"},{id:"konfirmasi",level:2,text:"Konfirmasi Pendaftaran"}],content:`
+                `},r={slug:"mendaftar-event",title:"Cara Mendaftar ke Event",excerpt:"Panduan lengkap langkah demi langkah untuk mendaftar ke turnamen atau event panahan di archeris.net.",icon:"ph:clipboard-text-bold",category:"archer",readTime:"5 menit",toc:[{id:"cari-event",level:2,text:"Mencari Event"},{id:"pilihan-kategori",level:2,text:"Memilih Kategori Lomba"},{id:"isi-data",level:2,text:"Melengkapi Data Kepesertaan"},{id:"proses-bayar",level:2,text:"Pembayaran Pendaftaran"},{id:"konfirmasi",level:2,text:"Konfirmasi Pendaftaran"}],content:`
                     <h2 id="cari-event">Mencari Event</h2>
                     <p>Anda dapat menemukan berbagai turnamen panahan melalui menu <strong>Events</strong> di halaman utama. Gunakan fitur filter untuk mencari event berdasarkan lokasi, status pendaftaran (Open/Closed), atau jenis turnamen yang Anda minati.</p>
                     <img src="/docs/archer-dashboard-event.png" alt="Dashboard Event Pemanah" />
@@ -308,7 +308,7 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     <p>Setelah melakukan pembayaran, Anda tidak perlu mengirimkan bukti transfer secara manual jika menggunakan metode Virtual Account atau E-Wallet. Tiket elektronik dan nomor peserta akan tersedia di dashboard Anda segera setelah sistem memverifikasi transaksi.</p>
 
                     <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-8 flex gap-4">
-                        <div class="text-primary text-2xl shrink-0">⚠️</div>
+                        <div class="text-primary text-2xl shrink-0">âš ï¸</div>
                         <div>
                             <div class="font-bold text-navy text-sm mb-1">Penting</div>
                             <div class="text-gray-600 text-sm">Pastikan Anda menyelesaikan pembayaran sebelum batas waktu invoice (biasanya 24 jam) agar pendaftaran Anda tidak hangus secara otomatis oleh sistem.</div>
@@ -322,7 +322,7 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     <p>Ada beberapa tahapan status yang perlu Anda perhatikan:</p>
                     <ul>
                         <li><strong>Pending:</strong> Pendaftaran sudah tercatat, namun pembayaran belum dilakukan atau belum terkonfirmasi.</li>
-                        <li><strong>Paid:</strong> Pembayaran telah diterima oleh sistem Archeryhub.id.</li>
+                        <li><strong>Paid:</strong> Pembayaran telah diterima oleh sistem archeris.net.</li>
                         <li><strong>Verified:</strong> Data kepesertaan Anda telah diperiksa dan disetujui oleh panitia penyelenggara.</li>
                         <li><strong>Rejected:</strong> Pendaftaran ditolak (biasanya karena ketidaksesuaian kategori atau data tidak valid).</li>
                     </ul>
@@ -335,7 +335,7 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     <p>Setelah status Anda menjadi <strong>Verified</strong>, tombol untuk mengunduh E-Ticket akan aktif. Tiket ini berisi QR Code unik yang wajib Anda tunjukkan saat check-in di lokasi pertandingan untuk proses absensi dan verifikasi peralatan.</p>
 
                     <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-8 flex gap-4">
-                        <div class="text-primary text-2xl shrink-0">📱</div>
+                        <div class="text-primary text-2xl shrink-0">ðŸ“±</div>
                         <div>
                             <div class="font-bold text-navy text-sm mb-1">Tips Mobile</div>
                             <div class="text-gray-600 text-sm">Anda dapat menyimpan screenshot QR Code di ponsel Anda untuk mempercepat proses check-in di lapangan jika koneksi internet di lokasi pertandingan tidak stabil.</div>
@@ -356,12 +356,12 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     <p>Halaman profil publik Anda adalah "kartu nama" digital Anda. Di sini pengunjung dapat melihat:</p>
                     <ul>
                         <li>Foto profil dan identitas singkat.</li>
-                        <li>Riwayat medali dan prestasi di turnamen yang menggunakan Archeryhub.id.</li>
+                        <li>Riwayat medali dan prestasi di turnamen yang menggunakan archeris.net.</li>
                         <li>Grafik perkembangan skor kualifikasi dari waktu ke waktu.</li>
                     </ul>
 
                     <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-8 flex gap-4">
-                        <div class="text-primary text-2xl shrink-0">📸</div>
+                        <div class="text-primary text-2xl shrink-0">ðŸ“¸</div>
                         <div>
                             <div class="font-bold text-navy text-sm mb-1">Tips Foto Profil</div>
                             <div class="text-gray-600 text-sm">Gunakan foto saat menggunakan peralatan panahan lengkap untuk memberikan kesan atlet yang profesional dan kredibel pada profil publik Anda.</div>
@@ -369,7 +369,7 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     </div>
                 `},d={slug:"keranjang-belanja",title:"Manajemen Keranjang Belanja",excerpt:"Panduan cara menggunakan keranjang belanja untuk mengelola item perlengkapan panahan sebelum melakukan checkout.",icon:"ph:shopping-cart-bold",category:"archer",readTime:"3 menit",toc:[{id:"tambah-produk",level:2,text:"Menambah Produk ke Keranjang"},{id:"kelola-item",level:2,text:"Mengelola Item di Keranjang"},{id:"multi-seller",level:2,text:"Checkout dari Berbagai Penjual"},{id:"riwayat-order",level:2,text:"Memantau Pesanan Barang"}],content:`
                     <h2 id="tambah-produk">Menambah Produk ke Keranjang</h2>
-                    <p>Saat menjelajahi Marketplace di Archeryhub.id, Anda dapat memasukkan berbagai perlengkapan ke dalam keranjang. Klik ikon keranjang pada produk yang Anda inginkan. Anda dapat terus berbelanja dan mengumpulkan item sebelum memutuskan untuk melakukan pembayaran.</p>
+                    <p>Saat menjelajahi Marketplace di archeris.net, Anda dapat memasukkan berbagai perlengkapan ke dalam keranjang. Klik ikon keranjang pada produk yang Anda inginkan. Anda dapat terus berbelanja dan mengumpulkan item sebelum memutuskan untuk melakukan pembayaran.</p>
                     
                     <h2 id="kelola-item">Mengelola Item di Keranjang</h2>
                     <p>Anda dapat mengakses keranjang belanja melalui ikon keranjang di navigasi atas atau melalui <strong>Dashboard > Cart</strong>. Di sini Anda bisa:</p>
@@ -380,16 +380,16 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     </ul>
 
                     <h2 id="multi-seller">Checkout dari Berbagai Penjual</h2>
-                    <p>Archeryhub.id mendukung pembelian dari beberapa penjual sekaligus dalam satu sesi belanja. Keranjang akan secara otomatis mengelompokkan produk berdasarkan toko pengirim. Biaya pengiriman akan dihitung terpisah per toko saat Anda melakukan checkout.</p>
+                    <p>archeris.net mendukung pembelian dari beberapa penjual sekaligus dalam satu sesi belanja. Keranjang akan secara otomatis mengelompokkan produk berdasarkan toko pengirim. Biaya pengiriman akan dihitung terpisah per toko saat Anda melakukan checkout.</p>
 
                     <h2 id="riwayat-order">Memantau Pesanan Barang</h2>
                     <p>Setelah checkout dan pembayaran diverifikasi, Anda dapat memantau status pengiriman barang Anda melalui tab <strong>Orders</strong> di dashboard. Di sana tertera nomor resi dan status perjalanan paket dari toko ke alamat Anda.</p>
 
                     <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-8 flex gap-4">
-                        <div class="text-primary text-2xl shrink-0">🛒</div>
+                        <div class="text-primary text-2xl shrink-0">ðŸ›’</div>
                         <div>
                             <div class="font-bold text-navy text-sm mb-1">Keamanan Transaksi</div>
-                            <div class="text-gray-600 text-sm">Dana Anda akan ditahan oleh sistem Archeryhub.id dan baru akan diteruskan ke penjual setelah Anda mengonfirmasi bahwa barang telah diterima dengan baik.</div>
+                            <div class="text-gray-600 text-sm">Dana Anda akan ditahan oleh sistem archeris.net dan baru akan diteruskan ke penjual setelah Anda mengonfirmasi bahwa barang telah diterima dengan baik.</div>
                         </div>
                     </div>
                 `},u={slug:"manajemen-keuangan",title:"Manajemen Keuangan & Saldo",excerpt:"Panduan lengkap pengelolaan penghasilan, saldo, dan pengaturan rekening bank pada dashboard Organisasi.",icon:"ph:wallet-bold",category:"platform",readTime:"6 menit",toc:[{id:"penghasilan-saya",level:2,text:"Menu Penghasilan Saya"},{id:"saldo-organisasi",level:2,text:"Saldo & Riwayat Transaksi"},{id:"rekening-bank",level:2,text:"Pengaturan Rekening Bank"},{id:"withdraw-hasi",level:2,text:"Penarikan Dana (Withdrawal)"}],content:`
@@ -398,7 +398,7 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     <img src="/docs/organization-menu-penghasilan-saya.png" alt="Menu Penghasilan Saya" />
                     
                     <h2 id="saldo-organisasi">Saldo & Riwayat Transaksi</h2>
-                    <p>Seluruh dana hasil pendaftaran yang telah diverifikasi (status Paid) akan masuk ke dalam <strong>Saldo Organisasi</strong> Anda. Sistem Archeryhub.id mencatat setiap mutasi saldo secara detail:</p>
+                    <p>Seluruh dana hasil pendaftaran yang telah diverifikasi (status Paid) akan masuk ke dalam <strong>Saldo Organisasi</strong> Anda. Sistem archeris.net mencatat setiap mutasi saldo secara detail:</p>
                     <ul>
                         <li><strong>Dana Masuk:</strong> Pendapatan bersih dari pendaftaran peserta setelah dikurangi biaya layanan platform.</li>
                         <li><strong>Dana Keluar:</strong> Riwayat penarikan dana (withdrawal) yang telah Anda lakukan ke rekening bank terdaftar.</li>
@@ -418,13 +418,13 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     <p>Penarikan dana dapat dilakukan secara fleksibel dari saldo yang tersedia. Anda cukup memasukkan nominal penarikan, dan sistem akan memproses transfer ke rekening bank Anda dalam kurun waktu 1-3 hari kerja (tergantung kebijakan bank masing-masing).</p>
 
                     <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-8 flex gap-4">
-                        <div class="text-primary text-2xl shrink-0">�️</div>
+                        <div class="text-primary text-2xl shrink-0">ï¿½ï¸</div>
                         <div>
                             <div class="font-bold text-navy text-sm mb-1">Keamanan Finansial</div>
-                            <div class="text-gray-600 text-sm">Archeryhub.id menggunakan sistem keamanan berlapis untuk setiap transaksi keuangan. Pastikan Anda tidak membagikan kredensial login atau kode verifikasi kepada pihak manapun demi keamanan saldo organisasi Anda.</div>
+                            <div class="text-gray-600 text-sm">archeris.net menggunakan sistem keamanan berlapis untuk setiap transaksi keuangan. Pastikan Anda tidak membagikan kredensial login atau kode verifikasi kepada pihak manapun demi keamanan saldo organisasi Anda.</div>
                         </div>
                     </div>
-                `},o={slug:"modul-news",title:"Modul Berita & Publikasi",excerpt:"Panduan lengkap cara mengelola konten berita, pengumuman, dan artikel edukasi untuk membangun engagement komunitas di Archeryhub.id.",icon:"ph:newspaper-clipping-bold",category:"platform",readTime:"5 menit",toc:[{id:"pengenalan-news",level:2,text:"Pengenalan Modul Berita"},{id:"membuat-berita",level:2,text:"Membuat Konten Baru"},{id:"kategori-status",level:2,text:"Kategori & Tingkat Publikasi"},{id:"media-seo",level:2,text:"Optimalisasi Media & SEO"},{id:"tampilan-publik",level:2,text:"Interaksi & Tampilan Publik"}],content:`
+                `},o={slug:"modul-news",title:"Modul Berita & Publikasi",excerpt:"Panduan lengkap cara mengelola konten berita, pengumuman, dan artikel edukasi untuk membangun engagement komunitas di archeris.net.",icon:"ph:newspaper-clipping-bold",category:"platform",readTime:"5 menit",toc:[{id:"pengenalan-news",level:2,text:"Pengenalan Modul Berita"},{id:"membuat-berita",level:2,text:"Membuat Konten Baru"},{id:"kategori-status",level:2,text:"Kategori & Tingkat Publikasi"},{id:"media-seo",level:2,text:"Optimalisasi Media & SEO"},{id:"tampilan-publik",level:2,text:"Interaksi & Tampilan Publik"}],content:`
                     <h2 id="pengenalan-news">Pengenalan Modul Berita</h2>
                     <p>Modul Berita (News) adalah alat komunikasi strategis bagi Organisasi untuk menyampaikan informasi penting kepada seluruh pemanah dan pengunjung platform. Tidak hanya untuk pengumuman resmi, modul ini juga ideal untuk membagikan laporan hasil pertandingan, dokumentasi event, hingga tips edukasi seputar dunia panahan.</p>
                     
@@ -466,10 +466,10 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     </ul>
 
                     <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-8 flex gap-4">
-                        <div class="text-primary text-2xl shrink-0">📈</div>
+                        <div class="text-primary text-2xl shrink-0">ðŸ“ˆ</div>
                         <div>
                             <div class="font-bold text-navy text-sm mb-1">Strategi Konten</div>
-                            <div class="text-gray-600 text-sm">Berita yang disertai gambar berkualitas tinggi dan tag yang tepat cenderung mendapatkan 2x lipat lebih banyak pembaca di platform Archeryhub.id.</div>
+                            <div class="text-gray-600 text-sm">Berita yang disertai gambar berkualitas tinggi dan tag yang tepat cenderung mendapatkan 2x lipat lebih banyak pembaca di platform archeris.net.</div>
                         </div>
                     </div>
                 `},p={slug:"jenis-busur",title:"Jenis-Jenis Busur Panahan",excerpt:"Mengenal Standard Bow, Recurve, Compound, Barebow, Tradisional, dan Longbow.",icon:"ph:crosshair-bold",category:"archery",readTime:"6 menit",toc:[{id:"standard-bow",level:2,text:"Standard Bow (Nasional)"},{id:"recurve",level:2,text:"Recurve"},{id:"compound",level:2,text:"Compound"},{id:"barebow",level:2,text:"Barebow"},{id:"tradisional",level:2,text:"Tradisional & Longbow"},{id:"perbandingan-busur",level:2,text:"Perbandingan Busur"}],content:`
@@ -520,38 +520,38 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                             </thead>
                             <tbody class="divide-y divide-gray-100 bg-white">
                                 <tr><td class="px-4 py-3 font-bold text-navy">Standard Bow</td><td class="px-4 py-3">Rendah-Sedang</td><td class="px-4 py-3 text-gray-400">Tidak</td><td class="px-4 py-3">Kayu & Fiber</td></tr>
-                                <tr><td class="px-4 py-3 font-bold text-navy">Recurve</td><td class="px-4 py-3">Sedang</td><td class="px-4 py-3 text-green-600 font-bold">✓ Ya</td><td class="px-4 py-3">Aluminium & Karbon</td></tr>
+                                <tr><td class="px-4 py-3 font-bold text-navy">Recurve</td><td class="px-4 py-3">Sedang</td><td class="px-4 py-3 text-green-600 font-bold">âœ“ Ya</td><td class="px-4 py-3">Aluminium & Karbon</td></tr>
                                 <tr><td class="px-4 py-3 font-bold text-navy">Compound</td><td class="px-4 py-3">Sedang-Tinggi</td><td class="px-4 py-3 text-gray-400">Tidak</td><td class="px-4 py-3">Paduan Logam & Karbon</td></tr>
                                 <tr><td class="px-4 py-3 font-bold text-navy">Barebow</td><td class="px-4 py-3">Tinggi</td><td class="px-4 py-3 text-gray-400">Tidak</td><td class="px-4 py-3">Aluminium & Karbon</td></tr>
                             </tbody>
                         </table>
                     </div>
-                `},g={slug:"paket-berlangganan",title:"Sistem & Paket Berlangganan",excerpt:"Informasi lengkap mengenai pilihan paket, fitur eksklusif, serta panduan tata cara berlangganan bagi Organisasi di Archeryhub.id.",icon:"ph:crown-bold",category:"subscription",readTime:"8 menit",toc:[{id:"tipe-paket",level:2,text:"Tipe Paket Organisasi"},{id:"perbandingan-fitur",level:2,text:"Fitur Standar vs Elite"},{id:"fitur-eksklusif",level:2,text:"Keunggulan Paket Elite"},{id:"alur-langganan",level:2,text:"Tata Cara Berlangganan"},{id:"metode-pembayaran",level:2,text:"Metode Pembayaran"},{id:"kelola-berlangganan",level:2,text:"Manajemen Langganan"}],content:`
+                `},g={slug:"paket-berlangganan",title:"Sistem & Paket Berlangganan",excerpt:"Informasi lengkap mengenai pilihan paket, fitur eksklusif, serta panduan tata cara berlangganan bagi Organisasi di archeris.net.",icon:"ph:crown-bold",category:"subscription",readTime:"8 menit",toc:[{id:"tipe-paket",level:2,text:"Tipe Paket Organisasi"},{id:"perbandingan-fitur",level:2,text:"Fitur Standar vs Elite"},{id:"fitur-eksklusif",level:2,text:"Keunggulan Paket Elite"},{id:"alur-langganan",level:2,text:"Tata Cara Berlangganan"},{id:"metode-pembayaran",level:2,text:"Metode Pembayaran"},{id:"kelola-berlangganan",level:2,text:"Manajemen Langganan"}],content:`
                     <h2 id="tipe-paket">Tipe Paket Organisasi</h2>
-                    <p>Archeryhub.id menyediakan dua pilihan paket utama bagi Organisasi (Penyelenggara Event) untuk mengakomodasi berbagai skala kejuaraan panahan:</p>
+                    <p>archeris.net menyediakan dua pilihan paket utama bagi Organisasi (Penyelenggara Event) untuk mengakomodasi berbagai skala kejuaraan panahan:</p>
                     <img src="/docs/organization-pilihan-paket.png" alt="Pilihan Paket Organisasi" />
                     <div class="not-prose grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
                         <div class="border border-gray-100 rounded-2xl p-5 bg-white shadow-sm border-t-4 border-t-navy">
-                            <div class="font-bold text-navy h-8">💼 Paket Standar</div>
+                            <div class="font-bold text-navy h-8">ðŸ’¼ Paket Standar</div>
                             <div class="text-2xl font-black text-navy mb-2">Rp 29.999<span class="text-xs font-normal text-gray-400">/bln</span></div>
                             <p class="text-xs text-gray-500 mb-4">Cocok untuk klub lokal atau kejuaraan internal dengan peserta terbatas.</p>
                             <ul class="text-xs space-y-2 text-gray-600">
-                                <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Maks. 50 Peserta / Event</li>
-                                <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Digital Scoring Standar</li>
-                                <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Live Results Publik</li>
-                                <li class="flex items-center gap-2"><span class="text-green-500">✓</span> Media Storage 1 GB</li>
+                                <li class="flex items-center gap-2"><span class="text-green-500">âœ“</span> Maks. 50 Peserta / Event</li>
+                                <li class="flex items-center gap-2"><span class="text-green-500">âœ“</span> Digital Scoring Standar</li>
+                                <li class="flex items-center gap-2"><span class="text-green-500">âœ“</span> Live Results Publik</li>
+                                <li class="flex items-center gap-2"><span class="text-green-500">âœ“</span> Media Storage 1 GB</li>
                             </ul>
                         </div>
                         <div class="border border-primary/30 rounded-2xl p-5 bg-primary/5 shadow-md border-t-4 border-t-primary relative overflow-hidden">
                             <div class="absolute top-2 right-2 bg-primary text-navy text-[10px] font-black px-2 py-0.5 rounded-full uppercase">Paling Populer</div>
-                            <div class="font-bold text-navy h-8">👑 Paket Elite</div>
+                            <div class="font-bold text-navy h-8">ðŸ‘‘ Paket Elite</div>
                             <div class="text-2xl font-black text-navy mb-2">Rp 49.999<span class="text-xs font-normal text-gray-400">/bln</span></div>
                             <p class="text-xs text-navy/70 mb-4">Solusi profesional untuk turnamen besar, open tournament, dan skala nasional.</p>
                             <ul class="text-xs space-y-2 text-navy/80">
-                                <li class="flex items-center gap-2"><span class="text-primary font-bold">✓</span> Peserta Tak Terbatas</li>
-                                <li class="flex items-center gap-2"><span class="text-primary font-bold">✓</span> Manajemen Match Finals</li>
-                                <li class="flex items-center gap-2"><span class="text-primary font-bold">✓</span> Integrasi Pembayaran Otomatis</li>
-                                <li class="flex items-center gap-2"><span class="text-primary font-bold">✓</span> Media Storage 5 GB</li>
+                                <li class="flex items-center gap-2"><span class="text-primary font-bold">âœ“</span> Peserta Tak Terbatas</li>
+                                <li class="flex items-center gap-2"><span class="text-primary font-bold">âœ“</span> Manajemen Match Finals</li>
+                                <li class="flex items-center gap-2"><span class="text-primary font-bold">âœ“</span> Integrasi Pembayaran Otomatis</li>
+                                <li class="flex items-center gap-2"><span class="text-primary font-bold">âœ“</span> Media Storage 5 GB</li>
                             </ul>
                         </div>
                     </div>
@@ -568,11 +568,11 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                             </thead>
                             <tbody class="divide-y divide-gray-100 bg-white">
                                 <tr><td class="px-4 py-3 text-gray-700 font-medium">Kapasitas Peserta</td><td class="px-4 py-3 text-center">Maks. 50</td><td class="px-4 py-3 text-center font-bold text-primary">Unlimited</td></tr>
-                                <tr><td class="px-4 py-3 text-gray-700 font-medium">Digital Scoring & Leaderboard</td><td class="px-4 py-3 text-center text-green-600 text-lg">●</td><td class="px-4 py-3 text-center text-green-600 text-lg">●</td></tr>
-                                <tr><td class="px-4 py-3 text-gray-700 font-medium">Bracket Eliminasi (Aduan)</td><td class="px-4 py-3 text-center text-green-600 text-lg">●</td><td class="px-4 py-3 text-center text-green-600 text-lg">●</td></tr>
-                                <tr><td class="px-4 py-3 text-gray-700 font-medium">Manajemen Match Finals</td><td class="px-4 py-3 text-center text-gray-300">○</td><td class="px-4 py-3 text-center text-green-600 text-lg">●</td></tr>
-                                <tr><td class="px-4 py-3 text-gray-700 font-medium">Integrasi Pembayaran Otomatis</td><td class="px-4 py-3 text-center text-gray-300">○</td><td class="px-4 py-3 text-center text-green-600 text-lg">●</td></tr>
-                                <tr><td class="px-4 py-3 text-gray-700 font-medium">Analitik & Laporan Lanjutan</td><td class="px-4 py-3 text-center text-gray-300">○</td><td class="px-4 py-3 text-center text-green-600 text-lg">●</td></tr>
+                                <tr><td class="px-4 py-3 text-gray-700 font-medium">Digital Scoring & Leaderboard</td><td class="px-4 py-3 text-center text-green-600 text-lg">â—</td><td class="px-4 py-3 text-center text-green-600 text-lg">â—</td></tr>
+                                <tr><td class="px-4 py-3 text-gray-700 font-medium">Bracket Eliminasi (Aduan)</td><td class="px-4 py-3 text-center text-green-600 text-lg">â—</td><td class="px-4 py-3 text-center text-green-600 text-lg">â—</td></tr>
+                                <tr><td class="px-4 py-3 text-gray-700 font-medium">Manajemen Match Finals</td><td class="px-4 py-3 text-center text-gray-300">â—‹</td><td class="px-4 py-3 text-center text-green-600 text-lg">â—</td></tr>
+                                <tr><td class="px-4 py-3 text-gray-700 font-medium">Integrasi Pembayaran Otomatis</td><td class="px-4 py-3 text-center text-gray-300">â—‹</td><td class="px-4 py-3 text-center text-green-600 text-lg">â—</td></tr>
+                                <tr><td class="px-4 py-3 text-gray-700 font-medium">Analitik & Laporan Lanjutan</td><td class="px-4 py-3 text-center text-gray-300">â—‹</td><td class="px-4 py-3 text-center text-green-600 text-lg">â—</td></tr>
                                 <tr><td class="px-4 py-3 text-gray-700 font-medium">Penyimpanan Media</td><td class="px-4 py-3 text-center">1 GB</td><td class="px-4 py-3 text-center">5 GB</td></tr>
                             </tbody>
                         </table>
@@ -597,7 +597,7 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     </ol>
 
                     <h2 id="metode-pembayaran">Metode Pembayaran</h2>
-                    <p>Pembayaran paket berlangganan diproses melalui payment gateway Archeryhub.id dengan pilihan metode:</p>
+                    <p>Pembayaran paket berlangganan diproses melalui payment gateway archeris.net dengan pilihan metode:</p>
                     <ul>
                         <li><strong>Virtual Account (VA):</strong> Tersedia untuk Bank BNI, Mandiri, Permata, BRI, dan lainnya.</li>
                         <li><strong>QRIS & E-Wallet:</strong> Dukungan penuh untuk pembayaran instan via GoPay, ShopeePay, Dana, dll.</li>
@@ -608,7 +608,7 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     <img src="/docs/organization-riwayat-tagihan-paket.png" alt="Riwayat Tagihan Paket" />
 
                     <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-8 flex gap-4">
-                        <div class="text-primary text-2xl shrink-0">💡</div>
+                        <div class="text-primary text-2xl shrink-0">ðŸ’¡</div>
                         <div>
                             <div class="font-bold text-navy text-sm mb-1">Promo Pengguna Baru</div>
                             <div class="text-gray-600 text-sm">Organisasi yang baru mendaftar mendapatkan kesempatan mencoba Paket Standar secara GRATIS selama 3 bulan pertama sebagai bagian dari program digitalisasi panahan nasional.</div>
@@ -716,7 +716,7 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     <p>Scorekeeper adalah petugas yang bertanggung jawab memasukkan skor panahan secara digital selama event berlangsung. Setiap skor yang diinput langsung tersinkronisasi ke leaderboard publik secara real-time, menggantikan pencatatan manual di kertas yang rawan kesalahan.</p>
 
                     <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mb-6 flex gap-4">
-                        <div class="text-primary text-2xl shrink-0">🎯</div>
+                        <div class="text-primary text-2xl shrink-0">ðŸŽ¯</div>
                         <div>
                             <div class="font-bold text-navy text-sm mb-1">Peran Kunci dalam Integritas Skor</div>
                             <div class="text-gray-600 text-sm">Scorekeeper tidak punya akses ke pengaturan event maupun data peserta secara keseluruhan. Mereka hanya dapat mengakses target yang ditugaskan, menjaga keamanan dan isolasi data.</div>
@@ -726,7 +726,7 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     <h2 id="buat-scorekeeper">Membuat Akun Scorekeeper</h2>
                     <p>Hanya admin organisasi yang dapat membuat akun scorekeeper. Proses pembuatan akun dilakukan dari dasbor manajemen event:</p>
                     <ol>
-                        <li>Buka <strong>Dasbor Organisasi → Event → [Nama Event] → Scorekeeper</strong>.</li>
+                        <li>Buka <strong>Dasbor Organisasi â†’ Event â†’ [Nama Event] â†’ Scorekeeper</strong>.</li>
                         <li>Klik tombol <strong>Tambah Scorekeeper</strong>.</li>
                         <li>Isi nama petugas, nomor HP atau email, dan assign ke target/sesi yang dikehendaki.</li>
                         <li>Sistem akan mengenerate kredensial login sementara (PIN atau kata sandi) yang dapat dibagikan ke petugas.</li>
@@ -775,15 +775,15 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     <h2 id="alur-input-skor">Alur Input Skor di Lapangan</h2>
                     <p>Setelah login, scorekeeper hanya melihat daftar target yang ditugaskan. Berikut alur input skor per end:</p>
                     <ol>
-                        <li><strong>Pilih Target</strong> — Pilih nomor target dari daftar yang tersedia.</li>
-                        <li><strong>Pilih End</strong> — Pilih nomor end yang akan diinput (End 1, 2, 3, dst).</li>
-                        <li><strong>Input Skor Tiap Panah</strong> — Masukkan nilai panah satu per satu (0–10, atau X untuk 10 ring dalam). Urutan input dari nilai terbesar ke terkecil sesuai ketentuan World Archery.</li>
-                        <li><strong>Konfirmasi Total</strong> — Sistem otomatis menjumlah skor per end. Konfirmasi jika total sudah benar.</li>
-                        <li><strong>Kirim</strong> — Skor tersimpan dan langsung muncul di leaderboard publik.</li>
+                        <li><strong>Pilih Target</strong> â€” Pilih nomor target dari daftar yang tersedia.</li>
+                        <li><strong>Pilih End</strong> â€” Pilih nomor end yang akan diinput (End 1, 2, 3, dst).</li>
+                        <li><strong>Input Skor Tiap Panah</strong> â€” Masukkan nilai panah satu per satu (0â€“10, atau X untuk 10 ring dalam). Urutan input dari nilai terbesar ke terkecil sesuai ketentuan World Archery.</li>
+                        <li><strong>Konfirmasi Total</strong> â€” Sistem otomatis menjumlah skor per end. Konfirmasi jika total sudah benar.</li>
+                        <li><strong>Kirim</strong> â€” Skor tersimpan dan langsung muncul di leaderboard publik.</li>
                     </ol>
 
                     <div class="not-prose bg-green-50 border border-green-200 rounded-2xl p-5 mb-6 flex gap-4">
-                        <div class="text-green-600 text-2xl shrink-0">✅</div>
+                        <div class="text-green-600 text-2xl shrink-0">âœ…</div>
                         <div>
                             <div class="font-bold text-green-800 text-sm mb-1">Verifikasi Ganda</div>
                             <div class="text-green-700 text-sm">Sebelum skor dikirim, sistem menampilkan ringkasan semua panah dalam satu end. Scorekeeper wajib mengkonfirmasi sebelum data tersimpan permanen.</div>
@@ -791,7 +791,7 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     </div>
 
                     <h2 id="koreksi-skor">Koreksi & Pembatalan Skor</h2>
-                    <p>Kesalahan input dapat terjadi di lapangan. Archeryhub.id menyediakan mekanisme koreksi yang terkontrol:</p>
+                    <p>Kesalahan input dapat terjadi di lapangan. archeris.net menyediakan mekanisme koreksi yang terkontrol:</p>
                     <ul>
                         <li><strong>Koreksi segera (dalam 5 menit):</strong> Scorekeeper dapat langsung mengedit skor end yang baru diinput selama jendela waktu koreksi masih terbuka.</li>
                         <li><strong>Koreksi oleh admin:</strong> Jika jendela waktu telah habis, hanya admin event yang dapat membuka kunci end dan mengizinkan koreksi ulang.</li>
@@ -803,7 +803,7 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
 
                     <h2 id="kontrol-akses">Kontrol Akses dan Keamanan</h2>
                     <ul>
-                        <li><strong>Isolasi data:</strong> Scorekeeper hanya dapat melihat dan menginput skor untuk target yang ditugaskan — tidak ada akses ke data peserta lain.</li>
+                        <li><strong>Isolasi data:</strong> Scorekeeper hanya dapat melihat dan menginput skor untuk target yang ditugaskan â€” tidak ada akses ke data peserta lain.</li>
                         <li><strong>Non-aktifkan akun:</strong> Admin dapat menonaktifkan akun scorekeeper kapan saja dari dasbor manajemen event.</li>
                         <li><strong>Rotasi PIN:</strong> Ganti PIN setiap event untuk mencegah penyalahgunaan kredensial lama.</li>
                         <li><strong>Log aktivitas:</strong> Semua aksi scorekeeper (login, input, koreksi) tercatat dalam log yang dapat diakses admin untuk keperluan audit.</li>
@@ -838,7 +838,7 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     </ul>
 
                     <h2 id="format-lomba">Format Pertandingan</h2>
-                    <p>Di Archeryhub.id, sistem kami mendukung dua format utama pertandingan:</p>
+                    <p>Di archeris.net, sistem kami mendukung dua format utama pertandingan:</p>
                     <ol>
                         <li><strong>Kualifikasi:</strong> Babak penentuan skor total untuk mencari peringkat awal. Biasanya terdiri dari 2 sesi (masing-masing 36 anak panah).</li>
                         <li><strong>Eliminasi (Aduan):</strong> Sistem gugur (bracket) di mana pemanah bertanding satu lawan satu hingga babak final.</li>
@@ -846,10 +846,10 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
 
                     <div class="not-prose bg-amber-50 border border-amber-200 rounded-2xl p-6 mt-8">
                         <div class="flex items-center gap-3 mb-3">
-                            <span class="text-2xl">📝</span>
+                            <span class="text-2xl">ðŸ“</span>
                             <div class="font-bold text-amber-800">Catatan Penting</div>
                         </div>
-                        <p class="text-sm text-amber-700">Beberapa event mungkin memiliki penamaan kategori yang unik (misalnya: "SD Kelas 1-3" atau "Internal Club"). Selalu periksa detail Technical Handbook event yang Anda ikuti melalui Archeryhub.id sebelum mendaftar.</p>
+                        <p class="text-sm text-amber-700">Beberapa event mungkin memiliki penamaan kategori yang unik (misalnya: "SD Kelas 1-3" atau "Internal Club"). Selalu periksa detail Technical Handbook event yang Anda ikuti melalui archeris.net sebelum mendaftar.</p>
                     </div>
                 `},P={slug:"jarak-dan-target",title:"Jarak Tembak dan Format Target",excerpt:"Panduan standar jarak tembak dan ukuran target face untuk berbagai divisi panahan.",icon:"ph:ruler-bold",category:"archery",readTime:"6 menit",toc:[{id:"standar-jarak",level:2,text:"Standar Jarak Tembak"},{id:"target-face",level:2,text:"Ukuran Target Face"},{id:"skoring-zona",level:2,text:"Zona Penilaian (Scoring Zones)"},{id:"format-indoor",level:2,text:"Format Indoor vs Outdoor"}],content:`
                     <h2 id="standar-jarak">Standar Jarak Tembak</h2>
@@ -887,13 +887,13 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     <p><strong>Indoor:</strong> Pertandingan dilakukan di dalam ruangan dengan jarak standar 18 meter. Karena tidak ada gangguan angin, akurasi pemanah diuji pada konsistensi tembakan di target face yang lebih kecil (biasanya vertical 3-spot).</p>
 
                     <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-8 flex gap-4">
-                        <div class="text-primary text-2xl shrink-0">📏</div>
+                        <div class="text-primary text-2xl shrink-0">ðŸ“</div>
                         <div>
                             <div class="font-bold text-navy text-sm mb-1">Cek Handbook Event</div>
-                            <div class="text-gray-600 text-sm">Panitia memiliki wewenang untuk menyesuaikan kombinasi jarak dan ukuran target. Selalu baca pengumuman resmi event pada platform Archeryhub.id sebelum mulai berlatih.</div>
+                            <div class="text-gray-600 text-sm">Panitia memiliki wewenang untuk menyesuaikan kombinasi jarak dan ukuran target. Selalu baca pengumuman resmi event pada platform archeris.net sebelum mulai berlatih.</div>
                         </div>
                     </div>
-                `},j={slug:"fase-kualifikasi",title:"Fase Kualifikasi dalam Pertandingan Panahan",excerpt:"Memahami tujuan, format, dan mekanisme fase kualifikasi — fondasi utama setiap kompetisi panahan modern.",icon:"ph:chart-line-up-bold",category:"archery",readTime:"5 menit",toc:[{id:"apa-itu-kualifikasi",level:2,text:"Apa Itu Fase Kualifikasi?"},{id:"format-round",level:2,text:"Format Round yang Digunakan"},{id:"sistem-penilaian",level:2,text:"Sistem Penilaian & Tie-Break"},{id:"hasil-kualifikasi",level:2,text:"Apa yang Ditentukan oleh Hasil Kualifikasi?"},{id:"mengapa-kualifikasi-penting",level:2,text:"Mengapa Fase Ini Sangat Penting?"},{id:"kualifikasi-di-archeryhub",level:2,text:"Kualifikasi di Platform Archeryhub.id"}],content:`
+                `},j={slug:"fase-kualifikasi",title:"Fase Kualifikasi dalam Pertandingan Panahan",excerpt:"Memahami tujuan, format, dan mekanisme fase kualifikasi â€” fondasi utama setiap kompetisi panahan modern.",icon:"ph:chart-line-up-bold",category:"archery",readTime:"5 menit",toc:[{id:"apa-itu-kualifikasi",level:2,text:"Apa Itu Fase Kualifikasi?"},{id:"format-round",level:2,text:"Format Round yang Digunakan"},{id:"sistem-penilaian",level:2,text:"Sistem Penilaian & Tie-Break"},{id:"hasil-kualifikasi",level:2,text:"Apa yang Ditentukan oleh Hasil Kualifikasi?"},{id:"mengapa-kualifikasi-penting",level:2,text:"Mengapa Fase Ini Sangat Penting?"},{id:"kualifikasi-di-Archeris",level:2,text:"Kualifikasi di Platform archeris.net"}],content:`
         <h2 id="apa-itu-kualifikasi">Apa Itu Fase Kualifikasi?</h2>
         <p>Dalam kompetisi panahan, <strong>fase kualifikasi</strong> (disebut juga <em>ranking round</em>) adalah babak pertama di mana semua peserta menembakkan sejumlah panah ke target yang sama dalam kondisi yang setara. Setiap panah diberi nilai poin berdasarkan zona target yang mengenai, kemudian total poin dikumpulkan untuk menentukan <em>ranking</em> setiap atlet.</p>
         <p>Kualifikasi biasanya dilakukan dalam satu atau dua sesi, tergantung format event dan jumlah peserta.</p>
@@ -911,9 +911,9 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100 bg-white">
-                    <tr><td class="px-4 py-3 font-bold text-navy">720 Round</td><td class="px-4 py-3">50–70 m</td><td class="px-4 py-3">72 panah (6 panah × 12 end)</td><td class="px-4 py-3">Recurve, Standard Bow (outdoor)</td></tr>
+                    <tr><td class="px-4 py-3 font-bold text-navy">720 Round</td><td class="px-4 py-3">50â€“70 m</td><td class="px-4 py-3">72 panah (6 panah Ã— 12 end)</td><td class="px-4 py-3">Recurve, Standard Bow (outdoor)</td></tr>
                     <tr><td class="px-4 py-3 font-bold text-navy">1440 Round</td><td class="px-4 py-3">90/70/50/30 m</td><td class="px-4 py-3">144 panah</td><td class="px-4 py-3">Recurve (kompetisi penuh)</td></tr>
-                    <tr><td class="px-4 py-3 font-bold text-navy">25 m Indoor</td><td class="px-4 py-3">18 m / 25 m</td><td class="px-4 py-3">60 panah (3 panah × 20 end)</td><td class="px-4 py-3">Semua divisi (indoor)</td></tr>
+                    <tr><td class="px-4 py-3 font-bold text-navy">25 m Indoor</td><td class="px-4 py-3">18 m / 25 m</td><td class="px-4 py-3">60 panah (3 panah Ã— 20 end)</td><td class="px-4 py-3">Semua divisi (indoor)</td></tr>
                     <tr><td class="px-4 py-3 font-bold text-navy">Field Round</td><td class="px-4 py-3">Bervariasi</td><td class="px-4 py-3">24 atau 48 target</td><td class="px-4 py-3">Field archery</td></tr>
                 </tbody>
             </table>
@@ -923,9 +923,9 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
         <h2 id="sistem-penilaian">Sistem Penilaian & Tie-Break</h2>
         <p>Nilai per panah ditentukan oleh zona target yang terttenai:</p>
         <ul>
-            <li><strong>10 (Emas dalam)</strong> — Lingkaran terdalam (X), bernilai 10 poin, dihitung terpisah sebagai tie-break.</li>
-            <li><strong>9, 8, 7 …</strong> — Zona berikutnya berurutan keluar dari pusat.</li>
-            <li><strong>M (Miss)</strong> — Panah tidak mengenai target atau jatuh, bernilai 0.</li>
+            <li><strong>10 (Emas dalam)</strong> â€” Lingkaran terdalam (X), bernilai 10 poin, dihitung terpisah sebagai tie-break.</li>
+            <li><strong>9, 8, 7 â€¦</strong> â€” Zona berikutnya berurutan keluar dari pusat.</li>
+            <li><strong>M (Miss)</strong> â€” Panah tidak mengenai target atau jatuh, bernilai 0.</li>
         </ul>
         <p>Jika dua atau lebih atlet memiliki total poin yang sama, <em>tie-break</em> ditentukan secara berurutan oleh:</p>
         <ol>
@@ -937,29 +937,29 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
         <h2 id="hasil-kualifikasi">Apa yang Ditentukan oleh Hasil Kualifikasi?</h2>
         <p>Hasil kualifikasi menghasilkan sebuah <strong>daftar ranking</strong> (seeding list) per kategori/divisi. Ranking ini menentukan:</p>
         <ul>
-            <li><strong>Siapa yang lolos ke babak eliminasi</strong> — Hanya sejumlah peserta teratas (biasanya 8, 16, atau 32 besar) yang melanjutkan ke fase eliminasi head-to-head.</li>
-            <li><strong>Posisi bracket eliminasi</strong> — Peringkat #1 dari kualifikasi akan bertanding melawan peringkat terakhir yang lolos; format ini disebut <em>bracket seeding</em>.</li>
-            <li><strong>Penghargaan kualifikasi</strong> — Beberapa event memberikan gelar atau medali tersendiri untuk juara babak kualifikasi.</li>
+            <li><strong>Siapa yang lolos ke babak eliminasi</strong> â€” Hanya sejumlah peserta teratas (biasanya 8, 16, atau 32 besar) yang melanjutkan ke fase eliminasi head-to-head.</li>
+            <li><strong>Posisi bracket eliminasi</strong> â€” Peringkat #1 dari kualifikasi akan bertanding melawan peringkat terakhir yang lolos; format ini disebut <em>bracket seeding</em>.</li>
+            <li><strong>Penghargaan kualifikasi</strong> â€” Beberapa event memberikan gelar atau medali tersendiri untuk juara babak kualifikasi.</li>
         </ul>
         <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-4 flex gap-4">
-            <div class="text-primary text-2xl shrink-0">🏹</div>
+            <div class="text-primary text-2xl shrink-0">ðŸ¹</div>
             <div>
-                <div class="font-bold text-navy text-sm mb-1">Kualifikasi ≠ Hanya "Babak Penyisihan"</div>
+                <div class="font-bold text-navy text-sm mb-1">Kualifikasi â‰  Hanya "Babak Penyisihan"</div>
                 <div class="text-gray-600 text-sm">Peringkat kualifikasi yang baik memberikan keuntungan besar di eliminasi: Anda mendapat lawan yang (secara teoritis) lebih lemah di babak awal dan mendapat "sisi" bracket yang lebih mudah. Atlet berperingkat #1 hampir selalu menghindari bertemu sesama unggulan sampai final.</div>
             </div>
         </div>
 
         <h2 id="mengapa-kualifikasi-penting">Mengapa Fase Ini Sangat Penting Bagi Setiap Atlet?</h2>
-        <p>Banyak atlet pemula menganggap kualifikasi sebagai formalitas belaka — padahal sebenarnya kualifikasi adalah tahap yang paling menentukan <em>jalur perjalanan</em> mereka dalam kompetisi. Berikut alasannya:</p>
+        <p>Banyak atlet pemula menganggap kualifikasi sebagai formalitas belaka â€” padahal sebenarnya kualifikasi adalah tahap yang paling menentukan <em>jalur perjalanan</em> mereka dalam kompetisi. Berikut alasannya:</p>
         <ul>
-            <li><strong>Konsistensi diuji</strong> — Kualifikasi menembak banyak panah dalam durasi panjang, menuntut konsentrasi dan stamina yang stabil dari awal hingga akhir.</li>
-            <li><strong>Tidak ada "second chance"</strong> — Berbeda dengan eliminasi yang bisa berputar nasib dalam satu end, satu panah meleset di kualifikasi tidak bisa diulangi dan langsung mempengaruhi total skor.</li>
-            <li><strong>Mental pressure berbeda</strong> — Kualifikasi adalah tekanan "akumulatif" (harus konsisten puluhan panah), sedangkan eliminasi adalah tekanan "per momen". Persiapan mental untuk keduanya berbeda.</li>
-            <li><strong>Seeding menentukan jalannya turnamen</strong> — Atlet yang serius di kualifikasi secara statistik memiliki peluang lebih tinggi untuk melaju jauh di eliminasi karena mendapat seeding yang menguntungkan.</li>
+            <li><strong>Konsistensi diuji</strong> â€” Kualifikasi menembak banyak panah dalam durasi panjang, menuntut konsentrasi dan stamina yang stabil dari awal hingga akhir.</li>
+            <li><strong>Tidak ada "second chance"</strong> â€” Berbeda dengan eliminasi yang bisa berputar nasib dalam satu end, satu panah meleset di kualifikasi tidak bisa diulangi dan langsung mempengaruhi total skor.</li>
+            <li><strong>Mental pressure berbeda</strong> â€” Kualifikasi adalah tekanan "akumulatif" (harus konsisten puluhan panah), sedangkan eliminasi adalah tekanan "per momen". Persiapan mental untuk keduanya berbeda.</li>
+            <li><strong>Seeding menentukan jalannya turnamen</strong> â€” Atlet yang serius di kualifikasi secara statistik memiliki peluang lebih tinggi untuk melaju jauh di eliminasi karena mendapat seeding yang menguntungkan.</li>
         </ul>
 
-        <h2 id="kualifikasi-di-archeryhub">Kualifikasi di Platform Archeryhub.id</h2>
-        <p>Di Archeryhub.id, fase kualifikasi difasilitasi melalui modul <strong>Qualification</strong> yang dimiliki oleh panitia event berlangganan. Fitur yang tersedia:</p>
+        <h2 id="kualifikasi-di-Archeris">Kualifikasi di Platform archeris.net</h2>
+        <p>Di archeris.net, fase kualifikasi difasilitasi melalui modul <strong>Qualification</strong> yang dimiliki oleh panitia event berlangganan. Fitur yang tersedia:</p>
         <ul>
             <li>Pembuatan sesi kualifikasi dengan konfigurasi bebas (jumlah end, panah per end, jarak).</li>
             <li>Auto-assign peserta ke bantalan secara acak atau manual.</li>
@@ -968,10 +968,10 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
             <li>Cetak scoresheet (lembar skor) per sesi dalam format PDF.</li>
             <li>Generate ranking otomatis untuk digunakan sebagai seeding di babak eliminasi.</li>
         </ul>
-    `},A={slug:"fase-eliminasi",title:"Fase Eliminasi dalam Pertandingan Panahan",excerpt:"Memahami format bracket, sistem set, mekanisme tie-break, dan relasi antara kualifikasi dengan eliminasi dalam kompetisi panahan.",icon:"ph:git-branch-bold",category:"archery",readTime:"6 menit",toc:[{id:"apa-itu-eliminasi",level:2,text:"Apa Itu Fase Eliminasi?"},{id:"format-bracket",level:2,text:"Format Bracket"},{id:"sistem-set",level:2,text:"Sistem Set (Set System)"},{id:"sistem-poin-kumulatif",level:2,text:"Sistem Poin Kumulatif (Compound)"},{id:"tie-break-shootoff",level:2,text:"Tie-Break & Shoot-Off"},{id:"hubungan-kualifikasi",level:2,text:"Hubungan Eliminasi dengan Kualifikasi"},{id:"eliminasi-di-archeryhub",level:2,text:"Eliminasi di Archeryhub.id"}],content:`
+    `},A={slug:"fase-eliminasi",title:"Fase Eliminasi dalam Pertandingan Panahan",excerpt:"Memahami format bracket, sistem set, mekanisme tie-break, dan relasi antara kualifikasi dengan eliminasi dalam kompetisi panahan.",icon:"ph:git-branch-bold",category:"archery",readTime:"6 menit",toc:[{id:"apa-itu-eliminasi",level:2,text:"Apa Itu Fase Eliminasi?"},{id:"format-bracket",level:2,text:"Format Bracket"},{id:"sistem-set",level:2,text:"Sistem Set (Set System)"},{id:"sistem-poin-kumulatif",level:2,text:"Sistem Poin Kumulatif (Compound)"},{id:"tie-break-shootoff",level:2,text:"Tie-Break & Shoot-Off"},{id:"hubungan-kualifikasi",level:2,text:"Hubungan Eliminasi dengan Kualifikasi"},{id:"eliminasi-di-Archeris",level:2,text:"Eliminasi di archeris.net"}],content:`
         <h2 id="apa-itu-eliminasi">Apa Itu Fase Eliminasi?</h2>
         <p><strong>Fase eliminasi</strong> adalah babak kedua kompetisi panahan di mana peserta bertanding secara <em>head-to-head</em> (satu lawan satu) berdasarkan bracket yang disusun dari hasil kualifikasi. Setiap pertandingan menghasilkan satu pemenang yang melanjutkan ke babak berikutnya, dan satu peserta yang gugur. Babak ini terus berlanjut hingga menyisakan satu pemenang sebagai juara.</p>
-        <p>Format ini dipopulerkan oleh World Archery sejak Olimpiade 1988 dan kini menjadi standar dalam hampir semua kompetisi panahan besar di dunia, termasuk kejuaraan yang difasilitasi oleh Archeryhub.id.</p>
+        <p>Format ini dipopulerkan oleh World Archery sejak Olimpiade 1988 dan kini menjadi standar dalam hampir semua kompetisi panahan besar di dunia, termasuk kejuaraan yang difasilitasi oleh archeris.net.</p>
 
         <h2 id="format-bracket">Format Bracket</h2>
         <p>Bracket eliminasi tersedia dalam berbagai ukuran, disesuaikan dengan jumlah peserta yang lolos kualifikasi:</p>
@@ -997,21 +997,21 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
         <h2 id="sistem-set">Sistem Set (Set System)</h2>
         <p>Digunakan untuk divisi <strong>Recurve</strong>, Standard Bow, dan Barebow. Dalam satu pertandingan, kedua atlet menembak beberapa <em>set</em>, masing-masing set terdiri dari 3 panah (outdoor) atau 3 panah (indoor). Pemenang setiap set ditentukan oleh siapa yang meraih total poin tertinggi dalam set tersebut:</p>
         <ul>
-            <li>Menang set → mendapat <strong>2 poin set</strong></li>
-            <li>Seri dalam satu set → masing-masing mendapat <strong>1 poin set</strong></li>
-            <li>Kalah set → mendapat <strong>0 poin set</strong></li>
+            <li>Menang set â†’ mendapat <strong>2 poin set</strong></li>
+            <li>Seri dalam satu set â†’ masing-masing mendapat <strong>1 poin set</strong></li>
+            <li>Kalah set â†’ mendapat <strong>0 poin set</strong></li>
         </ul>
-        <p>Atlet pertama yang mencapai <strong>6 poin set</strong> memenangkan pertandingan. Jika kedua atlet mencapai 5–5, pertandingan masuk ke <strong>shoot-off</strong> (lihat seksi Tie-Break di bawah).</p>
+        <p>Atlet pertama yang mencapai <strong>6 poin set</strong> memenangkan pertandingan. Jika kedua atlet mencapai 5â€“5, pertandingan masuk ke <strong>shoot-off</strong> (lihat seksi Tie-Break di bawah).</p>
         <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-4 mb-2 flex gap-4">
-            <div class="text-primary text-2xl shrink-0">🎯</div>
+            <div class="text-primary text-2xl shrink-0">ðŸŽ¯</div>
             <div>
                 <div class="font-bold text-navy text-sm mb-1">Kenapa Sistem Set Dibuat?</div>
-                <div class="text-gray-600 text-sm">Sistem set sengaja dirancang supaya setiap end terasa seperti "pertandingan kecil". Satu kesalahan tidak langsung mematikan peluang—tapi konsistensi per set adalah kunci. Ini membuat eliminasi lebih dramatis dan menarik bagi penonton.</div>
+                <div class="text-gray-600 text-sm">Sistem set sengaja dirancang supaya setiap end terasa seperti "pertandingan kecil". Satu kesalahan tidak langsung mematikan peluangâ€”tapi konsistensi per set adalah kunci. Ini membuat eliminasi lebih dramatis dan menarik bagi penonton.</div>
             </div>
         </div>
 
         <h2 id="sistem-poin-kumulatif">Sistem Poin Kumulatif (Compound)</h2>
-        <p>Divisi <strong>Compound</strong> menggunakan format berbeda: semua panah dalam seluruh end dijumlahkan langsung. Atlet dengan total poin kumulatif tertinggi setelah semua end selesai memenangkan pertandingan. Tidak ada poin set — setiap panah berpengaruh langsung pada total akhir.</p>
+        <p>Divisi <strong>Compound</strong> menggunakan format berbeda: semua panah dalam seluruh end dijumlahkan langsung. Atlet dengan total poin kumulatif tertinggi setelah semua end selesai memenangkan pertandingan. Tidak ada poin set â€” setiap panah berpengaruh langsung pada total akhir.</p>
         <p>Hal ini mencerminkan karakteristik compound: dengan akurasi tinggi, selisih skor biasanya sangat tipis dan setiap panah benar-benar menentukan.</p>
 
         <h2 id="tie-break-shootoff">Tie-Break & Shoot-Off</h2>
@@ -1021,10 +1021,10 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
             <li>Atlet dengan nilai panah tertinggi menang.</li>
             <li>Jika masih seri, pemenang ditentukan oleh panah yang <strong>lebih dekat ke pusat</strong> (diukur).</li>
         </ol>
-        <p>Shoot-off adalah momen paling menegangkan dalam eliminasi — satu panah tunggal menentukan siapa yang melanjutkan dan siapa yang pulang.</p>
+        <p>Shoot-off adalah momen paling menegangkan dalam eliminasi â€” satu panah tunggal menentukan siapa yang melanjutkan dan siapa yang pulang.</p>
 
-        <h2 id="hubungan-kualifikasi">Hubungan Eliminasi dengan Kualifikasi — Mengapa Atlet Butuh Keduanya</h2>
-        <p>Kualifikasi dan eliminasi <strong>bukan dua lomba yang terpisah</strong> — keduanya adalah satu sistem terpadu yang saling bergantung. Berikut alasan mengapa setiap atlet harus memahami dan mempersiapkan kedua fase ini secara berbeda:</p>
+        <h2 id="hubungan-kualifikasi">Hubungan Eliminasi dengan Kualifikasi â€” Mengapa Atlet Butuh Keduanya</h2>
+        <p>Kualifikasi dan eliminasi <strong>bukan dua lomba yang terpisah</strong> â€” keduanya adalah satu sistem terpadu yang saling bergantung. Berikut alasan mengapa setiap atlet harus memahami dan mempersiapkan kedua fase ini secara berbeda:</p>
         <div class="not-prose overflow-x-auto my-4">
             <table class="w-full text-sm border-collapse">
                 <thead>
@@ -1042,13 +1042,13 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     </tr>
                     <tr>
                         <td class="px-4 py-3 font-bold text-navy">Lawan</td>
-                        <td class="px-4 py-3">Tidak ada — melawan target sendiri</td>
+                        <td class="px-4 py-3">Tidak ada â€” melawan target sendiri</td>
                         <td class="px-4 py-3">Satu atlet spesifik per babak</td>
                     </tr>
                     <tr>
                         <td class="px-4 py-3 font-bold text-navy">Tekanan mental</td>
-                        <td class="px-4 py-3">Akumulatif — harus stabil puluhan panah</td>
-                        <td class="px-4 py-3">Situasional — setiap set bisa berbalik</td>
+                        <td class="px-4 py-3">Akumulatif â€” harus stabil puluhan panah</td>
+                        <td class="px-4 py-3">Situasional â€” setiap set bisa berbalik</td>
                     </tr>
                     <tr>
                         <td class="px-4 py-3 font-bold text-navy">Strategi</td>
@@ -1062,26 +1062,26 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     </tr>
                     <tr>
                         <td class="px-4 py-3 font-bold text-navy">Hasil</td>
-                        <td class="px-4 py-3">Ranking → posisi di bracket</td>
+                        <td class="px-4 py-3">Ranking â†’ posisi di bracket</td>
                         <td class="px-4 py-3">Posisi akhir: juara, runner-up, dll.</td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <p>Singkatnya: <strong>kualifikasi yang baik membuka jalan yang lebih mudah di eliminasi</strong> — Anda mendapat lawan yang secara seeding lebih lemah di babak awal, dan Anda berada di sisi bracket yang menguntungkan. Namun kualifikasi yang sempurna pun tidak menjamin kemenangan eliminasi, karena sifat head-to-head membuat siapapun bisa kalah pada hari yang berbeda.</p>
+        <p>Singkatnya: <strong>kualifikasi yang baik membuka jalan yang lebih mudah di eliminasi</strong> â€” Anda mendapat lawan yang secara seeding lebih lemah di babak awal, dan Anda berada di sisi bracket yang menguntungkan. Namun kualifikasi yang sempurna pun tidak menjamin kemenangan eliminasi, karena sifat head-to-head membuat siapapun bisa kalah pada hari yang berbeda.</p>
         <p>Itulah mengapa program latihan atlet yang baik harus mencakup <em>kedua</em> jenis mental training: latihan skor konsisten jangka panjang (untuk kualifikasi), dan latihan pressure shot situasional (untuk eliminasi).</p>
 
-        <h2 id="eliminasi-di-archeryhub">Eliminasi di Archeryhub.id</h2>
-        <p>Panitia event di Archeryhub.id dapat mengelola fase eliminasi melalui modul <strong>Elimination</strong> yang terintegrasi dengan hasil kualifikasi. Fitur utama:</p>
+        <h2 id="eliminasi-di-Archeris">Eliminasi di archeris.net</h2>
+        <p>Panitia event di archeris.net dapat mengelola fase eliminasi melalui modul <strong>Elimination</strong> yang terintegrasi dengan hasil kualifikasi. Fitur utama:</p>
         <ul>
             <li><strong>Generate bracket otomatis</strong> dari ranking kualifikasi dengan satu klik.</li>
             <li>Dukungan bracket 4/8/16/32 besar per kategori.</li>
             <li>Input skor set atau poin kumulatif langsung dari mobile app atau dashboard.</li>
-            <li>Visualisasi bracket real-time — dapat ditampilkan di layar TV/display venue.</li>
+            <li>Visualisasi bracket real-time â€” dapat ditampilkan di layar TV/display venue.</li>
             <li>Tambah <strong>Additional End</strong> (end tambahan) jika terjadi seri di akhir pertandingan, tanpa harus mereset seluruh data.</li>
             <li>Cetak bracket dalam format PDF untuk arsip atau tempel di venue.</li>
         </ul>
-    `},S={slug:"sinkronisasi-tim",title:"Sinkronisasi Tim Otomatis",excerpt:"Cara kerja fitur Sync Tim di Archeryhub.id — bagaimana sistem mengelompokkan pemanah menjadi tim berdasarkan klub dan skor kualifikasi secara otomatis.",icon:"ph:arrows-clockwise-bold",category:"archery",readTime:"5 menit",toc:[{id:"apa-itu-sync-tim",level:2,text:"Apa Itu Sinkronisasi Tim?"},{id:"syarat-tim-terbentuk",level:2,text:"Syarat Tim Terbentuk"},{id:"tipe-tim",level:2,text:"Tipe Tim: Standar vs Mixed"},{id:"cara-kerja-pengelompokan",level:2,text:"Cara Kerja Pengelompokan"},{id:"kategori-individu-vs-tim",level:2,text:"Kategori Individu & Kategori Tim"},{id:"estimasi-vs-hasil-sync",level:2,text:"Estimasi Tim vs Hasil Sync"},{id:"sync-manual",level:2,text:"Kapan Perlu Sync Manual?"},{id:"troubleshooting",level:2,text:"Troubleshooting (Error Messages)"}],content:`
+    `},S={slug:"sinkronisasi-tim",title:"Sinkronisasi Tim Otomatis",excerpt:"Cara kerja fitur Sync Tim di archeris.net â€” bagaimana sistem mengelompokkan pemanah menjadi tim berdasarkan klub dan skor kualifikasi secara otomatis.",icon:"ph:arrows-clockwise-bold",category:"archery",readTime:"5 menit",toc:[{id:"apa-itu-sync-tim",level:2,text:"Apa Itu Sinkronisasi Tim?"},{id:"syarat-tim-terbentuk",level:2,text:"Syarat Tim Terbentuk"},{id:"tipe-tim",level:2,text:"Tipe Tim: Standar vs Mixed"},{id:"cara-kerja-pengelompokan",level:2,text:"Cara Kerja Pengelompokan"},{id:"kategori-individu-vs-tim",level:2,text:"Kategori Individu & Kategori Tim"},{id:"estimasi-vs-hasil-sync",level:2,text:"Estimasi Tim vs Hasil Sync"},{id:"sync-manual",level:2,text:"Kapan Perlu Sync Manual?"},{id:"troubleshooting",level:2,text:"Troubleshooting (Error Messages)"}],content:`
         <h2 id="apa-itu-sync-tim">Apa Itu Sinkronisasi Tim?</h2>
         <p><strong>Sinkronisasi Tim</strong> adalah fitur di dashboard panitia yang secara otomatis membentuk tim-tim resmi untuk babak eliminasi beregu berdasarkan:</p>
         <ul>
@@ -1121,10 +1121,10 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                 </tbody>
             </table>
         </div>
-        <p>Jika salah satu syarat tidak terpenuhi, klub tersebut tidak akan menghasilkan tim — namun klub lain yang memenuhi syarat tetap akan diproses.</p>
+        <p>Jika salah satu syarat tidak terpenuhi, klub tersebut tidak akan menghasilkan tim â€” namun klub lain yang memenuhi syarat tetap akan diproses.</p>
 
         <h2 id="tipe-tim">Tipe Tim: Standar vs Mixed</h2>
-        <p>Archeryhub.id mendukung dua tipe kategori beregu:</p>
+        <p>archeris.net mendukung dua tipe kategori beregu:</p>
         <div class="not-prose overflow-x-auto my-4">
             <table class="w-full text-sm border-collapse">
                 <thead>
@@ -1138,7 +1138,7 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     <tr>
                         <td class="px-4 py-3 font-bold text-navy">Tim Standar</td>
                         <td class="px-4 py-3">3 pemanah dari klub yang sama (gender sama)</td>
-                        <td class="px-4 py-3">Diambil 3 pemanah dengan skor tertinggi per kelompok (grup 3 teratas, grup 4–6, dst.)</td>
+                        <td class="px-4 py-3">Diambil 3 pemanah dengan skor tertinggi per kelompok (grup 3 teratas, grup 4â€“6, dst.)</td>
                     </tr>
                     <tr>
                         <td class="px-4 py-3 font-bold text-navy">Mixed Team</td>
@@ -1149,10 +1149,10 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
             </table>
         </div>
         <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 my-4 flex gap-4">
-            <div class="text-primary text-2xl shrink-0">💡</div>
+            <div class="text-primary text-2xl shrink-0">ðŸ’¡</div>
             <div>
                 <div class="font-bold text-navy text-sm mb-1">Satu Klub, Banyak Tim</div>
-                <div class="text-gray-600 text-sm">Jika sebuah klub memiliki 6 pemanah berskor di satu kategori, sistem akan otomatis membentuk 2 tim dari klub tersebut — Tim A (peringkat 1–3 klub) dan Tim B (peringkat 4–6 klub).</div>
+                <div class="text-gray-600 text-sm">Jika sebuah klub memiliki 6 pemanah berskor di satu kategori, sistem akan otomatis membentuk 2 tim dari klub tersebut â€” Tim A (peringkat 1â€“3 klub) dan Tim B (peringkat 4â€“6 klub).</div>
             </div>
         </div>
 
@@ -1170,10 +1170,10 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
         <h2 id="kategori-individu-vs-tim">Kategori Individu &amp; Kategori Tim</h2>
         <p>Di sebuah event panahan, satu divisi biasanya memiliki <strong>dua kategori terpisah</strong>: kategori individu dan kategori tim.</p>
         <div class="not-prose bg-amber-50 border border-amber-200 rounded-2xl p-5 my-4 flex gap-4">
-            <div class="text-amber-500 text-2xl shrink-0">⚠️</div>
+            <div class="text-amber-500 text-2xl shrink-0">âš ï¸</div>
             <div>
                 <div class="font-bold text-navy text-sm mb-1">Pemanah Mendaftar di Kategori Individu</div>
-                <div class="text-gray-600 text-sm">Peserta <strong>selalu mendaftar ke kategori individu</strong> — bukan ke kategori tim. Saat Sync Tim dijalankan, sistem secara otomatis mencari peserta dari kategori individu yang memiliki divisi, kelompok usia, dan gender yang sama dengan kategori tim yang dipilih. Ini berarti sinkronisasi akan berhasil meski dari tampilan kategori tim tidak terlihat peserta terdaftar.</div>
+                <div class="text-gray-600 text-sm">Peserta <strong>selalu mendaftar ke kategori individu</strong> â€” bukan ke kategori tim. Saat Sync Tim dijalankan, sistem secara otomatis mencari peserta dari kategori individu yang memiliki divisi, kelompok usia, dan gender yang sama dengan kategori tim yang dipilih. Ini berarti sinkronisasi akan berhasil meski dari tampilan kategori tim tidak terlihat peserta terdaftar.</div>
             </div>
         </div>
         <p>Contoh: Kategori <em>Compound U-13 Putra Tim</em> akan mencari pesertanya dari kategori <em>Compound U-13 Putra Individual</em> di event yang sama.</p>
@@ -1181,8 +1181,8 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
         <h2 id="estimasi-vs-hasil-sync">Estimasi Tim vs Hasil Sync</h2>
         <p>Sebelum menjalankan sync, halaman <strong>Pembuatan Bracket</strong> menampilkan dua angka:</p>
         <ul>
-            <li><strong>Estimasi Tim</strong> <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-bold rounded-full">Estimasi</span> — perkiraan jumlah tim yang akan terbentuk, dihitung langsung dari data kualifikasi saat ini tanpa benar-benar membuat tim. Berguna untuk memutuskan ukuran bracket sebelum sync dijalankan.</li>
-            <li><strong>Tim Tersinkron</strong> <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-green-100 text-green-700 text-xs font-bold rounded-full">Auto</span> — jumlah tim yang sudah benar-benar dibuat dan tersimpan di database setelah sync dijalankan.</li>
+            <li><strong>Estimasi Tim</strong> <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-bold rounded-full">Estimasi</span> â€” perkiraan jumlah tim yang akan terbentuk, dihitung langsung dari data kualifikasi saat ini tanpa benar-benar membuat tim. Berguna untuk memutuskan ukuran bracket sebelum sync dijalankan.</li>
+            <li><strong>Tim Tersinkron</strong> <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-green-100 text-green-700 text-xs font-bold rounded-full">Auto</span> â€” jumlah tim yang sudah benar-benar dibuat dan tersimpan di database setelah sync dijalankan.</li>
         </ul>
         <p>Jika sudah ada tim tersinkron, angka tersebut yang digunakan sebagai dasar rekomendasi ukuran bracket. Jika belum ada, sistem menggunakan estimasi sebagai acuan.</p>
 
@@ -1195,7 +1195,7 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
         </ul>
         <p>Gunakan tombol <strong>Tambah Tim Manual</strong> atau <strong>Edit Detil Tim</strong> di halaman Manajemen Tim untuk kasus-kasus tersebut.</p>
         <div class="not-prose bg-red-50 border border-red-200 rounded-2xl p-5 my-4 flex gap-4">
-            <div class="text-red-500 text-2xl shrink-0">🔄</div>
+            <div class="text-red-500 text-2xl shrink-0">ðŸ”„</div>
             <div>
                 <div class="font-bold text-navy text-sm mb-1">Sync Otomatis Menghapus Data Tim Lama</div>
                 <div class="text-gray-600 text-sm">Setiap kali Sync Otomatis dijalankan, semua tim yang ada di kategori tersebut akan dihapus dan dibuat ulang dari awal. Pastikan skor kualifikasi sudah final sebelum menjalankan sync.</div>
@@ -1268,11 +1268,11 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                 </div>
                 <div class="space-y-2 mt-3">
                     <p class="text-[13px] text-gray-700"><strong>Penyebab:</strong> Gangguan koneksi ke server database atau timeout saat memproses data dalam jumlah besar.</p>
-                    <p class="text-[13px] text-gray-700"><strong>Solusi:</strong> Tunggu beberapa saat dan ulangi proses. Jika masalah berlanjut, hubungi tim support ArcheryHub untuk pengecekan status server.</p>
+                    <p class="text-[13px] text-gray-700"><strong>Solusi:</strong> Tunggu beberapa saat dan ulangi proses. Jika masalah berlanjut, hubungi tim support Archeris untuk pengecekan status server.</p>
                 </div>
             </div>
         </div>
-    `},w={slug:"ukuran-bracket",title:"Ukuran Bracket Eliminasi",excerpt:"Panduan memilih ukuran bracket yang tepat — cara kalkulasi otomatis, konsep bye, dan opsi yang tersedia berdasarkan jumlah peserta atau tim.",icon:"ph:tree-structure-bold",category:"archery",readTime:"4 menit",toc:[{id:"apa-itu-ukuran-bracket",level:2,text:"Apa Itu Ukuran Bracket?"},{id:"aturan-pangkat-dua",level:2,text:"Aturan Pangkat Dua"},{id:"konsep-bye",level:2,text:"Konsep Bye (Laga Kosong)"},{id:"kalkulasi-otomatis",level:2,text:"Kalkulasi Otomatis Archeryhub.id"},{id:"memilih-ukuran",level:2,text:"Panduan Memilih Ukuran"},{id:"bracket-tim",level:2,text:"Bracket untuk Kategori Tim"}],content:`
+    `},w={slug:"ukuran-bracket",title:"Ukuran Bracket Eliminasi",excerpt:"Panduan memilih ukuran bracket yang tepat â€” cara kalkulasi otomatis, konsep bye, dan opsi yang tersedia berdasarkan jumlah peserta atau tim.",icon:"ph:tree-structure-bold",category:"archery",readTime:"4 menit",toc:[{id:"apa-itu-ukuran-bracket",level:2,text:"Apa Itu Ukuran Bracket?"},{id:"aturan-pangkat-dua",level:2,text:"Aturan Pangkat Dua"},{id:"konsep-bye",level:2,text:"Konsep Bye (Laga Kosong)"},{id:"kalkulasi-otomatis",level:2,text:"Kalkulasi Otomatis archeris.net"},{id:"memilih-ukuran",level:2,text:"Panduan Memilih Ukuran"},{id:"bracket-tim",level:2,text:"Bracket untuk Kategori Tim"}],content:`
         <h2 id="apa-itu-ukuran-bracket">Apa Itu Ukuran Bracket?</h2>
         <p><strong>Ukuran bracket</strong> menentukan berapa slot peserta yang tersedia dalam fase eliminasi. Ukuran ini sekaligus menentukan jumlah babak yang harus dilalui hingga final, serta apakah ada peserta yang mendapat <em>bye</em> (laga gratis) di babak pertama.</p>
         <div class="not-prose overflow-x-auto my-4">
@@ -1285,41 +1285,41 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100 bg-white">
-                    <tr><td class="px-4 py-3 font-bold text-navy">4 Slot</td><td class="px-4 py-3">2 babak</td><td class="px-4 py-3">Semifinal → Final</td></tr>
-                    <tr><td class="px-4 py-3 font-bold text-navy">8 Slot</td><td class="px-4 py-3">3 babak</td><td class="px-4 py-3">8-Besar → Semifinal → Final</td></tr>
-                    <tr><td class="px-4 py-3 font-bold text-navy">16 Slot</td><td class="px-4 py-3">4 babak</td><td class="px-4 py-3">16-Besar → … → Final</td></tr>
-                    <tr><td class="px-4 py-3 font-bold text-navy">32 Slot</td><td class="px-4 py-3">5 babak</td><td class="px-4 py-3">32-Besar → … → Final</td></tr>
-                    <tr><td class="px-4 py-3 font-bold text-navy">64 Slot</td><td class="px-4 py-3">6 babak</td><td class="px-4 py-3">64-Besar → … → Final</td></tr>
+                    <tr><td class="px-4 py-3 font-bold text-navy">4 Slot</td><td class="px-4 py-3">2 babak</td><td class="px-4 py-3">Semifinal â†’ Final</td></tr>
+                    <tr><td class="px-4 py-3 font-bold text-navy">8 Slot</td><td class="px-4 py-3">3 babak</td><td class="px-4 py-3">8-Besar â†’ Semifinal â†’ Final</td></tr>
+                    <tr><td class="px-4 py-3 font-bold text-navy">16 Slot</td><td class="px-4 py-3">4 babak</td><td class="px-4 py-3">16-Besar â†’ â€¦ â†’ Final</td></tr>
+                    <tr><td class="px-4 py-3 font-bold text-navy">32 Slot</td><td class="px-4 py-3">5 babak</td><td class="px-4 py-3">32-Besar â†’ â€¦ â†’ Final</td></tr>
+                    <tr><td class="px-4 py-3 font-bold text-navy">64 Slot</td><td class="px-4 py-3">6 babak</td><td class="px-4 py-3">64-Besar â†’ â€¦ â†’ Final</td></tr>
                 </tbody>
             </table>
         </div>
 
         <h2 id="aturan-pangkat-dua">Aturan Pangkat Dua</h2>
-        <p>Ukuran bracket <strong>selalu harus berupa pangkat dua</strong> (4, 8, 16, 32, 64, …). Aturan ini memastikan setiap babak dapat menghasilkan tepat setengah dari jumlah peserta sebelumnya, sehingga seseorang selalu keluar sebagai pemenang tanpa kasus bracket ganjil.</p>
+        <p>Ukuran bracket <strong>selalu harus berupa pangkat dua</strong> (4, 8, 16, 32, 64, â€¦). Aturan ini memastikan setiap babak dapat menghasilkan tepat setengah dari jumlah peserta sebelumnya, sehingga seseorang selalu keluar sebagai pemenang tanpa kasus bracket ganjil.</p>
         <p>Ini adalah standar internasional yang digunakan oleh World Archery, WA Indoor, dan seluruh kompetisi resmi yang terdaftar di bawah Pengurus Besar Perpani.</p>
 
         <h2 id="konsep-bye">Konsep Bye (Laga Kosong)</h2>
-        <p>Ketika jumlah peserta tidak pas mengisi semua slot bracket, beberapa slot diisi dengan <strong>bye</strong> — laga kosong di mana peserta secara otomatis menang tanpa bertanding. Bye selalu diberikan kepada peserta dengan ranking kualifikasi terendah (seeding terakhir) agar peserta terbaik tidak terpengaruh.</p>
+        <p>Ketika jumlah peserta tidak pas mengisi semua slot bracket, beberapa slot diisi dengan <strong>bye</strong> â€” laga kosong di mana peserta secara otomatis menang tanpa bertanding. Bye selalu diberikan kepada peserta dengan ranking kualifikasi terendah (seeding terakhir) agar peserta terbaik tidak terpengaruh.</p>
         <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 my-4 flex gap-4">
-            <div class="text-primary text-2xl shrink-0">🎯</div>
+            <div class="text-primary text-2xl shrink-0">ðŸŽ¯</div>
             <div>
                 <div class="font-bold text-navy text-sm mb-1">Contoh Skenario Bye</div>
                 <div class="text-gray-600 text-sm">Jika ada 11 peserta dan bracket 16 dipilih, terdapat 5 bye. Peserta seeded #12 s.d. #16 (slot yang tidak terisi) mendapat bye di babak 16-besar dan langsung masuk ke babak 8-besar.</div>
             </div>
         </div>
-        <p>Semakin kecil ukuran bracket yang dipilih dibandingkan jumlah peserta, sistem akan menggunakan format <strong>"Top-N"</strong> — hanya peserta dengan ranking kualifikasi tertinggi yang diikutsertakan. Misalnya, jika ada 30 peserta tetapi bracket 16 dipilih, hanya 16 peserta dengan skor tertinggi yang masuk bracket.</p>
+        <p>Semakin kecil ukuran bracket yang dipilih dibandingkan jumlah peserta, sistem akan menggunakan format <strong>"Top-N"</strong> â€” hanya peserta dengan ranking kualifikasi tertinggi yang diikutsertakan. Misalnya, jika ada 30 peserta tetapi bracket 16 dipilih, hanya 16 peserta dengan skor tertinggi yang masuk bracket.</p>
 
-        <h2 id="kalkulasi-otomatis">Kalkulasi Otomatis Archeryhub.id</h2>
+        <h2 id="kalkulasi-otomatis">Kalkulasi Otomatis archeris.net</h2>
         <p>Saat panitia membuka halaman pembuatan bracket, sistem secara otomatis:</p>
         <ol>
             <li><strong>Menghitung jumlah peserta (atau tim)</strong> yang memenuhi syarat di kategori tersebut.</li>
-            <li><strong>Menentukan ukuran bracket maksimum</strong> — yaitu pangkat dua terkecil yang bisa menampung seluruh peserta.</li>
+            <li><strong>Menentukan ukuran bracket maksimum</strong> â€” yaitu pangkat dua terkecil yang bisa menampung seluruh peserta.</li>
             <li><strong>Menampilkan opsi ukuran</strong> dari 4 hingga maksimum, dalam kelipatan pangkat dua, untuk dipilih panitia.</li>
         </ol>
         <p>Sistem juga menampilkan hint dinamis di bawah dropdown pilihan:</p>
         <ul>
-            <li>Jika ukuran ≥ jumlah peserta: <em>"30 peserta · 2 bye"</em> — semua peserta masuk, dengan beberapa bye.</li>
-            <li>Jika ukuran &lt; jumlah peserta: <em>"Top 16 dari 30 peserta berdasarkan ranking"</em> — hanya ranking teratas yang masuk.</li>
+            <li>Jika ukuran â‰¥ jumlah peserta: <em>"30 peserta Â· 2 bye"</em> â€” semua peserta masuk, dengan beberapa bye.</li>
+            <li>Jika ukuran &lt; jumlah peserta: <em>"Top 16 dari 30 peserta berdasarkan ranking"</em> â€” hanya ranking teratas yang masuk.</li>
         </ul>
 
         <h2 id="memilih-ukuran">Panduan Memilih Ukuran</h2>
@@ -1347,13 +1347,13 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     </tr>
                     <tr>
                         <td class="px-4 py-3 font-bold text-navy">Jumlah peserta kecil</td>
-                        <td class="px-4 py-3">Jika peserta ≤ 4, gunakan bracket 4; memaksa bracket 16 dengan 4 peserta menghasilkan terlalu banyak bye</td>
+                        <td class="px-4 py-3">Jika peserta â‰¤ 4, gunakan bracket 4; memaksa bracket 16 dengan 4 peserta menghasilkan terlalu banyak bye</td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <div class="not-prose bg-amber-50 border border-amber-200 rounded-2xl p-5 my-4 flex gap-4">
-            <div class="text-amber-500 text-2xl shrink-0">⚠️</div>
+            <div class="text-amber-500 text-2xl shrink-0">âš ï¸</div>
             <div>
                 <div class="font-bold text-navy text-sm mb-1">Ukuran Terkunci Setelah Bracket Dibuat</div>
                 <div class="text-gray-600 text-sm">Setelah bracket berhasil dibuat, ukurannya tidak dapat diubah. Jika ingin mengubah ukuran, bracket harus dihapus dan dibuat ulang. Pastikan komposisi peserta sudah final sebelum membuat bracket.</div>
@@ -1367,7 +1367,7 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
             <li>Jika sinkronisasi belum dijalankan, sistem menggunakan <strong>estimasi tim</strong> dari data kualifikasi yang ada.</li>
             <li>Panitia disarankan menjalankan <a href="/docs/sinkronisasi-tim">Sinkronisasi Tim</a> terlebih dahulu sebelum membuat bracket tim agar angka yang ditampilkan akurat.</li>
         </ul>
-    `},T={slug:"apa-itu-end",title:"Apa Itu END dalam Panahan?",excerpt:'Memahami konsep "end" sebagai unit dasar tembakan dalam sesi kualifikasi, cara kerjanya, dan pengaruhnya terhadap skor total atlet.',icon:"ph:arrows-in-bold",category:"archery",readTime:"4 menit",toc:[{id:"definisi-end",level:2,text:"Definisi End"},{id:"berapa-panah-per-end",level:2,text:"Berapa Panah per End?"},{id:"alur-satu-end",level:2,text:"Alur Satu End dari Awal hingga Akhir"},{id:"end-dan-total-skor",level:2,text:"End dan Total Skor"},{id:"end-di-eliminasi",level:2,text:"End dalam Konteks Eliminasi"},{id:"end-di-archeryhub",level:2,text:"End di Platform Archeryhub.id"}],content:`
+    `},T={slug:"apa-itu-end",title:"Apa Itu END dalam Panahan?",excerpt:'Memahami konsep "end" sebagai unit dasar tembakan dalam sesi kualifikasi, cara kerjanya, dan pengaruhnya terhadap skor total atlet.',icon:"ph:arrows-in-bold",category:"archery",readTime:"4 menit",toc:[{id:"definisi-end",level:2,text:"Definisi End"},{id:"berapa-panah-per-end",level:2,text:"Berapa Panah per End?"},{id:"alur-satu-end",level:2,text:"Alur Satu End dari Awal hingga Akhir"},{id:"end-dan-total-skor",level:2,text:"End dan Total Skor"},{id:"end-di-eliminasi",level:2,text:"End dalam Konteks Eliminasi"},{id:"end-di-Archeris",level:2,text:"End di Platform archeris.net"}],content:`
         <h2 id="definisi-end">Definisi End</h2>
         <p>Dalam panahan kompetisi, <strong>end</strong> (bahasa Indonesia: <em>babak tembak</em> atau <em>ronde tembak</em>) adalah satu unit tembakan di mana seorang atlet menembakkan sejumlah panah yang telah ditentukan ke target dalam satu periode waktu, sebelum maju mengambil dan mencatat nilainya.</p>
         <p>Sederhananya: <strong>end = satu giliran menembak</strong>. Setelah semua atlet di satu kelompok selesai menembak panah-panah mereka untuk satu end, seluruh kelompok maju bersama ke garis target untuk mencatat nilai dan mencabut panah, lalu kembali ke garis tembak untuk memulai end berikutnya.</p>
@@ -1387,12 +1387,12 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     <tr>
                         <td class="px-4 py-3 font-bold text-navy">Kualifikasi Outdoor (720 Round)</td>
                         <td class="px-4 py-3 text-center font-bold">6</td>
-                        <td class="px-4 py-3">12 end × 6 panah = 72 panah total</td>
+                        <td class="px-4 py-3">12 end Ã— 6 panah = 72 panah total</td>
                     </tr>
                     <tr>
                         <td class="px-4 py-3 font-bold text-navy">Kualifikasi Indoor (18/25 m)</td>
                         <td class="px-4 py-3 text-center font-bold">3</td>
-                        <td class="px-4 py-3">20 end × 3 panah = 60 panah total</td>
+                        <td class="px-4 py-3">20 end Ã— 3 panah = 60 panah total</td>
                     </tr>
                     <tr>
                         <td class="px-4 py-3 font-bold text-navy">Eliminasi Recurve (Set System)</td>
@@ -1402,11 +1402,11 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     <tr>
                         <td class="px-4 py-3 font-bold text-navy">Eliminasi Compound</td>
                         <td class="px-4 py-3 text-center font-bold">3 atau 6</td>
-                        <td class="px-4 py-3">Jumlah end × panah dikonfigurasi per event</td>
+                        <td class="px-4 py-3">Jumlah end Ã— panah dikonfigurasi per event</td>
                     </tr>
                     <tr>
-                        <td class="px-4 py-3 font-bold text-navy">Event Kustom (Archeryhub.id)</td>
-                        <td class="px-4 py-3 text-center font-bold">1 – 6</td>
+                        <td class="px-4 py-3 font-bold text-navy">Event Kustom (archeris.net)</td>
+                        <td class="px-4 py-3 text-center font-bold">1 â€“ 6</td>
                         <td class="px-4 py-3">Dapat dikonfigurasi bebas oleh panitia</td>
                     </tr>
                 </tbody>
@@ -1416,16 +1416,16 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
         <h2 id="alur-satu-end">Alur Satu End dari Awal hingga Akhir</h2>
         <p>Berikut urutan kejadian dalam satu end di lapangan:</p>
         <ol>
-            <li><strong>Sinyal mulai</strong> — Panitia atau sistem memberi aba-aba (biasanya bunyi lonceng atau peluit).</li>
-            <li><strong>Waktu berjalan</strong> — Atlet mengambil ancang dan menembakkan panah sebanyak yang ditentukan untuk end tersebut. Terdapat batas waktu (umumnya 2 menit untuk 3 panah, atau 4 menit untuk 6 panah).</li>
-            <li><strong>Sinyal selesai</strong> — Semua atlet berhenti menembak.</li>
-            <li><strong>Maju ke target</strong> — Semua atlet berjalan bersama ke garis target.</li>
-            <li><strong>Catat nilai</strong> — Nilai setiap panah dibaca dan dicatat (oleh scorekeeper atau atlet sendiri). Urutan pencatatan: dari nilai tertinggi ke terendah (misalnya: X, 10, 9, 8, M).</li>
-            <li><strong>Cabut panah</strong> — Setelah semua nilai dicatat dan dikonfirmasi, panah dicabut dari target.</li>
-            <li><strong>Kembali ke garis tembak</strong> — End berikutnya dimulai.</li>
+            <li><strong>Sinyal mulai</strong> â€” Panitia atau sistem memberi aba-aba (biasanya bunyi lonceng atau peluit).</li>
+            <li><strong>Waktu berjalan</strong> â€” Atlet mengambil ancang dan menembakkan panah sebanyak yang ditentukan untuk end tersebut. Terdapat batas waktu (umumnya 2 menit untuk 3 panah, atau 4 menit untuk 6 panah).</li>
+            <li><strong>Sinyal selesai</strong> â€” Semua atlet berhenti menembak.</li>
+            <li><strong>Maju ke target</strong> â€” Semua atlet berjalan bersama ke garis target.</li>
+            <li><strong>Catat nilai</strong> â€” Nilai setiap panah dibaca dan dicatat (oleh scorekeeper atau atlet sendiri). Urutan pencatatan: dari nilai tertinggi ke terendah (misalnya: X, 10, 9, 8, M).</li>
+            <li><strong>Cabut panah</strong> â€” Setelah semua nilai dicatat dan dikonfirmasi, panah dicabut dari target.</li>
+            <li><strong>Kembali ke garis tembak</strong> â€” End berikutnya dimulai.</li>
         </ol>
         <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-4 flex gap-4">
-            <div class="text-primary text-2xl shrink-0">⏱️</div>
+            <div class="text-primary text-2xl shrink-0">â±ï¸</div>
             <div>
                 <div class="font-bold text-navy text-sm mb-1">Batas Waktu per End</div>
                 <div class="text-gray-600 text-sm">Menembak melewati batas waktu mengakibatkan panah terakhir yang ditembakkan dinyatakan <strong>M (miss/0 poin)</strong>, sesuai peraturan World Archery. Manajemen waktu per end adalah bagian penting dari kompetisi atlet.</div>
@@ -1433,31 +1433,31 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
         </div>
 
         <h2 id="end-dan-total-skor">End dan Total Skor</h2>
-        <p>Nilai kualifikasi seorang atlet adalah <strong>jumlah total poin dari semua panah di semua end</strong>. Misalnya, dalam format 720 Round (12 end × 6 panah):</p>
+        <p>Nilai kualifikasi seorang atlet adalah <strong>jumlah total poin dari semua panah di semua end</strong>. Misalnya, dalam format 720 Round (12 end Ã— 6 panah):</p>
         <ul>
             <li>Setiap end menghasilkan subtotal dari 6 panah (maksimal 60 poin per end jika semua 10).</li>
-            <li>Total 12 end dijumlahkan → skor akhir (maksimal 720 poin, itulah asal nama "720 Round").</li>
+            <li>Total 12 end dijumlahkan â†’ skor akhir (maksimal 720 poin, itulah asal nama "720 Round").</li>
         </ul>
         <p>Di sinilah pentingnya <em>konsistensi per end</em>: atlet yang rata-rata 55 poin per end akan mengalahkan atlet yang mendapat 60 di beberapa end tapi 40 di end lainnya.</p>
 
         <h2 id="end-di-eliminasi">End dalam Konteks Eliminasi</h2>
         <p>Pada eliminasi head-to-head, setiap end dalam format <strong>Set System</strong> (Recurve) disebut juga <em>set</em>. Pemenang tiap set (end) tidak langsung menang pertandingan, melainkan mendapat <strong>poin set</strong>. Pertandingan dimenangkan oleh atlet yang pertama mengumpulkan 6 poin set.</p>
-        <p>Untuk format <strong>Compound</strong>, end tetap bersifat kumulatif — tidak ada poin set, semua panah dari semua end dijumlahkan untuk menentukan pemenang match.</p>
+        <p>Untuk format <strong>Compound</strong>, end tetap bersifat kumulatif â€” tidak ada poin set, semua panah dari semua end dijumlahkan untuk menentukan pemenang match.</p>
 
-        <h2 id="end-di-archeryhub">End di Platform Archeryhub.id</h2>
-        <p>Saat panitia membuat sesi kualifikasi di Archeryhub.id, mereka mengisi dua parameter utama:</p>
+        <h2 id="end-di-Archeris">End di Platform archeris.net</h2>
+        <p>Saat panitia membuat sesi kualifikasi di archeris.net, mereka mengisi dua parameter utama:</p>
         <ul>
-            <li><strong>Jumlah End</strong> — Berapa end yang akan ditembak dalam sesi tersebut.</li>
-            <li><strong>Panah per End</strong> — Berapa panah yang ditembak per end.</li>
+            <li><strong>Jumlah End</strong> â€” Berapa end yang akan ditembak dalam sesi tersebut.</li>
+            <li><strong>Panah per End</strong> â€” Berapa panah yang ditembak per end.</li>
         </ul>
-        <p>Kedua angka ini menghasilkan total panah per atlet (Jumlah End × Panah per End), yang tampil di scoresheet dan digunakan untuk validasi input skor. Sistem tidak akan mengizinkan skor disubmit jika jumlah panah yang diisi tidak sesuai konfigurasi end yang telah ditetapkan.</p>
+        <p>Kedua angka ini menghasilkan total panah per atlet (Jumlah End Ã— Panah per End), yang tampil di scoresheet dan digunakan untuk validasi input skor. Sistem tidak akan mengizinkan skor disubmit jika jumlah panah yang diisi tidak sesuai konfigurasi end yang telah ditetapkan.</p>
     `},M={slug:"penempatan-bantalan",title:"Tipe Draw & Penempatan Otomatis Bantalan",excerpt:"Panduan memilih tipe draw (acak, manual, atau berdasarkan ranking) dan cara kerja fitur penempatan otomatis peserta ke bantalan di sesi kualifikasi.",icon:"ph:shuffle-bold",category:"archery",readTime:"5 menit",toc:[{id:"apa-itu-draw",level:2,text:"Apa Itu Draw?"},{id:"tipe-draw",level:2,text:"Tipe-Tipe Draw yang Tersedia"},{id:"penempatan-otomatis",level:2,text:"Penempatan Otomatis (Auto-Assign)"},{id:"penempatan-manual",level:2,text:"Penempatan Manual"},{id:"aturan-penempatan",level:2,text:"Aturan & Pertimbangan Penempatan"},{id:"cetak-target-list",level:2,text:"Mencetak Daftar Bantalan (Target List)"}],content:`
         <h2 id="apa-itu-draw">Apa Itu Draw?</h2>
-        <p><strong>Draw</strong> dalam konteks kompetisi panahan adalah proses pengundian atau penentuan posisi — yaitu bantalan target mana yang akan digunakan oleh setiap peserta dalam sesi tembak. Posisi bantalan (target face position) sering disebut juga <em>target number</em> atau <em>nomor bantalan</em>.</p>
-        <p>Draw yang adil dan transparan penting untuk menjaga integritas kompetisi. Contohnya, dalam kondisi angin outdoor, posisi bantalan di sisi kiri vs kanan lapangan bisa memberikan keuntungan berbeda bagi atlet — sehingga draw yang benar-benar acak lebih diutamakan.</p>
+        <p><strong>Draw</strong> dalam konteks kompetisi panahan adalah proses pengundian atau penentuan posisi â€” yaitu bantalan target mana yang akan digunakan oleh setiap peserta dalam sesi tembak. Posisi bantalan (target face position) sering disebut juga <em>target number</em> atau <em>nomor bantalan</em>.</p>
+        <p>Draw yang adil dan transparan penting untuk menjaga integritas kompetisi. Contohnya, dalam kondisi angin outdoor, posisi bantalan di sisi kiri vs kanan lapangan bisa memberikan keuntungan berbeda bagi atlet â€” sehingga draw yang benar-benar acak lebih diutamakan.</p>
 
         <h2 id="tipe-draw">Tipe-Tipe Draw yang Tersedia</h2>
-        <p>Di Archeryhub.id, panitia dapat memilih dari beberapa pendekatan draw saat mengatur sesi kualifikasi:</p>
+        <p>Di archeris.net, panitia dapat memilih dari beberapa pendekatan draw saat mengatur sesi kualifikasi:</p>
 
         <h3 style="font-size:1rem; font-weight:700; margin-top:1.5rem; margin-bottom:0.5rem;">1. Draw Acak (Random Draw)</h3>
         <p>Sistem secara acak mengacak seluruh peserta yang terdaftar dalam sesi, lalu memetakan mereka ke bantalan yang tersedia. Ini adalah metode paling umum dan direkomendasikan untuk kompetisi terbuka.</p>
@@ -1467,28 +1467,28 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
         </ul>
 
         <h3 style="font-size:1rem; font-weight:700; margin-top:1.5rem; margin-bottom:0.5rem;">2. Draw Berdasarkan Kategori (Grouped Draw)</h3>
-        <p>Peserta dikelompokkan terlebih dahulu berdasarkan divisi atau kategori umur, kemudian draw acak dilakukan di dalam masing-masing kelompok. Hasilnya, satu area bantalan didominasi oleh satu kategori — mempermudah pengawasan juri lapang.</p>
+        <p>Peserta dikelompokkan terlebih dahulu berdasarkan divisi atau kategori umur, kemudian draw acak dilakukan di dalam masing-masing kelompok. Hasilnya, satu area bantalan didominasi oleh satu kategori â€” mempermudah pengawasan juri lapang.</p>
         <ul>
             <li><strong>Keunggulan:</strong> Juri kategori tidak perlu berpindah terlalu jauh, pembacaan nilai per kelompok lebih efisien.</li>
             <li><strong>Kapan digunakan:</strong> Event besar dengan banyak kategori dan juri khusus per divisi.</li>
         </ul>
 
         <h3 style="font-size:1rem; font-weight:700; margin-top:1.5rem; margin-bottom:0.5rem;">3. Draw Manual (Manual Assignment)</h3>
-        <p>Panitia menentukan posisi setiap peserta secara individual — menggeser, mengatur, atau menukar posisi lewat antarmuka drag-and-drop di dashboard.</p>
+        <p>Panitia menentukan posisi setiap peserta secara individual â€” menggeser, mengatur, atau menukar posisi lewat antarmuka drag-and-drop di dashboard.</p>
         <ul>
             <li><strong>Keunggulan:</strong> Kontrol penuh, cocok untuk situasi khusus (atlet berkebutuhan khusus, permintaan panitia, dll.).</li>
             <li><strong>Kapan digunakan:</strong> Event semi-privat, kelas latihan, atau ketika ada kondisi khusus yang perlu dipertimbangkan.</li>
         </ul>
         <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-4 flex gap-4">
-            <div class="text-primary text-2xl shrink-0">💡</div>
+            <div class="text-primary text-2xl shrink-0">ðŸ’¡</div>
             <div>
                 <div class="font-bold text-navy text-sm mb-1">Kombinasi Draw yang Umum Digunakan</div>
-                <div class="text-gray-600 text-sm">Banyak panitia memulai dengan <strong>Draw Berdasarkan Kategori</strong> untuk mengelompokkan peserta, kemudian melakukan <strong>fine-tuning manual</strong> jika ada peserta yang perlu dipindah karena alasan tertentu. Kedua pendekatan ini bisa dikombinasikan di Archeryhub.id.</div>
+                <div class="text-gray-600 text-sm">Banyak panitia memulai dengan <strong>Draw Berdasarkan Kategori</strong> untuk mengelompokkan peserta, kemudian melakukan <strong>fine-tuning manual</strong> jika ada peserta yang perlu dipindah karena alasan tertentu. Kedua pendekatan ini bisa dikombinasikan di archeris.net.</div>
             </div>
         </div>
 
         <h2 id="penempatan-otomatis">Penempatan Otomatis (Auto-Assign)</h2>
-        <p>Fitur <strong>Auto-Assign</strong> di Archeryhub.id memungkinkan panitia menempatkan seluruh peserta ke bantalan yang tersedia hanya dengan satu klik. Berikut cara kerjanya:</p>
+        <p>Fitur <strong>Auto-Assign</strong> di archeris.net memungkinkan panitia menempatkan seluruh peserta ke bantalan yang tersedia hanya dengan satu klik. Berikut cara kerjanya:</p>
         <ol>
             <li>Panitia membuka sesi kualifikasi yang sudah dikonfigurasi (jumlah end, panah per end, dan daftar target tersedia).</li>
             <li>Pilih mode draw: <strong>Acak</strong> atau <strong>Berdasarkan Kategori</strong>.</li>
@@ -1497,47 +1497,47 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
             <li>Hasilnya langsung bisa dipreview sebelum dikonfirmasi dan dipublikasikan.</li>
         </ol>
         <div class="not-prose bg-yellow-50 border border-yellow-200 rounded-2xl p-5 mt-4 flex gap-4">
-            <div class="text-yellow-500 text-2xl shrink-0">⚠️</div>
+            <div class="text-yellow-500 text-2xl shrink-0">âš ï¸</div>
             <div>
                 <div class="font-bold text-navy text-sm mb-1">Jumlah Target Harus Mencukupi</div>
-                <div class="text-gray-600 text-sm">Auto-Assign hanya berhasil jika jumlah slot bantalan ≥ jumlah peserta. Pastikan Anda sudah menambahkan target yang cukup di konfigurasi sesi sebelum menjalankan auto-assign. Jika slot kurang, sistem akan meminta Anda menambah target terlebih dahulu.</div>
+                <div class="text-gray-600 text-sm">Auto-Assign hanya berhasil jika jumlah slot bantalan â‰¥ jumlah peserta. Pastikan Anda sudah menambahkan target yang cukup di konfigurasi sesi sebelum menjalankan auto-assign. Jika slot kurang, sistem akan meminta Anda menambah target terlebih dahulu.</div>
             </div>
         </div>
 
         <h2 id="penempatan-manual">Penempatan Manual</h2>
         <p>Setelah auto-assign selesai (atau kapan saja), panitia masih bisa melakukan perubahan manual di halaman Assignment:</p>
         <ul>
-            <li><strong>Pindah peserta</strong> — Klik peserta lalu pilih target tujuan (drag-and-drop atau dropdown).</li>
-            <li><strong>Tukar posisi</strong> — Tukar posisi dua peserta sekaligus tanpa harus melepas salah satunya terlebih dahulu.</li>
-            <li><strong>Hapus penempatan</strong> — Kosongkan satu slot agar bisa diisi ulang secara manual atau via auto-assign parsial.</li>
+            <li><strong>Pindah peserta</strong> â€” Klik peserta lalu pilih target tujuan (drag-and-drop atau dropdown).</li>
+            <li><strong>Tukar posisi</strong> â€” Tukar posisi dua peserta sekaligus tanpa harus melepas salah satunya terlebih dahulu.</li>
+            <li><strong>Hapus penempatan</strong> â€” Kosongkan satu slot agar bisa diisi ulang secara manual atau via auto-assign parsial.</li>
         </ul>
 
         <h2 id="aturan-penempatan">Aturan & Pertimbangan Penempatan</h2>
         <p>Beberapa hal yang perlu dipertimbangkan saat melakukan draw:</p>
         <ul>
-            <li><strong>Satu bantalan, satu atlet</strong> — Pada format olimpik standar setiap bantalan hanya untuk satu peserta. Untuk format 3D atau field, satu target bisa dikunjungi bergantian.</li>
-            <li><strong>Kapasitas per target</strong> — Untuk sesi dengan banyak peserta dan target terbatas, sistem mendukung konfigurasi "A/B" (dua peserta per bantalan dalam satu sesi terbagi dua gelombang).</li>
-            <li><strong>Atlet dengan kebutuhan khusus</strong> — Prioritaskan penempatan di bantalan beraksesibilitas (area datar, dekat pintu masuk juri, dll.) — lakukan ini via penempatan manual sebelum auto-assign.</li>
-            <li><strong>Jangan menempatkan peserta dari tim/klub yang sama jika memungkinkan</strong> — Pada kompetisi beregu, ini mencegah anggota tim saling memberi tanda.</li>
+            <li><strong>Satu bantalan, satu atlet</strong> â€” Pada format olimpik standar setiap bantalan hanya untuk satu peserta. Untuk format 3D atau field, satu target bisa dikunjungi bergantian.</li>
+            <li><strong>Kapasitas per target</strong> â€” Untuk sesi dengan banyak peserta dan target terbatas, sistem mendukung konfigurasi "A/B" (dua peserta per bantalan dalam satu sesi terbagi dua gelombang).</li>
+            <li><strong>Atlet dengan kebutuhan khusus</strong> â€” Prioritaskan penempatan di bantalan beraksesibilitas (area datar, dekat pintu masuk juri, dll.) â€” lakukan ini via penempatan manual sebelum auto-assign.</li>
+            <li><strong>Jangan menempatkan peserta dari tim/klub yang sama jika memungkinkan</strong> â€” Pada kompetisi beregu, ini mencegah anggota tim saling memberi tanda.</li>
         </ul>
 
         <h2 id="cetak-target-list">Mencetak Daftar Bantalan (Target List)</h2>
-        <p>Setelah penempatan final dikonfirmasi, panitia dapat mencetak <strong>Target List</strong> — daftar lengkap yang menampilkan nama peserta beserta nomor bantalan mereka — dalam format PDF langsung dari dashboard. Dokumen ini biasanya ditempel di papan pengumuman venue sebelum sesi dimulai.</p>
-        <p>Di Archeryhub.id, Target List dapat dicetak dengan tampilan yang terfilter per sesi, per kategori, atau untuk semua peserta sekaligus, sesuai kebutuhan panitia.</p>
-    `},K={slug:"cara-menjual-barang",title:"Cara Menjual Barang di Marketplace",excerpt:"Panduan lengkap bagi penjual untuk mendaftarkan toko, mengunggah produk, dan mengelola pesanan di Marketplace Archeryhub.id.",icon:"ph:storefront-bold",category:"marketplace",readTime:"5 menit",toc:[{id:"syarat-penjual",level:2,text:"Syarat Menjadi Penjual"},{id:"daftar-toko",level:2,text:"Mendaftarkan Toko"},{id:"tambah-produk",level:2,text:"Mengunggah Produk"},{id:"kelola-stok",level:2,text:"Mengelola Stok & Harga"},{id:"proses-pesanan",level:2,text:"Memproses Pesanan Masuk"},{id:"tips-deskripsi",level:2,text:"Tips Menulis Deskripsi Produk"}],content:`
+        <p>Setelah penempatan final dikonfirmasi, panitia dapat mencetak <strong>Target List</strong> â€” daftar lengkap yang menampilkan nama peserta beserta nomor bantalan mereka â€” dalam format PDF langsung dari dashboard. Dokumen ini biasanya ditempel di papan pengumuman venue sebelum sesi dimulai.</p>
+        <p>Di archeris.net, Target List dapat dicetak dengan tampilan yang terfilter per sesi, per kategori, atau untuk semua peserta sekaligus, sesuai kebutuhan panitia.</p>
+    `},K={slug:"cara-menjual-barang",title:"Cara Menjual Barang di Marketplace",excerpt:"Panduan lengkap bagi penjual untuk mendaftarkan toko, mengunggah produk, dan mengelola pesanan di Marketplace archeris.net.",icon:"ph:storefront-bold",category:"marketplace",readTime:"5 menit",toc:[{id:"syarat-penjual",level:2,text:"Syarat Menjadi Penjual"},{id:"daftar-toko",level:2,text:"Mendaftarkan Toko"},{id:"tambah-produk",level:2,text:"Mengunggah Produk"},{id:"kelola-stok",level:2,text:"Mengelola Stok & Harga"},{id:"proses-pesanan",level:2,text:"Memproses Pesanan Masuk"},{id:"tips-deskripsi",level:2,text:"Tips Menulis Deskripsi Produk"}],content:`
         <h2 id="syarat-penjual">Syarat Menjadi Penjual</h2>
-        <p>Siapa pun dapat berjualan di Marketplace Archeryhub.id selama memenuhi syarat berikut:</p>
+        <p>Siapa pun dapat berjualan di Marketplace archeris.net selama memenuhi syarat berikut:</p>
         <ul>
-            <li>Memiliki akun Archeryhub.id yang sudah terverifikasi.</li>
+            <li>Memiliki akun archeris.net yang sudah terverifikasi.</li>
             <li>Menyetujui Syarat & Ketentuan Penjual dan Kebijakan Marketplace.</li>
             <li>Memiliki nomor rekening bank atau dompet digital yang valid untuk pencairan dana.</li>
             <li>Menjual produk yang relevan dengan olahraga panahan (perlengkapan, aksesoris, pakaian, jasa pelatihan, dll.).</li>
         </ul>
         <div class="not-prose bg-blue-50 border border-blue-200 rounded-2xl p-5 mt-4 flex gap-4">
-            <div class="text-blue-500 text-2xl shrink-0">ℹ️</div>
+            <div class="text-blue-500 text-2xl shrink-0">â„¹ï¸</div>
             <div>
                 <div class="font-bold text-navy text-sm mb-1">Verifikasi Toko</div>
-                <div class="text-gray-600 text-sm">Toko baru akan masuk ke tahap review oleh tim Archeryhub.id dalam 1×24 jam. Produk baru dapat langsung diunggah namun akan ditampilkan ke publik setelah toko disetujui.</div>
+                <div class="text-gray-600 text-sm">Toko baru akan masuk ke tahap review oleh tim archeris.net dalam 1Ã—24 jam. Produk baru dapat langsung diunggah namun akan ditampilkan ke publik setelah toko disetujui.</div>
             </div>
         </div>
 
@@ -1548,7 +1548,7 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
             <li>Isi nama toko, deskripsi singkat, dan logo toko.</li>
             <li>Masukkan informasi rekening bank atau dompet digital untuk pencairan.</li>
             <li>Centang persetujuan syarat & ketentuan penjual, lalu klik <strong>Daftarkan Toko</strong>.</li>
-            <li>Tunggu konfirmasi email dari tim Archeryhub.id.</li>
+            <li>Tunggu konfirmasi email dari tim archeris.net.</li>
         </ol>
 
         <h2 id="tambah-produk">Mengunggah Produk</h2>
@@ -1566,7 +1566,7 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
                     <tr><td class="px-4 py-3 font-bold text-navy">Kategori</td><td class="px-4 py-3">Pilih kategori yang paling sesuai (Peralatan, Pakaian, Aksesoris, Latihan, dll.).</td></tr>
                     <tr><td class="px-4 py-3 font-bold text-navy">Harga</td><td class="px-4 py-3">Harga dalam Rupiah sebelum biaya pengiriman.</td></tr>
                     <tr><td class="px-4 py-3 font-bold text-navy">Stok</td><td class="px-4 py-3">Jumlah unit yang tersedia. Sistem akan otomatis menutup listing jika stok habis.</td></tr>
-                    <tr><td class="px-4 py-3 font-bold text-navy">Foto Produk</td><td class="px-4 py-3">Minimal 1 foto, disarankan 3–5 foto dari berbagai sudut.</td></tr>
+                    <tr><td class="px-4 py-3 font-bold text-navy">Foto Produk</td><td class="px-4 py-3">Minimal 1 foto, disarankan 3â€“5 foto dari berbagai sudut.</td></tr>
                     <tr><td class="px-4 py-3 font-bold text-navy">Deskripsi</td><td class="px-4 py-3">Jelaskan spesifikasi, kondisi (baru/bekas), dan keunggulan produk.</td></tr>
                     <tr><td class="px-4 py-3 font-bold text-navy">Berat & Dimensi</td><td class="px-4 py-3">Digunakan untuk kalkulasi biaya pengiriman otomatis.</td></tr>
                 </tbody>
@@ -1584,16 +1584,16 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
         <h2 id="proses-pesanan">Memproses Pesanan Masuk</h2>
         <p>Setiap pesanan masuk akan tampil di <strong>Dashboard Toko > Pesanan</strong>. Alur prosesnya:</p>
         <ol>
-            <li><strong>Menunggu Konfirmasi</strong> — Pesanan baru dari pembeli, dana sudah ditahan sistem.</li>
-            <li><strong>Diproses</strong> — Anda mengonfirmasi ketersediaan dan mulai menyiapkan paket.</li>
-            <li><strong>Dikirim</strong> — Masukkan nomor resi pengiriman. Pembeli akan menerima notifikasi.</li>
-            <li><strong>Selesai</strong> — Barang diterima pembeli, dana dicairkan ke saldo toko Anda.</li>
+            <li><strong>Menunggu Konfirmasi</strong> â€” Pesanan baru dari pembeli, dana sudah ditahan sistem.</li>
+            <li><strong>Diproses</strong> â€” Anda mengonfirmasi ketersediaan dan mulai menyiapkan paket.</li>
+            <li><strong>Dikirim</strong> â€” Masukkan nomor resi pengiriman. Pembeli akan menerima notifikasi.</li>
+            <li><strong>Selesai</strong> â€” Barang diterima pembeli, dana dicairkan ke saldo toko Anda.</li>
         </ol>
         <div class="not-prose bg-yellow-50 border border-yellow-200 rounded-2xl p-5 mt-4 flex gap-4">
-            <div class="text-yellow-500 text-2xl shrink-0">⚠️</div>
+            <div class="text-yellow-500 text-2xl shrink-0">âš ï¸</div>
             <div>
                 <div class="font-bold text-navy text-sm mb-1">Batas Waktu Konfirmasi</div>
-                <div class="text-gray-600 text-sm">Pesanan harus dikonfirmasi dalam 2×24 jam kerja. Jika tidak dikonfirmasi, sistem akan secara otomatis membatalkan pesanan dan mengembalikan dana ke pembeli.</div>
+                <div class="text-gray-600 text-sm">Pesanan harus dikonfirmasi dalam 2Ã—24 jam kerja. Jika tidak dikonfirmasi, sistem akan secara otomatis membatalkan pesanan dan mengembalikan dana ke pembeli.</div>
             </div>
         </div>
 
@@ -1606,25 +1606,25 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
             <li>Isi paket: apa saja yang ikut dalam box/paket pengiriman.</li>
             <li>Catatan khusus: misalnya "tidak termasuk nocking point" atau "perlu tuning setelah dipasang".</li>
         </ul>
-    `},B={slug:"membeli-barang",title:"Cara Membeli Barang di Marketplace",excerpt:"Panduan lengkap untuk menemukan, membeli, dan menerima perlengkapan panahan dari Marketplace Archeryhub.id.",icon:"ph:bag-bold",category:"marketplace",readTime:"4 menit",toc:[{id:"cari-produk",level:2,text:"Menemukan Produk"},{id:"detail-produk",level:2,text:"Membaca Detail Produk"},{id:"proses-checkout",level:2,text:"Proses Checkout & Pembayaran"},{id:"lacak-pesanan",level:2,text:"Melacak Pesanan"},{id:"konfirmasi-terima",level:2,text:"Konfirmasi Penerimaan Barang"},{id:"retur",level:2,text:"Retur & Komplain"}],content:`
+    `},B={slug:"membeli-barang",title:"Cara Membeli Barang di Marketplace",excerpt:"Panduan lengkap untuk menemukan, membeli, dan menerima perlengkapan panahan dari Marketplace archeris.net.",icon:"ph:bag-bold",category:"marketplace",readTime:"4 menit",toc:[{id:"cari-produk",level:2,text:"Menemukan Produk"},{id:"detail-produk",level:2,text:"Membaca Detail Produk"},{id:"proses-checkout",level:2,text:"Proses Checkout & Pembayaran"},{id:"lacak-pesanan",level:2,text:"Melacak Pesanan"},{id:"konfirmasi-terima",level:2,text:"Konfirmasi Penerimaan Barang"},{id:"retur",level:2,text:"Retur & Komplain"}],content:`
         <h2 id="cari-produk">Menemukan Produk</h2>
         <p>Anda dapat menemukan produk yang diinginkan melalui beberapa cara:</p>
         <ul>
-            <li><strong>Pencarian</strong> — Ketik nama produk, merek, atau kata kunci di kolom pencarian Marketplace.</li>
-            <li><strong>Filter Kategori</strong> — Gunakan filter di sidebar untuk mempersempit hasil berdasarkan kategori, harga, atau kondisi barang.</li>
-            <li><strong>Rekomendasi</strong> — Halaman utama Marketplace menampilkan produk populer dan pilihan editor yang relevan dengan minat Anda.</li>
+            <li><strong>Pencarian</strong> â€” Ketik nama produk, merek, atau kata kunci di kolom pencarian Marketplace.</li>
+            <li><strong>Filter Kategori</strong> â€” Gunakan filter di sidebar untuk mempersempit hasil berdasarkan kategori, harga, atau kondisi barang.</li>
+            <li><strong>Rekomendasi</strong> â€” Halaman utama Marketplace menampilkan produk populer dan pilihan editor yang relevan dengan minat Anda.</li>
         </ul>
 
         <h2 id="detail-produk">Membaca Detail Produk</h2>
         <p>Sebelum membeli, periksa detail produk dengan cermat:</p>
         <ul>
-            <li><strong>Foto produk</strong> — Lihat dari berbagai sudut. Foto yang buram atau sangat sedikit patut diwaspadai.</li>
-            <li><strong>Deskripsi</strong> — Pastikan spesifikasi, ukuran, dan material sesuai kebutuhan Anda.</li>
-            <li><strong>Info toko</strong> — Lihat rating toko dan ulasan dari pembeli sebelumnya.</li>
-            <li><strong>Status stok</strong> — Pastikan produk masih tersedia sebelum dimasukkan ke keranjang.</li>
+            <li><strong>Foto produk</strong> â€” Lihat dari berbagai sudut. Foto yang buram atau sangat sedikit patut diwaspadai.</li>
+            <li><strong>Deskripsi</strong> â€” Pastikan spesifikasi, ukuran, dan material sesuai kebutuhan Anda.</li>
+            <li><strong>Info toko</strong> â€” Lihat rating toko dan ulasan dari pembeli sebelumnya.</li>
+            <li><strong>Status stok</strong> â€” Pastikan produk masih tersedia sebelum dimasukkan ke keranjang.</li>
         </ul>
         <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-4 flex gap-4">
-            <div class="text-primary text-2xl shrink-0">💡</div>
+            <div class="text-primary text-2xl shrink-0">ðŸ’¡</div>
             <div>
                 <div class="font-bold text-navy text-sm mb-1">Tanya Penjual</div>
                 <div class="text-gray-600 text-sm">Ragu dengan spesifikasi produk? Gunakan fitur chat langsung di halaman produk untuk bertanya kepada penjual sebelum melakukan pembelian.</div>
@@ -1641,10 +1641,10 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
             <li>Klik <strong>Bayar Sekarang</strong> dan selesaikan pembayaran sebelum batas waktu.</li>
         </ol>
         <div class="not-prose bg-green-50 border border-green-200 rounded-2xl p-5 mt-4 flex gap-4">
-            <div class="text-green-600 text-2xl shrink-0">🔒</div>
+            <div class="text-green-600 text-2xl shrink-0">ðŸ”’</div>
             <div>
                 <div class="font-bold text-navy text-sm mb-1">Dana Aman dengan Sistem Escrow</div>
-                <div class="text-gray-600 text-sm">Dana pembayaran Anda <strong>tidak langsung diteruskan ke penjual</strong>. Dana ditahan sistem Archeryhub.id (escrow) dan baru dicairkan ke penjual setelah Anda mengonfirmasi barang diterima dengan baik.</div>
+                <div class="text-gray-600 text-sm">Dana pembayaran Anda <strong>tidak langsung diteruskan ke penjual</strong>. Dana ditahan sistem archeris.net (escrow) dan baru dicairkan ke penjual setelah Anda mengonfirmasi barang diterima dengan baik.</div>
             </div>
         </div>
 
@@ -1677,10 +1677,10 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
         <p>Jika tidak dikonfirmasi dalam 7 hari setelah status "Dikirim", sistem secara otomatis menganggap barang diterima.</p>
 
         <h2 id="retur">Retur & Komplain</h2>
-        <p>Jika barang tidak sesuai deskripsi, rusak, atau salah kirim, ajukan komplain <strong>sebelum mengonfirmasi penerimaan</strong> melalui tombol <strong>Ajukan Masalah</strong> di halaman detail pesanan. Tim Archeryhub.id akan memediasi dan keputusan akhir mengikuti kebijakan perlindungan pembeli yang berlaku.</p>
-    `},D={slug:"kategorisasi-produk",title:"Kategorisasi Produk Marketplace",excerpt:"Penjelasan lengkap tentang kategori produk yang tersedia di Marketplace Archeryhub.id dan pedoman penempatan produk yang tepat.",icon:"ph:tag-bold",category:"marketplace",readTime:"3 menit",toc:[{id:"mengapa-kategori",level:2,text:"Mengapa Kategori Itu Penting"},{id:"daftar-kategori",level:2,text:"Daftar Kategori Produk"},{id:"sub-kategori",level:2,text:"Sub-Kategori & Filter Lanjutan"},{id:"kategori-salah",level:2,text:"Produk di Kategori yang Salah"}],content:`
+        <p>Jika barang tidak sesuai deskripsi, rusak, atau salah kirim, ajukan komplain <strong>sebelum mengonfirmasi penerimaan</strong> melalui tombol <strong>Ajukan Masalah</strong> di halaman detail pesanan. Tim archeris.net akan memediasi dan keputusan akhir mengikuti kebijakan perlindungan pembeli yang berlaku.</p>
+    `},D={slug:"kategorisasi-produk",title:"Kategorisasi Produk Marketplace",excerpt:"Penjelasan lengkap tentang kategori produk yang tersedia di Marketplace archeris.net dan pedoman penempatan produk yang tepat.",icon:"ph:tag-bold",category:"marketplace",readTime:"3 menit",toc:[{id:"mengapa-kategori",level:2,text:"Mengapa Kategori Itu Penting"},{id:"daftar-kategori",level:2,text:"Daftar Kategori Produk"},{id:"sub-kategori",level:2,text:"Sub-Kategori & Filter Lanjutan"},{id:"kategori-salah",level:2,text:"Produk di Kategori yang Salah"}],content:`
         <h2 id="mengapa-kategori">Mengapa Kategori Itu Penting</h2>
-        <p>Kategori yang tepat membantu pembeli menemukan produk Anda lebih cepat. Algoritma pencarian Marketplace Archeryhub.id menggunakan kategori sebagai salah satu sinyal relevansi. Produk yang dikategorikan dengan benar cenderung mendapat lebih banyak tayangan organik dibandingkan produk dengan kategori yang tidak sesuai.</p>
+        <p>Kategori yang tepat membantu pembeli menemukan produk Anda lebih cepat. Algoritma pencarian Marketplace archeris.net menggunakan kategori sebagai salah satu sinyal relevansi. Produk yang dikategorikan dengan benar cenderung mendapat lebih banyak tayangan organik dibandingkan produk dengan kategori yang tidak sesuai.</p>
 
         <h2 id="daftar-kategori">Daftar Kategori Produk</h2>
         <div class="not-prose overflow-x-auto my-4">
@@ -1725,47 +1725,47 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
         <h2 id="sub-kategori">Sub-Kategori & Filter Lanjutan</h2>
         <p>Selain memilih kategori utama, penjual disarankan melengkapi atribut lanjutan agar produk bisa muncul di filter spesifik pembeli:</p>
         <ul>
-            <li><strong>Jenis busur yang kompatibel</strong> — Recurve, Compound, Barebow, Standard Bow, dll.</li>
-            <li><strong>Level atlet</strong> — Pemula, Menengah, Profesional / Kompetisi.</li>
-            <li><strong>Kondisi barang</strong> — Baru / Bekas (Second).</li>
-            <li><strong>Merek</strong> — Samick, Hoyt, Win&Win, Easton, Carbon Express, lokal, atau no-brand.</li>
+            <li><strong>Jenis busur yang kompatibel</strong> â€” Recurve, Compound, Barebow, Standard Bow, dll.</li>
+            <li><strong>Level atlet</strong> â€” Pemula, Menengah, Profesional / Kompetisi.</li>
+            <li><strong>Kondisi barang</strong> â€” Baru / Bekas (Second).</li>
+            <li><strong>Merek</strong> â€” Samick, Hoyt, Win&Win, Easton, Carbon Express, lokal, atau no-brand.</li>
         </ul>
         <p>Atribut ini tidak bersifat wajib, namun sangat berpengaruh pada visibilitas produk di hasil filter pencarian pembeli.</p>
 
         <h2 id="kategori-salah">Produk di Kategori yang Salah</h2>
-        <p>Tim Archeryhub.id melakukan kurasi periodik terhadap listing. Produk yang terbukti berada di kategori yang tidak relevan akan dipindahkan atau dihapus sementara sambil menunggu koreksi dari penjual. Penjual akan menerima notifikasi dan penjelasan alasan tindakan tersebut.</p>
+        <p>Tim archeris.net melakukan kurasi periodik terhadap listing. Produk yang terbukti berada di kategori yang tidak relevan akan dipindahkan atau dihapus sementara sambil menunggu koreksi dari penjual. Penjual akan menerima notifikasi dan penjelasan alasan tindakan tersebut.</p>
         <div class="not-prose bg-yellow-50 border border-yellow-200 rounded-2xl p-5 mt-4 flex gap-4">
-            <div class="text-yellow-500 text-2xl shrink-0">⚠️</div>
+            <div class="text-yellow-500 text-2xl shrink-0">âš ï¸</div>
             <div>
                 <div class="font-bold text-navy text-sm mb-1">Produk yang Dilarang</div>
-                <div class="text-gray-600 text-sm">Archeryhub.id tidak menerima listing untuk senjata api, produk berbahaya yang tidak berhubungan dengan olahraga panahan, atau produk palsu/KW yang melanggar hak merek. Pelanggaran dapat berujung pada penangguhan toko.</div>
+                <div class="text-gray-600 text-sm">archeris.net tidak menerima listing untuk senjata api, produk berbahaya yang tidak berhubungan dengan olahraga panahan, atau produk palsu/KW yang melanggar hak merek. Pelanggaran dapat berujung pada penangguhan toko.</div>
             </div>
         </div>
-    `},E={slug:"fee-biaya-admin",title:"Perihal Fee & Biaya Admin",excerpt:"Penjelasan tentang biaya platform, cara kerja listing produk, dan ketentuan promosi di Marketplace Archeryhub.id.",icon:"ph:currency-circle-dollar-bold",category:"marketplace",readTime:"3 menit",toc:[{id:"gratis-berjualan",level:2,text:"Berjualan Gratis Tanpa Komisi"},{id:"cara-transaksi",level:2,text:"Cara Transaksi: Langsung via WhatsApp"},{id:"tanggung-jawab-harga",level:2,text:"Tanggung Jawab Harga & Negosiasi"},{id:"promosi-berbayar",level:2,text:"Promosi & Fitur Berbayar (Opsional)"},{id:"kebijakan-konten",level:2,text:"Kebijakan Konten Produk"}],content:`
+    `},E={slug:"fee-biaya-admin",title:"Perihal Fee & Biaya Admin",excerpt:"Penjelasan tentang biaya platform, cara kerja listing produk, dan ketentuan promosi di Marketplace archeris.net.",icon:"ph:currency-circle-dollar-bold",category:"marketplace",readTime:"3 menit",toc:[{id:"gratis-berjualan",level:2,text:"Berjualan Gratis Tanpa Komisi"},{id:"cara-transaksi",level:2,text:"Cara Transaksi: Langsung via WhatsApp"},{id:"tanggung-jawab-harga",level:2,text:"Tanggung Jawab Harga & Negosiasi"},{id:"promosi-berbayar",level:2,text:"Promosi & Fitur Berbayar (Opsional)"},{id:"kebijakan-konten",level:2,text:"Kebijakan Konten Produk"}],content:`
         <h2 id="gratis-berjualan">Berjualan Gratis Tanpa Komisi</h2>
-        <p>Marketplace Archeryhub.id dirancang sebagai <strong>katalog komunitas</strong> — tempat penjual memajang produk dan pembeli menemukan barang yang mereka butuhkan. <strong>Tidak ada komisi transaksi, tidak ada biaya listing, dan tidak ada biaya bulanan</strong> untuk berjualan di sini.</p>
+        <p>Marketplace archeris.net dirancang sebagai <strong>katalog komunitas</strong> â€” tempat penjual memajang produk dan pembeli menemukan barang yang mereka butuhkan. <strong>Tidak ada komisi transaksi, tidak ada biaya listing, dan tidak ada biaya bulanan</strong> untuk berjualan di sini.</p>
         <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-4 flex gap-4">
-            <div class="text-primary text-2xl shrink-0">🎉</div>
+            <div class="text-primary text-2xl shrink-0">ðŸŽ‰</div>
             <div>
                 <div class="font-bold text-navy text-sm mb-1">100% Gratis untuk Semua Penjual</div>
-                <div class="text-gray-600 text-sm">Archeryhub.id tidak memungut biaya apa pun dari proses jual beli di Marketplace. Platform ini hadir sebagai jembatan antara komunitas panahan — pembayaran, pengiriman, dan negosiasi harga sepenuhnya menjadi urusan antara penjual dan pembeli secara langsung.</div>
+                <div class="text-gray-600 text-sm">archeris.net tidak memungut biaya apa pun dari proses jual beli di Marketplace. Platform ini hadir sebagai jembatan antara komunitas panahan â€” pembayaran, pengiriman, dan negosiasi harga sepenuhnya menjadi urusan antara penjual dan pembeli secara langsung.</div>
             </div>
         </div>
 
         <h2 id="cara-transaksi">Cara Transaksi: Langsung via WhatsApp</h2>
-        <p>Seluruh proses transaksi di Marketplace Archeryhub.id dilakukan <strong>di luar platform</strong>, langsung antara pembeli dan penjual melalui WhatsApp atau media komunikasi lain yang disepakati bersama.</p>
+        <p>Seluruh proses transaksi di Marketplace archeris.net dilakukan <strong>di luar platform</strong>, langsung antara pembeli dan penjual melalui WhatsApp atau media komunikasi lain yang disepakati bersama.</p>
         <p>Alur umumnya adalah sebagai berikut:</p>
         <ol>
             <li>Pembeli menemukan produk yang diinginkan di halaman Marketplace.</li>
             <li>Pembeli menekan tombol <strong>"Hubungi Penjual"</strong> yang akan langsung membuka chat WhatsApp ke nomor penjual.</li>
             <li>Penjual dan pembeli mendiskusikan detail: ketersediaan stok, kondisi barang, harga final, dan metode pengiriman.</li>
-            <li>Pembayaran dan pengiriman diurus langsung oleh kedua pihak — bisa transfer bank, COD, rekber, atau cara lain yang disepakati.</li>
+            <li>Pembayaran dan pengiriman diurus langsung oleh kedua pihak â€” bisa transfer bank, COD, rekber, atau cara lain yang disepakati.</li>
         </ol>
         <div class="not-prose bg-yellow-50 border border-yellow-200 rounded-2xl p-5 mt-4 flex gap-4">
-            <div class="text-yellow-500 text-2xl shrink-0">⚠️</div>
+            <div class="text-yellow-500 text-2xl shrink-0">âš ï¸</div>
             <div>
-                <div class="font-bold text-navy text-sm mb-1">Archeryhub.id Bukan Pihak dalam Transaksi</div>
-                <div class="text-gray-600 text-sm">Karena pembayaran tidak melewati platform, Archeryhub.id tidak dapat dan tidak bertanggung jawab atas sengketa antara pembeli dan penjual. Selalu lakukan verifikasi identitas penjual dan gunakan metode pembayaran yang aman.</div>
+                <div class="font-bold text-navy text-sm mb-1">archeris.net Bukan Pihak dalam Transaksi</div>
+                <div class="text-gray-600 text-sm">Karena pembayaran tidak melewati platform, archeris.net tidak dapat dan tidak bertanggung jawab atas sengketa antara pembeli dan penjual. Selalu lakukan verifikasi identitas penjual dan gunakan metode pembayaran yang aman.</div>
             </div>
         </div>
 
@@ -1777,19 +1777,19 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
             <li>Tambahan biaya ongkos kirim yang disepakati.</li>
             <li>Diskon khusus yang ditawarkan penjual secara pribadi.</li>
         </ul>
-        <p>Archeryhub.id tidak terlibat dalam proses penetapan atau perubahan harga ini.</p>
+        <p>archeris.net tidak terlibat dalam proses penetapan atau perubahan harga ini.</p>
 
         <h2 id="promosi-berbayar">Promosi & Fitur Berbayar (Opsional)</h2>
-        <p>Meskipun listing dasar sepenuhnya gratis, ke depannya Archeryhub.id berencana menyediakan fitur opsional berbayar untuk meningkatkan visibilitas produk, seperti:</p>
+        <p>Meskipun listing dasar sepenuhnya gratis, ke depannya archeris.net berencana menyediakan fitur opsional berbayar untuk meningkatkan visibilitas produk, seperti:</p>
         <ul>
-            <li><strong>Produk Unggulan</strong> — Produk tampil di bagian teratas halaman Marketplace dan di homepage.</li>
-            <li><strong>Badge Toko Terverifikasi</strong> — Menambah kepercayaan pembeli dengan tanda verifikasi identitas penjual.</li>
-            <li><strong>Iklan Kategori</strong> — Slot iklan di halaman kategori tertentu.</li>
+            <li><strong>Produk Unggulan</strong> â€” Produk tampil di bagian teratas halaman Marketplace dan di homepage.</li>
+            <li><strong>Badge Toko Terverifikasi</strong> â€” Menambah kepercayaan pembeli dengan tanda verifikasi identitas penjual.</li>
+            <li><strong>Iklan Kategori</strong> â€” Slot iklan di halaman kategori tertentu.</li>
         </ul>
         <p>Fitur-fitur ini bersifat opsional dan tidak memengaruhi kemampuan dasar penjual untuk berjualan secara gratis. Pengumuman resmi akan disampaikan melalui email dan notifikasi platform.</p>
 
         <h2 id="kebijakan-konten">Kebijakan Konten Produk</h2>
-        <p>Meskipun gratis dan tanpa komisi, setiap produk yang didaftarkan harus mematuhi kebijakan konten Archeryhub.id:</p>
+        <p>Meskipun gratis dan tanpa komisi, setiap produk yang didaftarkan harus mematuhi kebijakan konten archeris.net:</p>
         <ul>
             <li>Produk harus relevan dengan olahraga panahan.</li>
             <li>Foto dan deskripsi harus akurat dan tidak menyesatkan.</li>
@@ -1799,3 +1799,5 @@ const a={slug:"apa-itu-archeryhub",title:"Apa itu Archeryhub.id?",excerpt:"Penge
         <p>Pelanggaran terhadap kebijakan ini dapat mengakibatkan produk dihapus atau akun penjual dinonaktifkan.</p>
     `},I=[a,e,n,t,i,r,s,l,d,u,o,p,g,k,m,b,h,c,y,x,v,f,P,j,A,S,w,T,M,K,B,D,E];export{I as d};
 //# sourceMappingURL=CgIY9ify.js.map
+
+

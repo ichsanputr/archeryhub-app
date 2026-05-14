@@ -1,4 +1,4 @@
-<template>
+﻿<template>
     <!-- Precision Ecosystem Features -->
     <section ref="sectionRef" class="relative bg-white py-12 sm:py-24 md:py-32 overflow-hidden border-b border-gray-100">
         <!-- Background Glow/Patterns -->
@@ -197,7 +197,7 @@ const featureItems = [
         title: 'Registrasi Event Simpel',
         icon: 'ph:user-plus-bold',
         description: 'Daftar turnamen dalam satu klik.',
-        longDescription: 'Capek nginput data yang sama berulang kali? Di Archeryhub, profil atlet kamu udah kesimpan aman. Kamu tinggal pilih event, klik daftar, dan beres!',
+        longDescription: 'Capek nginput data yang sama berulang kali? Di Archeris, profil atlet kamu udah kesimpan aman. Kamu tinggal pilih event, klik daftar, dan beres!',
         image: '/features/feature_registration.png'
     },
     {
@@ -225,7 +225,7 @@ const featureItems = [
         title: 'Pembayaran Terintegrasi',
         icon: 'ph:credit-card-bold',
         description: 'Transaksi aman dan instan.',
-        longDescription: 'Bayar pendaftaran turnamen kini lebih mudah dengan virtual account, e-wallet, dan QRIS yang terintegrasi langsung di aplikasi Archeryhub.',
+        longDescription: 'Bayar pendaftaran turnamen kini lebih mudah dengan virtual account, e-wallet, dan QRIS yang terintegrasi langsung di aplikasi Archeris.',
         image: '/features/feature_payment.png'
     },
     {
@@ -293,3 +293,4 @@ const featureItems = [
     animation: fadeIn 0.4s ease-out forwards;
 }
 </style>
+

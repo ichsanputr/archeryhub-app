@@ -1,4 +1,4 @@
-export const manajemen_keuangan = {
+﻿export const manajemen_keuangan = {
     slug: 'manajemen-keuangan', title: 'Manajemen Keuangan & Saldo', excerpt: 'Panduan lengkap pengelolaan penghasilan, saldo, dan pengaturan rekening bank pada dashboard Organisasi.', icon: 'ph:wallet-bold', category: 'platform', readTime: '6 menit',
     toc: [
         { id: 'penghasilan-saya', level: 2, text: 'Menu Penghasilan Saya' },
@@ -12,7 +12,7 @@ export const manajemen_keuangan = {
                     <img src="/docs/organization-menu-penghasilan-saya.png" alt="Menu Penghasilan Saya" />
                     
                     <h2 id="saldo-organisasi">Saldo & Riwayat Transaksi</h2>
-                    <p>Seluruh dana hasil pendaftaran yang telah diverifikasi (status Paid) akan masuk ke dalam <strong>Saldo Organisasi</strong> Anda. Sistem Archeryhub.id mencatat setiap mutasi saldo secara detail:</p>
+                    <p>Seluruh dana hasil pendaftaran yang telah diverifikasi (status Paid) akan masuk ke dalam <strong>Saldo Organisasi</strong> Anda. Sistem archeris.net mencatat setiap mutasi saldo secara detail:</p>
                     <ul>
                         <li><strong>Dana Masuk:</strong> Pendapatan bersih dari pendaftaran peserta setelah dikurangi biaya layanan platform.</li>
                         <li><strong>Dana Keluar:</strong> Riwayat penarikan dana (withdrawal) yang telah Anda lakukan ke rekening bank terdaftar.</li>
@@ -32,11 +32,12 @@ export const manajemen_keuangan = {
                     <p>Penarikan dana dapat dilakukan secara fleksibel dari saldo yang tersedia. Anda cukup memasukkan nominal penarikan, dan sistem akan memproses transfer ke rekening bank Anda dalam kurun waktu 1-3 hari kerja (tergantung kebijakan bank masing-masing).</p>
 
                     <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-8 flex gap-4">
-                        <div class="text-primary text-2xl shrink-0">�️</div>
+                        <div class="text-primary text-2xl shrink-0">ï¿½ï¸</div>
                         <div>
                             <div class="font-bold text-navy text-sm mb-1">Keamanan Finansial</div>
-                            <div class="text-gray-600 text-sm">Archeryhub.id menggunakan sistem keamanan berlapis untuk setiap transaksi keuangan. Pastikan Anda tidak membagikan kredensial login atau kode verifikasi kepada pihak manapun demi keamanan saldo organisasi Anda.</div>
+                            <div class="text-gray-600 text-sm">archeris.net menggunakan sistem keamanan berlapis untuk setiap transaksi keuangan. Pastikan Anda tidak membagikan kredensial login atau kode verifikasi kepada pihak manapun demi keamanan saldo organisasi Anda.</div>
                         </div>
                     </div>
                 `
 }
+

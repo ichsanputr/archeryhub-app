@@ -1,4 +1,4 @@
-<template>
+﻿<template>
     <div class="relative w-full flex items-center justify-center p-4">
         <!-- Animated background elements -->
         <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/20 rounded-full blur-[100px] animate-pulse"></div>
@@ -39,10 +39,10 @@
                     tetap update di Instagram kami.
                 </p>
 
-                <a href="https://www.instagram.com/archeryhub.id/" target="_blank"
+                <a href="https://www.instagram.com/archeris.net/" target="_blank"
                     class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-tr from-[#833ab4] via-[#fd1d1d] to-[#fcb045] text-white rounded-2xl font-black text-sm  tracking-widest shadow-lg hover:shadow-sm hover:scale-[1.02] transition-all">
                     <Icon icon="ph:instagram-logo-fill" class="text-xl" />
-                    Follow @archeryhub.id
+                    Follow @archeris.net
                 </a>
             </div>
         </div>
@@ -68,3 +68,4 @@
     }
 }
 </style>
+

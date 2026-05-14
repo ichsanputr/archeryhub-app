@@ -1,4 +1,4 @@
-<template>
+﻿<template>
     <Transition enter-active-class="transition duration-300 ease-out" enter-from-class="opacity-0"
         enter-to-class="opacity-100" leave-active-class="transition duration-500 ease-in" leave-from-class="opacity-100"
         leave-to-class="opacity-0">
@@ -19,7 +19,7 @@
                     <div class="absolute inset-0 bg-primary/20 blur-2xl rounded-full animate-pulse"></div>
                     <div
                         class="relative size-24 sm:size-32 bg-navy rounded-[32px] border-2 border-primary/30 flex items-center justify-center shadow-2xl overflow-hidden group">
-                        <img src="/logo.png" alt="ArcheryHub" class="w-16 h-16 sm:w-20 sm:h-20 object-contain" />
+                        <img src="/logo.png" alt="Archeris" class="w-16 h-16 sm:w-20 sm:h-20 object-contain" />
 
                         <!-- Scanning Line Effect -->
                         <div
@@ -31,7 +31,7 @@
                 <!-- Text and Progress -->
                 <div class="text-center space-y-4">
                     <div class="flex flex-col gap-1">
-                        <h2 class="text-white text-2xl font-black tracking-[0.2em] uppercase">ArcheryHub</h2>
+                        <h2 class="text-white text-2xl font-black tracking-[0.2em] uppercase">Archeris</h2>
                         <p class="text-primary/60 text-[10px] font-bold uppercase tracking-[0.4em]">Menyiapkan Aplikasi
                         </p>
                     </div>
@@ -126,3 +126,4 @@ defineProps({
     background-color: rgba(217, 255, 0, 0.2);
 }
 </style>
+

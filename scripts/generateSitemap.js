@@ -10,12 +10,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Configuration
-const SITE_URL = 'https://archeryhub.id';
+const SITE_URL = 'https://Archeris.id';
 const API_URL = 'http://localhost:8001/api/v1'; // Fallback if no .env
 const OUTPUT_FILE = path.join(__dirname, '../public/sitemap.xml');
 
 async function generateSitemap() {
-    console.log('--- Archeryhub.id Sitemap Generator ---');
+    console.log('--- Archeris.id Sitemap Generator ---');
     console.log(`Site URL: ${SITE_URL}`);
     console.log(`API URL: ${API_URL}`);
 

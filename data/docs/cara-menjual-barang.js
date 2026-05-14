@@ -1,7 +1,7 @@
-export const cara_menjual_barang = {
+﻿export const cara_menjual_barang = {
     slug: 'cara-menjual-barang',
     title: 'Cara Menjual Barang di Marketplace',
-    excerpt: 'Panduan lengkap bagi penjual untuk mendaftarkan toko, mengunggah produk, dan mengelola pesanan di Marketplace Archeryhub.id.',
+    excerpt: 'Panduan lengkap bagi penjual untuk mendaftarkan toko, mengunggah produk, dan mengelola pesanan di Marketplace archeris.net.',
     icon: 'ph:storefront-bold',
     category: 'marketplace',
     readTime: '5 menit',
@@ -15,18 +15,18 @@ export const cara_menjual_barang = {
     ],
     content: `
         <h2 id="syarat-penjual">Syarat Menjadi Penjual</h2>
-        <p>Siapa pun dapat berjualan di Marketplace Archeryhub.id selama memenuhi syarat berikut:</p>
+        <p>Siapa pun dapat berjualan di Marketplace archeris.net selama memenuhi syarat berikut:</p>
         <ul>
-            <li>Memiliki akun Archeryhub.id yang sudah terverifikasi.</li>
+            <li>Memiliki akun archeris.net yang sudah terverifikasi.</li>
             <li>Menyetujui Syarat & Ketentuan Penjual dan Kebijakan Marketplace.</li>
             <li>Memiliki nomor rekening bank atau dompet digital yang valid untuk pencairan dana.</li>
             <li>Menjual produk yang relevan dengan olahraga panahan (perlengkapan, aksesoris, pakaian, jasa pelatihan, dll.).</li>
         </ul>
         <div class="not-prose bg-blue-50 border border-blue-200 rounded-2xl p-5 mt-4 flex gap-4">
-            <div class="text-blue-500 text-2xl shrink-0">ℹ️</div>
+            <div class="text-blue-500 text-2xl shrink-0">â„¹ï¸</div>
             <div>
                 <div class="font-bold text-navy text-sm mb-1">Verifikasi Toko</div>
-                <div class="text-gray-600 text-sm">Toko baru akan masuk ke tahap review oleh tim Archeryhub.id dalam 1×24 jam. Produk baru dapat langsung diunggah namun akan ditampilkan ke publik setelah toko disetujui.</div>
+                <div class="text-gray-600 text-sm">Toko baru akan masuk ke tahap review oleh tim archeris.net dalam 1Ã—24 jam. Produk baru dapat langsung diunggah namun akan ditampilkan ke publik setelah toko disetujui.</div>
             </div>
         </div>
 
@@ -37,7 +37,7 @@ export const cara_menjual_barang = {
             <li>Isi nama toko, deskripsi singkat, dan logo toko.</li>
             <li>Masukkan informasi rekening bank atau dompet digital untuk pencairan.</li>
             <li>Centang persetujuan syarat & ketentuan penjual, lalu klik <strong>Daftarkan Toko</strong>.</li>
-            <li>Tunggu konfirmasi email dari tim Archeryhub.id.</li>
+            <li>Tunggu konfirmasi email dari tim archeris.net.</li>
         </ol>
 
         <h2 id="tambah-produk">Mengunggah Produk</h2>
@@ -55,7 +55,7 @@ export const cara_menjual_barang = {
                     <tr><td class="px-4 py-3 font-bold text-navy">Kategori</td><td class="px-4 py-3">Pilih kategori yang paling sesuai (Peralatan, Pakaian, Aksesoris, Latihan, dll.).</td></tr>
                     <tr><td class="px-4 py-3 font-bold text-navy">Harga</td><td class="px-4 py-3">Harga dalam Rupiah sebelum biaya pengiriman.</td></tr>
                     <tr><td class="px-4 py-3 font-bold text-navy">Stok</td><td class="px-4 py-3">Jumlah unit yang tersedia. Sistem akan otomatis menutup listing jika stok habis.</td></tr>
-                    <tr><td class="px-4 py-3 font-bold text-navy">Foto Produk</td><td class="px-4 py-3">Minimal 1 foto, disarankan 3–5 foto dari berbagai sudut.</td></tr>
+                    <tr><td class="px-4 py-3 font-bold text-navy">Foto Produk</td><td class="px-4 py-3">Minimal 1 foto, disarankan 3â€“5 foto dari berbagai sudut.</td></tr>
                     <tr><td class="px-4 py-3 font-bold text-navy">Deskripsi</td><td class="px-4 py-3">Jelaskan spesifikasi, kondisi (baru/bekas), dan keunggulan produk.</td></tr>
                     <tr><td class="px-4 py-3 font-bold text-navy">Berat & Dimensi</td><td class="px-4 py-3">Digunakan untuk kalkulasi biaya pengiriman otomatis.</td></tr>
                 </tbody>
@@ -73,16 +73,16 @@ export const cara_menjual_barang = {
         <h2 id="proses-pesanan">Memproses Pesanan Masuk</h2>
         <p>Setiap pesanan masuk akan tampil di <strong>Dashboard Toko > Pesanan</strong>. Alur prosesnya:</p>
         <ol>
-            <li><strong>Menunggu Konfirmasi</strong> — Pesanan baru dari pembeli, dana sudah ditahan sistem.</li>
-            <li><strong>Diproses</strong> — Anda mengonfirmasi ketersediaan dan mulai menyiapkan paket.</li>
-            <li><strong>Dikirim</strong> — Masukkan nomor resi pengiriman. Pembeli akan menerima notifikasi.</li>
-            <li><strong>Selesai</strong> — Barang diterima pembeli, dana dicairkan ke saldo toko Anda.</li>
+            <li><strong>Menunggu Konfirmasi</strong> â€” Pesanan baru dari pembeli, dana sudah ditahan sistem.</li>
+            <li><strong>Diproses</strong> â€” Anda mengonfirmasi ketersediaan dan mulai menyiapkan paket.</li>
+            <li><strong>Dikirim</strong> â€” Masukkan nomor resi pengiriman. Pembeli akan menerima notifikasi.</li>
+            <li><strong>Selesai</strong> â€” Barang diterima pembeli, dana dicairkan ke saldo toko Anda.</li>
         </ol>
         <div class="not-prose bg-yellow-50 border border-yellow-200 rounded-2xl p-5 mt-4 flex gap-4">
-            <div class="text-yellow-500 text-2xl shrink-0">⚠️</div>
+            <div class="text-yellow-500 text-2xl shrink-0">âš ï¸</div>
             <div>
                 <div class="font-bold text-navy text-sm mb-1">Batas Waktu Konfirmasi</div>
-                <div class="text-gray-600 text-sm">Pesanan harus dikonfirmasi dalam 2×24 jam kerja. Jika tidak dikonfirmasi, sistem akan secara otomatis membatalkan pesanan dan mengembalikan dana ke pembeli.</div>
+                <div class="text-gray-600 text-sm">Pesanan harus dikonfirmasi dalam 2Ã—24 jam kerja. Jika tidak dikonfirmasi, sistem akan secara otomatis membatalkan pesanan dan mengembalikan dana ke pembeli.</div>
             </div>
         </div>
 
@@ -97,3 +97,4 @@ export const cara_menjual_barang = {
         </ul>
     `
 }
+

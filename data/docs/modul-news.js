@@ -1,5 +1,5 @@
-export const modul_news = {
-    slug: 'modul-news', title: 'Modul Berita & Publikasi', excerpt: 'Panduan lengkap cara mengelola konten berita, pengumuman, dan artikel edukasi untuk membangun engagement komunitas di Archeryhub.id.', icon: 'ph:newspaper-clipping-bold', category: 'platform', readTime: '5 menit',
+﻿export const modul_news = {
+    slug: 'modul-news', title: 'Modul Berita & Publikasi', excerpt: 'Panduan lengkap cara mengelola konten berita, pengumuman, dan artikel edukasi untuk membangun engagement komunitas di archeris.net.', icon: 'ph:newspaper-clipping-bold', category: 'platform', readTime: '5 menit',
     toc: [
         { id: 'pengenalan-news', level: 2, text: 'Pengenalan Modul Berita' },
         { id: 'membuat-berita', level: 2, text: 'Membuat Konten Baru' },
@@ -49,11 +49,12 @@ export const modul_news = {
                     </ul>
 
                     <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-8 flex gap-4">
-                        <div class="text-primary text-2xl shrink-0">📈</div>
+                        <div class="text-primary text-2xl shrink-0">ðŸ“ˆ</div>
                         <div>
                             <div class="font-bold text-navy text-sm mb-1">Strategi Konten</div>
-                            <div class="text-gray-600 text-sm">Berita yang disertai gambar berkualitas tinggi dan tag yang tepat cenderung mendapatkan 2x lipat lebih banyak pembaca di platform Archeryhub.id.</div>
+                            <div class="text-gray-600 text-sm">Berita yang disertai gambar berkualitas tinggi dan tag yang tepat cenderung mendapatkan 2x lipat lebih banyak pembaca di platform archeris.net.</div>
                         </div>
                     </div>
                 `
 }
+

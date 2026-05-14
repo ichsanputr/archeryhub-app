@@ -1,7 +1,7 @@
-export const peran_pengguna = {
-    slug: 'peran-pengguna', title: 'Jenis Akun di Platform', excerpt: 'Panduan lengkap jenis akun, hak akses, dan alur kerja tiap tipe pengguna di Archeryhub.id.', icon: 'ph:users-three-bold', category: 'platform', readTime: '8 menit',
+﻿export const peran_pengguna = {
+    slug: 'peran-pengguna', title: 'Jenis Akun di Platform', excerpt: 'Panduan lengkap jenis akun, hak akses, dan alur kerja tiap tipe pengguna di archeris.net.', icon: 'ph:users-three-bold', category: 'platform', readTime: '8 menit',
     toc: [
-        { id: 'tipe-akun', level: 2, text: 'Tipe Akun di Archeryhub.id' },
+        { id: 'tipe-akun', level: 2, text: 'Tipe Akun di archeris.net' },
         { id: 'pemanah', level: 2, text: 'Akun Pemanah' },
         { id: 'organisasi', level: 2, text: 'Akun Organisasi' },
         { id: 'penjual', level: 2, text: 'Akun Penjual' },
@@ -9,8 +9,8 @@ export const peran_pengguna = {
         { id: 'pilih-peran', level: 2, text: 'Bagaimana Memilih Akun yang Tepat?' },
     ],
     content: `
-                    <h2 id="tipe-akun">Tipe Akun di Archeryhub.id</h2>
-                    <p>Archeryhub.id dirancang untuk melayani satu ekosistem panahan yang lengkap. Karena kebutuhan pengguna berbeda-beda, sistem menyediakan tiga tipe akun utama: <strong>Pemanah</strong>, <strong>Organisasi</strong> (Penyelenggara), dan <strong>Penjual</strong>. Masing-masing tipe memiliki dashboard, menu, serta kewenangan yang disesuaikan dengan fungsinya.</p>
+                    <h2 id="tipe-akun">Tipe Akun di archeris.net</h2>
+                    <p>archeris.net dirancang untuk melayani satu ekosistem panahan yang lengkap. Karena kebutuhan pengguna berbeda-beda, sistem menyediakan tiga tipe akun utama: <strong>Pemanah</strong>, <strong>Organisasi</strong> (Penyelenggara), dan <strong>Penjual</strong>. Masing-masing tipe memiliki dashboard, menu, serta kewenangan yang disesuaikan dengan fungsinya.</p>
                     <p>Memilih tipe akun yang tepat sejak awal akan membuat alur kerja Anda lebih efisien, mulai dari pendaftaran event, penyelenggaraan turnamen, hingga penjualan produk panahan.</p>
 
                     <h2 id="pemanah">Akun Pemanah</h2>
@@ -80,3 +80,4 @@ export const peran_pengguna = {
                     <p>Setiap tipe akun memiliki workflow yang berbeda. Pastikan Anda memilih sesuai kebutuhan utama Anda saat ini.</p>
                 `
 }
+

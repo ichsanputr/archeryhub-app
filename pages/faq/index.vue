@@ -22,7 +22,7 @@
                     </h1>
                     <p class="text-white/90 text-sm md:text-lg leading-relaxed max-w-xl mx-auto md:mx-0">
                         Temukan jawaban cepat untuk pertanyaan umum mengenai pendaftaran, organisasi, dan sistem
-                        scoring Archeryhub.id.
+                        scoring Archeris.net.
                     </p>
                 </div>
             </div>
@@ -88,12 +88,12 @@ const toggleFaq = (index) => {
 
 const faqs = [
     {
-        question: 'Bagaimana cara mendaftarkan organisasi di Archeryhub.id?',
+        question: 'Bagaimana cara mendaftarkan organisasi di Archeris.net?',
         answer: 'Anda dapat mendaftarkan organisasi melalui halaman registrasi dengan memilih tipe akun "Organisasi". Setelah email terverifikasi, Anda dapat melengkapi profil organisasi dan mulai mengelola event.'
     },
     {
         question: 'Apakah sistem scoring bisa digunakan untuk turnamen offline?',
-        answer: 'Tentu! Archeryhub.id dirancang untuk mempermudah scoring turnamen offline secara digital. Skor dapat diinput langsung oleh wasit atau peserta melalui aplikasi.'
+        answer: 'Tentu! Archeris.net dirancang untuk mempermudah scoring turnamen offline secara digital. Skor dapat diinput langsung oleh wasit atau peserta melalui aplikasi.'
     },
     {
         question: 'Bagaimana proses pembayaran pendaftaran event?',
@@ -105,11 +105,11 @@ const faqs = [
     },
     {
         question: 'Bagaimana cara mengajukan bantuan teknis?',
-        answer: 'Jika Anda mengalami kendala teknis, silakan hubungi tim support kami melalui halaman Kontak atau kirimkan email ke support@archeryhub.id.'
+        answer: 'Jika Anda mengalami kendala teknis, silakan hubungi tim support kami melalui halaman Kontak atau kirimkan email ke support@archeris.net.'
     }
 ]
 
 useHead({
-    title: 'FAQ - Pertanyaan Sering Diajukan - Archeryhub.id'
+    title: 'FAQ - Pertanyaan Sering Diajukan - Archeris.net'
 })
 </script>

@@ -23,9 +23,9 @@ export default defineNuxtConfig({
   runtimeConfig: {
     apiBaseUrl: process.env.NUXT_API_BASE_URL || 'http://localhost:8001/api/v1',
     public: {
-      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || 'https://api.archeryhub.id/api/v1',
-      siteUrl: 'https://archeryhub.id',
-      siteName: 'Archeryhub.id',
+      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || 'https://api.archeris.net/api/v1',
+      siteUrl: 'https://archeris.net',
+      siteName: 'Archeris.net',
     }
   },
   app: {
@@ -35,12 +35,12 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'en'
       },
-      title: 'Archeryhub.id - All In One Platform Panahan Indonesia',
+      title: 'Archeris.net - All In One Platform Panahan Indonesia',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         {
-          name: 'description', content: 'Archeryhub.id hadir sebagai wadah bagi seluruh penggiat panahan di Indonesia. Dari pemula hingga juara nasional, di sini kita terhubung lewat event, prestasi, dan semangat yang sama.'
+          name: 'description', content: 'Archeris.net hadir sebagai wadah bagi seluruh penggiat panahan di Indonesia. Dari pemula hingga juara nasional, di sini kita terhubung lewat event, prestasi, dan semangat yang sama.'
         },
       ],
       link: [

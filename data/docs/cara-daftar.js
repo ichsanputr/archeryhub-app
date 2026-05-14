@@ -1,5 +1,5 @@
-export const cara_daftar = {
-  slug: 'cara-daftar', title: 'Cara Mendaftar Akun', excerpt: 'Panduan langkah demi langkah untuk mendaftarkan akun baru di Archeryhub.id.', icon: 'ph:user-plus-bold', category: 'platform', readTime: '4 menit',
+﻿export const cara_daftar = {
+  slug: 'cara-daftar', title: 'Cara Mendaftar Akun', excerpt: 'Panduan langkah demi langkah untuk mendaftarkan akun baru di archeris.net.', icon: 'ph:user-plus-bold', category: 'platform', readTime: '4 menit',
   toc: [
     { id: 'pilih-tipe', level: 2, text: 'Pilih Tipe Akun' },
     { id: 'daftar-email', level: 2, text: 'Daftar via Email' },
@@ -8,7 +8,7 @@ export const cara_daftar = {
   ],
   content: `
           <h2 id="pilih-tipe">Pilih Tipe Akun</h2>
-          <p>Archeryhub.id menyediakan tiga tipe akun utama yang dapat dipilih saat pendaftaran: <strong>Pemanah</strong>, <strong>Organisasi</strong> (Penyelenggara), dan <strong>Penjual</strong>. Pilih tipe yang sesuai dengan peran Anda dalam ekosistem panahan.</p>
+          <p>archeris.net menyediakan tiga tipe akun utama yang dapat dipilih saat pendaftaran: <strong>Pemanah</strong>, <strong>Organisasi</strong> (Penyelenggara), dan <strong>Penjual</strong>. Pilih tipe yang sesuai dengan peran Anda dalam ekosistem panahan.</p>
           <h2 id="daftar-email">Daftar via Email</h2>
           <ol>
             <li>Kunjungi halaman <a href="/auth/register" class="text-primary font-semibold">Daftar</a>.</li>
@@ -23,3 +23,4 @@ export const cara_daftar = {
           <p>Setelah verifikasi berhasil, Anda akan langsung diarahkan ke dashboard sesuai tipe akun yang dipilih. Lengkapi profil Anda agar informasi tampil dengan benar di halaman publik.</p>
         `
 }
+

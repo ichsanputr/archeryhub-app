@@ -1,7 +1,7 @@
-export const fase_kualifikasi = {
+﻿export const fase_kualifikasi = {
     slug: 'fase-kualifikasi',
     title: 'Fase Kualifikasi dalam Pertandingan Panahan',
-    excerpt: 'Memahami tujuan, format, dan mekanisme fase kualifikasi — fondasi utama setiap kompetisi panahan modern.',
+    excerpt: 'Memahami tujuan, format, dan mekanisme fase kualifikasi â€” fondasi utama setiap kompetisi panahan modern.',
     icon: 'ph:chart-line-up-bold',
     category: 'archery',
     readTime: '5 menit',
@@ -11,7 +11,7 @@ export const fase_kualifikasi = {
         { id: 'sistem-penilaian', level: 2, text: 'Sistem Penilaian & Tie-Break' },
         { id: 'hasil-kualifikasi', level: 2, text: 'Apa yang Ditentukan oleh Hasil Kualifikasi?' },
         { id: 'mengapa-kualifikasi-penting', level: 2, text: 'Mengapa Fase Ini Sangat Penting?' },
-        { id: 'kualifikasi-di-archeryhub', level: 2, text: 'Kualifikasi di Platform Archeryhub.id' },
+        { id: 'kualifikasi-di-Archeris', level: 2, text: 'Kualifikasi di Platform archeris.net' },
     ],
     content: `
         <h2 id="apa-itu-kualifikasi">Apa Itu Fase Kualifikasi?</h2>
@@ -31,9 +31,9 @@ export const fase_kualifikasi = {
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100 bg-white">
-                    <tr><td class="px-4 py-3 font-bold text-navy">720 Round</td><td class="px-4 py-3">50–70 m</td><td class="px-4 py-3">72 panah (6 panah × 12 end)</td><td class="px-4 py-3">Recurve, Standard Bow (outdoor)</td></tr>
+                    <tr><td class="px-4 py-3 font-bold text-navy">720 Round</td><td class="px-4 py-3">50â€“70 m</td><td class="px-4 py-3">72 panah (6 panah Ã— 12 end)</td><td class="px-4 py-3">Recurve, Standard Bow (outdoor)</td></tr>
                     <tr><td class="px-4 py-3 font-bold text-navy">1440 Round</td><td class="px-4 py-3">90/70/50/30 m</td><td class="px-4 py-3">144 panah</td><td class="px-4 py-3">Recurve (kompetisi penuh)</td></tr>
-                    <tr><td class="px-4 py-3 font-bold text-navy">25 m Indoor</td><td class="px-4 py-3">18 m / 25 m</td><td class="px-4 py-3">60 panah (3 panah × 20 end)</td><td class="px-4 py-3">Semua divisi (indoor)</td></tr>
+                    <tr><td class="px-4 py-3 font-bold text-navy">25 m Indoor</td><td class="px-4 py-3">18 m / 25 m</td><td class="px-4 py-3">60 panah (3 panah Ã— 20 end)</td><td class="px-4 py-3">Semua divisi (indoor)</td></tr>
                     <tr><td class="px-4 py-3 font-bold text-navy">Field Round</td><td class="px-4 py-3">Bervariasi</td><td class="px-4 py-3">24 atau 48 target</td><td class="px-4 py-3">Field archery</td></tr>
                 </tbody>
             </table>
@@ -43,9 +43,9 @@ export const fase_kualifikasi = {
         <h2 id="sistem-penilaian">Sistem Penilaian & Tie-Break</h2>
         <p>Nilai per panah ditentukan oleh zona target yang terttenai:</p>
         <ul>
-            <li><strong>10 (Emas dalam)</strong> — Lingkaran terdalam (X), bernilai 10 poin, dihitung terpisah sebagai tie-break.</li>
-            <li><strong>9, 8, 7 …</strong> — Zona berikutnya berurutan keluar dari pusat.</li>
-            <li><strong>M (Miss)</strong> — Panah tidak mengenai target atau jatuh, bernilai 0.</li>
+            <li><strong>10 (Emas dalam)</strong> â€” Lingkaran terdalam (X), bernilai 10 poin, dihitung terpisah sebagai tie-break.</li>
+            <li><strong>9, 8, 7 â€¦</strong> â€” Zona berikutnya berurutan keluar dari pusat.</li>
+            <li><strong>M (Miss)</strong> â€” Panah tidak mengenai target atau jatuh, bernilai 0.</li>
         </ul>
         <p>Jika dua atau lebih atlet memiliki total poin yang sama, <em>tie-break</em> ditentukan secara berurutan oleh:</p>
         <ol>
@@ -57,29 +57,29 @@ export const fase_kualifikasi = {
         <h2 id="hasil-kualifikasi">Apa yang Ditentukan oleh Hasil Kualifikasi?</h2>
         <p>Hasil kualifikasi menghasilkan sebuah <strong>daftar ranking</strong> (seeding list) per kategori/divisi. Ranking ini menentukan:</p>
         <ul>
-            <li><strong>Siapa yang lolos ke babak eliminasi</strong> — Hanya sejumlah peserta teratas (biasanya 8, 16, atau 32 besar) yang melanjutkan ke fase eliminasi head-to-head.</li>
-            <li><strong>Posisi bracket eliminasi</strong> — Peringkat #1 dari kualifikasi akan bertanding melawan peringkat terakhir yang lolos; format ini disebut <em>bracket seeding</em>.</li>
-            <li><strong>Penghargaan kualifikasi</strong> — Beberapa event memberikan gelar atau medali tersendiri untuk juara babak kualifikasi.</li>
+            <li><strong>Siapa yang lolos ke babak eliminasi</strong> â€” Hanya sejumlah peserta teratas (biasanya 8, 16, atau 32 besar) yang melanjutkan ke fase eliminasi head-to-head.</li>
+            <li><strong>Posisi bracket eliminasi</strong> â€” Peringkat #1 dari kualifikasi akan bertanding melawan peringkat terakhir yang lolos; format ini disebut <em>bracket seeding</em>.</li>
+            <li><strong>Penghargaan kualifikasi</strong> â€” Beberapa event memberikan gelar atau medali tersendiri untuk juara babak kualifikasi.</li>
         </ul>
         <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-4 flex gap-4">
-            <div class="text-primary text-2xl shrink-0">🏹</div>
+            <div class="text-primary text-2xl shrink-0">ðŸ¹</div>
             <div>
-                <div class="font-bold text-navy text-sm mb-1">Kualifikasi ≠ Hanya "Babak Penyisihan"</div>
+                <div class="font-bold text-navy text-sm mb-1">Kualifikasi â‰  Hanya "Babak Penyisihan"</div>
                 <div class="text-gray-600 text-sm">Peringkat kualifikasi yang baik memberikan keuntungan besar di eliminasi: Anda mendapat lawan yang (secara teoritis) lebih lemah di babak awal dan mendapat "sisi" bracket yang lebih mudah. Atlet berperingkat #1 hampir selalu menghindari bertemu sesama unggulan sampai final.</div>
             </div>
         </div>
 
         <h2 id="mengapa-kualifikasi-penting">Mengapa Fase Ini Sangat Penting Bagi Setiap Atlet?</h2>
-        <p>Banyak atlet pemula menganggap kualifikasi sebagai formalitas belaka — padahal sebenarnya kualifikasi adalah tahap yang paling menentukan <em>jalur perjalanan</em> mereka dalam kompetisi. Berikut alasannya:</p>
+        <p>Banyak atlet pemula menganggap kualifikasi sebagai formalitas belaka â€” padahal sebenarnya kualifikasi adalah tahap yang paling menentukan <em>jalur perjalanan</em> mereka dalam kompetisi. Berikut alasannya:</p>
         <ul>
-            <li><strong>Konsistensi diuji</strong> — Kualifikasi menembak banyak panah dalam durasi panjang, menuntut konsentrasi dan stamina yang stabil dari awal hingga akhir.</li>
-            <li><strong>Tidak ada "second chance"</strong> — Berbeda dengan eliminasi yang bisa berputar nasib dalam satu end, satu panah meleset di kualifikasi tidak bisa diulangi dan langsung mempengaruhi total skor.</li>
-            <li><strong>Mental pressure berbeda</strong> — Kualifikasi adalah tekanan "akumulatif" (harus konsisten puluhan panah), sedangkan eliminasi adalah tekanan "per momen". Persiapan mental untuk keduanya berbeda.</li>
-            <li><strong>Seeding menentukan jalannya turnamen</strong> — Atlet yang serius di kualifikasi secara statistik memiliki peluang lebih tinggi untuk melaju jauh di eliminasi karena mendapat seeding yang menguntungkan.</li>
+            <li><strong>Konsistensi diuji</strong> â€” Kualifikasi menembak banyak panah dalam durasi panjang, menuntut konsentrasi dan stamina yang stabil dari awal hingga akhir.</li>
+            <li><strong>Tidak ada "second chance"</strong> â€” Berbeda dengan eliminasi yang bisa berputar nasib dalam satu end, satu panah meleset di kualifikasi tidak bisa diulangi dan langsung mempengaruhi total skor.</li>
+            <li><strong>Mental pressure berbeda</strong> â€” Kualifikasi adalah tekanan "akumulatif" (harus konsisten puluhan panah), sedangkan eliminasi adalah tekanan "per momen". Persiapan mental untuk keduanya berbeda.</li>
+            <li><strong>Seeding menentukan jalannya turnamen</strong> â€” Atlet yang serius di kualifikasi secara statistik memiliki peluang lebih tinggi untuk melaju jauh di eliminasi karena mendapat seeding yang menguntungkan.</li>
         </ul>
 
-        <h2 id="kualifikasi-di-archeryhub">Kualifikasi di Platform Archeryhub.id</h2>
-        <p>Di Archeryhub.id, fase kualifikasi difasilitasi melalui modul <strong>Qualification</strong> yang dimiliki oleh panitia event berlangganan. Fitur yang tersedia:</p>
+        <h2 id="kualifikasi-di-Archeris">Kualifikasi di Platform archeris.net</h2>
+        <p>Di archeris.net, fase kualifikasi difasilitasi melalui modul <strong>Qualification</strong> yang dimiliki oleh panitia event berlangganan. Fitur yang tersedia:</p>
         <ul>
             <li>Pembuatan sesi kualifikasi dengan konfigurasi bebas (jumlah end, panah per end, jarak).</li>
             <li>Auto-assign peserta ke bantalan secara acak atau manual.</li>
@@ -90,3 +90,5 @@ export const fase_kualifikasi = {
         </ul>
     `
 }
+
+

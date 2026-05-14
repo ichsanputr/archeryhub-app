@@ -388,14 +388,6 @@
                                 <h2 class="text-base font-black text-navy">Metode Pembayaran</h2>
                             </div>
                             <div class="p-6 space-y-5">
-                                <!-- Method Info -->
-                                <div class="p-4 rounded-xl border-2 border-navy bg-navy/5 text-navy flex items-center gap-3">
-                                    <Icon icon="ph:lightning-bold" class="text-2xl" />
-                                    <div>
-                                        <div class="text-[10px] font-black uppercase tracking-wider text-navy">Bayar Online</div>
-                                        <div class="text-[9px] text-navy/70 mt-0.5">Otomatis Terkonfirmasi</div>
-                                    </div>
-                                </div>
 
                                 <!-- Online Payment Channels — Expansion panel -->
                                 <div v-if="form.payment_type === 'online'" class="space-y-2">
