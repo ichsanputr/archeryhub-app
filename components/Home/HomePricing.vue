@@ -3,10 +3,10 @@
         <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 sm:mb-24">
                 <h2 class="text-4xl sm:text-7xl font-black text-navy leading-tight font-display tracking-tighter mb-6">
-                    Choose your level.
+                    {{ $t('home.pricing.title') }}
                 </h2>
                 <p class="text-navy/60 text-lg max-w-2xl mx-auto font-light">
-                    Mulai dari individu hingga klub besar, kami memiliki paket yang tepat untuk mendukung prestasi panahan Anda.
+                    {{ $t('home.pricing.description') }}
                 </p>
             </div>
 
@@ -14,12 +14,12 @@
                 <!-- Basic Plan -->
                 <div class="bg-[#F8F9FA] rounded-[40px] p-10 border border-navy/5 flex flex-col hover:border-primary/50 transition-colors group">
                     <div class="mb-8">
-                        <span class="px-4 py-1 bg-navy/5 text-navy text-[10px] font-bold rounded-full tracking-widest">Archer Basic</span>
+                        <span class="px-4 py-1 bg-navy/5 text-navy text-[10px] font-bold rounded-full tracking-widest">{{ $t('home.pricing.basic.name') }}</span>
                         <div class="mt-6 flex items-baseline gap-1">
-                            <span class="text-4xl font-black text-navy font-display">Free</span>
+                            <span class="text-4xl font-black text-navy font-display">{{ $t('home.pricing.basic.price') }}</span>
                         </div>
                         <p class="mt-4 text-navy/40 text-sm font-light leading-relaxed">
-                            Sempurna untuk atlet pemula yang ingin mulai mencatat skor digital.
+                            {{ $t('home.pricing.basic.desc') }}
                         </p>
                     </div>
 
@@ -32,8 +32,8 @@
                         </div>
                     </div>
 
-                    <NuxtLink to="/auth/register" class="w-full py-4 bg-navy text-white rounded-2xl text-center font-bold text-sm hover:bg-navy/90 transition-colors">
-                        Mulai Gratis
+                    <NuxtLink :to="localePath('/auth/register')" class="w-full py-4 bg-navy text-white rounded-2xl text-center font-bold text-sm hover:bg-navy/90 transition-colors">
+                        {{ $t('home.pricing.basic.cta') }}
                     </NuxtLink>
                 </div>
 
@@ -43,14 +43,14 @@
                         <Icon icon="ph:crown-fill" class="text-primary text-4xl opacity-20" />
                     </div>
                     <div class="mb-8 relative z-10">
-                        <span class="px-4 py-1 bg-primary text-navy text-[10px] font-bold rounded-full tracking-widest">Archer Pro</span>
+                        <span class="px-4 py-1 bg-primary text-navy text-[10px] font-bold rounded-full tracking-widest">{{ $t('home.pricing.pro.name') }}</span>
                         <div class="mt-6 flex items-baseline gap-1">
                             <span class="text-lg font-bold text-white/60">Rp</span>
-                            <span class="text-5xl font-black text-white font-display">29K</span>
-                            <span class="text-white/40 text-sm">/bulan</span>
+                            <span class="text-5xl font-black text-white font-display">{{ $t('home.pricing.pro.price') }}</span>
+                            <span class="text-white/40 text-sm">{{ $t('home.pricing.pro.period') }}</span>
                         </div>
                         <p class="mt-4 text-white/60 text-sm font-light leading-relaxed">
-                            Maksimalkan potensi Anda dengan statistik mendalam dan portfolio pro.
+                            {{ $t('home.pricing.pro.desc') }}
                         </p>
                     </div>
 
@@ -63,22 +63,22 @@
                         </div>
                     </div>
 
-                    <NuxtLink to="/subscription" class="w-full py-4 bg-primary text-navy rounded-2xl text-center font-bold text-sm hover:scale-105 transition-transform relative z-10">
-                        Upgrade ke Pro
+                    <NuxtLink :to="localePath('/subscription')" class="w-full py-4 bg-primary text-navy rounded-2xl text-center font-bold text-sm hover:scale-105 transition-transform relative z-10">
+                        {{ $t('home.pricing.pro.cta') }}
                     </NuxtLink>
                 </div>
 
                 <!-- Elite/Club Plan -->
                 <div class="bg-[#DEFEBD] rounded-[40px] p-10 border border-navy/5 flex flex-col hover:border-navy/20 transition-colors">
                     <div class="mb-8">
-                        <span class="px-4 py-1 bg-navy/10 text-navy text-[10px] font-bold rounded-full tracking-widest">Club Elite</span>
+                        <span class="px-4 py-1 bg-navy/10 text-navy text-[10px] font-bold rounded-full tracking-widest">{{ $t('home.pricing.elite.name') }}</span>
                         <div class="mt-6 flex items-baseline gap-1">
                             <span class="text-lg font-bold text-navy/60">Rp</span>
-                            <span class="text-4xl font-black text-navy font-display">149K</span>
-                            <span class="text-navy/40 text-sm">/bulan</span>
+                            <span class="text-4xl font-black text-navy font-display">{{ $t('home.pricing.elite.price') }}</span>
+                            <span class="text-navy/40 text-sm">{{ $t('home.pricing.elite.period') }}</span>
                         </div>
                         <p class="mt-4 text-navy/40 text-sm font-light leading-relaxed">
-                            Solusi lengkap untuk manajemen klub dan penyelenggaraan event profesional.
+                            {{ $t('home.pricing.elite.desc') }}
                         </p>
                     </div>
 
@@ -91,8 +91,8 @@
                         </div>
                     </div>
 
-                    <NuxtLink to="/subscription" class="w-full py-4 bg-navy text-white rounded-2xl text-center font-bold text-sm hover:bg-navy/90 transition-colors">
-                        Hubungi Kami
+                    <NuxtLink :to="localePath('/subscription')" class="w-full py-4 bg-navy text-white rounded-2xl text-center font-bold text-sm hover:bg-navy/90 transition-colors">
+                        {{ $t('home.pricing.elite.cta') }}
                     </NuxtLink>
                 </div>
             </div>

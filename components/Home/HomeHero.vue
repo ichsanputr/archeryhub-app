@@ -13,26 +13,26 @@
                     <!-- Title -->
                     <h1 ref="heroTitle"
                         class="text-4xl sm:text-7xl font-black text-white leading-[1.1] mb-8 tracking-tight drop-shadow-sm font-display opacity-0 translate-y-8">
-                        Digitalize Your<br />
+                        {{ $t('home.hero.title_part1') }}<br />
                         <span
                             class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary to-green-300">
-                            Archery Experience</span>
+                            {{ $t('home.hero.title_part2') }}</span>
                     </h1>
 
                     <!-- Description moved below Title -->
                     <p ref="heroText" class="text-white/80 text-lg sm:text-xl font-light leading-relaxed max-w-2xl mb-12 opacity-0 translate-y-8">
-                        Archeris.net adalah platform manajemen panahan terpadu yang dirancang khusus untuk memudahkan pengelolaan turnamen, skoring real-time, dan pengembangan ekosistem olahraga panahan di Indonesia.
+                        {{ $t('home.hero.description') }}
                     </p>
                     
                     <!-- Buttons -->
                     <div ref="heroButtons" class="flex flex-col sm:flex-row gap-4 opacity-0 translate-y-8">
-                        <NuxtLink to="/auth/login"
+                        <NuxtLink :to="localePath('/auth/login')"
                             class="bg-primary hover:bg-primary-hover text-navy text-sm font-bold px-8 py-3.5 rounded-xl transition-all shadow-[0_4px_14px_0_rgba(183,251,35,0.39)] hover:shadow-[0_6px_20px_rgba(183,251,35,0.23)] hover:-translate-y-0.5 text-center">
-                            Mulai Sekarang
+                            {{ $t('home.hero.cta_primary') }}
                         </NuxtLink>
                         <button
                             class="bg-white/10 hover:bg-white/20 border border-white/20 text-white text-sm font-medium px-8 py-3.5 rounded-xl transition-colors backdrop-blur-md">
-                            Pelajari Lebih Lanjut
+                            {{ $t('home.hero.cta_secondary') }}
                         </button>
                     </div>
                 </div>

@@ -15,9 +15,6 @@
         <!-- Pricing Section -->
         <HomePricing />
 
-        <!-- Stats Section -->
-        <HomeStats />
-
         <!-- Mobile CTA Section -->
         <HomeMobileCTA />
 
@@ -41,15 +38,17 @@ definePageMeta({
     layout: 'landing'
 })
 
+const { t } = useI18n()
+
 useHead({
-    title: 'Archeris.net - Platform Manajemen Panahan Indonesia',
+    title: t('home.meta_title'),
     link: [
         { rel: 'canonical', href: useRequestURL().href }
     ],
     meta: [
         {
             name: 'description',
-            content: 'Archeris.net - Platform manajemen panahan terpadu untuk turnamen, scoring real-time, dan pengembangan atlet profesional di Indonesia.'
+            content: t('home.meta_desc')
         }
     ]
 })

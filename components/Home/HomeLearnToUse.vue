@@ -4,11 +4,11 @@
             <!-- Section Header -->
             <div class="text-center mb-16 sm:mb-24">
                 <h2 class="text-3xl sm:text-5xl font-black text-navy leading-tight mb-6 font-display">
-                    Step-by-Step Guide to Using <br class="hidden sm:block" />
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-navy to-navy/60">Archeris Efficiently</span>
+                    {{ $t('home.learn.title') }} <br class="hidden sm:block" />
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-navy to-navy/60">{{ $t('home.learn.subtitle') }}</span>
                 </h2>
                 <p class="text-text-secondary text-base sm:text-lg max-w-2xl mx-auto font-light">
-                    Mulai kelola turnamen panahan Anda dengan sistem digital yang terintegrasi dan mudah digunakan.
+                    {{ $t('home.learn.description') }}
                 </p>
             </div>
 

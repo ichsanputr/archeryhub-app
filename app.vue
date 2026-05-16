@@ -14,6 +14,21 @@ defineOptions({
   name: 'App'
 })
 
+const head = useLocaleHead({
+  addDirAttribute: true,
+  identifierAttribute: 'id',
+  addSeoAttributes: true
+})
+
+useHead({
+  htmlAttrs: {
+    lang: head.value.htmlAttrs.lang,
+    dir: head.value.htmlAttrs.dir
+  },
+  link: [...(head.value.link || [])],
+  meta: [...(head.value.meta || [])]
+})
+
 const route = useRoute()
 
 // Force page to remount when route changes (fixes blank page on browser back / touchpad back)

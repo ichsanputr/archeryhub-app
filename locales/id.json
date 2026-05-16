@@ -1,0 +1,84 @@
+{
+  "common": {
+    "loading": "Memuat...",
+    "error": "Terjadi kesalahan"
+  },
+  "nav": {
+    "home": "Beranda",
+    "features": "Event",
+    "pricing": "Harga",
+    "blog": "Blog",
+    "archers": "Pemanah",
+    "news": "Berita",
+    "marketplace": "Marketplace",
+    "login": "Masuk",
+    "register": "Daftar"
+  },
+  "home": {
+    "hero": {
+      "title_part1": "Digitalisasi Pengalaman",
+      "title_part2": "Panahan Anda",
+      "description": "Archeris.net adalah platform manajemen panahan terpadu yang dirancang khusus untuk memudahkan pengelolaan turnamen, skoring real-time, dan pengembangan ekosistem olahraga panahan di Indonesia.",
+      "cta_primary": "Mulai Sekarang",
+      "cta_secondary": "Pelajari Lebih Lanjut"
+    },
+    "learn": {
+      "title": "Panduan Langkah demi Langkah Menggunakan",
+      "subtitle": "Archeris Secara Efisien",
+      "description": "Mulai kelola turnamen panahan Anda dengan sistem digital yang terintegrasi dan mudah digunakan."
+    },
+    "features_demo": {
+      "title1": "Dibuat untuk Archer.",
+      "title2": "Dirancang untuk Klub.",
+      "description": "Platform lengkap yang menumbuhkan komunitas Anda dan membangun loyalitas atlet yang berkelanjutan.",
+      "f1_tag": "Aplikasi White Label",
+      "f1_title": "Brand Anda di setiap langkah",
+      "f1_desc": "Berikan pengalaman yang mulus bagi anggota—aplikasi Anda, logo Anda, nama Anda di App Store. Dengan fungsionalitas penuh Archeris di balik layar, brand Anda tetap menjadi pusat perhatian.",
+      "f2_tag": "Penjadwalan Klub",
+      "f2_title": "Maksimalkan setiap jam latihan",
+      "f2_desc": "Penjadwalan cerdas yang membantu Anda memaksimalkan aset paling berharga klub Anda: target dan lapangan. Manajemen alokasi bantalan otomatis.",
+      "f3_tag": "Pembayaran Terintegrasi",
+      "f3_title": "Registrasi turnamen tanpa hambatan",
+      "f3_desc": "Kumpulkan biaya pendaftaran secara instan dengan payment gateway yang aman dan terintegrasi. Mendukung QRIS, VA, dan Kartu Kredit.",
+      "f4_tag": "Portofolio Atlet",
+      "f4_title": "Pamerkan setiap pencapaian",
+      "f4_desc": "Setiap anak panah yang dilesatkan akan tercatat. Bangun portofolio digital komprehensif yang menunjukkan tren performa dan sertifikat digital."
+    },
+    "blog": {
+      "title1": "Operator mengandalkan kami.",
+      "title2": "Archer mencintai kami.",
+      "view_all": "Lihat Semua Postingan"
+    },
+    "pricing": {
+      "title": "Pilih level Anda.",
+      "description": "Mulai dari individu hingga klub besar, kami memiliki paket yang tepat untuk mendukung prestasi panahan Anda.",
+      "basic": {
+        "name": "Archer Basic",
+        "price": "Gratis",
+        "desc": "Sempurna untuk atlet pemula yang ingin mulai mencatat skor digital.",
+        "cta": "Mulai Gratis"
+      },
+      "pro": {
+        "name": "Archer Pro",
+        "price": "29rb",
+        "period": "/bulan",
+        "desc": "Maksimalkan potensi Anda dengan statistik mendalam dan portfolio pro.",
+        "cta": "Upgrade ke Pro"
+      },
+      "elite": {
+        "name": "Club Elite",
+        "price": "149rb",
+        "period": "/bulan",
+        "desc": "Solusi lengkap untuk manajemen klub dan penyelenggaraan event profesional.",
+        "cta": "Hubungi Kami"
+      }
+    },
+    "mobile": {
+      "title1": "Bawa permainan Anda",
+      "title2": "ke mana saja.",
+      "description": "Dapatkan pengalaman skoring digital terbaik langsung di genggaman Anda. Download aplikasi Archeris sekarang dan mulai pantau prestasi Anda secara real-time."
+    },
+    "meta_title": "Archeris.net - Platform Manajemen Panahan Indonesia",
+    "meta_desc": "Archeris.net - Platform manajemen panahan terpadu untuk turnamen, scoring real-time, dan pengembangan atlet profesional di Indonesia."
+  }
+}

@@ -4,21 +4,21 @@
             <!-- Main Heading -->
             <div class="text-center mb-24">
                 <h2 class="text-4xl sm:text-7xl font-black text-navy leading-tight mb-6 font-display tracking-tighter">
-                    Made for Archers.<br />
-                    Designed for Clubs.
+                    {{ $t('home.features_demo.title1') }}<br />
+                    {{ $t('home.features_demo.title2') }}
                 </h2>
                 <p class="text-text-secondary text-lg sm:text-xl max-w-2xl mx-auto font-light">
-                    The complete platform that grows your community and builds lasting athlete loyalty.
+                    {{ $t('home.features_demo.description') }}
                 </p>
             </div>
 
             <!-- Feature Block 1: App -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center mb-32">
                 <div class="order-2 lg:order-1">
-                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-navy/40 mb-4 block">White Label App</span>
-                    <h3 class="text-3xl sm:text-4xl font-bold text-navy mb-6 leading-tight">Your brand, every step of the way</h3>
+                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-navy/40 mb-4 block">{{ $t('home.features_demo.f1_tag') }}</span>
+                    <h3 class="text-3xl sm:text-4xl font-bold text-navy mb-6 leading-tight">{{ $t('home.features_demo.f1_title') }}</h3>
                     <p class="text-text-secondary text-base sm:text-lg font-light leading-relaxed mb-10">
-                        Give members a seamless experience—your app, your logo, your name in the App Store. With full Archeris functionality behind the scenes, your brand stays front and center from first registration to final arrow.
+                        {{ $t('home.features_demo.f1_desc') }}
                     </p>
                     
                     <ul class="space-y-4 border-t border-gray-100 pt-8">
@@ -55,10 +55,10 @@
                 </div>
 
                 <div>
-                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-navy/40 mb-4 block">Club Scheduling</span>
-                    <h3 class="text-3xl sm:text-4xl font-bold text-navy mb-6 leading-tight">Maximize every training hour</h3>
+                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-navy/40 mb-4 block">{{ $t('home.features_demo.f2_tag') }}</span>
+                    <h3 class="text-3xl sm:text-4xl font-bold text-navy mb-6 leading-tight">{{ $t('home.features_demo.f2_title') }}</h3>
                     <p class="text-text-secondary text-base sm:text-lg font-light leading-relaxed mb-10">
-                        Smart scheduling that helps you get the most out of your club’s most valuable asset, your targets and ranges. Automated lane assignments and coach availability management.
+                        {{ $t('home.features_demo.f2_desc') }}
                     </p>
                     
                     <ul class="space-y-4 border-t border-gray-100 pt-8">
@@ -77,10 +77,10 @@
             <!-- Feature Block 3: Payments -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center mb-32">
                 <div class="order-2 lg:order-1">
-                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-navy/40 mb-4 block">Integrated Payments</span>
-                    <h3 class="text-3xl sm:text-4xl font-bold text-navy mb-6 leading-tight">Frictionless tournament registrations</h3>
+                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-navy/40 mb-4 block">{{ $t('home.features_demo.f3_tag') }}</span>
+                    <h3 class="text-3xl sm:text-4xl font-bold text-navy mb-6 leading-tight">{{ $t('home.features_demo.f3_title') }}</h3>
                     <p class="text-text-secondary text-base sm:text-lg font-light leading-relaxed mb-10">
-                        Collect entry fees instantly with a secure, integrated payment gateway. Support for all major local payment methods including QRIS, Virtual Accounts, and Credit Cards.
+                        {{ $t('home.features_demo.f3_desc') }}
                     </p>
                     
                     <ul class="space-y-4 border-t border-gray-100 pt-8">
@@ -114,10 +114,10 @@
                 </div>
 
                 <div>
-                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-navy/40 mb-4 block">Athlete Portfolio</span>
-                    <h3 class="text-3xl sm:text-4xl font-bold text-navy mb-6 leading-tight">Showcase every achievement</h3>
+                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-navy/40 mb-4 block">{{ $t('home.features_demo.f4_tag') }}</span>
+                    <h3 class="text-3xl sm:text-4xl font-bold text-navy mb-6 leading-tight">{{ $t('home.features_demo.f4_title') }}</h3>
                     <p class="text-text-secondary text-base sm:text-lg font-light leading-relaxed mb-10">
-                        Every arrow shot is recorded. Build a comprehensive digital portfolio showing performance trends, historical stats, and verified digital certificates for every event.
+                        {{ $t('home.features_demo.f4_desc') }}
                     </p>
                     
                     <ul class="space-y-4 border-t border-gray-100 pt-8">

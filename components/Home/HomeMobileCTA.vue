@@ -5,11 +5,11 @@
                 <!-- Text Content -->
                 <div class="order-2 lg:order-1">
                     <h2 class="text-4xl sm:text-6xl font-black text-navy leading-tight mb-8 font-display tracking-tighter">
-                        Take your game<br />
-                        anywhere.
+                        {{ $t('home.mobile.title1') }}<br />
+                        {{ $t('home.mobile.title2') }}
                     </h2>
                     <p class="text-navy/70 text-lg sm:text-xl font-light leading-relaxed mb-10 max-w-xl">
-                        Dapatkan pengalaman skoring digital terbaik langsung di genggaman Anda. Download aplikasi Archeris sekarang dan mulai pantau prestasi Anda secara real-time.
+                        {{ $t('home.mobile.description') }}
                     </p>
 
                     <div class="flex flex-wrap gap-4">

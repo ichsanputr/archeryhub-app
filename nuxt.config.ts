@@ -7,7 +7,23 @@ export default defineNuxtConfig({
   },
   modules: [
     '@vueuse/motion/nuxt',
+    '@nuxtjs/i18n',
   ],
+  i18n: {
+    locales: [
+      { code: 'id', iso: 'id-ID', file: 'id.json', name: 'Bahasa Indonesia' },
+      { code: 'kr', iso: 'ko-KR', file: 'kr.json', name: '한국어' }
+    ],
+    lazy: true,
+    langDir: 'locales',
+    defaultLocale: 'id',
+    strategy: 'prefix',
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      redirectOn: 'root',
+    }
+  },
   components: [
     {
       path: '~/components/common',

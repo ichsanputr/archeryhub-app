@@ -3,7 +3,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <!-- Logo -->
-                <NuxtLink to="/" class="flex items-center gap-3">
+                <NuxtLink :to="localePath('/')" class="flex items-center gap-3">
                     <div class="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-300"
                         :class="logoBoxClasses">
                         <img src="/logo.png" alt="Logo" class="w-5 h-5 object-contain" />
@@ -19,7 +19,7 @@
                         <button
                             class="text-sm font-semibold transition-all duration-300 flex items-center gap-1 hover:text-primary px-3 py-1.5 rounded-lg"
                             :class="[navLinkClasses, { 'bg-primary !text-black hover:!text-black font-bold': isActive('/events') }]">
-                            Event
+                            {{ $t('nav.features') }}
                             <Icon icon="ph:caret-down" class="text-xs transition-transform"
                                 :class="{ 'rotate-180': showMegaMenu }" />
                         </button>
@@ -47,7 +47,7 @@
                                                 </h3>
                                                 <p class="text-white/70 text-xs mt-1">{{ featuredEvent.location }} â€¢ {{
                                                     featuredEvent.date }}</p>
-                                                <NuxtLink :to="`/events/${featuredEvent.slug || featuredEvent.id}`"
+                                                <NuxtLink :to="localePath(`/events/${featuredEvent.slug || featuredEvent.id}`)"
                                                     class="inline-flex items-center gap-1 mt-3 text-primary text-xs font-bold hover:text-white transition-colors">
                                                     Cek Detailnya
                                                     <Icon icon="ph:arrow-right" />
@@ -66,7 +66,7 @@
                                             <div class="flex items-center justify-between mb-3">
                                                 <span class="text-gray-400 text-xs font-bold  tracking-wider">Event
                                                     Terakhir</span>
-                                                <NuxtLink to="/events"
+                                                <NuxtLink :to="localePath('/events')"
                                                     class="text-navy hover:text-primary text-xs font-bold transition-colors">
                                                     Lihat
                                                     Semua</NuxtLink>
@@ -74,7 +74,7 @@
                                             <div v-if="latestEvents.length > 0"
                                                 class="space-y-2 flex-1 flex flex-col justify-start">
                                                 <NuxtLink v-for="event in latestEvents.slice(0, 5)" :key="event.id"
-                                                    :to="`/events/${event.slug || event.id}`"
+                                                    :to="localePath(`/events/${event.slug || event.id}`)"
                                                     class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors group">
                                                     <div
                                                         class="w-10 h-10 rounded-lg bg-gray-100 overflow-hidden flex-shrink-0">
@@ -104,25 +104,51 @@
                     </div>
 
 
-                    <NuxtLink to="/archers"
+                    <NuxtLink :to="localePath('/archers')"
                         class="font-black text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
                         :class="[navLinkClasses, { 'bg-primary !text-black hover:!text-black': isActive('/archers') }]">
-                        Pemanah</NuxtLink>
-                    <NuxtLink to="/news"
+                        {{ $t('nav.archers') }}</NuxtLink>
+                    <NuxtLink :to="localePath('/news')"
                         class="font-black text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
                         :class="[navLinkClasses, { 'bg-primary !text-black hover:!text-black': isActive('/news') }]">
-                        Berita</NuxtLink>
-                    <NuxtLink to="/products"
+                        {{ $t('nav.news') }}</NuxtLink>
+                    <NuxtLink :to="localePath('/products')"
                         class="font-black text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
                         :class="[navLinkClasses, { 'bg-primary !text-black hover:!text-black': isActive('/products') }]">
-                        Marketplace
+                        {{ $t('nav.marketplace') }}
                     </NuxtLink>
                 </nav>
 
-                <!-- Desktop Auth Buttons -->
+                <!-- Desktop Auth & Language Buttons -->
                 <div class="hidden md:flex items-center gap-3">
+                    <!-- Language Switcher -->
+                    <div class="relative mr-2" @mouseenter="showLangMenu = true" @mouseleave="showLangMenu = false">
+                        <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all duration-300 text-xs font-bold uppercase tracking-widest"
+                            :class="showSolid ? 'text-navy hover:bg-gray-100' : 'text-white hover:bg-white/10'">
+                            <Icon icon="ph:globe-bold" class="text-lg" />
+                            {{ locale }}
+                        </button>
+                        
+                        <Transition enter-active-class="transition duration-200 ease-out"
+                            enter-from-class="opacity-0 translate-y-1" enter-to-class="opacity-100 translate-y-0"
+                            leave-active-class="transition duration-150 ease-in"
+                            leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 translate-y-1">
+                            <div v-if="showLangMenu" class="absolute right-0 top-full pt-2 w-40">
+                                <div class="bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden py-2">
+                                    <button v-for="loc in locales" :key="loc.code" 
+                                        @click="setLocale(loc.code)"
+                                        class="flex items-center justify-between w-full px-4 py-2 text-xs font-bold transition-colors hover:bg-gray-50"
+                                        :class="locale === loc.code ? 'text-primary' : 'text-navy'">
+                                        {{ loc.name }}
+                                        <Icon v-if="locale === loc.code" icon="ph:check-bold" />
+                                    </button>
+                                </div>
+                            </div>
+                        </Transition>
+                    </div>
+
                     <!-- Cart Icon (For Archers) -->
-                    <NuxtLink v-if="isLoggedIn && user?.user_type === 'archer'" to="/dashboard/archer/cart"
+                    <NuxtLink v-if="isLoggedIn && user?.user_type === 'archer'" :to="localePath('/dashboard/archer/cart')"
                         class="relative p-2 rounded-xl transition-all duration-300 group"
                         :class="showSolid ? 'text-navy hover:bg-gray-100' : 'text-white hover:bg-white/10'">
                         <Icon icon="ph:shopping-bag-bold" class="text-2xl" />
@@ -164,13 +190,13 @@
                                     <NuxtLink :to="`/dashboard/${userPersona}/settings`" @click="showUserMenu = false"
                                         class="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-navy transition-colors">
                                         <Icon icon="ph:gear" class="text-lg" />
-                                        Pengaturan
+                                        {{ $t('nav.settings') || 'Pengaturan' }}
                                     </NuxtLink>
                                     <div class="border-t border-gray-100 mt-2 pt-2">
                                         <button @click="handleLogout"
                                             class="flex items-center gap-3 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 transition-colors w-full">
                                             <Icon icon="ph:sign-out" class="text-lg" />
-                                            Keluar
+                                            {{ $t('nav.logout') || 'Keluar' }}
                                         </button>
                                     </div>
                                 </div>
@@ -178,14 +204,14 @@
                         </Transition>
                     </div>
                     <template v-else>
-                        <NuxtLink to="/auth/login"
+                        <NuxtLink :to="localePath('/auth/login')"
                             class="text-sm font-bold px-4 py-2 rounded-lg transition-colors border"
                             :class="authButtonClasses">
-                            Masuk
+                            {{ $t('nav.login') }}
                         </NuxtLink>
-                        <NuxtLink to="/auth/register"
+                        <NuxtLink :to="localePath('/auth/register')"
                             class="bg-primary hover:bg-primary-hover text-primary-text text-sm font-bold px-4 py-2 rounded-lg transition-colors">
-                            Daftar
+                            {{ $t('nav.register') }}
                         </NuxtLink>
                     </template>
                 </div>
@@ -228,12 +254,12 @@
                 class="fixed top-0 right-0 w-[300px] h-full bg-white z-50 md:hidden shadow-2xl flex flex-col">
                 <!-- Drawer Header -->
                 <div class="p-6 border-b border-gray-50 flex items-center justify-between bg-white relative">
-                    <NuxtLink to="/" @click="mobileMenuOpen = false" class="flex items-center gap-2">
+                    <NuxtLink :to="localePath('/')" @click="mobileMenuOpen = false" class="flex items-center gap-2">
                         <div class="w-8 h-8 rounded-lg bg-navy flex items-center justify-center">
                             <img src="/logo.png" alt="Logo" class="w-5 h-5 object-contain" />
                         </div>
                         <span class="text-lg font-black tracking-tight text-navy">Archeris<span
-                                class="text-logo-id">.id</span></span>
+                                class="text-logo-id">.net</span></span>
                     </NuxtLink>
                     <button @click="mobileMenuOpen = false"
                         class="p-2 hover:bg-gray-100 rounded-xl transition-all scale-100">
@@ -267,12 +293,11 @@
                     <!-- Navigation Links -->
                     <div class="p-4 space-y-1">
                         <NuxtLink v-for="link in [
-                            { to: '/', label: 'Beranda', icon: 'ph:house-bold' },
-
-                            { to: '/archers', label: 'Pemanah', icon: 'ph:users-bold' },
-                            { to: '/news', label: 'Berita', icon: 'ph:newspaper-bold' },
-                            { to: '/products', label: 'Marketplace', icon: 'ph:shopping-bag-bold' },
-                        ]" :key="link.to" :to="link.to" @click="mobileMenuOpen = false"
+                            { to: '/', label: $t('nav.home'), icon: 'ph:house-bold' },
+                            { to: '/archers', label: $t('nav.archers'), icon: 'ph:users-bold' },
+                            { to: '/news', label: $t('nav.news'), icon: 'ph:newspaper-bold' },
+                            { to: '/products', label: $t('nav.marketplace'), icon: 'ph:shopping-bag-bold' },
+                        ]" :key="link.to" :to="localePath(link.to)" @click="mobileMenuOpen = false"
                             class="flex items-center gap-4 p-4 rounded-2xl transition-all group"
                             :class="isActive(link.to) ? 'bg-primary text-primary-text' : 'text-gray-500 hover:bg-gray-50 hover:text-navy'">
                             <Icon :icon="link.icon" class="text-xl" />
@@ -302,10 +327,10 @@
                                         <div class="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0"></div>
                                         <span class="truncate">{{ event.name }}</span>
                                     </NuxtLink>
-                                    <NuxtLink to="/events" @click="mobileMenuOpen = false"
+                                    <NuxtLink :to="localePath('/events')" @click="mobileMenuOpen = false"
                                         class="flex items-center gap-3 py-3 text-navy text-xs font-black transition-colors border-t border-gray-50 mt-2">
                                         <Icon icon="ph:list-bullets-bold" class="text-sm" />
-                                        Semua Turnamen
+                                        {{ $t('nav.view_all_tournaments') || 'Semua Turnamen' }}
                                     </NuxtLink>
                                 </div>
                             </Transition>
@@ -328,13 +353,13 @@
                         </button>
                     </div>
                     <div v-else class="grid grid-cols-2 gap-3">
-                        <NuxtLink to="/auth/login" @click="mobileMenuOpen = false"
+                        <NuxtLink :to="localePath('/auth/login')" @click="mobileMenuOpen = false"
                             class="flex items-center justify-center py-3.5 border-2 border-gray-50 text-navy rounded-2xl text-sm font-black  tracking-wider hover:bg-gray-50 transition-all">
-                            Masuk
+                            {{ $t('nav.login') }}
                         </NuxtLink>
-                        <NuxtLink to="/auth/register" @click="mobileMenuOpen = false"
+                        <NuxtLink :to="localePath('/auth/register')" @click="mobileMenuOpen = false"
                             class="flex items-center justify-center py-3.5 bg-primary text-primary-text rounded-2xl text-sm font-black  tracking-wider shadow-lg shadow-primary/20 transition-all">
-                            Daftar
+                            {{ $t('nav.register') }}
                         </NuxtLink>
                     </div>
                 </div>
@@ -353,11 +378,14 @@ const props = defineProps({
 
 const route = useRoute()
 const { isLoggedIn, user, userPersona, logout } = useAuth()
+const { locale, locales, setLocale } = useI18n()
+const localePath = useLocalePath()
 
 const mobileMenuOpen = ref(false)
 const mobileSubmenuOpen = ref(false)
 const showMegaMenu = ref(false)
 const showUserMenu = ref(false)
+const showLangMenu = ref(false)
 const isScrolled = ref(false)
 const cartCount = ref(0)
 const { get } = useApi()
