@@ -3,25 +3,21 @@
         <!-- Hero Section -->
         <HomeHero />
 
-        <!-- Main Content Section: Tournaments & CTA -->
-        <section class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20 -mt-12 relative z-20">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-8 sm:mt-2 gap-6 md:gap-8">
-                <!-- Column 1: Upcoming Tournaments -->
-                <div class="md:col-span-2 lg:col-span-2">
-                    <HomeUpcomingEvents />
-                </div>
+        <!-- Stats Section -->
+        <HomeStats />
 
-                <!-- Column 2: CTA Cards (Stacked) -->
-                <HomeCTAStack />
-            </div>
-        </section>
+        <!-- Learn to Use Section -->
+        <HomeLearnToUse />
 
+        <!-- Features Demo Section -->
+        <HomeFeaturesDemo />
 
-        <!-- Live Events Section -->
-        <HomeLiveEvents />
+        <!-- Mobile CTA Section -->
+        <HomeMobileCTA />
 
-        <!-- Features Section (Restored) -->
-        <HomeFeatures />
+        <!-- Latest Blog Section -->
+        <HomeLatestBlog />
+
 
 
 
@@ -31,12 +27,11 @@
 
 <script setup>
 import HomeHero from '~/components/Home/HomeHero.vue'
-import HomeUpcomingEvents from '~/components/Home/HomeUpcomingEvents.vue'
-import HomeCTAStack from '~/components/Home/HomeCTAStack.vue'
-import HomeLiveEvents from '~/components/Home/HomeLiveEvents.vue'
-
-
-import HomeFeatures from '~/components/Home/HomeFeatures.vue'
+import HomeStats from '~/components/Home/HomeStats.vue'
+import HomeLearnToUse from '~/components/Home/HomeLearnToUse.vue'
+import HomeFeaturesDemo from '~/components/Home/HomeFeaturesDemo.vue'
+import HomeMobileCTA from '~/components/Home/HomeMobileCTA.vue'
+import HomeLatestBlog from '~/components/Home/HomeLatestBlog.vue'
 import SubscriptionPromo from '~/components/dashboard/subscription/SubscriptionPromo.vue'
 
 definePageMeta({
@@ -51,7 +46,7 @@ useHead({
     meta: [
         {
             name: 'description',
-            content: 'Archeris.net hadir sebagai wadah bagi seluruh penggiat panahan di Indonesia. Dari pemula hingga juara nasional, di sini kita terhubung lewat event, prestasi, dan semangat yang sama.'
+            content: 'Archeris.net - Platform manajemen panahan terpadu untuk turnamen, scoring real-time, dan pengembangan atlet profesional di Indonesia.'
         }
     ]
 })

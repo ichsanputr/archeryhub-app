@@ -52,10 +52,9 @@ module.exports = {
                 }
             },
             fontFamily: {
-                sans: ['Untitled Sans', 'Inter', 'sans-serif'],
-                reddit: ['Reddit Sans', 'sans-serif'],
-                display: ['Lexend', 'sans-serif'],
-                body: ['Untitled Sans', 'Noto Sans', 'sans-serif'],
+                sans: ['NovaText', 'sans-serif'],
+                display: ['Bricolage Grotesque', 'sans-serif'],
+                body: ['NovaText', 'sans-serif'],
             },
         },
     },

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap');
+
 @font-face {
   font-family: 'NovaText';
   src: url('/fonts/v_std_402.ttf') format('truetype');
@@ -6,17 +8,13 @@
   font-display: swap;
 }
 
-@font-face {
-  font-family: 'Untitled Sans';
-  src: url('/fonts/Untitled-Sans-Regular.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
 /* Base styles */
 body {
-  font-family: 'NovaText', 'Untitled Sans', 'Inter', sans-serif;
+  font-family: 'NovaText', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Bricolage Grotesque', sans-serif;
 }
 
 /* Light theme base colors */
