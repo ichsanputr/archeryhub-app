@@ -1,11 +1,11 @@
 <template>
-    <section class="py-24 bg-[#DEFEBD] overflow-hidden">
+    <section class="py-24 bg-[#E8E8DD] overflow-hidden">
         <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
                 <div>
-                    <h2 class="text-4xl sm:text-6xl font-black text-navy uppercase leading-tight font-display tracking-tighter">
-                        LATEST FROM<br />
-                        OUR ARCHIVE.
+                    <h2 class="text-4xl sm:text-6xl font-black text-navy leading-tight font-display tracking-tighter">
+                        Latest from<br />
+                        our archive.
                     </h2>
                 </div>
                 <NuxtLink to="/blog" class="inline-flex items-center gap-2 text-navy font-bold uppercase tracking-widest text-sm hover:translate-x-2 transition-transform">

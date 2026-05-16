@@ -3,9 +3,9 @@
         <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Main Heading -->
             <div class="text-center mb-24">
-                <h2 class="text-4xl sm:text-7xl font-black text-navy uppercase leading-tight mb-6 font-display tracking-tighter">
-                    MADE FOR ARCHERS.<br />
-                    DESIGNED FOR CLUBS.
+                <h2 class="text-4xl sm:text-7xl font-black text-navy leading-tight mb-6 font-display tracking-tighter">
+                    Made for Archers.<br />
+                    Designed for Clubs.
                 </h2>
                 <p class="text-text-secondary text-lg sm:text-xl max-w-2xl mx-auto font-light">
                     The complete platform that grows your community and builds lasting athlete loyalty.

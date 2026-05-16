@@ -3,20 +3,23 @@
         <!-- Hero Section -->
         <HomeHero />
 
-        <!-- Stats Section -->
-        <HomeStats />
-
         <!-- Learn to Use Section -->
         <HomeLearnToUse />
 
         <!-- Features Demo Section -->
         <HomeFeaturesDemo />
 
-        <!-- Mobile CTA Section -->
-        <HomeMobileCTA />
-
         <!-- Latest Blog Section -->
         <HomeLatestBlog />
+
+        <!-- Pricing Section -->
+        <HomePricing />
+
+        <!-- Stats Section -->
+        <HomeStats />
+
+        <!-- Mobile CTA Section -->
+        <HomeMobileCTA />
 
 
 

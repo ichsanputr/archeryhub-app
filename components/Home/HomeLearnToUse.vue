@@ -1,5 +1,5 @@
 <template>
-    <section class="py-20 sm:py-32 bg-background-light overflow-hidden">
+    <section class="py-20 sm:py-32 bg-[#DEFEBD] overflow-hidden">
         <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Section Header -->
             <div class="text-center mb-16 sm:mb-24">

@@ -1,12 +1,12 @@
 <template>
-    <section class="py-24 bg-[#E8E8DD] overflow-hidden">
+    <section class="py-24 bg-[#DEFEBD] overflow-hidden">
         <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 <!-- Text Content -->
                 <div class="order-2 lg:order-1">
-                    <h2 class="text-4xl sm:text-6xl font-black text-navy uppercase leading-tight mb-8 font-display tracking-tighter">
-                        TAKE YOUR GAME<br />
-                        ANYWHERE.
+                    <h2 class="text-4xl sm:text-6xl font-black text-navy leading-tight mb-8 font-display tracking-tighter">
+                        Take your game<br />
+                        anywhere.
                     </h2>
                     <p class="text-navy/70 text-lg sm:text-xl font-light leading-relaxed mb-10 max-w-xl">
                         Dapatkan pengalaman skoring digital terbaik langsung di genggaman Anda. Download aplikasi Archeris sekarang dan mulai pantau prestasi Anda secara real-time.
