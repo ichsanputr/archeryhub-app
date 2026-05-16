@@ -1,4 +1,12 @@
 @font-face {
+  font-family: 'NovaText';
+  src: url('/fonts/v_std_402.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'Untitled Sans';
   src: url('/fonts/Untitled-Sans-Regular.ttf') format('truetype');
   font-weight: 400;
@@ -8,7 +16,7 @@
 
 /* Base styles */
 body {
-  font-family: 'Untitled Sans', 'Inter', sans-serif;
+  font-family: 'NovaText', 'Untitled Sans', 'Inter', sans-serif;
 }
 
 /* Light theme base colors */

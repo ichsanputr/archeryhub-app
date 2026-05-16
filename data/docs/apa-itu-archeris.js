@@ -62,8 +62,5 @@ export const apa_itu_archeris = {
           <p>Kami terus berkomitmen untuk memperluas jangkauan platform ini agar dapat mengakomodasi lebih banyak skenario di lapangan, memastikan bahwa setiap kemajuan kecil yang dicapai oleh seorang pemanah tercatat dan diapresiasi dalam ekosistem panahan digital Indonesia yang semakin berkembang.</p>
         `
 }
-Indonesia yang semakin berkembang.</p>
-        `
-}
 
 
