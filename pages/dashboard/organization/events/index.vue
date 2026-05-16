@@ -12,7 +12,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Daftar Event - ArcheryHub Dashboard'
+  title: 'Daftar Event - Archeris Dashboard'
 })
 
 const { user } = useAuth()

@@ -378,7 +378,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Profil Pemanah - ArcheryHub Dashboard'
+  title: 'Profil Pemanah - Archeris Dashboard'
 })
 
 const { user, archerProfile } = useAuth()

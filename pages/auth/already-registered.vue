@@ -12,7 +12,7 @@
             Email sudah terdaftar
           </h1>
           <div class="text-gray-600 dark:text-gray-300 text-sm font-body">
-            Email yang kamu pakai buat daftar lewat Google udah punya akun di Archeryhub.id. Kamu bisa langsung masuk
+            Email yang kamu pakai buat daftar lewat Google udah punya akun di Archeris.net. Kamu bisa langsung masuk
             pakai akun itu.
           </div>
         </div>
@@ -60,7 +60,7 @@ import { useRoute } from 'vue-router'
 definePageMeta({ layout: 'default' })
 
 useHead({
-  title: 'Email Sudah Terdaftar - Archeryhub.id'
+  title: 'Email Sudah Terdaftar - Archeris.net'
 })
 
 const route = useRoute()

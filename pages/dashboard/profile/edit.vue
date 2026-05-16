@@ -8,7 +8,7 @@
                         <div class="w-8 h-8 bg-navy rounded-lg flex items-center justify-center text-primary">
                             <Icon icon="ph:target-bold" class="text-xl" />
                         </div>
-                        <span class="text-navy text-xl font-black tracking-tight font-display">Archeryhub.id</span>
+                        <span class="text-navy text-xl font-black tracking-tight font-display">Archeris.net</span>
                     </NuxtLink>
                 </div>
                 <div class="flex items-center gap-4">
@@ -197,7 +197,7 @@
 import { Icon } from '@iconify/vue'
 
 useHead({
-    title: 'Edit Profil - ArcheryHub Dashboard'
+    title: 'Edit Profil - Archeris Dashboard'
 })
 
 const profileData = ref({

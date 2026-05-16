@@ -299,12 +299,12 @@ const activeArchers = computed(() => {
 const filteredArchers = computed(() => archers.value)
 
 useHead({
-    title: 'Komunitas Pemanah Indonesia — Archeryhub.id',
+    title: 'Komunitas Pemanah Indonesia — Archeris.net',
     link: [
         { rel: 'canonical', href: useRequestURL().href }
     ],
     meta: [
-        { name: 'description', content: 'Temukan dan jelajahi profil pemanah berbakat dari seluruh penjuru Indonesia. Lihat prestasi, klub, dan dedikasi mereka di Archeryhub.id.' }
+        { name: 'description', content: 'Temukan dan jelajahi profil pemanah berbakat dari seluruh penjuru Indonesia. Lihat prestasi, klub, dan dedikasi mereka di Archeris.net.' }
     ]
 })
 </script>

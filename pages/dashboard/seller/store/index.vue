@@ -100,7 +100,7 @@
                 <BaseInput v-model="form.name" label="Nama Toko" placeholder="Nama brand atau toko anda" required />
               </div>
               <div class="md:col-span-2">
-                <BaseInput v-model="form.username" label="Username / Link Toko" placeholder="toko-saya" required prefix="archeryhub.id/s/" />
+                <BaseInput v-model="form.username" label="Username / Link Toko" placeholder="toko-saya" required prefix="Archeris.net/s/" />
               </div>
               <div class="md:col-span-2">
                 <BaseTextarea v-model="form.description" label="Deskripsi Toko" placeholder="Ceritakan tentang toko anda..." rows="4" />

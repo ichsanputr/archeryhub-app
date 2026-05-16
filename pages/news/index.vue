@@ -409,7 +409,7 @@ const subscribe = async () => {
     }
 }
 useHead({
-    title: 'Berita Panahan Terbaru - Archeryhub.id',
+    title: 'Berita Panahan Terbaru - Archeris.net',
     link: [
         { rel: 'canonical', href: useRequestURL().href }
     ],

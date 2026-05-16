@@ -8,10 +8,10 @@
                 <div class="flex items-center gap-2 sm:gap-3 min-w-0">
                     <NuxtLink to="/" class="flex items-center gap-2.5 shrink-0">
                         <div class="w-8 h-8 bg-[#0f172a] rounded-lg flex items-center justify-center">
-                            <img src="/logo.png" alt="Archeryhub.id" class="w-5 h-5 object-contain" />
+                            <img src="/logo.png" alt="Archeris.net" class="w-5 h-5 object-contain" />
                         </div>
-                        <span class="text-lg font-black tracking-tight text-[#0f172a] hidden md:block">Archeryhub<span
-                                class="text-[#D9FF00]">.id</span></span>
+                        <span class="text-lg font-black tracking-tight text-[#0f172a] hidden md:block">Archeris<span
+                                class="text-[#D9FF00]">.net</span></span>
                     </NuxtLink>
                     <div class="flex items-center gap-2 min-w-0">
                         <span class="text-gray-200 text-lg font-light select-none hidden md:block">/</span>

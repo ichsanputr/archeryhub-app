@@ -1,4 +1,4 @@
-﻿export const mendaftar_event = {
+export const mendaftar_event = {
     slug: 'mendaftar-event', title: 'Cara Mendaftar ke Event', excerpt: 'Panduan lengkap langkah demi langkah untuk mendaftar ke turnamen atau event panahan di archeris.net.', icon: 'ph:clipboard-text-bold', category: 'archer', readTime: '5 menit',
     toc: [
         { id: 'cari-event', level: 2, text: 'Mencari Event' },
@@ -34,7 +34,7 @@
                     <p>Setelah melakukan pembayaran, Anda tidak perlu mengirimkan bukti transfer secara manual jika menggunakan metode Virtual Account atau E-Wallet. Tiket elektronik dan nomor peserta akan tersedia di dashboard Anda segera setelah sistem memverifikasi transaksi.</p>
 
                     <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-8 flex gap-4">
-                        <div class="text-primary text-2xl shrink-0">âš ï¸</div>
+                        <div class="text-primary text-2xl shrink-0">⚠️</div>
                         <div>
                             <div class="font-bold text-navy text-sm mb-1">Penting</div>
                             <div class="text-gray-600 text-sm">Pastikan Anda menyelesaikan pembayaran sebelum batas waktu invoice (biasanya 24 jam) agar pendaftaran Anda tidak hangus secara otomatis oleh sistem.</div>

@@ -15,7 +15,7 @@
             <div class="container mx-auto px-4 max-w-7xl relative z-10 text-center">
                 <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-primary text-[10px] font-black tracking-widest uppercase mb-8 border border-white/10">
                     <Icon icon="ph:users-four-bold" />
-                    <span>TENTANG ARCHERYHUB</span>
+                    <span>TENTANG Archeris</span>
                 </div>
                 <h1 class="text-white text-4xl md:text-7xl font-black tracking-tighter leading-tight max-w-5xl mx-auto mb-8">
                     Membangun Masa Depan <br />
@@ -82,7 +82,7 @@
                     <div class="lg:col-span-5">
                          <h2 class="text-4xl md:text-5xl font-black text-navy leading-tight tracking-tighter mb-8 uppercase">Berawal dari <br /> <span class="text-primary italic">Garasi Kecil.</span></h2>
                          <div class="space-y-6 text-navy/50 text-lg leading-relaxed font-medium">
-                            <p>ArcheryHub dimulai dengan visi sederhana untuk memecahkan masalah manualnya pencatatan skor di lapangan panahan tradisional.</p>
+                            <p>Archeris dimulai dengan visi sederhana untuk memecahkan masalah manualnya pencatatan skor di lapangan panahan tradisional.</p>
                             <p>Kini, kami telah berkembang menjadi ekosistem lengkap yang melayani ribuan atlet dan ratusan organisasi panahan di seluruh Indonesia.</p>
                             <p>Setiap baris kode yang kami tulis didedikasikan untuk presisi, transparansi, dan kemajuan olahraga panahan nasional.</p>
                          </div>
@@ -114,7 +114,7 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Tentang Kami - ArcheryHub',
+    title: 'Tentang Kami - Archeris',
     meta: [
         { name: 'description', content: 'Pelajari misi kami untuk mendigitalisasi panahan Indonesia dengan sistem scoring real-time dan manajemen turnamen yang presisi.' }
     ]

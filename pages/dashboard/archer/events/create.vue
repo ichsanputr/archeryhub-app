@@ -219,7 +219,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Buat Event Baru - ArcheryHub Dashboard'
+  title: 'Buat Event Baru - Archeris Dashboard'
 })
 
 const router = useRouter()

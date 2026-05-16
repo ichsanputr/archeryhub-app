@@ -149,7 +149,7 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Rekening Bank - ArcheryHub'
+    title: 'Rekening Bank - Archeris'
 })
 
 const bankAccounts = ref([])

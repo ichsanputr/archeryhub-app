@@ -261,7 +261,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Pengaturan Akun - ArcheryHub Dashboard'
+  title: 'Pengaturan Akun - Archeris Dashboard'
 })
 
 const { login, user } = useAuth()

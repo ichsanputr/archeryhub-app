@@ -1,4 +1,4 @@
-﻿export const kategori_lomba = {
+export const kategori_lomba = {
     slug: 'kategori-lomba', title: 'Kategori dan Divisi Lomba', excerpt: 'Panduan lengkap pembagian divisi berdasarkan jenis busur, kelompok usia, dan format pertandingan.', icon: 'ph:list-numbers-bold', category: 'archery', readTime: '7 menit',
     toc: [
         { id: 'divisi-busur', level: 2, text: 'Divisi Berdasarkan Jenis Busur' },
@@ -44,7 +44,7 @@
 
                     <div class="not-prose bg-amber-50 border border-amber-200 rounded-2xl p-6 mt-8">
                         <div class="flex items-center gap-3 mb-3">
-                            <span class="text-2xl">ðŸ“</span>
+                            <span class="text-2xl">📝</span>
                             <div class="font-bold text-amber-800">Catatan Penting</div>
                         </div>
                         <p class="text-sm text-amber-700">Beberapa event mungkin memiliki penamaan kategori yang unik (misalnya: "SD Kelas 1-3" atau "Internal Club"). Selalu periksa detail Technical Handbook event yang Anda ikuti melalui archeris.net sebelum mendaftar.</p>

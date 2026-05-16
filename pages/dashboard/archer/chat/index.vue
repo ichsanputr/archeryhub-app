@@ -270,7 +270,7 @@ import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 
 definePageMeta({ layout: 'dashboard' })
-useHead({ title: 'Pesan Saya - ArcheryHub' })
+useHead({ title: 'Pesan Saya - Archeris' })
 
 const route = useRoute()
 const { get, post } = useApi()

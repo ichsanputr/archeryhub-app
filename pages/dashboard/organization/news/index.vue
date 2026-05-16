@@ -204,7 +204,7 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Manajemen Berita - ArcheryHub Dashboard'
+    title: 'Manajemen Berita - Archeris Dashboard'
 })
 
 import { useApi } from '~/composables/useApi'

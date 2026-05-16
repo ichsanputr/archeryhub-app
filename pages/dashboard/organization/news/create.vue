@@ -115,7 +115,7 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Buat Berita - ArcheryHub Dashboard'
+    title: 'Buat Berita - Archeris Dashboard'
 })
 
 const { post } = useApi()

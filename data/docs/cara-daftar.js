@@ -1,4 +1,4 @@
-﻿export const cara_daftar = {
+export const cara_daftar = {
   slug: 'cara-daftar', title: 'Cara Mendaftar Akun', excerpt: 'Panduan langkah demi langkah untuk mendaftarkan akun baru di archeris.net.', icon: 'ph:user-plus-bold', category: 'platform', readTime: '4 menit',
   toc: [
     { id: 'pilih-tipe', level: 2, text: 'Pilih Tipe Akun' },

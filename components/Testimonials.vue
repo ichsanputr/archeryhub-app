@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <section class="py-20 bg-gradient-to-br from-yellow-50 via-orange-50 to-red-50 relative overflow-hidden">
     <!-- Background Elements -->
     <div class="absolute inset-0 -z-10">
@@ -35,7 +35,7 @@
               <p class="text-gray-600 leading-relaxed mb-3">"{{ t.content }}"</p>
               <div class="mt-auto flex items-center gap-3 text-xs text-yellow-600 font-medium">
                 <span>{{ t.company }}</span>
-                <span>â€¢</span>
+                <span>•</span>
                 <span class="flex items-center gap-0.5">
                   <img v-for="star in t.rating" :key="star" src="/star.svg" alt="star" class="w-4 h-4" />
                 </span>

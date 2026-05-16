@@ -76,6 +76,6 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Syarat dan Ketentuan - Archeryhub.id'
+  title: 'Syarat dan Ketentuan - Archeris.net'
 })
 </script>

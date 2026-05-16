@@ -14,7 +14,7 @@
                     <span>DOKUMENTASI RESMI</span>
                 </div>
                 <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight mb-5">
-                    Pusat <span class="text-primary">Dokumentasi</span><br />Archeryhub.id
+                    Pusat <span class="text-primary">Dokumentasi</span><br />Archeris.net
                 </h1>
                 <p class="text-white/60 text-sm md:text-base max-w-xl mx-auto mb-10 leading-relaxed">
                     Panduan lengkap tentang platform, jenis busur panahan, sistem berlangganan, tata cara turnamen, dan
@@ -112,8 +112,8 @@ import { Icon } from '@iconify/vue'
 definePageMeta({ layout: 'docs' })
 
 useHead({
-    title: 'Dokumentasi - Archeryhub.id',
-    meta: [{ name: 'description', content: 'Dokumentasi resmi Archeryhub.id. Panduan lengkap tentang platform, jenis busur, sistem berlangganan, dan tata cara turnamen.' }]
+    title: 'Dokumentasi - Archeris.net',
+    meta: [{ name: 'description', content: 'Dokumentasi resmi Archeris.net. Panduan lengkap tentang platform, jenis busur, sistem berlangganan, dan tata cara turnamen.' }]
 })
 
 const route = useRoute()
@@ -150,7 +150,7 @@ watch(() => route.query.cat, (newCat) => {
 
 const categories = [
     { id: 'all', label: 'Semua', icon: 'ph:squares-four-bold', description: '' },
-    { id: 'platform', label: 'Platform', icon: 'ph:rocket-bold', description: 'Mengenal Archeryhub.id secara mendalam' },
+    { id: 'platform', label: 'Platform', icon: 'ph:rocket-bold', description: 'Mengenal Archeris.net secara mendalam' },
     { id: 'archer', label: 'Akun Pemanah', icon: 'ph:user-bold', description: 'Panduan khusus untuk pengguna akun Pemanah' },
     { id: 'archery', label: 'Teknis Panahan', icon: 'ph:crosshair-bold', description: 'Pengetahuan dasar dan teknis panahan' },
     { id: 'subscription', label: 'Berlangganan', icon: 'ph:crown-bold', description: 'Paket dan fitur berlangganan' },

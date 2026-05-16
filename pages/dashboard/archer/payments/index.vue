@@ -54,7 +54,7 @@
                             <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{{
                                 formatDate(payment.created_at) }} • {{ payment.reference }}</p>
                             <h3 class="text-base font-black text-navy dark:text-white leading-tight mb-1">
-                                {{ payment.event_name || payment.plan_name || 'Pembayaran ArcheryHub' }}</h3>
+                                {{ payment.event_name || payment.plan_name || 'Pembayaran Archeris' }}</h3>
                             <div class="flex items-center gap-2 flex-wrap">
                                 <span class="text-sm font-bold text-navy/70 dark:text-white/70">{{ formatCurrency(payment.total_amount) }}</span>
                                 <span v-if="payment.payment_method"
@@ -159,7 +159,7 @@ const config = useRuntimeConfig()
 definePageMeta({ layout: 'dashboard' })
 
 useHead({
-    title: 'Riwayat Pembayaran - ArcheryHub'
+    title: 'Riwayat Pembayaran - Archeris'
 })
 
 const payments = ref([])

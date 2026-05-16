@@ -191,7 +191,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Manajemen Tim - ArcheryHub Dashboard'
+  title: 'Manajemen Tim - Archeris Dashboard'
 })
 
 const { get, delete: del } = useApi()

@@ -18,7 +18,7 @@
                     <div class="w-12 h-12 flex items-center justify-center transition-all duration-300">
                         <img src="/logo.png" alt="Logo" class="w-12 h-12 object-contain" />
                     </div>
-                    <span class="text-white text-3xl font-black tracking-tight font-display">Archeryhub<span
+                    <span class="text-white text-3xl font-black tracking-tight font-display">Archeris<span
                             class="text-logo-id">.id</span></span>
                 </div>
                 <h1 class="text-white text-5xl font-black leading-tight tracking-tight mb-4 font-display">
@@ -26,7 +26,7 @@
                     Akses Kamu
                 </h1>
                 <p class="text-slate-300 text-lg leading-relaxed max-w-md font-body">
-                    Jangan khawatir, tinggal ikutin langkah simpelnya buat dapet balik akses akun Archeryhub kamu.
+                    Jangan khawatir, tinggal ikutin langkah simpelnya buat dapet balik akses akun Archeris kamu.
                 </p>
                 <div class="mt-12 flex items-center gap-4 text-sm text-slate-400 font-medium font-body">
                     <div class="flex -space-x-2">
@@ -40,7 +40,7 @@
                             class="w-8 h-8 rounded-full border-2 border-navy bg-slate-700 flex items-center justify-center text-[10px] text-white">
                             +2k</div>
                     </div>
-                    <span>Pemanah udah gabung di Archeryhub.id</span>
+                    <span>Pemanah udah gabung di Archeris.net</span>
                 </div>
             </div>
         </div>
@@ -53,7 +53,7 @@
                 <!-- Mobile logo -->
                 <div class="lg:hidden mb-8 flex items-center gap-3">
                     <img src="/logo.png" alt="Logo" class="w-9 h-9 object-contain" />
-                    <span class="text-navy text-xl font-black tracking-tight">Archeryhub<span
+                    <span class="text-navy text-xl font-black tracking-tight">Archeris<span
                             class="text-yellow-500">.id</span></span>
                 </div>
 
@@ -220,7 +220,7 @@ import { useToast } from '~/composables/useToast'
 
 definePageMeta({ layout: false })
 
-useHead({ title: 'Lupa Password - Archeryhub.id' })
+useHead({ title: 'Lupa Password - Archeris.net' })
 
 const config = useRuntimeConfig()
 const apiBaseUrl = useApiBaseUrl()
@@ -429,10 +429,8 @@ const goToLogin = () => {
     transform: translateX(-20px);
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&display=swap');
-
 .font-display {
-    font-family: 'Lexend', sans-serif;
+    /* Falling back to global Bricolage Grotesque */
 }
 
 .animate-shake {

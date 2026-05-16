@@ -163,7 +163,7 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Pembayaran Checkout - ArcheryHub'
+    title: 'Pembayaran Checkout - Archeris'
 })
 
 const { get, post } = useApi()

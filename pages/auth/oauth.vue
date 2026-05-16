@@ -31,7 +31,7 @@ const router = useRouter()
 const { setToken } = useAuth()
 
 useHead({
-  title: 'Login Berhasil - Archeryhub.id'
+  title: 'Login Berhasil - Archeris.net'
 })
 
 onMounted(() => {

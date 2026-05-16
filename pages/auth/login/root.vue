@@ -18,7 +18,7 @@
                     <div class="w-12 h-12 flex items-center justify-center transition-all duration-300">
                         <img src="/logo.png" alt="Logo" class="w-12 h-12 object-contain" />
                     </div>
-                    <span class="text-white text-3xl font-black tracking-tight font-display">Archeryhub<span
+                    <span class="text-white text-3xl font-black tracking-tight font-display">Archeris<span
                             class="text-logo-id">.id</span></span>
                 </div>
                 <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/20 rounded-full mb-6">
@@ -31,7 +31,7 @@
                     Terminal
                 </h1>
                 <p class="text-slate-300 text-lg leading-relaxed max-w-md font-body">
-                    Akses kontrol pusat untuk pengelolaan ekosistem panahan digital Archeryhub.id.
+                    Akses kontrol pusat untuk pengelolaan ekosistem panahan digital Archeris.net.
                 </p>
             </div>
         </div>
@@ -45,7 +45,7 @@
                         <div class="w-10 h-10 flex items-center justify-center">
                             <img src="/logo.png" alt="Logo" class="w-10 h-10 object-contain" />
                         </div>
-                        <span class="text-navy text-2xl font-black tracking-tight font-display">Archeryhub<span
+                        <span class="text-navy text-2xl font-black tracking-tight font-display">Archeris<span
                                 class="text-logo-id">.id</span></span>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                 </div>
 
                 <form @submit.prevent="handleLogin" class="space-y-6">
-                    <BaseInput v-model="form.email" label="Root Identity (Email)" placeholder="admin@archeryhub.id"
+                    <BaseInput v-model="form.email" label="Root Identity (Email)" placeholder="admin@Archeris.net"
                         type="email" icon="ph:envelope-simple-fill" required
                         :error="error && error.includes('Email') ? error : ''" />
 
@@ -86,7 +86,7 @@
 
                 <div class="pt-8 border-t border-gray-100 mt-8">
                     <p class="text-center text-[10px] text-gray-400 font-bold uppercase tracking-[0.3em]">
-                        Archeryhub OS v2.0 • Secure Terminal
+                        Archeris OS v2.0 • Secure Terminal
                     </p>
                 </div>
 
@@ -115,7 +115,7 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Root Login - Archeryhub.id'
+    title: 'Root Login - Archeris.net'
 })
 
 const slides = ['/slide-1.jpeg', '/slide-2.jpeg', '/slide-3.jpeg']
@@ -166,11 +166,11 @@ onUnmounted(() => {
 
 <style scoped>
 .font-display {
-    font-family: 'Lexend', sans-serif;
+    /* Falling back to global Bricolage Grotesque */
 }
 
 .font-body {
-    font-family: 'Noto Sans', sans-serif;
+    /* Falling back to global NovaText */
 }
 
 @keyframes shake {

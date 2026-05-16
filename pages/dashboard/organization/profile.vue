@@ -48,7 +48,7 @@
 
               <!-- Slug URL -->
               <BaseInput v-model="form.slug" label="Slug URL" placeholder="perpani-indonesia"
-                helper="Digunakan untuk URL profil publik (archeryhub.id/organization/slug)" />
+                helper="Digunakan untuk URL profil publik (Archeris.net/organization/slug)" />
 
               <!-- City Autocomplete -->
               <div class="relative">
@@ -335,7 +335,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Profil Organisasi - ArcheryHub Dashboard'
+  title: 'Profil Organisasi - Archeris Dashboard'
 })
 
 const router = useRouter()

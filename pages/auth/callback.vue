@@ -33,7 +33,7 @@ const route = useRoute()
 const { handleCallback, user } = useAuth()
 
 useHead({
-  title: 'Menyambungkan Akun... - Archeryhub.id'
+  title: 'Menyambungkan Akun... - Archeris.net'
 })
 
 const loading = ref(true)

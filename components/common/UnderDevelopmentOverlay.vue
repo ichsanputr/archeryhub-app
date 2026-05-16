@@ -1,4 +1,4 @@
-﻿<template>
+<template>
     <div class="relative w-full flex items-center justify-center p-4">
         <!-- Animated background elements -->
         <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/20 rounded-full blur-[100px] animate-pulse"></div>

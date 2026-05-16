@@ -1,4 +1,4 @@
-﻿export const status_pendaftaran = {
+export const status_pendaftaran = {
     slug: 'status-pendaftaran', title: 'Melihat Status Pendaftaran', excerpt: 'Cara memantau status invoice, verifikasi peserta, dan mengunduh tiket elektronik di dashboard Pemanah.', icon: 'ph:magnifying-glass-bold', category: 'archer', readTime: '4 menit',
     toc: [
         { id: 'akses-dashboard', level: 2, text: 'Akses Riwayat Event' },
@@ -27,7 +27,7 @@
                     <p>Setelah status Anda menjadi <strong>Verified</strong>, tombol untuk mengunduh E-Ticket akan aktif. Tiket ini berisi QR Code unik yang wajib Anda tunjukkan saat check-in di lokasi pertandingan untuk proses absensi dan verifikasi peralatan.</p>
 
                     <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-8 flex gap-4">
-                        <div class="text-primary text-2xl shrink-0">ðŸ“±</div>
+                        <div class="text-primary text-2xl shrink-0">📱</div>
                         <div>
                             <div class="font-bold text-navy text-sm mb-1">Tips Mobile</div>
                             <div class="text-gray-600 text-sm">Anda dapat menyimpan screenshot QR Code di ponsel Anda untuk mempercepat proses check-in di lapangan jika koneksi internet di lokasi pertandingan tidak stabil.</div>

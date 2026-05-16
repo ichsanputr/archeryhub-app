@@ -1,4 +1,4 @@
-﻿export const scorekeeper = {
+export const scorekeeper = {
     slug: 'scorekeeper', title: 'Manajemen Scorekeeper', excerpt: 'Panduan lengkap peran scorekeeper: pembuatan akun, assignment target, alur input skor, koreksi, dan kontrol akses.', icon: 'ph:identification-badge-bold', category: 'scoring', readTime: '8 menit',
     toc: [
         { id: 'apa-itu-scorekeeper', level: 2, text: 'Apa Itu Scorekeeper?' },
@@ -14,7 +14,7 @@
                     <p>Scorekeeper adalah petugas yang bertanggung jawab memasukkan skor panahan secara digital selama event berlangsung. Setiap skor yang diinput langsung tersinkronisasi ke leaderboard publik secara real-time, menggantikan pencatatan manual di kertas yang rawan kesalahan.</p>
 
                     <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mb-6 flex gap-4">
-                        <div class="text-primary text-2xl shrink-0">ðŸŽ¯</div>
+                        <div class="text-primary text-2xl shrink-0">🎯</div>
                         <div>
                             <div class="font-bold text-navy text-sm mb-1">Peran Kunci dalam Integritas Skor</div>
                             <div class="text-gray-600 text-sm">Scorekeeper tidak punya akses ke pengaturan event maupun data peserta secara keseluruhan. Mereka hanya dapat mengakses target yang ditugaskan, menjaga keamanan dan isolasi data.</div>
@@ -24,7 +24,7 @@
                     <h2 id="buat-scorekeeper">Membuat Akun Scorekeeper</h2>
                     <p>Hanya admin organisasi yang dapat membuat akun scorekeeper. Proses pembuatan akun dilakukan dari dasbor manajemen event:</p>
                     <ol>
-                        <li>Buka <strong>Dasbor Organisasi â†’ Event â†’ [Nama Event] â†’ Scorekeeper</strong>.</li>
+                        <li>Buka <strong>Dasbor Organisasi → Event → [Nama Event] → Scorekeeper</strong>.</li>
                         <li>Klik tombol <strong>Tambah Scorekeeper</strong>.</li>
                         <li>Isi nama petugas, nomor HP atau email, dan assign ke target/sesi yang dikehendaki.</li>
                         <li>Sistem akan mengenerate kredensial login sementara (PIN atau kata sandi) yang dapat dibagikan ke petugas.</li>
@@ -73,15 +73,15 @@
                     <h2 id="alur-input-skor">Alur Input Skor di Lapangan</h2>
                     <p>Setelah login, scorekeeper hanya melihat daftar target yang ditugaskan. Berikut alur input skor per end:</p>
                     <ol>
-                        <li><strong>Pilih Target</strong> â€” Pilih nomor target dari daftar yang tersedia.</li>
-                        <li><strong>Pilih End</strong> â€” Pilih nomor end yang akan diinput (End 1, 2, 3, dst).</li>
-                        <li><strong>Input Skor Tiap Panah</strong> â€” Masukkan nilai panah satu per satu (0â€“10, atau X untuk 10 ring dalam). Urutan input dari nilai terbesar ke terkecil sesuai ketentuan World Archery.</li>
-                        <li><strong>Konfirmasi Total</strong> â€” Sistem otomatis menjumlah skor per end. Konfirmasi jika total sudah benar.</li>
-                        <li><strong>Kirim</strong> â€” Skor tersimpan dan langsung muncul di leaderboard publik.</li>
+                        <li><strong>Pilih Target</strong> — Pilih nomor target dari daftar yang tersedia.</li>
+                        <li><strong>Pilih End</strong> — Pilih nomor end yang akan diinput (End 1, 2, 3, dst).</li>
+                        <li><strong>Input Skor Tiap Panah</strong> — Masukkan nilai panah satu per satu (0–10, atau X untuk 10 ring dalam). Urutan input dari nilai terbesar ke terkecil sesuai ketentuan World Archery.</li>
+                        <li><strong>Konfirmasi Total</strong> — Sistem otomatis menjumlah skor per end. Konfirmasi jika total sudah benar.</li>
+                        <li><strong>Kirim</strong> — Skor tersimpan dan langsung muncul di leaderboard publik.</li>
                     </ol>
 
                     <div class="not-prose bg-green-50 border border-green-200 rounded-2xl p-5 mb-6 flex gap-4">
-                        <div class="text-green-600 text-2xl shrink-0">âœ…</div>
+                        <div class="text-green-600 text-2xl shrink-0">✅</div>
                         <div>
                             <div class="font-bold text-green-800 text-sm mb-1">Verifikasi Ganda</div>
                             <div class="text-green-700 text-sm">Sebelum skor dikirim, sistem menampilkan ringkasan semua panah dalam satu end. Scorekeeper wajib mengkonfirmasi sebelum data tersimpan permanen.</div>
@@ -101,7 +101,7 @@
 
                     <h2 id="kontrol-akses">Kontrol Akses dan Keamanan</h2>
                     <ul>
-                        <li><strong>Isolasi data:</strong> Scorekeeper hanya dapat melihat dan menginput skor untuk target yang ditugaskan â€” tidak ada akses ke data peserta lain.</li>
+                        <li><strong>Isolasi data:</strong> Scorekeeper hanya dapat melihat dan menginput skor untuk target yang ditugaskan — tidak ada akses ke data peserta lain.</li>
                         <li><strong>Non-aktifkan akun:</strong> Admin dapat menonaktifkan akun scorekeeper kapan saja dari dasbor manajemen event.</li>
                         <li><strong>Rotasi PIN:</strong> Ganti PIN setiap event untuk mencegah penyalahgunaan kredensial lama.</li>
                         <li><strong>Log aktivitas:</strong> Semua aksi scorekeeper (login, input, koreksi) tercatat dalam log yang dapat diakses admin untuk keperluan audit.</li>

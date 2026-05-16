@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <section class="relative overflow-hidden">
     <!-- Background -->
     <div class="absolute inset-0 -z-10">

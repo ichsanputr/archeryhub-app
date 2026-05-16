@@ -109,16 +109,16 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Organisasi Panahan - Archeryhub.id',
+    title: 'Organisasi Panahan - Archeris.net',
     link: [
         { rel: 'canonical', href: useRequestURL().href }
     ]
 })
 
 useSeoMeta({
-    title: 'Organisasi Panahan - Archeryhub.id',
+    title: 'Organisasi Panahan - Archeris.net',
     description: 'Temukan federasi, asosiasi, dan penyelenggara event panahan terpercaya di Indonesia.',
-    ogTitle: 'Organisasi Panahan - Archeryhub.id',
+    ogTitle: 'Organisasi Panahan - Archeris.net',
     ogDescription: 'Temukan federasi, asosiasi, dan penyelenggara event panahan terpercaya di Indonesia.'
 })
 

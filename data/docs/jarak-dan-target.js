@@ -1,4 +1,4 @@
-﻿export const jarak_dan_target = {
+export const jarak_dan_target = {
     slug: 'jarak-dan-target', title: 'Jarak Tembak dan Format Target', excerpt: 'Panduan standar jarak tembak dan ukuran target face untuk berbagai divisi panahan.', icon: 'ph:ruler-bold', category: 'archery', readTime: '6 menit',
     toc: [
         { id: 'standar-jarak', level: 2, text: 'Standar Jarak Tembak' },
@@ -42,7 +42,7 @@
                     <p><strong>Indoor:</strong> Pertandingan dilakukan di dalam ruangan dengan jarak standar 18 meter. Karena tidak ada gangguan angin, akurasi pemanah diuji pada konsistensi tembakan di target face yang lebih kecil (biasanya vertical 3-spot).</p>
 
                     <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-8 flex gap-4">
-                        <div class="text-primary text-2xl shrink-0">ðŸ“</div>
+                        <div class="text-primary text-2xl shrink-0">📏</div>
                         <div>
                             <div class="font-bold text-navy text-sm mb-1">Cek Handbook Event</div>
                             <div class="text-gray-600 text-sm">Panitia memiliki wewenang untuk menyesuaikan kombinasi jarak dan ukuran target. Selalu baca pengumuman resmi event pada platform archeris.net sebelum mulai berlatih.</div>

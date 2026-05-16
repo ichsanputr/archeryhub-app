@@ -73,6 +73,6 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Disclaimer - Archeryhub.id'
+    title: 'Disclaimer - Archeris.net'
 })
 </script>

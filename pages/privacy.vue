@@ -81,6 +81,6 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Kebijakan Privasi - Archeryhub.id'
+  title: 'Kebijakan Privasi - Archeris.net'
 })
 </script>

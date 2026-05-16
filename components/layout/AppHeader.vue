@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <header :class="[
     navClasses,
     'h-16 px-4 md:px-8 flex items-center justify-between shrink-0 z-50 sticky top-0 transition-all duration-300'

@@ -277,7 +277,7 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Manajemen Produk - ArcheryHub Dashboard'
+    title: 'Manajemen Produk - Archeris Dashboard'
 })
 
 const { get, delete: del } = useApi()

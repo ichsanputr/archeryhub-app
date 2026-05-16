@@ -256,7 +256,7 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Tambah Produk - ArcheryHub Dashboard'
+    title: 'Tambah Produk - Archeris Dashboard'
 })
 
 const router = useRouter()

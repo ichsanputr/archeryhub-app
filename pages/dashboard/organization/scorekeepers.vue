@@ -278,7 +278,7 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Manajemen Scorekeeper - ArcheryHub Dashboard'
+    title: 'Manajemen Scorekeeper - Archeris Dashboard'
 })
 
 const { isSubscriptionActive } = useSubscription()

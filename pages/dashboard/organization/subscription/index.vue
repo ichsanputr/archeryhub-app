@@ -289,8 +289,8 @@ const roleContent = computed(() => {
 })
 
 useSeoMeta({
-    title: 'Dashboard Berlangganan - Archeryhub.id',
-    description: 'Kelola langganan, batas penggunaan, dan riwayat tagihan di dashboard Archeryhub.id.'
+    title: 'Dashboard Berlangganan - Archeris.net',
+    description: 'Kelola langganan, batas penggunaan, dan riwayat tagihan di dashboard Archeris.net.'
 })
 </script>
 

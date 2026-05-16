@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <aside
     class="w-64 max-w-[85vw] bg-navy flex flex-col fixed md:static inset-y-0 left-0 z-[100] md:z-auto transition-transform duration-300 ease-out md:translate-x-0 shrink-0 border-r border-white/10 md:shadow-xl"
     :class="[
@@ -255,7 +255,7 @@ const userRoleLabel = computed(() => {
 
 const { isSubscriptionActive, isElite } = useSubscription()
 
-// â”€â”€ Nav sections (supports labels, items, and group dropdowns) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Nav sections (supports labels, items, and group dropdowns) ─────────────
 const navSections = computed(() => {
   const role = user.value?.role || user.value?.type || user.value?.user_type
   const isActiveSub = isSubscriptionActive.value
@@ -336,7 +336,7 @@ const navSections = computed(() => {
     ]
   }
 
-  // Root admin â€” clean minimal nav
+  // Root admin — clean minimal nav
   if (role === 'root') {
     return [
       { type: 'label', label: 'Manajemen Akun' },
@@ -374,7 +374,7 @@ watch(() => route.path, (path) => {
   })
 }, { immediate: true })
 
-// â”€â”€ Active detection â€” exact match for /dashboard, prefix for others â”€â”€â”€â”€â”€â”€â”€
+// ── Active detection — exact match for /dashboard, prefix for others ───────
 const isActive = (path) => {
   if (!path) return false
   if (path === '/dashboard') {

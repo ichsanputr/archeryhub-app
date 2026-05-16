@@ -96,7 +96,7 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Penghasilan Saya - ArcheryHub'
+    title: 'Penghasilan Saya - Archeris'
 })
 
 const earningsHistoryData = ref([])

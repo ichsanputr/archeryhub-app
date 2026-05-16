@@ -186,7 +186,7 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Saldo & Penarikan - ArcheryHub'
+    title: 'Saldo & Penarikan - Archeris'
 })
 
 // Security State

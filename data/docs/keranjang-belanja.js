@@ -1,4 +1,4 @@
-﻿export const keranjang_belanja = {
+export const keranjang_belanja = {
     slug: 'keranjang-belanja', title: 'Manajemen Keranjang Belanja', excerpt: 'Panduan cara menggunakan keranjang belanja untuk mengelola item perlengkapan panahan sebelum melakukan checkout.', icon: 'ph:shopping-cart-bold', category: 'archer', readTime: '3 menit',
     toc: [
         { id: 'tambah-produk', level: 2, text: 'Menambah Produk ke Keranjang' },
@@ -25,7 +25,7 @@
                     <p>Setelah checkout dan pembayaran diverifikasi, Anda dapat memantau status pengiriman barang Anda melalui tab <strong>Orders</strong> di dashboard. Di sana tertera nomor resi dan status perjalanan paket dari toko ke alamat Anda.</p>
 
                     <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 mt-8 flex gap-4">
-                        <div class="text-primary text-2xl shrink-0">ðŸ›’</div>
+                        <div class="text-primary text-2xl shrink-0">🛒</div>
                         <div>
                             <div class="font-bold text-navy text-sm mb-1">Keamanan Transaksi</div>
                             <div class="text-gray-600 text-sm">Dana Anda akan ditahan oleh sistem archeris.net dan baru akan diteruskan ke penjual setelah Anda mengonfirmasi bahwa barang telah diterima dengan baik.</div>

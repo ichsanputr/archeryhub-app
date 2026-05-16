@@ -186,7 +186,7 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Keranjang Belanja - ArcheryHub'
+    title: 'Keranjang Belanja - Archeris'
 })
 
 const { user } = useAuth()

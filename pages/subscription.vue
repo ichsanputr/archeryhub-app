@@ -253,7 +253,7 @@ const faqs = [
 ]
 
 useSeoMeta({
-    title: 'Paket Berlangganan - Archeryhub.id',
+    title: 'Paket Berlangganan - Archeris.net',
     description: 'Temukan solusi terbaik untuk penyelenggara turnamen (EO) panahan Anda. Paket fleksibel untuk segala jenis skala organisasi.'
 })
 </script>

@@ -11,7 +11,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Event Saya - ArcheryHub Dashboard'
+  title: 'Event Saya - Archeris Dashboard'
 })
 
 const { clearEvent } = useEventContext()

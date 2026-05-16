@@ -21,7 +21,7 @@ const FEATURES = [
 ]
 
 const run = async () => {
-    console.log(`\n🚀 Capturing ${FEATURES.length} ArcheryHub feature prototypes...`)
+    console.log(`\n🚀 Capturing ${FEATURES.length} Archeris feature prototypes...`)
 
     const browser = await puppeteer.launch({ headless: 'new' })
     const page = await browser.newPage()

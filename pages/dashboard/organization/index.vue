@@ -317,7 +317,7 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Dashboard Organisasi - ArcheryHub'
+    title: 'Dashboard Organisasi - Archeris'
 })
 
 const router = useRouter()

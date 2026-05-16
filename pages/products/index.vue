@@ -205,11 +205,11 @@ definePageMeta({
 })
 
 useHead({
-    title: 'Produk Panahan | ArcheryHub',
+    title: 'Produk Panahan | Archeris',
     meta: [
         {
             name: 'description',
-            content: 'Temukan perlengkapan dan aksesoris panahan pilihan untuk latihan dan kompetisi di ArcheryHub.'
+            content: 'Temukan perlengkapan dan aksesoris panahan pilihan untuk latihan dan kompetisi di Archeris.'
         }
     ]
 })

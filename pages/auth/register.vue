@@ -15,7 +15,7 @@
                     <div class="w-12 h-12 flex items-center justify-center transition-all duration-300">
                         <img src="/logo.png" alt="Logo" class="w-12 h-12 object-contain" />
                     </div>
-                    <span class="text-white text-3xl font-black tracking-tight font-display">Archeryhub<span
+                    <span class="text-white text-3xl font-black tracking-tight font-display">Archeris<span
                             class="text-logo-id">.id</span></span>
                 </div>
                 <h1 class="text-white text-5xl font-black leading-tight tracking-tight mb-4 font-display">
@@ -38,7 +38,7 @@
                             class="w-8 h-8 rounded-full border-2 border-navy bg-slate-700 flex items-center justify-center text-[10px] text-white">
                             +2k</div>
                     </div>
-                    <span>Pemanah udah gabung di Archeryhub.id</span>
+                    <span>Pemanah udah gabung di Archeris.net</span>
                 </div>
             </div>
         </div>
@@ -53,7 +53,7 @@
                         <div class="w-10 h-10 flex items-center justify-center">
                             <img src="/logo.png" alt="Logo" class="w-10 h-10 object-contain" />
                         </div>
-                        <span class="text-navy text-2xl font-black tracking-tight font-display">Archeryhub<span
+                        <span class="text-navy text-2xl font-black tracking-tight font-display">Archeris<span
                                 class="text-logo-id">.id</span></span>
                     </div>
                 </div>
@@ -235,7 +235,7 @@ const toast = useToast()
 const cities = ref([])
 
 useHead({
-    title: 'Buat Akun Baru - Archeryhub.id'
+    title: 'Buat Akun Baru - Archeris.net'
 })
 
 const userTypes = [

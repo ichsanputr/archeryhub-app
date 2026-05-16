@@ -114,7 +114,7 @@
                     <div>
                         <h2 class="text-navy text-4xl md:text-5xl font-black leading-tight tracking-tight mb-6">
                             Tajamkan Fokus <br />
-                            Dapatkan Update <span class="text-white">ArcheryHub.</span>
+                            Dapatkan Update <span class="text-white">Archeris.</span>
                         </h2>
                         <p class="text-navy/60 text-lg font-bold">Dapatkan tips eksklusif dan berita prestasi langsung di inbox Anda.</p>
                     </div>
@@ -170,9 +170,9 @@ const handleSubscribe = () => {
 }
 
 useHead({
-    title: 'Blog Artikel & Tips Panahan - ArcheryHub',
+    title: 'Blog Artikel & Tips Panahan - Archeris',
     meta: [
-        { name: 'description', content: 'Pelajari teknik panahan, tips memilih gear, dan rahasia mental juara dari para ahli di ArcheryHub.' }
+        { name: 'description', content: 'Pelajari teknik panahan, tips memilih gear, dan rahasia mental juara dari para ahli di Archeris.' }
     ]
 })
 </script>

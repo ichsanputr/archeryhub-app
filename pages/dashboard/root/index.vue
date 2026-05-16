@@ -44,7 +44,7 @@
                         <div>
                             <h1 class="text-xl sm:text-3xl font-black tracking-tight">Manajemen Akun</h1>
                             <div class="text-slate-300 text-[10px] sm:text-sm font-medium mt-1">
-                                Kelola semua pengguna terdaftar di Archeryhub.id
+                                Kelola semua pengguna terdaftar di Archeris.net
                             </div>
                         </div>
                     </div>

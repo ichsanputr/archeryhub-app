@@ -1,4 +1,4 @@
-﻿export const kategorisasi_produk = {
+export const kategorisasi_produk = {
     slug: 'kategorisasi-produk',
     title: 'Kategorisasi Produk Marketplace',
     excerpt: 'Penjelasan lengkap tentang kategori produk yang tersedia di Marketplace archeris.net dan pedoman penempatan produk yang tepat.',
@@ -58,17 +58,17 @@
         <h2 id="sub-kategori">Sub-Kategori & Filter Lanjutan</h2>
         <p>Selain memilih kategori utama, penjual disarankan melengkapi atribut lanjutan agar produk bisa muncul di filter spesifik pembeli:</p>
         <ul>
-            <li><strong>Jenis busur yang kompatibel</strong> â€” Recurve, Compound, Barebow, Standard Bow, dll.</li>
-            <li><strong>Level atlet</strong> â€” Pemula, Menengah, Profesional / Kompetisi.</li>
-            <li><strong>Kondisi barang</strong> â€” Baru / Bekas (Second).</li>
-            <li><strong>Merek</strong> â€” Samick, Hoyt, Win&Win, Easton, Carbon Express, lokal, atau no-brand.</li>
+            <li><strong>Jenis busur yang kompatibel</strong> — Recurve, Compound, Barebow, Standard Bow, dll.</li>
+            <li><strong>Level atlet</strong> — Pemula, Menengah, Profesional / Kompetisi.</li>
+            <li><strong>Kondisi barang</strong> — Baru / Bekas (Second).</li>
+            <li><strong>Merek</strong> — Samick, Hoyt, Win&Win, Easton, Carbon Express, lokal, atau no-brand.</li>
         </ul>
         <p>Atribut ini tidak bersifat wajib, namun sangat berpengaruh pada visibilitas produk di hasil filter pencarian pembeli.</p>
 
         <h2 id="kategori-salah">Produk di Kategori yang Salah</h2>
         <p>Tim archeris.net melakukan kurasi periodik terhadap listing. Produk yang terbukti berada di kategori yang tidak relevan akan dipindahkan atau dihapus sementara sambil menunggu koreksi dari penjual. Penjual akan menerima notifikasi dan penjelasan alasan tindakan tersebut.</p>
         <div class="not-prose bg-yellow-50 border border-yellow-200 rounded-2xl p-5 mt-4 flex gap-4">
-            <div class="text-yellow-500 text-2xl shrink-0">âš ï¸</div>
+            <div class="text-yellow-500 text-2xl shrink-0">⚠️</div>
             <div>
                 <div class="font-bold text-navy text-sm mb-1">Produk yang Dilarang</div>
                 <div class="text-gray-600 text-sm">archeris.net tidak menerima listing untuk senjata api, produk berbahaya yang tidak berhubungan dengan olahraga panahan, atau produk palsu/KW yang melanggar hak merek. Pelanggaran dapat berujung pada penangguhan toko.</div>

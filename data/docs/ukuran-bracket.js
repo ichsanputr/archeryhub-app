@@ -1,7 +1,7 @@
-﻿export const ukuran_bracket = {
+export const ukuran_bracket = {
     slug: 'ukuran-bracket',
     title: 'Ukuran Bracket Eliminasi',
-    excerpt: 'Panduan memilih ukuran bracket yang tepat â€” cara kalkulasi otomatis, konsep bye, dan opsi yang tersedia berdasarkan jumlah peserta atau tim.',
+    excerpt: 'Panduan memilih ukuran bracket yang tepat — cara kalkulasi otomatis, konsep bye, dan opsi yang tersedia berdasarkan jumlah peserta atau tim.',
     icon: 'ph:tree-structure-bold',
     category: 'archery',
     readTime: '4 menit',
@@ -26,41 +26,41 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100 bg-white">
-                    <tr><td class="px-4 py-3 font-bold text-navy">4 Slot</td><td class="px-4 py-3">2 babak</td><td class="px-4 py-3">Semifinal â†’ Final</td></tr>
-                    <tr><td class="px-4 py-3 font-bold text-navy">8 Slot</td><td class="px-4 py-3">3 babak</td><td class="px-4 py-3">8-Besar â†’ Semifinal â†’ Final</td></tr>
-                    <tr><td class="px-4 py-3 font-bold text-navy">16 Slot</td><td class="px-4 py-3">4 babak</td><td class="px-4 py-3">16-Besar â†’ â€¦ â†’ Final</td></tr>
-                    <tr><td class="px-4 py-3 font-bold text-navy">32 Slot</td><td class="px-4 py-3">5 babak</td><td class="px-4 py-3">32-Besar â†’ â€¦ â†’ Final</td></tr>
-                    <tr><td class="px-4 py-3 font-bold text-navy">64 Slot</td><td class="px-4 py-3">6 babak</td><td class="px-4 py-3">64-Besar â†’ â€¦ â†’ Final</td></tr>
+                    <tr><td class="px-4 py-3 font-bold text-navy">4 Slot</td><td class="px-4 py-3">2 babak</td><td class="px-4 py-3">Semifinal → Final</td></tr>
+                    <tr><td class="px-4 py-3 font-bold text-navy">8 Slot</td><td class="px-4 py-3">3 babak</td><td class="px-4 py-3">8-Besar → Semifinal → Final</td></tr>
+                    <tr><td class="px-4 py-3 font-bold text-navy">16 Slot</td><td class="px-4 py-3">4 babak</td><td class="px-4 py-3">16-Besar → … → Final</td></tr>
+                    <tr><td class="px-4 py-3 font-bold text-navy">32 Slot</td><td class="px-4 py-3">5 babak</td><td class="px-4 py-3">32-Besar → … → Final</td></tr>
+                    <tr><td class="px-4 py-3 font-bold text-navy">64 Slot</td><td class="px-4 py-3">6 babak</td><td class="px-4 py-3">64-Besar → … → Final</td></tr>
                 </tbody>
             </table>
         </div>
 
         <h2 id="aturan-pangkat-dua">Aturan Pangkat Dua</h2>
-        <p>Ukuran bracket <strong>selalu harus berupa pangkat dua</strong> (4, 8, 16, 32, 64, â€¦). Aturan ini memastikan setiap babak dapat menghasilkan tepat setengah dari jumlah peserta sebelumnya, sehingga seseorang selalu keluar sebagai pemenang tanpa kasus bracket ganjil.</p>
+        <p>Ukuran bracket <strong>selalu harus berupa pangkat dua</strong> (4, 8, 16, 32, 64, …). Aturan ini memastikan setiap babak dapat menghasilkan tepat setengah dari jumlah peserta sebelumnya, sehingga seseorang selalu keluar sebagai pemenang tanpa kasus bracket ganjil.</p>
         <p>Ini adalah standar internasional yang digunakan oleh World Archery, WA Indoor, dan seluruh kompetisi resmi yang terdaftar di bawah Pengurus Besar Perpani.</p>
 
         <h2 id="konsep-bye">Konsep Bye (Laga Kosong)</h2>
-        <p>Ketika jumlah peserta tidak pas mengisi semua slot bracket, beberapa slot diisi dengan <strong>bye</strong> â€” laga kosong di mana peserta secara otomatis menang tanpa bertanding. Bye selalu diberikan kepada peserta dengan ranking kualifikasi terendah (seeding terakhir) agar peserta terbaik tidak terpengaruh.</p>
+        <p>Ketika jumlah peserta tidak pas mengisi semua slot bracket, beberapa slot diisi dengan <strong>bye</strong> — laga kosong di mana peserta secara otomatis menang tanpa bertanding. Bye selalu diberikan kepada peserta dengan ranking kualifikasi terendah (seeding terakhir) agar peserta terbaik tidak terpengaruh.</p>
         <div class="not-prose bg-primary/10 border border-primary/20 rounded-2xl p-5 my-4 flex gap-4">
-            <div class="text-primary text-2xl shrink-0">ðŸŽ¯</div>
+            <div class="text-primary text-2xl shrink-0">🎯</div>
             <div>
                 <div class="font-bold text-navy text-sm mb-1">Contoh Skenario Bye</div>
                 <div class="text-gray-600 text-sm">Jika ada 11 peserta dan bracket 16 dipilih, terdapat 5 bye. Peserta seeded #12 s.d. #16 (slot yang tidak terisi) mendapat bye di babak 16-besar dan langsung masuk ke babak 8-besar.</div>
             </div>
         </div>
-        <p>Semakin kecil ukuran bracket yang dipilih dibandingkan jumlah peserta, sistem akan menggunakan format <strong>"Top-N"</strong> â€” hanya peserta dengan ranking kualifikasi tertinggi yang diikutsertakan. Misalnya, jika ada 30 peserta tetapi bracket 16 dipilih, hanya 16 peserta dengan skor tertinggi yang masuk bracket.</p>
+        <p>Semakin kecil ukuran bracket yang dipilih dibandingkan jumlah peserta, sistem akan menggunakan format <strong>"Top-N"</strong> — hanya peserta dengan ranking kualifikasi tertinggi yang diikutsertakan. Misalnya, jika ada 30 peserta tetapi bracket 16 dipilih, hanya 16 peserta dengan skor tertinggi yang masuk bracket.</p>
 
         <h2 id="kalkulasi-otomatis">Kalkulasi Otomatis archeris.net</h2>
         <p>Saat panitia membuka halaman pembuatan bracket, sistem secara otomatis:</p>
         <ol>
             <li><strong>Menghitung jumlah peserta (atau tim)</strong> yang memenuhi syarat di kategori tersebut.</li>
-            <li><strong>Menentukan ukuran bracket maksimum</strong> â€” yaitu pangkat dua terkecil yang bisa menampung seluruh peserta.</li>
+            <li><strong>Menentukan ukuran bracket maksimum</strong> — yaitu pangkat dua terkecil yang bisa menampung seluruh peserta.</li>
             <li><strong>Menampilkan opsi ukuran</strong> dari 4 hingga maksimum, dalam kelipatan pangkat dua, untuk dipilih panitia.</li>
         </ol>
         <p>Sistem juga menampilkan hint dinamis di bawah dropdown pilihan:</p>
         <ul>
-            <li>Jika ukuran â‰¥ jumlah peserta: <em>"30 peserta Â· 2 bye"</em> â€” semua peserta masuk, dengan beberapa bye.</li>
-            <li>Jika ukuran &lt; jumlah peserta: <em>"Top 16 dari 30 peserta berdasarkan ranking"</em> â€” hanya ranking teratas yang masuk.</li>
+            <li>Jika ukuran ≥ jumlah peserta: <em>"30 peserta · 2 bye"</em> — semua peserta masuk, dengan beberapa bye.</li>
+            <li>Jika ukuran &lt; jumlah peserta: <em>"Top 16 dari 30 peserta berdasarkan ranking"</em> — hanya ranking teratas yang masuk.</li>
         </ul>
 
         <h2 id="memilih-ukuran">Panduan Memilih Ukuran</h2>
@@ -88,13 +88,13 @@
                     </tr>
                     <tr>
                         <td class="px-4 py-3 font-bold text-navy">Jumlah peserta kecil</td>
-                        <td class="px-4 py-3">Jika peserta â‰¤ 4, gunakan bracket 4; memaksa bracket 16 dengan 4 peserta menghasilkan terlalu banyak bye</td>
+                        <td class="px-4 py-3">Jika peserta ≤ 4, gunakan bracket 4; memaksa bracket 16 dengan 4 peserta menghasilkan terlalu banyak bye</td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <div class="not-prose bg-amber-50 border border-amber-200 rounded-2xl p-5 my-4 flex gap-4">
-            <div class="text-amber-500 text-2xl shrink-0">âš ï¸</div>
+            <div class="text-amber-500 text-2xl shrink-0">⚠️</div>
             <div>
                 <div class="font-bold text-navy text-sm mb-1">Ukuran Terkunci Setelah Bracket Dibuat</div>
                 <div class="text-gray-600 text-sm">Setelah bracket berhasil dibuat, ukurannya tidak dapat diubah. Jika ingin mengubah ukuran, bracket harus dihapus dan dibuat ulang. Pastikan komposisi peserta sudah final sebelum membuat bracket.</div>

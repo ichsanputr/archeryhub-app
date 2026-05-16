@@ -255,7 +255,7 @@ import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 
 definePageMeta({ layout: 'dashboard' })
-useHead({ title: 'Pusat Pesan - ArcheryHub Dashboard' })
+useHead({ title: 'Pusat Pesan - Archeris Dashboard' })
 
 const { get, post } = useApi()
 const toast = useToast()

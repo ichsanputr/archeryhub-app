@@ -239,7 +239,7 @@
                             Event Panahan?
                         </h2>
                         <p class="text-white/70 text-sm sm:text-base font-bold max-w-xl leading-relaxed">Daftarkan event
-                            Anda di Archeryhub.id dan kelola pendaftaran serta scoring dengan lebih profesional.</p>
+                            Anda di Archeris.net dan kelola pendaftaran serta scoring dengan lebih profesional.</p>
                     </div>
                     <NuxtLink to="/auth/register?type=organizer">
                         <button
@@ -373,7 +373,7 @@ useHead({
 })
 
 useSeoMeta({
-    title: 'Semua Event - Archeryhub.id',
+    title: 'Semua Event - Archeris.net',
     description: 'Cari dan daftar event panahan seru di seluruh Indonesia.'
 })
 

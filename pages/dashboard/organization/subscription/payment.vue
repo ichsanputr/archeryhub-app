@@ -106,7 +106,7 @@ const handlePayment = async () => {
 }
 
 useHead({
-    title: 'Pilih Metode Pembayaran - Archeryhub.id'
+    title: 'Pilih Metode Pembayaran - Archeris.net'
 })
 </script>
 

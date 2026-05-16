@@ -135,7 +135,7 @@ import { computed, onMounted, ref } from 'vue'
 import { useApi } from '~/composables/useApi'
 
 definePageMeta({ layout: 'dashboard' })
-useHead({ title: 'Dashboard Ringkasan Toko - ArcheryHub' })
+useHead({ title: 'Dashboard Ringkasan Toko - Archeris' })
 
 const api = useApi()
 

@@ -1,4 +1,4 @@
-﻿<template>
+<template>
     <!-- Precision Ecosystem Features -->
     <section ref="sectionRef" class="relative bg-white py-12 sm:py-24 md:py-32 overflow-hidden border-b border-gray-100">
         <!-- Background Glow/Patterns -->

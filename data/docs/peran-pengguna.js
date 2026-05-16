@@ -1,4 +1,4 @@
-﻿export const peran_pengguna = {
+export const peran_pengguna = {
     slug: 'peran-pengguna', title: 'Jenis Akun di Platform', excerpt: 'Panduan lengkap jenis akun, hak akses, dan alur kerja tiap tipe pengguna di archeris.net.', icon: 'ph:users-three-bold', category: 'platform', readTime: '8 menit',
     toc: [
         { id: 'tipe-akun', level: 2, text: 'Tipe Akun di archeris.net' },
