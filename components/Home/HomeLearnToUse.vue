@@ -13,7 +13,7 @@
             </div>
 
             <!-- Steps Grid Replaced by Iframe -->
-            <div class="relative w-full aspect-video rounded-3xl overflow-hidden shadow-2xl border border-gray-100 bg-white">
+            <div class="relative w-full aspect-video rounded-3xl overflow-hidden shadow-lg border border-navy/5 bg-white">
                 <iframe 
                     src="about:blank" 
                     class="w-full h-full"

@@ -84,30 +84,22 @@
     <!-- Right Section -->
     <div class="flex items-center gap-3 pl-4">
       <!-- Search Button -->
-      <button
-        @click="searchDialog?.open()"
-        :class="[
-          isScrolled || !transparent
-            ? 'bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-navy'
-            : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white border border-white/20'
-        ]"
-        class="hidden sm:flex items-center gap-2 rounded-xl px-3 h-9 text-sm transition-all"
-        title="Cari halaman (Ctrl+K)"
-      >
+      <button @click="searchDialog?.open()" :class="[
+        isScrolled || !transparent
+          ? 'bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-navy'
+          : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white border border-white/20'
+      ]" class="hidden sm:flex items-center gap-2 rounded-xl px-3 h-9 text-sm transition-all"
+        title="Cari halaman (Ctrl+K)">
         <Icon icon="ph:magnifying-glass-bold" class="text-base" />
         <span class="hidden md:inline text-xs font-medium">Cari halaman</span>
         <kbd
           :class="isScrolled || !transparent ? 'bg-white border-gray-200 text-gray-400' : 'bg-white/10 border-white/20 text-white/50'"
-          class="hidden lg:inline-flex items-center px-1.5 py-0.5 border rounded text-xs font-mono ml-1"
-        >Ctrl K</kbd>
+          class="hidden lg:inline-flex items-center px-1.5 py-0.5 border rounded text-xs font-mono ml-1">Ctrl K</kbd>
       </button>
       <!-- Mobile search icon -->
-      <button
-        @click="searchDialog?.open()"
+      <button @click="searchDialog?.open()"
         :class="isScrolled || !transparent ? 'text-gray-500 hover:text-navy' : 'text-white/70 hover:text-white'"
-        class="sm:hidden p-2 rounded-xl transition-colors"
-        title="Cari halaman"
-      >
+        class="sm:hidden p-2 rounded-xl transition-colors" title="Cari halaman">
         <Icon icon="ph:magnifying-glass-bold" class="text-xl" />
       </button>
     </div>
@@ -261,4 +253,3 @@ const getFirstWord = (text) => {
   return text.split(' ')[0]
 }
 </script>
-

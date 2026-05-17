@@ -1,0 +1,84 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred"
+  },
+  "nav": {
+    "home": "Home",
+    "features": "Events",
+    "pricing": "Pricing",
+    "blog": "Blog",
+    "archers": "Archers",
+    "news": "News",
+    "marketplace": "Marketplace",
+    "login": "Login",
+    "register": "Register"
+  },
+  "home": {
+    "hero": {
+      "title_part1": "Digitalize Your",
+      "title_part2": "Archery Experience",
+      "description": "Archeris.net is an integrated archery management platform designed specifically to ease tournament management, real-time scoring, and the development of the archery sports ecosystem in Indonesia.",
+      "cta_primary": "Get Started",
+      "cta_secondary": "Learn More"
+    },
+    "learn": {
+      "title": "Step-by-Step Guide to Using",
+      "subtitle": "Archeris Efficiently",
+      "description": "Start managing your archery tournaments with an integrated and easy-to-use digital system."
+    },
+    "features_demo": {
+      "title1": "Built for Archers.",
+      "title2": "Designed for Clubs.",
+      "description": "A complete platform that grows your community and builds sustainable athlete loyalty.",
+      "f1_tag": "White Label App",
+      "f1_title": "Your brand at every step",
+      "f1_desc": "Provide a seamless experience for members—your app, your logo, your name in the App Store. With full Archeris functionality behind the scenes, your brand remains at the center of attention.",
+      "f2_tag": "Club Scheduling",
+      "f2_title": "Maximize every practice hour",
+      "f2_desc": "Smart scheduling that helps you maximize your club's most valuable assets: targets and fields. Automatic target butt allocation management.",
+      "f3_tag": "Integrated Payments",
+      "f3_title": "Frictionless tournament registration",
+      "f3_desc": "Collect registration fees instantly with a secure and integrated payment gateway. Supports QRIS, VA, and Credit Cards.",
+      "f4_tag": "Athlete Portfolio",
+      "f4_title": "Showcase every achievement",
+      "f4_desc": "Every shot arrow will be recorded. Build a comprehensive digital portfolio showing performance trends and digital certificates."
+    },
+    "blog": {
+      "title1": "Operators rely on us.",
+      "title2": "Archers love us.",
+      "view_all": "View All Posts"
+    },
+    "pricing": {
+      "title": "Choose your level.",
+      "description": "From individuals to large clubs, we have the right package to support your archery achievements.",
+      "basic": {
+        "name": "Archer Basic",
+        "price": "Free",
+        "desc": "Perfect for beginner athletes who want to start recording digital scores.",
+        "cta": "Start Free"
+      },
+      "pro": {
+        "name": "Archer Pro",
+        "price": "29k",
+        "period": "/month",
+        "desc": "Maximize your potential with deep statistics and a pro portfolio.",
+        "cta": "Upgrade to Pro"
+      },
+      "elite": {
+        "name": "Club Elite",
+        "price": "149k",
+        "period": "/month",
+        "desc": "Complete solution for club management and professional event organizing.",
+        "cta": "Contact Us"
+      }
+    },
+    "mobile": {
+      "title1": "Bring your game",
+      "title2": "anywhere.",
+      "description": "Get the best digital scoring experience right in your hand. Download the Archeris app now and start tracking your achievements in real-time."
+    },
+    "meta_title": "Archeris.net - Archery Management Platform Indonesia",
+    "meta_desc": "Archeris.net - Integrated archery management platform for tournaments, real-time scoring, and professional athlete development in Indonesia."
+  }
+}

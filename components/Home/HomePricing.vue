@@ -103,6 +103,8 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 
+const localePath = useLocalePath()
+
 const basicFeatures = [
     'Skoring Digital (Unlimited)',
     'Logbook Latihan Dasar',

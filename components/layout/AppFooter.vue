@@ -24,8 +24,7 @@
               </div>
             </div>
             <p class="text-gray-400 leading-relaxed text-sm sm:text-base">
-              Platform infrastruktur digital terintegrasi untuk skor real-time dan turnamen panahan
-              profesional yang lebih efisien.
+              Platform infrastruktur digital terintegrasi untuk skor real-time dan turnamen panahan profesional yang lebih efisien. Archeris hadir untuk menghubungkan dan memberdayakan seluruh penggiat panahan di Indonesia, mulai dari atlet pemula hingga penyelenggara event tingkat nasional.
             </p>
           </div>
         </div>

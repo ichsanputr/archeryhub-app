@@ -45,6 +45,8 @@
 import { ref, onMounted } from 'vue'
 import { gsap } from 'gsap'
 
+const localePath = useLocalePath()
+
 const heroTitle = ref(null)
 const heroText = ref(null)
 const heroButtons = ref(null)

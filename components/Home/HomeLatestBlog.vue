@@ -8,14 +8,24 @@
                         {{ $t('home.blog.title2') }}
                     </h2>
                 </div>
-                <NuxtLink :to="localePath('/blog')" class="inline-flex items-center gap-2 text-white/60 font-bold uppercase tracking-widest text-sm hover:text-primary transition-colors">
-                    {{ $t('home.blog.view_all') }} <Icon icon="ph:arrow-right-bold" />
-                </NuxtLink>
+                <div class="flex items-center gap-4">
+                    <!-- Left Arrow Button -->
+                    <button @click="scrollLeft" class="w-12 h-12 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 hover:border-primary text-white flex items-center justify-center transition-all group/btn shadow-lg" aria-label="Scroll Left">
+                        <Icon icon="ph:caret-left-bold" class="text-xl group-hover/btn:-translate-x-0.5 transition-transform" />
+                    </button>
+                    <!-- Right Arrow Button -->
+                    <button @click="scrollRight" class="w-12 h-12 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 hover:border-primary text-white flex items-center justify-center transition-all group/btn shadow-lg" aria-label="Scroll Right">
+                        <Icon icon="ph:caret-right-bold" class="text-xl group-hover/btn:translate-x-0.5 transition-transform" />
+                    </button>
+                    <NuxtLink :to="localePath('/blog')" class="ml-4 inline-flex items-center gap-2 text-white/60 font-bold uppercase tracking-widest text-sm hover:text-primary transition-colors">
+                        {{ $t('home.blog.view_all') }} <Icon icon="ph:arrow-right-bold" />
+                    </NuxtLink>
+                </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div ref="blogScrollContainer" class="flex gap-8 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar pb-6 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
                 <!-- Blog Card 1 -->
-                <div class="group cursor-pointer">
+                <div class="w-[280px] sm:w-[350px] md:w-[400px] flex-shrink-0 snap-start group cursor-pointer">
                     <div class="aspect-[16/10] rounded-3xl overflow-hidden mb-6 bg-white shadow-lg">
                         <img src="/archery_blog_thumbnail_1778934914638.png" alt="Blog Post" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                     </div>
@@ -30,7 +40,7 @@
                 </div>
 
                 <!-- Blog Card 2 (Placeholder) -->
-                <div class="group cursor-pointer">
+                <div class="w-[280px] sm:w-[350px] md:w-[400px] flex-shrink-0 snap-start group cursor-pointer">
                     <div class="aspect-[16/10] rounded-3xl overflow-hidden mb-6 bg-white/5 border border-white/10 flex items-center justify-center">
                         <Icon icon="ph:image-square-bold" class="text-4xl text-white/20" />
                     </div>
@@ -45,7 +55,7 @@
                 </div>
 
                 <!-- Blog Card 3 (Placeholder) -->
-                <div class="group cursor-pointer">
+                <div class="w-[280px] sm:w-[350px] md:w-[400px] flex-shrink-0 snap-start group cursor-pointer">
                     <div class="aspect-[16/10] rounded-3xl overflow-hidden mb-6 bg-white/5 border border-white/10 flex items-center justify-center">
                         <Icon icon="ph:image-square-bold" class="text-4xl text-white/20" />
                     </div>
@@ -64,8 +74,32 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
+
+const localePath = useLocalePath()
+
+const blogScrollContainer = ref(null)
+
+const scrollLeft = () => {
+    if (blogScrollContainer.value) {
+        blogScrollContainer.value.scrollBy({ left: -432, behavior: 'smooth' })
+    }
+}
+
+const scrollRight = () => {
+    if (blogScrollContainer.value) {
+        blogScrollContainer.value.scrollBy({ left: 432, behavior: 'smooth' })
+    }
+}
 </script>
 
 <style scoped>
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
 </style>

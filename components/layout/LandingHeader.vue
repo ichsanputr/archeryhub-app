@@ -123,9 +123,9 @@
                 <div class="hidden md:flex items-center gap-3">
                     <!-- Language Switcher -->
                     <div class="relative mr-2" @mouseenter="showLangMenu = true" @mouseleave="showLangMenu = false">
-                        <button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all duration-300 text-xs font-bold uppercase tracking-widest"
+                        <button class="flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all duration-300 text-xs font-bold uppercase tracking-widest"
                             :class="showSolid ? 'text-navy hover:bg-gray-100' : 'text-white hover:bg-white/10'">
-                            <Icon icon="ph:globe-bold" class="text-lg" />
+                            <Icon :icon="langFlags[locale] || 'ph:globe-bold'" class="text-lg rounded-full overflow-hidden border border-white/20" />
                             {{ locale }}
                         </button>
                         
@@ -137,9 +137,10 @@
                                 <div class="bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden py-2">
                                     <button v-for="loc in locales" :key="loc.code" 
                                         @click="setLocale(loc.code)"
-                                        class="flex items-center justify-between w-full px-4 py-2 text-xs font-bold transition-colors hover:bg-gray-50"
+                                        class="flex items-center gap-3 w-full px-4 py-2.5 text-xs font-bold transition-colors hover:bg-gray-50"
                                         :class="locale === loc.code ? 'text-primary' : 'text-navy'">
-                                        {{ loc.name }}
+                                        <Icon :icon="langFlags[loc.code] || 'ph:globe-bold'" class="text-base rounded-full overflow-hidden border border-gray-100" />
+                                        <span class="flex-1 text-left">{{ loc.name }}</span>
                                         <Icon v-if="locale === loc.code" icon="ph:check-bold" />
                                     </button>
                                 </div>
@@ -220,7 +221,7 @@
                 <div class="flex items-center gap-2 md:hidden">
                     <!-- Mobile Cart (For Archers) -->
                     <NuxtLink v-if="isLoggedIn && user?.user_type === 'archer'" to="/dashboard/archer/cart"
-                        class="relative p-2 rounded-xl transition-all duration-300"
+                        class="relative p-2 rounded-xl transition-all duration-300 mr-1"
                         :class="showSolid ? 'text-navy' : 'text-white'">
                         <Icon icon="ph:shopping-bag-bold" class="text-2xl" />
                         <span v-if="cartCount > 0"
@@ -228,6 +229,32 @@
                             {{ cartCount }}
                         </span>
                     </NuxtLink>
+
+                    <!-- Mobile Language Switcher -->
+                    <div class="relative mr-1" @click.stop="showLangMenuMobile = !showLangMenuMobile">
+                        <button class="flex items-center gap-1.5 p-2 rounded-xl transition-all duration-300 text-xs font-bold uppercase"
+                            :class="showSolid ? 'text-navy hover:bg-gray-100' : 'text-white hover:bg-white/10'">
+                            <Icon :icon="langFlags[locale] || 'ph:globe-bold'" class="text-xl rounded-full overflow-hidden border border-white/20" />
+                        </button>
+                        
+                        <Transition enter-active-class="transition duration-200 ease-out"
+                            enter-from-class="opacity-0 translate-y-1" enter-to-class="opacity-100 translate-y-0"
+                            leave-active-class="transition duration-150 ease-in"
+                            leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 translate-y-1">
+                            <div v-if="showLangMenuMobile" class="absolute right-0 top-full pt-2 w-40 z-50">
+                                <div class="bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden py-2">
+                                    <button v-for="loc in locales" :key="loc.code" 
+                                        @click="setLocale(loc.code); showLangMenuMobile = false"
+                                        class="flex items-center gap-3 w-full px-4 py-2.5 text-xs font-bold transition-colors hover:bg-gray-50 text-left"
+                                        :class="locale === loc.code ? 'text-primary' : 'text-navy'">
+                                        <Icon :icon="langFlags[loc.code] || 'ph:globe-bold'" class="text-base rounded-full overflow-hidden border border-gray-100" />
+                                        <span class="flex-1 text-left">{{ loc.name }}</span>
+                                        <Icon v-if="locale === loc.code" icon="ph:check-bold" />
+                                    </button>
+                                </div>
+                            </div>
+                        </Transition>
+                    </div>
 
                     <button class="p-2 transition-colors duration-300" :class="mobileToggleClasses"
                         @click="mobileMenuOpen = !mobileMenuOpen">
@@ -381,11 +408,18 @@ const { isLoggedIn, user, userPersona, logout } = useAuth()
 const { locale, locales, setLocale } = useI18n()
 const localePath = useLocalePath()
 
+const langFlags = {
+    en: 'circle-flags:us',
+    id: 'circle-flags:id',
+    kr: 'circle-flags:kr'
+}
+
 const mobileMenuOpen = ref(false)
 const mobileSubmenuOpen = ref(false)
 const showMegaMenu = ref(false)
 const showUserMenu = ref(false)
 const showLangMenu = ref(false)
+const showLangMenuMobile = ref(false)
 const isScrolled = ref(false)
 const cartCount = ref(0)
 const { get } = useApi()
@@ -519,6 +553,8 @@ watch(() => route.path, () => {
     mobileSubmenuOpen.value = false
     showMegaMenu.value = false
     showUserMenu.value = false
+    showLangMenu.value = false
+    showLangMenuMobile.value = false
 
     // Force re-check of scroll position after navigation
     if (import.meta.client) {
