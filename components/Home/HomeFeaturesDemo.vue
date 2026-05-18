@@ -3,7 +3,7 @@
         <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Main Heading -->
             <div class="text-center mb-24">
-                <h2 class="text-4xl sm:text-7xl font-black text-navy leading-tight mb-6 font-display tracking-tighter">
+                <h2 class="text-navy mb-6">
                     {{ $t('home.features_demo.title1') }}<br />
                     {{ $t('home.features_demo.title2') }}
                 </h2>

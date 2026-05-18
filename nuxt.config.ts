@@ -1,4 +1,30 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+import fs from 'fs'
+import path from 'path'
+
+function getDashboardPages(dir: string, base: string = 'dashboard'): Record<string, boolean> {
+  const pages: Record<string, boolean> = {}
+  if (!fs.existsSync(dir)) return pages
+
+  const items = fs.readdirSync(dir)
+  for (const item of items) {
+    const fullPath = path.join(dir, item)
+    const stat = fs.statSync(fullPath)
+    if (stat.isDirectory()) {
+      Object.assign(pages, getDashboardPages(fullPath, `${base}/${item}`))
+    } else if (item.endsWith('.vue')) {
+      const cleanItem = item.replace(/\.vue$/, '')
+      const key = `${base}/${cleanItem}`.replace(/\\/g, '/')
+      pages[key] = false
+      if (cleanItem === 'index') {
+        const indexKey = base.replace(/\\/g, '/')
+        pages[indexKey] = false
+      }
+    }
+  }
+  return pages
+}
+
+const dashboardPages = getDashboardPages(path.resolve(__dirname, 'pages/dashboard'))
 
 export default defineNuxtConfig({
   ssr: true,
@@ -19,7 +45,8 @@ export default defineNuxtConfig({
     langDir: 'locales',
     defaultLocale: 'en',
     strategy: 'prefix_except_default',
-    detectBrowserLanguage: false
+    detectBrowserLanguage: false,
+    pages: dashboardPages
   },
   components: [
     {

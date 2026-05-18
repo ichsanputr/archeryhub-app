@@ -2,7 +2,7 @@
     <section class="py-24 bg-white overflow-hidden">
         <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 sm:mb-24">
-                <h2 class="text-4xl sm:text-7xl font-black text-navy leading-tight font-display tracking-tighter mb-6">
+                <h2 class="text-navy mb-6">
                     {{ $t('home.pricing.title') }}
                 </h2>
                 <p class="text-navy/60 text-lg max-w-2xl mx-auto font-light">

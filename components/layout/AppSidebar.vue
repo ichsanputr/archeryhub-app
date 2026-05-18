@@ -138,6 +138,7 @@ import { useImageOrDefault } from '~/composables/useImageHelper'
 const route = useRoute()
 const router = useRouter()
 const { user, userPersona, archerProfile, organizationProfile, sellerProfile, logout } = useAuth()
+const { t } = useI18n()
 
 const isSidebarOpen = useState('mobile-sidebar-open', () => false)
 const isSidebarCollapsed = useState('sidebar-collapsed', () => false)
@@ -262,99 +263,97 @@ const navSections = computed(() => {
 
   if (role === 'archer') {
     return [
-      { label: 'Event Saya', icon: 'ph:trophy', path: '/dashboard/archer/events' },
-      { label: 'Pembayaran', icon: 'ph:credit-card', path: '/dashboard/archer/payments' },
-      { label: 'Keranjang', icon: 'ph:shopping-cart', path: '/dashboard/archer/cart' },
-      { label: 'Pesan', icon: 'ph:chat-circle-dots', path: '/dashboard/archer/chat', badge: 'New' },
-      { label: 'Profil Pemanah', icon: 'ph:user-circle', path: '/dashboard/archer/profile' },
-      { label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/archer/settings' },
+      { label: t('dashboard.sidebar.my_events'), icon: 'ph:trophy', path: '/dashboard/archer/events' },
+      { label: t('dashboard.sidebar.finance'), icon: 'ph:credit-card', path: '/dashboard/archer/payments' },
+      { label: t('dashboard.sidebar.overview'), icon: 'ph:shopping-cart', path: '/dashboard/archer/cart' }, // using cart but standard
+      { label: t('dashboard.sidebar.news'), icon: 'ph:chat-circle-dots', path: '/dashboard/archer/chat', badge: 'New' },
+      { label: t('dashboard.sidebar.profile'), icon: 'ph:user-circle', path: '/dashboard/archer/profile' },
+      { label: t('dashboard.sidebar.settings'), icon: 'ph:gear', path: '/dashboard/archer/settings' },
     ]
   }
 
   if (role === 'seller') {
     return [
-      { label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard/seller' },
-      { type: 'label', label: 'Manajemen Toko' },
-      { label: 'Toko Saya', icon: 'ph:storefront', path: '/dashboard/seller/store' },
-      { label: 'Produk', icon: 'ph:package', path: '/dashboard/seller/products' },
-      { label: 'Pesanan', icon: 'ph:shopping-cart', path: '/dashboard/seller/orders' },
-      { label: 'Chat', icon: 'ph:chat-circle-dots', path: '/dashboard/seller/chat', badge: 'New' },
-      { type: 'label', label: 'Keuangan' },
+      { label: t('dashboard.sidebar.overview'), icon: 'ph:squares-four', path: '/dashboard/seller' },
+      { type: 'label', label: t('dashboard.sidebar.overview') },
+      { label: t('dashboard.sidebar.profile'), icon: 'ph:storefront', path: '/dashboard/seller/store' },
+      { label: t('dashboard.sidebar.event'), icon: 'ph:package', path: '/dashboard/seller/products' },
+      { label: t('dashboard.sidebar.my_events'), icon: 'ph:shopping-cart', path: '/dashboard/seller/orders' },
+      { label: t('dashboard.sidebar.news'), icon: 'ph:chat-circle-dots', path: '/dashboard/seller/chat', badge: 'New' },
+      { type: 'label', label: t('dashboard.sidebar.finance') },
       {
-        label: 'Keuangan',
+        label: t('dashboard.sidebar.finance'),
         icon: 'ph:coins',
         type: 'group',
         children: [
-          { label: 'Transaksi', icon: 'ph:credit-card', path: '/dashboard/seller/finance/transactions' },
-          { label: 'Saldo & Penarikan', icon: 'ph:wallet', path: '/dashboard/seller/finance/balance' },
+          { label: t('dashboard.sidebar.earnings'), icon: 'ph:credit-card', path: '/dashboard/seller/finance/transactions' },
+          { label: t('dashboard.sidebar.balance'), icon: 'ph:wallet', path: '/dashboard/seller/finance/balance' },
         ]
       },
-      { type: 'label', label: 'Lainnya' },
-      { label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/seller/settings' },
+      { type: 'label', label: t('dashboard.sidebar.settings') },
+      { label: t('dashboard.sidebar.settings'), icon: 'ph:gear', path: '/dashboard/seller/settings' },
     ]
   }
 
-
-
   if (role === 'organization') {
     return [
-      { label: 'Ringkasan', icon: 'ph:squares-four', path: '/dashboard/organization' },
-      { type: 'label', label: 'Manajemen Event' },
+      { label: t('dashboard.sidebar.overview'), icon: 'ph:squares-four', path: '/dashboard/organization' },
+      { type: 'label', label: t('dashboard.sidebar.event') },
       {
-        label: 'Event',
+        label: t('dashboard.sidebar.event'),
         icon: 'ph:trophy',
         type: 'group',
         children: [
-          { label: 'Event Saya', icon: 'material-symbols:event-list-outline', path: '/dashboard/organization/events', isLocked: !isActiveSub },
+          { label: t('dashboard.sidebar.my_events'), icon: 'material-symbols:event-list-outline', path: '/dashboard/organization/events', isLocked: !isActiveSub },
         ]
       },
-      { type: 'label', label: 'Manajemen Organisasi' },
+      { type: 'label', label: t('dashboard.sidebar.organization') },
       {
-        label: 'Organisasi',
+        label: t('dashboard.sidebar.organization'),
         icon: 'ph:building-office',
         type: 'group',
         children: [
-          { label: 'Profil Organisasi', icon: 'icomoon-free:profile', path: '/dashboard/organization/profile' },
-          { label: 'Scorekeeper', icon: 'ph:user-focus', path: '/dashboard/organization/scorekeepers', isLocked: !isActiveSub },
+          { label: t('dashboard.sidebar.profile'), icon: 'icomoon-free:profile', path: '/dashboard/organization/profile' },
+          { label: t('dashboard.sidebar.scorekeeper'), icon: 'ph:user-focus', path: '/dashboard/organization/scorekeepers', isLocked: !isActiveSub },
         ]
       },
-      { type: 'label', label: 'Manajemen Keuangan' },
+      { type: 'label', label: t('dashboard.sidebar.finance') },
       {
-        label: 'Keuangan',
+        label: t('dashboard.sidebar.finance'),
         icon: 'ph:coins',
         type: 'group',
         children: [
-          { label: 'Penghasilan Saya', icon: 'ph:wallet', path: '/dashboard/organization/earnings', isLocked: !isActiveSub },
-          { label: 'Saldo', icon: 'ph:bank', path: '/dashboard/organization/balance', isLocked: !isActiveSub },
-          { label: 'Rekening Bank', icon: 'ph:credit-card', path: '/dashboard/organization/bank-accounts', isLocked: !isActiveSub },
+          { label: t('dashboard.sidebar.earnings'), icon: 'ph:wallet', path: '/dashboard/organization/earnings', isLocked: !isActiveSub },
+          { label: t('dashboard.sidebar.balance'), icon: 'ph:bank', path: '/dashboard/organization/balance', isLocked: !isActiveSub },
+          { label: t('dashboard.sidebar.bank_accounts'), icon: 'ph:credit-card', path: '/dashboard/organization/bank-accounts', isLocked: !isActiveSub },
         ]
       },
-      { type: 'label', label: 'Lainnya' },
-      { label: 'Subscription', icon: 'ph:credit-card', path: '/dashboard/organization/subscription' },
-      ...(!isEventManagePage.value ? [{ label: 'Berita', icon: 'ph:newspaper', path: '/dashboard/organization/news' }] : []),
-      ...(!isEventManagePage.value ? [{ label: 'Pengaturan', icon: 'ph:gear', path: '/dashboard/organization/settings' }] : []),
+      { type: 'label', label: t('dashboard.sidebar.settings') },
+      { label: t('dashboard.sidebar.subscription'), icon: 'ph:credit-card', path: '/dashboard/organization/subscription' },
+      ...(!isEventManagePage.value ? [{ label: t('dashboard.sidebar.news'), icon: 'ph:newspaper', path: '/dashboard/organization/news' }] : []),
+      ...(!isEventManagePage.value ? [{ label: t('dashboard.sidebar.settings'), icon: 'ph:gear', path: '/dashboard/organization/settings' }] : []),
     ]
   }
 
   // Root admin — clean minimal nav
   if (role === 'root') {
     return [
-      { type: 'label', label: 'Manajemen Akun' },
-      { label: 'Pengguna', icon: 'ph:users-four-bold', path: '/dashboard/root' },
-      { type: 'label', label: 'Manajemen Paket' },
-      { label: 'Subscription', icon: 'ph:credit-card-bold', path: '/dashboard/root/subscriptions' },
+      { type: 'label', label: t('dashboard.sidebar.profile') },
+      { label: t('dashboard.sidebar.organization'), icon: 'ph:users-four-bold', path: '/dashboard/root' },
+      { type: 'label', label: t('dashboard.sidebar.subscription') },
+      { label: t('dashboard.sidebar.subscription'), icon: 'ph:credit-card-bold', path: '/dashboard/root/subscriptions' },
     ]
   }
 
   // Admin / default
   const prefix = `/dashboard/${userPersona.value}`
   return [
-    { label: 'Ringkasan', icon: 'ph:squares-four', path: prefix },
-    { label: 'Event', icon: 'ph:trophy', path: `${prefix}/events` },
-    ...(!isEventManagePage.value ? [{ label: 'Laporan', icon: 'ph:chart-bar', path: `${prefix}/reports` }] : []),
-    { label: 'Tim', icon: 'ph:users-four', path: `${prefix}/teams` },
-    ...(!isEventManagePage.value ? [{ label: 'Berita', icon: 'ph:newspaper', path: `${prefix}/news` }] : []),
-    ...(!isEventManagePage.value ? [{ label: 'Pengaturan', icon: 'ph:gear', path: `${prefix}/settings` }] : []),
+    { label: t('dashboard.sidebar.overview'), icon: 'ph:squares-four', path: prefix },
+    { label: t('dashboard.sidebar.event'), icon: 'ph:trophy', path: `${prefix}/events` },
+    ...(!isEventManagePage.value ? [{ label: t('dashboard.sidebar.earnings'), icon: 'ph:chart-bar', path: `${prefix}/reports` }] : []),
+    { label: t('dashboard.sidebar.profile'), icon: 'ph:users-four', path: `${prefix}/teams` },
+    ...(!isEventManagePage.value ? [{ label: t('dashboard.sidebar.news'), icon: 'ph:newspaper', path: `${prefix}/news` }] : []),
+    ...(!isEventManagePage.value ? [{ label: t('dashboard.sidebar.settings'), icon: 'ph:gear', path: `${prefix}/settings` }] : []),
   ]
 })
 

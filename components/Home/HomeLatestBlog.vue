@@ -3,7 +3,7 @@
         <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
                 <div>
-                    <h2 class="text-4xl sm:text-7xl font-black text-white leading-tight font-display tracking-tighter">
+                    <h2 class="text-white">
                         {{ $t('home.blog.title1') }}<br />
                         {{ $t('home.blog.title2') }}
                     </h2>

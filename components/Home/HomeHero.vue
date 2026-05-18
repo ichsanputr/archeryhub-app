@@ -12,7 +12,7 @@
                 <div class="max-w-3xl">
                     <!-- Title -->
                     <h1 ref="heroTitle"
-                        class="text-4xl sm:text-7xl font-black text-white leading-[1.1] mb-8 tracking-tight drop-shadow-sm font-display opacity-0 translate-y-8">
+                        class="text-white mb-8 drop-shadow-sm opacity-0 translate-y-8">
                         {{ $t('home.hero.title_part1') }}<br />
                         <span
                             class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary to-green-300">
