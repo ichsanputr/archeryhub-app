@@ -126,7 +126,7 @@
                     <!-- Language Switcher -->
                     <div class="relative mr-2" @mouseenter="showLangMenu = true" @mouseleave="showLangMenu = false">
                         <button
-                            class="flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all duration-300 text-xs font-bold uppercase tracking-widest"
+                            class="flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all duration-300 text-xs font-bold tracking-widest"
                             :class="showSolid ? 'text-navy hover:bg-gray-100' : 'text-white hover:bg-white/10'">
                             <Icon :icon="langFlags[locale] || 'ph:globe-bold'"
                                 class="text-lg rounded-full overflow-hidden border border-white/20" />
@@ -173,7 +173,7 @@
                                 <img v-if="user?.avatar_url" :src="user.avatar_url"
                                     class="w-full h-full object-cover" />
                                 <span v-else class="text-navy font-bold text-sm">{{ user?.full_name?.charAt(0) || 'U'
-                                    }}</span>
+                                }}</span>
                             </div>
                         </button>
 
@@ -312,7 +312,7 @@
                                 <img v-if="user?.avatar_url" :src="user.avatar_url"
                                     class="w-full h-full object-cover" />
                                 <span v-else class="text-navy font-black text-xl">{{ user?.full_name?.charAt(0) || 'U'
-                                    }}</span>
+                                }}</span>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <div class="text-navy font-black truncate">{{ user?.full_name || 'User' }}</div>

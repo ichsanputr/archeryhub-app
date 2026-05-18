@@ -9,8 +9,7 @@
                 </NuxtLink>
                 <div>
                     <h1 class="text-2xl font-black text-navy tracking-tight">Buat Akun Baru</h1>
-                    <div
-                        class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gray-400 mt-0.5">
+                    <div class="flex items-center gap-2 text-[10px] font-black tracking-widest text-gray-400 mt-0.5">
                         <span>Root Terminal</span>
                         <Icon icon="ph:caret-right-bold" class="text-[8px]" />
                         <span class="text-primary-dark font-black tracking-[0.2em]">Registrasi Manual</span>
@@ -29,7 +28,7 @@
                     class="absolute inset-0 bg-primary/5 pointer-events-none animate-in fade-in duration-500"></div>
                 <Icon :icon="t.icon" class="text-2xl transition-all duration-300 group-hover:scale-110"
                     :class="form.user_type === t.id ? 'text-primary' : ''" />
-                <span class="text-[9px] font-black uppercase tracking-widest">{{ t.label }}</span>
+                <span class="text-[9px] font-black tracking-widest">{{ t.label }}</span>
             </button>
         </div>
 
@@ -43,7 +42,7 @@
                 </div>
                 <div class="px-4 py-2 bg-primary/10 rounded-xl border border-primary/20 flex items-center gap-2">
                     <Icon icon="ph:info-bold" class="text-navy" />
-                    <span class="text-[10px] font-black uppercase tracking-widest text-navy">Mode Root</span>
+                    <span class="text-[10px] font-black tracking-widest text-navy">Mode Root</span>
                 </div>
             </div>
 
@@ -51,7 +50,7 @@
                 <!-- Grid Fields -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="space-y-1.5">
-                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">
+                        <label class="text-[10px] font-black tracking-widest text-gray-500 ml-1">
                             {{ form.user_type === 'seller' ? 'Nama Toko' : 'Nama Lengkap' }}
                         </label>
                         <div class="relative group">
@@ -67,8 +66,7 @@
                     <!-- Unique Field for Organization -->
                     <div v-if="form.user_type === 'organization'"
                         class="space-y-1.5 animate-in fade-in slide-in-from-left-2 duration-300">
-                        <label
-                            class="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Akronim</label>
+                        <label class="text-[10px] font-black tracking-widest text-gray-500 ml-1">Akronim</label>
                         <div class="relative group">
                             <Icon icon="ph:file-text"
                                 class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors duration-200" />
@@ -80,7 +78,7 @@
                     <!-- Phone Field (Hidden for Org if Acronym takes spot, but user type change might cause issues) -->
                     <!-- I'll keep Phone for everyone for simplicity and usefulness -->
                     <div v-if="form.user_type !== 'organization'" class="space-y-1.5">
-                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Nomor
+                        <label class="text-[10px] font-black tracking-widest text-gray-500 ml-1">Nomor
                             Telepon</label>
                         <div class="relative group">
                             <Icon icon="ph:phone"
@@ -90,11 +88,12 @@
                                 class="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-2xl text-sm font-semibold focus:bg-white focus:border-primary/40 focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-200"
                                 :class="form.phone && form.phone.length < 8 ? 'border-red-400' : ''" />
                         </div>
-                        <p v-if="form.phone && form.phone.length < 8" class="text-red-500 text-[11px] font-bold ml-1">Nomor HP minimal 8 digit</p>
+                        <p v-if="form.phone && form.phone.length < 8" class="text-red-500 text-[11px] font-bold ml-1">
+                            Nomor HP minimal 8 digit</p>
                     </div>
 
                     <div class="space-y-1.5">
-                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Email
+                        <label class="text-[10px] font-black tracking-widest text-gray-500 ml-1">Email
                             Registrasi</label>
                         <div class="relative group">
                             <Icon icon="ph:envelope"
@@ -106,7 +105,7 @@
                     </div>
 
                     <div class="space-y-1.5">
-                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Password
+                        <label class="text-[10px] font-black tracking-widest text-gray-500 ml-1">Password
                             Inisial</label>
                         <div class="relative group">
                             <Icon icon="ph:lock"
@@ -122,7 +121,7 @@
                 <div v-if="form.user_type !== 'seller'"
                     class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 animate-in fade-in slide-in-from-bottom-2 duration-500">
                     <div v-if="form.user_type === 'organization'" class="space-y-1.5">
-                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Kota /
+                        <label class="text-[10px] font-black tracking-widest text-gray-500 ml-1">Kota /
                             Domisili</label>
                         <div class="relative group">
                             <Icon icon="ph:map-pin"
@@ -133,7 +132,7 @@
                     </div>
 
                     <div class="space-y-1.5">
-                        <label class="text-[10px] font-black uppercase tracking-widest text-gray-500 ml-1">Masa Trial
+                        <label class="text-[10px] font-black tracking-widest text-gray-500 ml-1">Masa Trial
                             (Hari)</label>
                         <div class="relative group">
                             <Icon icon="ph:calendar"
@@ -149,11 +148,11 @@
                 <!-- Footer Actions -->
                 <div class="flex flex-col sm:flex-row gap-4 pt-10 border-t border-gray-50">
                     <NuxtLink to="/dashboard/root"
-                        class="flex-1 py-4 text-center border border-gray-200 rounded-2xl text-sm font-bold text-gray-400 hover:bg-gray-50 hover:text-gray-600 transition-all uppercase tracking-widest">
+                        class="flex-1 py-4 text-center border border-gray-200 rounded-2xl text-sm font-bold text-gray-400 hover:bg-gray-50 hover:text-gray-600 transition-all tracking-widest">
                         Batalkan
                     </NuxtLink>
                     <button type="submit" :disabled="loading"
-                        class="flex-1 py-4 bg-navy text-primary rounded-2xl text-sm font-black hover:bg-navy/90 transition-all shadow-sm shadow-navy/20 disabled:opacity-50 flex items-center justify-center gap-3 uppercase tracking-widest">
+                        class="flex-1 py-4 bg-navy text-primary rounded-2xl text-sm font-black hover:bg-navy/90 transition-all shadow-sm shadow-navy/20 disabled:opacity-50 flex items-center justify-center gap-3 tracking-widest">
                         <Icon v-if="loading" icon="ph:spinner-bold" class="animate-spin text-lg" />
                         <Icon v-else icon="ph:check-circle-bold" class="text-lg" />
                         Simpan Akun

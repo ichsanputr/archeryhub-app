@@ -28,7 +28,7 @@
                     <div class="flex flex-col sm:flex-row gap-3">
                         <BaseButton @click="isSubscriptionActive ? openAddModal() : (showPremiumModal = true)"
                             variant="primary" icon="ph:plus-bold"
-                            class="w-full sm:w-auto h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-[10px] !rounded-xl"
+                            class="w-full sm:w-auto h-11 px-6 shadow-lg shadow-primary/20 font-black tracking-widest text-[10px] !rounded-xl"
                             :class="{ 'opacity-50 grayscale cursor-not-allowed': !isSubscriptionActive }">
                             Tambah Staff
                         </BaseButton>
@@ -45,7 +45,7 @@
                     class="!mb-0" />
             </div>
             <BaseButton variant="white" icon="ph:funnel" @click="searchQuery = ''"
-                class="h-11 px-6 !rounded-xl text-[10px] font-black uppercase tracking-widest">
+                class="h-11 px-6 !rounded-xl text-[10px] font-black tracking-widest">
                 Reset
             </BaseButton>
         </div>
@@ -106,7 +106,7 @@
                     <h3 class="text-lg font-bold text-navy">Hasil Tidak Ditemukan</h3>
                     <p class="text-sm text-gray-500 max-w-xs mx-auto">
                         Tidak ada staff yang cocok dengan kata kunci "<span class="font-bold text-navy">{{ searchQuery
-                        }}</span>".
+                            }}</span>".
                     </p>
                 </div>
                 <BaseButton @click="searchQuery = ''" variant="white" size="sm" class="font-bold">
@@ -120,7 +120,7 @@
                     <thead>
                         <tr class="bg-gray-50/50 border-b border-gray-100">
                             <th @click="toggleSort('name')"
-                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest cursor-pointer hover:text-navy transition-colors">
+                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                                 <div class="flex items-center gap-2">
                                     Profil Staff
                                     <Icon v-if="sortBy === 'name'"
@@ -130,7 +130,7 @@
                                 </div>
                             </th>
                             <th @click="toggleSort('code')"
-                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest cursor-pointer hover:text-navy transition-colors">
+                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                                 <div class="flex items-center gap-2">
                                     Kode Login
                                     <Icon v-if="sortBy === 'code'"
@@ -140,7 +140,7 @@
                                 </div>
                             </th>
                             <th @click="toggleSort('status')"
-                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest cursor-pointer hover:text-navy transition-colors">
+                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                                 <div class="flex items-center gap-2">
                                     Status Akun
                                     <Icon v-if="sortBy === 'status'"
@@ -150,7 +150,7 @@
                                 </div>
                             </th>
                             <th @click="toggleSort('created_at')"
-                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest cursor-pointer hover:text-navy transition-colors">
+                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                                 <div class="flex items-center gap-2">
                                     Tgl Bergabung
                                     <Icon v-if="sortBy === 'created_at'"
@@ -159,8 +159,7 @@
                                     <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
                                 </div>
                             </th>
-                            <th
-                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 uppercase tracking-widest text-right">
+                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest text-right">
                                 Aksi</th>
                         </tr>
                     </thead>
@@ -179,7 +178,7 @@
                             <td class="px-6 py-5">
                                 <div class="flex items-center gap-2">
                                     <span class="text-lg font-black font-mono tracking-tighter">{{ sk.code
-                                        }}</span>
+                                    }}</span>
                                 </div>
                             </td>
                             <td class="px-6 py-5">
@@ -229,7 +228,7 @@
                 </div>
 
                 <div v-if="modal.isEdit" class="mt-2">
-                    <label class="block text-xs font-black text-gray-500 uppercase tracking-widest mb-2">Status
+                    <label class="block text-xs font-black text-gray-500 tracking-widest mb-2">Status
                         Akun</label>
                     <div class="flex gap-4">
                         <button type="button" @click="form.status = 'active'"

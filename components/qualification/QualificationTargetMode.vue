@@ -31,7 +31,7 @@
                         <div v-if="showAutoAssignMenu" v-click-outside="() => showAutoAssignMenu = false"
                             class="absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-xl border border-gray-100 py-3 z-[1001] origin-top-right">
                             <div class="px-4 py-2 border-b border-gray-50 mb-2">
-                                <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Pilih tipe
+                                <span class="text-[10px] font-black text-gray-400 tracking-widest">Pilih tipe
                                     draw</span>
                             </div>
 
@@ -79,7 +79,7 @@
                 <div class="bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200 p-4 min-h-[500px] flex flex-col gap-4"
                     @dragover.prevent @drop="handleDropOnUnassigned">
                     <div class="flex items-center justify-between px-2">
-                        <h3 class="font-black text-navy text-xs uppercase tracking-widest">Belum Terbagi</h3>
+                        <h3 class="font-black text-navy text-xs tracking-widest">Belum Terbagi</h3>
                         <span class="bg-navy text-white text-[10px] font-black px-2 py-0.5 rounded-full">{{
                             unassignedArchersCount }}</span>
                     </div>
@@ -96,7 +96,7 @@
                             <div class="flex items-center gap-3 px-2 py-3">
                                 <div class="flex-1 h-[1px] bg-gray-200"></div>
                                 <span
-                                    class="text-[9px] font-black text-gray-400 uppercase tracking-widest whitespace-nowrap bg-gray-50 px-2 rounded-full border border-gray-100 shadow-sm">
+                                    class="text-[9px] font-black text-gray-400 tracking-widest whitespace-nowrap bg-gray-50 px-2 rounded-full border border-gray-100 shadow-sm">
                                     {{ group.clubName }}
                                 </span>
                                 <div class="flex-1 h-[1px] bg-gray-200"></div>
@@ -112,7 +112,7 @@
                                 </div>
                                 <div class="flex-1 min-w-0 pointer-events-none">
                                     <div class="text-[11px] font-black text-navy truncate">{{ archer.name }}</div>
-                                    <div class="text-[9px] text-gray-400 font-bold truncate uppercase tracking-tighter">
+                                    <div class="text-[9px] text-gray-400 font-bold truncate tracking-tighter">
                                         {{ archer.club || 'Independen' }}
                                     </div>
                                 </div>
@@ -146,7 +146,7 @@
                                 </div>
                             </div>
                             <span :class="[
-                                'text-[10px] font-black uppercase tracking-wider px-2 py-1 rounded-full',
+                                'text-[10px] font-black tracking-wider px-2 py-1 rounded-full',
                                 target.assignedCount === target.availableLetters.length ? 'bg-green-100 text-green-700' :
                                     target.assignedCount === 0 ? 'bg-gray-100 text-gray-400' : 'bg-blue-100 text-blue-700'
                             ]">
@@ -177,8 +177,7 @@
                                     <div class="flex-1 min-w-0 pointer-events-none">
                                         <div class="text-[11px] font-black text-navy truncate leading-tight">{{
                                             target.slots[pos].name }}</div>
-                                        <div
-                                            class="text-[9px] text-gray-500 truncate font-bold uppercase tracking-tighter">
+                                        <div class="text-[9px] text-gray-500 truncate font-bold tracking-tighter">
                                             {{
                                                 target.slots[pos].club || 'Independen' }}</div>
                                     </div>
@@ -200,7 +199,7 @@
                                             <div class="text-[11px] font-black text-gray-500 truncate leading-tight">
                                                 {{ target.otherSlots[pos].archer_name }}
                                             </div>
-                                            <div class="text-[9px] text-gray-400 font-bold uppercase tracking-tighter">
+                                            <div class="text-[9px] text-gray-400 font-bold tracking-tighter">
                                                 Lain Kategori
                                             </div>
                                         </div>
@@ -255,7 +254,7 @@
                                                         {{ archer.name }}
                                                     </div>
                                                     <div
-                                                        class="text-[9px] text-gray-500 font-bold truncate uppercase tracking-tighter">
+                                                        class="text-[9px] text-gray-500 font-bold truncate tracking-tighter">
                                                         {{
                                                             archer.club || 'Independen' }}</div>
                                                 </div>

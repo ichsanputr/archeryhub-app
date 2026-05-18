@@ -15,7 +15,7 @@
 
             <div class="container mx-auto px-4 max-w-7xl relative z-10 text-center">
                 <div
-                    class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-primary text-[10px] font-black tracking-widest uppercase mb-8 border border-white/10">
+                    class="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full text-primary text-[10px] font-black tracking-widest mb-8 border border-white/10">
                     <Icon icon="ph:users-four-bold" />
                     <span>TENTANG Archeris</span>
                 </div>
@@ -41,7 +41,7 @@
                         <div
                             class="absolute top-0 right-0 p-8 text- navy/5 text-8xl font-black group-hover:text-primary/10 transition-colors pointer-events-none">
                             V</div>
-                        <h2 class="text-3xl font-black text-navy uppercase tracking-tight mb-8">Visi Kami.</h2>
+                        <h2 class="text-3xl font-black text-navy tracking-tight mb-8">Visi Kami.</h2>
                         <p class="text-navy/50 text-lg leading-relaxed font-medium">
                             Menjadi platform infrastruktur digital nomor satu di Asia Tenggara yang memberdayakan
                             ekosistem panahan
@@ -53,7 +53,7 @@
                         <div
                             class="absolute top-0 right-0 p-8 text-white/5 text-8xl font-black group-hover:text-primary/10 transition-colors pointer-events-none">
                             M</div>
-                        <h2 class="text-3xl font-black text-white uppercase tracking-tight mb-8">Misi Kami.</h2>
+                        <h2 class="text-3xl font-black text-white tracking-tight mb-8">Misi Kami.</h2>
                         <ul class="space-y-6">
                             <li class="flex gap-4">
                                 <div class="w-2 h-2 rounded-full bg-primary mt-3 flex-shrink-0"></div>
@@ -89,7 +89,7 @@
                             <div
                                 class="absolute bottom-12 right-12 bg-white p-8 rounded-3xl border border-navy/5 shadow-2xl max-w-xs">
                                 <div class="text-navy text-4xl font-black leading-none mb-2">500+</div>
-                                <div class="text-[10px] font-black text-navy/40 uppercase tracking-widest">Turnamen
+                                <div class="text-[10px] font-black text-navy/40 tracking-widest">Turnamen
                                     Terkelola</div>
                             </div>
                         </div>
@@ -115,16 +115,16 @@
             <div
                 class="max-w-7xl mx-auto bg-primary rounded-[48px] p-12 md:p-24 text-center relative overflow-hidden shadow-2xl shadow-primary/20">
                 <div class="absolute inset-0 bg-navy/5 transform skew-y-12 translate-y-20"></div>
-                <h2 class="text-navy text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6 relative z-10">
+                <h2 class="text-navy text-4xl md:text-6xl font-black tracking-tighter mb-6 relative z-10">
                     Jadilah Bagian dari <br /> Revolusi Digital Panahan.</h2>
                 <p class="text-navy/60 text-lg font-bold mb-12 relative z-10">Daftarkan klub atau organisasi Anda
                     sekarang juga.</p>
                 <div class="flex flex-col sm:flex-row gap-6 justify-center relative z-10">
                     <button
-                        class="px-12 py-5 bg-navy text-white rounded-2xl font-black uppercase tracking-widest text-sm hover:scale-105 transition-transform active:scale-95 shadow-xl shadow-navy/20">Daftar
+                        class="px-12 py-5 bg-navy text-white rounded-2xl font-black tracking-widest text-sm hover:scale-105 transition-transform active:scale-95 shadow-xl shadow-navy/20">Daftar
                         Sekarang</button>
                     <NuxtLink to="/contact"
-                        class="px-12 py-5 bg-white text-navy rounded-2xl font-black uppercase tracking-widest text-sm border-2 border-transparent hover:border-navy transition-all active:scale-95">
+                        class="px-12 py-5 bg-white text-navy rounded-2xl font-black tracking-widest text-sm border-2 border-transparent hover:border-navy transition-all active:scale-95">
                         Hubungi Kami</NuxtLink>
                 </div>
             </div>

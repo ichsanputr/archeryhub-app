@@ -144,7 +144,7 @@ export const sinkronisasi_tim = {
             <div class="p-5 bg-gray-50 border border-gray-100 rounded-2xl">
                 <div class="flex items-center gap-2 mb-2">
                     <span class="px-2 py-0.5 bg-red-100 text-red-600 font-bold text-[10px] rounded ">Error</span>
-                    <h4 class="text-sm font-black text-navy uppercase tracking-tight">"Kategori pasangan putra/putri (Individual) tidak ditemukan..."</h4>
+                    <h4 class="text-sm font-black text-navy tracking-tight">"Kategori pasangan putra/putri (Individual) tidak ditemukan..."</h4>
                 </div>
                 <p class="text-[13px] text-gray-500 italic mb-3">Kasus: Sinkronisasi Mixed Team.</p>
                 <div class="space-y-2">
@@ -157,7 +157,7 @@ export const sinkronisasi_tim = {
             <div class="p-5 bg-gray-50 border border-gray-100 rounded-2xl">
                 <div class="flex items-center gap-2 mb-2">
                     <span class="px-2 py-0.5 bg-amber-100 text-amber-600 font-bold text-[10px] rounded ">Info</span>
-                    <h4 class="text-sm font-black text-navy uppercase tracking-tight">"Sinkronisasi tidak menghasilkan tim"</h4>
+                    <h4 class="text-sm font-black text-navy tracking-tight">"Sinkronisasi tidak menghasilkan tim"</h4>
                 </div>
                 <div class="space-y-2 mt-3">
                     <p class="text-[13px] text-gray-700"><strong>Penyebab:</strong> Peserta ada, kategori ada, namun kuota per klub tidak mencukupi untuk membentuk satu pun tim.</p>
@@ -174,7 +174,7 @@ export const sinkronisasi_tim = {
             <div class="p-5 bg-gray-50 border border-gray-100 rounded-2xl">
                 <div class="flex items-center gap-2 mb-2">
                     <span class="px-2 py-0.5 bg-red-100 text-red-600 font-bold text-[10px] rounded ">Error</span>
-                    <h4 class="text-sm font-black text-navy uppercase tracking-tight">"Event tidak ditemukan"</h4>
+                    <h4 class="text-sm font-black text-navy tracking-tight">"Event tidak ditemukan"</h4>
                 </div>
                 <div class="space-y-2 mt-3">
                     <p class="text-[13px] text-gray-700"><strong>Penyebab:</strong> Masalah pada sinkronisasi URL atau data cache di browser.</p>
@@ -186,7 +186,7 @@ export const sinkronisasi_tim = {
             <div class="p-5 bg-gray-50 border border-gray-100 rounded-2xl">
                 <div class="flex items-center gap-2 mb-2">
                     <span class="px-2 py-0.5 bg-red-100 text-red-600 font-bold text-[10px] rounded ">Error</span>
-                    <h4 class="text-sm font-black text-navy uppercase tracking-tight">"Gagal menghitung peringkat tim" / "Gagal menghitung peringkat mixed team"</h4>
+                    <h4 class="text-sm font-black text-navy tracking-tight">"Gagal menghitung peringkat tim" / "Gagal menghitung peringkat mixed team"</h4>
                 </div>
                 <div class="space-y-2 mt-3">
                     <p class="text-[13px] text-gray-700"><strong>Penyebab:</strong> Terjadi ketidakkonsistenan data skor di database pada salah satu peserta.</p>
@@ -198,7 +198,7 @@ export const sinkronisasi_tim = {
             <div class="p-5 bg-gray-50 border border-gray-100 rounded-2xl">
                 <div class="flex items-center gap-2 mb-2">
                     <span class="px-2 py-0.5 bg-red-100 text-red-600 font-bold text-[10px] rounded ">Error</span>
-                    <h4 class="text-sm font-black text-navy uppercase tracking-tight">"Gagal menyimpan hasil sinkronisasi" / "Gagal memulai transaksi"</h4>
+                    <h4 class="text-sm font-black text-navy tracking-tight">"Gagal menyimpan hasil sinkronisasi" / "Gagal memulai transaksi"</h4>
                 </div>
                 <div class="space-y-2 mt-3">
                     <p class="text-[13px] text-gray-700"><strong>Penyebab:</strong> Gangguan koneksi ke server database atau timeout saat memproses data dalam jumlah besar.</p>

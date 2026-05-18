@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <BaseButton to="/dashboard/organization/news/create" variant="primary" icon="ph:plus-bold"
-                    class="h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-xs">
+                    class="h-11 px-6 shadow-lg shadow-primary/20 font-black tracking-widest text-xs">
                     Buat Berita Baru
                 </BaseButton>
             </div>
@@ -72,7 +72,8 @@
                 </div>
                 <div>
                     <p class="text-xs text-gray-400 font-bold  tracking-wider">Total View</p>
-                    <p class="text-lg font-bold text-navy">{{ news.reduce((acc, n) => acc + (n.views || 0), 0).toLocaleString() }}</p>
+                    <p class="text-lg font-bold text-navy">{{news.reduce((acc, n) => acc + (n.views || 0),
+                        0).toLocaleString() }}</p>
                 </div>
             </div>
         </div>

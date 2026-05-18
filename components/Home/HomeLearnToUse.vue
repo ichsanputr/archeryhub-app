@@ -59,7 +59,7 @@
                                 <div class="h-2 bg-navy/10 rounded-full w-4/6"></div>
                             </div>
                             <span
-                                class="absolute right-4 bottom-4 px-3 py-1 bg-[#DEFEBD] text-navy text-[10px] font-bold rounded-full uppercase tracking-wider">Aktif</span>
+                                class="absolute right-4 bottom-4 px-3 py-1 bg-[#DEFEBD] text-navy text-[10px] font-bold rounded-full tracking-wider">Aktif</span>
                         </div>
                     </div>
 
@@ -116,8 +116,7 @@
                             </div>
                             <div class="flex items-center justify-between gap-4">
                                 <div>
-                                    <span
-                                        class="text-[10px] text-white/40 font-bold uppercase tracking-wider">Archer</span>
+                                    <span class="text-[10px] text-white/40 font-bold tracking-wider">Archer</span>
                                     <h4 class="font-bold text-sm text-white">Budi Santoso</h4>
                                 </div>
                                 <div class="flex gap-1.5">

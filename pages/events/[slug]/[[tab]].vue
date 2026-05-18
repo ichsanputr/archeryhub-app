@@ -154,7 +154,7 @@
                                                 </div>
                                                 <div>
                                                     <h3 class="font-black text-navy text-lg md:text-xl">{{ division.name
-                                                    }}
+                                                        }}
                                                     </h3>
                                                     <span class="text-[10px] font-black tracking-[0.2em] ">Tournament
                                                         Division</span>
@@ -241,7 +241,7 @@
                                             </li>
                                         </ul>
                                         <div
-                                            class="w-full py-3 border-2 border-navy text-center text-xs font-black uppercase tracking-widest text-navy rounded-xl">
+                                            class="w-full py-3 border-2 border-navy text-center text-xs font-black tracking-widest text-navy rounded-xl">
                                             Biaya Tetap Aktif
                                         </div>
                                     </div>
@@ -265,8 +265,7 @@
                                                     class="text-xl md:text-2xl text-navy" />
                                             </div>
                                             <div class="min-w-0">
-                                                <div
-                                                    class="text-[10px] font-black text-gray-400 uppercase tracking-wider mb-0.5">
+                                                <div class="text-[10px] font-black text-gray-400 tracking-wider mb-0.5">
                                                     {{ method.bank_name }}
                                                 </div>
                                                 <div class="text-sm font-black text-navy truncate">
@@ -287,13 +286,12 @@
                                 <div
                                     class="lg:w-1/2 bg-primary relative flex flex-col justify-center items-center px-8 md:px-12 py-16 target-texture">
                                     <div class="relative z-10 text-center">
-                                        <span
-                                            class="text-navy/40 font-black tracking-[0.3em] text-xs uppercase mb-4 block">Total
+                                        <span class="text-navy/40 font-black tracking-[0.3em] text-xs mb-4 block">Total
                                             Hadiah</span>
                                         <h2 class="text-navy text-4xl md:text-5xl font-black leading-none mb-4">Rp {{
                                             (tournament.total_prize || 0).toLocaleString('id-ID') }}</h2>
                                         <div class="h-2 w-40 bg-navy mx-auto mb-6"></div>
-                                        <p class="text-navy font-bold text-base uppercase tracking-widest">Perebutkan
+                                        <p class="text-navy font-bold text-base tracking-widest">Perebutkan
                                             Podium Terbaik
                                         </p>
                                     </div>
@@ -340,7 +338,7 @@
                                                     </div>
                                                     <div class="text-white text-lg sm:text-xl font-black">{{
                                                         displayValue(tournament.prizes?.second)
-                                                    }}</div>
+                                                        }}</div>
                                                 </div>
                                                 <div class="w-full h-2 bg-white/10 overflow-hidden">
                                                     <div class="h-full bg-white/60 w-1/2"></div>
@@ -432,7 +430,7 @@
                                 <!-- Gallery Grid -->
                                 <div v-if="galleryImages.length > 0" class="relative z-10">
                                     <h3 v-if="tournament.thumbnail || (tournament.image && tournament.image !== '/hero-event-detail.jpeg')"
-                                        class="text-sm font-black text-gray-400 tracking-widest uppercase mb-4 pt-6 border-t border-gray-100">
+                                        class="text-sm font-black text-gray-400 tracking-widest mb-4 pt-6 border-t border-gray-100">
                                         Dokumentasi</h3>
                                     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
                                         <div v-for="(img, idx) in galleryImages" :key="idx"

@@ -213,7 +213,7 @@
                                 <!-- Session Selector -->
                                 <div class="flex items-center gap-3">
                                     <span
-                                        class="text-[10px] font-black text-white/60 uppercase tracking-widest hidden sm:block">Filter
+                                        class="text-[10px] font-black text-white/60 tracking-widest hidden sm:block">Filter
                                         Sesi:</span>
                                     <select v-model="selectedSession"
                                         class="bg-white/10 border border-white/20 text-white text-xs font-bold px-4 py-2 rounded-xl outline-none focus:border-primary transition-all">
@@ -233,31 +233,31 @@
                                     <thead class="bg-gray-50 border-b-2 border-gray-200">
                                         <tr>
                                             <th :rowspan="selectedSession === 'total' ? 1 : 2"
-                                                class="px-4 py-3 text-left text-xs font-black text-gray-500 uppercase tracking-wider sticky left-0 bg-gray-50 z-10 border-r border-gray-200">
+                                                class="px-4 py-3 text-left text-xs font-black text-gray-500 tracking-wider sticky left-0 bg-gray-50 z-10 border-r border-gray-200">
                                                 Rank
                                             </th>
                                             <th :rowspan="selectedSession === 'total' ? 1 : 2"
-                                                class="px-4 py-3 text-left text-xs font-black text-gray-500 uppercase tracking-wider min-w-[200px]">
+                                                class="px-4 py-3 text-left text-xs font-black text-gray-500 tracking-wider min-w-[200px]">
                                                 Atlet
                                             </th>
                                             <th :rowspan="selectedSession === 'total' ? 1 : 2"
-                                                class="px-4 py-3 text-center text-xs font-black text-gray-500 uppercase tracking-wider">
+                                                class="px-4 py-3 text-center text-xs font-black text-gray-500 tracking-wider">
                                                 Klub
                                             </th>
                                             <th v-if="selectedSession !== 'total'" :colspan="displayTotalEnds"
-                                                class="px-4 py-2 text-center text-xs font-black text-gray-500 uppercase tracking-wider border-b border-gray-300">
+                                                class="px-4 py-2 text-center text-xs font-black text-gray-500 tracking-wider border-b border-gray-300">
                                                 Skor Per End
                                             </th>
                                             <th :rowspan="selectedSession === 'total' ? 1 : 2"
-                                                class="px-4 py-3 text-center text-xs font-black text-navy uppercase tracking-wider bg-navy/5 border-l-2 border-navy/20">
+                                                class="px-4 py-3 text-center text-xs font-black text-navy tracking-wider bg-navy/5 border-l-2 border-navy/20">
                                                 Total
                                             </th>
                                             <th :rowspan="selectedSession === 'total' ? 1 : 2"
-                                                class="px-4 py-3 text-center text-xs font-black text-gray-500 uppercase tracking-wider">
+                                                class="px-4 py-3 text-center text-xs font-black text-gray-500 tracking-wider">
                                                 10+X
                                             </th>
                                             <th :rowspan="selectedSession === 'total' ? 1 : 2"
-                                                class="px-4 py-3 text-center text-xs font-black text-gray-500 uppercase tracking-wider">
+                                                class="px-4 py-3 text-center text-xs font-black text-gray-500 tracking-wider">
                                                 X
                                             </th>
                                         </tr>

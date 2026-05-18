@@ -15,7 +15,7 @@
                 <div
                     class="lg:w-4/12 bg-navy relative flex flex-col justify-center items-center px-8 py-16 text-center overflow-hidden text-white">
                     <div class="relative z-10">
-                        <span class="text-primary/60 font-black tracking-[0.3em] text-[10px] uppercase mb-4 block">
+                        <span class="text-primary/60 font-black tracking-[0.3em] text-[10px] mb-4 block">
                             Direkomendasikan untuk EO Profesional
                         </span>
                         <h3 class="text-white text-3xl font-black leading-tight mb-4 tracking-tight">Paket Elite</h3>
@@ -26,12 +26,12 @@
                         <div class="mt-12 space-y-4">
                             <div class="flex items-center gap-3 justify-center text-primary/80">
                                 <Icon icon="ph:users-three-fill" class="text-xl" />
-                                <span class="text-xs font-black uppercase tracking-widest text-white/80">Peserta Tak
+                                <span class="text-xs font-black tracking-widest text-white/80">Peserta Tak
                                     Terbatas</span>
                             </div>
                             <div class="flex items-center gap-3 justify-center text-primary/80">
                                 <Icon icon="ph:chart-bar-fill" class="text-xl" />
-                                <span class="text-xs font-black uppercase tracking-widest text-white/80">Analitik
+                                <span class="text-xs font-black tracking-widest text-white/80">Analitik
                                     Lanjutan</span>
                             </div>
                         </div>
@@ -59,11 +59,11 @@
                                         :icon="plan.name.toLowerCase().includes('elite') ? 'ph:crown-bold' : 'ph:lightning-bold'"
                                         class="text-xl text-navy" />
                                 </div>
-                                <h4 class="text-[11px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2">{{
+                                <h4 class="text-[11px] font-black text-gray-400 tracking-[0.2em] mb-2">{{
                                     plan.name }}</h4>
                                 <div class="flex items-baseline gap-1">
                                     <span class="text-3xl font-black text-navy">{{ plan.priceLabel }}</span>
-                                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">/
+                                    <span class="text-[10px] font-bold text-gray-400 tracking-widest ml-1">/
                                         {{ plan.billing }}</span>
                                 </div>
                             </div>
@@ -78,12 +78,12 @@
                             </ul>
 
                             <button v-if="plan.isCurrent"
-                                class="w-full py-4 text-[10px] font-black bg-slate-100 text-slate-400 rounded-2xl cursor-not-allowed uppercase tracking-widest border border-slate-200"
+                                class="w-full py-4 text-[10px] font-black bg-slate-100 text-slate-400 rounded-2xl cursor-not-allowed tracking-widest border border-slate-200"
                                 disabled>
                                 Paket Aktif
                             </button>
                             <button v-else @click="$emit('select', plan)"
-                                class="w-full py-4 text-[10px] font-black bg-navy text-white rounded-2xl hover:bg-primary hover:text-btn-text transition-all uppercase tracking-widest shadow-sm active:scale-95">
+                                class="w-full py-4 text-[10px] font-black bg-navy text-white rounded-2xl hover:bg-primary hover:text-btn-text transition-all tracking-widest shadow-sm active:scale-95">
                                 {{ plan.isUpgrade ? 'Upgrade Sekarang' : 'Pilih Paket' }}
                             </button>
                         </div>
@@ -105,13 +105,13 @@
                 <table class="w-full text-left min-w-[600px]">
                     <thead>
                         <tr class="bg-slate-50/50 border-b border-gray-100">
-                            <th class="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Fitur
+                            <th class="px-8 py-5 text-[10px] font-black text-gray-400 tracking-[0.2em]">Fitur
                                 Utama</th>
                             <th
-                                class="px-8 py-5 text-center text-xs font-black text-navy uppercase tracking-widest border-l border-gray-50">
+                                class="px-8 py-5 text-center text-xs font-black text-navy tracking-widest border-l border-gray-50">
                                 Standar</th>
                             <th
-                                class="px-8 py-5 text-center text-xs font-black text-primary uppercase tracking-widest border-l border-gray-50 bg-primary/5">
+                                class="px-8 py-5 text-center text-xs font-black text-primary tracking-widest border-l border-gray-50 bg-primary/5">
                                 Elite</th>
                         </tr>
                     </thead>
@@ -144,7 +144,7 @@
                     </tbody>
                 </table>
                 <div class="p-4 bg-slate-50/50 text-center border-t border-gray-50">
-                    <div class="text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em]">
+                    <div class="text-[10px] text-gray-400 font-bold tracking-[0.2em]">
                         * Downgrade akan berlaku setelah periode tagihan berjalan berakhir.
                     </div>
                 </div>

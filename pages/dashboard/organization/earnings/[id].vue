@@ -16,13 +16,13 @@
                     </button>
                     <div>
                         <h1 class="text-xl sm:text-3xl font-black tracking-tight">{{ eventName || 'Detail Penghasilan'
-                        }}</h1>
+                            }}</h1>
                         <p class="text-slate-300 text-xs sm:text-sm font-medium mt-1">Rincian pembayaran per peserta</p>
                     </div>
                 </div>
                 <div class="flex gap-3">
                     <div class="bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-2xl border border-white/20 text-right">
-                        <p class="text-[10px] font-black uppercase tracking-wider text-primary">Total Event Ini</p>
+                        <p class="text-[10px] font-black tracking-wider text-primary">Total Event Ini</p>
                         <p class="text-xl font-black tabular-nums">Rp {{ totalAmount.toLocaleString('id-ID') }}</p>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                 <table class="w-full text-left">
                     <thead>
                         <tr
-                            class="bg-gray-50/50 text-gray-500 font-bold text-[10px] uppercase tracking-widest border-b border-gray-100">
+                            class="bg-gray-50/50 text-gray-500 font-bold text-[10px] tracking-widest border-b border-gray-100">
                             <th class="px-6 py-4">Peserta</th>
                             <th class="px-6 py-4">Tanggal Bayar</th>
                             <th class="px-6 py-4">Metode</th>

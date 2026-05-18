@@ -39,7 +39,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
               <!-- Avatar -->
               <div class="space-y-4">
-                <p class="text-[10px] font-black text-navy/30 uppercase tracking-widest">Foto Profil</p>
+                <p class="text-[10px] font-black text-navy/30 tracking-widest">Foto Profil</p>
                 <div class="flex items-center gap-6">
                   <div
                     class="w-24 h-24 rounded-full bg-gray-50 border-4 border-white shadow-md overflow-hidden shrink-0 relative group">
@@ -62,7 +62,7 @@
 
               <!-- Banner -->
               <div class="space-y-4">
-                <p class="text-[10px] font-black text-navy/30 uppercase tracking-widest">Banner Profil (Hero)</p>
+                <p class="text-[10px] font-black text-navy/30 tracking-widest">Banner Profil (Hero)</p>
                 <div
                   class="w-full aspect-[21/9] rounded-xl bg-gray-50 border-2 border-dashed border-gray-200 overflow-hidden relative group">
                   <img v-if="accountForm.banner_url" :src="useImageOrDefault(accountForm.banner_url)"
@@ -284,7 +284,7 @@
                       :class="getPlatformIconBagde(social.platform)">
                       <Icon :icon="getPlatformInfo(social.platform).icon" class="text-lg" />
                     </div>
-                    <span class="text-xs font-black text-navy uppercase tracking-widest">{{
+                    <span class="text-xs font-black text-navy tracking-widest">{{
                       getPlatformInfo(social.platform).title }}</span>
                   </div>
                   <button @click="removeSocial(idx)" class="text-gray-400 hover:text-red-500 transition-colors">

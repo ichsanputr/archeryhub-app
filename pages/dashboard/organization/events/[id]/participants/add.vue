@@ -123,7 +123,7 @@
                             <div v-if="selectedArchers.length > 0" class="space-y-3">
                                 <div class="flex items-center justify-between">
                                     <p class="text-sm font-bold text-navy">Pemanah Terpilih ({{ selectedArchers.length
-                                        }})</p>
+                                    }})</p>
                                     <BaseButton @click="selectedArchers = []" variant="white" size="xs"
                                         class="text-red-500 font-bold border-none shadow-none hover:underline p-0 h-auto">
                                         Hapus Semua
@@ -252,10 +252,10 @@
                                     </div>
                                     <span class="text-sm font-bold text-navy">{{ category.name ||
                                         getCategoryName(category)
-                                    }}</span>
+                                        }}</span>
                                 </div>
                                 <div v-if="form.category_ids.includes(category.id || category.uuid)"
-                                    class="px-2 py-1 bg-primary text-navy text-[10px] font-black uppercase tracking-widest rounded-md">
+                                    class="px-2 py-1 bg-primary text-navy text-[10px] font-black tracking-widest rounded-md">
                                     Terpilih
                                 </div>
                             </div>

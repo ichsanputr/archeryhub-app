@@ -115,7 +115,7 @@
 
                             <div class="space-y-4">
                                 <label
-                                    class="block text-sm font-black text-navy uppercase tracking-widest flex items-center gap-2">
+                                    class="block text-sm font-black text-navy tracking-widest flex items-center gap-2">
                                     <Icon icon="ph:trophy-bold" class="text-primary" />
                                     Divisi & Kategori Lomba
                                 </label>
@@ -148,7 +148,7 @@
                                                     <span class="text-sm font-black text-navy leading-tight">{{
                                                         category.label }}</span>
                                                     <span
-                                                        class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mt-1">{{
+                                                        class="text-[10px] text-gray-500 font-bold tracking-wider mt-1">{{
                                                             category.description }}</span>
                                                 </div>
                                             </div>
@@ -157,7 +157,7 @@
                                     <div v-if="filteredCategories.length === 0" class="py-12 text-center text-gray-400">
                                         <Icon icon="ph:magnifying-glass-slash"
                                             class="text-3xl mx-auto mb-2 opacity-50" />
-                                        <p class="text-xs font-bold uppercase tracking-widest">Kategori tidak ditemukan
+                                        <p class="text-xs font-bold tracking-widest">Kategori tidak ditemukan
                                         </p>
                                     </div>
                                 </div>
@@ -198,7 +198,7 @@
                         <div class="absolute top-0 left-0 w-full h-1 bg-primary"></div>
 
                         <div class="flex flex-col items-center text-center">
-                            <h3 class="text-sm font-black text-navy uppercase tracking-widest mb-4">QR Daftar Ulang</h3>
+                            <h3 class="text-sm font-black text-navy tracking-widest mb-4">QR Daftar Ulang</h3>
 
                             <div class="relative p-3 bg-white border-2 border-primary rounded-2xl shadow-lg mb-4">
                                 <!-- Use local qrcode.vue when qr_raw exists -->
@@ -278,7 +278,7 @@
                             <p class="text-gray-500 text-sm leading-relaxed">
                                 Apakah Anda yakin ingin mengeluarkan <span class="font-bold text-navy">{{
                                     participant?.full_name
-                                    }}</span> dari event ini?
+                                }}</span> dari event ini?
                             </p>
                             <p class="text-red-600 text-xs mt-2 font-semibold">
                                 Tindakan ini akan menghapus semua data target dan skor yang terkait dan tidak dapat

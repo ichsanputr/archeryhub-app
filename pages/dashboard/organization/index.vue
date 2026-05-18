@@ -19,13 +19,14 @@
                     <div>
                         <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none ">Overview</h1>
                         <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider ">Welcome back,
-                            <span class="text-white">{{ welcomeName }}</span></p>
+                            <span class="text-white">{{ welcomeName }}</span>
+                        </p>
                     </div>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-3">
                     <NuxtLink to="/dashboard/organization/events" class="w-full sm:w-auto">
                         <BaseButton variant="primary" icon="ph:trophy-bold"
-                            class="w-full h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-[10px] !rounded-xl">
+                            class="w-full h-11 px-6 shadow-lg shadow-primary/20 font-black tracking-widest text-[10px] !rounded-xl">
                             Kelola Event
                         </BaseButton>
                     </NuxtLink>
@@ -42,7 +43,7 @@
                     <div>
                         <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Total Atlet</p>
                         <p class="text-navy-dark text-3xl font-extrabold tracking-tight">{{ dashboardStats.totalArchers
-                        }}
+                            }}
                         </p>
                     </div>
                     <div
@@ -112,9 +113,9 @@
                 class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-sm transition-all border border-gray-100 group">
                 <div class="flex justify-between items-start">
                     <div>
-                        <p class="text-[10px] text-gray-400 font-bold tracking-widest uppercase mb-1">Total Pendapatan
+                        <p class="text-[10px] text-gray-400 font-bold tracking-widest mb-1">Total Pendapatan
                         </p>
-                        <p class="text-navy-dark text-xl font-black tracking-tight uppercase tabular-nums">
+                        <p class="text-navy-dark text-xl font-black tracking-tight tabular-nums">
                             Rp {{ formatPrice(dashboardStats.totalRevenue || 0) }}
                         </p>
                     </div>
@@ -123,7 +124,7 @@
                         <Icon icon="ph:wallet-bold" class="text-xl" />
                     </div>
                 </div>
-                <div class="mt-auto flex items-center justify-between text-[9px] font-black uppercase tracking-widest">
+                <div class="mt-auto flex items-center justify-between text-[9px] font-black tracking-widest">
                     <span class="text-orange-500 flex items-center gap-1">
                         <Icon icon="ph:clock-bold" />
                         {{ dashboardStats.pendingPayments || 0 }} Menunggu
@@ -207,7 +208,7 @@
                     </NuxtLink>
                 </div>
                 <div class="mt-8 pt-6 border-t border-white/10">
-                    <div class="flex items-center gap-3 text-xs opacity-60 font-bold mb-4 uppercase tracking-widest">
+                    <div class="flex items-center gap-3 text-xs opacity-60 font-bold mb-4 tracking-widest">
                         Pusat Bantuan</div>
                     <BaseButton variant="primary" size="sm" class="w-full text-xs font-black">Kontak Support
                     </BaseButton>
@@ -221,12 +222,12 @@
             <div
                 class="lg:col-span-2 bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-sm">
                 <div class="p-4 px-6 border-b border-gray-100 flex items-center justify-between bg-white">
-                    <h3 class="text-navy-dark font-black text-xs uppercase tracking-widest flex items-center gap-2">
+                    <h3 class="text-navy-dark font-black text-xs tracking-widest flex items-center gap-2">
                         <Icon icon="ph:chart-line-up-bold" class="text-primary" />
                         Rekap Event
                     </h3>
                     <NuxtLink to="/dashboard/organization/events">
-                        <BaseButton variant="ghost" class="text-[10px] uppercase font-black tracking-widest">Lihat Semua
+                        <BaseButton variant="ghost" class="text-[10px] font-black tracking-widest">Lihat Semua
                         </BaseButton>
                     </NuxtLink>
                 </div>
@@ -274,9 +275,9 @@
             <!-- Leaderboard -->
             <div class="bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-sm">
                 <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
-                    <h3 class="text-navy-dark font-black text-xs uppercase tracking-widest flex items-center gap-2">
+                    <h3 class="text-navy-dark font-black text-xs tracking-widest flex items-center gap-2">
                         Leaderboard</h3>
-                    <BaseButton variant="ghost" class="text-[10px] uppercase font-black tracking-widest">
+                    <BaseButton variant="ghost" class="text-[10px] font-black tracking-widest">
                         Semua
                     </BaseButton>
                 </div>

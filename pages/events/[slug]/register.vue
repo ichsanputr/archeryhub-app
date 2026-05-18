@@ -68,7 +68,7 @@
                     class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-5 space-y-4 mb-6">
                     <!-- VA Number -->
                     <div v-if="paymentResult.pay_code">
-                        <span class="text-[10px] font-black uppercase tracking-widest text-white/40 block mb-2">Virtual
+                        <span class="text-[10px] font-black tracking-widest text-white/40 block mb-2">Virtual
                             Account</span>
                         <div class="flex items-center justify-between gap-3 bg-white/10 rounded-xl px-4 py-3">
                             <span class="font-mono font-black text-white text-xl tracking-widest">{{
@@ -81,21 +81,20 @@
                     </div>
                     <!-- QR -->
                     <div v-if="paymentResult.qr_url" class="flex flex-col items-center bg-white rounded-xl p-4">
-                        <span class="text-[10px] font-black uppercase tracking-widest text-gray-400 block mb-3">Scan
+                        <span class="text-[10px] font-black tracking-widest text-gray-400 block mb-3">Scan
                             QRIS</span>
                         <img :src="paymentResult.qr_url" class="w-40 h-40" />
                     </div>
                     <!-- Amount & method -->
                     <div class="flex items-center justify-between border-t border-white/10 pt-3">
                         <div>
-                            <span class="text-[9px] text-white/40 font-black uppercase tracking-widest block">Total
+                            <span class="text-[9px] text-white/40 font-black tracking-widest block">Total
                                 Bayar</span>
                             <span class="font-black text-primary text-lg tabular-nums">Rp {{ (paymentResult.total_amount
                                 || paymentResult.amount || 0).toLocaleString('id-ID') }}</span>
                         </div>
                         <div v-if="paymentResult.payment_method" class="text-right">
-                            <span
-                                class="text-[9px] text-white/40 font-black uppercase tracking-widest block">Metode</span>
+                            <span class="text-[9px] text-white/40 font-black tracking-widest block">Metode</span>
                             <span class="text-white font-black text-sm">{{ paymentResult.payment_method }}</span>
                         </div>
                     </div>
@@ -131,12 +130,12 @@
                 <div class="relative z-20 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pb-8">
                     <div class="flex items-center gap-3 mb-2">
                         <NuxtLink :to="`/events/${slug}`"
-                            class="text-white/60 hover:text-white transition-colors text-xs font-bold uppercase tracking-widest flex items-center gap-1">
+                            class="text-white/60 hover:text-white transition-colors text-xs font-bold tracking-widest flex items-center gap-1">
                             <Icon icon="ph:arrow-left-bold" />
                             Kembali
                         </NuxtLink>
                         <Icon icon="ph:caret-right-bold" class="text-white/30 text-[10px]" />
-                        <span class="text-white/60 text-xs font-bold uppercase tracking-widest">Pendaftaran</span>
+                        <span class="text-white/60 text-xs font-bold tracking-widest">Pendaftaran</span>
                     </div>
                     <h1 class="text-2xl md:text-4xl font-black text-white tracking-tight leading-tight">
                         Daftar: {{ event.name }}
@@ -227,7 +226,7 @@
                                             <span class="font-black text-navy text-lg leading-tight block">{{
                                                 profileForm.full_name || 'Atlet' }}</span>
                                             <span class="text-sm text-gray-400 block">{{ archerProfile?.email || ''
-                                                }}</span>
+                                            }}</span>
                                             <span v-if="archerProfile?.id"
                                                 class="text-[10px] text-navy font-black bg-gray-100 px-2 py-0.5 rounded-full tracking-wider">ID:
                                                 {{ archerProfile.id }}</span>
@@ -298,7 +297,7 @@
                                                     icon="ph:check-bold" class="text-navy text-xs" />
                                             </div>
                                             <span class="text-sm font-bold text-navy leading-tight">{{ category.name
-                                            }}</span>
+                                                }}</span>
                                         </div>
                                         <span v-if="event.registration_fee > 0"
                                             class="text-xs font-black tabular-nums shrink-0 ml-2">
@@ -308,7 +307,7 @@
                                     <div v-if="filteredCategories.length === 0" class="py-10 text-center text-gray-400">
                                         <Icon icon="ph:magnifying-glass-slash"
                                             class="text-3xl mx-auto mb-2 opacity-40" />
-                                        <span class="text-xs font-bold uppercase tracking-widest block">Kategori tidak
+                                        <span class="text-xs font-bold tracking-widest block">Kategori tidak
                                             ditemukan</span>
                                     </div>
                                     <div v-if="categories.length === 0 && !pending"
@@ -334,8 +333,7 @@
                             <div class="p-6 space-y-4">
                                 <!-- Selected categories list -->
                                 <div v-if="form.category_ids.length > 0" class="space-y-2">
-                                    <span
-                                        class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">Kategori
+                                    <span class="text-[10px] font-black text-gray-400 tracking-widest block">Kategori
                                         Dipilih</span>
                                     <div v-for="catId in form.category_ids" :key="catId"
                                         class="flex items-center justify-between gap-2">
@@ -353,7 +351,7 @@
                                 </div>
                                 <div v-else class="py-4 text-center border-2 border-dashed border-gray-100 rounded-xl">
                                     <Icon icon="ph:tag-light" class="text-3xl text-gray-300 mb-1 mx-auto" />
-                                    <span class="text-xs text-gray-300 font-bold uppercase tracking-widest block">Belum
+                                    <span class="text-xs text-gray-300 font-bold tracking-widest block">Belum
                                         ada
                                         kategori dipilih</span>
                                 </div>
@@ -391,8 +389,7 @@
 
                                 <!-- Online Payment Channels — Expansion panel -->
                                 <div v-if="form.payment_type === 'online'" class="space-y-2">
-                                    <span
-                                        class="text-[10px] font-black text-gray-600 uppercase tracking-widest block">Pilih
+                                    <span class="text-[10px] font-black text-gray-600 tracking-widest block">Pilih
                                         Metode Pembayaran Online</span>
                                     <div class="flex flex-col gap-2">
                                         <div v-for="ch in onlineChannels" :key="ch.code"
@@ -407,10 +404,10 @@
                                                     <Icon v-else icon="ph:credit-card-bold" class="text-navy text-sm" />
                                                 </div>
                                                 <div class="flex-1 min-w-0">
-                                                    <span
-                                                        class="text-sm font-black text-navy block leading-tight">{{
-                                                            ch.label }}</span>
-                                                    <span class="text-[10px] text-gray-400 font-medium">{{ ch.type }}</span>
+                                                    <span class="text-sm font-black text-navy block leading-tight">{{
+                                                        ch.label }}</span>
+                                                    <span class="text-[10px] text-gray-400 font-medium">{{ ch.type
+                                                        }}</span>
                                                 </div>
                                             </button>
                                             <!-- Expanded: payment instructions -->
@@ -419,32 +416,31 @@
                                                 <div v-if="channelInstructionsLoading === ch.code"
                                                     class="flex items-center gap-2 py-4 text-gray-500">
                                                     <Icon icon="ph:circle-notch-bold" class="animate-spin text-lg" />
-                                                    <span class="text-xs font-medium">Memuat panduan pembayaran...</span>
+                                                    <span class="text-xs font-medium">Memuat panduan
+                                                        pembayaran...</span>
                                                 </div>
                                                 <div v-else-if="channelInstructionGroups(ch.code).length"
                                                     class="space-y-4">
                                                     <!-- Tab panel when multiple platforms (e.g. Internet Banking, Aplikasi BRImo) -->
                                                     <div v-if="channelInstructionGroups(ch.code).length > 1"
                                                         class="flex gap-2 flex-wrap border-b border-gray-100 pb-2 mb-2">
-                                                        <button
-                                                            v-for="(group, gi) in channelInstructionGroups(ch.code)"
+                                                        <button v-for="(group, gi) in channelInstructionGroups(ch.code)"
                                                             :key="group.title"
                                                             @click="setActiveInstructionTab(ch.code, gi)"
                                                             :class="getActiveInstructionTab(ch.code) === gi
                                                                 ? 'bg-navy text-white border-navy'
                                                                 : 'bg-white text-gray-500 border-gray-200 hover:border-navy/40'"
-                                                            class="px-3 py-1.5 rounded-lg border text-[10px] font-black uppercase tracking-widest transition-colors">
+                                                            class="px-3 py-1.5 rounded-lg border text-[10px] font-black tracking-widest transition-colors">
                                                             {{ group.title }}
                                                         </button>
                                                     </div>
                                                     <!-- Steps for active tab (or only group) -->
-                                                    <div
-                                                        v-for="(group, gi) in channelInstructionGroups(ch.code)"
+                                                    <div v-for="(group, gi) in channelInstructionGroups(ch.code)"
                                                         :key="group.title"
                                                         v-show="channelInstructionGroups(ch.code).length === 1 || getActiveInstructionTab(ch.code) === gi"
                                                         class="space-y-2.5">
                                                         <div v-if="channelInstructionGroups(ch.code).length > 1"
-                                                            class="text-[10px] font-black text-gray-500 uppercase tracking-widest">
+                                                            class="text-[10px] font-black text-gray-500 tracking-widest">
                                                             {{ group.title }}
                                                         </div>
                                                         <div v-for="(step, si) in (group.steps || [])" :key="si"
@@ -459,7 +455,8 @@
                                                     </div>
                                                 </div>
                                                 <div v-else class="py-3 text-xs text-gray-500 italic">
-                                                    Panduan tidak tersedia. Setelah mendaftar, instruksi pembayaran akan muncul.
+                                                    Panduan tidak tersedia. Setelah mendaftar, instruksi pembayaran akan
+                                                    muncul.
                                                 </div>
                                             </div>
                                         </div>
@@ -487,7 +484,9 @@
                             <span v-if="submitError" class="text-sm text-red-500 font-bold text-center block">{{
                                 submitError }}</span>
                             <span
-                                class="text-[10px] text-gray-400 text-center font-medium leading-relaxed block">Konfirmasi otomatis setelah pembayaran berhasil.</span>
+                                class="text-[10px] text-gray-400 text-center font-medium leading-relaxed block">Konfirmasi
+                                otomatis setelah
+                                pembayaran berhasil.</span>
                         </div>
                     </div>
                 </div>
@@ -817,21 +816,21 @@ const handleSubmit = async () => {
         const response = await post(`/events/${event.value.id}/participants`, payload)
 
         // For online payment: call Tripay with chosen channel
-            const registrationId = response.registration_id || response.uuid
-            try {
-                const payResult = await post('/payment/create', {
-                    type: 'registration',
-                    registration_id: registrationId,
-                    event_id: event.value.id,
-                    method: form.value.online_channel
-                })
-                paymentResult.value = payResult
-                registrationSuccess.value = true
-            } catch (payErr) {
-                // Registration succeeded but payment link failed - still show success
-                registrationSuccess.value = true
-            }
-            return
+        const registrationId = response.registration_id || response.uuid
+        try {
+            const payResult = await post('/payment/create', {
+                type: 'registration',
+                registration_id: registrationId,
+                event_id: event.value.id,
+                method: form.value.online_channel
+            })
+            paymentResult.value = payResult
+            registrationSuccess.value = true
+        } catch (payErr) {
+            // Registration succeeded but payment link failed - still show success
+            registrationSuccess.value = true
+        }
+        return
 
         registrationSuccess.value = true
     } catch (err) {

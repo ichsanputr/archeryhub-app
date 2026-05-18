@@ -3,17 +3,17 @@
         <!-- Consolidated Header for Semi and Final -->
         <div class="round-header !flex-row !gap-4 !items-end !mb-12">
             <div class="flex flex-col items-center">
-                <span class="text-[10px] uppercase font-black tracking-[0.3em] text-navy/30">Semifinal</span>
+                <span class="text-[10px] font-black tracking-[0.3em] text-navy/30">Semifinal</span>
                 <button type="button" @click="$emit('navigate', totalRounds - 1)"
-                    class="mt-2 px-4 py-1.5 rounded-xl bg-white border border-[#d1dcf0] text-[9px] font-black tracking-widest text-navy uppercase hover:bg-navy hover:text-primary transition-all shadow-sm">
+                    class="mt-2 px-4 py-1.5 rounded-xl bg-white border border-[#d1dcf0] text-[9px] font-black tracking-widest text-navy hover:bg-navy hover:text-primary transition-all shadow-sm">
                     Manage
                 </button>
             </div>
             <div class="h-8 w-px bg-[#d1dcf0] mb-1"></div>
             <div class="flex flex-col items-center">
-                <span class="text-[10px] uppercase font-black tracking-[0.3em] text-navy/30">Finals</span>
+                <span class="text-[10px] font-black tracking-[0.3em] text-navy/30">Finals</span>
                 <button type="button" @click="$emit('navigate', totalRounds)"
-                    class="mt-2 px-4 py-1.5 rounded-xl bg-white border border-[#d1dcf0] text-[9px] font-black tracking-widest text-navy uppercase hover:bg-navy hover:text-primary transition-all shadow-sm">
+                    class="mt-2 px-4 py-1.5 rounded-xl bg-white border border-[#d1dcf0] text-[9px] font-black tracking-widest text-navy hover:bg-navy hover:text-primary transition-all shadow-sm">
                     Manage
                 </button>
             </div>

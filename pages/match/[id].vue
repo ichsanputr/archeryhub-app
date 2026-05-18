@@ -20,7 +20,7 @@
                 </div>
                 <div class="flex items-center gap-2 sm:gap-3 shrink-0">
                     <div v-if="matchData"
-                        class="hidden sm:flex px-2 sm:px-3 py-1 bg-[#D9FF00] text-[#0f172a] rounded-full text-[9px] sm:text-[10px] font-black tracking-wider uppercase border border-[#0f172a]/10 max-w-[120px] md:max-w-none truncate">
+                        class="hidden sm:flex px-2 sm:px-3 py-1 bg-[#D9FF00] text-[#0f172a] rounded-full text-[9px] sm:text-[10px] font-black tracking-wider border border-[#0f172a]/10 max-w-[120px] md:max-w-none truncate">
                         {{ formatLabel }}
                     </div>
                     <button @click="handleBack"
@@ -42,7 +42,7 @@
                     <span class="size-3 rounded-full bg-[#D9FF00] animate-bounce" style="animation-delay: 150ms"></span>
                     <span class="size-3 rounded-full bg-[#D9FF00] animate-bounce" style="animation-delay: 300ms"></span>
                 </div>
-                <span class="text-slate-400 font-bold tracking-widest uppercase text-xs">Memuat data
+                <span class="text-slate-400 font-bold tracking-widest text-xs">Memuat data
                     pertandingan...</span>
             </div>
 
@@ -70,16 +70,16 @@
                                 </div>
                                 <div class="min-w-0 flex-1">
                                     <div v-if="isWinner('A')"
-                                        class="inline-flex items-center gap-1 px-1.5 py-0.5 bg-[#D9FF00] text-[#0f172a] rounded text-[8px] font-black tracking-widest uppercase mb-1">
+                                        class="inline-flex items-center gap-1 px-1.5 py-0.5 bg-[#D9FF00] text-[#0f172a] rounded text-[8px] font-black tracking-widest mb-1">
                                         <Icon icon="ph:crown-fill" class="text-[9px]" />
                                         Pemenang
                                     </div>
                                     <h2
-                                        class="text-sm sm:text-base md:text-xl font-black text-[#0f172a] uppercase tracking-tight truncate leading-tight">
+                                        class="text-sm sm:text-base md:text-xl font-black text-[#0f172a] tracking-tight truncate leading-tight">
                                         {{ participantA?.name || 'TBD' }}
                                     </h2>
                                     <span
-                                        class="text-[#64748b] font-medium text-[10px] sm:text-xs block truncate uppercase mt-0.5">
+                                        class="text-[#64748b] font-medium text-[10px] sm:text-xs block truncate mt-0.5">
                                         {{ participantA?.club || 'PEMANAH A' }}
                                     </span>
                                     <!-- Score -->
@@ -88,8 +88,7 @@
                                             class="text-3xl sm:text-4xl md:text-5xl font-black text-[#0f172a] tabular-nums leading-none">
                                             {{ getFinalScore('A') }}
                                         </span>
-                                        <span
-                                            class="text-[9px] font-black text-[#94a3b8] uppercase tracking-widest mb-0.5">
+                                        <span class="text-[9px] font-black text-[#94a3b8] tracking-widest mb-0.5">
                                             {{ matchData.format === 'recurve_set' ? 'Set Pts' : 'Skor' }}
                                         </span>
                                     </div>
@@ -100,7 +99,7 @@
                         <!-- VS Divider -->
                         <div class="md:col-span-3 flex flex-col items-center justify-center py-2 sm:py-4">
                             <span
-                                class="text-[8px] sm:text-[10px] font-black text-[#64748b] uppercase tracking-[0.4em] mb-1 sm:mb-2">
+                                class="text-[8px] sm:text-[10px] font-black text-[#64748b] tracking-[0.4em] mb-1 sm:mb-2">
                                 Babak Eliminasi
                             </span>
                             <span class="text-2xl sm:text-3xl md:text-4xl font-black text-[#e2e8f0]">VS</span>
@@ -126,16 +125,16 @@
                             </div>
                             <div class="min-w-0 flex-1">
                                 <div v-if="isWinner('B')"
-                                    class="inline-flex items-center gap-1 px-1.5 py-0.5 bg-[#D9FF00] text-[#0f172a] rounded text-[8px] font-black tracking-widest uppercase mb-1">
+                                    class="inline-flex items-center gap-1 px-1.5 py-0.5 bg-[#D9FF00] text-[#0f172a] rounded text-[8px] font-black tracking-widest mb-1">
                                     <Icon icon="ph:crown-fill" class="text-[9px]" />
                                     Pemenang
                                 </div>
                                 <h2
-                                    class="text-sm sm:text-base md:text-xl font-black text-[#0f172a] uppercase tracking-tight truncate leading-tight text-right">
+                                    class="text-sm sm:text-base md:text-xl font-black text-[#0f172a] tracking-tight truncate leading-tight text-right">
                                     {{ participantB?.name || 'TBD' }}
                                 </h2>
                                 <span
-                                    class="text-[#64748b] font-medium text-[10px] sm:text-xs block truncate uppercase mt-0.5 text-right">
+                                    class="text-[#64748b] font-medium text-[10px] sm:text-xs block truncate mt-0.5 text-right">
                                     {{ participantB?.club || 'PEMANAH B' }}
                                 </span>
                                 <!-- Score -->
@@ -144,7 +143,7 @@
                                         class="text-3xl sm:text-4xl md:text-5xl font-black text-[#0f172a] tabular-nums leading-none">
                                         {{ getFinalScore('B') }}
                                     </span>
-                                    <span class="text-[9px] font-black text-[#94a3b8] uppercase tracking-widest mb-0.5">
+                                    <span class="text-[9px] font-black text-[#94a3b8] tracking-widest mb-0.5">
                                         {{ matchData.format === 'recurve_set' ? 'Set Pts' : 'Skor' }}
                                     </span>
                                 </div>
@@ -161,13 +160,13 @@
                             <div class="flex items-center gap-1.5 sm:gap-2 min-w-0">
                                 <Icon icon="ph:table-bold" class="text-[#0f172a] text-sm shrink-0" />
                                 <h3
-                                    class="text-[10px] sm:text-xs font-black text-[#0f172a] uppercase tracking-widest sm:tracking-[0.15em] truncate">
+                                    class="text-[10px] sm:text-xs font-black text-[#0f172a] tracking-widest sm:tracking-[0.15em] truncate">
                                     <span class="sm:hidden">Skor Seri</span>
                                     <span class="hidden sm:inline">Rincian Skor Per Seri</span>
                                 </h3>
                             </div>
                             <div
-                                class="flex items-center gap-1 sm:gap-1.5 text-[9px] sm:text-[10px] font-bold text-[#64748b] uppercase tracking-wider sm:tracking-widest shrink-0">
+                                class="flex items-center gap-1 sm:gap-1.5 text-[9px] sm:text-[10px] font-bold text-[#64748b] tracking-wider sm:tracking-widest shrink-0">
                                 <Icon icon="ph:info-bold" class="shrink-0" />
                                 <span class="sm:hidden">{{ formatLabelMobile }}</span>
                                 <span class="hidden sm:inline">{{ formatLabel }}</span>
@@ -208,7 +207,7 @@
                                                     <span
                                                         class="w-2 h-2 rounded-full bg-[#D9FF00] border border-[#0f172a]/20 shrink-0"></span>
                                                     <span
-                                                        class="font-black text-[10px] sm:text-xs text-[#0f172a] uppercase truncate">
+                                                        class="font-black text-[10px] sm:text-xs text-[#0f172a] truncate">
                                                         {{ participantA?.name || 'ARCHER A' }}
                                                     </span>
                                                 </div>
@@ -246,7 +245,7 @@
                                                 <div class="flex items-center gap-1.5">
                                                     <span class="w-2 h-2 rounded-full bg-slate-300 shrink-0"></span>
                                                     <span
-                                                        class="font-semibold text-[10px] sm:text-xs text-[#64748b] uppercase truncate">
+                                                        class="font-semibold text-[10px] sm:text-xs text-[#64748b] truncate">
                                                         {{ participantB?.name || 'ARCHER B' }}
                                                     </span>
                                                 </div>
@@ -279,7 +278,7 @@
                                         <td :colspan="3 + maxArrows" class="py-16 text-center">
                                             <div class="flex flex-col items-center gap-3 text-gray-300">
                                                 <Icon icon="ph:clipboard-text-bold" class="text-4xl" />
-                                                <span class="text-xs font-bold uppercase tracking-widest">Belum Ada
+                                                <span class="text-xs font-bold tracking-widest">Belum Ada
                                                     Data Skor</span>
                                             </div>
                                         </td>
@@ -290,8 +289,7 @@
                                 <tfoot v-if="sortedEnds.length > 0">
                                     <tr class="bg-[#0f172a] text-white">
                                         <td colspan="2" class="py-3 px-4 sm:px-6 text-left">
-                                            <span
-                                                class="text-[9px] font-black tracking-widest uppercase text-white/40">Total
+                                            <span class="text-[9px] font-black tracking-widest text-white/40">Total
                                                 Akhir</span>
                                         </td>
                                         <td :colspan="maxArrows"></td>

@@ -46,7 +46,7 @@
         </div>
       </div>
       <BaseButton :to="`/dashboard/${userPersona}/notifications`" variant="white" size="sm"
-        class="h-9 px-4 font-black text-[10px] uppercase tracking-wider text-amber-700 border-amber-200">
+        class="h-9 px-4 font-black text-[10px] tracking-wider text-amber-700 border-amber-200">
         Lihat Detail
       </BaseButton>
     </div>
@@ -58,7 +58,7 @@
           placeholder="Cari nama event, lokasi, atau kode..." label="Pencarian" />
       </div>
       <BaseButton variant="white" icon="ph:funnel-bold" @click="resetFilters"
-        class="h-11 font-black uppercase tracking-widest text-xs">
+        class="h-11 font-black tracking-widest text-xs">
         Reset
       </BaseButton>
     </div>
@@ -146,9 +146,8 @@
             </div>
             <div class="min-w-0 flex-1">
               <div class="flex items-center gap-2 mb-1">
-                <span
-                  class="px-1.5 py-0.5 bg-navy text-primary rounded-[4px] text-[8px] font-black uppercase tracking-widest">{{
-                    event.code?.toUpperCase() }}</span>
+                <span class="px-1.5 py-0.5 bg-navy text-primary rounded-[4px] text-[8px] font-black tracking-widest">{{
+                  event.code?.toUpperCase() }}</span>
               </div>
               <h3
                 class="text-base font-black text-navy leading-tight group-hover:text-primary transition-colors line-clamp-2">
@@ -164,7 +163,7 @@
                 <Icon icon="ph:calendar-blank-bold" class="text-xs" />
               </div>
               <div class="min-w-0">
-                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0">Jadwal</p>
+                <p class="text-[9px] font-black text-slate-400 tracking-widest mb-0">Jadwal</p>
                 <p class="text-xs font-bold text-navy truncate">{{ formatDate(event.start_date) }}</p>
               </div>
             </div>
@@ -174,7 +173,7 @@
                 <Icon icon="ph:map-pin-bold" class="text-xs" />
               </div>
               <div class="min-w-0">
-                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0">Lokasi</p>
+                <p class="text-[9px] font-black text-slate-400 tracking-widest mb-0">Lokasi</p>
                 <p class="text-xs font-bold text-navy truncate">{{ event.venue }}</p>
               </div>
             </div>
@@ -183,7 +182,7 @@
           <!-- Status Badge (Consolidated) -->
           <div class="mb-5">
             <div :class="getMainStatusClass(event)"
-              class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest border shadow-sm">
+              class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-[10px] font-black tracking-widest border shadow-sm">
               <span :class="getMainStatusDotClass(event)" class="size-1.5 rounded-full"></span>
               {{ getMainStatusLabel(event) }}
             </div>
@@ -192,8 +191,7 @@
           <!-- Card Footer -->
           <div class="mt-auto pt-4 border-t border-slate-50 flex items-center gap-3">
             <BaseButton :to="`/dashboard/archer/events/${event.slug || event.id}/my-registration`" variant="primary"
-              size="sm"
-              class="flex-1 font-black uppercase tracking-widest text-[10px] h-10 shadow-sm shadow-primary/10">
+              size="sm" class="flex-1 font-black tracking-widest text-[10px] h-10 shadow-sm shadow-primary/10">
               Buka Event
             </BaseButton>
           </div>
@@ -226,7 +224,7 @@
               <!-- Archer Name -->
               <div class="text-center space-y-3">
                 <h3 class="text-3xl sm:text-4xl font-black text-navy tracking-tight">{{ user?.name || 'Archer' }}</h3>
-                <p class="text-sm sm:text-base text-slate-500 font-bold uppercase tracking-widest">{{
+                <p class="text-sm sm:text-base text-slate-500 font-bold tracking-widest">{{
                   selectedEvent?.name }}</p>
               </div>
 
@@ -238,7 +236,7 @@
 
               <!-- Info -->
               <div class="text-center">
-                <p class="text-xs text-slate-400 font-bold uppercase tracking-widest">Tunjukkan QR ini saat registrasi
+                <p class="text-xs text-slate-400 font-bold tracking-widest">Tunjukkan QR ini saat registrasi
                   ulang</p>
               </div>
             </div>

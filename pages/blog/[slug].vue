@@ -10,7 +10,7 @@
         <!-- ── BREADCRUMBS ── -->
         <div class="pt-24">
             <div class="container mx-auto px-4 max-w-7xl">
-                <nav class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-navy/40">
+                <nav class="flex items-center gap-2 text-[10px] font-black tracking-widest text-navy/40">
                     <NuxtLink to="/" class="hover:text-primary transition-colors">HOME</NuxtLink>
                     <Icon icon="ph:caret-right-bold" />
                     <NuxtLink to="/blog" class="hover:text-primary transition-colors">BLOG</NuxtLink>
@@ -62,7 +62,7 @@
                         <div class="mt-20 pt-12 border-t border-navy/10">
                             <div class="flex flex-wrap gap-3 mb-16">
                                 <span v-for="tag in article.tags" :key="tag"
-                                    class="px-5 py-2 bg-navy/[0.03] text-navy/40 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-primary hover:text-white transition-all cursor-pointer">
+                                    class="px-5 py-2 bg-navy/[0.03] text-navy/40 text-[10px] font-black tracking-widest rounded-xl hover:bg-primary hover:text-white transition-all cursor-pointer">
                                     #{{ tag }}
                                 </span>
                             </div>
@@ -77,8 +77,7 @@
                                         <div
                                             class="text-navy font-black text-xl leading-none group-hover:text-primary transition-colors text-left">
                                             {{ article.author.name }}</div>
-                                        <div
-                                            class="text-navy/30 text-[10px] font-bold tracking-widest uppercase mt-2 text-left">
+                                        <div class="text-navy/30 text-[10px] font-bold tracking-widest mt-2 text-left">
                                             Penulis Artikel & Pelatih Panahan</div>
                                     </div>
                                 </div>
@@ -93,8 +92,7 @@
                             <!-- ── COMMENT SECTION ── -->
                             <section class="mt-16 pt-16 border-t border-navy/5">
                                 <div class="flex items-center justify-between mb-10">
-                                    <h3
-                                        class="text-xl font-black text-navy uppercase tracking-widest flex items-center gap-3">
+                                    <h3 class="text-xl font-black text-navy tracking-widest flex items-center gap-3">
                                         <Icon icon="ph:chats-circle-bold" class="text-navy text-2xl" />
                                         Komentar ({{ totalComments }})
                                     </h3>
@@ -104,15 +102,14 @@
                                 <div
                                     class="bg-white rounded-[32px] p-8 border border-navy/5 mb-12 relative overflow-hidden shadow-sm">
                                     <div class="absolute top-0 left-0 w-1.5 h-full bg-primary/20"></div>
-                                    <h4
-                                        class="font-black text-navy uppercase tracking-widest text-[10px] mb-8 opacity-40">
+                                    <h4 class="font-black text-navy tracking-widest text-[10px] mb-8 opacity-40">
                                         Suarakan Pendapat Anda</h4>
 
                                     <form @submit.prevent="submitComment" class="space-y-6">
                                         <div v-if="!isLoggedIn" class="grid grid-cols-1 gap-6">
                                             <div class="space-y-2">
                                                 <label
-                                                    class="text-[10px] font-black uppercase tracking-widest text-navy/40 ml-1">Nama
+                                                    class="text-[10px] font-black tracking-widest text-navy/40 ml-1">Nama
                                                     Lengkap</label>
                                                 <input v-model="commentForm.guest_name" type="text"
                                                     placeholder="Masukkan nama Anda..."
@@ -126,14 +123,14 @@
                                                 class="w-10 h-10 rounded-xl bg-navy flex items-center justify-center text-white font-black text-xs">
                                                 {{ user?.full_name?.charAt(0) || user?.name?.charAt(0) || 'U' }}
                                             </div>
-                                            <div class="text-xs font-black text-navy/40 uppercase tracking-widest">
+                                            <div class="text-xs font-black text-navy/40 tracking-widest">
                                                 Komentar sebagai <span class="text-navy">{{ user?.full_name ||
                                                     user?.name }}</span></div>
                                         </div>
 
                                         <div class="space-y-2">
                                             <label
-                                                class="text-[10px] font-black uppercase tracking-widest text-navy/40 ml-1">Pesan
+                                                class="text-[10px] font-black tracking-widest text-navy/40 ml-1">Pesan
                                                 Komentar</label>
                                             <textarea v-model="commentForm.content" rows="4"
                                                 placeholder="Apa yang Anda pikirkan tentang artikel ini?"
@@ -142,7 +139,7 @@
                                         </div>
 
                                         <button type="submit" :disabled="isSubmittingComment"
-                                            class="inline-flex items-center gap-3 bg-navy text-white px-10 py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] hover:bg-navy-light transition-all active:scale-95 disabled:opacity-50 shadow-lg shadow-navy/10">
+                                            class="inline-flex items-center gap-3 bg-navy text-white px-10 py-4 rounded-2xl font-black tracking-widest text-[10px] hover:bg-navy-light transition-all active:scale-95 disabled:opacity-50 shadow-lg shadow-navy/10">
                                             <Icon v-if="isSubmittingComment" icon="ph:spinner"
                                                 class="animate-spin text-lg" />
                                             <Icon v-else icon="ph:paper-plane-tilt-bold" class="text-lg" />
@@ -155,7 +152,7 @@
                                 <div class="space-y-8">
                                     <div v-if="isCommentsLoading" class="flex flex-col items-center py-20 text-navy/10">
                                         <Icon icon="ph:spinner" class="text-4xl animate-spin mb-4" />
-                                        <span class="font-black uppercase tracking-widest text-[10px]">Memuat
+                                        <span class="font-black tracking-widest text-[10px]">Memuat
                                             Komentar...</span>
                                     </div>
 
@@ -163,7 +160,7 @@
                                         class="text-center py-24 bg-navy/[0.01] rounded-[40px] border-2 border-dashed border-navy/10">
                                         <Icon icon="ph:chat-teardrop-dots-bold"
                                             class="text-5xl text-navy/10 mx-auto mb-6" />
-                                        <p class="text-navy/20 text-[10px] font-black uppercase tracking-widest">Belum
+                                        <p class="text-navy/20 text-[10px] font-black tracking-widest">Belum
                                             ada diskusi. Mulai sekarang!</p>
                                     </div>
 
@@ -178,14 +175,12 @@
                                             <div class="flex-grow pt-1">
                                                 <div class="flex items-center justify-between mb-3">
                                                     <div class="flex items-center gap-3">
-                                                        <h5
-                                                            class="font-black text-navy text-xs uppercase tracking-widest">
+                                                        <h5 class="font-black text-navy text-xs tracking-widest">
                                                             {{ comment.user_name }}</h5>
                                                         <span v-if="comment.user_type !== 'guest'"
-                                                            class="bg-primary/20 text-navy text-[8px] font-black uppercase px-2 py-0.5 rounded-md tracking-widest">MEMBER</span>
+                                                            class="bg-primary/20 text-navy text-[8px] font-black px-2 py-0.5 rounded-md tracking-widest">MEMBER</span>
                                                     </div>
-                                                    <span
-                                                        class="text-[9px] font-black text-navy/20 uppercase tracking-widest">{{
+                                                    <span class="text-[9px] font-black text-navy/20 tracking-widest">{{
                                                         formatDate(comment.created_at) }}</span>
                                                 </div>
                                                 <div
@@ -203,8 +198,7 @@
                     <!-- RIGHT COLUMN: SIDEBAR -->
                     <aside class="lg:col-span-4 sticky top-40 self-start">
                         <div class="bg-white rounded-[32px] border border-navy/5 p-8 shadow-sm">
-                            <h3
-                                class="text-navy font-black text-xs uppercase tracking-widest mb-8 border-b border-navy/5 pb-4">
+                            <h3 class="text-navy font-black text-xs tracking-widest mb-8 border-b border-navy/5 pb-4">
                                 Artikel Populer
                             </h3>
                             <div class="flex flex-col gap-8">
@@ -216,7 +210,7 @@
                                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                     </div>
                                     <div class="flex flex-col gap-1">
-                                        <div class="text-[8px] font-black text-primary uppercase tracking-widest">{{
+                                        <div class="text-[8px] font-black text-primary tracking-widest">{{
                                             item.category }}</div>
                                         <h4
                                             class="text-navy font-black text-sm leading-snug group-hover:text-primary transition-colors line-clamp-2">
@@ -228,7 +222,7 @@
                             </div>
 
                             <NuxtLink to="/blog"
-                                class="mt-10 block w-full text-center py-4 rounded-2xl bg-navy text-white text-[10px] font-black uppercase tracking-widest hover:bg-navy-light transition-all active:scale-95 shadow-lg shadow-navy/10">
+                                class="mt-10 block w-full text-center py-4 rounded-2xl bg-navy text-white text-[10px] font-black tracking-widest hover:bg-navy-light transition-all active:scale-95 shadow-lg shadow-navy/10">
                                 LIHAT SEMUA BLOG
                             </NuxtLink>
                         </div>
@@ -238,10 +232,10 @@
                             class="mt-8 bg-primary rounded-[32px] p-8 text-navy relative overflow-hidden shadow-xl shadow-primary/10">
                             <div class="relative z-10 text-center">
                                 <h4 class="text-xl font-black leading-tight mb-2">Tajamkan Bidikan Anda!</h4>
-                                <p class="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-6">Berlangganan
+                                <p class="text-[10px] font-bold tracking-widest opacity-60 mb-6">Berlangganan
                                     berita terbaru.</p>
                                 <button
-                                    class="w-full bg-navy text-white py-4 rounded-2xl text-[9px] font-black uppercase tracking-widest hover:bg-navy-light transition-all">Langganan
+                                    class="w-full bg-navy text-white py-4 rounded-2xl text-[9px] font-black tracking-widest hover:bg-navy-light transition-all">Langganan
                                     Sekarang</button>
                             </div>
                             <Icon icon="ph:target-bold"
@@ -262,7 +256,7 @@
                     <h2 class="text-navy text-3xl md:text-5xl font-black tracking-tight ">Lainnya <span
                             class="text-primary">Untuk Anda.</span></h2>
                     <NuxtLink to="/blog"
-                        class="text-navy hover:text-primary transition-colors font-black text-xs uppercase tracking-widest">
+                        class="text-navy hover:text-primary transition-colors font-black text-xs tracking-widest">
                         Lihat Semua →</NuxtLink>
                 </div>
 
@@ -278,7 +272,7 @@
                                 class="text-navy text-xl font-black mb-4 group-hover:text-primary transition-colors line-clamp-2 leading-snug">
                                 {{ item.title }}</h4>
                             <div
-                                class="flex items-center justify-between text-[10px] font-black tracking-widest uppercase text-navy/20">
+                                class="flex items-center justify-between text-[10px] font-black tracking-widest text-navy/20">
                                 <span>{{ item.category }}</span>
                                 <span>{{ item.date }}</span>
                             </div>

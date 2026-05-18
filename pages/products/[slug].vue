@@ -23,7 +23,7 @@
                         {{ fetchError?.data?.error || 'Produk yang Anda cari tidak tersedia atau sudah dihapus.' }}
                     </p>
                     <NuxtLink href="/products"
-                        class="mt-5 inline-flex items-center rounded-xl bg-navy px-5 py-2.5 text-xs font-black uppercase tracking-widest text-white hover:bg-navy/90">
+                        class="mt-5 inline-flex items-center rounded-xl bg-navy px-5 py-2.5 text-xs font-black tracking-widest text-white hover:bg-navy/90">
                         Kembali ke Produk
                     </NuxtLink>
                 </section>
@@ -41,11 +41,11 @@
 
                                 <div class="absolute left-4 top-4 flex items-center gap-2">
                                     <span
-                                        class="inline-flex items-center gap-1 rounded-full bg-black px-3 py-1 text-xs font-bold uppercase tracking-wider text-white">
+                                        class="inline-flex items-center gap-1 rounded-full bg-black px-3 py-1 text-xs font-bold tracking-wider text-white">
                                         {{ productCategoryLabel }}
                                     </span>
                                     <span v-if="product.sale_price"
-                                        class="inline-flex rounded-full bg-red-500 px-3 py-1 text-xs font-black uppercase tracking-wider text-white">
+                                        class="inline-flex rounded-full bg-red-500 px-3 py-1 text-xs font-black tracking-wider text-white">
                                         -{{ discountPercent }}%
                                     </span>
                                 </div>
@@ -70,7 +70,7 @@
 
                         <aside class="space-y-5 lg:sticky lg:top-28 lg:h-fit">
                             <div class="rounded-[2rem] border border-black/5 bg-white p-5 sm:p-6 shadow-sm">
-                                <div class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Pilihan
+                                <div class="text-[10px] font-black tracking-[0.2em] text-gray-400">Pilihan
                                     Terbaik</div>
                                 <h1 class="mt-2 text-xl sm:text-2xl lg:text-3xl font-black leading-tight text-navy">{{
                                     product.name }}</h1>
@@ -89,7 +89,7 @@
                                 </div>
 
                                 <div class="mt-4 rounded-2xl bg-[#0f172a] p-4 sm:p-5 text-white">
-                                    <div class="text-[10px] uppercase tracking-[0.18em] text-white/70">Harga Spesial
+                                    <div class="text-[10px] tracking-[0.18em] text-white/70">Harga Spesial
                                     </div>
                                     <div class="mt-1 flex items-end gap-2.5">
                                         <div class="text-2xl sm:text-3xl font-black">Rp {{ formatPrice(finalPrice) }}
@@ -100,7 +100,7 @@
                                 </div>
 
                                 <div v-if="product.colors?.length" class="mt-5">
-                                    <div class="mb-2 text-[10px] font-black uppercase tracking-wider text-gray-400">
+                                    <div class="mb-2 text-[10px] font-black tracking-wider text-gray-400">
                                         Pilihan Warna</div>
                                     <div class="flex flex-wrap gap-2">
                                         <button v-for="color in product.colors" :key="color"
@@ -115,7 +115,7 @@
 
                                 <div
                                     class="mt-5 flex items-center justify-between rounded-xl border border-black/5 bg-[#fafafa] p-3">
-                                    <div class="text-[11px] font-black text-navy uppercase tracking-widest">Jumlah</div>
+                                    <div class="text-[11px] font-black text-navy tracking-widest">Jumlah</div>
                                     <div
                                         class="flex items-center rounded-lg border border-black/10 bg-white overflow-hidden">
                                         <button @click="quantity = Math.max(1, quantity - 1)"
@@ -174,7 +174,7 @@
                             </div>
 
                             <div class="rounded-[2rem] border border-black/5 bg-white p-5 sm:p-6 shadow-sm">
-                                <div class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Informasi
+                                <div class="text-[10px] font-black tracking-[0.2em] text-gray-400">Informasi
                                     Penjual</div>
                                 <template v-if="product.seller">
                                     <div class="mt-3 flex items-center gap-3">
@@ -189,7 +189,7 @@
                                         <div class="flex-1 min-w-0">
                                             <div v-if="product.seller.store_name"
                                                 class="font-black text-navy text-sm truncate">{{
-                                                product.seller.store_name }}
+                                                    product.seller.store_name }}
                                             </div>
                                             <div v-if="sellerSubtitle"
                                                 class="text-[10px] text-gray-400 font-bold mt-0.5">{{ sellerSubtitle }}
@@ -244,12 +244,12 @@
                         </div>
 
                         <div v-if="Object.keys(product.specifications || {}).length" class="mt-8">
-                            <h3 class="text-[11px] font-black uppercase tracking-[0.2em] text-gray-400 mb-4">Spesifikasi
+                            <h3 class="text-[11px] font-black tracking-[0.2em] text-gray-400 mb-4">Spesifikasi
                                 Detail</h3>
                             <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
                                 <div v-for="(value, key) in product.specifications" :key="key"
                                     class="rounded-2xl border border-gray-50 bg-[#fafafa] p-4 flex flex-col gap-1">
-                                    <div class="text-[10px] font-bold uppercase tracking-wider text-gray-400">{{ key }}
+                                    <div class="text-[10px] font-bold tracking-wider text-gray-400">{{ key }}
                                     </div>
                                     <div class="font-black text-navy text-sm">{{ value }}</div>
                                 </div>
@@ -309,7 +309,7 @@
                                 </span>
                                 <span class="font-bold text-navy text-xs bg-gray-50 px-2 py-0.5 rounded-lg">{{
                                     (product.slug ||
-                                    '-').toUpperCase() }}</span>
+                                        '-').toUpperCase() }}</span>
                             </li>
                             <li class="flex items-center justify-between px-5 py-3.5">
                                 <span class="flex items-center gap-2 text-xs text-gray-400">
@@ -367,7 +367,7 @@
                         <div v-if="chatConv?.product_name" class="flex items-center gap-1 mt-0.5">
                             <Icon icon="ph:package-bold" class="text-[9px] text-white/60" />
                             <span class="text-[10px] text-white/60 font-semibold truncate">{{ chatConv.product_name
-                                }}</span>
+                            }}</span>
                         </div>
                     </div>
                     <button @click="closeChatDialog"

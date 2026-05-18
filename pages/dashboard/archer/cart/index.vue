@@ -35,7 +35,8 @@
         </div>
 
         <!-- Content Area -->
-        <div v-if="isLoading" class="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
+        <div v-if="isLoading"
+            class="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
             <Icon icon="ph:spinner-gap-bold" class="text-4xl text-primary animate-spin mb-4" />
             <p class="text-gray-500 font-medium">Memuat data keranjang...</p>
         </div>
@@ -47,7 +48,8 @@
                     <Icon icon="ph:shopping-bag-open" class="text-5xl text-gray-200" />
                 </div>
                 <h3 class="text-xl font-bold text-navy mb-2">Keranjang Belanja Kosong</h3>
-                <p class="text-gray-500 mb-8 px-6 text-center max-w-md">Belum ada perlengkapan archery di keranjang Anda.</p>
+                <p class="text-gray-500 mb-8 px-6 text-center max-w-md">Belum ada perlengkapan archery di keranjang
+                    Anda.</p>
                 <NuxtLink to="/products">
                     <BaseButton variant="primary" size="lg" icon="ph:shopping-bag">Mulai Belanja</BaseButton>
                 </NuxtLink>
@@ -56,12 +58,14 @@
             <div v-else class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <!-- Product List -->
                 <div class="lg:col-span-2 space-y-4">
-                    <div v-for="item in productCart" :key="item.uuid" 
+                    <div v-for="item in productCart" :key="item.uuid"
                         class="bg-white rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100 flex gap-4 md:gap-6 relative group overflow-hidden hover:border-primary/20 transition-all">
-                        
+
                         <!-- Product Image -->
-                        <div class="w-24 h-24 md:w-32 md:h-32 rounded-xl bg-gray-50 flex-shrink-0 overflow-hidden border border-gray-100">
-                            <img v-if="item.product_image_url" :src="item.product_image_url" :alt="item.product_name" class="w-full h-full object-cover" />
+                        <div
+                            class="w-24 h-24 md:w-32 md:h-32 rounded-xl bg-gray-50 flex-shrink-0 overflow-hidden border border-gray-100">
+                            <img v-if="item.product_image_url" :src="item.product_image_url" :alt="item.product_name"
+                                class="w-full h-full object-cover" />
                             <div v-else class="w-full h-full flex items-center justify-center">
                                 <Icon icon="ph:package" class="text-4xl text-gray-200" />
                             </div>
@@ -69,12 +73,16 @@
 
                         <div class="flex-grow min-w-0 flex flex-col justify-between py-1">
                             <div class="space-y-1">
-                                <div class="flex items-center gap-1.5 text-[10px] text-gray-500 font-bold uppercase tracking-wider">
+                                <div
+                                    class="flex items-center gap-1.5 text-[10px] text-gray-500 font-bold tracking-wider">
                                     <Icon icon="ph:storefront" />
                                     <span>{{ item.seller_name }}</span>
                                 </div>
-                                <h3 class="text-base md:text-lg font-bold text-navy truncate pr-8 group-hover:text-primary transition-colors">{{ item.product_name }}</h3>
-                                <div v-if="item.color" class="inline-flex items-center gap-2 px-2 py-0.5 bg-gray-100 rounded text-[10px] text-gray-600 font-bold">
+                                <h3
+                                    class="text-base md:text-lg font-bold text-navy truncate pr-8 group-hover:text-primary transition-colors">
+                                    {{ item.product_name }}</h3>
+                                <div v-if="item.color"
+                                    class="inline-flex items-center gap-2 px-2 py-0.5 bg-gray-100 rounded text-[10px] text-gray-600 font-bold">
                                     Varian: {{ item.color }}
                                 </div>
                             </div>
@@ -91,19 +99,16 @@
 
                                 <!-- Quantity Controls -->
                                 <div class="flex items-center gap-3 bg-gray-50 p-1 rounded-xl border border-gray-100">
-                                    <button 
-                                        @click="updateQty(item, -1)" 
+                                    <button @click="updateQty(item, -1)"
                                         class="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-white hover:text-red-500 transition-all text-gray-400 disabled:opacity-30"
-                                        :disabled="isProcessing"
-                                    >
+                                        :disabled="isProcessing">
                                         <Icon icon="ph:minus-bold" class="text-sm" />
                                     </button>
-                                    <span class="w-6 text-center font-black text-navy text-sm">{{ item.quantity }}</span>
-                                    <button 
-                                        @click="updateQty(item, 1)" 
+                                    <span class="w-6 text-center font-black text-navy text-sm">{{ item.quantity
+                                        }}</span>
+                                    <button @click="updateQty(item, 1)"
                                         class="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-white hover:text-primary transition-all text-gray-400 disabled:opacity-30"
-                                        :disabled="isProcessing"
-                                    >
+                                        :disabled="isProcessing">
                                         <Icon icon="ph:plus-bold" class="text-sm" />
                                     </button>
                                 </div>
@@ -111,11 +116,9 @@
                         </div>
 
                         <!-- Remove Button -->
-                        <button 
-                            @click="removeItem(item.uuid)" 
+                        <button @click="removeItem(item.uuid)"
                             class="absolute top-4 right-4 p-2 text-gray-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
-                            title="Hapus Produk"
-                        >
+                            title="Hapus Produk">
                             <Icon icon="ph:trash-bold" class="text-lg" />
                         </button>
                     </div>
@@ -129,42 +132,50 @@
                                 <Icon icon="ph:receipt-bold" class="text-primary" />
                                 Ringkasan Pesanan
                             </h4>
-                            
+
                             <div class="space-y-4 mb-8">
                                 <div class="flex justify-between text-sm">
-                                    <span class="text-gray-500 font-medium">Subtotal ({{ totalProductQty }} produk)</span>
+                                    <span class="text-gray-500 font-medium">Subtotal ({{ totalProductQty }}
+                                        produk)</span>
                                     <span class="font-bold text-navy">Rp {{ formatPrice(totalProductSubtotal) }}</span>
                                 </div>
                                 <div class="flex justify-between text-sm">
                                     <span class="text-gray-500 font-medium">Estimasi Ongkir</span>
                                     <span class="text-gray-400 italic text-xs font-bold">Checkout untuk hitung</span>
                                 </div>
-                                <div class="pt-4 border-t border-dashed border-gray-200 flex justify-between items-center">
-                                    <span class="font-bold text-navy uppercase tracking-widest text-xs">Total Pembayaran</span>
-                                    <span class="text-2xl font-black text-navy">Rp {{ formatPrice(totalProductSubtotal) }}</span>
+                                <div
+                                    class="pt-4 border-t border-dashed border-gray-200 flex justify-between items-center">
+                                    <span class="font-bold text-navy tracking-widest text-xs">Total Pembayaran</span>
+                                    <span class="text-2xl font-black text-navy">Rp {{ formatPrice(totalProductSubtotal)
+                                        }}</span>
                                 </div>
                             </div>
 
-                            <BaseButton @click="navigateTo('/dashboard/archer/cart/payment')" class="w-full" variant="primary" size="lg" icon="ph:arrow-right-bold" :disabled="productCart.length === 0">
+                            <BaseButton @click="navigateTo('/dashboard/archer/cart/payment')" class="w-full"
+                                variant="primary" size="lg" icon="ph:arrow-right-bold"
+                                :disabled="productCart.length === 0">
                                 Lanjut ke Pembayaran
                             </BaseButton>
-                            
+
                             <div class="mt-6 p-4 bg-navy/[0.02] rounded-xl border border-navy/5">
                                 <p class="text-[10px] text-gray-400 text-center italic">
-                                    Produk akan dikirim langsung oleh masing-masing penjual setelah pembayaran diverifikasi.
+                                    Produk akan dikirim langsung oleh masing-masing penjual setelah pembayaran
+                                    diverifikasi.
                                 </p>
                             </div>
                         </div>
 
                         <!-- Info Cards -->
                         <div class="grid grid-cols-2 gap-3">
-                            <div class="p-3 bg-white rounded-xl border border-gray-100 flex flex-col items-center text-center gap-2">
+                            <div
+                                class="p-3 bg-white rounded-xl border border-gray-100 flex flex-col items-center text-center gap-2">
                                 <Icon icon="ph:shield-check-fill" class="text-primary text-xl" />
-                                <span class="text-[9px] font-bold text-navy uppercase tracking-tighter">Garansi Aman</span>
+                                <span class="text-[9px] font-bold text-navy tracking-tighter">Garansi Aman</span>
                             </div>
-                            <div class="p-3 bg-white rounded-xl border border-gray-100 flex flex-col items-center text-center gap-2">
+                            <div
+                                class="p-3 bg-white rounded-xl border border-gray-100 flex flex-col items-center text-center gap-2">
                                 <Icon icon="ph:truck-fill" class="text-primary text-xl" />
-                                <span class="text-[9px] font-bold text-navy uppercase tracking-tighter">Kurir Terpercaya</span>
+                                <span class="text-[9px] font-bold text-navy tracking-tighter">Kurir Terpercaya</span>
                             </div>
                         </div>
                     </div>
@@ -214,8 +225,8 @@ const fetchCart = async () => {
         const res = await get('/cart')
         // Normalize UUIDs
         productCart.value = (res.data || []).map(item => ({
-            ...item, 
-            uuid: item.uuid || item.id 
+            ...item,
+            uuid: item.uuid || item.id
         }))
     } catch (e) {
         console.error('Failed to load cart', e)
@@ -227,10 +238,10 @@ const fetchCart = async () => {
 
 const updateQty = async (item, delta) => {
     const newQty = item.quantity + delta
-    
+
     // Minimum quantity is 1 (removal handled separately)
     if (newQty < 1) return removeItem(item.uuid)
-    
+
     // Stock validation
     if (newQty > item.product_stock) {
         toast.error(`Maaf, stok hanya tersedia ${item.product_stock} unit`)
@@ -250,7 +261,7 @@ const updateQty = async (item, delta) => {
 
 const removeItem = async (uuid) => {
     if (!confirm('Hapus produk ini dari keranjang?')) return
-    
+
     isProcessing.value = true
     try {
         await del(`/cart/${uuid}`)

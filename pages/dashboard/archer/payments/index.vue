@@ -51,37 +51,41 @@
                             <Icon :icon="getPaymentIcon(payment)" class="text-xl" />
                         </div>
                         <div class="min-w-0">
-                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{{
+                            <p class="text-[10px] font-black text-slate-400 tracking-widest mb-1">{{
                                 formatDate(payment.created_at) }} • {{ payment.reference }}</p>
                             <h3 class="text-base font-black text-navy dark:text-white leading-tight mb-1">
                                 {{ payment.event_name || payment.plan_name || 'Pembayaran Archeris' }}</h3>
                             <div class="flex items-center gap-2 flex-wrap">
-                                <span class="text-sm font-bold text-navy/70 dark:text-white/70">{{ formatCurrency(payment.total_amount) }}</span>
+                                <span class="text-sm font-bold text-navy/70 dark:text-white/70">{{
+                                    formatCurrency(payment.total_amount) }}</span>
                                 <span v-if="payment.payment_method"
-                                    class="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded-md">
+                                    class="text-[10px] font-black text-slate-400 tracking-widest bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded-md">
                                     {{ payment.payment_method }}
                                 </span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="flex items-center justify-between sm:justify-end gap-3 border-t sm:border-t-0 pt-4 sm:pt-0">
+                    <div
+                        class="flex items-center justify-between sm:justify-end gap-3 border-t sm:border-t-0 pt-4 sm:pt-0">
                         <span :class="getStatusClass(payment.status)"
-                            class="px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest border">
+                            class="px-3 py-1.5 rounded-xl text-[10px] font-black tracking-widest border">
                             {{ getStatusLabel(payment.status) }}
                         </span>
                         <BaseButton v-if="payment.status === 'pending' && payment.checkout_url"
                             :to="payment.checkout_url" target="_blank" variant="primary" size="sm"
-                            class="h-9 px-4 font-black text-[10px] uppercase tracking-wider">
+                            class="h-9 px-4 font-black text-[10px] tracking-wider">
                             Bayar Sekarang
                         </BaseButton>
                         <BaseButton v-else-if="payment.status === 'paid'" :to="getInvoiceUrl(payment.reference)"
                             target="_blank" variant="white" size="sm" icon="ph:file-pdf"
                             class="h-9 w-9 p-0 border-slate-200 text-slate-500 hover:text-primary hover:border-primary/20" />
-                        <button v-if="payment.status === 'pending' && (payment.va_number || payment.pay_code || payment.qr_url || payment.instructions)"
+                        <button
+                            v-if="payment.status === 'pending' && (payment.va_number || payment.pay_code || payment.qr_url || payment.instructions)"
                             @click="toggleInstructions(payment.uuid)"
                             class="h-9 w-9 rounded-xl border border-slate-200 dark:border-slate-600 flex items-center justify-center text-slate-400 hover:text-primary hover:border-primary/30 transition-colors">
-                            <Icon :icon="expandedPayments.has(payment.uuid) ? 'ph:caret-up-bold' : 'ph:caret-down-bold'" />
+                            <Icon
+                                :icon="expandedPayments.has(payment.uuid) ? 'ph:caret-up-bold' : 'ph:caret-down-bold'" />
                         </button>
                     </div>
                 </div>
@@ -93,7 +97,7 @@
                     <!-- VA / Pay code highlight -->
                     <div v-if="payment.va_number || payment.pay_code"
                         class="flex items-center justify-between p-3 bg-white dark:bg-slate-800 rounded-xl border border-primary/20">
-                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                        <span class="text-[10px] font-black text-slate-400 tracking-widest">
                             {{ payment.va_number ? 'Nomor VA' : 'Kode Bayar' }}
                         </span>
                         <span class="text-sm font-black text-navy dark:text-white font-mono tracking-wider select-all">
@@ -109,17 +113,16 @@
 
                     <!-- Instruction groups -->
                     <template v-if="parseInstructionGroups(payment.instructions).length">
-                        <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest pt-1">Cara Pembayaran</div>
+                        <div class="text-[10px] font-black text-slate-400 tracking-widest pt-1">Cara Pembayaran</div>
                         <!-- Tab selector when multiple groups -->
                         <div v-if="parseInstructionGroups(payment.instructions).length > 1"
                             class="flex gap-2 flex-wrap">
-                            <button
-                                v-for="(group, gi) in parseInstructionGroups(payment.instructions)" :key="group.title"
-                                @click="setActiveGroup(payment.uuid, gi)"
+                            <button v-for="(group, gi) in parseInstructionGroups(payment.instructions)"
+                                :key="group.title" @click="setActiveGroup(payment.uuid, gi)"
                                 :class="getActiveGroup(payment.uuid) === gi
                                     ? 'bg-navy text-white border-navy'
                                     : 'bg-white dark:bg-slate-800 text-slate-500 border-slate-200 dark:border-slate-600 hover:border-primary/40'"
-                                class="px-3 py-1.5 rounded-lg border text-[10px] font-black uppercase tracking-widest transition-colors">
+                                class="px-3 py-1.5 rounded-lg border text-[10px] font-black tracking-widest transition-colors">
                                 {{ group.title }}
                             </button>
                         </div>
@@ -128,7 +131,7 @@
                             v-show="parseInstructionGroups(payment.instructions).length === 1 || getActiveGroup(payment.uuid) === gi"
                             class="space-y-2.5">
                             <div v-if="parseInstructionGroups(payment.instructions).length === 1"
-                                class="text-[10px] font-black text-slate-500 uppercase tracking-widest">{{ group.title }}</div>
+                                class="text-[10px] font-black text-slate-500 tracking-widest">{{ group.title }}</div>
                             <div v-for="(step, si) in group.steps" :key="si" class="flex gap-3">
                                 <span
                                     class="size-5 mt-0.5 rounded-full bg-primary/10 text-primary font-black flex items-center justify-center shrink-0 text-[9px]">

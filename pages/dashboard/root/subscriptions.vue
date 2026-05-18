@@ -9,7 +9,7 @@
             <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div class="space-y-4">
                     <div
-                        class="flex items-center gap-2 text-[10px] sm:text-xs font-black uppercase tracking-widest text-primary/80">
+                        class="flex items-center gap-2 text-[10px] sm:text-xs font-black tracking-widest text-primary/80">
                         <span class="text-white">Root Terminal</span>
                         <Icon icon="ph:caret-right-bold" class="text-[8px] opacity-50" />
                         <span class="text-primary">Subscription</span>
@@ -91,18 +91,15 @@
                         <tr class="bg-gray-50/50 border-b border-gray-100">
                             <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest ">
                                 Akun</th>
-                            <th
-                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest uppercase text-center">
+                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest text-center">
                                 Tipe</th>
                             <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest ">
                                 Paket</th>
-                            <th
-                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest uppercase text-center">
+                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest text-center">
                                 Status</th>
                             <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest ">
                                 Expires</th>
-                            <th
-                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest uppercase text-right">
+                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest text-right">
                                 Aksi</th>
                         </tr>
                     </thead>
@@ -138,8 +135,7 @@
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-700 font-medium">{{ sub.plan_name || '—' }}</td>
                             <td class="px-6 py-4 text-center">
-                                <span
-                                    class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border"
+                                <span class="px-2.5 py-1 rounded-full text-[10px] font-black tracking-widest border"
                                     :class="getStatusBadgeClass(sub.subscription_status)">
                                     {{ sub.subscription_status }}
                                 </span>
@@ -180,7 +176,7 @@
             <!-- Pagination -->
             <div v-if="filteredSubs.length > 0"
                 class="px-6 py-4 bg-gray-50/50 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div class="text-xs font-bold text-gray-400 uppercase tracking-widest">
+                <div class="text-xs font-bold text-gray-400 tracking-widest">
                     Menampilkan <span class="text-navy">{{ subStartIndex + 1 }} - {{ Math.min(subEndIndex,
                         filteredSubs.length) }}</span>
                     dari <span class="text-navy">{{ filteredSubs.length }}</span> Langganan
@@ -222,7 +218,7 @@
 
                 <div class="space-y-4">
                     <div class="space-y-1.5">
-                        <label class="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Status
+                        <label class="text-[10px] font-black text-gray-500 tracking-widest ml-1">Status
                             Langganan</label>
                         <select v-model="editStatus"
                             class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-4 focus:ring-primary/10 transition-all">
@@ -234,7 +230,7 @@
                     </div>
 
                     <div class="space-y-1.5">
-                        <label class="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Pilih
+                        <label class="text-[10px] font-black text-gray-500 tracking-widest ml-1">Pilih
                             Paket</label>
                         <select v-model.number="editPlanId"
                             class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-4 focus:ring-primary/10 transition-all">
@@ -246,14 +242,13 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div class="space-y-1.5">
-                            <label class="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Tgl
+                            <label class="text-[10px] font-black text-gray-500 tracking-widest ml-1">Tgl
                                 Kadaluarsa</label>
                             <input v-model="editExpiresAt" type="date"
                                 class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-4 focus:ring-primary/10 transition-all" />
                         </div>
                         <div class="space-y-1.5">
-                            <label
-                                class="text-[10px] font-black text-gray-500 uppercase tracking-widest ml-1">Perpanjang
+                            <label class="text-[10px] font-black text-gray-500 tracking-widest ml-1">Perpanjang
                                 (Hari)</label>
                             <input v-model.number="editExtendDays" type="number" min="0" placeholder="+0"
                                 class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-bold text-navy outline-none focus:ring-4 focus:ring-primary/10 transition-all" />
@@ -263,11 +258,11 @@
 
                 <div class="flex gap-3">
                     <button @click="showEditModal = false"
-                        class="flex-1 py-3 border border-gray-200 rounded-xl text-xs font-black text-gray-500 hover:bg-gray-50 transition-all uppercase tracking-widest">
+                        class="flex-1 py-3 border border-gray-200 rounded-xl text-xs font-black text-gray-500 hover:bg-gray-50 transition-all tracking-widest">
                         Batal
                     </button>
                     <button @click="submitEdit" :disabled="editLoading"
-                        class="flex-1 py-3 bg-navy text-primary rounded-xl text-xs font-black hover:bg-navy/90 transition-all disabled:opacity-50 flex items-center justify-center gap-2 uppercase tracking-widest shadow-lg shadow-navy/20">
+                        class="flex-1 py-3 bg-navy text-primary rounded-xl text-xs font-black hover:bg-navy/90 transition-all disabled:opacity-50 flex items-center justify-center gap-2 tracking-widest shadow-lg shadow-navy/20">
                         <Icon v-if="editLoading" icon="ph:spinner-bold" class="animate-spin" />
                         Simpan
                     </button>

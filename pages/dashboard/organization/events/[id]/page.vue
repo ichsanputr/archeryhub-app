@@ -329,7 +329,7 @@
                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             <div class="space-y-1">
                                                 <label
-                                                    class="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-1">Nama
+                                                    class="text-[10px] font-black text-gray-400 tracking-widest pl-1">Nama
                                                     Bank / Provider</label>
                                                 <BaseSelect v-model="method.bank_name" :items="indonesianPaymentMethods"
                                                     item-title="title" item-value="value"
@@ -338,7 +338,7 @@
                                             </div>
                                             <div class="space-y-1">
                                                 <label
-                                                    class="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-1">Nomor
+                                                    class="text-[10px] font-black text-gray-400 tracking-widest pl-1">Nomor
                                                     Rekening / Akun</label>
                                                 <input v-model="method.account_number" type="text"
                                                     placeholder="8000xxxxxxx"
@@ -348,7 +348,7 @@
                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             <div class="space-y-1">
                                                 <label
-                                                    class="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-1">Nama
+                                                    class="text-[10px] font-black text-gray-400 tracking-widest pl-1">Nama
                                                     Pemilik Rekening</label>
                                                 <input v-model="method.account_name" type="text"
                                                     placeholder="Contoh: Muhammad Ali"
@@ -356,7 +356,7 @@
                                             </div>
                                             <div class="space-y-1 text-right pt-4 flex flex-col justify-center">
                                                 <span
-                                                    class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Tipe
+                                                    class="text-[10px] font-black text-gray-400 tracking-widest mb-1">Tipe
                                                     Metode</span>
                                                 <span
                                                     class="px-3 py-1 bg-navy text-primary rounded-full text-[10px] font-black w-fit ml-auto capitalize shadow-sm">
@@ -367,7 +367,7 @@
                                         </div>
                                         <div class="space-y-1">
                                             <label
-                                                class="text-[10px] font-black text-gray-400 uppercase tracking-widest pl-1">Instruksi
+                                                class="text-[10px] font-black text-gray-400 tracking-widest pl-1">Instruksi
                                                 Tambahan (Opsional)</label>
                                             <input v-model="method.instructions" type="text"
                                                 placeholder="Contoh: Lampirkan bukti transfer di form konfirmasi"

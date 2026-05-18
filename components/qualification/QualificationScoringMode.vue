@@ -13,7 +13,7 @@
                         <div
                             class="bg-navy text-btn-inverse px-5 py-1.5 rounded-xl border border-white/5 flex items-center gap-2 shadow-sm">
                             <Icon icon="ph:target-bold" class="text-xs" />
-                            <span class="text-[10px] font-black uppercase tracking-widest">Target {{
+                            <span class="text-[10px] font-black tracking-widest">Target {{
                                 group.number }}</span>
                         </div>
                         <div class="flex-1 h-px bg-gray-100"></div>
@@ -49,7 +49,7 @@
                                                 {{ assignment.archer_name }}</h3>
                                         </div>
                                         <div
-                                            class="text-[9px] sm:text-[10px] text-gray-400 font-bold truncate uppercase tracking-widest">
+                                            class="text-[9px] sm:text-[10px] text-gray-400 font-bold truncate tracking-widest">
                                             {{ assignment.club_name || 'Independen' }}
                                         </div>
                                     </div>
@@ -63,7 +63,7 @@
                                         class="!size-9 !p-0 !rounded-xl border-2 border-slate-100 bg-white text-navy hover:bg-slate-50 shadow-sm"
                                         @click.stop="goPrevEnd" />
                                     <div class="px-2 text-center min-w-[50px]">
-                                        <div class="text-[8px] font-black text-gray-300 uppercase leading-none mb-0.5">
+                                        <div class="text-[8px] font-black text-gray-300 leading-none mb-0.5">
                                             End
                                         </div>
                                         <div class="text-sm font-black text-navy">{{ assignment.currentEnd || 1 }}
@@ -136,7 +136,7 @@
                     <div class="size-20 rounded-full bg-slate-50 flex items-center justify-center mb-6">
                         <Icon icon="ph:users-bold" class="text-3xl text-gray-300" />
                     </div>
-                    <p class="text-gray-400 font-black uppercase text-[10px] tracking-widest leading-relaxed max-w-xs">
+                    <p class="text-gray-400 font-black text-[10px] tracking-widest leading-relaxed max-w-xs">
                         Belum ada pemanah yang ditugaskan
                     </p>
                 </div>
@@ -182,7 +182,7 @@
                 class="lg:hidden fixed inset-x-0 bottom-0 z-[70] bg-white border-t border-gray-200 shadow-[0_-10px_30px_rgba(0,0,0,0.08)] rounded-t-3xl p-4 pb-[calc(1rem+env(safe-area-inset-bottom))]">
                 <div class="flex items-center justify-between mb-3">
                     <div class="min-w-0">
-                        <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">Input Nilai</p>
+                        <p class="text-[10px] font-black tracking-widest text-gray-400">Input Nilai</p>
                         <p class="text-sm font-black text-navy truncate">
                             {{ currentScoringAssignment?.archer_name || 'Pilih pemanah' }}
                         </p>

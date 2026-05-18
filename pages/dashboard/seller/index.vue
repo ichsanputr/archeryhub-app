@@ -1,7 +1,8 @@
 <template>
   <div class="space-y-8">
     <div class="relative overflow-hidden rounded-3xl border border-primary/20 bg-navy text-white shadow-sm">
-      <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);"></div>
+      <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
+      </div>
       <div class="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-primary/10 blur-3xl"></div>
       <div class="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-primary/5 blur-3xl"></div>
 
@@ -13,7 +14,8 @@
           </div>
           <div>
             <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none text-white">Ringkasan Seller</h1>
-            <div class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wide capitalize">Pantau performa dan operasional toko anda</div>
+            <div class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wide capitalize">Pantau performa
+              dan operasional toko anda</div>
           </div>
         </div>
         <div class="flex flex-col sm:flex-row gap-3">
@@ -41,8 +43,10 @@
         </div>
         <div class="text-3xl font-black text-navy">{{ products.length }}</div>
         <div class="flex items-center gap-2">
-          <span class="text-[9px] font-black text-green-500 bg-green-50 px-1.5 py-0.5 rounded capitalize">{{ products.filter(p => p.status === 'active').length }} aktif</span>
-          <span class="text-[9px] font-black text-gray-400 bg-gray-50 px-1.5 py-0.5 rounded capitalize">{{ products.filter(p => p.status === 'draft').length }} draft</span>
+          <span class="text-[9px] font-black text-green-500 bg-green-50 px-1.5 py-0.5 rounded capitalize">{{
+            products.filter(p => p.status === 'active').length }} aktif</span>
+          <span class="text-[9px] font-black text-gray-400 bg-gray-50 px-1.5 py-0.5 rounded capitalize">{{
+            products.filter(p => p.status === 'draft').length }} draft</span>
         </div>
       </div>
 
@@ -75,17 +79,19 @@
           </h2>
         </div>
         <div class="divide-y divide-gray-50">
-          <div v-for="product in topSellingProducts" :key="product.id" class="p-4 px-6 flex items-center gap-4 hover:bg-gray-50/50 transition-colors">
+          <div v-for="product in topSellingProducts" :key="product.id"
+            class="p-4 px-6 flex items-center gap-4 hover:bg-gray-50/50 transition-colors">
             <div class="size-12 rounded-xl bg-gray-50 overflow-hidden shrink-0">
               <img :src="product.image" class="w-full h-full object-cover" />
             </div>
             <div class="flex-1 min-w-0">
               <div class="text-sm font-black text-navy truncate">{{ product.name }}</div>
-              <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">{{ product.category }}</div>
+              <div class="text-[10px] text-gray-400 font-bold tracking-wider">{{ product.category }}</div>
             </div>
             <div class="text-right">
               <div class="text-sm font-black text-navy">{{ product.sold }} Terjual</div>
-              <div class="text-[10px] text-primary font-bold uppercase tracking-wider">Rp {{ formatCurrencyValue(product.price) }}</div>
+              <div class="text-[10px] text-primary font-bold tracking-wider">Rp {{ formatCurrencyValue(product.price) }}
+              </div>
             </div>
           </div>
           <div v-if="!loading && topSellingProducts.length === 0" class="p-12 text-center text-gray-400 text-sm">
@@ -102,17 +108,19 @@
             Produk terbaru
           </h2>
           <NuxtLink to="/dashboard/seller/products">
-            <BaseButton variant="ghost" class="text-[10px] font-black uppercase tracking-widest text-primary">Lihat Semua</BaseButton>
+            <BaseButton variant="ghost" class="text-[10px] font-black tracking-widest text-primary">Lihat Semua
+            </BaseButton>
           </NuxtLink>
         </div>
         <div class="divide-y divide-gray-50">
-          <div v-for="product in latestProducts" :key="product.id" class="p-4 px-6 flex items-center gap-4 hover:bg-gray-50/50 transition-colors">
+          <div v-for="product in latestProducts" :key="product.id"
+            class="p-4 px-6 flex items-center gap-4 hover:bg-gray-50/50 transition-colors">
             <div class="size-12 rounded-xl bg-gray-100 overflow-hidden shrink-0">
               <img :src="product.image" class="w-full h-full object-cover" />
             </div>
             <div class="flex-1 min-w-0">
               <div class="text-sm font-black text-navy truncate">{{ product.name }}</div>
-              <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Stok: {{ product.stock }}</div>
+              <div class="text-[10px] text-gray-400 font-bold tracking-wider">Stok: {{ product.stock }}</div>
             </div>
             <div class="text-right">
               <NuxtLink :to="`/dashboard/seller/products/${product.id}`">
@@ -150,7 +158,7 @@ const fetchData = async () => {
       api.get('/products/my').catch(() => ({ data: [] })),
       api.get('/sellers/wallet').catch(() => ({ data: { balance: 0 } }))
     ])
-    
+
     // Process products
     products.value = (productsRes.data || []).map(p => ({
       ...p,

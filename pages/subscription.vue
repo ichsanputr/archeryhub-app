@@ -50,7 +50,7 @@
                             <div class="flex items-baseline gap-1">
                                 <span class="text-xl font-bold text-navy opacity-40">Rp</span>
                                 <span class="text-5xl font-black text-navy tracking-tighter">29.999</span>
-                                <span class="text-gray-400 font-bold tracking-wider uppercase text-xs">/BLN</span>
+                                <span class="text-gray-400 font-bold tracking-wider text-xs">/BLN</span>
                             </div>
                         </div>
                         <ul class="space-y-4 mb-12 flex-1">
@@ -70,7 +70,7 @@
                     <div
                         class="bg-navy rounded-3xl p-8 flex flex-col shadow-sm relative overflow-hidden ring-4 ring-primary/20 transition-all duration-500 hover:-translate-y-2">
                         <div
-                            class="absolute top-0 right-0 bg-primary text-navy px-6 py-2 text-[11px] font-black uppercase tracking-[0.2em] rounded-bl-2xl shadow-lg">
+                            class="absolute top-0 right-0 bg-primary text-navy px-6 py-2 text-[11px] font-black tracking-[0.2em] rounded-bl-2xl shadow-lg">
                             PROFESIONAL
                         </div>
                         <div class="mb-10 pt-4">
@@ -87,7 +87,7 @@
                             <div class="flex items-baseline gap-1">
                                 <span class="text-xl font-bold text-white opacity-40">Rp</span>
                                 <span class="text-5xl font-black text-white tracking-tighter">49.999</span>
-                                <span class="text-slate-400 font-bold tracking-wider uppercase text-xs">/BLN</span>
+                                <span class="text-slate-400 font-bold tracking-wider text-xs">/BLN</span>
                             </div>
                         </div>
                         <ul class="space-y-5 mb-14 flex-1">
@@ -106,12 +106,12 @@
 
                 <!-- EO Comparison Table -->
                 <div class="max-w-5xl mx-auto">
-                    <h3 class="text-center text-[11px] font-black text-gray-400 uppercase tracking-widest mb-8">
+                    <h3 class="text-center text-[11px] font-black text-gray-400 tracking-widest mb-8">
                         Perbandingan Detail
                     </h3>
                     <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
                         <div
-                            class="grid grid-cols-3 bg-gray-50 px-6 py-4 text-xs font-black uppercase tracking-widest text-gray-400">
+                            class="grid grid-cols-3 bg-gray-50 px-6 py-4 text-xs font-black tracking-widest text-gray-400">
                             <div>Fitur</div>
                             <div class="text-center">Standar</div>
                             <div class="text-center">Elite</div>
@@ -153,7 +153,7 @@
             <!-- FAQ Section -->
             <div class="mt-24 md:mt-40 max-w-4xl mx-auto px-4">
                 <div class="text-center mb-16">
-                    <h2 class="text-sm font-black text-primary uppercase tracking-[0.3em] mb-4">FAQ</h2>
+                    <h2 class="text-sm font-black text-primary tracking-[0.3em] mb-4">FAQ</h2>
                     <h4 class="font-black text-navy text-2xl sm:text-3xl md:text-5xl tracking-tight">Punya Pertanyaan?
                     </h4>
                 </div>

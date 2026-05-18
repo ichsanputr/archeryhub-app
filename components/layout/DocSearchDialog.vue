@@ -6,23 +6,18 @@
         <div class="absolute inset-0 bg-navy/60 backdrop-blur-sm" @click="close" />
 
         <!-- Dialog -->
-        <div class="relative w-full max-w-xl bg-white rounded-2xl shadow-2xl overflow-hidden z-10 border border-gray-100">
+        <div
+          class="relative w-full max-w-xl bg-white rounded-2xl shadow-2xl overflow-hidden z-10 border border-gray-100">
           <!-- Input Row -->
           <div class="flex items-center gap-3 px-5 py-4 border-b border-gray-100">
             <Icon icon="ph:magnifying-glass-bold" class="text-xl text-primary shrink-0" />
-            <input
-              ref="inputRef"
-              v-model="query"
-              type="text"
-              placeholder="Cari halaman..."
+            <input ref="inputRef" v-model="query" type="text" placeholder="Cari halaman..."
               class="flex-1 text-sm text-gray-900 placeholder-gray-400 focus:outline-none bg-transparent"
-              @keydown.esc="close"
-              @keydown.down.prevent="moveDown"
-              @keydown.up.prevent="moveUp"
-              @keydown.enter.prevent="navigate"
-            />
+              @keydown.esc="close" @keydown.down.prevent="moveDown" @keydown.up.prevent="moveUp"
+              @keydown.enter.prevent="navigate" />
             <div class="flex items-center gap-1.5 shrink-0">
-              <kbd class="hidden sm:inline-flex items-center px-1.5 py-0.5 bg-gray-100 border border-gray-200 rounded text-xs text-gray-400 font-mono">Esc</kbd>
+              <kbd
+                class="hidden sm:inline-flex items-center px-1.5 py-0.5 bg-gray-100 border border-gray-200 rounded text-xs text-gray-400 font-mono">Esc</kbd>
             </div>
           </div>
 
@@ -31,48 +26,38 @@
             <!-- Results -->
             <template v-if="query.trim()">
               <template v-if="results.length">
-                <NuxtLink
-                  v-for="(page, i) in results"
-                  :key="page.path"
-                  :to="page.path"
-                  @click="close"
+                <NuxtLink v-for="(page, i) in results" :key="page.path" :to="page.path" @click="close"
                   class="flex items-center gap-4 px-5 py-3.5 transition-colors cursor-pointer border-b border-gray-50 last:border-0"
-                  :class="i === activeIndex ? 'bg-gray-100' : 'hover:bg-gray-50'"
-                >
-                  <div
-                    class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-colors"
-                    :class="i === activeIndex ? 'bg-navy/10 text-navy' : 'bg-gray-100 text-gray-400'"
-                  >
+                  :class="i === activeIndex ? 'bg-gray-100' : 'hover:bg-gray-50'">
+                  <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-colors"
+                    :class="i === activeIndex ? 'bg-navy/10 text-navy' : 'bg-gray-100 text-gray-400'">
                     <Icon :icon="page.icon" class="text-base" />
                   </div>
                   <div class="flex-1 min-w-0">
                     <div class="text-sm font-bold text-navy leading-snug" v-html="highlight(page.title)" />
                     <div class="text-xs text-gray-400 truncate mt-0.5" v-html="highlight(page.description)" />
                   </div>
-                  <Icon icon="ph:arrow-right-bold" class="text-xs text-gray-300 shrink-0" :class="i === activeIndex ? 'text-navy' : ''" />
+                  <Icon icon="ph:arrow-right-bold" class="text-xs text-gray-300 shrink-0"
+                    :class="i === activeIndex ? 'text-navy' : ''" />
                 </NuxtLink>
               </template>
               <div v-else class="py-14 text-center">
                 <div class="flex justify-center w-full">
                   <Icon icon="ph:file-search-bold" class="text-4xl text-gray-200 mb-3" />
                 </div>
-                <p class="text-sm text-gray-400">Tidak ada hasil untuk <strong class="text-navy">"{{ query }}"</strong></p>
+                <p class="text-sm text-gray-400">Tidak ada hasil untuk <strong class="text-navy">"{{ query }}"</strong>
+                </p>
               </div>
             </template>
 
             <!-- Empty / Default state: quick links -->
             <template v-else>
               <div class="px-5 pt-5 pb-4">
-                <p class="text-xs text-gray-300 font-bold uppercase tracking-widest mb-3">Navigasi Cepat</p>
+                <p class="text-xs text-gray-300 font-bold tracking-widest mb-3">Navigasi Cepat</p>
                 <div class="flex flex-col gap-1">
-                  <NuxtLink
-                    v-for="(page, i) in quickLinks"
-                    :key="page.path"
-                    :to="page.path"
-                    @click="close"
+                  <NuxtLink v-for="(page, i) in quickLinks" :key="page.path" :to="page.path" @click="close"
                     class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors text-xs text-gray-600 border border-gray-100"
-                    :class="i === activeIndex ? 'bg-primary/10 text-primary border-primary/20' : 'hover:bg-gray-50'"
-                  >
+                    :class="i === activeIndex ? 'bg-primary/10 text-primary border-primary/20' : 'hover:bg-gray-50'">
                     <Icon :icon="page.icon" class="text-base text-gray-400 shrink-0" />
                     <div class="flex-1 min-w-0">
                       <span class="font-bold text-navy">{{ page.title }}</span>
@@ -207,14 +192,17 @@ defineExpose({ open, close })
 .search-fade-leave-active {
   transition: opacity 0.15s ease;
 }
+
 .search-fade-enter-active .relative,
 .search-fade-leave-active .relative {
   transition: transform 0.15s ease, opacity 0.15s ease;
 }
+
 .search-fade-enter-from,
 .search-fade-leave-to {
   opacity: 0;
 }
+
 .search-fade-enter-from .relative {
   transform: translateY(-8px);
   opacity: 0;

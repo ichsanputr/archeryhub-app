@@ -14,7 +14,7 @@
       </div>
       <div class="flex gap-3">
         <BaseButton variant="primary" :loading="saving" @click="saveProfile" icon="ph:floppy-disk"
-          class="h-11 px-6 shadow-lg shadow-primary/20 font-black uppercase tracking-widest text-[10px] !rounded-xl">
+          class="h-11 px-6 shadow-lg shadow-primary/20 font-black tracking-widest text-[10px] !rounded-xl">
           {{ saving ? 'Menyimpan...' : 'Simpan Profil' }}
         </BaseButton>
       </div>
@@ -96,8 +96,7 @@
                   </div>
                   <div class="flex gap-2 w-full">
                     <BaseButton @click="openMediaLibrary('logo')" variant="primary" size="sm"
-                      icon="ph:cloud-arrow-up-bold"
-                      class="flex-1 h-10 font-black uppercase tracking-widest text-[10px]">
+                      icon="ph:cloud-arrow-up-bold" class="flex-1 h-10 font-black tracking-widest text-[10px]">
                       Pilih Logo
                     </BaseButton>
                     <BaseButton v-if="form.logoUrl" @click="form.logoUrl = ''" variant="white" size="sm"
@@ -122,7 +121,7 @@
                   </div>
                   <div class="mt-4 flex gap-2">
                     <BaseButton @click="openMediaLibrary('banner')" variant="primary" size="sm" icon="ph:image-bold"
-                      class="flex-1 h-10 font-black uppercase tracking-widest text-[10px]">
+                      class="flex-1 h-10 font-black tracking-widest text-[10px]">
                       Ganti Banner
                     </BaseButton>
                     <BaseButton v-if="form.bannerUrl" @click="form.bannerUrl = ''" variant="white" size="sm"
@@ -190,7 +189,7 @@
                       :class="getPlatformIconBagde(social.platform)">
                       <Icon :icon="getPlatformInfo(social.platform).icon" class="text-lg" />
                     </div>
-                    <span class="text-xs font-black text-navy uppercase tracking-widest">{{
+                    <span class="text-xs font-black text-navy tracking-widest">{{
                       getPlatformInfo(social.platform).title }}</span>
                   </div>
                   <button @click="removeSocialMedia(idx)" class="text-gray-400 hover:text-red-500 transition-colors">

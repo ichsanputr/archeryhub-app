@@ -165,15 +165,15 @@
                             dengan ukuran A4 standar Ianseo.</p>
 
                         <div class="w-full space-y-4 pt-6 border-t border-white/10 text-[10px] font-bold">
-                            <div class="flex justify-between items-center text-slate-400 uppercase tracking-widest">
+                            <div class="flex justify-between items-center text-slate-400 tracking-widest">
                                 <span>Ukuran kertas</span>
                                 <span class="text-white">A4 (Portrait)</span>
                             </div>
-                            <div class="flex justify-between items-center text-slate-400 uppercase tracking-widest">
+                            <div class="flex justify-between items-center text-slate-400 tracking-widest">
                                 <span>Layout</span>
                                 <span class="text-white">2 Scoresheets/Page</span>
                             </div>
-                            <div class="flex justify-between items-center text-slate-400 uppercase tracking-widest">
+                            <div class="flex justify-between items-center text-slate-400 tracking-widest">
                                 <span>Status barcode</span>
                                 <span class="text-white">{{ form.printBarcode ? 'Aktif' : 'Nonaktif' }}</span>
                             </div>
@@ -183,7 +183,7 @@
 
                 <!-- Action Button -->
                 <BaseButton variant="primary" icon="ph:printer-bold"
-                    class="w-full !py-6 !rounded-3xl font-black uppercase tracking-widest text-sm shadow-sm"
+                    class="w-full !py-6 !rounded-3xl font-black tracking-widest text-sm shadow-sm"
                     :disabled="!form.session || isProcessing" :loading="isProcessing" @click="handlePrint">
                     Cetak PDF
                 </BaseButton>

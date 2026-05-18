@@ -3,9 +3,9 @@
         <h2 class="text-lg font-extrabold text-navy">Riwayat Tagihan</h2>
         <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
             <div class="p-6 border-b border-gray-100 bg-slate-50/50 flex items-center justify-between">
-                <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Invoice</span>
+                <span class="text-[10px] font-black text-gray-400 tracking-widest">Invoice</span>
                 <button v-if="invoices?.length" @click="handleDownload"
-                    class="flex items-center gap-2 px-4 py-2 text-[10px] font-black uppercase tracking-widest text-navy bg-white border border-gray-200 rounded-xl hover:border-primary hover:shadow-md transition-all group">
+                    class="flex items-center gap-2 px-4 py-2 text-[10px] font-black tracking-widest text-navy bg-white border border-gray-200 rounded-xl hover:border-primary hover:shadow-md transition-all group">
                     <Icon icon="ph:download-simple-bold" class="text-lg group-hover:text-primary transition-colors" />
                     <span>Download Report</span>
                 </button>
@@ -14,7 +14,7 @@
             <div v-if="invoices?.length" class="overflow-x-auto">
                 <table class="w-full text-left">
                     <thead
-                        class="bg-gray-50/50 text-gray-400 font-black text-[10px] uppercase tracking-widest border-b border-gray-100">
+                        class="bg-gray-50/50 text-gray-400 font-black text-[10px] tracking-widest border-b border-gray-100">
                         <tr>
                             <th class="px-8 py-4">Tanggal</th>
                             <th class="px-8 py-4">Deskripsi</th>
@@ -43,7 +43,7 @@
                                 <div class="flex items-center justify-end gap-2">
                                     <a v-if="invoice.status === 'pending' && invoice.checkout_url"
                                         :href="invoice.checkout_url"
-                                        class="px-4 py-2 bg-primary text-btn-text text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-primary-dark transition-all shadow-sm">
+                                        class="px-4 py-2 bg-primary text-btn-text text-[10px] font-black tracking-widest rounded-xl hover:bg-primary-dark transition-all shadow-sm">
                                         Bayar Sekarang
                                     </a>
                                     <a v-else-if="invoice.status === 'paid'"
@@ -59,7 +59,7 @@
             </div>
             <div v-else class="flex flex-col items-center justify-center p-16 text-center text-gray-300">
                 <Icon icon="ph:receipt-bold" class="text-4xl mb-4 opacity-20" />
-                <div class="text-xs font-black uppercase tracking-widest">Belum Ada Transaksi</div>
+                <div class="text-xs font-black tracking-widest">Belum Ada Transaksi</div>
             </div>
         </div>
     </div>

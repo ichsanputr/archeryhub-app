@@ -14,7 +14,7 @@
                     <div class="flex items-center gap-4">
                         <div>
                             <nav
-                                class="flex text-[10px] font-bold text-white/40 uppercase tracking-widest mb-1 items-center gap-1.5">
+                                class="flex text-[10px] font-bold text-white/40 tracking-widest mb-1 items-center gap-1.5">
                                 <NuxtLink :to="`/dashboard/archer/events/${eventId}`"
                                     class="hover:text-white transition-colors">Event</NuxtLink>
                                 <Icon icon="ph:caret-right-bold" class="text-[9px]" />
@@ -89,8 +89,7 @@
                     </div>
                     <!-- Match count -->
                     <div class="flex flex-col items-center sm:items-end">
-                        <span
-                            class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Pertandingan</span>
+                        <span class="text-[10px] font-black text-slate-400 tracking-widest mb-1">Pertandingan</span>
                         <div class="flex items-baseline gap-1">
                             <span class="text-5xl font-black text-navy dark:text-white tracking-tighter tabular-nums">{{
                                 elimMatches.length }}</span>
@@ -115,7 +114,7 @@
                 <div v-if="elimMatches.length === 0"
                     class="py-20 text-center border-2 border-dashed border-slate-100 dark:border-slate-800 m-6 rounded-3xl">
                     <Icon icon="ph:sword-light" class="text-7xl mx-auto mb-6 opacity-10" />
-                    <span class="text-sm font-black uppercase tracking-widest text-slate-300 block">Belum mencapai
+                    <span class="text-sm font-black tracking-widest text-slate-300 block">Belum mencapai
                         eliminasi</span>
                 </div>
 
@@ -130,7 +129,7 @@
                             <div v-for="(match, mIdx) in elimMatches" :key="match.uuid"
                                 class="flex flex-col sm:flex-row items-start gap-3 sm:gap-5">
                                 <!-- Round node -->
-                                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 font-black text-[9px] sm:text-[10px] tracking-widest uppercase shadow-sm"
+                                <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 font-black text-[9px] sm:text-[10px] tracking-widest shadow-sm"
                                     :class="match.winner_entry_uuid === myEntryUuid
                                         ? 'bg-primary text-navy'
                                         : (match.status === 'finished' ? 'bg-navy text-white' : 'bg-white border border-slate-200 text-slate-500')">
@@ -147,7 +146,7 @@
                                         class="px-5 py-3 border-b border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800">
                                         <div
                                             class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-0">
-                                            <span class="text-[10px] font-black uppercase tracking-widest"
+                                            <span class="text-[10px] font-black tracking-widest"
                                                 :class="match.winner_entry_uuid === myEntryUuid ? 'text-navy dark:text-primary' : 'text-slate-400'">
                                                 Babak {{ match.round_no }} · Match #{{ match.match_no || '-' }}
                                             </span>
@@ -213,8 +212,7 @@
                                     <div v-if="match.ends && match.ends.length"
                                         class="px-5 py-3 border-t border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800">
                                         <div class="flex gap-2 mb-2">
-                                            <span
-                                                class="text-[10px] font-black uppercase tracking-widest text-slate-400">Rincian
+                                            <span class="text-[10px] font-black tracking-widest text-slate-400">Rincian
                                                 Skor Per End</span>
                                         </div>
                                         <div class="flex flex-col gap-2 text-xs">

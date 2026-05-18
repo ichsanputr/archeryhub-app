@@ -36,7 +36,7 @@
           <!-- Action Buttons -->
           <div class="flex flex-col sm:flex-row gap-3">
             <BaseButton variant="primary" icon="ph:plus-bold"
-              class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black uppercase tracking-widest"
+              class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black tracking-widest"
               @click="openCreateModal">
               Tambah Sesi
             </BaseButton>
@@ -252,7 +252,7 @@
                         <div class="text-[11px] sm:text-base font-bold text-navy leading-tight">{{ archer.archer_name }}
                         </div>
                         <div class="flex items-center gap-2 mt-1">
-                          <div class="text-[10px] text-gray-400 font-bold uppercase tracking-tighter">{{
+                          <div class="text-[10px] text-gray-400 font-bold tracking-tighter">{{
                             archer.club_name
                             ||
                             'Independen' }}</div>
@@ -277,7 +277,7 @@
                           <div v-for="(s, sIdx) in session.displayScores" :key="sIdx"
                             class="flex flex-col items-center bg-gray-50 border border-gray-100 rounded-lg overflow-hidden shadow-sm group/score hover:border-primary/50 transition-all">
                             <div class="bg-navy/5 px-2 py-0.5 w-full text-center border-b border-gray-100">
-                              <span class="text-[8px] font-black text-gray-400 uppercase tracking-tighter">E{{ sIdx + 1
+                              <span class="text-[8px] font-black text-gray-400 tracking-tighter">E{{ sIdx + 1
                               }}</span>
                             </div>
                             <div class="px-3 py-1 min-w-[45px] flex items-center justify-center">
@@ -297,7 +297,7 @@
                     </div>
                     <div v-else
                       class="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-xl border-2 border-dashed border-gray-100 max-w-[150px]">
-                      <span class="text-[11px] text-gray-400 font-black italic uppercase tracking-widest">Kosong</span>
+                      <span class="text-[11px] text-gray-400 font-black italic tracking-widest">Kosong</span>
                     </div>
                   </td>
                   <td class="px-6 py-4 text-right">
@@ -521,7 +521,7 @@
             <Icon icon="ph:warning-circle-bold" class="text-8xl text-red-600" />
           </div>
           <div class="relative z-10">
-            <h4 class="text-sm font-black text-red-700 uppercase tracking-widest mb-2">Peringatan Penghapusan</h4>
+            <h4 class="text-sm font-black text-red-700 tracking-widest mb-2">Peringatan Penghapusan</h4>
             <div class="text-xs font-bold text-red-600/80 leading-relaxed mb-4">
               Anda akan menghapus sesi kualifikasi ini secara permanen. Tindakan ini bersifat destruktif dan tidak dapat
               dibatalkan.
@@ -529,7 +529,7 @@
 
             <div class="flex items-center gap-2 px-3 py-1.5 bg-red-100 rounded-xl w-fit">
               <Icon icon="ph:info-bold" class="text-red-600" />
-              <span class="text-[10px] font-black uppercase tracking-wider text-red-700">Data Akan Dihapus
+              <span class="text-[10px] font-black tracking-wider text-red-700">Data Akan Dihapus
                 Selamanya</span>
             </div>
           </div>
@@ -541,7 +541,7 @@
             style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, white 10px, white 11px);">
           </div>
           <div class="relative z-10">
-            <h4 class="text-[9px] font-black text-primary uppercase tracking-[0.2em] mb-2">Informasi Sesi</h4>
+            <h4 class="text-[9px] font-black text-primary tracking-[0.2em] mb-2">Informasi Sesi</h4>
             <div class="text-lg font-black leading-tight mb-1">
               {{ sessionToDelete?.name }}
             </div>
@@ -570,18 +570,17 @@
                 {{ stat.count }}
               </div>
             </div>
-            <span class="text-[9px] uppercase font-black text-gray-400 tracking-wider">{{ stat.label }}</span>
+            <span class="text-[9px] font-black text-gray-400 tracking-wider">{{ stat.label }}</span>
           </div>
         </div>
       </div>
 
       <template #action>
-        <BaseButton variant="white" @click="showDeleteDialog = false"
-          class="px-6 font-bold uppercase tracking-wider text-xs">
+        <BaseButton variant="white" @click="showDeleteDialog = false" class="px-6 font-bold tracking-wider text-xs">
           Batal
         </BaseButton>
         <BaseButton variant="danger" @click="handleDeleteSession" :disabled="savingDelete" :loading="savingDelete"
-          icon="ph:trash-bold" class="px-8 font-black uppercase tracking-wider text-xs shadow-lg shadow-red-200">
+          icon="ph:trash-bold" class="px-8 font-black tracking-wider text-xs shadow-lg shadow-red-200">
           Hapus Permanen
         </BaseButton>
       </template>

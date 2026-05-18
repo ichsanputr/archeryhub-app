@@ -6,7 +6,8 @@
                 <div class="flex items-center gap-2 text-sm text-gray-400 mb-2 font-bold tracking-tight">
                     <NuxtLink to="/dashboard" class="hover:text-primary transition-colors">Dashboard</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
-                    <NuxtLink to="/dashboard/organization/news" class="hover:text-primary transition-colors">Berita</NuxtLink>
+                    <NuxtLink to="/dashboard/organization/news" class="hover:text-primary transition-colors">Berita
+                    </NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[12px]" />
                     <span class="text-navy">Detail</span>
                 </div>
@@ -106,11 +107,13 @@
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
                             <span class="text-sm text-gray-500">Dibuat</span>
-                            <span class="text-sm font-medium text-gray-700">{{ formatDate(article.created_at, true) }}</span>
+                            <span class="text-sm font-medium text-gray-700">{{ formatDate(article.created_at, true)
+                                }}</span>
                         </div>
                         <div class="flex items-center justify-between">
                             <span class="text-sm text-gray-500">Terakhir diubah</span>
-                            <span class="text-sm font-medium text-gray-700">{{ formatDate(article.updated_at, true) }}</span>
+                            <span class="text-sm font-medium text-gray-700">{{ formatDate(article.updated_at, true)
+                                }}</span>
                         </div>
                     </div>
                 </div>
@@ -124,22 +127,23 @@
                     <div class="space-y-3">
                         <div class="grid grid-cols-3 gap-3">
                             <div class="rounded-xl border border-navy/10 bg-navy/5 p-3 text-center">
-                                <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">Views</p>
-                                <p class="text-xl font-black text-navy mt-1">{{ article.views?.toLocaleString() || 0 }}</p>
+                                <p class="text-[10px] font-black tracking-widest text-gray-400">Views</p>
+                                <p class="text-xl font-black text-navy mt-1">{{ article.views?.toLocaleString() || 0 }}
+                                </p>
                             </div>
                             <div class="rounded-xl border border-primary/20 bg-primary/5 p-3 text-center">
-                                <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">Words</p>
+                                <p class="text-[10px] font-black tracking-widest text-gray-400">Words</p>
                                 <p class="text-xl font-black text-navy mt-1">{{ wordCount.toLocaleString() }}</p>
                             </div>
                             <div class="rounded-xl border border-amber-200 bg-amber-50 p-3 text-center">
-                                <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">Read Time</p>
+                                <p class="text-[10px] font-black tracking-widest text-gray-400">Read Time</p>
                                 <p class="text-xl font-black text-navy mt-1">{{ readTimeMinutes }}m</p>
                             </div>
                         </div>
 
                         <div class="rounded-xl border border-gray-100 bg-gray-50 p-3">
                             <div class="flex items-center justify-between text-xs font-bold">
-                                <span class="text-gray-500 uppercase tracking-widest">Status</span>
+                                <span class="text-gray-500 tracking-widest">Status</span>
                                 <span :class="article.status === 'published' ? 'text-green-600' : 'text-amber-600'">
                                     {{ article.status === 'published' ? 'Published' : 'Draft' }}
                                 </span>
@@ -201,7 +205,8 @@
                                     <Icon icon="ph:share-network-bold" class="text-3xl" />
                                 </div>
                                 <div>
-                                    <h3 class="text-navy-dark text-xl font-black tracking-tight mb-2">Bagikan Berita</h3>
+                                    <h3 class="text-navy-dark text-xl font-black tracking-tight mb-2">Bagikan Berita
+                                    </h3>
                                     <p class="text-text-secondary text-sm font-medium leading-relaxed">
                                         Sebarkan link berita ini ke sosial media atau salin link untuk dibagikan.
                                     </p>
@@ -210,7 +215,7 @@
 
                             <!-- Link Copy Segment -->
                             <div class="space-y-3 mb-8">
-                                <label class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Link Berita</label>
+                                <label class="text-[10px] font-black text-gray-400 tracking-[0.2em]">Link Berita</label>
                                 <div class="flex items-center gap-2">
                                     <div
                                         class="flex-1 bg-gray-50 border border-gray-100 rounded-xl px-4 py-3 text-xs text-gray-600 font-mono truncate">
@@ -226,7 +231,8 @@
 
                             <!-- Social Sharing -->
                             <div class="space-y-4">
-                                <label class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Bagikan Ke Sosial Media</label>
+                                <label class="text-[10px] font-black text-gray-400 tracking-[0.2em]">Bagikan Ke Sosial
+                                    Media</label>
                                 <div class="grid grid-cols-4 gap-3">
                                     <button v-for="social in [
                                         { id: 'whatsapp', icon: 'ph:whatsapp-logo-fill', color: 'text-green-500', bg: 'bg-green-50', hover: 'hover:bg-green-500' },
@@ -249,15 +255,9 @@
         </ClientOnly>
 
         <!-- Delete Confirmation -->
-        <AppDialog 
-            v-model:show="showDeleteConfirm"
-            title="Hapus Berita"
+        <AppDialog v-model:show="showDeleteConfirm" title="Hapus Berita"
             :message="`Apakah Anda yakin ingin menghapus berita '${article.title}'? Tindakan ini tidak dapat dibatalkan.`"
-            confirm-text="Ya, Hapus"
-            type="danger"
-            icon="ph:trash"
-            @confirm="deleteArticle"
-        />
+            confirm-text="Ya, Hapus" type="danger" icon="ph:trash" @confirm="deleteArticle" />
     </div>
 </template>
 

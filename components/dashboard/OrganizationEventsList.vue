@@ -36,7 +36,7 @@
           <div class="flex flex-col sm:flex-row gap-3">
             <BaseButton id="tour-create-event-btn" :to="canCreateEvent ? '/dashboard/events/create' : undefined"
               variant="primary" icon="ph:plus-bold" @click="!canCreateEvent && (showPremiumModal = true)"
-              class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black uppercase tracking-widest"
+              class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black tracking-widest"
               :class="{ 'opacity-50 grayscale cursor-not-allowed': !canCreateEvent }">
               Buat Event
             </BaseButton>

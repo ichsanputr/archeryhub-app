@@ -20,7 +20,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 sm:pt-40 pb-10 sm:pb-16 relative z-10 text-white">
                 <!-- Back nav -->
                 <NuxtLink to="/news"
-                    class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white/50 hover:text-primary transition-colors mb-8 sm:mb-12">
+                    class="inline-flex items-center gap-2 text-[10px] font-black tracking-widest text-white/50 hover:text-primary transition-colors mb-8 sm:mb-12">
                     <Icon icon="ph:arrow-left-bold" />
                     Kembali ke Berita
                 </NuxtLink>
@@ -28,7 +28,7 @@
                 <div class="w-full">
                     <!-- Category Tag -->
                     <span
-                        class="inline-block bg-primary text-navy text-[10px] sm:text-xs font-black px-2 py-1 mb-6 tracking-widest uppercase rounded-sm">
+                        class="inline-block bg-primary text-navy text-[10px] sm:text-xs font-black px-2 py-1 mb-6 tracking-widest rounded-sm">
                         {{ article.category || 'Berita' }}
                     </span>
 
@@ -47,7 +47,7 @@
                             </div>
                             <div>
                                 <div class="text-sm font-black text-white">{{ article.author.name }}</div>
-                                <div class="text-[10px] font-bold text-white/50 uppercase tracking-widest">{{
+                                <div class="text-[10px] font-bold text-white/50 tracking-widest">{{
                                     article.author.role }}</div>
                             </div>
                         </div>
@@ -55,14 +55,13 @@
                         <!-- Date -->
                         <div class="flex flex-col">
                             <span
-                                class="text-[10px] uppercase tracking-widest text-white/40 font-black block mb-1">Diterbitkan</span>
+                                class="text-[10px] tracking-widest text-white/40 font-black block mb-1">Diterbitkan</span>
                             <span class="text-sm sm:text-base font-bold text-primary">{{ article.date }}</span>
                         </div>
 
                         <!-- Read Time -->
                         <div class="flex flex-col">
-                            <span
-                                class="text-[10px] uppercase tracking-widest text-white/40 font-black block mb-1">Durasi
+                            <span class="text-[10px] tracking-widest text-white/40 font-black block mb-1">Durasi
                                 Baca</span>
                             <span class="text-sm sm:text-base font-bold">{{ readTime }} Menit</span>
                         </div>
@@ -103,7 +102,7 @@
                     <div class="mt-12 pt-8 border-t border-[#0f172a]/10">
                         <div v-if="article.tags?.length" class="flex flex-wrap gap-2 mb-8">
                             <span v-for="tag in article.tags" :key="tag"
-                                class="px-3 py-1 border border-[#0f172a]/20 text-[10px] font-black uppercase tracking-wider hover:bg-navy hover:text-primary hover:border-navy transition-all cursor-default">
+                                class="px-3 py-1 border border-[#0f172a]/20 text-[10px] font-black tracking-wider hover:bg-navy hover:text-primary hover:border-navy transition-all cursor-default">
                                 #{{ tag }}
                             </span>
                         </div>
@@ -115,7 +114,7 @@
                             </div>
                             <div class="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6">
                                 <div>
-                                    <h4 class="font-black text-xl mb-1 uppercase tracking-tight">Bagikan Artikel Ini
+                                    <h4 class="font-black text-xl mb-1 tracking-tight">Bagikan Artikel Ini
                                     </h4>
                                     <p class="text-sm text-white/60 font-medium">Bantu sebarkan informasi bermanfaat ini
                                         ke komunitas panahan.</p>
@@ -139,88 +138,102 @@
                     </div>
 
 
-                <!-- ── COMMENT SECTION ── -->
-                <section class="mt-16 pt-16 border-t border-navy/5">
-                    <div class="flex items-center justify-between mb-10">
-                        <h3 class="text-xl font-bold text-navy uppercase tracking-widest flex items-center gap-3">
-                            <Icon icon="ph:chats-circle-bold" class="text-navy text-2xl" />
-                            Komentar ({{ totalComments }})
-                        </h3>
-                    </div>
+                    <!-- ── COMMENT SECTION ── -->
+                    <section class="mt-16 pt-16 border-t border-navy/5">
+                        <div class="flex items-center justify-between mb-10">
+                            <h3 class="text-xl font-bold text-navy tracking-widest flex items-center gap-3">
+                                <Icon icon="ph:chats-circle-bold" class="text-navy text-2xl" />
+                                Komentar ({{ totalComments }})
+                            </h3>
+                        </div>
 
-                    <!-- Comment Form -->
-                    <div class="bg-white rounded-3xl p-8 border border-navy/10 mb-12 relative overflow-hidden">
-                        <div class="absolute top-0 left-0 w-1.5 h-full bg-navy/20"></div>
-                        <h4 class="font-bold text-navy uppercase tracking-widest text-[10px] mb-6 opacity-40">Tulis Komentar</h4>
-                        
-                        <form @submit.prevent="submitComment" class="space-y-6">
-                            <div v-if="!isLoggedIn" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Comment Form -->
+                        <div class="bg-white rounded-3xl p-8 border border-navy/10 mb-12 relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-1.5 h-full bg-navy/20"></div>
+                            <h4 class="font-bold text-navy tracking-widest text-[10px] mb-6 opacity-40">Tulis Komentar
+                            </h4>
+
+                            <form @submit.prevent="submitComment" class="space-y-6">
+                                <div v-if="!isLoggedIn" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="space-y-2">
+                                        <label class="text-[10px] font-bold tracking-widest text-navy/40 ml-1">Nama
+                                            Anda</label>
+                                        <input v-model="commentForm.guest_name" type="text"
+                                            placeholder="Contoh: Budi Archer"
+                                            class="w-full px-5 py-3 rounded-xl bg-navy/[0.02] border border-navy/10 focus:ring-1 focus:ring-navy/30 text-navy font-bold placeholder:text-navy/20 transition-all outline-none"
+                                            required />
+                                    </div>
+                                </div>
+                                <div v-else
+                                    class="flex items-center gap-3 mb-4 p-3 bg-navy/[0.02] rounded-xl border border-navy/5">
+                                    <div
+                                        class="w-8 h-8 rounded-full bg-navy flex items-center justify-center text-white font-bold text-xs">
+                                        {{ user?.full_name?.charAt(0) || user?.name?.charAt(0) || 'U' }}
+                                    </div>
+                                    <div class="text-xs font-bold text-navy/60 tracking-widest">Komentar sebagai <span
+                                            class="text-navy">{{ user?.full_name || user?.name }}</span></div>
+                                </div>
+
                                 <div class="space-y-2">
-                                    <label class="text-[10px] font-bold uppercase tracking-widest text-navy/40 ml-1">Nama Anda</label>
-                                    <input v-model="commentForm.guest_name" type="text" placeholder="Contoh: Budi Archer" 
-                                        class="w-full px-5 py-3 rounded-xl bg-navy/[0.02] border border-navy/10 focus:ring-1 focus:ring-navy/30 text-navy font-bold placeholder:text-navy/20 transition-all outline-none"
-                                        required />
+                                    <label class="text-[10px] font-bold tracking-widest text-navy/40 ml-1">Pesan
+                                        Komentar</label>
+                                    <textarea v-model="commentForm.content" rows="4"
+                                        placeholder="Tulis pendapat Anda di sini..."
+                                        class="w-full px-5 py-4 rounded-xl bg-navy/[0.02] border border-navy/10 focus:ring-1 focus:ring-navy/30 text-navy font-medium placeholder:text-navy/20 transition-all outline-none"
+                                        required></textarea>
                                 </div>
-                            </div>
-                            <div v-else class="flex items-center gap-3 mb-4 p-3 bg-navy/[0.02] rounded-xl border border-navy/5">
-                                <div class="w-8 h-8 rounded-full bg-navy flex items-center justify-center text-white font-bold text-xs">
-                                    {{ user?.full_name?.charAt(0) || user?.name?.charAt(0) || 'U' }}
-                                </div>
-                                <div class="text-xs font-bold text-navy/60 uppercase tracking-widest">Komentar sebagai <span class="text-navy">{{ user?.full_name || user?.name }}</span></div>
-                            </div>
 
-                            <div class="space-y-2">
-                                <label class="text-[10px] font-bold uppercase tracking-widest text-navy/40 ml-1">Pesan Komentar</label>
-                                <textarea v-model="commentForm.content" rows="4" placeholder="Tulis pendapat Anda di sini..."
-                                    class="w-full px-5 py-4 rounded-xl bg-navy/[0.02] border border-navy/10 focus:ring-1 focus:ring-navy/30 text-navy font-medium placeholder:text-navy/20 transition-all outline-none"
-                                    required></textarea>
-                            </div>
-
-                            <button type="submit" :disabled="isSubmittingComment"
-                                class="inline-flex items-center gap-3 bg-navy text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:bg-navy-light transition-all active:scale-95 disabled:opacity-50">
-                                <Icon v-if="isSubmittingComment" icon="ph:spinner" class="animate-spin" />
-                                <Icon v-else icon="ph:paper-plane-tilt-bold" />
-                                {{ isSubmittingComment ? 'Mengirim...' : 'Kirim Komentar' }}
-                            </button>
-                        </form>
-                    </div>
-
-                    <!-- Comment List -->
-                    <div class="space-y-6">
-                        <div v-if="isCommentsLoading" class="flex flex-col items-center py-12 text-navy/20">
-                            <Icon icon="ph:spinner" class="text-3xl animate-spin mb-4" />
-                            <span class="font-bold uppercase tracking-widest text-[10px]">Memuat Komentar...</span>
+                                <button type="submit" :disabled="isSubmittingComment"
+                                    class="inline-flex items-center gap-3 bg-navy text-white px-8 py-4 rounded-xl font-bold tracking-widest text-[10px] hover:bg-navy-light transition-all active:scale-95 disabled:opacity-50">
+                                    <Icon v-if="isSubmittingComment" icon="ph:spinner" class="animate-spin" />
+                                    <Icon v-else icon="ph:paper-plane-tilt-bold" />
+                                    {{ isSubmittingComment ? 'Mengirim...' : 'Kirim Komentar' }}
+                                </button>
+                            </form>
                         </div>
 
-                        <div v-else-if="comments.length === 0" class="text-center py-16 bg-navy/[0.01] rounded-3xl border border-dashed border-navy/10">
-                            <Icon icon="ph:chat-teardrop-dots-bold" class="text-4xl text-navy/10 mx-auto mb-4" />
-                            <p class="text-navy/30 text-[10px] font-bold uppercase tracking-widest">Belum ada komentar</p>
-                        </div>
+                        <!-- Comment List -->
+                        <div class="space-y-6">
+                            <div v-if="isCommentsLoading" class="flex flex-col items-center py-12 text-navy/20">
+                                <Icon icon="ph:spinner" class="text-3xl animate-spin mb-4" />
+                                <span class="font-bold tracking-widest text-[10px]">Memuat Komentar...</span>
+                            </div>
 
-                        <div v-else v-for="comment in comments" :key="comment.id" class="group">
-                            <div class="flex gap-4 sm:gap-6 items-start">
-                                <div class="flex-shrink-0">
-                                    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-navy/5 border border-navy/10 flex items-center justify-center text-navy font-bold text-lg group-hover:bg-navy group-hover:text-white transition-all duration-300">
-                                        {{ comment.user_name?.charAt(0) || '?' }}
-                                    </div>
-                                </div>
-                                <div class="flex-grow pt-1">
-                                    <div class="flex items-center justify-between mb-2">
-                                        <div class="flex items-center gap-2">
-                                            <h5 class="font-bold text-navy text-xs uppercase tracking-widest">{{ comment.user_name }}</h5>
-                                            <span v-if="comment.user_type !== 'guest'" class="bg-navy/10 text-navy text-[7px] font-bold uppercase px-2 py-0.5 rounded-full tracking-tighter">Member</span>
+                            <div v-else-if="comments.length === 0"
+                                class="text-center py-16 bg-navy/[0.01] rounded-3xl border border-dashed border-navy/10">
+                                <Icon icon="ph:chat-teardrop-dots-bold" class="text-4xl text-navy/10 mx-auto mb-4" />
+                                <p class="text-navy/30 text-[10px] font-bold tracking-widest">Belum ada komentar</p>
+                            </div>
+
+                            <div v-else v-for="comment in comments" :key="comment.id" class="group">
+                                <div class="flex gap-4 sm:gap-6 items-start">
+                                    <div class="flex-shrink-0">
+                                        <div
+                                            class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-navy/5 border border-navy/10 flex items-center justify-center text-navy font-bold text-lg group-hover:bg-navy group-hover:text-white transition-all duration-300">
+                                            {{ comment.user_name?.charAt(0) || '?' }}
                                         </div>
-                                        <span class="text-[8px] font-bold text-navy/20 uppercase tracking-widest">{{ formatDate(comment.created_at) }}</span>
                                     </div>
-                                    <div class="text-navy/70 text-sm leading-relaxed font-medium bg-white p-5 rounded-2xl rounded-tl-none border border-navy/5 group-hover:border-navy/20 transition-all">
-                                        {{ comment.content }}
+                                    <div class="flex-grow pt-1">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <div class="flex items-center gap-2">
+                                                <h5 class="font-bold text-navy text-xs tracking-widest">{{
+                                                    comment.user_name }}</h5>
+                                                <span v-if="comment.user_type !== 'guest'"
+                                                    class="bg-navy/10 text-navy text-[7px] font-bold px-2 py-0.5 rounded-full tracking-tighter">Member</span>
+                                            </div>
+                                            <span class="text-[8px] font-bold text-navy/20 tracking-widest">{{
+                                                formatDate(comment.created_at) }}</span>
+                                        </div>
+                                        <div
+                                            class="text-navy/70 text-sm leading-relaxed font-medium bg-white p-5 rounded-2xl rounded-tl-none border border-navy/5 group-hover:border-navy/20 transition-all">
+                                            {{ comment.content }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </section>
-            </article>
+                    </section>
+                </article>
 
                 <!-- Sidebar -->
                 <aside class="lg:col-span-4 space-y-8">

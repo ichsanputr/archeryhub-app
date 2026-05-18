@@ -14,7 +14,7 @@
                     <div class="flex items-center gap-4">
                         <div>
                             <nav
-                                class="flex text-[10px] font-bold text-white/40 uppercase tracking-widest mb-1 items-center gap-1.5">
+                                class="flex text-[10px] font-bold text-white/40 tracking-widest mb-1 items-center gap-1.5">
                                 <NuxtLink :to="`/dashboard/archer/events/${eventId}`"
                                     class="hover:text-white transition-colors">Event</NuxtLink>
                                 <Icon icon="ph:caret-right-bold" class="text-[9px]" />
@@ -79,7 +79,7 @@
                     </div>
                     <!-- Rank Badge -->
                     <div class="flex flex-col items-center sm:items-end">
-                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Peringkat
+                        <span class="text-[10px] font-black text-slate-400 tracking-widest mb-1">Peringkat
                             Kualifikasi</span>
                         <div class="flex items-baseline gap-1">
                             <span class="text-5xl font-black text-primary tracking-tighter tabular-nums">{{ qualRank ||
@@ -95,7 +95,7 @@
                 <div
                     class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm flex items-center justify-between group hover:border-primary/30 transition-colors">
                     <div>
-                        <span class="text-[10px] text-slate-400 font-black uppercase tracking-widest block mb-1">Total
+                        <span class="text-[10px] text-slate-400 font-black tracking-widest block mb-1">Total
                             Skor</span>
                         <span class="text-4xl font-black text-navy dark:text-white tracking-tighter tabular-nums">{{
                             qualTotalScore || 0 }}</span>
@@ -108,7 +108,7 @@
                 <div
                     class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm flex items-center justify-between group hover:border-primary/30 transition-colors">
                     <div>
-                        <span class="text-[10px] text-slate-400 font-black uppercase tracking-widest block mb-1">Total
+                        <span class="text-[10px] text-slate-400 font-black tracking-widest block mb-1">Total
                             10s+X</span>
                         <span class="text-4xl font-black text-navy dark:text-white tracking-tighter tabular-nums">{{
                             qualTotalTenX || 0 }}</span>
@@ -121,7 +121,7 @@
                 <div
                     class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm flex items-center justify-between group hover:border-primary/30 transition-colors">
                     <div>
-                        <span class="text-[10px] text-slate-400 font-black uppercase tracking-widest block mb-1">Total
+                        <span class="text-[10px] text-slate-400 font-black tracking-widest block mb-1">Total
                             X</span>
                         <span class="text-4xl font-black text-navy dark:text-white tracking-tighter tabular-nums">{{
                             qualTotalX || 0 }}</span>
@@ -146,7 +146,7 @@
                     </h4>
                     <!-- Session Tabs -->
                     <div v-if="qualSessions.length > 1"
-                        class="flex bg-slate-100 dark:bg-slate-900 p-1 rounded-xl text-[10px] font-black uppercase tracking-widest border border-slate-200 dark:border-slate-700 shadow-inner">
+                        class="flex bg-slate-100 dark:bg-slate-900 p-1 rounded-xl text-[10px] font-black tracking-widest border border-slate-200 dark:border-slate-700 shadow-inner">
                         <button v-for="(session, idx) in qualSessions" :key="idx" @click="activeSessionIdx = idx"
                             class="px-5 py-2 rounded-lg transition-all"
                             :class="activeSessionIdx === idx ? 'bg-white dark:bg-slate-700 text-navy dark:text-white shadow-sm' : 'text-slate-400 hover:text-slate-600'">
@@ -158,7 +158,7 @@
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left min-w-[480px]">
                         <thead
-                            class="bg-slate-50/50 dark:bg-slate-900/50 text-slate-400 uppercase text-[10px] font-black tracking-widest">
+                            class="bg-slate-50/50 dark:bg-slate-900/50 text-slate-400 text-[10px] font-black tracking-widest">
                             <tr>
                                 <th class="px-6 sm:px-8 py-4">End</th>
                                 <th class="px-6 sm:px-8 py-4 text-center">Rincian Skor</th>
@@ -211,7 +211,7 @@
 
                                 <!-- Summary row -->
                                 <tr class="bg dark:bg-primary/5 border-t-2 border-primary">
-                                    <td class="px-6 sm:px-8 py-5 text-right uppercase tracking-widest text-[10px] text-slate-500 font-black"
+                                    <td class="px-6 sm:px-8 py-5 text-right tracking-widest text-[10px] text-slate-500 font-black"
                                         colspan="2">
                                         Total Sesi:
                                     </td>
@@ -229,7 +229,7 @@
                             <tr v-else>
                                 <td colspan="4" class="py-20 text-center">
                                     <Icon icon="ph:target-light" class="text-6xl mx-auto mb-4 opacity-10" />
-                                    <span class="text-xs font-black uppercase tracking-widest text-slate-300 block">Data
+                                    <span class="text-xs font-black tracking-widest text-slate-300 block">Data
                                         tidak tersedia</span>
                                 </td>
                             </tr>

@@ -27,7 +27,7 @@
         <!-- Earnings Table -->
         <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
             <div class="p-6 border-b border-gray-100 flex items-center justify-between">
-                <h3 class="font-black text-navy uppercase tracking-widest text-sm">Riwayat Penghasilan Event</h3>
+                <h3 class="font-black text-navy tracking-widest text-sm">Riwayat Penghasilan Event</h3>
                 <div class="flex gap-2">
                     <BaseButton variant="outline" size="xs" icon="ph:download-simple-bold">Export</BaseButton>
                 </div>
@@ -36,7 +36,7 @@
                 <table class="w-full text-left">
                     <thead>
                         <tr
-                            class="bg-gray-50/50 text-gray-500 font-bold text-[10px] uppercase tracking-widest border-b border-gray-100">
+                            class="bg-gray-50/50 text-gray-500 font-bold text-[10px] tracking-widest border-b border-gray-100">
                             <th class="px-6 py-4">Event</th>
                             <th class="px-6 py-4">Tanggal Selesai</th>
                             <th class="px-6 py-4">Peserta</th>
@@ -50,7 +50,7 @@
                             <td class="px-6 py-4">
                                 <div class="font-bold text-navy group-hover:text-primary transition-colors">{{
                                     item.eventName
-                                }}</div>
+                                    }}</div>
                                 <div class="text-[10px] text-gray-400 font-medium">{{ item.category }}</div>
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-600 font-medium">
@@ -59,7 +59,7 @@
                             <td class="px-6 py-4">
                                 <span class="px-2 py-1 bg-navy/5 text-navy text-[10px] font-black rounded-lg">{{
                                     item.participants
-                                }} Peserta</span>
+                                    }} Peserta</span>
                             </td>
                             <td class="px-6 py-4 text-right font-bold text-navy">
                                 Rp {{ item.amount.toLocaleString('id-ID') }}

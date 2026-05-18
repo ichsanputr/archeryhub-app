@@ -37,8 +37,7 @@
                             {{ match.match_no }}
                         </div>
                         <div>
-                            <div
-                                class="text-[10px] font-black text-navy/30 uppercase tracking-[0.2em] leading-none mb-1">
+                            <div class="text-[10px] font-black text-navy/30 tracking-[0.2em] leading-none mb-1">
                                 Pertandingan</div>
                             <div class="text-xs font-black text-navy/80 ">Match {{ match.match_no }}</div>
                         </div>
@@ -70,7 +69,7 @@
                                 </div>
                             </div>
                             <div class="min-w-0">
-                                <p class="text-[10px] font-black text-gray-400 uppercase tracking-tighter mb-0.5">
+                                <p class="text-[10px] font-black text-gray-400 tracking-tighter mb-0.5">
                                     Side {{ side.toUpperCase() }}
                                 </p>
                                 <p class="text-xs font-black text-navy truncate">
@@ -86,7 +85,7 @@
                     <div
                         class="p-1 px-3 bg-navy/5 rounded-2xl border border-navy/5 group/sel focus-within:bg-white focus-within:border-primary/30 transition-all">
                         <div class="flex items-center justify-between mb-1 mt-1">
-                            <label class="text-[9px] font-black text-navy/30 uppercase tracking-widest block">Garis
+                            <label class="text-[9px] font-black text-navy/30 tracking-widest block">Garis
                                 Target</label>
                             <span v-if="match.board_code"
                                 class="text-[8px] font-black bg-navy text-primary px-1.5 py-0.5 rounded shadow-sm">{{

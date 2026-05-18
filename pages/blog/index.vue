@@ -56,7 +56,7 @@
             <div class="flex items-center justify-between mb-12 border-b border-navy/5 pb-8">
                 <div class="flex items-center gap-3 overflow-x-auto no-scrollbar pb-2 sm:pb-0">
                     <button v-for="cat in categories" :key="cat" @click="activeCategory = cat" :class="[
-                        'px-6 py-2.5 rounded-full text-[10px] font-black tracking-widest uppercase transition-all whitespace-nowrap',
+                        'px-6 py-2.5 rounded-full text-[10px] font-black tracking-widest transition-all whitespace-nowrap',
                         activeCategory === cat ? 'bg-navy text-white' : 'bg-white border border-navy/10 text-navy/40 hover:bg-navy/5'
                     ]">
                         {{ cat }}
@@ -66,7 +66,7 @@
                 <div class="hidden md:flex items-center gap-2 text-navy/20">
                     <Icon icon="ph:magnifying-glass-bold" class="text-xl" />
                     <input v-model="searchQuery" type="text" placeholder="Cari artikel..."
-                        class="bg-transparent border-none outline-none text-[10px] font-black uppercase tracking-widest text-navy placeholder:text-navy/10 w-48" />
+                        class="bg-transparent border-none outline-none text-[10px] font-black tracking-widest text-navy placeholder:text-navy/10 w-48" />
                 </div>
             </div>
 
@@ -80,15 +80,15 @@
                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                         <div class="absolute top-4 left-4">
                             <span
-                                class="bg-white/90 backdrop-blur-md text-navy text-[8px] font-black px-3 py-1 rounded-lg tracking-widest uppercase border border-navy/5">
+                                class="bg-white/90 backdrop-blur-md text-navy text-[8px] font-black px-3 py-1 rounded-lg tracking-widest border border-navy/5">
                                 {{ article.category }}
                             </span>
                         </div>
                     </div>
 
                     <div class="p-8 flex flex-col flex-1">
-                        <div class="text-navy/20 text-[9px] font-black tracking-widest uppercase mb-4">{{ article.date
-                            }}</div>
+                        <div class="text-navy/20 text-[9px] font-black tracking-widest mb-4">{{ article.date
+                        }}</div>
                         <h3
                             class="text-navy text-xl font-black leading-tight group-hover:text-primary transition-colors line-clamp-2 mb-4">
                             {{ article.title }}
@@ -101,7 +101,7 @@
                             <div class="flex items-center gap-2">
                                 <img :src="article.author.avatar"
                                     class="w-6 h-6 rounded-full grayscale group-hover:grayscale-0 transition-all" />
-                                <span class="text-[10px] font-black text-navy/40 uppercase tracking-widest">{{
+                                <span class="text-[10px] font-black text-navy/40 tracking-widest">{{
                                     article.author.name }}</span>
                             </div>
                             <Icon icon="ph:arrow-up-right-bold"
@@ -114,7 +114,7 @@
             <!-- Empty State -->
             <div v-if="filteredArticles.length === 0" class="py-32 text-center">
                 <div class="text-6xl mb-6">🔍</div>
-                <h3 class="text-2xl font-black text-navy uppercase tracking-tight">Tidak ada artikel</h3>
+                <h3 class="text-2xl font-black text-navy tracking-tight">Tidak ada artikel</h3>
                 <p class="text-navy/40 font-medium mt-2">Coba kata kunci lain atau kategori berbeda.</p>
             </div>
         </section>
@@ -138,7 +138,7 @@
                                 class="flex-1 bg-white border-none rounded-2xl px-6 py-4 text-navy font-bold focus:ring-4 focus:ring-navy/10 outline-none"
                                 required />
                             <button
-                                class="bg-navy text-white px-10 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-navy-light transition-all active:scale-95">
+                                class="bg-navy text-white px-10 py-4 rounded-2xl font-black tracking-widest text-xs hover:bg-navy-light transition-all active:scale-95">
                                 Gabung Sekarang
                             </button>
                         </form>

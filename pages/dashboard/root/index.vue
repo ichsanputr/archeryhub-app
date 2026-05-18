@@ -12,7 +12,7 @@
                     <Icon icon="ph:check-circle-bold" class="text-2xl text-primary" />
                 </div>
                 <div>
-                    <h4 class="text-[10px] font-black uppercase tracking-widest text-white">SISTEM ROOT</h4>
+                    <h4 class="text-[10px] font-black tracking-widest text-white">SISTEM ROOT</h4>
                     <div class="text-xs font-bold text-primary/80">Akun baru telah berhasil dibuat</div>
                 </div>
                 <button @click="showSuccessToast = false"
@@ -31,7 +31,7 @@
             <div class="relative p-6 sm:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div class="space-y-4">
                     <div
-                        class="flex items-center gap-2 text-[10px] sm:text-xs font-black uppercase tracking-widest text-primary/80">
+                        class="flex items-center gap-2 text-[10px] sm:text-xs font-black tracking-widest text-primary/80">
                         <span class="text-white">Root Terminal</span>
                         <Icon icon="ph:caret-right-bold" class="text-[8px] opacity-50" />
                         <span class="text-primary">Manajemen Akun</span>
@@ -50,7 +50,7 @@
                     </div>
                 </div>
                 <NuxtLink to="/dashboard/root/create-account"
-                    class="flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary/90 text-navy rounded-xl text-[10px] sm:text-xs font-black tracking-widest uppercase transition-all shadow-lg shadow-primary/20 shrink-0">
+                    class="flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary/90 text-navy rounded-xl text-[10px] sm:text-xs font-black tracking-widest transition-all shadow-lg shadow-primary/20 shrink-0">
                     <Icon icon="ph:plus-bold" />
                     Buat Akun Baru
                 </NuxtLink>
@@ -108,17 +108,14 @@
                         <tr class="bg-gray-50/50 border-b border-gray-100">
                             <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest ">
                                 Identitas</th>
-                            <th
-                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest uppercase text-center">
+                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest text-center">
                                 Tipe
                             </th>
-                            <th
-                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest uppercase text-center">
+                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest text-center">
                                 Status</th>
                             <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest ">
                                 Terdaftar</th>
-                            <th
-                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest uppercase text-right">
+                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest text-right">
                                 Aksi</th>
                         </tr>
                     </thead>
@@ -150,8 +147,7 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-center">
-                                <span
-                                    class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border"
+                                <span class="px-2.5 py-1 rounded-full text-[10px] font-black tracking-widest border"
                                     :class="getStatusBadgeClass(user.status)">
                                     {{ user.status || 'inactive' }}
                                 </span>
@@ -221,11 +217,11 @@
 
                 <div class="flex gap-3">
                     <button @click="showConfirmModal = false"
-                        class="flex-1 py-3 border border-gray-200 rounded-xl text-xs font-black text-gray-500 hover:bg-gray-50 transition-all uppercase tracking-widest">
+                        class="flex-1 py-3 border border-gray-200 rounded-xl text-xs font-black text-gray-500 hover:bg-gray-50 transition-all tracking-widest">
                         Batal
                     </button>
                     <button @click="executeAction" :disabled="actionLoading"
-                        class="flex-1 py-3 rounded-xl text-xs font-black transition-all disabled:opacity-50 flex items-center justify-center gap-2 uppercase tracking-widest shadow-lg"
+                        class="flex-1 py-3 rounded-xl text-xs font-black transition-all disabled:opacity-50 flex items-center justify-center gap-2 tracking-widest shadow-lg"
                         :class="pendingAction === 'suspend' ? 'bg-red-500 text-white hover:bg-red-600 shadow-red-200' : 'bg-navy text-primary hover:bg-navy/90 shadow-navy/20'">
                         <Icon v-if="actionLoading" icon="ph:spinner-bold" class="animate-spin" />
                         {{ pendingAction === 'suspend' ? 'Ya, Suspend' : 'Ya, Aktifkan' }}

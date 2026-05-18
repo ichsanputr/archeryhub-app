@@ -134,7 +134,7 @@
                                     {{ selectedScoringMatch.entry_a_name || 'TBD' }}
                                 </h4>
                                 <p
-                                    class="text-[8px] sm:text-[10px] font-black text-primary uppercase tracking-[0.2em] opacity-60">
+                                    class="text-[8px] sm:text-[10px] font-black text-primary tracking-[0.2em] opacity-60">
                                     {{ bracket.bracket_type !== 'individual' ? 'Tim A' : 'Peserta A' }}
                                 </p>
                                 <!-- Team member roster for non-individual brackets -->
@@ -146,7 +146,7 @@
                                             class="size-7 sm:size-8 rounded-lg border-2 border-white/20 shadow-sm object-cover" />
                                         <span
                                             class="text-[7px] sm:text-[8px] font-bold text-white/50 max-w-[48px] sm:max-w-[56px] truncate">{{
-                                            member.full_name }}</span>
+                                                member.full_name }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -207,11 +207,11 @@
                                         title="Atur Ulang Pertandingan ke Mode Berlangsung">
                                         <Icon :icon="isResetting ? 'ph:circle-notch-bold' : 'ph:lock-open-bold'"
                                             :class="{ 'animate-spin': isResetting }" class="text-xs" />
-                                        <span class="text-[8px] font-black uppercase tracking-wider">ATUR ULANG</span>
+                                        <span class="text-[8px] font-black tracking-wider">ATUR ULANG</span>
                                     </button>
                                 </div>
                                 <button v-else-if="canEndMatch" @click="$emit('end-match')" :disabled="isEndingMatch"
-                                    class="group px-6 py-2 rounded-xl w-[100px] bg-primary text-btn-text font-black text-[10px] tracking-widest uppercase hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-sm shadow-primary/20 hover:-translate-y-0.5">
+                                    class="group px-6 py-2 rounded-xl w-[100px] bg-primary text-btn-text font-black text-[10px] tracking-widest hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-sm shadow-primary/20 hover:-translate-y-0.5">
                                     <div class="flex-none">
                                         <Icon v-if="isEndingMatch" icon="ph:circle-notch-bold"
                                             class="animate-spin text-xs" />
@@ -268,8 +268,7 @@
                                     class="font-black text-base sm:text-2xl leading-tight truncate tracking-tight text-white">
                                     {{ selectedScoringMatch.entry_b_name || 'TBD' }}
                                 </h4>
-                                <p
-                                    class="text-[8px] sm:text-[10px] font-black text-white uppercase tracking-[0.2em] opacity-40">
+                                <p class="text-[8px] sm:text-[10px] font-black text-white tracking-[0.2em] opacity-40">
                                     {{ bracket.bracket_type !== 'individual' ? 'Tim B' : 'Peserta B' }}
                                 </p>
                                 <!-- Team member roster for non-individual brackets -->
@@ -281,7 +280,7 @@
                                             class="size-7 sm:size-8 rounded-lg border-2 border-white/20 shadow-sm object-cover" />
                                         <span
                                             class="text-[7px] sm:text-[8px] font-bold text-white/50 max-w-[48px] sm:max-w-[56px] truncate">{{
-                                            member.full_name }}</span>
+                                                member.full_name }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -296,7 +295,7 @@
                                     SELESAI</span>
                             </div>
                             <button v-else-if="canEndMatch" @click="$emit('end-match')" :disabled="isEndingMatch"
-                                class="w-full py-3.5 sm:py-4 rounded-xl bg-primary text-btn-text font-black text-[10px] sm:text-xs tracking-widest uppercase flex items-center justify-center gap-2 sm:gap-3 transition-all active:scale-[0.98]">
+                                class="w-full py-3.5 sm:py-4 rounded-xl bg-primary text-btn-text font-black text-[10px] sm:text-xs tracking-widest flex items-center justify-center gap-2 sm:gap-3 transition-all active:scale-[0.98]">
                                 <Icon v-if="isEndingMatch" icon="ph:circle-notch-bold" class="animate-spin text-lg" />
                                 <Icon v-else icon="ph:flag-checkered-fill" class="text-lg" />
                                 <span>{{ isEndingMatch ? 'Mengakhiri...' : 'Akhiri Pertandingan' }}</span>
@@ -340,7 +339,7 @@
                             </div>
                         </div>
                         <div class="hidden sm:block text-right">
-                            <h5 class="text-[9px] font-black text-gray-400 tracking-widest uppercase mb-1">Mode</h5>
+                            <h5 class="text-[9px] font-black text-gray-400 tracking-widest mb-1">Mode</h5>
                             <span class="px-2 py-0.5 rounded-lg bg-navy/5 text-navy text-[10px] font-black capitalize">
                                 {{ bracket.format === 'recurve_set' ? 'SET' : 'ACCUMULATED' }}
                             </span>
@@ -458,7 +457,7 @@
                                                         class="animate-spin text-lg sm:text-xl" />
                                                     <template v-else>
                                                         <span
-                                                            class="text-[9px] sm:text-[10px] tracking-widest uppercase truncate">{{
+                                                            class="text-[9px] sm:text-[10px] tracking-widest truncate">{{
                                                                 isMatchFinished ? 'HANYA BACA' : 'Simpan Skor' }}</span>
                                                         <Icon icon="ph:paper-plane-right-fill"
                                                             class="text-base sm:text-lg group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />

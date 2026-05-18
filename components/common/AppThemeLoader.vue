@@ -32,7 +32,7 @@
                 <div class="text-center space-y-4">
                     <div class="flex flex-col gap-1">
                         <h2 class="text-white text-2xl font-black tracking-[0.2em] uppercase">Archeris</h2>
-                        <p class="text-primary/60 text-[10px] font-bold uppercase tracking-[0.4em]">Menyiapkan Aplikasi
+                        <p class="text-primary/60 text-[10px] font-bold tracking-[0.4em]">Menyiapkan Aplikasi
                         </p>
                     </div>
 
@@ -126,4 +126,3 @@ defineProps({
     background-color: rgba(217, 255, 0, 0.2);
 }
 </style>
-

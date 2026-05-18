@@ -21,7 +21,7 @@
                     <div class="space-y-2">
                         <h2 class="text-2xl font-black text-navy tracking-tight ">Verifikasi Keamanan</h2>
                         <p
-                            class="text-[11px] text-gray-400 font-bold leading-relaxed max-w-[240px] mx-auto uppercase tracking-wider">
+                            class="text-[11px] text-gray-400 font-bold leading-relaxed max-w-[240px] mx-auto tracking-wider">
                             Masukkan password akun Anda untuk mengakses fitur keuangan
                         </p>
                     </div>
@@ -31,7 +31,7 @@
                             class="!rounded-2xl border-gray-100 focus:!border-primary/30" icon="ph:lock-bold"
                             @keyup.enter="verifyPassword" />
                         <BaseButton @click="verifyPassword" variant="primary" block :loading="verifying"
-                            class="h-11 !rounded-xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-primary/20">
+                            class="h-11 !rounded-xl font-black tracking-widest text-[10px] shadow-lg shadow-primary/20">
                             Buka Akses Keamanan
                         </BaseButton>
                     </div>
@@ -73,7 +73,7 @@
                         <div class="absolute top-0 right-0 p-8 opacity-10">
                             <Icon icon="ph:coins-bold" class="text-8xl" />
                         </div>
-                        <p class="text-primary text-[10px] font-black uppercase tracking-[0.2em] mb-3">Saldo Tersedia
+                        <p class="text-primary text-[10px] font-black tracking-[0.2em] mb-3">Saldo Tersedia
                         </p>
                         <h2 class="text-3xl sm:text-4xl font-black tracking-tight mb-10 leading-none tabular-nums">
                             <span class="text-lg font-bold opacity-40 mr-1">Rp</span>{{ balance.toLocaleString('id-ID')
@@ -82,11 +82,10 @@
 
                         <div class="space-y-3">
                             <BaseButton variant="primary" block
-                                class="font-black uppercase tracking-widest text-[10px] h-11 !rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform active:scale-95">
+                                class="font-black tracking-widest text-[10px] h-11 !rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform active:scale-95">
                                 Tarik Saldo
                             </BaseButton>
-                            <p
-                                class="text-[9px] text-slate-400 text-center font-black uppercase tracking-widest leading-loose">
+                            <p class="text-[9px] text-slate-400 text-center font-black tracking-widest leading-loose">
                                 Min. Penarikan Rp 100.000<br />Proses 1-3 hari kerja
                             </p>
                         </div>
@@ -98,13 +97,13 @@
                     <div
                         class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm h-full flex flex-col">
                         <div class="p-6 border-b border-gray-100 flex items-center justify-between">
-                            <h3 class="font-black text-navy uppercase tracking-widest text-sm">Riwayat Penarikan</h3>
+                            <h3 class="font-black text-navy tracking-widest text-sm">Riwayat Penarikan</h3>
                         </div>
                         <div class="flex-grow overflow-x-auto">
                             <table class="w-full text-left">
                                 <thead>
                                     <tr
-                                        class="bg-gray-50/50 text-gray-500 font-black text-[10px] uppercase tracking-widest border-b border-gray-100">
+                                        class="bg-gray-50/50 text-gray-500 font-black text-[10px] tracking-widest border-b border-gray-100">
                                         <th class="px-6 py-4">ID Transaksi</th>
                                         <th @click="toggleSort('created_at')"
                                             class="px-6 py-4 cursor-pointer hover:text-navy transition-colors">
@@ -143,12 +142,12 @@
                                         class="hover:bg-gray-50 transition-colors">
                                         <td class="px-6 py-4">
                                             <span class="font-mono text-[10px] font-bold text-gray-400">#{{ item.txId
-                                            }}</span>
+                                                }}</span>
                                         </td>
                                         <td class="px-6 py-4 text-sm text-navy font-bold">{{ item.date }}</td>
                                         <td class="px-6 py-4">
                                             <span :class="getStatusClass(item.status)"
-                                                class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
+                                                class="px-3 py-1 rounded-full text-[10px] font-black tracking-widest">
                                                 {{ item.status }}
                                             </span>
                                         </td>

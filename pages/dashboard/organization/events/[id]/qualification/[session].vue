@@ -35,10 +35,10 @@
                 <div class="h-5 w-24 bg-white/5 rounded animate-pulse"></div>
               </div>
               <div v-else
-                class="flex flex-wrap items-center gap-1.5 sm:gap-4 text-[10px] sm:text-xs text-slate-300 font-bold uppercase tracking-widest">
+                class="flex flex-wrap items-center gap-1.5 sm:gap-4 text-[10px] sm:text-xs text-slate-300 font-bold tracking-widest">
                 <span class="px-2 py-0.5 rounded bg-white/10 border border-white/10 font-mono">{{
                   sessionData?.session_code
-                  }}</span>
+                }}</span>
                 <span class="opacity-20 hidden sm:inline">•</span>
                 <div class="flex items-center gap-1.5">
                   <Icon icon="ph:arrow-clockwise-bold" class="text-xs sm:text-sm text-primary" />
@@ -134,7 +134,7 @@
         class="absolute inset-0 z-[50] flex items-center justify-center bg-white/60 backdrop-blur-sm min-h-[400px]">
         <div class="flex flex-col items-center gap-3">
           <div class="size-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-          <p class="text-xs font-bold text-navy animate-pulse uppercase tracking-widest">Memuat Data...</p>
+          <p class="text-xs font-bold text-navy animate-pulse tracking-widest">Memuat Data...</p>
         </div>
       </div>
 

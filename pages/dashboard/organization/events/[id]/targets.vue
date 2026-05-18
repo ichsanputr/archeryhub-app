@@ -41,12 +41,12 @@
               <button @click="viewMode = 'grid'" class="px-3 py-1.5 rounded-lg transition-all flex items-center gap-2"
                 :class="viewMode === 'grid' ? 'bg-primary text-btn-text shadow-md' : 'text-slate-300 hover:text-white'">
                 <Icon icon="ph:grid-four-bold" />
-                <span class="text-[10px] font-black uppercase tracking-wider">Grid</span>
+                <span class="text-[10px] font-black tracking-wider">Grid</span>
               </button>
               <button @click="viewMode = 'table'" class="px-3 py-1.5 rounded-lg transition-all flex items-center gap-2"
                 :class="viewMode === 'table' ? 'bg-primary text-btn-text shadow-md' : 'text-slate-300 hover:text-white'">
                 <Icon icon="ph:table-bold" />
-                <span class="text-[10px] font-black uppercase tracking-wider">Tabel</span>
+                <span class="text-[10px] font-black tracking-wider">Tabel</span>
               </button>
             </div>
 
@@ -177,7 +177,7 @@
 
           <!-- Quick Footer Info -->
           <div class="px-6 py-3 bg-gray-50/30 text-center">
-            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+            <p class="text-[10px] font-bold text-gray-400 tracking-widest">
               {{ target.letters.split(',').length }} Target Faces
             </p>
           </div>
@@ -315,7 +315,7 @@
 
                 <div v-if="!showEditDialog" class="mt-3 rounded-xl border border-gray-200 bg-gray-50 p-3">
                   <div class="flex items-center justify-between gap-2 mb-2">
-                    <p class="text-[11px] font-bold text-navy uppercase tracking-wider">Preview Target</p>
+                    <p class="text-[11px] font-bold text-navy tracking-wider">Preview Target</p>
                     <span class="text-[11px] font-bold text-gray-500">
                       {{ totalCreatedTargets }} target
                     </span>

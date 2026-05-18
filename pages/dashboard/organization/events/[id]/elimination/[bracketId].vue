@@ -105,7 +105,7 @@
                                     class="flex items-center gap-1.5 text-[10px] mb-2 sm:text-sm text-slate-300 font-medium">
                                     <template v-if="categoryInfo">
                                         <span
-                                            class="px-2 py-0.5 rounded bg-primary text-navy text-[9px] sm:text-[10px] font-black uppercase tracking-wider backdrop-blur-md shrink-0">
+                                            class="px-2 py-0.5 rounded bg-primary text-navy text-[9px] sm:text-[10px] font-black tracking-wider backdrop-blur-md shrink-0">
                                             {{ categoryInfo.division_name }}
                                         </span>
                                         <span class="opacity-40 hidden sm:inline">•</span>
@@ -123,7 +123,7 @@
                                         class="flex items-center gap-1 sm:gap-1.5 bg-white/5 px-2 py-0.5 rounded-lg border border-white/10 shrink-0">
                                         <Icon icon="ph:chart-bar-fill" class="text-primary text-[10px] sm:text-xs" />
                                         <span
-                                            class="text-[8px] sm:text-[10px] font-black uppercase tracking-wide sm:tracking-widest text-white/60 whitespace-nowrap">
+                                            class="text-[8px] sm:text-[10px] font-black tracking-wide sm:tracking-widest text-white/60 whitespace-nowrap">
                                             {{ finishedMatchesCount }}/{{ matches.length }} Selesai
                                         </span>
                                     </div>
@@ -131,7 +131,7 @@
                                         class="flex items-center gap-1 sm:gap-1.5 bg-blue-500/20 px-2 py-0.5 rounded-lg border border-blue-500/20 shrink-0">
                                         <Icon icon="ph:users-four-fill" class="text-blue-300 text-[10px] sm:text-xs" />
                                         <span
-                                            class="text-[8px] sm:text-[10px] font-black uppercase tracking-wide sm:tracking-widest text-blue-200 whitespace-nowrap">
+                                            class="text-[8px] sm:text-[10px] font-black tracking-wide sm:tracking-widest text-blue-200 whitespace-nowrap">
                                             {{ roundMatches.length }} Match
                                         </span>
                                     </div>
@@ -139,7 +139,7 @@
                                         class="flex items-center gap-1 sm:gap-1.5 bg-white/5 px-2 py-0.5 rounded-lg border border-white/10 shrink-0">
                                         <Icon icon="ph:gear-six-fill" class="text-white/40 text-[10px] sm:text-xs" />
                                         <span
-                                            class="text-[8px] sm:text-[10px] font-black uppercase tracking-wide sm:tracking-widest text-white/60 whitespace-nowrap">
+                                            class="text-[8px] sm:text-[10px] font-black tracking-wide sm:tracking-widest text-white/60 whitespace-nowrap">
                                             {{ bracket.format === 'recurve_set' ? 'SET' : 'ACC' }} • {{
                                                 bracket.arrows_per_end }}A/{{
                                                 bracket.ends_per_match }}E
@@ -154,7 +154,7 @@
                             <div v-if="currentRoundNo"
                                 class="bg-white/10 p-1 sm:p-1.5 rounded-xl sm:rounded-2xl flex gap-1 backdrop-blur-sm border border-white/20">
                                 <button v-for="t in tabs" :key="t.id" @click="activeTab = t.id"
-                                    class="flex-1 sm:flex-none px-4 sm:px-6 py-2 sm:py-2.5 text-[10px] sm:text-xs font-black tracking-widest uppercase rounded-lg sm:rounded-xl transition-all flex items-center justify-center gap-2"
+                                    class="flex-1 sm:flex-none px-4 sm:px-6 py-2 sm:py-2.5 text-[10px] sm:text-xs font-black tracking-widest rounded-lg sm:rounded-xl transition-all flex items-center justify-center gap-2"
                                     :class="activeTab === t.id ? 'bg-primary text-btn-text shadow-sm' : 'text-slate-300 hover:text-white hover:bg-white/10'">
                                     <Icon :icon="t.icon" class="text-sm sm:text-lg" />
                                     <span>{{ t.label }}</span>
@@ -163,7 +163,7 @@
 
                             <BaseButton v-if="!currentRoundNo && Object.keys(rounds).length === 0"
                                 @click="generateBracket" variant="primary" icon="ph:magic-wand-bold"
-                                class="h-10 sm:h-11 shadow-lg shadow-primary/30 tracking-[0.2em] font-black uppercase text-[10px] sm:text-xs">
+                                class="h-10 sm:h-11 shadow-lg shadow-primary/30 tracking-[0.2em] font-black text-[10px] sm:text-xs">
                                 Buat Bracket
                             </BaseButton>
 
@@ -184,8 +184,7 @@
                     :selected-scoring-match="selectedScoringMatch" v-model:active-side="activeSide"
                     v-model:current-end="currentEnd" :match-ends="matchEnds" :is-saving="isSaving"
                     :is-ending-match="isEndingMatch" :selected-arrow-index="selectedArrowIndex"
-                    :can-end-match="canEndMatch" :manual-winner-id="manualWinnerId"
-                    :team-members-map="teamMembersMap"
+                    :can-end-match="canEndMatch" :manual-winner-id="manualWinnerId" :team-members-map="teamMembersMap"
                     @select-match="selectMatchForScoring" @add-score="addArrowScore"
                     @delete-last-arrow="deleteLastArrow" @save-and-next="saveAndNext" @end-match="endMatch"
                     @select-arrow-box="selectArrowBox" @reset-match="resetMatch" :is-match-finished="isMatchFinished"
@@ -301,7 +300,7 @@
                                 class="mb-6 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-2xl text-left">
                                 <div class="flex items-center gap-2 mb-3">
                                     <Icon icon="ph:info-bold" class="text-yellow-500" />
-                                    <span class="text-xs font-black text-yellow-500 uppercase tracking-widest">Penentuan
+                                    <span class="text-xs font-black text-yellow-500 tracking-widest">Penentuan
                                         Pemenang Manual</span>
                                 </div>
                                 <p class="text-[10px] text-white/40 mb-4 leading-relaxed">
@@ -316,7 +315,7 @@
                                         class="w-full flex items-center justify-between p-3 rounded-xl border transition-all"
                                         :class="manualWinnerId === selectedScoringMatch.entry_a_id ? 'bg-primary/20 border-primary text-primary' : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'">
                                         <span class="text-sm font-bold text-white">{{ selectedScoringMatch.entry_a_name
-                                        }}</span>
+                                            }}</span>
                                         <Icon v-if="manualWinnerId === selectedScoringMatch.entry_a_id"
                                             icon="ph:check-circle-fill" class="text-primary" />
                                     </button>
@@ -326,7 +325,7 @@
                                         class="w-full flex items-center justify-between p-3 rounded-xl border transition-all"
                                         :class="manualWinnerId === selectedScoringMatch.entry_b_id ? 'bg-primary/20 border-primary text-primary' : 'bg-white/5 border-white/10 text-white/60 hover:bg-white/10'">
                                         <span class="text-sm font-bold text-white">{{ selectedScoringMatch.entry_b_name
-                                        }}</span>
+                                            }}</span>
                                         <Icon v-if="manualWinnerId === selectedScoringMatch.entry_b_id"
                                             icon="ph:check-circle-fill" class="text-primary" />
                                     </button>

@@ -12,13 +12,13 @@
             <table class="w-full text-left min-w-[600px]">
                 <thead>
                     <tr class="bg-slate-50/50 border-b border-gray-100">
-                        <th class="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Fitur
+                        <th class="px-8 py-5 text-[10px] font-black text-gray-400 tracking-[0.2em]">Fitur
                             Utama</th>
                         <th
-                            class="px-8 py-5 text-center text-xs font-black text-navy uppercase tracking-widest border-l border-gray-50">
+                            class="px-8 py-5 text-center text-xs font-black text-navy tracking-widest border-l border-gray-50">
                             Standar</th>
                         <th
-                            class="px-8 py-5 text-center text-xs font-black text-primary uppercase tracking-widest border-l border-gray-50 bg-primary/5">
+                            class="px-8 py-5 text-center text-xs font-black text-primary tracking-widest border-l border-gray-50 bg-primary/5">
                             Elite</th>
                     </tr>
                 </thead>
@@ -49,7 +49,7 @@
                 </tbody>
             </table>
             <div class="p-4 bg-slate-50/50 text-center border-t border-gray-50">
-                <div class="text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em]">
+                <div class="text-[10px] text-gray-400 font-bold tracking-[0.2em]">
                     * Downgrade akan berlaku setelah periode tagihan berjalan berakhir.
                 </div>
             </div>

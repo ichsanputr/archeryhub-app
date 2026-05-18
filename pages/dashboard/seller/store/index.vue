@@ -8,7 +8,8 @@
         </div>
         <div>
           <h1 class="text-xl sm:text-2xl font-black text-navy tracking-tight leading-none capitalize">Profil Toko</h1>
-          <div class="text-[10px] text-gray-400 font-bold mt-1 tracking-wide capitalize">Atur data publik dan tampilan toko anda</div>
+          <div class="text-[10px] text-gray-400 font-bold mt-1 tracking-wide capitalize">Atur data publik dan tampilan
+            toko anda</div>
         </div>
       </div>
       <div class="flex gap-3">
@@ -43,24 +44,26 @@
               <Icon icon="ph:image-bold" class="text-primary text-xl" />
               Identitas visual
             </h3>
-            
+
             <div class="space-y-6">
               <!-- Banner Selection -->
               <div class="space-y-4">
                 <div class="flex items-center justify-between">
                   <div>
-                    <div class="text-[10px] font-black text-navy/30 capitalize tracking-widest">Banner profil (hero)</div>
+                    <div class="text-[10px] font-black text-navy/30 capitalize tracking-widest">Banner profil (hero)
+                    </div>
                   </div>
                   <BaseButton @click="openMedia('banner')" variant="outline" size="xs" icon="ph:pencil-simple"
                     class="h-8 px-4 font-black text-[9px] tracking-widest !rounded-lg">
                     Ganti Banner
                   </BaseButton>
                 </div>
-                <div class="relative aspect-[21/9] rounded-2xl bg-gray-50 border-2 border-dashed border-gray-200 overflow-hidden flex items-center justify-center group transition-all hover:border-primary/30">
+                <div
+                  class="relative aspect-[21/9] rounded-2xl bg-gray-50 border-2 border-dashed border-gray-200 overflow-hidden flex items-center justify-center group transition-all hover:border-primary/30">
                   <img v-if="form.banner" :src="form.banner" class="w-full h-full object-cover" />
                   <div v-else class="text-center">
                     <Icon icon="ph:image-square-bold" class="text-3xl text-gray-200 mx-auto mb-2" />
-                    <div class="text-[9px] font-black text-gray-300 uppercase tracking-tighter">Format 21:9 disarankan</div>
+                    <div class="text-[9px] font-black text-gray-300 tracking-tighter">Format 21:9 disarankan</div>
                   </div>
                 </div>
               </div>
@@ -69,17 +72,20 @@
               <div class="space-y-4 pt-4 border-t border-gray-50">
                 <div class="text-[10px] font-black text-navy/30 capitalize tracking-widest">Logo toko</div>
                 <div class="flex items-center gap-6">
-                  <div class="size-24 rounded-2xl bg-gray-50 border-4 border-white shadow-md overflow-hidden shrink-0 relative group flex items-center justify-center">
+                  <div
+                    class="size-24 rounded-2xl bg-gray-50 border-4 border-white shadow-md overflow-hidden shrink-0 relative group flex items-center justify-center">
                     <img v-if="form.logo" :src="form.logo" class="w-full h-full object-cover" />
                     <Icon v-else icon="ph:storefront-bold" class="text-3xl text-gray-200" />
-                    <div class="absolute inset-0 bg-navy/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer"
+                    <div
+                      class="absolute inset-0 bg-navy/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer"
                       @click="openMedia('logo')">
                       <Icon icon="ph:camera-bold" class="text-white text-2xl" />
                     </div>
                   </div>
                   <div class="space-y-2">
                     <h5 class="text-xs font-black text-navy capitalize">Store logo</h5>
-                    <div class="text-[10px] text-gray-500 max-w-[160px]">Rasio 1:1 direkomendasikan. Format transparan (PNG) lebih baik.</div>
+                    <div class="text-[10px] text-gray-500 max-w-[160px]">Rasio 1:1 direkomendasikan. Format transparan
+                      (PNG) lebih baik.</div>
                     <BaseButton variant="outline" size="xs" icon="ph:pencil-simple" @click="openMedia('logo')">
                       Ganti Logo
                     </BaseButton>
@@ -100,24 +106,29 @@
                 <BaseInput v-model="form.name" label="Nama Toko" placeholder="Nama brand atau toko anda" required />
               </div>
               <div class="md:col-span-2">
-                <BaseInput v-model="form.username" label="Username / Link Toko" placeholder="toko-saya" required prefix="Archeris.net/s/" />
+                <BaseInput v-model="form.username" label="Username / Link Toko" placeholder="toko-saya" required
+                  prefix="Archeris.net/s/" />
               </div>
               <div class="md:col-span-2">
-                <BaseTextarea v-model="form.description" label="Deskripsi Toko" placeholder="Ceritakan tentang toko anda..." rows="4" />
+                <BaseTextarea v-model="form.description" label="Deskripsi Toko"
+                  placeholder="Ceritakan tentang toko anda..." rows="4" />
               </div>
             </div>
           </div>
         </div>
 
         <!-- Contact & Social Section -->
-        <div v-if="activeTab === 'contact'" class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div v-if="activeTab === 'contact'"
+          class="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
           <h3 class="text-sm font-black text-navy tracking-widest flex items-center gap-2 capitalize">
             <Icon icon="ph:share-network-bold" class="text-primary text-xl" />
             Kontak & sosial
           </h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <BaseInput v-model="form.email" label="Email Bisnis" placeholder="email@toko.com" icon="ph:envelope-simple-bold" />
-            <BaseInput v-model="form.phone" label="Nomor WhatsApp" placeholder="0812xxxx" icon="ph:whatsapp-logo-bold" />
+            <BaseInput v-model="form.email" label="Email Bisnis" placeholder="email@toko.com"
+              icon="ph:envelope-simple-bold" />
+            <BaseInput v-model="form.phone" label="Nomor WhatsApp" placeholder="0812xxxx"
+              icon="ph:whatsapp-logo-bold" />
           </div>
         </div>
       </div>
@@ -127,13 +138,14 @@
         <!-- Store Card Preview -->
         <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm overflow-hidden relative">
           <div class="absolute top-0 left-0 w-full h-2 bg-primary"></div>
-          
+
           <div class="flex flex-col items-center text-center mt-4">
-            <div class="w-24 h-24 rounded-2xl bg-primary/10 border-4 border-white p-1 mb-4 overflow-hidden shadow-lg relative flex items-center justify-center">
+            <div
+              class="w-24 h-24 rounded-2xl bg-primary/10 border-4 border-white p-1 mb-4 overflow-hidden shadow-lg relative flex items-center justify-center">
               <img v-if="form.logo" :src="form.logo" class="w-full h-full object-cover rounded-xl" />
               <Icon v-else icon="ph:storefront-bold" class="text-primary text-4xl" />
             </div>
-            
+
             <h4 class="font-black text-navy text-lg leading-tight capitalize">{{ form.name || 'Nama toko' }}</h4>
             <div class="flex items-center justify-center gap-1.5 mt-1">
               <span class="text-gray-400 text-xs font-bold tracking-tighter">@{{ form.username || 'username' }}</span>
@@ -165,7 +177,8 @@
         <!-- Helpful Tips -->
         <div class="bg-navy rounded-2xl p-6 text-white shadow-md relative overflow-hidden">
           <Icon icon="ph:lightbulb" class="absolute -right-4 -bottom-4 text-8xl text-white/5 rotate-12" />
-          <h4 class="font-black text-white mb-3 flex items-center gap-2 capitalize text-xs tracking-widest">Tips optimasi</h4>
+          <h4 class="font-black text-white mb-3 flex items-center gap-2 capitalize text-xs tracking-widest">Tips
+            optimasi</h4>
           <ul class="text-[10px] space-y-3 text-gray-300 font-bold capitalize tracking-wide">
             <li class="flex gap-2">
               <Icon icon="ph:check-circle-fill" class="text-primary shrink-0 text-base" />

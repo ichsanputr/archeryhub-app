@@ -20,7 +20,7 @@
                         <div class="flex-1">
                             <div class="flex items-center gap-2 mb-1">
                                 <NuxtLink :to="`/dashboard/organization/events/${eventId}/categories`"
-                                    class="text-xs font-bold text-primary hover:underline uppercase tracking-widest flex items-center gap-1">
+                                    class="text-xs font-bold text-primary hover:underline tracking-widest flex items-center gap-1">
                                     <Icon icon="ph:arrow-left-bold" />
                                     Kembali ke Kategori
                                 </NuxtLink>
@@ -63,7 +63,7 @@
             <div v-else class="overflow-x-auto">
                 <table class="w-full text-left">
                     <thead class="bg-gray-50/50 border-b border-gray-100">
-                        <tr class="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                        <tr class="text-[10px] font-black text-gray-400 tracking-widest">
                             <th class="px-6 py-4 w-16">No</th>
                             <th class="px-6 py-4">Nama Pemanah</th>
                             <th class="px-6 py-4">Klub / Kota</th>
@@ -96,7 +96,7 @@
                             <td class="px-6 py-4">
                                 <span
                                     :class="p.payment_status === 'Terbayar' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'"
-                                    class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-tighter">
+                                    class="px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-tighter">
                                     {{ p.payment_status }}
                                 </span>
                             </td>

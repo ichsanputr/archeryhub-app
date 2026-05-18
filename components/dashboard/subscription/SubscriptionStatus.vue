@@ -4,12 +4,12 @@
         <div class="bg-white p-6 rounded-2xl shadow-sm relative overflow-hidden group transition-all"
             :class="isExpired ? 'border-2 border-primary/20 ring-4 ring-primary/5' : 'border border-gray-200 hover:border-primary/30'">
             <div class="absolute top-4 right-4">
-                <span class="px-3 py-1 text-[10px] font-black uppercase tracking-widest rounded-full"
+                <span class="px-3 py-1 text-[10px] font-black tracking-widest rounded-full"
                     :class="isExpired ? 'bg-navy text-primary' : 'bg-primary/20 text-navy'">
                     {{ isExpired ? 'Expired' : 'Aktif' }}
                 </span>
             </div>
-            <h3 class="text-[11px] font-black text-gray-500 uppercase tracking-widest mb-6">Paket Saat Ini</h3>
+            <h3 class="text-[11px] font-black text-gray-500 tracking-widest mb-6">Paket Saat Ini</h3>
             <div class="mb-6">
                 <div class="text-3xl font-black mb-1 group-hover:text-primary transition-colors"
                     :class="isExpired ? 'text-primary' : 'text-navy'">{{ planName ||
@@ -29,7 +29,7 @@
             </div>
             <div v-else class="mt-4">
                 <NuxtLink :to="`/dashboard/${userPersona}/subscription`"
-                    class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-navy text-primary hover:bg-white hover:text-navy border border-navy rounded-xl text-xs font-black transition-all shadow-xl shadow-navy/10 uppercase tracking-widest active:scale-95">
+                    class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-navy text-primary hover:bg-white hover:text-navy border border-navy rounded-xl text-xs font-black transition-all shadow-xl shadow-navy/10 tracking-widest active:scale-95">
                     <Icon icon="ph:sketch-logo-bold" />
                     Pilih Paket Baru
                 </NuxtLink>
@@ -39,13 +39,13 @@
         <!-- Usage Stats Card -->
         <div class="xl:col-span-2 bg-white p-6 rounded-2xl border shadow-sm transition-all"
             :class="isExpired ? 'border-primary/10 opacity-70 group' : 'border-gray-200 hover:border-primary/20'">
-            <h3 class="text-[11px] font-black text-gray-500 uppercase tracking-widest mb-6">Pemakaian &amp; Batas</h3>
+            <h3 class="text-[11px] font-black text-gray-500 tracking-widest mb-6">Pemakaian &amp; Batas</h3>
             <div v-if="isExpired" class="flex flex-col items-center justify-center py-8 text-center gap-3">
                 <div
                     class="size-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-2 transform group-hover:rotate-6 transition-transform">
                     <Icon icon="ph:lock-keyhole-fill" class="text-4xl text-primary" />
                 </div>
-                <div class="text-sm font-black text-navy uppercase tracking-widest">Data Terkunci</div>
+                <div class="text-sm font-black text-navy tracking-widest">Data Terkunci</div>
                 <div class="text-xs text-gray-400 font-medium leading-relaxed">Perbarui subscription Anda untuk membuka
                     kembali statistik pemakaian.</div>
             </div>
@@ -54,11 +54,11 @@
                 <div class="space-y-3">
                     <div class="flex justify-between items-end">
                         <div>
-                            <div class="text-xs font-black text-gray-400 uppercase tracking-widest">Penyimpanan Media
+                            <div class="text-xs font-black text-gray-400 tracking-widest">Penyimpanan Media
                             </div>
                             <div class="text-sm font-black text-navy mt-1">{{ usageMedia.current }} / {{
                                 usageMedia.limit
-                            }}</div>
+                                }}</div>
                         </div>
                         <span class="text-[10px] font-black text-primary">{{ usageMedia.percent }}%</span>
                     </div>
@@ -72,7 +72,7 @@
                 <div v-if="showMembers" class="space-y-3">
                     <div class="flex justify-between items-end">
                         <div>
-                            <div class="text-xs font-black text-gray-400 uppercase tracking-widest">{{ memberLabel ||
+                            <div class="text-xs font-black text-gray-400 tracking-widest">{{ memberLabel ||
                                 'Total Anggota' }}</div>
                             <div class="text-sm font-black text-navy mt-1">{{ usageMembers.current }} / {{
                                 usageMembers.limit }}</div>
@@ -89,7 +89,7 @@
                 <div class="space-y-3">
                     <div class="flex justify-between items-end">
                         <div>
-                            <div class="text-xs font-black text-gray-400 uppercase tracking-widest">Masa Aktif</div>
+                            <div class="text-xs font-black text-gray-400 tracking-widest">Masa Aktif</div>
                             <div class="text-sm font-black text-navy mt-1">{{ remainingDaysLabel }}</div>
                         </div>
                         <Icon icon="ph:clock-countdown-bold" class="text-primary text-xl" />

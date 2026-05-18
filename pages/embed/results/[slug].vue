@@ -3,16 +3,17 @@
         <!-- Loading State -->
         <div v-if="pending || isLoading" class="p-8 flex flex-col items-center justify-center min-h-[60vh] gap-4">
             <div class="w-12 h-12 border-4 border-navy/10 border-t-primary rounded-full animate-spin"></div>
-            <p class="text-sm font-bold text-gray-400 animate-pulse uppercase tracking-widest">Memuat Bagan...</p>
+            <p class="text-sm font-bold text-gray-400 animate-pulse tracking-widest">Memuat Bagan...</p>
         </div>
 
         <!-- Error State -->
-        <div v-else-if="error || fetchError" class="p-12 text-center flex flex-col items-center justify-center min-h-[60vh]">
+        <div v-else-if="error || fetchError"
+            class="p-12 text-center flex flex-col items-center justify-center min-h-[60vh]">
             <div class="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center mb-6">
                 <Icon icon="ph:warning-circle-bold" class="text-4xl text-red-500" />
             </div>
             <h1 class="text-xl font-black text-navy mb-2">Bagan Tidak Ditemukan</h1>
-            <p class="text-gray-500 max-w-xs mx-auto mb-2">{{ errorMsg || 'Bagan eliminasi belum tersedia.'  }}</p>
+            <p class="text-gray-500 max-w-xs mx-auto mb-2">{{ errorMsg || 'Bagan eliminasi belum tersedia.' }}</p>
             <BaseButton variant="navy" @click="() => reloadPage()">Coba Lagi</BaseButton>
         </div>
 
@@ -21,17 +22,12 @@
             <!-- Compact Category Filter (Horizontal Scroller) -->
             <div class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm">
                 <div class="flex items-center gap-3 overflow-x-auto p-4 no-scrollbar scrollbar-hide">
-                    <button 
-                        v-for="cat in categories" 
-                        :key="cat.uuid"
-                        @click="selectCategory(cat)"
-                        :class="[
-                            'flex-shrink-0 px-4 py-2.5 rounded-full text-[11px] font-black uppercase tracking-wider transition-all duration-300 border-2',
-                            selectedCategoryId === cat.uuid 
-                                ? 'bg-navy border-navy text-white shadow-md' 
-                                : 'bg-gray-50 border-transparent text-gray-400 hover:bg-gray-100'
-                        ]"
-                    >
+                    <button v-for="cat in categories" :key="cat.uuid" @click="selectCategory(cat)" :class="[
+                        'flex-shrink-0 px-4 py-2.5 rounded-full text-[11px] font-black tracking-wider transition-all duration-300 border-2',
+                        selectedCategoryId === cat.uuid
+                            ? 'bg-navy border-navy text-white shadow-md'
+                            : 'bg-gray-50 border-transparent text-gray-400 hover:bg-gray-100'
+                    ]">
                         {{ cat.category_name }}
                     </button>
                 </div>
@@ -42,7 +38,7 @@
                 <div v-if="bracketLoading" class="p-20 flex justify-center">
                     <div class="w-8 h-8 border-3 border-navy/10 border-t-primary rounded-full animate-spin"></div>
                 </div>
-                
+
                 <div v-else-if="bracket" class="relative">
                     <PublicEliminationBracket :bracket="bracket" :rounds="sortedRounds" />
                 </div>
@@ -51,7 +47,7 @@
                     <div class="size-16 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
                         <Icon icon="ph:trophy-bold" class="text-3xl text-gray-200" />
                     </div>
-                    <h3 class="text-sm font-black text-navy uppercase tracking-widest">Belum Ada Pertandingan</h3>
+                    <h3 class="text-sm font-black text-navy tracking-widest">Belum Ada Pertandingan</h3>
                     <p class="text-xs text-gray-400 mt-1">Bagan eliminasi untuk kategori ini belum dibuat.</p>
                 </div>
             </main>
@@ -110,15 +106,15 @@ const selectCategory = async (cat) => {
     const url = new URL(window.location)
     url.searchParams.set('category_id', cat.uuid)
     window.history.replaceState({}, '', url)
-    
+
     await fetchBracketData(cat.uuid)
 }
 
 const fetchBracketData = async (catId) => {
     bracketLoading.value = true
     try {
-        const response = await get(`/events/${slug}/results/elimination`, { 
-            params: { category_id: catId } 
+        const response = await get(`/events/${slug}/results/elimination`, {
+            params: { category_id: catId }
         })
         bracket.value = response?.bracket || null
     } catch (err) {
@@ -140,7 +136,7 @@ const init = async () => {
         // Fetch all categories for the filter
         const catResponse = await get(`/events/${slug}/categories`, { params: { limit: 100 } })
         const rawCats = catResponse?.events || []
-        
+
         categories.value = rawCats.map(cat => ({
             uuid: cat.id,
             category_name: [
@@ -188,10 +184,12 @@ watchEffect(() => {
 .scrollbar-hide::-webkit-scrollbar {
     display: none;
 }
+
 .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+
 .no-scrollbar::-webkit-scrollbar {
     display: none;
 }
@@ -199,8 +197,16 @@ watchEffect(() => {
 .animate-in {
     animation: fadeIn 0.5s ease-out;
 }
+
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 </style>

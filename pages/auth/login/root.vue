@@ -23,7 +23,7 @@
                 </div>
                 <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/20 rounded-full mb-6">
                     <Icon icon="ph:shield-checkered-fill" class="text-primary text-sm" />
-                    <span class="text-[10px] font-black text-primary uppercase tracking-widest">Administrative
+                    <span class="text-[10px] font-black text-primary tracking-widest">Administrative
                         Access</span>
                 </div>
                 <h1 class="text-white text-5xl font-black leading-tight tracking-tight mb-4 font-display ">
@@ -85,7 +85,7 @@
                 </form>
 
                 <div class="pt-8 border-t border-gray-100 mt-8">
-                    <p class="text-center text-[10px] text-gray-400 font-bold uppercase tracking-[0.3em]">
+                    <p class="text-center text-[10px] text-gray-400 font-bold tracking-[0.3em]">
                         Archeris OS v2.0 • Secure Terminal
                     </p>
                 </div>

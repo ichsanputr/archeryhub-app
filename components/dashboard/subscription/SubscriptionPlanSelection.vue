@@ -7,7 +7,7 @@
             <div
                 class="lg:w-4/12 bg-navy relative flex flex-col justify-center items-center px-8 py-16 text-center overflow-hidden text-white">
                 <div class="relative z-10">
-                    <span class="text-primary/60 font-black tracking-[0.3em] text-[10px] uppercase mb-4 block">
+                    <span class="text-primary/60 font-black tracking-[0.3em] text-[10px] mb-4 block">
                         Direkomendasikan untuk {{ recommendationBadge }}
                     </span>
                     <h3 class="text-white text-3xl font-black leading-tight mb-4 tracking-tight">Paket Elite</h3>
@@ -19,12 +19,12 @@
                     <div class="mt-12 space-y-4">
                         <div class="flex items-center gap-3 justify-center text-primary/80">
                             <Icon icon="ph:crown-fill" class="text-xl" />
-                            <span class="text-xs font-black uppercase tracking-widest text-white/80">Fitur
+                            <span class="text-xs font-black tracking-widest text-white/80">Fitur
                                 Premium</span>
                         </div>
                         <div class="flex items-center gap-3 justify-center text-primary/80">
                             <Icon icon="ph:shield-star-fill" class="text-xl" />
-                            <span class="text-xs font-black uppercase tracking-widest text-white/80">Support
+                            <span class="text-xs font-black tracking-widest text-white/80">Support
                                 Prioritas</span>
                         </div>
                     </div>
@@ -52,11 +52,11 @@
                                     :icon="plan.name.toLowerCase().includes('elite') ? 'ph:crown-bold' : 'ph:sparkle-bold'"
                                     class="text-xl text-navy" />
                             </div>
-                            <h4 class="text-[11px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2">{{
+                            <h4 class="text-[11px] font-black text-gray-400 tracking-[0.2em] mb-2">{{
                                 plan.name }}</h4>
                             <div class="flex items-baseline gap-1">
                                 <span class="text-3xl font-black text-navy">{{ plan.priceLabel }}</span>
-                                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">/ {{
+                                <span class="text-[10px] font-bold text-gray-400 tracking-widest ml-1">/ {{
                                     plan.billing }}</span>
                             </div>
                         </div>
@@ -70,12 +70,12 @@
                         </ul>
 
                         <button v-if="plan.isCurrent"
-                            class="w-full py-4 text-[10px] font-black bg-slate-100 text-slate-400 rounded-2xl cursor-not-allowed uppercase tracking-widest border border-slate-200"
+                            class="w-full py-4 text-[10px] font-black bg-slate-100 text-slate-400 rounded-2xl cursor-not-allowed tracking-widest border border-slate-200"
                             disabled>
                             Paket Aktif
                         </button>
                         <button v-else @click="$emit('select', plan)"
-                            class="w-full py-4 text-[10px] font-black bg-navy text-white rounded-2xl hover:bg-primary hover:text-btn-text transition-all uppercase tracking-widest shadow-sm active:scale-95">
+                            class="w-full py-4 text-[10px] font-black bg-navy text-white rounded-2xl hover:bg-primary hover:text-btn-text transition-all tracking-widest shadow-sm active:scale-95">
                             {{ plan.isUpgrade ? 'Upgrade Sekarang' : 'Pilih Paket' }}
                         </button>
                     </div>

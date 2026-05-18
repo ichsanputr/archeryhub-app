@@ -38,7 +38,7 @@
                         <div class="flex items-center gap-2 px-2 py-1.5 mb-1">
                             <Icon :icon="cat.icon" class="text-sm text-gray-400" />
                             <span class="text-xs font-black text-gray-400 tracking-widest ">{{ cat.label
-                            }}</span>
+                                }}</span>
                         </div>
                         <div class="space-y-0.5">
                             <NuxtLink v-for="doc in filteredSidebarDocs(cat.id)" :key="doc.slug"
@@ -51,7 +51,7 @@
                                     class="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-primary rounded-r-full">
                                 </div>
                                 <span class="leading-snug" :class="currentSlug !== doc.slug ? 'pl-2' : ''">{{ doc.title
-                                }}</span>
+                                    }}</span>
                             </NuxtLink>
                         </div>
                     </div>
@@ -135,7 +135,7 @@
             <!-- Right sidebar: Table of contents -->
             <aside class="hidden lg:block w-56 shrink-0 pl-4 self-start sticky top-24">
                 <div class="max-h-[calc(100vh-7rem)] overflow-y-auto scrollbar-styled flex flex-col">
-                    <div class="text-xs font-black text-gray-400 tracking-widest uppercase mb-3">Di halaman ini</div>
+                    <div class="text-xs font-black text-gray-400 tracking-widest mb-3">Di halaman ini</div>
                     <nav class="space-y-1">
                         <a v-for="heading in currentDoc?.toc || []" :key="heading.id" :href="`#${heading.id}`"
                             class="block text-sm py-1.5 transition-colors leading-snug" :class="[

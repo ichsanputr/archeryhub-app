@@ -22,7 +22,7 @@
                 </div>
                 <div>
                     <BaseButton @click="openAddModal" variant="primary" icon="ph:plus-bold"
-                        class="font-black uppercase tracking-widest text-[10px] h-11 px-6 shadow-lg shadow-primary/20 !rounded-xl">
+                        class="font-black tracking-widest text-[10px] h-11 px-6 shadow-lg shadow-primary/20 !rounded-xl">
                         Tambah Rekening
                     </BaseButton>
                 </div>
@@ -55,11 +55,11 @@
 
                 <div class="space-y-4">
                     <div>
-                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Nama Bank</p>
+                        <p class="text-[10px] font-black text-gray-400 tracking-widest mb-1">Nama Bank</p>
                         <p class="text-sm font-black text-navy">{{ account.bank_name }}</p>
                     </div>
                     <div>
-                        <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Nomor Rekening
+                        <div class="text-[10px] font-black text-gray-400 tracking-widest mb-1">Nomor Rekening
                         </div>
                         <div class="flex items-center gap-2">
                             <div class="text-lg font-black text-navy tracking-tight">{{ account.account_number }}</div>
@@ -69,7 +69,7 @@
                         </div>
                     </div>
                     <div>
-                        <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Nama Pemilik</p>
+                        <p class="text-[10px] font-black text-gray-400 tracking-widest mb-1">Nama Pemilik</p>
                         <p class="text-sm font-bold text-gray-700 truncate">{{ account.account_name }}</p>
                     </div>
                 </div>
@@ -83,7 +83,7 @@
                     <Icon icon="ph:plus-bold" class="text-2xl" />
                 </div>
                 <div class="text-center">
-                    <p class="text-sm font-black text-navy uppercase tracking-widest">Tambah Rekening Baru</p>
+                    <p class="text-sm font-black text-navy tracking-widest">Tambah Rekening Baru</p>
                     <p class="text-xs text-gray-400 font-medium mt-1">Gunakan rekening lain untuk pencairan</p>
                 </div>
             </button>
@@ -93,14 +93,14 @@
         <BaseDialogForm v-model="modal.show" :header="modal.isEdit ? 'Edit Rekening' : 'Tambah Rekening Bank'">
             <div class="space-y-4">
                 <div class="space-y-2">
-                    <label class="text-xs font-black text-gray-400 uppercase tracking-widest">Pilih Bank</label>
+                    <label class="text-xs font-black text-gray-400 tracking-widest">Pilih Bank</label>
                     <div class="grid grid-cols-3 sm:grid-cols-5 gap-2">
                         <button v-for="bank in supportedBanks" :key="bank.id" type="button"
                             @click="form.bankName = bank.name"
                             class="flex flex-col items-center justify-center p-2 rounded-xl border-2 transition-all gap-1.5"
                             :class="form.bankName === bank.name ? 'border-primary bg-primary/5' : 'border-gray-100 hover:border-primary/30'">
                             <img :src="`/payment-method/${bank.logo}`" :alt="bank.name" class="h-6 object-contain" />
-                            <span class="text-[8px] font-black uppercase text-gray-500">{{ bank.name }}</span>
+                            <span class="text-[8px] font-black text-gray-500">{{ bank.name }}</span>
                         </button>
                     </div>
                 </div>
@@ -113,7 +113,7 @@
                 <div class="flex items-center gap-2 mt-2">
                     <input type="checkbox" v-model="form.isPrimary" id="isPrimary"
                         class="rounded border-gray-300 text-primary focus:ring-primary h-4 w-4">
-                    <label for="isPrimary" class="text-xs font-bold text-navy uppercase tracking-widest">Jadikan
+                    <label for="isPrimary" class="text-xs font-bold text-navy tracking-widest">Jadikan
                         Rekening Utama</label>
                 </div>
             </div>

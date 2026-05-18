@@ -191,7 +191,7 @@
                                 <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">
                                     Penyelesaian</p>
                                 <p class="text-navy-dark text-3xl font-extrabold tracking-tight">{{ completionPercentage
-                                }}%</p>
+                                    }}%</p>
                             </div>
                             <div
                                 class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
@@ -252,7 +252,7 @@
                                             <span class="font-bold text-navy-dark truncate pr-2">{{ cat.division }} - {{
                                                 cat.name }}</span>
                                             <span class="text-navy font-black font-mono shrink-0 ml-auto">{{ cat.count
-                                                }}</span>
+                                            }}</span>
                                         </div>
                                         <div class="w-full bg-gray-200 rounded-full h-1.5">
                                             <div class="bg-navy h-1.5 rounded-full transition-all duration-500"
@@ -371,7 +371,7 @@
                                                 <img :src="'/' + getCategoryIcon(`${participant.division_name} ${participant.event_type_name} ${participant.gender_division_name}`)"
                                                     class="size-3 object-contain opacity-60" />
                                                 <span
-                                                    class="text-[9px] font-black uppercase text-gray-500 tracking-wider truncate max-w-[80px]">
+                                                    class="text-[9px] font-black text-gray-500 tracking-wider truncate max-w-[80px]">
                                                     {{ participant.division_name }}
                                                 </span>
                                             </div>
@@ -387,7 +387,7 @@
                                             class="text-xl font-black text-navy group-hover:scale-110 transition-transform tabular-nums">
                                             {{ participant.total_score || 0 }}
                                         </div>
-                                        <div class="text-[9px] font-black text-gray-400 uppercase tracking-tighter">
+                                        <div class="text-[9px] font-black text-gray-400 tracking-tighter">
                                             Total
                                             Skor</div>
                                     </div>
@@ -442,7 +442,7 @@
 
                             <!-- Link Copy Segment -->
                             <div class="space-y-3 mb-8">
-                                <label class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Link
+                                <label class="text-[10px] font-black text-gray-400 tracking-[0.2em]">Link
                                     Publik Event</label>
                                 <div class="flex items-center gap-2">
                                     <div
@@ -451,7 +451,7 @@
                                     </div>
                                     <BaseButton @click="copyPublicUrl" variant="primary" size="sm"
                                         :icon="copySuccess ? 'ph:check-bold' : 'ph:copy-bold'"
-                                        class="px-5 h-10 font-bold uppercase tracking-widest text-[10px] shrink-0 shadow-md">
+                                        class="px-5 h-10 font-bold tracking-widest text-[10px] shrink-0 shadow-md">
                                         {{ copySuccess ? 'Tersalin' : 'Salin' }}
                                     </BaseButton>
                                 </div>
@@ -459,7 +459,7 @@
 
                             <!-- Social Sharing -->
                             <div class="space-y-4">
-                                <label class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Bagikan
+                                <label class="text-[10px] font-black text-gray-400 tracking-[0.2em]">Bagikan
                                     Ke
                                     Sosial Media</label>
                                 <div class="grid grid-cols-4 gap-3">

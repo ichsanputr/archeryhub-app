@@ -11,19 +11,17 @@
             <div class="relative p-6 sm:p-8">
                 <div class="flex items-center justify-between gap-4">
                     <div>
-                        <nav
-                            class="flex text-[10px] font-bold text-white/40 uppercase tracking-widest mb-1 items-center gap-1.5">
-                            <NuxtLink to="/dashboard/archer/events"
-                                class="hover:text-white transition-colors">Event Saya</NuxtLink>
+                        <nav class="flex text-[10px] font-bold text-white/40 tracking-widest mb-1 items-center gap-1.5">
+                            <NuxtLink to="/dashboard/archer/events" class="hover:text-white transition-colors">Event
+                                Saya</NuxtLink>
                             <Icon icon="ph:caret-right-bold" class="text-[9px]" />
                             <span class="text-white/70">Status Registrasi</span>
                         </nav>
                         <h1 class="text-2xl font-black tracking-tight">Status Registrasi Saya</h1>
                     </div>
                     <div v-if="participant && participant.payment_status !== 'lunas'">
-                        <BaseButton variant="danger-outline" @click="showCancelConfirm = true"
-                            :loading="isCancelling"
-                            class="h-9 font-black uppercase tracking-widest text-[10px] !border-red-400/50 !text-red-300 hover:!bg-red-500 hover:!text-white hover:!border-red-500">
+                        <BaseButton variant="danger-outline" @click="showCancelConfirm = true" :loading="isCancelling"
+                            class="h-9 font-black tracking-widest text-[10px] !border-red-400/50 !text-red-300 hover:!bg-red-500 hover:!text-white hover:!border-red-500">
                             <Icon icon="ph:x-circle-bold" class="mr-1.5" />
                             Batalkan
                         </BaseButton>
@@ -102,7 +100,7 @@
                                 Kategori Terdaftar
                             </h3>
                             <span
-                                class="px-2 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-500 rounded-md text-[9px] font-black uppercase tracking-widest">
+                                class="px-2 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-500 rounded-md text-[9px] font-black tracking-widest">
                                 {{ participant.categories?.length || 0 }} Kategori
                             </span>
                         </div>
@@ -116,22 +114,21 @@
                                         <Icon icon="ph:target-bold" class="text-xl" />
                                     </div>
                                     <span :class="getStatusClass(cat.payment_status)"
-                                        class="px-2 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest border">
+                                        class="px-2 py-1 rounded-lg text-[9px] font-black tracking-widest border">
                                         {{ getDisplayStatus(cat.payment_status) }}
                                     </span>
                                 </div>
                                 <h4
-                                    class="text-lg font-black text-navy dark:text-white leading-tight mb-2 uppercase tracking-tight line-clamp-2">
+                                    class="text-lg font-black text-navy dark:text-white leading-tight mb-2 tracking-tight line-clamp-2">
                                     {{ cat.category_name }}
                                 </h4>
-                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">
+                                <p class="text-[10px] font-bold text-slate-400 tracking-widest mb-4">
                                     {{ cat.division_name }} - {{ cat.event_type_name }}
                                 </p>
                                 <div
                                     class="flex items-center justify-end pt-4 border-t border-slate-100 dark:border-slate-700">
                                     <div class="flex flex-col text-right">
-                                        <span
-                                            class="text-[9px] text-slate-400 font-black uppercase tracking-widest">Biaya</span>
+                                        <span class="text-[9px] text-slate-400 font-black tracking-widest">Biaya</span>
                                         <span class="text-sm font-black">Rp {{
                                             formatCurrency(cat.payment_amount) }}</span>
                                     </div>
@@ -150,11 +147,11 @@
 
                         <div class="relative flex flex-col items-center">
                             <div class="w-full flex justify-between items-center mb-6">
-                                <span class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Total
+                                <span class="text-[10px] font-black tracking-[0.2em] text-slate-400">Total
                                     Tagihan</span>
                                 <span class="text-xl font-black">Rp {{
                                     formatCurrency(participant.payment_amount)
-                                }}</span>
+                                    }}</span>
                             </div>
 
                             <!-- QR Code Section -->
@@ -172,7 +169,7 @@
                                         <Icon icon="ph:lock-key-bold" class="text-3xl" />
                                     </div>
                                     <span
-                                        class="text-[10px] font-black uppercase tracking-widest text-center px-4 leading-relaxed">QR
+                                        class="text-[10px] font-black tracking-widest text-center px-4 leading-relaxed">QR
                                         Terkunci Hingga Pembayaran Lunas</span>
                                 </div>
                             </div>
@@ -180,10 +177,10 @@
                             <!-- Payment Actions / Status -->
                             <div class="w-full space-y-4">
                                 <div class="flex items-center justify-between px-1">
-                                    <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Status
+                                    <span class="text-[10px] font-black tracking-widest text-slate-400">Status
                                         Pembayaran</span>
                                     <span :class="getStatusClass(participant.payment_status)"
-                                        class="px-2.5 py-1 rounded-xl text-[10px] font-black uppercase tracking-widest border">
+                                        class="px-2.5 py-1 rounded-xl text-[10px] font-black tracking-widest border">
                                         {{ getDisplayStatus(participant.payment_status) }}
                                     </span>
                                 </div>
@@ -195,7 +192,7 @@
                                         <div class="flex items-center gap-2">
                                             <Icon icon="ph:credit-card-bold" class="text-primary" />
                                             <span
-                                                class="text-xs font-black text-navy dark:text-white uppercase tracking-tight">Metode:
+                                                class="text-xs font-black text-navy dark:text-white tracking-tight">Metode:
                                                 {{ participant.transaction.payment_method }}</span>
                                         </div>
                                     </div>
@@ -209,11 +206,13 @@
                                         <!-- VA / Pay code -->
                                         <div v-if="participant.transaction.va_number || participant.transaction.pay_code"
                                             class="flex items-center justify-between bg-slate-50 dark:bg-slate-800 rounded-xl px-3 py-2.5 border border-slate-100 dark:border-slate-700">
-                                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                            <span class="text-[10px] font-black text-slate-400 tracking-widest">
                                                 {{ participant.transaction.va_number ? 'Nomor VA' : 'Kode Bayar' }}
                                             </span>
-                                            <span class="text-sm font-black text-navy dark:text-white font-mono tracking-wider select-all">
-                                                {{ participant.transaction.va_number || participant.transaction.pay_code }}
+                                            <span
+                                                class="text-sm font-black text-navy dark:text-white font-mono tracking-wider select-all">
+                                                {{ participant.transaction.va_number || participant.transaction.pay_code
+                                                }}
                                             </span>
                                         </div>
 
@@ -225,26 +224,27 @@
 
                                         <BaseButton v-if="participant.transaction.status === 'pending'"
                                             :to="participant.transaction.checkout_url" target="_blank" variant="primary"
-                                            block class="h-11 font-black uppercase tracking-widest text-xs shadow-sm">
+                                            block class="h-11 font-black tracking-widest text-xs shadow-sm">
                                             Bayar Sekarang
                                             <Icon icon="ph:arrow-right-bold" class="ml-2" />
                                         </BaseButton>
 
                                         <!-- Instruction groups -->
-                                        <template v-if="parseInstructionGroups(participant.transaction.instructions).length">
+                                        <template
+                                            v-if="parseInstructionGroups(participant.transaction.instructions).length">
                                             <div class="pt-2 space-y-3">
-                                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Cara Pembayaran</p>
+                                                <p class="text-[10px] font-black text-slate-400 tracking-widest">Cara
+                                                    Pembayaran</p>
                                                 <!-- Tab selector -->
                                                 <div v-if="parseInstructionGroups(participant.transaction.instructions).length > 1"
                                                     class="flex gap-2 flex-wrap">
                                                     <button
                                                         v-for="(group, gi) in parseInstructionGroups(participant.transaction.instructions)"
-                                                        :key="group.title"
-                                                        @click="activeInstructionGroup = gi"
+                                                        :key="group.title" @click="activeInstructionGroup = gi"
                                                         :class="activeInstructionGroup === gi
                                                             ? 'bg-navy text-white border-navy'
                                                             : 'bg-white dark:bg-slate-700 text-slate-500 border-slate-200 hover:border-primary/40'"
-                                                        class="px-2.5 py-1 rounded-lg border text-[9px] font-black uppercase tracking-widest transition-colors">
+                                                        class="px-2.5 py-1 rounded-lg border text-[9px] font-black tracking-widest transition-colors">
                                                         {{ group.title }}
                                                     </button>
                                                 </div>
@@ -253,9 +253,13 @@
                                                     v-show="parseInstructionGroups(participant.transaction.instructions).length === 1 || activeInstructionGroup === gi"
                                                     class="space-y-2">
                                                     <div v-if="parseInstructionGroups(participant.transaction.instructions).length === 1"
-                                                        class="text-[9px] font-black text-slate-400 uppercase tracking-widest">{{ group.title }}</div>
-                                                    <div v-for="(step, si) in group.steps" :key="si" class="flex gap-2.5">
-                                                        <span class="size-4 mt-0.5 rounded-full bg-primary/10 text-primary font-black flex items-center justify-center shrink-0 text-[9px]">{{ si + 1 }}</span>
+                                                        class="text-[9px] font-black text-slate-400 tracking-widest">{{
+                                                        group.title }}</div>
+                                                    <div v-for="(step, si) in group.steps" :key="si"
+                                                        class="flex gap-2.5">
+                                                        <span
+                                                            class="size-4 mt-0.5 rounded-full bg-primary/10 text-primary font-black flex items-center justify-center shrink-0 text-[9px]">{{
+                                                            si + 1 }}</span>
                                                         <span v-html="step"
                                                             class="text-[11px] text-slate-600 dark:text-slate-300 font-medium leading-relaxed"></span>
                                                     </div>
@@ -267,13 +271,12 @@
 
                                 <div v-else-if="participant.payment_status !== 'lunas'"
                                     class="bg-slate-50 dark:bg-slate-900 p-5 rounded-3xl border border-slate-100 dark:border-slate-700 space-y-4 shadow-sm">
-                                    <p
-                                        class="text-[10px] text-slate-500 font-bold text-center uppercase tracking-widest">
+                                    <p class="text-[10px] text-slate-500 font-bold text-center tracking-widest">
                                         Lanjutkan ke Pembayaran</p>
                                     <div class="flex flex-col gap-2">
                                         <BaseButton variant="primary" block @click="initiatePaymentGateway"
                                             :loading="isProcessingPayment"
-                                            class="h-12 font-black uppercase tracking-widest text-xs shadow-sm">
+                                            class="h-12 font-black tracking-widest text-xs shadow-sm">
                                             <Icon icon="ph:lightning-bold" class="text-lg mr-2" />
                                             Bayar Online (Otomatis)
                                         </BaseButton>
@@ -299,7 +302,7 @@
                 atau sesi
                 anda telah berakhir.</p>
             <BaseButton to="/dashboard/archer/events" variant="outline"
-                class="mt-8 px-8 h-12 rounded-2xl font-black uppercase tracking-widest text-xs">
+                class="mt-8 px-8 h-12 rounded-2xl font-black tracking-widest text-xs">
                 Kembali ke Dashboard
             </BaseButton>
         </div>
@@ -314,11 +317,11 @@
             </template>
             <template #actions>
                 <BaseButton variant="white" @click="showCancelConfirm = false"
-                    class="flex-1 font-black uppercase tracking-widest text-xs">
+                    class="flex-1 font-black tracking-widest text-xs">
                     Kembali
                 </BaseButton>
                 <BaseButton variant="danger" @click="cancelRegistration" :loading="isCancelling"
-                    class="flex-1 font-black uppercase tracking-widest text-xs">
+                    class="flex-1 font-black tracking-widest text-xs">
                     Ya, Batalkan
                 </BaseButton>
             </template>

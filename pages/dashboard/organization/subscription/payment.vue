@@ -151,10 +151,10 @@ useHead({
                             </div>
                         </div>
                         <div class="pt-3 border-t border-white/10 flex justify-between items-center">
-                            <span class="text-slate-400 text-[10px] font-black uppercase tracking-widest">Total
+                            <span class="text-slate-400 text-[10px] font-black tracking-widest">Total
                                 Bayar</span>
                             <span class="text-primary font-black text-xl">Rp {{ totalAmount.toLocaleString('id-ID')
-                                }}</span>
+                            }}</span>
                         </div>
                     </div>
                 </div>
@@ -170,14 +170,14 @@ useHead({
                     </div>
                     <div>
                         <h3 class="text-lg font-black text-navy leading-none">Pilih Durasi Berlangganan</h3>
-                        <p class="text-[11px] font-bold text-gray-400 uppercase tracking-widest mt-2">Berapa lama Anda
+                        <p class="text-[11px] font-bold text-gray-400 tracking-widest mt-2">Berapa lama Anda
                             ingin berlangganan?</p>
                     </div>
                 </div>
 
                 <div class="flex flex-wrap gap-3">
                     <button v-for="m in [1, 3, 6, 12]" :key="m" @click="selectedMonths = m"
-                        class="px-6 py-3 rounded-2xl border-2 font-black text-xs uppercase tracking-widest transition-all"
+                        class="px-6 py-3 rounded-2xl border-2 font-black text-xs tracking-widest transition-all"
                         :class="selectedMonths === m ? 'border-primary bg-primary/5 text-navy ring-4 ring-primary/5' : 'border-gray-100 text-gray-400 hover:border-gray-200 hover:text-navy'">
                         {{ m === 12 ? '1 Tahun' : `${m} Bulan` }}
                         <span v-if="m >= 6"
@@ -185,7 +185,7 @@ useHead({
                     </button>
 
                     <div class="flex items-center gap-3 ml-4">
-                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Kustom:</span>
+                        <span class="text-[10px] font-black text-gray-400 tracking-widest">Kustom:</span>
                         <div class="flex items-center bg-slate-50 rounded-xl border border-gray-100 p-1">
                             <button @click="selectedMonths > 1 && selectedMonths--"
                                 class="size-8 flex items-center justify-center text-navy hover:bg-white rounded-lg transition-colors">
@@ -212,7 +212,7 @@ useHead({
                     <div v-else v-for="(methods, group) in groupedChannels" :key="group" class="space-y-4">
                         <div class="flex items-center gap-3 ml-2">
                             <div class="size-2 bg-primary rounded-full"></div>
-                            <h3 class="text-sm font-black text-navy uppercase tracking-[0.2em]">{{ group }}</h3>
+                            <h3 class="text-sm font-black text-navy tracking-[0.2em]">{{ group }}</h3>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -228,7 +228,7 @@ useHead({
                                     </div>
                                     <div>
                                         <h4 class="text-sm font-black text-navy">{{ method.name }}</h4>
-                                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">
+                                        <p class="text-[10px] font-bold text-gray-400 tracking-widest mt-1">
                                             Biaya: {{ method.feeLabel }}</p>
                                     </div>
                                 </div>
@@ -250,11 +250,13 @@ useHead({
                             </div>
                             <div>
                                 <h3 class="text-lg font-black text-navy leading-none">Cara Pembayaran</h3>
-                                <p class="text-[11px] font-bold text-gray-400 uppercase tracking-widest mt-2">Langkah-langkah pembayaran</p>
+                                <p class="text-[11px] font-bold text-gray-400 tracking-widest mt-2">Langkah-langkah
+                                    pembayaran</p>
                             </div>
                         </div>
                         <div v-if="loadingInstructions" class="flex items-center gap-3 py-4">
-                            <div class="animate-spin size-5 border-2 border-navy border-t-transparent rounded-full"></div>
+                            <div class="animate-spin size-5 border-2 border-navy border-t-transparent rounded-full">
+                            </div>
                             <span class="text-xs font-bold text-gray-400">Memuat panduan...</span>
                         </div>
                         <div v-else-if="instructions.length === 0" class="text-sm text-gray-400 font-bold py-4">
@@ -266,7 +268,9 @@ useHead({
                                 <ol class="space-y-2">
                                     <li v-for="(step, idx) in section.steps" :key="idx"
                                         class="flex items-start gap-3 text-sm text-gray-600">
-                                        <span class="shrink-0 size-5 rounded-full bg-navy text-white text-[10px] font-black flex items-center justify-center mt-0.5">{{ idx + 1 }}</span>
+                                        <span
+                                            class="shrink-0 size-5 rounded-full bg-navy text-white text-[10px] font-black flex items-center justify-center mt-0.5">{{
+                                            idx + 1 }}</span>
                                         <span class="font-medium leading-snug">{{ step.description }}</span>
                                     </li>
                                 </ol>
@@ -308,7 +312,7 @@ useHead({
                         </div>
 
                         <button @click="handlePayment" :disabled="isProcessing || !selectedChannel"
-                            class="w-full h-12 mt-2 bg-navy text-white rounded-xl font-black text-sm uppercase tracking-wide transition-all flex items-center justify-center gap-2 disabled:bg-slate-100 disabled:text-slate-400 disabled:border-slate-200 shadow-sm hover:opacity-90 active:scale-95">
+                            class="w-full h-12 mt-2 bg-navy text-white rounded-xl font-black text-sm tracking-wide transition-all flex items-center justify-center gap-2 disabled:bg-slate-100 disabled:text-slate-400 disabled:border-slate-200 shadow-sm hover:opacity-90 active:scale-95">
                             <Icon v-if="isProcessing" icon="ph:spinner-gap-bold" class="animate-spin text-xl" />
                             <template v-else>
                                 Bayar Sekarang
@@ -316,7 +320,7 @@ useHead({
                             </template>
                         </button>
 
-                        <p class="text-[10px] text-center text-gray-400 font-bold uppercase tracking-widest mt-6">
+                        <p class="text-[10px] text-center text-gray-400 font-bold tracking-widest mt-6">
                             Transaksi aman & terenkripsi oleh Tripay
                         </p>
                     </div>

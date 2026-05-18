@@ -14,7 +14,7 @@
           </div>
           <h3 class="text-xl font-black text-navy mb-2">Data Registrasi</h3>
           <p class="text-sm text-gray-400 font-bold">Cek detail pendaftaran dan bukti pembayaran Anda.</p>
-          <div class="mt-6 flex items-center gap-2 text-amber-500 text-xs font-black uppercase tracking-widest">
+          <div class="mt-6 flex items-center gap-2 text-amber-500 text-xs font-black tracking-widest">
             Buka Data
             <Icon icon="ph:arrow-right-bold" />
           </div>
@@ -31,7 +31,7 @@
           </div>
           <h3 class="text-xl font-black text-navy mb-2">Hasil Kualifikasi</h3>
           <p class="text-sm text-gray-400 font-bold">Lihat skor dan peringkat kualifikasi Anda secara real-time.</p>
-          <div class="mt-6 flex items-center gap-2 text-emerald-500 text-xs font-black uppercase tracking-widest">
+          <div class="mt-6 flex items-center gap-2 text-emerald-500 text-xs font-black tracking-widest">
             Buka Hasil
             <Icon icon="ph:arrow-right-bold" />
           </div>
@@ -48,7 +48,7 @@
           </div>
           <h3 class="text-xl font-black text-navy mb-2">Hasil Eliminasi</h3>
           <p class="text-sm text-gray-400 font-bold">Pantau progres bracket eliminasi dan jadwal tanding Anda.</p>
-          <div class="mt-6 flex items-center gap-2 text-indigo-500 text-xs font-black uppercase tracking-widest">
+          <div class="mt-6 flex items-center gap-2 text-indigo-500 text-xs font-black tracking-widest">
             Buka Hasil
             <Icon icon="ph:arrow-right-bold" />
           </div>

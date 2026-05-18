@@ -16,7 +16,7 @@
                 <div>
                     <div class="flex items-center gap-2 mb-1.5">
                         <span
-                            class="px-2.5 py-0.5 bg-primary text-navy text-[9px] font-black uppercase tracking-widest rounded-full shadow-sm">
+                            class="px-2.5 py-0.5 bg-primary text-navy text-[9px] font-black tracking-widest rounded-full shadow-sm">
                             {{ status === 'expired' ? 'Kedaluwarsa' : 'Dibatalkan' }}
                         </span>
                         <div class="size-1.5 rounded-full bg-primary/40"></div>
@@ -30,7 +30,7 @@
             </div>
             <div class="flex items-center gap-3 shrink-0">
                 <NuxtLink :to="`/dashboard/${userPersona}/subscription`"
-                    class="px-6 py-3.5 bg-primary hover:bg-white text-navy rounded-xl text-xs font-black transition-all shadow-xl shadow-primary/10 flex items-center gap-2 uppercase tracking-widest active:scale-95">
+                    class="px-6 py-3.5 bg-primary hover:bg-white text-navy rounded-xl text-xs font-black transition-all shadow-xl shadow-primary/10 flex items-center gap-2 tracking-widest active:scale-95">
                     <Icon icon="ph:sketch-logo-fill" />
                     Pilih Paket Baru
                 </NuxtLink>

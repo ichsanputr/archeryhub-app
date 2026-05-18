@@ -31,8 +31,7 @@
                         <div v-if="org.verification_status === 'verified'"
                             class="flex items-center gap-1.5 text-primary">
                             <Icon icon="ph:seal-check-fill" class="text-base" />
-                            <span
-                                class="text-[10px] sm:text-[11px] font-black uppercase tracking-widest">Terverifikasi</span>
+                            <span class="text-[10px] sm:text-[11px] font-black tracking-widest">Terverifikasi</span>
                         </div>
                     </div>
 
@@ -44,7 +43,7 @@
                                 class="w-full h-full object-cover" :alt="org.name" />
                         </div>
                         <h1
-                            class="text-3xl sm:text-4xl font-black uppercase tracking-tighter leading-[0.9] text-white break-words">
+                            class="text-3xl sm:text-4xl font-black tracking-tighter leading-[0.9] text-white break-words">
                             {{ displayName }}
                         </h1>
                     </div>
@@ -53,21 +52,21 @@
                     <div class="flex flex-wrap items-center gap-4 sm:gap-6 pt-2">
                         <div v-if="org.city" class="flex items-center gap-2">
                             <span
-                                class="text-white/50 text-[10px] sm:text-[11px] font-black uppercase tracking-widest">Wilayah</span>
+                                class="text-white/50 text-[10px] sm:text-[11px] font-black tracking-widest">Wilayah</span>
                             <Icon icon="ph:map-pin-fill" class="text-primary text-sm" />
                             <span class="font-bold text-sm text-white">{{ org.city }}</span>
                         </div>
                         <div v-if="org.established_date" class="w-px h-4 bg-white/20"></div>
                         <div v-if="org.established_date" class="flex items-center gap-2">
                             <span
-                                class="text-white/50 text-[10px] sm:text-[11px] font-black uppercase tracking-widest">Berdiri</span>
+                                class="text-white/50 text-[10px] sm:text-[11px] font-black tracking-widest">Berdiri</span>
                             <span class="font-bold text-sm text-primary">{{ new Date(org.established_date).getFullYear()
-                                }}</span>
+                            }}</span>
                         </div>
                         <div class="w-px h-4 bg-white/20"></div>
                         <div class="flex items-center gap-2">
                             <span
-                                class="text-white/50 text-[10px] sm:text-[11px] font-black uppercase tracking-widest">Event</span>
+                                class="text-white/50 text-[10px] sm:text-[11px] font-black tracking-widest">Event</span>
                             <span class="font-bold text-sm text-primary">{{ totalEvents || 0 }}</span>
                         </div>
                     </div>
@@ -85,7 +84,7 @@
                     <!-- Profil Organisasi -->
                     <div v-if="pageSettings.sections.about" class="space-y-8">
                         <h3
-                            class="text-[11px] sm:text-xs font-black uppercase tracking-[0.3em] text-navy/30 flex items-center gap-4">
+                            class="text-[11px] sm:text-xs font-black tracking-[0.3em] text-navy/30 flex items-center gap-4">
                             Profil Organisasi <span class="h-px flex-1 bg-gray-100"></span>
                         </h3>
                         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
@@ -97,8 +96,7 @@
                                     class="inline-flex items-center gap-3 px-5 py-3 bg-gray-50 border border-gray-100 rounded-2xl">
                                     <Icon icon="ph:fingerprint-bold" class="text-navy/20 text-lg shrink-0" />
                                     <div>
-                                        <p
-                                            class="text-[10px] sm:text-[11px] font-black text-navy/30 uppercase tracking-widest">
+                                        <p class="text-[10px] sm:text-[11px] font-black text-navy/30 tracking-widest">
                                             Nomor
                                             Registrasi Resmi</p>
                                         <p class="font-black text-navy text-sm ">{{ org.registration_number }}
@@ -114,7 +112,7 @@
                     <!-- Visi & Misi -->
                     <div v-if="pageSettings.sections.about && (org.vision || org.mission)" class="space-y-8">
                         <h3
-                            class="text-[11px] sm:text-xs font-black uppercase tracking-[0.3em] text-navy/30 flex items-center gap-4">
+                            class="text-[11px] sm:text-xs font-black tracking-[0.3em] text-navy/30 flex items-center gap-4">
                             Visi &amp; Misi <span class="h-px flex-1 bg-gray-100"></span>
                         </h3>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
@@ -125,8 +123,7 @@
                                         class="size-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
                                         <Icon icon="ph:eye-fill" class="text-lg text-primary" />
                                     </div>
-                                    <h4
-                                        class="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.3em] text-navy/40">
+                                    <h4 class="text-[10px] sm:text-[11px] font-black tracking-[0.3em] text-navy/40">
                                         Visi
                                         Organisasi</h4>
                                 </div>
@@ -141,8 +138,7 @@
                                         class="size-9 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
                                         <Icon icon="ph:target-fill" class="text-lg text-primary" />
                                     </div>
-                                    <h4
-                                        class="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.3em] text-white/30">
+                                    <h4 class="text-[10px] sm:text-[11px] font-black tracking-[0.3em] text-white/30">
                                         Misi
                                         Strategis</h4>
                                 </div>
@@ -157,7 +153,7 @@
                     <!-- Prestasi Organisasi -->
                     <div v-if="achievements.length > 0" class="space-y-8">
                         <h3
-                            class="text-[11px] sm:text-xs font-black uppercase tracking-[0.3em] text-navy/30 flex items-center gap-4">
+                            class="text-[11px] sm:text-xs font-black tracking-[0.3em] text-navy/30 flex items-center gap-4">
                             Prestasi Organisasi <span class="h-px flex-1 bg-gray-100"></span>
                         </h3>
                         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -179,7 +175,7 @@
                     <!-- Berita & Artikel -->
                     <div v-if="news.length > 0" class="space-y-8">
                         <h3
-                            class="text-[11px] sm:text-xs font-black uppercase tracking-[0.3em] text-navy/30 flex items-center gap-4">
+                            class="text-[11px] sm:text-xs font-black tracking-[0.3em] text-navy/30 flex items-center gap-4">
                             Berita &amp; Artikel <span class="h-px flex-1 bg-gray-100"></span>
                         </h3>
                         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -202,11 +198,11 @@
                     <div class="space-y-8">
                         <div class="flex items-center justify-between">
                             <h3
-                                class="text-[11px] sm:text-xs font-black uppercase tracking-[0.3em] text-navy/30 flex items-center gap-4 flex-1">
+                                class="text-[11px] sm:text-xs font-black tracking-[0.3em] text-navy/30 flex items-center gap-4 flex-1">
                                 Event Diselenggarakan <span class="h-px flex-1 bg-gray-100"></span>
                             </h3>
                             <NuxtLink v-if="totalEvents > 4" to="/events"
-                                class="ml-4 text-[11px] sm:text-xs font-black uppercase tracking-widest text-primary">
+                                class="ml-4 text-[11px] sm:text-xs font-black tracking-widest text-primary">
                                 Lihat Semua
                             </NuxtLink>
                         </div>
@@ -214,7 +210,7 @@
                         <div v-if="events.length === 0"
                             class="py-16 text-center border-2 border-dashed border-gray-100 rounded-2xl">
                             <Icon icon="ph:calendar-blank-light" class="text-5xl text-gray-100 mx-auto mb-3" />
-                            <p class="text-[11px] sm:text-xs font-black uppercase tracking-[0.3em] text-navy/20">Belum
+                            <p class="text-[11px] sm:text-xs font-black tracking-[0.3em] text-navy/20">Belum
                                 ada event
                                 terjadwal</p>
                         </div>
@@ -233,18 +229,18 @@
                                             class="inline-block px-2.5 py-0.5 rounded-full text-[10px] sm:text-[11px] font-black capitalize tracking-wider">
                                             {{ statusLabel(event) }}
                                         </span>
-                                        <h4 class="font-black text-navy text-sm leading-tight uppercase truncate">
+                                        <h4 class="font-black text-navy text-sm leading-tight truncate">
                                             {{ event.name }}
                                         </h4>
                                     </div>
                                     <div class="flex flex-wrap gap-3 pt-2 border-t border-gray-50">
                                         <div
-                                            class="flex items-center gap-1.5 text-navy/40 text-[10px] sm:text-[11px] font-black uppercase tracking-widest">
+                                            class="flex items-center gap-1.5 text-navy/40 text-[10px] sm:text-[11px] font-black tracking-widest">
                                             <Icon icon="ph:calendar-blank-fill" class="text-xs text-primary" />
                                             {{ formatDate(event.start_date) }}
                                         </div>
                                         <div v-if="event.venue"
-                                            class="flex items-center gap-1.5 text-navy/40 text-[10px] sm:text-[11px] font-black uppercase tracking-widest">
+                                            class="flex items-center gap-1.5 text-navy/40 text-[10px] sm:text-[11px] font-black tracking-widest">
                                             <Icon icon="ph:map-pin-fill" class="text-xs text-primary" />
                                             <span class="truncate max-w-[120px]">{{ event.venue }}</span>
                                         </div>
@@ -257,7 +253,7 @@
                     <!-- Sejarah Singkat -->
                     <div v-if="pageSettings.sections.about && org.history" class="space-y-8">
                         <h3
-                            class="text-[11px] sm:text-xs font-black uppercase tracking-[0.3em] text-navy/30 flex items-center gap-4">
+                            class="text-[11px] sm:text-xs font-black tracking-[0.3em] text-navy/30 flex items-center gap-4">
                             Sejarah Singkat <span class="h-px flex-1 bg-gray-100"></span>
                         </h3>
                         <div class="max-w-3xl">
@@ -271,7 +267,7 @@
                     <!-- Lokasi & Sekretariat -->
                     <div v-if="org.address || org.gmaps_link" class="space-y-8">
                         <h3
-                            class="text-[11px] sm:text-xs font-black uppercase tracking-[0.3em] text-navy/30 flex items-center gap-4">
+                            class="text-[11px] sm:text-xs font-black tracking-[0.3em] text-navy/30 flex items-center gap-4">
                             Lokasi &amp; Sekretariat <span class="h-px flex-1 bg-gray-100"></span>
                         </h3>
                         <div
@@ -284,8 +280,7 @@
                                 <div v-else class="w-full h-full flex items-center justify-center bg-gray-50">
                                     <div class="text-center">
                                         <Icon icon="ph:map-pin-light" class="text-4xl text-gray-200 mb-2 mx-auto" />
-                                        <p
-                                            class="text-[11px] sm:text-xs font-black text-navy/20 uppercase tracking-widest">
+                                        <p class="text-[11px] sm:text-xs font-black text-navy/20 tracking-widest">
                                             Peta
                                             belum tersedia</p>
                                     </div>
@@ -299,12 +294,11 @@
                                     <h4 class="text-base sm:text-xl font-black text-navy leading-tight mb-1 ">
                                         {{ org.address || 'Sekretariat Utama' }}
                                     </h4>
-                                    <p
-                                        class="text-[11px] sm:text-xs font-black text-navy/30 uppercase tracking-widest mb-4">
+                                    <p class="text-[11px] sm:text-xs font-black text-navy/30 tracking-widest mb-4">
                                         {{ org.city }}, {{ org.province }}
                                     </p>
                                     <a v-if="org.gmaps_link" :href="org.gmaps_link" target="_blank"
-                                        class="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 text-navy rounded-xl text-[11px] sm:text-xs font-black uppercase tracking-widest border border-gray-100">
+                                        class="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 text-navy rounded-xl text-[11px] sm:text-xs font-black tracking-widest border border-gray-100">
                                         Buka di Maps
                                         <Icon icon="ph:arrow-square-out-bold" class="text-sm" />
                                     </a>
@@ -316,7 +310,7 @@
                     <!-- FAQ -->
                     <div v-if="pageSettings.sections.faq && org.faq?.length > 0" class="space-y-8">
                         <h3
-                            class="text-[11px] sm:text-xs font-black uppercase tracking-[0.3em] text-navy/30 flex items-center gap-4">
+                            class="text-[11px] sm:text-xs font-black tracking-[0.3em] text-navy/30 flex items-center gap-4">
                             Tanya Jawab (FAQ) <span class="h-px flex-1 bg-gray-100"></span>
                         </h3>
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -328,7 +322,7 @@
                                         <Icon icon="ph:question-bold" class="text-sm text-primary" />
                                     </div>
                                     <div class="space-y-3 flex-1 min-w-0">
-                                        <h4 class="font-black text-navy text-sm uppercase leading-tight tracking-tight">
+                                        <h4 class="font-black text-navy text-sm leading-tight tracking-tight">
                                             {{ item.question }}
                                         </h4>
                                         <div class="h-px bg-gray-100"></div>
@@ -345,7 +339,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 pt-10">
                         <!-- Hubungi Kami -->
                         <div class="bg-navy p-6 sm:p-8 rounded-[2rem] text-white shadow-sm relative overflow-hidden">
-                            <h4 class="text-[11px] sm:text-xs font-black uppercase tracking-[0.2em] text-primary mb-6">
+                            <h4 class="text-[11px] sm:text-xs font-black tracking-[0.2em] text-primary mb-6">
                                 Hubungi Kami
                             </h4>
                             <div class="space-y-4">
@@ -356,7 +350,7 @@
                                         <Icon icon="ph:whatsapp-logo-fill" class="text-base" />
                                     </div>
                                     <span class="font-bold text-xs sm:text-sm truncate text-white/80">{{ org.whatsapp_no
-                                        }}</span>
+                                    }}</span>
                                 </a>
                                 <a v-if="org.email" :href="`mailto:${org.email}`" class="flex items-center gap-3">
                                     <div
@@ -364,10 +358,10 @@
                                         <Icon icon="ph:envelope-bold" class="text-base" />
                                     </div>
                                     <span class="font-bold text-xs sm:text-sm truncate text-white/80">{{ org.email
-                                        }}</span>
+                                    }}</span>
                                 </a>
                                 <div v-if="!org.whatsapp_no && !org.email"
-                                    class="text-white/30 text-[11px] sm:text-xs font-black uppercase tracking-widest">
+                                    class="text-white/30 text-[11px] sm:text-xs font-black tracking-widest">
                                     Belum tersedia
                                 </div>
                             </div>
@@ -376,25 +370,25 @@
                         <!-- Media Sosial -->
                         <div v-if="hasSocialMedia"
                             class="bg-gray-50 p-6 sm:p-8 rounded-[2rem] border border-gray-100 shadow-sm">
-                            <h4 class="text-[11px] sm:text-xs font-black uppercase tracking-[0.2em] text-navy/30 mb-6">
+                            <h4 class="text-[11px] sm:text-xs font-black tracking-[0.2em] text-navy/30 mb-6">
                                 Media Sosial
                             </h4>
                             <div class="flex flex-wrap gap-3">
                                 <a v-if="org.social_instagram"
                                     :href="`https://instagram.com/${org.social_instagram.replace('@', '')}`"
                                     target="_blank"
-                                    class="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-100 rounded-xl text-navy shadow-sm text-xs font-black uppercase tracking-wider">
+                                    class="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-100 rounded-xl text-navy shadow-sm text-xs font-black tracking-wider">
                                     <Icon icon="ph:instagram-logo-bold" class="text-base shrink-0" />
                                     <span class="hidden sm:inline">Instagram</span>
                                 </a>
                                 <a v-if="org.social_facebook" :href="org.social_facebook" target="_blank"
-                                    class="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-100 rounded-xl text-navy shadow-sm text-xs font-black uppercase tracking-wider">
+                                    class="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-100 rounded-xl text-navy shadow-sm text-xs font-black tracking-wider">
                                     <Icon icon="ph:facebook-logo-bold" class="text-base shrink-0" />
                                     <span class="hidden sm:inline">Facebook</span>
                                 </a>
                                 <a v-if="org.social_twitter" :href="`https://twitter.com/${org.social_twitter}`"
                                     target="_blank"
-                                    class="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-100 rounded-xl text-navy shadow-sm text-xs font-black uppercase tracking-wider">
+                                    class="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-100 rounded-xl text-navy shadow-sm text-xs font-black tracking-wider">
                                     <Icon icon="ph:twitter-logo-bold" class="text-base shrink-0" />
                                     <span class="hidden sm:inline">Twitter</span>
                                 </a>
@@ -403,7 +397,7 @@
                         <!-- Placeholder if no social media -->
                         <div v-else
                             class="bg-gray-50 p-6 sm:p-8 rounded-[2rem] border border-gray-100 shadow-sm flex items-center justify-center">
-                            <p class="text-[10px] font-black uppercase tracking-widest text-navy/20">Belum ada media
+                            <p class="text-[10px] font-black tracking-widest text-navy/20">Belum ada media
                                 sosial</p>
                         </div>
                     </div>
@@ -418,7 +412,7 @@
                 <div @click="isShareOpen = false" class="absolute inset-0 bg-navy/80 backdrop-blur-sm"></div>
                 <div class="relative w-full max-w-sm bg-white rounded-2xl p-6 shadow-2xl border border-gray-100 z-10">
                     <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-base font-black text-navy uppercase tracking-tighter">Bagikan Profil</h3>
+                        <h3 class="text-base font-black text-navy tracking-tighter">Bagikan Profil</h3>
                         <button @click="isShareOpen = false"
                             class="size-9 bg-gray-100 rounded-full flex items-center justify-center">
                             <Icon icon="ph:x-bold" class="text-sm" />
@@ -432,10 +426,10 @@
                                 class="w-full h-full object-cover" />
                         </div>
                         <div>
-                            <p class="text-[11px] sm:text-xs font-black text-navy/40 uppercase tracking-widest mb-0.5">
+                            <p class="text-[11px] sm:text-xs font-black text-navy/40 tracking-widest mb-0.5">
                                 Organisasi
                                 Resmi</p>
-                            <p class="font-black text-navy text-sm uppercase leading-none">{{ org.name }}</p>
+                            <p class="font-black text-navy text-sm leading-none">{{ org.name }}</p>
                         </div>
                     </div>
 
@@ -444,17 +438,17 @@
                             class="flex flex-col items-center gap-2">
                             <div :class="`size-12 rounded-2xl ${plat.bg} flex items-center justify-center`"
                                 v-html="plat.iconHtml"></div>
-                            <span class="text-[10px] sm:text-[11px] font-black text-navy/40 uppercase tracking-wider">{{
+                            <span class="text-[10px] sm:text-[11px] font-black text-navy/40 tracking-wider">{{
                                 plat.name
-                            }}</span>
+                                }}</span>
                         </button>
                     </div>
 
                     <div class="flex gap-2">
                         <input type="text" readonly :value="shareUrl"
-                            class="flex-1 px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-[10px] sm:text-[11px] font-black uppercase text-navy/40 outline-none" />
+                            class="flex-1 px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-[10px] sm:text-[11px] font-black text-navy/40 outline-none" />
                         <button @click="copyLink"
-                            class="px-5 py-3 bg-navy text-white rounded-xl text-[10px] sm:text-[11px] font-black uppercase tracking-widest">
+                            class="px-5 py-3 bg-navy text-white rounded-xl text-[10px] sm:text-[11px] font-black tracking-widest">
                             {{ copied ? 'Tersalin' : 'Salin' }}
                         </button>
                     </div>

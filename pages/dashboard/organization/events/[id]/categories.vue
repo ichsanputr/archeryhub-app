@@ -235,7 +235,7 @@
 
             <div v-if="fetchingDetails" class="py-12 flex flex-col items-center justify-center gap-4 text-center">
                 <Icon icon="ph:circle-notch-bold" class="text-4xl text-primary animate-spin" />
-                <p class="text-sm font-bold text-gray-400 uppercase tracking-widest">Menganalisa keterkaitan data...</p>
+                <p class="text-sm font-bold text-gray-400 tracking-widest">Menganalisa keterkaitan data...</p>
             </div>
 
             <div v-else-if="categoryDetails" class="space-y-6">
@@ -249,7 +249,7 @@
                         style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, white 10px, white 11px);">
                     </div>
                     <div class="relative z-10">
-                        <h4 class="text-[9px] font-black text-primary uppercase tracking-[0.2em] mb-2">ID Kategori</h4>
+                        <h4 class="text-[9px] font-black text-primary tracking-[0.2em] mb-2">ID Kategori</h4>
                         <div class="text-lg font-black leading-tight mb-1">
                             {{ categoryDetails.category.division_name }} - {{ categoryDetails.category.category_name }}
                         </div>
@@ -283,20 +283,19 @@
                                 {{ stat.count }}
                             </div>
                         </div>
-                        <span class="text-[9px] uppercase font-black text-gray-400 tracking-wider">{{ stat.label
-                        }}</span>
+                        <span class="text-[9px] font-black text-gray-400 tracking-wider">{{ stat.label
+                            }}</span>
                     </div>
                 </div>
             </div>
 
             <template #action>
                 <BaseButton variant="white" @click="showDeleteDialog = false"
-                    class="px-6 font-bold uppercase tracking-wider text-xs">
+                    class="px-6 font-bold tracking-wider text-xs">
                     Batal
                 </BaseButton>
                 <BaseButton variant="danger" @click="confirmDeleteCategory" :disabled="saving" :loading="saving"
-                    icon="ph:trash-bold"
-                    class="px-8 font-black uppercase tracking-wider text-xs shadow-lg shadow-red-200">
+                    icon="ph:trash-bold" class="px-8 font-black tracking-wider text-xs shadow-lg shadow-red-200">
                     Konfirmasi Hapus
                 </BaseButton>
             </template>

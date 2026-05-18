@@ -1,11 +1,11 @@
 <template>
     <div class="bracket-round">
         <div class="round-header group">
-            <span class="text-[10px] uppercase font-black tracking-[0.3em] text-navy/30">
+            <span class="text-[10px] font-black tracking-[0.3em] text-navy/30">
                 {{ roundName }}
             </span>
             <button type="button" @click="$emit('navigate', roundNo)"
-                class="mt-2 px-4 py-1.5 rounded-xl bg-white border border-[#d1dcf0] text-[9px] font-black tracking-widest text-navy uppercase hover:bg-navy hover:text-primary transition-all shadow-sm">
+                class="mt-2 px-4 py-1.5 rounded-xl bg-white border border-[#d1dcf0] text-[9px] font-black tracking-widest text-navy hover:bg-navy hover:text-primary transition-all shadow-sm">
                 Manage
             </button>
         </div>

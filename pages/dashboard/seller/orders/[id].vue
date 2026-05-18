@@ -16,7 +16,7 @@
             <div class="flex flex-wrap items-center gap-2 mb-0.5">
               <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-tight capitalize">Detail pesanan</h1>
               <div v-if="order" :class="getStatusClass(order.status)"
-                class="px-2.5 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest border border-current shadow-sm backdrop-blur-md">
+                class="px-2.5 py-0.5 rounded-full text-[8px] font-black tracking-widest border border-current shadow-sm backdrop-blur-md">
                 {{ getStatusLabel(order.status) }}
               </div>
             </div>
@@ -56,7 +56,7 @@
       </div>
       <NuxtLink to="/dashboard/seller/orders">
         <BaseButton variant="primary" size="sm" icon="ph:arrow-left-bold"
-          class="h-11 px-6 !rounded-xl font-black tracking-widest uppercase text-[10px] shadow-sm">Kembali</BaseButton>
+          class="h-11 px-6 !rounded-xl font-black tracking-widest text-[10px] shadow-sm">Kembali</BaseButton>
       </NuxtLink>
     </div>
 
@@ -71,7 +71,7 @@
             <div>
               <div class="text-navy font-black text-lg tracking-tight">Status: {{ getStatusLabel(order.status) }}</div>
               <div class="text-[11px] font-bold text-gray-400 max-w-sm leading-tight">{{ getStatusMessage(order.status)
-              }}</div>
+                }}</div>
             </div>
           </div>
 
@@ -82,7 +82,7 @@
             </div>
             <BaseButton variant="primary" icon="ph:arrow-clockwise-bold" @click="handleUpdateStatus"
               :loading="isUpdating"
-              class="h-11 px-6 font-black uppercase tracking-widest text-[10px] shadow-sm active:scale-95 transition-all shrink-0">
+              class="h-11 px-6 font-black tracking-widest text-[10px] shadow-sm active:scale-95 transition-all shrink-0">
               Update
             </BaseButton>
           </div>
@@ -97,12 +97,12 @@
               </div>
               <div>
                 <h2 class="text-lg font-black text-navy tracking-tight">Item Pesanan</h2>
-                <div class="text-[9px] text-gray-400 font-black uppercase tracking-widest">Total {{ order.items.length
-                }} Produk</div>
+                <div class="text-[9px] text-gray-400 font-black tracking-widest">Total {{ order.items.length
+                  }} Produk</div>
               </div>
             </div>
             <div class="hidden sm:block text-right">
-              <div class="text-[9px] text-gray-400 font-bold uppercase tracking-widest mb-0.5">Invoice</div>
+              <div class="text-[9px] text-gray-400 font-bold tracking-widest mb-0.5">Invoice</div>
               <div class="font-mono text-[11px] font-black text-navy opacity-60">INV/{{ new
                 Date(order.created_at).getFullYear() }}/{{ (order.id || '').toUpperCase().slice(0, 6) }}</div>
             </div>
@@ -118,16 +118,16 @@
 
               <div class="flex-1 text-center sm:text-left min-w-0 w-full">
                 <div class="text-navy font-black text-base sm:text-lg tracking-tight truncate mb-2">{{ item.product_name
-                }}</div>
+                  }}</div>
                 <div class="flex flex-wrap items-center justify-center sm:justify-start gap-3">
                   <div
                     class="px-3 py-1.5 bg-white rounded-lg border border-gray-100 text-[10px] font-bold text-gray-400 flex items-center gap-2">
-                    <span class="text-primary font-black uppercase tracking-widest">Qty</span>
+                    <span class="text-primary font-black tracking-widest">Qty</span>
                     <span class="text-navy font-black">{{ item.quantity }}</span>
                   </div>
                   <div
                     class="px-3 py-1.5 bg-white rounded-lg border border-gray-100 text-[10px] font-bold text-gray-400 flex items-center gap-2">
-                    <span class="text-primary font-black uppercase tracking-widest">Harga</span>
+                    <span class="text-primary font-black tracking-widest">Harga</span>
                     <span class="text-navy font-black">Rp {{ formatPrice(item.price) }}</span>
                   </div>
                 </div>
@@ -135,7 +135,7 @@
 
               <div
                 class="text-center sm:text-right pt-3 sm:pt-0 border-t sm:border-t-0 border-gray-100 w-full sm:w-auto">
-                <div class="text-[9px] font-black text-gray-300 uppercase tracking-widest mb-1">Subtotal</div>
+                <div class="text-[9px] font-black text-gray-300 tracking-widest mb-1">Subtotal</div>
                 <div class="text-lg font-black text-navy tracking-tight">
                   <span class="text-xs font-bold opacity-30">Rp</span> {{ formatPrice(item.price * item.quantity) }}
                 </div>
@@ -161,7 +161,7 @@
               </div>
 
               <div class="text-center sm:text-right">
-                <div class="text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Total Pendapatan</div>
+                <div class="text-[10px] font-black tracking-widest text-white/40 mb-2">Total Pendapatan</div>
                 <div class="text-3xl sm:text-4xl font-black tracking-tight text-primary">
                   <span class="text-lg font-bold opacity-30 mr-0.5 italic">Rp</span>{{ formatPrice(order.total_amount)
                   }}
@@ -184,13 +184,13 @@
                 <h2 class="text-base font-black text-navy tracking-tight">Pengiriman</h2>
               </div>
               <BaseButton variant="white" size="xs" icon="ph:copy-bold"
-                class="h-8 px-3 !rounded-lg text-[8px] font-black uppercase bg-gray-50 border-gray-100">Salin
+                class="h-8 px-3 !rounded-lg text-[8px] font-black bg-gray-50 border-gray-100">Salin
               </BaseButton>
             </div>
 
             <div class="space-y-4">
               <div class="p-4 bg-gray-50/50 rounded-xl border border-gray-100">
-                <div class="text-[9px] font-black text-primary uppercase tracking-widest mb-1.5">Penerima</div>
+                <div class="text-[9px] font-black text-primary tracking-widest mb-1.5">Penerima</div>
                 <div class="text-navy font-black text-base mb-0.5">{{ order.customer_name }}</div>
                 <div class="text-[11px] font-bold text-gray-500 leading-tight">{{ shippingAddress }}</div>
               </div>
@@ -202,7 +202,7 @@
                     <Icon icon="ph:phone-bold" class="text-sm" />
                   </div>
                   <div class="min-w-0">
-                    <div class="text-[8px] font-black text-gray-400 uppercase tracking-widest">WhatsApp</div>
+                    <div class="text-[8px] font-black text-gray-400 tracking-widest">WhatsApp</div>
                     <div class="text-[10px] font-black text-navy truncate">{{ order.customer_phone || '-' }}</div>
                   </div>
                 </div>
@@ -212,9 +212,9 @@
                     <Icon icon="ph:envelope-simple-bold" class="text-sm" />
                   </div>
                   <div class="min-w-0">
-                    <div class="text-[8px] font-black text-gray-400 uppercase tracking-widest">Email</div>
+                    <div class="text-[8px] font-black text-gray-400 tracking-widest">Email</div>
                     <div class="text-[10px] font-black text-navy truncate">{{ (order.customer_email || '').split('@')[0]
-                    }}...</div>
+                      }}...</div>
                   </div>
                 </div>
               </div>
@@ -241,7 +241,7 @@
                   <Icon :icon="step.icon" class="text-xs" />
                 </div>
                 <div class="transition-all duration-300" :class="step.active ? 'translate-x-0.5' : 'opacity-40'">
-                  <div class="text-[10px] font-black uppercase tracking-wider"
+                  <div class="text-[10px] font-black tracking-wider"
                     :class="step.active ? 'text-navy' : 'text-gray-400'">{{ step.label }}</div>
                   <div class="text-[9px] font-bold text-gray-400 hidden sm:block">{{ step.desc }}</div>
                 </div>
@@ -268,7 +268,7 @@
               </div>
               <h2 class="text-lg sm:text-xl font-black text-navy tracking-tight mb-1">{{ order.customer_name }}</h2>
               <div
-                class="px-3 py-1 rounded-full bg-gray-50 border border-gray-100 text-[8px] font-black text-gray-400 uppercase tracking-widest inline-block shadow-sm">
+                class="px-3 py-1 rounded-full bg-gray-50 border border-gray-100 text-[8px] font-black text-gray-400 tracking-widest inline-block shadow-sm">
                 Loyal Customer</div>
             </div>
           </div>
@@ -276,17 +276,17 @@
           <div class="px-6 pb-8 space-y-3">
             <div class="grid grid-cols-2 gap-2">
               <div class="p-3 bg-gray-50/50 rounded-xl border border-gray-100 text-center">
-                <div class="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-0.5">Total Order</div>
+                <div class="text-[8px] font-black text-gray-400 tracking-widest mb-0.5">Total Order</div>
                 <div class="text-lg font-black text-navy tracking-tight">12</div>
               </div>
               <div class="p-3 bg-gray-50/50 rounded-xl border border-gray-100 text-center">
-                <div class="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-0.5">Feedback</div>
+                <div class="text-[8px] font-black text-gray-400 tracking-widest mb-0.5">Feedback</div>
                 <div class="text-lg font-black text-primary tracking-tight">4.8★</div>
               </div>
             </div>
 
             <BaseButton variant="white" block @click="handleContactBuyer"
-              class="h-11 font-black text-[10px] !rounded-xl tracking-widest uppercase !border-gray-100 hover:!border-primary hover:!bg-primary/5 hover:!text-primary transition-all">
+              class="h-11 font-black text-[10px] !rounded-xl tracking-widest !border-gray-100 hover:!border-primary hover:!bg-primary/5 hover:!text-primary transition-all">
               <Icon icon="ph:chat-circle-dots-bold" class="text-base mr-2" />
               Hubungi Pembeli
             </BaseButton>
@@ -298,24 +298,24 @@
           <div class="absolute top-0 left-0 size-32 bg-primary/10 blur-[40px] rounded-full"></div>
           <div class="relative z-10 space-y-6">
             <div class="flex items-center justify-between">
-              <div class="text-[9px] font-black uppercase tracking-widest text-primary">Pembayaran</div>
+              <div class="text-[9px] font-black tracking-widest text-primary">Pembayaran</div>
               <Icon icon="ph:receipt-bold" class="text-primary text-lg" />
             </div>
 
             <div class="space-y-3">
               <div class="flex items-center justify-between py-1.5 border-b border-white/5">
-                <span class="text-[10px] font-bold opacity-40 uppercase tracking-widest">Metode</span>
-                <span class="text-[10px] font-black uppercase text-white/80">Digital Wallet</span>
+                <span class="text-[10px] font-bold opacity-40 tracking-widest">Metode</span>
+                <span class="text-[10px] font-black text-white/80">Digital Wallet</span>
               </div>
               <div class="flex items-center justify-between py-1.5 border-b border-white/5">
-                <span class="text-[10px] font-bold opacity-40 uppercase tracking-widest">Status</span>
+                <span class="text-[10px] font-bold opacity-40 tracking-widest">Status</span>
                 <span
-                  class="text-[8px] font-black uppercase px-2 py-0.5 rounded-full border border-primary/30 text-primary bg-primary/5 shadow-sm">ESCROW</span>
+                  class="text-[8px] font-black px-2 py-0.5 rounded-full border border-primary/30 text-primary bg-primary/5 shadow-sm">ESCROW</span>
               </div>
               <div class="flex items-center justify-between py-1.5">
-                <span class="text-[10px] font-bold opacity-40 uppercase tracking-widest">Waktu</span>
+                <span class="text-[10px] font-bold opacity-40 tracking-widest">Waktu</span>
                 <span class="text-[10px] font-black text-white/80">{{ formatDate(order.created_at).split('•')[0]
-                }}</span>
+                  }}</span>
               </div>
             </div>
 

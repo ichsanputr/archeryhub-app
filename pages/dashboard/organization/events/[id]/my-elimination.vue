@@ -3,7 +3,7 @@
         <!-- Breadcrumbs & Header Actions -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-                <nav class="flex text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 items-center gap-2">
+                <nav class="flex text-xs font-bold text-slate-400 tracking-widest mb-2 items-center gap-2">
                     <NuxtLink :to="`/dashboard/events/${eventId}`" class="hover:text-primary transition-colors">Event
                     </NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[10px]" />
@@ -52,7 +52,7 @@
 
                     <!-- Final Standing Badge -->
                     <div class="flex flex-col items-center md:items-end justify-center">
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Status Eliminasi
+                        <p class="text-[10px] font-black text-slate-400 tracking-widest mb-1">Status Eliminasi
                         </p>
                         <div class="flex items-center gap-2">
                             <Icon v-if="elimStatusLabel === 'Juara'" icon="ph:crown-fill"
@@ -80,7 +80,7 @@
                 <div v-if="elimMatches.length === 0"
                     class="py-20 text-center border-2 border-dashed border-slate-100 dark:border-slate-800 rounded-[32px]">
                     <Icon icon="ph:sword-light" class="text-7xl mx-auto mb-6 opacity-10" />
-                    <p class="text-sm font-black uppercase tracking-widest text-slate-300">Belum mencapai eliminasi</p>
+                    <p class="text-sm font-black tracking-widest text-slate-300">Belum mencapai eliminasi</p>
                 </div>
 
                 <div v-else class="relative overflow-x-auto pb-8 scrollbar-hide">
@@ -88,8 +88,7 @@
                         <template v-for="(match, mIdx) in elimMatches" :key="match.uuid">
                             <!-- Match Box -->
                             <div class="w-[280px] shrink-0">
-                                <div
-                                    class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] text-center mb-6">
+                                <div class="text-[10px] font-black text-slate-400 tracking-[0.2em] text-center mb-6">
                                     Babak {{ match.round_no }}</div>
                                 <div class="relative p-6 rounded-[32px] overflow-hidden transition-all group border"
                                     :class="match.winner_entry_uuid === myEntryUuid ? 'bg-navy text-white shadow-xl shadow-primary/20 border-primary' : 'bg-slate-50 dark:bg-slate-900 border-slate-100 dark:border-slate-700'">
@@ -104,7 +103,7 @@
                                                         match.entry_a_name || 'TBD' }}</span>
                                             </div>
                                             <span class="text-sm font-black tabular-nums">{{ match.total_score_a ?? 0
-                                            }}</span>
+                                                }}</span>
                                         </div>
 
                                         <div class="h-px bg-slate-200 dark:bg-slate-800 opacity-20" />
@@ -118,7 +117,7 @@
                                                         match.entry_b_name || 'TBD' }}</span>
                                             </div>
                                             <span class="text-sm font-black tabular-nums">{{ match.total_score_b ?? 0
-                                            }}</span>
+                                                }}</span>
                                         </div>
                                     </div>
                                 </div>

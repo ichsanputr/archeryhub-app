@@ -36,7 +36,7 @@
           <!-- Action Buttons -->
           <div class="flex flex-col sm:flex-row gap-3">
             <BaseButton variant="primary" icon="ph:plus-bold"
-              class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black uppercase tracking-widest"
+              class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black tracking-widest"
               @click="resetForm(); showCreateDialog = true">
               Buat Bracket
             </BaseButton>
@@ -251,7 +251,7 @@
             <div class="p-6 bg-gray-50/80 rounded-3xl border border-gray-100 space-y-6">
               <div class="flex items-center gap-2 mb-1">
                 <div class="h-4 w-1 bg-primary rounded-full"></div>
-                <div class="text-[10px] font-black text-navy uppercase tracking-widest">Konfigurasi Match</div>
+                <div class="text-[10px] font-black text-navy tracking-widest">Konfigurasi Match</div>
               </div>
 
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -309,7 +309,7 @@
             <div class="p-6 bg-gray-50/80 rounded-3xl border border-gray-100 space-y-6">
               <div class="flex items-center gap-2 mb-1">
                 <div class="h-4 w-1 bg-primary rounded-full"></div>
-                <div class="text-[10px] font-black text-navy uppercase tracking-widest">Waktu Pelaksanaan</div>
+                <div class="text-[10px] font-black text-navy tracking-widest">Waktu Pelaksanaan</div>
               </div>
 
               <div class="space-y-6">
@@ -369,7 +369,7 @@
             <Icon icon="ph:warning-circle-bold" class="text-8xl text-red-600" />
           </div>
           <div class="relative z-10">
-            <h4 class="text-sm font-black text-red-700 uppercase tracking-widest mb-2">Peringatan Penghapusan</h4>
+            <h4 class="text-sm font-black text-red-700 tracking-widest mb-2">Peringatan Penghapusan</h4>
             <div class="text-xs font-bold text-red-600/80 leading-relaxed mb-4">
               Anda akan menghapus bracket eliminasi ini secara permanen. Seluruh riwayat pertandingan, skor, dan kode
               scoring akan ikut terhapus.
@@ -377,7 +377,7 @@
 
             <div class="flex items-center gap-2 px-3 py-1.5 bg-red-100 rounded-xl w-fit">
               <Icon icon="ph:info-bold" class="text-red-600" />
-              <span class="text-[10px] font-black uppercase tracking-wider text-red-700">Tindakan Tidak Dapat
+              <span class="text-[10px] font-black tracking-wider text-red-700">Tindakan Tidak Dapat
                 Dibatalkan</span>
             </div>
           </div>
@@ -389,7 +389,7 @@
             style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, white 10px, white 11px);">
           </div>
           <div class="relative z-10">
-            <h4 class="text-[9px] font-black text-primary uppercase tracking-[0.2em] mb-2">Informasi Bracket</h4>
+            <h4 class="text-[9px] font-black text-primary tracking-[0.2em] mb-2">Informasi Bracket</h4>
             <div class="text-lg font-black leading-tight mb-1">
               {{ getBracketName(bracketToDelete) }}
             </div>
@@ -414,22 +414,21 @@
                 class="size-9 rounded-lg flex items-center justify-center transition-colors shadow-inner bg-red-100 text-red-600">
                 <Icon :icon="stat.icon" class="text-lg" />
               </div>
-              <div class="text-[10px] font-black text-red-700 uppercase tracking-widest">
+              <div class="text-[10px] font-black text-red-700 tracking-widest">
                 {{ stat.count }}
               </div>
             </div>
-            <span class="text-[9px] uppercase font-black text-gray-400 tracking-wider text-left">{{ stat.label }}</span>
+            <span class="text-[9px] font-black text-gray-400 tracking-wider text-left">{{ stat.label }}</span>
           </div>
         </div>
       </div>
 
       <template #action>
-        <BaseButton variant="white" @click="showDeleteDialog = false"
-          class="px-6 font-bold uppercase tracking-wider text-xs">
+        <BaseButton variant="white" @click="showDeleteDialog = false" class="px-6 font-bold tracking-wider text-xs">
           Batal
         </BaseButton>
         <BaseButton variant="danger" @click="handleDeleteBracket" :disabled="savingDelete" :loading="savingDelete"
-          icon="ph:trash-bold" class="px-8 font-black uppercase tracking-wider text-xs shadow-lg shadow-red-200">
+          icon="ph:trash-bold" class="px-8 font-black tracking-wider text-xs shadow-lg shadow-red-200">
           Hapus Bracket
         </BaseButton>
       </template>

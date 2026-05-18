@@ -3,11 +3,11 @@
         <!-- Consolidated Header for Semi and Final -->
         <div class="round-header !flex-row !gap-4 !items-end !mb-12">
             <div class="flex flex-col items-center">
-                <span class="text-[10px] uppercase font-black tracking-[0.3em] text-navy/30">Semifinal</span>
+                <span class="text-[10px] font-black tracking-[0.3em] text-navy/30">Semifinal</span>
             </div>
             <div class="h-8 w-px bg-[#d1dcf0] mb-1"></div>
             <div class="flex flex-col items-center">
-                <span class="text-[10px] uppercase font-black tracking-[0.3em] text-navy/30">Finals</span>
+                <span class="text-[10px] font-black tracking-[0.3em] text-navy/30">Finals</span>
             </div>
         </div>
 

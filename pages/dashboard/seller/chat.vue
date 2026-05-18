@@ -5,10 +5,8 @@
     <div class="flex-grow flex bg-white rounded-3xl border border-gray-200 shadow-md overflow-hidden min-h-0">
 
       <!-- ───────── LEFT: Conversation List ───────── -->
-      <div
-        class="flex flex-col shrink-0 border-r border-gray-200 bg-gray-50"
-        :class="activeConv ? 'hidden md:flex md:w-80 lg:w-96' : 'w-full md:w-80 lg:w-96'"
-      >
+      <div class="flex flex-col shrink-0 border-r border-gray-200 bg-gray-50"
+        :class="activeConv ? 'hidden md:flex md:w-80 lg:w-96' : 'w-full md:w-80 lg:w-96'">
         <!-- Top bar -->
         <div class="px-5 pt-5 pb-4 border-b border-gray-200 bg-white shrink-0">
           <div class="flex items-center gap-3 mb-4">
@@ -42,8 +40,10 @@
           </div>
 
           <!-- Empty -->
-          <div v-else-if="filteredConvs.length === 0" class="flex flex-col items-center justify-center p-10 text-center h-full">
-            <div class="size-20 rounded-3xl bg-white border-2 border-dashed border-gray-200 flex items-center justify-center mb-4">
+          <div v-else-if="filteredConvs.length === 0"
+            class="flex flex-col items-center justify-center p-10 text-center h-full">
+            <div
+              class="size-20 rounded-3xl bg-white border-2 border-dashed border-gray-200 flex items-center justify-center mb-4">
               <Icon icon="ph:chat-centered-dots" class="text-4xl text-gray-300" />
             </div>
             <div class="text-sm font-black text-gray-500">Belum ada percakapan</div>
@@ -53,8 +53,7 @@
           <!-- Conversation List -->
           <div v-else class="divide-y divide-gray-100">
             <div v-for="conv in filteredConvs" :key="conv.id" @click="openConversation(conv)"
-              class="px-4 py-3.5 flex items-center gap-3 cursor-pointer transition-all relative"
-              :class="activeConv?.id === conv.id
+              class="px-4 py-3.5 flex items-center gap-3 cursor-pointer transition-all relative" :class="activeConv?.id === conv.id
                 ? 'bg-primary/10 border-l-4 border-primary'
                 : 'border-l-4 border-transparent hover:bg-white hover:shadow-sm'">
 
@@ -73,7 +72,8 @@
                 <!-- Unread badge -->
                 <div v-if="conv.seller_unread > 0"
                   class="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] rounded-full bg-primary border-2 border-white flex items-center justify-center px-1">
-                  <span class="text-[9px] font-black text-navy">{{ conv.seller_unread > 9 ? '9+' : conv.seller_unread }}</span>
+                  <span class="text-[9px] font-black text-navy">{{ conv.seller_unread > 9 ? '9+' : conv.seller_unread
+                    }}</span>
                 </div>
               </div>
 
@@ -102,12 +102,12 @@
       </div>
 
       <!-- ───────── RIGHT: Chat Thread ───────── -->
-      <div class="flex-grow flex flex-col min-w-0 bg-white"
-        :class="!activeConv && 'hidden md:flex'">
+      <div class="flex-grow flex flex-col min-w-0 bg-white" :class="!activeConv && 'hidden md:flex'">
 
         <!-- No conversation selected -->
         <div v-if="!activeConv" class="flex-grow flex flex-col items-center justify-center p-10 text-center">
-          <div class="size-24 rounded-3xl bg-gray-50 border-2 border-dashed border-gray-200 flex items-center justify-center mb-6">
+          <div
+            class="size-24 rounded-3xl bg-gray-50 border-2 border-dashed border-gray-200 flex items-center justify-center mb-6">
             <Icon icon="ph:chat-circle-dots-bold" class="text-4xl text-primary/50" />
           </div>
           <h3 class="text-xl font-black text-navy tracking-tight mb-2">Pilih percakapan</h3>
@@ -135,7 +135,8 @@
             </div>
             <!-- Info -->
             <div class="flex-1 min-w-0">
-              <h3 class="text-sm font-black text-navy leading-none truncate">{{ activeConv.archer_name || 'Pembeli' }}</h3>
+              <h3 class="text-sm font-black text-navy leading-none truncate">{{ activeConv.archer_name || 'Pembeli' }}
+              </h3>
               <div class="flex items-center gap-1 mt-0.5">
                 <div class="size-1.5 rounded-full"
                   :class="isOnline(activeConv.archer_last_seen) ? 'bg-green-400' : 'bg-gray-300'"></div>
@@ -151,7 +152,8 @@
               </div>
             </div>
             <!-- Product thumbnail -->
-            <div v-if="activeConv.product_image" class="size-10 rounded-xl overflow-hidden border-2 border-gray-200 shrink-0">
+            <div v-if="activeConv.product_image"
+              class="size-10 rounded-xl overflow-hidden border-2 border-gray-200 shrink-0">
               <img :src="activeConv.product_image" class="w-full h-full object-cover" />
             </div>
           </div>
@@ -170,8 +172,7 @@
           </div>
 
           <!-- Messages area -->
-          <div ref="messageContainer"
-            class="flex-grow overflow-y-auto px-4 sm:px-6 py-5 space-y-3 no-scrollbar"
+          <div ref="messageContainer" class="flex-grow overflow-y-auto px-4 sm:px-6 py-5 space-y-3 no-scrollbar"
             style="background: linear-gradient(180deg, #f4f6fb 0%, #eef1f8 100%);">
 
             <!-- Loading skeleton -->
@@ -184,8 +185,10 @@
 
             <!-- Messages -->
             <template v-else>
-              <div v-if="messages.length === 0" class="flex flex-col items-center justify-center h-full py-10 text-center">
-                <div class="size-16 rounded-3xl bg-white border-2 border-dashed border-gray-200 flex items-center justify-center mb-3">
+              <div v-if="messages.length === 0"
+                class="flex flex-col items-center justify-center h-full py-10 text-center">
+                <div
+                  class="size-16 rounded-3xl bg-white border-2 border-dashed border-gray-200 flex items-center justify-center mb-3">
                   <Icon icon="ph:chat-circle-bold" class="text-3xl text-gray-300" />
                 </div>
                 <div class="text-sm font-bold text-gray-400">Belum ada pesan</div>
@@ -197,28 +200,26 @@
                   <!-- Date separator -->
                   <div v-if="showDateSeparator(index)" class="flex items-center gap-3 my-3">
                     <div class="flex-1 h-px bg-gray-200"></div>
-                    <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest bg-white border border-gray-200 px-3 py-1 rounded-full shadow-sm">
+                    <span
+                      class="text-[9px] font-black text-gray-400 tracking-widest bg-white border border-gray-200 px-3 py-1 rounded-full shadow-sm">
                       {{ formatDateLabel(msg.created_at) }}
                     </span>
                     <div class="flex-1 h-px bg-gray-200"></div>
                   </div>
 
                   <!-- Message bubble -->
-                  <div class="flex flex-col"
-                    :class="msg.sender_type === 'seller' ? 'items-end' : 'items-start'">
+                  <div class="flex flex-col" :class="msg.sender_type === 'seller' ? 'items-end' : 'items-start'">
                     <div class="max-w-[78%] sm:max-w-[65%]">
-                      <div class="px-4 py-2.5 text-sm leading-relaxed font-medium shadow-md"
-                        :class="msg.sender_type === 'seller'
-                          ? 'bg-navy text-white rounded-2xl rounded-tr-sm'
-                          : 'bg-white text-navy border border-gray-200 rounded-2xl rounded-tl-sm'">
+                      <div class="px-4 py-2.5 text-sm leading-relaxed font-medium shadow-md" :class="msg.sender_type === 'seller'
+                        ? 'bg-navy text-white rounded-2xl rounded-tr-sm'
+                        : 'bg-white text-navy border border-gray-200 rounded-2xl rounded-tl-sm'">
                         {{ msg.message }}
                       </div>
                       <div class="mt-1 text-[9px] font-semibold text-gray-400 flex items-center gap-1"
                         :class="msg.sender_type === 'seller' ? 'justify-end' : 'justify-start'">
                         {{ formatMessageTime(msg.created_at) }}
                         <Icon v-if="msg.sender_type === 'seller'"
-                          :icon="msg.is_read ? 'ph:checks-bold' : 'ph:check-bold'"
-                          class="text-[10px]"
+                          :icon="msg.is_read ? 'ph:checks-bold' : 'ph:check-bold'" class="text-[10px]"
                           :class="msg.is_read ? 'text-primary' : 'text-gray-300'" />
                       </div>
                     </div>
@@ -231,7 +232,8 @@
           <!-- Input area -->
           <div class="px-4 py-3 bg-white border-t-2 border-gray-200 shrink-0">
             <div class="flex items-end gap-2.5 max-w-4xl mx-auto">
-              <div class="flex-grow bg-gray-50 rounded-2xl border-2 border-gray-200 focus-within:border-primary/40 focus-within:bg-white transition-all flex items-end overflow-hidden">
+              <div
+                class="flex-grow bg-gray-50 rounded-2xl border-2 border-gray-200 focus-within:border-primary/40 focus-within:bg-white transition-all flex items-end overflow-hidden">
                 <textarea v-model="newMessage" placeholder="Tulis balasan..." rows="1"
                   @keydown.enter.exact.prevent="sendMessage"
                   class="flex-grow bg-transparent border-none focus:ring-0 text-sm font-medium px-4 py-3 max-h-32 resize-none no-scrollbar text-navy placeholder:text-gray-300 outline-none" />
@@ -242,7 +244,9 @@
                 <Icon v-else icon="ph:paper-plane-right-fill" class="text-primary text-lg" />
               </button>
             </div>
-            <div class="text-[9px] text-gray-300 font-semibold text-center mt-2">Enter untuk kirim · Shift+Enter untuk baris baru</div>
+            <div class="text-[9px] text-gray-300 font-semibold text-center mt-2">Enter untuk kirim · Shift+Enter untuk
+              baris baru
+            </div>
           </div>
         </template>
       </div>
@@ -437,6 +441,12 @@ const showDateSeparator = (index) => {
 </script>
 
 <style scoped>
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 </style>

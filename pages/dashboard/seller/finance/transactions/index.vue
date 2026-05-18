@@ -87,7 +87,7 @@
                 <table class="w-full text-left min-w-[700px]">
                     <thead>
                         <tr
-                            class="bg-gray-50/50 text-[9px] font-black text-gray-400 tracking-[0.2em] uppercase border-b border-gray-50">
+                            class="bg-gray-50/50 text-[9px] font-black text-gray-400 tracking-[0.2em] border-b border-gray-50">
                             <th class="px-8 py-4">Tipe</th>
                             <th @click="toggleSort('date')"
                                 class="px-8 py-4 cursor-pointer hover:text-navy transition-colors">
@@ -127,7 +127,7 @@
                             <td colspan="5" class="py-20 text-center">
                                 <Icon icon="ph:circle-notched-bold"
                                     class="text-3xl text-primary animate-spin mx-auto mb-2" />
-                                <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Memuat
+                                <div class="text-[10px] font-bold text-gray-400 tracking-widest">Memuat
                                     Transaksi...</div>
                             </td>
                         </tr>
@@ -150,7 +150,7 @@
                                         class="size-8 rounded-lg flex items-center justify-center shrink-0">
                                         <Icon :icon="item.type === 'income' ? 'ph:trend-up' : 'ph:trend-down'" />
                                     </div>
-                                    <div class="text-[11px] font-black text-navy uppercase tracking-tight">{{ item.type
+                                    <div class="text-[11px] font-black text-navy tracking-tight">{{ item.type
                                         === 'income' ? 'Masuk' : 'Keluar' }}</div>
                                 </div>
                             </td>

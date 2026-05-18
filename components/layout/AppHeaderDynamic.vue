@@ -43,7 +43,7 @@
                         <p class="text-white/70 text-xs mt-1">{{ featuredEvent.location }} â€¢ {{
                           featuredEvent.date }}</p>
                         <NuxtLink :to="`/events/${featuredEvent.slug || featuredEvent.id}`"
-                          class="inline-flex items-center gap-1 mt-3 text-primary text-xs font-bold hover:text-white transition-colors uppercase tracking-widest">
+                          class="inline-flex items-center gap-1 mt-3 text-primary text-xs font-bold hover:text-white transition-colors tracking-widest">
                           Cek Detailnya
                           <Icon icon="ph:arrow-right" />
                         </NuxtLink>
@@ -60,7 +60,7 @@
                         <span class="text-gray-400 text-[10px] font-black tracking-widest ">Event
                           Terakhir</span>
                         <NuxtLink to="/events"
-                          class="text-navy hover:text-primary text-[10px] font-black tracking-widest uppercase transition-colors">
+                          class="text-navy hover:text-primary text-[10px] font-black tracking-widest transition-colors">
                           Lihat Semua
                         </NuxtLink>
                       </div>
@@ -254,7 +254,7 @@
               class="flex items-center gap-4 p-4 rounded-2xl transition-all group"
               :class="isActive(link.to) ? 'bg-primary text-primary-text font-black' : 'text-gray-500 hover:bg-gray-50 hover:text-navy'">
               <Icon :icon="link.icon" class="text-xl" />
-              <span class="font-black text-sm uppercase tracking-wider">{{ link.label }}</span>
+              <span class="font-black text-sm tracking-wider">{{ link.label }}</span>
             </NuxtLink>
 
             <!-- Mobile Turnamen with Accordion -->
@@ -263,7 +263,7 @@
                 class="w-full flex items-center justify-between p-4 rounded-2xl transition-all text-gray-500 hover:bg-gray-50 hover:text-navy">
                 <div class="flex items-center gap-4 font-black">
                   <Icon icon="ph:target-bold" class="text-xl" />
-                  <span class="font-black text-sm uppercase tracking-wider">Event</span>
+                  <span class="font-black text-sm tracking-wider">Event</span>
                 </div>
                 <Icon icon="ph:caret-down-bold" class="text-xs transition-transform duration-300"
                   :class="{ 'rotate-180': mobileSubmenuOpen }" />
@@ -294,23 +294,23 @@
         <div class="p-6 border-t border-gray-50 bg-white">
           <div v-if="isLoggedIn" class="space-y-3">
             <NuxtLink :to="dashboardUrl" @click="mobileMenuOpen = false"
-              class="flex items-center justify-center gap-2 w-full py-3.5 bg-navy text-white rounded-2xl text-sm font-black tracking-widest uppercase shadow-sm shadow-navy/20 transition-all">
+              class="flex items-center justify-center gap-2 w-full py-3.5 bg-navy text-white rounded-2xl text-sm font-black tracking-widest shadow-sm shadow-navy/20 transition-all">
               <Icon icon="ph:layout-bold" />
               Dashboard
             </NuxtLink>
             <button @click="handleLogout(); mobileMenuOpen = false"
-              class="flex items-center justify-center gap-2 w-full py-3.5 border-2 border-red-50 text-red-500 rounded-2xl text-sm font-black tracking-widest uppercase hover:bg-red-50 transition-all">
+              class="flex items-center justify-center gap-2 w-full py-3.5 border-2 border-red-50 text-red-500 rounded-2xl text-sm font-black tracking-widest hover:bg-red-50 transition-all">
               <Icon icon="ph:sign-out-bold" />
               Keluar
             </button>
           </div>
           <div v-else class="grid grid-cols-2 gap-3">
             <NuxtLink to="/auth/login" @click="mobileMenuOpen = false"
-              class="flex items-center justify-center py-3.5 border-2 border-gray-50 text-navy rounded-2xl text-[10px] font-black tracking-widest uppercase hover:bg-gray-50 transition-all">
+              class="flex items-center justify-center py-3.5 border-2 border-gray-50 text-navy rounded-2xl text-[10px] font-black tracking-widest hover:bg-gray-50 transition-all">
               Masuk
             </NuxtLink>
             <NuxtLink to="/auth/register" @click="mobileMenuOpen = false"
-              class="flex items-center justify-center py-3.5 bg-primary text-primary-text rounded-2xl text-[10px] font-black tracking-widest uppercase shadow-lg shadow-primary/20 transition-all">
+              class="flex items-center justify-center py-3.5 bg-primary text-primary-text rounded-2xl text-[10px] font-black tracking-widest shadow-lg shadow-primary/20 transition-all">
               Daftar
             </NuxtLink>
           </div>

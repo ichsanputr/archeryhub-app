@@ -3,7 +3,7 @@
         <!-- Breadcrumbs & Header Actions -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-                <nav class="flex text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 items-center gap-2">
+                <nav class="flex text-xs font-bold text-slate-400 tracking-widest mb-2 items-center gap-2">
                     <NuxtLink :to="`/dashboard/events/${eventId}`" class="hover:text-primary transition-colors">Event
                     </NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[10px]" />
@@ -59,7 +59,7 @@
 
                     <!-- Qual Rank Badge -->
                     <div class="flex flex-col items-center md:items-end justify-center">
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Peringkat
+                        <p class="text-[10px] font-black text-slate-400 tracking-widest mb-1">Peringkat
                             Kualifikasi</p>
                         <div class="flex items-baseline gap-1">
                             <span class="text-4xl font-black text-primary tracking-tighter">{{ qualRank || '-' }}</span>
@@ -83,7 +83,7 @@
                             Jejak Kualifikasi
                         </h4>
                         <div
-                            class="flex bg-slate-100 dark:bg-slate-900 p-1 rounded-xl text-[10px] font-black uppercase tracking-widest border border-slate-200 dark:border-slate-700 shadow-inner">
+                            class="flex bg-slate-100 dark:bg-slate-900 p-1 rounded-xl text-[10px] font-black tracking-widest border border-slate-200 dark:border-slate-700 shadow-inner">
                             <button v-for="(session, idx) in qualSessions" :key="idx" @click="activeSessionIdx = idx"
                                 class="px-6 py-2 rounded-lg transition-all"
                                 :class="activeSessionIdx === idx ? 'bg-white dark:bg-slate-700 text-navy dark:text-white shadow-sm' : 'text-slate-400 hover:text-slate-600'">
@@ -95,7 +95,7 @@
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm text-left">
                             <thead
-                                class="bg-slate-50/50 dark:bg-slate-900/50 text-slate-400 uppercase text-[10px] font-black tracking-widest">
+                                class="bg-slate-50/50 dark:bg-slate-900/50 text-slate-400 text-[10px] font-black tracking-widest">
                                 <tr>
                                     <th class="px-8 py-4">End</th>
                                     <th class="px-8 py-4 text-center">Rincian Skor</th>
@@ -119,7 +119,7 @@
                                                 </template>
                                                 <template v-else>
                                                     <div
-                                                        class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-900 text-[10px] text-slate-400 font-black uppercase tracking-widest">
+                                                        class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-900 text-[10px] text-slate-400 font-black tracking-widest">
                                                         Total End: {{ endTotal }}
                                                     </div>
                                                 </template>
@@ -130,7 +130,7 @@
                                         <td class="px-8 py-5 text-center text-slate-400 font-bold">-</td>
                                     </tr>
                                     <tr class="bg-primary/5 dark:bg-primary/5 font-black">
-                                        <td class="px-8 py-6 text-right uppercase tracking-widest text-[10px] text-slate-500"
+                                        <td class="px-8 py-6 text-right tracking-widest text-[10px] text-slate-500"
                                             colspan="2">Ringkasan Sesi:
                                         </td>
                                         <td class="px-8 py-6 text-center text-primary text-2xl tracking-tighter">{{
@@ -142,7 +142,7 @@
                                 <tr v-else>
                                     <td colspan="4" class="py-20 text-center">
                                         <Icon icon="ph:target-light" class="text-6xl mx-auto mb-4 opacity-10" />
-                                        <p class="text-xs font-black uppercase tracking-widest text-slate-300">Data
+                                        <p class="text-xs font-black tracking-widest text-slate-300">Data
                                             tidak tersedia</p>
                                     </td>
                                 </tr>

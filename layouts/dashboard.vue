@@ -47,7 +47,7 @@
                             <Icon icon="ph:warning-octagon-bold" class="text-primary text-xl" />
                         </div>
                         <div class="text-white min-w-0">
-                            <div class="font-black text-xs sm:text-sm tracking-tight uppercase leading-tight">
+                            <div class="font-black text-xs sm:text-sm tracking-tight leading-tight">
                                 Paket Anda Sudah Kedaluwarsa
                             </div>
                             <div class="text-[10px] sm:text-xs text-slate-400 font-medium mt-0.5 leading-tight">
@@ -55,7 +55,7 @@
                         </div>
                     </div>
                     <NuxtLink :to="`/dashboard/${userPersona}/subscription`"
-                        class="bg-primary hover:bg-white text-navy font-black text-[10px] sm:text-xs px-4 sm:px-5 py-2.5 rounded-xl transition-all shadow-sm flex items-center gap-2 whitespace-nowrap uppercase tracking-widest active:scale-95 shrink-0">
+                        class="bg-primary hover:bg-white text-navy font-black text-[10px] sm:text-xs px-4 sm:px-5 py-2.5 rounded-xl transition-all shadow-sm flex items-center gap-2 whitespace-nowrap tracking-widest active:scale-95 shrink-0">
                         <Icon icon="ph:crown-bold" class="text-xs sm:text-sm" />
                         <span class="hidden xs:inline">Perpanjang Sekarang</span>
                         <span class="xs:hidden">Perpanjang</span>

@@ -3,7 +3,7 @@
         <!-- Breadcrumbs -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-                <nav class="flex text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 items-center gap-2">
+                <nav class="flex text-xs font-bold text-slate-400 tracking-widest mb-2 items-center gap-2">
                     <NuxtLink :to="`/dashboard/events/${eventId}`" class="hover:text-primary transition-colors">Event
                     </NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-[10px]" />
@@ -64,7 +64,7 @@
                                         <div class="flex items-center gap-3 text-slate-500 dark:text-slate-400">
                                             <Icon icon="ph:shield-check-bold" class="text-primary text-xl" />
                                             <span class="text-sm font-medium">{{ participant.club_name || 'Independent'
-                                                }}</span>
+                                            }}</span>
                                         </div>
                                         <div class="flex items-center gap-3 text-slate-500 dark:text-slate-400">
                                             <Icon icon="ph:phone-bold" class="text-primary text-xl" />
@@ -91,7 +91,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div
                                 class="p-6 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-700 rounded-3xl group transition-all hover:border-primary/30">
-                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Divisi &
+                                <p class="text-[10px] font-black text-slate-400 tracking-widest mb-2">Divisi &
                                     Kategori</p>
                                 <p class="text-lg font-black text-navy dark:text-white leading-tight">
                                     {{ participant.category_name || participant.division_name }}
@@ -102,7 +102,7 @@
 
                             <div
                                 class="p-6 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-700 rounded-3xl group transition-all hover:border-primary/30 text-center">
-                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Nomor
+                                <p class="text-[10px] font-black text-slate-400 tracking-widest mb-2">Nomor
                                     Bantalan</p>
                                 <div class="flex items-center justify-center gap-2">
                                     <Icon icon="ph:target-bold" class="text-primary text-2xl" />
@@ -119,7 +119,7 @@
                     <!-- Status Card -->
                     <div
                         class="bg-white dark:bg-slate-800 rounded-[32px] border border-slate-100 dark:border-slate-700 shadow-sm shadow-slate-200/30 overflow-hidden p-8">
-                        <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-6">Status Pembayaran
+                        <h4 class="text-xs font-black text-slate-400 tracking-widest mb-6">Status Pembayaran
                         </h4>
 
                         <div class="flex flex-col gap-6">
@@ -129,7 +129,7 @@
                                     <Icon
                                         :icon="participant.payment_status === 'lunas' ? 'ph:check-circle-fill' : 'ph:clock-bold'"
                                         class="text-2xl" />
-                                    <span class="font-black uppercase tracking-widest text-xs">{{
+                                    <span class="font-black tracking-widest text-xs">{{
                                         getDisplayStatus(participant.payment_status) }}</span>
                                 </div>
                             </div>
@@ -148,7 +148,7 @@
 
                             <div v-if="participant.payment_proof_urls && participant.payment_proof_urls.length"
                                 class="mt-4">
-                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Bukti
+                                <p class="text-[10px] font-black text-slate-400 tracking-widest mb-4">Bukti
                                     Pembayaran</p>
                                 <div class="space-y-4">
                                     <div v-for="(url, idx) in paymentProofs" :key="idx" class="relative group">

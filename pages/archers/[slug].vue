@@ -23,9 +23,9 @@
                                     ArcherHub</span>
                                 <div v-if="archer.club_name" class="flex items-center gap-1 text-primary">
                                     <Icon icon="ph:shield-star-fill" class="text-lg" />
-                                    <span class="text-[10px] font-extrabold uppercase tracking-widest">{{
+                                    <span class="text-[10px] font-extrabold tracking-widest">{{
                                         archer.club_name
-                                        }}</span>
+                                    }}</span>
                                 </div>
                             </div>
 
@@ -37,7 +37,7 @@
                                         :alt="archer.full_name" />
                                 </div>
                                 <h1
-                                    class="text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tighter leading-[0.95] break-words">
+                                    class="text-2xl sm:text-3xl md:text-4xl font-black tracking-tighter leading-[0.95] break-words">
                                     {{ archer.full_name?.split(' ')[0] }} <br />
                                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-white">
                                         {{ archer.full_name?.split(' ').slice(1).join(' ') }}
@@ -47,19 +47,17 @@
 
                             <div class="flex items-center gap-6 pt-4">
                                 <div class="flex items-center gap-2">
-                                    <span
-                                        class="text-white/60 text-[10px] font-black uppercase tracking-widest">Asal</span>
+                                    <span class="text-white/60 text-[10px] font-black tracking-widest">Asal</span>
                                     <span class="font-bold flex items-center gap-2 text-sm">{{ archer.city ||
                                         'Indonesia' }}
                                         🇮🇩</span>
                                 </div>
                                 <div v-if="bowTypeLabel" class="w-px h-4 bg-white/20"></div>
                                 <div v-if="bowTypeLabel" class="flex items-center gap-2">
-                                    <span
-                                        class="text-white/60 text-[10px] font-black uppercase tracking-widest">Busur</span>
-                                    <span class="font-bold uppercase tracking-widest text-sm text-primary">{{
+                                    <span class="text-white/60 text-[10px] font-black tracking-widest">Busur</span>
+                                    <span class="font-bold tracking-widest text-sm text-primary">{{
                                         bowTypeLabel
-                                        }}</span>
+                                    }}</span>
                                 </div>
                             </div>
                         </div>
@@ -75,7 +73,7 @@
                                 <!-- Biography -->
                                 <div class="space-y-6">
                                     <h3
-                                        class="text-sm font-black uppercase tracking-[0.4em] text-navy/30 flex items-center gap-4">
+                                        class="text-sm font-black tracking-[0.4em] text-navy/30 flex items-center gap-4">
                                         Biografi <span class="h-px flex-1 bg-gray-100"></span>
                                     </h3>
                                     <div class="text-sm md:text-lg text-navy/80 leading-relaxed font-light">
@@ -90,7 +88,7 @@
                                 <!-- Personal Data Grid -->
                                 <div class="space-y-8">
                                     <h3
-                                        class="text-sm font-black uppercase tracking-[0.4em] text-navy/30 flex items-center gap-4">
+                                        class="text-sm font-black tracking-[0.4em] text-navy/30 flex items-center gap-4">
                                         Data Atlet <span class="h-px flex-1 bg-gray-100"></span>
                                     </h3>
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -100,8 +98,7 @@
                                                 <Icon icon="ph:student" class="text-xl text-navy" />
                                             </div>
                                             <div>
-                                                <div
-                                                    class="text-[10px] font-black text-navy/30 uppercase tracking-[0.2em]">
+                                                <div class="text-[10px] font-black text-navy/30 tracking-[0.2em]">
                                                     Pendidikan
                                                 </div>
                                                 <h5 class="font-bold text-navy mt-1">{{ archer.school }}</h5>
@@ -114,8 +111,7 @@
                                                 <Icon icon="ph:info" class="text-xl text-navy" />
                                             </div>
                                             <div>
-                                                <div
-                                                    class="text-[10px] font-black text-navy/30 uppercase tracking-[0.2em]">
+                                                <div class="text-[10px] font-black text-navy/30 tracking-[0.2em]">
                                                     Informasi
                                                 </div>
                                                 <h5 class="font-bold text-navy mt-1">
@@ -132,8 +128,7 @@
                                                     class="text-xl text-navy" />
                                             </div>
                                             <div>
-                                                <div
-                                                    class="text-[10px] font-black text-navy/30 uppercase tracking-[0.2em]">
+                                                <div class="text-[10px] font-black text-navy/30 tracking-[0.2em]">
                                                     Archer
                                                     ID
                                                 </div>
@@ -147,12 +142,11 @@
                                                 <Icon icon="ph:map-pin" class="text-xl text-navy" />
                                             </div>
                                             <div>
-                                                <div
-                                                    class="text-[10px] font-black text-navy/30 uppercase tracking-[0.2em]">
+                                                <div class="text-[10px] font-black text-navy/30 tracking-[0.2em]">
                                                     Domisili /
                                                     Alamat</div>
-                                                <h5 class="font-bold text-navy mt-1 uppercase text-xs">{{ archer.address
-                                                    }},
+                                                <h5 class="font-bold text-navy mt-1 text-xs">{{ archer.address
+                                                }},
                                                     {{
                                                         archer.city }}</h5>
                                             </div>
@@ -163,7 +157,7 @@
                                 <!-- Achievements Full List -->
                                 <div v-if="processedAchievements.full.length" class="space-y-8">
                                     <h3
-                                        class="text-sm font-black uppercase tracking-[0.4em] text-navy/30 flex items-center gap-4">
+                                        class="text-sm font-black tracking-[0.4em] text-navy/30 flex items-center gap-4">
                                         Prestasi & Penghargaan <span class="h-px flex-1 bg-gray-100"></span>
                                     </h3>
                                     <div class="grid grid-cols-1 gap-4">
@@ -182,7 +176,7 @@
                                 <div class="space-y-8">
                                     <div class="flex items-center justify-between">
                                         <h3
-                                            class="text-sm font-black uppercase tracking-[0.4em] text-navy/30 flex items-center gap-4 flex-1">
+                                            class="text-sm font-black tracking-[0.4em] text-navy/30 flex items-center gap-4 flex-1">
                                             Riwayat Pertandingan <span class="h-px flex-1 bg-gray-100"></span>
                                         </h3>
                                     </div>
@@ -207,22 +201,22 @@
                                                         {{ event.name }}</h4>
                                                     <div class="flex gap-2 mt-1">
                                                         <span v-for="cat in event.categories" :key="cat"
-                                                            class="text-[10px] font-bold text-navy/40 uppercase tracking-wider">{{
+                                                            class="text-[10px] font-bold text-navy/40 tracking-wider">{{
                                                                 cat }}</span>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="flex flex-col items-end">
                                                 <span
-                                                    class="text-[10px] font-black uppercase tracking-widest text-navy/20 mb-1">Rank</span>
+                                                    class="text-[10px] font-black tracking-widest text-navy/20 mb-1">Rank</span>
                                                 <span class="text-2xl font-black text-navy italic">#{{ event.rank
-                                                    }}</span>
+                                                }}</span>
                                             </div>
                                         </div>
 
                                         <div v-if="groupedEventHistory.length === 0"
                                             class="py-16 text-center bg-gray-50 rounded-3xl border border-dashed border-gray-200">
-                                            <p class="text-xs font-black text-navy/20 uppercase tracking-[0.3em]">Belum
+                                            <p class="text-xs font-black text-navy/20 tracking-[0.3em]">Belum
                                                 ada
                                                 riwayat kompetisi</p>
                                         </div>
@@ -234,7 +228,7 @@
                             <div class="lg:col-span-4 space-y-12">
                                 <!-- Achievements Highlights -->
                                 <div v-if="processedAchievements.highlights.length" class="space-y-6">
-                                    <h3 class="text-sm font-black uppercase tracking-[0.4em] text-navy/30">Top
+                                    <h3 class="text-sm font-black tracking-[0.4em] text-navy/30">Top
                                         Highlights
                                     </h3>
                                     <div
@@ -254,7 +248,7 @@
 
                                 <!-- Equipment -->
                                 <div v-if="archer.equipment" class="space-y-6">
-                                    <h3 class="text-sm font-black uppercase tracking-[0.4em] text-navy/30">Peralatan
+                                    <h3 class="text-sm font-black tracking-[0.4em] text-navy/30">Peralatan
                                         (Gear)
                                     </h3>
                                     <div class="space-y-3">
@@ -262,9 +256,9 @@
                                             <div v-if="gear.trim()"
                                                 class="p-5 border border-gray-100 rounded-2xl bg-white hover:border-primary transition-colors shadow-sm">
                                                 <div class="text-xs font-black text-navy leading-tight">{{ gear.trim()
-                                                }}
+                                                    }}
                                                 </div>
-                                                <div class="text-[9px] text-navy/30 uppercase tracking-widest mt-1.5">
+                                                <div class="text-[9px] text-navy/30 tracking-widest mt-1.5">
                                                     Primary
                                                     Equipment</div>
                                             </div>
@@ -274,7 +268,7 @@
 
                                 <!-- Kontak & Sosial -->
                                 <div class="space-y-6">
-                                    <h3 class="text-[10px] font-black uppercase tracking-[0.4em] text-navy/20">Kontak &
+                                    <h3 class="text-[10px] font-black tracking-[0.4em] text-navy/20">Kontak &
                                         Media
                                         Sosial
                                     </h3>
@@ -288,8 +282,7 @@
                                                 <Icon icon="ph:instagram-logo-bold" class="text-xl" />
                                             </div>
                                             <div class="flex-1">
-                                                <div
-                                                    class="text-[10px] font-black text-navy/40 uppercase tracking-widest">
+                                                <div class="text-[10px] font-black text-navy/40 tracking-widest">
                                                     Instagram</div>
                                                 <div class="text-xs font-bold text-navy">{{ archer.social_instagram }}
                                                 </div>
@@ -305,8 +298,7 @@
                                                 <Icon icon="ph:tiktok-logo-bold" class="text-xl" />
                                             </div>
                                             <div class="flex-1">
-                                                <div
-                                                    class="text-[10px] font-black text-navy/40 uppercase tracking-widest">
+                                                <div class="text-[10px] font-black text-navy/40 tracking-widest">
                                                     TikTok
                                                 </div>
                                                 <div class="text-xs font-bold text-navy">{{ archer.social_tiktok }}
@@ -323,8 +315,7 @@
                                                 <Icon icon="ph:whatsapp-logo-bold" class="text-xl" />
                                             </div>
                                             <div class="flex-1">
-                                                <div
-                                                    class="text-[10px] font-black text-navy/40 uppercase tracking-widest">
+                                                <div class="text-[10px] font-black text-navy/40 tracking-widest">
                                                     WhatsApp</div>
                                                 <div class="text-xs font-bold text-navy">{{ archer.social_whatsapp }}
                                                 </div>
@@ -340,8 +331,7 @@
                                                 <Icon icon="ph:facebook-logo-bold" class="text-xl" />
                                             </div>
                                             <div class="flex-1">
-                                                <div
-                                                    class="text-[10px] font-black text-navy/40 uppercase tracking-widest">
+                                                <div class="text-[10px] font-black text-navy/40 tracking-widest">
                                                     Facebook</div>
                                                 <div class="text-xs font-bold text-navy">{{ archer.social_facebook }}
                                                 </div>
@@ -357,8 +347,7 @@
                                                 <Icon icon="ph:twitter-logo-bold" class="text-xl" />
                                             </div>
                                             <div class="flex-1">
-                                                <div
-                                                    class="text-[10px] font-black text-navy/40 uppercase tracking-widest">
+                                                <div class="text-[10px] font-black text-navy/40 tracking-widest">
                                                     Twitter
                                                     (X)</div>
                                                 <div class="text-xs font-bold text-navy">{{ archer.social_twitter }}
@@ -367,7 +356,7 @@
                                         </a>
 
                                         <button @click="openShareDialog"
-                                            class="w-full flex items-center justify-center gap-3 py-3 px-4 bg-navy rounded-xl text-white font-black text-[10px] uppercase tracking-[0.2em] hover:bg-navy-dark transition-all shadow-sm shadow-navy/20">
+                                            class="w-full flex items-center justify-center gap-3 py-3 px-4 bg-navy rounded-xl text-white font-black text-[10px] tracking-[0.2em] hover:bg-navy-dark transition-all shadow-sm shadow-navy/20">
                                             <Icon icon="ph:share-network-bold" class="text-sm" />
                                             Bagikan Profil Atlet
                                         </button>
@@ -399,7 +388,7 @@
                                         class="w-full h-full object-cover" />
                                 </div>
                                 <div>
-                                    <div class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-0.5">Profil
+                                    <div class="text-xs text-slate-500 font-bold tracking-wider mb-0.5">Profil
                                         Atlet
                                     </div>
                                     <div class="font-black text-[#0e1e3a] text-base">{{ archer.full_name }}</div>
@@ -412,9 +401,9 @@
                                     class="flex flex-col items-center gap-2 group">
                                     <div :class="`w-12 h-12 rounded-xl ${plat.bg} flex items-center justify-center shadow-sm group-hover:scale-110 transition-all`"
                                         v-html="plat.iconHtml"></div>
-                                    <span class="text-[9px] font-black text-slate-400 uppercase tracking-wider">{{
+                                    <span class="text-[9px] font-black text-slate-400 tracking-wider">{{
                                         plat.name
-                                        }}</span>
+                                    }}</span>
                                 </button>
                             </div>
 

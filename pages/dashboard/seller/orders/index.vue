@@ -15,7 +15,8 @@
           </div>
           <div>
             <h1 class="text-2xl sm:text-4xl font-black tracking-tight leading-tight capitalize">Pesanan masuk</h1>
-            <div class="text-slate-300 text-xs sm:text-sm font-bold mt-1 tracking-wide capitalize">Kelola dan proses pesanan dari pembeli anda</div>
+            <div class="text-slate-300 text-xs sm:text-sm font-bold mt-1 tracking-wide capitalize">Kelola dan proses
+              pesanan dari pembeli anda</div>
           </div>
         </div>
         <BaseButton variant="primary" icon="ph:download-bold" @click="exportOrders" :loading="isExporting"
@@ -37,11 +38,11 @@
 
     <!-- Orders Table -->
     <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden">
-       <div v-if="isLoading" class="py-20 flex flex-col items-center gap-4">
-         <LoadingSpinner size="lg" />
-         <div class="text-gray-400 font-bold">Memuat pesanan...</div>
-       </div>
-       <div v-else-if="orders.length === 0" class="text-center py-20">
+      <div v-if="isLoading" class="py-20 flex flex-col items-center gap-4">
+        <LoadingSpinner size="lg" />
+        <div class="text-gray-400 font-bold">Memuat pesanan...</div>
+      </div>
+      <div v-else-if="orders.length === 0" class="text-center py-20">
         <Icon icon="ph:package-bold" class="text-6xl text-gray-100 mx-auto mb-4" />
         <div class="text-gray-400 font-bold">Tidak ada pesanan ditemukan</div>
       </div>
@@ -49,11 +50,10 @@
         <table class="w-full border-collapse min-w-[1000px]">
           <thead>
             <tr class="text-left bg-gray-50/50 border-b border-gray-100">
-              <th
-                class="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400">
+              <th class="px-8 py-5 text-[11px] font-black tracking-widest text-gray-400">
                 ID Pesanan</th>
               <th @click="toggleSort('created_at')"
-                class="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400 cursor-pointer hover:text-navy transition-colors">
+                class="px-8 py-5 text-[11px] font-black tracking-widest text-gray-400 cursor-pointer hover:text-navy transition-colors">
                 <div class="flex items-center gap-2">
                   Tanggal
                   <Icon v-if="sortBy === 'created_at'"
@@ -62,7 +62,7 @@
                 </div>
               </th>
               <th @click="toggleSort('buyer_name')"
-                class="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400 cursor-pointer hover:text-navy transition-colors">
+                class="px-8 py-5 text-[11px] font-black tracking-widest text-gray-400 cursor-pointer hover:text-navy transition-colors">
                 <div class="flex items-center gap-2">
                   Pelanggan
                   <Icon v-if="sortBy === 'buyer_name'"
@@ -71,7 +71,7 @@
                 </div>
               </th>
               <th @click="toggleSort('total_amount')"
-                class="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400 cursor-pointer hover:text-navy transition-colors">
+                class="px-8 py-5 text-[11px] font-black tracking-widest text-gray-400 cursor-pointer hover:text-navy transition-colors">
                 <div class="flex items-center gap-2">
                   Total
                   <Icon v-if="sortBy === 'total_amount'"
@@ -80,7 +80,7 @@
                 </div>
               </th>
               <th @click="toggleSort('status')"
-                class="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400 cursor-pointer hover:text-navy transition-colors">
+                class="px-8 py-5 text-[11px] font-black tracking-widest text-gray-400 cursor-pointer hover:text-navy transition-colors">
                 <div class="flex items-center gap-2">
                   Status
                   <Icon v-if="sortBy === 'status'" :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
@@ -88,13 +88,14 @@
                   <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
                 </div>
               </th>
-              <th class="px-8 py-5 text-[11px] font-black uppercase tracking-widest text-gray-400 text-right">Aksi</th>
+              <th class="px-8 py-5 text-[11px] font-black tracking-widest text-gray-400 text-right">Aksi</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-50">
             <tr v-for="order in orders" :key="order.id" class="group hover:bg-gray-50/80 transition-all duration-300">
               <td class="px-8 py-6">
-                <div class="font-black text-navy text-sm uppercase tracking-wider group-hover:text-primary transition-colors">#{{ (order.id || '').slice(0, 8) }}</div>
+                <div class="font-black text-navy text-sm tracking-wider group-hover:text-primary transition-colors">#{{
+                  (order.id || '').slice(0, 8) }}</div>
               </td>
               <td class="px-8 py-6">
                 <div class="text-sm text-gray-500 font-medium">{{ formatDate(order.created_at) }}</div>
@@ -108,12 +109,13 @@
                 <div class="text-[10px] text-gray-400 mt-0.5 tracking-wide">{{ order.total_items }} item dipesan</div>
               </td>
               <td class="px-8 py-6">
-                <span :class="getStatusClass(order.status)" class="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm">
+                <span :class="getStatusClass(order.status)"
+                  class="px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest shadow-sm">
                   {{ getStatusLabel(order.status) }}
                 </span>
               </td>
               <td class="px-8 py-6 text-right">
-                <BaseButton variant="white" size="md" icon="ph:arrow-right-bold" 
+                <BaseButton variant="white" size="md" icon="ph:arrow-right-bold"
                   class="h-11 px-5 !rounded-xl border-gray-100 text-gray-400 hover:text-white hover:bg-navy hover:border-navy transition-all shadow-sm"
                   :to="`/dashboard/seller/orders/${order.id}`">
                   Detail
@@ -156,7 +158,7 @@ const statusOptions = [
 const fetchOrders = async () => {
   isLoading.value = true
   try {
-    const response = await get('/orders', { 
+    const response = await get('/orders', {
       query: {
         status: statusFilter.value,
         sort_by: sortBy.value,

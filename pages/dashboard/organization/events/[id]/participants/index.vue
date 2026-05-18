@@ -79,7 +79,7 @@
             </div>
 
             <div class="flex items-center gap-2">
-                <span class="text-xs font-bold text-gray-400 uppercase tracking-widest hidden sm:inline">Total:</span>
+                <span class="text-xs font-bold text-gray-400 tracking-widest hidden sm:inline">Total:</span>
                 <div class="px-3 py-1.5 bg-navy/5 text-navy rounded-lg font-black text-xs border border-navy/10">
                     {{ total }} Peserta
                 </div>
@@ -138,7 +138,7 @@
                                 class="group hover:bg-gray-50/50 transition-colors">
                                 <td class="px-6 py-4 align-top text-center w-16">
                                     <span class="text-sm font-bold text-gray-400">{{ (page - 1) * limit + index + 1
-                                    }}</span>
+                                        }}</span>
                                 </td>
                                 <td class="px-6 py-4 align-top min-w-[250px]">
                                     <div class="flex items-center gap-3">
@@ -160,7 +160,7 @@
                                         <span class="text-xs font-bold text-gray-600 leading-snug">{{
                                             participant.club_name || '-' }}</span>
                                         <span v-if="participant.city"
-                                            class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">{{
+                                            class="text-[10px] text-gray-400 font-bold tracking-wider">{{
                                                 participant.city }}</span>
                                     </div>
                                 </td>

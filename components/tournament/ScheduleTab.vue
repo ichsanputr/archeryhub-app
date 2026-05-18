@@ -5,7 +5,7 @@
 
             <div v-if="isLoading" class="py-20 flex flex-col items-center justify-center text-gray-400 gap-4">
                 <Icon icon="ph:spinner-gap-bold" class="text-4xl animate-spin text-primary" />
-                <p class="text-sm font-bold tracking-widest uppercase text-navy">Memuat jadwal...</p>
+                <p class="text-sm font-bold tracking-widest text-navy">Memuat jadwal...</p>
             </div>
 
             <div v-else-if="!props.schedules.length"
@@ -13,7 +13,7 @@
                 <div class="w-20 h-20 rounded-full bg-gray-50 flex items-center justify-center mb-6">
                     <Icon icon="ph:calendar-blank-bold" class="text-5xl text-gray-200" />
                 </div>
-                <p class="text-gray-400 font-black uppercase tracking-widest text-sm">Jadwal belum tersedia.</p>
+                <p class="text-gray-400 font-black tracking-widest text-sm">Jadwal belum tersedia.</p>
             </div>
 
             <div v-else class="space-y-16">
@@ -21,7 +21,7 @@
                 <div v-for="day in sortedDays" :key="day" class="space-y-10">
                     <!-- Section Header (Date Focused) -->
                     <div class="flex items-center gap-4">
-                        <h2 class="text-lg sm:text-xl font-black text-navy uppercase tracking-tight whitespace-nowrap">
+                        <h2 class="text-lg sm:text-xl font-black text-navy tracking-tight whitespace-nowrap">
                             {{ formatDate(groupedByDay[day][0]?.start_time) }} <span
                                 class="text-[10px] sm:text-xs font-bold text-gray-400 ml-2 tracking-normal">/ HARI {{
                                     day }}</span>
@@ -40,15 +40,15 @@
                             <div
                                 class="absolute md:relative top-7 md:top-0 left-14 md:left-0 md:w-20 flex-shrink-0 md:pt-7 text-navy z-30">
                                 <span
-                                    class="text-xs sm:text-sm font-black block md:text-right leading-none uppercase tracking-wider">
+                                    class="text-xs sm:text-sm font-black block md:text-right leading-none tracking-wider">
                                     {{ formatStartTime(session.start_time) }}
                                 </span>
                                 <div v-if="getSessionStatus(session) === 'ongoing'"
-                                    class="text-[8px] sm:text-[9px] text-primary-hover block md:text-right uppercase font-black tracking-tighter mt-1.5 whitespace-nowrap">
+                                    class="text-[8px] sm:text-[9px] text-primary-hover block md:text-right font-black tracking-tighter mt-1.5 whitespace-nowrap">
                                     Berlangsung
                                 </div>
                                 <div v-else-if="getSessionStatus(session) === 'completed'"
-                                    class="text-[8px] sm:text-[9px] text-gray-400 block md:text-right uppercase font-bold mt-1.5 whitespace-nowrap">
+                                    class="text-[8px] sm:text-[9px] text-gray-400 block md:text-right font-bold mt-1.5 whitespace-nowrap">
                                     Selesai
                                 </div>
                             </div>
@@ -98,7 +98,7 @@
                                         </div>
                                         <div>
                                             <p
-                                                class="text-[8px] sm:text-[9px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">
+                                                class="text-[8px] sm:text-[9px] font-black text-gray-400 tracking-widest leading-none mb-1">
                                                 LOKASI</p>
                                             <p class="text-xs sm:text-sm font-black text-navy">{{ session.location ||
                                                 'Venue Utama' }}</p>
@@ -112,7 +112,7 @@
                                         </div>
                                         <div>
                                             <p
-                                                class="text-[8px] sm:text-[9px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">
+                                                class="text-[8px] sm:text-[9px] font-black text-gray-400 tracking-widest leading-none mb-1">
                                                 DETAIL</p>
                                             <p class="text-xs sm:text-sm font-black text-navy line-clamp-1">{{
                                                 session.description }}</p>

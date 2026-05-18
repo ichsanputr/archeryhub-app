@@ -5,7 +5,7 @@
             <div class="text-center md:text-left max-w-xl">
                 <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/20 rounded-full mb-4">
                     <Icon icon="ph:sparkle-fill" class="text-primary text-sm" />
-                    <span class="text-[10px] font-black text-primary uppercase tracking-widest">
+                    <span class="text-[10px] font-black text-primary tracking-widest">
                         {{ promoBadge }}
                     </span>
                 </div>
@@ -24,7 +24,7 @@
                 </div>
                 <div class="text-center">
                     <div class="text-white font-black text-lg">Hemat Rp {{ savings }}</div>
-                    <div class="text-white/50 text-[10px] font-bold uppercase tracking-widest">Total Nilai</div>
+                    <div class="text-white/50 text-[10px] font-bold tracking-widest">Total Nilai</div>
                 </div>
             </div>
         </div>
