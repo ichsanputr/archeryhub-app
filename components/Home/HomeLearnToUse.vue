@@ -1,30 +1,21 @@
 <template>
     <section class="py-20 sm:py-32 bg-[#DEFEBD] overflow-hidden relative">
-        <!-- Creative Archery Target Orbit Spiral SVG (Right Side - Navy) -->
-        <svg class="absolute -right-32 -bottom-32 h-[135%] w-auto text-navy pointer-events-none opacity-20 animate-[spin_240s_linear_infinite]" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="400" cy="400" r="360" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="10 15" opacity="0.15" />
-            <circle cx="400" cy="400" r="290" fill="none" stroke="currentColor" stroke-width="3" opacity="0.25" />
-            <circle cx="400" cy="400" r="220" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 5" opacity="0.3" />
-            <circle cx="400" cy="400" r="150" fill="none" stroke="currentColor" stroke-width="5" opacity="0.4" />
-            <circle cx="400" cy="400" r="80" fill="none" stroke="currentColor" stroke-width="2.5" opacity="0.5" />
-            <path d="M 400 400 A 300 300 0 0 1 700 400 A 240 240 0 0 1 400 640 A 180 180 0 0 1 220 400 Z" fill="none" stroke="currentColor" stroke-width="2" opacity="0.18" />
-            <line x1="400" y1="40" x2="400" y2="760" stroke="currentColor" stroke-width="1" stroke-dasharray="10 10" opacity="0.12" />
-            <line x1="40" y1="400" x2="760" y2="400" stroke="currentColor" stroke-width="1" stroke-dasharray="10 10" opacity="0.12" />
+        <!-- Subtle Stripes SVG Overlay (Right Side - Bold & Variant) -->
+        <svg class="absolute inset-y-0 right-0 h-full w-auto text-[#63C03B] pointer-events-none opacity-80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 765 1186" xml:space="preserve">
+            <!-- Intersecting double-stripe parallel variants -->
+            <path fill="currentColor" style="opacity: 0.12;" d="M122,1186H0L406-31h122L122,1186z M765-31H643L237,1186h122L765-31z"></path>
+            <path fill="currentColor" style="opacity: 0.05;" d="M180,1186H58L464-31h122L180,1186z M825-31H703L297,1186h122L825-31z"></path>
         </svg>
 
-        <!-- Creative Archery Target Orbit Spiral SVG (Left Side - Navy) -->
-        <svg class="absolute -left-32 -top-32 h-[135%] w-auto text-navy pointer-events-none opacity-20" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="400" cy="400" r="360" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="10 15" opacity="0.15" />
-            <circle cx="400" cy="400" r="290" fill="none" stroke="currentColor" stroke-width="3" opacity="0.25" />
-            <circle cx="400" cy="400" r="220" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 5" opacity="0.3" />
-            <path d="M 400 400 A 300 300 0 0 1 700 400 A 240 240 0 0 1 400 640 A 180 180 0 0 1 220 400 Z" fill="none" stroke="currentColor" stroke-width="2" opacity="0.18" />
-            <line x1="400" y1="40" x2="400" y2="760" stroke="currentColor" stroke-width="1" stroke-dasharray="10 10" opacity="0.12" />
-            <line x1="40" y1="400" x2="760" y2="400" stroke="currentColor" stroke-width="1" stroke-dasharray="10 10" opacity="0.12" />
+        <!-- Subtle Stripes SVG Overlay (Left Side Flipped - Bold & Variant) -->
+        <svg class="absolute inset-y-0 left-0 h-full w-auto text-[#63C03B] pointer-events-none opacity-80 transform scale-x-[-1]" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 765 1186" xml:space="preserve">
+            <path fill="currentColor" style="opacity: 0.12;" d="M122,1186H0L406-31h122L122,1186z M765-31H643L237,1186h122L765-31z"></path>
+            <path fill="currentColor" style="opacity: 0.05;" d="M180,1186H58L464-31h122L180,1186z M825-31H703L297,1186h122L825-31z"></path>
         </svg>
 
-        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="max-w-[1600px] mx-auto relative z-10">
             <!-- Section Header -->
-            <div class="text-center mb-16 sm:mb-24">
+            <div class="text-center mb-16 sm:mb-24 px-4 sm:px-6 lg:px-8">
                 <h2 class="text-3xl sm:text-5xl font-black text-navy leading-tight mb-6 font-display tracking-tight">
                     {{ $t('home.learn.title') }} <br class="hidden sm:block" />
                     <span class="text-navy/70">
@@ -36,180 +27,73 @@
                 </p>
             </div>
 
-            <!-- Three Centered White Feature Panels (Smooth Featherweight Shadows) -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch justify-center">
-                
-                <!-- ── CARD 1: CLUB REGISTRATION & MANAGEMENT ── -->
-                <div class="bg-white rounded-[32px] p-6 sm:p-8 flex flex-col justify-between shadow-[0_8px_32px_rgba(15,23,42,0.04)] border border-slate-100/80 text-navy hover:shadow-[0_16px_48px_rgba(15,23,42,0.08)] hover:-translate-y-1 transition-all duration-300">
-                    <div class="mb-6 flex justify-between items-center">
-                        <div class="flex items-center gap-1.5">
-                            <span class="w-3 h-3 rounded-full bg-red-400/80"></span>
-                            <span class="w-3 h-3 rounded-full bg-yellow-400/80"></span>
-                            <span class="w-3 h-3 rounded-full bg-[#63C03B]"></span>
-                        </div>
-                        <span class="px-3 py-1 bg-[#63C03B]/10 text-[#63C03B] font-black text-[10px] rounded-full uppercase tracking-wider">
-                            Club Setup
-                        </span>
-                    </div>
-
-                    <div class="flex-1 flex flex-col justify-center gap-6">
-                        <!-- Custom Setup Header -->
-                        <div class="flex items-center gap-4 border-b border-slate-100 pb-4">
-                            <div class="w-12 h-12 rounded-2xl bg-[#63C03B]/10 flex items-center justify-center text-[#63C03B] shrink-0 font-bold text-lg">
-                                AH
-                            </div>
-                            <div>
-                                <h4 class="font-black text-sm text-navy leading-none">Archery Hub Surabaya</h4>
-                                <span class="text-[10px] font-bold text-slate-400 mt-1 block">Professional Club Portal</span>
-                            </div>
-                        </div>
-
-                        <!-- Active Members List -->
-                        <div class="space-y-3">
-                            <span class="text-[10px] font-black tracking-widest uppercase text-slate-400 block mb-1">Active Roster</span>
-                            <div class="flex items-center justify-between bg-slate-50 border border-slate-100 rounded-xl p-3">
-                                <div class="flex items-center gap-2">
-                                    <Icon icon="ph:user-circle-bold" class="text-slate-400 text-lg" />
-                                    <span class="text-xs font-bold text-navy">Farhan Wijaya</span>
-                                </div>
-                                <span class="text-[9px] font-bold bg-slate-200 text-slate-600 px-2 py-0.5 rounded-full uppercase">Recurve</span>
-                            </div>
-                            <div class="flex items-center justify-between bg-slate-50 border border-slate-100 rounded-xl p-3">
-                                <div class="flex items-center gap-2">
-                                    <Icon icon="ph:user-circle-bold" class="text-slate-400 text-lg" />
-                                    <span class="text-xs font-bold text-navy">Rania Nabilla</span>
-                                </div>
-                                <span class="text-[9px] font-bold bg-[#63C03B]/20 text-[#63C03B] px-2 py-0.5 rounded-full uppercase font-black">Compound</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-8 pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
-                        <span class="font-bold text-slate-400">Total Members:</span>
-                        <span class="font-black text-navy">124 Athletes</span>
-                    </div>
-                </div>
-
-                <!-- ── CARD 2 (CENTER): DYNAMIC TARGET & FIELD SCHEDULER ── -->
-                <div class="bg-white rounded-[32px] p-6 sm:p-8 flex flex-col justify-between shadow-[0_8px_32px_rgba(15,23,42,0.04)] border border-slate-100/80 text-navy hover:shadow-[0_16px_48px_rgba(15,23,42,0.08)] hover:-translate-y-1 transition-all duration-300">
-                    <div class="mb-6 flex justify-between items-center">
-                        <div class="flex items-center gap-1.5">
-                            <span class="w-3 h-3 rounded-full bg-red-400/80"></span>
-                            <span class="w-3 h-3 rounded-full bg-yellow-400/80"></span>
-                            <span class="w-3 h-3 rounded-full bg-[#63C03B]"></span>
-                        </div>
-                        <span class="px-3 py-1 bg-[#63C03B]/10 text-[#63C03B] font-black text-[10px] rounded-full uppercase tracking-wider animate-pulse">
-                            Live Scheduling
-                        </span>
-                    </div>
-
-                    <div class="flex-1 flex flex-col gap-5">
-                        <div class="flex justify-between items-center">
-                            <h3 class="text-base font-black tracking-tight leading-none text-navy font-display">
-                                Target Allocation
+            <!-- Horizontal Dashboard Showcase Mockup Container (Identical to Image) -->
+            <div class="relative w-full overflow-hidden">
+                <!-- Outer Scrolling Area with Faded Mask Edges -->
+                <div class="flex gap-8 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar px-6 sm:px-16 lg:px-24 pb-12">
+                    
+                    <!-- ── CARD 1: ROSTER & COMMUNICATIONS ── -->
+                    <div class="w-[300px] sm:w-[500px] md:w-[600px] lg:w-[650px] shrink-0 snap-center bg-white border border-slate-100 rounded-[32px] p-6 sm:p-8 flex flex-col justify-between shadow-[0_8px_32px_rgba(15,23,42,0.04)] hover:shadow-[0_16px_48px_rgba(15,23,42,0.08)] hover:-translate-y-1 transition-all duration-300">
+                        <div class="mb-5">
+                            <span class="px-3 py-1 bg-[#63C03B]/10 border border-[#63C03B]/20 text-[#63C03B] text-[10px] font-black uppercase tracking-widest rounded-full mb-3 inline-block">
+                                Step 1: Club Setup
+                            </span>
+                            <h3 class="text-xl sm:text-2xl font-black tracking-tight text-navy leading-none font-display">
+                                Roster & Communications
                             </h3>
-                            <span class="text-[10px] font-bold text-slate-400">Week 1</span>
+                            <p class="text-xs sm:text-sm text-slate-500 font-semibold mt-1">
+                                Manage members, divisions (recurve/compound), and broadcast instant announcement logs.
+                            </p>
                         </div>
-
-                        <!-- Target Butt Interactive Allocator Grid -->
-                        <div class="grid grid-cols-4 gap-2.5">
-                            <div class="aspect-square rounded-xl border border-slate-100 bg-slate-50 flex flex-col items-center justify-center p-1 cursor-pointer hover:border-[#63C03B]/50 transition-colors">
-                                <span class="text-xs font-black text-navy">1A</span>
-                                <span class="text-[8px] text-slate-400">Recurve</span>
-                            </div>
-                            <div class="aspect-square rounded-xl border border-[#63C03B]/30 bg-[#63C03B]/5 flex flex-col items-center justify-center p-1 cursor-pointer">
-                                <span class="text-xs font-black text-[#63C03B]">1B</span>
-                                <span class="text-[8px] text-[#63C03B]/70 font-bold">U-15</span>
-                            </div>
-                            <div class="aspect-square rounded-xl border border-slate-100 bg-slate-50 flex flex-col items-center justify-center p-1 cursor-pointer hover:border-[#63C03B]/50 transition-colors">
-                                <span class="text-xs font-black text-navy">2A</span>
-                                <span class="text-[8px] text-slate-400">Barebow</span>
-                            </div>
-                            <div class="aspect-square rounded-xl border border-slate-100 bg-slate-50 flex flex-col items-center justify-center p-1 cursor-pointer hover:border-[#63C03B]/50 transition-colors">
-                                <span class="text-xs font-black text-navy">2B</span>
-                                <span class="text-[8px] text-slate-400">Compound</span>
-                            </div>
-                        </div>
-
-                        <!-- Mini Schedule Table -->
-                        <div class="border border-slate-100 rounded-xl overflow-hidden bg-slate-50 text-[10px] font-medium text-slate-500">
-                            <div class="bg-slate-100 p-2 flex justify-between font-bold text-navy">
-                                <span>Upcoming Match</span>
-                                <span class="text-[#63C03B]">Active</span>
-                            </div>
-                            <div class="p-2.5 flex items-center justify-between border-t border-slate-200/40">
-                                <span class="font-black text-navy">Warriors vs Bobcats</span>
-                                <span>Target 1B</span>
-                            </div>
+                        <div class="rounded-2xl overflow-hidden border border-slate-100 shadow-sm relative aspect-[1.6/1] bg-slate-50">
+                            <img src="/learn-step1.png" alt="Club Setup & Roster Dashboard" class="w-full h-full object-cover object-top" />
                         </div>
                     </div>
 
-                    <div class="mt-8 pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
-                        <span class="font-bold text-slate-400">Total Matches:</span>
-                        <span class="font-black text-navy">125 Games</span>
+                    <!-- ── CARD 2: MATCH SCHEDULE & TARGET ALLOCATION ── -->
+                    <div class="w-[300px] sm:w-[500px] md:w-[600px] lg:w-[650px] shrink-0 snap-center bg-white border border-slate-100 rounded-[32px] p-6 sm:p-8 flex flex-col justify-between shadow-[0_8px_32px_rgba(15,23,42,0.04)] hover:shadow-[0_16px_48px_rgba(15,23,42,0.08)] hover:-translate-y-1 transition-all duration-300">
+                        <div class="mb-5">
+                            <span class="px-3 py-1 bg-[#63C03B]/10 border border-[#63C03B]/20 text-[#63C03B] text-[10px] font-black uppercase tracking-widest rounded-full mb-3 inline-block">
+                                Step 2: Schedule & Allocations
+                            </span>
+                            <h3 class="text-xl sm:text-2xl font-black tracking-tight text-navy leading-none font-display">
+                                Match & Target Butt Allocation
+                            </h3>
+                            <p class="text-xs sm:text-sm text-slate-500 font-semibold mt-1">
+                                Assign lanes (1A, 1B, 2A, 2B), schedule tournaments, and configure match guidelines.
+                            </p>
+                        </div>
+                        <div class="rounded-2xl overflow-hidden border border-slate-100 shadow-sm relative aspect-[1.6/1] bg-slate-50">
+                            <img src="/learn-step2.png" alt="Match Schedule & Target Butt Dashboard" class="w-full h-full object-cover object-top" />
+                        </div>
                     </div>
+
+                    <!-- ── CARD 3: LIVE SCORING & LEADERBOARD ── -->
+                    <div class="w-[300px] sm:w-[500px] md:w-[600px] lg:w-[650px] shrink-0 snap-center bg-white border border-slate-100 rounded-[32px] p-6 sm:p-8 flex flex-col justify-between shadow-[0_8px_32px_rgba(15,23,42,0.04)] hover:shadow-[0_16px_48px_rgba(15,23,42,0.08)] hover:-translate-y-1 transition-all duration-300">
+                        <div class="mb-5">
+                            <span class="px-3 py-1 bg-[#63C03B]/10 border border-[#63C03B]/20 text-[#63C03B] text-[10px] font-black uppercase tracking-widest rounded-full mb-3 inline-block">
+                                Step 3: Scoring & Leaderboards
+                            </span>
+                            <h3 class="text-xl sm:text-2xl font-black tracking-tight text-navy leading-none font-display">
+                                Live Scoring & Performance
+                            </h3>
+                            <p class="text-xs sm:text-sm text-slate-500 font-semibold mt-1">
+                                Monitor athlete performance end-by-end (X, 10, 9) and publish real-time public leaderboards.
+                            </p>
+                        </div>
+                        <div class="rounded-2xl overflow-hidden border border-slate-100 shadow-sm relative aspect-[1.6/1] bg-slate-50">
+                            <img src="/learn-step3.png" alt="Live Scoring Leaderboard Dashboard" class="w-full h-full object-cover object-top" />
+                        </div>
+                    </div>
+
                 </div>
-
-                <!-- ── CARD 3: REAL-TIME SCORING & PORTFOLIO ── -->
-                <div class="bg-white rounded-[32px] p-6 sm:p-8 flex flex-col justify-between shadow-[0_8px_32px_rgba(15,23,42,0.04)] border border-slate-100/80 text-navy hover:shadow-[0_16px_48px_rgba(15,23,42,0.08)] hover:-translate-y-1 transition-all duration-300">
-                    <div class="mb-6 flex justify-between items-center">
-                        <div class="flex items-center gap-1.5">
-                            <span class="w-3 h-3 rounded-full bg-red-400/80"></span>
-                            <span class="w-3 h-3 rounded-full bg-yellow-400/80"></span>
-                            <span class="w-3 h-3 rounded-full bg-[#63C03B]"></span>
-                        </div>
-                        <span class="px-3 py-1 bg-[#63C03B]/10 text-[#63C03B] font-black text-[10px] rounded-full uppercase tracking-wider">
-                            Analytics
-                        </span>
-                    </div>
-
-                    <div class="flex-1 flex flex-col justify-center gap-6">
-                        <!-- Scoreboard Mock -->
-                        <div class="bg-slate-900 text-white rounded-2xl p-4 flex flex-col gap-3">
-                            <div class="flex justify-between items-center border-b border-white/10 pb-2">
-                                <span class="text-[9px] font-black text-[#63C03B] tracking-widest uppercase">Live Scoring</span>
-                                <span class="text-[8px] text-white/40">Sesi 1</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <span class="text-[8px] text-white/40 font-bold block">Archer</span>
-                                    <h5 class="font-black text-xs text-white">Budi Santoso</h5>
-                                </div>
-                                <div class="flex gap-1">
-                                    <span class="w-6 h-6 rounded bg-white/10 flex items-center justify-center font-bold text-xs">X</span>
-                                    <span class="w-6 h-6 rounded bg-white/10 flex items-center justify-center font-bold text-xs">10</span>
-                                    <span class="w-6 h-6 rounded bg-[#63C03B]/20 text-[#63C03B] border border-[#63C03B]/30 flex items-center justify-center font-black text-xs">9</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Visual Trend Chart Mock -->
-                        <div class="space-y-2">
-                            <div class="flex justify-between items-center text-[10px] font-bold text-slate-400">
-                                <span>Athlete Trend</span>
-                                <span class="text-[#63C03B] font-black">9.2 Average</span>
-                            </div>
-                            <div class="flex items-end gap-2 h-14 pt-2">
-                                <div class="bg-slate-100 rounded-t flex-1 h-[40%]"></div>
-                                <div class="bg-slate-100 rounded-t flex-1 h-[60%]"></div>
-                                <div class="bg-slate-100 rounded-t flex-1 h-[50%]"></div>
-                                <div class="bg-[#63C03B] rounded-t flex-1 h-[85%]"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mt-8 pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
-                        <span class="font-bold text-slate-400">Success Rate:</span>
-                        <span class="font-black text-[#63C03B]">+12% Growth</span>
-                    </div>
-                </div>
-
             </div>
         </div>
     </section>
 </template>
 
 <script setup>
+// Icon not strictly needed if we don't render inline widgets, but imported for potential extensions.
 import { Icon } from '@iconify/vue'
 </script>
 
