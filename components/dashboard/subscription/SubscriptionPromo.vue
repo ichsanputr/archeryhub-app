@@ -14,7 +14,7 @@
                 </h2>
                 <div class="text-slate-300 text-sm font-medium leading-relaxed">
                     {{ promoDesc }}
-                    Tanpa biaya pendaftaran, tanpa komitment.
+                    <span class="block mt-1 opacity-80">{{ $t('subscription_page.promo_extra') }}</span>
                 </div>
             </div>
             <div class="shrink-0 flex flex-col items-center">
@@ -23,8 +23,8 @@
                     <Icon icon="ph:gift-bold" class="text-primary text-4xl" />
                 </div>
                 <div class="text-center">
-                    <div class="text-white font-black text-lg">Hemat Rp {{ savings }}</div>
-                    <div class="text-white/50 text-[10px] font-bold tracking-widest">Total Nilai</div>
+                    <div class="text-white font-black text-lg">{{ savings }}</div>
+                    <div class="text-white/50 text-[10px] font-bold tracking-widest">{{ $t('subscription_page.total_value') }}</div>
                 </div>
             </div>
         </div>

@@ -197,5 +197,195 @@
       "scoring": "Judging system and scoring guides",
       "marketplace": "Buying and selling archery equipment"
     }
+  },
+  "subscription_page": {
+    "badge": "SUBSCRIPTION PLAN",
+    "title": "Scale Your Archery Management",
+    "description": "Flexible options for tournament organizers from small-scale to international. Get 3 months free Standard package for new organization registration.",
+    "detail_comparison": "Detailed Comparison",
+    "feature_header": "Feature",
+    "basic_title": "Standard EO",
+    "basic_desc": "Complete digital solution for small & medium scale tournaments.",
+    "elite_title": "Elite EO",
+    "elite_desc": "Custom features and priority for professional tournament organizers.",
+    "select_plan": "Choose Plan",
+    "activate_elite": "Activate Elite EO",
+    "professional": "PROFESSIONAL",
+    "month_unit": "/MO",
+    "limit_promo": "Limited Promo",
+    "promo_title": "Start Your Tournament Free for 3 Months!",
+    "promo_desc": "Register your organization now and enjoy full access to the Standard package at no cost for the first three months.",
+    "saving_text": "You save Rp 104,997",
+    "promo_extra": "No setup fees, no commitment.",
+    "total_value": "Total Value",
+    "faq_title": "FAQ",
+    "faq_subtitle": "Have Questions?",
+    "basic_features_list": [
+      "Max 40 Participants / Event",
+      "1 GB Media Storage",
+      "Full & Custom Org Profile",
+      "Create & Promote Events",
+      "Publish News Articles",
+      "Real-time Scoring System",
+      "Automated E-Certificates"
+    ],
+    "elite_features_list": [
+      "All Standard EO Features",
+      "Unlimited Participants",
+      "3 GB Media Storage",
+      "Advanced Analytic Dashboard",
+      "Priority Customer Support",
+      "Early Access to New Features"
+    ],
+    "comparison_list": [
+      { "feature": "Max Participants", "basic": "40 / Event", "elite": "Unlimited", "icon": "ph:users-three-bold" },
+      { "feature": "Media Storage", "basic": "1 GB", "elite": "3 GB", "icon": "ph:hard-drives-bold" },
+      { "feature": "Publish News", "basic": true, "elite": true, "icon": "ph:newspaper-bold" },
+      { "feature": "Org Profile", "basic": "Full & Custom", "elite": "Full & Custom", "icon": "ph:buildings-bold" },
+      { "feature": "Event Promotion", "basic": true, "elite": true, "icon": "ph:megaphone-bold" },
+      { "feature": "Advanced Analytics", "basic": true, "elite": true, "icon": "ph:chart-bar-bold" },
+      { "feature": "Priority Support", "basic": true, "elite": true, "icon": "ph:headset-bold" }
+    ],
+    "faqs_list": [
+      {
+        "question": "Can I upgrade or downgrade my plan at any time?",
+        "answer": "Absolutely! Flexibility is key. You can change plans whenever you like. Upgrades are calculated pro-rata for the remaining days of the billing cycle, while downgrades take effect in the next cycle."
+      },
+      {
+        "question": "What happens after the trial period ends?",
+        "answer": "Your data remains safe on our servers. You will be asked to choose a paid plan to keep using premium features. If you don't choose in 7 days, your account will automatically return to the Free plan."
+      },
+      {
+        "question": "How does the payment model work?",
+        "answer": "The EO plan uses a flat monthly subscription model. No per-athlete fees, allowing you to manage your tournament budget with absolute predictability."
+      },
+      {
+        "question": "How long does implementation take for the Elite plan?",
+        "answer": "For Elite plans, we typically set up all custom configurations within 3-5 business days. You will also receive dedicated training sessions for your organization's administrators."
+      }
+    ]
+  },
+  "events_page": {
+    "badge": "ARCHERY EVENTS",
+    "title": "Find Your Victory Target",
+    "description": "Join prestigious archery tournaments across Indonesia. From club level to national level, all available in one platform.",
+    "register_event": "Register Event",
+    "search_title": "Search Event",
+    "search_placeholder": "Search event name...",
+    "filter_title": "Filter",
+    "reset_button": "Reset",
+    "status": "Status",
+    "status_upcoming": "Upcoming",
+    "status_ongoing": "Ongoing",
+    "status_completed": "Completed",
+    "city": "City",
+    "all_cities": "All Cities",
+    "all_events": "All Events",
+    "sort_by": "Sort By",
+    "sort_newest": "Newest",
+    "sort_oldest": "Oldest",
+    "sort_name": "Name A-Z",
+    "no_events": "No Events Found",
+    "no_events_desc": "Try changing your search or filters to find available events.",
+    "clear_search": "Clear Search",
+    "event_detail": "Event Detail",
+    "view_more": "View More",
+    "cta_title": "Have an Archery Event?",
+    "cta_desc": "Register your event on Archeris.net and manage registration and scoring more professionally.",
+    "cta_button": "Create Event Now",
+    "general_category": "General"
+  },
+  "products_page": {
+    "badge": "ARCHERY CATALOG",
+    "title": "Equip Your Best Archery Gear",
+    "description": "Discover quality equipment from trusted clubs and organizations across Indonesia.",
+    "search_placeholder_hero": "Search products like bows, arrows...",
+    "search_placeholder_sticky": "Search archery products...",
+    "search_button": "Search",
+    "all_categories": "All Categories",
+    "sort_title": "Sort",
+    "not_found": "Products Not Found",
+    "not_found_desc": "Try changing the filters or search keywords to find matching products.",
+    "promo": "PROMO",
+    "view_detail": "VIEW DETAIL",
+    "in_stock": "In Stock",
+    "categories_list": [
+      { "label": "All", "value": "all", "icon": "ph:squares-four" },
+      { "label": "Equipment", "value": "equipment", "icon": "ph:target" },
+      { "label": "Apparel", "value": "apparel", "icon": "ph:t-shirt" },
+      { "label": "Accessories", "value": "accessories", "icon": "ph:bag" },
+      { "label": "Training", "value": "training", "icon": "ph:graduation-cap" },
+      { "label": "Other", "value": "other", "icon": "ph:package" }
+    ],
+    "sort_options_list": [
+      { "value": "newest", "title": "Newest" },
+      { "value": "price-low", "title": "Lowest Price" },
+      { "value": "price-high", "title": "Highest Price" },
+      { "value": "popular", "title": "Popular" }
+    ],
+    "category_labels": {
+      "equipment": "Equipment",
+      "apparel": "Apparel",
+      "accessories": "Accessories",
+      "training": "Training",
+      "other": "Other"
+    }
+  },
+  "news_page": {
+    "badge": "News & Articles",
+    "title_main": "Latest Updates from the",
+    "title_highlight": "Archery World",
+    "description": "Follow the latest tournament updates, athlete achievements, and news about the archery community.",
+    "search_placeholder": "Search news...",
+    "read_more": "Read More",
+    "no_news": "No News Found",
+    "no_news_desc": "Stay tuned for the latest news and updates from the archery world here.",
+    "load_more": "Load More",
+    "popular_title": "Popular News",
+    "no_popular": "No popular news yet.",
+    "upcoming_title": "Upcoming Tournaments",
+    "no_upcoming": "No upcoming tournaments.",
+    "all_tournaments": "View All Tournaments",
+    "subscribe_title": "Subscribe to Updates",
+    "subscribe_desc": "Get the latest news sent directly to your email.",
+    "subscribe_placeholder": "Your email address",
+    "subscribe_button": "Subscribe",
+    "subscribing_button": "Subscribing...",
+    "subscribe_success": "Successfully subscribed!",
+    "subscribe_error": "Subscription failed. Please try again later.",
+    "categories": {
+      "all": "All",
+      "event": "Event",
+      "pengumuman": "Announcement",
+      "prestasi": "Achievement",
+      "tips": "Tips & Tutorials"
+    }
+  },
+  "news_detail_page": {
+    "back_to_news": "Back to News",
+    "published": "Published",
+    "read_time": "Read Time",
+    "minutes_unit": "Mins",
+    "share_title": "Share This Article",
+    "share_desc": "Help spread this helpful information to the archery community.",
+    "comments_title": "Comments",
+    "write_comment": "Write a Comment",
+    "your_name": "Your Name",
+    "name_placeholder": "e.g., John Archer",
+    "message_label": "Comment Message",
+    "message_placeholder": "Write your opinion here...",
+    "submit_button": "Post Comment",
+    "submitting_button": "Sending...",
+    "comment_success": "Your comment was successfully posted!",
+    "comment_error": "Failed to send comment. Please try again later.",
+    "name_error": "Please fill in your name",
+    "comment_as": "Comment as",
+    "loading_comments": "Loading comments...",
+    "no_comments": "No comments yet",
+    "member_tag": "Member",
+    "related_articles": "Related Articles",
+    "all_news": "View All News",
+    "link_copied": "Article link copied to clipboard.",
+    "share_intro": "Read this interesting article: "
   }
 }

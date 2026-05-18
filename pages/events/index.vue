@@ -13,22 +13,20 @@
                     <div
                         class="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-[10px] sm:text-sm font-bold tracking-widest mb-6">
                         <Icon icon="ph:calendar-bold" class="text-base sm:text-lg" />
-                        <span>Event Panahan</span>
+                        <span>{{ $t('events_page.badge') }}</span>
                     </div>
                     <h1
-                        class="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
-                        Temukan <span class="text-primary">Target</span><br />
-                        Kemenanganmu
+                        class="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6"
+                        v-html="$t('events_page.title')">
                     </h1>
                     <p class="text-white/90 text-sm md:text-lg leading-relaxed max-w-xl mb-8">
-                        Ikuti berbagai turnamen panahan bergengsi di seluruh Indonesia. Dari tingkat klub hingga
-                        nasional, semua tersedia dalam satu platform.
+                        {{ $t('events_page.description') }}
                     </p>
                     <div class="flex flex-wrap gap-4">
-                        <NuxtLink to="/auth/register?type=organizer">
+                        <NuxtLink :to="localePath('/auth/register?type=organizer')">
                             <BaseButton variant="primary" size="lg" icon="ph:plus-circle-bold"
                                 class="shadow-sm shadow-primary/20 font-black">
-                                Daftarkan Event
+                                {{ $t('events_page.register_event') }}
                             </BaseButton>
                         </NuxtLink>
                     </div>
@@ -45,14 +43,14 @@
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                         <h3 class="text-navy font-bold text-lg mb-4 flex items-center gap-2">
                             <Icon icon="ph:magnifying-glass-bold" class="text-primary" />
-                            Cari Event
+                            {{ $t('events_page.search_title') }}
                         </h3>
                         <div class="relative">
                             <Icon icon="ph:magnifying-glass"
                                 class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl" />
                             <input v-model="searchQuery"
                                 class="w-full pl-12 pr-4 py-3 bg-gray-50 border-gray-100 rounded-xl text-sm focus:ring-4 focus:ring-primary/20 transition-all placeholder:text-gray-400"
-                                placeholder="Cari nama event..." type="text" />
+                                :placeholder="$t('events_page.search_placeholder')" type="text" />
                         </div>
                     </div>
 
@@ -61,18 +59,19 @@
                         <div class="p-6 border-b border-gray-100 flex justify-between items-center">
                             <h3 class="text-navy font-bold text-lg flex items-center gap-2">
                                 <Icon icon="ph:funnel-bold" class="text-primary" />
-                                Filter
+                                {{ $t('events_page.filter_title') }}
                             </h3>
                             <button @click="resetFilters"
-                                class="text-sm font-bold text-gray-400 hover:text-primary transition-colors">Atur
-                                Ulang</button>
+                                class="text-sm font-bold text-gray-400 hover:text-primary transition-colors">
+                                {{ $t('events_page.reset_button') }}
+                            </button>
                         </div>
                         <div class="divide-y divide-gray-100">
                             <!-- Status Filter -->
                             <details class="group">
                                 <summary
                                     class="flex justify-between items-center font-bold cursor-pointer list-none p-6 text-sm text-navy hover:bg-gray-50 transition-colors">
-                                    <span>Status</span>
+                                    <span>{{ $t('events_page.status') }}</span>
                                     <Icon icon="ph:caret-down-bold"
                                         class="transition group-open:rotate-180 text-gray-400" />
                                 </summary>
@@ -82,23 +81,27 @@
                                             class="h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary shadow-sm"
                                             type="checkbox" />
                                         <span
-                                            class="font-bold text-gray-600 group-hover/item:text-navy transition-colors">Akan
-                                            Datang</span>
+                                            class="font-bold text-gray-600 group-hover/item:text-navy transition-colors">
+                                            {{ $t('events_page.status_upcoming') }}
+                                        </span>
                                     </label>
                                     <label class="flex items-center gap-3 cursor-pointer group/item">
                                         <input
                                             class="h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary shadow-sm"
                                             type="checkbox" />
                                         <span
-                                            class="font-bold text-gray-600 group-hover/item:text-navy transition-colors">Sedang
-                                            Berlangsung</span>
+                                            class="font-bold text-gray-600 group-hover/item:text-navy transition-colors">
+                                            {{ $t('events_page.status_ongoing') }}
+                                        </span>
                                     </label>
                                     <label class="flex items-center gap-3 cursor-pointer group/item">
                                         <input
                                             class="h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary shadow-sm"
                                             type="checkbox" />
                                         <span
-                                            class="font-bold text-gray-600 group-hover/item:text-navy transition-colors">Selesai</span>
+                                            class="font-bold text-gray-600 group-hover/item:text-navy transition-colors">
+                                            {{ $t('events_page.status_completed') }}
+                                        </span>
                                     </label>
                                 </div>
                             </details>
@@ -107,14 +110,14 @@
                             <details class="group" open>
                                 <summary
                                     class="flex justify-between items-center font-bold cursor-pointer list-none p-6 text-sm text-navy hover:bg-gray-50 transition-colors">
-                                    <span>Kota</span>
+                                    <span>{{ $t('events_page.city') }}</span>
                                     <Icon icon="ph:caret-down-bold"
                                         class="transition group-open:rotate-180 text-gray-400" />
                                 </summary>
                                 <div class="px-6 pb-6">
                                     <select v-model="selectedCity"
                                         class="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-sm font-semibold text-navy focus:ring-4 focus:ring-primary/20 transition-all">
-                                        <option value="">Semua Kota</option>
+                                        <option value="">{{ $t('events_page.all_cities') }}</option>
                                         <option v-for="city in cityOptions" :key="city" :value="city">
                                             {{ city }}
                                         </option>
@@ -129,17 +132,18 @@
                 <div class="flex-1">
                     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
                         <h2 class="text-lg sm:text-2xl font-black text-navy flex items-center gap-3">
-                            Semua Event
-                            <span class="px-3 py-1 bg-gray-100 text-gray-400 font-bold text-sm rounded-full">{{
-                                filteredTournaments.length }}</span>
+                            {{ $t('events_page.all_events') }}
+                            <span class="px-3 py-1 bg-gray-100 text-gray-400 font-bold text-sm rounded-full">
+                                {{ filteredTournaments.length }}
+                            </span>
                         </h2>
                         <div class="flex items-center gap-3 bg-white p-2 rounded-xl border border-gray-100 shadow-sm">
-                            <span class="text-xs font-black text-gray-400  tracking-wider ml-2">Urutan:</span>
+                            <span class="text-xs font-black text-gray-400 tracking-wider ml-2">{{ $t('events_page.sort_by') }}:</span>
                             <select v-model="sortBy"
                                 class="border-none bg-transparent text-sm font-bold text-navy py-1.5 pl-2 pr-8 focus:ring-0 cursor-pointer">
-                                <option value="newest">Paling Baru</option>
-                                <option value="oldest">Terlama</option>
-                                <option value="name">Nama A-Z</option>
+                                <option value="newest">{{ $t('events_page.sort_newest') }}</option>
+                                <option value="oldest">{{ $t('events_page.sort_oldest') }}</option>
+                                <option value="name">{{ $t('events_page.sort_name') }}</option>
                             </select>
                         </div>
                     </div>
@@ -151,13 +155,13 @@
                         <div v-else-if="!isLoading && filteredTournaments.length === 0" key="empty"
                             class="text-center py-20">
                             <Icon icon="ph:calendar-x-light" class="text-7xl text-gray-200 mb-6 mx-auto" />
-                            <h3 class="text-2xl font-black text-navy mb-3">Belum Ada Event</h3>
+                            <h3 class="text-2xl font-black text-navy mb-3">{{ $t('events_page.no_events') }}</h3>
                             <p class="text-gray-500 text-sm leading-relaxed max-w-sm mx-auto mb-8">
-                                Coba ubah pencarian atau filter Anda untuk menemukan event yang tersedia.
+                                {{ $t('events_page.no_events_desc') }}
                             </p>
                             <BaseButton v-if="searchQuery" variant="primary" @click="searchQuery = ''"
                                 class="shadow-sm shadow-primary/20">
-                                Hapus Pencarian
+                                {{ $t('events_page.clear_search') }}
                             </BaseButton>
                         </div>
 
@@ -165,7 +169,7 @@
                         <div v-else key="content" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                             <NuxtLink v-for="tournament in filteredTournaments.slice(0, displayedLimit)"
                                 :key="tournament.slug || tournament.id"
-                                :to="`/events/${tournament.slug || tournament.id}`"
+                                :to="localePath(`/events/${tournament.slug || tournament.id}`)"
                                 class="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:border-primary/50 transition-all duration-500 flex flex-col h-full">
                                 <div class="relative h-52 overflow-hidden bg-gray-100">
                                     <img :alt="tournament.name"
@@ -173,8 +177,8 @@
                                         :src="tournament.image" />
                                     <div class="absolute top-4 left-4">
                                         <span
-                                            class="px-3 py-1.5 bg-white/90 backdrop-blur-sm text-navy text-[10px] font-black rounded-lg  tracking-wider shadow-sm">
-                                            {{ tournament.category || 'Umum' }}
+                                            class="px-3 py-1.5 bg-white/90 backdrop-blur-sm text-navy text-[10px] font-black rounded-lg tracking-wider shadow-sm">
+                                            {{ tournament.category || $t('events_page.general_category') }}
                                         </span>
                                     </div>
                                 </div>
@@ -202,7 +206,7 @@
                                     <div class="mt-auto">
                                         <BaseButton variant="primary" block size="lg" iconRight="ph:arrow-right-bold"
                                             class="shadow-sm group-hover:shadow-sm group-hover:shadow-primary/20 transition-all">
-                                            Detail Event
+                                            {{ $t('events_page.event_detail') }}
                                         </BaseButton>
                                     </div>
                                 </div>
@@ -215,7 +219,7 @@
                         class="mt-16 flex justify-center">
                         <BaseButton variant="outline" size="lg" icon="ph:caret-down-bold" class="rounded-xl px-10"
                             @click="displayedLimit += 6">
-                            Lihat Lebih Banyak
+                            {{ $t('events_page.view_more') }}
                         </BaseButton>
                     </div>
                 </div>
@@ -235,18 +239,19 @@
             <div class="container mx-auto px-4 max-w-7xl relative z-10">
                 <div class="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-10">
                     <div class="text-center md:text-left">
-                        <h2 class="text-lg sm:text-2xl md:text-3xl font-black text-white mb-3 tracking-tight">Punya
-                            Event Panahan?
+                        <h2 class="text-lg sm:text-2xl md:text-3xl font-black text-white mb-3 tracking-tight">
+                            {{ $t('events_page.cta_title') }}
                         </h2>
-                        <p class="text-white/70 text-sm sm:text-base font-bold max-w-xl leading-relaxed">Daftarkan event
-                            Anda di Archeris.net dan kelola pendaftaran serta scoring dengan lebih profesional.</p>
+                        <p class="text-white/70 text-sm sm:text-base font-bold max-w-xl leading-relaxed">
+                            {{ $t('events_page.cta_desc') }}
+                        </p>
                     </div>
-                    <NuxtLink to="/auth/register?type=organizer">
+                    <NuxtLink :to="localePath('/auth/register?type=organizer')">
                         <button
                             class="px-8 py-4 bg-navy hover:bg-navy-light text-white font-black rounded-xl transition-all shadow-sm shadow-navy/20 flex items-center gap-3 text-lg group">
                             <Icon icon="ph:plus-circle-bold"
                                 class="text-xl group-hover:rotate-90 transition-transform duration-500" />
-                            Buat Event Sekarang
+                            {{ $t('events_page.cta_button') }}
                         </button>
                     </NuxtLink>
                 </div>
@@ -258,6 +263,8 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import { ref, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 const config = useRuntimeConfig()
 const apiBaseUrl = useApiBaseUrl()
@@ -265,6 +272,9 @@ const searchQuery = ref('')
 const sortBy = ref('newest')
 const selectedCity = ref('')
 const displayedLimit = ref(6)
+
+const { t } = useI18n()
+const localePath = useLocalePath()
 
 // Transform API response to match expected format
 const transformEventData = (event) => {
@@ -373,8 +383,8 @@ useHead({
 })
 
 useSeoMeta({
-    title: 'Semua Event - Archeris.net',
-    description: 'Cari dan daftar event panahan seru di seluruh Indonesia.'
+    title: () => `${t('events_page.all_events')} - Archeris.net`,
+    description: () => t('events_page.description')
 })
 
 definePageMeta({

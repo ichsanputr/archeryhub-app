@@ -14,16 +14,14 @@
                     <div
                         class="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-[10px] sm:text-sm font-bold tracking-widest mb-6">
                         <Icon icon="ph:credit-card-bold" class="text-base sm:text-lg" />
-                        <span>PAKET BERLANGGANAN</span>
+                        <span>{{ $t('subscription_page.badge') }}</span>
                     </div>
                     <h1
                         class="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
-                        Skalakan Manajemen Panahan Anda
+                        {{ $t('subscription_page.title') }}
                     </h1>
                     <p class="text-white/90 text-sm md:text-lg leading-relaxed max-w-2xl">
-                        Opsi fleksibel untuk penyelenggara turnamen skala kecil sampai skala internasional.
-                        <span class="text-primary font-bold">Dapatkan 3 bulan gratis</span> paket Standard untuk
-                        pendaftaran organisasi baru.
+                        {{ $t('subscription_page.description') }}
                     </p>
                 </div>
             </div>
@@ -41,16 +39,14 @@
                                 class="size-12 bg-gray-50 rounded-2xl flex items-center justify-center mb-6 text-gray-400 group-hover:bg-navy group-hover:text-white transition-colors duration-500">
                                 <Icon icon="ph:lightning-bold" class="text-2xl" />
                             </div>
-                            <h3 class="text-2xl font-black text-navy mb-2">Standar EO</h3>
-                            <p class="text-gray-500 text-sm font-medium">Solusi digital lengkap untuk turnamen skala
-                                kecil &amp;
-                                menengah.</p>
+                            <h3 class="text-2xl font-black text-navy mb-2">{{ $t('subscription_page.basic_title') }}</h3>
+                            <p class="text-gray-500 text-sm font-medium">{{ $t('subscription_page.basic_desc') }}</p>
                         </div>
                         <div class="mb-10">
                             <div class="flex items-baseline gap-1">
                                 <span class="text-xl font-bold text-navy opacity-40">Rp</span>
                                 <span class="text-5xl font-black text-navy tracking-tighter">29.999</span>
-                                <span class="text-gray-400 font-bold tracking-wider text-xs">/BLN</span>
+                                <span class="text-gray-400 font-bold tracking-wider text-xs">{{ $t('subscription_page.month_unit') }}</span>
                             </div>
                         </div>
                         <ul class="space-y-4 mb-12 flex-1">
@@ -62,7 +58,7 @@
                         </ul>
                         <button
                             class="w-full py-4 px-6 rounded-2xl border-2 border-navy text-navy font-black hover:bg-navy hover:text-white transition-all duration-300">
-                            Pilih Paket
+                            {{ $t('subscription_page.select_plan') }}
                         </button>
                     </div>
 
@@ -71,23 +67,21 @@
                         class="bg-navy rounded-3xl p-8 flex flex-col shadow-sm relative overflow-hidden ring-4 ring-primary/20 transition-all duration-500 hover:-translate-y-2">
                         <div
                             class="absolute top-0 right-0 bg-primary text-navy px-6 py-2 text-[11px] font-black tracking-[0.2em] rounded-bl-2xl shadow-lg">
-                            PROFESIONAL
+                            {{ $t('subscription_page.professional') }}
                         </div>
                         <div class="mb-10 pt-4">
                             <div
                                 class="size-14 bg-primary rounded-2xl flex items-center justify-center mb-6 text-navy shadow-lg shadow-primary/20">
                                 <Icon icon="ph:crown-simple-fill" class="text-3xl" />
                             </div>
-                            <h3 class="text-3xl font-black text-white mb-2">Elite EO</h3>
-                            <p class="text-slate-400 text-sm font-medium">Fitur kustom dan prioritas untuk penyelenggara
-                                turnamen
-                                profesional.</p>
+                            <h3 class="text-3xl font-black text-white mb-2">{{ $t('subscription_page.elite_title') }}</h3>
+                            <p class="text-slate-400 text-sm font-medium">{{ $t('subscription_page.elite_desc') }}</p>
                         </div>
                         <div class="mb-10">
                             <div class="flex items-baseline gap-1">
                                 <span class="text-xl font-bold text-white opacity-40">Rp</span>
                                 <span class="text-5xl font-black text-white tracking-tighter">49.999</span>
-                                <span class="text-slate-400 font-bold tracking-wider text-xs">/BLN</span>
+                                <span class="text-slate-400 font-bold tracking-wider text-xs">{{ $t('subscription_page.month_unit') }}</span>
                             </div>
                         </div>
                         <ul class="space-y-5 mb-14 flex-1">
@@ -99,7 +93,7 @@
                         </ul>
                         <button
                             class="w-full py-4 px-6 rounded-2xl bg-primary text-navy font-black hover:scale-[1.03] active:scale-95 transition-all shadow-primary/20">
-                            Aktifkan Elite EO
+                            {{ $t('subscription_page.activate_elite') }}
                         </button>
                     </div>
                 </div>
@@ -107,12 +101,12 @@
                 <!-- EO Comparison Table -->
                 <div class="max-w-5xl mx-auto">
                     <h3 class="text-center text-[11px] font-black text-gray-400 tracking-widest mb-8">
-                        Perbandingan Detail
+                        {{ $t('subscription_page.detail_comparison') }}
                     </h3>
                     <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
                         <div
                             class="grid grid-cols-3 bg-gray-50 px-6 py-4 text-xs font-black tracking-widest text-gray-400">
-                            <div>Fitur</div>
+                            <div>{{ $t('subscription_page.feature_header') }}</div>
                             <div class="text-center">Standar</div>
                             <div class="text-center">Elite</div>
                         </div>
@@ -145,16 +139,19 @@
 
             <!-- Subscription Promotion -->
             <section class="max-w-4xl mx-auto px-4 mb-24 mt-16">
-                <SubscriptionPromo promo-badge="Promo Terbatas" promo-title="Mulai Turnamen Anda Gratis 3 Bulan!"
-                    promo-desc="Daftarkan organisasi Anda sekarang dan nikmati akses penuh paket Standard tanpa biaya selama tiga bulan pertama."
-                    savings="104.997" />
+                <SubscriptionPromo 
+                    :promo-badge="$t('subscription_page.limit_promo')" 
+                    :promo-title="$t('subscription_page.promo_title')"
+                    :promo-desc="$t('subscription_page.promo_desc')"
+                    :savings="$t('subscription_page.saving_text')" />
             </section>
 
             <!-- FAQ Section -->
             <div class="mt-24 md:mt-40 max-w-4xl mx-auto px-4">
                 <div class="text-center mb-16">
-                    <h2 class="text-sm font-black text-primary tracking-[0.3em] mb-4">FAQ</h2>
-                    <h4 class="font-black text-navy text-2xl sm:text-3xl md:text-5xl tracking-tight">Punya Pertanyaan?
+                    <h2 class="text-sm font-black text-primary tracking-[0.3em] mb-4">{{ $t('subscription_page.faq_title') }}</h2>
+                    <h4 class="font-black text-navy text-2xl sm:text-3xl md:text-5xl tracking-tight">
+                        {{ $t('subscription_page.faq_subtitle') }}
                     </h4>
                 </div>
                 <div class="space-y-4">
@@ -163,8 +160,9 @@
                         <button @click="toggleFaq(index)"
                             class="w-full px-6 sm:px-10 py-6 md:py-8 flex items-center justify-between text-left group">
                             <span
-                                class="text-lg font-black text-navy pr-4 group-hover:text-primary transition-colors">{{
-                                    faq.question }}</span>
+                                class="text-lg font-black text-navy pr-4 group-hover:text-primary transition-colors">
+                                {{ faq.question }}
+                            </span>
                             <div
                                 :class="['size-8 rounded-xl flex items-center justify-center transition-all duration-500', activeFaq === index ? 'bg-navy text-white rotate-180' : 'bg-gray-50 text-gray-300 group-hover:bg-gray-100']">
                                 <Icon icon="ph:caret-down-bold" class="text-xl" />
@@ -188,73 +186,30 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import SubscriptionPromo from '~/components/dashboard/subscription/SubscriptionPromo.vue'
+
 const activeFaq = ref(0)
 const toggleFaq = (index) => {
     activeFaq.value = activeFaq.value === index ? null : index
 }
-import SubscriptionPromo from '~/components/dashboard/subscription/SubscriptionPromo.vue'
+
+const { tm, t } = useI18n()
 
 definePageMeta({
     layout: 'landing'
 })
 
-
-
-// ─── EO feature lists ─────────────────────────────────────────
-const eoBasicFeatures = [
-    'Maksimal 40 Peserta / Event',
-    'Penyimpanan Media 1 GB',
-    'Profil Organisasi Lengkap & Kustom',
-    'Buat & Promosi Event',
-    'Publikasi Berita',
-    'Scoring Real-time',
-    'E-Certificate Otomatis',
-]
-
-const eoEliteFeatures = [
-    'Semua fitur Standar EO',
-    'Peserta Tak Terbatas',
-    'Penyimpanan Media 3 GB',
-    'Dashboard Analitik Lanjutan',
-    'Dukungan Prioritas',
-    'Akses Awal Fitur Baru',
-]
-
-
-
-const eoComparisonData = [
-    { feature: 'Maksimum Peserta', basic: '40 / Event', elite: 'Tak Terbatas', icon: 'ph:users-three-bold' },
-    { feature: 'Penyimpanan Media', basic: '1 GB', elite: '3 GB', icon: 'ph:hard-drives-bold' },
-    { feature: 'Buat Berita (News)', basic: true, elite: true, icon: 'ph:newspaper-bold' },
-    { feature: 'Profil Organisasi', basic: 'Lengkap & Kustom', elite: 'Lengkap & Kustom', icon: 'ph:buildings-bold' },
-    { feature: 'Promosi Event', basic: true, elite: true, icon: 'ph:megaphone-bold' },
-    { feature: 'Analitik Lanjutan', basic: true, elite: true, icon: 'ph:chart-bar-bold' },
-    { feature: 'Dukungan Prioritas', basic: true, elite: true, icon: 'ph:headset-bold' },
-]
-
-const faqs = [
-    {
-        question: 'Apakah paket bisa upgrade atau downgrade kapan saja?',
-        answer: 'Tentu saja! Fleksibilitas adalah kunci. Anda bisa mengubah paket kapan pun. Upgrade akan dihitung prorata dari sisa hari bulan berjalan, sedangkan downgrade akan efektif di siklus tagihan berikutnya.'
-    },
-    {
-        question: 'Apa yang terjadi setelah masa uji coba selesai?',
-        answer: 'Data Anda tetap aman di server kami. Anda akan diminta memilih paket berbayar untuk tetap menggunakan fitur premium. Jika tidak memilih dalam 7 hari, akun akan otomatis kembali ke paket Gratis.'
-    },
-    {
-        question: 'Bagaimana cara kerja skema bayar Paket EO?',
-        answer: 'Paket EO menggunakan sistem langganan bulanan yang flat. Tidak ada lagi biaya per atlet, sehingga Anda bisa mengelola budget turnamen dengan lebih pasti dan efisien.'
-    },
-    {
-        question: 'Berapa lama waktu implementasi untuk paket Elite?',
-        answer: 'Untuk paket Elite, kami biasanya menyiapkan semua konfigurasi dalam waktu 3-5 hari kerja. Anda juga akan mendapatkan sesi training khusus untuk seluruh staf admin organisasi.'
-    }
-]
+// ─── Localized EO feature lists ─────────────────────────────────────────
+const eoBasicFeatures = computed(() => tm('subscription_page.basic_features_list') || [])
+const eoEliteFeatures = computed(() => tm('subscription_page.elite_features_list') || [])
+const eoComparisonData = computed(() => tm('subscription_page.comparison_list') || [])
+const faqs = computed(() => tm('subscription_page.faqs_list') || [])
 
 useSeoMeta({
-    title: 'Paket Berlangganan - Archeris.net',
-    description: 'Temukan solusi terbaik untuk penyelenggara turnamen (EO) panahan Anda. Paket fleksibel untuk segala jenis skala organisasi.'
+    title: () => `${t('subscription_page.title')} - Archeris.net`,
+    description: () => t('subscription_page.description')
 })
 </script>
 

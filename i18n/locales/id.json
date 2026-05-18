@@ -197,5 +197,195 @@
       "scoring": "Sistem penilaian dan scoring",
       "marketplace": "Jual beli perlengkapan panahan"
     }
+  },
+  "subscription_page": {
+    "badge": "PAKET BERLANGGANAN",
+    "title": "Skalakan Manajemen Panahan Anda",
+    "description": "Opsi fleksibel untuk penyelenggara turnamen skala kecil sampai skala internasional. Dapatkan 3 bulan gratis paket Standard untuk pendaftaran organisasi baru.",
+    "detail_comparison": "Perbandingan Detail",
+    "feature_header": "Fitur",
+    "basic_title": "Standar EO",
+    "basic_desc": "Solusi digital lengkap untuk turnamen skala kecil & menengah.",
+    "elite_title": "Elite EO",
+    "elite_desc": "Fitur kustom dan prioritas untuk penyelenggara turnamen profesional.",
+    "select_plan": "Pilih Paket",
+    "activate_elite": "Aktifkan Elite EO",
+    "professional": "PROFESIONAL",
+    "month_unit": "/BLN",
+    "limit_promo": "Promo Terbatas",
+    "promo_title": "Mulai Turnamen Anda Gratis 3 Bulan!",
+    "promo_desc": "Daftarkan organisasi Anda sekarang dan nikmati akses penuh paket Standard tanpa biaya selama tiga bulan pertama.",
+    "saving_text": "Hemat Rp 104.997",
+    "promo_extra": "Tanpa biaya pendaftaran, tanpa komitmen.",
+    "total_value": "Total Nilai",
+    "faq_title": "FAQ",
+    "faq_subtitle": "Punya Pertanyaan?",
+    "basic_features_list": [
+      "Maksimal 40 Peserta / Event",
+      "Penyimpanan Media 1 GB",
+      "Profil Organisasi Lengkap & Kustom",
+      "Buat & Promosi Event",
+      "Publikasi Berita",
+      "Scoring Real-time",
+      "E-Certificate Otomatis"
+    ],
+    "elite_features_list": [
+      "Semua fitur Standar EO",
+      "Peserta Tak Terbatas",
+      "Penyimpanan Media 3 GB",
+      "Dashboard Analitik Lanjutan",
+      "Dukungan Prioritas",
+      "Akses Awal Fitur Baru"
+    ],
+    "comparison_list": [
+      { "feature": "Maksimum Peserta", "basic": "40 / Event", "elite": "Tak Terbatas", "icon": "ph:users-three-bold" },
+      { "feature": "Penyimpanan Media", "basic": "1 GB", "elite": "3 GB", "icon": "ph:hard-drives-bold" },
+      { "feature": "Buat Berita (News)", "basic": true, "elite": true, "icon": "ph:newspaper-bold" },
+      { "feature": "Profil Organisasi", "basic": "Lengkap & Kustom", "elite": "Lengkap & Kustom", "icon": "ph:buildings-bold" },
+      { "feature": "Promosi Event", "basic": true, "elite": true, "icon": "ph:megaphone-bold" },
+      { "feature": "Analitik Lanjutan", "basic": true, "elite": true, "icon": "ph:chart-bar-bold" },
+      { "feature": "Dukungan Prioritas", "basic": true, "elite": true, "icon": "ph:headset-bold" }
+    ],
+    "faqs_list": [
+      {
+        "question": "Apakah paket bisa upgrade atau downgrade kapan saja?",
+        "answer": "Tentu saja! Fleksibilitas adalah kunci. Anda bisa mengubah paket kapan pun. Upgrade akan dihitung prorata dari sisa hari bulan berjalan, sedangkan downgrade akan efektif di siklus tagihan berikutnya."
+      },
+      {
+        "question": "Apa yang terjadi setelah masa uji coba selesai?",
+        "answer": "Data Anda tetap aman di server kami. Anda akan diminta memilih paket berbayar untuk tetap menggunakan fitur premium. Jika tidak memilih dalam 7 hari, akun akan otomatis kembali ke paket Gratis."
+      },
+      {
+        "question": "Bagaimana cara kerja skema bayar Paket EO?",
+        "answer": "Paket EO menggunakan sistem langganan bulanan yang flat. Tidak ada lagi biaya per atlet, sehingga Anda bisa mengelola budget turnamen dengan lebih pasti dan efisien."
+      },
+      {
+        "question": "Berapa lama waktu implementasi untuk paket Elite?",
+        "answer": "Untuk paket Elite, kami biasanya menyiapkan semua konfigurasi dalam waktu 3-5 hari kerja. Anda juga akan mendapatkan sesi training khusus untuk seluruh staf admin organisasi."
+      }
+    ]
+  },
+  "events_page": {
+    "badge": "EVENT PANAHAN",
+    "title": "Temukan Target Kemenanganmu",
+    "description": "Ikuti berbagai turnamen panahan bergengsi di seluruh Indonesia. Dari tingkat klub hingga nasional, semua tersedia dalam satu platform.",
+    "register_event": "Daftarkan Event",
+    "search_title": "Cari Event",
+    "search_placeholder": "Cari nama event...",
+    "filter_title": "Filter",
+    "reset_button": "Atur Ulang",
+    "status": "Status",
+    "status_upcoming": "Akan Datang",
+    "status_ongoing": "Sedang Berlangsung",
+    "status_completed": "Selesai",
+    "city": "Kota",
+    "all_cities": "Semua Kota",
+    "all_events": "Semua Event",
+    "sort_by": "Urutan",
+    "sort_newest": "Paling Baru",
+    "sort_oldest": "Terlama",
+    "sort_name": "Nama A-Z",
+    "no_events": "Belum Ada Event",
+    "no_events_desc": "Coba ubah pencarian atau filter Anda untuk menemukan event yang tersedia.",
+    "clear_search": "Hapus Pencarian",
+    "event_detail": "Detail Event",
+    "view_more": "Lihat Lebih Banyak",
+    "cta_title": "Punya Event Panahan?",
+    "cta_desc": "Daftarkan event Anda di Archeris.net dan kelola pendaftaran serta scoring dengan lebih profesional.",
+    "cta_button": "Buat Event Sekarang",
+    "general_category": "Umum"
+  },
+  "products_page": {
+    "badge": "KATALOG PRODUK PANAHAN",
+    "title": "Lengkapi Peralatan Panahan Terbaikmu",
+    "description": "Temukan peralatan berkualitas dari berbagai klub dan organisasi terpercaya di seluruh Indonesia.",
+    "search_placeholder_hero": "Cari produk seperti busur, arrow...",
+    "search_placeholder_sticky": "Cari produk panahan...",
+    "search_button": "Cari",
+    "all_categories": "Semua Kategori",
+    "sort_title": "Urutan",
+    "not_found": "Produk Tidak Ditemukan",
+    "not_found_desc": "Coba ubah filter atau kata kunci pencarian untuk menemukan produk yang sesuai.",
+    "promo": "PROMO",
+    "view_detail": "LIHAT DETAIL",
+    "in_stock": "Tersedia",
+    "categories_list": [
+      { "label": "Semua", "value": "all", "icon": "ph:squares-four" },
+      { "label": "Peralatan", "value": "equipment", "icon": "ph:target" },
+      { "label": "Pakaian", "value": "apparel", "icon": "ph:t-shirt" },
+      { "label": "Aksesoris", "value": "accessories", "icon": "ph:bag" },
+      { "label": "Latihan", "value": "training", "icon": "ph:graduation-cap" },
+      { "label": "Lainnya", "value": "other", "icon": "ph:package" }
+    ],
+    "sort_options_list": [
+      { "value": "newest", "title": "Terbaru" },
+      { "value": "price-low", "title": "Harga Terendah" },
+      { "value": "price-high", "title": "Harga Tertinggi" },
+      { "value": "popular", "title": "Terpopuler" }
+    ],
+    "category_labels": {
+      "equipment": "Peralatan",
+      "apparel": "Pakaian",
+      "accessories": "Aksesoris",
+      "training": "Latihan",
+      "other": "Lainnya"
+    }
+  },
+  "news_page": {
+    "badge": "Berita & Artikel",
+    "title_main": "Kabar Terbaru",
+    "title_highlight": "Dunia Panahan",
+    "description": "Ikuti perkembangan terbaru turnamen, prestasi atlet, dan berita seputar komunitas panahan.",
+    "search_placeholder": "Cari berita...",
+    "read_more": "Baca Selengkapnya",
+    "no_news": "Belum Ada Berita",
+    "no_news_desc": "Pantau terus kabar terbaru seputar dunia panahan di sini.",
+    "load_more": "Muat Lebih Banyak",
+    "popular_title": "Berita Populer",
+    "no_popular": "Belum ada berita populer.",
+    "upcoming_title": "Turnamen Mendatang",
+    "no_upcoming": "Belum ada turnamen terdekat.",
+    "all_tournaments": "Lihat Semua Turnamen",
+    "subscribe_title": "Berlangganan Update",
+    "subscribe_desc": "Dapatkan berita terbaru langsung ke email Anda.",
+    "subscribe_placeholder": "Alamat email Anda",
+    "subscribe_button": "Langganan",
+    "subscribing_button": "Mengirim...",
+    "subscribe_success": "Berhasil berlangganan!",
+    "subscribe_error": "Gagal berlangganan. Silakan coba lagi nanti.",
+    "categories": {
+      "all": "Semua",
+      "event": "Event",
+      "pengumuman": "Pengumuman",
+      "prestasi": "Prestasi",
+      "tips": "Tips & Tutorial"
+    }
+  },
+  "news_detail_page": {
+    "back_to_news": "Kembali ke Berita",
+    "published": "Diterbitkan",
+    "read_time": "Durasi Baca",
+    "minutes_unit": "Menit",
+    "share_title": "Bagikan Artikel Ini",
+    "share_desc": "Bantu sebarkan informasi bermanfaat ini ke komunitas panahan.",
+    "comments_title": "Komentar",
+    "write_comment": "Tulis Komentar",
+    "your_name": "Nama Anda",
+    "name_placeholder": "Contoh: Budi Archer",
+    "message_label": "Pesan Komentar",
+    "message_placeholder": "Tulis pendapat Anda di sini...",
+    "submit_button": "Kirim Komentar",
+    "submitting_button": "Mengirim...",
+    "comment_success": "Komentar Anda berhasil diposting!",
+    "comment_error": "Gagal mengirim komentar. Silakan coba lagi nanti.",
+    "name_error": "Silakan isi nama Anda",
+    "comment_as": "Komentar sebagai",
+    "loading_comments": "Memuat Komentar...",
+    "no_comments": "Belum ada komentar",
+    "member_tag": "Member",
+    "related_articles": "Artikel Terkait",
+    "all_news": "Lihat Semua Berita",
+    "link_copied": "Tautan artikel telah disalin ke clipboard.",
+    "share_intro": "Baca artikel menarik ini: "
   }
 }

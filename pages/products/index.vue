@@ -13,15 +13,14 @@
                     <div
                         class="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-[10px] sm:text-sm font-bold tracking-widest mb-6">
                         <Icon icon="ph:shopping-bag-bold" class="text-base sm:text-lg" />
-                        <span>Katalog Produk Panahan</span>
+                        <span>{{ $t('products_page.badge') }}</span>
                     </div>
                     <h1
-                        class="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
-                        Lengkapi <span class="text-primary">Peralatan</span><br />
-                        Panahan Terbaikmu
+                        class="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6"
+                        v-html="$t('products_page.title')">
                     </h1>
                     <p class="text-white/90 text-sm md:text-lg leading-relaxed max-w-xl">
-                        Temukan peralatan berkualitas dari berbagai klub dan organisasi terpercaya di seluruh Indonesia.
+                        {{ $t('products_page.description') }}
                     </p>
 
                     <!-- Search Bar CTA -->
@@ -29,13 +28,13 @@
                         <div class="relative flex-1">
                             <Icon icon="ph:magnifying-glass-bold"
                                 class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl" />
-                            <input v-model="searchQuery" type="text" placeholder="Cari produk seperti busur, arrow..."
+                            <input v-model="searchQuery" type="text" :placeholder="$t('products_page.search_placeholder_hero')"
                                 class="w-full pl-12 pr-4 py-4 rounded-xl bg-white text-navy font-medium placeholder:text-gray-400 focus:ring-4 focus:ring-primary/30 outline-none transition-all text-base" />
                         </div>
                         <button
                             class="px-6 py-3.5 bg-primary hover:bg-primary-hover text-navy font-black rounded-xl transition-all shadow-lg shadow-primary/30 flex items-center justify-center gap-2">
                             <Icon icon="ph:magnifying-glass-bold" />
-                            Cari
+                            {{ $t('products_page.search_button') }}
                         </button>
                     </div>
                 </div>
@@ -50,17 +49,17 @@
                         <div class="relative">
                             <Icon icon="ph:magnifying-glass"
                                 class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg" />
-                            <input v-model="searchQuery" type="text" placeholder="Cari produk panahan..."
+                            <input v-model="searchQuery" type="text" :placeholder="$t('products_page.search_placeholder_sticky')"
                                 class="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm" />
                         </div>
                     </div>
                     <div class="flex items-center gap-3 w-full md:w-auto">
                         <div class="min-w-[150px]">
                             <BaseSelect v-model="categoryFilter" :items="categories" item-title="label"
-                                item-value="value" placeholder="Semua Kategori" />
+                                item-value="value" :placeholder="$t('products_page.all_categories')" />
                         </div>
                         <div class="min-w-[150px]">
-                            <BaseSelect v-model="sortBy" :items="sortOptions" placeholder="Urutan" />
+                            <BaseSelect v-model="sortBy" :items="sortOptions" :placeholder="$t('products_page.sort_title')" />
                         </div>
                     </div>
                 </div>
@@ -89,15 +88,13 @@
                 <div v-else-if="filteredProducts.length === 0 && !isLoading" key="empty"
                     class="flex flex-col items-center justify-center py-20">
                     <Icon icon="ph:package-light" class="text-7xl text-gray-200 mb-6" />
-                    <h3 class="text-lg sm:text-2xl font-black text-navy mb-3">Produk Tidak Ditemukan</h3>
-                    <p class="text-gray-500 max-w-md mx-auto text-center">Coba ubah filter atau kata kunci pencarian
-                        untuk
-                        menemukan produk yang sesuai.</p>
+                    <h3 class="text-lg sm:text-2xl font-black text-navy mb-3">{{ $t('products_page.not_found') }}</h3>
+                    <p class="text-gray-500 max-w-md mx-auto text-center">{{ $t('products_page.not_found_desc') }}</p>
                 </div>
                 <div v-else key="content" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                     <!-- Product Card Premium -->
                     <a v-for="product in filteredProducts" :key="product.id"
-                        :href="`/products/${product.slug || product.id}`"
+                        :href="localePath(`/products/${product.slug || product.id}`)"
                         class="bg-white rounded-3xl border border-stone-200 flex flex-col shadow-sm hover:border-stone-300 transition-all group overflow-hidden h-full">
 
                         <!-- Product Image Container -->
@@ -115,7 +112,7 @@
                                 <div
                                     class="px-3 py-1 bg-stone-900 text-white text-[10px] font-black rounded-lg shadow-sm flex items-center gap-1">
                                     <Icon icon="ph:tag-fill" />
-                                    PROMO
+                                    {{ $t('products_page.promo') }}
                                 </div>
                             </div>
 
@@ -124,7 +121,7 @@
                                 <div
                                     class="w-full py-2.5 bg-white/92 backdrop-blur-md text-navy text-xs font-black rounded-xl text-center shadow-sm flex items-center justify-center gap-2">
                                     <Icon icon="ph:arrow-square-out-bold" class="text-sm" />
-                                    LIHAT DETAIL
+                                    {{ $t('products_page.view_detail') }}
                                 </div>
                             </div>
                         </div>
@@ -134,13 +131,13 @@
                             <!-- Category & Status -->
                             <div class="flex items-center justify-between mb-3">
                                 <span
-                                    class="text-[10px] font-black text-stone-600 tracking-widest bg-stone-100 px-2 py-0.5 rounded-md ">
+                                    class="text-[10px] font-black text-stone-600 tracking-widest bg-stone-100 px-2 py-0.5 rounded-md">
                                     {{ getCategoryLabel(product.category) }}
                                 </span>
                                 <span v-if="product.stock > 0"
                                     class="text-[10px] font-bold text-emerald-700 flex items-center gap-1">
                                     <span class="w-1.5 h-1.5 bg-emerald-600 rounded-full"></span>
-                                    Tersedia
+                                    {{ $t('products_page.in_stock') }}
                                 </span>
                             </div>
 
@@ -181,22 +178,23 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import { ref, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import BaseSelect from '~/components/common/BaseSelect.vue'
+
 const config = useRuntimeConfig()
 const apiBaseUrl = useApiBaseUrl()
+
+const { tm, t } = useI18n()
+const localePath = useLocalePath()
 
 definePageMeta({
     layout: 'landing'
 })
 
-useHead({
-    title: 'Produk Panahan | Archeris',
-    meta: [
-        {
-            name: 'description',
-            content: 'Temukan perlengkapan dan aksesoris panahan pilihan untuk latihan dan kompetisi di Archeris.'
-        }
-    ]
+useSeoMeta({
+    title: () => `${t('products_page.badge')} - Archeris.net`,
+    description: () => t('products_page.description')
 })
 
 const searchQuery = ref('')
@@ -211,29 +209,8 @@ const allowedProductImages = [
     'https://images.unsplash.com/photo-1491553895911-0055eca6402d'
 ]
 
-const categories = [
-    { label: 'Semua', value: 'all', icon: 'ph:squares-four' },
-    { label: 'Peralatan', value: 'equipment', icon: 'ph:target' },
-    { label: 'Pakaian', value: 'apparel', icon: 'ph:t-shirt' },
-    { label: 'Aksesoris', value: 'accessories', icon: 'ph:bag' },
-    { label: 'Latihan', value: 'training', icon: 'ph:graduation-cap' },
-    { label: 'Lainnya', value: 'other', icon: 'ph:package' },
-]
-
-const categoryLabels = {
-    equipment: 'Peralatan',
-    apparel: 'Pakaian',
-    accessories: 'Aksesoris',
-    training: 'Latihan',
-    other: 'Lainnya'
-}
-
-const sortOptions = [
-    { value: 'newest', title: 'Terbaru' },
-    { value: 'price-low', title: 'Harga Terendah' },
-    { value: 'price-high', title: 'Harga Tertinggi' },
-    { value: 'popular', title: 'Terpopuler' }
-]
+const categories = computed(() => tm('products_page.categories_list') || [])
+const sortOptions = computed(() => tm('products_page.sort_options_list') || [])
 
 const { data: productResponse, pending: isLoading } = useAsyncData('products', () => $fetch(`${apiBaseUrl}/products`), {
     lazy: true,
@@ -265,7 +242,9 @@ const formatPrice = (price) => {
     return new Intl.NumberFormat('id-ID').format(price)
 }
 
-const getCategoryLabel = (category) => categoryLabels[category] || 'Produk'
+const getCategoryLabel = (category) => {
+    return t(`products_page.category_labels.${category}`) || t('products_page.category_labels.other') || 'Produk'
+}
 
 const getProductImage = (url) => allowedProductImages.includes(url) ? url : allowedProductImages[0]
 </script>
