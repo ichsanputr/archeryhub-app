@@ -192,8 +192,7 @@
               <div class="p-4 bg-gray-50/50 rounded-xl border border-gray-100">
                 <div class="text-[9px] font-black text-primary uppercase tracking-widest mb-1.5">Penerima</div>
                 <div class="text-navy font-black text-base mb-0.5">{{ order.customer_name }}</div>
-                <div class="text-[11px] font-bold text-gray-500 leading-tight">{{ order.shipping_address || 'Harap
-                  konfirmasi alamat' }}</div>
+                <div class="text-[11px] font-bold text-gray-500 leading-tight">{{ shippingAddress }}</div>
               </div>
 
               <div class="flex items-center gap-2">
@@ -410,6 +409,10 @@ const logSteps = computed(() => [
   { label: 'Dikirim', desc: 'Dalam perjalanan', icon: 'ph:truck-bold', active: ['shipping', 'completed'].includes(order.value?.status) },
   { label: 'Selesai', desc: 'Tiba di pembeli', icon: 'ph:check-box-bold', active: order.value?.status === 'completed' }
 ])
+
+const shippingAddress = computed(() => {
+  return order.value?.shipping_address || 'Harap konfirmasi alamat'
+})
 
 const formatDate = (val) => {
   if (!val) return '-'
