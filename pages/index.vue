@@ -6,6 +6,9 @@
         <!-- Learn to Use Section -->
         <HomeLearnToUse />
 
+        <!-- Trust & Testimonials Section -->
+        <HomeTrustTestimonials />
+
         <!-- Features Demo Section -->
         <HomeFeaturesDemo />
 
@@ -18,10 +21,6 @@
         <!-- Mobile CTA Section -->
         <HomeMobileCTA />
 
-
-
-
-
     </div>
 </template>
 
@@ -29,6 +28,7 @@
 import HomeHero from '~/components/Home/HomeHero.vue'
 import HomeStats from '~/components/Home/HomeStats.vue'
 import HomeLearnToUse from '~/components/Home/HomeLearnToUse.vue'
+import HomeTrustTestimonials from '~/components/Home/HomeTrustTestimonials.vue'
 import HomeFeaturesDemo from '~/components/Home/HomeFeaturesDemo.vue'
 import HomeMobileCTA from '~/components/Home/HomeMobileCTA.vue'
 import HomeLatestBlog from '~/components/Home/HomeLatestBlog.vue'

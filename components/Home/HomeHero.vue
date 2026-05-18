@@ -11,21 +11,26 @@
             <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
                 <div class="max-w-3xl">
                     <!-- Title -->
-                    <h1 ref="heroTitle"
-                        class="text-white mb-8 drop-shadow-sm opacity-0 translate-y-8">
-                        {{ $t('home.hero.title_part1') }}<br />
-                        <span
-                            class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary to-green-300">
-                            {{ $t('home.hero.title_part2') }}</span>
+                    <!-- Title -->
+                    <h1 ref="heroTitle" class="text-white mb-8 drop-shadow-sm">
+                        <span class="inline-block overflow-hidden mr-2.5 sm:mr-4 py-1" v-for="(word, i) in $t('home.hero.title_part1').split(' ')" :key="'p1-' + i">
+                            <span class="hero-word inline-block transform-gpu">{{ word }}</span>
+                        </span>
+                        <br />
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary to-green-300">
+                            <span class="inline-block overflow-hidden mr-2.5 sm:mr-4 py-1" v-for="(word, i) in $t('home.hero.title_part2').split(' ')" :key="'p2-' + i">
+                                <span class="hero-word inline-block transform-gpu">{{ word }}</span>
+                            </span>
+                        </span>
                     </h1>
 
                     <!-- Description moved below Title -->
-                    <p ref="heroText" class="text-white/80 text-lg sm:text-xl font-light leading-relaxed max-w-2xl mb-12 opacity-0 translate-y-8">
+                    <p ref="heroText" class="text-white/80 text-lg sm:text-xl font-light leading-relaxed max-w-2xl mb-12">
                         {{ $t('home.hero.description') }}
                     </p>
                     
                     <!-- Buttons -->
-                    <div ref="heroButtons" class="flex flex-col sm:flex-row gap-4 opacity-0 translate-y-8">
+                    <div ref="heroButtons" class="flex flex-col sm:flex-row gap-4">
                         <NuxtLink :to="localePath('/auth/login')"
                             class="bg-primary hover:bg-primary-hover text-navy text-sm font-bold px-8 py-3.5 rounded-xl transition-all shadow-[0_4px_14px_0_rgba(183,251,35,0.39)] hover:shadow-[0_6px_20px_rgba(183,251,35,0.23)] hover:-translate-y-0.5 text-center">
                             {{ $t('home.hero.cta_primary') }}
@@ -52,11 +57,26 @@ const heroText = ref(null)
 const heroButtons = ref(null)
 
 onMounted(() => {
-    const tl = gsap.timeline({ defaults: { ease: 'power3.out', duration: 1 } })
+    const tl = gsap.timeline({ defaults: { ease: 'power4.out', duration: 1.2 } })
 
-    tl.to(heroTitle.value, { opacity: 1, y: 0, duration: 1 }, 0.2)
-        .to(heroText.value, { opacity: 1, y: 0, duration: 1 }, 0.4)
-        .to(heroButtons.value, { opacity: 1, y: 0, duration: 1 }, 0.6)
+    // Animate word-by-word reveal
+    tl.from('.hero-word', {
+        yPercent: 100,
+        stagger: 0.08,
+        duration: 1.2,
+    })
+    // Animate text description fade & slide
+    .from(heroText.value, {
+        opacity: 0,
+        y: 30,
+        duration: 1,
+    }, '-=0.8')
+    // Animate buttons
+    .from(heroButtons.value, {
+        opacity: 0,
+        y: 20,
+        duration: 0.8,
+    }, '-=0.6')
 })
 </script>
 
