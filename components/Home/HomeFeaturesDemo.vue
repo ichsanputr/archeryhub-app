@@ -1,5 +1,5 @@
 <template>
-    <section ref="sectionRef" class="py-24 sm:py-32 bg-white">
+    <section ref="sectionRef" class="py-24 sm:py-32 bg-white overflow-hidden">
         <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Main Heading -->
             <div class="text-center mb-24">
@@ -13,8 +13,8 @@
             </div>
 
             <!-- Feature Block 1: App -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center mb-32">
-                <div class="order-2 lg:order-1">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center mb-32 feature-row">
+                <div class="order-2 lg:order-1 text-col">
                     <span class="text-[10px] font-bold tracking-[0.2em] text-navy/40 mb-4 block">{{
                         $t('home.features_demo.f1_tag') }}</span>
                     <h3 class="text-3xl sm:text-4xl font-bold text-navy mb-6 leading-tight">{{
@@ -39,7 +39,7 @@
                     </ul>
                 </div>
 
-                <div class="order-1 lg:order-2 relative flex justify-center lg:justify-end">
+                <div class="order-1 lg:order-2 relative flex justify-center lg:justify-end image-col">
                     <div class="absolute inset-0 bg-[#E2F9C2] rounded-[3rem] -rotate-3 scale-95 opacity-50"></div>
                     <div
                         class="relative w-full max-w-[400px] aspect-[4/5] bg-[#E2F9C2] rounded-[3rem] flex items-center justify-center p-8">
@@ -50,8 +50,8 @@
             </div>
 
             <!-- Feature Block 2: Scheduling -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-                <div class="relative flex justify-center lg:justify-start">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center mb-32 feature-row">
+                <div class="relative flex justify-center lg:justify-start image-col">
                     <div class="absolute inset-0 bg-[#E2F9C2] rounded-[3rem] rotate-3 scale-95 opacity-50"></div>
                     <div
                         class="relative w-full aspect-video lg:aspect-[4/3] bg-[#E2F9C2] rounded-[3rem] flex items-center justify-center p-8">
@@ -60,7 +60,7 @@
                     </div>
                 </div>
 
-                <div>
+                <div class="text-col">
                     <span class="text-[10px] font-bold tracking-[0.2em] text-navy/40 mb-4 block">{{
                         $t('home.features_demo.f2_tag') }}</span>
                     <h3 class="text-3xl sm:text-4xl font-bold text-navy mb-6 leading-tight">{{
@@ -82,9 +82,10 @@
                     </ul>
                 </div>
             </div>
+
             <!-- Feature Block 3: Payments -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center mb-32">
-                <div class="order-2 lg:order-1">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center mb-32 feature-row">
+                <div class="order-2 lg:order-1 text-col">
                     <span class="text-[10px] font-bold tracking-[0.2em] text-navy/40 mb-4 block">{{
                         $t('home.features_demo.f3_tag') }}</span>
                     <h3 class="text-3xl sm:text-4xl font-bold text-navy mb-6 leading-tight">{{
@@ -106,7 +107,7 @@
                     </ul>
                 </div>
 
-                <div class="order-1 lg:order-2 relative flex justify-center lg:justify-end">
+                <div class="order-1 lg:order-2 relative flex justify-center lg:justify-end image-col">
                     <div class="absolute inset-0 bg-[#E2F9C2] rounded-[3rem] -rotate-3 scale-95 opacity-50"></div>
                     <div
                         class="relative w-full max-w-[400px] aspect-[4/5] bg-[#E2F9C2] rounded-[3rem] flex items-center justify-center p-8">
@@ -117,8 +118,8 @@
             </div>
 
             <!-- Feature Block 4: Portfolio -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-                <div class="relative flex justify-center lg:justify-start">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center feature-row">
+                <div class="relative flex justify-center lg:justify-start image-col">
                     <div class="absolute inset-0 bg-[#E2F9C2] rounded-[3rem] rotate-3 scale-95 opacity-50"></div>
                     <div
                         class="relative w-full max-w-[400px] aspect-[4/5] bg-[#E2F9C2] rounded-[3rem] flex items-center justify-center p-8">
@@ -127,7 +128,7 @@
                     </div>
                 </div>
 
-                <div>
+                <div class="text-col">
                     <span class="text-[10px] font-bold tracking-[0.2em] text-navy/40 mb-4 block">{{
                         $t('home.features_demo.f4_tag') }}</span>
                     <h3 class="text-3xl sm:text-4xl font-bold text-navy mb-6 leading-tight">{{
@@ -165,6 +166,7 @@ onMounted(() => {
     const el = sectionRef.value
     if (!el) return
 
+    // heading animations
     gsap.from(el.querySelector('.reveal-title'), {
         scrollTrigger: {
             trigger: el,
@@ -189,9 +191,52 @@ onMounted(() => {
         delay: 0.18,
         ease: 'power3.out'
     })
+
+    // row-by-row coordinated slide animations
+    const rows = el.querySelectorAll('.feature-row')
+    rows.forEach((row, index) => {
+        const textCol = row.querySelector('.text-col')
+        const imageCol = row.querySelector('.image-col')
+        
+        // alternating slide directions based on grid order
+        // block 1: text slides from left, image from right
+        // block 2: image slides from left, text from right
+        // block 3: text slides from left, image from right
+        // block 4: image slides from left, text from right
+        const isTextLeft = index % 2 === 0
+
+        if (textCol) {
+            gsap.from(textCol, {
+                scrollTrigger: {
+                    trigger: row,
+                    start: 'top 85%',
+                    toggleActions: 'play none none none'
+                },
+                opacity: 0,
+                x: isTextLeft ? -60 : 60,
+                duration: 1.2,
+                ease: 'power3.out'
+            })
+        }
+
+        if (imageCol) {
+            gsap.from(imageCol, {
+                scrollTrigger: {
+                    trigger: row,
+                    start: 'top 85%',
+                    toggleActions: 'play none none none'
+                },
+                opacity: 0,
+                x: isTextLeft ? 60 : -60,
+                scale: 0.95,
+                duration: 1.3,
+                delay: 0.12,
+                ease: 'power3.out'
+            })
+        }
+    })
 })
 </script>
 
 <style scoped>
-/* No additional styles needed */
 </style>

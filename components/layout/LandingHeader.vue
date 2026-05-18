@@ -107,16 +107,16 @@
 
 
                     <NuxtLink :to="localePath('/archers')"
-                        class="font-black text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
-                        :class="[navLinkClasses, { 'bg-primary !text-black hover:!text-black': isActive('/archers') }]">
+                        class="font-semibold text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
+                        :class="[navLinkClasses, { 'bg-primary !text-black hover:!text-black font-bold': isActive('/archers') }]">
                         {{ $t('nav.archers') }}</NuxtLink>
                     <NuxtLink :to="localePath('/news')"
-                        class="font-black text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
-                        :class="[navLinkClasses, { 'bg-primary !text-black hover:!text-black': isActive('/news') }]">
+                        class="font-semibold text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
+                        :class="[navLinkClasses, { 'bg-primary !text-black hover:!text-black font-bold': isActive('/news') }]">
                         {{ $t('nav.news') }}</NuxtLink>
                     <NuxtLink :to="localePath('/products')"
-                        class="font-black text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
-                        :class="[navLinkClasses, { 'bg-primary !text-black hover:!text-black': isActive('/products') }]">
+                        class="font-semibold text-sm transition-all duration-300 hover:text-primary px-3 py-1.5 rounded-lg"
+                        :class="[navLinkClasses, { 'bg-primary !text-black hover:!text-black font-bold': isActive('/products') }]">
                         {{ $t('nav.marketplace') }}
                     </NuxtLink>
                 </nav>
@@ -130,7 +130,7 @@
                             :class="showSolid ? 'text-navy hover:bg-gray-100' : 'text-white hover:bg-white/10'">
                             <Icon :icon="langFlags[locale] || 'ph:globe-bold'"
                                 class="text-lg rounded-full overflow-hidden border border-white/20" />
-                            {{ locale }}
+                            {{ locale.toUpperCase() }}
                         </button>
 
                         <Transition enter-active-class="transition duration-200 ease-out"

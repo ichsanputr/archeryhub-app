@@ -10,7 +10,7 @@
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 items-end">
                 <!-- Stat 1 -->
-                <NuxtLink :to="localePath('/blog/impact-tracking-ten-thousand-archers')" class="group relative pl-8 border-l border-dashed border-white/20 block hover:opacity-90 transition-opacity">
+                <NuxtLink :to="localePath('/blog/tips-for-choosing-the-right-bow-for-beginners')" class="group relative pl-8 border-l border-dashed border-white/20 block hover:opacity-90 transition-opacity">
                     <div class="text-4xl sm:text-6xl font-black text-primary mb-2 font-display tracking-tighter group-hover:translate-x-1 transition-transform inline-block">10K+</div>
                     <div class="text-white/60 text-xs sm:text-sm tracking-widest font-bold flex items-center gap-1.5">
                         Archery Athletes 
@@ -19,7 +19,7 @@
                 </NuxtLink>
 
                 <!-- Stat 2 -->
-                <NuxtLink :to="localePath('/blog/scale-up-five-hundred-archery-tournaments')" class="group relative pl-8 border-l border-dashed border-white/20 block hover:opacity-90 transition-opacity">
+                <NuxtLink :to="localePath('/blog/essential-physical-preparation-tips-before-major-tournaments')" class="group relative pl-8 border-l border-dashed border-white/20 block hover:opacity-90 transition-opacity">
                     <div class="text-4xl sm:text-6xl font-black text-primary mb-2 font-display tracking-tighter group-hover:translate-x-1 transition-transform inline-block">500+</div>
                     <div class="text-white/60 text-xs sm:text-sm tracking-widest font-bold flex items-center gap-1.5">
                         Tournaments Organized 
@@ -28,7 +28,7 @@
                 </NuxtLink>
 
                 <!-- Stat 3 -->
-                <NuxtLink :to="localePath('/blog/why-archers-rate-archeris-five-stars')" class="group relative pl-8 border-l border-dashed border-white/20 block hover:opacity-90 transition-opacity">
+                <NuxtLink :to="localePath('/blog/how-archery-improves-your-focus-and-mental-well-being')" class="group relative pl-8 border-l border-dashed border-white/20 block hover:opacity-90 transition-opacity">
                     <div class="text-4xl sm:text-6xl font-black text-primary mb-2 font-display tracking-tighter group-hover:translate-x-1 transition-transform inline-block">4.9</div>
                     <div class="text-white/60 text-xs sm:text-sm tracking-widest font-bold flex items-center gap-1.5">
                         App Store Rating 
@@ -37,7 +37,7 @@
                 </NuxtLink>
 
                 <!-- Stat 4 -->
-                <NuxtLink :to="localePath('/blog/big-data-scoring-one-million-arrows')" class="group relative pl-8 border-l border-dashed border-white/20 block hover:opacity-90 transition-opacity">
+                <NuxtLink :to="localePath('/blog/tips-for-choosing-the-right-bow-for-beginners')" class="group relative pl-8 border-l border-dashed border-white/20 block hover:opacity-90 transition-opacity">
                     <div class="text-4xl sm:text-6xl font-black text-primary mb-2 font-display tracking-tighter group-hover:translate-x-1 transition-transform inline-block">1M+</div>
                     <div class="text-white/60 text-xs sm:text-sm tracking-widest font-bold flex items-center gap-1.5">
                         Arrows Scored 
@@ -50,6 +50,8 @@
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue'
+
 const localePath = useLocalePath()
 </script>
 

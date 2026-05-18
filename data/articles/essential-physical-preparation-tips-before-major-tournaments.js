@@ -1,6 +1,6 @@
 export const article3 = {
     id: 3,
-    slug: 'persiapan-fisik-sebelum-turnamen-panahan',
+    slug: 'essential-physical-preparation-tips-before-major-tournaments',
     title: 'Essential Physical Preparation Tips Before Major Tournaments',
     excerpt: 'Maximize your performance on the shooting line. Learn the essential core, shoulder, and cardio routines to build tournament-day endurance.',
     category: 'Performance',
@@ -9,7 +9,7 @@ export const article3 = {
         name: 'Coach Bambang',
         avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Bambang'
     },
-    image: 'https://images.unsplash.com/photo-1444491741275-3747c33cc99b?auto=format&fit=crop&q=80&w=1200',
+    image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&q=80&w=1200',
     content: `
         <p>Many novice archers mistakenly assume that preparing for a tournament only involves shooting thousands of arrows on the practice range. However, when competition day arrives—bringing 72 arrows in qualification plus demanding elimination matches under a scorching sun—they quickly realize that excellent technique collapses without physical stamina. Physical fitness is the foundation that keeps your form stable until the very last arrow. Let's discuss the essential routines required for those aiming for the podium.</p>
 

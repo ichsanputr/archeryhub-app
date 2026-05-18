@@ -1,14 +1,14 @@
 <template>
     <section ref="sectionRef" class="py-20 sm:py-32 bg-[#DEFEBD] overflow-hidden relative">
         <!-- Subtle Stripes SVG Overlay (Right Side - Bold & Variant) -->
-        <svg class="absolute inset-y-0 right-0 h-full w-auto text-[#63C03B] pointer-events-none opacity-80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 765 1186" xml:space="preserve">
+        <svg class="absolute inset-y-0 right-0 h-[40%] sm:h-full w-auto text-[#63C03B] pointer-events-none opacity-80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 765 1186" xml:space="preserve">
             <!-- Intersecting double-stripe parallel variants -->
             <path fill="currentColor" style="opacity: 0.12;" d="M122,1186H0L406-31h122L122,1186z M765-31H643L237,1186h122L765-31z"></path>
             <path fill="currentColor" style="opacity: 0.05;" d="M180,1186H58L464-31h122L180,1186z M825-31H703L297,1186h122L825-31z"></path>
         </svg>
 
         <!-- Subtle Stripes SVG Overlay (Left Side Flipped - Bold & Variant) -->
-        <svg class="absolute inset-y-0 left-0 h-full w-auto text-[#63C03B] pointer-events-none opacity-80 transform scale-x-[-1]" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 765 1186" xml:space="preserve">
+        <svg class="absolute inset-y-0 left-0 h-[40%] sm:h-full w-auto text-[#63C03B] pointer-events-none opacity-80 transform scale-x-[-1]" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 765 1186" xml:space="preserve">
             <path fill="currentColor" style="opacity: 0.12;" d="M122,1186H0L406-31h122L122,1186z M765-31H643L237,1186h122L765-31z"></path>
             <path fill="currentColor" style="opacity: 0.05;" d="M180,1186H58L464-31h122L180,1186z M825-31H703L297,1186h122L825-31z"></path>
         </svg>
@@ -105,6 +105,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 const sectionRef = ref(null)
+const scrollContainer = ref(null)
 
 onMounted(() => {
     gsap.registerPlugin(ScrollTrigger)
@@ -135,6 +136,26 @@ onMounted(() => {
         delay: 0.18,
         ease: 'power3.out'
     })
+
+    // scroll the second card (step 2) to the center of the screen
+    if (scrollContainer.value) {
+        setTimeout(() => {
+            const container = scrollContainer.value
+            const children = container.children
+            if (children && children.length >= 2) {
+                const secondChild = children[1]
+                const containerWidth = container.clientWidth
+                const childWidth = secondChild.clientWidth
+                const childOffset = secondChild.offsetLeft
+                
+                const scrollPosition = childOffset - (containerWidth / 2) + (childWidth / 2)
+                container.scrollTo({
+                    left: scrollPosition,
+                    behavior: 'instant'
+                })
+            }
+        }, 150)
+    }
 })
 </script>
 

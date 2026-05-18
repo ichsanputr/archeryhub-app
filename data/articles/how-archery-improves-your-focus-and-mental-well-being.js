@@ -1,6 +1,6 @@
 export const article2 = {
     id: 2,
-    slug: 'manfaat-olahraga-panahan-untuk-kesehatan-mental',
+    slug: 'how-archery-improves-your-focus-and-mental-well-being',
     title: 'How Archery Improves Your Focus and Mental Well-being',
     excerpt: 'Discover how archery goes beyond physical strength, serving as a form of moving meditation that sharpens concentration, fosters self-discipline, and calms the mind.',
     category: 'Health',

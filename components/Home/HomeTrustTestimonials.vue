@@ -3,6 +3,16 @@
         <!-- Subtle Vector Graphic in Background for aesthetics -->
         <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-[#DEFEBD]/30 via-transparent to-transparent pointer-events-none"></div>
 
+        <!-- Badminton Player Decorative Watermark Graphic in Bottom Corner -->
+        <div class="absolute bottom-0 right-0 w-[180px] sm:w-[280px] md:w-[350px] opacity-15 pointer-events-none transform translate-y-8 translate-x-8 z-0">
+            <img src="/badminton_vector.png" alt="Badminton Players Watermark" class="w-full h-auto object-contain select-none pointer-events-none" />
+        </div>
+
+        <!-- Second Badminton Player Decorative Watermark Graphic in Left Corner -->
+        <div class="absolute bottom-0 left-0 w-[180px] sm:w-[280px] md:w-[350px] opacity-15 pointer-events-none transform translate-y-8 -translate-x-8 z-0">
+            <img src="/badminton_vector_2.png" alt="Badminton Players Watermark Left" class="w-full h-auto object-contain select-none pointer-events-none" />
+        </div>
+
         <div class="max-w-[1280px] mx-auto px-6 md:px-12">
             <!-- ── Top Header Section: Metric and Badges (Exact Same layout as image) ── -->
             <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center mb-16 relative z-10">
@@ -14,7 +24,12 @@
                         <div class="absolute w-24 h-24 rounded-full bg-[#DEFEBD]/40 animate-ping opacity-25"></div>
                         <div class="absolute w-20 h-20 rounded-full bg-[#DEFEBD]/30"></div>
                         <div class="w-16 h-16 rounded-full bg-[#DEFEBD] flex items-center justify-center text-navy relative z-10">
-                            <Icon icon="ph:arrow-circle-up-right-bold" class="text-3xl text-navy/80" />
+                            <!-- Custom SVG Icon replacing original -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-navy/80" viewBox="0 0 32 32">
+                                <path d="M0 0h32v32H0z" fill="none" />
+                                <path fill="currentColor" d="m16 8l1.912 3.703l4.088.594L19 15l1 4l-4-2.25L12 19l1-4l-3-2.703l4.2-.594z" />
+                                <path fill="currentColor" d="M17.736 30L16 29l4-7h6a1.997 1.997 0 0 0 2-2V8a1.997 1.997 0 0 0-2-2H6a1.997 1.997 0 0 0-2 2v12a1.997 1.997 0 0 0 2 2h9v2H6a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4h20a4 4 0 0 1 4 4v12a4 4 0 0 1-4 4h-4.835Z" />
+                            </svg>
                         </div>
                     </div>
 
@@ -59,105 +74,57 @@
 
             </div>
 
-            <!-- ── Bottom Row Section: Card Testimonials (Exact Same design as image) ── -->
-            <div class="relative w-full">
+            <!-- ── Bottom Row Section: Card Testimonials (Running Infinite Loop) ── -->
+            <div class="relative w-full overflow-hidden mt-8">
                 <!-- Fading Mask for side scrolling indicators -->
-                <div class="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[#fcfdfa]/20 to-transparent z-10 pointer-events-none"></div>
-                <div class="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#fcfdfa]/20 to-transparent z-10 pointer-events-none"></div>
+                <div class="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#fcfdfa] via-[#fcfdfa]/80 to-transparent z-10 pointer-events-none"></div>
+                <div class="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#fcfdfa] via-[#fcfdfa]/80 to-transparent z-10 pointer-events-none"></div>
 
-                <!-- Scrollable Grid Row Container -->
-                <div class="flex gap-6 overflow-x-auto no-scrollbar pb-6 scroll-smooth snap-x">
-                    
-                    <!-- Card 1: Shabbona Park Saints -->
-                    <div class="w-[320px] sm:w-[360px] bg-white border border-slate-100 rounded-3xl p-6 flex flex-col justify-between shrink-0 snap-start shadow-[0_4px_16px_rgba(183,251,35,0.04)] hover:shadow-[0_8px_24px_rgba(183,251,35,0.12)] hover:border-primary/45 hover:-translate-y-1 transition-all duration-300">
+                <!-- Infinite Marquee Scrolling Container -->
+                <div class="animate-marquee flex gap-6 py-4">
+                    <!-- original set of cards -->
+                    <div 
+                        v-for="(item, index) in testimonials" 
+                        :key="'testi-orig-' + index"
+                        class="w-[320px] sm:w-[360px] bg-white border border-slate-100 rounded-3xl p-6 flex flex-col justify-between shrink-0 shadow-[0_4px_16px_rgba(183,251,35,0.04)] hover:shadow-[0_8px_24px_rgba(183,251,35,0.12)] hover:border-primary/45 hover:-translate-y-1 transition-all duration-300 animate-hover-lift"
+                    >
                         <div class="flex-1">
                             <p class="text-xs sm:text-sm text-navy/80 font-bold leading-relaxed">
-                                "Our youth football program went from 23 players to 124 players in one season due to this platform."
+                                "{{ item.quote }}"
                             </p>
                         </div>
                         <div class="flex items-center gap-3.5 mt-5 border-t border-slate-100 pt-4 shrink-0">
-                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Farhan" alt="Coach Farhan Avatar" class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200/50 shrink-0" />
+                            <img :src="item.avatar" :alt="item.name + ' Avatar'" class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200/50 shrink-0" />
                             <div>
-                                <h4 class="font-black text-xs text-navy leading-none">Coach Farhan</h4>
+                                <h4 class="font-black text-xs text-navy leading-none">{{ item.name }}</h4>
                                 <span class="text-[9px] font-black text-slate-400 mt-1 block uppercase tracking-wider">
-                                    Shabbona Park Saints
+                                    {{ item.org }}
                                 </span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Card 2: Thunder Soccer Club -->
-                    <div class="w-[320px] sm:w-[360px] bg-white border border-slate-100 rounded-3xl p-6 flex flex-col justify-between shrink-0 snap-start shadow-[0_4px_16px_rgba(183,251,35,0.04)] hover:shadow-[0_8px_24px_rgba(183,251,35,0.12)] hover:border-primary/45 hover:-translate-y-1 transition-all duration-300">
+                    <!-- duplicate set of cards for seamless infinite looping -->
+                    <div 
+                        v-for="(item, index) in testimonials" 
+                        :key="'testi-dup-' + index"
+                        class="w-[320px] sm:w-[360px] bg-white border border-slate-100 rounded-3xl p-6 flex flex-col justify-between shrink-0 shadow-[0_4px_16px_rgba(183,251,35,0.04)] hover:shadow-[0_8px_24px_rgba(183,251,35,0.12)] hover:border-primary/45 hover:-translate-y-1 transition-all duration-300 animate-hover-lift"
+                    >
                         <div class="flex-1">
                             <p class="text-xs sm:text-sm text-navy/80 font-bold leading-relaxed">
-                                "The easy-to-use software, affordability, and first-class customer service make Archeris a must-use for sports organizations."
+                                "{{ item.quote }}"
                             </p>
                         </div>
                         <div class="flex items-center gap-3.5 mt-5 border-t border-slate-100 pt-4 shrink-0">
-                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Rania" alt="Rania Nabilla Avatar" class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200/50 shrink-0" />
+                            <img :src="item.avatar" :alt="item.name + ' Avatar'" class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200/50 shrink-0" />
                             <div>
-                                <h4 class="font-black text-xs text-navy leading-none">Rania Nabilla</h4>
+                                <h4 class="font-black text-xs text-navy leading-none">{{ item.name }}</h4>
                                 <span class="text-[9px] font-black text-slate-400 mt-1 block uppercase tracking-wider">
-                                    Thunder Soccer Club
+                                    {{ item.org }}
                                 </span>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Card 3: Shadyside Youth Sports -->
-                    <div class="w-[320px] sm:w-[360px] bg-white border border-slate-100 rounded-3xl p-6 flex flex-col justify-between shrink-0 snap-start shadow-[0_4px_16px_rgba(183,251,35,0.04)] hover:shadow-[0_8px_24px_rgba(183,251,35,0.12)] hover:border-primary/45 hover:-translate-y-1 transition-all duration-300">
-                        <div class="flex-1">
-                            <p class="text-xs sm:text-sm text-navy/80 font-bold leading-relaxed">
-                                "Archeris is extremely easy to use and they helped us every step of the way to get us setup very quickly."
-                            </p>
-                        </div>
-                        <div class="flex items-center gap-3.5 mt-5 border-t border-slate-100 pt-4 shrink-0">
-                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Budi" alt="Budi Santoso Avatar" class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200/50 shrink-0" />
-                            <div>
-                                <h4 class="font-black text-xs text-navy leading-none">Budi Santoso</h4>
-                                <span class="text-[9px] font-black text-slate-400 mt-1 block uppercase tracking-wider">
-                                    Shadyside Youth Sports
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card 4: Hueytown Youth Baseball -->
-                    <div class="w-[320px] sm:w-[360px] bg-white border border-slate-100 rounded-3xl p-6 flex flex-col justify-between shrink-0 snap-start shadow-[0_4px_16px_rgba(183,251,35,0.04)] hover:shadow-[0_8px_24px_rgba(183,251,35,0.12)] hover:border-primary/45 hover:-translate-y-1 transition-all duration-300">
-                        <div class="flex-1">
-                            <p class="text-xs sm:text-sm text-navy/80 font-bold leading-relaxed">
-                                "Spring registration was approaching fast and the move to Archeris could not have gone more smoothly."
-                            </p>
-                        </div>
-                        <div class="flex items-center gap-3.5 mt-5 border-t border-slate-100 pt-4 shrink-0">
-                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jessica" alt="Jessica Lim Avatar" class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200/50 shrink-0" />
-                            <div>
-                                <h4 class="font-black text-xs text-navy leading-none">Jessica Lim</h4>
-                                <span class="text-[9px] font-black text-slate-400 mt-1 block uppercase tracking-wider">
-                                    Hueytown Youth Baseball
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card 5: Columbia Wrestling Club -->
-                    <div class="w-[320px] sm:w-[360px] bg-white border border-slate-100 rounded-3xl p-6 flex flex-col justify-between shrink-0 snap-start shadow-[0_4px_16px_rgba(183,251,35,0.04)] hover:shadow-[0_8px_24px_rgba(183,251,35,0.12)] hover:border-primary/45 hover:-translate-y-1 transition-all duration-300">
-                        <div class="flex-1">
-                            <p class="text-xs sm:text-sm text-navy/80 font-bold leading-relaxed">
-                                "I was navigating the site as an admin for the first time last year and the amount of support they've provided speaks volumes."
-                            </p>
-                        </div>
-                        <div class="flex items-center gap-3.5 mt-5 border-t border-slate-100 pt-4 shrink-0">
-                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Marcus" alt="Marcus Vance Avatar" class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-200/50 shrink-0" />
-                            <div>
-                                <h4 class="font-black text-xs text-navy leading-none">Marcus Vance</h4>
-                                <span class="text-[9px] font-black text-slate-400 mt-1 block uppercase tracking-wider">
-                                    Columbia Wrestling Club
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
 
@@ -172,6 +139,39 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 const sectionRef = ref(null)
+
+const testimonials = [
+    {
+        quote: "Our youth football program went from 23 players to 124 players in one season due to this platform.",
+        name: "Coach Farhan",
+        org: "Shabbona Park Saints",
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Farhan"
+    },
+    {
+        quote: "The easy-to-use software, affordability, and first-class customer service make Archeris a must-use for sports organizations.",
+        name: "Rania Nabilla",
+        org: "Thunder Soccer Club",
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rania"
+    },
+    {
+        quote: "Archeris is extremely easy to use and they helped us every step of the way to get us setup very quickly.",
+        name: "Budi Santoso",
+        org: "Shadyside Youth Sports",
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Budi"
+    },
+    {
+        quote: "Spring registration was approaching fast and the move to Archeris could not have gone more smoothly.",
+        name: "Jessica Lim",
+        org: "Hueytown Youth Baseball",
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jessica"
+    },
+    {
+        quote: "I was navigating the site as an admin for the first time last year and the amount of support they've provided speaks volumes.",
+        name: "Marcus Vance",
+        org: "Columbia Wrestling Club",
+        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Marcus"
+    }
+]
 
 onMounted(() => {
     gsap.registerPlugin(ScrollTrigger)
@@ -206,6 +206,25 @@ onMounted(() => {
 </script>
 
 <style scoped>
+@keyframes marquee {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.animate-marquee {
+    display: flex;
+    width: max-content;
+    animation: marquee 35s linear infinite;
+}
+
+.animate-marquee:hover {
+    animation-play-state: paused;
+}
+
 .no-scrollbar::-webkit-scrollbar {
     display: none;
 }

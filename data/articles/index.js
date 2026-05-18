@@ -1,6 +1,6 @@
-import { article1 } from './tips-memilih-busur-panah-untuk-pemula'
-import { article2 } from './manfaat-olahraga-panahan-untuk-kesehatan-mental'
-import { article3 } from './persiapan-fisik-sebelum-turnamen-panahan'
+import { article1 } from './tips-for-choosing-the-right-bow-for-beginners'
+import { article2 } from './how-archery-improves-your-focus-and-mental-well-being'
+import { article3 } from './essential-physical-preparation-tips-before-major-tournaments'
 
 export const articles = [
     article1,

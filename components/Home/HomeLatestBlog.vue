@@ -31,64 +31,42 @@
                 </div>
             </div>
 
+            <!-- dynamic carousel of actual english blog posts -->
             <div ref="blogScrollContainer"
                 class="flex gap-8 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar pb-6 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
-                <!-- Blog Card 1 -->
-                <div class="w-[280px] sm:w-[350px] md:w-[400px] flex-shrink-0 snap-start group cursor-pointer">
-                    <div class="aspect-[16/10] rounded-3xl overflow-hidden mb-6 bg-white shadow-lg">
-                        <img src="/archery_blog_thumbnail_1778934914638.png" alt="Blog Post"
-                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                
+                <NuxtLink 
+                    v-for="article in articles" 
+                    :key="article.slug" 
+                    :to="localePath('/blog/' + article.slug)"
+                    class="w-[280px] sm:w-[350px] md:w-[400px] flex-shrink-0 snap-start group cursor-pointer blog-card block"
+                >
+                    <div class="aspect-[16/10] rounded-3xl overflow-hidden mb-6 bg-white/5 border border-white/10 shadow-lg relative">
+                        <img 
+                            :src="article.image" 
+                            :alt="article.title"
+                            class="w-full h-full object-cover blog-card-image group-hover:scale-105 transition-transform duration-700" 
+                        />
                     </div>
+                    
                     <div class="flex items-center gap-4 mb-4">
-                        <span
-                            class="px-3 py-1 bg-white/10 text-primary text-[10px] font-bold rounded-full tracking-widest">Update</span>
-                        <span class="text-white/40 text-xs font-bold tracking-widest">May 16, 2026</span>
+                        <span class="px-3 py-1 bg-white/10 text-primary text-[10px] font-bold rounded-full tracking-widest uppercase">
+                            {{ article.category }}
+                        </span>
+                        <span class="text-white/40 text-xs font-bold tracking-widest">
+                            {{ article.date }}
+                        </span>
                     </div>
-                    <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-primary transition-colors">
-                        Digitalizing the Archery Ecosystem: Archeris Release Notes v1.0</h3>
+                    
+                    <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-primary transition-colors line-clamp-2 leading-snug">
+                        {{ article.title }}
+                    </h3>
+                    
                     <p class="text-white/60 font-light leading-relaxed line-clamp-2">
-                        Kami dengan bangga memperkenalkan versi stabil pertama Archeris, platform yang akan mengubah
-                        cara kita mengelola olahraga panahan di Indonesia.
+                        {{ article.excerpt }}
                     </p>
-                </div>
+                </NuxtLink>
 
-                <!-- Blog Card 2 (Placeholder) -->
-                <div class="w-[280px] sm:w-[350px] md:w-[400px] flex-shrink-0 snap-start group cursor-pointer">
-                    <div
-                        class="aspect-[16/10] rounded-3xl overflow-hidden mb-6 bg-white/5 border border-white/10 flex items-center justify-center">
-                        <Icon icon="ph:image-square-bold" class="text-4xl text-white/20" />
-                    </div>
-                    <div class="flex items-center gap-4 mb-4">
-                        <span
-                            class="px-3 py-1 bg-white/10 text-primary text-[10px] font-bold rounded-full tracking-widest">Tips</span>
-                        <span class="text-white/40 text-xs font-bold tracking-widest">May 14, 2026</span>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-primary transition-colors">Cara
-                        Efektif Mengelola Turnamen Skala Nasional</h3>
-                    <p class="text-white/60 font-light leading-relaxed line-clamp-2">
-                        Panduan lengkap bagi operator klub untuk memaksimalkan fitur Archeris dalam penyelenggaraan
-                        event besar.
-                    </p>
-                </div>
-
-                <!-- Blog Card 3 (Placeholder) -->
-                <div class="w-[280px] sm:w-[350px] md:w-[400px] flex-shrink-0 snap-start group cursor-pointer">
-                    <div
-                        class="aspect-[16/10] rounded-3xl overflow-hidden mb-6 bg-white/5 border border-white/10 flex items-center justify-center">
-                        <Icon icon="ph:image-square-bold" class="text-4xl text-white/20" />
-                    </div>
-                    <div class="flex items-center gap-4 mb-4">
-                        <span
-                            class="px-3 py-1 bg-white/10 text-primary text-[10px] font-bold rounded-full tracking-widest">Feature</span>
-                        <span class="text-white/40 text-xs font-bold tracking-widest">May 12, 2026</span>
-                    </div>
-                    <h3 class="text-2xl font-bold text-white mb-4 group-hover:text-primary transition-colors">Mengenal
-                        Fitur Athlete Portfolio Pro</h3>
-                    <p class="text-white/60 font-light leading-relaxed line-clamp-2">
-                        Bagaimana profil digital dapat membantu atlet mendapatkan visibilitas lebih luas di komunitas
-                        panahan.
-                    </p>
-                </div>
             </div>
         </div>
     </section>
@@ -99,6 +77,7 @@ import { ref, onMounted } from 'vue'
 import { Icon } from '@iconify/vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { articles } from '~/data/articles/index'
 
 const localePath = useLocalePath()
 const sectionRef = ref(null)
@@ -109,6 +88,7 @@ onMounted(() => {
     const el = sectionRef.value
     if (!el) return
 
+    // title/desc reveal animations
     gsap.from(el.querySelector('.reveal-title'), {
         scrollTrigger: {
             trigger: el,
@@ -120,6 +100,36 @@ onMounted(() => {
         duration: 1.1,
         ease: 'power3.out'
     })
+
+    // cards entry animation: slide in from right and fade in
+    const cards = el.querySelectorAll('.blog-card')
+    if (cards.length > 0) {
+        gsap.from(cards, {
+            scrollTrigger: {
+                trigger: blogScrollContainer.value,
+                start: 'top 85%',
+                toggleActions: 'play none none none'
+            },
+            opacity: 0,
+            x: 60,
+            duration: 1.2,
+            stagger: 0.15,
+            ease: 'power3.out'
+        })
+
+        // zoom-out lens effect on the thumbnails when entering the viewport
+        const cardImages = el.querySelectorAll('.blog-card-image')
+        gsap.from(cardImages, {
+            scrollTrigger: {
+                trigger: blogScrollContainer.value,
+                start: 'top 85%',
+                toggleActions: 'play none none none'
+            },
+            scale: 1.2,
+            duration: 1.6,
+            ease: 'power3.out'
+        })
+    }
 })
 
 const scrollLeft = () => {

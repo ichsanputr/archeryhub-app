@@ -15,13 +15,13 @@
             Legal
           </div>
           <h1 class="text-2xl sm:text-3xl md:text-5xl font-black text-white leading-tight mb-4">
-            Syarat dan Ketentuan
+            Terms & Conditions
           </h1>
           <p class="text-slate-300 text-sm md:text-lg leading-relaxed">
-            Harap baca Syarat dan Ketentuan ini dengan teliti sebelum menggunakan platform kami.
+            Please read these Terms and Conditions carefully before using our platform.
           </p>
           <p class="text-slate-400 text-sm mt-6">
-            Terakhir diperbarui: 24 Oktober 2024
+            Last updated: October 24, 2024
           </p>
         </div>
       </div>
@@ -33,35 +33,24 @@
         class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-8 md:p-12">
         <div class="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300">
           <p>
-            Harap baca Syarat dan Ketentuan ("Syarat", "Syarat dan Ketentuan") ini dengan teliti sebelum menggunakan
-            situs web Archery Hub (the "Layanan") yang dioperasikan oleh Archery Hub Indonesia ("kami", "kita",
-            atau "milik kami").
+            Please read these Terms and Conditions ("Terms", "Terms and Conditions") carefully before using the Archery Hub website (the "Service") operated by Archery Hub Indonesia ("us", "we", or "our").
           </p>
-          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">1. Penerimaan Syarat</h3>
+          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">1. Acceptance of Terms</h3>
           <p>
-            Dengan mengakses atau menggunakan Layanan, Anda setuju untuk terikat oleh Syarat ini. Jika Anda tidak setuju
-            dengan bagian mana pun dari syarat tersebut, maka Anda tidak boleh mengakses Layanan.
+            By accessing or using the Service, you agree to be bound by these Terms. If you disagree with any part of the terms, then you may not access the Service.
           </p>
-          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">2. Direktori Klub & Verifikasi
-          </h3>
+          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">2. Club Directory & Verification</h3>
           <p>
-            Archery Hub menyediakan direktori klub panahan di Indonesia. Meskipun kami berusaha untuk
-            memverifikasi klub, kami tidak dapat menjamin keakuratan lengkap
-            semua detail klub, termasuk jadwal latihan dan biaya.
+            Archery Hub provides a directory of archery clubs in Indonesia. While we strive to verify clubs, we cannot guarantee the complete accuracy of all club details, including training schedules and fees.
           </p>
           <ol class="list-decimal pl-6 space-y-2 mb-6 marker:text-navy marker:font-bold text-sm sm:text-base">
-            <li><strong>Informasi Klub:</strong> Informasi tentang klub disediakan untuk tujuan informasi.</li>
-            <li><strong>Ulasan Anggota:</strong> Pengguna bertanggung jawab atas konten ulasan mereka. Kami berhak
-              menghapus ulasan yang melanggar pedoman komunitas kami.</li>
-            <li><strong>Perselisihan:</strong> Perselisihan apa pun antara pengguna dan klub yang ditemukan melalui
-              platform kami harus diselesaikan langsung antara para pihak. Archery Hub tidak bertanggung jawab atas
-              operasi klub.</li>
+            <li><strong>Club Information:</strong> Information about clubs is provided for informational purposes only.</li>
+            <li><strong>Member Reviews:</strong> Users are responsible for the content of their reviews. We reserve the right to remove reviews that violate our community guidelines.</li>
+            <li><strong>Disputes:</strong> Any disputes between users and clubs found through our platform must be resolved directly between the parties. Archery Hub is not responsible for club operations.</li>
           </ol>
-          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">3. Penghentian</h3>
+          <h3 class="text-lg md:text-xl font-black text-navy dark:text-white mt-8 mb-4">3. Termination</h3>
           <p>
-            Kami dapat menghentikan atau menangguhkan akses ke Layanan kami secara segera, tanpa pemberitahuan
-            sebelumnya atau
-            tanggung jawab, untuk alasan apa pun, termasuk tanpa batasan jika Anda melanggar Syarat.
+            We may terminate or suspend access to our Service immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms.
           </p>
         </div>
       </div>
@@ -71,11 +60,12 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+
 definePageMeta({
   layout: 'landing'
 })
 
 useHead({
-  title: 'Syarat dan Ketentuan - Archeris.net'
+  title: 'Terms & Conditions - Archeris.net'
 })
 </script>

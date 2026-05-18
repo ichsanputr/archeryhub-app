@@ -18,11 +18,10 @@
                     </div>
                     <h1
                         class="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
-                        Pertanyaan <span class="text-primary">Sering Diajukan</span>
+                        Frequently <span class="text-primary">Asked Questions</span>
                     </h1>
                     <p class="text-white/90 text-sm md:text-lg leading-relaxed max-w-xl mx-auto md:mx-0">
-                        Temukan jawaban cepat untuk pertanyaan umum mengenai pendaftaran, organisasi, dan sistem
-                        scoring Archeris.net.
+                        Find quick answers to common questions about registration, organizations, and the Archeris.net scoring system.
                     </p>
                 </div>
             </div>
@@ -32,7 +31,7 @@
         <section class="container mx-auto px-4 max-w-4xl py-16">
             <div class="space-y-4">
                 <div v-for="(faq, index) in faqs" :key="index"
-                    class="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-sm transition-all">
+                     class="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-sm transition-all">
                     <button @click="toggleFaq(index)"
                         class="w-full px-6 py-5 flex items-center justify-between text-left group">
                         <span class="font-bold text-navy group-hover:text-primary transition-colors">{{ faq.question
@@ -52,19 +51,19 @@
                     class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6 text-primary">
                     <Icon icon="ph:chat-circle-dots-bold" class="text-3xl" />
                 </div>
-                <h2 class="text-lg sm:text-2xl font-black text-navy mb-3">Masih Butuh Bantuan?</h2>
+                <h2 class="text-lg sm:text-2xl font-black text-navy mb-3">Still Need Help?</h2>
                 <p class="text-gray-500 mb-8 max-w-md mx-auto">
-                    Tim dukungan kami siap membantu Anda dengan kendala teknis atau pertanyaan lainnya.
+                    Our support team is ready to assist you with technical issues or any other questions.
                 </p>
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
                     <NuxtLink to="/contact">
                         <BaseButton variant="primary" size="lg" icon="ph:envelope-simple-bold">
-                            Hubungi Kami
+                            Contact Us
                         </BaseButton>
                     </NuxtLink>
                     <NuxtLink to="/docs">
                         <BaseButton variant="outline" size="lg" icon="ph:book-open-bold">
-                            Dokumentasi
+                            Documentation
                         </BaseButton>
                     </NuxtLink>
                 </div>
@@ -88,28 +87,28 @@ const toggleFaq = (index) => {
 
 const faqs = [
     {
-        question: 'Bagaimana cara mendaftarkan organisasi di Archeris.net?',
-        answer: 'Anda dapat mendaftarkan organisasi melalui halaman registrasi dengan memilih tipe akun "Organisasi". Setelah email terverifikasi, Anda dapat melengkapi profil organisasi dan mulai mengelola event.'
+        question: 'How do I register an organization on Archeris.net?',
+        answer: 'You can register your organization via the registration page by choosing the "Organization" account type. Once your email is verified, you can complete your organization profile and start managing events.'
     },
     {
-        question: 'Apakah sistem scoring bisa digunakan untuk turnamen offline?',
-        answer: 'Tentu! Archeris.net dirancang untuk mempermudah scoring turnamen offline secara digital. Skor dapat diinput langsung oleh wasit atau peserta melalui aplikasi.'
+        question: 'Can the scoring system be used for offline tournaments?',
+        answer: 'Absolutely! Archeris.net is designed to simplify offline tournament scoring digitally. Scores can be entered directly by referees or participants through the application.'
     },
     {
-        question: 'Bagaimana proses pembayaran pendaftaran event?',
-        answer: 'Kami mendukung berbagai metode pembayaran otomatis seperti Transfer Bank, E-Wallet (Gopay, OVO), dan QRIS. Status pendaftaran akan terupdate otomatis setelah pembayaran berhasil.'
+        question: 'How does the event registration payment process work?',
+        answer: 'We support various automated payment methods such as Bank Transfer, E-Wallet, and QRIS. Registration status is updated automatically upon successful payment.'
     },
     {
-        question: 'Apakah data atlet dijamin keamanannya?',
-        answer: 'Kami menerapkan standar keamanan data yang ketat dan enkripsi end-to-end untuk memastikan seluruh informasi pribadi atlet tersimpan dengan aman.'
+        question: 'Is athlete data kept secure?',
+        answer: 'We implement strict data security standards and end-to-end encryption to ensure all athletes\' personal information is stored securely.'
     },
     {
-        question: 'Bagaimana cara mengajukan bantuan teknis?',
-        answer: 'Jika Anda mengalami kendala teknis, silakan hubungi tim support kami melalui halaman Kontak atau kirimkan email ke support@archeris.net.'
+        question: 'How do I request technical assistance?',
+        answer: 'If you encounter any technical issues, please contact our support team through the Contact page or send an email to support@archeris.net.'
     }
 ]
 
 useHead({
-    title: 'FAQ - Pertanyaan Sering Diajukan - Archeris.net'
+    title: 'FAQ - Frequently Asked Questions - Archeris.net'
 })
 </script>

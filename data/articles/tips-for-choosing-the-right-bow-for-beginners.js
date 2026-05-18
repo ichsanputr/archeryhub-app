@@ -1,6 +1,6 @@
 export const article1 = {
     id: 1,
-    slug: 'tips-memilih-busur-panah-untuk-pemula',
+    slug: 'tips-for-choosing-the-right-bow-for-beginners',
     title: 'Tips for Choosing the Right Bow for Beginners',
     excerpt: 'Avoid early purchasing mistakes! Learn about the three main bow types, draw weight guidelines, and how to measure your draw length for the best start in archery.',
     category: 'Tips & Tutorials',
