@@ -45,9 +45,11 @@
                                                 <h3 class="text-white font-bold text-sm leading-tight line-clamp-2">
                                                     {{ featuredEvent.name }}
                                                 </h3>
-                                                <p class="text-white/70 text-xs mt-1">{{ featuredEvent.location }} â€¢ {{
-                                                    featuredEvent.date }}</p>
-                                                <NuxtLink :to="localePath(`/events/${featuredEvent.slug || featuredEvent.id}`)"
+                                                <p class="text-white/70 text-xs mt-1">{{ featuredEvent.location }} â€¢
+                                                    {{
+                                                        featuredEvent.date }}</p>
+                                                <NuxtLink
+                                                    :to="localePath(`/events/${featuredEvent.slug || featuredEvent.id}`)"
                                                     class="inline-flex items-center gap-1 mt-3 text-primary text-xs font-bold hover:text-white transition-colors">
                                                     Cek Detailnya
                                                     <Icon icon="ph:arrow-right" />
@@ -123,23 +125,25 @@
                 <div class="hidden md:flex items-center gap-3">
                     <!-- Language Switcher -->
                     <div class="relative mr-2" @mouseenter="showLangMenu = true" @mouseleave="showLangMenu = false">
-                        <button class="flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all duration-300 text-xs font-bold uppercase tracking-widest"
+                        <button
+                            class="flex items-center gap-2 px-3 py-1.5 rounded-lg transition-all duration-300 text-xs font-bold uppercase tracking-widest"
                             :class="showSolid ? 'text-navy hover:bg-gray-100' : 'text-white hover:bg-white/10'">
-                            <Icon :icon="langFlags[locale] || 'ph:globe-bold'" class="text-lg rounded-full overflow-hidden border border-white/20" />
+                            <Icon :icon="langFlags[locale] || 'ph:globe-bold'"
+                                class="text-lg rounded-full overflow-hidden border border-white/20" />
                             {{ locale }}
                         </button>
-                        
+
                         <Transition enter-active-class="transition duration-200 ease-out"
                             enter-from-class="opacity-0 translate-y-1" enter-to-class="opacity-100 translate-y-0"
                             leave-active-class="transition duration-150 ease-in"
                             leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 translate-y-1">
                             <div v-if="showLangMenu" class="absolute right-0 top-full pt-2 w-40">
                                 <div class="bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden py-2">
-                                    <button v-for="loc in locales" :key="loc.code" 
-                                        @click="setLocale(loc.code)"
+                                    <button v-for="loc in locales" :key="loc.code" @click="setLocale(loc.code)"
                                         class="flex items-center gap-3 w-full px-4 py-2.5 text-xs font-bold transition-colors hover:bg-gray-50"
                                         :class="locale === loc.code ? 'text-primary' : 'text-navy'">
-                                        <Icon :icon="langFlags[loc.code] || 'ph:globe-bold'" class="text-base rounded-full overflow-hidden border border-gray-100" />
+                                        <Icon :icon="langFlags[loc.code] || 'ph:globe-bold'"
+                                            class="text-base rounded-full overflow-hidden border border-gray-100" />
                                         <span class="flex-1 text-left">{{ loc.name }}</span>
                                         <Icon v-if="locale === loc.code" icon="ph:check-bold" />
                                     </button>
@@ -149,7 +153,8 @@
                     </div>
 
                     <!-- Cart Icon (For Archers) -->
-                    <NuxtLink v-if="isLoggedIn && user?.user_type === 'archer'" :to="localePath('/dashboard/archer/cart')"
+                    <NuxtLink v-if="isLoggedIn && user?.user_type === 'archer'"
+                        :to="localePath('/dashboard/archer/cart')"
                         class="relative p-2 rounded-xl transition-all duration-300 group"
                         :class="showSolid ? 'text-navy hover:bg-gray-100' : 'text-white hover:bg-white/10'">
                         <Icon icon="ph:shopping-bag-bold" class="text-2xl" />
@@ -168,7 +173,7 @@
                                 <img v-if="user?.avatar_url" :src="user.avatar_url"
                                     class="w-full h-full object-cover" />
                                 <span v-else class="text-navy font-bold text-sm">{{ user?.full_name?.charAt(0) || 'U'
-                                }}</span>
+                                    }}</span>
                             </div>
                         </button>
 
@@ -232,22 +237,25 @@
 
                     <!-- Mobile Language Switcher -->
                     <div class="relative mr-1" @click.stop="showLangMenuMobile = !showLangMenuMobile">
-                        <button class="flex items-center gap-1.5 p-2 rounded-xl transition-all duration-300 text-xs font-bold uppercase"
+                        <button
+                            class="flex items-center gap-1.5 p-2 rounded-xl transition-all duration-300 text-xs font-bold "
                             :class="showSolid ? 'text-navy hover:bg-gray-100' : 'text-white hover:bg-white/10'">
-                            <Icon :icon="langFlags[locale] || 'ph:globe-bold'" class="text-xl rounded-full overflow-hidden border border-white/20" />
+                            <Icon :icon="langFlags[locale] || 'ph:globe-bold'"
+                                class="text-xl rounded-full overflow-hidden border border-white/20" />
                         </button>
-                        
+
                         <Transition enter-active-class="transition duration-200 ease-out"
                             enter-from-class="opacity-0 translate-y-1" enter-to-class="opacity-100 translate-y-0"
                             leave-active-class="transition duration-150 ease-in"
                             leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 translate-y-1">
                             <div v-if="showLangMenuMobile" class="absolute right-0 top-full pt-2 w-40 z-50">
                                 <div class="bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden py-2">
-                                    <button v-for="loc in locales" :key="loc.code" 
+                                    <button v-for="loc in locales" :key="loc.code"
                                         @click="setLocale(loc.code); showLangMenuMobile = false"
                                         class="flex items-center gap-3 w-full px-4 py-2.5 text-xs font-bold transition-colors hover:bg-gray-50 text-left"
                                         :class="locale === loc.code ? 'text-primary' : 'text-navy'">
-                                        <Icon :icon="langFlags[loc.code] || 'ph:globe-bold'" class="text-base rounded-full overflow-hidden border border-gray-100" />
+                                        <Icon :icon="langFlags[loc.code] || 'ph:globe-bold'"
+                                            class="text-base rounded-full overflow-hidden border border-gray-100" />
                                         <span class="flex-1 text-left">{{ loc.name }}</span>
                                         <Icon v-if="locale === loc.code" icon="ph:check-bold" />
                                     </button>
@@ -304,7 +312,7 @@
                                 <img v-if="user?.avatar_url" :src="user.avatar_url"
                                     class="w-full h-full object-cover" />
                                 <span v-else class="text-navy font-black text-xl">{{ user?.full_name?.charAt(0) || 'U'
-                                }}</span>
+                                    }}</span>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <div class="text-navy font-black truncate">{{ user?.full_name || 'User' }}</div>
@@ -564,4 +572,3 @@ watch(() => route.path, () => {
     }
 })
 </script>
-

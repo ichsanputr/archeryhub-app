@@ -161,13 +161,13 @@
                             :disabled="!currentScoringAssignment || !currentScoringAssignment.currentEndScores?.some(v => v !== undefined)"
                             class="!h-14 !rounded-xl border-2 border-slate-100 bg-white text-navy hover:!bg-red-50 hover:!text-red-500 hover:!border-red-100"
                             @click="deleteLastScore">
-                            <span class="text-[10px] tracking-widest uppercase">HAPUS</span>
+                            <span class="text-[10px] tracking-widest ">HAPUS</span>
                         </BaseButton>
                         <BaseButton variant="primary" iconRight="ph:paper-plane-right-fill"
                             :disabled="saving || !currentScoringAssignment" :loading="saving"
                             class="!h-14 !rounded-xl bg-primary text-primary-text hover:bg-primary/90 shadow-sm"
                             @click="saveEndAndNext">
-                            <span class="text-[10px] tracking-widest uppercase">SIMPAN</span>
+                            <span class="text-[10px] tracking-widest ">SIMPAN</span>
                         </BaseButton>
                     </div>
                 </div>
@@ -204,11 +204,11 @@
                     <BaseButton variant="white" icon="ph:backspace-bold"
                         :disabled="!currentScoringAssignment || !currentScoringAssignment.currentEndScores?.some(v => v !== undefined)"
                         class="!h-11 !rounded-xl border border-slate-200" @click="deleteLastScore">
-                        <span class="text-[10px] tracking-widest uppercase">Hapus</span>
+                        <span class="text-[10px] tracking-widest ">Hapus</span>
                     </BaseButton>
                     <BaseButton variant="primary" :disabled="saving || !currentScoringAssignment" :loading="saving"
                         class="!h-11 !rounded-xl" @click="saveEndAndNext">
-                        <span class="text-[10px] tracking-widest uppercase">Simpan</span>
+                        <span class="text-[10px] tracking-widest ">Simpan</span>
                     </BaseButton>
                 </div>
             </div>

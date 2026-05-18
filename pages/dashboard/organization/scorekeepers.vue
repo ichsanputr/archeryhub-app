@@ -20,8 +20,9 @@
                             <Icon icon="ph:user-focus-bold" class="text-primary text-2xl sm:text-3xl" />
                         </div>
                         <div>
-                            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none uppercase">Scorekeeper</h1>
-                            <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider uppercase">Kelola akun staff pencatat skor organisasi</p>
+                            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none ">Scorekeeper</h1>
+                            <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider ">Kelola akun
+                                staff pencatat skor organisasi</p>
                         </div>
                     </div>
                     <div class="flex flex-col sm:flex-row gap-3">
@@ -43,7 +44,8 @@
                 <BaseInput v-model="searchQuery" icon="ph:magnifying-glass" placeholder="Cari nama atau kode staff..."
                     class="!mb-0" />
             </div>
-            <BaseButton variant="white" icon="ph:funnel" @click="searchQuery = ''" class="h-11 px-6 !rounded-xl text-[10px] font-black uppercase tracking-widest">
+            <BaseButton variant="white" icon="ph:funnel" @click="searchQuery = ''"
+                class="h-11 px-6 !rounded-xl text-[10px] font-black uppercase tracking-widest">
                 Reset
             </BaseButton>
         </div>
@@ -104,7 +106,7 @@
                     <h3 class="text-lg font-bold text-navy">Hasil Tidak Ditemukan</h3>
                     <p class="text-sm text-gray-500 max-w-xs mx-auto">
                         Tidak ada staff yang cocok dengan kata kunci "<span class="font-bold text-navy">{{ searchQuery
-                            }}</span>".
+                        }}</span>".
                     </p>
                 </div>
                 <BaseButton @click="searchQuery = ''" variant="white" size="sm" class="font-bold">
@@ -177,7 +179,7 @@
                             <td class="px-6 py-5">
                                 <div class="flex items-center gap-2">
                                     <span class="text-lg font-black font-mono tracking-tighter">{{ sk.code
-                                    }}</span>
+                                        }}</span>
                                 </div>
                             </td>
                             <td class="px-6 py-5">

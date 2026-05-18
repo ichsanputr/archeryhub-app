@@ -281,7 +281,7 @@
                 <div class="text-sm text-gray-500">
                     Penempatan otomatis akan menghapus semua penempatan yang ada untuk kategori
                     ini, lalu menempatkan ulang semua pemanah secara otomatis menggunakan mode:
-                    <span class="font-black text-navy block mt-1 uppercase">{{ drawType === 'standard' ? 'Standard Draw'
+                    <span class="font-black text-navy block mt-1 ">{{ drawType === 'standard' ? 'Standard Draw'
                         :
                         'Field / 3D Draw' }}</span>
                 </div>

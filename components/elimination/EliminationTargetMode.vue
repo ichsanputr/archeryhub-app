@@ -12,7 +12,7 @@
             </div>
             <BaseButton variant="primary" icon="ph:magic-wand-bold" :loading="isAutoAssigning"
                 @click="$emit('auto-assign')" class="hidden sm:flex shadow-sm shadow-primary/20 !rounded-2xl">
-                <span class="text-[10px] font-black tracking-widest uppercase">Auto Assign</span>
+                <span class="text-[10px] font-black tracking-widest ">Auto Assign</span>
             </BaseButton>
         </div>
 
@@ -20,7 +20,7 @@
         <div class="sm:hidden">
             <BaseButton variant="primary" icon="ph:magic-wand-bold" :loading="isAutoAssigning"
                 @click="$emit('auto-assign')" block class="shadow-xl shadow-primary/20 !rounded-2xl">
-                <span class="text-[10px] font-black tracking-widest uppercase">Auto Assign</span>
+                <span class="text-[10px] font-black tracking-widest ">Auto Assign</span>
             </BaseButton>
         </div>
 
@@ -40,7 +40,7 @@
                             <div
                                 class="text-[10px] font-black text-navy/30 uppercase tracking-[0.2em] leading-none mb-1">
                                 Pertandingan</div>
-                            <div class="text-xs font-black text-navy/80 uppercase">Match {{ match.match_no }}</div>
+                            <div class="text-xs font-black text-navy/80 ">Match {{ match.match_no }}</div>
                         </div>
                     </div>
 
@@ -50,7 +50,7 @@
                     </div>
                     <div v-else-if="match.target_name"
                         class="px-3 py-1 bg-primary/10 rounded-full border border-primary/20">
-                        <span class="text-[10px] font-black text-primary-hover tracking-widest uppercase">TERPLOT</span>
+                        <span class="text-[10px] font-black text-primary-hover tracking-widest ">TERPLOT</span>
                     </div>
                 </div>
 

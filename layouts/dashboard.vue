@@ -76,6 +76,7 @@
             @confirm="handleConfirmedLogout" />
 
         <BaseToast />
+        <BaseTour />
     </div>
 
 </template>

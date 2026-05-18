@@ -19,8 +19,9 @@
                     </div>
 
                     <div class="space-y-2">
-                        <h2 class="text-2xl font-black text-navy tracking-tight uppercase">Verifikasi Keamanan</h2>
-                        <p class="text-[11px] text-gray-400 font-bold leading-relaxed max-w-[240px] mx-auto uppercase tracking-wider">
+                        <h2 class="text-2xl font-black text-navy tracking-tight ">Verifikasi Keamanan</h2>
+                        <p
+                            class="text-[11px] text-gray-400 font-bold leading-relaxed max-w-[240px] mx-auto uppercase tracking-wider">
                             Masukkan password akun Anda untuk mengakses fitur keuangan
                         </p>
                     </div>
@@ -55,8 +56,10 @@
                             <Icon icon="ph:bank-bold" class="text-primary text-2xl sm:text-3xl" />
                         </div>
                         <div>
-                            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none uppercase">Saldo & Penarikan</h1>
-                            <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider uppercase">Kelola saldo Anda dan ajukan penarikan</p>
+                            <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none ">Saldo & Penarikan
+                            </h1>
+                            <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider ">Kelola saldo
+                                Anda dan ajukan penarikan</p>
                         </div>
                     </div>
                 </div>
@@ -70,18 +73,21 @@
                         <div class="absolute top-0 right-0 p-8 opacity-10">
                             <Icon icon="ph:coins-bold" class="text-8xl" />
                         </div>
-                        <p class="text-primary text-[10px] font-black uppercase tracking-[0.2em] mb-3">Saldo Tersedia</p>
+                        <p class="text-primary text-[10px] font-black uppercase tracking-[0.2em] mb-3">Saldo Tersedia
+                        </p>
                         <h2 class="text-3xl sm:text-4xl font-black tracking-tight mb-10 leading-none tabular-nums">
-                            <span class="text-lg font-bold opacity-40 mr-1">Rp</span>{{ balance.toLocaleString('id-ID') }}
+                            <span class="text-lg font-bold opacity-40 mr-1">Rp</span>{{ balance.toLocaleString('id-ID')
+                            }}
                         </h2>
 
                         <div class="space-y-3">
-                            <BaseButton variant="primary" block 
+                            <BaseButton variant="primary" block
                                 class="font-black uppercase tracking-widest text-[10px] h-11 !rounded-xl shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform active:scale-95">
                                 Tarik Saldo
                             </BaseButton>
-                            <p class="text-[9px] text-slate-400 text-center font-black uppercase tracking-widest leading-loose">
-                                Min. Penarikan Rp 100.000<br/>Proses 1-3 hari kerja
+                            <p
+                                class="text-[9px] text-slate-400 text-center font-black uppercase tracking-widest leading-loose">
+                                Min. Penarikan Rp 100.000<br />Proses 1-3 hari kerja
                             </p>
                         </div>
                     </div>
@@ -100,7 +106,8 @@
                                     <tr
                                         class="bg-gray-50/50 text-gray-500 font-black text-[10px] uppercase tracking-widest border-b border-gray-100">
                                         <th class="px-6 py-4">ID Transaksi</th>
-                                        <th @click="toggleSort('created_at')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors">
+                                        <th @click="toggleSort('created_at')"
+                                            class="px-6 py-4 cursor-pointer hover:text-navy transition-colors">
                                             <div class="flex items-center gap-2">
                                                 Tanggal
                                                 <Icon v-if="sortBy === 'created_at'"
@@ -109,7 +116,8 @@
                                                 <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
                                             </div>
                                         </th>
-                                        <th @click="toggleSort('status')" class="px-6 py-4 cursor-pointer hover:text-navy transition-colors">
+                                        <th @click="toggleSort('status')"
+                                            class="px-6 py-4 cursor-pointer hover:text-navy transition-colors">
                                             <div class="flex items-center gap-2">
                                                 Status
                                                 <Icon v-if="sortBy === 'status'"
@@ -118,7 +126,8 @@
                                                 <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
                                             </div>
                                         </th>
-                                        <th @click="toggleSort('amount')" class="px-6 py-4 text-right cursor-pointer hover:text-navy transition-colors">
+                                        <th @click="toggleSort('amount')"
+                                            class="px-6 py-4 text-right cursor-pointer hover:text-navy transition-colors">
                                             <div class="flex items-center justify-end gap-2">
                                                 Nominal
                                                 <Icon v-if="sortBy === 'amount'"
@@ -134,7 +143,7 @@
                                         class="hover:bg-gray-50 transition-colors">
                                         <td class="px-6 py-4">
                                             <span class="font-mono text-[10px] font-bold text-gray-400">#{{ item.txId
-                                                }}</span>
+                                            }}</span>
                                         </td>
                                         <td class="px-6 py-4 text-sm text-navy font-bold">{{ item.date }}</td>
                                         <td class="px-6 py-4">

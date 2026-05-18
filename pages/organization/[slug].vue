@@ -62,7 +62,7 @@
                             <span
                                 class="text-white/50 text-[10px] sm:text-[11px] font-black uppercase tracking-widest">Berdiri</span>
                             <span class="font-bold text-sm text-primary">{{ new Date(org.established_date).getFullYear()
-                            }}</span>
+                                }}</span>
                         </div>
                         <div class="w-px h-4 bg-white/20"></div>
                         <div class="flex items-center gap-2">
@@ -101,7 +101,7 @@
                                             class="text-[10px] sm:text-[11px] font-black text-navy/30 uppercase tracking-widest">
                                             Nomor
                                             Registrasi Resmi</p>
-                                        <p class="font-black text-navy text-sm uppercase">{{ org.registration_number }}
+                                        <p class="font-black text-navy text-sm ">{{ org.registration_number }}
                                         </p>
                                     </div>
                                 </div>
@@ -164,7 +164,7 @@
                             <div v-for="item in achievements" :key="item.id"
                                 class="bg-white border border-gray-100 p-6 rounded-2xl shadow-sm flex flex-col gap-3">
                                 <div class="flex items-center justify-between">
-                                    <span class="text-[9px] font-black tracking-widest text-navy/20 uppercase">{{
+                                    <span class="text-[9px] font-black tracking-widest text-navy/20 ">{{
                                         formatDate(item.published_at) }}</span>
                                     <div class="size-9 rounded-xl bg-primary/10 flex items-center justify-center">
                                         <Icon icon="ph:trophy-fill" class="text-primary text-base" />
@@ -189,7 +189,7 @@
                                     <img :src="item.image_url" class="w-full h-full object-cover" />
                                 </div>
                                 <div class="p-5 flex flex-col gap-2 flex-1">
-                                    <span class="text-[9px] font-black tracking-widest text-navy/20 uppercase">{{
+                                    <span class="text-[9px] font-black tracking-widest text-navy/20 ">{{
                                         formatDate(item.published_at) }}</span>
                                     <h4 class="text-sm font-black text-navy leading-tight">{{ item.title }}</h4>
                                     <p class="text-xs text-navy/60 line-clamp-2 leading-relaxed">{{ item.excerpt }}</p>
@@ -296,7 +296,7 @@
                                     <Icon icon="ph:map-pin-fill" class="text-xl text-primary" />
                                 </div>
                                 <div class="min-w-0">
-                                    <h4 class="text-base sm:text-xl font-black text-navy leading-tight mb-1 uppercase">
+                                    <h4 class="text-base sm:text-xl font-black text-navy leading-tight mb-1 ">
                                         {{ org.address || 'Sekretariat Utama' }}
                                     </h4>
                                     <p
@@ -356,7 +356,7 @@
                                         <Icon icon="ph:whatsapp-logo-fill" class="text-base" />
                                     </div>
                                     <span class="font-bold text-xs sm:text-sm truncate text-white/80">{{ org.whatsapp_no
-                                    }}</span>
+                                        }}</span>
                                 </a>
                                 <a v-if="org.email" :href="`mailto:${org.email}`" class="flex items-center gap-3">
                                     <div
@@ -364,7 +364,7 @@
                                         <Icon icon="ph:envelope-bold" class="text-base" />
                                     </div>
                                     <span class="font-bold text-xs sm:text-sm truncate text-white/80">{{ org.email
-                                    }}</span>
+                                        }}</span>
                                 </a>
                                 <div v-if="!org.whatsapp_no && !org.email"
                                     class="text-white/30 text-[11px] sm:text-xs font-black uppercase tracking-widest">
@@ -446,7 +446,7 @@
                                 v-html="plat.iconHtml"></div>
                             <span class="text-[10px] sm:text-[11px] font-black text-navy/40 uppercase tracking-wider">{{
                                 plat.name
-                                }}</span>
+                            }}</span>
                         </button>
                     </div>
 

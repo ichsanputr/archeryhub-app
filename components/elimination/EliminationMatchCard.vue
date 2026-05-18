@@ -4,7 +4,7 @@
         <div class="match-card-header" :class="{ '!bg-primary/5': isFinal, '!bg-orange-50/50': isBronze }">
             <div class="flex items-center gap-1.5" :class="headerTextStyle">
                 <Icon :icon="headerIcon" class="text-[10px]" />
-                <span class="text-[8px] font-black tracking-widest uppercase">{{ headerLabel }}</span>
+                <span class="text-[8px] font-black tracking-widest ">{{ headerLabel }}</span>
             </div>
         </div>
         <div class="archer-list">

@@ -225,7 +225,7 @@
             <!-- Category & Type Section -->
             <div class="space-y-5">
               <div>
-                <label class="block text-[10px] font-black text-gray-400 tracking-widest mb-2 px-1 uppercase">Kategori
+                <label class="block text-[10px] font-black text-gray-400 tracking-widest mb-2 px-1 ">Kategori
                   Pertandingan</label>
                 <BaseSelect v-model="newBracket.categoryId" :items="categoryOptions" placeholder="Pilih Kategori"
                   required :disabled="isEditing" teleport />
@@ -233,13 +233,13 @@
 
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
-                  <label class="block text-[10px] font-black text-gray-400 tracking-widest mb-2 px-1 uppercase">Tipe
+                  <label class="block text-[10px] font-black text-gray-400 tracking-widest mb-2 px-1 ">Tipe
                     Bracket</label>
                   <BaseSelect v-model="newBracket.bracketType" :items="availableBracketTypes"
                     placeholder="Pilih Tipe Bracket" required teleport />
                 </div>
                 <div>
-                  <label class="block text-[10px] font-black text-gray-400 tracking-widest mb-2 px-1 uppercase">Format
+                  <label class="block text-[10px] font-black text-gray-400 tracking-widest mb-2 px-1 ">Format
                     Skor</label>
                   <BaseSelect v-model="newBracket.format" :items="formatOptions" placeholder="Pilih Format" required
                     teleport />
@@ -256,7 +256,7 @@
 
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
-                  <label class="block text-[10px] font-black text-gray-400 tracking-widest mb-2 px-1 uppercase">Ukuran
+                  <label class="block text-[10px] font-black text-gray-400 tracking-widest mb-2 px-1 ">Ukuran
                     Bracket</label>
                   <!-- Loading -->
                   <div v-if="loadingBracketSize"
@@ -275,7 +275,8 @@
                     <BaseSelect v-model="newBracket.bracketSize" :items="bracketSizeDropdownOptions"
                       placeholder="Pilih Ukuran" required teleport />
                     <!-- Hint below dropdown -->
-                    <div class="text-[10px] px-1" :class="selectedBracketHint.isEstimate ? 'text-amber-600' : 'text-gray-400'">
+                    <div class="text-[10px] px-1"
+                      :class="selectedBracketHint.isEstimate ? 'text-amber-600' : 'text-gray-400'">
                       {{ selectedBracketHint.text }}
                     </div>
                   </div>
@@ -291,14 +292,14 @@
                   </div>
                 </div>
                 <div>
-                  <label class="block text-[10px] font-black text-gray-400 tracking-widest mb-2 px-1 uppercase">Ends per
+                  <label class="block text-[10px] font-black text-gray-400 tracking-widest mb-2 px-1 ">Ends per
                     Match</label>
                   <BaseInput v-model.number="newBracket.endsPerMatch" type="number" min="1" max="15" required />
                 </div>
               </div>
 
               <div>
-                <label class="block text-[10px] font-black text-gray-400 tracking-widest mb-2 px-1 uppercase">Anak Panah
+                <label class="block text-[10px] font-black text-gray-400 tracking-widest mb-2 px-1 ">Anak Panah
                   per End</label>
                 <BaseInput v-model.number="newBracket.arrowsPerEnd" type="number" min="1" max="6" required />
               </div>
@@ -336,12 +337,13 @@
           <!-- Modal Footer (Matching Qualification Styles) -->
           <div class="p-8 bg-gray-50 border-t border-gray-100 flex gap-4 shrink-0">
             <button @click="showCreateDialog = false; resetForm()"
-              class="flex-1 px-6 py-4 bg-white border-2 border-gray-200 text-gray-500 rounded-2xl font-black hover:bg-gray-100 hover:border-gray-300 transition-all tracking-widest text-[10px] uppercase">
+              class="flex-1 px-6 py-4 bg-white border-2 border-gray-200 text-gray-500 rounded-2xl font-black hover:bg-gray-100 hover:border-gray-300 transition-all tracking-widest text-[10px] ">
               Batal
             </button>
-            <BaseButton :disabled="(!isEditing && bracketSizeDropdownOptions.length === 0) || !newBracket.categoryId || creatingBracket" :loading="creatingBracket"
-              variant="primary"
-              class="flex-[2] py-4 rounded-2xl font-black shadow-lg shadow-primary/10 tracking-widest text-[10px] uppercase"
+            <BaseButton
+              :disabled="(!isEditing && bracketSizeDropdownOptions.length === 0) || !newBracket.categoryId || creatingBracket"
+              :loading="creatingBracket" variant="primary"
+              class="flex-[2] py-4 rounded-2xl font-black shadow-lg shadow-primary/10 tracking-widest text-[10px] "
               @click="handleCreateOrUpdate">
               <span>{{ submitButtonLabel }}</span>
             </BaseButton>

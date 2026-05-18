@@ -19,7 +19,8 @@
                         </div>
                         <div class="flex-1">
                             <div class="flex items-center gap-2 mb-1">
-                                <NuxtLink :to="`/dashboard/organization/events/${eventId}/categories`" class="text-xs font-bold text-primary hover:underline uppercase tracking-widest flex items-center gap-1">
+                                <NuxtLink :to="`/dashboard/organization/events/${eventId}/categories`"
+                                    class="text-xs font-bold text-primary hover:underline uppercase tracking-widest flex items-center gap-1">
                                     <Icon icon="ph:arrow-left-bold" />
                                     Kembali ke Kategori
                                 </NuxtLink>
@@ -38,7 +39,8 @@
 
         <!-- Participants List -->
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-            <div class="p-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div
+                class="p-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <h2 class="text-lg font-bold text-navy">Peserta Terdaftar</h2>
                 <div class="flex items-center gap-2">
                     <span class="text-xs font-bold text-gray-400">TOTAL:</span>
@@ -69,25 +71,31 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-50">
-                        <tr v-for="(p, index) in participants" :key="p.id" class="group hover:bg-gray-50 transition-colors">
+                        <tr v-for="(p, index) in participants" :key="p.id"
+                            class="group hover:bg-gray-50 transition-colors">
                             <td class="px-6 py-4 text-sm font-bold text-gray-400">{{ index + 1 }}</td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center gap-3">
-                                    <div class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs border border-gray-200 overflow-hidden shrink-0">
-                                        <img :src="useImageOrDefault(p.avatar_url, p.full_name)" class="w-full h-full object-cover">
+                                    <div
+                                        class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center text-navy font-bold text-xs border border-gray-200 overflow-hidden shrink-0">
+                                        <img :src="useImageOrDefault(p.avatar_url, p.full_name)"
+                                            class="w-full h-full object-cover">
                                     </div>
                                     <div class="min-w-0">
                                         <div class="text-sm font-black text-navy leading-tight">{{ p.full_name }}</div>
-                                        <div class="text-[11px] text-gray-400 font-medium mt-1 uppercase">{{ p.athlete_code || '-' }}</div>
+                                        <div class="text-[11px] text-gray-400 font-medium mt-1 ">{{ p.athlete_code ||
+                                            '-' }}</div>
                                     </div>
                                 </div>
                             </td>
                             <td class="px-6 py-4">
-                                <div class="text-sm font-bold text-navy leading-tight">{{ p.club_name || 'Independen' }}</div>
+                                <div class="text-sm font-bold text-navy leading-tight">{{ p.club_name || 'Independen' }}
+                                </div>
                                 <div class="text-[11px] text-gray-400 mt-0.5">{{ p.city || '-' }}</div>
                             </td>
                             <td class="px-6 py-4">
-                                <span :class="p.payment_status === 'Terbayar' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'"
+                                <span
+                                    :class="p.payment_status === 'Terbayar' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'"
                                     class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-tighter">
                                     {{ p.payment_status }}
                                 </span>

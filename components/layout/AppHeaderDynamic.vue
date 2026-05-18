@@ -31,7 +31,7 @@
                   <div class="grid grid-cols-12 gap-0 min-h-[350px]">
                     <!-- Featured Event -->
                     <div class="col-span-5 bg-gradient-to-br from-navy to-navy-light p-6 flex flex-col">
-                      <span class="text-primary text-xs font-bold tracking-wider uppercase">Event Unggulan</span>
+                      <span class="text-primary text-xs font-bold tracking-wider ">Event Unggulan</span>
                       <div class="mt-3 flex-1 flex flex-col justify-center" v-if="featuredEvent">
                         <div class="aspect-video bg-white/10 rounded-lg overflow-hidden mb-3">
                           <img :src="featuredEvent.image" :alt="featuredEvent.name"
@@ -57,7 +57,7 @@
                     <!-- Latest Events -->
                     <div class="col-span-7 p-6 flex flex-col">
                       <div class="flex items-center justify-between mb-3 border-b border-gray-100 pb-2">
-                        <span class="text-gray-400 text-[10px] font-black tracking-widest uppercase">Event
+                        <span class="text-gray-400 text-[10px] font-black tracking-widest ">Event
                           Terakhir</span>
                         <NuxtLink to="/events"
                           class="text-navy hover:text-primary text-[10px] font-black tracking-widest uppercase transition-colors">
@@ -127,7 +127,7 @@
                 class="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-amber-400 flex items-center justify-center overflow-hidden border-2 border-white shadow-md">
                 <img v-if="user?.avatar_url" :src="user.avatar_url" class="w-full h-full object-cover" />
                 <span v-else class="text-navy font-bold text-sm">{{ user?.full_name?.charAt(0) || 'U'
-                  }}</span>
+                }}</span>
               </div>
             </button>
 
@@ -213,7 +213,7 @@
             <div class="w-8 h-8 rounded-lg bg-navy flex items-center justify-center">
               <img src="/logo.png" alt="Logo" class="w-5 h-5 object-contain" />
             </div>
-            <span class="text-lg font-black tracking-tight text-navy uppercase">Archeris<span
+            <span class="text-lg font-black tracking-tight text-navy ">Archeris<span
                 class="text-logo-id">.net</span></span>
           </NuxtLink>
           <button @click="mobileMenuOpen = false" class="p-2 hover:bg-gray-100 rounded-xl transition-all scale-100">
@@ -230,13 +230,13 @@
                 class="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-amber-400 border-2 border-white shadow-sm overflow-hidden flex items-center justify-center">
                 <img v-if="user?.avatar_url" :src="user.avatar_url" class="w-full h-full object-cover" />
                 <span v-else class="text-navy font-black text-xl text-center">{{ user?.full_name?.charAt(0) || 'U'
-                  }}</span>
+                }}</span>
               </div>
               <div class="flex-1 min-w-0">
                 <div class="text-navy font-black truncate">{{ user?.full_name || 'User' }}</div>
                 <div class="text-xs text-gray-400 truncate">{{ user?.email }}</div>
                 <span
-                  class="inline-block mt-2 px-2 py-0.5 bg-primary/20 text-navy text-[10px] font-black rounded tracking-wider uppercase">
+                  class="inline-block mt-2 px-2 py-0.5 bg-primary/20 text-navy text-[10px] font-black rounded tracking-wider ">
                   {{ user?.user_type || 'Archer' }}
                 </span>
               </div>
@@ -418,4 +418,3 @@ watch(() => route.path, () => {
   showUserMenu.value = false
 })
 </script>
-

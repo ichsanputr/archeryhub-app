@@ -9,9 +9,9 @@
     <!-- Logo/Brand -->
     <div class="h-16 flex items-center gap-3 px-6 border-b border-white/10 shrink-0">
       <div class="flex items-center gap-3 overflow-hidden">
-        <img src="/logo.png" alt="archeris.net Logo" class="h-8 w-8 object-contain shrink-0" />
+        <img src="/logo.png" alt="Archeris Logo" class="h-8 w-8 object-contain shrink-0" />
         <span v-if="!isSidebarCollapsed"
-          class="text-lg font-black tracking-tight whitespace-nowrap text-white">archeris.net</span>
+          class="text-lg font-black tracking-tight whitespace-nowrap text-white">Archeris</span>
       </div>
       <button class="md:hidden ml-auto text-gray-400 p-1 hover:text-white" @click="isSidebarOpen = false">
         <Icon icon="ph:x" class="text-xl" />
@@ -143,7 +143,7 @@ const isSidebarOpen = useState('mobile-sidebar-open', () => false)
 const isSidebarCollapsed = useState('sidebar-collapsed', () => false)
 
 // Groups that are expanded (open)
-const openGroups = ref(['Event', 'Organisasi', 'Keuangan'])
+const openGroups = ref([])
 
 function toggleGroup(label) {
   const idx = openGroups.value.indexOf(label)
@@ -363,16 +363,6 @@ watch(() => route.path, () => {
   isSidebarOpen.value = false
 })
 
-// Auto-open group if any child is active
-watch(() => route.path, (path) => {
-  navSections.value?.forEach(section => {
-    if (section.children && section.children.some(c => path.startsWith(c.path))) {
-      if (!openGroups.value.includes(section.label)) {
-        openGroups.value.push(section.label)
-      }
-    }
-  })
-}, { immediate: true })
 
 // ── Active detection — exact match for /dashboard, prefix for others ───────
 const isActive = (path) => {

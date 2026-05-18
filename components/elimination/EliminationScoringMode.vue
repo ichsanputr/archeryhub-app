@@ -4,7 +4,7 @@
         <div class="w-full lg:col-span-4 xl:col-span-3 lg:sticky lg:top-6">
             <div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm p-4 sm:p-6">
                 <div class="flex items-center justify-between mb-4 lg:mb-6 pb-2 border-b border-gray-50">
-                    <h3 class="text-[10px] font-black tracking-[0.2em] text-navy/40 flex items-center gap-2 uppercase">
+                    <h3 class="text-[10px] font-black tracking-[0.2em] text-navy/40 flex items-center gap-2 ">
                         <Icon icon="ph:list-bullets-bold" class="text-sm" />
                         Daftar Pertandingan
                     </h3>
@@ -59,8 +59,7 @@
                                 ]">
                                 <div class="flex items-center gap-3 min-w-0">
                                     <!-- Avatar for individual matches -->
-                                    <div v-if="bracket.bracket_type === 'individual'"
-                                        class="shrink-0 relative">
+                                    <div v-if="bracket.bracket_type === 'individual'" class="shrink-0 relative">
                                         <img :src="useImageOrDefault(side === 'A' ? (match.entry_a_avatar || match.entry_a_photo) : (match.entry_b_avatar || match.entry_b_photo), side === 'A' ? match.entry_a_name : match.entry_b_name)"
                                             class="size-8 rounded-lg object-cover border-2 shadow-sm"
                                             :class="isWinner(match, side === 'A' ? match.entry_a_id : match.entry_b_id) ? 'border-green-500/30' : 'border-slate-100'" />
@@ -108,7 +107,8 @@
                     <div class="absolute bottom-0 left-0 w-1/2 h-full bg-gradient-to-r from-blue-500/5 to-transparent">
                     </div>
 
-                    <div class="relative z-10 grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center gap-6 md:gap-12 w-full">
+                    <div
+                        class="relative z-10 grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] items-center gap-6 md:gap-12 w-full">
                         <!-- Side A View -->
                         <div class="flex flex-col items-center gap-4 sm:gap-5 text-center group w-full px-2">
                             <div class="relative shrink-0">
@@ -144,7 +144,9 @@
                                         class="flex flex-col items-center gap-0.5">
                                         <img :src="useImageOrDefault(member.avatar_url, member.full_name)"
                                             class="size-7 sm:size-8 rounded-lg border-2 border-white/20 shadow-sm object-cover" />
-                                        <span class="text-[7px] sm:text-[8px] font-bold text-white/50 max-w-[48px] sm:max-w-[56px] truncate">{{ member.full_name }}</span>
+                                        <span
+                                            class="text-[7px] sm:text-[8px] font-bold text-white/50 max-w-[48px] sm:max-w-[56px] truncate">{{
+                                            member.full_name }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -159,7 +161,7 @@
                         <div class="hidden md:flex flex-col items-center gap-5">
                             <div
                                 class="px-6 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl shadow-inner">
-                                <span class="text-[9px] font-black tracking-[0.5em] text-white/40 uppercase">{{
+                                <span class="text-[9px] font-black tracking-[0.5em] text-white/40 ">{{
                                     getFullTargetName(selectedScoringMatch) }}</span>
                             </div>
 
@@ -198,7 +200,7 @@
                                         class="px-5 py-1.5 rounded-xl bg-green-500/10 border border-green-500/20 backdrop-blur-sm flex items-center gap-2">
                                         <Icon icon="ph:seal-check-fill" class="text-green-500 text-[10px]" />
                                         <span
-                                            class="text-[9px] font-black tracking-[0.3em] text-green-400 uppercase">SELESAI</span>
+                                            class="text-[9px] font-black tracking-[0.3em] text-green-400 ">SELESAI</span>
                                     </div>
                                     <button @click="$emit('reset-match')" :disabled="isResetting"
                                         class="group px-3 py-1.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500/20 transition-all active:scale-95 disabled:opacity-50 flex items-center gap-2"
@@ -222,7 +224,7 @@
                                     class="px-5 py-1.5 rounded-xl bg-white/5 border border-white/10 flex items-center gap-2">
                                     <div class="size-1 rounded-full bg-white/20 animate-pulse"></div>
                                     <span
-                                        class="text-[9px] font-black tracking-[0.3em] text-white/30 uppercase">BERLANGSUNG</span>
+                                        class="text-[9px] font-black tracking-[0.3em] text-white/30 ">BERLANGSUNG</span>
                                 </div>
                             </div>
                         </div>
@@ -277,7 +279,9 @@
                                         class="flex flex-col items-center gap-0.5">
                                         <img :src="useImageOrDefault(member.avatar_url, member.full_name)"
                                             class="size-7 sm:size-8 rounded-lg border-2 border-white/20 shadow-sm object-cover" />
-                                        <span class="text-[7px] sm:text-[8px] font-bold text-white/50 max-w-[48px] sm:max-w-[56px] truncate">{{ member.full_name }}</span>
+                                        <span
+                                            class="text-[7px] sm:text-[8px] font-bold text-white/50 max-w-[48px] sm:max-w-[56px] truncate">{{
+                                            member.full_name }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -288,7 +292,7 @@
                             <div v-if="selectedScoringMatch.winner_entry_id || selectedScoringMatch.status === 'finished'"
                                 class="w-full py-3 rounded-xl bg-green-500/10 border border-green-500/20 flex items-center justify-center gap-2">
                                 <Icon icon="ph:seal-check-fill" class="text-green-500 text-sm" />
-                                <span class="text-[10px] font-black tracking-[0.3em] text-green-400 uppercase">PERTANDINGAN
+                                <span class="text-[10px] font-black tracking-[0.3em] text-green-400 ">PERTANDINGAN
                                     SELESAI</span>
                             </div>
                             <button v-else-if="canEndMatch" @click="$emit('end-match')" :disabled="isEndingMatch"
@@ -310,7 +314,7 @@
                             <div v-for="i in (bracket?.ends_per_match || 5)" :key="i"
                                 @click="$emit('update:currentEnd', i)"
                                 class="flex flex-col items-center gap-2 cursor-pointer group">
-                                <span class="text-[10px] font-black tracking-[0.2em] transition-colors uppercase"
+                                <span class="text-[10px] font-black tracking-[0.2em] transition-colors "
                                     :class="currentEnd === i ? 'text-navy' : 'text-gray-300 group-hover:text-gray-500'">End
                                     {{ i }}</span>
                                 <div class="size-10 sm:size-12 rounded-xl flex items-center justify-center text-xs sm:text-sm font-black transition-all relative"
@@ -324,7 +328,7 @@
                             <!-- Shoot-off End (End 99) -->
                             <div v-if="showShootOff" @click="$emit('update:currentEnd', 99)"
                                 class="flex flex-col items-center gap-2 cursor-pointer group ml-2 border-l border-slate-100 pl-4">
-                                <span class="text-[10px] font-black tracking-[0.2em] transition-colors uppercase"
+                                <span class="text-[10px] font-black tracking-[0.2em] transition-colors "
                                     :class="currentEnd === 99 ? 'text-orange-500' : 'text-orange-300 group-hover:text-orange-400'">Shoot-off</span>
                                 <div class="size-10 sm:size-12 rounded-xl flex items-center justify-center text-xs sm:text-sm font-black transition-all relative"
                                     :class="currentEnd === 99 ? 'bg-orange-500 text-white shadow-sm ring-4 ring-orange-500/10' : 'bg-orange-50 text-orange-300 group-hover:bg-orange-100/50 group-hover:text-orange-400'">
@@ -384,7 +388,7 @@
                                                 </div>
                                                 <div class="flex items-center gap-2">
                                                     <span
-                                                        class="text-[7px] sm:text-[8px] font-black text-gray-400 uppercase">SUM</span>
+                                                        class="text-[7px] sm:text-[8px] font-black text-gray-400 ">SUM</span>
                                                     <span
                                                         class="text-lg sm:text-xl font-black text-navy tabular-nums">{{
                                                             calculateEndTotal(selectedScoringMatch.id, currentEnd, side)
@@ -445,7 +449,7 @@
                                                     <Icon icon="ph:backspace-bold"
                                                         class="text-lg sm:text-xl group-active:scale-90 transition-transform" />
                                                     <span
-                                                        class="hidden sm:inline text-[9px] tracking-widest font-black uppercase">DEL</span>
+                                                        class="hidden sm:inline text-[9px] tracking-widest font-black ">DEL</span>
                                                 </button>
                                                 <button @click="!isMatchFinished && $emit('save-and-next')"
                                                     :disabled="isSaving || isMatchFinished"

@@ -10,12 +10,12 @@
         </section>
 
         <Transition name="fade" mode="out-in">
-            <ProductPageSkeleton v-if="isLoading" key="skeleton"
-                class="container mx-auto max-w-7xl px-4 pt-8" />
+            <ProductPageSkeleton v-if="isLoading" key="skeleton" class="container mx-auto max-w-7xl px-4 pt-8" />
 
             <div v-else-if="!product" key="not-found" class="container mx-auto max-w-7xl px-4 pt-8">
                 <section class="rounded-3xl border border-black/5 bg-white p-10 text-center shadow-sm">
-                    <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-red-50 text-red-500">
+                    <div
+                        class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-red-50 text-red-500">
                         <Icon icon="ph:package-bold" class="text-2xl" />
                     </div>
                     <h2 class="text-2xl font-black text-navy">Produk tidak ditemukan</h2>
@@ -62,40 +62,49 @@
                                         'aspect-square overflow-hidden rounded-2xl border-2 bg-white transition',
                                         selectedImage === img ? 'border-primary shadow-sm' : 'border-transparent hover:border-black/10'
                                     ]">
-                                    <img :src="img" :alt="`${product.name} ${idx + 1}`" class="h-full w-full object-cover" />
+                                    <img :src="img" :alt="`${product.name} ${idx + 1}`"
+                                        class="h-full w-full object-cover" />
                                 </button>
                             </div>
                         </div>
 
                         <aside class="space-y-5 lg:sticky lg:top-28 lg:h-fit">
                             <div class="rounded-[2rem] border border-black/5 bg-white p-5 sm:p-6 shadow-sm">
-                                <div class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Pilihan Terbaik</div>
-                                <h1 class="mt-2 text-xl sm:text-2xl lg:text-3xl font-black leading-tight text-navy">{{ product.name }}</h1>
+                                <div class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Pilihan
+                                    Terbaik</div>
+                                <h1 class="mt-2 text-xl sm:text-2xl lg:text-3xl font-black leading-tight text-navy">{{
+                                    product.name }}</h1>
 
                                 <div class="mt-3 flex flex-wrap items-center gap-2 text-sm">
                                     <span
                                         class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-700">
-                                        <span class="h-1.5 w-1.5 rounded-full" :class="product.stock > 0 ? 'bg-emerald-600' : 'bg-red-500'" />
+                                        <span class="h-1.5 w-1.5 rounded-full"
+                                            :class="product.stock > 0 ? 'bg-emerald-600' : 'bg-red-500'" />
                                         {{ product.stock > 0 ? `Stok ${product.stock}` : 'Stok Habis' }}
                                     </span>
-                                    <span class="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-[11px] font-bold text-amber-700">
+                                    <span
+                                        class="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-[11px] font-bold text-amber-700">
                                         <Icon icon="ph:star-fill" /> 4.9
                                     </span>
                                 </div>
 
                                 <div class="mt-4 rounded-2xl bg-[#0f172a] p-4 sm:p-5 text-white">
-                                    <div class="text-[10px] uppercase tracking-[0.18em] text-white/70">Harga Spesial</div>
+                                    <div class="text-[10px] uppercase tracking-[0.18em] text-white/70">Harga Spesial
+                                    </div>
                                     <div class="mt-1 flex items-end gap-2.5">
-                                        <div class="text-2xl sm:text-3xl font-black">Rp {{ formatPrice(finalPrice) }}</div>
-                                        <div v-if="product.sale_price" class="pb-1 text-xs text-white/60 line-through">Rp {{ formatPrice(product.price) }}</div>
+                                        <div class="text-2xl sm:text-3xl font-black">Rp {{ formatPrice(finalPrice) }}
+                                        </div>
+                                        <div v-if="product.sale_price" class="pb-1 text-xs text-white/60 line-through">
+                                            Rp {{ formatPrice(product.price) }}</div>
                                     </div>
                                 </div>
 
                                 <div v-if="product.colors?.length" class="mt-5">
-                                    <div class="mb-2 text-[10px] font-black uppercase tracking-wider text-gray-400">Pilihan Warna</div>
+                                    <div class="mb-2 text-[10px] font-black uppercase tracking-wider text-gray-400">
+                                        Pilihan Warna</div>
                                     <div class="flex flex-wrap gap-2">
-                                        <button v-for="color in product.colors" :key="color" @click="selectedColor = color"
-                                            :class="[
+                                        <button v-for="color in product.colors" :key="color"
+                                            @click="selectedColor = color" :class="[
                                                 'rounded-xl border px-3 py-2 text-[11px] font-bold transition',
                                                 selectedColor === color ? 'border-navy bg-navy text-white' : 'border-gray-100 bg-gray-50 text-gray-500 hover:border-gray-200'
                                             ]">
@@ -104,81 +113,113 @@
                                     </div>
                                 </div>
 
-                                <div class="mt-5 flex items-center justify-between rounded-xl border border-black/5 bg-[#fafafa] p-3">
+                                <div
+                                    class="mt-5 flex items-center justify-between rounded-xl border border-black/5 bg-[#fafafa] p-3">
                                     <div class="text-[11px] font-black text-navy uppercase tracking-widest">Jumlah</div>
-                                    <div class="flex items-center rounded-lg border border-black/10 bg-white overflow-hidden">
-                                        <button @click="quantity = Math.max(1, quantity - 1)" class="px-2.5 py-1.5 text-navy hover:bg-gray-50">
+                                    <div
+                                        class="flex items-center rounded-lg border border-black/10 bg-white overflow-hidden">
+                                        <button @click="quantity = Math.max(1, quantity - 1)"
+                                            class="px-2.5 py-1.5 text-navy hover:bg-gray-50">
                                             <Icon icon="ph:minus-bold" class="text-xs" />
                                         </button>
                                         <input v-model.number="quantity" type="number" min="1" :max="maxQty"
                                             class="w-10 text-center text-[11px] font-black text-navy outline-none" />
-                                        <button @click="quantity = Math.min(maxQty, quantity + 1)" class="px-2.5 py-1.5 text-navy hover:bg-gray-50">
+                                        <button @click="quantity = Math.min(maxQty, quantity + 1)"
+                                            class="px-2.5 py-1.5 text-navy hover:bg-gray-50">
                                             <Icon icon="ph:plus-bold" class="text-xs" />
                                         </button>
                                     </div>
                                 </div>
 
                                 <div class="mt-5 grid grid-cols-2 gap-3">
-                                    <button type="button" @click="handleAddToCart" :disabled="maxQty < 1 || isAddingToCart"
+                                    <button type="button" @click="handleAddToCart"
+                                        :disabled="maxQty < 1 || isAddingToCart"
                                         class="w-full flex items-center justify-center gap-2 rounded-2xl bg-primary py-3.5 text-[11px] font-black text-navy shadow-xl shadow-primary/20 transition hover:opacity-90 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed">
-                                        <Icon v-if="isAddingToCart" icon="ph:spinner" class="animate-spin text-lg shrink-0" />
+                                        <Icon v-if="isAddingToCart" icon="ph:spinner"
+                                            class="animate-spin text-lg shrink-0" />
                                         <Icon v-else icon="ph:shopping-cart-simple-bold" class="text-lg shrink-0" />
                                         <span class="uppercase tracking-wide">Keranjang</span>
                                     </button>
                                     <button type="button" @click="openChatDialog" :disabled="isChatStarting"
                                         class="w-full flex items-center justify-center gap-2 rounded-2xl border-2 border-navy py-3.5 text-[11px] font-black text-navy transition hover:bg-navy hover:text-white active:scale-95 disabled:opacity-60">
-                                        <Icon v-if="isChatStarting" icon="ph:spinner" class="animate-spin text-lg shrink-0" />
+                                        <Icon v-if="isChatStarting" icon="ph:spinner"
+                                            class="animate-spin text-lg shrink-0" />
                                         <Icon v-else icon="ph:chat-circle-dots-bold" class="text-lg shrink-0" />
                                         <span class="uppercase tracking-wide">Chat</span>
                                     </button>
                                 </div>
 
-                                <div class="mt-4 flex items-center justify-between rounded-xl border border-black/5 bg-white p-3">
-                                    <div class="text-[10px] font-black text-gray-400 tracking-widest uppercase">Bagikan</div>
+                                <div
+                                    class="mt-4 flex items-center justify-between rounded-xl border border-black/5 bg-white p-3">
+                                    <div class="text-[10px] font-black text-gray-400 tracking-widest ">Bagikan</div>
                                     <div class="flex items-center gap-2">
-                                        <button @click="share('facebook')" class="rounded-lg bg-blue-50 p-2 text-blue-600 hover:bg-blue-100 transition"><Icon icon="ph:facebook-logo-bold" /></button>
-                                        <button @click="share('twitter')" class="rounded-lg bg-sky-50 p-2 text-sky-600 hover:bg-sky-100 transition"><Icon icon="ph:twitter-logo-bold" /></button>
-                                        <button @click="share('whatsapp')" class="rounded-lg bg-green-50 p-2 text-green-600 hover:bg-green-100 transition"><Icon icon="ph:whatsapp-logo-bold" /></button>
-                                        <button @click="copyLink" class="rounded-lg bg-gray-50 p-2 text-gray-500 hover:bg-gray-100 transition"><Icon icon="ph:copy-bold" /></button>
+                                        <button @click="share('facebook')"
+                                            class="rounded-lg bg-blue-50 p-2 text-blue-600 hover:bg-blue-100 transition">
+                                            <Icon icon="ph:facebook-logo-bold" />
+                                        </button>
+                                        <button @click="share('twitter')"
+                                            class="rounded-lg bg-sky-50 p-2 text-sky-600 hover:bg-sky-100 transition">
+                                            <Icon icon="ph:twitter-logo-bold" />
+                                        </button>
+                                        <button @click="share('whatsapp')"
+                                            class="rounded-lg bg-green-50 p-2 text-green-600 hover:bg-green-100 transition">
+                                            <Icon icon="ph:whatsapp-logo-bold" />
+                                        </button>
+                                        <button @click="copyLink"
+                                            class="rounded-lg bg-gray-50 p-2 text-gray-500 hover:bg-gray-100 transition">
+                                            <Icon icon="ph:copy-bold" />
+                                        </button>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="rounded-[2rem] border border-black/5 bg-white p-5 sm:p-6 shadow-sm">
-                                <div class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Informasi Penjual</div>
+                                <div class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Informasi
+                                    Penjual</div>
                                 <template v-if="product.seller">
                                     <div class="mt-3 flex items-center gap-3">
                                         <template v-if="product.seller.avatar_url">
-                                            <img :src="product.seller.avatar_url" :alt="product.seller.store_name" class="h-12 w-12 rounded-full object-cover border-2 border-gray-100 shrink-0" />
+                                            <img :src="product.seller.avatar_url" :alt="product.seller.store_name"
+                                                class="h-12 w-12 rounded-full object-cover border-2 border-gray-100 shrink-0" />
                                         </template>
-                                        <div v-else class="h-12 w-12 rounded-full border-2 border-gray-100 bg-gray-100 flex items-center justify-center shrink-0">
+                                        <div v-else
+                                            class="h-12 w-12 rounded-full border-2 border-gray-100 bg-gray-100 flex items-center justify-center shrink-0">
                                             <Icon icon="ph:storefront-bold" class="text-gray-400 text-xl" />
                                         </div>
                                         <div class="flex-1 min-w-0">
-                                            <div v-if="product.seller.store_name" class="font-black text-navy text-sm truncate">{{ product.seller.store_name }}</div>
-                                            <div v-if="sellerSubtitle" class="text-[10px] text-gray-400 font-bold mt-0.5">{{ sellerSubtitle }}</div>
+                                            <div v-if="product.seller.store_name"
+                                                class="font-black text-navy text-sm truncate">{{
+                                                product.seller.store_name }}
+                                            </div>
+                                            <div v-if="sellerSubtitle"
+                                                class="text-[10px] text-gray-400 font-bold mt-0.5">{{ sellerSubtitle }}
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="flex items-center gap-2">
                                         <div v-if="product.seller.chat_response_rate || product.seller.chat_response_time"
-                                        class="mt-3 flex items-center gap-4 text-[10px] font-bold text-gray-500">
-                                        <div v-if="product.seller.chat_response_rate" class="flex items-center gap-1">
-                                            <Icon icon="ph:check-circle-bold" class="text-emerald-500 text-sm" />
-                                            {{ product.seller.chat_response_rate }} respon
+                                            class="mt-3 flex items-center gap-4 text-[10px] font-bold text-gray-500">
+                                            <div v-if="product.seller.chat_response_rate"
+                                                class="flex items-center gap-1">
+                                                <Icon icon="ph:check-circle-bold" class="text-emerald-500 text-sm" />
+                                                {{ product.seller.chat_response_rate }} respon
+                                            </div>
+                                            <div v-if="product.seller.chat_response_time && product.seller.chat_response_time.toLowerCase() !== 'hitungan jam'"
+                                                class="flex items-center gap-1">
+                                                <Icon icon="ph:clock-bold" class="text-amber-500 text-sm" />
+                                                {{ product.seller.chat_response_time }}
+                                            </div>
                                         </div>
-                                        <div v-if="product.seller.chat_response_time && product.seller.chat_response_time.toLowerCase() !== 'hitungan jam'" class="flex items-center gap-1">
-                                            <Icon icon="ph:clock-bold" class="text-amber-500 text-sm" />
-                                            {{ product.seller.chat_response_time }}
+                                        <div v-if="product.seller.rating != null && product.seller.rating > 0"
+                                            class="mt-2 flex items-center gap-1.5 text-[10px] font-bold text-amber-600">
+                                            <Icon icon="ph:star-fill" class="text-amber-500 text-sm" />
+                                            {{ Number(product.seller.rating).toFixed(1) }} rating
                                         </div>
-                                    </div>
-                                    <div v-if="product.seller.rating != null && product.seller.rating > 0" class="mt-2 flex items-center gap-1.5 text-[10px] font-bold text-amber-600">
-                                        <Icon icon="ph:star-fill" class="text-amber-500 text-sm" />
-                                        {{ Number(product.seller.rating).toFixed(1) }} rating
-                                    </div>
                                     </div>
                                 </template>
                                 <div v-else class="mt-3 flex items-center gap-3">
-                                    <div class="h-12 w-12 rounded-full border-2 border-gray-100 bg-gray-100 flex items-center justify-center shrink-0">
+                                    <div
+                                        class="h-12 w-12 rounded-full border-2 border-gray-100 bg-gray-100 flex items-center justify-center shrink-0">
                                         <Icon icon="ph:storefront-bold" class="text-gray-400 text-xl" />
                                     </div>
                                     <div class="text-[11px] text-gray-500 font-medium">Data penjual tidak tersedia</div>
@@ -189,24 +230,27 @@
                 </section>
 
                 <section class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_340px]">
-                    <div class="rounded-[2.5rem] border border-black/5 bg-white p-6 sm:p-8 lg:p-10 shadow-sm relative overflow-hidden">
+                    <div
+                        class="rounded-[2.5rem] border border-black/5 bg-white p-6 sm:p-8 lg:p-10 shadow-sm relative overflow-hidden">
                         <div class="absolute top-0 right-0 p-8 opacity-[0.03] pointer-events-none">
                             <Icon icon="ph:quotes-bold" class="text-8xl text-navy" />
                         </div>
                         <h2 class="text-lg font-black text-navy tracking-tight flex items-center gap-2">
-                             <div class="w-1.5 h-6 bg-primary rounded-full"></div>
-                             Deskripsi Produk
+                            <div class="w-1.5 h-6 bg-primary rounded-full"></div>
+                            Deskripsi Produk
                         </h2>
                         <div class="mt-6 whitespace-pre-line leading-relaxed text-gray-600 text-sm sm:text-base">
                             {{ product.description || 'Belum ada deskripsi detail untuk produk ini.' }}
                         </div>
 
                         <div v-if="Object.keys(product.specifications || {}).length" class="mt-8">
-                            <h3 class="text-[11px] font-black uppercase tracking-[0.2em] text-gray-400 mb-4">Spesifikasi Detail</h3>
+                            <h3 class="text-[11px] font-black uppercase tracking-[0.2em] text-gray-400 mb-4">Spesifikasi
+                                Detail</h3>
                             <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
                                 <div v-for="(value, key) in product.specifications" :key="key"
                                     class="rounded-2xl border border-gray-50 bg-[#fafafa] p-4 flex flex-col gap-1">
-                                    <div class="text-[10px] font-bold uppercase tracking-wider text-gray-400">{{ key }}</div>
+                                    <div class="text-[10px] font-bold uppercase tracking-wider text-gray-400">{{ key }}
+                                    </div>
                                     <div class="font-black text-navy text-sm">{{ value }}</div>
                                 </div>
                             </div>
@@ -214,31 +258,40 @@
 
                         <!-- Trust Badges Relocated to Bottom -->
                         <div class="mt-12 pt-8 border-t border-gray-50 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                            <div class="flex items-center gap-4 rounded-3xl border border-black/5 bg-white p-5 shadow-sm hover:shadow-md transition duration-300">
-                                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-[1.25rem] bg-emerald-50 text-emerald-600">
+                            <div
+                                class="flex items-center gap-4 rounded-3xl border border-black/5 bg-white p-5 shadow-sm hover:shadow-md transition duration-300">
+                                <div
+                                    class="flex h-12 w-12 shrink-0 items-center justify-center rounded-[1.25rem] bg-emerald-50 text-emerald-600">
                                     <Icon icon="ph:seal-check-bold" class="text-2xl" />
                                 </div>
                                 <div>
                                     <div class="font-black text-navy text-sm leading-tight">100% Ori</div>
-                                    <div class="text-[10px] text-gray-400 font-bold leading-tight mt-0.5">Sudah Dicek</div>
+                                    <div class="text-[10px] text-gray-400 font-bold leading-tight mt-0.5">Sudah Dicek
+                                    </div>
                                 </div>
                             </div>
-                            <div class="flex items-center gap-4 rounded-3xl border border-black/5 bg-white p-5 shadow-sm hover:shadow-md transition duration-300">
-                                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-[1.25rem] bg-amber-50 text-amber-500">
+                            <div
+                                class="flex items-center gap-4 rounded-3xl border border-black/5 bg-white p-5 shadow-sm hover:shadow-md transition duration-300">
+                                <div
+                                    class="flex h-12 w-12 shrink-0 items-center justify-center rounded-[1.25rem] bg-amber-50 text-amber-500">
                                     <Icon icon="ph:shield-check-bold" class="text-2xl" />
                                 </div>
                                 <div>
                                     <div class="font-black text-navy text-sm leading-tight">Garansi 7 Hari</div>
-                                    <div class="text-[10px] text-gray-400 font-bold leading-tight mt-0.5">Tukar Produk</div>
+                                    <div class="text-[10px] text-gray-400 font-bold leading-tight mt-0.5">Tukar Produk
+                                    </div>
                                 </div>
                             </div>
-                            <div class="flex items-center gap-4 rounded-3xl border border-black/5 bg-white p-5 shadow-sm hover:shadow-md transition duration-300">
-                                <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-[1.25rem] bg-blue-50 text-blue-500">
+                            <div
+                                class="flex items-center gap-4 rounded-3xl border border-black/5 bg-white p-5 shadow-sm hover:shadow-md transition duration-300">
+                                <div
+                                    class="flex h-12 w-12 shrink-0 items-center justify-center rounded-[1.25rem] bg-blue-50 text-blue-500">
                                     <Icon icon="ph:rocket-launch-bold" class="text-2xl" />
                                 </div>
                                 <div>
                                     <div class="font-black text-navy text-sm leading-tight">Pengiriman Cepat</div>
-                                    <div class="text-[10px] text-gray-400 font-bold leading-tight mt-0.5">Estimasi 1-3 Hari</div>
+                                    <div class="text-[10px] text-gray-400 font-bold leading-tight mt-0.5">Estimasi 1-3
+                                        Hari</div>
                                 </div>
                             </div>
                         </div>
@@ -247,14 +300,16 @@
                     <div class="rounded-[2rem] border border-black/5 bg-white shadow-sm overflow-hidden h-fit">
                         <div class="bg-navy px-6 py-5 flex items-center gap-3">
                             <Icon icon="ph:clipboard-text-bold" class="text-primary text-xl" />
-                            <h3 class="text-xs font-black text-white tracking-[0.15em] uppercase">Ringkasan</h3>
+                            <h3 class="text-xs font-black text-white tracking-[0.15em] ">Ringkasan</h3>
                         </div>
                         <ul class="divide-y divide-gray-50">
                             <li class="flex items-center justify-between px-5 py-3.5">
                                 <span class="flex items-center gap-2 text-xs text-gray-400">
                                     <Icon icon="ph:barcode-bold" class="text-sm" /> SKU
                                 </span>
-                                <span class="font-bold text-navy text-xs bg-gray-50 px-2 py-0.5 rounded-lg">{{ (product.slug || '-').toUpperCase() }}</span>
+                                <span class="font-bold text-navy text-xs bg-gray-50 px-2 py-0.5 rounded-lg">{{
+                                    (product.slug ||
+                                    '-').toUpperCase() }}</span>
                             </li>
                             <li class="flex items-center justify-between px-5 py-3.5">
                                 <span class="flex items-center gap-2 text-xs text-gray-400">
@@ -272,7 +327,8 @@
                                 <span class="flex items-center gap-2 text-xs text-gray-400">
                                     <Icon icon="ph:sparkle-bold" class="text-sm" /> Kondisi
                                 </span>
-                                <span class="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-700">
+                                <span
+                                    class="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-700">
                                     <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span> Baru
                                 </span>
                             </li>
@@ -286,7 +342,8 @@
             <button @click="isZoomOpen = false" class="absolute right-5 top-5 text-white">
                 <Icon icon="ph:x-bold" class="text-3xl" />
             </button>
-            <img :src="selectedImage" :alt="product?.name" class="max-h-[90vh] max-w-[92vw] rounded-2xl object-contain" />
+            <img :src="selectedImage" :alt="product?.name"
+                class="max-h-[90vh] max-w-[92vw] rounded-2xl object-contain" />
         </div>
 
         <!-- ── Chat Dialog (floating bottom-right) ─────────────────────────── -->
@@ -298,16 +355,19 @@
                 <!-- Header -->
                 <div class="flex items-center gap-3 px-4 py-3 bg-navy text-white shrink-0">
                     <div class="size-9 rounded-xl overflow-hidden bg-white/10 border border-white/20 shrink-0">
-                        <img v-if="chatConv?.seller_avatar" :src="chatConv.seller_avatar" class="w-full h-full object-cover" />
+                        <img v-if="chatConv?.seller_avatar" :src="chatConv.seller_avatar"
+                            class="w-full h-full object-cover" />
                         <div v-else class="w-full h-full flex items-center justify-center">
                             <Icon icon="ph:storefront-bold" class="text-white/70" />
                         </div>
                     </div>
                     <div class="flex-1 min-w-0">
-                        <p class="text-sm font-black leading-none truncate">{{ chatConv?.seller_name || product?.seller?.store_name || 'Penjual' }}</p>
+                        <p class="text-sm font-black leading-none truncate">{{ chatConv?.seller_name ||
+                            product?.seller?.store_name || 'Penjual' }}</p>
                         <div v-if="chatConv?.product_name" class="flex items-center gap-1 mt-0.5">
                             <Icon icon="ph:package-bold" class="text-[9px] text-white/60" />
-                            <span class="text-[10px] text-white/60 font-semibold truncate">{{ chatConv.product_name }}</span>
+                            <span class="text-[10px] text-white/60 font-semibold truncate">{{ chatConv.product_name
+                                }}</span>
                         </div>
                     </div>
                     <button @click="closeChatDialog"
@@ -320,20 +380,21 @@
                 <div v-if="chatConv?.product_name"
                     class="flex items-center gap-2.5 px-4 py-2 bg-primary/5 border-b border-primary/15 shrink-0">
                     <div class="size-7 rounded-lg overflow-hidden bg-white border border-gray-200 shrink-0">
-                        <img v-if="chatConv.product_image" :src="chatConv.product_image" class="w-full h-full object-cover" />
+                        <img v-if="chatConv.product_image" :src="chatConv.product_image"
+                            class="w-full h-full object-cover" />
                         <Icon v-else icon="ph:package-bold" class="text-gray-400 text-xs m-auto mt-1" />
                     </div>
                     <p class="text-[10px] font-black text-navy truncate flex-1">{{ chatConv.product_name }}</p>
                 </div>
 
                 <!-- Messages -->
-                <div ref="chatContainer"
-                    class="flex-grow overflow-y-auto px-4 py-4 space-y-2.5 no-scrollbar"
+                <div ref="chatContainer" class="flex-grow overflow-y-auto px-4 py-4 space-y-2.5 no-scrollbar"
                     style="background: linear-gradient(180deg,#f4f6fb 0%,#eef1f8 100%)">
 
                     <!-- Loading skeleton -->
                     <div v-if="chatLoadingMsg" class="space-y-3 animate-pulse">
-                        <div v-for="i in 3" :key="i" class="flex" :class="i % 2 === 0 ? 'justify-end' : 'justify-start'">
+                        <div v-for="i in 3" :key="i" class="flex"
+                            :class="i % 2 === 0 ? 'justify-end' : 'justify-start'">
                             <div class="h-9 rounded-2xl bg-white border border-gray-200"
                                 :class="i % 2 === 0 ? 'w-3/4' : 'w-1/2'"></div>
                         </div>
@@ -348,21 +409,18 @@
                     </div>
 
                     <!-- Messages -->
-                    <div v-else v-for="msg in chatMessages" :key="msg.id"
-                        class="flex flex-col"
+                    <div v-else v-for="msg in chatMessages" :key="msg.id" class="flex flex-col"
                         :class="msg.sender_type === 'archer' ? 'items-end' : 'items-start'">
-                        <div class="max-w-[85%] px-3.5 py-2.5 text-[12px] leading-relaxed font-medium shadow-sm"
-                            :class="msg.sender_type === 'archer'
-                                ? 'bg-navy text-white rounded-2xl rounded-tr-sm'
-                                : 'bg-white text-navy border border-gray-200 rounded-2xl rounded-tl-sm'">
+                        <div class="max-w-[85%] px-3.5 py-2.5 text-[12px] leading-relaxed font-medium shadow-sm" :class="msg.sender_type === 'archer'
+                            ? 'bg-navy text-white rounded-2xl rounded-tr-sm'
+                            : 'bg-white text-navy border border-gray-200 rounded-2xl rounded-tl-sm'">
                             {{ msg.message }}
                         </div>
                         <div class="mt-0.5 text-[9px] font-semibold text-gray-400 flex items-center gap-1"
                             :class="msg.sender_type === 'archer' ? 'justify-end' : 'justify-start'">
                             {{ formatChatTime(msg.created_at) }}
                             <Icon v-if="msg.sender_type === 'archer'"
-                                :icon="msg.is_read ? 'ph:checks-bold' : 'ph:check-bold'"
-                                class="text-[9px]"
+                                :icon="msg.is_read ? 'ph:checks-bold' : 'ph:check-bold'" class="text-[9px]"
                                 :class="msg.is_read ? 'text-primary' : 'text-gray-300'" />
                         </div>
                     </div>
@@ -371,7 +429,8 @@
                 <!-- Input -->
                 <div class="px-3 py-3 bg-white border-t-2 border-gray-200 shrink-0">
                     <div class="flex items-end gap-2">
-                        <div class="flex-grow bg-gray-50 rounded-2xl border-2 border-gray-200 focus-within:border-primary/40 focus-within:bg-white transition-all overflow-hidden">
+                        <div
+                            class="flex-grow bg-gray-50 rounded-2xl border-2 border-gray-200 focus-within:border-primary/40 focus-within:bg-white transition-all overflow-hidden">
                             <textarea v-model="chatInput" placeholder="Tulis pesan..." rows="1"
                                 @keydown.enter.exact.prevent="sendChatMessage"
                                 class="w-full bg-transparent border-none focus:ring-0 text-sm font-medium px-3.5 py-2.5 max-h-20 resize-none no-scrollbar text-navy placeholder:text-gray-300 outline-none" />
@@ -383,7 +442,9 @@
                         </button>
                     </div>
                     <p class="text-[9px] text-gray-300 font-semibold text-center mt-1.5">
-                        Enter kirim · <NuxtLink :to="`/dashboard/archer/chat?conv=${chatConv?.id}`" class="text-primary hover:underline" @click.native="closeChatDialog">Buka di dashboard →</NuxtLink>
+                        Enter kirim · <NuxtLink :to="`/dashboard/archer/chat?conv=${chatConv?.id}`"
+                            class="text-primary hover:underline" @click.native="closeChatDialog">Buka di dashboard →
+                        </NuxtLink>
                     </p>
                 </div>
             </div>
@@ -659,7 +720,7 @@ const sendChatMessage = async () => {
         const sent = await api.post(`/chat/conversations/${chatConv.value.id}/messages`, { message: text })
         const idx = chatMessages.value.findIndex(m => m.id === tmp.id)
         if (idx >= 0) chatMessages.value[idx] = sent
-    } catch { toast.error('Gagal mengirim pesan') ; chatMessages.value = chatMessages.value.filter(m => m.id !== tmp.id) }
+    } catch { toast.error('Gagal mengirim pesan'); chatMessages.value = chatMessages.value.filter(m => m.id !== tmp.id) }
     finally { chatSending.value = false }
 }
 
@@ -698,6 +759,7 @@ const formatChatTime = (dt) => {
 .fade-leave-active {
     transition: opacity 0.2s ease;
 }
+
 .fade-enter-from,
 .fade-leave-to {
     opacity: 0;
@@ -707,12 +769,19 @@ const formatChatTime = (dt) => {
 .chat-slide-leave-active {
     transition: opacity 0.25s ease, transform 0.25s ease;
 }
+
 .chat-slide-enter-from,
 .chat-slide-leave-to {
     opacity: 0;
     transform: translateY(20px) scale(0.97);
 }
 
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
 </style>

@@ -1,7 +1,8 @@
 <template>
   <div class="space-y-6">
     <!-- Header -->
-    <div class="relative overflow-hidden rounded-2xl border border-primary/20 bg-navy text-white shadow-sm">
+    <div id="tour-events-header"
+      class="relative overflow-hidden rounded-2xl border border-primary/20 bg-navy text-white shadow-sm">
       <!-- Theme Motif Pattern -->
       <div class="absolute inset-0" style="background-image: var(--motif-pattern); opacity: var(--motif-opacity, 0.2);">
       </div>
@@ -33,8 +34,8 @@
 
           <!-- Action Buttons -->
           <div class="flex flex-col sm:flex-row gap-3">
-            <BaseButton :to="canCreateEvent ? '/dashboard/events/create' : undefined" variant="primary"
-              icon="ph:plus-bold" @click="!canCreateEvent && (showPremiumModal = true)"
+            <BaseButton id="tour-create-event-btn" :to="canCreateEvent ? '/dashboard/events/create' : undefined"
+              variant="primary" icon="ph:plus-bold" @click="!canCreateEvent && (showPremiumModal = true)"
               class="h-10 sm:h-11 px-6 shadow-lg shadow-primary/30 hover:shadow-md hover:shadow-primary/40 transition-all w-full sm:w-auto text-xs sm:text-sm font-black uppercase tracking-widest"
               :class="{ 'opacity-50 grayscale cursor-not-allowed': !canCreateEvent }">
               Buat Event
@@ -46,7 +47,8 @@
     <PremiumRequiredModal v-model:show="showPremiumModal" feature="create_event" />
 
     <!-- Search & Filter Card -->
-    <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
+    <div id="tour-search-filter"
+      class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
       <div class="flex-grow w-full">
         <BaseInput v-model="searchQuery" icon="ph:magnifying-glass" placeholder="Cari nama event, lokasi, atau kode..."
           label="Pencarian" />
@@ -57,14 +59,14 @@
     </div>
 
     <!-- Events List / Table -->
-    <div class="bg-white border border-gray-100 rounded-2xl shadow-sm flex flex-col">
+    <div id="tour-events-table" class="bg-white border border-gray-100 rounded-2xl shadow-sm flex flex-col">
       <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse min-w-[800px]">
           <thead>
             <tr class="bg-gray-50/50 border-b border-gray-100">
               <th @click="toggleSort('name')"
                 class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
-                <div class="flex items-center gap-2 uppercase">
+                <div class="flex items-center gap-2 ">
                   Informasi Event
                   <Icon v-if="sortBy === 'name'" :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
                     class="text-primary" />
@@ -73,16 +75,16 @@
               </th>
               <th @click="toggleSort('start_date')"
                 class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
-                <div class="flex items-center gap-2 uppercase">
+                <div class="flex items-center gap-2 ">
                   Jadwal & Lokasi
-                  <Icon v-if="sortBy === 'start_date'" :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
-                    class="text-primary" />
+                  <Icon v-if="sortBy === 'start_date'"
+                    :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary" />
                   <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
                 </div>
               </th>
               <th @click="toggleSort('participant_count')"
                 class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
-                <div class="flex items-center gap-2 uppercase">
+                <div class="flex items-center gap-2 ">
                   Peserta / Kategori
                   <Icon v-if="sortBy === 'participant_count'"
                     :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary" />
@@ -91,14 +93,14 @@
               </th>
               <th @click="toggleSort('status')"
                 class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
-                <div class="flex items-center gap-2 uppercase">
+                <div class="flex items-center gap-2 ">
                   Status
                   <Icon v-if="sortBy === 'status'" :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
                     class="text-primary" />
                   <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
                 </div>
               </th>
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest text-right uppercase">Aksi
+              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest text-right ">Aksi
               </th>
             </tr>
           </thead>
@@ -222,13 +224,13 @@
       confirm-text="Ya, Hapus" type="danger" icon="ph:trash" @confirm="deleteEvent" @cancel="cancelDelete" />
   </div>
 </template>
-
 <script setup>
 import { Icon } from '@iconify/vue'
 import { useEventContext } from '~/composables/useEventContext'
 import { useToast } from '~/composables/useToast'
 import { useRouter } from 'vue-router'
 import { useSubscription } from '~/composables/useSubscription'
+import { useTour } from '~/composables/useTour'
 import BasePagination from '~/components/common/BasePagination.vue'
 import AppDialog from '~/components/common/AppDialog.vue'
 import PremiumRequiredModal from '~/components/common/PremiumRequiredModal.vue'
@@ -238,6 +240,7 @@ const router = useRouter()
 const { setEvent } = useEventContext()
 const { isSubscriptionActive, canCreateEvent } = useSubscription()
 const toast = useToast()
+const { startTour } = useTour()
 
 const showPremiumModal = ref(false)
 const searchQuery = ref('')
@@ -252,6 +255,36 @@ const totalItems = ref(0)
 const limit = ref(10)
 const sortBy = ref('created_at')
 const order = ref('DESC')
+
+const triggerTour = (force = false) => {
+  const steps = [
+    {
+      target: '#tour-events-header',
+      title: 'Events Dashboard',
+      description: 'Welcome to your events dashboard! Here you can manage all your tournaments, registrations, brackets, and live results in one place.',
+      placement: 'bottom'
+    },
+    {
+      target: '#tour-create-event-btn',
+      title: 'Create Tournaments',
+      description: 'Click here to create a new archery tournament. You can configure categories, sessions, elimination brackets, venue locations, and fees.',
+      placement: 'left'
+    },
+    {
+      target: '#tour-search-filter',
+      title: 'Search & Filters',
+      description: 'Quickly find your tournaments by code, name, or location. Keep your dashboard organized as your event list grows.',
+      placement: 'bottom'
+    },
+    {
+      target: '#tour-events-table',
+      title: 'Tournament List & Management',
+      description: 'All your active and draft tournaments are listed here. Click "Kelola" on any tournament to configure its settings, view participants, print target lists, or manage brackets.',
+      placement: 'top'
+    }
+  ]
+  startTour('organization-events-tour', steps, force)
+}
 
 watch([searchQuery, limit, sortBy, order], () => {
   currentPage.value = 1
@@ -295,8 +328,16 @@ const toggleSort = (field) => {
 
 onMounted(() => {
   fetchEvents()
+  // Trigger tour automatically only if not marked as seen in localStorage
+  if (import.meta.client) {
+    const completed = JSON.parse(localStorage.getItem('completed_tours') || '[]')
+    if (!completed.includes('organization-events-tour')) {
+      setTimeout(() => {
+        triggerTour(false)
+      }, 1000)
+    }
+  }
 })
-
 const resetFilters = () => {
   searchQuery.value = ''
 }

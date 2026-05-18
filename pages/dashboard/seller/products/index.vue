@@ -15,8 +15,10 @@
                         <Icon icon="ph:package-bold" class="text-primary text-2xl sm:text-3xl" />
                     </div>
                     <div>
-                        <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none capitalize">Manajemen produk</h1>
-                        <div class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wide capitalize">Kelola katalog produk yang Anda jual</div>
+                        <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none capitalize">Manajemen
+                            produk</h1>
+                        <div class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wide capitalize">
+                            Kelola katalog produk yang Anda jual</div>
                     </div>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-3">
@@ -28,11 +30,13 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Quick Stats -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
+            <div
+                class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div
+                    class="bg-gray-50 p-2 rounded-lg text-primary-hover group-hover:bg-primary group-hover:text-navy-dark transition-colors">
                     <Icon icon="ph:package-bold" class="text-xl" />
                 </div>
                 <div>
@@ -40,230 +44,234 @@
                     <div class="text-lg font-black text-navy">{{ products.length }}</div>
                 </div>
             </div>
-            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div class="bg-gray-50 p-2 rounded-lg text-green-500 group-hover:bg-green-500 group-hover:text-white transition-colors">
+            <div
+                class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div
+                    class="bg-gray-50 p-2 rounded-lg text-green-500 group-hover:bg-green-500 group-hover:text-white transition-colors">
                     <Icon icon="ph:check-circle-bold" class="text-xl" />
                 </div>
                 <div>
                     <div class="text-[9px] text-gray-400 font-black tracking-widest capitalize">Produk aktif</div>
-                    <div class="text-lg font-black text-navy">{{ products.filter(p => p.status === 'active').length }}</div>
+                    <div class="text-lg font-black text-navy">{{products.filter(p => p.status === 'active').length}}
+                    </div>
                 </div>
             </div>
-            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div class="bg-gray-50 p-2 rounded-lg text-amber-500 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+            <div
+                class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                <div
+                    class="bg-gray-50 p-2 rounded-lg text-amber-500 group-hover:bg-amber-500 group-hover:text-white transition-colors">
                     <Icon icon="ph:warning-circle-bold" class="text-xl" />
                 </div>
                 <div>
                     <div class="text-[9px] text-gray-400 font-black tracking-widest capitalize">Stok tipis</div>
-                    <div class="text-lg font-black text-navy">{{ products.filter(p => p.stock < 10).length }}</div>
+                    <div class="text-lg font-black text-navy">{{products.filter(p => p.stock < 10).length}}</div>
+                    </div>
+                </div>
+                <div
+                    class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
+                    <div
+                        class="bg-gray-50 p-2 rounded-lg text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-colors">
+                        <Icon icon="ph:eye-bold" class="text-xl" />
+                    </div>
+                    <div>
+                        <div class="text-[9px] text-gray-400 font-black tracking-widest capitalize">Total views</div>
+                        <div class="text-lg font-black text-navy">{{products.reduce((acc, p) => acc + (p.views || 0),
+                            0).toLocaleString('id-ID') }}</div>
+                    </div>
                 </div>
             </div>
-            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex items-center gap-4 group hover:border-primary transition-all">
-                <div class="bg-gray-50 p-2 rounded-lg text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-colors">
-                    <Icon icon="ph:eye-bold" class="text-xl" />
-                </div>
-                <div>
-                    <div class="text-[9px] text-gray-400 font-black tracking-widest capitalize">Total views</div>
-                    <div class="text-lg font-black text-navy">{{ products.reduce((acc, p) => acc + (p.views || 0), 0).toLocaleString('id-ID') }}</div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Search & Filter -->
-        <div
-            class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
-            <div class="flex-grow w-full">
-                <BaseInput v-model="searchQuery" icon="ph:magnifying-glass" placeholder="Cari nama produk..."
-                    label="Pencarian" />
+            <!-- Search & Filter -->
+            <div
+                class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
+                <div class="flex-grow w-full">
+                    <BaseInput v-model="searchQuery" icon="ph:magnifying-glass" placeholder="Cari nama produk..."
+                        label="Pencarian" />
+                </div>
+                <div class="w-full md:w-48">
+                    <BaseSelect v-model="statusFilter" :items="statusOptions" label="Status" item-title="title" />
+                </div>
+                <div class="w-full md:w-48">
+                    <BaseSelect v-model="categoryFilter" :items="categoryOptions" label="Kategori" item-title="title" />
+                </div>
+                <BaseButton variant="white" icon="ph:funnel" @click="resetFilters" class="h-11">
+                    Reset
+                </BaseButton>
             </div>
-            <div class="w-full md:w-48">
-                <BaseSelect v-model="statusFilter" :items="statusOptions" label="Status" item-title="title" />
-            </div>
-            <div class="w-full md:w-48">
-                <BaseSelect v-model="categoryFilter" :items="categoryOptions" label="Kategori" item-title="title" />
-            </div>
-            <BaseButton variant="white" icon="ph:funnel" @click="resetFilters" class="h-11">
-                Reset
-            </BaseButton>
-        </div>
 
-        <!-- Products Table -->
-        <div class="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse min-w-[900px]">
-                    <thead>
-                        <tr class="bg-gray-50/50 border-b border-gray-100">
-                            <th @click="toggleSort('name')"
-                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors uppercase">
-                                <div class="flex items-center gap-2">
-                                    Produk
-                                    <Icon v-if="sortBy === 'name'"
-                                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
-                                        class="text-primary" />
-                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
-                                </div>
-                            </th>
-                            <th @click="toggleSort('category')"
-                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors uppercase">
-                                <div class="flex items-center gap-2">
-                                    Kategori
-                                    <Icon v-if="sortBy === 'category'"
-                                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
-                                        class="text-primary" />
-                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
-                                </div>
-                            </th>
-                            <th @click="toggleSort('price')"
-                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors uppercase">
-                                <div class="flex items-center gap-2">
-                                    Harga
-                                    <Icon v-if="sortBy === 'price'"
-                                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
-                                        class="text-primary" />
-                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
-                                </div>
-                            </th>
-                            <th @click="toggleSort('stock')"
-                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors uppercase">
-                                <div class="flex items-center gap-2">
-                                    Stok
-                                    <Icon v-if="sortBy === 'stock'"
-                                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
-                                        class="text-primary" />
-                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
-                                </div>
-                            </th>
-                            <th @click="toggleSort('status')"
-                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors uppercase">
-                                <div class="flex items-center gap-2">
-                                    Status
-                                    <Icon v-if="sortBy === 'status'"
-                                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
-                                        class="text-primary" />
-                                    <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
-                                </div>
-                            </th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest text-right uppercase">
-                                Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-50">
-                        <!-- Loading State -->
-                        <tr v-if="isLoading">
-                            <td colspan="6" class="px-6 py-12 text-center">
-                                <div class="flex flex-col items-center gap-3">
-                                    <LoadingSpinner size="lg" />
-                                    <div class="text-sm text-gray-400 font-medium">Memuat data produk...</div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr v-for="product in filteredProducts" :key="product.id"
-                            class="hover:bg-primary/5 transition-colors group">
-                            <!-- Product Info -->
-                            <td class="px-6 py-4">
-                                <div class="flex items-center gap-4">
-                                    <div class="h-14 w-14 rounded-xl bg-gray-100 overflow-hidden flex-shrink-0">
-                                        <img :src="product.image" class="w-full h-full object-cover" />
+            <!-- Products Table -->
+            <div class="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse min-w-[900px]">
+                        <thead>
+                            <tr class="bg-gray-50/50 border-b border-gray-100">
+                                <th @click="toggleSort('name')"
+                                    class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors ">
+                                    <div class="flex items-center gap-2">
+                                        Produk
+                                        <Icon v-if="sortBy === 'name'"
+                                            :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                                            class="text-primary" />
+                                        <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
                                     </div>
+                                </th>
+                                <th @click="toggleSort('category')"
+                                    class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors ">
+                                    <div class="flex items-center gap-2">
+                                        Kategori
+                                        <Icon v-if="sortBy === 'category'"
+                                            :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                                            class="text-primary" />
+                                        <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                                    </div>
+                                </th>
+                                <th @click="toggleSort('price')"
+                                    class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors ">
+                                    <div class="flex items-center gap-2">
+                                        Harga
+                                        <Icon v-if="sortBy === 'price'"
+                                            :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                                            class="text-primary" />
+                                        <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                                    </div>
+                                </th>
+                                <th @click="toggleSort('stock')"
+                                    class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors ">
+                                    <div class="flex items-center gap-2">
+                                        Stok
+                                        <Icon v-if="sortBy === 'stock'"
+                                            :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                                            class="text-primary" />
+                                        <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                                    </div>
+                                </th>
+                                <th @click="toggleSort('status')"
+                                    class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors ">
+                                    <div class="flex items-center gap-2">
+                                        Status
+                                        <Icon v-if="sortBy === 'status'"
+                                            :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                                            class="text-primary" />
+                                        <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
+                                    </div>
+                                </th>
+                                <th
+                                    class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest text-right ">
+                                    Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-50">
+                            <!-- Loading State -->
+                            <tr v-if="isLoading">
+                                <td colspan="6" class="px-6 py-12 text-center">
+                                    <div class="flex flex-col items-center gap-3">
+                                        <LoadingSpinner size="lg" />
+                                        <div class="text-sm text-gray-400 font-medium">Memuat data produk...</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr v-for="product in filteredProducts" :key="product.id"
+                                class="hover:bg-primary/5 transition-colors group">
+                                <!-- Product Info -->
+                                <td class="px-6 py-4">
+                                    <div class="flex items-center gap-4">
+                                        <div class="h-14 w-14 rounded-xl bg-gray-100 overflow-hidden flex-shrink-0">
+                                            <img :src="product.image" class="w-full h-full object-cover" />
+                                        </div>
+                                        <div>
+                                            <div class="font-bold text-navy group-hover:text-primary transition-colors">
+                                                {{
+                                                    product.name }}</div>
+                                            <div class="flex items-center gap-3 text-xs text-gray-400 mt-1">
+                                                <span class="flex items-center gap-1">
+                                                    <Icon icon="ph:eye" />
+                                                    {{ product.views }} views
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <!-- Category -->
+                                <td class="px-6 py-4">
+                                    <span class="text-xs font-bold text-navy tracking-tight">
+                                        {{ getCategoryLabel(product.category) }}
+                                    </span>
+                                </td>
+
+                                <!-- Price -->
+                                <td class="px-6 py-4">
                                     <div>
-                                        <div class="font-bold text-navy group-hover:text-primary transition-colors">{{
-                                            product.name }}</div>
-                                        <div class="flex items-center gap-3 text-xs text-gray-400 mt-1">
-                                            <span class="flex items-center gap-1">
-                                                <Icon icon="ph:eye" />
-                                                {{ product.views }} views
-                                            </span>
+                                        <div class="font-bold text-navy">Rp {{ formatPrice(product.price) }}</div>
+                                        <div v-if="product.salePrice" class="text-xs text-red-500 line-through">
+                                            Rp {{ formatPrice(product.salePrice) }}
                                         </div>
                                     </div>
-                                </div>
-                            </td>
+                                </td>
 
-                            <!-- Category -->
-                            <td class="px-6 py-4">
-                                <span class="text-xs font-bold text-navy tracking-tight">
-                                    {{ getCategoryLabel(product.category) }}
-                                </span>
-                            </td>
+                                <!-- Stock -->
+                                <td class="px-6 py-4">
+                                    <span class="font-bold text-black">
+                                        {{ product.stock }}
+                                    </span>
+                                </td>
 
-                            <!-- Price -->
-                            <td class="px-6 py-4">
-                                <div>
-                                    <div class="font-bold text-navy">Rp {{ formatPrice(product.price) }}</div>
-                                    <div v-if="product.salePrice" class="text-xs text-red-500 line-through">
-                                        Rp {{ formatPrice(product.salePrice) }}
+                                <!-- Status -->
+                                <td class="px-6 py-4">
+                                    <span :class="[
+                                        'px-3 py-1 rounded-full text-xs font-bold  tracking-wider',
+                                        product.status === 'active' ? 'bg-green-50 text-green-600' :
+                                            product.status === 'draft' ? 'bg-gray-100 text-gray-500' :
+                                                product.status === 'sold_out' ? 'bg-red-50 text-red-600' :
+                                                    'bg-gray-100 text-gray-500'
+                                    ]">
+                                        {{ getStatusLabel(product.status) }}
+                                    </span>
+                                </td>
+
+                                <!-- Actions -->
+                                <td class="px-6 py-4 text-right">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <BaseButton variant="white" size="sm" icon="ph:pencil-simple"
+                                            class="h-9 w-9 p-0 text-gray-400 hover:text-primary border-slate-200"
+                                            :to="`/dashboard/seller/products/${product.id}`" />
+                                        <BaseButton @click="deleteProduct(product)" variant="white" size="sm"
+                                            icon="ph:trash"
+                                            class="h-9 w-9 p-0 text-red-500 hover:text-red-600 border-slate-200" />
                                     </div>
-                                </div>
-                            </td>
+                                </td>
+                            </tr>
 
-                            <!-- Stock -->
-                            <td class="px-6 py-4">
-                                <span class="font-bold text-black">
-                                    {{ product.stock }}
-                                </span>
-                            </td>
-
-                            <!-- Status -->
-                            <td class="px-6 py-4">
-                                <span :class="[
-                                    'px-3 py-1 rounded-full text-xs font-bold  tracking-wider',
-                                    product.status === 'active' ? 'bg-green-50 text-green-600' :
-                                        product.status === 'draft' ? 'bg-gray-100 text-gray-500' :
-                                            product.status === 'sold_out' ? 'bg-red-50 text-red-600' :
-                                                'bg-gray-100 text-gray-500'
-                                ]">
-                                    {{ getStatusLabel(product.status) }}
-                                </span>
-                            </td>
-
-                            <!-- Actions -->
-                            <td class="px-6 py-4 text-right">
-                                <div class="flex items-center justify-end gap-2">
-                                    <BaseButton variant="white" size="sm" icon="ph:pencil-simple"
-                                        class="h-9 w-9 p-0 text-gray-400 hover:text-primary border-slate-200"
-                                        :to="`/dashboard/seller/products/${product.id}`" />
-                                    <BaseButton @click="deleteProduct(product)" variant="white" size="sm"
-                                        icon="ph:trash"
-                                        class="h-9 w-9 p-0 text-red-500 hover:text-red-600 border-slate-200" />
-                                </div>
-                            </td>
-                        </tr>
-
-                        <!-- Empty State -->
-                        <tr v-if="!isLoading && filteredProducts.length === 0">
-                            <td colspan="6" class="px-6 py-24 text-center">
-                                <div class="flex flex-col items-center gap-4 max-w-xs mx-auto">
-                                    <div
-                                        class="h-16 w-16 bg-gray-50 rounded-2xl flex items-center justify-center text-gray-300">
-                                        <Icon icon="ph:package" class="text-4xl" />
-                                    </div>
-                                    <div class="space-y-1">
-                                        <div class="text-lg font-bold text-navy">Belum Ada Produk</div>
-                                        <div class="text-sm text-gray-500 font-medium leading-relaxed">
-                                            Tambahkan produk pertama Anda untuk mulai berjualan di marketplace.
+                            <!-- Empty State -->
+                            <tr v-if="!isLoading && filteredProducts.length === 0">
+                                <td colspan="6" class="px-6 py-24 text-center">
+                                    <div class="flex flex-col items-center gap-4 max-w-xs mx-auto">
+                                        <div
+                                            class="h-16 w-16 bg-gray-50 rounded-2xl flex items-center justify-center text-gray-300">
+                                            <Icon icon="ph:package" class="text-4xl" />
                                         </div>
+                                        <div class="space-y-1">
+                                            <div class="text-lg font-bold text-navy">Belum Ada Produk</div>
+                                            <div class="text-sm text-gray-500 font-medium leading-relaxed">
+                                                Tambahkan produk pertama Anda untuk mulai berjualan di marketplace.
+                                            </div>
+                                        </div>
+                                        <BaseButton variant="primary" icon="ph:plus-bold"
+                                            to="/dashboard/seller/products/add">
+                                            Tambah Produk Pertama
+                                        </BaseButton>
                                     </div>
-                                    <BaseButton variant="primary" icon="ph:plus-bold"
-                                        to="/dashboard/seller/products/add">
-                                        Tambah Produk Pertama
-                                    </BaseButton>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
 
-        <AppDialog 
-            v-model:show="deleteModal.show"
-            title="Hapus Produk?"
-            :message="`Produk '${deleteModal.productName}' akan dihapus permanen dari katalog Anda.`"
-            confirm-text="Ya, Hapus"
-            cancel-text="Batal"
-            type="danger"
-            @confirm="handleConfirmDelete"
-        />
-    </div>
+            <AppDialog v-model:show="deleteModal.show" title="Hapus Produk?"
+                :message="`Produk '${deleteModal.productName}' akan dihapus permanen dari katalog Anda.`"
+                confirm-text="Ya, Hapus" cancel-text="Batal" type="danger" @confirm="handleConfirmDelete" />
+        </div>
 </template>
 
 <script setup>

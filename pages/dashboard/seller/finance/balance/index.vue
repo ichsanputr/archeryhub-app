@@ -15,7 +15,8 @@
           </div>
           <div>
             <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none capitalize">Saldo & rekening</h1>
-            <div class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wide capitalize">Kelola dana masuk dan akun penarikan anda</div>
+            <div class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wide capitalize">Kelola dana masuk
+              dan akun penarikan anda</div>
           </div>
         </div>
       </div>
@@ -142,37 +143,42 @@
             <table class="w-full text-left min-w-[600px]">
               <thead>
                 <tr
-                  class="bg-gray-50/50 text-[10px] font-black text-gray-400 tracking-[0.2em] border-b border-gray-100 uppercase">
-                  <th @click="toggleSort('status')" class="px-8 py-5 text-left cursor-pointer hover:text-navy transition-colors">
+                  class="bg-gray-50/50 text-[10px] font-black text-gray-400 tracking-[0.2em] border-b border-gray-100 ">
+                  <th @click="toggleSort('status')"
+                    class="px-8 py-5 text-left cursor-pointer hover:text-navy transition-colors">
                     <div class="flex items-center gap-2">
                       Status
                       <Icon v-if="sortBy === 'status'"
-                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-[11px]" />
+                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                        class="text-primary text-[11px]" />
                       <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
                     </div>
                   </th>
-                  <th @click="toggleSort('created_at')" class="px-8 py-5 text-left cursor-pointer hover:text-navy transition-colors">
+                  <th @click="toggleSort('created_at')"
+                    class="px-8 py-5 text-left cursor-pointer hover:text-navy transition-colors">
                     <div class="flex items-center gap-2">
                       Tanggal
                       <Icon v-if="sortBy === 'created_at'"
-                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-[11px]" />
+                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                        class="text-primary text-[11px]" />
                       <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
                     </div>
                   </th>
                   <th class="px-8 py-5 text-left">ID Referensi</th>
-                  <th @click="toggleSort('amount')" class="px-8 py-5 text-right cursor-pointer hover:text-navy transition-colors">
+                  <th @click="toggleSort('amount')"
+                    class="px-8 py-5 text-right cursor-pointer hover:text-navy transition-colors">
                     <div class="flex items-center justify-end gap-2">
                       Nominal
                       <Icon v-if="sortBy === 'amount'"
-                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'" class="text-primary text-[11px]" />
+                        :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
+                        class="text-primary text-[11px]" />
                       <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
                     </div>
                   </th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-50">
-                <tr v-for="item in withdrawals" :key="item.id"
-                  class="hover:bg-gray-50/80 transition-colors">
+                <tr v-for="item in withdrawals" :key="item.id" class="hover:bg-gray-50/80 transition-colors">
                   <td class="px-8 py-5 text-left">
                     <span :class="getStatusClass(item.status)"
                       class="px-3 py-1.5 rounded-full text-[9px] font-black tracking-widest border">

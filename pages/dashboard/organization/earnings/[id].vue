@@ -16,7 +16,7 @@
                     </button>
                     <div>
                         <h1 class="text-xl sm:text-3xl font-black tracking-tight">{{ eventName || 'Detail Penghasilan'
-                            }}</h1>
+                        }}</h1>
                         <p class="text-slate-300 text-xs sm:text-sm font-medium mt-1">Rincian pembayaran per peserta</p>
                     </div>
                 </div>
@@ -64,8 +64,7 @@
                                 {{ formatPaymentDate(payment.createdAt) }}
                             </td>
                             <td class="px-6 py-4">
-                                <span
-                                    class="px-2 py-1 bg-gray-100 text-gray-600 text-[10px] font-black rounded-lg uppercase">
+                                <span class="px-2 py-1 bg-gray-100 text-gray-600 text-[10px] font-black rounded-lg ">
                                     {{ payment.method }}
                                 </span>
                             </td>

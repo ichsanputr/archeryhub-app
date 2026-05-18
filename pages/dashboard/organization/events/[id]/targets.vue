@@ -125,7 +125,7 @@
           <!-- Board Header -->
           <div class="px-6 py-4 bg-gray-50/50 border-b border-gray-100 flex items-center justify-between">
             <div class="flex items-center gap-2">
-              <span class="text-[10px] font-black text-gray-400 tracking-[0.2em] uppercase">Bantalan</span>
+              <span class="text-[10px] font-black text-gray-400 tracking-[0.2em] ">Bantalan</span>
               <span
                 class="size-8 rounded-lg bg-navy text-white flex items-center justify-center font-black text-sm font-mono shadow-sm">
                 {{ target.target_number }}
@@ -169,7 +169,7 @@
                     {{ letter }}
                   </div>
                 </div>
-                <span class="text-[11px] font-black text-navy/40 tracking-widest uppercase">{{ target.target_number }}{{
+                <span class="text-[11px] font-black text-navy/40 tracking-widest ">{{ target.target_number }}{{
                   letter }}</span>
               </div>
             </div>

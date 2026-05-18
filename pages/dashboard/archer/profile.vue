@@ -52,7 +52,7 @@
                     </div>
                   </div>
                   <div class="space-y-2">
-                    <h5 class="text-xs font-black text-navy uppercase">Profile Picture</h5>
+                    <h5 class="text-xs font-black text-navy ">Profile Picture</h5>
                     <p class="text-[10px] text-gray-500 max-w-[160px]">Rasio 1:1 direkomendasikan. Maksimal 10MB.</p>
                     <BaseButton variant="outline" size="xs" icon="ph:pencil-simple" @click="openMediaLibrary('avatar')">
                       Ganti Foto</BaseButton>
@@ -110,8 +110,7 @@
               ]" icon="ph:gender-intersex" />
 
               <BaseInput v-model="accountForm.phone" label="Nomor Telepon" type="tel" placeholder="+62 812-3456-7890"
-                icon="ph:phone" numberOnly
-                :rules="[v => !v || String(v).length >= 8 || 'Nomor HP minimal 8 digit']" />
+                icon="ph:phone" numberOnly :rules="[v => !v || String(v).length >= 8 || 'Nomor HP minimal 8 digit']" />
               <BaseSelect v-model="accountForm.city" label="Kota / Kabupaten" :items="cityOptions"
                 placeholder="Pilih kota" icon="mingcute:building-2-line" />
 
@@ -124,8 +123,8 @@
                 { title: 'Traditional', value: 'traditional' }
               ]" icon="hugeicons:archer" />
 
-              <BaseSelect v-model="accountForm.club_id" label="Klub" :items="clubOptions"
-                placeholder="Pilih klub" icon="ph:buildings" />
+              <BaseSelect v-model="accountForm.club_id" label="Klub" :items="clubOptions" placeholder="Pilih klub"
+                icon="ph:buildings" />
 
               <div class="md:col-span-2">
                 <BaseTextarea v-model="accountForm.address" label="Alamat Lengkap" placeholder="Alamat lengkap Anda"
@@ -156,7 +155,9 @@
             <div class="space-y-4">
               <div>
                 <label class="block text-sm font-bold text-navy mb-2">Deskripsi Diri</label>
-                <TiptapEditor v-model="profile.bio" placeholder="Ceritakan sejarah panahan Anda, filosofi, atau informasi menarik lainnya..." minHeight="180px" />
+                <TiptapEditor v-model="profile.bio"
+                  placeholder="Ceritakan sejarah panahan Anda, filosofi, atau informasi menarik lainnya..."
+                  minHeight="180px" />
               </div>
               <p class="text-[10px] text-gray-400 font-medium italic">
                 * Bio akan ditampilkan di halaman profil publik Anda untuk dilihat oleh klub dan penyelenggara event.

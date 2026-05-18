@@ -66,7 +66,7 @@
                     <Icon :icon="stat.icon" class="text-xl" />
                 </div>
                 <div>
-                    <div class="text-xs text-gray-400 font-bold tracking-wider uppercase">{{ stat.label }}</div>
+                    <div class="text-xs text-gray-400 font-bold tracking-wider ">{{ stat.label }}</div>
                     <div class="text-lg font-bold text-navy">{{ stat.value }}</div>
                 </div>
             </div>
@@ -76,7 +76,7 @@
         <div
             class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row gap-4 items-end">
             <div class="flex-grow w-full">
-                <label class="block text-xs font-bold text-gray-500 mb-1.5 tracking-wider uppercase">Pencarian</label>
+                <label class="block text-xs font-bold text-gray-500 mb-1.5 tracking-wider ">Pencarian</label>
                 <div class="relative">
                     <Icon icon="ph:magnifying-glass" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
                     <input v-model="searchQuery" type="text" placeholder="Cari nama atau email..."
@@ -84,7 +84,7 @@
                 </div>
             </div>
             <div class="w-full md:w-48">
-                <label class="block text-xs font-bold text-gray-500 mb-1.5 tracking-wider uppercase">Tipe Akun</label>
+                <label class="block text-xs font-bold text-gray-500 mb-1.5 tracking-wider ">Tipe Akun</label>
                 <select v-model="typeFilter"
                     class="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 focus:ring-2 focus:ring-primary/20 outline-none transition-all">
                     <option value="">Semua Tipe</option>
@@ -106,7 +106,7 @@
                 <table class="w-full text-left border-collapse min-w-[750px]">
                     <thead>
                         <tr class="bg-gray-50/50 border-b border-gray-100">
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest uppercase">
+                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest ">
                                 Identitas</th>
                             <th
                                 class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest uppercase text-center">
@@ -115,7 +115,7 @@
                             <th
                                 class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest uppercase text-center">
                                 Status</th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest uppercase">
+                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest ">
                                 Terdaftar</th>
                             <th
                                 class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest uppercase text-right">

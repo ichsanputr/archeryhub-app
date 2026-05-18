@@ -26,7 +26,7 @@
                     <span class="text-[10px] font-black text-primary uppercase tracking-widest">Administrative
                         Access</span>
                 </div>
-                <h1 class="text-white text-5xl font-black leading-tight tracking-tight mb-4 font-display uppercase">
+                <h1 class="text-white text-5xl font-black leading-tight tracking-tight mb-4 font-display ">
                     Root <br />
                     Terminal
                 </h1>
@@ -51,7 +51,7 @@
                 </div>
 
                 <div class="text-center sm:text-left">
-                    <h2 class="text-3xl font-black text-slate-900 tracking-tight font-display uppercase">System Restore
+                    <h2 class="text-3xl font-black text-slate-900 tracking-tight font-display ">System Restore
                     </h2>
                     <p class="mt-2 text-slate-500 text-sm font-body">Input secure identification to access the root
                         environment.</p>

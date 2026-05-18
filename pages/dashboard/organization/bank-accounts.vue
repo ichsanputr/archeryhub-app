@@ -15,8 +15,9 @@
                         <Icon icon="ph:credit-card-bold" class="text-primary text-2xl sm:text-3xl" />
                     </div>
                     <div>
-                        <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none uppercase">Rekening Bank</h1>
-                        <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider uppercase">Kelola rekening tujuan pencairan dana Anda</p>
+                        <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none ">Rekening Bank</h1>
+                        <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider ">Kelola rekening
+                            tujuan pencairan dana Anda</p>
                     </div>
                 </div>
                 <div>

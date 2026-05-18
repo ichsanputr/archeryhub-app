@@ -27,7 +27,7 @@
                         <div
                             class="flex items-center gap-3 px-6 py-2 rounded-2xl bg-white border-2 border-primary shadow-sm relative overflow-hidden group/title">
                             <Icon icon="ph:crown-simple-fill" class="text-primary text-lg" />
-                            <span class="text-xs font-black text-navy tracking-[0.3em] uppercase">Grand Final</span>
+                            <span class="text-xs font-black text-navy tracking-[0.3em] ">Grand Final</span>
                         </div>
                     </div>
                 </div>
@@ -70,7 +70,7 @@
                     <div
                         class="flex items-center gap-2 px-6 py-2 rounded-xl bg-white border border-[#d1dcf0] shadow-sm">
                         <Icon icon="ph:shield-bold" class="text-orange-500 text-sm" />
-                        <span class="text-[9px] font-black text-navy/40 tracking-[0.2em] uppercase">Bronze Match</span>
+                        <span class="text-[9px] font-black text-navy/40 tracking-[0.2em] ">Bronze Match</span>
                     </div>
                     <div class="h-px flex-1 bg-[#d1dcf0]"></div>
                 </div>

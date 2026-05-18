@@ -27,31 +27,31 @@
       <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
         <NuxtLink to="/">
           <BaseButton variant="primary" size="lg" icon="ph:house-bold">
-            Kembali ke Beranda
+            Back to Home
           </BaseButton>
         </NuxtLink>
         <button @click="handleError"
           class="flex items-center gap-2 text-gray-500 hover:text-navy transition-colors font-medium">
           <Icon icon="ph:arrow-counter-clockwise" />
-          Coba Lagi
+          Try Again
         </button>
       </div>
 
       <!-- Helpful Links -->
       <div class="mt-12 pt-8 border-t border-gray-200">
-        <p class="text-xs text-gray-400  tracking-widest font-bold mb-4">Mungkin Anda mencari</p>
+        <p class="text-xs text-gray-400  tracking-widest font-bold mb-4">You might be looking for</p>
         <div class="flex flex-wrap justify-center gap-3">
           <NuxtLink to="/events"
             class="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:border-primary hover:text-navy transition-all">
-            Turnamen
+            Tournaments
           </NuxtLink>
           <NuxtLink to="/clubs"
             class="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:border-primary hover:text-navy transition-all">
-            Klub
+            Clubs
           </NuxtLink>
           <NuxtLink to="/news"
             class="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:border-primary hover:text-navy transition-all">
-            Berita
+            News
           </NuxtLink>
           <NuxtLink to="/products"
             class="px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:border-primary hover:text-navy transition-all">
@@ -74,13 +74,13 @@ const title = computed(() => {
   const code = error.value?.statusCode
   switch (code) {
     case 404:
-      return 'Halaman Tidak Ditemukan'
+      return 'Page Not Found'
     case 403:
-      return 'Akses Ditolak'
+      return 'Access Denied'
     case 500:
-      return 'Terjadi Kesalahan'
+      return 'An Error Occurred'
     default:
-      return 'Terjadi Kesalahan'
+      return 'An Error Occurred'
   }
 })
 
@@ -88,13 +88,13 @@ const message = computed(() => {
   const code = error.value?.statusCode
   switch (code) {
     case 404:
-      return 'Maaf, halaman yang Anda cari tidak dapat ditemukan. Mungkin sudah dipindahkan atau dihapus.'
+      return 'Sorry, the page you are looking for could not be found. It might have been moved or deleted.'
     case 403:
-      return 'Anda tidak memiliki izin untuk mengakses halaman ini. Silakan login atau hubungi administrator.'
+      return 'You do not have permission to access this page. Please log in or contact the administrator.'
     case 500:
-      return 'Terjadi kesalahan pada server. Tim kami sedang bekerja untuk memperbaikinya.'
+      return 'An error occurred on the server. Our team is working to fix it.'
     default:
-      return error.value?.message || 'Terjadi kesalahan yang tidak diketahui.'
+      return error.value?.message || 'An unknown error occurred.'
   }
 })
 

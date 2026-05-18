@@ -12,7 +12,7 @@
           <div
             class="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-[10px] sm:text-sm font-bold tracking-widest mb-6">
             <Icon icon="ph:headset-bold" class="text-base sm:text-lg" />
-            <span class="uppercase">Get in Touch</span>
+            <span class="">Get in Touch</span>
           </div>
           <h1 class="text-white text-2xl sm:text-3xl md:text-5xl font-black leading-tight tracking-tight mb-4">
             Hubungi <span class="text-primary">Kami</span>

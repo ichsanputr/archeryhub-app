@@ -3,8 +3,7 @@
         <!-- Hero Section -->
         <section class="bg-navy relative overflow-hidden pt-36 pb-16 md:pt-48 md:pb-24">
             <div class="absolute inset-0 z-0">
-                <img :src="allowedProductImages[0]"
-                    alt="Shop Background" class="w-full h-full object-cover" />
+                <img :src="allowedProductImages[0]" alt="Shop Background" class="w-full h-full object-cover" />
                 <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
                 <div class="absolute inset-0 bg-gradient-to-t from-navy via-transparent to-transparent opacity-90">
                 </div>
@@ -135,7 +134,7 @@
                             <!-- Category & Status -->
                             <div class="flex items-center justify-between mb-3">
                                 <span
-                                    class="text-[10px] font-black text-stone-600 tracking-widest bg-stone-100 px-2 py-0.5 rounded-md uppercase">
+                                    class="text-[10px] font-black text-stone-600 tracking-widest bg-stone-100 px-2 py-0.5 rounded-md ">
                                     {{ getCategoryLabel(product.category) }}
                                 </span>
                                 <span v-if="product.stock > 0"
@@ -176,21 +175,7 @@
             </Transition>
         </section>
 
-        <!-- Become a Seller CTA -->
-        <section class="bg-gradient-to-r from-primary to-amber-400 py-16">
-            <div class="container mx-auto px-4 max-w-7xl text-center">
-                <h2 class="text-xl sm:text-2xl md:text-3xl font-black text-navy mb-4">Ingin Jual Produk Panahan?</h2>
-                <p class="text-navy/70 max-w-xl mx-auto mb-8">
-                    Gabung sebagai penjual dan jangkau ribuan pemanah di seluruh Indonesia. Gratis untuk klub dan
-                    organisasi!
-                </p>
-                <a href="/auth/register?type=club">
-                    <BaseButton variant="navy" size="lg" icon="ph:storefront">
-                        Daftar Sebagai Penjual
-                    </BaseButton>
-                </a>
-            </div>
-        </section>
+
     </div>
 </template>
 

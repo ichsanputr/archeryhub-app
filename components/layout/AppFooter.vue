@@ -24,7 +24,7 @@
               </div>
             </div>
             <p class="text-gray-400 leading-relaxed text-sm sm:text-base">
-              Platform infrastruktur digital terintegrasi untuk skor real-time dan turnamen panahan profesional yang lebih efisien. Archeris hadir untuk menghubungkan dan memberdayakan seluruh penggiat panahan di Indonesia, mulai dari atlet pemula hingga penyelenggara event tingkat nasional.
+              An integrated digital infrastructure platform for real-time scoring and more efficient professional archery tournaments. Archeris is here to connect and empower all archery enthusiasts in Indonesia, from beginner athletes to national event organizers.
             </p>
           </div>
         </div>
@@ -34,17 +34,17 @@
           <!-- Column 2: Navigation -->
           <div class="flex flex-col gap-5">
             <h4 class="text-xs font-black  tracking-widest text-white border-b border-white/10 pb-2">
-              Navigasi
+              Navigation
             </h4>
             <div class="flex flex-col gap-3">
               <NuxtLink to="/events"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Turnamen
+                Tournaments
               </NuxtLink>
 
               <NuxtLink to="/news"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Berita
+                News
               </NuxtLink>
               <NuxtLink to="/products"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
@@ -57,27 +57,27 @@
             </div>
           </div>
 
-          <!-- Column 3: About -->
+          <!-- Column 3: Company -->
           <div class="flex flex-col gap-5">
             <h4 class="text-xs font-black  tracking-widest text-white border-b border-white/10 pb-2">
-              Perusahaan
+              Company
             </h4>
             <div class="flex flex-col gap-3">
               <NuxtLink to="/about-us"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Tentang Kami
+                About Us
               </NuxtLink>
               <NuxtLink to="/contact"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Kontak
+                Contact
               </NuxtLink>
               <NuxtLink to="/privacy"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Kebijakan Privasi
+                Privacy Policy
               </NuxtLink>
               <NuxtLink to="/terms"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Syarat & Ketentuan
+                Terms & Conditions
               </NuxtLink>
               <NuxtLink to="/disclaimer"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
@@ -89,7 +89,7 @@
           <!-- Column 4: Support -->
           <div class="flex flex-col gap-5">
             <h4 class="text-xs font-black  tracking-widest text-white border-b border-white/10 pb-2">
-              Dukungan
+              Support
             </h4>
             <div class="flex flex-col gap-3">
               <NuxtLink to="/faq"
@@ -98,7 +98,7 @@
               </NuxtLink>
               <NuxtLink to="/docs"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
-                Dokumentasi
+                Documentation
               </NuxtLink>
               <NuxtLink to="/blog"
                 class="text-sm font-medium text-gray-400 hover:text-white transition-all duration-200 flex items-center gap-2 group">
@@ -112,7 +112,7 @@
       <!-- Bottom Bar -->
       <div class="py-8 border-t border-white/5">
         <p class="text-xs text-gray-500 font-medium text-center sm:text-left">
-          &copy; {{ new Date().getFullYear() }} archeris.net. Hak cipta dilindungi undang-undang.
+          &copy; {{ new Date().getFullYear() }} archeris.net. All rights reserved.
         </p>
       </div>
     </div>
@@ -120,5 +120,3 @@
 </template>
 
 <style scoped></style>
-
-

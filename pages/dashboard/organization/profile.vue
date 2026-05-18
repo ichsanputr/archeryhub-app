@@ -7,8 +7,9 @@
           <Icon icon="ph:buildings-bold" class="text-primary text-2xl" />
         </div>
         <div>
-          <h1 class="text-xl sm:text-2xl font-black text-navy tracking-tight leading-none uppercase">Profil Organisasi</h1>
-          <p class="text-[10px] text-gray-400 font-bold mt-1 tracking-wider uppercase">Kelola identitas publik organisasi Anda</p>
+          <h1 class="text-xl sm:text-2xl font-black text-navy tracking-tight leading-none ">Profil Organisasi</h1>
+          <p class="text-[10px] text-gray-400 font-bold mt-1 tracking-wider ">Kelola identitas publik organisasi Anda
+          </p>
         </div>
       </div>
       <div class="flex gap-3">
@@ -72,7 +73,8 @@
             </div>
             <div>
               <label class="block text-sm font-bold text-navy mb-2">Tentang Organisasi</label>
-              <TiptapEditor v-model="form.description" placeholder="Berikan deskripsi singkat dan menarik tentang organisasi Anda..." minHeight="180px" />
+              <TiptapEditor v-model="form.description"
+                placeholder="Berikan deskripsi singkat dan menarik tentang organisasi Anda..." minHeight="180px" />
             </div>
           </div>
 
@@ -223,7 +225,8 @@
             </div>
             <div>
               <label class="block text-sm font-bold text-navy mb-2">Misi</label>
-              <TiptapEditor v-model="form.mission" placeholder="Tuliskan misi organisasi (bisa per poin)..." minHeight="180px" />
+              <TiptapEditor v-model="form.mission" placeholder="Tuliskan misi organisasi (bisa per poin)..."
+                minHeight="180px" />
             </div>
           </div>
 
@@ -233,7 +236,8 @@
             </h3>
             <div>
               <label class="block text-sm font-bold text-navy mb-2">Sejarah Singkat</label>
-              <TiptapEditor v-model="form.history" placeholder="Ceritakan sejarah berdirinya organisasi..." minHeight="240px" />
+              <TiptapEditor v-model="form.history" placeholder="Ceritakan sejarah berdirinya organisasi..."
+                minHeight="240px" />
             </div>
           </div>
         </div>

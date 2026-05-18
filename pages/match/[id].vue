@@ -104,7 +104,7 @@
                                 Babak Eliminasi
                             </span>
                             <span class="text-2xl sm:text-3xl md:text-4xl font-black text-[#e2e8f0]">VS</span>
-                            <div class="mt-2 sm:mt-4 px-3 sm:px-4 py-1 rounded-full text-[8px] sm:text-[10px] font-black tracking-widest uppercase"
+                            <div class="mt-2 sm:mt-4 px-3 sm:px-4 py-1 rounded-full text-[8px] sm:text-[10px] font-black tracking-widest "
                                 :class="matchData.status === 'finished'
                                     ? 'bg-[#0f172a] text-[#D9FF00]'
                                     : 'bg-blue-500 text-white'">
@@ -178,7 +178,7 @@
                             <table class="w-full text-center min-w-[580px] text-xs sm:text-sm">
                                 <thead>
                                     <tr
-                                        class="bg-[#0f172a] text-white text-[9px] sm:text-[10px] tracking-widest font-black uppercase">
+                                        class="bg-[#0f172a] text-white text-[9px] sm:text-[10px] tracking-widest font-black ">
                                         <th class="py-3 sm:py-4 w-12 sm:w-14">Seri</th>
                                         <th class="w-36 sm:w-48 text-left px-4 sm:px-6">Pemanah</th>
                                         <th v-for="i in maxArrows" :key="i" class="w-10 sm:w-14 text-center">

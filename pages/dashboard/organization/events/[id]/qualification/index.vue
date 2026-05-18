@@ -466,7 +466,7 @@
 
               <!-- Category Selection -->
               <div>
-                <label class="block text-[10px] font-black text-gray-400 tracking-widest mb-3 px-1 uppercase">Kategori
+                <label class="block text-[10px] font-black text-gray-400 tracking-widest mb-3 px-1 ">Kategori
                   Event (Pilih kategori untuk sesi ini)</label>
                 <div
                   class="bg-gray-50 rounded-2xl p-4 border border-gray-100 max-h-48 overflow-y-auto space-y-2 custom-scrollbar">
@@ -489,13 +489,13 @@
           </div>
 
           <div class="p-8 bg-gray-50 flex gap-4">
-            <BaseButton variant="white" class="flex-1 !py-4 !rounded-2xl font-black !tracking-widest !text-xs uppercase"
+            <BaseButton variant="white" class="flex-1 !py-4 !rounded-2xl font-black !tracking-widest !text-xs "
               @click="showSessionDialog = false">
               Batal
             </BaseButton>
             <BaseButton :disabled="creatingSession || !newSessionName || selectedSessionCategoryIds.length === 0"
               :loading="creatingSession" variant="primary"
-              class="flex-[2] py-4 rounded-2xl font-black shadow-lg shadow-primary/10 tracking-widest text-xs uppercase"
+              class="flex-[2] py-4 rounded-2xl font-black shadow-lg shadow-primary/10 tracking-widest text-xs "
               @click="saveSession">
               {{ submitButtonLabel }}
             </BaseButton>

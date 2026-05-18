@@ -6,7 +6,8 @@
                 <div class="flex items-center gap-2 h-11 text-xs text-gray-500 overflow-x-auto no-scrollbar">
                     <NuxtLink to="/" class="hover:text-navy transition-colors whitespace-nowrap">Beranda</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-gray-300 shrink-0" />
-                    <NuxtLink to="/docs" class="hover:text-navy transition-colors whitespace-nowrap">Dokumentasi</NuxtLink>
+                    <NuxtLink to="/docs" class="hover:text-navy transition-colors whitespace-nowrap">Dokumentasi
+                    </NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-gray-300 shrink-0" />
                     <span class="text-navy font-semibold whitespace-nowrap truncate">{{ currentDoc?.title }}</span>
                 </div>
@@ -36,8 +37,8 @@
                     <div v-for="cat in sidebarVisibleCategories" :key="cat.id" class="mb-4">
                         <div class="flex items-center gap-2 px-2 py-1.5 mb-1">
                             <Icon :icon="cat.icon" class="text-sm text-gray-400" />
-                            <span class="text-xs font-black text-gray-400 tracking-widest uppercase">{{ cat.label
-                                }}</span>
+                            <span class="text-xs font-black text-gray-400 tracking-widest ">{{ cat.label
+                            }}</span>
                         </div>
                         <div class="space-y-0.5">
                             <NuxtLink v-for="doc in filteredSidebarDocs(cat.id)" :key="doc.slug"
@@ -50,7 +51,7 @@
                                     class="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-primary rounded-r-full">
                                 </div>
                                 <span class="leading-snug" :class="currentSlug !== doc.slug ? 'pl-2' : ''">{{ doc.title
-                                    }}</span>
+                                }}</span>
                             </NuxtLink>
                         </div>
                     </div>
@@ -132,30 +133,29 @@
             </main>
 
             <!-- Right sidebar: Table of contents -->
-            <aside
-                class="hidden lg:block w-56 shrink-0 pl-4 self-start sticky top-24">
+            <aside class="hidden lg:block w-56 shrink-0 pl-4 self-start sticky top-24">
                 <div class="max-h-[calc(100vh-7rem)] overflow-y-auto scrollbar-styled flex flex-col">
-                <div class="text-xs font-black text-gray-400 tracking-widest uppercase mb-3">Di halaman ini</div>
-                <nav class="space-y-1">
-                    <a v-for="heading in currentDoc?.toc || []" :key="heading.id" :href="`#${heading.id}`"
-                        class="block text-sm py-1.5 transition-colors leading-snug" :class="[
-                            heading.level === 2 ? 'text-gray-600 hover:text-primary font-medium pl-0' : 'text-gray-400 hover:text-primary pl-3 text-xs'
-                        ]">
-                        {{ heading.text }}
-                    </a>
-                </nav>
+                    <div class="text-xs font-black text-gray-400 tracking-widest uppercase mb-3">Di halaman ini</div>
+                    <nav class="space-y-1">
+                        <a v-for="heading in currentDoc?.toc || []" :key="heading.id" :href="`#${heading.id}`"
+                            class="block text-sm py-1.5 transition-colors leading-snug" :class="[
+                                heading.level === 2 ? 'text-gray-600 hover:text-primary font-medium pl-0' : 'text-gray-400 hover:text-primary pl-3 text-xs'
+                            ]">
+                            {{ heading.text }}
+                        </a>
+                    </nav>
 
-                <!-- Divider -->
-                <div class="mt-6 pt-6 border-t border-gray-100">
-                    <NuxtLink to="/docs"
-                        class="flex items-center gap-2 text-xs text-gray-400 hover:text-primary transition-colors font-medium mb-3">
-                        <Icon icon="ph:arrow-left-bold" class="text-xs" /> Semua Dokumentasi
-                    </NuxtLink>
-                    <NuxtLink to="/contact"
-                        class="flex items-center gap-2 text-xs text-gray-400 hover:text-primary transition-colors font-medium">
-                        <Icon icon="ph:chat-circle-dots-bold" class="text-sm" /> Hubungi Support
-                    </NuxtLink>
-                </div>
+                    <!-- Divider -->
+                    <div class="mt-6 pt-6 border-t border-gray-100">
+                        <NuxtLink to="/docs"
+                            class="flex items-center gap-2 text-xs text-gray-400 hover:text-primary transition-colors font-medium mb-3">
+                            <Icon icon="ph:arrow-left-bold" class="text-xs" /> Semua Dokumentasi
+                        </NuxtLink>
+                        <NuxtLink to="/contact"
+                            class="flex items-center gap-2 text-xs text-gray-400 hover:text-primary transition-colors font-medium">
+                            <Icon icon="ph:chat-circle-dots-bold" class="text-sm" /> Hubungi Support
+                        </NuxtLink>
+                    </div>
                 </div>
             </aside>
         </div>

@@ -143,7 +143,7 @@ export const sinkronisasi_tim = {
             <!-- 1. Kategori Putri/Putra Tidak Ditemukan -->
             <div class="p-5 bg-gray-50 border border-gray-100 rounded-2xl">
                 <div class="flex items-center gap-2 mb-2">
-                    <span class="px-2 py-0.5 bg-red-100 text-red-600 font-bold text-[10px] rounded uppercase">Error</span>
+                    <span class="px-2 py-0.5 bg-red-100 text-red-600 font-bold text-[10px] rounded ">Error</span>
                     <h4 class="text-sm font-black text-navy uppercase tracking-tight">"Kategori pasangan putra/putri (Individual) tidak ditemukan..."</h4>
                 </div>
                 <p class="text-[13px] text-gray-500 italic mb-3">Kasus: Sinkronisasi Mixed Team.</p>
@@ -156,7 +156,7 @@ export const sinkronisasi_tim = {
             <!-- 2. Sinkronisasi Tidak Menghasilkan Tim -->
             <div class="p-5 bg-gray-50 border border-gray-100 rounded-2xl">
                 <div class="flex items-center gap-2 mb-2">
-                    <span class="px-2 py-0.5 bg-amber-100 text-amber-600 font-bold text-[10px] rounded uppercase">Info</span>
+                    <span class="px-2 py-0.5 bg-amber-100 text-amber-600 font-bold text-[10px] rounded ">Info</span>
                     <h4 class="text-sm font-black text-navy uppercase tracking-tight">"Sinkronisasi tidak menghasilkan tim"</h4>
                 </div>
                 <div class="space-y-2 mt-3">
@@ -173,7 +173,7 @@ export const sinkronisasi_tim = {
             <!-- 3. Event Tidak Ditemukan -->
             <div class="p-5 bg-gray-50 border border-gray-100 rounded-2xl">
                 <div class="flex items-center gap-2 mb-2">
-                    <span class="px-2 py-0.5 bg-red-100 text-red-600 font-bold text-[10px] rounded uppercase">Error</span>
+                    <span class="px-2 py-0.5 bg-red-100 text-red-600 font-bold text-[10px] rounded ">Error</span>
                     <h4 class="text-sm font-black text-navy uppercase tracking-tight">"Event tidak ditemukan"</h4>
                 </div>
                 <div class="space-y-2 mt-3">
@@ -185,7 +185,7 @@ export const sinkronisasi_tim = {
             <!-- 4. Gagal Menghitung Peringkat -->
             <div class="p-5 bg-gray-50 border border-gray-100 rounded-2xl">
                 <div class="flex items-center gap-2 mb-2">
-                    <span class="px-2 py-0.5 bg-red-100 text-red-600 font-bold text-[10px] rounded uppercase">Error</span>
+                    <span class="px-2 py-0.5 bg-red-100 text-red-600 font-bold text-[10px] rounded ">Error</span>
                     <h4 class="text-sm font-black text-navy uppercase tracking-tight">"Gagal menghitung peringkat tim" / "Gagal menghitung peringkat mixed team"</h4>
                 </div>
                 <div class="space-y-2 mt-3">
@@ -197,7 +197,7 @@ export const sinkronisasi_tim = {
             <!-- 5. Database Transaction Error -->
             <div class="p-5 bg-gray-50 border border-gray-100 rounded-2xl">
                 <div class="flex items-center gap-2 mb-2">
-                    <span class="px-2 py-0.5 bg-red-100 text-red-600 font-bold text-[10px] rounded uppercase">Error</span>
+                    <span class="px-2 py-0.5 bg-red-100 text-red-600 font-bold text-[10px] rounded ">Error</span>
                     <h4 class="text-sm font-black text-navy uppercase tracking-tight">"Gagal menyimpan hasil sinkronisasi" / "Gagal memulai transaksi"</h4>
                 </div>
                 <div class="space-y-2 mt-3">

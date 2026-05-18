@@ -45,8 +45,7 @@
             <div class="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex items-center gap-1 overflow-x-auto no-scrollbar -mb-px">
-                        <NuxtLink v-for="tab in tabs" :key="tab"
-                            :to="getTabLink(tab)"
+                        <NuxtLink v-for="tab in tabs" :key="tab" :to="getTabLink(tab)"
                             class="px-4 md:px-6 py-3 md:py-4 font-semibold text-sm md:text-base transition-colors whitespace-nowrap border-b-2"
                             :class="activeTab === tab ? 'text-navy border-primary bg-primary/5' : 'text-gray-500 border-transparent hover:text-navy hover:bg-gray-50'">
                             {{ tab }}
@@ -155,10 +154,9 @@
                                                 </div>
                                                 <div>
                                                     <h3 class="font-black text-navy text-lg md:text-xl">{{ division.name
-                                                        }}
+                                                    }}
                                                     </h3>
-                                                    <span
-                                                        class="text-[10px] font-black tracking-[0.2em] uppercase">Tournament
+                                                    <span class="text-[10px] font-black tracking-[0.2em] ">Tournament
                                                         Division</span>
                                                 </div>
                                             </div>
@@ -203,8 +201,7 @@
                                     <div class="flex gap-6 min-w-max">
                                         <div v-for="(fee, idx) in formattedFees" :key="idx"
                                             class="bg-white border border-gray-200 p-7 rounded-[2rem] hover:border-primary hover:shadow-md transition-all relative w-[340px] md:w-[360px]">
-                                            <div
-                                                class="text-[10px] font-black tracking-widest text-gray-400 mb-2 uppercase">
+                                            <div class="text-[10px] font-black tracking-widest text-gray-400 mb-2 ">
                                                 {{ fee.typeLabel }}
                                             </div>
                                             <h3 class="text-lg font-black text-navy mb-5">{{ fee.name }}</h3>
@@ -225,8 +222,7 @@
                                 <!-- Fallback if no fees list -->
                                 <div v-else class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
                                     <div class="bg-white border border-gray-200 p-6 rounded-2xl">
-                                        <div
-                                            class="text-[10px] font-black tracking-widest text-gray-400 mb-2 uppercase">
+                                        <div class="text-[10px] font-black tracking-widest text-gray-400 mb-2 ">
                                             Biaya Tetap
                                         </div>
                                         <h3 class="text-lg font-black text-navy mb-5">Semua Kategori</h3>
@@ -254,7 +250,7 @@
                                 <!-- Integrated Payment Methods inside Fee Section -->
                                 <div v-if="tournament.payment_methods && tournament.payment_methods.length > 0"
                                     class="pt-8 mt-8 border-t border-gray-200">
-                                    <h3 class="text-xs font-black text-gray-400 tracking-[0.2em] mb-5 uppercase">Metode
+                                    <h3 class="text-xs font-black text-gray-400 tracking-[0.2em] mb-5 ">Metode
                                         Pembayaran
                                     </h3>
                                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -317,7 +313,7 @@
                                                 <div class="flex justify-between items-end mb-3">
                                                     <div>
                                                         <span
-                                                            class="text-primary font-black text-xs tracking-widest uppercase">Juara
+                                                            class="text-primary font-black text-xs tracking-widest ">Juara
                                                             Utama</span>
                                                         <h4 class="text-white text-lg sm:text-xl font-black">Juara 1
                                                         </h4>
@@ -337,14 +333,14 @@
                                                 <div class="flex justify-between items-end mb-3">
                                                     <div>
                                                         <span
-                                                            class="text-white/40 font-black text-xs tracking-widest uppercase">Peringkat
+                                                            class="text-white/40 font-black text-xs tracking-widest ">Peringkat
                                                             Kedua</span>
                                                         <h4 class="text-white text-lg sm:text-xl font-black">Juara 2
                                                         </h4>
                                                     </div>
                                                     <div class="text-white text-lg sm:text-xl font-black">{{
                                                         displayValue(tournament.prizes?.second)
-                                                        }}</div>
+                                                    }}</div>
                                                 </div>
                                                 <div class="w-full h-2 bg-white/10 overflow-hidden">
                                                     <div class="h-full bg-white/60 w-1/2"></div>
@@ -357,7 +353,7 @@
                                                 <div class="flex justify-between items-end mb-3">
                                                     <div>
                                                         <span
-                                                            class="text-white/40 font-black text-xs tracking-widest uppercase">Peringkat
+                                                            class="text-white/40 font-black text-xs tracking-widest ">Peringkat
                                                             Ketiga</span>
                                                         <h4 class="text-white text-lg sm:text-xl font-black">Juara 3
                                                         </h4>
@@ -416,7 +412,7 @@
                                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                         <div
                                             class="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                                            <span class="text-white text-xs font-black tracking-wider uppercase">Banner
+                                            <span class="text-white text-xs font-black tracking-wider ">Banner
                                                 Event</span>
                                         </div>
                                     </div>
@@ -427,7 +423,7 @@
                                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                         <div
                                             class="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                                            <span class="text-white text-xs font-black tracking-wider uppercase">Poster
+                                            <span class="text-white text-xs font-black tracking-wider ">Poster
                                                 Event</span>
                                         </div>
                                     </div>
@@ -745,7 +741,7 @@
 </template>
 
 <script setup>
- 
+
 import { Icon } from '@iconify/vue'
 import { ref, computed, onMounted, onUnmounted, watch, nextTick, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
@@ -1064,11 +1060,11 @@ const openLightbox = (url) => {
 
 // Throw 404 if event not found (only after loading is complete)
 watchEffect(() => {
-    if (!isPageLoading.value && eventData.value && (eventError.value || !eventData.value?.event || !tournament.value.name)) {
-        if (process.client) {
+    if (!isPageLoading.value) {
+        if (eventError.value || !eventData.value || !eventData.value?.event || !tournament.value.name) {
             throw createError({
                 statusCode: 404,
-                statusMessage: 'Event tidak ditemukan',
+                statusMessage: 'Event not found',
                 fatal: true
             })
         }
@@ -1113,14 +1109,14 @@ useHead({
 
 useSeoMeta({
     description: () => tournament.value.description,
-    ogTitle: () => activeTab.value && activeTab.value !== 'Ringkasan' 
-        ? `${activeTab.value} ${tournament.value.name}` 
+    ogTitle: () => activeTab.value && activeTab.value !== 'Ringkasan'
+        ? `${activeTab.value} ${tournament.value.name}`
         : tournament.value.name,
     ogDescription: () => tournament.value.description,
     ogImage: () => tournament.value.image,
     twitterCard: 'summary_large_image',
-    twitterTitle: () => activeTab.value && activeTab.value !== 'Ringkasan' 
-        ? `${activeTab.value} ${tournament.value.name}` 
+    twitterTitle: () => activeTab.value && activeTab.value !== 'Ringkasan'
+        ? `${activeTab.value} ${tournament.value.name}`
         : tournament.value.name,
     twitterDescription: () => tournament.value.description,
     twitterImage: () => tournament.value.image

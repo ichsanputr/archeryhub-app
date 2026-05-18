@@ -14,7 +14,7 @@
           </NuxtLink>
           <div>
             <div class="flex flex-wrap items-center gap-2 mb-0.5">
-               <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-tight capitalize">Detail pesanan</h1>
+              <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-tight capitalize">Detail pesanan</h1>
               <div v-if="order" :class="getStatusClass(order.status)"
                 class="px-2.5 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest border border-current shadow-sm backdrop-blur-md">
                 {{ getStatusLabel(order.status) }}
@@ -38,7 +38,7 @@
         </div>
       </div>
       <div class="text-center">
-        <div class="text-navy font-black tracking-widest text-[10px] uppercase">Menghubungkan</div>
+        <div class="text-navy font-black tracking-widest text-[10px] ">Menghubungkan</div>
         <div class="text-gray-400 text-[9px] font-bold">Sinkronisasi data...</div>
       </div>
     </div>
@@ -51,7 +51,8 @@
       </div>
       <div class="text-center space-y-1">
         <div class="text-navy font-black text-xl tracking-tight">Pesanan Tidak Ditemukan</div>
-        <div class="text-gray-400 text-xs font-medium max-w-[240px] mx-auto">Tautan mungkin sudah tidak valid atau telah dihapus.</div>
+        <div class="text-gray-400 text-xs font-medium max-w-[240px] mx-auto">Tautan mungkin sudah tidak valid atau telah
+          dihapus.</div>
       </div>
       <NuxtLink to="/dashboard/seller/orders">
         <BaseButton variant="primary" size="sm" icon="ph:arrow-left-bold"
@@ -70,7 +71,7 @@
             <div>
               <div class="text-navy font-black text-lg tracking-tight">Status: {{ getStatusLabel(order.status) }}</div>
               <div class="text-[11px] font-bold text-gray-400 max-w-sm leading-tight">{{ getStatusMessage(order.status)
-                }}</div>
+              }}</div>
             </div>
           </div>
 
@@ -97,7 +98,7 @@
               <div>
                 <h2 class="text-lg font-black text-navy tracking-tight">Item Pesanan</h2>
                 <div class="text-[9px] text-gray-400 font-black uppercase tracking-widest">Total {{ order.items.length
-                  }} Produk</div>
+                }} Produk</div>
               </div>
             </div>
             <div class="hidden sm:block text-right">
@@ -117,7 +118,7 @@
 
               <div class="flex-1 text-center sm:text-left min-w-0 w-full">
                 <div class="text-navy font-black text-base sm:text-lg tracking-tight truncate mb-2">{{ item.product_name
-                  }}</div>
+                }}</div>
                 <div class="flex flex-wrap items-center justify-center sm:justify-start gap-3">
                   <div
                     class="px-3 py-1.5 bg-white rounded-lg border border-gray-100 text-[10px] font-bold text-gray-400 flex items-center gap-2">
@@ -148,13 +149,11 @@
             <div
               class="flex flex-col sm:flex-row justify-between items-center sm:items-end gap-6 sm:gap-10 relative z-10">
               <div class="space-y-3 w-full sm:w-64">
-                <div
-                  class="flex justify-between items-center text-[10px] text-white/30 font-bold tracking-widest uppercase">
+                <div class="flex justify-between items-center text-[10px] text-white/30 font-bold tracking-widest ">
                   <span>Produk</span>
                   <span class="text-white/70">Rp {{ formatPrice(order.total_amount) }}</span>
                 </div>
-                <div
-                  class="flex justify-between items-center text-[10px] text-white/30 font-bold tracking-widest uppercase">
+                <div class="flex justify-between items-center text-[10px] text-white/30 font-bold tracking-widest ">
                   <span>Layanan</span>
                   <span class="text-primary/80">FREE</span>
                 </div>
@@ -193,7 +192,8 @@
               <div class="p-4 bg-gray-50/50 rounded-xl border border-gray-100">
                 <div class="text-[9px] font-black text-primary uppercase tracking-widest mb-1.5">Penerima</div>
                 <div class="text-navy font-black text-base mb-0.5">{{ order.customer_name }}</div>
-                <div class="text-[11px] font-bold text-gray-500 leading-tight">{{ order.shipping_address || 'Harap konfirmasi alamat' }}</div>
+                <div class="text-[11px] font-bold text-gray-500 leading-tight">{{ order.shipping_address || 'Harap
+                  konfirmasi alamat' }}</div>
               </div>
 
               <div class="flex items-center gap-2">
@@ -215,7 +215,7 @@
                   <div class="min-w-0">
                     <div class="text-[8px] font-black text-gray-400 uppercase tracking-widest">Email</div>
                     <div class="text-[10px] font-black text-navy truncate">{{ (order.customer_email || '').split('@')[0]
-                      }}...</div>
+                    }}...</div>
                   </div>
                 </div>
               </div>
@@ -316,7 +316,7 @@
               <div class="flex items-center justify-between py-1.5">
                 <span class="text-[10px] font-bold opacity-40 uppercase tracking-widest">Waktu</span>
                 <span class="text-[10px] font-black text-white/80">{{ formatDate(order.created_at).split('•')[0]
-                  }}</span>
+                }}</span>
               </div>
             </div>
 

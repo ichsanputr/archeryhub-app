@@ -17,9 +17,9 @@
                         <Icon icon="ph:chart-pie-slice-bold" class="text-primary text-2xl sm:text-3xl" />
                     </div>
                     <div>
-                        <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none uppercase">Overview</h1>
-                        <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider uppercase">Welcome back, <span
-                                class="text-white">{{ welcomeName }}</span></p>
+                        <h1 class="text-xl sm:text-2xl font-black tracking-tight leading-none ">Overview</h1>
+                        <p class="text-slate-300 text-[10px] sm:text-xs font-bold mt-1 tracking-wider ">Welcome back,
+                            <span class="text-white">{{ welcomeName }}</span></p>
                     </div>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-3">
@@ -42,7 +42,7 @@
                     <div>
                         <p class="text-text-secondary text-xs font-bold  tracking-wider mb-1">Total Atlet</p>
                         <p class="text-navy-dark text-3xl font-extrabold tracking-tight">{{ dashboardStats.totalArchers
-                            }}
+                        }}
                         </p>
                     </div>
                     <div
@@ -112,7 +112,8 @@
                 class="bg-white rounded-xl p-5 flex flex-col justify-between h-32 shadow-sm transition-all border border-gray-100 group">
                 <div class="flex justify-between items-start">
                     <div>
-                        <p class="text-[10px] text-gray-400 font-bold tracking-widest uppercase mb-1">Total Pendapatan</p>
+                        <p class="text-[10px] text-gray-400 font-bold tracking-widest uppercase mb-1">Total Pendapatan
+                        </p>
                         <p class="text-navy-dark text-xl font-black tracking-tight uppercase tabular-nums">
                             Rp {{ formatPrice(dashboardStats.totalRevenue || 0) }}
                         </p>
@@ -127,7 +128,8 @@
                         <Icon icon="ph:clock-bold" />
                         {{ dashboardStats.pendingPayments || 0 }} Menunggu
                     </span>
-                    <NuxtLink to="/dashboard/organization/balance" class="text-primary hover:underline">Detail</NuxtLink>
+                    <NuxtLink to="/dashboard/organization/balance" class="text-primary hover:underline">Detail
+                    </NuxtLink>
                 </div>
             </div>
         </div>
@@ -141,20 +143,28 @@
                         Tren Pendaftaran & Pendapatan
                     </h3>
                     <div class="flex gap-2">
-                        <button class="px-3 py-1 text-[10px] font-bold rounded-lg bg-gray-100 text-gray-500">7 Hari</button>
-                        <button class="px-3 py-1 text-[10px] font-bold rounded-lg bg-primary/10 text-primary">30 Hari</button>
+                        <button class="px-3 py-1 text-[10px] font-bold rounded-lg bg-gray-100 text-gray-500">7
+                            Hari</button>
+                        <button class="px-3 py-1 text-[10px] font-bold rounded-lg bg-primary/10 text-primary">30
+                            Hari</button>
                     </div>
                 </div>
                 <!-- Mock Chart Placeholder -->
-                <div class="h-64 w-full bg-gray-50 rounded-2xl border border-dashed border-gray-200 flex items-center justify-center relative overflow-hidden group">
-                    <div class="absolute inset-0 opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/graphy.png')]"></div>
+                <div
+                    class="h-64 w-full bg-gray-50 rounded-2xl border border-dashed border-gray-200 flex items-center justify-center relative overflow-hidden group">
+                    <div
+                        class="absolute inset-0 opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/graphy.png')]">
+                    </div>
                     <div class="text-center space-y-2">
-                        <Icon icon="ph:presentation-chart-bold" class="text-4xl text-gray-300 group-hover:text-primary transition-colors" />
+                        <Icon icon="ph:presentation-chart-bold"
+                            class="text-4xl text-gray-300 group-hover:text-primary transition-colors" />
                         <p class="text-gray-400 text-xs font-bold">Analisis Tren Sedang Disiapkan</p>
                     </div>
                     <!-- Decorative bars -->
                     <div class="absolute bottom-0 left-0 right-0 px-8 flex items-end gap-4 h-32 opacity-20">
-                        <div v-for="i in 12" :key="i" class="flex-1 bg-primary rounded-t-lg transition-all duration-1000" :style="{ height: `${Math.random() * 100}%` }"></div>
+                        <div v-for="i in 12" :key="i"
+                            class="flex-1 bg-primary rounded-t-lg transition-all duration-1000"
+                            :style="{ height: `${Math.random() * 100}%` }"></div>
                     </div>
                 </div>
             </div>
@@ -168,31 +178,39 @@
                     Quick Actions
                 </h3>
                 <div class="space-y-3 relative z-10">
-                    <NuxtLink to="/dashboard/organization/events" class="flex items-center justify-between p-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
+                    <NuxtLink to="/dashboard/organization/events"
+                        class="flex items-center justify-between p-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
                         <div class="flex items-center gap-3">
                             <Icon icon="ph:user-circle-check-bold" class="text-xl text-primary" />
                             <span class="text-sm font-bold">Kelola Pendaftar</span>
                         </div>
-                        <Icon icon="ph:caret-right-bold" class="text-xs group-hover:translate-x-1 transition-transform" />
+                        <Icon icon="ph:caret-right-bold"
+                            class="text-xs group-hover:translate-x-1 transition-transform" />
                     </NuxtLink>
-                    <NuxtLink to="/dashboard/organization/events/create" class="flex items-center justify-between p-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
+                    <NuxtLink to="/dashboard/organization/events/create"
+                        class="flex items-center justify-between p-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
                         <div class="flex items-center gap-3">
                             <Icon icon="ph:plus-circle-bold" class="text-xl text-green-400" />
                             <span class="text-sm font-bold">Buat Event Baru</span>
                         </div>
-                        <Icon icon="ph:caret-right-bold" class="text-xs group-hover:translate-x-1 transition-transform" />
+                        <Icon icon="ph:caret-right-bold"
+                            class="text-xs group-hover:translate-x-1 transition-transform" />
                     </NuxtLink>
-                    <NuxtLink to="/dashboard/organization/news/create" class="flex items-center justify-between p-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
+                    <NuxtLink to="/dashboard/organization/news/create"
+                        class="flex items-center justify-between p-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all group">
                         <div class="flex items-center gap-3">
                             <Icon icon="ph:article-bold" class="text-xl text-blue-400" />
                             <span class="text-sm font-bold">Publikasi Berita</span>
                         </div>
-                        <Icon icon="ph:caret-right-bold" class="text-xs group-hover:translate-x-1 transition-transform" />
+                        <Icon icon="ph:caret-right-bold"
+                            class="text-xs group-hover:translate-x-1 transition-transform" />
                     </NuxtLink>
                 </div>
                 <div class="mt-8 pt-6 border-t border-white/10">
-                    <div class="flex items-center gap-3 text-xs opacity-60 font-bold mb-4 uppercase tracking-widest">Pusat Bantuan</div>
-                    <BaseButton variant="primary" size="sm" class="w-full text-xs font-black">Kontak Support</BaseButton>
+                    <div class="flex items-center gap-3 text-xs opacity-60 font-bold mb-4 uppercase tracking-widest">
+                        Pusat Bantuan</div>
+                    <BaseButton variant="primary" size="sm" class="w-full text-xs font-black">Kontak Support
+                    </BaseButton>
                 </div>
             </div>
         </div>
@@ -208,7 +226,8 @@
                         Rekap Event
                     </h3>
                     <NuxtLink to="/dashboard/organization/events">
-                        <BaseButton variant="ghost" class="text-[10px] uppercase font-black tracking-widest">Lihat Semua</BaseButton>
+                        <BaseButton variant="ghost" class="text-[10px] uppercase font-black tracking-widest">Lihat Semua
+                        </BaseButton>
                     </NuxtLink>
                 </div>
                 <div class="p-5 space-y-4 flex-1 overflow-y-auto">
@@ -255,7 +274,8 @@
             <!-- Leaderboard -->
             <div class="bg-white rounded-xl border border-gray-200 flex flex-col overflow-hidden shadow-sm">
                 <div class="p-4 px-6 border-b border-gray-100 flex justify-between items-center bg-white">
-                    <h3 class="text-navy-dark font-black text-xs uppercase tracking-widest flex items-center gap-2">Leaderboard</h3>
+                    <h3 class="text-navy-dark font-black text-xs uppercase tracking-widest flex items-center gap-2">
+                        Leaderboard</h3>
                     <BaseButton variant="ghost" class="text-[10px] uppercase font-black tracking-widest">
                         Semua
                     </BaseButton>

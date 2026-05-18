@@ -25,7 +25,7 @@
                                     <Icon icon="ph:shield-star-fill" class="text-lg" />
                                     <span class="text-[10px] font-extrabold uppercase tracking-widest">{{
                                         archer.club_name
-                                    }}</span>
+                                        }}</span>
                                 </div>
                             </div>
 
@@ -59,7 +59,7 @@
                                         class="text-white/60 text-[10px] font-black uppercase tracking-widest">Busur</span>
                                     <span class="font-bold uppercase tracking-widest text-sm text-primary">{{
                                         bowTypeLabel
-                                    }}</span>
+                                        }}</span>
                                 </div>
                             </div>
                         </div>
@@ -152,7 +152,7 @@
                                                     Domisili /
                                                     Alamat</div>
                                                 <h5 class="font-bold text-navy mt-1 uppercase text-xs">{{ archer.address
-                                                }},
+                                                    }},
                                                     {{
                                                         archer.city }}</h5>
                                             </div>
@@ -194,7 +194,7 @@
                                             <div class="flex items-center gap-6">
                                                 <div
                                                     class="w-16 h-16 bg-gray-50 rounded-xl flex flex-col items-center justify-center border border-gray-100 group-hover:border-primary transition-colors">
-                                                    <span class="text-[10px] font-black text-navy/40 uppercase">{{
+                                                    <span class="text-[10px] font-black text-navy/40 ">{{
                                                         formatDate(event.date, 'MMM') }}</span>
                                                     <span class="text-2xl font-black text-navy">{{
                                                         formatDate(event.date,
@@ -216,7 +216,7 @@
                                                 <span
                                                     class="text-[10px] font-black uppercase tracking-widest text-navy/20 mb-1">Rank</span>
                                                 <span class="text-2xl font-black text-navy italic">#{{ event.rank
-                                                }}</span>
+                                                    }}</span>
                                             </div>
                                         </div>
 
@@ -262,7 +262,7 @@
                                             <div v-if="gear.trim()"
                                                 class="p-5 border border-gray-100 rounded-2xl bg-white hover:border-primary transition-colors shadow-sm">
                                                 <div class="text-xs font-black text-navy leading-tight">{{ gear.trim()
-                                                    }}
+                                                }}
                                                 </div>
                                                 <div class="text-[9px] text-navy/30 uppercase tracking-widest mt-1.5">
                                                     Primary
@@ -414,7 +414,7 @@
                                         v-html="plat.iconHtml"></div>
                                     <span class="text-[9px] font-black text-slate-400 uppercase tracking-wider">{{
                                         plat.name
-                                    }}</span>
+                                        }}</span>
                                 </button>
                             </div>
 
@@ -469,9 +469,9 @@ const { data: archerResponse, error: archerError, pending: isLoading } = useAsyn
 
 // Throw 404 if archer not found (only after loading is complete)
 watchEffect(() => {
-    if (!isLoading.value && archerResponse.value && (archerError.value || !archerResponse.value?.archer?.full_name)) {
-        if (process.client) {
-            throw createError({ statusCode: 404, statusMessage: 'Profil Atlet Tidak Ditemukan', fatal: true })
+    if (!isLoading.value) {
+        if (archerError.value || !archerResponse.value || !archerResponse.value?.archer?.full_name) {
+            throw createError({ statusCode: 404, statusMessage: 'Athlete profile not found', fatal: true })
         }
     }
 })
