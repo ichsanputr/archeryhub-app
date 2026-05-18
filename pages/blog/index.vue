@@ -41,8 +41,7 @@
                                 class="w-10 h-10 rounded-full border-2 border-primary/30" />
                             <div>
                                 <div class="text-white font-black text-sm">{{ featuredArticle.author.name }}</div>
-                                <div class="text-white/40 text-[10px] font-bold tracking-widest ">Spesialis Panahan
-                                </div>
+                                <div class="text-white/40 text-[10px] font-bold tracking-widest ">Archery Specialist</div>
                             </div>
                         </div>
                     </div>
@@ -58,14 +57,14 @@
                     <button v-for="cat in categories" :key="cat" @click="activeCategory = cat" :class="[
                         'px-6 py-2.5 rounded-full text-[10px] font-black tracking-widest transition-all whitespace-nowrap',
                         activeCategory === cat ? 'bg-navy text-white' : 'bg-white border border-navy/10 text-navy/40 hover:bg-navy/5'
-                    ]">
+                     ]">
                         {{ cat }}
                     </button>
                 </div>
 
                 <div class="hidden md:flex items-center gap-2 text-navy/20">
                     <Icon icon="ph:magnifying-glass-bold" class="text-xl" />
-                    <input v-model="searchQuery" type="text" placeholder="Cari artikel..."
+                    <input v-model="searchQuery" type="text" placeholder="Search articles..."
                         class="bg-transparent border-none outline-none text-[10px] font-black tracking-widest text-navy placeholder:text-navy/10 w-48" />
                 </div>
             </div>
@@ -87,8 +86,7 @@
                     </div>
 
                     <div class="p-8 flex flex-col flex-1">
-                        <div class="text-navy/20 text-[9px] font-black tracking-widest mb-4">{{ article.date
-                        }}</div>
+                        <div class="text-navy/20 text-[9px] font-black tracking-widest mb-4">{{ article.date }}</div>
                         <h3
                             class="text-navy text-xl font-black leading-tight group-hover:text-primary transition-colors line-clamp-2 mb-4">
                             {{ article.title }}
@@ -114,8 +112,8 @@
             <!-- Empty State -->
             <div v-if="filteredArticles.length === 0" class="py-32 text-center">
                 <div class="text-6xl mb-6">🔍</div>
-                <h3 class="text-2xl font-black text-navy tracking-tight">Tidak ada artikel</h3>
-                <p class="text-navy/40 font-medium mt-2">Coba kata kunci lain atau kategori berbeda.</p>
+                <h3 class="text-2xl font-black text-navy tracking-tight">No articles found</h3>
+                <p class="text-navy/40 font-medium mt-2">Try different keywords or select a different category.</p>
             </div>
         </section>
 
@@ -126,20 +124,19 @@
                 <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     <div>
                         <h2 class="text-navy text-4xl md:text-5xl font-black leading-tight tracking-tight mb-6">
-                            Tajamkan Fokus <br />
-                            Dapatkan Update <span class="text-white">Archeris.</span>
+                            Sharpen Your Focus <br />
+                            Get <span class="text-white">Archeris</span> Updates.
                         </h2>
-                        <p class="text-navy/60 text-lg font-bold">Dapatkan tips eksklusif dan berita prestasi langsung
-                            di inbox Anda.</p>
+                        <p class="text-navy/60 text-lg font-bold">Get exclusive coaching tips and performance news delivered straight to your inbox.</p>
                     </div>
                     <div>
                         <form @submit.prevent="handleSubscribe" class="flex flex-col sm:flex-row gap-4">
-                            <input v-model="subscribeEmail" type="email" placeholder="Alamat email Anda..."
+                            <input v-model="subscribeEmail" type="email" placeholder="Your email address..."
                                 class="flex-1 bg-white border-none rounded-2xl px-6 py-4 text-navy font-bold focus:ring-4 focus:ring-navy/10 outline-none"
                                 required />
                             <button
                                 class="bg-navy text-white px-10 py-4 rounded-2xl font-black tracking-widest text-xs hover:bg-navy-light transition-all active:scale-95">
-                                Gabung Sekarang
+                                Join Now
                             </button>
                         </form>
                     </div>
@@ -163,10 +160,10 @@ definePageMeta({
 
 const toast = useToast()
 const searchQuery = ref('')
-const activeCategory = ref('Semua')
+const activeCategory = ref('All')
 const subscribeEmail = ref('')
 
-const categories = ['Semua', 'Tips & Tutorial', 'Prestasi', 'Kesehatan']
+const categories = ['All', 'Tips & Tutorials', 'Performance', 'Health']
 
 const featuredArticle = computed(() => staticArticles[0])
 
@@ -175,20 +172,20 @@ const filteredArticles = computed(() => {
     return staticArticles.slice(1).filter(article => {
         const matchesSearch = article.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
             article.excerpt.toLowerCase().includes(searchQuery.value.toLowerCase())
-        const matchesCategory = activeCategory.value === 'Semua' || article.category === activeCategory.value
+        const matchesCategory = activeCategory.value === 'All' || article.category === activeCategory.value
         return matchesSearch && matchesCategory
     })
 })
 
 const handleSubscribe = () => {
-    toast.success('Terima kasih! Anda telah terdaftar dalam newsletter kami.')
+    toast.success('Thank you! You have successfully subscribed to our newsletter.')
     subscribeEmail.value = ''
 }
 
 useHead({
-    title: 'Blog Artikel & Tips Panahan - Archeris',
+    title: 'Archery Blog, Articles & Tips - Archeris',
     meta: [
-        { name: 'description', content: 'Pelajari teknik panahan, tips memilih gear, dan rahasia mental juara dari para ahli di Archeris.' }
+        { name: 'description', content: 'Learn archery techniques, gear selection tips, and mental secrets from the experts at Archeris.' }
     ]
 })
 </script>

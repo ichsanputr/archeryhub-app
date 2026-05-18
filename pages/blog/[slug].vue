@@ -28,7 +28,7 @@
                         {{ article.category }}
                     </span>
                     <span class="text-navy/30 text-[10px] font-black tracking-widest ">
-                        {{ article.date }} // {{ readTime }} MIN BACA
+                        {{ article.date }} // {{ readTime }} MIN READ
                     </span>
                 </div>
 
@@ -67,7 +67,7 @@
                                 </span>
                             </div>
 
-                            <!-- AUTHOR CARD (LINKED TO ABOUT US) - MOVED DOWN -->
+                            <!-- AUTHOR CARD (LINKED TO ABOUT US) -->
                             <NuxtLink to="/about-us"
                                 class="flex items-center justify-between p-8 bg-white rounded-[32px] border border-navy/5 mb-20 group hover:border-primary/50 transition-all shadow-sm">
                                 <div class="flex items-center gap-6">
@@ -78,7 +78,7 @@
                                             class="text-navy font-black text-xl leading-none group-hover:text-primary transition-colors text-left">
                                             {{ article.author.name }}</div>
                                         <div class="text-navy/30 text-[10px] font-bold tracking-widest mt-2 text-left">
-                                            Penulis Artikel & Pelatih Panahan</div>
+                                            Article Author & Archery Coach</div>
                                     </div>
                                 </div>
                                 <div class="hidden md:flex gap-3">
@@ -94,7 +94,7 @@
                                 <div class="flex items-center justify-between mb-10">
                                     <h3 class="text-xl font-black text-navy tracking-widest flex items-center gap-3">
                                         <Icon icon="ph:chats-circle-bold" class="text-navy text-2xl" />
-                                        Komentar ({{ totalComments }})
+                                        Comments ({{ totalComments }})
                                     </h3>
                                 </div>
 
@@ -103,16 +103,15 @@
                                     class="bg-white rounded-[32px] p-8 border border-navy/5 mb-12 relative overflow-hidden shadow-sm">
                                     <div class="absolute top-0 left-0 w-1.5 h-full bg-primary/20"></div>
                                     <h4 class="font-black text-navy tracking-widest text-[10px] mb-8 opacity-40">
-                                        Suarakan Pendapat Anda</h4>
+                                        Share Your Opinion</h4>
 
                                     <form @submit.prevent="submitComment" class="space-y-6">
                                         <div v-if="!isLoggedIn" class="grid grid-cols-1 gap-6">
                                             <div class="space-y-2">
                                                 <label
-                                                    class="text-[10px] font-black tracking-widest text-navy/40 ml-1">Nama
-                                                    Lengkap</label>
+                                                    class="text-[10px] font-black tracking-widest text-navy/40 ml-1">Full Name</label>
                                                 <input v-model="commentForm.guest_name" type="text"
-                                                    placeholder="Masukkan nama Anda..."
+                                                    placeholder="Enter your name..."
                                                     class="w-full px-6 py-4 rounded-2xl bg-slate-50 border border-navy/5 focus:ring-2 focus:ring-primary/20 text-navy font-black placeholder:text-navy/20 transition-all outline-none"
                                                     required />
                                             </div>
@@ -124,16 +123,15 @@
                                                 {{ user?.full_name?.charAt(0) || user?.name?.charAt(0) || 'U' }}
                                             </div>
                                             <div class="text-xs font-black text-navy/40 tracking-widest">
-                                                Komentar sebagai <span class="text-navy">{{ user?.full_name ||
+                                                Commenting as <span class="text-navy">{{ user?.full_name ||
                                                     user?.name }}</span></div>
                                         </div>
 
                                         <div class="space-y-2">
                                             <label
-                                                class="text-[10px] font-black tracking-widest text-navy/40 ml-1">Pesan
-                                                Komentar</label>
+                                                class="text-[10px] font-black tracking-widest text-navy/40 ml-1">Message</label>
                                             <textarea v-model="commentForm.content" rows="4"
-                                                placeholder="Apa yang Anda pikirkan tentang artikel ini?"
+                                                placeholder="What are your thoughts on this article?"
                                                 class="w-full px-6 py-4 rounded-2xl bg-slate-50 border border-navy/5 focus:ring-2 focus:ring-primary/20 text-navy font-medium placeholder:text-navy/20 transition-all outline-none resize-none"
                                                 required></textarea>
                                         </div>
@@ -143,7 +141,7 @@
                                             <Icon v-if="isSubmittingComment" icon="ph:spinner"
                                                 class="animate-spin text-lg" />
                                             <Icon v-else icon="ph:paper-plane-tilt-bold" class="text-lg" />
-                                            {{ isSubmittingComment ? 'Mengirim...' : 'Kirim Komentar' }}
+                                            {{ isSubmittingComment ? 'Sending...' : 'Post Comment' }}
                                         </button>
                                     </form>
                                 </div>
@@ -152,16 +150,14 @@
                                 <div class="space-y-8">
                                     <div v-if="isCommentsLoading" class="flex flex-col items-center py-20 text-navy/10">
                                         <Icon icon="ph:spinner" class="text-4xl animate-spin mb-4" />
-                                        <span class="font-black tracking-widest text-[10px]">Memuat
-                                            Komentar...</span>
+                                        <span class="font-black tracking-widest text-[10px]">Loading Comments...</span>
                                     </div>
 
                                     <div v-else-if="comments.length === 0"
                                         class="text-center py-24 bg-navy/[0.01] rounded-[40px] border-2 border-dashed border-navy/10">
                                         <Icon icon="ph:chat-teardrop-dots-bold"
                                             class="text-5xl text-navy/10 mx-auto mb-6" />
-                                        <p class="text-navy/20 text-[10px] font-black tracking-widest">Belum
-                                            ada diskusi. Mulai sekarang!</p>
+                                        <p class="text-navy/20 text-[10px] font-black tracking-widest">No comments yet. Be the first to start the discussion!</p>
                                     </div>
 
                                     <div v-else v-for="comment in comments" :key="comment.id" class="group">
@@ -199,7 +195,7 @@
                     <aside class="lg:col-span-4 sticky top-40 self-start">
                         <div class="bg-white rounded-[32px] border border-navy/5 p-8 shadow-sm">
                             <h3 class="text-navy font-black text-xs tracking-widest mb-8 border-b border-navy/5 pb-4">
-                                Artikel Populer
+                                Popular Articles
                             </h3>
                             <div class="flex flex-col gap-8">
                                 <NuxtLink v-for="item in popularArticles" :key="item.slug" :to="`/blog/${item.slug}`"
@@ -223,7 +219,7 @@
 
                             <NuxtLink to="/blog"
                                 class="mt-10 block w-full text-center py-4 rounded-2xl bg-navy text-white text-[10px] font-black tracking-widest hover:bg-navy-light transition-all active:scale-95 shadow-lg shadow-navy/10">
-                                LIHAT SEMUA BLOG
+                                VIEW ALL BLOGS
                             </NuxtLink>
                         </div>
 
@@ -231,12 +227,10 @@
                         <div
                             class="mt-8 bg-primary rounded-[32px] p-8 text-navy relative overflow-hidden shadow-xl shadow-primary/10">
                             <div class="relative z-10 text-center">
-                                <h4 class="text-xl font-black leading-tight mb-2">Tajamkan Bidikan Anda!</h4>
-                                <p class="text-[10px] font-bold tracking-widest opacity-60 mb-6">Berlangganan
-                                    berita terbaru.</p>
+                                <h4 class="text-xl font-black leading-tight mb-2">Sharpen Your Aim!</h4>
+                                <p class="text-[10px] font-bold tracking-widest opacity-60 mb-6">Subscribe to the latest news.</p>
                                 <button
-                                    class="w-full bg-navy text-white py-4 rounded-2xl text-[9px] font-black tracking-widest hover:bg-navy-light transition-all">Langganan
-                                    Sekarang</button>
+                                    class="w-full bg-navy text-white py-4 rounded-2xl text-[9px] font-black tracking-widest hover:bg-navy-light transition-all">Subscribe Now</button>
                             </div>
                             <Icon icon="ph:target-bold"
                                 class="absolute -bottom-4 -right-4 text-[6rem] opacity-10 rotate-12" />
@@ -253,11 +247,11 @@
             </div>
             <div class="container mx-auto px-4 max-w-7xl">
                 <div class="flex items-center justify-between mb-16">
-                    <h2 class="text-navy text-3xl md:text-5xl font-black tracking-tight ">Lainnya <span
-                            class="text-primary">Untuk Anda.</span></h2>
+                    <h2 class="text-navy text-3xl md:text-5xl font-black tracking-tight ">More <span
+                            class="text-primary">For You.</span></h2>
                     <NuxtLink to="/blog"
                         class="text-navy hover:text-primary transition-colors font-black text-xs tracking-widest">
-                        Lihat Semua →</NuxtLink>
+                        View All →</NuxtLink>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
@@ -339,7 +333,7 @@ const totalComments = computed(() => commentsResponse.value?.count || 0)
 
 const formatDate = (dateStr) => {
     if (!dateStr) return ''
-    return new Date(dateStr).toLocaleDateString('id-ID', {
+    return new Date(dateStr).toLocaleDateString('en-US', {
         day: 'numeric',
         month: 'short',
         year: 'numeric'
@@ -349,7 +343,7 @@ const formatDate = (dateStr) => {
 const submitComment = async () => {
     if (!commentForm.value.content) return
     if (!isLoggedIn.value && !commentForm.value.guest_name) {
-        toast.error('Silakan isi nama Anda')
+        toast.error('Please enter your name')
         return
     }
 
@@ -360,12 +354,12 @@ const submitComment = async () => {
             content: commentForm.value.content
         })
 
-        toast.success('Komentar berhasil ditambahkan!')
+        toast.success('Comment added successfully!')
         commentForm.value.content = ''
         commentForm.value.guest_name = ''
         await refreshComments()
     } catch (err) {
-        toast.error('Gagal mengirim komentar. Coba lagi nanti.')
+        toast.error('Failed to post comment. Please try again later.')
     } finally {
         isSubmittingComment.value = false
     }
@@ -381,7 +375,7 @@ onMounted(async () => {
 })
 
 useHead({
-    title: computed(() => article.value ? `${article.value.title} - ArcheryHub` : 'Blog Panahan - ArcheryHub'),
+    title: computed(() => article.value ? `${article.value.title} - Archeris` : 'Archery Blog - Archeris'),
     link: [
         { rel: 'canonical', href: useRequestURL().href }
     ],

@@ -157,5 +157,45 @@
     },
     "seo_title": "인도네시아 양궁 커뮤니티 — Archeris.net",
     "seo_desc": "인도네시아 전역의 재능 있는 궁수들의 프로필을 발견하고 탐색하십시오. 그들의 업적, 클럽, 그리고 헌신을 Archeris.net에서 확인하세요."
+  },
+  "docs": {
+    "official_docs": "공식 문서",
+    "title_part1": "Archeris.net",
+    "title_part2": "문서 센터",
+    "description": "플랫폼, 활 유형, 구독 요금제, 이벤트 관리 등에 대한 종합적인 가이드가 한곳에 마련되어 있습니다.",
+    "search_placeholder": "문서 검색...",
+    "no_docs_found": "검색 조건에 맞는 문서가 없습니다.",
+    "no_matching_articles": "일치하는 기사가 없습니다.",
+    "read_time_min": "{time}분 읽기",
+    "read": "읽기",
+    "on_this_page": "이 페이지 내용",
+    "all_docs": "모든 문서",
+    "contact_support": "기술 지원 문의",
+    "sidebar_title": "문서 목차",
+    "previous": "이전",
+    "next": "다음",
+    "not_found_title": "페이지를 찾을 수 없습니다",
+    "not_found_desc": "찾으시는 문서가 다른 곳으로 이동되었거나 아직 제공되지 않았을 수 있습니다.",
+    "back_to_docs": "문서 목록으로 돌아가기",
+    "updated_at": "2026년 3월 업데이트됨",
+    "categories": {
+      "all": "전체",
+      "platform": "플랫폼",
+      "archer": "궁사 계정",
+      "archery": "양궁 기술",
+      "subscription": "구독 요금제",
+      "event": "이벤트 관리",
+      "scoring": "스코어링",
+      "marketplace": "마켓플레이스"
+    },
+    "cat_desc": {
+      "platform": "Archeris.net에 대해 자세히 알아보기",
+      "archer": "궁사 계정 사용자를 위한 맞춤형 가이드",
+      "archery": "양궁 기본 및 기술 지식",
+      "subscription": "구독 패키지 및 핵심 기능",
+      "event": "이벤트 설정 및 토너먼트 가이드라인",
+      "scoring": "심사 시스템 및 스코어링 가이드",
+      "marketplace": "양궁 장비 구매 및 판매"
+    }
   }
 }

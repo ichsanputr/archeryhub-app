@@ -157,5 +157,45 @@
     },
     "seo_title": "Komunitas Pemanah Indonesia — Archeris.net",
     "seo_desc": "Temukan dan jelajahi profil pemanah berbakat dari seluruh penjuru Indonesia. Lihat prestasi, klub, dan dedikasi mereka di Archeris.net."
+  },
+  "docs": {
+    "official_docs": "DOKUMENTASI RESMI",
+    "title_part1": "Archeris.net",
+    "title_part2": "Pusat Dokumentasi",
+    "description": "Panduan lengkap tentang platform, jenis busur panahan, sistem berlangganan, tata cara turnamen, dan banyak lagi — semua tersedia di satu tempat.",
+    "search_placeholder": "Cari dokumentasi...",
+    "no_docs_found": "Tidak ada dokumentasi yang cocok dengan pencarian.",
+    "no_matching_articles": "Tidak ada artikel yang cocok.",
+    "read_time_min": "{time} menit membaca",
+    "read": "Baca",
+    "on_this_page": "Di halaman ini",
+    "all_docs": "Semua Dokumentasi",
+    "contact_support": "Hubungi Support",
+    "sidebar_title": "Daftar Isi Dokumentasi",
+    "previous": "Sebelumnya",
+    "next": "Selanjutnya",
+    "not_found_title": "Halaman tidak ditemukan",
+    "not_found_desc": "Dokumentasi yang kamu cari mungkin telah dipindahkan atau belum tersedia.",
+    "back_to_docs": "Kembali ke Docs",
+    "updated_at": "Diperbarui Maret 2026",
+    "categories": {
+      "all": "Semua",
+      "platform": "Platform",
+      "archer": "Akun Pemanah",
+      "archery": "Teknis Panahan",
+      "subscription": "Berlangganan",
+      "event": "Manajemen Event",
+      "scoring": "Scoring",
+      "marketplace": "Marketplace"
+    },
+    "cat_desc": {
+      "platform": "Mengenal Archeris.net secara mendalam",
+      "archer": "Panduan khusus untuk pengguna akun Pemanah",
+      "archery": "Pengetahuan dasar dan teknis panahan",
+      "subscription": "Paket dan fitur berlangganan",
+      "event": "Panduan pengelolaan event",
+      "scoring": "Sistem penilaian dan scoring",
+      "marketplace": "Jual beli perlengkapan panahan"
+    }
   }
 }

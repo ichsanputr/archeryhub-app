@@ -4,10 +4,9 @@
         <div class="bg-white border-b border-gray-100">
             <div class="container mx-auto px-4 max-w-7xl">
                 <div class="flex items-center gap-2 h-11 text-xs text-gray-500 overflow-x-auto no-scrollbar">
-                    <NuxtLink to="/" class="hover:text-navy transition-colors whitespace-nowrap">Beranda</NuxtLink>
+                    <NuxtLink to="/" class="hover:text-navy transition-colors whitespace-nowrap">{{ $t('nav.home') }}</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-gray-300 shrink-0" />
-                    <NuxtLink to="/docs" class="hover:text-navy transition-colors whitespace-nowrap">Dokumentasi
-                    </NuxtLink>
+                    <NuxtLink to="/docs" class="hover:text-navy transition-colors whitespace-nowrap">{{ $t('docs.all_docs') }}</NuxtLink>
                     <Icon icon="ph:caret-right-bold" class="text-gray-300 shrink-0" />
                     <span class="text-navy font-semibold whitespace-nowrap truncate">{{ currentDoc?.title }}</span>
                 </div>
@@ -23,7 +22,7 @@
                     class="lg:hidden flex items-center justify-between w-full bg-white border border-gray-200 rounded-xl px-4 py-3 mb-2 text-sm font-bold text-navy hover:bg-gray-50 transition-colors">
                     <span class="flex items-center gap-2">
                         <Icon icon="ph:list-dashes-bold" class="text-lg text-primary" />
-                        Daftar Isi Dokumentasi
+                        {{ $t('docs.sidebar_title') }}
                     </span>
                     <Icon :icon="isMobileMenuOpen ? 'ph:caret-up-bold' : 'ph:caret-down-bold'"
                         class="text-gray-400 text-base" />
@@ -37,8 +36,7 @@
                     <div v-for="cat in sidebarVisibleCategories" :key="cat.id" class="mb-4">
                         <div class="flex items-center gap-2 px-2 py-1.5 mb-1">
                             <Icon :icon="cat.icon" class="text-sm text-gray-400" />
-                            <span class="text-xs font-black text-gray-400 tracking-widest ">{{ cat.label
-                                }}</span>
+                            <span class="text-xs font-black text-gray-400 tracking-widest ">{{ $t(cat.label) }}</span>
                         </div>
                         <div class="space-y-0.5">
                             <NuxtLink v-for="doc in filteredSidebarDocs(cat.id)" :key="doc.slug"
@@ -50,8 +48,7 @@
                                 <div v-if="currentSlug === doc.slug"
                                     class="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-primary rounded-r-full">
                                 </div>
-                                <span class="leading-snug" :class="currentSlug !== doc.slug ? 'pl-2' : ''">{{ doc.title
-                                    }}</span>
+                                <span class="leading-snug" :class="currentSlug !== doc.slug ? 'pl-2' : ''">{{ doc.title }}</span>
                             </NuxtLink>
                         </div>
                     </div>
@@ -72,15 +69,14 @@
                                 <Icon :icon="currentDoc.icon" class="text-sm" />
                                 {{ getCategoryLabel(currentDoc.category) }}
                             </div>
-                            <h1 class="text-2xl md:text-3xl xl:text-4xl font-black text-white mb-3 leading-tight">{{
-                                currentDoc.title }}</h1>
+                            <h1 class="text-2xl md:text-3xl xl:text-4xl font-black text-white mb-3 leading-tight">{{ currentDoc.title }}</h1>
                             <p class="text-white/60 text-sm">{{ currentDoc.excerpt }}</p>
                             <div class="flex items-center gap-4 mt-4 text-white/40 text-xs">
                                 <span class="flex items-center gap-1.5">
-                                    <Icon icon="ph:clock-bold" class="text-sm" /> {{ currentDoc.readTime }} membaca
+                                    <Icon icon="ph:clock-bold" class="text-sm" /> {{ currentDoc.readTime }}
                                 </span>
                                 <span class="flex items-center gap-1.5">
-                                    <Icon icon="ph:calendar-blank-bold" class="text-sm" /> Diperbarui Maret 2025
+                                    <Icon icon="ph:calendar-blank-bold" class="text-sm" /> {{ $t('docs.updated_at') }}
                                 </span>
                             </div>
                         </div>
@@ -97,7 +93,7 @@
                             <Icon icon="ph:arrow-left-bold"
                                 class="text-gray-400 group-hover:text-primary transition-colors shrink-0" />
                             <div class="text-left min-w-0">
-                                <div class="text-xs text-gray-400 mb-0.5">Sebelumnya</div>
+                                <div class="text-xs text-gray-400 mb-0.5">{{ $t('docs.previous') }}</div>
                                 <div
                                     class="text-sm font-bold text-navy truncate group-hover:text-primary transition-colors">
                                     {{ prevDoc.title }}</div>
@@ -107,7 +103,7 @@
                         <NuxtLink v-if="nextDoc" :to="`/docs/${nextDoc.slug}`"
                             class="flex items-center gap-3 group p-4 rounded-2xl hover:bg-gray-50 border border-gray-100 transition-all w-full sm:max-w-xs justify-end text-right sm:ml-auto">
                             <div class="min-w-0">
-                                <div class="text-xs text-gray-400 mb-0.5">Selanjutnya</div>
+                                <div class="text-xs text-gray-400 mb-0.5">{{ $t('docs.next') }}</div>
                                 <div
                                     class="text-sm font-bold text-navy truncate group-hover:text-primary transition-colors">
                                     {{ nextDoc.title }}</div>
@@ -121,13 +117,12 @@
                 <!-- Not found -->
                 <div v-else class="bg-white rounded-3xl border border-gray-100 shadow-sm p-16 text-center">
                     <Icon icon="ph:file-x-bold" class="text-5xl text-gray-300 mb-4" />
-                    <h2 class="text-xl font-black text-navy mb-2">Halaman tidak ditemukan</h2>
-                    <p class="text-gray-500 mb-6 text-sm">Dokumentasi yang kamu cari mungkin telah dipindahkan atau
-                        belum tersedia.</p>
+                    <h2 class="text-xl font-black text-navy mb-2">{{ $t('docs.not_found_title') }}</h2>
+                    <p class="text-gray-500 mb-6 text-sm">{{ $t('docs.not_found_desc') }}</p>
                     <NuxtLink to="/docs"
                         class="inline-flex items-center gap-2 bg-navy text-primary font-bold px-6 py-2.5 rounded-xl hover:bg-navy/90 transition-all text-sm">
                         <Icon icon="ph:arrow-left-bold" />
-                        Kembali ke Docs
+                        {{ $t('docs.back_to_docs') }}
                     </NuxtLink>
                 </div>
             </main>
@@ -135,13 +130,13 @@
             <!-- Right sidebar: Table of contents -->
             <aside class="hidden lg:block w-56 shrink-0 pl-4 self-start sticky top-24">
                 <div class="max-h-[calc(100vh-7rem)] overflow-y-auto scrollbar-styled flex flex-col">
-                    <div class="text-xs font-black text-gray-400 tracking-widest mb-3">Di halaman ini</div>
+                    <div class="text-xs font-black text-gray-400 tracking-widest mb-3">{{ $t('docs.on_this_page') }}</div>
                     <nav class="space-y-1">
                         <a v-for="heading in currentDoc?.toc || []" :key="heading.id" :href="`#${heading.id}`"
                             class="block text-sm py-1.5 transition-colors leading-snug" :class="[
                                 heading.level === 2 ? 'text-gray-600 hover:text-primary font-medium pl-0' : 'text-gray-400 hover:text-primary pl-3 text-xs'
                             ]">
-                            {{ heading.text }}
+                            {{ translateHeadingText(heading.text) }}
                         </a>
                     </nav>
 
@@ -149,11 +144,11 @@
                     <div class="mt-6 pt-6 border-t border-gray-100">
                         <NuxtLink to="/docs"
                             class="flex items-center gap-2 text-xs text-gray-400 hover:text-primary transition-colors font-medium mb-3">
-                            <Icon icon="ph:arrow-left-bold" class="text-xs" /> Semua Dokumentasi
+                            <Icon icon="ph:arrow-left-bold" class="text-xs" /> {{ $t('docs.all_docs') }}
                         </NuxtLink>
                         <NuxtLink to="/contact"
                             class="flex items-center gap-2 text-xs text-gray-400 hover:text-primary transition-colors font-medium">
-                            <Icon icon="ph:chat-circle-dots-bold" class="text-sm" /> Hubungi Support
+                            <Icon icon="ph:chat-circle-dots-bold" class="text-sm" /> {{ $t('docs.contact_support') }}
                         </NuxtLink>
                     </div>
                 </div>
@@ -164,12 +159,15 @@
 
 <script setup>
 import { Icon } from '@iconify/vue'
+import { ref, computed, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { docs } from '~/data/docs'
+import { translateDoc, translateText } from '~/utils/docsTranslator'
 
 definePageMeta({ layout: 'docs' })
 
-const openSearch = () => {
-    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true }))
-}
+const { t, locale } = useI18n()
 
 const route = useRoute()
 const currentSlug = computed(() => route.params.slug)
@@ -181,26 +179,36 @@ watch(currentSlug, () => {
 })
 
 const categories = [
-    { id: 'platform', label: 'Platform', icon: 'ph:rocket-bold' },
-    { id: 'archer', label: 'Akun Pemanah', icon: 'ph:user-bold' },
-    { id: 'archery', label: 'Teknis Panahan', icon: 'ph:crosshair-bold' },
-    { id: 'subscription', label: 'Berlangganan', icon: 'ph:crown-bold' },
-    { id: 'event', label: 'Manajemen Event', icon: 'ph:trophy-bold' },
-    { id: 'scoring', label: 'Scoring', icon: 'ph:target-bold' },
-    { id: 'marketplace', label: 'Marketplace', icon: 'ph:storefront-bold' },
+    { id: 'platform', label: 'docs.categories.platform', icon: 'ph:rocket-bold' },
+    { id: 'archer', label: 'docs.categories.archer', icon: 'ph:user-bold' },
+    { id: 'archery', label: 'docs.categories.archery', icon: 'ph:crosshair-bold' },
+    { id: 'subscription', label: 'docs.categories.subscription', icon: 'ph:crown-bold' },
+    { id: 'event', label: 'docs.categories.event', icon: 'ph:trophy-bold' },
+    { id: 'scoring', label: 'docs.categories.scoring', icon: 'ph:target-bold' },
+    { id: 'marketplace', label: 'docs.categories.marketplace', icon: 'ph:storefront-bold' },
 ]
 
 const sidebarCategories = categories
 
-const getCategoryLabel = (id) => categories.find(c => c.id === id)?.label || id
+const getCategoryLabel = (id) => {
+    const cat = categories.find(c => c.id === id)
+    return cat ? t(cat.label) : id
+}
 
-import { docs } from '~/data/docs'
-
-const currentDoc = computed(() => docs.find(d => d.slug === currentSlug.value))
+const currentDoc = computed(() => {
+    const raw = docs.find(d => d.slug === currentSlug.value)
+    return raw ? translateDoc(raw, locale.value) : null
+})
 
 const currentIndex = computed(() => docs.findIndex(d => d.slug === currentSlug.value))
-const prevDoc = computed(() => currentIndex.value > 0 ? docs[currentIndex.value - 1] : null)
-const nextDoc = computed(() => currentIndex.value < docs.length - 1 ? docs[currentIndex.value + 1] : null)
+const prevDoc = computed(() => {
+    const raw = currentIndex.value > 0 ? docs[currentIndex.value - 1] : null
+    return raw ? translateDoc(raw, locale.value) : null
+})
+const nextDoc = computed(() => {
+    const raw = currentIndex.value < docs.length - 1 ? docs[currentIndex.value + 1] : null
+    return raw ? translateDoc(raw, locale.value) : null
+})
 
 const filteredSidebarDocs = (categoryId) => {
     return docs.filter(d => {
@@ -208,15 +216,19 @@ const filteredSidebarDocs = (categoryId) => {
         const matchSearch = sidebarSearch.value === '' ||
             d.title.toLowerCase().includes(sidebarSearch.value.toLowerCase())
         return matchCat && matchSearch
-    })
+    }).map(d => translateDoc(d, locale.value))
 }
 
 const sidebarVisibleCategories = computed(() => {
     return sidebarCategories.filter(cat => filteredSidebarDocs(cat.id).length > 0)
 })
 
+const translateHeadingText = (text) => {
+    return translateText(text, locale.value, currentSlug.value)
+}
+
 useHead(computed(() => ({
-    title: currentDoc.value ? `${currentDoc.value.title} - Dokumentasi Archeryhub.id` : 'Dokumentasi - Archeryhub.id',
+    title: currentDoc.value ? `${currentDoc.value.title} - Archeris` : 'Dokumentasi - Archeris',
     meta: [{ name: 'description', content: currentDoc.value?.excerpt || '' }]
 })))
 </script>

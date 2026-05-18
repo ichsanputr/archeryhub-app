@@ -11,14 +11,13 @@
                 <div
                     class="inline-flex items-center gap-2 px-4 py-2 bg-primary/20 border border-primary/30 backdrop-blur-sm rounded-full text-primary text-xs font-bold tracking-widest mb-6">
                     <Icon icon="ph:book-open-bold" class="text-base" />
-                    <span>DOKUMENTASI RESMI</span>
+                    <span>{{ $t('docs.official_docs') }}</span>
                 </div>
                 <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight mb-5">
-                    Pusat <span class="text-primary">Dokumentasi</span><br />Archeris.net
+                    {{ $t('docs.title_part2') }}<br /><span class="text-primary">{{ $t('docs.title_part1') }}</span>
                 </h1>
                 <p class="text-white/60 text-sm md:text-base max-w-xl mx-auto mb-10 leading-relaxed">
-                    Panduan lengkap tentang platform, jenis busur panahan, sistem berlangganan, tata cara turnamen, dan
-                    banyak lagi — semua tersedia di satu tempat.
+                    {{ $t('docs.description') }}
                 </p>
                 <!-- Search trigger -->
                 <div class="max-w-lg mx-auto">
@@ -27,7 +26,7 @@
                         class="w-full flex items-center gap-3 pl-4 pr-4 py-3.5 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 text-white/50 hover:bg-white/15 hover:border-primary/50 transition-all text-sm group"
                     >
                         <Icon icon="ph:magnifying-glass-bold" class="text-lg text-gray-300 group-hover:text-primary transition-colors" />
-                        <span class="flex-1 text-left text-white/40">Cari dokumentasi...</span>
+                        <span class="flex-1 text-left text-white/40">{{ $t('docs.search_placeholder') }}</span>
                         <kbd class="hidden sm:inline-flex items-center gap-1 px-2 py-1 bg-white/10 border border-white/20 rounded-lg text-xs text-white/30 font-mono">Ctrl K</kbd>
                     </button>
                 </div>
@@ -44,7 +43,7 @@
                             ? 'bg-navy text-primary shadow-sm'
                             : 'text-gray-500 hover:text-navy hover:bg-gray-100'">
                         <Icon :icon="cat.icon" class="text-base" />
-                        {{ cat.label }}
+                        {{ $t(cat.label) }}
                     </button>
                 </div>
             </div>
@@ -58,8 +57,8 @@
                         <Icon :icon="cat.icon" class="text-lg" />
                     </div>
                     <div>
-                        <h2 class="text-lg font-black text-navy">{{ cat.label }}</h2>
-                        <p class="text-gray-400 text-xs">{{ cat.description }}</p>
+                        <h2 class="text-lg font-black text-navy">{{ $t(cat.label) }}</h2>
+                        <p class="text-gray-400 text-xs">{{ cat.description ? $t(cat.description) : '' }}</p>
                     </div>
                 </div>
 
@@ -84,7 +83,7 @@
                             </span>
                             <span
                                 class="ml-auto flex items-center gap-1 text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
-                                Baca
+                                {{ $t('docs.read') }}
                                 <Icon icon="ph:arrow-right-bold" class="text-xs" />
                             </span>
                         </div>
@@ -93,14 +92,14 @@
 
                 <!-- Empty per category -->
                 <div v-if="filteredDocs(cat.id).length === 0" class="text-center py-8 text-gray-300 text-sm">
-                    Tidak ada artikel yang cocok.
+                    {{ $t('docs.no_matching_articles') }}
                 </div>
             </div>
 
             <!-- Global empty state -->
             <div v-if="filteredCategories.length === 0" class="text-center py-24">
                 <Icon icon="ph:file-search-bold" class="text-5xl text-gray-300 mb-4" />
-                <p class="text-gray-400 font-medium">Tidak ada dokumentasi yang cocok dengan pencarian.</p>
+                <p class="text-gray-400 font-medium">{{ $t('docs.no_docs_found') }}</p>
             </div>
         </section>
     </div>
@@ -108,8 +107,15 @@
 
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
+import { ref, computed, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { docs } from '~/data/docs'
+import { translateDoc } from '~/utils/docsTranslator'
 
 definePageMeta({ layout: 'docs' })
+
+const { t, locale } = useI18n()
 
 useHead({
     title: 'Dokumentasi - Archeris.net',
@@ -149,17 +155,15 @@ watch(() => route.query.cat, (newCat) => {
 })
 
 const categories = [
-    { id: 'all', label: 'Semua', icon: 'ph:squares-four-bold', description: '' },
-    { id: 'platform', label: 'Platform', icon: 'ph:rocket-bold', description: 'Mengenal Archeris.net secara mendalam' },
-    { id: 'archer', label: 'Akun Pemanah', icon: 'ph:user-bold', description: 'Panduan khusus untuk pengguna akun Pemanah' },
-    { id: 'archery', label: 'Teknis Panahan', icon: 'ph:crosshair-bold', description: 'Pengetahuan dasar dan teknis panahan' },
-    { id: 'subscription', label: 'Berlangganan', icon: 'ph:crown-bold', description: 'Paket dan fitur berlangganan' },
-    { id: 'event', label: 'Manajemen Event', icon: 'ph:trophy-bold', description: 'Panduan pengelolaan event' },
-    { id: 'scoring', label: 'Scoring', icon: 'ph:target-bold', description: 'Sistem penilaian dan scoring' },
-    { id: 'marketplace', label: 'Marketplace', icon: 'ph:storefront-bold', description: 'Jual beli perlengkapan panahan' },
+    { id: 'all', label: 'docs.categories.all', icon: 'ph:squares-four-bold', description: '' },
+    { id: 'platform', label: 'docs.categories.platform', icon: 'ph:rocket-bold', description: 'docs.cat_desc.platform' },
+    { id: 'archer', label: 'docs.categories.archer', icon: 'ph:user-bold', description: 'docs.cat_desc.archer' },
+    { id: 'archery', label: 'docs.categories.archery', icon: 'ph:crosshair-bold', description: 'docs.cat_desc.archery' },
+    { id: 'subscription', label: 'docs.categories.subscription', icon: 'ph:crown-bold', description: 'docs.cat_desc.subscription' },
+    { id: 'event', label: 'docs.categories.event', icon: 'ph:trophy-bold', description: 'docs.cat_desc.event' },
+    { id: 'scoring', label: 'docs.categories.scoring', icon: 'ph:target-bold', description: 'docs.cat_desc.scoring' },
+    { id: 'marketplace', label: 'docs.categories.marketplace', icon: 'ph:storefront-bold', description: 'docs.cat_desc.marketplace' },
 ]
-
-import { docs } from '~/data/docs'
 
 const filteredCategories = computed(() => {
     const cats = activeCategory.value === 'all' ? categories.filter(c => c.id !== 'all') : categories.filter(c => c.id === activeCategory.value)
@@ -174,7 +178,7 @@ const filteredDocs = (categoryId) => {
             d.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
             d.excerpt.toLowerCase().includes(searchQuery.value.toLowerCase())
         return matchCat && matchSearch
-    })
+    }).map(d => translateDoc(d, locale.value))
 }
 </script>
 

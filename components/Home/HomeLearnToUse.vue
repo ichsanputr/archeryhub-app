@@ -29,8 +29,14 @@
 
             <!-- Horizontal Dashboard Showcase Mockup Container (Identical to Image) -->
             <div class="relative w-full overflow-hidden">
+                <!-- Left overlay shadow (fades out from left) -->
+                <div class="absolute left-0 top-0 bottom-0 w-12 sm:w-24 md:w-36 bg-gradient-to-r from-[#DEFEBD] via-[#DEFEBD]/90 to-transparent z-20 pointer-events-none"></div>
+                
+                <!-- Right overlay shadow (fades out from right) -->
+                <div class="absolute right-0 top-0 bottom-0 w-12 sm:w-24 md:w-36 bg-gradient-to-l from-[#DEFEBD] via-[#DEFEBD]/90 to-transparent z-20 pointer-events-none"></div>
+
                 <!-- Outer Scrolling Area with Faded Mask Edges -->
-                <div class="flex gap-8 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar px-6 sm:px-16 lg:px-24 pb-12">
+                <div ref="scrollContainer" class="flex gap-8 overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar px-6 sm:px-16 lg:px-24 pb-12">
                     
                     <!-- ── CARD 1: ROSTER & COMMUNICATIONS ── -->
                     <div class="w-[300px] sm:w-[500px] md:w-[600px] lg:w-[650px] shrink-0 snap-center bg-white border border-slate-100 rounded-[32px] p-6 sm:p-8 flex flex-col justify-between shadow-[0_8px_32px_rgba(15,23,42,0.04)] hover:shadow-[0_16px_48px_rgba(15,23,42,0.08)] hover:-translate-y-1 transition-all duration-300">

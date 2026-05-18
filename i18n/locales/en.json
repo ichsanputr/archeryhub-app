@@ -157,5 +157,45 @@
     },
     "seo_title": "Indonesia Archery Community — Archeris.net",
     "seo_desc": "Discover and explore profiles of talented archers from across Indonesia. View their achievements, clubs, and dedication on Archeris.net."
+  },
+  "docs": {
+    "official_docs": "OFFICIAL DOCUMENTATION",
+    "title_part1": "Archeris.net",
+    "title_part2": "Documentation Center",
+    "description": "Comprehensive guides on the platform, bow types, subscription plans, event management, and more — all in one place.",
+    "search_placeholder": "Search documentation...",
+    "no_docs_found": "No documentation matches your search.",
+    "no_matching_articles": "No articles matching your criteria.",
+    "read_time_min": "{time} min read",
+    "read": "Read",
+    "on_this_page": "On this page",
+    "all_docs": "All Documentation",
+    "contact_support": "Contact Support",
+    "sidebar_title": "Documentation Table of Contents",
+    "previous": "Previous",
+    "next": "Next",
+    "not_found_title": "Page Not Found",
+    "not_found_desc": "The documentation you are looking for might have been moved or is not yet available.",
+    "back_to_docs": "Back to Docs",
+    "updated_at": "Updated March 2026",
+    "categories": {
+      "all": "All",
+      "platform": "Platform",
+      "archer": "Archer Account",
+      "archery": "Archery Technical",
+      "subscription": "Subscription",
+      "event": "Event Management",
+      "scoring": "Scoring",
+      "marketplace": "Marketplace"
+    },
+    "cat_desc": {
+      "platform": "Getting to know Archeris.net deeply",
+      "archer": "Guides tailored for Archer account users",
+      "archery": "Fundamental and technical archery knowledge",
+      "subscription": "Subscription plans and core features",
+      "event": "Event setup and tournament guidelines",
+      "scoring": "Judging system and scoring guides",
+      "marketplace": "Buying and selling archery equipment"
+    }
   }
 }
