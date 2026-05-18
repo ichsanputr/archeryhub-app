@@ -1,1 +1,0 @@
-{"version":3,"file":"Dw_KdBLP.js","sources":["../../../../virtual:public?%2Fhero-event-detail.jpeg"],"sourcesContent":["import { publicAssetsURL } from '#internal/nuxt/paths';export default publicAssetsURL(\"/hero-event-detail.jpeg\")"],"names":["_imports_0","publicAssetsURL"],"mappings":"kCAAuD,MAAAA,EAAeC,EAAgB,yBAAyB"}

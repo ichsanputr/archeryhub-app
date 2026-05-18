@@ -91,5 +91,10 @@
     "vue-chartjs": "^5.3.3",
     "vuetify": "^3.3.14",
     "yaml": "^2.8.1"
+  },
+  "pnpm": {
+    "overrides": {
+      "rollup": "4.44.0"
+    }
   }
 }

@@ -553,8 +553,10 @@ const setHeading = (level: number) => {
 
 // ── Link ──────────────────────────────────────────────────────────────────────
 const openLinkDialog = () => {
-    linkUrl.value = (editor.value?.getAttributes('link') as any)?.href ?? ''
-    linkOpenNewTab.value = (editor.value?.getAttributes('link') as any)?.target === '_blank' ?? true
+    const linkAttrs = editor.value?.getAttributes('link') as any
+    linkUrl.value = linkAttrs?.href ?? ''
+    const targetAttr = linkAttrs?.target
+    linkOpenNewTab.value = targetAttr === undefined ? true : targetAttr === '_blank'
     linkDialogOpen.value = true
     nextTick(() => linkInputRef.value?.focus())
 }
