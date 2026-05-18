@@ -1,5 +1,5 @@
 <template>
-    <section class="py-20 sm:py-24 bg-[#DEFEBD]/15 border-y border-[#DEFEBD]/30 overflow-hidden relative">
+    <section ref="sectionRef" class="py-20 sm:py-24 bg-[#DEFEBD]/15 border-y border-[#DEFEBD]/30 overflow-hidden relative">
         <!-- Subtle Vector Graphic in Background for aesthetics -->
         <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-[#DEFEBD]/30 via-transparent to-transparent pointer-events-none"></div>
 
@@ -19,10 +19,10 @@
                     </div>
 
                     <div>
-                        <div class="text-5xl sm:text-7xl font-black text-navy font-display tracking-tight leading-none mb-2">
+                        <div class="text-5xl sm:text-7xl font-black text-navy font-display tracking-tight leading-none mb-2 reveal-title">
                             2,800+
                         </div>
-                        <p class="text-base sm:text-lg font-bold text-slate-500 tracking-tight leading-normal">
+                        <p class="text-base sm:text-lg font-bold text-slate-500 tracking-tight leading-normal reveal-desc">
                             sports organizations trust <span class="text-navy font-black">Archeris</span>
                         </p>
                     </div>
@@ -166,7 +166,43 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import { Icon } from '@iconify/vue'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+const sectionRef = ref(null)
+
+onMounted(() => {
+    gsap.registerPlugin(ScrollTrigger)
+    const el = sectionRef.value
+    if (!el) return
+
+    gsap.from(el.querySelector('.reveal-title'), {
+        scrollTrigger: {
+            trigger: el,
+            start: 'top 80%',
+            toggleActions: 'play none none none'
+        },
+        opacity: 0,
+        y: 35,
+        duration: 1.1,
+        ease: 'power3.out'
+    })
+
+    gsap.from(el.querySelector('.reveal-desc'), {
+        scrollTrigger: {
+            trigger: el,
+            start: 'top 80%',
+            toggleActions: 'play none none none'
+        },
+        opacity: 0,
+        y: 20,
+        duration: 1.1,
+        delay: 0.18,
+        ease: 'power3.out'
+    })
+})
 </script>
 
 <style scoped>

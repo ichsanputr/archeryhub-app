@@ -134,5 +134,28 @@
       "peserta": "participants",
       "kategori": "categories"
     }
+  },
+  "archers": {
+    "badge": "Archery Community",
+    "title": "Discover Inspiration & Indonesian Archers",
+    "description": "Explore profiles of talented archers from across the archipelago. View their achievements, clubs, and dedication to the sport.",
+    "search_placeholder": "Search archer, city, or club...",
+    "count_unit": "archers",
+    "division": "Division",
+    "competition": "Competition",
+    "events_count": "{count} Events",
+    "total_events": "Total Events",
+    "not_found": "Archers Not Found",
+    "not_found_desc": "Try changing the filter or search keyword to find matching archers.",
+    "bow_types": {
+      "all": "All",
+      "standard": "Standard",
+      "recurve": "Recurve",
+      "compound": "Compound",
+      "barebow": "Barebow",
+      "traditional": "Traditional"
+    },
+    "seo_title": "Indonesia Archery Community — Archeris.net",
+    "seo_desc": "Discover and explore profiles of talented archers from across Indonesia. View their achievements, clubs, and dedication on Archeris.net."
   }
 }

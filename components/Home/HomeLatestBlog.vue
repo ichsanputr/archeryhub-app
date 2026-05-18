@@ -1,9 +1,9 @@
 <template>
-    <section class="py-24 bg-navy text-white overflow-hidden">
+    <section ref="sectionRef" class="py-24 bg-navy text-white overflow-hidden">
         <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
                 <div>
-                    <h2 class="text-white">
+                    <h2 class="text-white reveal-title">
                         {{ $t('home.blog.title1') }}<br />
                         {{ $t('home.blog.title2') }}
                     </h2>
@@ -95,12 +95,32 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { Icon } from '@iconify/vue'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 const localePath = useLocalePath()
-
+const sectionRef = ref(null)
 const blogScrollContainer = ref(null)
+
+onMounted(() => {
+    gsap.registerPlugin(ScrollTrigger)
+    const el = sectionRef.value
+    if (!el) return
+
+    gsap.from(el.querySelector('.reveal-title'), {
+        scrollTrigger: {
+            trigger: el,
+            start: 'top 80%',
+            toggleActions: 'play none none none'
+        },
+        opacity: 0,
+        y: 35,
+        duration: 1.1,
+        ease: 'power3.out'
+    })
+})
 
 const scrollLeft = () => {
     if (blogScrollContainer.value) {

@@ -134,5 +134,28 @@
       "peserta": "peserta",
       "kategori": "kategori"
     }
+  },
+  "archers": {
+    "badge": "Komunitas Pemanah",
+    "title": "Temukan Inspirasi & Koneksi Pemanah Indonesia",
+    "description": "Jelajahi profil para pemanah berbakat dari seluruh penjuru nusantara. Lihat prestasi, klub, dan dedikasi mereka dalam dunia panahan.",
+    "search_placeholder": "Cari pemanah, kota, atau klub...",
+    "count_unit": "pemanah",
+    "division": "Divisi",
+    "competition": "Kompetisi",
+    "events_count": "{count} Event",
+    "total_events": "Total Event",
+    "not_found": "Pemanah Tidak Ditemukan",
+    "not_found_desc": "Coba ubah filter atau kata kunci pencarian untuk menemukan pemanah yang sesuai.",
+    "bow_types": {
+      "all": "Semua",
+      "standard": "Standard",
+      "recurve": "Recurve",
+      "compound": "Compound",
+      "barebow": "Barebow",
+      "traditional": "Traditional"
+    },
+    "seo_title": "Komunitas Pemanah Indonesia — Archeris.net",
+    "seo_desc": "Temukan dan jelajahi profil pemanah berbakat dari seluruh penjuru Indonesia. Lihat prestasi, klub, dan dedikasi mereka di Archeris.net."
   }
 }

@@ -14,16 +14,14 @@
                     <div
                         class="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full text-primary text-[10px] sm:text-sm font-bold tracking-widest mb-6">
                         <Icon icon="ph:user-circle-gear-bold" class="text-base sm:text-lg" />
-                        <span>Komunitas Pemanah</span>
+                        <span>{{ $t('archers.badge') }}</span>
                     </div>
                     <h1
-                        class="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6">
-                        Temukan <span class="text-primary">Inspirasi</span> & <br />
-                        Koneksi Pemanah Indonesia
+                        class="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight leading-tight mb-6 font-display">
+                        {{ $t('archers.title') }}
                     </h1>
-                    <p class="text-white/90 text-sm md:text-lg leading-relaxed max-w-xl">
-                        Jelajahi profil para pemanah berbakat dari seluruh penjuru nusantara. Lihat prestasi, klub, dan
-                        dedikasi mereka dalam dunia panahan.
+                    <p class="text-white/90 text-sm md:text-lg leading-relaxed max-w-xl font-light">
+                        {{ $t('archers.description') }}
                     </p>
                 </div>
             </div>
@@ -34,7 +32,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
                 <!-- Bow Type Filters -->
                 <div class="lg:col-span-4 flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 md:pb-0">
-                    <button v-for="type in bowTypes" :key="type.value" @click="activeBowType = type.value" :class="[
+                    <button v-for="type in localizedBowTypes" :key="type.value" @click="activeBowType = type.value" :class="[
                         'px-5 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap transition-all border-2',
                         activeBowType === type.value
                             ? 'bg-navy text-white border-navy shadow-lg shadow-navy/20'
@@ -48,14 +46,14 @@
                 <div class="lg:col-span-5 relative group">
                     <Icon icon="ph:magnifying-glass-bold"
                         class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-navy transition-colors text-lg" />
-                    <input v-model="searchQuery" type="text" placeholder="Cari pemanah, kota, atau klub..."
+                    <input v-model="searchQuery" type="text" :placeholder="$t('archers.search_placeholder')"
                         class="w-full pl-12 pr-4 py-3.5 bg-white border-2 border-gray-100 rounded-2xl text-sm font-bold focus:border-navy focus:ring-4 focus:ring-navy/5 outline-none transition-all placeholder:text-gray-400 shadow-sm" />
                 </div>
 
                 <!-- View Toggle & Count -->
                 <div class="lg:col-span-3 flex items-center justify-between lg:justify-end gap-6">
                     <p class="text-gray-500 text-sm font-medium whitespace-nowrap">
-                        <span class="font-bold text-navy">{{ totalArchers }}</span> pemanah
+                        <span class="font-bold text-navy">{{ totalArchers }}</span> {{ $t('archers.count_unit') }}
                     </p>
                     <div class="flex items-center gap-1 bg-gray-100 p-1.5 rounded-xl">
                         <button @click="viewMode = 'grid'"
@@ -81,7 +79,7 @@
 
             <div v-else-if="viewMode === 'grid'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <NuxtLink v-for="archer in filteredArchers" :key="archer.id || archer.uuid"
-                    :to="`/archers/${archer.username || archer.slug}`"
+                    :to="localePath(`/archers/${archer.username || archer.slug}`)"
                     class="group bg-white rounded-3xl border border-gray-100 p-6 transition-all duration-500 hover:border-primary/50 hover:shadow-sm hover:shadow-primary/5">
                     <div class="flex items-center gap-5">
                         <!-- Avatar -->
@@ -123,7 +121,7 @@
                         <div
                             class="bg-gray-50/50 rounded-2xl p-3 border border-gray-50 transition-all group-hover:bg-primary/5 group-hover:border-primary/10">
                             <span
-                                class="block text-[10px] text-gray-400 font-black  tracking-widest mb-1.5">Divisi</span>
+                                class="block text-[10px] text-gray-400 font-black  tracking-widest mb-1.5 uppercase">{{ $t('archers.division') }}</span>
                             <div class="flex items-center gap-2">
                                 <div
                                     class="w-7 h-7 rounded-lg bg-white shadow-sm flex items-center justify-center p-1 border border-gray-100 group-hover:border-primary/20">
@@ -138,13 +136,13 @@
                         <div
                             class="bg-gray-50/50 rounded-2xl p-3 border border-gray-50 transition-all group-hover:bg-amber-50 group-hover:border-amber-100">
                             <span
-                                class="block text-[10px] text-gray-400 font-black  tracking-widest mb-1.5">Kompetisi</span>
+                                class="block text-[10px] text-gray-400 font-black  tracking-widest mb-1.5 uppercase">{{ $t('archers.competition') }}</span>
                             <div class="flex items-center gap-2">
                                 <div
                                     class="w-7 h-7 rounded-lg bg-white shadow-sm flex items-center justify-center border border-gray-100 group-hover:border-amber-200">
                                     <Icon icon="ph:medal-bold" class="text-amber-500 text-sm" />
                                 </div>
-                                <span class="text-xs font-black text-navy">{{ archer.total_events || 0 }} Event</span>
+                                <span class="text-xs font-black text-navy">{{ $t('archers.events_count', { count: archer.total_events || 0 }) }}</span>
                             </div>
                         </div>
                     </div>
@@ -155,7 +153,7 @@
             <div v-else class="space-y-4">
                 <div v-for="archer in filteredArchers" :key="archer.id || archer.uuid"
                     class="bg-white rounded-xl border-2 border-gray-100 hover:border-primary transition-all p-6">
-                    <NuxtLink :to="`/archers/${archer.slug}`" class="flex items-center gap-6 group">
+                    <NuxtLink :to="localePath(`/archers/${archer.slug}`)" class="flex items-center gap-6 group">
                         <div
                             class="w-20 h-20 rounded-xl bg-navy overflow-hidden flex-shrink-0 relative group-hover:shadow-md transition-all duration-500">
                             <img :src="useImageOrDefault(archer.photo_url || archer.avatar_url, archer.full_name)"
@@ -165,14 +163,14 @@
                             <h3 class="font-black text-navy text-xl transition-colors">
                                 {{ archer.full_name }}
                             </h3>
-                            <div class="flex items-center gap-4 mt-2 text-sm text-gray-500">
+                            <div class="flex items-center gap-4 mt-2 text-sm text-gray-500 font-semibold">
                                 <span v-if="archer.athlete_code">{{ archer.athlete_code }}</span>
                                 <span v-if="archer.city">{{ archer.city }}</span>
-                                <span v-if="archer.bow_type">{{ archer.bow_type }}</span>
+                                <span v-if="archer.bow_type" class="capitalize">{{ archer.bow_type }}</span>
                             </div>
                         </div>
-                        <div class="text-right">
-                            <div class="text-sm text-gray-500 mb-1">Total Event</div>
+                        <div class="text-right mr-4">
+                            <div class="text-sm text-gray-500 mb-1 font-semibold">{{ $t('archers.total_events') }}</div>
                             <div class="text-2xl font-black text-navy">{{ archer.total_events || 0 }}</div>
                         </div>
                         <Icon icon="ph:arrow-right" class="text-gray-300 transition-colors" />
@@ -183,9 +181,8 @@
             <!-- Empty State -->
             <div v-if="archers.length === 0 && !isLoading" class="text-center py-20">
                 <Icon icon="ph:user-focus-light" class="text-7xl text-gray-200 mb-6 mx-auto" />
-                <h3 class="text-lg sm:text-2xl font-black text-navy mb-3">Pemanah Tidak Ditemukan</h3>
-                <p class="text-gray-500 max-w-md mx-auto">Coba ubah filter atau kata kunci pencarian untuk menemukan
-                    pemanah yang sesuai.</p>
+                <h3 class="text-lg sm:text-2xl font-black text-navy mb-3">{{ $t('archers.not_found') }}</h3>
+                <p class="text-gray-500 max-w-md mx-auto">{{ $t('archers.not_found_desc') }}</p>
             </div>
 
             <!-- Pagination -->
@@ -200,6 +197,10 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { ref, computed, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+const localePath = useLocalePath()
 
 definePageMeta({
     layout: 'landing'
@@ -224,14 +225,14 @@ const getBowIcon = (type) => {
     return `/bow/${lowType}.svg`
 }
 
-const bowTypes = [
-    { label: 'Semua', value: 'all' },
-    { label: 'Standard', value: 'standard' },
-    { label: 'Recurve', value: 'recurve' },
-    { label: 'Compound', value: 'compound' },
-    { label: 'Barebow', value: 'barebow' },
-    { label: 'Traditional', value: 'traditional' },
-]
+const localizedBowTypes = computed(() => [
+    { label: t('archers.bow_types.all'), value: 'all' },
+    { label: t('archers.bow_types.standard'), value: 'standard' },
+    { label: t('archers.bow_types.recurve'), value: 'recurve' },
+    { label: t('archers.bow_types.compound'), value: 'compound' },
+    { label: t('archers.bow_types.barebow'), value: 'barebow' },
+    { label: t('archers.bow_types.traditional'), value: 'traditional' },
+])
 
 // Pagination state
 const { data: archerResponse, pending: isLoading } = await useAsyncData('archers', () => $fetch(`${apiBaseUrl}/archers`, {
@@ -299,12 +300,12 @@ const activeArchers = computed(() => {
 const filteredArchers = computed(() => archers.value)
 
 useHead({
-    title: 'Komunitas Pemanah Indonesia — Archeris.net',
+    title: t('archers.seo_title'),
     link: [
         { rel: 'canonical', href: useRequestURL().href }
     ],
     meta: [
-        { name: 'description', content: 'Temukan dan jelajahi profil pemanah berbakat dari seluruh penjuru Indonesia. Lihat prestasi, klub, dan dedikasi mereka di Archeris.net.' }
+        { name: 'description', content: t('archers.seo_desc') }
     ]
 })
 </script>

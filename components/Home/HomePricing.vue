@@ -1,11 +1,11 @@
 <template>
-    <section class="py-24 bg-white overflow-hidden">
+    <section ref="sectionRef" class="py-24 bg-white overflow-hidden">
         <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 sm:mb-24">
-                <h2 class="text-navy mb-6">
+                <h2 class="text-navy mb-6 reveal-title">
                     {{ $t('home.pricing.title') }}
                 </h2>
-                <p class="text-navy/60 text-lg max-w-2xl mx-auto font-light">
+                <p class="text-navy/60 text-lg max-w-2xl mx-auto font-light reveal-desc">
                     {{ $t('home.pricing.description') }}
                 </p>
             </div>
@@ -108,9 +108,44 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import { Icon } from '@iconify/vue'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 const localePath = useLocalePath()
+const sectionRef = ref(null)
+
+onMounted(() => {
+    gsap.registerPlugin(ScrollTrigger)
+    const el = sectionRef.value
+    if (!el) return
+
+    gsap.from(el.querySelector('.reveal-title'), {
+        scrollTrigger: {
+            trigger: el,
+            start: 'top 80%',
+            toggleActions: 'play none none none'
+        },
+        opacity: 0,
+        y: 35,
+        duration: 1.1,
+        ease: 'power3.out'
+    })
+
+    gsap.from(el.querySelector('.reveal-desc'), {
+        scrollTrigger: {
+            trigger: el,
+            start: 'top 80%',
+            toggleActions: 'play none none none'
+        },
+        opacity: 0,
+        y: 20,
+        duration: 1.1,
+        delay: 0.18,
+        ease: 'power3.out'
+    })
+})
 
 const basicFeatures = [
     'Skoring Digital (Unlimited)',

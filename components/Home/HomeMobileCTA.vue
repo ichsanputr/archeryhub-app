@@ -1,5 +1,5 @@
 <template>
-    <section class="py-24 bg-[#DEFEBD] overflow-hidden relative">
+    <section ref="sectionRef" class="py-24 bg-[#DEFEBD] overflow-hidden relative">
         <!-- Subtle Stripes SVG Overlay (Left Background - Navy) -->
         <svg class="absolute -top-12 -left-20 h-[120%] w-auto text-navy pointer-events-none opacity-40" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 765 1186" xml:space="preserve">
             <path fill="currentColor" style="opacity: 0.04;" d="M122,1186H0L406-31h122L122,1186z M765-31H643L237,1186h122L765-31z"></path>
@@ -39,11 +39,11 @@
                 <!-- Text Content -->
                 <div class="order-2 lg:order-1">
                     <h2
-                        class="text-4xl sm:text-6xl font-black text-navy leading-tight mb-8 font-display tracking-tighter">
+                        class="text-4xl sm:text-6xl font-black text-navy leading-tight mb-8 font-display tracking-tighter reveal-title">
                         {{ $t('home.mobile.title1') }}<br />
                         {{ $t('home.mobile.title2') }}
                     </h2>
-                    <p class="text-navy/70 text-lg sm:text-xl font-light leading-relaxed mb-10 max-w-xl">
+                    <p class="text-navy/70 text-lg sm:text-xl font-light leading-relaxed mb-10 max-w-xl reveal-desc">
                         {{ $t('home.mobile.description') }}
                     </p>
 
@@ -80,7 +80,43 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import { Icon } from '@iconify/vue'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+const sectionRef = ref(null)
+
+onMounted(() => {
+    gsap.registerPlugin(ScrollTrigger)
+    const el = sectionRef.value
+    if (!el) return
+
+    gsap.from(el.querySelector('.reveal-title'), {
+        scrollTrigger: {
+            trigger: el,
+            start: 'top 80%',
+            toggleActions: 'play none none none'
+        },
+        opacity: 0,
+        y: 35,
+        duration: 1.1,
+        ease: 'power3.out'
+    })
+
+    gsap.from(el.querySelector('.reveal-desc'), {
+        scrollTrigger: {
+            trigger: el,
+            start: 'top 80%',
+            toggleActions: 'play none none none'
+        },
+        opacity: 0,
+        y: 20,
+        duration: 1.1,
+        delay: 0.18,
+        ease: 'power3.out'
+    })
+})
 </script>
 
 <style scoped></style>

@@ -134,5 +134,28 @@
       "peserta": "참가자",
       "kategori": "카테고리"
     }
+  },
+  "archers": {
+    "badge": "양궁 커뮤니티",
+    "title": "인도네시아 궁수들의 영감과 연결을 발견하세요",
+    "description": "전국 각지의 재능 있는 궁수들의 프로필을 탐색해 보세요. 그들의 업적, 클럽, 그리고 스포츠를 향한 헌신을 확인하세요.",
+    "search_placeholder": "궁수, 도시, 또는 클럽 검색...",
+    "count_unit": "명",
+    "division": "부문",
+    "competition": "대회",
+    "events_count": "{count}개 이벤트",
+    "total_events": "총 이벤트 수",
+    "not_found": "궁수를 찾을 수 없습니다",
+    "not_found_desc": "필터 또는 검색 키워드를 변경하여 조건에 맞는 궁수를 찾아보세요.",
+    "bow_types": {
+      "all": "전체",
+      "standard": "스탠다드",
+      "recurve": "리커브",
+      "compound": "컴파운드",
+      "barebow": "베어보우",
+      "traditional": "트래디셔널"
+    },
+    "seo_title": "인도네시아 양궁 커뮤니티 — Archeris.net",
+    "seo_desc": "인도네시아 전역의 재능 있는 궁수들의 프로필을 발견하고 탐색하십시오. 그들의 업적, 클럽, 그리고 헌신을 Archeris.net에서 확인하세요."
   }
 }

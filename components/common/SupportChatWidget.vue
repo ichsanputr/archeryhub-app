@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 flex flex-col items-end gap-4">
+  <div ref="widgetWrapper" class="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 flex flex-col items-end gap-4">
     <Transition name="chat-window">
       <div v-if="isOpen"
         class="w-[380px] max-w-[calc(100vw-24px)] h-[600px] max-h-[calc(100vh-110px)] bg-white rounded-xl flex flex-col overflow-hidden border border-gray-200 shadow-[0_10px_25px_-5px_rgba(0,0,0,0.12)] max-sm:fixed max-sm:inset-0 max-sm:w-screen max-sm:h-[100dvh] max-sm:max-w-none max-sm:max-h-none max-sm:rounded-none max-sm:border-0">
@@ -83,9 +83,9 @@
     </Transition>
 
     <button
-      class="size-12 md:size-14 bg-primary text-navy rounded-full flex items-center justify-center shadow-[0_10px_25px_-5px_rgba(0,0,0,0.12)] hover:scale-105 active:scale-95 transition-all duration-300 relative"
+      class="size-10 md:size-12 bg-primary text-navy rounded-full flex items-center justify-center shadow-[0_10px_25px_-5px_rgba(0,0,0,0.12)] hover:scale-105 active:scale-95 transition-all duration-300 relative"
       :class="isOpen ? 'max-sm:hidden' : ''" @click="isOpen = !isOpen" aria-label="Toggle support chat">
-      <Icon :icon="isOpen ? 'ph:x-bold' : 'ph:chat-circle-dots-fill'" class="text-2xl" />
+      <Icon :icon="isOpen ? 'ph:x-bold' : 'ph:chat-circle-dots-fill'" class="text-xl md:text-2xl" />
       <span v-if="!isOpen && unreadCount > 0"
         class="absolute -top-1 -right-1 size-5 bg-red-500 border-2 border-background-light rounded-full text-[10px] text-white flex items-center justify-center font-bold">
         {{ unreadCount }}
@@ -95,15 +95,30 @@
 </template>
 
 <script setup>
-import { nextTick, ref } from 'vue'
+import { nextTick, ref, onMounted, onBeforeUnmount, watch } from 'vue'
 
 const config = useRuntimeConfig()
 const apiBaseUrl = useApiBaseUrl()
+const widgetWrapper = ref(null)
 const isOpen = ref(false)
 const isLoading = ref(false)
 const inputMessage = ref('')
 const chatContainer = ref(null)
 const unreadCount = ref(1)
+
+const handleOutsideClick = (event) => {
+  if (isOpen.value && widgetWrapper.value && !widgetWrapper.value.contains(event.target)) {
+    isOpen.value = false
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('click', handleOutsideClick)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('click', handleOutsideClick)
+})
 
 const nowTime = () => new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
 

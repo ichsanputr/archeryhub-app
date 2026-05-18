@@ -17,7 +17,7 @@
                             <span class="hero-word inline-block transform-gpu">{{ word }}</span>
                         </span>
                         <br />
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary to-green-300">
+                        <span class="text-white">
                             <span class="inline-block overflow-hidden mr-2.5 sm:mr-4 py-1" v-for="(word, i) in $t('home.hero.title_part2').split(' ')" :key="'p2-' + i">
                                 <span class="hero-word inline-block transform-gpu">{{ word }}</span>
                             </span>

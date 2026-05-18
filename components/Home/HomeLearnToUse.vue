@@ -1,5 +1,5 @@
 <template>
-    <section class="py-20 sm:py-32 bg-[#DEFEBD] overflow-hidden relative">
+    <section ref="sectionRef" class="py-20 sm:py-32 bg-[#DEFEBD] overflow-hidden relative">
         <!-- Subtle Stripes SVG Overlay (Right Side - Bold & Variant) -->
         <svg class="absolute inset-y-0 right-0 h-full w-auto text-[#63C03B] pointer-events-none opacity-80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 765 1186" xml:space="preserve">
             <!-- Intersecting double-stripe parallel variants -->
@@ -16,13 +16,13 @@
         <div class="max-w-[1600px] mx-auto relative z-10">
             <!-- Section Header -->
             <div class="text-center mb-16 sm:mb-24 px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl sm:text-5xl font-black text-navy leading-tight mb-6 font-display tracking-tight">
+                <h2 class="text-3xl sm:text-5xl font-black text-navy leading-tight mb-6 font-display tracking-tight reveal-title">
                     {{ $t('home.learn.title') }} <br class="hidden sm:block" />
                     <span class="text-navy/70">
                         {{ $t('home.learn.subtitle') }}
                     </span>
                 </h2>
-                <p class="text-slate-700 text-base sm:text-lg max-w-2xl mx-auto font-light leading-relaxed">
+                <p class="text-slate-700 text-base sm:text-lg max-w-2xl mx-auto font-light leading-relaxed reveal-desc">
                     {{ $t('home.learn.description') }}
                 </p>
             </div>
@@ -93,8 +93,43 @@
 </template>
 
 <script setup>
-// Icon not strictly needed if we don't render inline widgets, but imported for potential extensions.
+import { ref, onMounted } from 'vue'
 import { Icon } from '@iconify/vue'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+const sectionRef = ref(null)
+
+onMounted(() => {
+    gsap.registerPlugin(ScrollTrigger)
+    const el = sectionRef.value
+    if (!el) return
+
+    gsap.from(el.querySelector('.reveal-title'), {
+        scrollTrigger: {
+            trigger: el,
+            start: 'top 80%',
+            toggleActions: 'play none none none'
+        },
+        opacity: 0,
+        y: 35,
+        duration: 1.1,
+        ease: 'power3.out'
+    })
+
+    gsap.from(el.querySelector('.reveal-desc'), {
+        scrollTrigger: {
+            trigger: el,
+            start: 'top 80%',
+            toggleActions: 'play none none none'
+        },
+        opacity: 0,
+        y: 20,
+        duration: 1.1,
+        delay: 0.18,
+        ease: 'power3.out'
+    })
+})
 </script>
 
 <style scoped>

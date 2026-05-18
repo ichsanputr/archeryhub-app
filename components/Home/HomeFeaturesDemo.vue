@@ -1,13 +1,13 @@
 <template>
-    <section class="py-24 sm:py-32 bg-white">
+    <section ref="sectionRef" class="py-24 sm:py-32 bg-white">
         <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Main Heading -->
             <div class="text-center mb-24">
-                <h2 class="text-navy mb-6">
+                <h2 class="text-navy mb-6 reveal-title">
                     {{ $t('home.features_demo.title1') }}<br />
                     {{ $t('home.features_demo.title2') }}
                 </h2>
-                <p class="text-text-secondary text-lg sm:text-xl max-w-2xl mx-auto font-light">
+                <p class="text-text-secondary text-lg sm:text-xl max-w-2xl mx-auto font-light reveal-desc">
                     {{ $t('home.features_demo.description') }}
                 </p>
             </div>
@@ -154,7 +154,42 @@
 </template>
 
 <script setup>
-// No script needed for this simple demo
+import { ref, onMounted } from 'vue'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+const sectionRef = ref(null)
+
+onMounted(() => {
+    gsap.registerPlugin(ScrollTrigger)
+    const el = sectionRef.value
+    if (!el) return
+
+    gsap.from(el.querySelector('.reveal-title'), {
+        scrollTrigger: {
+            trigger: el,
+            start: 'top 80%',
+            toggleActions: 'play none none none'
+        },
+        opacity: 0,
+        y: 35,
+        duration: 1.1,
+        ease: 'power3.out'
+    })
+
+    gsap.from(el.querySelector('.reveal-desc'), {
+        scrollTrigger: {
+            trigger: el,
+            start: 'top 80%',
+            toggleActions: 'play none none none'
+        },
+        opacity: 0,
+        y: 20,
+        duration: 1.1,
+        delay: 0.18,
+        ease: 'power3.out'
+    })
+})
 </script>
 
 <style scoped>
