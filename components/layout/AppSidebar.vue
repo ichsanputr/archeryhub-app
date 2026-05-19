@@ -233,6 +233,7 @@ const eventLinks = computed(() => {
     { label: 'Eliminasi', icon: 'mdi:bracket', path: `${prefix}/events/${eventId.value}/elimination` },
     { label: 'Printout', icon: 'ph:printer-bold', path: `${prefix}/events/${eventId.value}/printout` },
     { label: 'Scan QR', icon: 'ph:qr-code', path: '/scan/qr' },
+    { label: 'Reset Data', icon: 'ph:arrow-counter-clockwise', path: `${prefix}/events/${eventId.value}/reset` },
   )
 
   return links

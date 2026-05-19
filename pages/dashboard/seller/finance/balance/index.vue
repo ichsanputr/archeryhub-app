@@ -115,7 +115,7 @@
 
                 <div class="min-w-0">
                   <div class="flex items-center gap-2 mb-1">
-                    <div class="text-[11px] font-black tracking-widest opacity-40">{{ account.bank_name }}</div>
+                    <div class=" text-xs font-black tracking-widest opacity-40">{{ account.bank_name }}</div>
                     <span v-if="account.is_primary"
                       class="text-[8px] font-black tracking-widest bg-primary text-navy px-1.5 py-0.5 rounded">Rekening
                       Utama</span>
@@ -150,7 +150,7 @@
                       Status
                       <Icon v-if="sortBy === 'status'"
                         :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
-                        class="text-primary text-[11px]" />
+                        class="text-primary  text-xs" />
                       <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
                     </div>
                   </th>
@@ -160,7 +160,7 @@
                       Tanggal
                       <Icon v-if="sortBy === 'created_at'"
                         :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
-                        class="text-primary text-[11px]" />
+                        class="text-primary  text-xs" />
                       <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
                     </div>
                   </th>
@@ -171,7 +171,7 @@
                       Nominal
                       <Icon v-if="sortBy === 'amount'"
                         :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
-                        class="text-primary text-[11px]" />
+                        class="text-primary  text-xs" />
                       <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
                     </div>
                   </th>
@@ -223,7 +223,7 @@
         <div class="size-10 rounded-2xl bg-white flex items-center justify-center shrink-0 shadow-sm">
           <Icon icon="ph:info-bold" class="text-primary text-xl" />
         </div>
-        <div class="text-[11px] font-bold text-navy/60 leading-relaxed tracking-tighter">
+        <div class=" text-xs font-bold text-navy/60 leading-relaxed tracking-tighter">
           Pastikan nomor rekening dan nama pemilik sesuai dengan buku tabungan untuk kelancaran proses pencairan dana
           toko anda.
         </div>

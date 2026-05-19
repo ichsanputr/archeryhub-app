@@ -83,7 +83,7 @@
                                     </div>
                                     <div class="min-w-0">
                                         <div class="text-sm font-black text-navy leading-tight">{{ p.full_name }}</div>
-                                        <div class="text-[11px] text-gray-400 font-medium mt-1 ">{{ p.athlete_code ||
+                                        <div class=" text-xs text-gray-400 font-medium mt-1 ">{{ p.athlete_code ||
                                             '-' }}</div>
                                     </div>
                                 </div>
@@ -91,7 +91,7 @@
                             <td class="px-6 py-4">
                                 <div class="text-sm font-bold text-navy leading-tight">{{ p.club_name || 'Independen' }}
                                 </div>
-                                <div class="text-[11px] text-gray-400 mt-0.5">{{ p.city || '-' }}</div>
+                                <div class=" text-xs text-gray-400 mt-0.5">{{ p.city || '-' }}</div>
                             </td>
                             <td class="px-6 py-4">
                                 <span

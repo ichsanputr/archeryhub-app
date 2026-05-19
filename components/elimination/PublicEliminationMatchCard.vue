@@ -167,7 +167,7 @@ const isLoser = (side) => {
 }
 
 .archer-name {
-    @apply text-[11px] font-black text-black truncate tracking-tight;
+    @apply  text-xs font-black text-black truncate tracking-tight;
 }
 
 .score-display {

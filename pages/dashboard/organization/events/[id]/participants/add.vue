@@ -260,7 +260,7 @@
                                 </div>
                             </div>
                         </div>
-                        <p class="text-[11px] text-gray-500 font-medium px-1 flex items-center gap-2">
+                        <p class=" text-xs text-gray-500 font-medium px-1 flex items-center gap-2">
                             <Icon icon="ph:info-bold" class="text-navy" />
                             Anda dapat memilih lebih dari satu kategori jika jadwal memungkinkan
                         </p>

@@ -25,7 +25,7 @@
             </span>
         </label>
 
-        <p v-if="error" class="text-red-500 text-[11px] font-bold ml-8">
+        <p v-if="error" class="text-red-500  text-xs font-bold ml-8">
             {{ error }}
         </p>
     </div>

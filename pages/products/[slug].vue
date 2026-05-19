@@ -77,13 +77,13 @@
 
                                 <div class="mt-3 flex flex-wrap items-center gap-2 text-sm">
                                     <span
-                                        class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-700">
+                                        class="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1  text-xs font-bold text-emerald-700">
                                         <span class="h-1.5 w-1.5 rounded-full"
                                             :class="product.stock > 0 ? 'bg-emerald-600' : 'bg-red-500'" />
                                         {{ product.stock > 0 ? `Stok ${product.stock}` : 'Stok Habis' }}
                                     </span>
                                     <span
-                                        class="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-[11px] font-bold text-amber-700">
+                                        class="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1  text-xs font-bold text-amber-700">
                                         <Icon icon="ph:star-fill" /> 4.9
                                     </span>
                                 </div>
@@ -105,7 +105,7 @@
                                     <div class="flex flex-wrap gap-2">
                                         <button v-for="color in product.colors" :key="color"
                                             @click="selectedColor = color" :class="[
-                                                'rounded-xl border px-3 py-2 text-[11px] font-bold transition',
+                                                'rounded-xl border px-3 py-2  text-xs font-bold transition',
                                                 selectedColor === color ? 'border-navy bg-navy text-white' : 'border-gray-100 bg-gray-50 text-gray-500 hover:border-gray-200'
                                             ]">
                                             {{ color }}
@@ -115,7 +115,7 @@
 
                                 <div
                                     class="mt-5 flex items-center justify-between rounded-xl border border-black/5 bg-[#fafafa] p-3">
-                                    <div class="text-[11px] font-black text-navy tracking-widest">Jumlah</div>
+                                    <div class=" text-xs font-black text-navy tracking-widest">Jumlah</div>
                                     <div
                                         class="flex items-center rounded-lg border border-black/10 bg-white overflow-hidden">
                                         <button @click="quantity = Math.max(1, quantity - 1)"
@@ -123,7 +123,7 @@
                                             <Icon icon="ph:minus-bold" class="text-xs" />
                                         </button>
                                         <input v-model.number="quantity" type="number" min="1" :max="maxQty"
-                                            class="w-10 text-center text-[11px] font-black text-navy outline-none" />
+                                            class="w-10 text-center  text-xs font-black text-navy outline-none" />
                                         <button @click="quantity = Math.min(maxQty, quantity + 1)"
                                             class="px-2.5 py-1.5 text-navy hover:bg-gray-50">
                                             <Icon icon="ph:plus-bold" class="text-xs" />
@@ -134,14 +134,14 @@
                                 <div class="mt-5 grid grid-cols-2 gap-3">
                                     <button type="button" @click="handleAddToCart"
                                         :disabled="maxQty < 1 || isAddingToCart"
-                                        class="w-full flex items-center justify-center gap-2 rounded-2xl bg-primary py-3.5 text-[11px] font-black text-navy shadow-xl shadow-primary/20 transition hover:opacity-90 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed">
+                                        class="w-full flex items-center justify-center gap-2 rounded-2xl bg-primary py-3.5  text-xs font-black text-navy shadow-xl shadow-primary/20 transition hover:opacity-90 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed">
                                         <Icon v-if="isAddingToCart" icon="ph:spinner"
                                             class="animate-spin text-lg shrink-0" />
                                         <Icon v-else icon="ph:shopping-cart-simple-bold" class="text-lg shrink-0" />
                                         <span class="uppercase tracking-wide">Keranjang</span>
                                     </button>
                                     <button type="button" @click="openChatDialog" :disabled="isChatStarting"
-                                        class="w-full flex items-center justify-center gap-2 rounded-2xl border-2 border-navy py-3.5 text-[11px] font-black text-navy transition hover:bg-navy hover:text-white active:scale-95 disabled:opacity-60">
+                                        class="w-full flex items-center justify-center gap-2 rounded-2xl border-2 border-navy py-3.5  text-xs font-black text-navy transition hover:bg-navy hover:text-white active:scale-95 disabled:opacity-60">
                                         <Icon v-if="isChatStarting" icon="ph:spinner"
                                             class="animate-spin text-lg shrink-0" />
                                         <Icon v-else icon="ph:chat-circle-dots-bold" class="text-lg shrink-0" />
@@ -222,7 +222,7 @@
                                         class="h-12 w-12 rounded-full border-2 border-gray-100 bg-gray-100 flex items-center justify-center shrink-0">
                                         <Icon icon="ph:storefront-bold" class="text-gray-400 text-xl" />
                                     </div>
-                                    <div class="text-[11px] text-gray-500 font-medium">Data penjual tidak tersedia</div>
+                                    <div class=" text-xs text-gray-500 font-medium">Data penjual tidak tersedia</div>
                                 </div>
                             </div>
                         </aside>
@@ -244,7 +244,7 @@
                         </div>
 
                         <div v-if="Object.keys(product.specifications || {}).length" class="mt-8">
-                            <h3 class="text-[11px] font-black tracking-[0.2em] text-gray-400 mb-4">Spesifikasi
+                            <h3 class=" text-xs font-black tracking-[0.2em] text-gray-400 mb-4">Spesifikasi
                                 Detail</h3>
                             <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
                                 <div v-for="(value, key) in product.specifications" :key="key"

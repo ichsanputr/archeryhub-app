@@ -95,7 +95,7 @@
                                     Tanggal
                                     <Icon v-if="sortBy === 'date'"
                                         :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
-                                        class="text-primary text-[11px]" />
+                                        class="text-primary  text-xs" />
                                     <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
                                 </div>
                             </th>
@@ -106,7 +106,7 @@
                                     Nominal
                                     <Icon v-if="sortBy === 'amount'"
                                         :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
-                                        class="text-primary text-[11px]" />
+                                        class="text-primary  text-xs" />
                                     <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
                                 </div>
                             </th>
@@ -116,7 +116,7 @@
                                     Status
                                     <Icon v-if="sortBy === 'status'"
                                         :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
-                                        class="text-primary text-[11px]" />
+                                        class="text-primary  text-xs" />
                                     <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
                                 </div>
                             </th>
@@ -150,16 +150,16 @@
                                         class="size-8 rounded-lg flex items-center justify-center shrink-0">
                                         <Icon :icon="item.type === 'income' ? 'ph:trend-up' : 'ph:trend-down'" />
                                     </div>
-                                    <div class="text-[11px] font-black text-navy tracking-tight">{{ item.type
+                                    <div class=" text-xs font-black text-navy tracking-tight">{{ item.type
                                         === 'income' ? 'Masuk' : 'Keluar' }}</div>
                                 </div>
                             </td>
                             <td class="px-8 py-4">
-                                <div class="text-[11px] font-bold text-navy/70">{{ formatDate(item.date) }}</div>
+                                <div class=" text-xs font-bold text-navy/70">{{ formatDate(item.date) }}</div>
                                 <div class="text-[9px] text-gray-400 font-bold ">{{ formatTime(item.date) }}</div>
                             </td>
                             <td class="px-8 py-4">
-                                <div class="text-[11px] font-black leading-none mb-1 text-navy">#{{ item.ref }}</div>
+                                <div class=" text-xs font-black leading-none mb-1 text-navy">#{{ item.ref }}</div>
                                 <div class="text-[10px] text-gray-400 font-medium max-w-[200px] truncate">{{ item.notes
                                     || 'Penghasilan Pesanan' }}</div>
                             </td>

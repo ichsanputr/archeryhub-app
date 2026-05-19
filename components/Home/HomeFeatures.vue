@@ -80,7 +80,7 @@
                                     <h3 class="text-xl font-black text-white mb-2 font-display">
                                         {{ featureItems[activeFeature].title }}
                                     </h3>
-                                    <div class="text-white/80 text-[11px] leading-relaxed line-clamp-3">
+                                    <div class="text-white/80  text-xs leading-relaxed line-clamp-3">
                                         {{ featureItems[activeFeature].longDescription }}
                                     </div>
                                 </div>

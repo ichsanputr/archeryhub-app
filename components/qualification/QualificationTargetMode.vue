@@ -111,7 +111,7 @@
                                         class="w-full h-full object-cover">
                                 </div>
                                 <div class="flex-1 min-w-0 pointer-events-none">
-                                    <div class="text-[11px] font-black text-navy truncate">{{ archer.name }}</div>
+                                    <div class=" text-xs font-black text-navy truncate">{{ archer.name }}</div>
                                     <div class="text-[9px] text-gray-400 font-bold truncate tracking-tighter">
                                         {{ archer.club || 'Independen' }}
                                     </div>
@@ -175,7 +175,7 @@
                                             :alt="target.slots[pos].name" />
                                     </div>
                                     <div class="flex-1 min-w-0 pointer-events-none">
-                                        <div class="text-[11px] font-black text-navy truncate leading-tight">{{
+                                        <div class=" text-xs font-black text-navy truncate leading-tight">{{
                                             target.slots[pos].name }}</div>
                                         <div class="text-[9px] text-gray-500 truncate font-bold tracking-tighter">
                                             {{
@@ -196,7 +196,7 @@
                                             {{ pos }}
                                         </span>
                                         <div class="flex-1 min-w-0">
-                                            <div class="text-[11px] font-black text-gray-500 truncate leading-tight">
+                                            <div class=" text-xs font-black text-gray-500 truncate leading-tight">
                                                 {{ target.otherSlots[pos].archer_name }}
                                             </div>
                                             <div class="text-[9px] text-gray-400 font-bold tracking-tighter">

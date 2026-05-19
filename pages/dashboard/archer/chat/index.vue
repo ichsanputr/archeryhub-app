@@ -15,7 +15,7 @@
             </div>
             <div>
               <h1 class="text-base font-black text-navy leading-none">Pesan Saya</h1>
-              <div class="text-[11px] text-gray-500 font-semibold mt-0.5">Percakapan dengan penjual</div>
+              <div class=" text-xs text-gray-500 font-semibold mt-0.5">Percakapan dengan penjual</div>
             </div>
           </div>
           <div class="relative">
@@ -47,7 +47,7 @@
               <Icon icon="ph:chat-centered-dots" class="text-4xl text-gray-300" />
             </div>
             <div class="text-sm font-black text-gray-500">Belum ada percakapan</div>
-            <div class="text-[11px] text-gray-400 font-medium mt-1 mb-4">Chat penjual dari halaman produk</div>
+            <div class=" text-xs text-gray-400 font-medium mt-1 mb-4">Chat penjual dari halaman produk</div>
             <BaseButton to="/products" variant="primary" size="sm" icon="ph:storefront-bold" class="!rounded-xl">
               Jelajahi Produk
             </BaseButton>
@@ -89,7 +89,7 @@
                     {{ formatTime(conv.last_message_at || conv.created_at) }}
                   </span>
                 </div>
-                <div class="text-[11px] truncate leading-snug"
+                <div class=" text-xs truncate leading-snug"
                   :class="conv.archer_unread > 0 ? 'text-navy font-bold' : 'text-gray-500 font-medium'">
                   {{ conv.last_message || (conv.product_name ? `Re: ${conv.product_name}` : 'Mulai percakapan') }}
                 </div>

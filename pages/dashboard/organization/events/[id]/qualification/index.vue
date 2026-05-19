@@ -249,7 +249,7 @@
                       <img :src="useImageOrDefault(archer.avatar_url, archer.archer_name)"
                         class="size-9 rounded-lg object-cover border border-gray-100" />
                       <div>
-                        <div class="text-[11px] sm:text-base font-bold text-navy leading-tight">{{ archer.archer_name }}
+                        <div class=" text-xs sm:text-base font-bold text-navy leading-tight">{{ archer.archer_name }}
                         </div>
                         <div class="flex items-center gap-2 mt-1">
                           <div class="text-[10px] text-gray-400 font-bold tracking-tighter">{{
@@ -297,7 +297,7 @@
                     </div>
                     <div v-else
                       class="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-xl border-2 border-dashed border-gray-100 max-w-[150px]">
-                      <span class="text-[11px] text-gray-400 font-black italic tracking-widest">Kosong</span>
+                      <span class=" text-xs text-gray-400 font-black italic tracking-widest">Kosong</span>
                     </div>
                   </td>
                   <td class="px-6 py-4 text-right">

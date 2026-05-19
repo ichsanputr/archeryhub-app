@@ -1,5 +1,19 @@
 <template>
     <div class="space-y-8">
+        <!-- Success Alert -->
+        <div v-if="showSuccessAlert" class="bg-emerald-50 border border-emerald-100 rounded-3xl p-6 flex items-start gap-4 shadow-sm relative overflow-hidden">
+            <div class="size-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-600 shrink-0">
+                <Icon icon="ph:check-circle-bold" class="text-2xl" />
+            </div>
+            <div class="flex-1">
+                <h4 class="text-lg font-black text-emerald-800 leading-none">Pembayaran Berhasil!</h4>
+                <p class="text-xs font-semibold text-emerald-600 mt-2">Langganan Anda telah berhasil diperbarui dan masa aktif telah diperpanjang. Terima kasih telah berlangganan!</p>
+            </div>
+            <button @click="showSuccessAlert = false" class="size-8 rounded-xl hover:bg-emerald-100/50 flex items-center justify-center text-emerald-700 transition-colors shrink-0">
+                <Icon icon="ph:x-bold" class="text-lg" />
+            </button>
+        </div>
+
         <!-- Header Section -->
         <SubscriptionHeader :status="headerStatus" />
 
@@ -23,7 +37,8 @@
 </template>
 
 <script setup>
-import { computed, onBeforeMount, onMounted } from 'vue'
+import { computed, ref, onBeforeMount, onMounted } from 'vue'
+import { Icon } from '@iconify/vue'
 import { useAuth } from '~/composables/useAuth'
 import { useSubscription } from '~/composables/useSubscription'
 import SubscriptionHeader from '~/components/dashboard/subscription/SubscriptionHeader.vue'
@@ -38,7 +53,9 @@ definePageMeta({
 const { user } = useAuth()
 const { subscriptionData, fetchSubscription } = useSubscription()
 const router = useRouter()
+const route = useRoute()
 const userType = computed(() => user.value?.user_type || user.value?.role || 'organization')
+const showSuccessAlert = ref(false)
 
 onBeforeMount(async () => {
     await fetchSubscription()
@@ -46,6 +63,10 @@ onBeforeMount(async () => {
 
 onMounted(() => {
     fetchSubscription(true)
+    if (route.query.status === 'success') {
+        showSuccessAlert.value = true
+        router.replace({ path: route.path, query: {} })
+    }
 })
 
 const subscriptionRes = computed(() => subscriptionData.value)

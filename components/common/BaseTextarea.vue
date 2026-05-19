@@ -20,10 +20,10 @@
             ]" />
         </div>
 
-        <p v-if="error" class="text-red-500 text-[11px] font-bold ml-1 animate-in fade-in slide-in-from-top-1">
+        <p v-if="error" class="text-red-500  text-xs font-bold ml-1 animate-in fade-in slide-in-from-top-1">
             {{ error }}
         </p>
-        <p v-else-if="hint" class="text-gray-400 text-[11px] ml-1">
+        <p v-else-if="hint" class="text-gray-400  text-xs ml-1">
             {{ hint }}
         </p>
     </div>

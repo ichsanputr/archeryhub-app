@@ -177,7 +177,7 @@
                                         </span>
                                     </div>
                                     <span
-                                        class="px-2 py-0.5 bg-white border border-gray-100 rounded-md text-[11px] font-black text-navy shadow-sm">
+                                        class="px-2 py-0.5 bg-white border border-gray-100 rounded-md  text-xs font-black text-navy shadow-sm">
                                         {{ member.total_score || 0 }}
                                     </span>
                                 </div>

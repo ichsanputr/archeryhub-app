@@ -66,6 +66,8 @@ export default defineNuxtConfig({
       apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || 'https://api.archeris.net/api/v1',
       siteUrl: 'https://archeris.net',
       siteName: 'Archeris.net',
+      paddleClientToken: process.env.NUXT_PUBLIC_PADDLE_CLIENT_TOKEN || 'test_e8c89b33a59fa8730ad3d1000bb',
+      paddleSandbox: process.env.NUXT_PUBLIC_PADDLE_SANDBOX !== 'false',
     }
   },
   app: {

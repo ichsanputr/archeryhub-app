@@ -169,7 +169,7 @@
                     {{ letter }}
                   </div>
                 </div>
-                <span class="text-[11px] font-black text-navy/40 tracking-widest ">{{ target.target_number }}{{
+                <span class=" text-xs font-black text-navy/40 tracking-widest ">{{ target.target_number }}{{
                   letter }}</span>
               </div>
             </div>
@@ -315,8 +315,8 @@
 
                 <div v-if="!showEditDialog" class="mt-3 rounded-xl border border-gray-200 bg-gray-50 p-3">
                   <div class="flex items-center justify-between gap-2 mb-2">
-                    <p class="text-[11px] font-bold text-navy tracking-wider">Preview Target</p>
-                    <span class="text-[11px] font-bold text-gray-500">
+                    <p class=" text-xs font-bold text-navy tracking-wider">Preview Target</p>
+                    <span class=" text-xs font-bold text-gray-500">
                       {{ totalCreatedTargets }} target
                     </span>
                   </div>

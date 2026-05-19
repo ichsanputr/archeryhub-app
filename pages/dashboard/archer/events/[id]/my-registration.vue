@@ -261,7 +261,7 @@
                                                             class="size-4 mt-0.5 rounded-full bg-primary/10 text-primary font-black flex items-center justify-center shrink-0 text-[9px]">{{
                                                             si + 1 }}</span>
                                                         <span v-html="step"
-                                                            class="text-[11px] text-slate-600 dark:text-slate-300 font-medium leading-relaxed"></span>
+                                                            class=" text-xs text-slate-600 dark:text-slate-300 font-medium leading-relaxed"></span>
                                                     </div>
                                                 </div>
                                             </div>

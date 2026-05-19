@@ -50,10 +50,10 @@
         <table class="w-full border-collapse min-w-[1000px]">
           <thead>
             <tr class="text-left bg-gray-50/50 border-b border-gray-100">
-              <th class="px-8 py-5 text-[11px] font-black tracking-widest text-gray-400">
+              <th class="px-8 py-5  text-xs font-black tracking-widest text-gray-400">
                 ID Pesanan</th>
               <th @click="toggleSort('created_at')"
-                class="px-8 py-5 text-[11px] font-black tracking-widest text-gray-400 cursor-pointer hover:text-navy transition-colors">
+                class="px-8 py-5  text-xs font-black tracking-widest text-gray-400 cursor-pointer hover:text-navy transition-colors">
                 <div class="flex items-center gap-2">
                   Tanggal
                   <Icon v-if="sortBy === 'created_at'"
@@ -62,7 +62,7 @@
                 </div>
               </th>
               <th @click="toggleSort('buyer_name')"
-                class="px-8 py-5 text-[11px] font-black tracking-widest text-gray-400 cursor-pointer hover:text-navy transition-colors">
+                class="px-8 py-5  text-xs font-black tracking-widest text-gray-400 cursor-pointer hover:text-navy transition-colors">
                 <div class="flex items-center gap-2">
                   Pelanggan
                   <Icon v-if="sortBy === 'buyer_name'"
@@ -71,7 +71,7 @@
                 </div>
               </th>
               <th @click="toggleSort('total_amount')"
-                class="px-8 py-5 text-[11px] font-black tracking-widest text-gray-400 cursor-pointer hover:text-navy transition-colors">
+                class="px-8 py-5  text-xs font-black tracking-widest text-gray-400 cursor-pointer hover:text-navy transition-colors">
                 <div class="flex items-center gap-2">
                   Total
                   <Icon v-if="sortBy === 'total_amount'"
@@ -80,7 +80,7 @@
                 </div>
               </th>
               <th @click="toggleSort('status')"
-                class="px-8 py-5 text-[11px] font-black tracking-widest text-gray-400 cursor-pointer hover:text-navy transition-colors">
+                class="px-8 py-5  text-xs font-black tracking-widest text-gray-400 cursor-pointer hover:text-navy transition-colors">
                 <div class="flex items-center gap-2">
                   Status
                   <Icon v-if="sortBy === 'status'" :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
@@ -88,7 +88,7 @@
                   <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
                 </div>
               </th>
-              <th class="px-8 py-5 text-[11px] font-black tracking-widest text-gray-400 text-right">Aksi</th>
+              <th class="px-8 py-5  text-xs font-black tracking-widest text-gray-400 text-right">Aksi</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-50">

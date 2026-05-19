@@ -70,7 +70,7 @@
           <div class="flex items-center gap-5 w-full">
             <div>
               <div class="text-navy font-black text-lg tracking-tight">Status: {{ getStatusLabel(order.status) }}</div>
-              <div class="text-[11px] font-bold text-gray-400 max-w-sm leading-tight">{{ getStatusMessage(order.status)
+              <div class=" text-xs font-bold text-gray-400 max-w-sm leading-tight">{{ getStatusMessage(order.status)
                 }}</div>
             </div>
           </div>
@@ -103,7 +103,7 @@
             </div>
             <div class="hidden sm:block text-right">
               <div class="text-[9px] text-gray-400 font-bold tracking-widest mb-0.5">Invoice</div>
-              <div class="font-mono text-[11px] font-black text-navy opacity-60">INV/{{ new
+              <div class="font-mono  text-xs font-black text-navy opacity-60">INV/{{ new
                 Date(order.created_at).getFullYear() }}/{{ (order.id || '').toUpperCase().slice(0, 6) }}</div>
             </div>
           </div>
@@ -192,7 +192,7 @@
               <div class="p-4 bg-gray-50/50 rounded-xl border border-gray-100">
                 <div class="text-[9px] font-black text-primary tracking-widest mb-1.5">Penerima</div>
                 <div class="text-navy font-black text-base mb-0.5">{{ order.customer_name }}</div>
-                <div class="text-[11px] font-bold text-gray-500 leading-tight">{{ shippingAddress }}</div>
+                <div class=" text-xs font-bold text-gray-500 leading-tight">{{ shippingAddress }}</div>
               </div>
 
               <div class="flex items-center gap-2">

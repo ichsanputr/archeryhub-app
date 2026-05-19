@@ -88,7 +88,7 @@
                                 class="w-full pl-11 pr-4 py-3 bg-gray-50/50 border border-gray-100 rounded-2xl text-sm font-semibold focus:bg-white focus:border-primary/40 focus:ring-4 focus:ring-primary/10 outline-none transition-all duration-200"
                                 :class="form.phone && form.phone.length < 8 ? 'border-red-400' : ''" />
                         </div>
-                        <p v-if="form.phone && form.phone.length < 8" class="text-red-500 text-[11px] font-bold ml-1">
+                        <p v-if="form.phone && form.phone.length < 8" class="text-red-500  text-xs font-bold ml-1">
                             Nomor HP minimal 8 digit</p>
                     </div>
 

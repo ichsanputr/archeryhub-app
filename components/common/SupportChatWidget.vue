@@ -13,7 +13,7 @@
               <h2 class="text-white text-sm font-bold leading-none">Customer Service</h2>
               <div class="flex items-center gap-1.5 mt-1">
                 <span class="size-2 bg-primary rounded-full animate-pulse"></span>
-                <span class="text-white/60 text-[11px] font-medium tracking-wider">Sedang Online</span>
+                <span class="text-white/60  text-xs font-medium tracking-wider">Sedang Online</span>
               </div>
             </div>
           </div>

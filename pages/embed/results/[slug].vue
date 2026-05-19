@@ -23,7 +23,7 @@
             <div class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm">
                 <div class="flex items-center gap-3 overflow-x-auto p-4 no-scrollbar scrollbar-hide">
                     <button v-for="cat in categories" :key="cat.uuid" @click="selectCategory(cat)" :class="[
-                        'flex-shrink-0 px-4 py-2.5 rounded-full text-[11px] font-black tracking-wider transition-all duration-300 border-2',
+                        'flex-shrink-0 px-4 py-2.5 rounded-full  text-xs font-black tracking-wider transition-all duration-300 border-2',
                         selectedCategoryId === cat.uuid
                             ? 'bg-navy border-navy text-white shadow-md'
                             : 'bg-gray-50 border-transparent text-gray-400 hover:bg-gray-100'

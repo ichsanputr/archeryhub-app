@@ -127,7 +127,7 @@ defineProps({
 }
 
 .archer-name {
-    @apply text-[11px] font-black text-navy truncate;
+    @apply  text-xs font-black text-navy truncate;
 }
 
 .seed-tag {

@@ -30,9 +30,22 @@ const { data: channelsRes, pending: loadingChannels, error: fetchError } = useFe
 })
 
 const channels = computed(() => {
-    if (!channelsRes.value) return []
+    const list = [
+        {
+            code: 'paddle',
+            name: 'Kartu Kredit / PayPal (Global)',
+            icon_url: 'https://cdn.paddle.com/paddle/assets/images/logos/paddle-logo-dark.svg',
+            feeLabel: 'Terintegrasi',
+            group: 'Kartu Kredit & Internasional',
+            active: true
+        }
+    ]
+    if (!channelsRes.value) return list
     const data = channelsRes.value.data || channelsRes.value || []
-    return Array.isArray(data) ? data.filter((c) => c.active) : []
+    if (Array.isArray(data)) {
+        return [...list, ...data.filter((c) => c.active)]
+    }
+    return list
 })
 
 const groupedChannels = computed(() => {
@@ -43,9 +56,9 @@ const groupedChannels = computed(() => {
         }
         groups[channel.group].push({
             ...channel,
-            feeLabel: channel.fee_customer?.flat === 0
+            feeLabel: channel.feeLabel || (channel.fee_customer?.flat === 0
                 ? `${channel.fee_customer?.percent}%`
-                : `Rp ${(channel.fee_customer?.flat || 0).toLocaleString('id-ID')}`
+                : `Rp ${(channel.fee_customer?.flat || 0).toLocaleString('id-ID')}`)
         })
     })
     return groups
@@ -59,7 +72,7 @@ const instructions = ref([])
 const loadingInstructions = ref(false)
 
 watch(selectedChannel, async (code) => {
-    if (!code) { instructions.value = []; return }
+    if (!code || code === 'paddle') { instructions.value = []; return }
     loadingInstructions.value = true
     instructions.value = await payment.getInstruction(code)
     loadingInstructions.value = false
@@ -78,6 +91,45 @@ const handlePayment = async () => {
 
     isProcessing.value = true
     errorMessage.value = ''
+
+    if (selectedChannel.value === 'paddle') {
+        try {
+            // 1. Initiate transaction on Go Backend which returns secure hosted checkout_url
+            const res = await $fetch(`${apiBaseUrl}/payment/paddle/initiate`, {
+                method: 'POST',
+                body: {
+                    plan_id: parseInt(planId.value),
+                    months: selectedMonths.value
+                },
+                credentials: 'include'
+            })
+
+            if (!res || !res.checkout_url) {
+                throw new Error('Gagal mendapatkan tautan pembayaran Paddle dari server')
+            }
+
+            // 2. Redirect user directly to Paddle secure hosted checkout page (adblocker immune!)
+            if (res.checkout_url.includes('txn_mock_')) {
+                alert('mode simulasi terdeteksi! karena tidak ada paddle api key di backend, pembayaran disimulasikan secara lokal.\n\nanda akan diarahkan ke halaman simulator untuk memproses pembayaran sukses.')
+                router.push(`/test-paddle?ref=${res.reference}`)
+            } else {
+                if (window.Paddle && res.tripay_reference) {
+                    window.Paddle.Checkout.open({
+                        transactionId: res.tripay_reference
+                    })
+                } else {
+                    window.location.href = res.checkout_url
+                }
+            }
+
+        } catch (err) {
+            console.error('Paddle payment initiation failed:', err)
+            errorMessage.value = err.data?.error || err.message || 'Gagal memproses pembayaran via Paddle'
+        } finally {
+            isProcessing.value = false
+        }
+        return
+    }
 
     try {
         const res = await $fetch(`${apiBaseUrl}/payment/create`, {
@@ -170,7 +222,7 @@ useHead({
                     </div>
                     <div>
                         <h3 class="text-lg font-black text-navy leading-none">Pilih Durasi Berlangganan</h3>
-                        <p class="text-[11px] font-bold text-gray-400 tracking-widest mt-2">Berapa lama Anda
+                        <p class=" text-xs font-bold text-gray-400 tracking-widest mt-2">Berapa lama Anda
                             ingin berlangganan?</p>
                     </div>
                 </div>
@@ -250,7 +302,7 @@ useHead({
                             </div>
                             <div>
                                 <h3 class="text-lg font-black text-navy leading-none">Cara Pembayaran</h3>
-                                <p class="text-[11px] font-bold text-gray-400 tracking-widest mt-2">Langkah-langkah
+                                <p class=" text-xs font-bold text-gray-400 tracking-widest mt-2">Langkah-langkah
                                     pembayaran</p>
                             </div>
                         </div>
@@ -306,7 +358,7 @@ useHead({
                         </div>
 
                         <div v-if="errorMessage || fetchError"
-                            class="mb-6 p-4 bg-red-50 text-red-600 rounded-2xl text-[11px] font-bold flex items-center gap-3 border border-red-100">
+                            class="mb-6 p-4 bg-red-50 text-red-600 rounded-2xl  text-xs font-bold flex items-center gap-3 border border-red-100">
                             <Icon icon="ph:warning-circle-fill" class="text-lg shrink-0" />
                             {{ errorMessage || 'Gagal mengambil metode pembayaran. Silakan coba lagi.' }}
                         </div>
@@ -321,7 +373,7 @@ useHead({
                         </button>
 
                         <p class="text-[10px] text-center text-gray-400 font-bold tracking-widest mt-6">
-                            Transaksi aman & terenkripsi oleh Tripay
+                            Transaksi aman & terenkripsi oleh {{ selectedChannel === 'paddle' ? 'Paddle' : 'Tripay' }}
                         </p>
                     </div>
                 </div>

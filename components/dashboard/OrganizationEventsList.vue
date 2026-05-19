@@ -65,7 +65,7 @@
           <thead>
             <tr class="bg-gray-50/50 border-b border-gray-100">
               <th @click="toggleSort('name')"
-                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
+                class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                 <div class="flex items-center gap-2 ">
                   Informasi Event
                   <Icon v-if="sortBy === 'name'" :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
@@ -74,7 +74,7 @@
                 </div>
               </th>
               <th @click="toggleSort('start_date')"
-                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
+                class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                 <div class="flex items-center gap-2 ">
                   Jadwal & Lokasi
                   <Icon v-if="sortBy === 'start_date'"
@@ -83,7 +83,7 @@
                 </div>
               </th>
               <th @click="toggleSort('participant_count')"
-                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
+                class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                 <div class="flex items-center gap-2 ">
                   Peserta / Kategori
                   <Icon v-if="sortBy === 'participant_count'"
@@ -92,7 +92,7 @@
                 </div>
               </th>
               <th @click="toggleSort('status')"
-                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
+                class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                 <div class="flex items-center gap-2 ">
                   Status
                   <Icon v-if="sortBy === 'status'" :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
@@ -100,7 +100,7 @@
                   <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
                 </div>
               </th>
-              <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest text-right ">Aksi
+              <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest text-right ">Aksi
               </th>
             </tr>
           </thead>
@@ -158,9 +158,9 @@
                       class="text-[15px] font-bold text-navy truncate group-hover:text-primary-dark transition-colors">
                       {{ event.name }}</div>
                     <div class="flex items-center gap-2 mt-0.5">
-                      <span class="text-[11px] font-bold text-gray-400 tracking-wide ">{{ event.code }}</span>
+                      <span class=" text-xs font-bold text-gray-400 tracking-wide ">{{ event.code }}</span>
                       <span class="text-gray-300">•</span>
-                      <span class="text-[11px] font-bold text-primary-dark  tracking-wide">{{
+                      <span class=" text-xs font-bold text-primary-dark  tracking-wide">{{
                         event.location_type || 'Event' }}</span>
                     </div>
                   </div>

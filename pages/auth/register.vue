@@ -159,7 +159,7 @@
                                         :class="{ 'border-red-500': errors.address }"
                                         placeholder="Alamat kantor atau sekretariat"
                                         @input="validate('address', form.address, [rules.required()])"></textarea>
-                                    <p v-if="errors.address" class="text-red-500 text-[11px] font-bold ml-1">{{
+                                    <p v-if="errors.address" class="text-red-500  text-xs font-bold ml-1">{{
                                         errors.address }}</p>
                                 </div>
                             </div>

@@ -193,7 +193,7 @@
                                 </div>
                                 <div class="pt-4 border-t border-dashed border-gray-100 mt-4 flex flex-col gap-1">
                                     <div class="flex justify-between items-center">
-                                        <span class="text-[11px] font-black text-navy">Total Bayar</span>
+                                        <span class=" text-xs font-black text-navy">Total Bayar</span>
                                         <span class="text-xl font-black text-navy tracking-tight">Rp {{
                                             formatNumber(totalAmount) }}</span>
                                     </div>

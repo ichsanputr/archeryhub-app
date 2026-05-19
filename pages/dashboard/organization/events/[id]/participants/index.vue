@@ -150,7 +150,7 @@
                                         <div class="min-w-0 py-1">
                                             <div class="text-sm font-black text-navy leading-tight">{{
                                                 participant.full_name }}</div>
-                                            <div class="text-[11px] text-gray-400 font-medium mt-1 leading-none">{{
+                                            <div class=" text-xs text-gray-400 font-medium mt-1 leading-none">{{
                                                 participant.email || '-' }}</div>
                                         </div>
                                     </div>

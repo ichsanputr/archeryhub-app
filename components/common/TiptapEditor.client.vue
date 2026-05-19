@@ -253,7 +253,7 @@
 
             <!-- Word count -->
             <div class="ml-auto flex items-center pl-2">
-                <span class="text-[11px] text-gray-400 font-bold hidden sm:block whitespace-nowrap">
+                <span class=" text-xs text-gray-400 font-bold hidden sm:block whitespace-nowrap">
                     {{ editor.storage.characterCount?.characters() ?? 0 }} karakter ·
                     {{ editor.storage.characterCount?.words() ?? 0 }} kata
                 </span>

@@ -57,6 +57,7 @@
                             </li>
                         </ul>
                         <button
+                            @click="handleSelectPlan(3, 'Standar', 29999)"
                             class="w-full py-4 px-6 rounded-2xl border-2 border-navy text-navy font-black hover:bg-navy hover:text-white transition-all duration-300">
                             {{ $t('subscription_page.select_plan') }}
                         </button>
@@ -66,7 +67,7 @@
                     <div
                         class="bg-navy rounded-3xl p-8 flex flex-col shadow-sm relative overflow-hidden ring-4 ring-primary/20 transition-all duration-500 hover:-translate-y-2">
                         <div
-                            class="absolute top-0 right-0 bg-primary text-navy px-6 py-2 text-[11px] font-black tracking-[0.2em] rounded-bl-2xl shadow-lg">
+                            class="absolute top-0 right-0 bg-primary text-navy px-6 py-2  text-xs font-black tracking-[0.2em] rounded-bl-2xl shadow-lg">
                             {{ $t('subscription_page.professional') }}
                         </div>
                         <div class="mb-10 pt-4">
@@ -92,6 +93,7 @@
                             </li>
                         </ul>
                         <button
+                            @click="handleSelectPlan(4, 'Elite', 49999)"
                             class="w-full py-4 px-6 rounded-2xl bg-primary text-navy font-black hover:scale-[1.03] active:scale-95 transition-all shadow-primary/20">
                             {{ $t('subscription_page.activate_elite') }}
                         </button>
@@ -100,7 +102,7 @@
 
                 <!-- EO Comparison Table -->
                 <div class="max-w-5xl mx-auto">
-                    <h3 class="text-center text-[11px] font-black text-gray-400 tracking-widest mb-8">
+                    <h3 class="text-center  text-xs font-black text-gray-400 tracking-widest mb-8">
                         {{ $t('subscription_page.detail_comparison') }}
                     </h3>
                     <div class="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
@@ -188,6 +190,7 @@
 import { Icon } from '@iconify/vue'
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useAuth } from '~/composables/useAuth'
 import SubscriptionPromo from '~/components/dashboard/subscription/SubscriptionPromo.vue'
 
 const activeFaq = ref(0)
@@ -196,10 +199,27 @@ const toggleFaq = (index) => {
 }
 
 const { tm, t } = useI18n()
+const { user } = useAuth()
+const router = useRouter()
 
 definePageMeta({
     layout: 'landing'
 })
+
+const handleSelectPlan = (planId, planName, planPrice) => {
+    if (!user.value) {
+        router.push(`/auth/login?redirect=${encodeURIComponent('/subscription')}`)
+        return
+    }
+    router.push({
+        path: '/dashboard/organization/subscription/payment',
+        query: {
+            plan_id: planId,
+            plan_name: planName,
+            plan_price: planPrice
+        }
+    })
+}
 
 // ─── Localized EO feature lists ─────────────────────────────────────────
 const eoBasicFeatures = computed(() => tm('subscription_page.basic_features_list') || [])

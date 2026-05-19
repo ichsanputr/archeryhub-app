@@ -161,7 +161,7 @@
                                         </p>
                                     </div>
                                 </div>
-                                <div class="text-[11px] text-gray-500 font-medium px-1 flex items-center gap-2">
+                                <div class=" text-xs text-gray-500 font-medium px-1 flex items-center gap-2">
                                     <Icon icon="ph:info-bold" class="text-navy" />
                                     Pemanah dapat mengikuti lebih dari satu kategori (Multiple Selection)
                                 </div>

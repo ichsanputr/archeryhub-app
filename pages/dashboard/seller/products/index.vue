@@ -106,7 +106,7 @@
                         <thead>
                             <tr class="bg-gray-50/50 border-b border-gray-100">
                                 <th @click="toggleSort('name')"
-                                    class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors ">
+                                    class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors ">
                                     <div class="flex items-center gap-2">
                                         Produk
                                         <Icon v-if="sortBy === 'name'"
@@ -116,7 +116,7 @@
                                     </div>
                                 </th>
                                 <th @click="toggleSort('category')"
-                                    class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors ">
+                                    class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors ">
                                     <div class="flex items-center gap-2">
                                         Kategori
                                         <Icon v-if="sortBy === 'category'"
@@ -126,7 +126,7 @@
                                     </div>
                                 </th>
                                 <th @click="toggleSort('price')"
-                                    class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors ">
+                                    class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors ">
                                     <div class="flex items-center gap-2">
                                         Harga
                                         <Icon v-if="sortBy === 'price'"
@@ -136,7 +136,7 @@
                                     </div>
                                 </th>
                                 <th @click="toggleSort('stock')"
-                                    class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors ">
+                                    class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors ">
                                     <div class="flex items-center gap-2">
                                         Stok
                                         <Icon v-if="sortBy === 'stock'"
@@ -146,7 +146,7 @@
                                     </div>
                                 </th>
                                 <th @click="toggleSort('status')"
-                                    class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors ">
+                                    class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors ">
                                     <div class="flex items-center gap-2">
                                         Status
                                         <Icon v-if="sortBy === 'status'"
@@ -156,7 +156,7 @@
                                     </div>
                                 </th>
                                 <th
-                                    class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest text-right ">
+                                    class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest text-right ">
                                     Aksi</th>
                             </tr>
                         </thead>

@@ -81,7 +81,7 @@
                                         {{ getItemTitle(item) }}
                                     </div>
                                     <div v-if="item.description"
-                                        class="text-[11px] text-gray-400 font-medium truncate mt-0.5 line-clamp-1">
+                                        class=" text-xs text-gray-400 font-medium truncate mt-0.5 line-clamp-1">
                                         {{ item.description }}
                                     </div>
                                 </div>
@@ -100,7 +100,7 @@
             </transition>
         </div>
 
-        <p v-if="error" class="text-red-500 text-[11px] font-bold ml-1 animate-in fade-in slide-in-from-top-1">
+        <p v-if="error" class="text-red-500  text-xs font-bold ml-1 animate-in fade-in slide-in-from-top-1">
             {{ error }}
         </p>
     </div>

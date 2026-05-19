@@ -708,7 +708,7 @@
                                 </div>
                             </div>
                             <h4 class="font-bold text-sm text-navy">Dari Sistem</h4>
-                            <p class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">Hasil kualifikasi & eliminasi
+                            <p class=" text-xs text-gray-400 mt-0.5 leading-relaxed">Hasil kualifikasi & eliminasi
                                 dari scoring system.</p>
                         </button>
                         <button @click="form.page_settings.results_type = 'manual'" type="button"
@@ -726,7 +726,7 @@
                                 </div>
                             </div>
                             <h4 class="font-bold text-sm text-navy">Upload Manual</h4>
-                            <p class="text-[11px] text-gray-400 mt-0.5 leading-relaxed">Upload file PDF/gambar hasil
+                            <p class=" text-xs text-gray-400 mt-0.5 leading-relaxed">Upload file PDF/gambar hasil
                                 lomba secara manual.</p>
                         </button>
                     </div>
@@ -816,7 +816,7 @@
                                                     File Download</label>
                                                 <div class="flex items-center gap-2">
                                                     <input v-model="file.name" type="text" placeholder="nama-file"
-                                                        class="flex-1 px-3 py-2 text-[11px] font-medium text-gray-500 bg-gray-50 border border-transparent focus:bg-white focus:border-primary rounded-lg outline-none transition-all" />
+                                                        class="flex-1 px-3 py-2  text-xs font-medium text-gray-500 bg-gray-50 border border-transparent focus:bg-white focus:border-primary rounded-lg outline-none transition-all" />
                                                     <span class="text-[10px] font-bold text-gray-400">.{{
                                                         getFileExt(file.url) }}</span>
                                                 </div>

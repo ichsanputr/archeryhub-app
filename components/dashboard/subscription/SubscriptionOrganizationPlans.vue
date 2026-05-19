@@ -59,7 +59,7 @@
                                         :icon="plan.name.toLowerCase().includes('elite') ? 'ph:crown-bold' : 'ph:lightning-bold'"
                                         class="text-xl text-navy" />
                                 </div>
-                                <h4 class="text-[11px] font-black text-gray-400 tracking-[0.2em] mb-2">{{
+                                <h4 class=" text-xs font-black text-gray-400 tracking-[0.2em] mb-2">{{
                                     plan.name }}</h4>
                                 <div class="flex items-baseline gap-1">
                                     <span class="text-3xl font-black text-navy">{{ plan.priceLabel }}</span>

@@ -120,7 +120,7 @@
                     <thead>
                         <tr class="bg-gray-50/50 border-b border-gray-100">
                             <th @click="toggleSort('name')"
-                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
+                                class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                                 <div class="flex items-center gap-2">
                                     Profil Staff
                                     <Icon v-if="sortBy === 'name'"
@@ -130,7 +130,7 @@
                                 </div>
                             </th>
                             <th @click="toggleSort('code')"
-                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
+                                class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                                 <div class="flex items-center gap-2">
                                     Kode Login
                                     <Icon v-if="sortBy === 'code'"
@@ -140,7 +140,7 @@
                                 </div>
                             </th>
                             <th @click="toggleSort('status')"
-                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
+                                class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                                 <div class="flex items-center gap-2">
                                     Status Akun
                                     <Icon v-if="sortBy === 'status'"
@@ -150,7 +150,7 @@
                                 </div>
                             </th>
                             <th @click="toggleSort('created_at')"
-                                class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
+                                class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest cursor-pointer hover:text-navy transition-colors">
                                 <div class="flex items-center gap-2">
                                     Tgl Bergabung
                                     <Icon v-if="sortBy === 'created_at'"
@@ -159,7 +159,7 @@
                                     <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
                                 </div>
                             </th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest text-right">
+                            <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest text-right">
                                 Aksi</th>
                         </tr>
                     </thead>
@@ -184,7 +184,7 @@
                             <td class="px-6 py-5">
                                 <span
                                     :class="sk.status === 'active' ? 'bg-green-50 text-green-700 border-green-100' : 'bg-red-50 text-red-700 border-red-100'"
-                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold border capitalize tracking-wider">
+                                    class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg  text-xs font-bold border capitalize tracking-wider">
                                     <span :class="sk.status === 'active' ? 'bg-green-500' : 'bg-red-500'"
                                         class="h-1.5 w-1.5 rounded-full"></span>
                                     {{ sk.status === 'active' ? 'Aktif' : 'Nonaktif' }}
@@ -221,7 +221,7 @@
                 <div v-if="!modal.isEdit"
                     class="bg-primary/5 border border-primary/20 p-4 rounded-xl flex gap-3 items-start">
                     <Icon icon="ph:info-bold" class="text-primary text-lg flex-shrink-0 mt-0.5" />
-                    <p class="text-[11px] text-navy/70 leading-relaxed font-medium">
+                    <p class=" text-xs text-navy/70 leading-relaxed font-medium">
                         Kode akses login mobile apps akan digenerate secara otomatis setelah Anda menyimpan data staff
                         ini.
                     </p>

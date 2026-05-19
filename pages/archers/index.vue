@@ -108,7 +108,7 @@
                                     <span class="truncate">{{ archer.club_name || archer.club || 'Independent' }}</span>
                                 </span>
                                 <span v-if="archer.city"
-                                    class="text-gray-400 text-[11px] font-bold flex items-center gap-1.5  tracking-wider">
+                                    class="text-gray-400  text-xs font-bold flex items-center gap-1.5  tracking-wider">
                                     <Icon icon="ph:map-pin-bold" class="text-xs" />
                                     {{ archer.city }}
                                 </span>

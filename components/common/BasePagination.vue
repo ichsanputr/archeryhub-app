@@ -8,7 +8,7 @@
         <Icon icon="ph:list-numbers-bold" class="text-xl text-black/60" />
       </div>
       <div class="flex flex-col">
-        <span class="text-[11px] font-black tracking-widest text-gray-400">Statistik Data</span>
+        <span class=" text-xs font-black tracking-widest text-gray-400">Statistik Data</span>
         <p class="text-xs sm:text-sm text-gray-500 font-bold leading-tight">
           Menampilkan <span class="text-navy underline decoration-primary decoration-2 underline-offset-2">{{ startItem
           }}</span>

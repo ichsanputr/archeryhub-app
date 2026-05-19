@@ -89,17 +89,17 @@
                 <table class="w-full text-left border-collapse min-w-[800px]">
                     <thead>
                         <tr class="bg-gray-50/50 border-b border-gray-100">
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest ">
+                            <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest ">
                                 Akun</th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest text-center">
+                            <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest text-center">
                                 Tipe</th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest ">
+                            <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest ">
                                 Paket</th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest text-center">
+                            <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest text-center">
                                 Status</th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest ">
+                            <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest ">
                                 Expires</th>
-                            <th class="px-6 py-4 text-[11px] font-extrabold text-gray-400 tracking-widest text-right">
+                            <th class="px-6 py-4  text-xs font-extrabold text-gray-400 tracking-widest text-right">
                                 Aksi</th>
                         </tr>
                     </thead>

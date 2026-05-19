@@ -75,6 +75,23 @@
                 </div>
 
                 <form @submit.prevent="handleEmailAuth" class="space-y-6">
+                    <div v-if="isDev" class="bg-amber-50/80 border border-amber-200/80 rounded-xl p-4 text-xs space-y-2 mb-2 font-body">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-amber-800 flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
+                                mode pengembangan / dev mode
+                            </span>
+                            <span class="text-[10px] bg-amber-200/60 text-amber-800 px-1.5 py-0.5 rounded font-mono font-bold">auto-fill</span>
+                        </div>
+                        <label class="block font-bold text-slate-700">pilih jenis akun demo:</label>
+                        <select @change="selectDemoUser($event.target.value)" class="w-full bg-white border border-slate-200 rounded-lg p-2 text-slate-700 focus:outline-none focus:ring-1 focus:ring-amber-500 font-medium">
+                            <option value="">-- pilih akun --</option>
+                            <option value="archer">archer (pemanah) - stewie4king@gmail.com</option>
+                            <option value="organization">organization (klub) - ichsanfadhil67@gmail.com</option>
+                            <option value="seller">seller (toko) - seller@panahan.com</option>
+                        </select>
+                    </div>
+
                     <BaseInput v-model="form.email" label="Alamat Email" placeholder="name@company.com" type="email"
                         icon="mail" required :error="errors.email"
                         @update:model-value="validate('email', form.email, [rules.required(), rules.email()])" />
@@ -131,15 +148,38 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAuth } from '~/composables/useAuth'
 import { useFormValidation } from '~/composables/useFormValidation'
 import { useToast } from '~/composables/useToast'
-
+ 
 const route = useRoute()
 const { login, loginWithEmail, isLoggedIn, user } = useAuth()
 const toast = useToast()
+
+const isDev = computed(() => {
+    if (process.client) {
+        return window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || import.meta.dev
+    }
+    return import.meta.dev
+})
+
+const selectDemoUser = (role) => {
+    if (!role) return
+    const credentials = {
+        archer: { email: 'stewie4king@gmail.com', password: '12345' },
+        organization: { email: 'ichsanfadhil67@gmail.com', password: '123456' },
+        seller: { email: 'seller@panahan.com', password: '12345' }
+    }
+    const creds = credentials[role]
+    if (creds) {
+        form.value.email = creds.email
+        form.value.password = creds.password
+        validate('email', form.value.email, [rules.required(), rules.email()])
+        validate('password', form.value.password, [rules.required()])
+    }
+}
 
 useHead({
     title: 'Masuk - Archeris.net'

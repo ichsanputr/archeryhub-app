@@ -21,7 +21,7 @@
                     <div class="space-y-2">
                         <h2 class="text-2xl font-black text-navy tracking-tight ">Verifikasi Keamanan</h2>
                         <p
-                            class="text-[11px] text-gray-400 font-bold leading-relaxed max-w-[240px] mx-auto tracking-wider">
+                            class=" text-xs text-gray-400 font-bold leading-relaxed max-w-[240px] mx-auto tracking-wider">
                             Masukkan password akun Anda untuk mengakses fitur keuangan
                         </p>
                     </div>
@@ -111,7 +111,7 @@
                                                 Tanggal
                                                 <Icon v-if="sortBy === 'created_at'"
                                                     :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
-                                                    class="text-primary text-[11px]" />
+                                                    class="text-primary  text-xs" />
                                                 <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
                                             </div>
                                         </th>
@@ -121,7 +121,7 @@
                                                 Status
                                                 <Icon v-if="sortBy === 'status'"
                                                     :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
-                                                    class="text-primary text-[11px]" />
+                                                    class="text-primary  text-xs" />
                                                 <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
                                             </div>
                                         </th>
@@ -131,7 +131,7 @@
                                                 Nominal
                                                 <Icon v-if="sortBy === 'amount'"
                                                     :icon="order === 'ASC' ? 'ph:caret-up-fill' : 'ph:caret-down-fill'"
-                                                    class="text-primary text-[11px]" />
+                                                    class="text-primary  text-xs" />
                                                 <Icon v-else icon="ph:caret-up-down" class="opacity-30" />
                                             </div>
                                         </th>

@@ -40,7 +40,7 @@
           <!-- Identitas -->
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
             <div class="flex items-center justify-between">
-              <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
+              <h3 class=" text-xs font-black text-navy  tracking-[0.2em] flex items-center gap-2">
                 <Icon icon="ph:identification-badge-bold" class="text-primary text-lg" /> Identitas Utama
               </h3>
             </div>
@@ -80,7 +80,7 @@
 
           <!-- Logo & Banner -->
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-8">
-            <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
+            <h3 class=" text-xs font-black text-navy  tracking-[0.2em] flex items-center gap-2">
               <Icon icon="ph:image-bold" class="text-primary text-lg" /> Branding Visual
             </h3>
 
@@ -137,7 +137,7 @@
         <!-- Tab: Kontak -->
         <div v-if="activeTab === 'contact'" class="space-y-8">
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
-            <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
+            <h3 class=" text-xs font-black text-navy  tracking-[0.2em] flex items-center gap-2">
               <Icon icon="ph:phone-bold" class="text-primary text-xl" /> Informasi Kontak
             </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -153,7 +153,7 @@
 
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
             <div class="flex items-center justify-between">
-              <h3 class="text-[11px] font-black text-navy tracking-[0.2em] flex items-center gap-2">
+              <h3 class=" text-xs font-black text-navy tracking-[0.2em] flex items-center gap-2">
                 <Icon icon="ph:share-network-bold" class="text-primary text-xl" /> Kehadiran Media Sosial
               </h3>
 
@@ -215,7 +215,7 @@
         <!-- Tab: Visi, Misi & Sejarah -->
         <div v-if="activeTab === 'about'" class="space-y-8">
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
-            <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
+            <h3 class=" text-xs font-black text-navy  tracking-[0.2em] flex items-center gap-2">
               <Icon icon="ph:eye-bold" class="text-primary text-xl" /> Visi & Misi
             </h3>
             <div>
@@ -230,7 +230,7 @@
           </div>
 
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
-            <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
+            <h3 class=" text-xs font-black text-navy  tracking-[0.2em] flex items-center gap-2">
               <Icon icon="ph:book-open-bold" class="text-primary text-xl" /> Sejarah Organisasi
             </h3>
             <div>
@@ -245,7 +245,7 @@
         <div v-if="activeTab === 'faq'" class="space-y-8">
           <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
             <div class="flex items-center justify-between">
-              <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
+              <h3 class=" text-xs font-black text-navy  tracking-[0.2em] flex items-center gap-2">
                 <Icon icon="ph:question-bold" class="text-primary text-xl" /> Pertanyaan Sering Diajukan (FAQ)
               </h3>
               <button @click="addFAQ"
@@ -285,7 +285,7 @@
       <!-- Side card -->
       <div class="space-y-4">
         <div class="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-5">
-          <h3 class="text-[11px] font-black text-navy  tracking-[0.2em] flex items-center gap-2">
+          <h3 class=" text-xs font-black text-navy  tracking-[0.2em] flex items-center gap-2">
             <Icon icon="ph:gear-six-bold" class="text-primary text-lg" /> Visibilitas Halaman
           </h3>
           <p class="text-xs text-gray-500 font-medium">Atur bagian mana yang dapat dilihat publik.</p>

@@ -80,12 +80,12 @@
                                 </h4>
                                 <div class="flex gap-3">
                                     <a :href="file.url" target="_blank"
-                                        class="flex-1 py-3 bg-gray-50 hover:bg-navy hover:text-white text-navy font-black text-[11px] rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 border border-transparent">
+                                        class="flex-1 py-3 bg-gray-50 hover:bg-navy hover:text-white text-navy font-black  text-xs rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 border border-transparent">
                                         <Icon icon="ph:eye-bold" class="text-sm" />
                                         Lihat
                                     </a>
                                     <BaseButton variant="primary" size="sm"
-                                        class="flex-1 !rounded-2xl !py-4 font-black text-[11px] h-auto"
+                                        class="flex-1 !rounded-2xl !py-4 font-black  text-xs h-auto"
                                         :loading="downloadingIndex === index" @click="handleDownload(file, index)">
                                         <Icon v-if="downloadingIndex !== index" icon="ph:download-simple-bold"
                                             class="text-sm mr-2" />
